@@ -7,64 +7,55 @@ from script_61 import correct_bracketing
 
 
 def test_correct_bracketing_empty_string():
-    """Test empty string returns True (no unclosed brackets)"""
+    """Test empty string returns True (depth == 0)."""
     assert correct_bracketing("") == True
 
 
 def test_correct_bracketing_single_open():
-    """Test single opening bracket returns False"""
+    """Test single opening bracket returns False."""
     assert correct_bracketing("(") == False
 
 
 def test_correct_bracketing_single_close():
-    """Test single closing bracket returns False"""
+    """Test single closing bracket returns False (depth < 0)."""
     assert correct_bracketing(")") == False
 
 
-def test_correct_bracketing_balanced_single_pair():
-    """Test single balanced pair returns True"""
+def test_correct_bracketing_balanced_pair():
+    """Test balanced pair returns True."""
     assert correct_bracketing("()") == True
 
 
-def test_correct_bracketing_balanced_nested():
-    """Test nested balanced brackets return True"""
-    assert correct_bracketing("(())") == True
+def test_correct_bracketing_nested():
+    """Test nested balanced brackets return True."""
     assert correct_bracketing("(()())") == True
 
 
-def test_correct_bracketing_balanced_sequential():
-    """Test sequential balanced brackets return True"""
-    assert correct_bracketing("()()") == True
+def test_correct_bracketing_close_before_open():
+    """Test closing bracket before opening returns False."""
+    assert correct_bracketing(")(()") == False
+
+
+def test_correct_bracketing_multiple_pairs():
+    """Test multiple balanced pairs return True."""
     assert correct_bracketing("()()()") == True
 
 
-def test_correct_bracketing_close_before_open():
-    """Test closing bracket before opening returns False"""
-    assert correct_bracketing(")(") == False
-    assert correct_bracketing(")()") == False
-
-
 def test_correct_bracketing_unbalanced_more_open():
-    """Test more opening brackets than closing returns False"""
-    assert correct_bracketing("((") == False
-    assert correct_bracketing("(()") == False
+    """Test more opening brackets than closing returns False."""
+    assert correct_bracketing("(((") == False
 
 
 def test_correct_bracketing_unbalanced_more_close():
-    """Test more closing brackets than opening returns False"""
-    assert correct_bracketing("))") == False
-    assert correct_bracketing("())") == False
+    """Test more closing brackets than opening returns False."""
+    assert correct_bracketing(")))") == False
 
 
 def test_correct_bracketing_complex_balanced():
-    """Test complex balanced expressions"""
-    assert correct_bracketing("((()))") == True
-    assert correct_bracketing("()(())()") == True
-    assert correct_bracketing("((()()))") == True
+    """Test complex balanced structure returns True."""
+    assert correct_bracketing("(()(()))") == True
 
 
 def test_correct_bracketing_complex_unbalanced():
-    """Test complex unbalanced expressions"""
-    assert correct_bracketing("((())") == False
-    assert correct_bracketing("(()))") == False
-    assert correct_bracketing("(()(") == False
+    """Test complex unbalanced structure returns False."""
+    assert correct_bracketing("(()(()") == False

@@ -2,10 +2,6 @@
 import script_23 as module_0
 
 def test_case_0():
-    str_0 = 'x4~VLEA:UU7'
-    str_1 = 'hJ\tc#^'
-    int_0 = module_0.strlen(str_1)
+    str_0 = 'AQ#5UKWC"iM'
+    int_0 = module_0.strlen(str_0)
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    int_1 = module_0.strlen(str_0)
-    str_2 = 'q78FBcTo6{baE,#6?'
-    int_2 = module_0.strlen(str_2)

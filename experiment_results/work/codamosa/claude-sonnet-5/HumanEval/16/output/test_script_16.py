@@ -2,12 +2,6 @@
 import script_16 as module_0
 
 def test_case_0():
-    str_0 = "!jL'=M"
+    str_0 = "aNa#.N\x0cq%ur':{\n3?"
     int_0 = module_0.count_distinct_characters(str_0)
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    str_1 = 'ru#/0]z\x0biyQH;,2Q'
-    int_1 = module_0.count_distinct_characters(str_1)
-    str_2 = ']Q\'^ZRO"s]CRqLoU"T'
-    int_2 = module_0.count_distinct_characters(str_2)
-    int_3 = module_0.count_distinct_characters(str_1)
-    int_4 = module_0.count_distinct_characters(str_1)

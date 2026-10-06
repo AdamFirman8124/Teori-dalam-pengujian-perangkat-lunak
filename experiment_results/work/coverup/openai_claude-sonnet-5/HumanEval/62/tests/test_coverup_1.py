@@ -7,12 +7,12 @@ from script_62 import derivative
 
 
 def test_derivative_basic():
-    """Test derivative with multiple coefficients."""
+    """Test basic derivative calculation."""
     assert derivative([3, 1, 2, 4, 5]) == [1, 4, 12, 20]
 
 
 def test_derivative_simple():
-    """Test derivative with three coefficients."""
+    """Test simple polynomial derivative."""
     assert derivative([1, 2, 3]) == [2, 6]
 
 
@@ -23,7 +23,7 @@ def test_derivative_constant():
 
 def test_derivative_linear():
     """Test derivative of linear polynomial."""
-    assert derivative([2, 3]) == [3]
+    assert derivative([3, 2]) == [2]
 
 
 def test_derivative_empty():
@@ -31,11 +31,16 @@ def test_derivative_empty():
     assert derivative([]) == []
 
 
-def test_derivative_zeros():
+def test_derivative_zero_coefficients():
     """Test derivative with zero coefficients."""
     assert derivative([0, 0, 3, 0, 5]) == [0, 6, 0, 20]
 
 
-def test_derivative_negative():
+def test_derivative_negative_coefficients():
     """Test derivative with negative coefficients."""
-    assert derivative([1, -2, 3, -4]) == [-2, 6, -12]
+    assert derivative([5, -3, 2, -1]) == [-3, 4, -3]
+
+
+def test_derivative_large_polynomial():
+    """Test derivative of larger polynomial."""
+    assert derivative([1, 2, 3, 4, 5, 6]) == [2, 6, 12, 20, 30]

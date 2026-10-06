@@ -3,24 +3,16 @@ import script_42 as module_0
 
 def test_case_0():
     try:
-        dict_0 = None
-        list_0 = [dict_0, dict_0, dict_0]
-        var_0 = module_0.incr_list(list_0)
+        list_0 = None
+        list_1 = [list_0, list_0, list_0, list_0]
+        list_2 = [list_1, list_0, list_1, list_1]
+        var_0 = module_0.incr_list(list_2)
     except BaseException:
         pass
 
 def test_case_1():
     try:
-        int_0 = -2951
-        tuple_0 = (int_0,)
-        list_0 = [int_0, int_0]
+        list_0 = []
         var_0 = module_0.incr_list(list_0)
-        assert var_0 == [-2950, -2950]
-        list_1 = []
-        var_1 = module_0.incr_list(list_1)
-        var_2 = module_0.incr_list(list_1)
-        str_0 = '|!NCXBkJY\x0cBl5pBlHZ.'
-        list_2 = [tuple_0, str_0, tuple_0, tuple_0]
-        var_3 = module_0.incr_list(list_2)
     except BaseException:
         pass

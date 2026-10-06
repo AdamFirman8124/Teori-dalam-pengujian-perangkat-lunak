@@ -2,6 +2,8 @@
 import script_34 as module_0
 
 def test_case_0():
-    float_0 = 3527.424356
-    list_0 = [float_0, float_0]
+    bool_0 = True
+    list_0 = [bool_0, bool_0, bool_0, bool_0]
     var_0 = module_0.unique(list_0)
+    list_1 = [bool_0]
+    var_1 = module_0.unique(list_1)

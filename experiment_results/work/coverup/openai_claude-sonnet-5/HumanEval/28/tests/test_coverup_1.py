@@ -25,19 +25,19 @@ def test_concatenate_multiple_strings():
     assert result == 'abc'
 
 
-def test_concatenate_with_empty_strings():
+def test_concatenate_strings_with_spaces():
+    """Test concatenating strings that contain spaces"""
+    result = concatenate(['hello ', 'world', '!'])
+    assert result == 'hello world!'
+
+
+def test_concatenate_empty_strings():
     """Test concatenating list containing empty strings"""
-    result = concatenate(['', 'a', '', 'b', ''])
-    assert result == 'ab'
+    result = concatenate(['', '', ''])
+    assert result == ''
 
 
-def test_concatenate_with_spaces():
-    """Test concatenating strings with spaces"""
-    result = concatenate(['hello', ' ', 'world'])
-    assert result == 'hello world'
-
-
-def test_concatenate_with_special_characters():
-    """Test concatenating strings with special characters"""
-    result = concatenate(['!', '@', '#', '$'])
-    assert result == '!@#$'
+def test_concatenate_mixed_content():
+    """Test concatenating strings with various content"""
+    result = concatenate(['foo', '', 'bar', 'baz'])
+    assert result == 'foobarbaz'

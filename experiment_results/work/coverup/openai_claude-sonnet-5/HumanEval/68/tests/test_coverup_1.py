@@ -13,31 +13,31 @@ def test_pluck_empty_array():
 
 
 def test_pluck_no_even_values():
-    """Test that array with only odd values returns empty list."""
-    result = pluck([1, 3, 5, 7])
+    """Test that array with no even values returns empty list."""
+    result = pluck([1, 3, 5, 7, 9])
     assert result == []
 
 
 def test_pluck_single_even_value():
-    """Test that array with single even value returns correct result."""
-    result = pluck([1, 3, 4, 5])
-    assert result == [4, 2]
+    """Test array with single even value."""
+    result = pluck([1, 4, 3])
+    assert result == [4, 1]
 
 
 def test_pluck_multiple_even_values():
-    """Test that smallest even value is returned with correct index."""
+    """Test array with multiple even values returns smallest."""
     result = pluck([4, 2, 3])
     assert result == [2, 1]
 
 
-def test_pluck_multiple_same_smallest_even():
-    """Test that first occurrence of smallest even is returned."""
+def test_pluck_duplicate_smallest_even():
+    """Test that first index is returned when smallest even appears multiple times."""
     result = pluck([5, 0, 3, 0, 4, 2])
     assert result == [0, 1]
 
 
 def test_pluck_zero_is_even():
-    """Test that zero is treated as even."""
+    """Test that zero is correctly identified as even."""
     result = pluck([1, 3, 0, 5])
     assert result == [0, 2]
 
@@ -49,12 +49,12 @@ def test_pluck_all_even_values():
 
 
 def test_pluck_even_at_start():
-    """Test even value at index 0."""
-    result = pluck([2, 5, 7])
+    """Test even value at the beginning of array."""
+    result = pluck([2, 5, 7, 9])
     assert result == [2, 0]
 
 
-def test_pluck_large_numbers():
-    """Test with larger even numbers."""
-    result = pluck([100, 50, 75, 25])
-    assert result == [50, 1]
+def test_pluck_even_at_end():
+    """Test even value at the end of array."""
+    result = pluck([5, 7, 9, 2])
+    assert result == [2, 3]

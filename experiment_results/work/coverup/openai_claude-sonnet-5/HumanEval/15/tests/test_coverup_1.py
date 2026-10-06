@@ -12,7 +12,7 @@ def test_string_sequence_zero():
 
 
 def test_string_sequence_positive():
-    """Test string_sequence with positive n"""
+    """Test string_sequence with positive number"""
     assert string_sequence(5) == '0 1 2 3 4 5'
 
 
@@ -22,5 +22,5 @@ def test_string_sequence_one():
 
 
 def test_string_sequence_large():
-    """Test string_sequence with larger n"""
+    """Test string_sequence with larger number"""
     assert string_sequence(10) == '0 1 2 3 4 5 6 7 8 9 10'

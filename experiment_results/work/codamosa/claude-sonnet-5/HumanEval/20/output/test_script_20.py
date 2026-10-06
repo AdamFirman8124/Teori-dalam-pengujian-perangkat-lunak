@@ -2,42 +2,57 @@
 import script_20 as module_0
 
 def test_case_0():
-    float_0 = -2693.101277
-    list_0 = [float_0, float_0, float_0]
+    float_0 = 636.01992
+    list_0 = [float_0, float_0]
     tuple_0 = module_0.find_closest_elements(list_0)
     assert len(tuple_0) == 2
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    tuple_1 = module_0.find_closest_elements(list_0)
-    assert len(tuple_1) == 2
-    list_1 = []
-    tuple_2 = module_0.find_closest_elements(list_1)
-    assert tuple_2 is None
-    tuple_3 = module_0.find_closest_elements(list_1)
-    assert tuple_3 is None
-    tuple_4 = module_0.find_closest_elements(list_1)
-    assert tuple_4 is None
 
 def test_case_1():
-    float_0 = -176.52971
-    float_1 = 332.56509
-    float_2 = 1701.2
-    float_3 = 1442.0
-    float_4 = 191.865
-    list_0 = [float_3, float_1, float_1, float_4]
+    float_0 = 207.555962
+    float_1 = -44.74
+    float_2 = 1593.965
+    list_0 = [float_1, float_2]
     tuple_0 = module_0.find_closest_elements(list_0)
     assert len(tuple_0) == 2
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    tuple_1 = module_0.find_closest_elements(list_0)
+    float_3 = -2296.551358
+    list_1 = [float_0, float_3, float_0]
+    tuple_1 = module_0.find_closest_elements(list_1)
     assert len(tuple_1) == 2
-    list_1 = [float_2, float_0, float_0]
-    tuple_2 = module_0.find_closest_elements(list_1)
+    float_4 = -1659.219
+    float_5 = -1725.83
+    float_6 = 2850.6927
+    float_7 = 5225.0
+    list_2 = [float_6, float_6, float_6, float_7]
+    tuple_2 = module_0.find_closest_elements(list_2)
     assert len(tuple_2) == 2
-    list_2 = [float_0, float_1, float_0, float_1]
-    tuple_3 = module_0.find_closest_elements(list_1)
+    float_8 = -1420.08448
+    tuple_3 = module_0.find_closest_elements(list_0)
     assert len(tuple_3) == 2
+    float_9 = -2697.3
+    float_10 = 935.1
+    list_3 = [float_9, float_4, float_8]
     tuple_4 = module_0.find_closest_elements(list_2)
     assert len(tuple_4) == 2
-    tuple_5 = module_0.find_closest_elements(list_2)
+    tuple_5 = module_0.find_closest_elements(list_3)
     assert len(tuple_5) == 2
-    tuple_6 = module_0.find_closest_elements(list_2)
+    float_11 = 2806.8
+    tuple_6 = module_0.find_closest_elements(list_1)
     assert len(tuple_6) == 2
+    list_4 = [float_8, float_9, float_10, float_11]
+    tuple_7 = module_0.find_closest_elements(list_4)
+    assert len(tuple_7) == 2
+    float_12 = -1126.94
+    list_5 = [float_4, float_5, float_8, float_12]
+    tuple_8 = module_0.find_closest_elements(list_5)
+    assert len(tuple_8) == 2
+    tuple_9 = module_0.find_closest_elements(list_5)
+    assert len(tuple_9) == 2
+    list_6 = []
+    tuple_10 = module_0.find_closest_elements(list_6)
+    assert tuple_10 is None
+    tuple_11 = module_0.find_closest_elements(list_3)
+    assert len(tuple_11) == 2
+    tuple_12 = module_0.find_closest_elements(list_6)
+    assert tuple_12 is None

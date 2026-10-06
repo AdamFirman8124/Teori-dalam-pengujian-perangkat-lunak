@@ -6,37 +6,43 @@ import pytest
 from script_59 import largest_prime_factor
 
 
-def test_largest_prime_factor_composite_number():
-    """Test largest prime factor of a composite number."""
-    result = largest_prime_factor(15)
-    assert result == 5
-
-
 def test_largest_prime_factor_13195():
-    """Test the example from docstring."""
+    """Test largest prime factor of 13195."""
     result = largest_prime_factor(13195)
     assert result == 29
 
 
 def test_largest_prime_factor_2048():
-    """Test power of 2 from docstring."""
+    """Test largest prime factor of 2048."""
     result = largest_prime_factor(2048)
     assert result == 2
 
 
 def test_largest_prime_factor_small_composite():
-    """Test smallest composite number."""
-    result = largest_prime_factor(4)
-    assert result == 2
+    """Test largest prime factor of a small composite number."""
+    result = largest_prime_factor(15)
+    assert result == 5
 
 
-def test_largest_prime_factor_product_of_primes():
-    """Test product of two primes."""
-    result = largest_prime_factor(21)
+def test_largest_prime_factor_with_multiple_primes():
+    """Test largest prime factor with multiple prime factors."""
+    result = largest_prime_factor(30)  # 2 * 3 * 5
+    assert result == 5
+
+
+def test_largest_prime_factor_even_number():
+    """Test largest prime factor of an even composite number."""
+    result = largest_prime_factor(100)  # 2^2 * 5^2
+    assert result == 5
+
+
+def test_largest_prime_factor_square_of_prime():
+    """Test largest prime factor of a square of a prime."""
+    result = largest_prime_factor(49)  # 7 * 7
     assert result == 7
 
 
-def test_largest_prime_factor_larger_number():
-    """Test with a larger composite number."""
-    result = largest_prime_factor(30)
-    assert result == 5
+def test_largest_prime_factor_product_of_two_primes():
+    """Test largest prime factor of product of two primes."""
+    result = largest_prime_factor(21)  # 3 * 7
+    assert result == 7

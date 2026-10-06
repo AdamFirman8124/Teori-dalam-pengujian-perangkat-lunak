@@ -2,22 +2,39 @@
 import script_63 as module_0
 
 def test_case_0():
-    int_0 = 238
+    int_0 = 81
     var_0 = module_0.fibfib(int_0)
     var_1 = module_0.fibfib(int_0)
-    int_1 = -2562
-    var_2 = module_0.fibfib(int_1)
-    int_2 = -2202
-    var_3 = module_0.fibfib(int_2)
-    int_3 = 465
-    var_4 = module_0.fibfib(int_3)
-    var_5 = module_0.fibfib(int_0)
-    var_6 = module_0.fibfib(int_3)
+    var_2 = module_0.fibfib(int_0)
+    int_1 = -1418
+    var_3 = module_0.fibfib(int_1)
+    int_2 = 2500
+    int_3 = -161
+    int_4 = -1684
+    var_4 = module_0.fibfib(int_4)
+    var_5 = module_0.fibfib(int_3)
+    int_5 = 605
+    var_6 = module_0.fibfib(int_5)
     var_7 = module_0.fibfib(int_0)
-    var_8 = module_0.fibfib(int_3)
-    var_9 = module_0.fibfib(int_1)
-    int_4 = 670
-    int_5 = -1636
-    var_10 = module_0.fibfib(int_5)
-    var_11 = module_0.fibfib(int_0)
-    var_12 = module_0.fibfib(int_4)
+    int_6 = 3707
+    var_8 = module_0.fibfib(int_6)
+    int_7 = -3692
+    var_9 = module_0.fibfib(int_7)
+    var_10 = module_0.fibfib(int_2)
+    int_8 = 1261
+    var_11 = module_0.fibfib(int_8)
+    var_12 = module_0.fibfib(int_5)
+    var_13 = module_0.fibfib(int_0)
+    int_9 = -840
+    var_14 = module_0.fibfib(int_9)
+    int_10 = 1141
+    int_11 = -2678
+    var_15 = module_0.fibfib(int_0)
+    var_16 = module_0.fibfib(int_11)
+    var_17 = module_0.fibfib(int_10)
+
+def test_case_1():
+    int_0 = 2
+    var_0 = module_0.fibfib(int_0)
+    assert var_0 == 1
+    assert module_0.METADATA == {}

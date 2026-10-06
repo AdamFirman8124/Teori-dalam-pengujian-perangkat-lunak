@@ -15,23 +15,18 @@ def test_modp_basic():
 
 
 def test_modp_zero():
-    """Test with n=0, which should return 1 without entering the loop."""
     assert modp(0, 101) == 1
     assert modp(0, 5) == 1
     assert modp(0, 2) == 1
 
 
-def test_modp_positive_n():
-    """Test with positive n values to execute lines 14-17."""
+def test_modp_one():
     assert modp(1, 5) == 2
-    assert modp(2, 5) == 4
-    assert modp(3, 5) == 3
-    assert modp(4, 7) == 2
-    assert modp(5, 13) == 6
+    assert modp(1, 101) == 2
+    assert modp(1, 11) == 2
 
 
-def test_modp_large_n():
-    """Test with larger n values to ensure loop executes multiple times."""
-    assert modp(10, 17) == 4
-    assert modp(50, 53) == 40
-    assert modp(100, 101) == 1
+def test_modp_positive_n():
+    assert modp(5, 7) == 4
+    assert modp(10, 13) == 10
+    assert modp(2, 3) == 1

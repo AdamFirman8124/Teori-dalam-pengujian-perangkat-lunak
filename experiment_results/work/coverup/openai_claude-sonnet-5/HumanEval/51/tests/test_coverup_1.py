@@ -36,14 +36,19 @@ def test_remove_vowels_no_vowels():
     assert remove_vowels('zbcd') == 'zbcd'
 
 
-def test_remove_vowels_all_vowel_types():
-    """Test with all vowel types to ensure line 17 executes."""
-    assert remove_vowels('aeiouAEIOU') == ''
-
-
 def test_remove_vowels_uppercase_vowels():
-    """Test with uppercase vowels."""
-    assert remove_vowels('HELLO') == 'HLL'
+    """Test with uppercase vowels to ensure line 17 executes."""
+    assert remove_vowels('AEIOU') == ''
+
+
+def test_remove_vowels_all_vowel_types():
+    """Test all vowel types (a, e, i, o, u) in both cases."""
+    assert remove_vowels('aEiOu') == ''
+
+
+def test_remove_vowels_consonants_with_all_vowels():
+    """Test consonants mixed with all vowel types."""
+    assert remove_vowels('bAcEdIfOgUh') == 'bcdfgh'
 
 
 def test_remove_vowels_special_characters():
@@ -54,13 +59,3 @@ def test_remove_vowels_special_characters():
 def test_remove_vowels_numbers_and_vowels():
     """Test with numbers and vowels."""
     assert remove_vowels('a1e2i3o4u5') == '12345'
-
-
-def test_remove_vowels_single_vowel():
-    """Test with single vowel."""
-    assert remove_vowels('a') == ''
-
-
-def test_remove_vowels_single_consonant():
-    """Test with single consonant."""
-    assert remove_vowels('b') == 'b'

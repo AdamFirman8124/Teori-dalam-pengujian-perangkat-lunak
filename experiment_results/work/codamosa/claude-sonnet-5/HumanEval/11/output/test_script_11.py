@@ -2,21 +2,11 @@
 import script_11 as module_0
 
 def test_case_0():
-    str_0 = '$W:JrK'
-    str_1 = '2'
-    str_2 = module_0.string_xor(str_0, str_1)
-    assert str_2 == '1'
+    str_0 = '.y#8rh#)[bmSKsu'
+    str_1 = '\x0c.;kU@\x0b}e'
+    str_2 = module_0.string_xor(str_1, str_1)
+    assert str_2 == '000000000'
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    str_3 = '$'
-    str_4 = module_0.string_xor(str_3, str_3)
-    assert str_4 == '0'
-    str_5 = module_0.string_xor(str_4, str_3)
-    assert str_5 == '1'
-    str_6 = module_0.string_xor(str_3, str_5)
-    assert str_6 == '1'
-    str_7 = 'khL|+\t"Fe\'gp^Z`%e\x0cT'
-    str_8 = module_0.string_xor(str_4, str_7)
-    assert str_8 == '1'
-    str_9 = 'Kb^jmwW'
-    str_10 = module_0.string_xor(str_4, str_9)
-    assert str_10 == '1'
+    str_3 = '0K Z>r!'
+    str_4 = module_0.string_xor(str_0, str_3)
+    assert str_4 == '1111111'

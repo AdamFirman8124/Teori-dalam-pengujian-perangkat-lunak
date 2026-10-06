@@ -29,19 +29,14 @@ def test_filter_integers_no_integers():
 
 def test_filter_integers_negative_integers():
     """Test with negative integers"""
-    assert filter_integers([-1, -2, 3, 'test']) == [-1, -2, 3]
+    assert filter_integers([-1, -2, 'test', 0, 5.5]) == [-1, -2, 0]
 
 
-def test_filter_integers_zero():
-    """Test with zero"""
-    assert filter_integers([0, 'zero', 0.0]) == [0]
-
-
-def test_filter_integers_bool_values():
-    """Test with boolean values (booleans are instances of int in Python)"""
+def test_filter_integers_booleans():
+    """Test with booleans (bool is subclass of int in Python)"""
     assert filter_integers([True, False, 1, 2]) == [True, False, 1, 2]
 
 
-def test_filter_integers_complex_mixed():
-    """Test with complex mix of types"""
-    assert filter_integers([1, 2.5, 'three', [4], {'five': 5}, 6, None, 7]) == [1, 6, 7]
+def test_filter_integers_nested_structures():
+    """Test with nested structures"""
+    assert filter_integers([[1, 2], (3, 4), 5, 'string']) == [5]

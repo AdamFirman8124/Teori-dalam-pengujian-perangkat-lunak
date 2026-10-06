@@ -8,27 +8,29 @@ from script_53 import add
 
 def test_add_positive_numbers():
     """Test adding two positive numbers."""
-    assert add(2, 3) == 5
+    result = add(2, 3)
+    assert result == 5
 
 
 def test_add_different_positive_numbers():
     """Test adding different positive numbers."""
-    assert add(5, 7) == 12
+    result = add(5, 7)
+    assert result == 12
 
 
 def test_add_zero():
     """Test adding zero."""
-    assert add(0, 5) == 5
-    assert add(5, 0) == 5
+    result = add(0, 0)
+    assert result == 0
 
 
 def test_add_negative_numbers():
     """Test adding negative numbers."""
-    assert add(-2, -3) == -5
-    assert add(-5, 3) == -2
-    assert add(5, -3) == 2
+    result = add(-5, -3)
+    assert result == -8
 
 
-def test_add_large_numbers():
-    """Test adding large numbers."""
-    assert add(1000000, 2000000) == 3000000
+def test_add_mixed_signs():
+    """Test adding positive and negative numbers."""
+    result = add(10, -3)
+    assert result == 7

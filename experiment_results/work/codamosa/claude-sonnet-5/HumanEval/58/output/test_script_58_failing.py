@@ -3,11 +3,15 @@ import script_58 as module_0
 
 def test_case_0():
     try:
-        str_0 = '@ 0=(t{xY$b:ELn6nV&'
-        dict_0 = {str_0: str_0}
-        list_0 = []
-        var_0 = module_0.common(list_0, list_0)
-        list_1 = [list_0, str_0, dict_0, str_0]
-        var_1 = module_0.common(list_1, list_1)
+        float_0 = -1414.0
+        dict_0 = {float_0: float_0, float_0: float_0, float_0: float_0, float_0: float_0}
+        list_0 = [float_0, dict_0, dict_0]
+        list_1 = [list_0, dict_0, float_0]
+        var_0 = module_0.common(list_1, list_0)
+    except BaseException:
+        pass
+
+def test_case_1():
+    try:
     except BaseException:
         pass

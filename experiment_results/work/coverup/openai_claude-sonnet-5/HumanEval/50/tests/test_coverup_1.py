@@ -30,6 +30,4 @@ def test_encode_shift_wraps_around():
 
 def test_encode_shift_full_alphabet():
     """Test encoding the full alphabet."""
-    result = encode_shift("abcdefghijklmnopqrstuvwxyz")
-    expected = "fghijklmnopqrstuvwxyzabcde"
-    assert result == expected
+    assert encode_shift("abcdefghijklmnopqrstuvwxyz") == "fghijklmnopqrstuvwxyzabcde"

@@ -2,27 +2,10 @@
 import script_9 as module_0
 
 def test_case_0():
-    int_0 = -390
-    int_1 = 1178
-    int_2 = -728
-    list_0 = [int_2, int_0, int_1, int_0]
+    int_0 = -3174
+    int_1 = -233
+    int_2 = 1014
+    list_0 = [int_0, int_0, int_1, int_2]
     list_1 = module_0.rolling_max(list_0)
-    assert list_1 == [-728, -390, 1178, 1178]
+    assert list_1 == [-3174, -3174, -233, 1014]
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    int_3 = -3873
-    list_2 = [int_0, int_1, int_3, int_1]
-    list_3 = module_0.rolling_max(list_2)
-    assert list_3 == [-390, 1178, 1178, 1178]
-    list_4 = [int_0, int_0]
-    list_5 = module_0.rolling_max(list_4)
-    assert list_5 == [-390, -390]
-    int_4 = 2141
-    int_5 = -1344
-    list_6 = [int_0, int_4, int_5]
-    list_7 = [int_0, int_4]
-    list_8 = module_0.rolling_max(list_7)
-    assert list_8 == [-390, 2141]
-    list_9 = module_0.rolling_max(list_6)
-    assert list_9 == [-390, 2141, 2141]
-    list_10 = module_0.rolling_max(list_7)
-    assert list_10 == [-390, 2141]

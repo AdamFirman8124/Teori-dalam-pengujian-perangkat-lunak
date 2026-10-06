@@ -6,13 +6,13 @@ import pytest
 from script_56 import correct_bracketing
 
 
-def test_correct_bracketing_single_open():
+def test_correct_bracketing_single_opening():
     """Test single opening bracket returns False"""
     assert correct_bracketing("<") == False
 
 
 def test_correct_bracketing_single_pair():
-    """Test single pair of brackets returns True"""
+    """Test single matched pair returns True"""
     assert correct_bracketing("<>") == True
 
 
@@ -21,41 +21,36 @@ def test_correct_bracketing_nested():
     assert correct_bracketing("<<><>>") == True
 
 
-def test_correct_bracketing_starts_with_close():
-    """Test string starting with closing bracket returns False"""
+def test_correct_bracketing_closing_first():
+    """Test closing bracket before opening returns False"""
     assert correct_bracketing("><<>") == False
 
 
-def test_correct_bracketing_empty_string():
+def test_correct_bracketing_empty():
     """Test empty string returns True"""
     assert correct_bracketing("") == True
 
 
-def test_correct_bracketing_single_close():
-    """Test single closing bracket returns False"""
-    assert correct_bracketing(">") == False
-
-
-def test_correct_bracketing_multiple_open():
-    """Test multiple opening brackets without closes returns False"""
+def test_correct_bracketing_multiple_opening():
+    """Test multiple opening brackets without closing returns False"""
     assert correct_bracketing("<<<") == False
 
 
-def test_correct_bracketing_balanced_multiple():
-    """Test multiple balanced pairs returns True"""
-    assert correct_bracketing("<><><>") == True
+def test_correct_bracketing_multiple_closing():
+    """Test multiple closing brackets returns False"""
+    assert correct_bracketing(">>>") == False
 
 
-def test_correct_bracketing_close_then_open():
-    """Test closing before opening in middle returns False"""
-    assert correct_bracketing("<>><<>") == False
+def test_correct_bracketing_balanced_complex():
+    """Test complex balanced brackets return True"""
+    assert correct_bracketing("<<>><<>>") == True
 
 
-def test_correct_bracketing_deeply_nested():
-    """Test deeply nested brackets return True"""
-    assert correct_bracketing("<<<>>>") == True
+def test_correct_bracketing_unbalanced_extra_closing():
+    """Test extra closing bracket returns False"""
+    assert correct_bracketing("<><>>") == False
 
 
-def test_correct_bracketing_unbalanced_more_opens():
-    """Test more opens than closes returns False"""
+def test_correct_bracketing_unbalanced_extra_opening():
+    """Test extra opening bracket returns False"""
     assert correct_bracketing("<<><") == False

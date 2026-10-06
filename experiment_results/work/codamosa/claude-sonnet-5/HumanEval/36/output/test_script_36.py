@@ -2,13 +2,6 @@
 import script_36 as module_0
 
 def test_case_0():
-    int_0 = -1663
+    int_0 = 955
     var_0 = module_0.fizz_buzz(int_0)
-    assert var_0 == 0
-    var_1 = module_0.fizz_buzz(int_0)
-    assert var_1 == 0
-    int_1 = 2740
-    var_2 = module_0.fizz_buzz(int_1)
-    assert var_2 == 125
-    var_3 = module_0.fizz_buzz(int_1)
-    assert var_3 == 125
+    assert var_0 == 44

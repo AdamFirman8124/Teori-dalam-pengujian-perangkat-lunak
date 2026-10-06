@@ -3,12 +3,36 @@ import script_65 as module_0
 
 def test_case_0():
     try:
-        str_0 = 'fs\tpwide-/Cu;}hd9p5?'
-        set_0 = {str_0, str_0, str_0}
-        bool_0 = False
-        int_0 = -681
-        var_0 = module_0.circular_shift(bool_0, int_0)
-        assert var_0 == 'False'
-        var_1 = module_0.circular_shift(str_0, set_0)
+        str_0 = 'mz*\t9'
+        int_0 = 4697
+        var_0 = module_0.circular_shift(str_0, int_0)
+        assert var_0 == '9\t*zm'
+        dict_0 = {int_0: str_0}
+        tuple_0 = ()
+        var_1 = module_0.circular_shift(dict_0, tuple_0)
+    except BaseException:
+        pass
+
+def test_case_1():
+    try:
+        bytes_0 = None
+        dict_0 = {}
+        var_0 = module_0.circular_shift(bytes_0, dict_0)
+    except BaseException:
+        pass
+
+def test_case_2():
+    try:
+        str_0 = 'ULSD'
+        str_1 = 'u|#'
+        set_0 = set()
+        int_0 = None
+        int_1 = 441
+        tuple_0 = (set_0, int_1)
+        bool_0 = True
+        var_0 = module_0.circular_shift(tuple_0, bool_0)
+        assert var_0 == ')(set(), 441'
+        dict_0 = {str_0: int_0}
+        var_1 = module_0.circular_shift(dict_0, str_1)
     except BaseException:
         pass

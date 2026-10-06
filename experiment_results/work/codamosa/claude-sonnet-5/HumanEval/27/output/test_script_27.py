@@ -2,13 +2,8 @@
 import script_27 as module_0
 
 def test_case_0():
-    str_0 = '%m'
-    str_1 = '\x0c.[>ye'
-    str_2 = module_0.flip_case(str_1)
+    str_0 = 'HztZi\tKvgK,`dY0Eg!UV'
+    str_1 = module_0.flip_case(str_0)
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    str_3 = module_0.flip_case(str_0)
-    str_4 = 'E\rrh=YJuv\r|D| \rIu@'
-    str_5 = module_0.flip_case(str_4)
-    str_6 = 'v/:7gZt:KpquL'
-    str_7 = module_0.flip_case(str_6)
-    str_8 = module_0.flip_case(str_0)
+    str_2 = '+&_K.#"(|g>{\'n?|h=<I'
+    str_3 = module_0.flip_case(str_2)

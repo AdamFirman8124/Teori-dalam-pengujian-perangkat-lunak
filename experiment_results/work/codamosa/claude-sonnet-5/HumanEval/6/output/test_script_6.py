@@ -2,41 +2,45 @@
 import script_6 as module_0
 
 def test_case_0():
-    str_0 = 'CK#&\\1v3rmr_fFL2vl0'
-    list_0 = module_0.parse_nested_parens(str_0)
+    str_0 = '~&W]3fc`2*)&T|D\x0c'
+    str_1 = 'PR#R|"'
+    list_0 = module_0.parse_nested_parens(str_1)
     assert list_0 == [0]
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
     list_1 = module_0.parse_nested_parens(str_0)
     assert list_1 == [0]
+    str_2 = '~T_!L1J '
     list_2 = module_0.parse_nested_parens(str_0)
     assert list_2 == [0]
-    str_1 = 'kU0Q+B`A=`6L<\tq+'
-    list_3 = module_0.parse_nested_parens(str_1)
+    list_3 = module_0.parse_nested_parens(str_2)
     assert list_3 == [0]
-    list_4 = module_0.parse_nested_parens(str_0)
-    assert list_4 == [0]
-    list_5 = module_0.parse_nested_parens(str_0)
+    str_3 = 'J;'
+    str_4 = '\x0cI\nBqMzU\\t{Eaez K,~'
+    list_4 = module_0.parse_nested_parens(str_4)
+    assert list_4 == [0, 0]
+    list_5 = module_0.parse_nested_parens(str_3)
     assert list_5 == [0]
-    str_2 = '(RB\x0c3&eFp0[P'
     list_6 = module_0.parse_nested_parens(str_2)
-    assert list_6 == [1]
-    list_7 = module_0.parse_nested_parens(str_0)
-    assert list_7 == [0]
+    assert list_6 == [0]
 
 def test_case_1():
-    str_0 = "A&4SLHw\x0b<9X'\tWB"
-    list_0 = module_0.parse_nested_parens(str_0)
+    str_0 = '~&W]3fc`2*)&T|D\x0c'
+    str_1 = 'PR#R|"'
+    list_0 = module_0.parse_nested_parens(str_1)
     assert list_0 == [0]
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    str_1 = '8a505_jVkjY{DT<A*'
-    list_1 = module_0.parse_nested_parens(str_1)
+    list_1 = module_0.parse_nested_parens(str_0)
     assert list_1 == [0]
-    str_2 = '@?Hm*@'
-    list_2 = module_0.parse_nested_parens(str_2)
+    str_2 = '~T_!L1J '
+    list_2 = module_0.parse_nested_parens(str_0)
     assert list_2 == [0]
-    str_3 = '5P=!'
-    list_3 = module_0.parse_nested_parens(str_3)
+    list_3 = module_0.parse_nested_parens(str_2)
     assert list_3 == [0]
-    str_4 = ' '
-    list_4 = module_0.parse_nested_parens(str_4)
-    assert list_4 == []
+    list_4 = module_0.parse_nested_parens(str_1)
+    assert list_4 == [0]
+    str_3 = '(w3nB{G"vSM>)k\r='
+    list_5 = module_0.parse_nested_parens(str_3)
+    assert list_5 == [1]
+    str_4 = '^'
+    list_6 = module_0.parse_nested_parens(str_4)
+    assert list_6 == [0]

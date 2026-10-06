@@ -7,63 +7,50 @@ from script_66 import digitSum
 
 
 def test_digitSum_empty_string():
-    """Test empty string returns 0 - covers line 14"""
-    result = digitSum("")
-    assert result == 0
+    """Test that empty string returns 0."""
+    assert digitSum("") == 0
 
 
-def test_digitSum_non_empty_string():
-    """Test non-empty string - covers line 15"""
-    result = digitSum("abAB")
-    assert result == 131
+def test_digitSum_mixed_case():
+    """Test with mixed upper and lower case characters."""
+    assert digitSum("abAB") == 131
 
 
-def test_digitSum_single_uppercase():
-    """Test string with single uppercase letter"""
-    result = digitSum("abcCd")
-    assert result == 67
+def test_digitSum_single_upper():
+    """Test with single uppercase character."""
+    assert digitSum("abcCd") == 67
 
 
-def test_digitSum_uppercase_at_end():
-    """Test string with uppercase at the end"""
-    result = digitSum("helloE")
-    assert result == 69
+def test_digitSum_upper_at_end():
+    """Test with uppercase character at the end."""
+    assert digitSum("helloE") == 69
 
 
-def test_digitSum_multiple_uppercase():
-    """Test string with multiple uppercase letters"""
-    result = digitSum("woArBld")
-    assert result == 131
+def test_digitSum_multiple_uppers():
+    """Test with multiple uppercase characters."""
+    assert digitSum("woArBld") == 131
 
 
-def test_digitSum_multiple_same_uppercase():
-    """Test string with multiple same uppercase letters"""
-    result = digitSum("aAaaaXa")
-    assert result == 153
+def test_digitSum_repeated_upper():
+    """Test with repeated uppercase characters."""
+    assert digitSum("aAaaaXa") == 153
 
 
-def test_digitSum_only_lowercase():
-    """Test string with only lowercase letters"""
-    result = digitSum("abcdef")
-    assert result == 0
+def test_digitSum_all_lowercase():
+    """Test with all lowercase characters returns 0."""
+    assert digitSum("abcdefg") == 0
 
 
-def test_digitSum_only_uppercase():
-    """Test string with only uppercase letters"""
-    result = digitSum("ABC")
-    assert result == ord('A') + ord('B') + ord('C')
-    assert result == 198
+def test_digitSum_all_uppercase():
+    """Test with all uppercase characters."""
+    assert digitSum("ABC") == 65 + 66 + 67
 
 
-def test_digitSum_with_numbers():
-    """Test string with numbers"""
-    result = digitSum("abc123DEF")
-    assert result == ord('D') + ord('E') + ord('F')
-    assert result == 207
+def test_digitSum_single_lowercase():
+    """Test with single lowercase character returns 0."""
+    assert digitSum("a") == 0
 
 
-def test_digitSum_with_special_characters():
-    """Test string with special characters"""
-    result = digitSum("a!B@C#")
-    assert result == ord('B') + ord('C')
-    assert result == 133
+def test_digitSum_single_uppercase_char():
+    """Test with single uppercase character."""
+    assert digitSum("A") == 65

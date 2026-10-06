@@ -2,33 +2,10 @@
 import script_52 as module_0
 
 def test_case_0():
-    list_0 = []
-    int_0 = 1225
-    int_1 = 2786
-    var_0 = module_0.below_threshold(list_0, int_1)
-    int_2 = None
-    var_1 = module_0.below_threshold(list_0, int_2)
-    int_3 = 2660
-    var_2 = module_0.below_threshold(list_0, int_3)
-    var_3 = module_0.below_threshold(list_0, int_0)
-
-def test_case_1():
-    list_0 = []
-    int_0 = 1203
-    int_1 = 2786
-    var_0 = module_0.below_threshold(list_0, int_1)
-    int_2 = 2786
-    bool_0 = None
-    var_1 = module_0.below_threshold(list_0, int_2)
-    list_1 = [int_0, int_2, bool_0, list_0, int_2]
-    int_3 = 1406
-    var_2 = module_0.below_threshold(list_1, int_3)
-    assert var_2 is False
-    var_3 = module_0.below_threshold(list_0, int_2)
-    int_4 = -2488
-    var_4 = module_0.below_threshold(list_0, int_4)
-    int_5 = None
-    var_5 = module_0.below_threshold(list_0, int_5)
-    int_6 = 4207
-    var_6 = module_0.below_threshold(list_0, int_6)
-    var_7 = module_0.below_threshold(list_0, int_0)
+    bool_0 = False
+    list_0 = [bool_0]
+    int_0 = 540
+    var_0 = module_0.below_threshold(list_0, int_0)
+    assert var_0 is True
+    var_1 = module_0.below_threshold(list_0, int_0)
+    assert var_1 is True

@@ -2,33 +2,15 @@
 import script_22 as module_0
 
 def test_case_0():
-    int_0 = -408
-    list_0 = [int_0]
-    list_1 = [list_0, list_0, int_0]
-    list_2 = [int_0, list_1, list_0, list_0]
-    list_3 = module_0.filter_integers(list_2)
-    assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    list_4 = [list_0, int_0, int_0]
-    list_5 = module_0.filter_integers(list_4)
-    list_6 = module_0.filter_integers(list_4)
-    list_7 = module_0.filter_integers(list_4)
-    list_8 = module_0.filter_integers(list_4)
-    list_9 = module_0.filter_integers(list_4)
-    list_10 = module_0.filter_integers(list_4)
-    list_11 = module_0.filter_integers(list_4)
-    list_12 = module_0.filter_integers(list_4)
-    list_13 = module_0.filter_integers(list_4)
-    list_14 = module_0.filter_integers(list_4)
-    list_15 = [list_10, list_5, list_14]
-    list_16 = module_0.filter_integers(list_15)
-
-def test_case_1():
-    bytes_0 = None
-    tuple_0 = (bytes_0,)
-    set_0 = {tuple_0}
-    list_0 = [set_0, set_0, tuple_0, set_0]
+    bytes_0 = b'\xb7\xb8n\xb9q\x1a!\xed\x9b\x99'
+    complex_0 = None
+    list_0 = [bytes_0, bytes_0, complex_0]
     list_1 = module_0.filter_integers(list_0)
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    list_2 = [set_0, tuple_0]
+    set_0 = {bytes_0, bytes_0, bytes_0, bytes_0}
+    list_2 = [bytes_0, bytes_0, set_0]
     list_3 = module_0.filter_integers(list_2)
-    list_4 = module_0.filter_integers(list_2)
+    list_4 = [set_0, set_0, bytes_0]
+    list_5 = [list_4]
+    list_6 = module_0.filter_integers(list_5)
+    list_7 = module_0.filter_integers(list_4)

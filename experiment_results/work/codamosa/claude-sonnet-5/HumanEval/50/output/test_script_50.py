@@ -2,11 +2,38 @@
 import script_50 as module_0
 
 def test_case_0():
-    str_0 = '*K4UD9[R[V_ND:,\\['
+    str_0 = 'x^c0Io@d'
     var_0 = module_0.decode_shift(str_0)
-    assert var_0 == 'szcjshpgpktcsiuqp'
+    assert var_0 == 'ssxyxjoy'
     assert module_0.METADATA == {}
-    var_1 = module_0.encode_shift(str_0)
-    assert var_1 == 'cjmtcrzqzudmcseaz'
-    var_2 = module_0.encode_shift(str_0)
-    assert var_2 == 'cjmtcrzqzudmcseaz'
+    var_1 = module_0.decode_shift(str_0)
+    assert var_1 == 'ssxyxjoy'
+    var_2 = module_0.decode_shift(str_0)
+    assert var_2 == 'ssxyxjoy'
+    str_1 = 'mw[tt\x0b'
+    var_3 = module_0.decode_shift(str_0)
+    assert var_3 == 'ssxyxjoy'
+    var_4 = module_0.decode_shift(str_1)
+    assert var_4 == 'hrpoon'
+    str_2 = '7'
+    str_3 = '9} )F>5+GL&\rE-'
+    var_5 = module_0.decode_shift(str_3)
+    assert var_5 == 'hxirumdtvaoptv'
+    var_6 = module_0.decode_shift(str_2)
+    assert var_6 == 'f'
+    var_7 = module_0.decode_shift(str_0)
+    assert var_7 == 'ssxyxjoy'
+    str_4 = '3q#L=+!Zy#uaS'
+    var_8 = module_0.encode_shift(str_4)
+    assert var_8 == 'lvvkvdtydvzfr'
+    var_9 = module_0.decode_shift(str_4)
+    assert var_9 == 'bllaltjotlpvh'
+    var_10 = module_0.decode_shift(str_4)
+    assert var_10 == 'bllaltjotlpvh'
+    var_11 = module_0.decode_shift(str_4)
+    assert var_11 == 'bllaltjotlpvh'
+    var_12 = module_0.decode_shift(str_2)
+    assert var_12 == 'f'
+    str_5 = 'opi@6WPjB~f\x0b*'
+    var_13 = module_0.encode_shift(str_5)
+    assert var_13 == 'tunyovooaikxc'

@@ -2,20 +2,18 @@
 import script_48 as module_0
 
 def test_case_0():
-    str_0 = '_@-T~xV/i]U@=t'
+    str_0 = '>q'
     var_0 = module_0.is_palindrome(str_0)
     assert var_0 is False
     assert module_0.METADATA == {}
-    str_1 = 'm{O15qR^'
-    var_1 = module_0.is_palindrome(str_1)
-    assert var_1 is False
+
+def test_case_1():
+    str_0 = '>'
+    var_0 = module_0.is_palindrome(str_0)
+    assert var_0 is True
+    assert module_0.METADATA == {}
+    var_1 = module_0.is_palindrome(str_0)
+    assert var_1 is True
+    str_1 = ';=%)$\x0cN(}cA1'
     var_2 = module_0.is_palindrome(str_1)
     assert var_2 is False
-    str_2 = 'bn8\x0bP#w69E'
-    str_3 = '|'
-    var_3 = module_0.is_palindrome(str_3)
-    assert var_3 is True
-    var_4 = module_0.is_palindrome(str_3)
-    assert var_4 is True
-    var_5 = module_0.is_palindrome(str_2)
-    assert var_5 is False

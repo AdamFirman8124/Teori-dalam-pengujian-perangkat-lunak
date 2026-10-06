@@ -12,7 +12,7 @@ def test_filter_by_prefix_empty_list():
     assert result == []
 
 
-def test_filter_by_prefix_no_matches():
+def test_filter_by_prefix_no_match():
     """Test when no strings have the prefix."""
     result = filter_by_prefix(["hello", "world", "foo"], "test")
     assert result == ["hello", "world", "foo"]

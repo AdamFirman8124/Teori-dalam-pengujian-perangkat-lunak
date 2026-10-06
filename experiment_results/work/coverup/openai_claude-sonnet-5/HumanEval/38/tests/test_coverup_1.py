@@ -22,27 +22,39 @@ def test_decode_cyclic_two_chars():
 
 
 def test_decode_cyclic_three_chars():
-    """Test decode_cyclic with three characters that form one group."""
+    """Test decode_cyclic with exactly three characters."""
     encoded = encode_cyclic("abc")
     assert decode_cyclic(encoded) == "abc"
 
 
-def test_decode_cyclic_multiple_groups():
-    """Test decode_cyclic with string containing multiple groups of three."""
-    original = "abcdef"
-    encoded = encode_cyclic(original)
-    assert decode_cyclic(encoded) == original
+def test_decode_cyclic_six_chars():
+    """Test decode_cyclic with six characters (two groups)."""
+    encoded = encode_cyclic("abcdef")
+    assert decode_cyclic(encoded) == "abcdef"
 
 
-def test_decode_cyclic_with_remainder():
-    """Test decode_cyclic with string that has remainder after grouping by 3."""
-    original = "abcdefgh"
-    encoded = encode_cyclic(original)
-    assert decode_cyclic(encoded) == original
+def test_decode_cyclic_not_divisible_by_three():
+    """Test decode_cyclic with string length not divisible by 3."""
+    encoded = encode_cyclic("abcde")
+    assert decode_cyclic(encoded) == "abcde"
 
 
 def test_decode_cyclic_long_string():
     """Test decode_cyclic with longer string."""
-    original = "thequickbrownfoxjumpsoverthelazydog"
+    original = "hello world"
+    encoded = encode_cyclic(original)
+    assert decode_cyclic(encoded) == original
+
+
+def test_decode_cyclic_with_spaces():
+    """Test decode_cyclic with spaces."""
+    original = "a b c d e f"
+    encoded = encode_cyclic(original)
+    assert decode_cyclic(encoded) == original
+
+
+def test_decode_cyclic_with_numbers():
+    """Test decode_cyclic with numbers."""
+    original = "123456789"
     encoded = encode_cyclic(original)
     assert decode_cyclic(encoded) == original

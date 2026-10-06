@@ -6,43 +6,43 @@ import pytest
 from script_9 import rolling_max
 
 
+def test_rolling_max_empty_list():
+    """Test rolling_max with an empty list."""
+    result = rolling_max([])
+    assert result == []
+
+
 def test_rolling_max_single_element():
-    """Test with a single element list"""
+    """Test rolling_max with a single element."""
     result = rolling_max([5])
     assert result == [5]
 
 
 def test_rolling_max_ascending():
-    """Test with ascending numbers"""
+    """Test rolling_max with ascending numbers."""
     result = rolling_max([1, 2, 3, 4, 5])
     assert result == [1, 2, 3, 4, 5]
 
 
 def test_rolling_max_descending():
-    """Test with descending numbers"""
+    """Test rolling_max with descending numbers."""
     result = rolling_max([5, 4, 3, 2, 1])
     assert result == [5, 5, 5, 5, 5]
 
 
 def test_rolling_max_mixed():
-    """Test with mixed numbers"""
+    """Test rolling_max with mixed values."""
     result = rolling_max([1, 2, 3, 2, 3, 4, 2])
     assert result == [1, 2, 3, 3, 3, 4, 4]
 
 
 def test_rolling_max_with_negatives():
-    """Test with negative numbers"""
-    result = rolling_max([-5, -2, -8, -1])
-    assert result == [-5, -2, -2, -1]
-
-
-def test_rolling_max_empty_list():
-    """Test with empty list"""
-    result = rolling_max([])
-    assert result == []
+    """Test rolling_max with negative numbers."""
+    result = rolling_max([-5, -2, -8, -1, -3])
+    assert result == [-5, -2, -2, -1, -1]
 
 
 def test_rolling_max_all_same():
-    """Test with all same numbers"""
+    """Test rolling_max with all same values."""
     result = rolling_max([3, 3, 3, 3])
     assert result == [3, 3, 3, 3]

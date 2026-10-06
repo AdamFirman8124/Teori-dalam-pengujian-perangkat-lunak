@@ -3,70 +3,39 @@ import script_30 as module_0
 
 def test_case_0():
     try:
-        float_0 = 1511.8
-        list_0 = [float_0, float_0, float_0]
+        int_0 = 805
+        list_0 = [int_0, int_0, int_0]
         var_0 = module_0.get_positive(list_0)
-        assert len(var_0) == 3
-        list_1 = [float_0, float_0]
+        assert var_0 == [805, 805, 805]
+        list_1 = [int_0]
         var_1 = module_0.get_positive(list_1)
-        assert len(var_1) == 2
-        list_2 = None
-        var_2 = module_0.get_positive(list_2)
+        assert var_1 == [805]
+        var_2 = module_0.get_positive(list_1)
+        assert var_2 == [805]
+        list_2 = [int_0, int_0]
+        var_3 = module_0.get_positive(list_2)
+        assert var_3 == [805, 805]
+        list_3 = [int_0]
+        var_4 = module_0.get_positive(list_3)
+        assert var_4 == [805]
+        list_4 = [int_0]
+        var_5 = module_0.get_positive(list_4)
+        assert var_5 == [805]
+        list_5 = []
+        var_6 = module_0.get_positive(list_5)
+        list_6 = None
+        var_7 = module_0.get_positive(list_6)
     except BaseException:
         pass
 
 def test_case_1():
     try:
-        float_0 = -486.0
-        list_0 = [float_0, float_0, float_0]
+        float_0 = -205.2478
+        list_0 = [float_0, float_0, float_0, float_0]
         var_0 = module_0.get_positive(list_0)
         assert var_0 == []
-        var_1 = module_0.get_positive(list_0)
-        assert var_1 == []
-        var_2 = module_0.get_positive(list_0)
-        assert var_2 == []
-        var_3 = module_0.get_positive(list_0)
-        assert var_3 == []
-        var_4 = module_0.get_positive(list_0)
-        assert var_4 == []
-        var_5 = module_0.get_positive(list_0)
-        assert var_5 == []
-        var_6 = module_0.get_positive(list_0)
-        assert var_6 == []
-        var_7 = module_0.get_positive(list_0)
-        assert var_7 == []
-        var_8 = module_0.get_positive(list_0)
-        assert var_8 == []
-        list_1 = []
-        var_9 = module_0.get_positive(list_1)
-        var_10 = module_0.get_positive(list_1)
-        var_11 = module_0.get_positive(list_1)
-        var_12 = module_0.get_positive(list_1)
-        var_13 = module_0.get_positive(list_1)
-        var_14 = module_0.get_positive(list_1)
-        var_15 = module_0.get_positive(list_1)
-        var_16 = module_0.get_positive(list_1)
-        var_17 = module_0.get_positive(list_1)
-        var_18 = module_0.get_positive(list_1)
-        var_19 = module_0.get_positive(list_1)
-        list_2 = [var_19, list_0]
-        var_20 = module_0.get_positive(list_2)
-    except BaseException:
-        pass
-
-def test_case_2():
-    try:
-        dict_0 = {}
-        float_0 = 1729.56
-        bool_0 = False
-        list_0 = [dict_0, float_0, bool_0, dict_0]
-        var_0 = module_0.get_positive(list_0)
-    except BaseException:
-        pass
-
-def test_case_3():
-    try:
-        list_0 = None
-        var_0 = module_0.get_positive(list_0)
+        bytes_0 = b'ZexoK\xeb7\x8e\xde\xd5\xad\x89\xf5\xbb'
+        list_1 = [bytes_0, bytes_0]
+        var_1 = module_0.get_positive(list_1)
     except BaseException:
         pass

@@ -2,24 +2,28 @@
 import script_58 as module_0
 
 def test_case_0():
-    str_0 = '4Y+jyNdYsL\x0b\n(2n I/'
-    str_1 = '=Vv\n\\TlP<P-n5tx'
-    list_0 = [str_0, str_0, str_1, str_0]
-    list_1 = [str_0]
-    var_0 = module_0.common(list_0, list_1)
-    assert var_0 == ['4Y+jyNdYsL\x0b\n(2n I/']
+    list_0 = []
+    var_0 = module_0.common(list_0, list_0)
     var_1 = module_0.common(list_0, list_0)
-    assert var_1 == ['4Y+jyNdYsL\x0b\n(2n I/', '=Vv\n\\TlP<P-n5tx']
-    var_2 = module_0.common(list_0, list_0)
-    assert var_2 == ['4Y+jyNdYsL\x0b\n(2n I/', '=Vv\n\\TlP<P-n5tx']
-    list_2 = [str_0, str_1, str_0]
-    var_3 = module_0.common(list_2, list_2)
-    assert var_3 == ['4Y+jyNdYsL\x0b\n(2n I/', '=Vv\n\\TlP<P-n5tx']
-    var_4 = module_0.common(list_2, list_2)
-    assert var_4 == ['4Y+jyNdYsL\x0b\n(2n I/', '=Vv\n\\TlP<P-n5tx']
-    var_5 = module_0.common(list_2, list_0)
-    assert var_5 == ['4Y+jyNdYsL\x0b\n(2n I/', '=Vv\n\\TlP<P-n5tx']
-    var_6 = module_0.common(list_0, list_2)
-    assert var_6 == ['4Y+jyNdYsL\x0b\n(2n I/', '=Vv\n\\TlP<P-n5tx']
-    var_7 = module_0.common(list_2, list_2)
-    assert var_7 == ['4Y+jyNdYsL\x0b\n(2n I/', '=Vv\n\\TlP<P-n5tx']
+    list_1 = [var_0, list_0]
+    var_2 = module_0.common(list_0, list_1)
+    var_3 = module_0.common(list_0, list_0)
+    var_4 = module_0.common(list_0, list_1)
+    list_2 = []
+    var_5 = module_0.common(list_2, list_2)
+    var_6 = module_0.common(list_0, list_0)
+    var_7 = module_0.common(list_0, list_2)
+    var_8 = module_0.common(list_1, list_0)
+    var_9 = module_0.common(list_2, list_0)
+    var_10 = module_0.common(list_2, list_2)
+    list_3 = [var_10, var_3, var_5, var_5]
+    var_11 = module_0.common(list_3, list_2)
+    var_12 = module_0.common(list_3, list_0)
+    var_13 = module_0.common(list_2, list_3)
+    var_14 = module_0.common(list_1, list_2)
+    list_4 = []
+    var_15 = module_0.common(list_0, list_2)
+    var_16 = module_0.common(list_2, list_0)
+    var_17 = module_0.common(list_4, list_4)
+    var_18 = module_0.common(list_2, list_0)
+    var_19 = module_0.common(list_4, list_1)

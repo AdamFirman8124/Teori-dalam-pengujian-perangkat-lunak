@@ -2,20 +2,10 @@
 import script_38 as module_0
 
 def test_case_0():
-    str_0 = ''
+    str_0 = '$]PS+OS"2i\'68wci.ALp'
     var_0 = module_0.decode_cyclic(str_0)
-    assert var_0 == ''
+    assert var_0 == 'P$]OS+2S"6i\'c8wAi.Lp'
     assert module_0.METADATA == {}
-    str_1 = '\r|-gq5a\x0c;:1'
-    str_2 = 'M{a@J.m:r9cQg]TFYA'
-    var_1 = module_0.decode_cyclic(str_2)
-    assert var_1 == 'aM{.@Jrm:Q9cTg]AFY'
-    var_2 = module_0.encode_cyclic(str_1)
-    assert var_2 == '|-\rq5g\x0c;a:1'
-    str_3 = 'OPZ\r7}+}D'
-    var_3 = module_0.encode_cyclic(str_1)
-    assert var_3 == '|-\rq5g\x0c;a:1'
-    var_4 = module_0.encode_cyclic(str_3)
-    assert var_4 == 'PZO7}\r}D+'
-    var_5 = module_0.decode_cyclic(str_3)
-    assert var_5 == 'ZOP}\r7D+}'
+    str_1 = ''
+    var_1 = module_0.encode_cyclic(str_1)
+    assert var_1 == ''

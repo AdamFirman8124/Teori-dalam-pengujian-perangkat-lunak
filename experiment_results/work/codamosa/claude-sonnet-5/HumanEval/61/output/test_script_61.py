@@ -2,71 +2,11 @@
 import script_61 as module_0
 
 def test_case_0():
-    str_0 = 'kFjmI}FZ<&z0L\\d&'
+    str_0 = ')_?wMUu1\tya"+fy'
     var_0 = module_0.correct_bracketing(str_0)
     assert var_0 is False
     var_1 = module_0.correct_bracketing(str_0)
     assert var_1 is False
-    str_1 = 'eSilU:#8*V]\x0bv|@'
+    str_1 = '6Fn'
     var_2 = module_0.correct_bracketing(str_1)
     assert var_2 is False
-
-def test_case_1():
-    str_0 = 'C'
-    var_0 = module_0.correct_bracketing(str_0)
-    assert var_0 is False
-    str_1 = 'f'
-    var_1 = module_0.correct_bracketing(str_1)
-    assert var_1 is False
-    str_2 = 'Gfdp\r\\8h0e'
-    var_2 = module_0.correct_bracketing(str_2)
-    assert var_2 is False
-    var_3 = module_0.correct_bracketing(str_0)
-    assert var_3 is False
-    str_3 = 'Q^?7X{HB-LZ3G0IG'
-    var_4 = module_0.correct_bracketing(str_3)
-    assert var_4 is False
-    var_5 = module_0.correct_bracketing(str_2)
-    assert var_5 is False
-    var_6 = module_0.correct_bracketing(str_2)
-    assert var_6 is False
-    var_7 = module_0.correct_bracketing(str_1)
-    assert var_7 is False
-    var_8 = module_0.correct_bracketing(str_2)
-    assert var_8 is False
-    var_9 = module_0.correct_bracketing(str_2)
-    assert var_9 is False
-    str_4 = '4t-e[\nr'
-    str_5 = 'I1AySPL1D54'
-    str_6 = '/jMFG~,O4'
-    var_10 = module_0.correct_bracketing(str_6)
-    assert var_10 is False
-    var_11 = module_0.correct_bracketing(str_5)
-    assert var_11 is False
-    var_12 = module_0.correct_bracketing(str_4)
-    assert var_12 is False
-    str_7 = '>\x0bPJDJS\x0bSN@'
-    var_13 = module_0.correct_bracketing(str_7)
-    assert var_13 is False
-    var_14 = module_0.correct_bracketing(str_5)
-    assert var_14 is False
-    str_8 = 'jnLF)46'
-    str_9 = '(\n!t[t:E! 93$S'
-    var_15 = module_0.correct_bracketing(str_9)
-    assert var_15 is False
-    var_16 = module_0.correct_bracketing(str_3)
-    assert var_16 is False
-    var_17 = module_0.correct_bracketing(str_3)
-    assert var_17 is False
-    str_10 = "H`Ehk'o.&"
-    var_18 = module_0.correct_bracketing(str_10)
-    assert var_18 is False
-    str_11 = '1[~T`J#K'
-    var_19 = module_0.correct_bracketing(str_8)
-    assert var_19 is False
-    var_20 = module_0.correct_bracketing(str_6)
-    assert var_20 is False
-    var_21 = module_0.correct_bracketing(str_0)
-    assert var_21 is False
-    var_22 = module_0.correct_bracketing(str_11)
-    assert var_22 is False

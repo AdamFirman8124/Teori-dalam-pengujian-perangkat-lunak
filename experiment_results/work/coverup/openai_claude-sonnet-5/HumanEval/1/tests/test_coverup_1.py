@@ -6,49 +6,46 @@ import pytest
 from script_1 import separate_paren_groups
 
 
-def test_separate_paren_groups_single_group():
-    """Test with a single balanced parentheses group."""
-    result = separate_paren_groups("(())")
-    assert result == ["(())"]
+def test_single_group():
+    result = separate_paren_groups("()")
+    assert result == ["()"]
 
 
-def test_separate_paren_groups_multiple_groups():
-    """Test with multiple balanced parentheses groups."""
-    result = separate_paren_groups("()()()")
-    assert result == ["()", "()", "()"]
+def test_multiple_groups():
+    result = separate_paren_groups("()()") 
+    assert result == ["()", "()"]
 
 
-def test_separate_paren_groups_nested():
-    """Test with nested parentheses."""
+def test_nested_groups():
     result = separate_paren_groups("((()))")
     assert result == ["((()))"]
 
 
-def test_separate_paren_groups_mixed():
-    """Test with mixed nested and sequential groups."""
+def test_multiple_nested_groups():
     result = separate_paren_groups("((()))(())")
     assert result == ["((()))", "(())"]
 
 
-def test_separate_paren_groups_with_spaces():
-    """Test with spaces between groups."""
-    result = separate_paren_groups("( ) (( )) (( )( ))")
-    assert result == ["()", "(())", "(()())"]
+def test_complex_nesting():
+    result = separate_paren_groups("(()(()))")
+    assert result == ["(()(()))"]
 
 
-def test_separate_paren_groups_complex():
-    """Test with complex nested structure."""
-    result = separate_paren_groups("(()())(())")
-    assert result == ["(()())", "(())"]
+def test_multiple_complex_groups():
+    result = separate_paren_groups("(()())((()))")
+    assert result == ["(()())", "((()))"]
 
 
-def test_separate_paren_groups_empty_string():
-    """Test with empty string."""
+def test_empty_string():
     result = separate_paren_groups("")
     assert result == []
 
 
-def test_separate_paren_groups_deeply_nested():
-    """Test with deeply nested parentheses."""
-    result = separate_paren_groups("((((()))))")
-    assert result == ["((((()))))"]
+def test_spaces_between_groups():
+    result = separate_paren_groups("() ()")
+    assert result == ["()", "()"]
+
+
+def test_deep_nesting():
+    result = separate_paren_groups("(((())))")
+    assert result == ["(((())))"]

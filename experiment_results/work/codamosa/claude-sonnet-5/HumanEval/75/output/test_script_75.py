@@ -2,6 +2,89 @@
 import script_75 as module_0
 
 def test_case_0():
-    bool_0 = True
-    dict_0 = {bool_0: bool_0, bool_0: bool_0}
-    var_0 = module_0.is_multiply_prime(dict_0)
+    str_0 = '7qEx{ck|GS<r~G{]O'
+    int_0 = 765
+    var_0 = module_0.is_multiply_prime(int_0)
+    assert var_0 is False
+    bool_0 = None
+    float_0 = None
+    var_1 = module_0.is_multiply_prime(float_0)
+    assert var_1 is False
+    bytes_0 = b'z'
+    var_2 = module_0.is_multiply_prime(bytes_0)
+    assert var_2 is False
+    tuple_0 = None
+    dict_0 = {tuple_0: str_0, float_0: str_0, var_1: tuple_0}
+    var_3 = module_0.is_multiply_prime(dict_0)
+    assert var_3 is False
+    var_4 = module_0.is_multiply_prime(tuple_0)
+    assert var_4 is False
+    set_0 = {str_0}
+    var_5 = module_0.is_multiply_prime(bytes_0)
+    assert var_5 is False
+    str_1 = 'q_;$\t~\t9vjt^O E);'
+    var_6 = module_0.is_multiply_prime(str_1)
+    list_0 = [bool_0, bool_0]
+    complex_0 = None
+    var_7 = module_0.is_multiply_prime(complex_0)
+    var_8 = module_0.is_multiply_prime(list_0)
+    dict_1 = {var_2: var_2, str_0: set_0, bytes_0: var_2}
+    var_9 = module_0.is_multiply_prime(str_0)
+    var_10 = module_0.is_multiply_prime(dict_1)
+    var_11 = module_0.is_multiply_prime(list_0)
+    tuple_1 = None
+    var_12 = module_0.is_multiply_prime(tuple_1)
+    var_13 = module_0.is_multiply_prime(bool_0)
+    var_14 = module_0.is_multiply_prime(str_0)
+    var_15 = module_0.is_multiply_prime(bytes_0)
+    var_16 = module_0.is_multiply_prime(str_0)
+
+def test_case_1():
+    str_0 = 'x>kp`'
+    var_0 = module_0.is_multiply_prime(str_0)
+    assert var_0 is False
+    float_0 = 2340.97
+    var_1 = module_0.is_multiply_prime(float_0)
+    assert var_1 is False
+    int_0 = None
+    str_1 = 'XZ^x'
+    tuple_0 = None
+    var_2 = module_0.is_multiply_prime(tuple_0)
+    assert var_2 is False
+    var_3 = module_0.is_multiply_prime(tuple_0)
+    assert var_3 is False
+    var_4 = module_0.is_multiply_prime(str_1)
+    assert var_4 is False
+    str_2 = None
+    var_5 = module_0.is_multiply_prime(str_2)
+    assert var_5 is False
+    list_0 = [var_5, var_5]
+    var_6 = module_0.is_multiply_prime(list_0)
+    assert var_6 is False
+    int_1 = 32153
+    var_7 = module_0.is_multiply_prime(int_1)
+    assert var_7 is True
+    int_2 = None
+    var_8 = module_0.is_multiply_prime(int_2)
+    str_3 = '\r"p8?_\rI$"\'wo3B$?\x0b'
+    set_0 = {var_5, var_5, str_3}
+    bool_0 = False
+    var_9 = module_0.is_multiply_prime(bool_0)
+    dict_0 = {var_7: int_0, int_1: bool_0}
+    var_10 = module_0.is_multiply_prime(dict_0)
+    var_11 = module_0.is_multiply_prime(set_0)
+    str_4 = "z('S7 `90jOwzLt*(-"
+    complex_0 = None
+    var_12 = module_0.is_multiply_prime(complex_0)
+    bytes_0 = b'76\x05\x16Bb\x170\x12Ie\xdf\x05z$\x89\xa2'
+    var_13 = module_0.is_multiply_prime(bytes_0)
+    var_14 = module_0.is_multiply_prime(str_4)
+    var_15 = module_0.is_multiply_prime(str_3)
+    float_1 = 2555.0
+    str_5 = '=p3{I'
+    var_16 = module_0.is_multiply_prime(str_5)
+    var_17 = module_0.is_multiply_prime(set_0)
+    var_18 = module_0.is_multiply_prime(float_1)
+    var_19 = module_0.is_multiply_prime(int_0)
+    bytes_1 = b'\x1f\xcd~\x87B}-\x93\xb5&I\x81cX\xfb\xef\x93\x9d\x06v'
+    var_20 = module_0.is_multiply_prime(bytes_1)

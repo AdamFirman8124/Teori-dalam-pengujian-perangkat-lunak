@@ -2,46 +2,17 @@
 import script_5 as module_0
 
 def test_case_0():
-    int_0 = 1463
-    list_0 = [int_0]
-    list_1 = module_0.intersperse(list_0, int_0)
-    assert list_1 == [1463]
+    int_0 = 1256
+    int_1 = -1119
+    list_0 = [int_0, int_0, int_1]
+    int_2 = 2551
+    list_1 = module_0.intersperse(list_0, int_2)
+    assert list_1 == [1256, 2551, 1256, 2551, -1119]
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    int_1 = 3198
-    list_2 = [int_1]
-    list_3 = module_0.intersperse(list_2, int_1)
-    assert list_3 == [3198]
-    int_2 = -1480
-    list_4 = []
-    list_5 = module_0.intersperse(list_4, int_2)
-    assert list_5 == []
-    int_3 = 320
-    list_6 = [int_2, int_2, int_3]
-    int_4 = 818
-    list_7 = module_0.intersperse(list_6, int_4)
-    assert list_7 == [-1480, 818, -1480, 818, 320]
-    int_5 = -533
-    list_8 = module_0.intersperse(list_6, int_5)
-    assert list_8 == [-1480, -533, -1480, -533, 320]
-
-def test_case_1():
-    list_0 = []
-    int_0 = -277
-    list_1 = module_0.intersperse(list_0, int_0)
-    assert list_1 == []
-    assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    list_2 = module_0.intersperse(list_1, int_0)
-    assert list_2 == []
-    list_3 = module_0.intersperse(list_0, int_0)
+    list_2 = []
+    int_3 = -927
+    list_3 = module_0.intersperse(list_2, int_3)
     assert list_3 == []
-    list_4 = []
-    int_1 = 4892
-    list_5 = module_0.intersperse(list_0, int_0)
-    assert list_5 == []
-    list_6 = module_0.intersperse(list_0, int_1)
-    assert list_6 == []
-    int_2 = 4115
-    list_7 = module_0.intersperse(list_3, int_0)
-    assert list_7 == []
-    list_8 = module_0.intersperse(list_4, int_2)
-    assert list_8 == []
+    int_4 = 2026
+    list_4 = module_0.intersperse(list_2, int_4)
+    assert list_4 == []

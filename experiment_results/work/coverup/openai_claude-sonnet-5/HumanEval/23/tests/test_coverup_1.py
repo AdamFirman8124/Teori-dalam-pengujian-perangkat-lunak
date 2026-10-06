@@ -7,17 +7,17 @@ from script_23 import strlen
 
 
 def test_strlen_empty_string():
-    """Test strlen with empty string"""
+    """Test strlen with an empty string"""
     assert strlen('') == 0
 
 
-def test_strlen_non_empty_string():
-    """Test strlen with non-empty string"""
+def test_strlen_nonempty_string():
+    """Test strlen with a non-empty string"""
     assert strlen('abc') == 3
 
 
 def test_strlen_single_character():
-    """Test strlen with single character"""
+    """Test strlen with a single character"""
     assert strlen('a') == 1
 
 

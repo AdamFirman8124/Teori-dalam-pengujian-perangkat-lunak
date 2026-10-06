@@ -3,19 +3,16 @@ import script_62 as module_0
 
 def test_case_0():
     try:
-        float_0 = 204.5093
-        list_0 = [float_0]
-        var_0 = module_0.derivative(list_0)
-        assert var_0 == []
-        str_0 = 't(\x0b[mK9RMi\\D'
-        list_1 = [str_0]
-        var_1 = module_0.derivative(list_1)
-        assert var_1 == []
+        int_0 = -3522
+        list_0 = [int_0, int_0, int_0, int_0]
+        list_1 = [list_0, list_0]
+        var_0 = module_0.derivative(list_1)
+        assert var_0 == [[-3522, -3522, -3522, -3522]]
         assert module_0.METADATA == {}
         list_2 = []
-        var_2 = module_0.derivative(list_2)
-        assert var_2 == []
+        var_1 = module_0.derivative(list_2)
+        assert var_1 == []
         list_3 = None
-        var_3 = module_0.derivative(list_3)
+        var_2 = module_0.derivative(list_3)
     except BaseException:
         pass

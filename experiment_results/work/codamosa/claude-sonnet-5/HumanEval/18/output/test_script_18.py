@@ -2,29 +2,30 @@
 import script_18 as module_0
 
 def test_case_0():
-    str_0 = '~Bvo~R,vLlQ:ip\t8 O"'
-    int_0 = module_0.how_many_times(str_0, str_0)
+    str_0 = 'e\nUXy'
+    str_1 = '\x0cMF7o9\x0cbj\r)6ydY0'
+    int_0 = module_0.how_many_times(str_1, str_1)
     assert int_0 == 1
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    str_1 = 'TCb'
-    str_2 = "_\x0bAEC'"
-    int_1 = module_0.how_many_times(str_1, str_2)
-    assert int_1 == 0
-    str_3 = '4'
-    int_2 = module_0.how_many_times(str_2, str_3)
-    assert int_2 == 0
-    str_4 = 'BxAh]Q)~Ckm:=3`KoU i'
-    str_5 = '\x0bAAKlQ#&r\x0cgmHN/'
-    int_3 = module_0.how_many_times(str_2, str_5)
-    assert int_3 == 0
-    int_4 = module_0.how_many_times(str_4, str_4)
-    assert int_4 == 1
-    int_5 = module_0.how_many_times(str_1, str_4)
-    assert int_5 == 0
+    int_1 = module_0.how_many_times(str_0, str_0)
+    assert int_1 == 1
 
 def test_case_1():
-    str_0 = "VL:?>(>ti'j*"
-    str_1 = 'M~7D4/lYqK1*'
+    str_0 = 'P5=@DTQ_'
+    str_1 = ')+$mKGe=bji'
     int_0 = module_0.how_many_times(str_0, str_1)
     assert int_0 == 0
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
+    str_2 = 'rn{)3pV'
+    str_3 = 'X\x0bW|>:>4yiIu\x0cVv'
+    int_1 = module_0.how_many_times(str_0, str_2)
+    assert int_1 == 0
+    int_2 = module_0.how_many_times(str_1, str_3)
+    assert int_2 == 0
+    str_4 = '32"C;4f'
+    str_5 = '0-:n0>k8{K)aRtP'
+    str_6 = 'd"y\r\rc(A|Cg>C:`'
+    int_3 = module_0.how_many_times(str_5, str_6)
+    assert int_3 == 0
+    int_4 = module_0.how_many_times(str_2, str_4)
+    assert int_4 == 0

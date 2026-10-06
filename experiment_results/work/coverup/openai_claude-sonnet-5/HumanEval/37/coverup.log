@@ -108,3 +108,379 @@ Command: C:\Users\adamf\AppData\Roaming\Python\Python314\Scripts\coverup --tests
 ---- 2026-10-06T18:12:33 script_37.py:1-18 ----
 Saved as C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\37\tests\test_coverup_1.py
 
+---- 2026-10-06T23:04:44 startup ----
+Command: C:\Users\adamf\AppData\Roaming\Python\Python314\Scripts\coverup --tests-dir C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\37\tests C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\37\script_37.py --model openai/claude-sonnet-5 --checkpoint C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\37\coverup.checkpoint --log-file C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\37\coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3
+---- 2026-10-06T23:04:45 script_37.py:1-18 ----
+{
+  "model": "openai/claude-sonnet-5",
+  "temperature": 0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from script_37.py, does not achieve full coverage:\nwhen tested, lines 10-18 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            def sort_even(l: list):\n                \"\"\"This function takes a list l and returns a list l' such that\n                l' is identical to l in the odd indicies, while its values at the even indicies are equal\n                to the values of the even indicies of l, but sorted.\n                >>> sort_even([1, 2, 3])\n                [1, 2, 3]\n                >>> sort_even([5, 6, 3, 4])\n                [3, 6, 5, 4]\n                \"\"\"\n        10:     evens = l[::2]\n        11:     odds = l[1::2]\n        12:     evens.sort()\n        13:     ans = []\n        14:     for e, o in zip(evens, odds):\n        15:         ans.extend([e, o])\n        16:     if len(evens) > len(odds):\n        17:         ans.append(evens[-1])\n        18:     return ans\n\n```\n"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-06T23:04:54 script_37.py:1-18 ----
+{
+  "id": "msg_011CfmGVsDnVUX4eHTyDs525",
+  "created": 1791302695,
+  "model": "claude-sonnet-5",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```python\nimport pytest\n\n\ndef sort_even(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the odd indicies, while its values at the even indicies are equal\n    to the values of the even indicies of l, but sorted.\n    >>> sort_even([1, 2, 3])\n    [1, 2, 3]\n    >>> sort_even([5, 6, 3, 4])\n    [3, 6, 5, 4]\n    \"\"\"\n    evens = l[::2]\n    odds = l[1::2]\n    evens.sort()\n    ans = []\n    for e, o in zip(evens, odds):\n        ans.extend([e, o])\n    if len(evens) > len(odds):\n        ans.append(evens[-1])\n    return ans\n\n\ndef test_sort_even_empty_list():\n    \"\"\"Test with empty list.\"\"\"\n    result = sort_even([])\n    assert result == []\n\n\ndef test_sort_even_single_element():\n    \"\"\"Test with single element - triggers len(evens) > len(odds) branch.\"\"\"\n    result = sort_even([5])\n    assert result == [5]\n\n\ndef test_sort_even_two_elements():\n    \"\"\"Test with two elements.\"\"\"\n    result = sort_even([5, 3])\n    assert result == [5, 3]\n\n\ndef test_sort_even_three_elements():\n    \"\"\"Test with three elements - triggers len(evens) > len(odds) branch.\"\"\"\n    result = sort_even([1, 2, 3])\n    assert result == [1, 2, 3]\n\n\ndef test_sort_even_four_elements():\n    \"\"\"Test with four elements - evens and odds same length.\"\"\"\n    result = sort_even([5, 6, 3, 4])\n    assert result == [3, 6, 5, 4]\n\n\ndef test_sort_even_five_elements():\n    \"\"\"Test with five elements - triggers len(evens) > len(odds) branch.\"\"\"\n    result = sort_even([9, 1, 7, 2, 5])\n    assert result == [5, 1, 7, 2, 9]\n\n\ndef test_sort_even_unsorted_evens():\n    \"\"\"Test that even indices are properly sorted.\"\"\"\n    result = sort_even([10, 100, 2, 200, 6, 300])\n    assert result == [2, 100, 6, 200, 10, 300]\n\n\ndef test_sort_even_negative_numbers():\n    \"\"\"Test with negative numbers.\"\"\"\n    result = sort_even([-5, 10, -3, 20, -1])\n    assert result == [-5, 10, -3, 20, -1]\n```",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {}
+    }
+  ],
+  "usage": {
+    "completion_tokens": 1584,
+    "prompt_tokens": 2076,
+    "total_tokens": 3660,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "text_tokens": 0,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 2072,
+      "cached_tokens": 0,
+      "text_tokens": 0,
+      "image_tokens": 0,
+      "cache_creation_tokens": 2072,
+      "cached_creation_tokens": 2072
+    },
+    "usage_semantic": "openai",
+    "usage_source": "anthropic",
+    "billing_usage": {
+      "source": "claude_messages",
+      "semantic": "anthropic",
+      "claude_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 2072,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 1584,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 2072
+        },
+        "claude_cache_creation_5_m_tokens": 0,
+        "claude_cache_creation_1_h_tokens": 0
+      }
+    },
+    "input_tokens": 2076,
+    "output_tokens": 0,
+    "input_tokens_details": null,
+    "claude_cache_creation_5_m_tokens": 2072,
+    "claude_cache_creation_1_h_tokens": 0
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-06T23:04:55 script_37.py:1-18 ----
+........                                                                 [100%]
+
+---- 2026-10-06T23:04:55 script_37.py:1-18 ----
+{
+  "model": "openai/claude-sonnet-5",
+  "temperature": 0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from script_37.py, does not achieve full coverage:\nwhen tested, lines 10-18 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            def sort_even(l: list):\n                \"\"\"This function takes a list l and returns a list l' such that\n                l' is identical to l in the odd indicies, while its values at the even indicies are equal\n                to the values of the even indicies of l, but sorted.\n                >>> sort_even([1, 2, 3])\n                [1, 2, 3]\n                >>> sort_even([5, 6, 3, 4])\n                [3, 6, 5, 4]\n                \"\"\"\n        10:     evens = l[::2]\n        11:     odds = l[1::2]\n        12:     evens.sort()\n        13:     ans = []\n        14:     for e, o in zip(evens, odds):\n        15:         ans.extend([e, o])\n        16:     if len(evens) > len(odds):\n        17:         ans.append(evens[-1])\n        18:     return ans\n\n```\n"
+    },
+    {
+      "content": "```python\nimport pytest\n\n\ndef sort_even(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the odd indicies, while its values at the even indicies are equal\n    to the values of the even indicies of l, but sorted.\n    >>> sort_even([1, 2, 3])\n    [1, 2, 3]\n    >>> sort_even([5, 6, 3, 4])\n    [3, 6, 5, 4]\n    \"\"\"\n    evens = l[::2]\n    odds = l[1::2]\n    evens.sort()\n    ans = []\n    for e, o in zip(evens, odds):\n        ans.extend([e, o])\n    if len(evens) > len(odds):\n        ans.append(evens[-1])\n    return ans\n\n\ndef test_sort_even_empty_list():\n    \"\"\"Test with empty list.\"\"\"\n    result = sort_even([])\n    assert result == []\n\n\ndef test_sort_even_single_element():\n    \"\"\"Test with single element - triggers len(evens) > len(odds) branch.\"\"\"\n    result = sort_even([5])\n    assert result == [5]\n\n\ndef test_sort_even_two_elements():\n    \"\"\"Test with two elements.\"\"\"\n    result = sort_even([5, 3])\n    assert result == [5, 3]\n\n\ndef test_sort_even_three_elements():\n    \"\"\"Test with three elements - triggers len(evens) > len(odds) branch.\"\"\"\n    result = sort_even([1, 2, 3])\n    assert result == [1, 2, 3]\n\n\ndef test_sort_even_four_elements():\n    \"\"\"Test with four elements - evens and odds same length.\"\"\"\n    result = sort_even([5, 6, 3, 4])\n    assert result == [3, 6, 5, 4]\n\n\ndef test_sort_even_five_elements():\n    \"\"\"Test with five elements - triggers len(evens) > len(odds) branch.\"\"\"\n    result = sort_even([9, 1, 7, 2, 5])\n    assert result == [5, 1, 7, 2, 9]\n\n\ndef test_sort_even_unsorted_evens():\n    \"\"\"Test that even indices are properly sorted.\"\"\"\n    result = sort_even([10, 100, 2, 200, 6, 300])\n    assert result == [2, 100, 6, 200, 10, 300]\n\n\ndef test_sort_even_negative_numbers():\n    \"\"\"Test with negative numbers.\"\"\"\n    result = sort_even([-5, 10, -3, 20, -1])\n    assert result == [-5, 10, -3, 20, -1]\n```",
+      "role": "assistant",
+      "tool_calls": null,
+      "function_call": null,
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "role": "user",
+      "content": "The tests still lack coverage: lines 10-18 do not execute.\nModify it to correct that; respond only with the complete Python code in backticks.\nUse the get_info tool function as necessary.\n"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-06T23:04:58 script_37.py:1-18 ----
+{
+  "id": "msg_011CfmGWXyBb2P3B3b3YJ7XW",
+  "created": 1791302699,
+  "model": "claude-sonnet-5",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "message": {
+        "content": "",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"name\":\"sort_even\"}",
+              "name": "get_info"
+            },
+            "id": "toolu_01NfKMa2iDUm1KPa7jikwRMN",
+            "type": "function"
+          }
+        ],
+        "function_call": null,
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {}
+    }
+  ],
+  "usage": {
+    "completion_tokens": 72,
+    "prompt_tokens": 3792,
+    "total_tokens": 3864,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "text_tokens": 0,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 1820,
+      "cached_tokens": 1968,
+      "text_tokens": 0,
+      "image_tokens": 0,
+      "cache_creation_tokens": 1820,
+      "cached_creation_tokens": 1820
+    },
+    "usage_semantic": "openai",
+    "usage_source": "anthropic",
+    "billing_usage": {
+      "source": "claude_messages",
+      "semantic": "anthropic",
+      "claude_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 1820,
+        "cache_read_input_tokens": 1968,
+        "output_tokens": 72,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 1820
+        },
+        "claude_cache_creation_5_m_tokens": 0,
+        "claude_cache_creation_1_h_tokens": 0
+      }
+    },
+    "input_tokens": 3792,
+    "output_tokens": 0,
+    "input_tokens_details": null,
+    "claude_cache_creation_5_m_tokens": 1820,
+    "claude_cache_creation_1_h_tokens": 0
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-06T23:04:58 script_37.py:1-18 ----
+{
+  "model": "openai/claude-sonnet-5",
+  "temperature": 0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from script_37.py, does not achieve full coverage:\nwhen tested, lines 10-18 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            def sort_even(l: list):\n                \"\"\"This function takes a list l and returns a list l' such that\n                l' is identical to l in the odd indicies, while its values at the even indicies are equal\n                to the values of the even indicies of l, but sorted.\n                >>> sort_even([1, 2, 3])\n                [1, 2, 3]\n                >>> sort_even([5, 6, 3, 4])\n                [3, 6, 5, 4]\n                \"\"\"\n        10:     evens = l[::2]\n        11:     odds = l[1::2]\n        12:     evens.sort()\n        13:     ans = []\n        14:     for e, o in zip(evens, odds):\n        15:         ans.extend([e, o])\n        16:     if len(evens) > len(odds):\n        17:         ans.append(evens[-1])\n        18:     return ans\n\n```\n"
+    },
+    {
+      "content": "```python\nimport pytest\n\n\ndef sort_even(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the odd indicies, while its values at the even indicies are equal\n    to the values of the even indicies of l, but sorted.\n    >>> sort_even([1, 2, 3])\n    [1, 2, 3]\n    >>> sort_even([5, 6, 3, 4])\n    [3, 6, 5, 4]\n    \"\"\"\n    evens = l[::2]\n    odds = l[1::2]\n    evens.sort()\n    ans = []\n    for e, o in zip(evens, odds):\n        ans.extend([e, o])\n    if len(evens) > len(odds):\n        ans.append(evens[-1])\n    return ans\n\n\ndef test_sort_even_empty_list():\n    \"\"\"Test with empty list.\"\"\"\n    result = sort_even([])\n    assert result == []\n\n\ndef test_sort_even_single_element():\n    \"\"\"Test with single element - triggers len(evens) > len(odds) branch.\"\"\"\n    result = sort_even([5])\n    assert result == [5]\n\n\ndef test_sort_even_two_elements():\n    \"\"\"Test with two elements.\"\"\"\n    result = sort_even([5, 3])\n    assert result == [5, 3]\n\n\ndef test_sort_even_three_elements():\n    \"\"\"Test with three elements - triggers len(evens) > len(odds) branch.\"\"\"\n    result = sort_even([1, 2, 3])\n    assert result == [1, 2, 3]\n\n\ndef test_sort_even_four_elements():\n    \"\"\"Test with four elements - evens and odds same length.\"\"\"\n    result = sort_even([5, 6, 3, 4])\n    assert result == [3, 6, 5, 4]\n\n\ndef test_sort_even_five_elements():\n    \"\"\"Test with five elements - triggers len(evens) > len(odds) branch.\"\"\"\n    result = sort_even([9, 1, 7, 2, 5])\n    assert result == [5, 1, 7, 2, 9]\n\n\ndef test_sort_even_unsorted_evens():\n    \"\"\"Test that even indices are properly sorted.\"\"\"\n    result = sort_even([10, 100, 2, 200, 6, 300])\n    assert result == [2, 100, 6, 200, 10, 300]\n\n\ndef test_sort_even_negative_numbers():\n    \"\"\"Test with negative numbers.\"\"\"\n    result = sort_even([-5, 10, -3, 20, -1])\n    assert result == [-5, 10, -3, 20, -1]\n```",
+      "role": "assistant",
+      "tool_calls": null,
+      "function_call": null,
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "role": "user",
+      "content": "The tests still lack coverage: lines 10-18 do not execute.\nModify it to correct that; respond only with the complete Python code in backticks.\nUse the get_info tool function as necessary.\n"
+    },
+    {
+      "content": "",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"name\":\"sort_even\"}",
+            "name": "get_info"
+          },
+          "id": "toolu_01NfKMa2iDUm1KPa7jikwRMN",
+          "type": "function"
+        }
+      ],
+      "function_call": null,
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "tool_call_id": "toolu_01NfKMa2iDUm1KPa7jikwRMN",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\n```python\ndef sort_even(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the odd indicies, while its values at the even indicies are equal\n    to the values of the even indicies of l, but sorted.\n    >>> sort_even([1, 2, 3])\n    [1, 2, 3]\n    >>> sort_even([5, 6, 3, 4])\n    [3, 6, 5, 4]\n    \"\"\"\n    evens = l[::2]\n    odds = l[1::2]\n    evens.sort()\n    ans = []\n    for e, o in zip(evens, odds):\n        ans.extend([e, o])\n    if len(evens) > len(odds):\n        ans.append(evens[-1])\n    return ans\n```"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-06T23:05:04 script_37.py:1-18 ----
+{
+  "id": "msg_011CfmGWkE7gPAMbkYJTHxtS",
+  "created": 1791302704,
+  "model": "claude-sonnet-5",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```python\nimport pytest\nfrom script_37 import sort_even\n\n\ndef test_sort_even_empty_list():\n    \"\"\"Test with empty list.\"\"\"\n    result = sort_even([])\n    assert result == []\n\n\ndef test_sort_even_single_element():\n    \"\"\"Test with single element - triggers len(evens) > len(odds) branch.\"\"\"\n    result = sort_even([5])\n    assert result == [5]\n\n\ndef test_sort_even_two_elements():\n    \"\"\"Test with two elements.\"\"\"\n    result = sort_even([5, 3])\n    assert result == [5, 3]\n\n\ndef test_sort_even_three_elements():\n    \"\"\"Test with three elements - triggers len(evens) > len(odds) branch.\"\"\"\n    result = sort_even([1, 2, 3])\n    assert result == [1, 2, 3]\n\n\ndef test_sort_even_four_elements():\n    \"\"\"Test with four elements - evens and odds same length.\"\"\"\n    result = sort_even([5, 6, 3, 4])\n    assert result == [3, 6, 5, 4]\n\n\ndef test_sort_even_five_elements():\n    \"\"\"Test with five elements - triggers len(evens) > len(odds) branch.\"\"\"\n    result = sort_even([9, 1, 7, 2, 5])\n    assert result == [5, 1, 7, 2, 9]\n\n\ndef test_sort_even_unsorted_evens():\n    \"\"\"Test that even indices are properly sorted.\"\"\"\n    result = sort_even([10, 100, 2, 200, 6, 300])\n    assert result == [2, 100, 6, 200, 10, 300]\n\n\ndef test_sort_even_negative_numbers():\n    \"\"\"Test with negative numbers.\"\"\"\n    result = sort_even([-5, 10, -3, 20, -1])\n    assert result == [-5, 10, -3, 20, -1]\n```",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {}
+    }
+  ],
+  "usage": {
+    "completion_tokens": 1126,
+    "prompt_tokens": 4420,
+    "total_tokens": 5546,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "text_tokens": 0,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 818,
+      "cached_tokens": 3598,
+      "text_tokens": 0,
+      "image_tokens": 0,
+      "cache_creation_tokens": 818,
+      "cached_creation_tokens": 818
+    },
+    "usage_semantic": "openai",
+    "usage_source": "anthropic",
+    "billing_usage": {
+      "source": "claude_messages",
+      "semantic": "anthropic",
+      "claude_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 818,
+        "cache_read_input_tokens": 3598,
+        "output_tokens": 1126,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 818
+        },
+        "claude_cache_creation_5_m_tokens": 0,
+        "claude_cache_creation_1_h_tokens": 0
+      }
+    },
+    "input_tokens": 4420,
+    "output_tokens": 0,
+    "input_tokens_details": null,
+    "claude_cache_creation_5_m_tokens": 818,
+    "claude_cache_creation_1_h_tokens": 0
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-06T23:05:04 script_37.py:1-18 ----
+........                                                                 [100%]
+
+---- 2026-10-06T23:05:04 script_37.py:1-18 ----
+Saved as C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\37\tests\test_coverup_1.py
+

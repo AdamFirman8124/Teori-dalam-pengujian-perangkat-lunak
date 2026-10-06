@@ -2,8 +2,13 @@
 import script_26 as module_0
 
 def test_case_0():
-    int_0 = -5051
-    list_0 = [int_0]
+    int_0 = -1990
+    int_1 = -195
+    int_2 = 1
+    list_0 = [int_1, int_2, int_1]
     list_1 = module_0.remove_duplicates(list_0)
-    assert list_1 == [-5051]
+    assert list_1 == [1]
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
+    list_2 = [int_0]
+    list_3 = module_0.remove_duplicates(list_2)
+    assert list_3 == [-1990]

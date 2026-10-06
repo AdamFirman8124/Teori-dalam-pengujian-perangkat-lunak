@@ -24,7 +24,7 @@ def test_unique_single_element():
     assert result == [42]
 
 
-def test_unique_all_same_elements():
+def test_unique_all_same():
     """Test unique function with all identical elements."""
     result = unique([7, 7, 7, 7])
     assert result == [7]
@@ -38,11 +38,11 @@ def test_unique_already_unique():
 
 def test_unique_negative_numbers():
     """Test unique function with negative numbers."""
-    result = unique([-5, -3, -5, 0, 3, -3])
-    assert result == [-5, -3, 0, 3]
+    result = unique([-5, -3, -5, 0, 3, 5])
+    assert result == [-5, -3, 0, 3, 5]
 
 
 def test_unique_unsorted_input():
     """Test unique function with unsorted input."""
-    result = unique([9, 1, 8, 2, 7, 3])
-    assert result == [1, 2, 3, 7, 8, 9]
+    result = unique([10, 1, 5, 1, 10, 3])
+    assert result == [1, 3, 5, 10]

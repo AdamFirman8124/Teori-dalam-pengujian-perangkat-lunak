@@ -374,3 +374,379 @@ Command: C:\Users\adamf\AppData\Roaming\Python\Python314\Scripts\coverup --tests
 ---- 2026-10-06T18:03:40 script_25.py:4-27 ----
 Saved as C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\25\tests\test_coverup_1.py
 
+---- 2026-10-06T22:55:07 startup ----
+Command: C:\Users\adamf\AppData\Roaming\Python\Python314\Scripts\coverup --tests-dir C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\25\tests C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\25\script_25.py --model openai/claude-sonnet-5 --checkpoint C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\25\coverup.checkpoint --log-file C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\25\coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3
+---- 2026-10-06T22:55:08 script_25.py:4-27 ----
+{
+  "model": "openai/claude-sonnet-5",
+  "temperature": 0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from script_25.py, does not achieve full coverage:\nwhen tested, lines 15-27 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            from typing import List\n            def factorize(n: int) -> List[int]:\n                \"\"\" Return list of prime factors of given integer in the order from smallest to largest.\n                Each of the factors should be listed number of times corresponding to how many times it appeares in factorization.\n                Input number should be equal to the product of all factors\n                >>> factorize(8)\n                [2, 2, 2]\n                >>> factorize(25)\n                [5, 5]\n                >>> factorize(70)\n                [2, 5, 7]\n                \"\"\"\n        15:     import math\n        16:     fact = []\n        17:     i = 2\n        18:     while i <= int(math.sqrt(n) + 1):\n        19:         if n % i == 0:\n        20:             fact.append(i)\n        21:             n //= i\n                    else:\n        23:             i += 1\n            \n        25:     if n > 1:\n        26:         fact.append(n)\n        27:     return fact\n\n```\n"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-06T22:55:16 script_25.py:4-27 ----
+{
+  "id": "msg_011CfmFmKnkjyWfWckMUjRnQ",
+  "created": 1791302117,
+  "model": "claude-sonnet-5",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```python\nimport pytest\nfrom typing import List\n\n\ndef factorize(n: int) -> List[int]:\n    \"\"\" Return list of prime factors of given integer in the order from smallest to largest.\n    Each of the factors should be listed number of times corresponding to how many times it appeares in factorization.\n    Input number should be equal to the product of all factors\n    >>> factorize(8)\n    [2, 2, 2]\n    >>> factorize(25)\n    [5, 5]\n    >>> factorize(70)\n    [2, 5, 7]\n    \"\"\"\n    import math\n    fact = []\n    i = 2\n    while i <= int(math.sqrt(n) + 1):\n        if n % i == 0:\n            fact.append(i)\n            n //= i\n        else:\n            i += 1\n    \n    if n > 1:\n        fact.append(n)\n    return fact\n\n\ndef test_factorize_8():\n    assert factorize(8) == [2, 2, 2]\n\n\ndef test_factorize_25():\n    assert factorize(25) == [5, 5]\n\n\ndef test_factorize_70():\n    assert factorize(2 * 5 * 7) == [2, 5, 7]\n\n\ndef test_factorize_prime_number():\n    assert factorize(13) == [13]\n    assert factorize(17) == [17]\n\n\ndef test_factorize_2():\n    assert factorize(2) == [2]\n\n\ndef test_factorize_3():\n    assert factorize(3) == [3]\n\n\ndef test_factorize_large_prime():\n    assert factorize(97) == [97]\n\n\ndef test_factorize_composite_with_large_prime_factor():\n    assert factorize(2 * 97) == [2, 97]\n    assert factorize(6 * 97) == [2, 3, 97]\n\n\ndef test_factorize_product_equals_input():\n    n = 100\n    factors = factorize(n)\n    product = 1\n    for f in factors:\n        product *= f\n    assert product == n\n```",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {}
+    }
+  ],
+  "usage": {
+    "completion_tokens": 1210,
+    "prompt_tokens": 2132,
+    "total_tokens": 3342,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "text_tokens": 0,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 2128,
+      "cached_tokens": 0,
+      "text_tokens": 0,
+      "image_tokens": 0,
+      "cache_creation_tokens": 2128,
+      "cached_creation_tokens": 2128
+    },
+    "usage_semantic": "openai",
+    "usage_source": "anthropic",
+    "billing_usage": {
+      "source": "claude_messages",
+      "semantic": "anthropic",
+      "claude_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 2128,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 1210,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 2128
+        },
+        "claude_cache_creation_5_m_tokens": 0,
+        "claude_cache_creation_1_h_tokens": 0
+      }
+    },
+    "input_tokens": 2132,
+    "output_tokens": 0,
+    "input_tokens_details": null,
+    "claude_cache_creation_5_m_tokens": 2128,
+    "claude_cache_creation_1_h_tokens": 0
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-06T22:55:17 script_25.py:4-27 ----
+.........                                                                [100%]
+
+---- 2026-10-06T22:55:17 script_25.py:4-27 ----
+{
+  "model": "openai/claude-sonnet-5",
+  "temperature": 0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from script_25.py, does not achieve full coverage:\nwhen tested, lines 15-27 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            from typing import List\n            def factorize(n: int) -> List[int]:\n                \"\"\" Return list of prime factors of given integer in the order from smallest to largest.\n                Each of the factors should be listed number of times corresponding to how many times it appeares in factorization.\n                Input number should be equal to the product of all factors\n                >>> factorize(8)\n                [2, 2, 2]\n                >>> factorize(25)\n                [5, 5]\n                >>> factorize(70)\n                [2, 5, 7]\n                \"\"\"\n        15:     import math\n        16:     fact = []\n        17:     i = 2\n        18:     while i <= int(math.sqrt(n) + 1):\n        19:         if n % i == 0:\n        20:             fact.append(i)\n        21:             n //= i\n                    else:\n        23:             i += 1\n            \n        25:     if n > 1:\n        26:         fact.append(n)\n        27:     return fact\n\n```\n"
+    },
+    {
+      "content": "```python\nimport pytest\nfrom typing import List\n\n\ndef factorize(n: int) -> List[int]:\n    \"\"\" Return list of prime factors of given integer in the order from smallest to largest.\n    Each of the factors should be listed number of times corresponding to how many times it appeares in factorization.\n    Input number should be equal to the product of all factors\n    >>> factorize(8)\n    [2, 2, 2]\n    >>> factorize(25)\n    [5, 5]\n    >>> factorize(70)\n    [2, 5, 7]\n    \"\"\"\n    import math\n    fact = []\n    i = 2\n    while i <= int(math.sqrt(n) + 1):\n        if n % i == 0:\n            fact.append(i)\n            n //= i\n        else:\n            i += 1\n    \n    if n > 1:\n        fact.append(n)\n    return fact\n\n\ndef test_factorize_8():\n    assert factorize(8) == [2, 2, 2]\n\n\ndef test_factorize_25():\n    assert factorize(25) == [5, 5]\n\n\ndef test_factorize_70():\n    assert factorize(2 * 5 * 7) == [2, 5, 7]\n\n\ndef test_factorize_prime_number():\n    assert factorize(13) == [13]\n    assert factorize(17) == [17]\n\n\ndef test_factorize_2():\n    assert factorize(2) == [2]\n\n\ndef test_factorize_3():\n    assert factorize(3) == [3]\n\n\ndef test_factorize_large_prime():\n    assert factorize(97) == [97]\n\n\ndef test_factorize_composite_with_large_prime_factor():\n    assert factorize(2 * 97) == [2, 97]\n    assert factorize(6 * 97) == [2, 3, 97]\n\n\ndef test_factorize_product_equals_input():\n    n = 100\n    factors = factorize(n)\n    product = 1\n    for f in factors:\n        product *= f\n    assert product == n\n```",
+      "role": "assistant",
+      "tool_calls": null,
+      "function_call": null,
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "role": "user",
+      "content": "The tests still lack coverage: lines 15-27 do not execute.\nModify it to correct that; respond only with the complete Python code in backticks.\nUse the get_info tool function as necessary.\n"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-06T22:55:21 script_25.py:4-27 ----
+{
+  "id": "msg_011CfmFmzc7Vor2BCB44Ncm5",
+  "created": 1791302122,
+  "model": "claude-sonnet-5",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "message": {
+        "content": "",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"name\":\"factorize\"}",
+              "name": "get_info"
+            },
+            "id": "toolu_01MJHZHS666E9msgBoSTGZ5Z",
+            "type": "function"
+          }
+        ],
+        "function_call": null,
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {}
+    }
+  ],
+  "usage": {
+    "completion_tokens": 70,
+    "prompt_tokens": 3474,
+    "total_tokens": 3544,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "text_tokens": 0,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 1450,
+      "cached_tokens": 2020,
+      "text_tokens": 0,
+      "image_tokens": 0,
+      "cache_creation_tokens": 1450,
+      "cached_creation_tokens": 1450
+    },
+    "usage_semantic": "openai",
+    "usage_source": "anthropic",
+    "billing_usage": {
+      "source": "claude_messages",
+      "semantic": "anthropic",
+      "claude_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 1450,
+        "cache_read_input_tokens": 2020,
+        "output_tokens": 70,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 1450
+        },
+        "claude_cache_creation_5_m_tokens": 0,
+        "claude_cache_creation_1_h_tokens": 0
+      }
+    },
+    "input_tokens": 3474,
+    "output_tokens": 0,
+    "input_tokens_details": null,
+    "claude_cache_creation_5_m_tokens": 1450,
+    "claude_cache_creation_1_h_tokens": 0
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-06T22:55:21 script_25.py:4-27 ----
+{
+  "model": "openai/claude-sonnet-5",
+  "temperature": 0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from script_25.py, does not achieve full coverage:\nwhen tested, lines 15-27 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            from typing import List\n            def factorize(n: int) -> List[int]:\n                \"\"\" Return list of prime factors of given integer in the order from smallest to largest.\n                Each of the factors should be listed number of times corresponding to how many times it appeares in factorization.\n                Input number should be equal to the product of all factors\n                >>> factorize(8)\n                [2, 2, 2]\n                >>> factorize(25)\n                [5, 5]\n                >>> factorize(70)\n                [2, 5, 7]\n                \"\"\"\n        15:     import math\n        16:     fact = []\n        17:     i = 2\n        18:     while i <= int(math.sqrt(n) + 1):\n        19:         if n % i == 0:\n        20:             fact.append(i)\n        21:             n //= i\n                    else:\n        23:             i += 1\n            \n        25:     if n > 1:\n        26:         fact.append(n)\n        27:     return fact\n\n```\n"
+    },
+    {
+      "content": "```python\nimport pytest\nfrom typing import List\n\n\ndef factorize(n: int) -> List[int]:\n    \"\"\" Return list of prime factors of given integer in the order from smallest to largest.\n    Each of the factors should be listed number of times corresponding to how many times it appeares in factorization.\n    Input number should be equal to the product of all factors\n    >>> factorize(8)\n    [2, 2, 2]\n    >>> factorize(25)\n    [5, 5]\n    >>> factorize(70)\n    [2, 5, 7]\n    \"\"\"\n    import math\n    fact = []\n    i = 2\n    while i <= int(math.sqrt(n) + 1):\n        if n % i == 0:\n            fact.append(i)\n            n //= i\n        else:\n            i += 1\n    \n    if n > 1:\n        fact.append(n)\n    return fact\n\n\ndef test_factorize_8():\n    assert factorize(8) == [2, 2, 2]\n\n\ndef test_factorize_25():\n    assert factorize(25) == [5, 5]\n\n\ndef test_factorize_70():\n    assert factorize(2 * 5 * 7) == [2, 5, 7]\n\n\ndef test_factorize_prime_number():\n    assert factorize(13) == [13]\n    assert factorize(17) == [17]\n\n\ndef test_factorize_2():\n    assert factorize(2) == [2]\n\n\ndef test_factorize_3():\n    assert factorize(3) == [3]\n\n\ndef test_factorize_large_prime():\n    assert factorize(97) == [97]\n\n\ndef test_factorize_composite_with_large_prime_factor():\n    assert factorize(2 * 97) == [2, 97]\n    assert factorize(6 * 97) == [2, 3, 97]\n\n\ndef test_factorize_product_equals_input():\n    n = 100\n    factors = factorize(n)\n    product = 1\n    for f in factors:\n        product *= f\n    assert product == n\n```",
+      "role": "assistant",
+      "tool_calls": null,
+      "function_call": null,
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "role": "user",
+      "content": "The tests still lack coverage: lines 15-27 do not execute.\nModify it to correct that; respond only with the complete Python code in backticks.\nUse the get_info tool function as necessary.\n"
+    },
+    {
+      "content": "",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"name\":\"factorize\"}",
+            "name": "get_info"
+          },
+          "id": "toolu_01MJHZHS666E9msgBoSTGZ5Z",
+          "type": "function"
+        }
+      ],
+      "function_call": null,
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "tool_call_id": "toolu_01MJHZHS666E9msgBoSTGZ5Z",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\n```python\nfrom typing import List\n\ndef factorize(n: int) -> List[int]:\n    \"\"\" Return list of prime factors of given integer in the order from smallest to largest.\n    Each of the factors should be listed number of times corresponding to how many times it appeares in factorization.\n    Input number should be equal to the product of all factors\n    >>> factorize(8)\n    [2, 2, 2]\n    >>> factorize(25)\n    [5, 5]\n    >>> factorize(70)\n    [2, 5, 7]\n    \"\"\"\n    import math\n    fact = []\n    i = 2\n    while i <= int(math.sqrt(n) + 1):\n        if n % i == 0:\n            fact.append(i)\n            n //= i\n        else:\n            i += 1\n    if n > 1:\n        fact.append(n)\n    return fact\n```"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-06T22:55:26 script_25.py:4-27 ----
+{
+  "id": "msg_011CfmFnF3HCpS2Mc5a2Pgpu",
+  "created": 1791302127,
+  "model": "claude-sonnet-5",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```python\nimport pytest\nfrom script_25 import factorize\n\n\ndef test_factorize_8():\n    assert factorize(8) == [2, 2, 2]\n\n\ndef test_factorize_25():\n    assert factorize(25) == [5, 5]\n\n\ndef test_factorize_70():\n    assert factorize(2 * 5 * 7) == [2, 5, 7]\n\n\ndef test_factorize_prime_number():\n    assert factorize(13) == [13]\n    assert factorize(17) == [17]\n\n\ndef test_factorize_2():\n    assert factorize(2) == [2]\n\n\ndef test_factorize_3():\n    assert factorize(3) == [3]\n\n\ndef test_factorize_large_prime():\n    assert factorize(97) == [97]\n\n\ndef test_factorize_composite_with_large_prime_factor():\n    assert factorize(2 * 97) == [2, 97]\n    assert factorize(6 * 97) == [2, 3, 97]\n\n\ndef test_factorize_product_equals_input():\n    n = 100\n    factors = factorize(n)\n    product = 1\n    for f in factors:\n        product *= f\n    assert product == n\n```",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {}
+    }
+  ],
+  "usage": {
+    "completion_tokens": 710,
+    "prompt_tokens": 4136,
+    "total_tokens": 4846,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "text_tokens": 0,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 836,
+      "cached_tokens": 3296,
+      "text_tokens": 0,
+      "image_tokens": 0,
+      "cache_creation_tokens": 836,
+      "cached_creation_tokens": 836
+    },
+    "usage_semantic": "openai",
+    "usage_source": "anthropic",
+    "billing_usage": {
+      "source": "claude_messages",
+      "semantic": "anthropic",
+      "claude_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 836,
+        "cache_read_input_tokens": 3296,
+        "output_tokens": 710,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 836
+        },
+        "claude_cache_creation_5_m_tokens": 0,
+        "claude_cache_creation_1_h_tokens": 0
+      }
+    },
+    "input_tokens": 4136,
+    "output_tokens": 0,
+    "input_tokens_details": null,
+    "claude_cache_creation_5_m_tokens": 836,
+    "claude_cache_creation_1_h_tokens": 0
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-06T22:55:27 script_25.py:4-27 ----
+.........                                                                [100%]
+
+---- 2026-10-06T22:55:27 script_25.py:4-27 ----
+Saved as C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\25\tests\test_coverup_1.py
+

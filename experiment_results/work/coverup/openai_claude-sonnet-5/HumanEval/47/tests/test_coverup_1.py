@@ -10,47 +10,32 @@ def test_median_odd_length():
     """Test median with odd number of elements."""
     result = median([3, 1, 2, 4, 5])
     assert result == 3
+    
+    result = median([1])
+    assert result == 1
+    
+    result = median([5, 3, 1])
+    assert result == 3
 
 
 def test_median_even_length():
     """Test median with even number of elements."""
-    result = median([-10, 4, 6, 1000, 10, 20])
     # Sorted: [-10, 4, 6, 10, 20, 1000]
-    # Median is average of 6 and 10: (6 + 10) / 2 = 8.0
+    # Median indices: 2 and 3 (6 and 10)
+    # Median: (6 + 10) / 2 = 8.0
+    result = median([-10, 4, 6, 1000, 10, 20])
     assert result == 8.0
+    
+    result = median([1, 2])
+    assert result == 1.5
+    
+    result = median([1, 2, 3, 4])
+    assert result == 2.5
 
 
-def test_median_single_element():
-    """Test median with single element."""
-    result = median([42])
-    assert result == 42
-
-
-def test_median_two_elements():
-    """Test median with two elements."""
-    result = median([1, 3])
-    assert result == 2.0
-
-
-def test_median_unsorted_odd():
-    """Test median with unsorted odd-length list."""
-    result = median([9, 1, 5, 3, 7])
-    assert result == 5
-
-
-def test_median_unsorted_even():
-    """Test median with unsorted even-length list."""
-    result = median([8, 2, 6, 4])
-    assert result == 5.0
-
-
-def test_median_negative_numbers_odd():
-    """Test median with negative numbers and odd length."""
-    result = median([-5, -1, -3])
-    assert result == -3
-
-
-def test_median_negative_numbers_even():
-    """Test median with negative numbers and even length."""
-    result = median([-10, -20, -30, -40])
-    assert result == -25.0
+def test_median_does_not_modify_input():
+    """Test that median does not modify the input list."""
+    original = [3, 1, 2, 4, 5]
+    input_list = original.copy()
+    median(input_list)
+    assert input_list == original

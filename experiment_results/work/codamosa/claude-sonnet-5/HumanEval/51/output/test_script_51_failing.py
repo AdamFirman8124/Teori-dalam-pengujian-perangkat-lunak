@@ -3,35 +3,21 @@ import script_51 as module_0
 
 def test_case_0():
     try:
-        str_0 = 'N4/h(.%?\r}2s|B'
+        str_0 = "'F)Z"
         var_0 = module_0.remove_vowels(str_0)
-        assert var_0 == 'N4/h(.%?\r}2s|B'
-        tuple_0 = None
-        str_1 = 'kY'
-        var_1 = module_0.remove_vowels(str_1)
-        assert var_1 == 'kY'
-        dict_0 = {tuple_0: tuple_0, tuple_0: tuple_0, tuple_0: tuple_0}
-        var_2 = module_0.remove_vowels(dict_0)
+        assert var_0 == "'F)Z"
+        set_0 = None
+        var_1 = module_0.remove_vowels(set_0)
     except BaseException:
         pass
 
 def test_case_1():
     try:
-        float_0 = 1699.0
-        var_0 = module_0.remove_vowels(float_0)
-    except BaseException:
-        pass
-
-def test_case_2():
-    try:
-        str_0 = '\tcL]\ru:&:EyIw[,Kfv#\x0c'
+        str_0 = '@wn\x0bi3E'
         var_0 = module_0.remove_vowels(str_0)
-        assert var_0 == '\tcL]\r:&:yw[,Kfv#\x0c'
-        tuple_0 = None
-        str_1 = 'kY'
-        var_1 = module_0.remove_vowels(str_1)
-        assert var_1 == 'kY'
-        dict_0 = {tuple_0: tuple_0, tuple_0: tuple_0, tuple_0: tuple_0}
-        var_2 = module_0.remove_vowels(dict_0)
+        assert var_0 == '@wn\x0b3'
+        float_0 = -2881.4312
+        set_0 = {float_0}
+        var_1 = module_0.remove_vowels(set_0)
     except BaseException:
         pass

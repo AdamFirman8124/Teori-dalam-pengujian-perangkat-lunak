@@ -2,10 +2,6 @@
 import script_73 as module_0
 
 def test_case_0():
-    bool_0 = True
-    dict_0 = {bool_0: bool_0, bool_0: bool_0, bool_0: bool_0}
-    var_0 = module_0.smallest_change(dict_0)
-    assert var_0 == 0
-    list_0 = [bool_0]
-    var_1 = module_0.smallest_change(list_0)
-    assert var_1 == 0
+    str_0 = 'hvq.s'
+    var_0 = module_0.smallest_change(str_0)
+    assert var_0 == 2

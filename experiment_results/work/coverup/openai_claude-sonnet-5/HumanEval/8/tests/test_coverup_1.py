@@ -6,10 +6,12 @@ import pytest
 from script_8 import sum_product
 
 
-def test_sum_product_empty_list():
-    """Test sum_product with an empty list."""
-    result = sum_product([])
-    assert result == (0, 1)
+def test_sum_product_non_empty_list():
+    """Test sum_product with a non-empty list."""
+    result = sum_product([1, 2, 3, 4])
+    assert result == (10, 24)
+    assert result[0] == 10
+    assert result[1] == 24
 
 
 def test_sum_product_single_element():
@@ -18,16 +20,10 @@ def test_sum_product_single_element():
     assert result == (5, 5)
 
 
-def test_sum_product_multiple_elements():
-    """Test sum_product with multiple elements."""
-    result = sum_product([1, 2, 3, 4])
-    assert result == (10, 24)
-
-
 def test_sum_product_with_zero():
-    """Test sum_product with a list containing zero."""
-    result = sum_product([1, 0, 5])
-    assert result == (6, 0)
+    """Test sum_product with list containing zero."""
+    result = sum_product([1, 0, 3])
+    assert result == (4, 0)
 
 
 def test_sum_product_negative_numbers():
@@ -36,7 +32,7 @@ def test_sum_product_negative_numbers():
     assert result == (-6, -6)
 
 
-def test_sum_product_mixed_positive_negative():
+def test_sum_product_mixed_numbers():
     """Test sum_product with mixed positive and negative numbers."""
     result = sum_product([2, -3, 4])
     assert result == (3, -24)

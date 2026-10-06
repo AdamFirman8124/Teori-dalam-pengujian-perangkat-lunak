@@ -2,25 +2,16 @@
 import script_29 as module_0
 
 def test_case_0():
-    str_0 = '7SU8'
+    str_0 = 'GJCH;<2ik;OJ&X'
     list_0 = [str_0]
     list_1 = module_0.filter_by_prefix(list_0, str_0)
     assert list_1 == []
-    str_1 = '?W`$,DURc@WpS~@Eh}oi'
-    str_2 = '_qGk)F:\n\x0c'
-    str_3 = '^=?t\n*7=/K+&Y${RB'
-    list_2 = [str_1, str_1, str_2, str_3]
-    list_3 = module_0.filter_by_prefix(list_2, str_1)
-    assert list_3 == ['_qGk)F:\n\x0c', '^=?t\n*7=/K+&Y${RB']
-    list_4 = module_0.filter_by_prefix(list_2, str_3)
-    assert list_4 == ['?W`$,DURc@WpS~@Eh}oi', '?W`$,DURc@WpS~@Eh}oi', '_qGk)F:\n\x0c']
 
 def test_case_1():
-    list_0 = []
-    str_0 = ',`ke8j-!a9%{7!'
-    list_1 = module_0.filter_by_prefix(list_0, str_0)
-    str_1 = ';cVE grG7\x0b1x3f9K/Op]'
+    str_0 = 'xuKN\x0c"X\r\tibp'
+    list_0 = [str_0]
+    str_1 = '"Kz'
+    list_1 = module_0.filter_by_prefix(list_0, str_1)
+    assert list_1 == ['xuKN\x0c"X\r\tibp']
     list_2 = module_0.filter_by_prefix(list_0, str_1)
-    list_3 = module_0.filter_by_prefix(list_0, str_1)
-    str_2 = '!28c\x0bP4dW\t\r&$1('
-    list_4 = module_0.filter_by_prefix(list_2, str_2)
+    assert list_2 == ['xuKN\x0c"X\r\tibp']

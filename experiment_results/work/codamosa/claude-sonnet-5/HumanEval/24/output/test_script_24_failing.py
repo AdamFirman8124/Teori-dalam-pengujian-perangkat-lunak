@@ -3,14 +3,23 @@ import script_24 as module_0
 
 def test_case_0():
     try:
-        int_0 = 10
-        int_1 = module_0.largest_divisor(int_0)
-        assert int_1 == 5
+        int_0 = None
+        int_1 = 2452
+        int_2 = module_0.largest_divisor(int_1)
+        assert int_2 == 1226
         assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-        int_2 = None
-        int_3 = 814
-        int_4 = module_0.largest_divisor(int_3)
-        assert int_4 == 407
-        int_5 = module_0.largest_divisor(int_2)
+        int_3 = module_0.largest_divisor(int_0)
+    except BaseException:
+        pass
+
+def test_case_1():
+    try:
+        int_0 = -2041
+        int_1 = module_0.largest_divisor(int_0)
+        assert int_1 is None
+        assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
+        int_2 = module_0.largest_divisor(int_0)
+        assert int_2 is None
+        int_3 = module_0.largest_divisor(int_2)
     except BaseException:
         pass

@@ -7,39 +7,39 @@ from script_11 import string_xor
 
 
 def test_string_xor_basic():
-    """Test basic XOR operation."""
+    """Test basic XOR operation"""
     assert string_xor('010', '110') == '100'
 
 
 def test_string_xor_all_zeros():
-    """Test XOR with all zeros."""
+    """Test XOR with all zeros"""
     assert string_xor('000', '000') == '000'
 
 
 def test_string_xor_all_ones():
-    """Test XOR with all ones."""
+    """Test XOR with all ones"""
     assert string_xor('111', '111') == '000'
 
 
 def test_string_xor_different_bits():
-    """Test XOR with different bits."""
+    """Test XOR with different bits"""
     assert string_xor('101', '010') == '111'
 
 
 def test_string_xor_single_bit():
-    """Test XOR with single bit."""
-    assert string_xor('0', '1') == '1'
-    assert string_xor('1', '0') == '1'
+    """Test XOR with single bit"""
     assert string_xor('0', '0') == '0'
     assert string_xor('1', '1') == '0'
+    assert string_xor('0', '1') == '1'
+    assert string_xor('1', '0') == '1'
 
 
 def test_string_xor_empty():
-    """Test XOR with empty strings."""
+    """Test XOR with empty strings"""
     assert string_xor('', '') == ''
 
 
 def test_string_xor_longer_strings():
-    """Test XOR with longer strings."""
+    """Test XOR with longer strings"""
     assert string_xor('10101010', '01010101') == '11111111'
-    assert string_xor('11110000', '10101010') == '01011010'
+    assert string_xor('11110000', '11110000') == '00000000'

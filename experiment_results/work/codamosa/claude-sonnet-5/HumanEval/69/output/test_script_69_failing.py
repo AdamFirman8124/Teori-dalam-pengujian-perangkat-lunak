@@ -3,31 +3,24 @@ import script_69 as module_0
 
 def test_case_0():
     try:
-        bytes_0 = b'iA\xd8\xcfJR\x17\x07\xf2\xc2y\x07\xf7'
-        var_0 = module_0.search(bytes_0)
-        assert var_0 == -1
-        str_0 = ')'
-        var_1 = module_0.search(str_0)
+        bool_0 = True
+        list_0 = [bool_0, bool_0]
+        var_0 = module_0.search(list_0)
+        assert var_0 == 1
+        var_1 = module_0.search(bool_0)
     except BaseException:
         pass
 
 def test_case_1():
     try:
-        list_0 = []
-        var_0 = module_0.search(list_0)
-    except BaseException:
-        pass
-
-def test_case_2():
-    try:
-        bool_0 = True
-        list_0 = [bool_0]
-        var_0 = module_0.search(list_0)
-        assert var_0 == 1
-        bytes_0 = b'iA\xd8\xcfJR\x17\x07\xf2\xc2y\x07\xf7'
-        var_1 = module_0.search(bytes_0)
-        assert var_1 == -1
-        str_0 = ')'
-        var_2 = module_0.search(str_0)
+        bytes_0 = b';\x8fO%?L\x94\xcbE\x02\x8dt\xa6$R'
+        set_0 = None
+        dict_0 = {set_0: set_0, set_0: bytes_0, set_0: bytes_0}
+        tuple_0 = (bytes_0, set_0, dict_0)
+        bytes_1 = b"\xdf\xed\xcd'\x03s\xbeP`"
+        var_0 = module_0.search(bytes_1)
+        assert var_0 == -1
+        list_0 = [bytes_0, bytes_0, bytes_1, tuple_0]
+        var_1 = module_0.search(list_0)
     except BaseException:
         pass

@@ -7,55 +7,60 @@ from script_75 import is_multiply_prime
 
 
 def test_is_multiply_prime_30():
-    """Test that 30 is the product of three primes (2 * 3 * 5)"""
+    """Test that 30 is the product of 3 primes (2 * 3 * 5)"""
     assert is_multiply_prime(30) == True
 
 
 def test_is_multiply_prime_8():
-    """Test that 8 is the product of three primes (2 * 2 * 2)"""
+    """Test that 8 is the product of 3 primes (2 * 2 * 2)"""
     assert is_multiply_prime(8) == True
 
 
-def test_is_multiply_prime_125():
-    """Test that 125 is the product of three primes (5 * 5 * 5)"""
-    assert is_multiply_prime(125) == True
-
-
 def test_is_multiply_prime_12():
-    """Test that 12 is the product of three primes (2 * 2 * 3)"""
+    """Test that 12 is the product of 3 primes (2 * 2 * 3)"""
     assert is_multiply_prime(12) == True
 
 
 def test_is_multiply_prime_50():
-    """Test that 50 is the product of three primes (2 * 5 * 5)"""
+    """Test that 50 is the product of 3 primes (2 * 5 * 5)"""
     assert is_multiply_prime(50) == True
 
 
-def test_is_multiply_prime_99():
-    """Test that 99 is the product of three primes (3 * 3 * 11)"""
-    assert is_multiply_prime(99) == True
+def test_is_multiply_prime_not_product_of_three():
+    """Test that a number that is NOT the product of 3 primes returns False"""
+    assert is_multiply_prime(10) == False  # 10 = 2 * 5 (only 2 primes)
+
+
+def test_is_multiply_prime_prime_itself():
+    """Test that a prime number itself is not the product of 3 primes"""
+    assert is_multiply_prime(7) == False
 
 
 def test_is_multiply_prime_1():
-    """Test that 1 is not the product of three primes"""
+    """Test that 1 returns False"""
     assert is_multiply_prime(1) == False
 
 
 def test_is_multiply_prime_2():
-    """Test that 2 is not the product of three primes"""
+    """Test that 2 (a prime) returns False"""
     assert is_multiply_prime(2) == False
 
 
-def test_is_multiply_prime_4():
-    """Test that 4 is not the product of three primes"""
-    assert is_multiply_prime(4) == False
+def test_is_multiply_prime_60():
+    """Test that 60 returns False (product of 4 primes: 2 * 2 * 3 * 5)"""
+    assert is_multiply_prime(60) == False
 
 
-def test_is_multiply_prime_17():
-    """Test that 17 is not the product of three primes"""
-    assert is_multiply_prime(17) == False
+def test_is_multiply_prime_27():
+    """Test that 27 is product of 3 primes (3 * 3 * 3)"""
+    assert is_multiply_prime(27) == True
 
 
-def test_is_multiply_prime_100():
-    """Test that 100 is not the product of three primes"""
-    assert is_multiply_prime(100) == False
+def test_is_multiply_prime_99():
+    """Test that 99 is product of 3 primes (3 * 3 * 11)"""
+    assert is_multiply_prime(99) == True
+
+
+def test_is_multiply_prime_66():
+    """Test that 66 is product of 3 primes (2 * 3 * 11)"""
+    assert is_multiply_prime(66) == True

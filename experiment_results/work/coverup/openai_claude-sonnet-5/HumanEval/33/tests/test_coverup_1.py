@@ -13,7 +13,7 @@ def test_sort_third_basic():
 
 
 def test_sort_third_longer_list():
-    """Test with a longer list requiring sorting."""
+    """Test with a longer list where sorting at indices divisible by 3 matters."""
     result = sort_third([5, 6, 3, 4, 8, 9, 2])
     assert result == [2, 6, 3, 4, 8, 9, 5]
 
@@ -31,23 +31,34 @@ def test_sort_third_single_element():
 
 
 def test_sort_third_two_elements():
-    """Test with two elements."""
-    result = sort_third([10, 20])
-    assert result == [10, 20]
+    """Test with two elements (only index 0 is divisible by 3)."""
+    result = sort_third([9, 5])
+    assert result == [9, 5]
 
 
-def test_sort_third_all_positions_divisible_by_three():
-    """Test with three elements at indices 0, 3, 6."""
-    result = sort_third([9, 1, 2, 3, 4, 5, 1])
-    assert result == [1, 1, 2, 3, 4, 5, 9]
+def test_sort_third_unsorted_at_divisible_indices():
+    """Test where elements at indices 0, 3, 6 need sorting."""
+    result = sort_third([9, 1, 2, 3, 4, 5, 6, 7, 8])
+    assert result == [3, 1, 2, 6, 4, 5, 9, 7, 8]
 
 
 def test_sort_third_negative_numbers():
-    """Test with negative numbers at indices 0, 3, 6."""
-    result = sort_third([-5, 10, -3, 20, -1, 30, -10])
-    # Indices 0, 3, 6 have values: -5, 20, -10
-    # Sorted: -10, -5, 20
-    assert result == [-10, 10, -3, -5, -1, 30, 20]
+    """Test with negative numbers."""
+    result = sort_third([-5, 10, -3, 2, 8, -1, 7])
+    assert result == [-5, 10, -3, 2, 8, -1, 7]
+
+
+def test_sort_third_duplicate_values():
+    """Test with duplicate values at divisible indices."""
+    result = sort_third([5, 1, 2, 5, 4, 6, 5, 8, 9])
+    assert result == [5, 1, 2, 5, 4, 6, 5, 8, 9]
+
+
+def test_sort_third_tuple_input():
+    """Test that function works with tuple input and returns a list."""
+    result = sort_third((5, 6, 3, 4, 8, 9, 2))
+    assert result == [2, 6, 3, 4, 8, 9, 5]
+    assert isinstance(result, list)
 
 
 def test_sort_third_does_not_modify_original():
@@ -57,16 +68,3 @@ def test_sort_third_does_not_modify_original():
     result = sort_third(original)
     assert original == original_copy
     assert result == [2, 6, 3, 4, 8, 9, 5]
-
-
-def test_sort_third_with_tuple():
-    """Test with a tuple input to ensure line 10 executes."""
-    result = sort_third((5, 6, 3, 4, 8, 9, 2))
-    assert result == [2, 6, 3, 4, 8, 9, 5]
-    assert isinstance(result, list)
-
-
-def test_sort_third_with_duplicates():
-    """Test with duplicate values at indices divisible by 3."""
-    result = sort_third([5, 1, 2, 5, 3, 4, 5])
-    assert result == [5, 1, 2, 5, 3, 4, 5]

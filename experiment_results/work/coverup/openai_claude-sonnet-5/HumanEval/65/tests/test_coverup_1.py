@@ -7,7 +7,7 @@ from script_65 import circular_shift
 
 
 def test_circular_shift_basic():
-    """Test basic circular shift operation."""
+    """Test basic circular shift functionality."""
     assert circular_shift(12, 1) == "21"
     assert circular_shift(12, 2) == "12"
 
@@ -19,25 +19,14 @@ def test_circular_shift_exceeds_length():
     assert circular_shift(5, 2) == "5"
 
 
-def test_circular_shift_single_digit():
-    """Test with single digit numbers."""
-    assert circular_shift(5, 0) == "5"
-    assert circular_shift(5, 1) == "5"
-
-
-def test_circular_shift_zero_shift():
-    """Test with zero shift."""
+def test_circular_shift_edge_cases():
+    """Test edge cases including zero shift and single digit."""
     assert circular_shift(12345, 0) == "12345"
-    assert circular_shift(99, 0) == "99"
+    assert circular_shift(0, 1) == "0"
+    assert circular_shift(9, 1) == "9"
 
 
-def test_circular_shift_exact_length():
-    """Test when shift equals number of digits."""
-    assert circular_shift(123, 3) == "123"
-    assert circular_shift(99, 2) == "99"
-
-
-def test_circular_shift_multiple_digits():
+def test_circular_shift_larger_numbers():
     """Test with larger numbers."""
     assert circular_shift(12345, 2) == "45123"
-    assert circular_shift(98765, 3) == "76598"
+    assert circular_shift(987654, 3) == "654987"

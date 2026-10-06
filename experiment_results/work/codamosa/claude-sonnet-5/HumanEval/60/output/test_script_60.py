@@ -2,40 +2,11 @@
 import script_60 as module_0
 
 def test_case_0():
-    int_0 = 544
+    int_0 = -3235
     var_0 = module_0.sum_to_n(int_0)
-    assert var_0 == 148240
     var_1 = module_0.sum_to_n(int_0)
-    assert var_1 == 148240
     var_2 = module_0.sum_to_n(int_0)
-    assert var_2 == 148240
     var_3 = module_0.sum_to_n(int_0)
-    assert var_3 == 148240
-    int_1 = 578
+    int_1 = 353
     var_4 = module_0.sum_to_n(int_1)
-    assert var_4 == 167331
-    var_5 = module_0.sum_to_n(int_1)
-    assert var_5 == 167331
-    var_6 = module_0.sum_to_n(int_0)
-    assert var_6 == 148240
-    var_7 = module_0.sum_to_n(int_1)
-    assert var_7 == 167331
-    var_8 = module_0.sum_to_n(int_0)
-    assert var_8 == 148240
-    int_2 = -772
-    var_9 = module_0.sum_to_n(int_2)
-    int_3 = -375
-    var_10 = module_0.sum_to_n(int_3)
-    int_4 = -849
-    int_5 = -1071
-    var_11 = module_0.sum_to_n(int_5)
-    var_12 = module_0.sum_to_n(int_4)
-    var_13 = module_0.sum_to_n(int_0)
-    assert var_13 == 148240
-    int_6 = 1740
-    var_14 = module_0.sum_to_n(int_6)
-    assert var_14 == 1514670
-    var_15 = module_0.sum_to_n(int_6)
-    assert var_15 == 1514670
-    int_7 = -3020
-    var_16 = module_0.sum_to_n(int_7)
+    assert var_4 == 62481

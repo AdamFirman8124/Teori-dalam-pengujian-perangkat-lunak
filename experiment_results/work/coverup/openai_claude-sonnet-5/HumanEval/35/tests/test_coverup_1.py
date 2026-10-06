@@ -28,25 +28,20 @@ def test_max_element_max_in_middle():
 
 def test_max_element_negative_numbers():
     """Test with negative numbers."""
-    assert max_element([-5, -10, -1, -20]) == -1
+    assert max_element([-5, -3, -10, -1]) == -1
 
 
-def test_max_element_mixed_positive_negative():
+def test_max_element_mixed_numbers():
     """Test with mixed positive and negative numbers."""
     assert max_element([5, 3, -5, 2, -3, 3, 9, 0, 123, 1, -10]) == 123
-
-
-def test_max_element_duplicates():
-    """Test with duplicate maximum values."""
-    assert max_element([5, 5, 5]) == 5
-
-
-def test_max_element_two_elements():
-    """Test with two elements."""
-    assert max_element([1, 2]) == 2
-    assert max_element([2, 1]) == 2
 
 
 def test_max_element_all_same():
     """Test with all elements being the same."""
     assert max_element([7, 7, 7, 7]) == 7
+
+
+def test_max_element_two_elements():
+    """Test with two elements."""
+    assert max_element([3, 5]) == 5
+    assert max_element([5, 3]) == 5

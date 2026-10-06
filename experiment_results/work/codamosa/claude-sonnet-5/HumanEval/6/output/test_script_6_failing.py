@@ -3,11 +3,7 @@ import script_6 as module_0
 
 def test_case_0():
     try:
-        str_0 = "A&4SLH\t\x0b|<9X'\tWB"
+        str_0 = None
         list_0 = module_0.parse_nested_parens(str_0)
-        assert list_0 == [0]
-        assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-        str_1 = None
-        list_1 = module_0.parse_nested_parens(str_1)
     except BaseException:
         pass

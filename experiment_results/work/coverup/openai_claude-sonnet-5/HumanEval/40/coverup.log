@@ -529,3 +529,379 @@ Command: C:\Users\adamf\AppData\Roaming\Python\Python314\Scripts\coverup --tests
 ---- 2026-10-06T18:22:24 script_40.py:1-23 ----
 Saved as C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\40\tests\test_coverup_1.py
 
+---- 2026-10-06T23:14:07 startup ----
+Command: C:\Users\adamf\AppData\Roaming\Python\Python314\Scripts\coverup --tests-dir C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\40\tests C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\40\script_40.py --model openai/claude-sonnet-5 --checkpoint C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\40\coverup.checkpoint --log-file C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\40\coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3
+---- 2026-10-06T23:14:08 script_40.py:1-23 ----
+{
+  "model": "openai/claude-sonnet-5",
+  "temperature": 0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from script_40.py, does not achieve full coverage:\nwhen tested, lines 18-23 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            def triples_sum_to_zero(l: list):\n                \"\"\"\n                triples_sum_to_zero takes a list of integers as an input.\n                it returns True if there are three distinct elements in the list that\n                sum to zero, and False otherwise.\n            \n                >>> triples_sum_to_zero([1, 3, 5, 0])\n                False\n                >>> triples_sum_to_zero([1, 3, -2, 1])\n                True\n                >>> triples_sum_to_zero([1, 2, 3, 7])\n                False\n                >>> triples_sum_to_zero([2, 4, -5, 3, 9, 7])\n                True\n                >>> triples_sum_to_zero([1])\n                False\n                \"\"\"\n        18:     for i in range(len(l)):\n        19:         for j in range(i + 1, len(l)):\n        20:             for k in range(j + 1, len(l)):\n        21:                 if l[i] + l[j] + l[k] == 0:\n        22:                     return True\n        23:     return False\n\n```\n"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-06T23:14:21 script_40.py:1-23 ----
+{
+  "id": "msg_011CfmHDPtQ5iUuWH5cxUMUz",
+  "created": 1791303261,
+  "model": "claude-sonnet-5",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```python\nimport pytest\n\n\ndef triples_sum_to_zero(l: list):\n    \"\"\"\n    triples_sum_to_zero takes a list of integers as an input.\n    it returns True if there are three distinct elements in the list that\n    sum to zero, and False otherwise.\n\n    >>> triples_sum_to_zero([1, 3, 5, 0])\n    False\n    >>> triples_sum_to_zero([1, 3, -2, 1])\n    True\n    >>> triples_sum_to_zero([1, 2, 3, 7])\n    False\n    >>> triples_sum_to_zero([2, 4, -5, 3, 9, 7])\n    True\n    >>> triples_sum_to_zero([1])\n    False\n    \"\"\"\n    for i in range(len(l)):\n        for j in range(i + 1, len(l)):\n            for k in range(j + 1, len(l)):\n                if l[i] + l[j] + l[k] == 0:\n                    return True\n    return False\n\n\ndef test_triples_sum_to_zero_empty_list():\n    \"\"\"Test with empty list - should return False without entering loops.\"\"\"\n    assert triples_sum_to_zero([]) == False\n\n\ndef test_triples_sum_to_zero_single_element():\n    \"\"\"Test with single element - should return False.\"\"\"\n    assert triples_sum_to_zero([1]) == False\n\n\ndef test_triples_sum_to_zero_two_elements():\n    \"\"\"Test with two elements - should return False.\"\"\"\n    assert triples_sum_to_zero([1, 2]) == False\n\n\ndef test_triples_sum_to_zero_three_elements_no_match():\n    \"\"\"Test with three elements that don't sum to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, 3]) == False\n\n\ndef test_triples_sum_to_zero_three_elements_match():\n    \"\"\"Test with three elements that sum to zero - triggers line 22.\"\"\"\n    assert triples_sum_to_zero([1, -1, 0]) == True\n\n\ndef test_triples_sum_to_zero_four_elements_no_match():\n    \"\"\"Test with four elements that don't sum to zero - executes all lines but returns False.\"\"\"\n    assert triples_sum_to_zero([1, 2, 3, 4]) == False\n\n\ndef test_triples_sum_to_zero_four_elements_match():\n    \"\"\"Test with four elements where a triple sums to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, -3, 4]) == True\n\n\ndef test_triples_sum_to_zero_negative_numbers():\n    \"\"\"Test with negative numbers that sum to zero.\"\"\"\n    assert triples_sum_to_zero([-1, -2, 3]) == True\n\n\ndef test_triples_sum_to_zero_with_zeros():\n    \"\"\"Test with multiple zeros.\"\"\"\n    assert triples_sum_to_zero([0, 0, 0]) == True\n\n\ndef test_triples_sum_to_zero_no_triple_exists():\n    \"\"\"Test where no triple sums to zero - exercises line 23.\"\"\"\n    assert triples_sum_to_zero([1, 3, 5, 7, 9]) == False\n\n\ndef test_triples_sum_to_zero_larger_list_with_match():\n    \"\"\"Test with larger list containing a triple that sums to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, 3, 4, 5, -6]) == True\n\n\ndef test_triples_sum_to_zero_larger_list_no_match():\n    \"\"\"Test with larger list with no triple summing to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, 4, 8, 16]) == False\n```",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {}
+    }
+  ],
+  "usage": {
+    "completion_tokens": 2280,
+    "prompt_tokens": 2190,
+    "total_tokens": 4470,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "text_tokens": 0,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 2186,
+      "cached_tokens": 0,
+      "text_tokens": 0,
+      "image_tokens": 0,
+      "cache_creation_tokens": 2186,
+      "cached_creation_tokens": 2186
+    },
+    "usage_semantic": "openai",
+    "usage_source": "anthropic",
+    "billing_usage": {
+      "source": "claude_messages",
+      "semantic": "anthropic",
+      "claude_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 2186,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 2280,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 2186
+        },
+        "claude_cache_creation_5_m_tokens": 0,
+        "claude_cache_creation_1_h_tokens": 0
+      }
+    },
+    "input_tokens": 2190,
+    "output_tokens": 0,
+    "input_tokens_details": null,
+    "claude_cache_creation_5_m_tokens": 2186,
+    "claude_cache_creation_1_h_tokens": 0
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-06T23:14:22 script_40.py:1-23 ----
+............                                                             [100%]
+
+---- 2026-10-06T23:14:22 script_40.py:1-23 ----
+{
+  "model": "openai/claude-sonnet-5",
+  "temperature": 0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from script_40.py, does not achieve full coverage:\nwhen tested, lines 18-23 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            def triples_sum_to_zero(l: list):\n                \"\"\"\n                triples_sum_to_zero takes a list of integers as an input.\n                it returns True if there are three distinct elements in the list that\n                sum to zero, and False otherwise.\n            \n                >>> triples_sum_to_zero([1, 3, 5, 0])\n                False\n                >>> triples_sum_to_zero([1, 3, -2, 1])\n                True\n                >>> triples_sum_to_zero([1, 2, 3, 7])\n                False\n                >>> triples_sum_to_zero([2, 4, -5, 3, 9, 7])\n                True\n                >>> triples_sum_to_zero([1])\n                False\n                \"\"\"\n        18:     for i in range(len(l)):\n        19:         for j in range(i + 1, len(l)):\n        20:             for k in range(j + 1, len(l)):\n        21:                 if l[i] + l[j] + l[k] == 0:\n        22:                     return True\n        23:     return False\n\n```\n"
+    },
+    {
+      "content": "```python\nimport pytest\n\n\ndef triples_sum_to_zero(l: list):\n    \"\"\"\n    triples_sum_to_zero takes a list of integers as an input.\n    it returns True if there are three distinct elements in the list that\n    sum to zero, and False otherwise.\n\n    >>> triples_sum_to_zero([1, 3, 5, 0])\n    False\n    >>> triples_sum_to_zero([1, 3, -2, 1])\n    True\n    >>> triples_sum_to_zero([1, 2, 3, 7])\n    False\n    >>> triples_sum_to_zero([2, 4, -5, 3, 9, 7])\n    True\n    >>> triples_sum_to_zero([1])\n    False\n    \"\"\"\n    for i in range(len(l)):\n        for j in range(i + 1, len(l)):\n            for k in range(j + 1, len(l)):\n                if l[i] + l[j] + l[k] == 0:\n                    return True\n    return False\n\n\ndef test_triples_sum_to_zero_empty_list():\n    \"\"\"Test with empty list - should return False without entering loops.\"\"\"\n    assert triples_sum_to_zero([]) == False\n\n\ndef test_triples_sum_to_zero_single_element():\n    \"\"\"Test with single element - should return False.\"\"\"\n    assert triples_sum_to_zero([1]) == False\n\n\ndef test_triples_sum_to_zero_two_elements():\n    \"\"\"Test with two elements - should return False.\"\"\"\n    assert triples_sum_to_zero([1, 2]) == False\n\n\ndef test_triples_sum_to_zero_three_elements_no_match():\n    \"\"\"Test with three elements that don't sum to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, 3]) == False\n\n\ndef test_triples_sum_to_zero_three_elements_match():\n    \"\"\"Test with three elements that sum to zero - triggers line 22.\"\"\"\n    assert triples_sum_to_zero([1, -1, 0]) == True\n\n\ndef test_triples_sum_to_zero_four_elements_no_match():\n    \"\"\"Test with four elements that don't sum to zero - executes all lines but returns False.\"\"\"\n    assert triples_sum_to_zero([1, 2, 3, 4]) == False\n\n\ndef test_triples_sum_to_zero_four_elements_match():\n    \"\"\"Test with four elements where a triple sums to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, -3, 4]) == True\n\n\ndef test_triples_sum_to_zero_negative_numbers():\n    \"\"\"Test with negative numbers that sum to zero.\"\"\"\n    assert triples_sum_to_zero([-1, -2, 3]) == True\n\n\ndef test_triples_sum_to_zero_with_zeros():\n    \"\"\"Test with multiple zeros.\"\"\"\n    assert triples_sum_to_zero([0, 0, 0]) == True\n\n\ndef test_triples_sum_to_zero_no_triple_exists():\n    \"\"\"Test where no triple sums to zero - exercises line 23.\"\"\"\n    assert triples_sum_to_zero([1, 3, 5, 7, 9]) == False\n\n\ndef test_triples_sum_to_zero_larger_list_with_match():\n    \"\"\"Test with larger list containing a triple that sums to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, 3, 4, 5, -6]) == True\n\n\ndef test_triples_sum_to_zero_larger_list_no_match():\n    \"\"\"Test with larger list with no triple summing to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, 4, 8, 16]) == False\n```",
+      "role": "assistant",
+      "tool_calls": null,
+      "function_call": null,
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "role": "user",
+      "content": "The tests still lack coverage: lines 18-23 do not execute.\nModify it to correct that; respond only with the complete Python code in backticks.\nUse the get_info tool function as necessary.\n"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-06T23:14:26 script_40.py:1-23 ----
+{
+  "id": "msg_011CfmHENeWZLPgWB95jtq6x",
+  "created": 1791303267,
+  "model": "claude-sonnet-5",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "message": {
+        "content": "",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"name\":\"triples_sum_to_zero\"}",
+              "name": "get_info"
+            },
+            "id": "toolu_01EWHFkwxHWwHPryKj5FoMAj",
+            "type": "function"
+          }
+        ],
+        "function_call": null,
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {}
+    }
+  ],
+  "usage": {
+    "completion_tokens": 84,
+    "prompt_tokens": 4602,
+    "total_tokens": 4686,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "text_tokens": 0,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 2522,
+      "cached_tokens": 2076,
+      "text_tokens": 0,
+      "image_tokens": 0,
+      "cache_creation_tokens": 2522,
+      "cached_creation_tokens": 2522
+    },
+    "usage_semantic": "openai",
+    "usage_source": "anthropic",
+    "billing_usage": {
+      "source": "claude_messages",
+      "semantic": "anthropic",
+      "claude_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 2522,
+        "cache_read_input_tokens": 2076,
+        "output_tokens": 84,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 2522
+        },
+        "claude_cache_creation_5_m_tokens": 0,
+        "claude_cache_creation_1_h_tokens": 0
+      }
+    },
+    "input_tokens": 4602,
+    "output_tokens": 0,
+    "input_tokens_details": null,
+    "claude_cache_creation_5_m_tokens": 2522,
+    "claude_cache_creation_1_h_tokens": 0
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-06T23:14:26 script_40.py:1-23 ----
+{
+  "model": "openai/claude-sonnet-5",
+  "temperature": 0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from script_40.py, does not achieve full coverage:\nwhen tested, lines 18-23 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            def triples_sum_to_zero(l: list):\n                \"\"\"\n                triples_sum_to_zero takes a list of integers as an input.\n                it returns True if there are three distinct elements in the list that\n                sum to zero, and False otherwise.\n            \n                >>> triples_sum_to_zero([1, 3, 5, 0])\n                False\n                >>> triples_sum_to_zero([1, 3, -2, 1])\n                True\n                >>> triples_sum_to_zero([1, 2, 3, 7])\n                False\n                >>> triples_sum_to_zero([2, 4, -5, 3, 9, 7])\n                True\n                >>> triples_sum_to_zero([1])\n                False\n                \"\"\"\n        18:     for i in range(len(l)):\n        19:         for j in range(i + 1, len(l)):\n        20:             for k in range(j + 1, len(l)):\n        21:                 if l[i] + l[j] + l[k] == 0:\n        22:                     return True\n        23:     return False\n\n```\n"
+    },
+    {
+      "content": "```python\nimport pytest\n\n\ndef triples_sum_to_zero(l: list):\n    \"\"\"\n    triples_sum_to_zero takes a list of integers as an input.\n    it returns True if there are three distinct elements in the list that\n    sum to zero, and False otherwise.\n\n    >>> triples_sum_to_zero([1, 3, 5, 0])\n    False\n    >>> triples_sum_to_zero([1, 3, -2, 1])\n    True\n    >>> triples_sum_to_zero([1, 2, 3, 7])\n    False\n    >>> triples_sum_to_zero([2, 4, -5, 3, 9, 7])\n    True\n    >>> triples_sum_to_zero([1])\n    False\n    \"\"\"\n    for i in range(len(l)):\n        for j in range(i + 1, len(l)):\n            for k in range(j + 1, len(l)):\n                if l[i] + l[j] + l[k] == 0:\n                    return True\n    return False\n\n\ndef test_triples_sum_to_zero_empty_list():\n    \"\"\"Test with empty list - should return False without entering loops.\"\"\"\n    assert triples_sum_to_zero([]) == False\n\n\ndef test_triples_sum_to_zero_single_element():\n    \"\"\"Test with single element - should return False.\"\"\"\n    assert triples_sum_to_zero([1]) == False\n\n\ndef test_triples_sum_to_zero_two_elements():\n    \"\"\"Test with two elements - should return False.\"\"\"\n    assert triples_sum_to_zero([1, 2]) == False\n\n\ndef test_triples_sum_to_zero_three_elements_no_match():\n    \"\"\"Test with three elements that don't sum to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, 3]) == False\n\n\ndef test_triples_sum_to_zero_three_elements_match():\n    \"\"\"Test with three elements that sum to zero - triggers line 22.\"\"\"\n    assert triples_sum_to_zero([1, -1, 0]) == True\n\n\ndef test_triples_sum_to_zero_four_elements_no_match():\n    \"\"\"Test with four elements that don't sum to zero - executes all lines but returns False.\"\"\"\n    assert triples_sum_to_zero([1, 2, 3, 4]) == False\n\n\ndef test_triples_sum_to_zero_four_elements_match():\n    \"\"\"Test with four elements where a triple sums to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, -3, 4]) == True\n\n\ndef test_triples_sum_to_zero_negative_numbers():\n    \"\"\"Test with negative numbers that sum to zero.\"\"\"\n    assert triples_sum_to_zero([-1, -2, 3]) == True\n\n\ndef test_triples_sum_to_zero_with_zeros():\n    \"\"\"Test with multiple zeros.\"\"\"\n    assert triples_sum_to_zero([0, 0, 0]) == True\n\n\ndef test_triples_sum_to_zero_no_triple_exists():\n    \"\"\"Test where no triple sums to zero - exercises line 23.\"\"\"\n    assert triples_sum_to_zero([1, 3, 5, 7, 9]) == False\n\n\ndef test_triples_sum_to_zero_larger_list_with_match():\n    \"\"\"Test with larger list containing a triple that sums to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, 3, 4, 5, -6]) == True\n\n\ndef test_triples_sum_to_zero_larger_list_no_match():\n    \"\"\"Test with larger list with no triple summing to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, 4, 8, 16]) == False\n```",
+      "role": "assistant",
+      "tool_calls": null,
+      "function_call": null,
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "role": "user",
+      "content": "The tests still lack coverage: lines 18-23 do not execute.\nModify it to correct that; respond only with the complete Python code in backticks.\nUse the get_info tool function as necessary.\n"
+    },
+    {
+      "content": "",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"name\":\"triples_sum_to_zero\"}",
+            "name": "get_info"
+          },
+          "id": "toolu_01EWHFkwxHWwHPryKj5FoMAj",
+          "type": "function"
+        }
+      ],
+      "function_call": null,
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "tool_call_id": "toolu_01EWHFkwxHWwHPryKj5FoMAj",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\n```python\ndef triples_sum_to_zero(l: list):\n    \"\"\"\n    triples_sum_to_zero takes a list of integers as an input.\n    it returns True if there are three distinct elements in the list that\n    sum to zero, and False otherwise.\n\n    >>> triples_sum_to_zero([1, 3, 5, 0])\n    False\n    >>> triples_sum_to_zero([1, 3, -2, 1])\n    True\n    >>> triples_sum_to_zero([1, 2, 3, 7])\n    False\n    >>> triples_sum_to_zero([2, 4, -5, 3, 9, 7])\n    True\n    >>> triples_sum_to_zero([1])\n    False\n    \"\"\"\n    for i in range(len(l)):\n        for j in range(i + 1, len(l)):\n            for k in range(j + 1, len(l)):\n                if l[i] + l[j] + l[k] == 0:\n                    return True\n    return False\n```"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-06T23:14:33 script_40.py:1-23 ----
+{
+  "id": "msg_011CfmHEcVhhUBNjXN3koFvm",
+  "created": 1791303274,
+  "model": "claude-sonnet-5",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```python\nimport pytest\nfrom script_40 import triples_sum_to_zero\n\n\ndef test_triples_sum_to_zero_empty_list():\n    \"\"\"Test with empty list - should return False without entering loops.\"\"\"\n    assert triples_sum_to_zero([]) == False\n\n\ndef test_triples_sum_to_zero_single_element():\n    \"\"\"Test with single element - should return False.\"\"\"\n    assert triples_sum_to_zero([1]) == False\n\n\ndef test_triples_sum_to_zero_two_elements():\n    \"\"\"Test with two elements - should return False.\"\"\"\n    assert triples_sum_to_zero([1, 2]) == False\n\n\ndef test_triples_sum_to_zero_three_elements_no_match():\n    \"\"\"Test with three elements that don't sum to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, 3]) == False\n\n\ndef test_triples_sum_to_zero_three_elements_match():\n    \"\"\"Test with three elements that sum to zero - triggers line 22.\"\"\"\n    assert triples_sum_to_zero([1, -1, 0]) == True\n\n\ndef test_triples_sum_to_zero_four_elements_no_match():\n    \"\"\"Test with four elements that don't sum to zero - executes all lines but returns False.\"\"\"\n    assert triples_sum_to_zero([1, 2, 3, 4]) == False\n\n\ndef test_triples_sum_to_zero_four_elements_match():\n    \"\"\"Test with four elements where a triple sums to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, -3, 4]) == True\n\n\ndef test_triples_sum_to_zero_negative_numbers():\n    \"\"\"Test with negative numbers that sum to zero.\"\"\"\n    assert triples_sum_to_zero([-1, -2, 3]) == True\n\n\ndef test_triples_sum_to_zero_with_zeros():\n    \"\"\"Test with multiple zeros.\"\"\"\n    assert triples_sum_to_zero([0, 0, 0]) == True\n\n\ndef test_triples_sum_to_zero_no_triple_exists():\n    \"\"\"Test where no triple sums to zero - exercises line 23.\"\"\"\n    assert triples_sum_to_zero([1, 3, 5, 7, 9]) == False\n\n\ndef test_triples_sum_to_zero_larger_list_with_match():\n    \"\"\"Test with larger list containing a triple that sums to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, 3, 4, 5, -6]) == True\n\n\ndef test_triples_sum_to_zero_larger_list_no_match():\n    \"\"\"Test with larger list with no triple summing to zero.\"\"\"\n    assert triples_sum_to_zero([1, 2, 4, 8, 16]) == False\n```",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {}
+    }
+  ],
+  "usage": {
+    "completion_tokens": 1708,
+    "prompt_tokens": 5368,
+    "total_tokens": 7076,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "text_tokens": 0,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 996,
+      "cached_tokens": 4368,
+      "text_tokens": 0,
+      "image_tokens": 0,
+      "cache_creation_tokens": 996,
+      "cached_creation_tokens": 996
+    },
+    "usage_semantic": "openai",
+    "usage_source": "anthropic",
+    "billing_usage": {
+      "source": "claude_messages",
+      "semantic": "anthropic",
+      "claude_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 996,
+        "cache_read_input_tokens": 4368,
+        "output_tokens": 1708,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 996
+        },
+        "claude_cache_creation_5_m_tokens": 0,
+        "claude_cache_creation_1_h_tokens": 0
+      }
+    },
+    "input_tokens": 5368,
+    "output_tokens": 0,
+    "input_tokens_details": null,
+    "claude_cache_creation_5_m_tokens": 996,
+    "claude_cache_creation_1_h_tokens": 0
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-06T23:14:34 script_40.py:1-23 ----
+............                                                             [100%]
+
+---- 2026-10-06T23:14:34 script_40.py:1-23 ----
+Saved as C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\40\tests\test_coverup_1.py
+

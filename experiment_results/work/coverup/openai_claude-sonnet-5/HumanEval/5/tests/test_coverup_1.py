@@ -26,17 +26,11 @@ def test_intersperse_multiple_elements():
 
 def test_intersperse_two_elements():
     """Test intersperse with two elements."""
-    result = intersperse([10, 20], 0)
-    assert result == [10, 0, 20]
+    result = intersperse([5, 10], 0)
+    assert result == [5, 0, 10]
 
 
-def test_intersperse_negative_numbers():
-    """Test intersperse with negative numbers."""
-    result = intersperse([-1, -2, -3], -99)
-    assert result == [-1, -99, -2, -99, -3]
-
-
-def test_intersperse_zero_delimiter():
-    """Test intersperse with zero as delimiter."""
-    result = intersperse([5, 6, 7, 8], 0)
-    assert result == [5, 0, 6, 0, 7, 0, 8]
+def test_intersperse_negative_delimiter():
+    """Test intersperse with negative delimiter."""
+    result = intersperse([1, 2, 3, 4], -1)
+    assert result == [1, -1, 2, -1, 3, -1, 4]

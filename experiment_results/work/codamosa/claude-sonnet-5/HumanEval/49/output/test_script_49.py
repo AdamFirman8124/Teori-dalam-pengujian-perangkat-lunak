@@ -2,44 +2,37 @@
 import script_49 as module_0
 
 def test_case_0():
-    int_0 = -1168
-    int_1 = None
-    var_0 = module_0.modp(int_0, int_1)
-    assert var_0 == 1
-    int_2 = -2162
-    int_3 = 1357
-    var_1 = module_0.modp(int_2, int_3)
-    assert var_1 == 1
-    int_4 = -477
-    int_5 = 1291
-    var_2 = module_0.modp(int_4, int_5)
+    int_0 = 602
+    var_0 = module_0.modp(int_0, int_0)
+    assert var_0 == 130
+    int_1 = 989
+    var_1 = module_0.modp(int_1, int_1)
+    assert var_1 == 426
+    int_2 = -865
+    var_2 = module_0.modp(int_2, int_1)
     assert var_2 == 1
-    int_6 = 687
-    int_7 = -3909
-    var_3 = module_0.modp(int_6, int_7)
-    assert var_3 == -3160
-    int_8 = -69
-    var_4 = module_0.modp(int_3, int_8)
-    assert var_4 == -7
-    var_5 = module_0.modp(int_4, int_4)
-    assert var_5 == 1
-    int_9 = 4880
-    int_10 = -240
-    int_11 = 4007
-    var_6 = module_0.modp(int_10, int_11)
-    assert var_6 == 1
-    var_7 = module_0.modp(int_9, int_9)
-    assert var_7 == 4256
-
-def test_case_1():
-    int_0 = -1163
-    int_1 = -1239
-    var_0 = module_0.modp(int_0, int_1)
-    assert var_0 == 1
-    int_2 = -1483
-    int_3 = 185
-    var_1 = module_0.modp(int_2, int_3)
-    assert var_1 == 1
-    int_4 = -1903
-    var_2 = module_0.modp(int_0, int_4)
-    assert var_2 == 1
+    var_3 = module_0.modp(int_1, int_2)
+    assert var_3 == -253
+    int_3 = 1064
+    int_4 = 1960
+    int_5 = -1753
+    int_6 = 817
+    var_4 = module_0.modp(int_5, int_6)
+    assert var_4 == 1
+    var_5 = module_0.modp(int_4, int_1)
+    assert var_5 == 947
+    var_6 = module_0.modp(int_1, int_3)
+    assert var_6 == 200
+    var_7 = module_0.modp(int_1, int_1)
+    assert var_7 == 426
+    int_7 = 3331
+    var_8 = module_0.modp(int_1, int_7)
+    assert var_8 == 1389
+    var_9 = module_0.modp(int_1, int_1)
+    assert var_9 == 426
+    int_8 = 1373
+    int_9 = -801
+    var_10 = module_0.modp(int_2, int_9)
+    assert var_10 == 1
+    var_11 = module_0.modp(int_2, int_8)
+    assert var_11 == 1

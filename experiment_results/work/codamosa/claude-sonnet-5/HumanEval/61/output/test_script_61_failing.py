@@ -3,47 +3,36 @@ import script_61 as module_0
 
 def test_case_0():
     try:
-        str_0 = '.1C!V'
+        str_0 = 'J7IaD."\'Bf'
         var_0 = module_0.correct_bracketing(str_0)
         assert var_0 is False
-        var_1 = module_0.correct_bracketing(str_0)
+        str_1 = '(D`pd:P!\nyU5_A@s'
+        var_1 = module_0.correct_bracketing(str_1)
         assert var_1 is False
-        str_1 = '-t\x0bL%+WdiYO'
-        var_2 = module_0.correct_bracketing(str_1)
+        str_2 = ']HhW<2x3'
+        str_3 = ':@*?X*VK'
+        var_2 = module_0.correct_bracketing(str_3)
         assert var_2 is False
-        str_2 = "ypc{f\x0bI'B'M>w&LuS"
-        str_3 = 'hwGi*\\hI^-!ERtsaF\r'
-        var_3 = module_0.correct_bracketing(str_3)
+        str_4 = '|\\'
+        var_3 = module_0.correct_bracketing(str_4)
         assert var_3 is False
         var_4 = module_0.correct_bracketing(str_2)
         assert var_4 is False
-        str_4 = '>'
-        str_5 = ''
-        var_5 = module_0.correct_bracketing(str_5)
-        assert var_5 is True
-        str_6 = "D;&'b<w;)"
-        var_6 = module_0.correct_bracketing(str_6)
+        var_5 = module_0.correct_bracketing(str_2)
+        assert var_5 is False
+        str_5 = None
+        var_6 = module_0.correct_bracketing(str_2)
         assert var_6 is False
-        str_7 = 'HZ@9g?J)U\n)(\x0c0'
-        var_7 = module_0.correct_bracketing(str_7)
-        assert var_7 is False
-        var_8 = module_0.correct_bracketing(str_1)
-        assert var_8 is False
-        var_9 = module_0.correct_bracketing(str_7)
-        assert var_9 is False
-        var_10 = module_0.correct_bracketing(str_2)
-        assert var_10 is False
-        str_8 = "~\rh'-}QkKHrW6"
-        var_11 = module_0.correct_bracketing(str_8)
-        assert var_11 is False
-        str_9 = 'KC5'
-        var_12 = module_0.correct_bracketing(str_9)
-        assert var_12 is False
-        var_13 = module_0.correct_bracketing(str_4)
-        assert var_13 is False
-        var_14 = module_0.correct_bracketing(str_2)
-        assert var_14 is False
-        str_10 = None
-        var_15 = module_0.correct_bracketing(str_10)
+        var_7 = module_0.correct_bracketing(str_5)
+    except BaseException:
+        pass
+
+def test_case_1():
+    try:
+        str_0 = ''
+        var_0 = module_0.correct_bracketing(str_0)
+        assert var_0 is True
+        str_1 = None
+        var_1 = module_0.correct_bracketing(str_1)
     except BaseException:
         pass

@@ -4,6 +4,8 @@ import script_1 as module_0
 def test_case_0():
     try:
         str_0 = None
-        list_0 = module_0.separate_paren_groups(str_0)
+        str_1 = '\tzbm\'oG@"]3AT'
+        list_0 = module_0.separate_paren_groups(str_1)
+        list_1 = module_0.separate_paren_groups(str_0)
     except BaseException:
         pass
