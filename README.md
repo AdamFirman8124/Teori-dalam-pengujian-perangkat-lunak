@@ -1,4 +1,4 @@
-# Teori dalam Pengujian Perangkat Lunak
+# Teori dalam Pengujian Perangkat Lunak.
 
 Repositori ini berisi materi dan eksperimen terkait teori pengujian perangkat lunak:
 perbandingan generator pengujian otomatis **CoverUp** dan **CodaMOSA** pada dataset
