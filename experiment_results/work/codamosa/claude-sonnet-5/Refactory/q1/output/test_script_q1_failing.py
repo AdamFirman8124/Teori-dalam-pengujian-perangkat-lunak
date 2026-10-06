@@ -3,41 +3,8 @@ import script_q1 as module_0
 
 def test_case_0():
     try:
-        tuple_0 = ()
-        bool_0 = True
-        var_0 = module_0.search(bool_0, tuple_0)
-        list_0 = []
-        var_1 = module_0.search(tuple_0, list_0)
-        str_0 = 'A`C/,a!8vu'
-        bool_1 = True
-        list_1 = [var_1, tuple_0, str_0]
-        dict_0 = {var_1: list_0}
-        var_2 = module_0.search(dict_0, tuple_0)
-        var_3 = module_0.search(bool_1, list_1)
-    except BaseException:
-        pass
-
-def test_case_1():
-    try:
-        bool_0 = True
-        list_0 = [bool_0]
-        int_0 = 314
-        var_0 = module_0.search(list_0, int_0)
-    except BaseException:
-        pass
-
-def test_case_2():
-    try:
-        tuple_0 = ()
-        list_0 = []
-        var_0 = module_0.search(tuple_0, list_0)
-        str_0 = 'A`C/,a!8vu'
-        bool_0 = False
-        list_1 = [var_0, tuple_0, str_0]
-        var_1 = module_0.search(bool_0, list_1)
-        assert var_1 == 0
-        dict_0 = {str_0: str_0, str_0: str_0, str_0: str_0, str_0: str_0}
-        set_0 = {str_0, str_0}
-        var_2 = module_0.search(dict_0, set_0)
+        bytes_0 = b'\xa4\xad\xa2|\xa5\x11\xd2\xa5\xf4A\xf4h'
+        str_0 = 'HB_l~'
+        var_0 = module_0.search(bytes_0, str_0)
     except BaseException:
         pass

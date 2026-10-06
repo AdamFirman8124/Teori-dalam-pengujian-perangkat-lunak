@@ -1,0 +1,110 @@
+---- 2026-10-06T21:07:40 startup ----
+Command: C:\Users\adamf\AppData\Roaming\Python\Python314\Scripts\coverup --tests-dir C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\130\tests C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\130\script_130.py --model openai/claude-sonnet-5 --checkpoint C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\130\coverup.checkpoint --log-file C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\130\coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3
+---- 2026-10-06T21:07:42 script_130.py:1-26 ----
+{
+  "model": "openai/claude-sonnet-5",
+  "temperature": 0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from script_130.py, does not achieve full coverage:\nwhen tested, lines 18-26 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            def tri(n):\n                \"\"\"Everyone knows Fibonacci sequence, it was studied deeply by mathematicians in \n                the last couple centuries. However, what people don't know is Tribonacci sequence.\n                Tribonacci sequence is defined by the recurrence:\n                tri(1) = 3\n                tri(n) = 1 + n / 2, if n is even.\n                tri(n) =  tri(n - 1) + tri(n - 2) + tri(n + 1), if n is odd.\n                For example:\n                tri(2) = 1 + (2 / 2) = 2\n                tri(4) = 3\n                tri(3) = tri(2) + tri(1) + tri(4)\n                       = 2 + 3 + 3 = 8 \n                You are given a non-negative integer number n, you have to a return a list of the \n                first n + 1 numbers of the Tribonacci sequence.\n                Examples:\n                tri(3) = [1, 3, 2, 8]\n                \"\"\"\n        18:     if n == 0:\n        19:         return [1]\n        20:     my_tri = [1, 3]\n        21:     for i in range(2, n + 1):\n        22:         if i % 2 == 0:\n        23:             my_tri.append(i / 2 + 1)\n                    else:\n        25:             my_tri.append(my_tri[i - 1] + my_tri[i - 2] + (i + 3) / 2)\n        26:     return my_tri\n\n```\n"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-06T21:07:53 script_130.py:1-26 ----
+{
+  "id": "msg_011Cfm7aAFGpToBFBPXa27Pp",
+  "created": 1791295673,
+  "model": "claude-sonnet-5",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```python\nimport pytest\nfrom script_130 import tri\n\n\ndef test_tri_zero():\n    \"\"\"Test tri(0) returns [1]\"\"\"\n    result = tri(0)\n    assert result == [1]\n    assert len(result) == 1\n\n\ndef test_tri_even_numbers():\n    \"\"\"Test tri with even n values\"\"\"\n    result = tri(2)\n    assert result == [1, 3, 2.0]\n    assert len(result) == 3\n    \n    result = tri(4)\n    assert result == [1, 3, 2.0, 8.0, 3.0]\n    assert len(result) == 5\n\n\ndef test_tri_odd_numbers():\n    \"\"\"Test tri with odd n values\"\"\"\n    result = tri(3)\n    assert result == [1, 3, 2.0, 8.0]\n    assert len(result) == 4\n    \n    result = tri(5)\n    assert result == [1, 3, 2.0, 8.0, 3.0, 15.0]\n    assert len(result) == 6\n\n\ndef test_tri_single():\n    \"\"\"Test tri(1) returns [1, 3]\"\"\"\n    result = tri(1)\n    assert result == [1, 3]\n    assert len(result) == 2\n\n\ndef test_tri_larger_value():\n    \"\"\"Test tri with larger n to ensure iteration works correctly\"\"\"\n    result = tri(6)\n    assert len(result) == 7\n    assert result[0] == 1\n    assert result[1] == 3\n    assert result[2] == 2.0  # even: 2/2 + 1\n    assert result[3] == 8.0  # odd: 2.0 + 3 + (3+3)/2\n    assert result[4] == 3.0  # even: 4/2 + 1\n    assert result[5] == 15.0  # odd: 3.0 + 8.0 + (5+3)/2\n    assert result[6] == 4.0  # even: 6/2 + 1\n```",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {}
+    }
+  ],
+  "usage": {
+    "completion_tokens": 1192,
+    "prompt_tokens": 2480,
+    "total_tokens": 3672,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "text_tokens": 0,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 2476,
+      "cached_tokens": 0,
+      "text_tokens": 0,
+      "image_tokens": 0,
+      "cache_creation_tokens": 2476,
+      "cached_creation_tokens": 2476
+    },
+    "usage_semantic": "openai",
+    "usage_source": "anthropic",
+    "billing_usage": {
+      "source": "claude_messages",
+      "semantic": "anthropic",
+      "claude_usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 2476,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 1192,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 2476
+        },
+        "claude_cache_creation_5_m_tokens": 0,
+        "claude_cache_creation_1_h_tokens": 0
+      }
+    },
+    "input_tokens": 2480,
+    "output_tokens": 0,
+    "input_tokens_details": null,
+    "claude_cache_creation_5_m_tokens": 2476,
+    "claude_cache_creation_1_h_tokens": 0
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-06T21:07:54 script_130.py:1-26 ----
+.....                                                                    [100%]
+
+---- 2026-10-06T21:07:54 script_130.py:1-26 ----
+Saved as C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Tugas 1\PRPL\experiment_results\work\coverup\openai_claude-sonnet-5\HumanEval\130\tests\test_coverup_1.py
+

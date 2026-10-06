@@ -37,6 +37,7 @@ import ast
 import json
 import os
 import re
+from concurrent.futures import ThreadPoolExecutor
 import shutil
 import subprocess
 import sys
@@ -116,7 +117,8 @@ def _resolve_cmd(cmd) -> T.List[str]:
 
 def _run(cmd, cwd: Path, env: dict, timeout: float):
     return subprocess.run(_resolve_cmd(cmd), cwd=str(cwd), env=env,
-                          capture_output=True, text=True, timeout=timeout)
+                          capture_output=True, text=True, encoding="utf-8",
+                          errors="replace", timeout=timeout)
 
 
 def coverup_cmd() -> T.List[str]:
@@ -410,53 +412,68 @@ def mutation_score_of(prepared: dict, mutants: T.Sequence[Path], workdir: Path,
         return {"mutation_score": None, "killed": 0, "survived": 0,
                 "problematic": 0, "n_mutants": len(mutants)}
 
-    env = dict(os.environ, NO_COLOR="1",
-               PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
+    base_env = dict(os.environ, NO_COLOR="1",
+                    PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
     inline = prepared["style"] == "inline"
-    shadow = workdir / "mut_shadow"
-    if inline:
-        env["PYTHONPATH"] = str(workdir)
-    else:
-        shadow.mkdir(parents=True, exist_ok=True)
-        env["PYTHONPATH"] = "{0}:{1}".format(shadow, workdir)
+    calls = "\n".join("{0}()".format(fn)
+                       for part in prepared["inline_parts"]
+                       for fn in TEST_DEF.findall(part)) if inline else ""
 
-    killed = survived = problematic = 0
-    tmp = Path(tempfile.mkdtemp(dir=workdir))
-    try:
-        for mut in mutants:
+    def evaluate_one(mut: Path) -> T.Tuple[int, int, int]:
+        """Run one independent mutant in its own directory.
+
+        The subprocesses do the CPU-heavy work, so threads let Windows overlap
+        them without multiprocessing spawn/pickle issues.  Per-mutant
+        directories prevent simultaneous shadow-module/probe writes from
+        affecting one another.
+        """
+        jobdir = Path(tempfile.mkdtemp(prefix="mutant_", dir=str(workdir)))
+        try:
             try:
                 mut_src = mut.read_text(errors="ignore")
             except OSError:
-                problematic += 1
-                continue
+                return 0, 0, 1
+            env = dict(base_env)
             if inline:
-                calls = "\n".join("{0}()".format(fn)
-                                  for part in prepared["inline_parts"]
-                                  for fn in TEST_DEF.findall(part))
-                probe = tmp / "mut_probe.py"
+                probe = jobdir / "mut_probe.py"
                 probe.write_text(mut_src + "\n\n"
                                  + "\n\n".join(prepared["inline_parts"])
                                  + "\n\n" + calls + "\n")
                 cmd: T.List[str] = [PY, str(probe)]
-                cwd = tmp
+                cwd = jobdir
+                env["PYTHONPATH"] = str(workdir)
             else:
+                shadow = jobdir / "mut_shadow"
+                shadow.mkdir()
                 (shadow / prepared["put"].name).write_text(mut_src)
                 cmd = [PY, PYTEST, "-q", "-p", "no:cacheprovider", "--no-header",
                        "-o", "addopts="] + [p.name for p in prepared["pytest_files"]]
                 cwd = workdir
+                env["PYTHONPATH"] = os.pathsep.join((str(shadow), str(workdir)))
             try:
                 cp = _run(cmd, cwd, env, timeout)
-                text = cp.stdout + cp.stderr
+                text = (cp.stdout or "") + (cp.stderr or "")
                 if cp.returncode == 0:
-                    survived += 1
-                elif "AssertionError" in text:
-                    killed += 1
-                else:
-                    problematic += 1
+                    return 0, 1, 0
+                if "AssertionError" in text:
+                    return 1, 0, 0
+                return 0, 0, 1
             except subprocess.TimeoutExpired:
-                problematic += 1
-    finally:
-        shutil.rmtree(tmp, ignore_errors=True)
+                return 0, 0, 1
+        finally:
+            shutil.rmtree(jobdir, ignore_errors=True)
+
+    workers_raw = os.getenv("EVAL_MUTANT_WORKERS", "6").strip()
+    try:
+        workers = max(1, int(workers_raw))
+    except ValueError:
+        workers = 6
+    workers = min(workers, len(mutants))
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        outcomes = list(executor.map(evaluate_one, mutants))
+    killed = sum(item[0] for item in outcomes)
+    survived = sum(item[1] for item in outcomes)
+    problematic = sum(item[2] for item in outcomes)
     denom = killed + survived
     return {"mutation_score": 100.0 * killed / denom if denom else None,
             "killed": killed, "survived": survived, "problematic": problematic,
@@ -516,9 +533,10 @@ def run_coverup(put: Path, tests_dir: Path, workdir: Path, model: str = "gpt-4o"
     t0 = time.perf_counter()
     try:
         cp = subprocess.run(cmd, cwd=str(workdir), env=env, capture_output=True,
-                            text=True, timeout=timeout)
+                            text=True, encoding="utf-8", errors="replace",
+                            timeout=timeout)
         r.ok = cp.returncode == 0
-        r.error = (cp.stdout + cp.stderr)[-2000:]
+        r.error = ((cp.stdout or "") + (cp.stderr or ""))[-2000:]
     except subprocess.TimeoutExpired:
         r.error = "timeout after {}s".format(timeout)
     except FileNotFoundError as e:
