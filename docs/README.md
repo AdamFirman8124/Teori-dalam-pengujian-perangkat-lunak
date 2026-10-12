@@ -13,7 +13,7 @@ perbandingan generator pengujian otomatis **CoverUp** dan **CodaMOSA** pada data
 | `eval_metrics.py` | Perhitungan metrik: coverage, pass rate, mutation score |
 | `experiments_codamosa_coverup.ipynb` | Notebook eksperimen CodaMOSA & CoverUp |
 | `EXPERIMENT_PROTOCOL.md` | Definisi metrik & perintah menjalankan eksperimen |
-| `EXPERIMENT_REPORT.md` | Status eksperimen terkini: perbaikan harness, hasil re-score, dan langkah berikutnya |
+| `docs/EXPERIMENT_REPORT.md` | Status eksperimen terkini: perbaikan harness, hasil re-score, dan langkah berikutnya |
 | `CODAMOSA_KNOWN_LIMITATIONS.md` | Keterbatasan CodaMOSA, mitigasi retry/guard, dan catatan interpretasi hasil |
 | `experiment_results/` | Artefak hasil eksperimen |
 | `tools/` | Utilitas pendukung |
