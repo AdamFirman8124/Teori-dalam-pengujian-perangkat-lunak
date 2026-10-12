@@ -2,47 +2,60 @@
 # asked: {"lines": [13, 14], "branches": []}
 # gained: {"lines": [13, 14], "branches": []}
 
+import importlib
+import math
+
 import pytest
-from script_4 import mean_absolute_deviation
 
 
-def test_mean_absolute_deviation_simple():
-    """Test MAD with a simple list of numbers."""
-    result = mean_absolute_deviation([1.0, 2.0, 3.0, 4.0])
-    assert result == 1.0
+def _load():
+    for name in ("script_4", "solution"):
+        try:
+            mod = importlib.import_module(name)
+        except Exception:
+            continue
+        if hasattr(mod, "mean_absolute_deviation"):
+            return mod
+    pytest.skip("mean_absolute_deviation not available")
 
 
-def test_mean_absolute_deviation_single_element():
-    """Test MAD with a single element (should be 0)."""
-    result = mean_absolute_deviation([5.0])
-    assert result == 0.0
+@pytest.fixture
+def mad():
+    mod = _load()
+    return mod.mean_absolute_deviation
 
 
-def test_mean_absolute_deviation_identical_elements():
-    """Test MAD with identical elements (should be 0)."""
-    result = mean_absolute_deviation([3.0, 3.0, 3.0, 3.0])
-    assert result == 0.0
+def test_documented_example(mad):
+    assert mad([1.0, 2.0, 3.0, 4.0]) == pytest.approx(1.0)
 
 
-def test_mean_absolute_deviation_negative_numbers():
-    """Test MAD with negative numbers."""
-    result = mean_absolute_deviation([-1.0, -2.0, -3.0, -4.0])
-    assert result == 1.0
+def test_single_element(mad):
+    assert mad([5.0]) == pytest.approx(0.0)
 
 
-def test_mean_absolute_deviation_mixed_numbers():
-    """Test MAD with mixed positive and negative numbers."""
-    result = mean_absolute_deviation([-2.0, 0.0, 2.0])
-    assert abs(result - 1.3333333333333333) < 1e-9
+def test_symmetric_set(mad):
+    assert mad([2.0, 4.0, 4.0, 4.0, 5.0, 5.0, 7.0, 9.0]) == pytest.approx(1.5)
 
 
-def test_mean_absolute_deviation_two_elements():
-    """Test MAD with two elements."""
-    result = mean_absolute_deviation([1.0, 5.0])
-    assert result == 2.0
+def test_two_values(mad):
+    assert mad([10.0, 20.0]) == pytest.approx(5.0)
 
 
-def test_mean_absolute_deviation_float_precision():
-    """Test MAD with floats requiring precision."""
-    result = mean_absolute_deviation([1.5, 2.5, 3.5])
-    assert abs(result - 0.6666666666666666) < 1e-9
+def test_all_equal(mad):
+    assert mad([3.0, 3.0, 3.0]) == pytest.approx(0.0)
+
+
+def test_negative_and_zero_values(mad):
+    assert mad([-2.0, 0.0, 2.0]) == pytest.approx(4.0 / 3.0)
+
+
+def test_integers_input(mad):
+    result = mad([1, 2, 3])
+    assert isinstance(result, float)
+    assert math.isfinite(result)
+    assert result == pytest.approx(2.0 / 3.0)
+
+
+def test_empty_list_raises(mad):
+    with pytest.raises(ZeroDivisionError):
+        mad([])

@@ -709,6 +709,10 @@ class CoverupRun:
     ok: bool = False
     wall_time_s: float = 0.0
     cost_usd: float = 0.0
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
+    total_tokens: int = 0
+    calls_with_usage: int = 0
     good: int = 0
     failed: int = 0
     useless: int = 0
@@ -788,6 +792,11 @@ def run_coverup(put: Path, tests_dir: Path, workdir: Path, model: str = "gpt-4o"
         try:
             ck = json.loads(ckpt.read_text())
             r.cost_usd = float(ck.get("cost", 0.0))
+            usage = ck.get("usage") or {}
+            r.prompt_tokens = int(usage.get("prompt_tokens", 0) or 0)
+            r.completion_tokens = int(usage.get("completion_tokens", 0) or 0)
+            r.total_tokens = int(usage.get("total_tokens", 0) or 0)
+            r.calls_with_usage = int(usage.get("calls_with_usage", 0) or 0)
             ctr = ck.get("counters", {})
             r.good, r.failed = ctr.get("G", 0), ctr.get("F", 0)
             r.useless, r.retries = ctr.get("U", 0), ctr.get("R", 0)

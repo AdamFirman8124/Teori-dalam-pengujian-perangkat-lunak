@@ -3,9 +3,11 @@ import pytest
 import script_4 as module_0
 
 def test_case_0():
-    float_0 = -452.39146
-    float_1 = -1259.67
-    list_0 = [float_0, float_1]
-    float_2 = module_0.mean_absolute_deviation(list_0)
-    assert float_2 == pytest.approx(403.63927, abs=0.01, rel=0.01)
+    float_0 = 1.0
+    float_1 = 2.0
+    float_2 = 3.0
+    float_3 = 4.0
+    float_4 = [float_0, float_1, float_2, float_3]
+    float_5 = module_0.mean_absolute_deviation(float_4)
+    assert float_5 == pytest.approx(1.0, abs=0.01, rel=0.01)
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}

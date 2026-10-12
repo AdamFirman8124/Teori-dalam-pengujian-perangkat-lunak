@@ -176,6 +176,10 @@ def main() -> int:
                           workroot=workroot)
         row["coverup_ok"] = rr.ok
         row["coverup_GFU_R"] = f"{rr.good}/{rr.failed}/{rr.useless}/{rr.retries}"
+        row["prompt_tokens"] = rr.prompt_tokens
+        row["completion_tokens"] = rr.completion_tokens
+        row["total_tokens"] = rr.total_tokens
+        row["calls_with_usage"] = rr.calls_with_usage
         row["n_tests_files"] = len(rr.generated_tests)
         if rr.error:
             row["error"] = rr.error[:300].replace("\n", " ")
@@ -211,6 +215,7 @@ def main() -> int:
     cols = ["dataset", "task", "method", "put", "line_pct", "branch_pct", "pass_rate",
             "mutation_score", "killed", "survived", "problematic", "n_mutants",
             "n_tests", "n_passed", "n_tests_files", "wall_time_s", "cost_usd",
+            "prompt_tokens", "completion_tokens", "total_tokens", "calls_with_usage",
             "coverup_ok", "coverup_GFU_R", "error"]
     with rows_path.open("w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=cols, extrasaction="ignore")

@@ -2,49 +2,23 @@
 import script_10 as module_0
 
 def test_case_0():
-    str_0 = "'|F\t=={UzBZ. :\\/Gl<)"
+    str_0 = ''
     str_1 = module_0.make_palindrome(str_0)
-    assert str_1 == "'|F\t=={UzBZ. :\\/Gl<)<lG/\\: .ZBzU{==\tF|'"
-    str_2 = 'M\x0cq`e\x0b$,'
-    str_3 = None
-    str_4 = module_0.make_palindrome(str_3)
-    assert str_4 == ''
-    str_5 = 'y(`t_WO*QssyT= '
-    str_6 = module_0.make_palindrome(str_5)
-    assert str_6 == 'y(`t_WO*QssyT= =TyssQ*OW_t`(y'
-    bool_0 = module_0.is_palindrome(str_5)
-    assert bool_0 is False
-    str_7 = ',7r3q[8br>C+'
-    str_8 = module_0.make_palindrome(str_7)
-    assert str_8 == ',7r3q[8br>C+C>rb8[q3r7,'
-    str_9 = 'eClV:5M\x0b)'
-    str_10 = 'LY.\x0b{>nhY!Z\tNR6b'
-    bool_1 = module_0.is_palindrome(str_10)
-    assert bool_1 is False
-    str_11 = '-R'
-    str_12 = module_0.make_palindrome(str_11)
-    assert str_12 == '-R-'
-    str_13 = module_0.make_palindrome(str_9)
-    assert str_13 == 'eClV:5M\x0b)\x0bM5:VlCe'
-    str_14 = module_0.make_palindrome(str_1)
-    assert str_14 == "'|F\t=={UzBZ. :\\/Gl<)<lG/\\: .ZBzU{==\tF|'"
-    bool_2 = module_0.is_palindrome(str_5)
-    assert bool_2 is False
-    bool_3 = module_0.is_palindrome(str_2)
-    assert bool_3 is False
-    str_15 = '";C16nHZy(O23O2'
-    bool_4 = module_0.is_palindrome(str_15)
-    assert bool_4 is False
-    str_16 = 'dlY=y4{'
-    bool_5 = module_0.is_palindrome(str_15)
-    assert bool_5 is False
-    str_17 = 'r\x0b\x0c#nz~K}QO H'
-    str_18 = module_0.make_palindrome(str_17)
-    assert str_18 == 'r\x0b\x0c#nz~K}QO H OQ}K~zn#\x0c\x0br'
-    bool_6 = module_0.is_palindrome(str_16)
-    assert bool_6 is False
+    assert str_1 == ''
 
 def test_case_1():
-    str_0 = '4>W]'
+    str_0 = ''
+    bool_0 = module_0.is_palindrome(str_0)
+    assert bool_0 is True
+
+def test_case_2():
+    str_0 = 'h^fEHbo4beR?'
     str_1 = module_0.make_palindrome(str_0)
-    assert str_1 == '4>W]W>4'
+    assert str_1 == 'h^fEHbo4beR?Reb4obHEf^h'
+
+def test_case_3():
+    str_0 = 'o)'
+    str_1 = module_0.make_palindrome(str_0)
+    assert str_1 == 'o)o'
+    str_2 = module_0.make_palindrome(str_1)
+    assert str_2 == 'o)o'

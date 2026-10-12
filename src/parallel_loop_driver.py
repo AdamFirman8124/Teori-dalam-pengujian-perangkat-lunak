@@ -12,10 +12,25 @@ if _task_jobs:
             _executor.submit(_run_one_task, dataset, task): (dataset, task)
             for dataset, task in _task_jobs
         }
+        _paused = False
         for _future in as_completed(_future_to_task):
             dataset, task = _future_to_task[_future]
+            if _paused:
+                # Budget already exhausted: do not record the pending tasks as
+                # failures.  They stay un-run so a later run resumes them.
+                continue
             try:
                 _task_rows, _task_statuses = _future.result()
+            except TokenBudgetExhausted as exc:
+                _paused = True
+                print("\n" + "=" * 68)
+                print("TOKEN BUDGET EXHAUSTED - eksperimen DIHENTIKAN sementara.")
+                print(str(exc))
+                print("Checkpoint disimpan. Isi ulang kuota lalu jalankan ulang "
+                      "notebook; run akan resume dari checkpoint.")
+                print("=" * 68)
+                store.checkpoint(rows, statuses)
+                continue
             except Exception as exc:
                 _task_rows, _task_statuses = [], []
                 _reason = "Unexpected task worker error: " + explain_error(exc)
@@ -31,5 +46,7 @@ if _task_jobs:
             statuses.extend(_task_statuses)
             store.checkpoint(rows, statuses)
             print(f"Checkpoint after {dataset} {task}: rows={len(rows)} statuses={len(statuses)}")
+        if _paused:
+            print("Run dihentikan karena token habis; status run ini: PAUSED.")
 else:
     print("No tasks selected; nothing to run.")

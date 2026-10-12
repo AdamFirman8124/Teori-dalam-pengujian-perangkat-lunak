@@ -427,6 +427,8 @@ class State:
         self._coverage = initial_coverage
         self._cost = 0.0
         self._counters = {k:0 for k in PROGRESS_COUNTERS}
+        self._usage = {'prompt_tokens': 0, 'completion_tokens': 0,
+                       'total_tokens': 0, 'calls_with_usage': 0}
         self._final_coverage: dict|None = None
         self._bar: Progress|None = None
 
@@ -453,6 +455,15 @@ class State:
         self._cost += cost
         if self._bar:
             self._bar.update_cost(self._cost)
+
+
+    def add_usage(self, prompt_tokens: int, completion_tokens: int,
+                  total_tokens: int) -> None:
+        """Accumulates token usage so a run can be costed exactly."""
+        self._usage['prompt_tokens'] += int(prompt_tokens or 0)
+        self._usage['completion_tokens'] += int(completion_tokens or 0)
+        self._usage['total_tokens'] += int(total_tokens or 0)
+        self._usage['calls_with_usage'] += 1
 
 
     def inc_counter(self, key: str):
@@ -488,6 +499,8 @@ class State:
                 state = State(ckpt['coverage'])
                 state._cost = ckpt['cost']
                 state._counters = ckpt['counters']
+                if 'usage' in ckpt and isinstance(ckpt['usage'], dict):
+                    state._usage = ckpt['usage']
                 for filename, done_list in ckpt['done'].items():
                     state._done[Path(filename).resolve()] = set(tuple(d) for d in done_list)
                 return state
@@ -504,6 +517,7 @@ class State:
             'cost': self._cost,
             'counters': self._counters,
             'coverage': self._coverage,
+            'usage': self._usage,
             **({'final_coverage': self._final_coverage} if self._final_coverage else {})
             # FIXME save missing modules
         }
@@ -707,6 +721,7 @@ def main():
         # TODO also show running coverage estimate
 
         chatter.set_add_cost(state.add_cost)
+        chatter.set_add_usage(state.add_usage)
 
         segments = sorted(get_missing_coverage(state.get_initial_coverage(), line_limit=args.line_limit),
                           key=lambda seg: seg.missing_count(), reverse=True)

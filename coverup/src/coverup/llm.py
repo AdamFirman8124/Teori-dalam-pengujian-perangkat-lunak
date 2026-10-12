@@ -137,12 +137,20 @@ class Chatter:
         self.token_rate_limit: AsyncLimiter | None
         self.set_token_rate_limit(token_rate_limit_for_model(model))
         self._add_cost = lambda cost: None
+        self._add_usage = lambda pt, ct, tt: None
         self._log_msg = lambda ctx, msg: None
         self._log_json = lambda ctx, j: None
         self._signal_retry = lambda: None
         self._functions: dict[str, dict[str, T.Any]] = dict()
         self._max_func_calls_per_chat = 50
         self._extra_request_pars: dict[str, T.Any] | None = None
+        # Token accounting.  Custom OpenAI-compatible providers may omit
+        # `usage`; we accumulate whatever is reported so a run can be costed
+        # exactly instead of guessed.
+        self.prompt_tokens = 0
+        self.completion_tokens = 0
+        self.total_tokens = 0
+        self.usage_reported = 0
 
     @staticmethod
     def _validate_model(model) -> None:
@@ -192,6 +200,10 @@ class Chatter:
     def set_add_cost(self, add_cost: T.Callable) -> None:
         """Sets up a callback to indicate additional costs."""
         self._add_cost = add_cost
+
+    def set_add_usage(self, add_usage: T.Callable) -> None:
+        """Sets up a callback to accumulate prompt/completion/total tokens."""
+        self._add_usage = add_usage
 
     def set_log_msg(self, log_msg: T.Callable[[str, str], None]) -> None:
         """Sets up a callback to write a message to the log."""
@@ -309,8 +321,25 @@ class Chatter:
                 return None # gives up this segment
 
     def _call_function(self, ctx: object, tool_call: litellm.ModelResponse) -> str:
-        args = json.loads(tool_call.function.arguments)
-        function = self._functions[tool_call.function.name]
+        # Providers occasionally return malformed or empty `arguments` (e.g.
+        # trailing text after the JSON object, or a bare empty string for a
+        # no-arg function).  A JSONDecodeError here would propagate out of
+        # asyncio.gather and abort the entire task, so a bad tool call is
+        # reported back to the model as a tool error instead.
+        raw_args = getattr(tool_call.function, "arguments", None)
+        try:
+            if raw_args is None or raw_args == "":
+                args = {}
+            else:
+                args = json.loads(raw_args)
+        except (json.JSONDecodeError, TypeError) as e:
+            self._log_msg(ctx, f"Invalid tool-call arguments from model: {e}\nraw={raw_args!r}")
+            return f"Error executing function: invalid arguments JSON ({e})"
+
+        function = self._functions.get(tool_call.function.name)
+        if function is None:
+            self._log_msg(ctx, f"Unknown tool function requested: {tool_call.function.name}")
+            return f"Error executing function: unknown function {tool_call.function.name}"
 
         try:
             return str(function['function'](ctx=ctx, **args))
@@ -340,6 +369,21 @@ args:{args}
             except Exception:
                 # Custom models may not be in LiteLLM cost map; skip cost tracking
                 pass
+
+            # Accumulate token usage when the provider reports it.
+            usage = getattr(response, "usage", None)
+            if usage is not None:
+                pt = getattr(usage, "prompt_tokens", None)
+                ct = getattr(usage, "completion_tokens", None)
+                tt = getattr(usage, "total_tokens", None)
+                if pt is not None:
+                    self.prompt_tokens += int(pt)
+                if ct is not None:
+                    self.completion_tokens += int(ct)
+                if tt is not None:
+                    self.total_tokens += int(tt)
+                self.usage_reported += 1
+                self._add_usage(pt, ct, tt)
 
             if response.choices[0].finish_reason != "tool_calls":
                 return response.json()

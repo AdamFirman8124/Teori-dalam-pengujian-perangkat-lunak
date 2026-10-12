@@ -164,6 +164,11 @@ class _OpenAILanguageModel:
         self._token_len_cache = {}
         self.num_codex_calls: int = 0
         self.time_calling_codex: float = 0
+        # Token accounting; providers that omit `usage` leave these at zero.
+        self.prompt_tokens: int = 0
+        self.completion_tokens: int = 0
+        self.total_tokens: int = 0
+        self.usage_reported: int = 0
 
     @property
     def temperature(self) -> float:
@@ -423,7 +428,26 @@ class _OpenAILanguageModel:
             logger.error("Failed to call for completion:\n%s", detail)
             logger.error(self.complete_model)
             return ""
+        self._record_usage(res)
         return _completion_text(res.json())
+
+    def _record_usage(self, res: "requests.Response") -> None:
+        """Accumulate token usage reported by the provider, when present.
+
+        The OpenAI-compatible router may include a ``usage`` object. Providers
+        that omit it leave the counters untouched so callers can tell measured
+        usage apart from missing data.
+        """
+        try:
+            usage = res.json().get("usage")
+        except ValueError:
+            return
+        if not isinstance(usage, dict):
+            return
+        self.prompt_tokens += int(usage.get("prompt_tokens") or 0)
+        self.completion_tokens += int(usage.get("completion_tokens") or 0)
+        self.total_tokens += int(usage.get("total_tokens") or 0)
+        self.usage_reported += 1
 
     def _get_num_tokens_at_line(self, line_num: int) -> int:
         """Get the approximate number of tokens for the source file at line_num.
