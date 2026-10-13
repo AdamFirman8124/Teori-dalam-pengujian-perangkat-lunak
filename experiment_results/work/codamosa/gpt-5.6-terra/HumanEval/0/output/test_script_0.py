@@ -2,6 +2,14 @@
 import script_0 as module_0
 
 def test_case_0():
+    float_0 = 2.0
+    float_1 = 3.0
+    list_0 = [float_1, float_1]
+    bool_0 = module_0.has_close_elements(list_0, float_0)
+    assert bool_0 is True
+    assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
+
+def test_case_1():
     float_0 = 1.0
     float_1 = 2.0
     float_2 = 3.0

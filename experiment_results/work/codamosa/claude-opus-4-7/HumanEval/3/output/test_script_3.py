@@ -2,19 +2,20 @@
 import script_3 as module_0
 
 def test_case_0():
-    int_0 = 1
-    int_1 = 2
-    int_2 = 3
-    int_3 = [int_0, int_1, int_2]
-    bool_0 = module_0.below_zero(int_3)
-    assert bool_0 is False
-    assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-
-def test_case_1():
-    int_0 = -2428
-    int_1 = -626
-    int_2 = 1199
-    list_0 = [int_0, int_1, int_2]
+    int_0 = 3054
+    int_1 = -2864
+    int_2 = -715
+    int_3 = -1456
+    list_0 = [int_0, int_1, int_2, int_3]
     bool_0 = module_0.below_zero(list_0)
     assert bool_0 is True
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
+
+def test_case_1():
+    int_0 = 1562
+    list_0 = []
+    bool_0 = module_0.below_zero(list_0)
+    assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
+    list_1 = [int_0]
+    bool_1 = module_0.below_zero(list_1)
+    assert bool_1 is False

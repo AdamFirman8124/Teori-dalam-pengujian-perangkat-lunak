@@ -5,9 +5,31 @@
 from script_3 import below_zero
 
 
-def test_below_zero_returns_false_when_balance_never_drops_below_zero():
-    assert below_zero([1, 2, 3]) is False
+def test_below_zero_returns_false_when_balance_never_becomes_negative():
+    operations = [1, 2, 3]
+
+    result = below_zero(operations)
+
+    assert result is False
 
 
-def test_below_zero_returns_true_when_balance_drops_below_zero():
-    assert below_zero([1, 2, -4, 5]) is True
+def test_below_zero_returns_true_when_balance_becomes_negative():
+    operations = [1, 2, -4, 5]
+
+    result = below_zero(operations)
+
+    assert result is True
+
+
+def test_below_zero_returns_true_for_an_immediate_negative_balance():
+    operations = [-1, 10]
+
+    result = below_zero(operations)
+
+    assert result is True
+
+
+def test_below_zero_returns_false_for_empty_operations():
+    result = below_zero([])
+
+    assert result is False

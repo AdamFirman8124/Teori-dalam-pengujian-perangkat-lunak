@@ -2,37 +2,13 @@
 import script_1 as module_0
 
 def test_case_0():
-    str_0 = ''
+    str_0 = '(a)(b)'
     list_0 = module_0.separate_paren_groups(str_0)
+    assert list_0 == ['()', '()']
 
 def test_case_1():
-    str_0 = 'Ucqb&Q'
-    list_0 = module_0.separate_paren_groups(str_0)
-
-def test_case_2():
-    str_0 = 'Ucqb&Q'
-    list_0 = module_0.separate_paren_groups(str_0)
-    str_1 = '\r<V<I]y2?A=my2),p-|'
-    list_1 = module_0.separate_paren_groups(str_1)
+    str_0 = ')'
+    str_1 = ''
+    list_0 = module_0.separate_paren_groups(str_1)
+    list_1 = module_0.separate_paren_groups(str_0)
     assert list_1 == []
-
-def test_case_3():
-    str_0 = "+c?U#'5\x0cEih:c'\nG=_"
-    list_0 = module_0.separate_paren_groups(str_0)
-    str_1 = '96l>ZRz:w2:\n2)'
-    list_1 = module_0.separate_paren_groups(str_1)
-    assert list_1 == []
-    str_2 = '`-L[(%<=DWBLo]=Ph4(0'
-    list_2 = module_0.separate_paren_groups(str_2)
-    list_3 = module_0.separate_paren_groups(str_2)
-
-def test_case_4():
-    str_0 = "+c?U#'5\x0cEih:c'\nG=_"
-    list_0 = module_0.separate_paren_groups(str_0)
-    str_1 = "q(kC).D,wX'P-<7+"
-    list_1 = module_0.separate_paren_groups(str_1)
-    assert list_1 == ['()']
-    str_2 = '`-L[(%<=DWBLo]=Ph4(0'
-    list_2 = module_0.separate_paren_groups(str_2)
-    str_3 = 'a_/LC>NE_'
-    list_3 = module_0.separate_paren_groups(str_3)

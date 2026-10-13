@@ -6,30 +6,13 @@ def test_case_0():
     list_0 = module_0.separate_paren_groups(str_0)
 
 def test_case_1():
-    str_0 = "S%=$k?sJ'djw"
+    str_0 = 'VgrS=YqNj)'
     list_0 = module_0.separate_paren_groups(str_0)
-    str_1 = '6'
-    str_2 = '@pM@Pa2;(.z04t-H'
-    list_1 = module_0.separate_paren_groups(str_2)
-    list_2 = module_0.separate_paren_groups(str_1)
-    list_3 = module_0.separate_paren_groups(str_1)
+    assert list_0 == []
 
 def test_case_2():
-    str_0 = '\t'
+    str_0 = 'j^QT'
     list_0 = module_0.separate_paren_groups(str_0)
-
-def test_case_3():
-    str_0 = "RQl8v,S ';=v4\r)5!"
-    str_1 = 'L]p`\nD1pvqQPb'
-    list_0 = module_0.separate_paren_groups(str_1)
-    list_1 = module_0.separate_paren_groups(str_0)
-    assert list_1 == []
-    str_2 = '<i XYB]K3"iF\'S`z'
-    list_2 = module_0.separate_paren_groups(str_2)
-    str_3 = '<CVFtP9 PyTJyu'
-    list_3 = module_0.separate_paren_groups(str_3)
-    str_4 = "wSnM%$$:jL\t(<'6Xfc~)"
-    list_4 = module_0.separate_paren_groups(str_4)
-    assert list_4 == ['()']
-    str_5 = '!"@ LvCSlB9'
-    list_5 = module_0.separate_paren_groups(str_5)
+    str_1 = 'B*Z:SU(\tu/cO)'
+    list_1 = module_0.separate_paren_groups(str_1)
+    assert list_1 == ['()']

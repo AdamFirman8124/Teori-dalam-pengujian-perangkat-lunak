@@ -6,28 +6,17 @@ def test_case_0():
     float_1 = 2.0
     float_2 = 3.0
     float_3 = [float_0, float_1, float_2]
-    float_4 = 0.5
-    bool_0 = module_0.has_close_elements(float_3, float_4)
+    bool_0 = module_0.has_close_elements(float_3, float_1)
     assert bool_0 is False
+    assert bool_0 is True
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
 
 def test_case_1():
     float_0 = 1.0
     float_1 = 2.0
-    float_2 = 7.308982397949884
-    float_3 = 21.08
-    list_0 = [float_3, float_3]
-    float_4 = 1648.0
-    float_5 = -414.651
-    float_6 = 1460.97
-    list_1 = [float_4, float_5, float_6, float_0]
-    float_7 = -487.125409
-    bool_0 = module_0.has_close_elements(list_1, float_7)
+    float_2 = 3.0
+    float_3 = [float_0, float_1, float_2]
+    float_4 = 0.5
+    bool_0 = module_0.has_close_elements(float_3, float_4)
     assert bool_0 is False
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    bool_1 = module_0.has_close_elements(list_0, float_0)
-    assert bool_1 is True
-    float_8 = [float_0, float_1, float_2]
-    float_9 = 0.5
-    bool_2 = module_0.has_close_elements(float_8, float_9)
-    assert bool_2 is False

@@ -1,36 +1,36 @@
 
 
-# Generated at 2026-10-13 03:06:41.289262
+# Generated at 2026-10-13 04:51:44.205835
 # Unit test for function separate_paren_groups
 
-# Generated at 2026-10-13 03:06:56.715070
+# Generated at 2026-10-13 04:51:54.289103
 # Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
+def test_separate_paren_groups():    assert separate_paren_groups("(a)(b)") == ["(a)", "(b)"]
 
-# Generated at 2026-10-13 03:07:06.470686
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-13 03:07:06.625339
-# Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
-
-# Generated at 2026-10-13 03:07:06.776603
+# Generated at 2026-10-13 04:51:54.476796
 # Unit test for function separate_paren_groups
 
-# Generated at 2026-10-13 03:07:07.027875
+# Generated at 2026-10-13 04:51:54.662290
 # Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
+def test_separate_paren_groups():    assert separate_paren_groups("(a)(b)") == ["(a)", "(b)"]
 
-# Generated at 2026-10-13 03:07:07.202738
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-13 03:07:07.375788
-# Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
-
-# Generated at 2026-10-13 03:07:07.552202
+# Generated at 2026-10-13 04:51:54.823472
 # Unit test for function separate_paren_groups
 
-# Generated at 2026-10-13 03:07:07.698124
+# Generated at 2026-10-13 04:51:54.991437
 # Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
+def test_separate_paren_groups():    assert separate_paren_groups("(a)(b)") == ["(a)", "(b)"]
+
+# Generated at 2026-10-13 04:51:55.125922
+# Unit test for function separate_paren_groups
+
+# Generated at 2026-10-13 04:51:55.292435
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():    assert separate_paren_groups("(a)(b)") == ["(a)", "(b)"]
+
+# Generated at 2026-10-13 04:51:55.450663
+# Unit test for function separate_paren_groups
+
+# Generated at 2026-10-13 04:51:55.638304
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():    assert separate_paren_groups("(a)(b)") == ["(a)", "(b)"]

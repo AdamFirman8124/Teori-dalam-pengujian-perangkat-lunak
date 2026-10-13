@@ -5,14 +5,9 @@
 from script_1 import separate_paren_groups
 
 
-def test_separate_paren_groups_handles_nested_and_multiple_groups():
-    paren_string = "prefix (a(b)c) middle () suffix"
-
-    result = separate_paren_groups(paren_string)
-
-    assert result == ["(())", "()"]
+def test_separate_paren_groups_handles_nested_and_adjacent_groups():
+    assert separate_paren_groups("(()) ()") == ["(())", "()"]
 
 
-def test_separate_paren_groups_ignores_unclosed_groups_and_empty_input():
-    assert separate_paren_groups("text (unclosed") == []
+def test_separate_paren_groups_returns_no_groups_for_empty_input():
     assert separate_paren_groups("") == []

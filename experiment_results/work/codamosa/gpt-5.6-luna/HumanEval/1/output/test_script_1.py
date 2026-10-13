@@ -2,11 +2,26 @@
 import script_1 as module_0
 
 def test_case_0():
-    str_0 = '(a)(b)'
+    str_0 = ''
     list_0 = module_0.separate_paren_groups(str_0)
-    assert list_0 == ['()', '()']
 
 def test_case_1():
-    str_0 = '0MU/^)1`at}6wNPl'
+    str_0 = 'w%:E\r(:%Q'
     list_0 = module_0.separate_paren_groups(str_0)
+
+def test_case_2():
+    str_0 = '>'
+    str_1 = '1sX\x0c.Mq]|c8`t\n#)$E4<'
+    list_0 = module_0.separate_paren_groups(str_1)
     assert list_0 == []
+    list_1 = module_0.separate_paren_groups(str_0)
+
+def test_case_3():
+    str_0 = '1sX\x0c.Mq]|c8`t\n#)$E4<'
+    str_1 = 'vy(Q+qMvlE}3M\x0cFV[L*'
+    list_0 = module_0.separate_paren_groups(str_1)
+    list_1 = module_0.separate_paren_groups(str_0)
+    assert list_1 == []
+    str_2 = "(KNM-0'gYsAv7)"
+    list_2 = module_0.separate_paren_groups(str_2)
+    assert list_2 == ['()']

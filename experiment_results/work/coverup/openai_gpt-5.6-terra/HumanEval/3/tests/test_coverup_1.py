@@ -6,18 +6,8 @@ from script_3 import below_zero
 
 
 def test_below_zero_returns_true_when_balance_becomes_negative():
-    operations = [1, 2, -4, 5]
-
-    result = below_zero(operations)
-
-    assert result is True
-    assert operations == [1, 2, -4, 5]
+    assert below_zero([1, 2, -4, 5]) is True
 
 
 def test_below_zero_returns_false_when_balance_never_becomes_negative():
-    operations = [1, -1, 2, -2, 0]
-
-    result = below_zero(operations)
-
-    assert result is False
-    assert operations == [1, -1, 2, -2, 0]
+    assert below_zero([1, 2, 3]) is False

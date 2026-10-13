@@ -3,15 +3,7 @@ import script_3 as module_0
 
 def test_case_0():
     try:
-        int_0 = 2946
-        int_1 = -2802
-        list_0 = [int_0, int_1]
+        list_0 = None
         bool_0 = module_0.below_zero(list_0)
-        assert bool_0 is False
-        assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-        list_1 = None
-        bool_1 = module_0.below_zero(list_0)
-        assert bool_1 is False
-        bool_2 = module_0.below_zero(list_1)
     except BaseException:
         pass

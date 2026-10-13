@@ -2,6 +2,6 @@
 import script_1 as module_0
 
 def test_case_0():
-    str_0 = 'ab(cd(ef)gh)ij(kl)'
+    str_0 = '(a(b)c)d(e)'
     list_0 = module_0.separate_paren_groups(str_0)
     assert list_0 == ['(())', '()']

@@ -10,13 +10,3 @@ def test_case_0():
     bool_0 = module_0.has_close_elements(float_3, float_4)
     assert bool_0 is False
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-
-def test_case_1():
-    float_0 = 1421.837796
-    float_1 = 2069.0
-    float_2 = -1789.487003
-    list_0 = [float_0, float_1, float_2]
-    float_3 = 2044.0
-    bool_0 = module_0.has_close_elements(list_0, float_3)
-    assert bool_0 is True
-    assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}

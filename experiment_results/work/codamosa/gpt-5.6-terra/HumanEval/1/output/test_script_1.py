@@ -2,11 +2,19 @@
 import script_1 as module_0
 
 def test_case_0():
-    str_0 = '(())'
+    str_0 = ''
     list_0 = module_0.separate_paren_groups(str_0)
-    assert list_0 == ['(())']
 
 def test_case_1():
-    str_0 = 'A()}'
+    str_0 = '+8\x0b8m/h,!'
     list_0 = module_0.separate_paren_groups(str_0)
-    assert list_0 == ['()']
+
+def test_case_2():
+    str_0 = '(v%j1&UON[ezxHq'
+    list_0 = module_0.separate_paren_groups(str_0)
+    assert list_0 == []
+
+def test_case_3():
+    str_0 = 'F#/4rK5,?)@'
+    list_0 = module_0.separate_paren_groups(str_0)
+    assert list_0 == []

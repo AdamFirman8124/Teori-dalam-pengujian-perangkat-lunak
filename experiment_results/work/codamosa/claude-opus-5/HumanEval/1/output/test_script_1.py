@@ -7,6 +7,6 @@ def test_case_0():
     assert list_0 == ['()', '()']
 
 def test_case_1():
-    str_0 = '(hello(wor>^ld)'
+    str_0 = 'helo)(orld)'
     list_0 = module_0.separate_paren_groups(str_0)
     assert list_0 == []

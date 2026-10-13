@@ -2,19 +2,20 @@
 # asked: {"lines": [13, 15, 16, 17, 18, 20], "branches": [[15, 16], [15, 20], [17, 15], [17, 18]]}
 # gained: {"lines": [13, 15, 16, 17, 18, 20], "branches": [[15, 16], [15, 20], [17, 15], [17, 18]]}
 
-import pytest
-
 from script_3 import below_zero
 
 
-@pytest.mark.parametrize(
-    ("operations", "expected"),
-    [
-        ([], False),
-        ([1, 2, 3], False),
-        ([1, 2, -4, 5], True),
-        ([-1, 10], True),
-    ],
-)
-def test_below_zero_detects_negative_balance(operations, expected):
-    assert below_zero(operations) is expected
+def test_below_zero_returns_false_when_balance_never_goes_negative():
+    operations = [1, 2, -1, 3]
+
+    result = below_zero(operations)
+
+    assert result is False
+
+
+def test_below_zero_returns_true_when_balance_goes_negative():
+    operations = [1, 2, -4, 5]
+
+    result = below_zero(operations)
+
+    assert result is True

@@ -2,15 +2,10 @@
 import script_1 as module_0
 
 def test_case_0():
-    str_0 = '()'
+    str_0 = '(())'
     list_0 = module_0.separate_paren_groups(str_0)
-    assert list_0 == ['()']
+    assert list_0 == ['(())']
 
 def test_case_1():
-    str_0 = ')'
-    list_0 = module_0.separate_paren_groups(str_0)
-    assert list_0 == []
-
-def test_case_2():
-    str_0 = '%$5RIvSg+Th'
+    str_0 = 'Ti!;v0_BmA"8g'
     list_0 = module_0.separate_paren_groups(str_0)
