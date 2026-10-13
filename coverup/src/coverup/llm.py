@@ -281,9 +281,41 @@ class Chatter:
                 await asyncio.sleep(sleep_time)
 
             except openai.BadRequestError as e:
-                # usually "maximum context length" XXX check for this?
-                self._log_msg(ctx, f"Error: {type(e)} {e}")
-                return None # gives up this segment
+                # Two very different causes reach this branch:
+                #   1. A genuine request-shape problem such as exceeding the
+                #      maximum context length - retrying cannot help.
+                #   2. An OpenAI-compatible gateway (e.g. OctaLabs) returning
+                #      HTTP 400 "The upstream service could not complete the
+                #      request" for a transient upstream hiccup - retrying with
+                #      backoff recovers it.
+                # Previously every BadRequestError gave up immediately, so a
+                # momentary upstream 400 killed the segment and the task was
+                # reported BLOCKED even though the model was fine.
+                message = str(e).lower()
+                permanent = (
+                    "maximum context length" in message
+                    or "context length" in message
+                    or "too many tokens" in message
+                    or "invalid api key" in message
+                    or "invalid_request_error" in message and "upstream" not in message
+                )
+                if permanent:
+                    self._log_msg(ctx, f"Error (permanent): {type(e)} {e}")
+                    return None  # gives up this segment
+
+                attempts += 1
+                if attempts > self._max_connection_retries:
+                    self._log_msg(
+                        ctx,
+                        f"Giving up after {attempts} upstream 400 errors: {type(e)} {e}",
+                    )
+                    return None  # gives up this segment
+                import random
+                sleep = min(sleep * 2, self._max_backoff)
+                sleep_time = random.uniform(sleep / 2, sleep)
+                self._log_msg(ctx, f"Error: {type(e)} {e} {sleep=} {sleep_time=}")
+                self._signal_retry()
+                await asyncio.sleep(sleep_time)
 
             except openai.AuthenticationError as e:
                 self._log_msg(ctx, f"Failed: {type(e)} {e}")

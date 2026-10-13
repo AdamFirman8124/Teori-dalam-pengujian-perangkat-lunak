@@ -38,44 +38,9 @@ def _retryable_failure(exc, method):
     return any(marker in text for marker in _TRANSIENT_ERROR_MARKERS)
 
 
-def _check_budget(context):
-    """Raise TokenBudgetExhausted when the remaining token quota is too low.
-
-    Imported lazily so this file stays importable in the notebook's exec
-    namespace (where ``src`` is already on sys.path) and in tests.
-    """
-    try:
-        from token_budget import check_budget
-    except ImportError:  # pragma: no cover - src not on path
-        try:
-            from src.token_budget import check_budget  # type: ignore
-        except ImportError:
-            return None
-    return check_budget(context=context)
-
-
-def _token_budget_exhausted_type():
-    """Return the TokenBudgetExhausted class, or a never-raised placeholder."""
-    try:
-        from token_budget import TokenBudgetExhausted
-    except ImportError:  # pragma: no cover
-        try:
-            from src.token_budget import TokenBudgetExhausted  # type: ignore
-        except ImportError:
-            class TokenBudgetExhausted(RuntimeError):  # type: ignore
-                pass
-    return TokenBudgetExhausted
-
-
-TokenBudgetExhausted = _token_budget_exhausted_type()
-
-
 def _run_with_retries(method, model, dataset, task, runner):
     last_exc = None
     for attempt in range(1, GENERATOR_ATTEMPTS + 1):
-        # Stop before spending tokens we do not have: a paused run resumes from
-        # its checkpoint once the provider quota is topped up again.
-        _check_budget(f"{method}:{model} {dataset} {task} attempt {attempt}")
         try:
             return runner()
         except Exception as exc:  # noqa: BLE001 - per-task isolation boundary
