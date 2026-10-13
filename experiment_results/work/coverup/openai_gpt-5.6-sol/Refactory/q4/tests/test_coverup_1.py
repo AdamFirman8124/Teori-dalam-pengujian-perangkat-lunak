@@ -7,26 +7,26 @@ from script_q4 import sort_age
 
 def test_sort_age_sorts_records_in_descending_age_order():
     records = [
-        ("Alice", 20),
-        ("Bob", 35),
-        ("Carol", 25),
+        ("Alice", 25),
+        ("Bob", 40),
+        ("Carol", 30),
     ]
 
     result = sort_age(records)
 
     assert result == [
-        ("Bob", 35),
-        ("Carol", 25),
-        ("Alice", 20),
+        ("Bob", 40),
+        ("Carol", 30),
+        ("Alice", 25),
     ]
     assert result is records
 
 
-def test_sort_age_preserves_already_sorted_records():
+def test_sort_age_leaves_already_sorted_records_unchanged():
     records = [
-        ("Bob", 35),
-        ("Carol", 25),
-        ("Alice", 20),
+        ("Bob", 40),
+        ("Carol", 30),
+        ("Alice", 25),
     ]
 
     result = sort_age(records)
@@ -37,7 +37,7 @@ def test_sort_age_preserves_already_sorted_records():
 
 def test_sort_age_handles_empty_and_single_record_lists():
     empty_records = []
-    single_record = [("Alice", 20)]
+    single_record = [("Alice", 25)]
 
     assert sort_age(empty_records) == []
-    assert sort_age(single_record) == [("Alice", 20)]
+    assert sort_age(single_record) == [("Alice", 25)]

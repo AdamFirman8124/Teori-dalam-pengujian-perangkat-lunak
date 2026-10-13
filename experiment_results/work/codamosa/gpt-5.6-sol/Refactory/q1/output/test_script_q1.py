@@ -4,9 +4,7 @@ import script_q1 as module_0
 def test_case_0():
     int_0 = 3
     int_1 = 1
-    int_2 = 2
-    int_3 = 4
-    int_4 = 5
-    int_5 = [int_1, int_2, int_3, int_4]
-    var_0 = module_0.search(int_0, int_5)
-    assert var_0 == 2
+    int_2 = 5
+    int_3 = [int_1, int_0, int_2]
+    var_0 = module_0.search(int_0, int_3)
+    assert var_0 == 1

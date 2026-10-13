@@ -6,8 +6,11 @@ def test_case_0():
     str_0 = 'May'
     var_0 = (str_0, int_0)
     str_1 = 'June'
-    int_1 = 20
+    int_1 = 16
     var_1 = (str_1, int_1)
-    var_2 = [var_0, var_1]
-    var_3 = module_0.unique_day(int_0, var_2)
-    assert var_3 is True
+    str_2 = 'July'
+    int_2 = 17
+    var_2 = (str_2, int_2)
+    var_3 = [var_0, var_1, var_2]
+    var_4 = module_0.unique_day(int_0, var_3)
+    assert var_4 is True

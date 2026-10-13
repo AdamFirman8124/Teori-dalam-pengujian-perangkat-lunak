@@ -7,6 +7,16 @@ import pytest
 from script_2 import truncate_number
 
 
-def test_truncate_number_returns_decimal_part():
-    assert truncate_number(3.5) == pytest.approx(0.5)
-    assert truncate_number(7.0) == pytest.approx(0.0)
+@pytest.mark.parametrize(
+    ("number", "expected"),
+    [
+        (3.5, 0.5),
+        (7.0, 0.0),
+        (0.25, 0.25),
+    ],
+)
+def test_truncate_number_returns_decimal_part(number, expected):
+    result = truncate_number(number)
+
+    assert result == pytest.approx(expected)
+    assert 0.0 <= result < 1.0

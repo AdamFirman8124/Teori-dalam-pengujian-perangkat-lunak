@@ -2,6 +2,29 @@
 import script_1 as module_0
 
 def test_case_0():
-    str_0 = '() (()) ((()))'
+    str_0 = ''
     list_0 = module_0.separate_paren_groups(str_0)
-    assert list_0 == ['()', '(())', '((()))']
+
+def test_case_1():
+    str_0 = '"p5 \';L '
+    list_0 = module_0.separate_paren_groups(str_0)
+
+def test_case_2():
+    str_0 = 'L2%Es4D'
+    list_0 = module_0.separate_paren_groups(str_0)
+    str_1 = 'H~{,"bo\'x(?fX}.F,r,~'
+    list_1 = module_0.separate_paren_groups(str_1)
+
+def test_case_3():
+    str_0 = '"p5 \';L '
+    list_0 = module_0.separate_paren_groups(str_0)
+    str_1 = ',O5"o !HY*0U`W)]?nI'
+    list_1 = module_0.separate_paren_groups(str_1)
+    assert list_1 == []
+
+def test_case_4():
+    str_0 = '"p5 \';L '
+    list_0 = module_0.separate_paren_groups(str_0)
+    str_1 = 'QN(N#Y)\x0b'
+    list_1 = module_0.separate_paren_groups(str_1)
+    assert list_1 == ['()']

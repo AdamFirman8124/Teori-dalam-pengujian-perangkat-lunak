@@ -2,10 +2,10 @@
 import script_q3 as module_0
 
 def test_case_0():
-    int_0 = 3
-    int_1 = 1
-    int_2 = 2
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
     int_3 = 4
-    int_4 = [int_0, int_1, int_0, int_2, int_1, int_3, int_2]
+    int_4 = [int_0, int_1, int_1, int_2, int_0, int_3, int_2]
     var_0 = module_0.remove_extras(int_4)
-    assert var_0 == [3, 1, 2, 4]
+    assert var_0 == [1, 2, 3, 4]

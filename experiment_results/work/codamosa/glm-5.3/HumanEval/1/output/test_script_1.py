@@ -2,82 +2,119 @@
 import script_1 as module_0
 
 def test_case_0():
-    str_0 = 'Nm)s]:\t'
-    list_0 = module_0.separate_paren_groups(str_0)
-    assert list_0 == []
-    list_1 = module_0.separate_paren_groups(str_0)
-    assert list_1 == []
-    str_1 = 'I\x0c\ts^t)-:x>OQ'
+    str_0 = 'dYK$oJY3D8~4g6[GY3-'
+    str_1 = 'l.7><TmSy68|z='
+    list_0 = module_0.separate_paren_groups(str_1)
+    list_1 = module_0.separate_paren_groups(str_1)
     list_2 = module_0.separate_paren_groups(str_0)
-    assert list_2 == []
     list_3 = module_0.separate_paren_groups(str_0)
-    assert list_3 == []
-    str_2 = '\ryQp1\n'
-    list_4 = module_0.separate_paren_groups(str_2)
+    str_2 = 'Z'
+    list_4 = module_0.separate_paren_groups(str_0)
     list_5 = module_0.separate_paren_groups(str_2)
-    str_3 = 'feJ,\nkyO+'
-    list_6 = module_0.separate_paren_groups(str_3)
-    list_7 = module_0.separate_paren_groups(str_0)
-    assert list_7 == []
+    list_6 = module_0.separate_paren_groups(str_1)
+    str_3 = ''
+    list_7 = module_0.separate_paren_groups(str_3)
     list_8 = module_0.separate_paren_groups(str_0)
-    assert list_8 == []
-    str_4 = '\x0b-/YFlz'
+    str_4 = '[#.x6o1)%l'
     list_9 = module_0.separate_paren_groups(str_4)
-    list_10 = module_0.separate_paren_groups(str_3)
-    str_5 = '\n@)P}V8%\rMbEPhGe'
+    assert list_9 == []
+    list_10 = module_0.separate_paren_groups(str_1)
+    str_5 = 'l'
     list_11 = module_0.separate_paren_groups(str_5)
-    assert list_11 == []
-    list_12 = module_0.separate_paren_groups(str_1)
-    assert list_12 == []
-    list_13 = module_0.separate_paren_groups(str_0)
-    assert list_13 == []
-    str_6 = "ouhsvW&+ut6z_'Z|F-"
-    list_14 = module_0.separate_paren_groups(str_6)
-    list_15 = module_0.separate_paren_groups(str_1)
-    assert list_15 == []
-    list_16 = module_0.separate_paren_groups(str_0)
-    assert list_16 == []
-    list_17 = module_0.separate_paren_groups(str_1)
-    assert list_17 == []
+    list_12 = module_0.separate_paren_groups(str_0)
+    str_6 = ';u+YD8RHvAn+0FX4}(+'
+    list_13 = module_0.separate_paren_groups(str_6)
+    str_7 = "9$';17IK?=yUo"
+    list_14 = module_0.separate_paren_groups(str_7)
+    str_8 = '}t&j.Dw'
+    list_15 = module_0.separate_paren_groups(str_8)
+    str_9 = ''
+    str_10 = '_<u<yM sGGG&>XTEN'
+    list_16 = module_0.separate_paren_groups(str_10)
+    str_11 = '2'
+    list_17 = module_0.separate_paren_groups(str_11)
+    list_18 = module_0.separate_paren_groups(str_10)
+    list_19 = module_0.separate_paren_groups(str_9)
+    str_12 = 'l{_Le2bbrq0W;xkW\x0c@o'
+    list_20 = module_0.separate_paren_groups(str_12)
+    list_21 = module_0.separate_paren_groups(str_1)
+    list_22 = module_0.separate_paren_groups(str_9)
 
 def test_case_1():
-    str_0 = 'Nm)s]:\t'
-    str_1 = 'F2'
-    list_0 = module_0.separate_paren_groups(str_1)
-    list_1 = module_0.separate_paren_groups(str_0)
-    assert list_1 == []
-    list_2 = module_0.separate_paren_groups(str_0)
-    assert list_2 == []
-    str_2 = 'I\ts^t)-:x>OQ'
-    list_3 = module_0.separate_paren_groups(str_0)
-    assert list_3 == []
-    list_4 = module_0.separate_paren_groups(str_0)
-    assert list_4 == []
-    str_3 = '\ryQp1\n'
-    list_5 = module_0.separate_paren_groups(str_3)
-    str_4 = 'su\t?Dk\tT~WfN'
+    str_0 = '?g"lq+\nb~s5Zc\n6+t<'
+    list_0 = module_0.separate_paren_groups(str_0)
+    str_1 = '.Kw*nj.ID\\'
+    list_1 = module_0.separate_paren_groups(str_1)
+    str_2 = 'V\x0b7k573hP1t'
+    str_3 = 'H9y-nrAR_ ]nWH*?9+'
+    list_2 = module_0.separate_paren_groups(str_3)
+    list_3 = module_0.separate_paren_groups(str_2)
+    list_4 = module_0.separate_paren_groups(str_1)
+    list_5 = module_0.separate_paren_groups(str_1)
+    str_4 = 'pJ2Z,i!{TAucuY'
     list_6 = module_0.separate_paren_groups(str_4)
-    str_5 = ''
+    str_5 = 'B;gpy'
     list_7 = module_0.separate_paren_groups(str_5)
-    list_8 = module_0.separate_paren_groups(str_5)
-    str_6 = 'f(J,\nkyO+'
-    list_9 = module_0.separate_paren_groups(str_6)
-    list_10 = module_0.separate_paren_groups(str_0)
+    str_6 = '5G\\8'
+    list_8 = module_0.separate_paren_groups(str_6)
+
+def test_case_2():
+    str_0 = 'dYK$oJY3D8~4g6[GY3-'
+    str_1 = 'l.7><TmSy68|z='
+    list_0 = module_0.separate_paren_groups(str_1)
+    list_1 = module_0.separate_paren_groups(str_1)
+    list_2 = module_0.separate_paren_groups(str_0)
+    list_3 = module_0.separate_paren_groups(str_0)
+    str_2 = '/cL$z=>f\\y5[:[Ck'
+    list_4 = module_0.separate_paren_groups(str_2)
+    str_3 = 'H9y-nrAR_ ]nWH*?9+'
+    str_4 = 'jG<|DDqL# ]H'
+    list_5 = module_0.separate_paren_groups(str_4)
+    list_6 = module_0.separate_paren_groups(str_3)
+    list_7 = module_0.separate_paren_groups(str_2)
+    str_5 = 'R=0Wr\tz'
+    str_6 = ')'
+    list_8 = module_0.separate_paren_groups(str_6)
+    assert list_8 == []
+    list_9 = module_0.separate_paren_groups(str_5)
+
+def test_case_3():
+    str_0 = 'dYK$oJY3D8~4g6[GY3-'
+    str_1 = 'l.7><TmSy68|z='
+    list_0 = module_0.separate_paren_groups(str_1)
+    list_1 = module_0.separate_paren_groups(str_1)
+    list_2 = module_0.separate_paren_groups(str_0)
+    list_3 = module_0.separate_paren_groups(str_0)
+    list_4 = module_0.separate_paren_groups(str_0)
+    str_2 = 'Z'
+    list_5 = module_0.separate_paren_groups(str_0)
+    list_6 = module_0.separate_paren_groups(str_2)
+    list_7 = module_0.separate_paren_groups(str_1)
+    str_3 = ''
+    list_8 = module_0.separate_paren_groups(str_3)
+    list_9 = module_0.separate_paren_groups(str_0)
+    str_4 = '[#.x6o1)%l'
+    list_10 = module_0.separate_paren_groups(str_4)
     assert list_10 == []
-    list_11 = module_0.separate_paren_groups(str_0)
-    assert list_11 == []
-    list_12 = module_0.separate_paren_groups(str_2)
-    assert list_12 == []
-    list_13 = module_0.separate_paren_groups(str_6)
-    str_7 = '\n@)P}V8%\rMbEPhGe'
-    list_14 = module_0.separate_paren_groups(str_7)
-    assert list_14 == []
-    list_15 = module_0.separate_paren_groups(str_2)
-    assert list_15 == []
-    list_16 = module_0.separate_paren_groups(str_0)
-    assert list_16 == []
-    str_8 = "ouhsvW&+ut6z_'Z|F-"
-    list_17 = module_0.separate_paren_groups(str_8)
-    list_18 = module_0.separate_paren_groups(str_2)
-    assert list_18 == []
-    list_19 = module_0.separate_paren_groups(str_6)
+    list_11 = module_0.separate_paren_groups(str_1)
+    str_5 = 'l'
+    list_12 = module_0.separate_paren_groups(str_5)
+    list_13 = module_0.separate_paren_groups(str_0)
+    str_6 = ';u+YD8RHvAn+0FX4}(+'
+    list_14 = module_0.separate_paren_groups(str_6)
+    str_7 = "9$';17IK?=yUo"
+    list_15 = module_0.separate_paren_groups(str_7)
+    str_8 = '}t&j.Dw'
+    list_16 = module_0.separate_paren_groups(str_8)
+    str_9 = ''
+    str_10 = '_<u<yM sGGG&>XTEN'
+    list_17 = module_0.separate_paren_groups(str_10)
+    str_11 = '2'
+    list_18 = module_0.separate_paren_groups(str_11)
+    list_19 = module_0.separate_paren_groups(str_10)
+    list_20 = module_0.separate_paren_groups(str_9)
+    str_12 = 'bT3(wP[6<)'
+    list_21 = module_0.separate_paren_groups(str_12)
+    assert list_21 == ['()']
+    list_22 = module_0.separate_paren_groups(str_1)
+    list_23 = module_0.separate_paren_groups(str_9)

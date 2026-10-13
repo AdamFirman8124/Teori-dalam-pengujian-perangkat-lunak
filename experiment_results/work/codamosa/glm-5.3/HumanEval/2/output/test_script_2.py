@@ -3,13 +3,6 @@ import pytest
 import script_2 as module_0
 
 def test_case_0():
-    float_0 = -133.70943
+    float_0 = -3677.65
     float_1 = module_0.truncate_number(float_0)
-    assert float_1 == pytest.approx(0.29057000000000244, abs=0.01, rel=0.01)
-    float_2 = -491.41
-    float_3 = module_0.truncate_number(float_1)
-    assert float_3 == pytest.approx(0.29057000000000244, abs=0.01, rel=0.01)
-    float_4 = module_0.truncate_number(float_2)
-    assert float_4 == pytest.approx(0.589999999999975, abs=0.01, rel=0.01)
-    float_5 = module_0.truncate_number(float_0)
-    assert float_5 == pytest.approx(0.29057000000000244, abs=0.01, rel=0.01)
+    assert float_1 == pytest.approx(0.34999999999990905, abs=0.01, rel=0.01)

@@ -5,20 +5,24 @@
 from script_q2 import contains_unique_day
 
 
-def test_contains_unique_day_returns_true_for_unique_day_in_month():
+def test_contains_unique_day_returns_true_for_a_month_with_a_unique_day():
     possible_birthdays = [
-        ("May", 15),
-        ("June", 16),
-        ("July", 17),
+        (5, 17),
+        (6, 18),
     ]
 
-    assert contains_unique_day("May", possible_birthdays) is True
+    result = contains_unique_day(5, possible_birthdays)
+
+    assert result is True
 
 
-def test_contains_unique_day_returns_false_when_matching_day_is_not_unique():
+def test_contains_unique_day_returns_false_when_no_day_in_month_is_unique():
     possible_birthdays = [
-        ("May", 15),
-        ("June", 15),
+        (5, 17),
+        (5, 17),
+        (6, 18),
     ]
 
-    assert contains_unique_day("May", possible_birthdays) is False
+    result = contains_unique_day(5, possible_birthdays)
+
+    assert result is False
