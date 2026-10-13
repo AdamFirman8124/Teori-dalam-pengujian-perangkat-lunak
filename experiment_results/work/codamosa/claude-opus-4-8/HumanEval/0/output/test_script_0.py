@@ -2,21 +2,29 @@
 import script_0 as module_0
 
 def test_case_0():
-    float_0 = -10.85745390923546
-    float_1 = -1149.4723
-    float_2 = [float_0, float_1, float_1]
-    float_3 = 0.005670333344234946
-    bool_0 = module_0.has_close_elements(float_2, float_3)
-    assert bool_0 is False
+    float_0 = 3074.0
+    float_1 = 1941.44
+    list_0 = [float_0, float_1, float_0, float_1]
+    float_2 = 216.7611
+    bool_0 = module_0.has_close_elements(list_0, float_2)
     assert bool_0 is True
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
 
 def test_case_1():
-    float_0 = 1.0
-    float_1 = 2.0
-    float_2 = 3.0
-    float_3 = [float_0, float_1, float_2]
-    float_4 = 0.5
-    bool_0 = module_0.has_close_elements(float_3, float_4)
-    assert bool_0 is False
+    float_0 = -1985.8606
+    list_0 = [float_0, float_0]
+    float_1 = -585.41
+    float_2 = 63.736
+    bool_0 = module_0.has_close_elements(list_0, float_2)
+    assert bool_0 is True
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
+    bool_1 = module_0.has_close_elements(list_0, float_2)
+    assert bool_1 is True
+    float_3 = -2086.35
+    float_4 = 681.154633
+    bool_2 = module_0.has_close_elements(list_0, float_4)
+    assert bool_2 is True
+    bool_3 = module_0.has_close_elements(list_0, float_3)
+    assert bool_3 is False
+    bool_4 = module_0.has_close_elements(list_0, float_1)
+    assert bool_4 is False

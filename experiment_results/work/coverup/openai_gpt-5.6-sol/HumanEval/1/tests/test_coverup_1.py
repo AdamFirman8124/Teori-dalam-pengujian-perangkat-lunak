@@ -5,12 +5,17 @@
 from script_1 import separate_paren_groups
 
 
-def test_separate_paren_groups_handles_nested_separate_groups_and_other_chars():
-    assert separate_paren_groups("(()) ignored (()())") == [
-        "(())",
-        "(()())",
-    ]
-
-
-def test_separate_paren_groups_with_empty_input():
+def test_separate_paren_groups_returns_empty_for_empty_input():
     assert separate_paren_groups("") == []
+
+
+def test_separate_paren_groups_ignores_non_parenthesis_characters():
+    assert separate_paren_groups("abc") == []
+
+
+def test_separate_paren_groups_handles_nested_and_adjacent_groups():
+    assert separate_paren_groups("(())()") == ["(())", "()"]
+
+
+def test_separate_paren_groups_ignores_non_parenthesis_characters_inside_groups():
+    assert separate_paren_groups("(a(b)c)(d)") == ["(())", "()"]

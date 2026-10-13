@@ -11,10 +11,17 @@ from script_2 import truncate_number
     ("number", "expected"),
     [
         (3.5, 0.5),
-        (10.25, 0.25),
         (7.0, 0.0),
-        (0.75, 0.75),
+        (0.25, 0.25),
+        (12.875, 0.875),
     ],
 )
 def test_truncate_number_returns_decimal_part(number, expected):
     assert truncate_number(number) == pytest.approx(expected)
+
+
+def test_truncate_number_returns_value_less_than_one():
+    result = truncate_number(123.456)
+
+    assert result == pytest.approx(0.456)
+    assert 0 <= result < 1

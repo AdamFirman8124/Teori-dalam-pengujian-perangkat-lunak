@@ -3,6 +3,6 @@ import pytest
 import script_2 as module_0
 
 def test_case_0():
-    float_0 = 3.5
+    float_0 = -168.3886
     float_1 = module_0.truncate_number(float_0)
-    assert float_1 == pytest.approx(0.5, abs=0.01, rel=0.01)
+    assert float_1 == pytest.approx(0.6114000000000033, abs=0.01, rel=0.01)

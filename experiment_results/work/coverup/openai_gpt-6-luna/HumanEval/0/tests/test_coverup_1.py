@@ -15,6 +15,7 @@ from script_0 import has_close_elements
         ([1.0, 2.0], 1.0, False),
         ([1.0, 1.0], 0.1, True),
         ([], 1.0, False),
+        ([1.0], 1.0, False),
     ],
 )
 def test_has_close_elements(numbers, threshold, expected):

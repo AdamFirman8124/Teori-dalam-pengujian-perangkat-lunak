@@ -87,3 +87,30 @@ def test_probe_model_ok(monkeypatch):
     p = md.probe_model("https://x/v1", "k", "m")
     assert p.available is True
     assert p.status == "OK"
+
+
+def test_discover_include_filters_before_probe(monkeypatch):
+    calls = []
+
+    class FakeResp:
+        status = 200
+        def read(self_inner):
+            return b'{"data":[{"id":"gpt-test"},{"id":"claude-test"},{"id":"gemini-test"}]}'
+        def __enter__(self_inner):
+            return self_inner
+        def __exit__(self_inner, *a):
+            return False
+
+    def fake_urlopen(req, timeout=None):
+        calls.append(req.full_url)
+        return FakeResp()
+
+    monkeypatch.setattr(md.urllib.request, "urlopen", fake_urlopen)
+    report = md.discover_and_probe(
+        "https://x/v1", "k", include="gpt|claude", workers=1,
+    )
+    assert report.listed_models == ["gpt-test", "claude-test", "gemini-test"]
+    assert report.available_models == ["gpt-test", "claude-test"]
+    assert len(calls) == 3  # /models plus exactly two filtered probes
+    assert calls[0].endswith("/models")
+    assert all("gemini-test" not in url for url in calls[1:])

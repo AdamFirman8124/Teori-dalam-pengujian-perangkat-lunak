@@ -5,17 +5,26 @@
 import pytest
 from script_1 import separate_paren_groups
 
-def test_separate_paren_groups_basic():
-    assert separate_paren_groups("()()") == ["()", "()"]
 
-def test_separate_paren_groups_nested():
+def test_separate_paren_groups_basic():
     assert separate_paren_groups("(())") == ["(())"]
 
-def test_separate_paren_groups_multiple_groups():
-    assert separate_paren_groups("()()()") == ["()", "()", "()"]
 
-def test_separate_paren_groups_empty():
+def test_separate_paren_groups_multiple_groups():
+    assert separate_paren_groups("(())(())") == ["(())", "(())"]
+
+
+def test_separate_paren_groups_empty_string():
     assert separate_paren_groups("") == []
 
-def test_separate_paren_groups_no_groups():
+
+def test_separate_paren_groups_no_parens():
     assert separate_paren_groups("abc") == []
+
+
+def test_separate_paren_groups_nested():
+    assert separate_paren_groups("((()))") == ["((()))"]
+
+
+def test_separate_paren_groups_whitespace_and_multiple():
+    assert separate_paren_groups("(()) (())") == ["(())", "(())"]

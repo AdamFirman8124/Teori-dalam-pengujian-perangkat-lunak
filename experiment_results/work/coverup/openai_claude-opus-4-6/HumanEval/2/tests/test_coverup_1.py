@@ -3,74 +3,56 @@
 # gained: {"lines": [10], "branches": []}
 
 import importlib
-import pathlib
 import sys
 
 import pytest
 
 
-def _import_script_2():
-    """Import script_2.py so that coverage traces its lines."""
-    candidates = [
-        pathlib.Path(__file__).resolve().parent,
-        pathlib.Path.cwd(),
-    ]
-    for candidate in candidates:
-        if (candidate / "script_2.py").exists():
-            path_str = str(candidate)
-            if path_str not in sys.path:
-                sys.path.insert(0, path_str)
-            return importlib.import_module("script_2")
-    raise ImportError("script_2.py not found next to the test file or in the cwd")
+@pytest.fixture
+def module(monkeypatch):
+    """Import script_2 fresh and make sure it is removed from sys.modules afterwards."""
+    monkeypatch.delitem(sys.modules, "script_2", raising=False)
+    mod = importlib.import_module("script_2")
+    yield mod
+    monkeypatch.delitem(sys.modules, "script_2", raising=False)
 
 
-@pytest.fixture()
-def truncate_number(monkeypatch):
-    """Provide truncate_number and clean up module/sys.path state afterwards."""
-    module = _import_script_2()
-    original_path = list(sys.path)
-    monkeypatch.setitem(sys.modules, "script_2", module)
-    try:
-        yield module.truncate_number
-    finally:
-        sys.path[:] = original_path
-        sys.modules.pop("script_2", None)
-        for name in list(sys.modules):
-            if name.startswith("script_2."):
-                sys.modules.pop(name, None)
-
-
-def test_truncate_number_executes_return_line(truncate_number):
-    result = truncate_number(3.5)
+def test_truncate_number_docstring_example(module):
+    # Executes the body of truncate_number (line 10) and checks the documented result.
+    result = module.truncate_number(3.5)
     assert result == 0.5
-    assert result == pytest.approx(0.5)
     assert isinstance(result, float)
-    assert 0 <= result < 1
+    assert 0.0 <= result < 1.0
 
 
-def test_truncate_number_integer_input_returns_zero(truncate_number):
-    result = truncate_number(4.0)
-    assert result == 0.0
-    assert isinstance(result, float)
-    assert 0 <= result < 1
+def test_truncate_number_integer_valued_input(module):
+    # A whole number has no decimal part.
+    assert module.truncate_number(2.0) == 0.0
+    assert module.truncate_number(1.0) == 0.0
+    assert module.truncate_number(100.0) == 0.0
 
 
-def test_truncate_number_small_fraction(truncate_number):
-    result = truncate_number(0.25)
-    assert result == 0.25
-    assert result == pytest.approx(0.25)
+def test_truncate_number_fractional_inputs(module):
+    assert module.truncate_number(0.5) == 0.5
+    assert module.truncate_number(1.25) == pytest.approx(0.25)
+    assert module.truncate_number(9.99) == pytest.approx(0.99)
+    assert module.truncate_number(123.456) == pytest.approx(0.456)
 
 
-def test_truncate_number_large_value(truncate_number):
-    result = truncate_number(123456.789)
-    assert result == pytest.approx(0.789, rel=1e-9)
-    assert 0 <= result < 1
+def test_truncate_number_postcondition_decimal_part(module):
+    # Postcondition: result is always the fractional leftover, strictly below 1.0,
+    # and the input can be reconstructed as int_part + result.
+    for number in (0.5, 1.0, 3.5, 7.125, 42.75, 1000.001):
+        result = module.truncate_number(number)
+        assert 0.0 <= result < 1.0
+        assert number - result == pytest.approx(float(int(number)), abs=1e-9)
 
 
-def test_truncate_number_postcondition_decimal_part(truncate_number):
-    for value in (1.1, 2.99, 10.0, 0.001, 999.999):
-        result = truncate_number(value)
-        integer_part = value - result
-        assert result == pytest.approx(value % 1.0)
-        assert 0 <= result < 1
-        assert integer_part == pytest.approx(float(int(value)))
+def test_truncate_number_small_and_large_values(module):
+    assert module.truncate_number(1e-9) == pytest.approx(1e-9)
+    assert module.truncate_number(1e9 + 0.5) == pytest.approx(0.5, abs=1e-6)
+
+
+def test_module_state_cleanup(module):
+    # Guard: the fixture must not leave script_2 in sys.modules after the test.
+    assert "script_2" in sys.modules

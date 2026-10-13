@@ -15,6 +15,7 @@ result is reported as "unknown" rather than crashing the run.
 from __future__ import annotations
 
 import json
+import re
 import time
 import urllib.error
 import urllib.request
@@ -119,6 +120,7 @@ def discover_and_probe(base_url: str, api_key: str, *,
                        completions_path: str = "/chat/completions",
                        probe: bool = True,
                        only: list[str] | None = None,
+                       include: str = "",
                        timeout: float = 60.0,
                        workers: int = 8) -> DiscoveryReport:
     """Full discovery: list models, optionally probe each one.
@@ -126,6 +128,10 @@ def discover_and_probe(base_url: str, api_key: str, *,
     Probing is parallelised (``workers`` concurrent requests) because an
     unresponsive model would otherwise stall the whole catalogue behind its
     timeout.  Order is preserved for a stable report.
+
+    ``include`` is a regex; when set, only matching model ids are probed.  This
+    keeps the experiment to a chosen family (e.g. ``gpt|claude``) without paying
+    probe requests for the rest of the catalogue.
     """
     report = DiscoveryReport(
         timestamp_utc=_now_utc(),
@@ -149,6 +155,9 @@ def discover_and_probe(base_url: str, api_key: str, *,
 
     if only:
         ids = [m for m in ids if m in only]
+    if include:
+        _re = re.compile(include, re.IGNORECASE)
+        ids = [m for m in ids if _re.search(m)]
 
     if probe:
         from concurrent.futures import ThreadPoolExecutor

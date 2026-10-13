@@ -2,22 +2,28 @@
 # asked: {"lines": [12, 13, 14, 15, 16, 17, 19], "branches": [[12, 13], [12, 19], [13, 12], [13, 14], [14, 13], [14, 15], [16, 13], [16, 17]]}
 # gained: {"lines": [12, 13, 14, 15, 16, 17, 19], "branches": [[12, 13], [12, 19], [13, 12], [13, 14], [14, 13], [14, 15], [16, 13], [16, 17]]}
 
+import pytest
+
 from script_0 import has_close_elements
 
 
-def test_has_close_elements_returns_false_when_no_pair_is_below_threshold():
-    numbers = [1.0, 2.0]
-    threshold = 0.5
+@pytest.mark.parametrize(
+    ("numbers", "threshold", "expected"),
+    [
+        ([], 0.5, False),
+        ([1.0], 0.5, False),
+        ([1.0, 2.0, 3.0], 0.5, False),
+        ([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3, True),
+        ([1.0, 1.5], 0.5, False),
+        ([1.0, 1.0], 0.1, True),
+        ([1.0, 1.0], 0.0, False),
+        ([1.0, 1.0], -0.1, False),
+        ([-1.0, -1.25], 0.5, True),
+        ([3.0, 1.0], 1.0, False),
+    ],
+)
+def test_has_close_elements(numbers, threshold, expected):
+    original_numbers = numbers.copy()
 
-    result = has_close_elements(numbers, threshold)
-
-    assert result is False
-
-
-def test_has_close_elements_returns_true_when_a_pair_is_below_threshold():
-    numbers = [1.0, 1.2, 3.0]
-    threshold = 0.3
-
-    result = has_close_elements(numbers, threshold)
-
-    assert result is True
+    assert has_close_elements(numbers, threshold) is expected
+    assert numbers == original_numbers

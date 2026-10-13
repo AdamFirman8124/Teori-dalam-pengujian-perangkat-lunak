@@ -2,32 +2,47 @@
 import script_0 as module_0
 
 def test_case_0():
-    float_0 = 707.44518
-    list_0 = [float_0, float_0, float_0, float_0]
+    float_0 = 4164.27
+    list_0 = [float_0]
     bool_0 = module_0.has_close_elements(list_0, float_0)
-    assert bool_0 is True
+    assert bool_0 is False
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
 
 def test_case_1():
+    float_0 = 1522.4999
     list_0 = []
-    float_0 = 1597.0
-    float_1 = -2535.943
+    float_1 = None
     bool_0 = module_0.has_close_elements(list_0, float_1)
     assert bool_0 is False
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    bool_1 = module_0.has_close_elements(list_0, float_0)
+    float_2 = -22.147
+    float_3 = 407.9634
+    list_1 = [float_2, float_3, float_3, float_2]
+    bool_1 = module_0.has_close_elements(list_1, float_2)
     assert bool_1 is False
-    float_2 = 0.0
-    bool_2 = module_0.has_close_elements(list_0, float_2)
+    float_4 = -1789.66
+    bool_2 = module_0.has_close_elements(list_1, float_4)
     assert bool_2 is False
-    bool_3 = module_0.has_close_elements(list_0, float_0)
+    bool_3 = module_0.has_close_elements(list_1, float_2)
     assert bool_3 is False
-    float_3 = -940.27
-    float_4 = 2114.0
-    bool_4 = module_0.has_close_elements(list_0, float_4)
-    assert bool_4 is False
-    float_5 = 3864.506412
-    list_1 = [float_3, float_4, float_5]
-    float_6 = 2325.799555
-    bool_5 = module_0.has_close_elements(list_1, float_6)
+    list_2 = [float_0, float_2, float_2, float_0]
+    float_5 = 1122.0
+    float_6 = 1522.4999
+    bool_4 = module_0.has_close_elements(list_1, float_6)
+    assert bool_4 is True
+    float_7 = 1522.4999
+    bool_5 = module_0.has_close_elements(list_2, float_7)
     assert bool_5 is True
+    bool_6 = module_0.has_close_elements(list_2, float_5)
+    assert bool_6 is True
+    bool_7 = module_0.has_close_elements(list_1, float_5)
+    assert bool_7 is True
+    bool_8 = module_0.has_close_elements(list_2, float_2)
+    assert bool_8 is False
+    float_8 = 1522.4999
+    bool_9 = module_0.has_close_elements(list_2, float_8)
+    assert bool_9 is True
+    bool_10 = module_0.has_close_elements(list_1, float_0)
+    assert bool_10 is True
+    bool_11 = module_0.has_close_elements(list_2, float_8)
+    assert bool_11 is True

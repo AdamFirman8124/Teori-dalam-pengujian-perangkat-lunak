@@ -4,54 +4,62 @@
 
 from script_1 import separate_paren_groups
 
-def test_single_simple_group():
-    # covers the '(' branch and the ')' branch with depth returning to 0
-    assert separate_paren_groups("()") == ["()"]
 
-def test_single_nested_group():
-    # covers ')' branch when depth does NOT return to 0 (inner close),
-    # then the close that brings depth back to 0 (outer close)
-    assert separate_paren_groups("((()))") == ["((()))"]
+def _is_balanced(group: str) -> bool:
+    depth = 0
+    for c in group:
+        depth += 1 if c == "(" else -1
+        if depth < 0:
+            return False
+    return depth == 0
 
-def test_multiple_groups_with_whitespace_between():
-    # covers several groups and the branch where neither '(' nor ')' matches
-    assert separate_paren_groups("() (()) ((()))") == ["()", "(())", "((()))"]
 
-def test_multiple_sibling_groups_no_separator():
-    assert separate_paren_groups("()()") == ["()", "()"]
-
-def test_empty_string():
-    # loop body never executes, result stays empty
+def test_empty_string_returns_empty_list():
     assert separate_paren_groups("") == []
 
-def test_no_parentheses_at_all():
-    # covers the branch where neither '(' nor ')' matches
+
+def test_only_non_paren_characters():
+    # Exercises the for loop with neither '(' nor ')' ever encountered.
     assert separate_paren_groups("abc def") == []
 
-def test_non_paren_characters_are_discarded():
-    # only '(' and ')' characters are retained in the output groups
-    result = separate_paren_groups("(a)(b)(c)")
-    assert result == ["()", "()", "()"]
-    # postcondition: every returned group is balanced
-    for group in result:
-        assert group.count("(") == group.count(")")
 
-def test_groups_returned_in_order():
-    result = separate_paren_groups("(())()(())")
-    assert result == ["(())", "()", "(())"]
+def test_single_simple_group():
+    result = separate_paren_groups("()")
+    assert result == ["()"]
+    assert _is_balanced(result[0])
 
-def test_does_not_mutate_input():
-    original = "(())()"
-    value = "(())()"
-    assert separate_paren_groups(value) == ["(())", "()"]
-    assert value == original
 
-def test_result_is_independent_across_calls():
-    # verifies no state leaks between calls (function must be pure)
-    first = separate_paren_groups("(())")
-    second = separate_paren_groups("()")
-    assert first == ["(())"]
-    assert second == ["()"]
-    # mutating the returned list must not affect later calls
-    first.append("CORRUPT")
-    assert separate_paren_groups("(())") == ["(())"]
+def test_nested_group_covers_depth_nonzero_branch():
+    # The inner ')' does not reach depth 0; only the outer ')' does.
+    result = separate_paren_groups("(())")
+    assert result == ["(())"]
+    assert _is_balanced(result[0])
+
+
+def test_multiple_groups_with_whitespace():
+    s = "(()()) ((())) ()"
+    result = separate_paren_groups(s)
+    assert result == ["(()())", "((()))", "()"]
+    assert all(_is_balanced(g) for g in result)
+    # Postcondition: concatenated groups equal the paren characters in order.
+    assert "".join(result) == "".join(c for c in s if c in "()")
+
+
+def test_groups_with_ignored_inner_characters():
+    result = separate_paren_groups("(a(b)c)(d)")
+    assert result == ["(())", "()"]
+    assert all(_is_balanced(g) for g in result)
+
+
+def test_unbalanced_input_returns_only_complete_groups():
+    assert separate_paren_groups("(()") == []
+    assert separate_paren_groups("()(") == ["()"]
+
+
+def test_repeated_calls_do_not_share_state():
+    # The function uses only local state; verify calls are independent and repeatable.
+    first = separate_paren_groups("(a)(b)")
+    second = separate_paren_groups("(a)(b)")
+    assert first == ["()", "()"]
+    assert second == ["()", "()"]
+    assert first is not second
