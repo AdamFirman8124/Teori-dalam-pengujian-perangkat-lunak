@@ -2,20 +2,27 @@
 # asked: {"lines": [6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 22], "branches": [[10, 11], [10, 22], [11, 12], [11, 14], [14, 10], [14, 15], [18, 10], [18, 19]]}
 # gained: {"lines": [6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 22], "branches": [[10, 11], [10, 22], [11, 12], [11, 14], [14, 10], [14, 15], [18, 10], [18, 19]]}
 
+import pytest
+
 from script_1 import separate_paren_groups
 
 
-def test_separate_paren_groups_returns_empty_for_empty_input():
-    assert separate_paren_groups("") == []
+def test_separate_paren_groups_handles_nested_and_adjacent_groups():
+    assert separate_paren_groups("(a(b)c)(d)") == ["(())", "()"]
 
 
 def test_separate_paren_groups_ignores_non_parenthesis_characters():
-    assert separate_paren_groups("abc") == []
+    assert separate_paren_groups("before(x)between(y)after") == ["()", "()"]
 
 
-def test_separate_paren_groups_handles_nested_and_adjacent_groups():
-    assert separate_paren_groups("(())()") == ["(())", "()"]
-
-
-def test_separate_paren_groups_ignores_non_parenthesis_characters_inside_groups():
-    assert separate_paren_groups("(a(b)c)(d)") == ["(())", "()"]
+@pytest.mark.parametrize(
+    ("paren_string", "expected"),
+    [
+        ("", []),
+        ("no groups here", []),
+        ("((nested))", ["(())"]),
+        ("(first)(second)(third)", ["()", "()", "()"]),
+    ],
+)
+def test_separate_paren_groups_returns_expected_groups(paren_string, expected):
+    assert separate_paren_groups(paren_string) == expected

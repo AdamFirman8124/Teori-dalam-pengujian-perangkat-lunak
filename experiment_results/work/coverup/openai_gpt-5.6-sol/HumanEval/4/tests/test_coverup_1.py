@@ -7,15 +7,20 @@ import pytest
 from script_4 import mean_absolute_deviation
 
 
-@pytest.mark.parametrize(
-    ("numbers", "expected"),
-    [
-        ([1.0, 2.0, 3.0, 4.0], 1.0),
-        ([5.0, 5.0, 5.0], 0.0),
-        ([-2.0, 0.0, 2.0], 4.0 / 3.0),
-    ],
-)
-def test_mean_absolute_deviation(numbers, expected):
+def test_mean_absolute_deviation_calculates_mad_without_mutating_input():
+    numbers = [1.0, 2.0, 3.0, 4.0]
+    original = numbers.copy()
+
     result = mean_absolute_deviation(numbers)
 
-    assert result == pytest.approx(expected)
+    assert result == pytest.approx(1.0)
+    assert numbers == original
+
+
+def test_mean_absolute_deviation_for_single_value():
+    assert mean_absolute_deviation([5.0]) == pytest.approx(0.0)
+
+
+def test_mean_absolute_deviation_rejects_empty_list():
+    with pytest.raises(ZeroDivisionError):
+        mean_absolute_deviation([])

@@ -2,27 +2,6 @@
 import script_1 as module_0
 
 def test_case_0():
-    str_0 = ''
+    str_0 = '() (()) ((()))'
     list_0 = module_0.separate_paren_groups(str_0)
-
-def test_case_1():
-    str_0 = 's?mc]e$<(UD'
-    list_0 = module_0.separate_paren_groups(str_0)
-
-def test_case_2():
-    str_0 = ''
-    list_0 = module_0.separate_paren_groups(str_0)
-    str_1 = "p8)au|i^z[(I'5^=Yb"
-    list_1 = module_0.separate_paren_groups(str_1)
-    assert list_1 == []
-
-def test_case_3():
-    str_0 = "p8)au|i^z[(I'5^=Yb"
-    str_1 = '%'
-    str_2 = 'qty()\rSxTIkr&/4;OBj'
-    list_0 = module_0.separate_paren_groups(str_2)
-    assert list_0 == ['()']
-    list_1 = module_0.separate_paren_groups(str_1)
-    list_2 = module_0.separate_paren_groups(str_1)
-    list_3 = module_0.separate_paren_groups(str_0)
-    assert list_3 == []
+    assert list_0 == ['()', '(())', '((()))']

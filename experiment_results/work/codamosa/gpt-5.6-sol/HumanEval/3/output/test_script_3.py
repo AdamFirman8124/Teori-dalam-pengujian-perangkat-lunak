@@ -6,3 +6,18 @@ def test_case_0():
     bool_0 = module_0.below_zero(var_0)
     assert bool_0 is False
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
+
+def test_case_1():
+    int_0 = 87
+    int_1 = -1021
+    list_0 = [int_0, int_0, int_1]
+    bool_0 = module_0.below_zero(list_0)
+    assert bool_0 is True
+    assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
+
+def test_case_2():
+    int_0 = 1111
+    list_0 = [int_0, int_0, int_0]
+    bool_0 = module_0.below_zero(list_0)
+    assert bool_0 is False
+    assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}

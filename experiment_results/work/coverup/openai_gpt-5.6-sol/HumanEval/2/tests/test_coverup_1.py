@@ -9,7 +9,4 @@ from script_2 import truncate_number
 
 def test_truncate_number_returns_decimal_part():
     assert truncate_number(3.5) == pytest.approx(0.5)
-
-
-def test_truncate_number_returns_zero_for_integer():
     assert truncate_number(7.0) == pytest.approx(0.0)

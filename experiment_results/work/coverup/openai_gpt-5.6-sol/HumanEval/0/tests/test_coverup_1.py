@@ -5,7 +5,7 @@
 from script_0 import has_close_elements
 
 
-def test_has_close_elements_returns_false_when_no_pair_is_close():
+def test_has_close_elements_returns_false_when_no_pair_is_within_threshold():
     numbers = [1.0, 2.0, 3.0]
 
     result = has_close_elements(numbers, 0.5)
@@ -21,7 +21,7 @@ def test_has_close_elements_returns_true_when_a_pair_is_within_threshold():
     assert result is True
 
 
-def test_has_close_elements_returns_false_for_an_empty_list():
-    result = has_close_elements([], 1.0)
+def test_has_close_elements_handles_a_single_element():
+    result = has_close_elements([42.0], 0.1)
 
     assert result is False

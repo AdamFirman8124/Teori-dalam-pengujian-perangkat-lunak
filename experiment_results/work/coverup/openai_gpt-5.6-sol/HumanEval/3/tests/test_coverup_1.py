@@ -11,4 +11,3 @@ def test_below_zero_returns_true_when_balance_becomes_negative():
 
 def test_below_zero_returns_false_when_balance_never_becomes_negative():
     assert below_zero([1, 2, 3]) is False
-    assert below_zero([]) is False

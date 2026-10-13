@@ -1,106 +1,36 @@
 
 
-# Generated at 2026-10-13 04:48:28.916155
+# Generated at 2026-10-13 13:50:42.186232
 # Unit test for function separate_paren_groups
 
-# Generated at 2026-10-13 04:48:39.697716
+# Generated at 2026-10-13 13:50:48.259116
 # Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
+def test_separate_paren_groups():    assert separate_paren_groups("() (()) ((()))") == ["()", "(())", "((()))"]
 
-# Generated at 2026-10-13 04:48:39.830493
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-13 04:48:39.981290
-# Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
-
-# Generated at 2026-10-13 04:48:40.133485
+# Generated at 2026-10-13 13:50:48.492068
 # Unit test for function separate_paren_groups
 
-# Generated at 2026-10-13 04:48:40.280062
+# Generated at 2026-10-13 13:50:49.378339
 # Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
+def test_separate_paren_groups():    assert separate_paren_groups("() (()) ((()))") == ["()", "(())", "((()))"]
 
-# Generated at 2026-10-13 04:48:40.461533
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-13 04:48:40.600512
-# Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
-
-# Generated at 2026-10-13 04:48:40.747605
+# Generated at 2026-10-13 13:50:50.529597
 # Unit test for function separate_paren_groups
 
-# Generated at 2026-10-13 04:48:40.946743
+# Generated at 2026-10-13 13:50:51.527970
 # Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
+def test_separate_paren_groups():    assert separate_paren_groups("() (()) ((()))") == ["()", "(())", "((()))"]
 
-# Generated at 2026-10-13 04:48:41.215126
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-13 04:48:41.542770
-# Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
-
-# Generated at 2026-10-13 04:48:41.689895
+# Generated at 2026-10-13 13:50:52.565594
 # Unit test for function separate_paren_groups
 
-# Generated at 2026-10-13 04:48:41.842841
+# Generated at 2026-10-13 13:50:53.676747
 # Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
+def test_separate_paren_groups():    assert separate_paren_groups("() (()) ((()))") == ["()", "(())", "((()))"]
 
-# Generated at 2026-10-13 04:48:42.022311
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-13 04:48:42.185895
-# Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
-
-# Generated at 2026-10-13 04:48:42.353738
+# Generated at 2026-10-13 13:50:54.495095
 # Unit test for function separate_paren_groups
 
-# Generated at 2026-10-13 04:48:42.490103
+# Generated at 2026-10-13 13:50:55.314629
 # Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
-
-# Generated at 2026-10-13 04:48:42.621554
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-13 04:48:42.778955
-# Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
-
-# Generated at 2026-10-13 04:48:42.903995
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-13 04:48:43.048231
-# Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
-
-# Generated at 2026-10-13 04:48:43.193793
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-13 04:48:43.324904
-# Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
-
-# Generated at 2026-10-13 04:48:43.484026
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-13 04:48:43.627560
-# Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
-
-# Generated at 2026-10-13 04:48:43.784557
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-13 04:48:43.922198
-# Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
-
-# Generated at 2026-10-13 04:48:44.059627
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-13 04:48:44.216817
-# Unit test for function separate_paren_groups
-def test_separate_paren_groups():    assert separate_paren_groups("") == []
+def test_separate_paren_groups():    assert separate_paren_groups("() (()) ((()))") == ["()", "(())", "((()))"]
