@@ -670,5 +670,1573 @@
     "task": "1",
     "status": "BLOCKED",
     "message": "BLOCKED: model gagal preflight. gpt-6-luna: ReadTimeout: HTTPSConnectionPool(host='router.octalabs.id', port=443): Read timed out. (read timeout=90)\nLangkah berikutnya: Endpoint tidak terjangkau/timeout. Periksa jaringan, DNS Docker, URL, dan TLS."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-fable-5-1",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-6",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-7",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\ntask is to detect if at any point the balance of account fallls below zero, and\\n    at that point function should return True. Otherwise it should return False.\\n    >>> below_zero([1, 2, 3])\\n    False\\n    >>> below_zero([1, 2, -4, 5])\\n    True\\n    \\\"\\\"\\\"\\n    balance = 0\\n    for op in operations:\\n        balance += op\\n        if balance < 0:\\n            return True\\n    return False\\n```\"\n    },\n    {\n      \"content\": \"```python\\nfrom typing import List\\n\\n\\ndef below_zero(operations: List[int]) -> bool:\\n    \\\"\\\"\\\" You're given a list of deposit and withdrawal operations on a bank account that starts with\\n    zero balance. Your task is to detect if at any point the balance of account fallls below zero, and\\n    at that point function should return True. Otherwise it should return False.\\n    >>> below_zero([1, 2, 3])\\n    False\\n    >>> below_zero([1, 2, -4, 5])\\n    True\\n    \\\"\\\"\\\"\\n    balance = 0\\n\\n    for op in operations:\\n        balance += op\\n        if balance < 0:\\n            return True\\n\\n    return False\\n\\n\\ndef test_below_zero_never_negative():\\n    assert below_zero([1, 2, 3]) is False\\n\\n\\ndef test_below_zero_goes_negative():\\n    assert below_zero([1, 2, -4, 5]) is True\\n\\n\\ndef test_below_zero_empty():\\n    assert below_zero([]) is False\\n\\n\\ndef test_below_zero_immediate_negative():\\n    assert below_zero([-1]) is True\\n\\n\\ndef test_below_zero_exact_zero():\\n    assert below_zero([5, -5]) is False\\n\\n\\ndef test_below_zero_negative_at_end():\\n    assert below_zero([10, -3, -8]) is True\\n```\",\n      \"role\": \"assistant\",\n      \"tool_calls\": null,\n      \"function_call\": null,\n      \"provider_specific_fields\": {\n        \"refusal\": null\n      }\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"The tests still lack coverage: lines 13-20 do not execute.\\nModify it to correct that; respond only with the complete Python code in backticks.\\nUse the get_info tool function as necessary.\\n\"\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"get_info\",\n        \"description\": \"Returns information about a symbol.\",\n        \"parameters\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"name\": {\n              \"type\": \"string\",\n              \"description\": \"class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C.\"\n            }\n          },\n          "
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-8",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\nthe test itself.\\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\\n```python\\n            from typing import List\\n            def below_zero(operations: List[int]) -> bool:\\n                \\\"\\\"\\\" You're given a list of deposit and withdrawal operations on a bank account that starts with\\n                zero balance. Your task is to detect if at any point the balance of account fallls below zero, and\\n                at that point function should return True. Otherwise it should return False.\\n                >>> below_zero([1, 2, 3])\\n                False\\n                >>> below_zero([1, 2, -4, 5])\\n                True\\n                \\\"\\\"\\\"\\n        13:     balance = 0\\n            \\n        15:     for op in operations:\\n        16:         balance += op\\n        17:         if balance < 0:\\n        18:             return True\\n            \\n        20:     return False\\n\\n```\\n\"\n    },\n    {\n      \"content\": \"```python\\nimport pytest\\nfrom typing import List\\n\\ndef below_zero(operations: List[int]) -> bool:\\n    \\\"\\\"\\\" You're given a list of deposit and withdrawal operations on a bank account that starts with\\n    zero balance. Your task is to detect if at any point the balance of account fallls below zero, and\\n    at that point function should return True. Otherwise it should return False.\\n    >>> below_zero([1, 2, 3])\\n    False\\n    >>> below_zero([1, 2, -4, 5])\\n    True\\n    \\\"\\\"\\\"\\n    balance = 0\\n    \\n    for op in operations:\\n        balance += op\\n        if balance < 0:\\n            return True\\n    \\n    return False\\n\\n\\ndef test_below_zero_negative_balance_detected():\\n    \\\"\\\"\\\"Test that function returns True when balance goes below zero\\\"\\\"\\\"\\n    assert below_zero([1, 2, -4, 5]) is True\\n\\n\\ndef test_below_zero_negative_balance_first_operation():\\n    \\\"\\\"\\\"Test that function detects negative balance on first operation\\\"\\\"\\\"\\n    assert below_zero([-1]) is True\\n\\n\\ndef test_below_zero_negative_balance_mid_sequence():\\n    \\\"\\\"\\\"Test that function detects negative balance in middle of sequence\\\"\\\"\\\"\\n    assert below_zero([5, 3, -10, 2]) is True\\n\\n\\ndef test_below_zero_all_positive():\\n    \\\"\\\"\\\"Test that function returns False when all operations are positive\\\"\\\"\\\"\\n    assert below_zero([1, 2, 3]) is False\\n\\n\\ndef test_below_zero_returns_false_never_negative():\\n    \\\"\\\"\\\"Test that function return"
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-5",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-sonnet-5",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.5",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-luna",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-sol",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-terra",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-astra",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-luna",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-sol",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6.1-sol",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\n\nLangkah berikutnya: Periksa detail provider, model, endpoint, credential, dan dependency."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-fable-5-1",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-6",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-7",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-8",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-5",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-sonnet-5",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.5",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-luna",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-sol",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-terra",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-astra",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-sol",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6.1-sol",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-luna",
+    "dataset": "HumanEval",
+    "task": "3",
+    "status": "BLOCKED",
+    "message": "BLOCKED: model gagal preflight. gpt-6-luna: ReadTimeout: HTTPSConnectionPool(host='router.octalabs.id', port=443): Read timed out. (read timeout=90)\nLangkah berikutnya: Endpoint tidak terjangkau/timeout. Periksa jaringan, DNS Docker, URL, dan TLS."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-fable-5-1",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-6",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-7",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-8",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\n---- 2026-10-13T11:53:44 startup ----\nCommand: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/coverup/src/coverup/__main__.py --tests-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/5/tests /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/5/script_5.py --model openai/claude-opus-4-8 --checkpoint /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/5/coverup.checkpoint --log-file /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/5/coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3\n---- 2026-10-13T11:53:44 script_5.py:4-22 ----\n{\n  \"model\": \"openai/claude-opus-4-8\",\n  \"temperature\": 0,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"\\nYou are an expert Python test-driven developer.\\nThe code below, extracted from script_5.py, does not achieve full coverage:\\nwhen tested, lines 11-22 do not execute.\\nCreate new pytest test functions that execute all missing lines and branches, always making\\nsure that each test is correct and indeed improves coverage.\\nUse the get_info tool function as necessary.\\nAlways send entire Python test scripts when proposing a new test or correcting one you\\npreviously proposed.\\nBe sure to include assertions in the test that verify any applicable postconditions.\\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\\nWrite as little top-level code as possible, and in particular do not include any top-level code\\ncalling into pytest.main or the test itself.\\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\\n```python\\n            from typing import List\\n            def intersperse(numbers: List[int], delimeter: int) -> List[int]:\\n                \\\"\\\"\\\" Insert a number 'delimeter' between every two consecutive elements of input list `numbers'\\n                >>> intersperse([], 4)\\n                []\\n                >>> intersperse([1, 2, 3], 4)\\n                [1, 4, 2, 4, 3]\\n                \\\"\\\"\\\"\\n        11:     if not numbers:\\n        12:         return ["
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-5",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-sonnet-5",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.5",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-luna",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-sol",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-terra",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-astra",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-luna",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-sol",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6.1-sol",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\n\nLangkah berikutnya: Periksa detail provider, model, endpoint, credential, dan dependency."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-fable-5-1",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-6",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-7",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-8",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-5",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-sonnet-5",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.5",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-luna",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-sol",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-terra",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-astra",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-sol",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6.1-sol",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-luna",
+    "dataset": "HumanEval",
+    "task": "5",
+    "status": "BLOCKED",
+    "message": "BLOCKED: model gagal preflight. gpt-6-luna: ReadTimeout: HTTPSConnectionPool(host='router.octalabs.id', port=443): Read timed out. (read timeout=90)\nLangkah berikutnya: Endpoint tidak terjangkau/timeout. Periksa jaringan, DNS Docker, URL, dan TLS."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-fable-5-1",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-6",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-7",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\n\\\"\\\"\\\" For a given list of input numbers, calculate Mean Absolute Deviation\\n    around the mean of this dataset.\\n    Mean Absolute Deviation is the average absolute difference between each\\n    element and a centerpoint (mean in this case):\\n    MAD = average | x - x_mean |\\n    >>> mean_absolute_deviation([1.0, 2.0, 3.0, 4.0])\\n    1.0\\n    \\\"\\\"\\\"\\n    mean = sum(numbers) / len(numbers)\\n    return sum((abs(x - mean) for x in numbers)) / len(numbers)\\n```\"\n    },\n    {\n      \"content\": \"```python\\nimport pytest\\nfrom typing import List\\n\\n\\ndef mean_absolute_deviation(numbers: List[float]) -> float:\\n    \\\"\\\"\\\" For a given list of input numbers, calculate Mean Absolute Deviation\\n    around the mean of this dataset.\\n    Mean Absolute Deviation is the average absolute difference between each\\n    element and a centerpoint (mean in this case):\\n    MAD = average | x - x_mean |\\n    >>> mean_absolute_deviation([1.0, 2.0, 3.0, 4.0])\\n    1.0\\n    \\\"\\\"\\\"\\n    mean = sum(numbers) / len(numbers)\\n    return sum(abs(x - mean) for x in numbers) / len(numbers)\\n\\n\\ndef test_mad_basic():\\n    assert mean_absolute_deviation([1.0, 2.0, 3.0, 4.0]) == 1.0\\n\\n\\ndef test_mad_single_element():\\n    assert mean_absolute_deviation([5.0]) == 0.0\\n\\n\\ndef test_mad_identical_elements():\\n    assert mean_absolute_deviation([2.0, 2.0, 2.0]) == 0.0\\n\\n\\ndef test_mad_negative_and_positive():\\n    assert mean_absolute_deviation([-1.0, 1.0]) == 1.0\\n\\n\\ndef test_mad_empty_raises_zero_division():\\n    with pytest.raises(ZeroDivisionError):\\n        mean_absolute_deviation([])\\n```\",\n      \"role\": \"assistant\",\n      \"tool_calls\": null,\n      \"function_call\": null,\n      \"provider_specific_fields\": {\n        \"refusal\": null\n      }\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"The tests still lack coverage: lines 13-14 do not execute.\\nModify it to correct that; respond only with the complete Python code in backticks.\\nUse the get_info tool function as necessary.\\n\"\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"get_info\",\n        \"description\": \"Returns information about a symbol.\",\n        \"parameters\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"name\": {\n              \"type\": \"string\",\n              \"description\": \"class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C.\"\n     "
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-8",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\nmain/coverup/src/coverup/__main__.py --tests-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/4/tests /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/4/script_4.py --model openai/claude-opus-4-8 --checkpoint /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/4/coverup.checkpoint --log-file /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/4/coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3\n---- 2026-10-13T11:49:49 script_4.py:4-14 ----\n{\n  \"model\": \"openai/claude-opus-4-8\",\n  \"temperature\": 0,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"\\nYou are an expert Python test-driven developer.\\nThe code below, extracted from script_4.py, does not achieve full coverage:\\nwhen tested, lines 13-14 do not execute.\\nCreate new pytest test functions that execute all missing lines and branches, always making\\nsure that each test is correct and indeed improves coverage.\\nUse the get_info tool function as necessary.\\nAlways send entire Python test scripts when proposing a new test or correcting one you\\npreviously proposed.\\nBe sure to include assertions in the test that verify any applicable postconditions.\\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\\nWrite as little top-level code as possible, and in particular do not include any top-level code\\ncalling into pytest.main or the test itself.\\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\\n```python\\n            from typing import List\\n            def mean_absolute_deviation(numbers: List[float]) -> float:\\n                \\\"\\\"\\\" For a given list of input numbers, calculate Mean Absolute Deviation\\n                around the mean of this dataset.\\n                Mean Absolute Deviation is the average absolute difference between each\\n                element and a centerpoint (mean in this case):\\n                MAD = average | x - x_mean |\\n                >>> mean_absolute_deviation([1.0, 2.0, 3.0, 4.0])\\n                1.0\\n              "
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-5",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-sonnet-5",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.5",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-luna",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-sol",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-terra",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-astra",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-luna",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-sol",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6.1-sol",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\n\nLangkah berikutnya: Periksa detail provider, model, endpoint, credential, dan dependency."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-fable-5-1",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "INVALID_GENERATED_TEST",
+    "message": "RuntimeError: INVALID_GENERATED_TEST: suite utama CODAMOSA kosong/tidak valid. Artefak utama: test_script_4.py (no test functions (empty/comment-only suite)) *_failing.py hanya diagnostik dan tidak dinilai sebagai sukses: test_script_4_failing.py. Inspect /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/codamosa/claude-fable-5-1/HumanEval/4/docker.stdout.log\nLangkah berikutnya: Periksa detail provider, model, endpoint, credential, dan dependency."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-6",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "INVALID_GENERATED_TEST",
+    "message": "RuntimeError: INVALID_GENERATED_TEST: suite utama CODAMOSA kosong/tidak valid. Artefak utama: test_script_4.py (no test functions (empty/comment-only suite)) *_failing.py hanya diagnostik dan tidak dinilai sebagai sukses: test_script_4_failing.py. Inspect /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/codamosa/claude-opus-4-6/HumanEval/4/docker.stdout.log\nLangkah berikutnya: Periksa detail provider, model, endpoint, credential, dan dependency."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-7",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-8",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "INVALID_GENERATED_TEST",
+    "message": "RuntimeError: INVALID_GENERATED_TEST: suite utama CODAMOSA kosong/tidak valid. Artefak utama: test_script_4.py (no test functions (empty/comment-only suite)) *_failing.py hanya diagnostik dan tidak dinilai sebagai sukses: test_script_4_failing.py. Inspect /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/codamosa/claude-opus-4-8/HumanEval/4/docker.stdout.log\nLangkah berikutnya: Periksa detail provider, model, endpoint, credential, dan dependency."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-5",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-sonnet-5",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.5",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-luna",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-sol",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-terra",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-astra",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-sol",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6.1-sol",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-luna",
+    "dataset": "HumanEval",
+    "task": "4",
+    "status": "BLOCKED",
+    "message": "BLOCKED: model gagal preflight. gpt-6-luna: ReadTimeout: HTTPSConnectionPool(host='router.octalabs.id', port=443): Read timed out. (read timeout=90)\nLangkah berikutnya: Endpoint tidak terjangkau/timeout. Periksa jaringan, DNS Docker, URL, dan TLS."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-fable-5-1",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-6",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-7",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-8",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\n---- 2026-10-13T12:09:41 startup ----\nCommand: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/coverup/src/coverup/__main__.py --tests-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/8/tests /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/8/script_8.py --model openai/claude-opus-4-8 --checkpoint /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/8/coverup.checkpoint --log-file /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/8/coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3\n---- 2026-10-13T12:09:42 script_8.py:4-18 ----\n{\n  \"model\": \"openai/claude-opus-4-8\",\n  \"temperature\": 0,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"\\nYou are an expert Python test-driven developer.\\nThe code below, extracted from script_8.py, does not achieve full coverage:\\nwhen tested, lines 12-18 do not execute.\\nCreate new pytest test functions that execute all missing lines and branches, always making\\nsure that each test is correct and indeed improves coverage.\\nUse the get_info tool function as necessary.\\nAlways send entire Python test scripts when proposing a new test or correcting one you\\npreviously proposed.\\nBe sure to include assertions in the test that verify any applicable postconditions.\\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\\nWrite as little top-level code as possible, and in particular do not include any top-level code\\ncalling into pytest.main or the test itself.\\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\\n```python\\n            from typing import List, Tuple\\n            def sum_product(numbers: List[int]) -> Tuple[int, int]:\\n                \\\"\\\"\\\" For a given list of integers, return a tuple consisting of a sum and a product of all the integers in a list.\\n                Empty sum should be equal to 0 and empty product should be equal to 1.\\n                >>> sum_product([])\\n                (0, 1)\\n                >>> sum_product([1, 2, 3, 4])\\n             "
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-5",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\n---- 2026-10-13T12:11:19 startup ----\nCommand: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/coverup/src/coverup/__main__.py --tests-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-5/HumanEval/8/tests /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-5/HumanEval/8/script_8.py --model openai/claude-opus-5 --checkpoint /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-5/HumanEval/8/coverup.checkpoint --log-file /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-5/HumanEval/8/coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3\n---- 2026-10-13T12:11:19 script_8.py:4-18 ----\n{\n  \"model\": \"openai/claude-opus-5\",\n  \"temperature\": 0,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"\\nYou are an expert Python test-driven developer.\\nThe code below, extracted from script_8.py, does not achieve full coverage:\\nwhen tested, lines 12-18 do not execute.\\nCreate new pytest test functions that execute all missing lines and branches, always making\\nsure that each test is correct and indeed improves coverage.\\nUse the get_info tool function as necessary.\\nAlways send entire Python test scripts when proposing a new test or correcting one you\\npreviously proposed.\\nBe sure to include assertions in the test that verify any applicable postconditions.\\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\\nWrite as little top-level code as possible, and in particular do not include any top-level code\\ncalling into pytest.main or the test itself.\\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\\n```python\\n            from typing import List, Tuple\\n            def sum_product(numbers: List[int]) -> Tuple[int, int]:\\n                \\\"\\\"\\\" For a given list of integers, return a tuple consisting of a sum and a product of all the integers in a list.\\n                Empty sum should be equal to 0 and empty product should be equal to 1.\\n                >>> sum_product([])\\n                (0, 1)\\n                >>> sum_product([1, 2, 3, 4])\\n                (10, 24)\\"
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-sonnet-5",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\nting one you\\npreviously proposed.\\nBe sure to include assertions in the test that verify any applicable postconditions.\\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\\nWrite as little top-level code as possible, and in particular do not include any top-level code\\ncalling into pytest.main or the test itself.\\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\\n```python\\n            from typing import List, Tuple\\n            def sum_product(numbers: List[int]) -> Tuple[int, int]:\\n                \\\"\\\"\\\" For a given list of integers, return a tuple consisting of a sum and a product of all the integers in a list.\\n                Empty sum should be equal to 0 and empty product should be equal to 1.\\n                >>> sum_product([])\\n                (0, 1)\\n                >>> sum_product([1, 2, 3, 4])\\n                (10, 24)\\n                \\\"\\\"\\\"\\n        12:     sum_value = 0\\n        13:     prod_value = 1\\n            \\n        15:     for n in numbers:\\n        16:         sum_value += n\\n        17:         prod_value *= n\\n        18:     return sum_value, prod_value\\n\\n```\\n\"\n    },\n    {\n      \"content\": \"```python\\nimport pytest\\nfrom typing import List, Tuple\\n\\n\\ndef sum_product(numbers: List[int]) -> Tuple[int, int]:\\n    \\\"\\\"\\\" For a given list of integers, return a tuple consisting of a sum and a product of all the integers in a list.\\n    Empty sum should be equal to 0 and empty product should be equal to 1.\\n    >>> sum_product([])\\n    (0, 1)\\n    >>> sum_product([1, 2, 3, 4])\\n    (10, 24)\\n    \\\"\\\"\\\"\\n    sum_value = 0\\n    prod_value = 1\\n    \\n    for n in numbers:\\n        sum_value += n\\n        prod_value *= n\\n    return sum_value, prod_value\\n\\n\\ndef test_sum_product_empty_list():\\n    \\\"\\\"\\\"Test with empty list - should return (0, 1)\\\"\\\"\\\"\\n    result = sum_product([])\\n    assert result == (0, 1)\\n    assert result[0] == 0\\n    assert result[1] == 1\\n\\n\\ndef test_sum_product_single_element():\\n    \\\"\\\"\\\"Test with single element\\\"\\\"\\\"\\n    result = sum_product([5])\\n    assert result == (5, 5)\\n\\n\\ndef test_sum_product_multiple_elements():\\n    \\\"\\\"\\\"Test with multiple elements\\\"\\\"\\\"\\n    result = sum_product([1, 2, 3, 4])\\n    assert result == (10, 24)\\n\\n\\ndef test_sum_product_with_zero():\\n    \\\"\\\"\\\"Test wit"
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.5",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-luna",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-sol",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-terra",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-astra",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-luna",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-sol",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6.1-sol",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\n\nLangkah berikutnya: Periksa detail provider, model, endpoint, credential, dan dependency."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-fable-5-1",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-6",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-7",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-8",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-5",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-sonnet-5",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.5",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-luna",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-sol",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-terra",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-astra",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-sol",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6.1-sol",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-luna",
+    "dataset": "HumanEval",
+    "task": "8",
+    "status": "BLOCKED",
+    "message": "BLOCKED: model gagal preflight. gpt-6-luna: ReadTimeout: HTTPSConnectionPool(host='router.octalabs.id', port=443): Read timed out. (read timeout=90)\nLangkah berikutnya: Endpoint tidak terjangkau/timeout. Periksa jaringan, DNS Docker, URL, dan TLS."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-fable-5-1",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-6",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-7",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-8",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\n---- 2026-10-13T12:07:56 startup ----\nCommand: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/coverup/src/coverup/__main__.py --tests-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/6/tests /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/6/script_6.py --model openai/claude-opus-4-8 --checkpoint /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/6/coverup.checkpoint --log-file /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/6/coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3\n---- 2026-10-13T12:07:56 script_6.py:4-24 ----\n{\n  \"model\": \"openai/claude-opus-4-8\",\n  \"temperature\": 0,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"\\nYou are an expert Python test-driven developer.\\nThe code below, extracted from script_6.py, does not achieve full coverage:\\nwhen tested, lines 12-24 do not execute.\\nCreate new pytest test functions that execute all missing lines and branches, always making\\nsure that each test is correct and indeed improves coverage.\\nUse the get_info tool function as necessary.\\nAlways send entire Python test scripts when proposing a new test or correcting one you\\npreviously proposed.\\nBe sure to include assertions in the test that verify any applicable postconditions.\\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\\nWrite as little top-level code as possible, and in particular do not include any top-level code\\ncalling into pytest.main or the test itself.\\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\\n```python\\n            from typing import List\\n            def parse_nested_parens(paren_string: str) -> List[int]:\\n                \\\"\\\"\\\" Input to this function is a string represented multiple groups for nested parentheses separated by spaces.\\n                For each of the group, output the deepest level of nesting of parentheses.\\n                E.g. (()()) has maximum two levels of nesting while ((())) has three.\\n            \\n                >>> parse"
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-5",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\n()())')\\n                [2, 3, 1, 3]\\n                \\\"\\\"\\\"\\n        12:     def parse_paren_group(s):\\n        13:         depth = 0\\n        14:         max_depth = 0\\n        15:         for c in s:\\n        16:             if c == '(':\\n        17:                 depth += 1\\n        18:                 max_depth = max(depth, max_depth)\\n                        else:\\n        20:                 depth -= 1\\n            \\n        22:         return max_depth\\n            \\n        24:     return [parse_paren_group(x) for x in paren_string.split(' ') if x]\\n\\n```\\n\"\n    },\n    {\n      \"content\": \"```python\\nimport pytest\\nfrom script_6 import parse_nested_parens\\n\\n\\ndef test_parse_nested_parens_single_group_simple():\\n    \\\"\\\"\\\"Test a single group with simple nesting\\\"\\\"\\\"\\n    result = parse_nested_parens('()')\\n    assert result == [1]\\n\\n\\ndef test_parse_nested_parens_single_group_nested():\\n    \\\"\\\"\\\"Test a single group with deeper nesting\\\"\\\"\\\"\\n    result = parse_nested_parens('(()())')\\n    assert result == [2]\\n\\n\\ndef test_parse_nested_parens_single_group_deep():\\n    \\\"\\\"\\\"Test a single group with maximum depth of 3\\\"\\\"\\\"\\n    result = parse_nested_parens('((()))')\\n    assert result == [3]\\n\\n\\ndef test_parse_nested_parens_multiple_groups():\\n    \\\"\\\"\\\"Test multiple groups separated by spaces\\\"\\\"\\\"\\n    result = parse_nested_parens('(()()) ((())) () ((())()())')\\n    assert result == [2, 3, 1, 3]\\n\\n\\ndef test_parse_nested_parens_empty_string():\\n    \\\"\\\"\\\"Test empty string returns empty list\\\"\\\"\\\"\\n    result = parse_nested_parens('')\\n    assert result == []\\n\\n\\ndef test_parse_nested_parens_single_empty_group():\\n    \\\"\\\"\\\"Test single empty parentheses group\\\"\\\"\\\"\\n    result = parse_nested_parens('()')\\n    assert result == [1]\\n\\n\\ndef test_parse_nested_parens_multiple_spaces():\\n    \\\"\\\"\\\"Test groups with multiple spaces between them\\\"\\\"\\\"\\n    result = parse_nested_parens('(())  (())')\\n    assert result == [2, 2]\\n\\n\\ndef test_parse_nested_parens_complex_nesting():\\n    \\\"\\\"\\\"Test complex nesting patterns\\\"\\\"\\\"\\n    result = parse_nested_parens('((()()))')\\n    assert result == [4]\\n\\n\\ndef test_parse_nested_parens_single_level():\\n    \\\"\\\"\\\"Test groups with only single level\\\"\\\"\\\"\\n    result = parse_nested_parens('() () ()')\\n    assert result == [1, 1, 1]\\n\\n\\ndef test_parse_nested_parens_mixed_depths():\\n    \\\"\\\"\\\"Test mixed depth levels\\\""
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-sonnet-5",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.5",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-luna",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-sol",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-terra",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-astra",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-luna",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-sol",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6.1-sol",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\n\nLangkah berikutnya: Periksa detail provider, model, endpoint, credential, dan dependency."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-fable-5-1",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-6",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-7",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-8",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-5",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-sonnet-5",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.5",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-luna",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-sol",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-terra",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-astra",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-sol",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6.1-sol",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-luna",
+    "dataset": "HumanEval",
+    "task": "6",
+    "status": "BLOCKED",
+    "message": "BLOCKED: model gagal preflight. gpt-6-luna: ReadTimeout: HTTPSConnectionPool(host='router.octalabs.id', port=443): Read timed out. (read timeout=90)\nLangkah berikutnya: Endpoint tidak terjangkau/timeout. Periksa jaringan, DNS Docker, URL, dan TLS."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-fable-5-1",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-6",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-7",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-8",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\n---- 2026-10-13T12:07:59 startup ----\nCommand: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/coverup/src/coverup/__main__.py --tests-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/7/tests /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/7/script_7.py --model openai/claude-opus-4-8 --checkpoint /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/7/coverup.checkpoint --log-file /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-4-8/HumanEval/7/coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3\n---- 2026-10-13T12:08:00 script_7.py:4-11 ----\n{\n  \"model\": \"openai/claude-opus-4-8\",\n  \"temperature\": 0,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"\\nYou are an expert Python test-driven developer.\\nThe code below, extracted from script_7.py, does not achieve full coverage:\\nwhen tested, line 11 does not execute.\\nCreate new pytest test functions that execute all missing lines and branches, always making\\nsure that each test is correct and indeed improves coverage.\\nUse the get_info tool function as necessary.\\nAlways send entire Python test scripts when proposing a new test or correcting one you\\npreviously proposed.\\nBe sure to include assertions in the test that verify any applicable postconditions.\\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\\nWrite as little top-level code as possible, and in particular do not include any top-level code\\ncalling into pytest.main or the test itself.\\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\\n```python\\n            from typing import List\\n            def filter_by_substring(strings: List[str], substring: str) -> List[str]:\\n                \\\"\\\"\\\" Filter an input list of strings only for ones that contain given substring\\n                >>> filter_by_substring([], 'a')\\n                []\\n                >>> filter_by_substring(['abc', 'bacd', 'cde', 'array'], 'a')\\n                ['abc', 'bacd', 'array']\\n                \\\"\\\"\\\"\\n        11:     retu"
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-5",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\n---- 2026-10-13T12:10:41 startup ----\nCommand: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/coverup/src/coverup/__main__.py --tests-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-5/HumanEval/7/tests /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-5/HumanEval/7/script_7.py --model openai/claude-opus-5 --checkpoint /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-5/HumanEval/7/coverup.checkpoint --log-file /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/coverup/openai_claude-opus-5/HumanEval/7/coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3\n---- 2026-10-13T12:10:41 script_7.py:4-11 ----\n{\n  \"model\": \"openai/claude-opus-5\",\n  \"temperature\": 0,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"\\nYou are an expert Python test-driven developer.\\nThe code below, extracted from script_7.py, does not achieve full coverage:\\nwhen tested, line 11 does not execute.\\nCreate new pytest test functions that execute all missing lines and branches, always making\\nsure that each test is correct and indeed improves coverage.\\nUse the get_info tool function as necessary.\\nAlways send entire Python test scripts when proposing a new test or correcting one you\\npreviously proposed.\\nBe sure to include assertions in the test that verify any applicable postconditions.\\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\\nWrite as little top-level code as possible, and in particular do not include any top-level code\\ncalling into pytest.main or the test itself.\\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\\n```python\\n            from typing import List\\n            def filter_by_substring(strings: List[str], substring: str) -> List[str]:\\n                \\\"\\\"\\\" Filter an input list of strings only for ones that contain given substring\\n                >>> filter_by_substring([], 'a')\\n                []\\n                >>> filter_by_substring(['abc', 'bacd', 'cde', 'array'], 'a')\\n                ['abc', 'bacd', 'array']\\n                \\\"\\\"\\\"\\n        11:     return [x for x "
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-sonnet-5",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.5",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-luna",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-sol",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-terra",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-astra",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-luna",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-sol",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6.1-sol",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\n\nLangkah berikutnya: Periksa detail provider, model, endpoint, credential, dan dependency."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-fable-5-1",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-6",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-7",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-8",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-5",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-sonnet-5",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.5",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-luna",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-sol",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-terra",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-astra",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-sol",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6.1-sol",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-luna",
+    "dataset": "HumanEval",
+    "task": "7",
+    "status": "BLOCKED",
+    "message": "BLOCKED: model gagal preflight. gpt-6-luna: ReadTimeout: HTTPSConnectionPool(host='router.octalabs.id', port=443): Read timed out. (read timeout=90)\nLangkah berikutnya: Endpoint tidak terjangkau/timeout. Periksa jaringan, DNS Docker, URL, dan TLS."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-fable-5-1",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-6",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-7",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-4-8",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\ntop-level code\\ncalling into pytest.main or the test itself.\\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\\n```python\\n            from typing import List\\n            def rolling_max(numbers: List[int]) -> List[int]:\\n                \\\"\\\"\\\" From a given list of integers, generate a list of rolling maximum element found until given moment\\n                in the sequence.\\n                >>> rolling_max([1, 2, 3, 2, 3, 4, 2])\\n                [1, 2, 3, 3, 3, 4, 4]\\n                \\\"\\\"\\\"\\n        10:     running_max = None\\n        11:     result = []\\n            \\n        13:     for n in numbers:\\n        14:         if running_max is None:\\n        15:             running_max = n\\n                    else:\\n        17:             running_max = max(running_max, n)\\n            \\n        19:         result.append(running_max)\\n            \\n        21:     return result\\n\\n```\\n\"\n    },\n    {\n      \"content\": \"```python\\nimport pytest\\nfrom typing import List\\n\\ndef rolling_max(numbers: List[int]) -> List[int]:\\n    \\\"\\\"\\\" From a given list of integers, generate a list of rolling maximum element found until given moment\\n    in the sequence.\\n    >>> rolling_max([1, 2, 3, 2, 3, 4, 2])\\n    [1, 2, 3, 3, 3, 4, 4]\\n    \\\"\\\"\\\"\\n    running_max = None\\n    result = []\\n    \\n    for n in numbers:\\n        if running_max is None:\\n            running_max = n\\n        else:\\n            running_max = max(running_max, n)\\n        \\n        result.append(running_max)\\n        \\n    return result\\n\\n\\ndef test_rolling_max_single_element():\\n    \\\"\\\"\\\"Test rolling_max with a single element.\\\"\\\"\\\"\\n    result = rolling_max([5])\\n    assert result == [5]\\n\\n\\ndef test_rolling_max_increasing_sequence():\\n    \\\"\\\"\\\"Test rolling_max with an increasing sequence.\\\"\\\"\\\"\\n    result = rolling_max([1, 2, 3, 4, 5])\\n    assert result == [1, 2, 3, 4, 5]\\n\\n\\ndef test_rolling_max_decreasing_sequence():\\n    \\\"\\\"\\\"Test rolling_max with a decreasing sequence.\\\"\\\"\\\"\\n    result = rolling_max([5, 4, 3, 2, 1])\\n    assert result == [5, 5, 5, 5, 5]\\n\\n\\ndef test_rolling_max_mixed_sequence():\\n    \\\"\\\"\\\"Test rolling_max with a mixed sequence - the docstring example.\\\"\\\"\\\"\\n    result = rolling_max([1, 2, 3, 2, 3, 4, 2])\\n    assert result == [1, 2, 3, 3, 3, 4, 4]\\n\\n\\ndef test_rolling_max_with_negative_numbers():\\n    \\\"\\\"\\\"Test rolling_max with negative nu"
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-opus-5",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/claude-sonnet-5",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.5",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-luna",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-sol",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-5.6-terra",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-astra",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-luna",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6-sol",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CoverUp",
+    "model": "openai/gpt-6.1-sol",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "BLOCKED",
+    "message": "RuntimeError: CoverUp tidak menghasilkan test setelah generator berhenti. Log run terbaru:\n\nLangkah berikutnya: Periksa detail provider, model, endpoint, credential, dan dependency."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-fable-5-1",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-6",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-7",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "INVALID_GENERATED_TEST",
+    "message": "RuntimeError: INVALID_GENERATED_TEST: suite utama CODAMOSA kosong/tidak valid. Artefak utama: test_script_9.py (no test functions (empty/comment-only suite)) *_failing.py hanya diagnostik dan tidak dinilai sebagai sukses: test_script_9_failing.py. Inspect /home/masoyi/Teori-dalam-pengujian-perangkat-lunak-main/experiment_results/work/codamosa/claude-opus-4-7/HumanEval/9/docker.stdout.log\nLangkah berikutnya: Periksa detail provider, model, endpoint, credential, dan dependency."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-4-8",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-opus-5",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "claude-sonnet-5",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.5",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-luna",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-sol",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-5.6-terra",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-astra",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-sol",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6.1-sol",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "OK",
+    "message": "Generation and evaluation completed."
+  },
+  {
+    "method": "CODAMOSA",
+    "model": "gpt-6-luna",
+    "dataset": "HumanEval",
+    "task": "9",
+    "status": "BLOCKED",
+    "message": "BLOCKED: model gagal preflight. gpt-6-luna: ReadTimeout: HTTPSConnectionPool(host='router.octalabs.id', port=443): Read timed out. (read timeout=90)\nLangkah berikutnya: Endpoint tidak terjangkau/timeout. Periksa jaringan, DNS Docker, URL, dan TLS."
   }
 ]

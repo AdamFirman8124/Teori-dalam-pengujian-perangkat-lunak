@@ -1,0 +1,13 @@
+# file: script_9.py:4-21
+# asked: {"lines": [10, 11, 13, 14, 15, 17, 19, 21], "branches": [[13, 14], [13, 21], [14, 15], [14, 17]]}
+# gained: {"lines": [10, 11, 13, 14, 15, 17, 19, 21], "branches": [[13, 14], [13, 21], [14, 15], [14, 17]]}
+
+from script_9 import rolling_max
+
+
+def test_rolling_max_empty_list():
+    assert rolling_max([]) == []
+
+
+def test_rolling_max_tracks_increasing_and_decreasing_values():
+    assert rolling_max([3, 1, 4, 2, 5]) == [3, 3, 4, 4, 5]
