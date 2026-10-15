@@ -5,23 +5,18 @@
 from script_7 import filter_by_substring
 
 
-def test_filter_by_substring_returns_matching_strings():
+def test_filter_by_substring_matches_and_excludes_strings():
     strings = ["abc", "bacd", "cde", "array"]
 
     result = filter_by_substring(strings, "a")
 
     assert result == ["abc", "bacd", "array"]
+    assert strings == ["abc", "bacd", "cde", "array"]
 
 
-def test_filter_by_substring_returns_empty_for_empty_input():
-    result = filter_by_substring([], "a")
-
-    assert result == []
+def test_filter_by_substring_with_empty_input():
+    assert filter_by_substring([], "a") == []
 
 
-def test_filter_by_substring_returns_empty_when_no_strings_match():
-    strings = ["abc", "bacd", "cde"]
-
-    result = filter_by_substring(strings, "z")
-
-    assert result == []
+def test_filter_by_substring_with_no_matches():
+    assert filter_by_substring(["abc", "def"], "z") == []

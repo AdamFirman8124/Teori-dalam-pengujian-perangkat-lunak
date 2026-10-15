@@ -9,22 +9,9 @@ def test_case_0():
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
 
 def test_case_1():
-    int_0 = None
-    list_0 = [int_0]
-    int_1 = 272
+    int_0 = 4
+    list_0 = [int_0, int_0, int_0]
+    int_1 = -1874
     list_1 = module_0.intersperse(list_0, int_1)
-    assert list_1 == [None]
+    assert list_1 == [4, -1874, 4, -1874, 4]
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-
-def test_case_2():
-    int_0 = None
-    int_1 = 719
-    list_0 = [int_1, int_0]
-    int_2 = 263
-    list_1 = module_0.intersperse(list_0, int_2)
-    assert list_1 == [719, 263, None]
-    assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    list_2 = [int_0]
-    int_3 = 272
-    list_3 = module_0.intersperse(list_2, int_3)
-    assert list_3 == [None]

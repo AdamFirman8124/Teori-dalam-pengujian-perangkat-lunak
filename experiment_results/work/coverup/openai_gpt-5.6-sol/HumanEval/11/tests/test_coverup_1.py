@@ -5,11 +5,9 @@
 from script_11 import string_xor
 
 
-def test_string_xor_returns_zero_for_equal_bits():
-    assert string_xor("000", "000") == "000"
-    assert string_xor("111", "111") == "000"
-
-
-def test_string_xor_returns_one_for_different_bits():
+def test_string_xor_executes_equal_and_different_bit_branches():
     assert string_xor("010", "110") == "100"
-    assert string_xor("01", "10") == "11"
+
+
+def test_string_xor_zips_only_to_shortest_input():
+    assert string_xor("1011", "10") == "00"

@@ -6,3 +6,11 @@ def test_case_0():
     tuple_0 = module_0.sum_product(var_0)
     assert tuple_0 == (0, 1)
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
+
+def test_case_1():
+    int_0 = 1553
+    int_1 = 1323
+    list_0 = [int_0, int_0, int_1, int_0]
+    tuple_0 = module_0.sum_product(list_0)
+    assert tuple_0 == (5982, 4955348595771)
+    assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}

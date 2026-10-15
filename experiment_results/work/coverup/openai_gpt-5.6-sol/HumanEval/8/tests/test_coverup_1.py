@@ -2,21 +2,16 @@
 # asked: {"lines": [12, 13, 15, 16, 17, 18], "branches": [[15, 16], [15, 18]]}
 # gained: {"lines": [12, 13, 15, 16, 17, 18], "branches": [[15, 16], [15, 18]]}
 
-import pytest
-
 from script_8 import sum_product
 
 
-@pytest.mark.parametrize(
-    ("numbers", "expected"),
-    [
-        ([], (0, 1)),
-        ([1, 2, 3, 4], (10, 24)),
-        ([-2, 0, 5], (3, 0)),
-    ],
-)
-def test_sum_product(numbers, expected):
-    original_numbers = numbers.copy()
+def test_sum_product_empty_list():
+    assert sum_product([]) == (0, 1)
 
-    assert sum_product(numbers) == expected
-    assert numbers == original_numbers
+
+def test_sum_product_multiple_integers():
+    assert sum_product([1, 2, 3, 4]) == (10, 24)
+
+
+def test_sum_product_with_zero_and_negative_integers():
+    assert sum_product([-2, 0, 3]) == (1, 0)

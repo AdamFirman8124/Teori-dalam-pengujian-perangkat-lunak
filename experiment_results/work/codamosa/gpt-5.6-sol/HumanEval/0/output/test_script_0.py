@@ -12,14 +12,12 @@ def test_case_0():
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
 
 def test_case_1():
-    float_0 = 2.0
-    float_1 = 3.0
-    float_2 = [float_1, float_0, float_1]
-    float_3 = 0.5
-    list_0 = [float_1, float_3, float_3, float_2]
-    bool_0 = module_0.has_close_elements(list_0, float_1)
+    float_0 = 1.0
+    float_1 = 2.0
+    float_2 = 0.5
+    float_3 = 2102.88
+    float_4 = 1.0
+    list_0 = [float_0, float_3, float_4, float_1]
+    bool_0 = module_0.has_close_elements(list_0, float_2)
     assert bool_0 is True
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    bool_1 = module_0.has_close_elements(float_2, float_3)
-    assert bool_1 is False
-    assert bool_1 is True

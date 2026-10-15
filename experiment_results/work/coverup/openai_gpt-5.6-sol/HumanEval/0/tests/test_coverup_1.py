@@ -5,17 +5,18 @@
 from script_0 import has_close_elements
 
 
+def test_has_close_elements_finds_close_pair():
+    assert has_close_elements([1.0, 2.8, 3.0, 4.0], 0.3) is True
+
+
 def test_has_close_elements_returns_false_when_no_pair_is_close():
-    numbers = [1.0, 2.0, 3.0]
-
-    result = has_close_elements(numbers, 0.5)
-
-    assert result is False
+    assert has_close_elements([1.0, 2.0, 3.0], 0.5) is False
 
 
-def test_has_close_elements_returns_true_for_a_close_pair():
-    numbers = [1.0, 2.8, 3.0, 4.0, 5.0, 2.0]
+def test_has_close_elements_excludes_same_element_and_threshold_equality():
+    assert has_close_elements([1.0], 0.1) is False
+    assert has_close_elements([1.0, 1.5], 0.5) is False
 
-    result = has_close_elements(numbers, 0.3)
 
-    assert result is True
+def test_has_close_elements_handles_empty_list():
+    assert has_close_elements([], 1.0) is False

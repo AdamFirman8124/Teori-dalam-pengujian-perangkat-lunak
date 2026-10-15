@@ -5,7 +5,16 @@
 from script_9 import rolling_max
 
 
-def test_rolling_max_updates_running_max_and_preserves_it():
+def test_rolling_max_empty_list():
+    numbers = []
+
+    result = rolling_max(numbers)
+
+    assert result == []
+    assert numbers == []
+
+
+def test_rolling_max_increasing_and_decreasing_values():
     numbers = [1, 2, 3, 2, 3, 4, 2]
 
     result = rolling_max(numbers)
@@ -14,5 +23,10 @@ def test_rolling_max_updates_running_max_and_preserves_it():
     assert numbers == [1, 2, 3, 2, 3, 4, 2]
 
 
-def test_rolling_max_returns_empty_list_for_empty_input():
-    assert rolling_max([]) == []
+def test_rolling_max_with_negative_values():
+    numbers = [-3, -5, -2, -2, -4]
+
+    result = rolling_max(numbers)
+
+    assert result == [-3, -3, -2, -2, -2]
+    assert numbers == [-3, -5, -2, -2, -4]

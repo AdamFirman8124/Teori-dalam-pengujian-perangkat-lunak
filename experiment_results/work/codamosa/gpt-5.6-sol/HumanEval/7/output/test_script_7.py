@@ -8,30 +8,9 @@ def test_case_0():
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
 
 def test_case_1():
-    str_0 = 'a'
-    list_0 = [str_0, str_0]
-    str_1 = '|aqB|K40Wj,|%*]lY'
-    list_1 = module_0.filter_by_substring(list_0, str_1)
-    assert list_1 == []
-    assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-
-def test_case_2():
-    str_0 = 'L'
-    str_1 = 'soA\t6#(Bv$dLw'
-    str_2 = 'dC0\\Q`8,%U:'
-    list_0 = [str_0, str_1, str_2]
+    str_0 = ',Wd[z+M'
+    str_1 = "|p`CB \ry?'"
+    list_0 = [str_0, str_0, str_1, str_1]
     list_1 = module_0.filter_by_substring(list_0, str_0)
-    assert list_1 == ['L', 'soA\t6#(Bv$dLw']
+    assert list_1 == [',Wd[z+M', ',Wd[z+M']
     assert module_0.METADATA == {'author': 'jt', 'dataset': 'test'}
-    str_3 = 'FYL%)}AI@m>\\/t;SB+\x0cc'
-    str_4 = "c:Qv\t10o1@'b$="
-    str_5 = ';!m#MxmJ-{k\x0cRBa$'
-    list_2 = [str_3, str_5]
-    str_6 = '&DD6\\B"k_=s'
-    list_3 = module_0.filter_by_substring(list_2, str_6)
-    assert list_3 == []
-    str_7 = '$lE4aS+[}7<UTvdHgTJ8'
-    list_4 = [str_4, str_7, str_7]
-    str_8 = '#r9YwP'
-    list_5 = module_0.filter_by_substring(list_4, str_8)
-    assert list_5 == []
