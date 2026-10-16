@@ -722,8 +722,15 @@ class CoverupRun:
 
 
 def run_coverup(put: Path, tests_dir: Path, workdir: Path, model: str = "gpt-4o",
-                timeout: int = 900, extra: T.Sequence[str] = ()) -> CoverupRun:
-    """Run CoverUp from scratch over `put`, returning wall time and native cost."""
+                timeout: int = 900, extra: T.Sequence[str] = (),
+                llm_calls_log: T.Optional[Path] = None) -> CoverupRun:
+    """Run CoverUp from scratch over `put`, returning wall time and native cost.
+
+    When `llm_calls_log` is given, the per-call LLM logger inside CoverUp
+    (waktu/prompt/output/token/cost per request) writes one JSON line per
+    provider round-trip to that path.  Passed explicitly through the child's
+    environment so parallel task workers cannot mix each other's logs.
+    """
     # CoverUp resolves --tests-dir/--source against its own cwd, so everything
     # handed to it must be absolute.
     workdir = Path(workdir).resolve()
@@ -758,6 +765,14 @@ def run_coverup(put: Path, tests_dir: Path, workdir: Path, model: str = "gpt-4o"
         pythonpath.append(existing_pythonpath)
     env = dict(os.environ, PYTHONPATH=os.pathsep.join(pythonpath), NO_COLOR="1",
                PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
+    if llm_calls_log is not None:
+        llm_calls_log = Path(llm_calls_log)
+        llm_calls_log.parent.mkdir(parents=True, exist_ok=True)
+        if llm_calls_log.exists():
+            llm_calls_log.unlink()
+        # Explicit child env (not os.environ) so ThreadPoolExecutor workers
+        # running tasks in parallel never clobber each other's log path.
+        env["COVERUP_LLM_CALLS_LOG"] = str(llm_calls_log.resolve())
     r = CoverupRun()
     log_path = workdir / "coverup.log"
     log_start = log_path.stat().st_size if log_path.exists() else 0

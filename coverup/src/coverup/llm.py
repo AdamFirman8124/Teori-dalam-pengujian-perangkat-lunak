@@ -5,6 +5,7 @@ import asyncio
 import warnings
 import textwrap
 import json
+import time
 import traceback
 import os
 from aiolimiter import AsyncLimiter
@@ -116,6 +117,30 @@ def count_tokens(model_name: str, completion: dict):
 
 class ChatterError(Exception):
     pass
+
+# --------------------------------------------------------------------------- #
+# Per-call LLM accounting
+# --------------------------------------------------------------------------- #
+# Every provider round-trip appends one JSON line to this file so the experiment
+# can report, per call: wall time, prompt text + prompt tokens, output text +
+# completion tokens, and cost in USD.  The path comes from
+# COVERUP_LLM_CALLS_LOG, which the experiment notebook sets per task/model.
+def _llm_calls_log(entry: dict) -> None:
+    """Append one per-call record. Never raises: logging is best-effort.
+
+    The path is resolved absolutely on first use: CoverUp may run with its
+    working directory set to a task workdir while `COVERUP_LLM_CALLS_LOG` was
+    written from the notebook's cwd, so a relative path would land elsewhere.
+    """
+    path = os.environ.get("COVERUP_LLM_CALLS_LOG", "")
+    if not path:
+        return
+    try:
+        with open(os.path.abspath(path), "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    except OSError:
+        pass
+
 
 class Chatter:
     """Chats with an LLM."""
@@ -392,6 +417,7 @@ args:{args}
             request = self._request(messages)
             self._log_json(ctx, request)
 
+            _req_t0 = time.time()
             if not (response := await self._send_request(request, ctx=ctx)):
                 return None
 
@@ -401,6 +427,41 @@ args:{args}
             except Exception:
                 # Custom models may not be in LiteLLM cost map; skip cost tracking
                 pass
+
+            # Per-call LLM accounting (time, prompt, tokens, output, cost).
+            try:
+                usage = getattr(response, "usage", None)
+                pt = int(getattr(usage, "prompt_tokens", 0) or 0)
+                ct = int(getattr(usage, "completion_tokens", 0) or 0)
+                tt = int(getattr(usage, "total_tokens", 0) or pt + ct)
+                try:
+                    call_cost = float(litellm.completion_cost(response))
+                except Exception:
+                    call_cost = None
+                choice = response.choices[0] if getattr(response, "choices", None) else None
+                out_text = ""
+                if choice is not None:
+                    msg = getattr(choice, "message", None)
+                    out_text = (getattr(msg, "content", None) or "")
+                    for tc in (getattr(msg, "tool_calls", None) or []):
+                        out_text += "\n[tool_call] " + getattr(getattr(tc, "function", None), "name", "?") + "(" + str(getattr(getattr(tc, "function", None), "arguments", "")) + ")"
+                _llm_calls_log({
+                    "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                    "latency_s": round(time.time() - _req_t0, 3),
+                    "model": self._model,
+                    "prompt": "\n".join(
+                        (m.get("content") or "") if isinstance(m, dict) else str(m)
+                        for m in messages
+                    ),
+                    "prompt_tokens": pt,
+                    "output": out_text,
+                    "completion_tokens": ct,
+                    "total_tokens": tt,
+                    "cost_usd": call_cost,
+                    "finish_reason": getattr(choice, "finish_reason", None),
+                })
+            except Exception:
+                pass  # logging must never break the run
 
             # Accumulate token usage when the provider reports it.
             usage = getattr(response, "usage", None)

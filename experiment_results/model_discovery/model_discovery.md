@@ -1,6 +1,6 @@
 # Model Discovery Report
 
-- **Run time (UTC):** 2026-10-15T13:29:30Z
+- **Run time (UTC):** 2026-10-16T11:11:48Z
 - **Provider:** https://router.octalabs.id/v1
 - **Models endpoint:** https://router.octalabs.id/v1/models
 - **Models listed:** 55

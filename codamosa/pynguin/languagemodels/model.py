@@ -35,6 +35,40 @@ from pynguin.utils.statistics.runtimevariable import RuntimeVariable
 logger = logging.getLogger(__name__)
 
 
+# --------------------------------------------------------------------------- #
+# Per-call LLM accounting
+# --------------------------------------------------------------------------- #
+# Every provider round-trip appends one JSON line to this file so the experiment
+# can report, per call: wall time, prompt text + prompt tokens, output text +
+# completion tokens, and cost in USD.  The path comes from
+# CODAMOSA_LLM_CALLS_LOG, which the experiment notebook sets per task/model.
+def _llm_calls_log(entry: dict) -> None:
+    """Append one per-call record. Never raises: logging is best-effort.
+
+    Resolves the path absolutely so a task workdir change cannot divert it.
+    """
+    path = os.environ.get("CODAMOSA_LLM_CALLS_LOG", "")
+    if not path:
+        return
+    try:
+        with open(os.path.abspath(path), "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    except OSError:
+        pass
+
+
+def _extract_output_text(body: dict) -> str:
+    """Best-effort text of a completion response across chat/legacy shapes."""
+    try:
+        choice = (body.get("choices") or [{}])[0]
+    except AttributeError:
+        return ""
+    message = choice.get("message")
+    if isinstance(message, dict) and message.get("content") is not None:
+        return str(message["content"])
+    return str(choice.get("text", "") or "")
+
+
 def approx_number_tokens(line: str):
     """
     We want to estimate the number of tokens in a line of code.
@@ -169,6 +203,12 @@ class _OpenAILanguageModel:
         self.completion_tokens: int = 0
         self.total_tokens: int = 0
         self.usage_reported: int = 0
+        # Per-call values for the most recent provider round-trip (used by the
+        # per-call LLM accounting log; not accumulated).
+        self._last_prompt_tokens: int = 0
+        self._last_completion_tokens: int = 0
+        self._last_total_tokens: int = 0
+        self._last_cost_usd: float | None = None
 
     @property
     def temperature(self) -> float:
@@ -427,27 +467,77 @@ class _OpenAILanguageModel:
                 detail = res.text[:1000]
             logger.error("Failed to call for completion:\n%s", detail)
             logger.error(self.complete_model)
+            _llm_calls_log({
+                "ts": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "latency_s": round(time.time() - time_start, 3),
+                "model": self.complete_model,
+                "prompt": self._prompt_text(payload),
+                "prompt_tokens": 0,
+                "output": "",
+                "completion_tokens": 0,
+                "total_tokens": 0,
+                "cost_usd": None,
+                "status_code": res.status_code,
+                "error": str(detail)[:2000],
+            })
             return ""
         self._record_usage(res)
-        return _completion_text(res.json())
+        body = res.json()
+        _llm_calls_log({
+            "ts": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "latency_s": round(time.time() - time_start, 3),
+            "model": self.complete_model,
+            "prompt": self._prompt_text(payload),
+            "prompt_tokens": self._last_prompt_tokens,
+            "output": _extract_output_text(body),
+            "completion_tokens": self._last_completion_tokens,
+            "total_tokens": self._last_total_tokens,
+            "cost_usd": self._last_cost_usd,
+            "status_code": res.status_code,
+        })
+        return _completion_text(body)
+
+    @staticmethod
+    def _prompt_text(payload: dict) -> str:
+        """Reconstruct the prompt/context sent to the provider for logging."""
+        if "messages" in payload:
+            return "\n".join(
+                str(m.get("content", "")) for m in payload.get("messages") or []
+            )
+        return str(payload.get("input", "") or payload.get("prompt", ""))
 
     def _record_usage(self, res: "requests.Response") -> None:
         """Accumulate token usage reported by the provider, when present.
 
         The OpenAI-compatible router may include a ``usage`` object. Providers
         that omit it leave the counters untouched so callers can tell measured
-        usage apart from missing data.
+        usage apart from missing data.  Per-call values are also stashed so the
+        per-call LLM log can include them.
         """
+        self._last_prompt_tokens = 0
+        self._last_completion_tokens = 0
+        self._last_total_tokens = 0
+        self._last_cost_usd = None
         try:
             usage = res.json().get("usage")
         except ValueError:
             return
         if not isinstance(usage, dict):
             return
-        self.prompt_tokens += int(usage.get("prompt_tokens") or 0)
-        self.completion_tokens += int(usage.get("completion_tokens") or 0)
-        self.total_tokens += int(usage.get("total_tokens") or 0)
+        self._last_prompt_tokens = int(usage.get("prompt_tokens") or 0)
+        self._last_completion_tokens = int(usage.get("completion_tokens") or 0)
+        self._last_total_tokens = int(usage.get("total_tokens") or 0)
+        self.prompt_tokens += self._last_prompt_tokens
+        self.completion_tokens += self._last_completion_tokens
+        self.total_tokens += self._last_total_tokens
         self.usage_reported += 1
+        # Cost: from the router's own price fields if present, otherwise zero
+        # (the notebook fills in a computed value from the pricing table).
+        price = usage.get("total_cost") or usage.get("cost")
+        try:
+            self._last_cost_usd = float(price) if price is not None else None
+        except (TypeError, ValueError):
+            self._last_cost_usd = None
 
     def _get_num_tokens_at_line(self, line_num: int) -> int:
         """Get the approximate number of tokens for the source file at line_num.
