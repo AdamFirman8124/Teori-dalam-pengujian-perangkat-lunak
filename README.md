@@ -55,12 +55,15 @@ jadi, kita koreksi:
 
    | Cell | Apa yang dilakukan | Butuh internet? |
    |---|---|---|
-   | 1–2 | Cek dependency + konfigurasi | Tidak |
+   | 1 | Setup: dependency, konfigurasi, path hasil | Tidak |
+   | 2 | **Kesiapan device**: CPU/RAM/disk, WSL, jam, Docker | Ya (cek jam, 1 request kecil) |
    | 3 | Tanya provider: model apa yang tersedia (hanya `gpt-5.6-sol`) | Ya, 1 request kecil |
-   | 5 | Cek tiap model bisa merespons + cek Docker | Ya, beberapa request kecil |
-   | 6 | Cek/bangun image Docker CodaMOSA | Tidak (lokal) |
-   | 8 | **Inti**: buat test + evaluasi semua task | Ya, banyak request |
-   | 10+ | Simpan hasil, grafik, tabel RQ | Tidak |
+   | 4 | Cek tiap model bisa merespons | Ya, beberapa request kecil |
+   | 5 | Cek/bangun image Docker CodaMOSA | Tidak (lokal) |
+   | 6 | **Inti**: buat test + evaluasi semua task | Ya, banyak request |
+   | 7 | Simpan hasil (finalize + manifest) | Tidak |
+   | 8 | Grafik `comparison.png` + ringkasan | Tidak |
+   | 9 | Verifikasi pasca-run + tabel RQ (`tools/post_run.py`) | Tidak |
 
 5. **Lihat hasilnya** di folder `experiment_results/`:
 
@@ -103,8 +106,126 @@ ulang cell 1→8 akan melanjutkan dari yang sudah selesai.
 
 **Kenapa CPU terlihat cuma ~12%?**
 Monitor menghitung seluruh 12 thread sebagai 100%. Dua container CodaMOSA yang
-berjalan penuh memakai ~2 core (≈17% dari total). Ini disengaja
-(`TASK_WORKERS=2`) agar desktop/VS Code tetap responsif dan tidak crash.
+berjalan penuh memakai ~2 core (≈17% dari total). Untuk memakai lebih banyak,
+set `AUTO_SCALE=1` — cell kesiapan menaikkan beban otomatis. Jaga
+`CPU_RESERVED_THREADS >= 2` bila akses lewat SSH supaya koneksi tidak putus.
+
+---
+
+## Bagian 1b — Pindah ke PC yang menyala 24 jam
+
+Bagian ini untuk memindahkan eksperimen ke PC/mesin yang hidup terus.
+
+### Ringkas: 6 langkah
+
+```bash
+# 1) Di PC ini: pastikan semua perubahan sudah terkirim
+git status          # harus bersih (tidak ada "M ...")
+git push origin main
+
+# 2) Di PC 24 jam: ambil kode
+git clone https://github.com/AdamFirman8124/Teori-dalam-pengujian-perangkat-lunak.git
+cd Teori-dalam-pengujian-perangkat-lunak
+
+# 3) Buat Python env + daftarkan kernel
+python3 -m venv .venv
+.venv/bin/pip install -r config/requirements.txt
+.venv/bin/python -m ipykernel install --user --name teori-pengujian \
+  --display-name 'Python (.venv Teori Pengujian)'
+
+# 4) Isi kredensial (hanya 2 nilai: endpoint + API key)
+cp config/.env.example config/.env
+nano config/.env        # isi OCTA_API_KEY dan OPENAI_BASE_URL saja
+
+# 5) Siapkan Docker (untuk CodaMOSA)
+docker info             # harus menampilkan Server Version
+
+# 6) Jalankan di tmux supaya selamat dari putus koneksi
+tmux new -s exp
+.venv/bin/python tools/run_notebook.py experiments_codamosa_coverup.ipynb out.ipynb
+# tekan Ctrl+B lalu D untuk detach — proses tetap jalan
+```
+
+Pantau kapan saja dengan: `tmux attach -t exp`.
+
+### Yang WAJIB ada di PC 24 jam
+
+| Kebutuhan | Cara cek | Kalau belum ada |
+|---|---|---|
+| Python 3.11+ | `python3 --version` | `sudo apt install python3 python3-venv` |
+| Docker Engine | `docker info` | `sudo apt install docker.io` + `sudo usermod -aG docker $USER` |
+| Git | `git --version` | `sudo apt install git` |
+| Ruang disk ≥ 5 GB | `df -h .` | bersihkan `experiment_results/work/` |
+| Internet stabil | `curl -sI https://router.octalabs.id/v1/models` | perbaiki jaringan |
+| Jam akurat | cell kesiapan akan memeriksa | `sudo hwclock -s` |
+
+Cell **Kesiapan Device** memeriksa semua ini otomatis sebelum eksperimen mulai,
+jadi Anda tidak perlu menebak.
+
+### Isi `config/.env` (hanya 2 baris yang perlu diubah)
+
+```env
+OCTA_API_KEY=<token Anda>
+OPENAI_BASE_URL=https://router.octalabs.id/v1
+```
+
+Sisanya sudah punya nilai bawaan yang benar. `config/.env` **tidak ikut Git**,
+jadi harus diisi manual di setiap mesin — jangan pernah dikirim lewat chat.
+
+### Kalau PC 24 jam hanya menyediakan Windows (WSL)
+
+Cell kesiapan mendeteksi WSL otomatis dan menyesuaikan:
+
+- **WSL2** → didukung penuh. Docker harus lewat **Docker Desktop Windows**:
+  aktifkan *Settings → Resources → WSL Integration* untuk distro Anda.
+- **WSL1** → **diblokir** (tidak punya kernel Linux penuh, Docker tidak jalan).
+  Perbaiki: `wsl --set-version <distro> 2` di PowerShell admin.
+- **Repo di `/mnt/c/...`** → diberi peringatan: I/O 2–5× lebih lambat.
+  Sebaiknya `git clone` ke home WSL (`~/`) untuk run 24 jam.
+- **Batas RAM/CPU** mengikuti `.wslconfig` Windows, bukan spek fisik PC.
+  Cell membaca file itu dan menampilkan batas efektifnya.
+- **Windows sleep** akan membekukan WSL → set *Power → Sleep = Never* saat dicolok.
+
+### Mengatur beban CPU
+
+```env
+CPU_RESERVED_THREADS=2   # thread yang disisakan untuk desktop + koneksi remote
+AUTO_SCALE=1             # naikkan beban otomatis bila PC kuat
+CONFIG_MAX_LOAD=8        # batas keras jumlah worker
+TASK_WORKERS=3           # jumlah task paralel
+EVAL_MUTANT_WORKERS=2    # subprocess mutasi per task
+```
+
+Rumus budget: `cpu_count - CPU_RESERVED_THREADS`, lalu dibagi
+`(1 + EVAL_MUTANT_WORKERS)` per pipeline. Dengan `AUTO_SCALE=1`, cell kesiapan
+menghitung ulang sendiri. **Selalu sisakan ≥2 thread** bila Anda mengakses PC
+lewat SSH/VS Code Remote — kalau tidak, koneksi bisa terputus.
+
+### Menjalankan bertahap (aman untuk 24 jam)
+
+```env
+RESUME=1        # lanjutkan task yang sudah OK, jangan ulang
+```
+
+Progres disimpan berkala ke `experiment_results/runs/<waktu>/`. Kalau PC mati,
+restart, atau Windows update memaksa reboot: jalankan lagi dari cell 1 —
+task berstatus `OK` dilewati otomatis.
+
+### Kalau provider rate limit (50 RPM)
+
+```env
+RPM_LIMIT=50              # 1 request setiap 1,2 detik
+RPM_RETRY_ATTEMPTS=4      # retry saat kena 429
+RPM_RETRY_WAIT=5
+```
+
+### Cek kesehatan hasil (tanpa biaya)
+
+```bash
+.venv/bin/python tools/post_run.py --source experiment_results
+```
+
+Akan mencetak verdict **SIAP PAPER / BELUM SIAP PAPER** beserta alasannya.
 
 ---
 
@@ -146,8 +267,19 @@ penyebut mutation score (protokol MuTAP).
 | `EVAL_MUTANT_LIMIT` | `25` | `0` (semua mutant) |
 | `CODAMOSA_SEARCH_SECONDS` | `30` | `60` |
 | `TASK_LIMIT` | kecil, mis. `5` | `None` |
-| `TASK_WORKERS` | `2` | `2–3` |
+| `TASK_WORKERS` | `2–3` | `3–8` (sesuai CPU) |
 | `RESUME` | `1` | `1` |
+
+Kunci kesiapan/lingkungan (bukan bagian RQ, hanya operasional):
+
+| Kunci | Arti |
+|---|---|
+| `CPU_RESERVED_THREADS` | Thread yang disisakan untuk desktop/remote (default 2) |
+| `AUTO_SCALE` | `1` = naikkan beban otomatis bila PC kuat |
+| `CONFIG_MAX_LOAD` | Batas keras jumlah worker |
+| `CLOCK_WARN_SECONDS` / `CLOCK_BLOCK_SECONDS` | Ambang selisih jam lokal vs provider |
+| `AUTO_INSTALL` | `1` = `pip install` otomatis paket yang hilang |
+| `RPM_LIMIT` | Kuota request/menit provider (default 50) |
 
 **Penting untuk validitas:** kedua metode harus dievaluasi dengan profil yang
 sama. Mutation score dari sampel 25 mutant tidak setara dengan skor penuh —
@@ -195,8 +327,8 @@ sebelumnya). Snapshot lama otomatis dibackup ke `experiment_results/backups/`.
 `post_run.py` memeriksa kesehatan data (distribusi status, sel kosong, mutation
 score nol merata, konflik mutant set), menjalankan re-score, dan mencetak
 verdict **SIAP PAPER / BELUM SIAP PAPER** beserta alasannya. Suite `tests/`
-berisi 59 test regresi (preflight per-model, rate limiter, discovery filter,
-token accounting, penyimpanan hasil).
+berisi 66 test regresi (preflight per-model, rate limiter, discovery filter,
+kesiapan device/WSL, clock drift, token accounting, penyimpanan hasil).
 
 ### Batas dan catatan interpretasi
 

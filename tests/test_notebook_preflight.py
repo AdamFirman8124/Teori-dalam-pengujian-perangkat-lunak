@@ -137,6 +137,73 @@ def test_rpm_limit_from_env(monkeypatch):
 
 
 
+def test_readiness_cell_structure():
+    cells = _notebook_cells()
+    ids = list(cells)
+    assert cells["b4501a3d"], "readiness code cell missing"
+    assert ids.index("b4501a3d") < ids.index("a9f680bb"), "readiness must run before discovery"
+    assert ids.index("b4501a3d") > ids.index("c5d09b00"), "readiness needs setup variables"
+
+
+def test_readiness_cell_contract():
+    src = _notebook_cells()["b4501a3d"]
+    for token in (
+        "CPU threads", "RAM total", "RAM tersedia", "Disk bebas",
+        "AUTO_INSTALL", "READINESS: OK", "READINESS BLOCKED",
+        "RAM tidak bisa diunduh", "TASK_WORKERS",
+    ):
+        assert token in src, token
+
+
+def test_readiness_never_downloads_hardware():
+    src = _notebook_cells()["b4501a3d"].lower()
+    assert "unduh ram" not in src and "download ram" not in src
+    assert "Auto-tune" in _notebook_cells()["b4501a3d"]
+
+
+def test_readiness_detects_wsl_and_adapts():
+    src = _notebook_cells()["b4501a3d"]
+    assert "def _readiness_detect_wsl():" in src
+    assert "microsoft" in src and "_ENV_KIND" in src and "_IS_WSL" in src
+    assert ".wslconfig" in src
+    assert "Upgrade ke WSL2" in src
+    assert "/mnt/" in src and "lebih lambat" in src
+    assert "WSL Integration" in src
+    assert "sleep" in src.lower()
+
+
+def test_readiness_wsl_rules_execute():
+    src = _notebook_cells()["b4501a3d"]
+    start = src.index("def _readiness_detect_wsl():")
+    end = src.index("# --- 0b.", start)
+    ns: dict = {}
+    exec(
+        "from pathlib import Path\n"
+        "import platform as _platform\n"
+        "def _readiness_note(t): pass\n"
+        + src[start:end],
+        ns,
+    )
+    assert callable(ns["_readiness_detect_wsl"])
+    assert ns["_readiness_detect_wsl"]() in {"native", "wsl", "wsl1", "wsl2"}
+
+
+def test_readiness_scale_up_guards_remote_threads():
+    src = _notebook_cells()["b4501a3d"]
+    assert "_AUTO_SCALE" in src
+    assert "CPU_RESERVED_THREADS" in src
+    assert "CONFIG_MAX_LOAD" in src
+    # Skala naik tidak boleh menghapus tunjangan remote: minimal 2 disisakan.
+    assert "max(2" in src
+
+
+def test_readiness_clock_drift_checked():
+    src = _notebook_cells()["b4501a3d"]
+    assert "CLOCK_WARN_SECONDS" in src
+    assert "CLOCK_BLOCK_SECONDS" in src
+    assert "hwclock -s" in src
+
+
 def test_statistics_reader_handles_header_oriented_csv(tmp_path):
     """Reproduce Pynguin's CSV layout and the notebook's parsing logic."""
     stat = tmp_path / "statistics.csv"
