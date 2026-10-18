@@ -98,7 +98,12 @@ def BIN(name: str) -> str:
 
 
 PY = BIN("python")
-PYTEST = BIN("pytest")
+# pytest is invoked as a module (``python -m pytest``) rather than through the
+# ``pytest.exe`` launcher.  Some Windows venvs ship a launcher that exits
+# non-zero with empty stdout/stderr, which silently turned every measurement
+# into ``pass_rate=0`` and every mutant into ``broken``.
+PYTEST = "-m"
+PYTEST_MODULE = "pytest"
 
 
 def _count(pattern: str, text: str) -> int:
@@ -178,12 +183,7 @@ def _resolve_cmd(cmd) -> T.List[str]:
     executable = parts[0]
     if not Path(executable).exists():
         executable = BIN(executable)
-    resolved = [executable] + parts[1:]
-    if (len(resolved) >= 2 and resolved[0] == PY and resolved[1] == PYTEST
-            and Path(PYTEST).suffix == ".exe"):
-        # PYTEST is a Windows executable; invoke it directly.
-        resolved = [PYTEST] + resolved[2:]
-    return resolved
+    return [executable] + parts[1:]
 
 
 def _run(cmd, cwd: Path, env: dict, timeout: float):
@@ -213,6 +213,29 @@ def coverup_pythonpath() -> T.List[str]:
     """Return local CoverUp source paths needed by a subprocess."""
     local_source = ROOT / "coverup" / "src"
     return [str(local_source)] if (local_source / "coverup").is_dir() else []
+
+
+def coverup_rate_limit() -> T.List[str]:
+    """Return the ``--rate-limit`` arguments for CoverUp, if configured.
+
+    CoverUp throttles only models listed in its own ``MODEL_RATE_LIMITS`` table.
+    For a gateway model such as ``gpt-5.6-*`` that table yields ``None``, so
+    every request fires immediately and the provider answers HTTP 429
+    ("Rate limit: 50 rpm").  Measurements on 2026-10-15 lost 35% of CoverUp
+    tasks (59/169) that way.
+
+    ``COVERUP_RATE_LIMIT`` sets the prompt token budget per minute, passed
+    straight through to ``coverup --rate-limit`` (an ``AsyncLimiter`` window of
+    60s).  Leave it empty/0 to keep CoverUp's built-in behaviour.
+    """
+    raw = (os.getenv("COVERUP_RATE_LIMIT") or "").strip()
+    if not raw:
+        return []
+    try:
+        limit = int(float(raw))
+    except ValueError:
+        return []
+    return ["--rate-limit", str(limit)] if limit > 0 else []
 
 
 # --------------------------------------------------------------------------- #
@@ -515,7 +538,7 @@ def coverage_of(prepared: dict, workdir: Path) -> dict:
         out.unlink()
     env = dict(os.environ, PYTHONPATH=str(workdir), NO_COLOR="1",
                PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
-    cmd = [BIN("slipcover"), "--branch", "--json", "--out", str(out),
+    cmd = [PY, "-m", "slipcover", "--branch", "--json", "--out", str(out),
            "-m", "pytest", "-q", "-p", "no:cacheprovider", "--no-header",
            "-o", "addopts="] + [p.name for p in prepared["pytest_files"]]
     try:
@@ -566,8 +589,8 @@ def pass_rate_of(prepared: dict, workdir: Path) -> dict:
         target = "{0}::{1}".format(mat.name, fn) if fn else mat.name
         total += 1
         try:
-            cp = _run([PY, PYTEST, "-q", "-p", "no:cacheprovider", "--no-header",
-                       "-o", "addopts=", target], workdir, env, 120)
+            cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
+                       "--no-header", "-o", "addopts=", target], workdir, env, 120)
             text = cp.stdout + cp.stderr
             passed = _count(r"(\d+) passed", text)
             bad = _count(r"(\d+) failed", text) + _count(r"(\d+) error", text)
@@ -661,8 +684,8 @@ def mutation_score_of(prepared: dict, mutants: T.Sequence[Path], workdir: Path,
                 for p in prepared["pytest_files"]:
                     shutil.copy(p, jobdir / p.name)
                     names.append(p.name)
-                cmd = [PY, PYTEST, "-q", "-p", "no:cacheprovider", "--no-header",
-                       "-o", "addopts="] + names
+                cmd = [PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
+                       "--no-header", "-o", "addopts="] + names
                 cwd = jobdir
                 env["PYTHONPATH"] = os.pathsep.join((str(shadow), str(workdir)))
             try:
@@ -757,7 +780,8 @@ def run_coverup(put: Path, tests_dir: Path, workdir: Path, model: str = "gpt-4o"
            "--model", model, "--checkpoint", str(ckpt),
            "--log-file", str(workdir / "coverup.log"),
            "--no-isolate-tests", "--no-repeat-tests", "--no-disable-polluting",
-           "--no-disable-failing", "--max-attempts", "3", *extra]
+           "--no-disable-failing", "--max-attempts", "3",
+           *coverup_rate_limit(), *extra]
     cmd[cmd.index(str(put))] = str(local_put)
     pythonpath = [str(workdir), *coverup_pythonpath()]
     existing_pythonpath = os.environ.get("PYTHONPATH")

@@ -147,10 +147,34 @@ class ResultStore:
                 conflicts.setdefault(task, set()).update({previous, mutant_id})
         return {task: sorted(ids) for task, ids in conflicts.items()}
 
+    @staticmethod
+    def unmeasured_rows(rows: list[dict]) -> int:
+        """Rows marked successful whose metrics are all missing.
+
+        A harness/environment failure (e.g. a broken ``pytest`` launcher) makes
+        every measurement collapse to ``pass_rate=0`` with empty ``line_pct``
+        and ``mutation_score``.  Such rows are not results, and promoting them
+        would publish zeros as if they were measurements.
+        """
+        unmeasured = 0
+        for row in rows:
+            values = []
+            for key in ("line_pct", "branch_pct", "mutation_score", "pass_rate"):
+                value = row.get(key)
+                try:
+                    if value not in (None, ""):
+                        values.append(float(value))
+                except (TypeError, ValueError):
+                    continue
+            if not values or all(value == 0.0 for value in values):
+                unmeasured += 1
+        return unmeasured
+
     def finalize(self, rows: list[dict], statuses: list[dict], *, expected_statuses: int) -> dict:
         """Save candidate and promote only when complete and no worse."""
         self.checkpoint(rows, statuses)
         conflicts = self.mutant_set_conflicts(rows)
+        unmeasured = self.unmeasured_rows(rows)
         valid = len(statuses) == expected_statuses and not conflicts and all(
             item.get("status") in {"OK", "BLOCKED", "INVALID_GENERATED_TEST"}
             for item in statuses
@@ -158,7 +182,9 @@ class ResultStore:
         old_rows, old_statuses = self._read_active(self.root)
         old_quality = self._quality(old_rows, old_statuses)
         new_quality = self._quality(rows, statuses)
-        promoted = valid and (not old_statuses or new_quality >= old_quality)
+        # Zero measured results means the harness never ran: never promote.
+        trustworthy = bool(rows) and unmeasured < len(rows)
+        promoted = valid and trustworthy and (not old_statuses or new_quality >= old_quality)
         backup = None
         if promoted:
             backup_path = self.backups / self.run_id
@@ -178,7 +204,8 @@ class ResultStore:
             "run_id": self.run_id, "valid": valid, "promoted": promoted,
             "backup": backup, "expected_statuses": expected_statuses,
             "actual_statuses": len(statuses), "old_quality": old_quality,
-            "new_quality": new_quality,
+            "new_quality": new_quality, "unmeasured_rows": unmeasured,
+            "trustworthy": trustworthy,
             "mutant_set_conflicts": {
                 f"{dataset}:{task}": ids for (dataset, task), ids in conflicts.items()
             },
