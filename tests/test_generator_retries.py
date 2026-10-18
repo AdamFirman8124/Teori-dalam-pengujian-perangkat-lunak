@@ -201,3 +201,41 @@ def test_coverup_deterministic_exhaustion_not_retried(monkeypatch):
     assert sleeps == []
 
     assert len(calls) == 1
+def test_probe_timeout_is_retried(monkeypatch):
+    helpers, sleeps = _load_retry_helpers(monkeypatch, attempts=3, delay=2)
+    calls = []
+
+    def runner():
+        calls.append(1)
+        if len(calls) < 2:
+            raise TimeoutError("Request timed out")
+        return "ok"
+
+    assert helpers["_run_with_retries"](
+        "CoverUp", "model", "HumanEval", "2", runner
+    ) == "ok"
+    assert len(calls) == 2
+    assert sleeps == [2]
+
+
+def test_invalid_suite_is_not_retried_in_place(monkeypatch):
+    """Invalid suites fail fast; a rerun must be an explicit new run."""
+    helpers, sleeps = _load_retry_helpers(monkeypatch, attempts=4, delay=10)
+    calls = []
+
+    def runner():
+        calls.append(1)
+        raise RuntimeError("INVALID_GENERATED_TEST: no assertions")
+
+    try:
+        helpers["_run_with_retries"](
+            "CODAMOSA", "model", "HumanEval", "42", runner
+        )
+    except RuntimeError:
+        pass
+    else:
+        raise AssertionError("invalid suite must fail fast")
+    assert len(calls) == 1
+    assert sleeps == []
+
+

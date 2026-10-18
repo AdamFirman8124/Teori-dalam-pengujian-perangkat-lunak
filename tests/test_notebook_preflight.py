@@ -98,7 +98,8 @@ def test_rpm_helpers_respect_limit_and_retry_on_429():
     pre = _notebook_cells()["f68dcf13"]
     ns: dict = {"os": os, "time": time}
     # Only the pure helpers are needed; skip the provider imports.
-    for name in ("_rpm_limit", "_throttle", "_is_rate_limit_error", "_probe_with_backoff"):
+    for name in ("_rpm_limit", "_throttle", "_is_rate_limit_error",
+                 "_is_transient_probe_error", "_probe_with_backoff"):
         start = pre.index("def %s(" % name)
         end = pre.index("\ndef ", start + 1)
         exec(pre[start:end], ns)
@@ -233,3 +234,102 @@ def test_statistics_reader_source_has_no_dictreader_name_value():
     runner = _notebook_cells()["4ce9652a"]
     assert "DictReader(_fh)" not in runner
     assert "CODAMOSA writes variable names as column headers" in runner
+
+
+def test_llm_logging_and_budget_knobs_are_wired():
+    cells = _notebook_cells()
+    setup = cells["c5d09b00"]
+    runner = cells["4ce9652a"]
+    preflight = cells["f68dcf13"]
+
+    # One fixed budget for every task: no profile/tuned switch may exist.
+    assert "EXPERIMENT_PROFILE" not in setup
+    assert "PROFILE_TAG" not in setup
+    assert "TUNED_" not in setup
+    assert "COVERUP_MAX_ATTEMPTS" in setup
+    assert "CODAMOSA_TEMPERATURE" in setup
+    assert "load_dotenv(ROOT / 'config' / '.env', override=True)" in setup
+
+    assert "COVERUP_PREFLIGHT_TIMEOUT" in preflight
+    assert "_is_transient_probe_error" in preflight
+    assert "llm_calls_log=llm_calls_log" in runner
+    assert "CODAMOSA_LLM_CALLS_LOG=/output/llm_calls.jsonl" in runner
+    assert "COVERUP_MAX_ATTEMPTS" in runner
+    assert "CODAMOSA_TEMPERATURE" in runner
+
+
+def test_runner_has_no_profile_dimension():
+    cells = _notebook_cells()
+    runner = cells["4ce9652a"]
+    finalizer = cells["dc51281c"]
+
+    assert "_profiled_slug" not in runner
+    assert 'row["profile"]' not in runner
+    assert '"profile":' not in runner
+    # Plain method+model resume key.
+    assert "return (method, model, dataset, str(task)) in RESUME_KEYS" in runner
+    # Fresh full run: expected count comes straight from TASKS x models.
+    assert "expected_statuses = sum(len(task_ids) for task_ids in TASKS.values())" in finalizer
+    assert "profile" not in finalizer
+
+
+
+def test_wilcoxon_markdown_contains_no_python_code():
+    nb = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
+    cell = next(c for c in nb["cells"] if c.get("id") == "wilcoxon-table-md")
+    assert cell["cell_type"] == "markdown"
+    source = "".join(cell["source"])
+    assert "import numpy" not in source
+    assert "def _a12" not in source
+    assert "p-Holm" in source
+
+
+
+
+def test_analysis_cells_have_no_profile_dimension():
+    cells = _notebook_cells()
+    chart = cells["valid-comparison-chart"]
+    summary = cells["suite-metrics-table"]
+    stats = cells["wilcoxon-table"]
+
+    assert '["dataset", "method", "model"]' in chart
+    assert '"profile"' not in chart
+    assert '"profile"' not in summary
+    assert '"profile"' not in stats
+    assert '" @"' not in stats
+
+
+
+
+def test_all_terminal_statuses_are_recorded():
+    runner = _notebook_cells()["4ce9652a"]
+    # Successful CoverUp/CODAMOSA statuses and the generic blocked helpers must
+    # all record the same identity fields so nothing is silently dropped.
+    assert runner.count('"status": "OK"') >= 2
+    assert runner.count('"status": _status') >= 1
+    assert '"method": _method' in runner
+
+
+
+def test_codamosa_preflight_preserves_upstream_400_body_for_retry():
+    preflight = _notebook_cells()["f68dcf13"]
+    assert "upstream_error" in preflight
+    assert "response.text[:1000]" in preflight
+    assert "_is_transient_probe_error" in preflight
+
+
+
+def test_codamosa_container_named_and_force_removed_on_timeout():
+    runner = _notebook_cells()["4ce9652a"]
+    assert '"--name", _container_name' in runner
+    assert '"docker", "rm", "-f", _container_name' in runner
+    assert "container removed: " in runner
+    assert 'teori.dataset=" + dataset' in runner
+
+
+def test_valid_comparison_ok_keys_include_method_model_dataset_task():
+    chart = _notebook_cells()["valid-comparison-chart"]
+    assert 'x.get("method")' in chart
+    assert 'x.get("model")' in chart
+    assert 'x.get("dataset")' in chart
+    assert 'str(x.get("task"))' in chart
