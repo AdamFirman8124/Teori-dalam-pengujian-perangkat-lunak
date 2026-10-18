@@ -43,21 +43,19 @@ def test_notebook_is_valid_and_all_cells_compile():
         compile(source, cell_id, "exec")
 
 
-def test_preflight_is_per_model_not_all_or_nothing():
+def test_preflight_checks_configuration_without_model_calls():
     pre = _notebook_cells()["f68dcf13"]
     assert "def coverup_preflight(models):" in pre
     assert "def codamosa_preflight(models):" in pre
-    # Return a dict keyed by model so healthy models survive a sibling failure.
-    assert "verdict[model] = True" in pre
-    assert "verdict[model] = False" in pre
-    assert "ok_models" in pre
+    assert "litellm.completion(" not in pre
+    assert "requests.post(" not in pre
+    assert "list(models)" in pre
 
 
-def test_task_runner_uses_only_preflight_passed_models():
+def test_task_runner_attempts_all_configured_models():
     runner = _notebook_cells()["4ce9652a"]
     assert "for model in ACTIVE_COVERUP_MODELS:" in runner
     assert "for model in ACTIVE_CODAMOSA_MODELS:" in runner
-    # Failing models are still recorded, but only for the failing model.
     assert "BLOCKED: model gagal preflight." in runner
 
 
@@ -71,26 +69,20 @@ def test_task_runner_respects_global_ok_flags():
     assert runner.index("if not codamosa_ok:") < runner.index("for model in ACTIVE_CODAMOSA_MODELS:")
 
 
-def test_discovery_defaults_to_all_available_models():
+def test_discovery_uses_configured_model_without_completion_probe():
     discovery = _notebook_cells()["a9f680bb"]
-    # Default must adopt every probed model rather than a fixed short list.
-    assert 'os.getenv("MODEL_DISCOVERY_USE_ALL", "1")' in discovery
+    assert "_PROBE_ALL = False" in discovery
     assert 'os.getenv("MODEL_DISCOVERY_MAX_MODELS", "0")' in discovery
     assert '"openai/" + m for m in _selected' in discovery
     assert '",".join(_selected)' in discovery
 
 
-def test_preflight_has_rpm_throttle_and_backoff():
-    """Probing the whole catalogue must respect the provider RPM cap."""
+def test_preflight_does_not_spend_tokens():
     pre = _notebook_cells()["f68dcf13"]
-    assert "def _rpm_limit()" in pre
-    assert 'os.getenv("RPM_LIMIT", "50")' in pre
-    assert "def _throttle(" in pre
-    assert "def _probe_with_backoff(" in pre
-    assert "_is_rate_limit_error" in pre
-    # Both preflights must actually use the throttle and the backoff helper.
-    assert pre.count("_throttle(interval)") >= 2
-    assert pre.count("_probe_with_backoff(") >= 2
+    discovery = _notebook_cells()["a9f680bb"]
+    assert "litellm.completion(" not in pre
+    assert "requests.post(" not in pre
+    assert "_PROBE_ALL = False" in discovery
 
 
 def test_rpm_helpers_respect_limit_and_retry_on_429():
@@ -250,8 +242,6 @@ def test_llm_logging_and_budget_knobs_are_wired():
     assert "CODAMOSA_TEMPERATURE" in setup
     assert "load_dotenv(ROOT / 'config' / '.env', override=True)" in setup
 
-    assert "COVERUP_PREFLIGHT_TIMEOUT" in preflight
-    assert "_is_transient_probe_error" in preflight
     assert "llm_calls_log=llm_calls_log" in runner
     assert "CODAMOSA_LLM_CALLS_LOG=/output/llm_calls.jsonl" in runner
     assert "COVERUP_MAX_ATTEMPTS" in runner
@@ -284,6 +274,13 @@ def test_wilcoxon_markdown_contains_no_python_code():
     assert "p-Holm" in source
 
 
+def test_resume_retries_blocked_and_keeps_only_ok_statuses():
+    runner = _notebook_cells()["4ce9652a"]
+    assert "x.get('status') == 'OK'" in runner
+    assert "_retry_count" in runner
+    assert "BLOCKED/INVALID lama akan dicoba ulang" in runner
+
+
 
 
 def test_analysis_cells_have_no_profile_dimension():
@@ -311,11 +308,10 @@ def test_all_terminal_statuses_are_recorded():
 
 
 
-def test_codamosa_preflight_preserves_upstream_400_body_for_retry():
+def test_codamosa_preflight_performs_no_provider_request():
     preflight = _notebook_cells()["f68dcf13"]
-    assert "upstream_error" in preflight
-    assert "response.text[:1000]" in preflight
-    assert "_is_transient_probe_error" in preflight
+    assert "requests.post(" not in preflight
+    assert "list(models)" in preflight
 
 
 
