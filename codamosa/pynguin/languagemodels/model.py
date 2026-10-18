@@ -203,12 +203,19 @@ class _OpenAILanguageModel:
         self.completion_tokens: int = 0
         self.total_tokens: int = 0
         self.usage_reported: int = 0
+        # Prompt-cache breakdown.  These are subsets of prompt_tokens, kept
+        # separately so reports can show how much was served from cache without
+        # under-counting real billed tokens.
+        self.cache_read_tokens: int = 0
+        self.cache_write_tokens: int = 0
         # Per-call values for the most recent provider round-trip (used by the
         # per-call LLM accounting log; not accumulated).
         self._last_prompt_tokens: int = 0
         self._last_completion_tokens: int = 0
         self._last_total_tokens: int = 0
         self._last_cost_usd: float | None = None
+        self._last_cache_read_tokens: int = 0
+        self._last_cache_write_tokens: int = 0
 
     @property
     def temperature(self) -> float:
@@ -424,7 +431,16 @@ class _OpenAILanguageModel:
         time_start = time.time()
         res = None
         last_connection_error = None
-        for attempt in range(4):
+        # One attempt by default: a timed-out request still bills its prompt
+        # tokens, so looping multiplies cost without new information.  Raise
+        # CODAMOSA_MAX_TRANSPORT_RETRIES if the endpoint proves flaky.
+        try:
+            _max_transport_attempts = max(
+                1, int(os.environ.get("CODAMOSA_MAX_TRANSPORT_RETRIES", "1"))
+            )
+        except ValueError:
+            _max_transport_attempts = 1
+        for attempt in range(_max_transport_attempts):
             try:
                 res = requests.post(
                     url, data=json.dumps(payload), headers=headers, timeout=90
@@ -435,14 +451,15 @@ class _OpenAILanguageModel:
                 # A single transient lookup/connection failure must not abort the
                 # entire CodaMOSA search process.
                 last_connection_error = exc
-                if attempt == 3:
+                if attempt + 1 >= _max_transport_attempts:
                     raise
                 logger.warning(
-                    "Transient model connection failure (%s/4): %s", attempt + 1, exc
+                    "Transient model connection failure (%s/%s): %s",
+                    attempt + 1, _max_transport_attempts, exc,
                 )
                 time.sleep(min(2.0**attempt, 8.0))
                 continue
-            if res.status_code != 429 or attempt == 3:
+            if res.status_code != 429 or attempt + 1 >= _max_transport_attempts:
                 break
             retry_after = res.headers.get("Retry-After")
             try:
@@ -467,17 +484,27 @@ class _OpenAILanguageModel:
                 detail = res.text[:1000]
             logger.error("Failed to call for completion:\n%s", detail)
             logger.error(self.complete_model)
+            # Error responses can still be billed (e.g. a rejected request that
+            # already consumed prompt tokens).  Record whatever usage the
+            # provider reported instead of hard-coding zeros.
+            try:
+                self._record_usage(res)
+            except Exception:
+                pass
             _llm_calls_log({
                 "ts": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
                 "latency_s": round(time.time() - time_start, 3),
                 "model": self.complete_model,
                 "prompt": self._prompt_text(payload),
-                "prompt_tokens": 0,
+                "prompt_tokens": self._last_prompt_tokens,
                 "output": "",
-                "completion_tokens": 0,
-                "total_tokens": 0,
-                "cost_usd": None,
+                "completion_tokens": self._last_completion_tokens,
+                "total_tokens": self._last_total_tokens,
+                "cost_usd": self._last_cost_usd,
                 "status_code": res.status_code,
+                "response_headers": dict(getattr(res, "headers", None) or {}),
+                "cache_read_tokens": self._last_cache_read_tokens,
+                "cache_write_tokens": self._last_cache_write_tokens,
                 "error": str(detail)[:2000],
             })
             return ""
@@ -494,6 +521,10 @@ class _OpenAILanguageModel:
             "total_tokens": self._last_total_tokens,
             "cost_usd": self._last_cost_usd,
             "status_code": res.status_code,
+            "response_headers": dict(getattr(res, "headers", None) or {}),
+            # Cached prompt tokens are billed; keep the breakdown visible.
+            "cache_read_tokens": self._last_cache_read_tokens,
+            "cache_write_tokens": self._last_cache_write_tokens,
         })
         return _completion_text(body)
 
@@ -513,23 +544,43 @@ class _OpenAILanguageModel:
         that omit it leave the counters untouched so callers can tell measured
         usage apart from missing data.  Per-call values are also stashed so the
         per-call LLM log can include them.
+
+        Cached prompt tokens are still REAL tokens billed by the provider, so
+        they are counted in full; the breakdown is preserved separately for
+        reporting (prompt_tokens here includes cached ones, matching the
+        router's own total_tokens).
         """
         self._last_prompt_tokens = 0
         self._last_completion_tokens = 0
         self._last_total_tokens = 0
         self._last_cost_usd = None
+        self._last_cache_read_tokens = 0
+        self._last_cache_write_tokens = 0
         try:
             usage = res.json().get("usage")
         except ValueError:
             return
         if not isinstance(usage, dict):
             return
-        self._last_prompt_tokens = int(usage.get("prompt_tokens") or 0)
+        prompt = int(usage.get("prompt_tokens") or 0)
+        # Prompt-caching breakdown, when the provider reports one.  These are
+        # subsets of prompt_tokens, not additional tokens.
+        cache_read = int(usage.get("prompt_tokens_details", {}).get("cached_tokens", 0)
+                         or usage.get("cache_read_input_tokens", 0) or 0)
+        cache_write = int(usage.get("cache_creation_input_tokens", 0) or 0)
+        self._last_cache_read_tokens = cache_read
+        self._last_cache_write_tokens = cache_write
+        self._last_prompt_tokens = prompt
         self._last_completion_tokens = int(usage.get("completion_tokens") or 0)
-        self._last_total_tokens = int(usage.get("total_tokens") or 0)
+        # Router's total_tokens already includes cached prompt tokens; if it is
+        # missing, fall back to prompt+completion (which also includes them).
+        total = int(usage.get("total_tokens") or 0)
+        self._last_total_tokens = total or (prompt + self._last_completion_tokens)
         self.prompt_tokens += self._last_prompt_tokens
         self.completion_tokens += self._last_completion_tokens
         self.total_tokens += self._last_total_tokens
+        self.cache_read_tokens += cache_read
+        self.cache_write_tokens += cache_write
         self.usage_reported += 1
         # Cost: from the router's own price fields if present, otherwise zero
         # (the notebook fills in a computed value from the pricing table).

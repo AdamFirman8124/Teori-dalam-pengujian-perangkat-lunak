@@ -150,15 +150,17 @@ class Chatter:
         self._model = model
         self._model_temperature: float | None = None
         self._max_backoff = 64 # seconds
-        # Bound transient transport retries (connection reset / 5xx from an
-        # OpenAI-compatible router) so a permanently broken endpoint fails
-        # instead of retrying forever.
+        # Provider calls are billed even when they end in an error or a cache
+        # hit.  Retrying the same request therefore costs tokens repeatedly for
+        # the same (often identical) answer.  Default is 0 retries: record what
+        # the provider returned instead of re-buying it.  Raise
+        # COVERUP_MAX_TRANSPORT_RETRIES if a flaky endpoint needs more attempts.
         try:
             self._max_connection_retries = max(
-                0, int(os.environ.get("COVERUP_MAX_TRANSPORT_RETRIES", "4"))
+                0, int(os.environ.get("COVERUP_MAX_TRANSPORT_RETRIES", "0"))
             )
         except ValueError:
-            self._max_connection_retries = 4
+            self._max_connection_retries = 0
         self.token_rate_limit: AsyncLimiter | None
         self.set_token_rate_limit(token_rate_limit_for_model(model))
         self._add_cost = lambda cost: None
@@ -459,6 +461,10 @@ args:{args}
                     "total_tokens": tt,
                     "cost_usd": call_cost,
                     "finish_reason": getattr(choice, "finish_reason", None),
+                    # Raw provider outcome so consolidated logs can separate
+                    # errors, cache hits, and genuine completions.
+                    "response_headers": dict(getattr(response, "headers", None) or {}),
+                    "status_code": getattr(response, "status_code", None),
                 })
             except Exception:
                 pass  # logging must never break the run
