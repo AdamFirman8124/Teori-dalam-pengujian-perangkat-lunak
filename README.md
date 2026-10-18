@@ -1,5 +1,76 @@
 # Perbandingan CoverUp vs CodaMOSA sebagai Generator Test Otomatis
 
+## Struktur repositori
+
+```text
+config/                         konfigurasi tunggal: .env / .env.example
+experiments_codamosa_coverup.ipynb  satu-satunya notebook eksperimen
+src/                            evaluator, storage, discovery, loop helpers
+tools/                          post-run, rescore, tabel RQ, provider log
+scripts/                        runner alternatif
+MuTAP/                          dataset HumanEval + Refactory (WAJIB)
+codamosa/                      source + Docker runner CodaMOSA
+coverup/                       source runner CoverUp
+docs/                           protokol, batasan, laporan, referensi
+experiment_results/             output lokal (tidak di-commit)
+```
+
+## Run fresh yang direkomendasikan
+
+1. Isi API key di `config/.env`.
+2. Pastikan konfigurasi fresh:
+
+   ```env
+   COVERUP_MODELS=openai/gpt-5.6-luna
+   CODAMOSA_MODELS=gpt-5.6-luna
+   TASK_FILTER=
+   TASK_LIMIT=None
+   RESUME=0
+   FRESH=1
+   RUN_LABEL=luna-fresh
+   TASK_WORKERS=2
+   AUTO_SCALE=0
+   ```
+
+3. Restart kernel VS Code, pilih kernel `.venv`.
+4. Buka `experiments_codamosa_coverup.ipynb` dan tekan **Run All**.
+5. Amati `experiment_results/provider_responses_summary.md` selama run.
+
+Semua hasil lama yang dibutuhkan untuk audit disimpan di luar output aktif atau
+arsip manual; `experiment_results/` selalu dianggap disposable dan diabaikan Git.
+
+## Struktur hasil
+
+```text
+experiment_results/
+  rows.csv                         hasil aktif setelah finalize
+  status.json                      status seluruh task
+  provider_responses.jsonl         satu log semua respons provider
+  provider_responses_summary.md    ringkasan error/token/cache
+  runs/<run_id>/                   checkpoint kandidat dan manifest
+  work/                            artefak mentah per metode/model/task
+  llm_calls/                       log per-panggilan JSONL
+  model_discovery/                 laporan discovery provider
+  backups/                         backup snapshot yang dipromosikan
+```
+
+## Verifikasi tanpa LLM
+
+```powershell
+.venv\Scripts\python.exe tools\provider_responses.py
+.venv\Scripts\python.exe tools\post_run.py --source experiment_results
+.venv\Scripts\python.exe -m pytest tests -q
+```
+
+## Catatan validitas
+
+- Sol tidak dijalankan lagi; hanya luna yang menjadi model aktif.
+- Error provider dicatat sebagai `BLOCKED`, bukan skor nol.
+- `cache_hit` tetap dihitung sebagai token yang digunakan jika provider
+  melaporkan token cache.
+- Mutation score dari `EVAL_MUTANT_LIMIT=25` tidak setara dengan skor paper;
+  gunakan `EVAL_MUTANT_LIMIT=0` untuk hasil final.
+
 Repositori ini menjalankan dua metode pembuat test otomatis — **CoverUp** dan
 **CodaMOSA** — pada dua dataset (**HumanEval** dan **Refactory** dari paket
 MuTAP), lalu mengukur hasilnya untuk menjawab dua pertanyaan riset:
@@ -7,8 +78,9 @@ MuTAP), lalu mengukur hasilnya untuk menjawab dua pertanyaan riset:
 - **RQ1 (Performa utama):** Coverage, Pass Rate, Mutation Score
 - **RQ2 (Backbone):** Coverage, Pass Rate, Waktu, dan Biaya
 
-> Panduan teknis tambahan ada di [`docs/README.md`](docs/README.md),
-> [`docs/EXPERIMENT_PROTOCOL.md`](docs/EXPERIMENT_PROTOCOL.md), dan
+> Panduan teknis tambahan ada di [`docs/EXPERIMENT_FLOW.md`](docs/EXPERIMENT_FLOW.md)
+> (alur dari awal sampai akhir, titik pemanggilan model & token),
+> [`docs/README.md`](docs/README.md), [`docs/EXPERIMENT_PROTOCOL.md`](docs/EXPERIMENT_PROTOCOL.md), dan
 > [`docs/CODAMOSA_KNOWN_LIMITATIONS.md`](docs/CODAMOSA_KNOWN_LIMITATIONS.md).
 
 ---
@@ -32,7 +104,7 @@ jadi, kita koreksi:
 
 | Kebutuhan | Keterangan |
 |---|---|
-| Python 3.14 di folder `.venv` | Sudah tersedia di repo ini |
+| Python 3.12 di folder `.venv` | Sudah tersedia di repo ini |
 | Docker | Hanya untuk metode CodaMOSA (CoverUp tidak perlu) |
 | API key OctaLabs | Diletakkan di `config/.env` |
 | Koneksi internet | Model dipanggil lewat API, bukan dijalankan di PC |
@@ -57,7 +129,7 @@ jadi, kita koreksi:
    |---|---|---|
    | 1 | Setup: dependency, konfigurasi, path hasil | Tidak |
    | 2 | **Kesiapan device**: CPU/RAM/disk, WSL, jam, Docker | Ya (cek jam, 1 request kecil) |
-   | 3 | Tanya provider: model apa yang tersedia (hanya `gpt-5.6-sol`) | Ya, 1 request kecil |
+   | 3 | Tanya provider: model apa yang tersedia (hanya `gpt-5.6-luna`) | Ya, 1 request kecil |
    | 4 | Cek tiap model bisa merespons | Ya, beberapa request kecil |
    | 5 | Cek/bangun image Docker CodaMOSA | Tidak (lokal) |
    | 6 | **Inti**: buat test + evaluasi semua task | Ya, banyak request |
@@ -327,7 +399,7 @@ sebelumnya). Snapshot lama otomatis dibackup ke `experiment_results/backups/`.
 `post_run.py` memeriksa kesehatan data (distribusi status, sel kosong, mutation
 score nol merata, konflik mutant set), menjalankan re-score, dan mencetak
 verdict **SIAP PAPER / BELUM SIAP PAPER** beserta alasannya. Suite `tests/`
-berisi 66 test regresi (preflight per-model, rate limiter, discovery filter,
+berisi 76 test regresi (preflight per-model, rate limiter, discovery filter,
 kesiapan device/WSL, clock drift, token accounting, penyimpanan hasil).
 
 ### Batas dan catatan interpretasi
