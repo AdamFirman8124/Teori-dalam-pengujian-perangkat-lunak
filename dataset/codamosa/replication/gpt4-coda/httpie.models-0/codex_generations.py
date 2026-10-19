@@ -1,0 +1,1003 @@
+
+
+# Generated at 2024-03-18 05:44:59.567042
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    # Prepare a mock HTTPRequest object with a body that contains new lines
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'line1\nline2\nline3',
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {}
+    })())
+
+    # Call iter_lines with a chunk size of 1
+    lines = list(request.iter_lines(chunk_size=1))
+
+    # Check that the lines are split correctly and include empty bytes for line feed
+    expected_lines = [(b'line1', b''), (b'line2', b''), (b'line3', b'')]
+    assert lines == expected_lines, f"Expected lines to be {expected_lines}, but got {lines}"
+
+# Generated at 2024-03-18 05:45:04.513028
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': b'This is a test body.',
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Call iter_body with a chunk size of 10
+    body_chunks = list(request.iter_body(chunk_size=10))
+
+    # Assert that the body is split into correct chunks
+    assert body_chunks == [b'This is a t', b'est body.'], "Body chunks do not match expected output"
+
+# Generated at 2024-03-18 05:45:10.999902
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'test body',
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Call iter_body with a chunk size of 1
+    body_chunks = list(request.iter_body(chunk_size=1))
+
+    # Assert that the body is split into chunks of size 1
+    assert body_chunks == [b't', b'e', b's', b't', b' ', b'b', b'o', b'd', b'y']
+
+    # Call iter_body with a chunk size of 4
+    body_chunks = list(request.iter_body(chunk_size=4))
+
+    # Assert that the body is split into chunks of size 4
+    assert body_chunks == [b'test', b' bod', b'y']
+
+# Generated at 2024-03-18 05:45:22.452056
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request = HTTPRequest(orig=type('MockRequest', (object,), {
+        'body': 'test body',
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {}
+    })())
+
+    # Call iter_body with a chunk size of 1
+    body_iter = request.iter_body(chunk_size=1)
+
+    # Collect the chunks into a list
+    chunks = list(body_iter)
+
+    # Assert that the body is split into correct chunks
+    assert chunks == [b't', b'e', b's', b't', b' ', b'b', b'o', b'd', b'y']
+
+    # Call iter_body with a larger chunk size
+    body_iter_large_chunk = request.iter_body(chunk_size=4)
+
+    # Collect the chunks into a list
+    large_chunks = list(body_iter_large_chunk)
+
+    # Assert that the body is
+
+# Generated at 2024-03-18 05:45:29.999540
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    # Prepare a mock HTTPRequest with a body that contains new lines
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': b'line1\nline2\nline3',
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Call iter_lines with a chunk size of 1
+    lines = list(request.iter_lines(chunk_size=1))
+
+    # Check that the lines are split correctly
+    assert lines == [(b'line1', b''), (b'line2', b''), (b'line3', b'')]
+
+    # Check that the lines are split correctly when using a larger chunk size
+    lines = list(request.iter_lines(chunk_size=10))
+    assert lines == [(b'line1\nline2\nline3', b'')]
+
+# Generated at 2024-03-18 05:45:34.788189
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    # Prepare a mock HTTPRequest object with a body that contains newlines
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'line1\nline2\nline3',
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Call iter_lines method with a chunk size of 1
+    lines = list(request.iter_lines(chunk_size=1))
+
+    # Check that the lines are split correctly and include empty line_feed
+    expected_lines = [(b'line1', b''), (b'line2', b''), (b'line3', b'')]
+    assert lines == expected_lines, f"Expected lines to be {expected_lines}, but got {lines}"
+
+# Generated at 2024-03-18 05:45:42.716311
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request = HTTPRequest(orig=type('MockRequest', (object,), {
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {},
+        'body': b'This is a test body.'
+    })())
+
+    # Test iter_body with a chunk size of 1
+    body_iter = request.iter_body(chunk_size=1)
+    assert list(body_iter) == [b'T', b'h', b'i', b's', b' ', b'i', b's', b' ', b'a', b' ', b't', b'e', b's', b't', b' ', b'b', b'o', b'd', b'y', b'.']
+
+    # Test iter_body with a chunk size larger than the body length
+    body_iter = request.iter_body(chunk_size=100)
+
+# Generated at 2024-03-18 05:45:47.927371
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    # Prepare a mock HTTPRequest object with a body that contains newlines
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': b'line1\nline2\nline3',
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Call iter_lines with a chunk size of 1
+    lines = list(request.iter_lines(chunk_size=1))
+
+    # Check that the lines are split correctly
+    assert lines == [(b'line1\n', b''), (b'line2\n', b''), (b'line3', b'')], "The lines were not split correctly"
+
+# Run the test
+test_HTTPRequest_iter_lines()
+
+# Generated at 2024-03-18 05:45:53.348721
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'test body',
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Create a list from the iterator returned by iter_body
+    body_chunks = list(request.iter_body(chunk_size=4))
+
+    # Check if the body is split into correct chunks
+    expected_chunks = [b'test', b' bod', b'y']
+    assert body_chunks == expected_chunks, f"Expected body chunks {expected_chunks}, got {body_chunks}"
+
+
+# Generated at 2024-03-18 05:46:00.871447
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request_body = b"Hello, world!"
+    mock_request = HTTPRequest(orig=type('MockRequest', (object,), {
+        'body': request_body,
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {}
+    })())
+
+    # Create an instance of HTTPRequest
+    http_request = HTTPRequest(mock_request)
+
+    # Test iter_body with a specific chunk size
+    chunk_size = 5
+    body_chunks = list(http_request.iter_body(chunk_size))
+
+    # Verify that the body is split into correct chunks
+    expected_chunks = [request_body[i:i+chunk_size] for i in range(0, len(request_body), chunk_size)]
+    assert body_chunks == expected_chunks, f"Expected body chunks {expected_chunks}, got {body_chunks}"
+
+
+# Generated at 2024-03-18 05:46:27.920101
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'test body',
+        'headers': {},
+        'url': 'http://example.com'
+    })())
+
+    # Call iter_body with a chunk size of 1
+    body_chunks = list(request.iter_body(1))
+
+    # Assert that the body is split into chunks of size 1
+    assert body_chunks == [b't', b'e', b's', b't', b' ', b'b', b'o', b'd', b'y']
+
+    # Call iter_body with a chunk size of 4
+    body_chunks = list(request.iter_body(4))
+
+    # Assert that the body is split into chunks of size 4
+    assert body_chunks == [b'test', b' bod', b'y']
+
+# Generated at 2024-03-18 05:46:30.849704
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    request = HTTPRequest(mock_request_with_body)
+
+# Generated at 2024-03-18 05:46:38.527340
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Mock a simple request object with a body
+    class MockRequest:
+        def __init__(self, url, method, headers, body):
+            self.url = url
+            self.method = method
+            self.headers = headers
+            self.body = body
+
+    # Create a mock request with a body that can be iterated over
+    mock_request = MockRequest(
+        url='http://example.com',
+        method='GET',
+        headers={'Content-Type': 'text/plain'},
+        body='This is a test body.'
+    )
+
+    # Wrap the mock request in our HTTPRequest class
+    http_request = HTTPRequest(mock_request)
+
+    # Define the chunk size for iteration
+    chunk_size = 5
+
+    # Collect the chunks from the iterator
+    body_chunks = list(http_request.iter_body(chunk_size))
+
+    # Check that the body was correctly split into chunks
+
+# Generated at 2024-03-18 05:46:43.910459
+# Unit test for method iter_lines of class HTTPResponse
+def test_HTTPResponse_iter_lines():    # Mocking a response object with iter_lines method
+    class MockResponse:
+        def iter_lines(self, chunk_size=1, delimiter=b'\n'):
+            return iter([b'This is line 1' + delimiter,
+                         b'This is line 2' + delimiter,
+                         b'This is line 3' + delimiter])
+
+    # Creating an instance of HTTPResponse with the mocked response
+    response = HTTPResponse(MockResponse())
+
+    # Expected list of tuples (line, line_feed)
+    expected_lines = [
+        (b'This is line 1', b'\n'),
+        (b'This is line 2', b'\n'),
+        (b'This is line 3', b'\n')
+    ]
+
+    # Collecting the actual lines from iter_lines method
+    actual_lines = list(response.iter_lines(chunk_size=1))
+
+    # Asserting that the actual lines match the expected lines
+
+# Generated at 2024-03-18 05:46:48.171363
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'test body',
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Call iter_body with a chunk size of 1
+    body_chunks = list(request.iter_body(chunk_size=1))
+
+    # Assert that the body is returned as a single chunk
+    assert body_chunks == [b'test body'], "Body chunks do not match expected single chunk"
+
+# Generated at 2024-03-18 05:46:54.175170
+# Unit test for method iter_lines of class HTTPResponse
+def test_HTTPResponse_iter_lines():    # Mocking a response object with iter_lines method
+    class MockResponse:
+        def iter_lines(self, chunk_size):
+            lines = [
+                b"This is the first line\n",
+                b"This is the second line\n",
+                b"This is the third line"
+            ]
+            for line in lines:
+                yield line
+
+    # Creating an instance of HTTPResponse with the mocked response
+    response = HTTPResponse(MockResponse())
+
+    # Expected list of tuples (line, line_feed)
+    expected_lines = [
+        (b"This is the first line", b'\n'),
+        (b"This is the second line", b'\n'),
+        (b"This is the third line", b'')
+    ]
+
+    # Collecting the actual output from iter_lines
+    actual_lines = list(response.iter_lines(chunk_size=1))
+
+    # Asserting that the actual output matches the expected output
+
+# Generated at 2024-03-18 05:46:57.646771
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    request = HTTPRequest(mock_request_object_with_body(b"line1\nline2\nline3"))
+
+# Generated at 2024-03-18 05:47:01.522619
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    # Prepare a mock HTTPRequest with a body that contains new lines
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': b'line1\nline2\nline3',
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Call iter_lines with a chunk size of 1
+    lines = list(request.iter_lines(chunk_size=1))
+
+    # Check that the lines are split correctly
+    assert lines == [(b'line1', b''), (b'line2', b''), (b'line3', b'')], "The lines were not split correctly"
+
+# Generated at 2024-03-18 05:47:08.802891
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Mock a simple request object with a body
+    mock_request = HTTPRequest(type('MockRequest', (object,), {
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {},
+        'body': b'Test body content'
+    })())
+
+    # Create an instance of HTTPRequest
+    http_request = HTTPRequest(mock_request)
+
+    # Test iter_body with a chunk size of 5
+    body_chunks = list(http_request.iter_body(chunk_size=5))
+
+    # Verify that the body is split into correct chunks
+    assert body_chunks == [b'Test ', b'body', b' cont', b'ent']
+
+    # Test iter_body with a chunk size larger than the body
+    body_chunks_large = list(http_request.iter_body(chunk_size=50))
+
+    # Verify that the entire body is returned in one chunk
+    assert body_chunks_large == [b'Test body content']
+
+
+# Generated at 2024-03-18 05:47:16.839894
+# Unit test for method iter_lines of class HTTPResponse
+def test_HTTPResponse_iter_lines():    # Mocking a response object with iter_lines method
+    class MockResponse:
+        def iter_lines(self, chunk_size=1, delimiter=b'\n'):
+            return iter([b'This is line one' + delimiter,
+                         b'This is line two' + delimiter,
+                         b'This is line three' + delimiter])
+
+    # Creating an instance of HTTPResponse with the mocked response
+    response = HTTPResponse(MockResponse())
+
+    # Expected lines
+    expected_lines = [
+        (b'This is line one', b'\n'),
+        (b'This is line two', b'\n'),
+        (b'This is line three', b'\n')
+    ]
+
+    # Testing iter_lines method
+    for index, (line, line_feed) in enumerate(response.iter_lines(chunk_size=1)):
+        assert (line, line_feed) == expected_lines[index], f"Line {index} is not as expected."
+
+
+# Generated at 2024-03-18 05:47:47.636618
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request_body = b"Hello, world!"
+    mock_request = HTTPRequest(orig=type('MockRequest', (object,), {
+        'body': request_body,
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {}
+    })())
+
+    # Create an instance of HTTPRequest
+    http_request = HTTPRequest(mock_request)
+
+    # Test iter_body method
+    body_chunks = list(http_request.iter_body(chunk_size=5))
+
+    # Verify that the body is returned in correct chunks
+    assert body_chunks == [request_body[i:i+5] for i in range(0, len(request_body), 5)]
+
+
+# Generated at 2024-03-18 05:47:53.331944
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Mock a simple request object with a body
+    class MockRequest:
+        def __init__(self, url, method, headers, body):
+            self.url = url
+            self.method = method
+            self.headers = headers
+            self.body = body
+
+    # Create a mock request with a body that can be iterated over
+    mock_request = MockRequest(
+        url='http://example.com',
+        method='GET',
+        headers={'Content-Type': 'text/plain'},
+        body='This is a test body.'
+    )
+
+    # Wrap the mock request in our HTTPRequest class
+    http_request = HTTPRequest(mock_request)
+
+    # Define the chunk size for iteration
+    chunk_size = 5
+
+    # Collect the chunks from the iterator
+    body_chunks = list(http_request.iter_body(chunk_size))
+
+    # Check that the body was correctly split into chunks
+
+# Generated at 2024-03-18 05:48:00.353891
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Mock a simple request object with a body
+    mock_request = HTTPRequest(type('MockRequest', (object,), {
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {},
+        'body': b'Test body content'
+    })())
+
+    # Create an instance of HTTPRequest
+    http_request = HTTPRequest(mock_request)
+
+    # Test iter_body with a chunk size of 5
+    body_chunks = list(http_request.iter_body(chunk_size=5))
+
+    # Verify that the body is split into correct chunks
+    assert body_chunks == [b'Test ', b'body', b' cont', b'ent']
+
+    # Test iter_body with a chunk size larger than the body
+    body_chunks_large = list(http_request.iter_body(chunk_size=50))
+
+    # Verify that the entire body is returned in one chunk
+    assert body_chunks_large == [b'Test body content']
+
+
+# Generated at 2024-03-18 05:48:06.925706
+# Unit test for method iter_lines of class HTTPResponse
+def test_HTTPResponse_iter_lines():    # Mock a response object with iter_lines method
+    class MockResponse:
+        def iter_lines(self, chunk_size):
+            return [b'line1\n', b'line2\n', b'line3']
+
+    # Create an instance of HTTPResponse with the mocked response
+    http_response = HTTPResponse(MockResponse())
+
+    # Call iter_lines with a specific chunk size
+    lines = list(http_response.iter_lines(chunk_size=10))
+
+    # Expected output: list of tuples with the line and the line feed
+    expected_lines = [(b'line1', b'\n'), (b'line2', b'\n'), (b'line3', b'')]
+
+    # Assert that the output from iter_lines is as expected
+    assert lines == expected_lines, f"Expected {expected_lines}, got {lines}"
+
+# Generated at 2024-03-18 05:48:13.981814
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request_body = b"Hello, world!"
+    mock_request = HTTPRequest(orig=type('MockRequest', (object,), {
+        'body': request_body,
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Create an instance of HTTPRequest
+    http_request = HTTPRequest(mock_request)
+
+    # Test iter_body method
+    chunk_size = 5
+    body_chunks = list(http_request.iter_body(chunk_size))
+
+    # Verify that the body is split into correct chunks
+    expected_chunks = [request_body[i:i+chunk_size] for i in range(0, len(request_body), chunk_size)]
+    assert body_chunks == expected_chunks, f"Expected chunks {expected_chunks}, got {body_chunks}"
+
+
+# Generated at 2024-03-18 05:48:20.010334
+# Unit test for method iter_lines of class HTTPResponse
+def test_HTTPResponse_iter_lines():    # Mocking a Response object with iter_lines method
+    class MockResponse:
+        def iter_lines(self, chunk_size):
+            return [b'line1\n', b'line2\n', b'line3']
+
+    # Creating an instance of HTTPResponse with the mocked Response
+    http_response = HTTPResponse(MockResponse())
+
+    # Expected list of tuples (line, line_feed)
+    expected_lines = [(b'line1', b'\n'), (b'line2', b'\n'), (b'line3', b'')]
+
+    # Testing iter_lines method
+    for index, (line, line_feed) in enumerate(http_response.iter_lines(chunk_size=1)):
+        assert (line, line_feed) == expected_lines[index], f"Line {index + 1} did not match expected output"
+
+# Generated at 2024-03-18 05:48:23.625980
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Setup: Create a mock HTTPRequest object with a body
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'test body',
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Execute: Call iter_body with a chunk size of 4
+    body_chunks = list(request.iter_body(chunk_size=4))
+
+    # Assert: Check if the body is split into correct chunks
+    assert body_chunks == [b'test', b' body'], "Body chunks do not match expected output."
+
+# Generated at 2024-03-18 05:48:28.485761
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    # Prepare a mock HTTPRequest object with a body that contains new lines
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'line1\nline2\nline3',
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {}
+    })())
+
+    # Call iter_lines with a chunk size of 1
+    lines = list(request.iter_lines(chunk_size=1))
+
+    # Check that the lines are split correctly and include empty bytes for line feed
+    expected_lines = [(b'line1', b''), (b'line2', b''), (b'line3', b'')]
+    assert lines == expected_lines, f"Expected lines to be {expected_lines}, but got {lines}"
+
+# Generated at 2024-03-18 05:48:36.395717
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request_body = b"Hello, world!"
+    mock_request = HTTPRequest(orig=type('MockRequest', (object,), {
+        'body': request_body,
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {}
+    })())
+
+    # Create an instance of HTTPRequest
+    http_request = HTTPRequest(mock_request)
+
+    # Test iter_body method
+    body_chunks = list(http_request.iter_body(chunk_size=5))
+
+    # Verify that the body is returned in correct chunks
+    expected_chunks = [request_body[i:i+5] for i in range(0, len(request_body), 5)]
+    assert body_chunks == expected_chunks, f"Expected body chunks {expected_chunks}, got {body_chunks}"
+
+
+# Generated at 2024-03-18 05:48:40.535103
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Mock request object with a body
+    mock_request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'test body',
+        'headers': {},
+        'url': 'http://example.com'
+    })())
+
+    # Create an instance of HTTPRequest
+    http_request = HTTPRequest(mock_request)
+
+    # Define the expected result
+    expected_body = b'test body'
+
+    # Call the iter_body method with a chunk size of 1
+    body_chunks = list(http_request.iter_body(chunk_size=1))
+
+    # Check if the body is returned as a single chunk
+    assert body_chunks == [expected_body], f"Expected body chunks to be {[expected_body]}, but got {body_chunks}"
+
+
+# Generated at 2024-03-18 05:49:35.159660
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    # Prepare a mock HTTPRequest with a body that contains new lines
+    request = HTTPRequest(orig=type('MockRequest', (object,), {
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {},
+        'body': b'line1\nline2\nline3'
+    })())
+
+    # Call iter_lines with a chunk size of 1
+    lines = list(request.iter_lines(chunk_size=1))
+
+    # Check that the lines are split correctly
+    assert lines == [(b'line1', b''), (b'line2', b''), (b'line3', b'')]
+
+    # Check that the lines are split correctly when there is no new line at the end
+    request._orig.body = b'line1\nline2\nline3'
+    lines = list(request.iter_lines(chunk_size=1))
+
+# Generated at 2024-03-18 05:49:39.822390
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    # Prepare a mock HTTPRequest with a body containing multiple lines
+    request = HTTPRequest(mock_request_with_body(b"line1\nline2\nline3"))
+
+    # Call iter_lines with a chunk size of 1
+    lines = list(request.iter_lines(chunk_size=1))
+
+    # Check that the lines are split correctly and include the line feed
+    assert lines == [(b"line1", b''), (b"line2", b''), (b"line3", b'')]
+
+# Mock request object with body
+
+# Generated at 2024-03-18 05:49:46.864899
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'test body',
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Call iter_body with a chunk size of 1
+    body_chunks = list(request.iter_body(chunk_size=1))
+
+    # Assert that the body is split into chunks of size 1
+    assert body_chunks == [b't', b'e', b's', b't', b' ', b'b', b'o', b'd', b'y']
+
+    # Call iter_body with a chunk size of 4
+    body_chunks = list(request.iter_body(chunk_size=4))
+
+    # Assert that the body is split into chunks of size 4
+    assert body_chunks == [b'test', b' bod', b'y']
+
+    # Call iter_body with a chunk size
+
+# Generated at 2024-03-18 05:49:51.719150
+# Unit test for method iter_lines of class HTTPResponse
+def test_HTTPResponse_iter_lines():    # Mocking a response object with iter_lines method
+    class MockResponse:
+        def iter_lines(self, chunk_size=1, delimiter=b'\n'):
+            return iter([b'This is line 1' + delimiter,
+                         b'This is line 2' + delimiter,
+                         b'This is line 3' + delimiter])
+
+    # Creating an instance of HTTPResponse with the mocked response
+    response = HTTPResponse(MockResponse())
+
+    # Expected list of tuples (line, line_feed)
+    expected_lines = [
+        (b'This is line 1', b'\n'),
+        (b'This is line 2', b'\n'),
+        (b'This is line 3', b'\n'),
+    ]
+
+    # Collecting the actual lines from iter_lines
+    actual_lines = list(response.iter_lines(chunk_size=1))
+
+    # Asserting that the actual lines match the expected lines
+    assert actual_lines == expected_lines, f
+
+# Generated at 2024-03-18 05:49:58.383510
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'test body',
+        'headers': {},
+        'url': 'http://example.com'
+    })())
+
+    # Create a chunk size
+    chunk_size = 5
+
+    # Get the iterator from the iter_body method
+    body_iter = request.iter_body(chunk_size)
+
+    # Read chunks from the iterator and collect them
+    chunks = list(body_iter)
+
+    # Verify that the body is split correctly into chunks
+    expected_chunks = [b'test ', b'body']
+    assert chunks == expected_chunks, f"Expected chunks {expected_chunks}, got {chunks}"
+
+
+# Generated at 2024-03-18 05:50:03.628983
+# Unit test for method iter_lines of class HTTPResponse
+def test_HTTPResponse_iter_lines():    # Mocking a response object with iter_lines method
+    class MockResponse:
+        def iter_lines(self, chunk_size=1, delimiter=b'\n'):
+            return iter([b'This is line one' + delimiter,
+                         b'This is line two' + delimiter,
+                         b'This is line three' + delimiter])
+
+    # Creating an instance of HTTPResponse with the mocked response
+    response = HTTPResponse(MockResponse())
+
+    # Expected lines
+    expected_lines = [
+        (b'This is line one', b'\n'),
+        (b'This is line two', b'\n'),
+        (b'This is line three', b'\n')
+    ]
+
+    # Testing iter_lines method
+    for expected, actual in zip(expected_lines, response.iter_lines(chunk_size=1)):
+        assert expected == actual, f"Expected {expected}, got {actual}"
+
+# Generated at 2024-03-18 05:50:08.479618
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': b'This is a test body',
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Call iter_body with a chunk size of 5
+    body_chunks = list(request.iter_body(chunk_size=5))
+
+    # Assert that the body is split into the correct number of chunks
+    assert len(body_chunks) == 4
+
+    # Assert that the content of the chunks is correct
+    assert body_chunks[0] == b'This '
+    assert body_chunks[1] == b'is a '
+    assert body_chunks[2] == b'test '
+    assert body_chunks[3] == b'body'
+
+# Generated at 2024-03-18 05:50:21.588128
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request = HTTPRequest(orig=type('MockRequest', (object,), {
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {},
+        'body': b'This is a test body.'
+    })())
+
+    # Call iter_body with a chunk size of 5
+    body_chunks = list(request.iter_body(chunk_size=5))
+
+    # Assert that the body is split into the correct chunks
+    assert body_chunks == [b'This ', b'is a ', b'test ', b'body.'], "Body chunks do not match expected output"
+
+# Run the unit test
+test_HTTPRequest_iter_body()
+
+# Generated at 2024-03-18 05:50:27.911213
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': b'This is a test body.',
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Test iter_body with a chunk size of 1
+    body_iter = request.iter_body(chunk_size=1)
+    assert list(body_iter) == [b'T', b'h', b'i', b's', b' ', b'i', b's', b' ', b'a', b' ', b't', b'e', b's', b't', b' ', b'b', b'o', b'd', b'y', b'.']
+
+    # Test iter_body with a chunk size of 5
+    body_iter = request.iter_body(chunk_size=5)
+
+# Generated at 2024-03-18 05:50:36.588431
+# Unit test for method iter_lines of class HTTPResponse
+def test_HTTPResponse_iter_lines():    # Mock a response object with iter_lines method
+    class MockResponse:
+        def iter_lines(self, chunk_size=1, delimiter=b'\n'):
+            return iter([b'This is a line' + delimiter, b'Another line' + delimiter])
+
+    # Create an instance of HTTPResponse with the mocked response
+    http_response = HTTPResponse(MockResponse())
+
+    # Call iter_lines method and convert the result to a list
+    lines = list(http_response.iter_lines(chunk_size=1))
+
+    # Expected output is a list of tuples with the line and the line feed
+    expected_lines = [(b'This is a line', b'\n'), (b'Another line', b'\n')]
+
+    # Assert that the output from iter_lines is as expected
+    assert lines == expected_lines, f"Expected lines to be {expected_lines}, but got {lines}"
+
+# Generated at 2024-03-18 05:52:17.122585
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    # Prepare a mock HTTPRequest object with a body that contains new lines
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'line1\nline2\nline3',
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {}
+    })())
+
+    # Call iter_lines with a chunk size of 1
+    lines = list(request.iter_lines(chunk_size=1))
+
+    # Check that the lines are split correctly and that the line feed is correct
+    assert lines == [
+        (b'line1\n', b''),
+        (b'line2\n', b''),
+        (b'line3', b'')
+    ], f"Expected lines to be split correctly with line feeds, got: {lines}"
+
+# Generated at 2024-03-18 05:52:21.606124
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    # Prepare a mock HTTPRequest object with a body that contains newlines
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'line1\nline2\nline3',
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Call iter_lines method with a chunk size of 1
+    lines = list(request.iter_lines(chunk_size=1))
+
+    # Check that the lines are split correctly and include empty line_feed
+    assert lines == [(b'line1\n', b''), (b'line2\n', b''), (b'line3', b'')], "The lines were not split correctly."
+
+# Generated at 2024-03-18 05:52:27.257675
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    # Prepare a mock HTTPRequest object with a body that contains new lines
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {},
+        'body': b'line1\nline2\nline3'
+    }))
+
+    # Call iter_lines with a chunk size of 1
+    lines = list(request.iter_lines(chunk_size=1))
+
+    # Check that the lines are split correctly and include the line feed
+    expected_lines = [(b'line1', b''), (b'line2', b''), (b'line3', b'')]
+    assert lines == expected_lines, f"Expected lines to be {expected_lines}, but got {lines}"
+
+# Generated at 2024-03-18 05:52:31.601213
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    # Prepare a mock HTTPRequest object with a body that contains new lines
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'line1\nline2\nline3',
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {}
+    })())
+
+    # Call iter_lines method with a chunk size of 1
+    lines = list(request.iter_lines(chunk_size=1))
+
+    # Check that the lines are split correctly and include empty line_feed
+    expected_lines = [(b'line1', b''), (b'line2', b''), (b'line3', b'')]
+    assert lines == expected_lines, f"Expected lines to be {expected_lines}, but got {lines}"
+
+# Generated at 2024-03-18 05:52:38.305477
+# Unit test for method iter_lines of class HTTPResponse
+def test_HTTPResponse_iter_lines():    # Mocking a response object with iter_lines method
+    class MockResponse:
+        def iter_lines(self, chunk_size=1, delimiter=b'\n'):
+            return iter([b'This is line 1' + delimiter,
+                         b'This is line 2' + delimiter,
+                         b'This is line 3' + delimiter])
+
+    # Creating an instance of HTTPResponse with the mocked response
+    response = HTTPResponse(MockResponse())
+
+    # Expected lines
+    expected_lines = [
+        (b'This is line 1', b'\n'),
+        (b'This is line 2', b'\n'),
+        (b'This is line 3', b'\n')
+    ]
+
+    # Test iter_lines method
+
+# Generated at 2024-03-18 05:52:45.167849
+# Unit test for method iter_lines of class HTTPResponse
+def test_HTTPResponse_iter_lines():    # Mock a response object with iter_lines method
+    class MockResponse:
+        def iter_lines(self, chunk_size=1, delimiter=b'\n'):
+            return iter([b'This is line 1' + delimiter,
+                         b'This is line 2' + delimiter,
+                         b'This is line 3' + delimiter])
+
+    # Create an instance of HTTPResponse with the mocked response
+    http_response = HTTPResponse(MockResponse())
+
+    # Call iter_lines method with a specific chunk size
+    lines = list(http_response.iter_lines(chunk_size=10))
+
+    # Expected lines with line_feed
+    expected_lines = [
+        (b'This is line 1', b'\n'),
+        (b'This is line 2', b'\n'),
+        (b'This is line 3', b'\n')
+    ]
+
+    # Assert that the lines returned by iter_lines are as expected
+
+# Generated at 2024-03-18 05:52:49.761581
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    # Prepare a mock HTTPRequest with a body that contains new lines
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'line1\nline2\nline3',
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Call iter_lines method with a chunk size of 1
+    lines = list(request.iter_lines(chunk_size=1))
+
+    # Check if the lines are split correctly and include empty bytes for line feed
+    expected_lines = [(b'line1', b''), (b'line2', b''), (b'line3', b'')]
+    assert lines == expected_lines, f"Expected lines {expected_lines}, got {lines}"
+
+# Generated at 2024-03-18 05:52:55.673771
+# Unit test for method iter_lines of class HTTPRequest
+def test_HTTPRequest_iter_lines():    # Prepare a mock HTTPRequest object with a body that contains new lines
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {},
+        'body': b'line1\nline2\nline3'
+    }))
+
+    # Call iter_lines with a chunk size of 1
+    lines = list(request.iter_lines(chunk_size=1))
+
+    # Check that the lines are split correctly and include the line feed
+    expected_lines = [(b'line1', b''), (b'line2', b''), (b'line3', b'')]
+    assert lines == expected_lines, f"Expected lines to be {expected_lines}, but got {lines}"
+
+# Generated at 2024-03-18 05:53:01.964353
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request = HTTPRequest(orig=type('MockRequest', (object,), {
+        'url': 'http://example.com',
+        'method': 'GET',
+        'headers': {},
+        'body': b'Test body content'
+    })())
+
+    # Create a list from the iterator returned by iter_body
+    body_chunks = list(request.iter_body(chunk_size=5))
+
+    # Assert that the body is split into correct chunks
+    assert body_chunks == [b'Test ', b'body ', b'conte', b'nt']
+
+    # Test with a different chunk size
+    body_chunks = list(request.iter_body(chunk_size=9))
+    assert body_chunks == [b'Test body', b' content']
+
+    # Test with a chunk size larger than the body
+    body_chunks = list(request.iter_body(chunk_size=50))
+    assert body_chunks == [b'Test body content']
+
+
+
+# Generated at 2024-03-18 05:53:06.444534
+# Unit test for method iter_body of class HTTPRequest
+def test_HTTPRequest_iter_body():    # Prepare a mock HTTPRequest object with a body
+    request = HTTPRequest(type('MockRequest', (object,), {
+        'body': 'test body',
+        'headers': {},
+        'url': 'http://example.com',
+        'method': 'GET'
+    })())
+
+    # Call iter_body with a chunk size of 1
+    body_chunks = list(request.iter_body(chunk_size=1))
+
+    # Assert that the body is split into chunks of size 1
+    assert body_chunks == [b't', b'e', b's', b't', b' ', b'b', b'o', b'd', b'y']
+
+    # Call iter_body with a chunk size larger than the body
+    body_chunks = list(request.iter_body(chunk_size=100))
+
+    # Assert that the body is returned as a single chunk
+    assert body_chunks == [b'test body']

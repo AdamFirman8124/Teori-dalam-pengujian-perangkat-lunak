@@ -1,0 +1,730 @@
+
+
+# Generated at 2024-05-31 08:30:41.615528
+```python
+    import socket
+    import ssl
+    from unittest.mock import patch, MagicMock
+
+    # Mocking socket.create_connection
+    with patch('socket.create_connection', return_value=MagicMock()) as mock_create_connection:
+        # Mocking ssl.wrap_socket
+        with patch('ssl.wrap_socket', return_value=MagicMock()) as mock_wrap_socket:
+            # Mocking ssl.SSLContext.wrap_socket
+            with patch.object(ssl.SSLContext, 'wrap_socket', return_value=MagicMock()) as mock_ssl_context_wrap_socket:
+                conn = CustomHTTPSConnection('example.com', 443)
+                conn.cert_file = None
+                conn.key_file = None
+                conn.context = MagicMock()
+                conn._tunnel_host = None
+
+                conn.connect()
+
+                mock_create_connection.assert_called_once_with(('example.com', 443), conn.timeout, None)
+                mock_ssl_context_wrap_socket.assert_called_once()
+                mock_wrap_socket.assert_not_called()
+
+                conn
+
+# Generated at 2024-05-31 08:30:43.451181
+```python
+    conn = CustomHTTPSConnection('example.com', 443)
+    assert conn.host == 'example.com'
+    assert conn.port == 443
+    assert conn.context is not None or conn.context is None  # Depending on the environment
+    assert conn.cert_file is None
+    assert conn.key_file is None
+```
+
+# Generated at 2024-05-31 08:30:49.992029
+```python
+    handler = SSLValidationHandler('example.com', 443)
+    
+    # Test with valid response
+    valid_response = b'HTTP/1.1 200 Connection established\r\n\r\n'
+    try:
+        handler.validate_proxy_response(valid_response)
+        print("Test passed: Valid response")
+    except ProxyError:
+        print("Test failed: Valid response")
+
+    # Test with invalid response code
+    invalid_response_code = b'HTTP/1.1 404 Not Found\r\n\r\n'
+    try:
+        handler.validate_proxy_response(invalid_response_code)
+        print("Test failed: Invalid response code")
+    except ProxyError:
+        print("Test passed: Invalid response code")
+
+    # Test with malformed response
+    malformed_response = b'Invalid response'
+    try:
+        handler.validate_proxy_response(malformed_response)
+        print("Test failed: Malformed response")
+    except ProxyError:
+        print("Test passed: Malformed response")
+```
+
+# Generated at 2024-05-31 08:30:55.822159
+```python
+    import urllib.request as urllib_request
+    import urllib.error as urllib_error
+    from unittest import TestCase, main
+    from unittest.mock import patch, MagicMock
+
+    class TestRedirectHandlerFactory(TestCase):
+
+        def setUp(self):
+            self.url = 'http://example.com'
+            self.newurl = 'http://example.com/redirect'
+            self.req = urllib_request.Request(self.url)
+            self.fp = MagicMock()
+            self.code = 302
+            self.msg = 'Found'
+            self.hdrs = {}
+
+        @patch('urllib.request._opener')
+        def test_redirect_handler_no_redirects(self, mock_opener):
+            handler = RedirectHandlerFactory(follow_redirects='no')()
+            with self.assertRaises(urllib_error.HTTPError):
+                handler.redirect_request(self.req, self.fp, self.code, self.msg, self.hdrs, self.newurl)
+
+        @patch('urllib.request._opener')
+        def
+
+# Generated at 2024-05-31 08:31:01.399539
+```python
+    import socket
+    import ssl
+    from unittest import mock, TestCase
+
+    class TestCustomHTTPSConnection(TestCase):
+        @mock.patch('socket.create_connection')
+        @mock.patch('ssl.wrap_socket')
+        def test_connect(self, mock_wrap_socket, mock_create_connection):
+            # Arrange
+            mock_sock = mock.Mock()
+            mock_create_connection.return_value = mock_sock
+            mock_ssl_sock = mock.Mock()
+            mock_wrap_socket.return_value = mock_ssl_sock
+
+            conn = CustomHTTPSConnection('example.com', 443)
+            conn.key_file = None
+            conn.cert_file = None
+            conn._tunnel_host = None
+            conn.timeout = 10
+
+            # Act
+            conn.connect()
+
+            # Assert
+            mock_create_connection.assert_called_once_with(('example.com', 443), 10, None)
+            mock_wrap_socket.assert_called_once_with(mock_sock, keyfile=None, certfile=None, ssl_version=ssl.PRO
+
+# Generated at 2024-05-31 08:31:07.461239
+```python
+    url = "https://example.com"
+    validate_certs = True
+    ca_path = "/path/to/ca_cert.pem"
+
+    # Test with valid SSL
+    handler = maybe_add_ssl_handler(url, validate_certs, ca_path)
+    assert isinstance(handler, SSLValidationHandler)
+    assert handler.hostname == "example.com"
+    assert handler.port == 443
+    assert handler.ca_path == ca_path
+
+    # Test with invalid SSL
+    try:
+        handler = maybe_add_ssl_handler(url, False, ca_path)
+    except NoSSLError:
+        pass
+    else:
+        assert False, "Expected NoSSLError"
+
+    # Test with non-https URL
+    url = "http://example.com"
+    handler = maybe_add_ssl_handler(url, validate_certs, ca_path)
+    assert handler is None
+
+    # Test with missing SSL support
+    global HAS_SSL
+    HAS_SSL = False
+    try:
+        handler =
+
+# Generated at 2024-05-31 08:31:11.328307
+```python
+    request = Request()
+    url = "http://example.com"
+    method = "GET"
+    response = request.open(method, url)
+    assert response is not None
+    assert response.getcode() == 200
+
+    method = "POST"
+    data = b"test data"
+    response = request.open(method, url, data=data)
+    assert response is not None
+    assert response.getcode() == 200
+
+    method = "PUT"
+    data = b"test data"
+    response = request.open(method, url, data=data)
+    assert response is not None
+    assert response.getcode() == 200
+
+    method = "DELETE"
+    response = request.open(method, url)
+    assert response is not None
+    assert response.getcode() == 200
+
+    method = "HEAD"
+    response = request.open(method, url)
+    assert response is not None
+    assert response.getcode() == 200
+
+   
+
+# Generated at 2024-05-31 08:31:16.744078
+```python
+    import time
+
+    # Test case 1: Standard date and time
+    timetuple = (2023, 10, 5, 14, 30, 0, 3, 278, -1)
+    assert rfc2822_date_string(timetuple) == 'Thu, 05 Oct 2023 14:30:00 -0000'
+
+    # Test case 2: Date and time with different zone
+    timetuple = (2023, 10, 5, 14, 30, 0, 3, 278, -1)
+    assert rfc2822_date_string(timetuple, '+0200') == 'Thu, 05 Oct 2023 14:30:00 +0200'
+
+    # Test case 3: Date and time with different day of the week
+    timetuple = (2023, 10, 6, 
+
+# Generated at 2024-05-31 08:31:21.034526
+```python
+    class MockResponse:
+        def __init__(self, sock):
+            self.fp = self
+            self.raw = self
+            self._sock = sock
+
+    class MockSocket:
+        def getpeercert(self, binary_form):
+            return "mocked_cert" if not binary_form else b"mocked_cert"
+
+    # Test for Python 3
+    global PY3
+    PY3 = True
+    response = MockResponse(MockSocket())
+    assert getpeercert(response) == "mocked_cert"
+    assert getpeercert(response, binary_form=True) == b"mocked_cert"
+
+    # Test for Python 2
+    PY3 = False
+    response = MockResponse(MockSocket())
+    assert getpeercert(response) == "mocked_cert"
+    assert getpeercert(response, binary_form=True) == b"mocked_cert"
+
+    # Test for non-HTTPS response
+    class NonHTTPSSocket
+
+# Generated at 2024-05-31 08:31:25.194954
+```python
+    fields = {
+        "file1": {
+            "filename": "/bin/true",
+            "mime_type": "application/octet-stream"
+        },
+        "file2": {
+            "content": "text based file content",
+            "filename": "fake.txt",
+            "mime_type": "text/plain",
+        },
+        "text_form_field": "value"
+    }
+
+    content_type, body = prepare_multipart(fields)
+
+    assert content_type.startswith("multipart/form-data; boundary=")
+    assert b'Content-Disposition: form-data; name="file1"; filename="true"' in body
+    assert b'Content-Type: application/octet-stream' in body
+    assert b'Content-Disposition: form-data; name="file2"; filename="fake.txt"' in body
+    assert b'Content-Type: text/plain' in body
+    assert b'text based file content' in body
+    assert b'Content-Disposition: form-data; name="
+
+# Generated at 2024-05-31 08:32:12.122264
+```python
+    handler = SSLValidationHandler('example.com', 443)
+    
+    # Test with valid response
+    valid_response = b'HTTP/1.1 200 Connection established\r\n\r\n'
+    try:
+        handler.validate_proxy_response(valid_response)
+        print("Test passed: Valid response")
+    except ProxyError:
+        print("Test failed: Valid response")
+
+    # Test with invalid response code
+    invalid_response_code = b'HTTP/1.1 404 Not Found\r\n\r\n'
+    try:
+        handler.validate_proxy_response(invalid_response_code)
+        print("Test failed: Invalid response code")
+    except ProxyError:
+        print("Test passed: Invalid response code")
+
+    # Test with malformed response
+    malformed_response = b'Invalid response'
+    try:
+        handler.validate_proxy_response(malformed_response)
+        print("Test failed: Malformed response")
+    except ProxyError:
+        print("Test passed: Malformed response")
+```
+
+# Generated at 2024-05-31 08:32:18.220448
+```python
+    from cryptography.hazmat.primitives import hashes
+    from cryptography.hazmat.primitives.serialization import Encoding
+    from cryptography.hazmat.primitives.serialization import PublicFormat
+    from cryptography.hazmat.primitives.asymmetric import rsa
+    from cryptography.x509 import CertificateBuilder, NameOID
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.backends import default_backend
+    import datetime
+
+    # Generate a test certificate
+    key = rsa.generate_private_key(public_exponent=65537, key_size=2048, backend=default_backend())
+    name = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, u'Test Certificate')])
+    cert = (
+        CertificateBuilder()
+        .subject_name(name)
+        .issuer_name(name)
+        .public_key(key.public_key())
+        .serial_number(x509.random_serial_number())
+        .not_valid_before(datetime.datetime.utcnow())
+       
+
+# Generated at 2024-05-31 08:32:23.313616
+```python
+    handler = SSLValidationHandler('example.com', 443)
+    
+    # Test case where no_proxy is not set
+    os.environ.pop('no_proxy', None)
+    assert handler.detect_no_proxy('https://example.com') == True
+    
+    # Test case where no_proxy is set but does not match the URL
+    os.environ['no_proxy'] = 'localhost,127.0.0.1'
+    assert handler.detect_no_proxy('https://example.com') == True
+    
+    # Test case where no_proxy is set and matches the URL
+    os.environ['no_proxy'] = 'example.com'
+    assert handler.detect_no_proxy('https://example.com') == False
+    
+    # Test case where no_proxy is set and matches the URL with port
+    os.environ['no_proxy'] = 'example.com'
+    assert handler.detect_no_proxy('https://example.com:443') == False
+    
+    # Test case where no_proxy is set and matches
+
+# Generated at 2024-05-31 08:32:25.143516
+```python
+    unix_socket = '/tmp/test_socket'
+    connection = UnixHTTPSConnection(unix_socket)
+    with patch('httplib.HTTPConnection.connect') as mock_connect:
+        connection.connect()
+        mock_connect.assert_called_once()
+```
+
+# Generated at 2024-05-31 08:32:29.149436
+```python
+    import urllib.request as urllib_request
+    import urllib.error as urllib_error
+    from unittest import TestCase, main
+    from unittest.mock import patch, MagicMock
+
+    class TestRedirectHandlerFactory(TestCase):
+
+        @patch('urllib.request.HTTPRedirectHandler.redirect_request')
+        def test_redirect_request_urllib2(self, mock_redirect_request):
+            follow_redirects = 'urllib2'
+            handler = RedirectHandlerFactory(follow_redirects)()
+            req = MagicMock()
+            fp = MagicMock()
+            code = 301
+            msg = 'Moved Permanently'
+            hdrs = {}
+            newurl = 'http://example.com'
+
+            handler.redirect_request(req, fp, code, msg, hdrs, newurl)
+            mock_redirect_request.assert_called_once_with(req, fp, code, msg, hdrs, newurl)
+
+        def test_redirect_request_no_redirects(self):
+            follow_redirects = 'no'
+            handler = RedirectHandlerFactory(f
+
+# Generated at 2024-05-31 08:32:33.085423
+```python
+    handler = SSLValidationHandler('example.com', 443)
+    
+    # Test with valid response
+    valid_response = b'HTTP/1.1 200 Connection established\r\n\r\n'
+    try:
+        handler.validate_proxy_response(valid_response)
+        print("Test passed: valid response")
+    except ProxyError:
+        print("Test failed: valid response")
+
+    # Test with invalid response code
+    invalid_response_code = b'HTTP/1.1 500 Internal Server Error\r\n\r\n'
+    try:
+        handler.validate_proxy_response(invalid_response_code)
+        print("Test failed: invalid response code")
+    except ProxyError:
+        print("Test passed: invalid response code")
+
+    # Test with malformed response
+    malformed_response = b'INVALID RESPONSE'
+    try:
+        handler.validate_proxy_response(malformed_response)
+        print("Test failed: malformed response")
+    except ProxyError:
+        print("Test passed: malformed response")
+```
+
+# Generated at 2024-05-31 08:32:34.801974
+```python
+    unix_socket = "/tmp/test_socket"
+    connection = UnixHTTPSConnection(unix_socket)
+    
+    with patch('httplib.HTTPConnection.connect') as mock_connect:
+        connection.connect()
+        mock_connect.assert_called_once()
+```
+
+# Generated at 2024-05-31 08:32:38.381192
+```python
+    import os
+    import pytest
+    from unittest.mock import patch, MagicMock
+
+    # Mocking necessary components
+    mock_socket = MagicMock()
+    mock_ssl = MagicMock()
+    mock_ssl_context = MagicMock()
+    mock_ssl_wrap_socket = MagicMock()
+    mock_ssl_context.wrap_socket.return_value = mock_ssl_wrap_socket
+    mock_ssl_wrap_socket.getpeercert.return_value = {}
+
+    with patch('socket.create_connection', return_value=mock_socket), \
+         patch('ssl.create_default_context', return_value=mock_ssl_context), \
+         patch('ssl.wrap_socket', return_value=mock_ssl_wrap_socket), \
+         patch('ssl.match_hostname', return_value=True), \
+         patch('os.environ.get', return_value=None):
+
+        handler = SSLValidationHandler('example.com', 443)
+        req = MagicMock()
+        req.get_full_url.return_value = 'https://example.com'
+
+        # Test the http_request method
+        result =
+
+# Generated at 2024-05-31 08:32:41.943887
+```python
+    class MockModule:
+        def __init__(self):
+            self.tmpdir = tempfile.gettempdir()
+            self.cleanup_files = []
+
+        def add_cleanup_file(self, file):
+            self.cleanup_files.append(file)
+
+        def fail_json(self, msg):
+            raise Exception(msg)
+
+    module = MockModule()
+    url = "http://example.com/testfile.txt"
+    expected_content = b"Test file content"
+
+    with requests_mock.Mocker() as m:
+        m.get(url, content=expected_content)
+        file_path = fetch_file(module, url)
+
+        with open(file_path, 'rb') as f:
+            content = f.read()
+
+        assert content == expected_content
+        assert file_path in module.cleanup_files
+        os.remove(file_path)
+
+test_fetch_file()
+```
+
+# Generated at 2024-05-31 08:32:44.184181
+```python
+    handler = SSLValidationHandler('example.com', 443)
+    tmp_ca_cert_path, cadata, paths_checked = handler.get_ca_certs()
+
+    assert tmp_ca_cert_path is not None
+    assert isinstance(cadata, bytearray)
+    assert isinstance(paths_checked, list)
+    assert len(paths_checked) > 0
+```
+
+# Generated at 2024-05-31 08:33:29.347318
+```python
+    import socket
+    import ssl
+    from unittest.mock import patch, MagicMock
+
+    # Mocking socket.create_connection
+    with patch('socket.create_connection', return_value=MagicMock()) as mock_create_connection:
+        # Mocking ssl.wrap_socket
+        with patch('ssl.wrap_socket', return_value=MagicMock()) as mock_wrap_socket:
+            # Create an instance of CustomHTTPSConnection
+            conn = CustomHTTPSConnection('example.com', 443)
+            conn.cert_file = None
+            conn.key_file = None
+            conn._tunnel_host = None
+
+            # Call the connect method
+            conn.connect()
+
+            # Assertions to ensure the methods were called correctly
+            mock_create_connection.assert_called_once_with(('example.com', 443), conn.timeout)
+            mock_wrap_socket.assert_called_once()
+```
+
+# Generated at 2024-05-31 08:33:30.643842
+```python
+    with unix_socket_patch_httpconnection_connect():
+        conn = httplib.HTTPConnection('localhost')
+        conn.connect()
+        assert isinstance(conn.sock, socket.socket)
+```
+
+# Generated at 2024-05-31 08:33:34.583248
+```python
+    handler = SSLValidationHandler('example.com', 443)
+    
+    # Test with valid response
+    valid_response = b'HTTP/1.1 200 Connection established\r\n\r\n'
+    try:
+        handler.validate_proxy_response(valid_response)
+        print("Test passed: Valid response")
+    except ProxyError:
+        print("Test failed: Valid response")
+
+    # Test with invalid response code
+    invalid_response_code = b'HTTP/1.1 500 Internal Server Error\r\n\r\n'
+    try:
+        handler.validate_proxy_response(invalid_response_code)
+        print("Test failed: Invalid response code")
+    except ProxyError:
+        print("Test passed: Invalid response code")
+
+    # Test with malformed response
+    malformed_response = b'Invalid response'
+    try:
+        handler.validate_proxy_response(malformed_response)
+        print("Test failed: Malformed response")
+    except ProxyError:
+        print("Test passed: Malformed response")
+```
+
+# Generated at 2024-05-31 08:33:40.458236
+```python
+    class MockResponse:
+        def __init__(self, sock):
+            self.fp = self.FP(sock)
+
+        class FP:
+            def __init__(self, sock):
+                self.raw = self.Raw(sock)
+
+            class Raw:
+                def __init__(self, sock):
+                    self._sock = sock
+
+    class MockSocket:
+        def getpeercert(self, binary_form):
+            return "mock_cert" if not binary_form else b"mock_cert"
+
+    # Test for Python 3
+    response = MockResponse(MockSocket())
+    assert getpeercert(response) == "mock_cert"
+    assert getpeercert(response, binary_form=True) == b"mock_cert"
+
+    # Test for Python 2
+    class MockResponsePy2:
+        def __init__(self, sock):
+            self.fp = self.FP(sock)
+
+        class FP:
+            def __init__(self, sock):
+                self._sock = self.Sock
+
+# Generated at 2024-05-31 08:33:44.805208
+```python
+    handler = SSLValidationHandler('example.com', 443)
+    
+    # Test case where no_proxy is not set
+    os.environ.pop('no_proxy', None)
+    assert handler.detect_no_proxy('https://example.com') == True
+    
+    # Test case where no_proxy is set but does not match the URL
+    os.environ['no_proxy'] = 'localhost,127.0.0.1'
+    assert handler.detect_no_proxy('https://example.com') == True
+    
+    # Test case where no_proxy is set and matches the URL
+    os.environ['no_proxy'] = 'example.com'
+    assert handler.detect_no_proxy('https://example.com') == False
+    
+    # Test case where no_proxy is set and matches the URL with port
+    os.environ['no_proxy'] = 'example.com'
+    assert handler.detect_no_proxy('https://example.com:443') == False
+    
+    # Test case where no_proxy is set and matches
+
+# Generated at 2024-05-31 08:33:52.136258
+```python
+    module = Mock()
+    module.params = {
+        'validate_certs': True,
+        'url_username': 'user',
+        'url_password': 'pass',
+        'http_agent': 'ansible-httpget',
+        'force_basic_auth': False,
+        'follow_redirects': 'urllib2',
+        'client_cert': None,
+        'client_key': None,
+        'use_gssapi': False
+    }
+    url = 'http://example.com'
+    data = None
+    headers = {'Content-type': 'application/json'}
+    method = 'GET'
+    use_proxy = True
+    force = False
+    last_mod_time = None
+    timeout = 10
+    use_gssapi = False
+    unix_socket = None
+    ca_path = None
+    cookies = None
+    unredirected_headers = None
+
+    response, info = fetch_url(module, url, data, headers, method, use_proxy, force
+
+# Generated at 2024-05-31 08:34:00.513833
+```python
+    url = "https://example.com"
+    validate_certs = True
+    ca_path = "/path/to/ca.pem"
+
+    # Test when SSL is available and validate_certs is True
+    handler = maybe_add_ssl_handler(url, validate_certs, ca_path)
+    assert isinstance(handler, SSLValidationHandler)
+    assert handler.hostname == "example.com"
+    assert handler.port == 443
+    assert handler.ca_path == ca_path
+
+    # Test when SSL is not available
+    global HAS_SSL
+    HAS_SSL = False
+    try:
+        maybe_add_ssl_handler(url, validate_certs, ca_path)
+    except NoSSLError as e:
+        assert str(e) == 'SSL validation is not available in your version of python. You can use validate_certs=False, however this is unsafe and not recommended'
+    finally:
+        HAS_SSL = True
+
+    # Test when validate_certs is False
+    handler = maybe_add_ssl_handler
+
+# Generated at 2024-05-31 08:34:06.117832
+```python
+    class MockModule:
+        def __init__(self, params):
+            self.params = params
+            self.tmpdir = tempfile.gettempdir()
+
+        def fail_json(self, **kwargs):
+            raise Exception(kwargs['msg'])
+
+    module = MockModule({
+        'validate_certs': True,
+        'url_username': 'user',
+        'url_password': 'pass',
+        'http_agent': 'test-agent',
+        'force_basic_auth': False,
+        'follow_redirects': 'urllib2',
+        'client_cert': None,
+        'client_key': None,
+        'use_gssapi': False
+    })
+
+    url = 'http://httpbin.org/get'
+    headers = {'Content-Type': 'application/json'}
+    method = 'GET'
+
+    response, info = fetch_url(module, url, headers=headers, method=method)
+
+    assert response is not None
+    assert info['status'] == 200
+    assert 'application/json'
+
+# Generated at 2024-05-31 08:34:10.866245
+```python
+    class MockResponse:
+        def __init__(self, sock):
+            self.fp = self.FP(sock)
+
+        class FP:
+            def __init__(self, sock):
+                self.raw = self.Raw(sock)
+
+            class Raw:
+                def __init__(self, sock):
+                    self._sock = sock
+
+    class MockSocket:
+        def getpeercert(self, binary_form=False):
+            return {'subject': ((('commonName', 'example.com'),),)}
+
+    response = MockResponse(MockSocket())
+    cert = getpeercert(response)
+    assert cert == {'subject': ((('commonName', 'example.com'),),)}
+
+    response = MockResponse(None)
+    cert = getpeercert(response)
+    assert cert is None
+
+    print("All tests passed.")
+
+test_getpeercert()
+```
+
+# Generated at 2024-05-31 08:34:15.786383
+```python
+    handler = SSLValidationHandler('example.com', 443)
+    cafile = '/path/to/cafile'
+    cadata = b'certificate data'
+
+    # Test with HAS_SSLCONTEXT
+    global HAS_SSLCONTEXT
+    HAS_SSLCONTEXT = True
+    context = handler.make_context(cafile, cadata)
+    assert context is not None
+    assert context.verify_mode == ssl.CERT_REQUIRED
+
+    # Test without HAS_SSLCONTEXT but with HAS_URLLIB3_PYOPENSSLCONTEXT
+    HAS_SSLCONTEXT = False
+    global HAS_URLLIB3_PYOPENSSLCONTEXT
+    HAS_URLLIB3_PYOPENSSLCONTEXT = True
+    context = handler.make_context(cafile, cadata)
+    assert context is not None
+
+    # Test without both HAS_SSLCONTEXT and HAS_URLLIB3_PYOPENSSLCONTEXT
+    HAS_URLLIB3

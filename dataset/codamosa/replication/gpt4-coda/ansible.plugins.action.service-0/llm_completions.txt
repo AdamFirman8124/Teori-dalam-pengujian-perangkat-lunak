@@ -1,0 +1,1240 @@
+
+
+# Generated at 2024-03-18 03:20:42.772133
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+    from unittest.mock import MagicMock, patch
+
+    # Mock the necessary Ansible internals for the test
+    mock_loader = MagicMock()
+    mock_loader.has_plugin.return_value = True
+    mock_connection = MagicMock()
+    mock_connection._shell.tmpdir = '/fake/tmp/dir'
+    mock_templar = MagicMock()
+    mock_templar.template.side_effect = lambda x: x.strip('{{').strip('}}')
+    mock_display = MagicMock()
+
+    # Create the action plugin instance
+    action_plugin = ActionModule(task=MagicMock(), connection=mock_connection, play_context=MagicMock(), loader=mock_loader, templar=mock_templar, shared_loader_obj=MagicMock
+
+# Generated at 2024-03-18 03:20:46.761675
+```python
+    action_module = ActionModule(None, None, None, None, None, None, None)
+
+    assert action_module.TRANSFERS_FILES == False
+    assert isinstance(action_module.UNUSED_PARAMS, dict)
+    assert 'systemd' in action_module.UNUSED_PARAMS
+    assert action_module.BUILTIN_SVC_MGR_MODULES == set(['openwrt_init', 'service', 'systemd', 'sysvinit'])
+```
+
+# Generated at 2024-03-18 03:20:58.091663
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+    import pytest
+
+    # Mock the necessary Ansible classes and methods
+    class MockLoader:
+        def __init__(self, has_plugin=True):
+            self.has_plugin = has_plugin
+
+        def has_plugin(self, name):
+            return self.has_plugin
+
+        def find_plugin_with_context(self, name, collection_list=None):
+            class MockContext:
+                def __init__(self, resolved_fqcn):
+                    self.resolved_fqcn = resolved_fqcn
+            return MockContext(resolved_fqcn=name)
+
+    class MockTemplar:
+        def template(self, template):
+            return 'systemd'
+
+    class
+
+# Generated at 2024-03-18 03:21:04.267153
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+
+    # Mocking objects and variables
+    fake_loader = None
+    fake_shared_loader_obj = action_loader
+    fake_connection = None
+    fake_play_context = PlayContext()
+    fake_variable_manager = VariableManager()
+    fake_executor = TaskExecutor(None, None, fake_play_context, fake_loader, fake_connection, fake_variable_manager, None)
+    fake_task = Task()
+    fake_task.action = 'service'
+    fake_task.async_val = False
+    fake_task.args = {'use': 'auto'}
+    fake_task._parent = Sentinel()
+    fake_task._parent._play = Sentinel()
+    fake_task._parent._play._
+
+# Generated at 2024-03-18 03:21:10.742061
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+
+    # Mocking objects and methods that would be provided by the Ansible runtime environment
+    mock_loader = None  # This would be a DataLoader object in a real Ansible environment
+    mock_inventory = None  # This would be an Inventory object
+    mock_variable_manager = VariableManager()
+    mock_play_context = PlayContext()
+
+    # Creating a fake task with the 'service' action
+    fake_task_data = dict(
+        action='service',
+        args=dict(name='httpd', state='started', use='auto'),
+    )
+    fake_task = Task()
+    fake_task.load(fake_task_data)
+
+    # Creating a fake
+
+# Generated at 2024-03-18 03:21:17.019347
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+
+    # Mocking objects and methods that would be available during actual runtime
+    mock_loader = Sentinel()
+    mock_inventory = Sentinel()
+    mock_variable_manager = VariableManager()
+    mock_play_context = PlayContext()
+    mock_task = Task()
+    mock_task.async_val = False
+    mock_task.action = 'service'
+    mock_task.args = {'name': 'httpd', 'state': 'started'}
+    mock_task._parent = Sentinel()
+    mock_task._parent._play = Sentinel()
+    mock_task._parent._play._action_groups = []
+    mock_task.delegate_to = None
+    mock_task.collections = None
+    mock
+
+# Generated at 2024-03-18 03:21:25.723909
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_ActionModule_run(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+
+        # Mock task variables
+        task_vars = {
+            'ansible_facts': {'service_mgr': 'systemd'},
+            'hostvars': {'delegated_host': {'ansible_facts': {'service_mgr': 'systemd'}}}
+        }
+        action_module._task.args = {'use': 'auto'}
+        action_module._task.delegate_to = None
+        action_module._task.async_val = False
+        action_module._task._parent = MagicMock(_play=MagicMock(_action_groups=[]))
+        action_module._task.module_defaults = []
+        action_module._templar = MagicMock()
+        action_module._templar.template.side_effect = lambda x
+
+# Generated at 2024-03-18 03:21:33.257681
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+    from io import StringIO
+    import pytest
+
+    @pytest.fixture
+    def setup_action_module(mocker):
+        # Mock necessary Ansible internal components for the action module
+        mocker.patch('ansible.plugins.action.ActionBase._execute_module')
+        mocker.patch('ansible.plugins.action.ActionBase._remove_tmp_path')
+        mocker.patch('ansible.plugins.loader.action_loader.get', return_value=ActionModule)
+        mocker.patch('ansible.executor.module_common.get_action_args_with_defaults', return_value={})
+
+        # Create fake objects to pass to the action module
+        fake_loader = mocker.MagicMock()
+        fake_loader.get.return_value = None
+        fake_connection = mocker.MagicMock()
+        fake_play_context
+
+# Generated at 2024-03-18 03:21:37.736187
+```python
+    action_module = ActionModule(None, None, None, None, None, None, None)
+
+    assert action_module.TRANSFERS_FILES == False
+    assert isinstance(action_module.UNUSED_PARAMS, dict)
+    assert 'systemd' in action_module.UNUSED_PARAMS
+    assert isinstance(action_module.BUILTIN_SVC_MGR_MODULES, set)
+    assert 'service' in action_module.BUILTIN_SVC_MGR_MODULES
+```
+
+# Generated at 2024-03-18 03:21:43.322971
+```python
+    def mock_loader(has_plugin_return_value):
+        mock_loader = mock.Mock()
+        mock_loader.has_plugin.return_value = has_plugin_return_value
+        return mock_loader
+
+    def mock_templar(template_return_value):
+        mock_templar = mock.Mock()
+        mock_templar.template.return_value = template_return_value
+        return mock_templar
+
+    def mock_task(args, delegate_to=None, async_val=False, module_defaults=None, parent=None):
+        mock_task = mock.Mock()
+        mock_task.args = args
+        mock_task.delegate_to = delegate_to
+        mock_task.async_val = async_val
+        mock_task.module_defaults = module_defaults or []
+        mock_task._parent = parent or mock.Mock()
+        mock_task._parent._play = mock.Mock()
+        mock_task._parent._play._action_groups = []
+        return mock_task
+
+    def mock_display():
+        return mock.Mock()
+
+    def mock_connection():
+        mock_connection = mock.Mock()
+
+
+# Generated at 2024-03-18 03:21:54.958393
+```python
+    action_module = ActionModule(None, None, None, None, None, None, None)
+
+    assert action_module.TRANSFERS_FILES == False
+    assert isinstance(action_module.UNUSED_PARAMS, dict)
+    assert 'systemd' in action_module.UNUSED_PARAMS
+    assert action_module.BUILTIN_SVC_MGR_MODULES == set(['openwrt_init', 'service', 'systemd', 'sysvinit'])
+```
+
+# Generated at 2024-03-18 03:22:00.105248
+```python
+    from unittest.mock import MagicMock, patch
+
+    # Create an instance of the ActionModule with mock objects
+    action_module = ActionModule(task=MagicMock(), connection=MagicMock(), play_context=MagicMock(), loader=MagicMock(), templar=MagicMock(), shared_loader_obj=MagicMock())
+
+    # Mock task variables
+    task_vars = {
+        'ansible_facts': {
+            'service_mgr': 'systemd'
+        }
+    }
+
+    # Mock the _execute_module method to return a fake result
+    fake_result = {'changed': True, 'msg': 'Service executed successfully'}
+    action_module._execute_module = MagicMock(return_value=fake_result)
+
+    # Run the action module's run method with the mocked task_vars
+    result = action_module.run(task_vars=task_vars)
+
+    # Assertions to check if the result is as expected
+    assert 'changed' in result
+    assert result['changed'] == True
+    assert '
+
+# Generated at 2024-03-18 03:22:02.835832
+```python
+    action_module = ActionModule(None, None, None, None, None, None, None)
+
+    assert action_module.TRANSFERS_FILES == False
+    assert isinstance(action_module.UNUSED_PARAMS, dict)
+    assert 'systemd' in action_module.UNUSED_PARAMS
+    assert action_module.BUILTIN_SVC_MGR_MODULES == set(['openwrt_init', 'service', 'systemd', 'sysvinit'])
+```
+
+# Generated at 2024-03-18 03:22:08.318249
+```python
+    from unittest.mock import MagicMock, patch
+
+    def test_ActionModule_run():
+        # Create instance of ActionModule with mock parameters
+        action_module = ActionModule(task=MagicMock(), connection=MagicMock(), play_context=MagicMock(), loader=MagicMock(), templar=MagicMock(), shared_loader_obj=MagicMock())
+
+        # Mock the methods and variables used in the run method
+        action_module._execute_module = MagicMock()
+        action_module._remove_tmp_path = MagicMock()
+        action_module._display = MagicMock()
+        action_module._task.async_val = False
+        action_module._task.args = {'use': 'auto'}
+        action_module._task.delegate_to = None
+        action_module._task._parent._play._action_groups = []
+        action_module._templar.template = MagicMock(side_effect=lambda x: x.strip('{{').strip('}}'))
+        action_module._shared_loader_obj.module_loader.has_plugin = MagicMock(return_value=True)
+        action_module._
+
+# Generated at 2024-03-18 03:22:11.218612
+```python
+    def test_constructor_defaults():
+        action = ActionModule(None, None, None, None, None, None, None)
+        assert action.TRANSFERS_FILES is False
+        assert 'systemd' in action.UNUSED_PARAMS
+        assert action.BUILTIN_SVC_MGR_MODULES == set(['openwrt_init', 'service', 'systemd', 'sysvinit'])
+```
+
+# Generated at 2024-03-18 03:22:18.027373
+```python
+    from unittest.mock import MagicMock, patch
+
+    def test_ActionModule_run():
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        
+        # Mocking methods and attributes used in the run method
+        action_module._execute_module = MagicMock()
+        action_module._remove_tmp_path = MagicMock()
+        action_module._display = MagicMock()
+        action_module._templar = MagicMock()
+        action_module._templar.template = MagicMock(return_value='systemd')
+        action_module._shared_loader_obj = MagicMock()
+        action_module._shared_loader_obj.module_loader = MagicMock()
+        action_module._shared_loader_obj.module_loader.has_plugin = MagicMock(return_value=True)
+        action_module._task = MagicMock()
+        action_module._task.async_val = False
+        action_module._task.args = {'use': 'auto'}
+        action_module._task.delegate_to = None
+        action_module._task._parent = MagicMock
+
+# Generated at 2024-03-18 03:22:23.588055
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+    import pytest
+
+    # Mock objects and data
+    fake_loader = None
+    fake_inventory = None
+    fake_variable_manager = VariableManager()
+    fake_play_context = PlayContext()
+    fake_task = Task()
+    fake_handler = Sentinel()
+    fake_executor = TaskExecutor(
+        loader=fake_loader,
+        inventory=fake_inventory,
+        variable_manager=fake_variable_manager,
+        play_context=fake_play_context,
+        task=fake_task,
+        handlers=[fake_handler],
+    )
+
+    # Mock the action plugin
+    action_plugin = action_loader.get('service', task=fake_task, connection=fake_executor._connection)
+    action_plugin._templar = fake_executor._templ
+
+# Generated at 2024-03-18 03:22:30.952339
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+
+    # Mock objects and data
+    mock_loader = None
+    mock_shared_loader_obj = Sentinel()
+    mock_connection = Sentinel()
+    mock_play_context = PlayContext()
+    mock_variable_manager = VariableManager()
+    mock_executor = TaskExecutor(None, None, mock_loader, mock_play_context, mock_connection, mock_variable_manager, None)
+    mock_task = Task()
+    mock_task.async_val = False
+    mock_task.action = 'service'
+    mock_task.args = {'name': 'httpd', 'state': 'started'}
+    mock_task._parent = Sentinel()
+    mock_task._parent._play = Sentinel()
+    mock_task
+
+# Generated at 2024-03-18 03:22:35.157403
+```python
+    action_module = ActionModule(None, None, None, None, None, None, None)
+
+    assert action_module.TRANSFERS_FILES == False
+    assert isinstance(action_module.UNUSED_PARAMS, dict)
+    assert 'systemd' in action_module.UNUSED_PARAMS
+    assert action_module.BUILTIN_SVC_MGR_MODULES == set(['openwrt_init', 'service', 'systemd', 'sysvinit'])
+```
+
+# Generated at 2024-03-18 03:22:39.400853
+```python
+    action_module = ActionModule(None, None, None, None, None, None, None)
+
+    assert action_module.TRANSFERS_FILES == False
+    assert isinstance(action_module.UNUSED_PARAMS, dict)
+    assert 'systemd' in action_module.UNUSED_PARAMS
+    assert action_module.BUILTIN_SVC_MGR_MODULES == set(['openwrt_init', 'service', 'systemd', 'sysvinit'])
+```
+
+# Generated at 2024-03-18 03:23:01.224943
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+    from unittest.mock import MagicMock, patch
+
+    # Setup test variables
+    fake_loader, fake_inventory, fake_variable_manager = MagicMock(), MagicMock(), MagicMock()
+    fake_task = Task()
+    fake_task.args = {'use': 'auto'}
+    fake_play_context = PlayContext()
+    fake_play_context.check_mode = False
+    fake_handler = Sentinel()
+    fake_executor = TaskExecutor(loader=fake_loader, inventory=fake_inventory, variable_manager=fake_variable_manager, play_context=fake_play_context, handler=fake_handler)
+
+    # Mock the action plugin
+    fake_action_plugin = action_loader.get('service', task=fake_task, connection=fake_executor._connection, play_context=f
+
+# Generated at 2024-03-18 03:23:06.819515
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+    from unittest.mock import MagicMock, patch
+
+    def test_ActionModule_run():
+        fake_loader = MagicMock()
+        fake_loader.has_plugin.return_value = True
+        fake_loader.find_plugin_with_context.return_value = Sentinel(module='fake_module')
+
+        fake_task = Task()
+        fake_task.async_val = False
+        fake_task.args = {'use': 'auto'}
+        fake_task.delegate_to = None
+        fake_task._parent = MagicMock()
+        fake_task._parent._play = MagicMock()
+        fake_task._parent._play._action_groups = []
+
+        fake_play_context = PlayContext()
+        fake_variable_manager = VariableManager()
+
+        fake_executor = TaskExecutor(
+            host=MagicMock(),
+
+
+# Generated at 2024-03-18 03:23:12.619681
+```python
+    from unittest.mock import MagicMock, patch
+
+    # Create an instance of the ActionModule with necessary mocks
+    action_module = ActionModule(task=MagicMock(), connection=MagicMock(), play_context=MagicMock(), loader=MagicMock(), templar=MagicMock(), shared_loader_obj=MagicMock())
+
+    # Mock task variables
+    task_vars = {
+        'ansible_facts': {'service_mgr': 'systemd'},
+        'hostvars': {'delegated_host': {'ansible_facts': {'service_mgr': 'systemd'}}}
+    }
+
+    # Mock the _execute_module method to return a fake result
+    fake_result = {'changed': True, 'msg': 'Service started'}
+    with patch.object(ActionModule, '_execute_module', return_value=fake_result):
+        # Run the method
+        result = action_module.run(task_vars=task_vars)
+
+        # Assertions to validate the expected outcome
+        assert 'changed' in result
+       
+
+# Generated at 2024-03-18 03:23:21.207795
+```python
+    from unittest.mock import MagicMock, patch
+
+    # Create an instance of the ActionModule with mock objects
+    action_module = ActionModule(task=MagicMock(), connection=MagicMock(), play_context=MagicMock(), loader=MagicMock(), templar=MagicMock(), shared_loader_obj=MagicMock())
+
+    # Mock task variables
+    task_vars = {
+        'ansible_facts': {'service_mgr': 'systemd'},
+        'hostvars': {'delegated_host': {'ansible_facts': {'service_mgr': 'systemd'}}}
+    }
+
+    # Mock the _execute_module method to return a specific service manager
+    action_module._execute_module = MagicMock(return_value={'ansible_facts': {'ansible_service_mgr': 'systemd'}})
+
+    # Mock the has_plugin method to return True for the 'systemd' module
+    action_module._shared_loader_obj.module_loader.has_plugin = MagicMock(return_value=True)
+
+    # Run the action module's run
+
+# Generated at 2024-03-18 03:23:24.970286
+```python
+    action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+
+    assert action_module.TRANSFERS_FILES == False
+    assert isinstance(action_module.UNUSED_PARAMS, dict)
+    assert 'systemd' in action_module.UNUSED_PARAMS
+    assert isinstance(action_module.BUILTIN_SVC_MGR_MODULES, set)
+    assert 'service' in action_module.BUILTIN_SVC_MGR_MODULES
+```
+
+# Generated at 2024-03-18 03:23:28.293377
+```python
+    action_module = ActionModule(None, None, None, None, None, None, None)
+
+    assert action_module.TRANSFERS_FILES == False
+    assert isinstance(action_module.UNUSED_PARAMS, dict)
+    assert 'systemd' in action_module.UNUSED_PARAMS
+    assert action_module.BUILTIN_SVC_MGR_MODULES == set(['openwrt_init', 'service', 'systemd', 'sysvinit'])
+```
+
+# Generated at 2024-03-18 03:23:31.695230
+```python
+    action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+    assert isinstance(action_module, ActionModule)
+    assert action_module.TRANSFERS_FILES == False
+    assert 'systemd' in action_module.UNUSED_PARAMS
+    assert 'service' in action_module.BUILTIN_SVC_MGR_MODULES
+```
+
+# Generated at 2024-03-18 03:23:34.841021
+```python
+    action_module = ActionModule(None, None, None, None, None, None, None)
+
+    assert action_module.TRANSFERS_FILES == False
+    assert isinstance(action_module.UNUSED_PARAMS, dict)
+    assert 'systemd' in action_module.UNUSED_PARAMS
+    assert action_module.BUILTIN_SVC_MGR_MODULES == set(['openwrt_init', 'service', 'systemd', 'sysvinit'])
+```
+
+# Generated at 2024-03-18 03:23:42.733534
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+    import pytest
+
+    @pytest.fixture
+    def setup_action_module(mocker):
+        # Mock necessary objects and return them for use in tests
+        mock_task = Task()
+        mock_task.async_val = False
+        mock_task.action = 'service'
+        mock_task.args = {'use': 'auto'}
+
+        mock_play_context = PlayContext()
+        mock_variable_manager = VariableManager()
+        mock_loader = mocker.MagicMock()
+        mock_connection = mocker.MagicMock()
+
+        action_base = ActionBase(task=mock_task, connection=mock_connection, play_context=mock_play_context, loader=mock_loader, templar=None, shared_loader_obj
+
+# Generated at 2024-03-18 03:23:49.445959
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+
+    # Mocking necessary objects
+    mock_loader = Sentinel()
+    mock_inventory = Sentinel()
+    mock_variable_manager = VariableManager()
+    mock_play_context = PlayContext()
+    mock_task = Task()
+    mock_task.async_val = False
+    mock_task.action = 'service'
+    mock_task.args = {'name': 'httpd', 'state': 'started'}
+    mock_task._parent = Sentinel()
+    mock_task._parent._play = Sentinel()
+    mock_task._parent._play._action_groups = []
+
+    # Mocking the connection
+    mock_connection = Sentinel()
+
+    # Initialize the action plugin
+    action_plugin = action_loader.get('service', task=mock_task,
+
+# Generated at 2024-03-18 03:24:24.942413
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+
+    # Mocking necessary objects
+    mock_loader = None  # Replace with your specific loader if necessary
+    mock_inventory = None  # Replace with your specific inventory if necessary
+    mock_variable_manager = VariableManager()
+    mock_play_context = PlayContext()
+    mock_task = Task()
+    mock_task.action = 'service'
+    mock_task.async_val = False
+    mock_task.args = {'use': 'auto'}
+    mock_connection = None  # Replace with your specific connection if necessary
+
+    # Initialize the action plugin
+    action_plugin = action_loader.get('service', task=mock_task, connection=mock_connection, play_context
+
+# Generated at 2024-03-18 03:24:32.306588
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+
+    # Mocking objects and methods that would be provided by Ansible during runtime
+    mock_loader = Sentinel()
+    mock_inventory = Sentinel()
+    mock_variable_manager = VariableManager()
+    mock_play_context = PlayContext()
+    mock_task = Task()
+    mock_task.async_val = False
+    mock_task.action = 'service'
+    mock_task.args = {'name': 'httpd', 'state': 'started'}
+    mock_task._parent = Sentinel()
+    mock_task._parent._play = Sentinel()
+    mock_task._parent._play._action_groups = []
+
+    # Mocking the connection object
+    class MockConnection:
+        def
+
+# Generated at 2024-03-18 03:24:37.993685
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+
+    # Mocking necessary objects
+    mock_loader = None  # Mocked DataLoader object
+    mock_inventory = None  # Mocked Inventory object
+    mock_variable_manager = VariableManager()  # Mocked VariableManager object
+    mock_play_context = PlayContext()  # Mocked PlayContext object
+    mock_task = Task()  # Mocked Task object
+    mock_connection = None  # Mocked Connection object
+
+    # Setting up fake task vars
+    fake_task_vars = {
+        'ansible_facts': {'service_mgr': 'systemd'},
+        'hostvars': {'localhost': {'ansible_facts': {'
+
+# Generated at 2024-03-18 03:24:44.476794
+```python
+    def mock_loader(has_plugin_return_value=True):
+        mock_loader = mock.Mock()
+        mock_loader.has_plugin.return_value = has_plugin_return_value
+        return mock_loader
+
+    def mock_templar(template_return_value=''):
+        mock_templar = mock.Mock()
+        mock_templar.template.return_value = template_return_value
+        return mock_templar
+
+    def mock_task(args=None, delegate_to=None, async_val=False, module_defaults=None, collections=None):
+        mock_task = mock.Mock()
+        mock_task.args = args or {}
+        mock_task.delegate_to = delegate_to
+        mock_task.async_val = async_val
+        mock_task.module_defaults = module_defaults or []
+        mock_task._parent = mock.Mock()
+        mock_task._parent._play = mock.Mock()
+        mock_task._parent._play._action_groups = []
+        mock_task.collections = collections or []
+        return mock_task
+
+    def mock_connection(shell_tmpdir=''):
+        mock_connection = mock
+
+# Generated at 2024-03-18 03:24:47.071267
+```python
+    action_module = ActionModule(None, None, None, None, None, None, None)
+
+    assert action_module.TRANSFERS_FILES == False
+    assert isinstance(action_module.UNUSED_PARAMS, dict)
+    assert 'systemd' in action_module.UNUSED_PARAMS
+    assert action_module.BUILTIN_SVC_MGR_MODULES == set(['openwrt_init', 'service', 'systemd', 'sysvinit'])
+```
+
+# Generated at 2024-03-18 03:24:53.113772
+```python
+    from unittest.mock import MagicMock, patch
+
+    # Mock the necessary components and methods
+    action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+    action_module._execute_module = MagicMock()
+    action_module._remove_tmp_path = MagicMock()
+    action_module._display = MagicMock()
+    action_module._templar = MagicMock()
+    action_module._templar.template = MagicMock(side_effect=lambda x: x.strip('{{').strip('}}'))
+    action_module._shared_loader_obj = MagicMock()
+    action_module._shared_loader_obj.module_loader = MagicMock()
+    action_module._shared_loader_obj.module_loader.has_plugin = MagicMock(return_value=True)
+    action_module._task = MagicMock()
+    action_module._task.async_val = False
+    action_module._task.args = {'use': 'auto'}
+    action_module._task.delegate_to = None
+    action_module._task._parent = MagicMock()
+    action_module._
+
+# Generated at 2024-03-18 03:24:59.655585
+```python
+    # Mock necessary components for the test
+    mock_loader = MagicMock()
+    mock_shared_loader_obj = MagicMock()
+    mock_task = MagicMock()
+    mock_connection = MagicMock()
+    mock_play_context = MagicMock()
+    mock_templar = MagicMock()
+    mock_options = MagicMock()
+
+    # Instantiate the ActionModule with mocked components
+    action_module = ActionModule(
+        task=mock_task,
+        connection=mock_connection,
+        play_context=mock_play_context,
+        loader=mock_loader,
+        templar=mock_templar,
+        shared_loader_obj=mock_shared_loader_obj,
+        options=mock_options
+    )
+
+    # Assertions to ensure the object is initialized correctly
+    assert action_module._task == mock_task
+    assert action_module._connection == mock_connection
+    assert action_module._play_context == mock_play_context
+    assert action_module._loader == mock_loader
+    assert action_module._templar == mock_templar
+    assert action_module._
+
+# Generated at 2024-03-18 03:25:05.554202
+```python
+    def test_ActionModule_constructor():
+        fake_loader, fake_shared_loader_obj, fake_connection, fake_play_context, fake_task, fake_templar, fake_options = (
+            MagicMock(), MagicMock(), MagicMock(), MagicMock(), MagicMock(), MagicMock(), MagicMock()
+        )
+        action_module = ActionModule(fake_task, fake_connection, fake_play_context, fake_loader, fake_shared_loader_obj, fake_templar, fake_options)
+
+        assert action_module._task == fake_task
+        assert action_module._connection == fake_connection
+        assert action_module._play_context == fake_play_context
+        assert action_module._loader == fake_loader
+        assert action_module._shared_loader_obj == fake_shared_loader_obj
+        assert action_module._templar == fake_templar
+        assert action_module._options == fake_options
+        assert action_module.TRANSFERS_FILES == False
+        assert action_module.UNUSED_PARAMS == {
+            'systemd': ['pattern', 'runlevel', '
+
+# Generated at 2024-03-18 03:25:07.521543
+```python
+import pytest
+from ansible.playbook.task import Task
+from ansible.template import Templar
+from ansible.utils.display import Display
+from ansible.executor.task_executor import TaskExecutor
+from ansible.executor.task_result import TaskResult
+from ansible.plugins.loader import action_loader
+
+# Mocking necessary Ansible components
+
+# Generated at 2024-03-18 03:25:13.181007
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+
+    # Mocking objects and methods that would be provided in the actual runtime environment
+    mock_loader = None
+    mock_shared_loader_obj = Sentinel()
+    mock_connection = Sentinel()
+    mock_play_context = PlayContext()
+    mock_variable_manager = VariableManager()
+    mock_executor = TaskExecutor(None, None, mock_loader, mock_play_context, mock_connection, mock_variable_manager, None)
+    mock_task = Task()
+    mock_task.async_val = False
+    mock_task.action = 'service'
+    mock_task.args = {'name': 'httpd', 'state': 'started'}
+    mock_task._parent = Sentinel()
+    mock_task
+
+# Generated at 2024-03-18 03:26:14.030568
+```python
+    def test_ActionModule_constructor():
+        fake_loader, fake_shared_loader_obj, fake_connection, fake_play_context, fake_task, fake_templar = (
+            None, MagicMock(), None, None, MagicMock(), None
+        )
+        action_module = ActionModule(fake_loader, fake_task, fake_connection, fake_play_context, fake_templar, fake_shared_loader_obj)
+        assert action_module.UNUSED_PARAMS == {
+            'systemd': ['pattern', 'runlevel', 'sleep', 'arguments', 'args'],
+        }
+        assert action_module.BUILTIN_SVC_MGR_MODULES == set(['openwrt_init', 'service', 'systemd', 'sysvinit'])
+        assert action_module.TRANSFERS_FILES is False
+```
+
+# Generated at 2024-03-18 03:26:22.650472
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+    import pytest
+
+    @pytest.fixture
+    def setup_action_module(mocker):
+        # Mock necessary start-up objects
+        mocker.patch.object(TaskExecutor, '_get_loop_control')
+        mocker.patch.object(TaskExecutor, '_get_val')
+        mocker.patch.object(TaskResult, '__init__', return_value=None)
+        mocker.patch.object(PlayContext, '__init__', return_value=None)
+        mocker.patch.object(Task, '__init__', return_value=None)
+        mocker.patch.object(VariableManager, '__init__', return_value=None)
+        mocker.patch.object(VariableManager, 'get_vars', return_value={})
+
+        # Instantiate the action module
+        task
+
+# Generated at 2024-03-18 03:26:30.250971
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+    import pytest
+
+    @pytest.fixture
+    def setup_action_module(mocker):
+        # Mock necessary start-up objects
+        mocker.patch.object(TaskExecutor, '_get_loop_control', return_value=None)
+        mocker.patch.object(TaskExecutor, '_get_val', return_value=None)
+        play_context = PlayContext()
+        variable_manager = VariableManager()
+        loader = mocker.MagicMock()
+        new_stdin = Sentinel(name="new_stdin")
+
+        # Create a fake task to pass into the action plugin
+        fake_task = Task()
+        fake_task.args = {'use': 'auto'}
+
+        # Instantiate the action plugin
+        action_plugin = ActionModule(task=fake_task, connection=mocker
+
+# Generated at 2024-03-18 03:26:33.699851
+```python
+    action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+    assert isinstance(action_module, ActionModule)
+    assert action_module.TRANSFERS_FILES == False
+    assert 'systemd' in action_module.UNUSED_PARAMS
+    assert 'service' in action_module.BUILTIN_SVC_MGR_MODULES
+```
+
+# Generated at 2024-03-18 03:26:43.355428
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+    import pytest
+
+    @pytest.fixture
+    def setup_action_module(mocker):
+        # Mock necessary objects and return them for use in tests
+        mock_task = Task()
+        mock_task.async_val = False
+        mock_task.action = 'service'
+        mock_task.args = {'use': 'auto'}
+
+        mock_play_context = PlayContext()
+        mock_variable_manager = VariableManager()
+        mock_loader = mocker.MagicMock()
+        mock_connection = mocker.MagicMock()
+
+        action_base = ActionBase(task=mock_task, connection=mock_connection, play_context=mock_play_context, loader=mock_loader, templar=None, shared_loader_obj
+
+# Generated at 2024-03-18 03:26:49.407018
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+
+    # Mocking necessary objects
+    mock_loader = None  # Replace with your specific loader if necessary
+    mock_inventory = None  # Replace with your specific inventory if necessary
+    mock_variable_manager = VariableManager()
+    mock_play_context = PlayContext()
+    mock_task = Task()
+    mock_task.async_val = False
+    mock_task.action = 'service'
+    mock_task.args = {'name': 'httpd', 'state': 'started'}
+    mock_connection = None  # Replace with your specific connection if necessary
+
+    # Initialize the action plugin
+    action_plugin = action_loader.get('service', task=mock_task,
+
+# Generated at 2024-03-18 03:26:57.870552
+```python
+    from unittest.mock import MagicMock, patch
+
+    # Create a mock ActionModule instance
+    action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+
+    # Set up the necessary mock objects and return values
+    mock_task_vars = {'ansible_facts': {'service_mgr': 'systemd'}}
+    mock_result = {'changed': False, 'msg': 'Service operation successful.'}
+    action_module._execute_module = MagicMock(return_value=mock_result)
+    action_module._remove_tmp_path = MagicMock()
+    action_module._display = MagicMock()
+    action_module._templar = MagicMock()
+    action_module._templar.template = MagicMock(side_effect=lambda x: x.strip('{{').strip('}}'))
+    action_module._shared_loader_obj = MagicMock()
+    action_module._shared_loader_obj.module_loader = MagicMock()
+    action_module._shared_loader_obj.module_loader.has_plugin = MagicMock(return_value=True)
+
+    #
+
+# Generated at 2024-03-18 03:27:04.023872
+```python
+    def mock_loader(has_plugin=True):
+        class MockLoader:
+            def has_plugin(self, plugin_name):
+                return has_plugin
+        return MockLoader()
+
+    def mock_templar(template_result='auto'):
+        class MockTemplar:
+            def template(self, template_string):
+                return template_result
+        return MockTemplar()
+
+    def mock_task(args=None, delegate_to=None, async_val=False, module_defaults=None, parent=None):
+        class MockTask:
+            def __init__(self):
+                self.args = args if args is not None else {}
+                self.delegate_to = delegate_to
+                self.async_val = async_val
+                self.module_defaults = module_defaults if module_defaults is not None else []
+                self._parent = parent
+
+            @property
+            def collections(self):
+                return []
+
+        return MockTask()
+
+    def mock_parent(play=None):
+        class MockParent:
+            def __init__(self):
+                self._play = play
+
+
+
+# Generated at 2024-03-18 03:27:09.727910
+```python
+    def mock_loader(has_plugin_return_value):
+        mock_loader = mock.Mock()
+        mock_loader.has_plugin.return_value = has_plugin_return_value
+        return mock_loader
+
+    def mock_templar(template_return_value):
+        mock_templar = mock.Mock()
+        mock_templar.template.return_value = template_return_value
+        return mock_templar
+
+    def mock_task(args, delegate_to=None, async_val=False):
+        mock_task = mock.Mock()
+        mock_task.async_val = async_val
+        mock_task.delegate_to = delegate_to
+        mock_task.args = args
+        return mock_task
+
+    def mock_connection(shell_tmpdir):
+        mock_connection = mock.Mock()
+        mock_connection._shell.tmpdir = shell_tmpdir
+        return mock_connection
+
+    def mock_display():
+        return mock.Mock()
+
+    action_module = ActionModule(task=mock_task(args={'use': 'auto'}),
+                                 connection=mock_connection('/path/to/tmp'),
+                                 play_context=
+
+# Generated at 2024-03-18 03:27:15.594195
+```python
+    from unittest.mock import MagicMock, patch
+
+    # Mock the necessary components and methods
+    action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+    action_module._execute_module = MagicMock()
+    action_module._remove_tmp_path = MagicMock()
+    action_module._display = MagicMock()
+    action_module._templar = MagicMock()
+    action_module._templar.template = MagicMock(side_effect=lambda x: x.strip('{{').strip('}}'))
+    action_module._shared_loader_obj = MagicMock()
+    action_module._shared_loader_obj.module_loader = MagicMock()
+    action_module._shared_loader_obj.module_loader.has_plugin = MagicMock(return_value=True)
+    action_module._task = MagicMock()
+    action_module._task.async_val = False
+    action_module._task.args = {'use': 'auto'}
+    action_module._task.delegate_to = None
+    action_module._task._parent = MagicMock()
+    action_module._
+
+# Generated at 2024-03-18 03:29:13.729476
+```python
+    def mock_loader(has_plugin=True):
+        return type('MockLoader', (object,), {
+            'has_plugin': lambda self, plugin_name: has_plugin,
+            'module_loader': type('MockModuleLoader', (object,), {
+                'find_plugin_with_context': lambda self, plugin_name, collection_list: type('MockContext', (object,), {
+                    'resolved_fqcn': plugin_name
+                })()
+            })()
+        })()
+
+    def mock_templar(template_var=None):
+        return type('MockTemplar', (object,), {
+            'template': lambda self, template: template_var if template_var else template
+        })()
+
+    def mock_task(args=None, delegate_to=None, async_val=False, module_defaults=None, parent=None):
+        return type('MockTask', (object,), {
+            'args': args if args else {},
+            'delegate_to': delegate_to,
+            'async_val': async_val,
+            'module_defaults
+
+# Generated at 2024-03-18 03:29:20.296496
+```python
+    def mock_loader(has_plugin=True):
+        loader = mock.MagicMock()
+        loader.has_plugin.return_value = has_plugin
+        return loader
+
+    def mock_templar(template_result='auto'):
+        templar = mock.MagicMock()
+        templar.template.return_value = template_result
+        return templar
+
+    def mock_task(args=None, delegate_to=None, async_val=False, module_defaults=None, parent=None):
+        task = mock.MagicMock()
+        task.args = args or {}
+        task.delegate_to = delegate_to
+        task.async_val = async_val
+        task.module_defaults = module_defaults or []
+        task._parent = parent or mock.MagicMock()
+        return task
+
+    def mock_display():
+        return mock.MagicMock()
+
+    def mock_execute_module(facts=None):
+        def execute_module(*args, **kwargs):
+            return {
+                'ansible_facts': facts or {'ansible_service_mgr': 'auto'}
+            }
+        return execute_module
+
+    action
+
+# Generated at 2024-03-18 03:29:30.657723
+```python
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.loader import action_loader
+    from ansible.utils.sentinel import Sentinel
+    from ansible.vars.manager import VariableManager
+
+    # Mocking objects and methods that would be available during actual runtime
+    mock_loader = Sentinel()
+    mock_inventory = Sentinel()
+    mock_variable_manager = VariableManager()
+    mock_play_context = PlayContext()
+    mock_task = Task()
+    mock_task.async_val = False
+    mock_task.action = 'service'
+    mock_task.args = {'name': 'httpd', 'state': 'started'}
+    mock_task._parent = Sentinel()
+    mock_task._parent._play = Sentinel()
+    mock_task._parent._play._action_groups = []
+
+    # Initialize the action plugin
+    action_plugin = action_loader.get('service',
+
+# Generated at 2024-03-18 03:29:32.942874
+```python
+    action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+    assert isinstance(action_module, ActionModule)
+    assert action_module.TRANSFERS_FILES == False
+    assert 'systemd' in action_module.UNUSED_PARAMS
+    assert 'service' in action_module.BUILTIN_SVC_MGR_MODULES
+```
+
+# Generated at 2024-03-18 03:29:40.847503
+```python
+    def test_ActionModule_constructor():
+        fake_loader, fake_shared_loader_obj, fake_connection, fake_play_context, fake_task, fake_templar = (
+            MagicMock(), MagicMock(), MagicMock(), MagicMock(), MagicMock(), MagicMock()
+        )
+        action_module = ActionModule(fake_task, fake_connection, fake_play_context, fake_loader, fake_shared_loader_obj, fake_templar)
+        assert action_module.UNUSED_PARAMS == {
+            'systemd': ['pattern', 'runlevel', 'sleep', 'arguments', 'args'],
+        }
+        assert action_module.BUILTIN_SVC_MGR_MODULES == set(['openwrt_init', 'service', 'systemd', 'sysvinit'])
+        assert action_module._supports_check_mode is True
+        assert action_module._supports_async is True
+```
+
+# Generated at 2024-03-18 03:29:43.559687
+```python
+    def test_constructor_defaults():
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        assert action_module.TRANSFERS_FILES is False
+        assert 'systemd' in action_module.UNUSED_PARAMS
+        assert 'service' in action_module.BUILTIN_SVC_MGR_MODULES
+```
+
+# Generated at 2024-03-18 03:29:48.173246
+```python
+    action_module = ActionModule(None, None, None, None, None, None, None)
+
+    assert action_module.TRANSFERS_FILES == False
+    assert isinstance(action_module.UNUSED_PARAMS, dict)
+    assert 'systemd' in action_module.UNUSED_PARAMS
+    assert action_module.BUILTIN_SVC_MGR_MODULES == set(['openwrt_init', 'service', 'systemd', 'sysvinit'])
+```
+
+# Generated at 2024-03-18 03:29:54.165321
+```python
+    def mock_loader(has_plugin_return_value=True):
+        mock_loader = mock.Mock()
+        mock_loader.has_plugin.return_value = has_plugin_return_value
+        return mock_loader
+
+    def mock_templar(template_return_value='auto'):
+        mock_templar = mock.Mock()
+        mock_templar.template.return_value = template_return_value
+        return mock_templar
+
+    def mock_display():
+        return mock.Mock()
+
+    action_module = ActionModule(task=mock.Mock(), connection=mock.Mock(), play_context=mock.Mock(), loader=mock_loader(), templar=mock_templar(), shared_loader_obj=mock.Mock())
+    action_module._display = mock_display()
+
+    assert action_module is not None
+    assert isinstance(action_module, ActionModule)
+    assert action_module._supports_check_mode is True
+    assert action_module._supports_async is True
+```
+
+# Generated at 2024-03-18 03:29:59.037914
+```python
+    from unittest.mock import MagicMock, patch
+
+    # Create a mock ActionModule instance
+    action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+
+    # Mock the methods and attributes used in the run method
+    action_module._task = MagicMock()
+    action_module._task.async_val = False
+    action_module._task.delegate_to = None
+    action_module._task.args = {'use': 'auto'}
+    action_module._task.module_defaults = []
+    action_module._task._parent = MagicMock()
+    action_module._task._parent._play = MagicMock()
+    action_module._task._parent._play._action_groups = []
+
+    action_module._templar = MagicMock()
+    action_module._templar.template = MagicMock(side_effect=lambda x: x.strip('{{').strip('}}'))
+
+    action_module._shared_loader_obj = MagicMock()
+    action_module._shared_loader_obj.module_loader = MagicMock()
+
+
+# Generated at 2024-03-18 03:30:05.004318
+```python
+    # Mock necessary components for the test
+    mock_loader = MagicMock()
+    mock_shared_loader_obj = MagicMock()
+    mock_task = MagicMock()
+    mock_connection = MagicMock()
+    mock_play_context = MagicMock()
+    mock_runner = MagicMock()
+
+    # Create an instance of the ActionModule with mocked components
+    action_module = ActionModule(mock_task, mock_connection, mock_play_context, mock_loader, mock_shared_loader_obj, mock_runner)
+
+    # Assert that the instance is created and has the expected properties
+    assert isinstance(action_module, ActionModule)
+    assert action_module._loader == mock_loader
+    assert action_module._shared_loader_obj == mock_shared_loader_obj
+    assert action_module._task == mock_task
+    assert action_module._connection == mock_connection
+    assert action_module._play_context == mock_play_context
+    assert action_module._runner == mock_runner
+    assert not action_module.TRANSFERS_FILES
+    assert action_module.UNUSED_PARAMS == {

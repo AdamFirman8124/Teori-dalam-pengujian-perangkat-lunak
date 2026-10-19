@@ -1,0 +1,2197 @@
+
+
+# Generated at 2024-06-01 17:18:58.335676
+```python
+    import shutil
+    from unittest import mock
+
+    # Mock dependencies
+    with mock.patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         mock.patch('cookiecutter.utils.prompt_and_delete', return_value=True) as mock_prompt_and_delete, \
+         mock.patch('requests.get') as mock_requests_get, \
+         mock.patch('zipfile.ZipFile') as mock_zipfile, \
+         mock.patch('tempfile.mkdtemp', return_value='/tmp/unzip_base') as mock_mkdtemp, \
+         mock.patch('cookiecutter.prompt.read_repo_password', return_value='password') as mock_read_repo_password:
+
+        # Mock responses and behaviors
+        mock_response = mock.Mock()
+        mock_response.iter_content = mock.Mock(return_value=[b'content'])
+        mock_requests_get.return_value = mock_response
+
+        mock_zip = mock.Mock()
+        mock_zip.namelist.return_value = ['project_name/
+
+# Generated at 2024-06-01 17:19:01.465110
+```python
+    import shutil
+    from unittest import mock
+
+    # Mock dependencies
+    with mock.patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         mock.patch('cookiecutter.utils.prompt_and_delete', return_value=True) as mock_prompt_and_delete, \
+         mock.patch('requests.get') as mock_requests_get, \
+         mock.patch('zipfile.ZipFile') as mock_zipfile, \
+         mock.patch('tempfile.mkdtemp', return_value='/tmp/unzip_base') as mock_mkdtemp, \
+         mock.patch('cookiecutter.prompt.read_repo_password', return_value='password') as mock_read_repo_password:
+
+        # Mock responses and behaviors
+        mock_response = mock.Mock()
+        mock_response.iter_content = mock.Mock(return_value=[b'content'])
+        mock_requests_get.return_value = mock_response
+
+        mock_zip = mock.Mock()
+        mock_zip.namelist.return_value = ['project_name/
+
+# Generated at 2024-06-01 17:19:04.556752
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once()
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall.assert_called
+
+# Generated at 2024-06-01 17:19:09.323227
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/', 'project/file.txt']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:19:12.260643
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('cookiecutter.utils.prompt_and_delete')
+    @patch('requests.get')
+    @patch('zipfile.ZipFile')
+    @patch('tempfile.mkdtemp')
+    def test_unzip(mock_mkdtemp, mock_zipfile, mock_requests_get, mock_prompt_and_delete, mock_make_sure_path_exists):
+        # Setup
+        mock_make_sure_path_exists.return_value = None
+        mock_prompt_and_delete.return_value = True
+        mock_mkdtemp.return_value = '/tmp/unzip_base'
+        mock_zipfile.return_value.__enter__.return_value.namelist.return_value = ['project/']
+        mock_requests_get.return_value.iter_content = lambda chunk_size: [b'content']
+
+        # Test URL case
+        with patch('builtins.open', mock_open()) as mock
+
+# Generated at 2024-06-01 17:19:21.404733
+```python
+    import shutil
+    from unittest import mock
+
+    # Mock dependencies
+    with mock.patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         mock.patch('cookiecutter.utils.prompt_and_delete') as mock_prompt_and_delete, \
+         mock.patch('requests.get') as mock_requests_get, \
+         mock.patch('zipfile.ZipFile') as mock_zipfile, \
+         mock.patch('tempfile.mkdtemp') as mock_mkdtemp, \
+         mock.patch('cookiecutter.prompt.read_repo_password') as mock_read_repo_password:
+
+        # Setup mock responses
+        mock_make_sure_path_exists.return_value = None
+        mock_prompt_and_delete.return_value = True
+        mock_requests_get.return_value.iter_content = lambda chunk_size: [b'content']
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        mock_mkdtemp.return_value = '/tmp/unzip_base'
+
+
+# Generated at 2024-06-01 17:19:25.547984
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('zipfile.ZipFile')
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('cookiecutter.utils.prompt_and_delete', return_value=True)
+    def test_unzip_valid_url(mock_prompt_and_delete, mock_make_sure_path_exists, mock_zipfile, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        mock_requests
+
+# Generated at 2024-06-01 17:19:28.580982
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/temp/dir'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        assert result == '/temp
+
+# Generated at 2024-06-01 17:19:32.850030
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:19:39.132837
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/', 'project/file.txt']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_requests_get.assert_called_once_with('http://example
+
+# Generated at 2024-06-01 17:19:46.969428
+```python
+    import pytest
+    from unittest.mock import patch, mock_open
+
+    # Test case: Unzipping a valid local zip file
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_local(mock_zipfile, mock_make_sure_path_exists):
+        mock_zipfile.return_value.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value.extractall.return_value = None
+
+        result = unzip('test.zip', is_url=False, clone_to_dir='.')
+
+        assert result.endswith('project_name')
+        mock_make_sure_path_exists.assert_called_once()
+        mock_zipfile.assert_called_once_with(os.path.abspath('test.zip'))
+
+    # Test case: Unzipping a valid remote zip file
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open
+
+# Generated at 2024-06-01 17:19:49.918256
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project_name/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert mock_requests_get.called
+        assert mock_open.called
+        assert mock_zipfile.called
+        assert unzip
+
+# Generated at 2024-06-01 17:19:53.247324
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project_name/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        mock_make_sure_path_exists.assert_called_once_with('/tmp')
+        mock_requests_get.assert_called_once_with('
+
+# Generated at 2024-06-01 17:19:56.148025
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('zipfile.ZipFile')
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('cookiecutter.utils.prompt_and_delete', return_value=True)
+    def test_unzip_valid_url(mock_prompt_and_delete, mock_make_sure_path_exists, mock_zipfile, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        assert unzip_path.startswith
+
+# Generated at 2024-06-01 17:19:59.836388
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall
+
+# Generated at 2024-06-01 17:20:02.674183
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('cookiecutter.utils.prompt_and_delete')
+    @patch('requests.get')
+    @patch('zipfile.ZipFile')
+    def test_unzip(mock_zipfile, mock_requests_get, mock_prompt_and_delete, mock_make_sure_path_exists):
+        # Mock responses and behaviors
+        mock_make_sure_path_exists.return_value = None
+        mock_prompt_and_delete.return_value = True
+
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        # Test URL case
+        zip_uri = 'http://example.com/repo.zip'
+        is_url
+
+# Generated at 2024-06-01 17:20:05.769053
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:20:08.654643
+```python
+    import shutil
+    from unittest import mock
+
+    # Mock dependencies
+    with mock.patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         mock.patch('cookiecutter.utils.prompt_and_delete', return_value=True) as mock_prompt_and_delete, \
+         mock.patch('requests.get') as mock_requests_get, \
+         mock.patch('zipfile.ZipFile') as mock_zipfile, \
+         mock.patch('tempfile.mkdtemp', return_value='/tmp/unzip_base') as mock_mkdtemp, \
+         mock.patch('cookiecutter.prompt.read_repo_password', return_value='password') as mock_read_repo_password:
+
+        # Mock responses and behaviors
+        mock_response = mock.Mock()
+        mock_response.iter_content = mock.Mock(return_value=[b'content'])
+        mock_requests_get.return_value = mock_response
+
+        mock_zip = mock.Mock()
+        mock_zip.namelist.return_value = ['project_name/
+
+# Generated at 2024-06-01 17:20:11.688719
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        assert mock_requests_get.called
+        assert mock_open.called
+
+# Generated at 2024-06-01 17:20:14.884867
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/', 'project/file.txt']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:20:23.102401
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:20:26.890000
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        mock_zipfile.return_value.extractall = MagicMock()
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        assert mock_requests_get.called
+        assert mock_open.called
+       
+
+# Generated at 2024-06-01 17:20:31.151832
+```python
+    import shutil
+    from unittest import mock
+
+    # Mock dependencies
+    mock_make_sure_path_exists = mock.patch('cookiecutter.utils.make_sure_path_exists').start()
+    mock_prompt_and_delete = mock.patch('cookiecutter.utils.prompt_and_delete', return_value=True).start()
+    mock_requests_get = mock.patch('requests.get').start()
+    mock_read_repo_password = mock.patch('cookiecutter.prompt.read_repo_password', return_value='password').start()
+    mock_zipfile = mock.patch('zipfile.ZipFile').start()
+
+    # Setup mock responses
+    mock_response = mock.Mock()
+    mock_response.iter_content = mock.Mock(return_value=[b'content'])
+    mock_requests_get.return_value = mock_response
+
+    mock_zip = mock.Mock()
+    mock_zip.namelist.return_value = ['project/']
+    mock_zipfile.return_value = mock_zip
+
+    # Test URL case
+    zip_uri = 'http://example.com/re
+
+# Generated at 2024-06-01 17:20:34.442260
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/', 'project/file.txt']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:20:37.567561
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base') as mock_mkdtemp:
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('test.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once()
+        mock_zipfile.assert_called_once_with(os.path.abspath('test.zip'))
+        mock_zip.extractall.assert_called_once_with(path='/tmp/unzip_base')
+        assert unzip_path == '/tmp/unzip_base/project_name'
+
+    # Test case: Unz
+
+# Generated at 2024-06-01 17:20:41.173447
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/', 'project/file.txt']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:20:43.963314
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:20:47.291889
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall
+
+# Generated at 2024-06-01 17:20:50.686731
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/', 'project/file.txt']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:20:54.017337
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once()
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall.assert_called
+
+# Generated at 2024-06-01 17:21:02.765577
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('cookiecutter.utils.prompt_and_delete', return_value=True)
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_prompt_and_delete, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert mock
+
+# Generated at 2024-06-01 17:21:05.876510
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall
+
+# Generated at 2024-06-01 17:21:08.707532
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:21:11.622893
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        assert mock_requests_get.called
+        assert mock_open.called
+
+# Generated at 2024-06-01 17:21:16.866050
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('cookiecutter.utils.prompt_and_delete')
+    @patch('requests.get')
+    @patch('zipfile.ZipFile')
+    @patch('tempfile.mkdtemp')
+    def test_unzip(mock_mkdtemp, mock_zipfile, mock_requests_get, mock_prompt_and_delete, mock_make_sure_path_exists):
+        # Setup
+        mock_make_sure_path_exists.return_value = None
+        mock_prompt_and_delete.return_value = True
+        mock_mkdtemp.return_value = '/tmp/unzip_base'
+        
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile
+
+# Generated at 2024-06-01 17:21:19.826862
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/temp/dir'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once()
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        assert result == '/temp/dir
+
+# Generated at 2024-06-01 17:21:22.919146
+```python
+    import shutil
+    from unittest import mock
+
+    # Mock dependencies
+    with mock.patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         mock.patch('cookiecutter.utils.prompt_and_delete', return_value=True) as mock_prompt_and_delete, \
+         mock.patch('requests.get') as mock_requests_get, \
+         mock.patch('zipfile.ZipFile') as mock_zipfile, \
+         mock.patch('tempfile.mkdtemp', return_value='/tmp/unzip_base') as mock_mkdtemp, \
+         mock.patch('os.path.exists', return_value=False) as mock_os_path_exists, \
+         mock.patch('os.path.abspath', side_effect=lambda x: x) as mock_os_path_abspath:
+
+        # Setup mock responses
+        mock_response = mock.Mock()
+        mock_response.iter_content = mock.Mock(return_value=[b'content'])
+        mock_requests_get.return_value = mock_response
+
+        mock_zip
+
+# Generated at 2024-06-01 17:21:25.983073
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:21:29.485766
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/', 'project/file.txt']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:21:33.322316
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('path/to/valid.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/absolute/path/to/valid.zip')
+        mock_zip.extractall.assert_called_once_with(path='/tmp/unzip_base')
+        assert result == '/tmp/unzip_base/project_name'
+
+    # Test case: Unzipping
+
+# Generated at 2024-06-01 17:21:45.385345
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('cookiecutter.utils.prompt_and_delete', return_value=True)
+    @patch('requests.get')
+    @patch('zipfile.ZipFile')
+    def test_unzip(mock_zipfile, mock_requests_get, mock_prompt_and_delete, mock_make_sure_path_exists):
+        # Mock responses and behaviors
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        # Test URL case
+        zip_uri = 'http://example.com/repo.zip'
+        is_url = True
+        clone_to_dir = '/fake/dir'
+        no_input = True
+
+# Generated at 2024-06-01 17:21:48.833935
+```python
+    import shutil
+    from unittest import mock
+
+    # Mock dependencies
+    mock_make_sure_path_exists = mock.patch('cookiecutter.utils.make_sure_path_exists').start()
+    mock_prompt_and_delete = mock.patch('cookiecutter.utils.prompt_and_delete').start()
+    mock_read_repo_password = mock.patch('cookiecutter.prompt.read_repo_password').start()
+    mock_requests_get = mock.patch('requests.get').start()
+    mock_zipfile = mock.patch('zipfile.ZipFile').start()
+
+    # Setup
+    zip_uri = 'http://example.com/repo.zip'
+    is_url = True
+    clone_to_dir = tempfile.mkdtemp()
+    no_input = True
+    password = None
+
+    # Mock responses
+    mock_requests_get.return_value.iter_content = lambda chunk_size: [b'content']
+    mock_zipfile.return_value.namelist.return_value = ['repo/']
+    mock_zipfile.return_value.extractall = mock
+
+# Generated at 2024-06-01 17:21:52.131079
+```python
+    import shutil
+    from unittest import mock
+
+    # Mock dependencies
+    with mock.patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         mock.patch('cookiecutter.utils.prompt_and_delete') as mock_prompt_and_delete, \
+         mock.patch('requests.get') as mock_requests_get, \
+         mock.patch('zipfile.ZipFile') as mock_zipfile, \
+         mock.patch('tempfile.mkdtemp') as mock_mkdtemp, \
+         mock.patch('cookiecutter.prompt.read_repo_password') as mock_read_repo_password:
+
+        # Setup mock responses
+        mock_make_sure_path_exists.return_value = None
+        mock_prompt_and_delete.return_value = True
+        mock_requests_get.return_value.iter_content = lambda chunk_size: [b'content']
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        mock_mkdtemp.return_value = '/tmp/unzip_base'
+
+
+# Generated at 2024-06-01 17:21:55.401991
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        mock_zipfile.return_value.extractall = MagicMock()
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        assert mock_make_sure_path_exists.called
+        assert mock_requests
+
+# Generated at 2024-06-01 17:21:58.729175
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall
+
+# Generated at 2024-06-01 17:22:02.690006
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:22:06.631064
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall
+
+# Generated at 2024-06-01 17:22:09.655011
+```python
+    import shutil
+    from unittest import mock
+
+    # Mock dependencies
+    with mock.patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         mock.patch('cookiecutter.utils.prompt_and_delete', return_value=True) as mock_prompt_and_delete, \
+         mock.patch('requests.get') as mock_requests_get, \
+         mock.patch('zipfile.ZipFile') as mock_zipfile, \
+         mock.patch('tempfile.mkdtemp', return_value='/tmp/unzip_base') as mock_mkdtemp, \
+         mock.patch('os.path.exists', return_value=False) as mock_os_path_exists, \
+         mock.patch('os.path.abspath', return_value='/absolute/path/to/zipfile.zip') as mock_os_path_abspath:
+
+        # Mock response for requests.get
+        mock_response = mock.Mock()
+        mock_response.iter_content = mock.Mock(return_value=[b'content'])
+        mock_requests_get.return_value =
+
+# Generated at 2024-06-01 17:22:12.619742
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall
+
+# Generated at 2024-06-01 17:22:15.772808
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall
+
+# Generated at 2024-06-01 17:22:33.357362
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as MockZipFile, \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base') as mock_mkdtemp:
+
+        mock_zip = MockZipFile.return_value
+        mock_zip.namelist.return_value = ['project_name/']
+
+        unzip_path = unzip('test.zip', is_url=False, clone_to_dir='.')
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        MockZipFile.assert_called_once_with(os.path.abspath('test.zip'))
+        mock_zip.extractall.assert_called_once_with(path='/tmp/unzip_base')
+        assert unzip_path == '/tmp/unzip_base/project_name'
+
+    # Test case: Unz
+
+# Generated at 2024-06-01 17:22:40.332700
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        assert unzip_path.startswith('/tmp')
+        mock_make_s
+
+# Generated at 2024-06-01 17:22:43.247911
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/tmp')
+        mock
+
+# Generated at 2024-06-01 17:22:46.309259
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('cookiecutter.utils.prompt_and_delete', return_value=True)
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_prompt_and_delete, mock_make_sure_path_exists, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        assert mock_make_sure_path_exists
+
+# Generated at 2024-06-01 17:22:49.519153
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('zipfile.ZipFile')
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('cookiecutter.utils.prompt_and_delete', return_value=True)
+    def test_unzip_valid_url(mock_prompt_and_delete, mock_make_sure_path_exists, mock_zipfile, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip
+
+# Generated at 2024-06-01 17:22:57.599681
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/temp/dir'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall.assert
+
+# Generated at 2024-06-01 17:23:02.215391
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('test.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once()
+        mock_zipfile.assert_called_once_with(os.path.abspath('test.zip'))
+        assert unzip_path == '/tmp/unzip_base/project_name'
+
+    # Test case: Unzipping an empty zip file
+    with patch('cookiecutter.utils.make_sure_path_exists'), \
+
+
+# Generated at 2024-06-01 17:23:05.226054
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        mock_zipfile.return_value.extractall = MagicMock()
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        assert mock_make_sure_path_exists.called
+        assert mock_requests
+
+# Generated at 2024-06-01 17:23:09.432040
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        assert mock_requests_get.called
+        assert mock_open.called
+
+# Generated at 2024-06-01 17:23:12.275023
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        assert result == '/tmp/unzip_base/project_name'
+        mock_make_sure_path_exists.assert_called_once()
+        mock_zipfile.assert_called_once_with('/path/to
+
+# Generated at 2024-06-01 17:23:28.995742
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        mock_make_sure_path_exists.assert_called_once_with('/tmp')
+        mock_requests_get.assert_called_once_with('http
+
+# Generated at 2024-06-01 17:23:32.030382
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('zipfile.ZipFile')
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('cookiecutter.utils.prompt_and_delete')
+    def test_unzip_valid_url(mock_prompt_and_delete, mock_make_sure_path_exists, mock_zipfile, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_prompt_and_delete.return_value = True
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/
+
+# Generated at 2024-06-01 17:23:34.818718
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/temp/dir'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall.assert
+
+# Generated at 2024-06-01 17:23:39.586611
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/', 'project/file.txt']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:23:42.756287
+```python
+    import pytest
+    from unittest.mock import patch, mock_open
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = mock_requests_get.return_value
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_zipfile.return_value.namelist.return_value = ['project/', 'project/file.txt']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/tmp')
+        mock_requests_get.assert_called_once_with
+
+# Generated at 2024-06-01 17:23:45.507242
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/', 'project/file.txt']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:23:48.383706
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/temp/dir'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall.assert
+
+# Generated at 2024-06-01 17:23:51.270783
+```python
+    import shutil
+    from unittest import mock
+
+    # Mock dependencies
+    with mock.patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         mock.patch('cookiecutter.utils.prompt_and_delete') as mock_prompt_and_delete, \
+         mock.patch('requests.get') as mock_requests_get, \
+         mock.patch('zipfile.ZipFile') as mock_ZipFile, \
+         mock.patch('tempfile.mkdtemp') as mock_mkdtemp, \
+         mock.patch('cookiecutter.prompt.read_repo_password') as mock_read_repo_password:
+
+        # Setup mock responses
+        mock_make_sure_path_exists.return_value = None
+        mock_prompt_and_delete.return_value = True
+        mock_requests_get.return_value.iter_content = lambda chunk_size: [b'content']
+        mock_ZipFile.return_value.namelist.return_value = ['project/']
+        mock_mkdtemp.return_value = '/tmp/unzip
+
+# Generated at 2024-06-01 17:23:54.094062
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:23:57.114354
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        assert unzip_path.startswith('/tmp')
+        mock_make_s
+
+# Generated at 2024-06-01 17:24:32.534245
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall
+
+# Generated at 2024-06-01 17:24:35.645522
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project_name/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        mock_make_sure_path_exists.assert_called_once_with('/tmp')
+        mock_requests_get.assert_called_once_with('
+
+# Generated at 2024-06-01 17:24:38.636727
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('cookiecutter.utils.prompt_and_delete', return_value=True)
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_prompt_and_delete, mock_make_sure_path_exists, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:24:41.979278
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/', 'project/file.txt']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:24:45.190779
+```python
+    import shutil
+    from unittest import mock
+
+    # Mock dependencies
+    mock_make_sure_path_exists = mock.patch('cookiecutter.utils.make_sure_path_exists').start()
+    mock_prompt_and_delete = mock.patch('cookiecutter.utils.prompt_and_delete', return_value=True).start()
+    mock_requests_get = mock.patch('requests.get').start()
+    mock_read_repo_password = mock.patch('cookiecutter.prompt.read_repo_password', return_value='password').start()
+    mock_zipfile = mock.patch('zipfile.ZipFile').start()
+
+    # Setup
+    zip_uri = 'http://example.com/repo.zip'
+    is_url = True
+    clone_to_dir = tempfile.mkdtemp()
+    no_input = True
+    password = None
+
+    # Mock response for requests.get
+    mock_response = mock.Mock()
+    mock_response.iter_content = mock.Mock(return_value=[b'content'])
+    mock_requests_get.return_value = mock_response
+
+
+
+# Generated at 2024-06-01 17:24:48.516076
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:24:51.470479
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        assert mock_requests_get.called
+        assert mock_open.called
+
+# Generated at 2024-06-01 17:24:54.549223
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall
+
+# Generated at 2024-06-01 17:24:58.224839
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall
+
+# Generated at 2024-06-01 17:25:01.320978
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('cookiecutter.utils.prompt_and_delete', return_value=True)
+    @patch('requests.get')
+    @patch('zipfile.ZipFile')
+    def test_unzip(mock_zipfile, mock_requests_get, mock_prompt_and_delete, mock_make_sure_path_exists):
+        # Mock responses and behaviors
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        # Test URL case
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/fake/dir', no_input=True)
+        assert unzip_path
+
+# Generated at 2024-06-01 17:25:28.328533
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        mock_zipfile.return_value.extractall = MagicMock()
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        assert mock_make_sure_path_exists.called
+        assert mock_requests
+
+# Generated at 2024-06-01 17:25:31.949819
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:25:35.589125
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/tmp')
+        mock
+
+# Generated at 2024-06-01 17:25:38.640349
+```python
+    import shutil
+    from unittest import mock
+
+    # Mock dependencies
+    with mock.patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         mock.patch('cookiecutter.utils.prompt_and_delete') as mock_prompt_and_delete, \
+         mock.patch('requests.get') as mock_requests_get, \
+         mock.patch('zipfile.ZipFile') as mock_zipfile, \
+         mock.patch('tempfile.mkdtemp') as mock_mkdtemp, \
+         mock.patch('cookiecutter.prompt.read_repo_password') as mock_read_repo_password:
+
+        # Setup mock behavior
+        mock_make_sure_path_exists.return_value = None
+        mock_prompt_and_delete.return_value = True
+        mock_requests_get.return_value.iter_content = lambda chunk_size: [b'content']
+        mock_mkdtemp.return_value = '/mock/temp/dir'
+        mock_zipfile.return_value.__enter__.return_value.namelist.return_value
+
+# Generated at 2024-06-01 17:25:42.470825
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('zipfile.ZipFile')
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('cookiecutter.utils.prompt_and_delete', return_value=True)
+    def test_unzip_valid_url(mock_prompt_and_delete, mock_make_sure_path_exists, mock_zipfile, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        mock_make
+
+# Generated at 2024-06-01 17:25:45.884875
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/', 'project/file.txt']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:25:48.890487
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', True, clone_to_dir='/tmp')
+        
+        mock_requests_get.assert_called_once_with('http://example.com/repo.zip', stream=True)
+        mock_open.assert_called_once
+
+# Generated at 2024-06-01 17:25:51.935221
+```python
+    import shutil
+    from unittest import mock
+
+    # Mock dependencies
+    with mock.patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         mock.patch('cookiecutter.utils.prompt_and_delete', return_value=True) as mock_prompt_and_delete, \
+         mock.patch('requests.get') as mock_requests_get, \
+         mock.patch('zipfile.ZipFile') as mock_zipfile, \
+         mock.patch('tempfile.mkdtemp', return_value='/tmp/unzip_base') as mock_mkdtemp, \
+         mock.patch('cookiecutter.prompt.read_repo_password', return_value='password') as mock_read_repo_password:
+
+        # Mock responses and behaviors
+        mock_response = mock.Mock()
+        mock_response.iter_content = mock.Mock(return_value=[b'content'])
+        mock_requests_get.return_value = mock_response
+
+        mock_zip = mock.Mock()
+        mock_zip.namelist.return_value = ['project_name/
+
+# Generated at 2024-06-01 17:25:56.287420
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:26:00.607344
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('cookiecutter.utils.prompt_and_delete', return_value=True)
+    @patch('requests.get')
+    @patch('zipfile.ZipFile')
+    def test_unzip(mock_zipfile, mock_requests_get, mock_prompt_and_delete, mock_make_sure_path_exists):
+        # Mock responses and behaviors
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        # Test URL case
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        assert mock_make_sure_path_exists.called
+
+
+# Generated at 2024-06-01 17:26:53.591187
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        mock_make_sure_path_exists.assert_called_once_with('/
+
+# Generated at 2024-06-01 17:26:57.185962
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        assert mock_requests_get.called
+        assert mock_open.called
+
+# Generated at 2024-06-01 17:27:00.849319
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base') as mock_mkdtemp:
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('test.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once()
+        mock_zipfile.assert_called_once_with(os.path.abspath('test.zip'))
+        mock_zip.extractall.assert_called_once_with(path='/tmp/unzip_base')
+        assert unzip_path == '/tmp/unzip_base/project_name'
+
+    # Test case: Unz
+
+# Generated at 2024-06-01 17:27:03.752137
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project_name/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/tmp')
+       
+
+# Generated at 2024-06-01 17:27:08.564560
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case: Unzipping a valid local zip file
+    with patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         patch('zipfile.ZipFile') as mock_zipfile, \
+         patch('os.path.exists', return_value=False), \
+         patch('os.path.abspath', return_value='/path/to/zipfile.zip'), \
+         patch('tempfile.mkdtemp', return_value='/tmp/unzip_base'):
+
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project_name/']
+        mock_zipfile.return_value = mock_zip
+
+        result = unzip('/path/to/zipfile.zip', is_url=False)
+
+        mock_make_sure_path_exists.assert_called_once_with('.')
+        mock_zipfile.assert_called_once_with('/path/to/zipfile.zip')
+        mock_zip.extractall
+
+# Generated at 2024-06-01 17:27:15.195690
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project_name/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/tmp')
+       
+
+# Generated at 2024-06-01 17:27:18.736818
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('cookiecutter.utils.prompt_and_delete', return_value=True)
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_prompt_and_delete, mock_make_sure_path_exists, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert mock_requests_get.called
+        assert mock_make_sure_path_exists.called
+        assert unzip
+
+# Generated at 2024-06-01 17:27:22.217303
+```python
+    import shutil
+    from unittest import mock
+
+    # Mock dependencies
+    with mock.patch('cookiecutter.utils.make_sure_path_exists') as mock_make_sure_path_exists, \
+         mock.patch('cookiecutter.utils.prompt_and_delete') as mock_prompt_and_delete, \
+         mock.patch('requests.get') as mock_requests_get, \
+         mock.patch('zipfile.ZipFile') as mock_zipfile, \
+         mock.patch('tempfile.mkdtemp') as mock_mkdtemp, \
+         mock.patch('cookiecutter.prompt.read_repo_password') as mock_read_repo_password:
+
+        # Setup mock responses
+        mock_make_sure_path_exists.return_value = None
+        mock_prompt_and_delete.return_value = True
+        mock_requests_get.return_value.iter_content = lambda chunk_size: [b'content']
+        mock_zipfile.return_value.namelist.return_value = ['project/']
+        mock_mkdtemp.return_value = '/tmp/unzip_base'
+
+
+# Generated at 2024-06-01 17:27:25.179419
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zip = MagicMock()
+        mock_zip.namelist.return_value = ['project/']
+        mock_zipfile.return_value = mock_zip
+
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+
+        assert unzip_path.startswith('/tmp')
+        mock_make_s
+
+# Generated at 2024-06-01 17:27:28.554924
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    # Test case for a valid zip file from a URL
+    @patch('requests.get')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('cookiecutter.utils.make_sure_path_exists')
+    @patch('zipfile.ZipFile')
+    def test_unzip_valid_url(mock_zipfile, mock_make_sure_path_exists, mock_open, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.iter_content = lambda chunk_size: [b'content']
+        mock_requests_get.return_value = mock_response
+        mock_zipfile.return_value.namelist.return_value = ['project/', 'project/file.txt']
+        
+        unzip_path = unzip('http://example.com/repo.zip', is_url=True, clone_to_dir='/tmp')
+        
+        assert unzip_path.startswith('/tmp')
+        mock_make_sure_path_exists.assert_called_once_with('/

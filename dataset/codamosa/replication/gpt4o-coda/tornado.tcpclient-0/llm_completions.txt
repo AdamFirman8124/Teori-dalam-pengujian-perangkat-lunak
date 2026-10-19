@@ -1,0 +1,871 @@
+
+
+# Generated at 2024-06-03 16:35:50.555956
+```python
+    io_loop = IOLoop.current()
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80))]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+
+    connector.set_timeout(1)
+    connector.set_connect_timeout(1)
+    assert connector.timeout is not None
+    assert connector.connect_timeout is not None
+
+    connector.clear_timeouts()
+    assert connector.timeout is None
+    assert connector.connect_timeout is None
+```
+
+# Generated at 2024-06-03 16:35:58.509405
+```python
+    addrinfo = [
+        (socket.AF_INET, ('127.0.0.1', 80)),
+        (socket.AF_INET6, ('::1', 80))
+    ]
+    connect_called = []
+
+    def mock_connect(af, addr):
+        connect_called.append((af, addr))
+        future = Future()
+        if af == socket.AF_INET:
+            future.set_exception(IOError("mock error"))
+        else:
+            future.set_result(IOStream(socket.socket(af)))
+        return IOStream(socket.socket(af)), future
+
+    connector = _Connector(addrinfo, mock_connect)
+    future = connector.start()
+
+    IOLoop.current().run_sync(lambda: future)
+
+    assert len(connect_called) == 2
+    assert connect_called[0][0] == socket.AF_INET
+    assert connect_called[1][0] == socket.AF_INET6
+    assert future.done()
+    assert isinstance(future.result()[2], IOStream)
+```
+
+# Generated at 2024-06-03 16:36:00.105124
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], lambda af, addr: (IOStream(socket.socket(af)), Future()))
+    connector.timeout = io_loop.add_timeout(io_loop.time() + 1, lambda: None)
+    connector.clear_timeout()
+    assert connector.timeout is None
+```
+
+# Generated at 2024-06-03 16:36:04.365329
+```python
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80))]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    future = connector.start(connect_timeout=0.1)
+    IOLoop.current().add_timeout(IOLoop.current().time() + 0.2, lambda: None)
+    IOLoop.current().start()
+    assert future.done()
+    assert isinstance(future.exception(), TimeoutError)
+```
+
+# Generated at 2024-06-03 16:36:08.122180
+```python
+    addrinfo = [
+        (socket.AF_INET, ('127.0.0.1', 80)),
+        (socket.AF_INET6, ('::1', 80))
+    ]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    
+    assert connector.io_loop is not None
+    assert connector.connect == connect
+    assert isinstance(connector.future, Future)
+    assert connector.timeout is None
+    assert connector.connect_timeout is None
+    assert connector.last_error is None
+    assert connector.remaining == len(addrinfo)
+    assert len(connector.primary_addrs) > 0
+    assert len(connector.secondary_addrs) > 0
+    assert isinstance(connector.streams, set)
+```
+
+# Generated at 2024-06-03 16:36:10.275940
+```python
+    io_loop = IOLoop.current()
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80))]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    
+    connector.set_timeout(1)
+    assert connector.timeout is not None
+    
+    connector.clear_timeout()
+    assert connector.timeout is None
+```
+
+# Generated at 2024-06-03 16:36:12.360299
+```python
+    io_loop = IOLoop.current()
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80))]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    
+    connect_timeout = 5.0
+    connector.set_connect_timeout(connect_timeout)
+    
+    assert connector.connect_timeout is not None
+    io_loop.remove_timeout(connector.connect_timeout)
+```
+
+# Generated at 2024-06-03 16:36:15.939011
+```python
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80)), (socket.AF_INET6, ('::1', 80))]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    
+    # Mocking the future result to simulate a successful connection
+    future = Future()
+    future.set_result(IOStream(socket.socket(socket.AF_INET)))
+    
+    # Mocking the addrs iterator
+    addrs = iter([(socket.AF_INET, ('127.0.0.1', 80))])
+    
+    # Call the method
+    connector.on_connect_done(addrs, socket.AF_INET, ('127.0.0.1', 80), future)
+    
+    # Assertions
+    assert connector.future.done()
+    assert isinstance(connector.future.result(), tuple)
+    assert connector.future.result()[0] == socket.AF_INET
+    assert connector.future
+
+# Generated at 2024-06-03 16:36:18.377931
+```python
+    io_loop = IOLoop.current()
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80))]
+    connector = _Connector(addrinfo, lambda af, addr: (IOStream(socket.socket(af)), Future()))
+
+    # Set a timeout and ensure it is set
+    connector.set_timeout(1)
+    assert connector.timeout is not None
+
+    # Clear the timeout and ensure it is cleared
+    connector.clear_timeout()
+    assert connector.timeout is None
+```
+
+# Generated at 2024-06-03 16:36:22.492139
+```python
+    async def mock_resolve(host, port, af):
+        return [(socket.AF_INET, ('127.0.0.1', port))]
+
+    async def mock_with_timeout(timeout, future):
+        return await future
+
+    class MockStream(IOStream):
+        async def start_tls(self, server_side, ssl_options, server_hostname):
+            return self
+
+    async def mock_create_stream(max_buffer_size, af, addr, source_ip=None, source_port=None):
+        stream = MockStream(socket.socket(af))
+        future = Future()
+        future.set_result(stream)
+        return stream, future
+
+    resolver = Resolver()
+    client = TCPClient(resolver=resolver)
+    client.resolver.resolve = mock_resolve
+    gen.with_timeout = mock_with_timeout
+    client._create_stream = mock_create_stream
+
+    stream = await client.connect('localhost', 8888)
+    assert isinstance(stream, MockStream)
+```
+
+# Generated at 2024-06-03 16:37:04.174552
+```python
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80))]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    future = connector.start(connect_timeout=0.1)
+    IOLoop.current().add_timeout(IOLoop.current().time() + 0.2, lambda: None)
+    IOLoop.current().start()
+    assert future.done()
+    assert isinstance(future.exception(), TimeoutError)
+```
+
+# Generated at 2024-06-03 16:37:14.047439
+```python
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80)), (socket.AF_INET6, ('::1', 80))]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    
+    # Mocking the future result to simulate a successful connection
+    future = Future()
+    future.set_result(IOStream(socket.socket(socket.AF_INET)))
+    
+    # Mocking the addrs iterator
+    addrs = iter([(socket.AF_INET, ('127.0.0.1', 80))])
+    
+    # Call the method
+    connector.on_connect_done(addrs, socket.AF_INET, ('127.0.0.1', 80), future)
+    
+    # Assertions
+    assert connector.future.done()
+    assert isinstance(connector.future.result(), tuple)
+    assert connector.future.result()[0] == socket.AF_INET
+    assert connector.future
+
+# Generated at 2024-06-03 16:37:16.211307
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], lambda af, addr: (IOStream(socket.socket(af)), Future()))
+    connect_timeout = 5.0
+
+    connector.set_connect_timeout(connect_timeout)
+    assert connector.connect_timeout is not None
+
+    io_loop.remove_timeout(connector.connect_timeout)
+    connector.clear_timeouts()
+    assert connector.connect_timeout is None
+```
+
+# Generated at 2024-06-03 16:37:18.531299
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], lambda af, addr: (IOStream(socket.socket(af)), Future()))
+    timeout = 1.0
+
+    connector.set_timeout(timeout)
+    assert connector.timeout is not None
+
+    io_loop.remove_timeout(connector.timeout)
+    connector.clear_timeout()
+    assert connector.timeout is None
+```
+
+# Generated at 2024-06-03 16:37:23.741243
+```python
+    addrinfo = [
+        (socket.AF_INET, ('127.0.0.1', 80)),
+        (socket.AF_INET6, ('::1', 80))
+    ]
+    
+    def mock_connect(af, addr):
+        stream = IOStream(socket.socket(af))
+        future = Future()
+        if addr[0] == '127.0.0.1':
+            future.set_result(stream)
+        else:
+            future.set_exception(IOError("connection failed"))
+        return stream, future
+
+    connector = _Connector(addrinfo, mock_connect)
+    future = connector.start()
+
+    def callback(future):
+        assert future.result()[1] == ('127.0.0.1', 80)
+
+    future.add_done_callback(callback)
+```
+
+# Generated at 2024-06-03 16:37:28.413663
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], None)
+    
+    # Set some timeouts
+    connector.set_timeout(1)
+    connector.set_connect_timeout(2)
+    
+    # Ensure timeouts are set
+    assert connector.timeout is not None
+    assert connector.connect_timeout is not None
+    
+    # Clear timeouts
+    connector.clear_timeouts()
+    
+    # Ensure timeouts are cleared
+    assert connector.timeout is None
+    assert connector.connect_timeout is None
+```
+
+# Generated at 2024-06-03 16:37:35.980352
+```python
+    addrinfo = [
+        (socket.AF_INET, ('127.0.0.1', 80)),
+        (socket.AF_INET6, ('::1', 80))
+    ]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    assert connector.primary_addrs == [(socket.AF_INET, ('127.0.0.1', 80))]
+    assert connector.secondary_addrs == [(socket.AF_INET6, ('::1', 80))]
+    assert connector.remaining == 2
+    assert connector.future is not None
+    assert connector.timeout is None
+    assert connector.connect_timeout is None
+    assert connector.last_error is None
+    assert connector.streams == set()
+```
+
+# Generated at 2024-06-03 16:37:37.883517
+```python
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80))]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    future = connector.start(connect_timeout=0.1)
+    connector.on_connect_timeout()
+    assert future.done()
+    assert isinstance(future.exception(), TimeoutError)
+```
+
+# Generated at 2024-06-03 16:37:40.845684
+```python
+    addrinfo = [
+        (socket.AF_INET, ('127.0.0.1', 80)),
+        (socket.AF_INET6, ('::1', 80))
+    ]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    
+    assert connector.io_loop is not None
+    assert connector.connect == connect
+    assert isinstance(connector.future, Future)
+    assert connector.timeout is None
+    assert connector.connect_timeout is None
+    assert connector.last_error is None
+    assert connector.remaining == len(addrinfo)
+    assert len(connector.primary_addrs) > 0
+    assert len(connector.secondary_addrs) > 0
+    assert isinstance(connector.streams, set)
+```
+
+# Generated at 2024-06-03 16:37:43.275584
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], None)
+    
+    # Set some timeouts
+    connector.set_timeout(1)
+    connector.set_connect_timeout(2)
+    
+    # Ensure timeouts are set
+    assert connector.timeout is not None
+    assert connector.connect_timeout is not None
+    
+    # Clear timeouts
+    connector.clear_timeouts()
+    
+    # Ensure timeouts are cleared
+    assert connector.timeout is None
+    assert connector.connect_timeout is None
+```
+
+# Generated at 2024-06-03 16:38:58.084763
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], None)
+    
+    # Set some timeouts
+    connector.set_timeout(1)
+    connector.set_connect_timeout(2)
+    
+    # Ensure timeouts are set
+    assert connector.timeout is not None
+    assert connector.connect_timeout is not None
+    
+    # Clear timeouts
+    connector.clear_timeouts()
+    
+    # Ensure timeouts are cleared
+    assert connector.timeout is None
+    assert connector.connect_timeout is None
+```
+
+# Generated at 2024-06-03 16:39:02.698014
+```python
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80))]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    future = connector.start(connect_timeout=0.1)
+    IOLoop.current().add_timeout(IOLoop.current().time() + 0.2, lambda: None)
+    IOLoop.current().start()
+    assert future.done()
+    assert isinstance(future.exception(), TimeoutError)
+```
+
+# Generated at 2024-06-03 16:39:05.534320
+```python
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80))]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    stream1 = IOStream(socket.socket(socket.AF_INET))
+    stream2 = IOStream(socket.socket(socket.AF_INET))
+    connector.streams.add(stream1)
+    connector.streams.add(stream2)
+    connector.close_streams()
+    assert stream1.closed()
+    assert stream2.closed()
+```
+
+# Generated at 2024-06-03 16:39:07.979966
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], None)
+    
+    # Set some timeouts
+    connector.set_timeout(1)
+    connector.set_connect_timeout(2)
+    
+    # Ensure timeouts are set
+    assert connector.timeout is not None
+    assert connector.connect_timeout is not None
+    
+    # Clear timeouts
+    connector.clear_timeouts()
+    
+    # Ensure timeouts are cleared
+    assert connector.timeout is None
+    assert connector.connect_timeout is None
+```
+
+# Generated at 2024-06-03 16:39:09.893007
+```python
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80))]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    future = connector.start(connect_timeout=0.1)
+    connector.on_connect_timeout()
+    assert future.done()
+    assert isinstance(future.exception(), TimeoutError)
+```
+
+# Generated at 2024-06-03 16:39:11.951506
+```python
+    addrinfo = [
+        (socket.AF_INET, ('127.0.0.1', 80)),
+        (socket.AF_INET6, ('::1', 80))
+    ]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    future = connector.start()
+    assert isinstance(future, Future)
+    assert not future.done()
+```
+
+# Generated at 2024-06-03 16:39:14.926773
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], lambda af, addr: (IOStream(socket.socket(af)), Future()))
+    timeout = 1.0
+
+    connector.set_timeout(timeout)
+    assert connector.timeout is not None
+
+    io_loop.remove_timeout(connector.timeout)
+    connector.clear_timeout()
+    assert connector.timeout is None
+```
+
+# Generated at 2024-06-03 16:39:20.761142
+```python
+    addrinfo = [
+        (socket.AF_INET, ('127.0.0.1', 80)),
+        (socket.AF_INET6, ('::1', 80))
+    ]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    
+    future = connector.start()
+    
+    assert isinstance(future, Future)
+    assert not future.done()
+    
+    # Simulate a successful connection
+    stream, future_stream = connect(socket.AF_INET, ('127.0.0.1', 80))
+    future_stream.set_result(stream)
+    
+    result = future.result()
+    assert result[0] == socket.AF_INET
+    assert result[1] == ('127.0.0.1', 80)
+    assert isinstance(result[2], IOStream)
+```
+
+# Generated at 2024-06-03 16:39:23.708669
+```python
+    addrinfo = [
+        (socket.AF_INET, ('127.0.0.1', 80)),
+        (socket.AF_INET6, ('::1', 80))
+    ]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    connector.start()
+    connector.on_timeout()
+    assert connector.timeout is None
+    assert not connector.future.done()
+```
+
+# Generated at 2024-06-03 16:39:26.439986
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], None)
+    
+    # Set some timeouts
+    connector.set_timeout(1)
+    connector.set_connect_timeout(2)
+    
+    # Ensure timeouts are set
+    assert connector.timeout is not None
+    assert connector.connect_timeout is not None
+    
+    # Clear timeouts
+    connector.clear_timeouts()
+    
+    # Ensure timeouts are cleared
+    assert connector.timeout is None
+    assert connector.connect_timeout is None
+```
+
+# Generated at 2024-06-03 16:41:52.300648
+```python
+    async def mock_resolve(host, port, af):
+        return [(socket.AF_INET, ('127.0.0.1', port))]
+
+    async def mock_with_timeout(timeout, future):
+        return await future
+
+    class MockStream(IOStream):
+        async def start_tls(self, server_side, ssl_options, server_hostname):
+            return self
+
+    def mock_create_stream(max_buffer_size, af, addr, source_ip=None, source_port=None):
+        stream = MockStream(socket.socket(af))
+        future = Future()
+        future.set_result(stream)
+        return stream, future
+
+    resolver = Resolver()
+    client = TCPClient(resolver=resolver)
+    client.resolver.resolve = mock_resolve
+    gen.with_timeout = mock_with_timeout
+    client._create_stream = mock_create_stream
+
+    async def run_test():
+        stream = await client.connect('localhost', 8888)
+        assert isinstance(stream, MockStream)
+
+    IOLoop.current
+
+# Generated at 2024-06-03 16:41:54.626042
+```python
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80))]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    future = connector.start(connect_timeout=0.1)
+    IOLoop.current().call_later(0.2, lambda: None)  # Allow time for timeout
+    IOLoop.current().start()
+    assert future.done()
+    assert isinstance(future.exception(), TimeoutError)
+```
+
+# Generated at 2024-06-03 16:41:57.080134
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], lambda af, addr: (IOStream(socket.socket(af)), Future()))
+
+    # Set some timeouts
+    connector.set_timeout(1)
+    connector.set_connect_timeout(2)
+
+    # Ensure timeouts are set
+    assert connector.timeout is not None
+    assert connector.connect_timeout is not None
+
+    # Clear timeouts
+    connector.clear_timeouts()
+
+    # Ensure timeouts are cleared
+    assert connector.timeout is None
+    assert connector.connect_timeout is None
+```
+
+# Generated at 2024-06-03 16:41:58.923433
+```python
+    addrinfo = [
+        (socket.AF_INET, ('127.0.0.1', 80)),
+        (socket.AF_INET6, ('::1', 80))
+    ]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    connector.start()
+    connector.on_timeout()
+    assert connector.timeout is None
+    assert not connector.future.done()
+```
+
+# Generated at 2024-06-03 16:42:01.135569
+```python
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80))]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    future = connector.start(connect_timeout=0.1)
+    IOLoop.current().add_timeout(IOLoop.current().time() + 0.2, lambda: None)
+    IOLoop.current().start()
+    assert future.done()
+    assert isinstance(future.exception(), TimeoutError)
+```
+
+# Generated at 2024-06-03 16:42:05.590097
+```python
+    addrinfo = [
+        (socket.AF_INET, ('192.168.1.1', 80)),
+        (socket.AF_INET6, ('::1', 80)),
+        (socket.AF_INET, ('192.168.1.2', 80)),
+        (socket.AF_INET6, ('::2', 80)),
+    ]
+    primary, secondary = _Connector.split(addrinfo)
+    assert primary == [(socket.AF_INET, ('192.168.1.1', 80)), (socket.AF_INET, ('192.168.1.2', 80))]
+    assert secondary == [(socket.AF_INET6, ('::1', 80)), (socket.AF_INET6, ('::2', 80))]
+```
+
+# Generated at 2024-06-03 16:42:07.723055
+```python
+    io_loop = IOLoop.current()
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80))]
+    connector = _Connector(addrinfo, lambda af, addr: (IOStream(socket.socket(af)), Future()))
+
+    # Set a timeout and ensure it is set
+    connector.set_timeout(1)
+    assert connector.timeout is not None
+
+    # Clear the timeout and ensure it is cleared
+    connector.clear_timeout()
+    assert connector.timeout is None
+```
+
+# Generated at 2024-06-03 16:42:11.373937
+```python
+    import pytest
+    from tornado.testing import AsyncTestCase, gen_test
+    from tornado.iostream import IOStream
+    from tornado.netutil import Resolver
+    from unittest.mock import patch, MagicMock
+
+    class TestTCPClient(AsyncTestCase):
+        @gen_test
+        async def test_connect(self):
+            resolver = Resolver()
+            client = TCPClient(resolver=resolver)
+            host = 'localhost'
+            port = 8888
+
+            with patch.object(resolver, 'resolve', return_value=gen.maybe_future([(socket.AF_INET, ('127.0.0.1', port))])):
+                with patch.object(IOStream, 'connect', return_value=gen.maybe_future(None)):
+                    stream = await client.connect(host, port)
+                    assert isinstance(stream, IOStream)
+
+        @gen_test
+        async def test_connect_with_ssl(self):
+            resolver = Resolver()
+            client = TCPClient(resolver=resolver)
+            host = '
+
+# Generated at 2024-06-03 16:42:16.859225
+```python
+    import pytest
+    from tornado.testing import AsyncTestCase, gen_test
+    from tornado.iostream import IOStream
+    from unittest.mock import patch, MagicMock
+
+    class TestTCPClient(AsyncTestCase):
+        @gen_test
+        async def test_connect(self):
+            client = TCPClient()
+            host = 'localhost'
+            port = 8888
+
+            with patch.object(client.resolver, 'resolve', return_value=[(socket.AF_INET, ('127.0.0.1', port))]):
+                with patch.object(IOStream, 'connect', return_value=Future()) as mock_connect:
+                    mock_connect.return_value.set_result(None)
+                    stream = await client.connect(host, port)
+                    assert isinstance(stream, IOStream)
+                    mock_connect.assert_called_once_with(('127.0.0.1', port))
+
+        @gen_test
+        async def test_connect_with_ssl(self):
+            client = TCPClient()
+            host = 'localhost'
+
+
+# Generated at 2024-06-03 16:42:18.545984
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], lambda af, addr: (IOStream(socket.socket(af)), Future()))
+    connect_timeout = 5.0
+
+    connector.set_connect_timeout(connect_timeout)
+    assert connector.connect_timeout is not None
+
+    io_loop.remove_timeout(connector.connect_timeout)
+    connector.clear_timeouts()
+    assert connector.connect_timeout is None
+```
+
+# Generated at 2024-06-03 16:44:52.376577
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], None)
+    connector.timeout = io_loop.add_timeout(io_loop.time() + 1, lambda: None)
+    connector.clear_timeout()
+    assert connector.timeout is None
+```
+
+# Generated at 2024-06-03 16:44:55.318522
+```python
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80))]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    stream1 = IOStream(socket.socket(socket.AF_INET))
+    stream2 = IOStream(socket.socket(socket.AF_INET))
+    connector.streams.add(stream1)
+    connector.streams.add(stream2)
+    connector.close_streams()
+    assert stream1.closed()
+    assert stream2.closed()
+```
+
+# Generated at 2024-06-03 16:45:00.115782
+```python
+    addrinfo = [
+        (socket.AF_INET, ('127.0.0.1', 80)),
+        (socket.AF_INET6, ('::1', 80))
+    ]
+    connect_called = []
+
+    def mock_connect(af, addr):
+        connect_called.append((af, addr))
+        future = Future()
+        if af == socket.AF_INET:
+            future.set_exception(IOError("connection failed"))
+        else:
+            future.set_result(IOStream(socket.socket(af)))
+        return IOStream(socket.socket(af)), future
+
+    connector = _Connector(addrinfo, mock_connect)
+    future = connector.start()
+
+    IOLoop.current().run_sync(lambda: future)
+
+    assert len(connect_called) == 2
+    assert connect_called[0][0] == socket.AF_INET
+    assert connect_called[1][0] == socket.AF_INET6
+    assert future.result()[0] == socket.AF_INET6
+```
+
+# Generated at 2024-06-03 16:45:04.121977
+```python
+    addrinfo = [
+        (socket.AF_INET, ('127.0.0.1', 80)),
+        (socket.AF_INET6, ('::1', 80))
+    ]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    
+    future = connector.start()
+    connector.on_timeout()
+    
+    assert not future.done(), "Future should not be done after on_timeout if secondary addresses are available"
+    
+    connector.remaining = 0
+    connector.on_timeout()
+    
+    assert future.done(), "Future should be done after on_timeout if no addresses are remaining"
+    assert isinstance(future.exception(), IOError), "Future should have IOError exception if no addresses are remaining"
+```
+
+# Generated at 2024-06-03 16:45:07.981718
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], None)
+    
+    # Set some timeouts
+    connector.set_timeout(1)
+    connector.set_connect_timeout(2)
+    
+    # Ensure timeouts are set
+    assert connector.timeout is not None
+    assert connector.connect_timeout is not None
+    
+    # Clear timeouts
+    connector.clear_timeouts()
+    
+    # Ensure timeouts are cleared
+    assert connector.timeout is None
+    assert connector.connect_timeout is None
+```
+
+# Generated at 2024-06-03 16:45:09.427495
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], None)
+    connector.timeout = io_loop.add_timeout(io_loop.time() + 1, lambda: None)
+    connector.clear_timeout()
+    assert connector.timeout is None
+```
+
+# Generated at 2024-06-03 16:45:11.467268
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], lambda af, addr: (IOStream(socket.socket(af)), Future()))
+    connect_timeout = 5.0
+
+    connector.set_connect_timeout(connect_timeout)
+    assert connector.connect_timeout is not None
+
+    io_loop.remove_timeout(connector.connect_timeout)
+    connector.clear_timeouts()
+    assert connector.connect_timeout is None
+```
+
+# Generated at 2024-06-03 16:45:13.363580
+```python
+    addrinfo = [(socket.AF_INET, ('127.0.0.1', 80))]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    future = connector.start(connect_timeout=0.1)
+    connector.on_connect_timeout()
+    assert future.done()
+    assert isinstance(future.exception(), TimeoutError)
+```
+
+# Generated at 2024-06-03 16:45:15.223740
+```python
+    io_loop = IOLoop.current()
+    connector = _Connector([], lambda af, addr: (IOStream(socket.socket(af)), Future()))
+    timeout = 1.0
+
+    connector.set_timeout(timeout)
+    assert connector.timeout is not None
+
+    io_loop.remove_timeout(connector.timeout)
+    connector.clear_timeout()
+    assert connector.timeout is None
+```
+
+# Generated at 2024-06-03 16:45:18.787053
+```python
+    addrinfo = [
+        (socket.AF_INET, ('127.0.0.1', 80)),
+        (socket.AF_INET6, ('::1', 80))
+    ]
+    connect = lambda af, addr: (IOStream(socket.socket(af)), Future())
+    connector = _Connector(addrinfo, connect)
+    
+    assert connector.primary_addrs == [(socket.AF_INET, ('127.0.0.1', 80))]
+    assert connector.secondary_addrs == [(socket.AF_INET6, ('::1', 80))]
+    assert connector.remaining == 2
+    assert connector.future is not None
+    assert connector.timeout is None
+    assert connector.connect_timeout is None
+    assert connector.last_error is None
+    assert connector.streams == set()
+```

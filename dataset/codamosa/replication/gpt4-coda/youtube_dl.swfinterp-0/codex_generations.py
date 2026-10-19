@@ -1,0 +1,456 @@
+
+
+# Generated at 2024-03-18 09:41:00.083463
+# Unit test for constructor of class SWFInterpreter
+def test_SWFInterpreter():    # Instantiate the SWFInterpreter class
+    interpreter = SWFInterpreter()
+
+    # Test the constructor to ensure it initializes the necessary attributes
+    assert hasattr(interpreter, 'constant_strings'), "Interpreter should have 'constant_strings' attribute"
+    assert hasattr(interpreter, 'multinames'), "Interpreter should have 'multinames' attribute"
+    assert hasattr(interpreter, 'scopes'), "Interpreter should have 'scopes' attribute"
+    assert hasattr(interpreter, 'stack'), "Interpreter should have 'stack' attribute"
+    assert hasattr(interpreter, 'registers'), "Interpreter should have 'registers' attribute"
+    assert hasattr(interpreter, 'avm_class'), "Interpreter should have 'avm_class' attribute"
+    assert hasattr(interpreter, 'method_pyfunctions'), "Interpreter should have 'method_pyfunctions' attribute"
+
+    # Test the initial state of the attributes
+
+# Generated at 2024-03-18 09:41:11.200735
+# Unit test for method extract_function of class SWFInterpreter
+def test_SWFInterpreter_extract_function():    # Setup the SWFInterpreter instance and dependencies
+    interpreter = SWFInterpreter()
+    interpreter.constant_strings = ["Hello", "World"]
+    interpreter.multinames = ["length", "String", "split", "charCodeAt"]
+    interpreter.avm_class = MockAVMClass()
+    interpreter.registers = [None] * 4
+    interpreter.scopes = [MockScopeDict()]
+    interpreter.stack = []
+
+    # Mocking necessary functions and classes
+    MockAVMClass.make_object = Mock(return_value="NewObject")
+    MockScopeDict.__contains__ = Mock(return_value=True)
+    MockScopeDict.__getitem__ = Mock(return_value="ScopeValue")
+    _read_byte = Mock(return_value=42)
+    u30 = Mock(return_value=1)
+    s24 = Mock(return_value=-5)
+    undefined = _Undefined()
+
+    # Mocking the extract_function method
+
+# Generated at 2024-03-18 09:41:20.744960
+# Unit test for method extract_function of class SWFInterpreter
+def test_SWFInterpreter_extract_function():    # Assuming the existence of a SWFInterpreter instance named interpreter
+    # and a mock setup for the necessary environment and dependencies.
+
+    # Test setup
+    class MockAVMClass:
+        def __init__(self):
+            self.method_names = ['testMethod']
+            self.make_object = lambda: 'newObject'
+
+        def testMethod(self, args):
+            return 'methodResult'
+
+    mock_avm_class = MockAVMClass()
+    interpreter.constant_strings = ['testString']
+    interpreter.multinames = ['testMethod']
+    interpreter.extract_function = lambda obj, name: getattr(obj, name)
+
+    # Test case: Extracting a method from an AVMClass instance
+    extracted_method = interpreter.extract_function(mock_avm_class, 'testMethod')
+    assert callable(extracted_method), "The extracted method should be callable"
+    assert extracted_method([]) == 'methodResult', "The extracted method should return the correct result"
+
+    # Test case
+
+# Generated at 2024-03-18 09:41:27.377239
+# Unit test for method extract_class of class SWFInterpreter
+def test_SWFInterpreter_extract_class():    # Assuming the existence of a SWFInterpreter instance `interpreter`
+    # and a mock SWF class structure `mock_swf_class` for testing purposes.
+
+    # Test extraction of a simple class with no inheritance or complex features
+    simple_class = interpreter.extract_class(mock_swf_class)
+    assert isinstance(simple_class, _AVMClass)
+    assert simple_class.class_name == 'SimpleClass'
+    assert len(simple_class.method_names) == len(mock_swf_class.methods)
+    for method_name in simple_class.method_names:
+        assert method_name in mock_swf_class.methods
+
+    # Test extraction of a class with inheritance
+    mock_swf_class.base_class_name = 'BaseClass'
+    derived_class = interpreter.extract_class(mock_swf_class)
+    assert isinstance(derived_class, _AVMClass)
+    assert derived_class.class_name == 'DerivedClass'
+    assert derived_class.base_class_name == 'BaseClass'
+    assert derived_class.base_class
+
+# Generated at 2024-03-18 09:41:33.661153
+# Unit test for method extract_function of class SWFInterpreter
+def test_SWFInterpreter_extract_function():    # Setup the SWFInterpreter instance and dependencies
+    interpreter = SWFInterpreter()
+    interpreter.constant_strings = ["Hello", "World"]
+    interpreter.multinames = ["length", "String", "split", "charCodeAt"]
+    interpreter.avm_class = MockAVMClass()
+    interpreter.registers = [None] * 4
+    interpreter.scopes = [MockScopeDict()]
+    interpreter._builtin_classes = {'String': MockStringClass}
+
+    # Mock the necessary methods and classes
+    MockAVMClass.make_object = Mock()
+    MockAVMClass.make_object.return_value = 'new_object'
+    MockScopeDict.__getitem__ = Mock()
+    MockScopeDict.__getitem__.return_value = 'scope_value'
+    MockStringClass.split = Mock()
+    MockStringClass.split.return_value = ['H', 'e', 'l', 'l', 'o']
+    MockStringClass.charCodeAt = Mock()
+    MockStringClass.charCodeAt.return_value
+
+# Generated at 2024-03-18 09:41:40.337843
+# Unit test for constructor of class SWFInterpreter
+def test_SWFInterpreter():    # Create an instance of the SWFInterpreter class
+    interpreter = SWFInterpreter()
+
+    # Test the constructor to ensure it initializes the necessary attributes
+    assert hasattr(interpreter, 'constant_strings'), "Interpreter should have 'constant_strings' attribute"
+    assert hasattr(interpreter, 'multinames'), "Interpreter should have 'multinames' attribute"
+    assert hasattr(interpreter, 'scopes'), "Interpreter should have 'scopes' attribute"
+    assert hasattr(interpreter, 'stack'), "Interpreter should have 'stack' attribute"
+    assert hasattr(interpreter, 'registers'), "Interpreter should have 'registers' attribute"
+    assert hasattr(interpreter, 'avm_class'), "Interpreter should have 'avm_class' attribute"
+    assert hasattr(interpreter, 'method_pyfunctions'), "Interpreter should have 'method_pyfunctions' attribute"
+
+    # Test that the attributes are initialized to the correct types or values
+
+# Generated at 2024-03-18 09:41:47.799783
+# Unit test for constructor of class SWFInterpreter
+def test_SWFInterpreter():    # Instantiate the SWFInterpreter class
+    interpreter = SWFInterpreter()
+
+    # Test the constructor to ensure it initializes the necessary attributes
+    assert hasattr(interpreter, 'constant_strings'), "Interpreter should have 'constant_strings' attribute"
+    assert hasattr(interpreter, 'multinames'), "Interpreter should have 'multinames' attribute"
+    assert hasattr(interpreter, 'scopes'), "Interpreter should have 'scopes' attribute"
+    assert hasattr(interpreter, 'stack'), "Interpreter should have 'stack' attribute"
+    assert hasattr(interpreter, 'registers'), "Interpreter should have 'registers' attribute"
+    assert hasattr(interpreter, 'method_pyfunctions'), "Interpreter should have 'method_pyfunctions' attribute"
+
+    # Check if the attributes are initialized to the correct types
+    assert isinstance(interpreter.constant_strings, list), "'constant_strings' should be a list"
+
+# Generated at 2024-03-18 09:41:55.351594
+# Unit test for method extract_function of class SWFInterpreter
+def test_SWFInterpreter_extract_function():    # Setup the SWFInterpreter instance and dependencies
+    interpreter = SWFInterpreter()
+    interpreter.constant_strings = ["Hello", "World"]
+    interpreter.multinames = ["length", "String", "split", "charCodeAt"]
+    interpreter.avm_class = MockAVMClass()
+    interpreter.registers = [None] * 8
+
+    # Mock the necessary methods and classes
+    def mock_u30():
+        return 1
+
+    def mock_s24():
+        return -5
+
+    def mock_read_byte(coder):
+        return 42
+
+    def mock_extract_function(avm_class, mname):
+        def mock_function(args):
+            return "MockFunctionCalled"
+        return mock_function
+
+    interpreter.u30 = mock_u30
+    interpreter.s24 = mock_s24
+    interpreter._read_byte = mock_read_byte
+    interpreter.extract_function = mock_extract_function
+
+    # Mock the stack and scopes
+    stack = []
+
+# Generated at 2024-03-18 09:42:02.413503
+# Unit test for method extract_function of class SWFInterpreter
+def test_SWFInterpreter_extract_function():    # Setup the SWFInterpreter instance and dependencies
+    interpreter = SWFInterpreter()
+    interpreter.constant_strings = ["Hello", "World"]
+    interpreter.multinames = ["length", "String", "split", "charCodeAt"]
+    interpreter.registers = [None] * 4
+    interpreter.scopes = [{}]
+    interpreter.avm_class = MockAVMClass()
+    interpreter.avm_class.variables = {}
+    interpreter.avm_class.method_names = ["testMethod"]
+    interpreter.avm_class.method_pyfunctions = {}
+    interpreter.avm_class.make_object = Mock()
+    interpreter.extract_function = Mock()
+
+    # Mocking the necessary functions and classes
+    _Undefined = Mock()
+    _AVMClass_Object = Mock()
+    _AVMClass = Mock()
+    _ScopeDict = Mock()
+    _Multiname = Mock()
+    _builtin_classes = {'String': Mock()}
+    StringClass = Mock()
+    undefined = _Undefined()
+    compat
+
+# Generated at 2024-03-18 09:42:11.293763
+# Unit test for method extract_function of class SWFInterpreter
+def test_SWFInterpreter_extract_function():    # Setup the SWFInterpreter instance and dependencies
+    interpreter = SWFInterpreter()
+    interpreter.constant_strings = ["Hello", "World"]
+    interpreter.multinames = ["length", "String", "split", "charCodeAt"]
+    interpreter.avm_class = MockAVMClass()
+    interpreter.registers = [None] * 4
+    interpreter.scopes = [MockScopeDict()]
+    interpreter.stack = []
+
+    # Mocking necessary functions and classes
+    MockAVMClass.make_object = MagicMock(return_value="NewObject")
+    MockAVMClass.method_names = ["testMethod"]
+    interpreter.extract_function = MagicMock(return_value=lambda args: "FunctionResult")
+    _read_byte = MagicMock(return_value=42)
+    u30 = MagicMock(return_value=1)
+    s24 = MagicMock(return_value=-5)
+    undefined = _Undefined()
+
+    # Define a mock function bytecode that will be interpreted
+
+# Generated at 2024-03-18 09:44:19.021131
+# Unit test for constructor of class SWFInterpreter
+def test_SWFInterpreter():    # Create an instance of the SWFInterpreter class
+    interpreter = SWFInterpreter()
+
+    # Test the constructor to ensure the instance is created properly
+    assert isinstance(interpreter, SWFInterpreter), "Instance creation failed."
+
+    # Test the initial state of the interpreter
+    assert interpreter.stack == [], "Initial stack should be empty."
+    assert interpreter.scopes == [], "Initial scope stack should be empty."
+    assert interpreter.registers == [None] * 8, "Initial registers should be None."
+    assert interpreter.constant_strings == [], "Initial constant strings should be empty."
+    assert interpreter.multinames == [], "Initial multinames should be empty."
+    assert interpreter.avm_class.method_pyfunctions == {}, "Initial method_pyfunctions should be empty."
+
+    # Add more tests as necessary to cover the functionality of the constructor
+
+    print("All tests passed for SWFInterpreter constructor.")
+
+
+# Generated at 2024-03-18 09:44:25.636389
+# Unit test for method extract_function of class SWFInterpreter
+def test_SWFInterpreter_extract_function():    # Setup the SWFInterpreter instance and dependencies
+    interpreter = SWFInterpreter()
+    interpreter.constant_strings = ["Hello", "World"]
+    interpreter.multinames = ["length", "String", "split", "charCodeAt"]
+    interpreter.avm_class = MockAVMClass()
+    interpreter.registers = [None] * 4
+    interpreter.scopes = [MockScopeDict()]
+    interpreter._builtin_classes = {'String': MockStringClass}
+
+    # Mock the necessary methods and classes
+    MockAVMClass.make_object = Mock()
+    MockAVMClass.make_object.return_value = 'NewObject'
+    MockScopeDict.__contains__ = Mock(return_value=True)
+    MockScopeDict.__getitem__ = Mock(return_value='ScopeValue')
+    MockStringClass.__contains__ = Mock(return_value=True)
+    MockStringClass.__getitem__ = Mock(return_value='StringValue')
+
+    # Define a simple function to be extracted
+
+# Generated at 2024-03-18 09:44:34.319829
+# Unit test for method extract_function of class SWFInterpreter
+def test_SWFInterpreter_extract_function():    # Assuming the existence of a SWFInterpreter instance named interpreter
+    # and a setup with necessary context, constants, and method names.
+
+    # Mock data for testing
+    interpreter.constant_strings = ["Hello", "World"]
+    interpreter.multinames = ["concat", "toUpperCase"]
+    interpreter.registers = [None] * 4
+    interpreter.scopes = [{}]
+    interpreter.avm_class = MockAVMClass()
+    interpreter.avm_class.variables = {'globalVar': 'value'}
+    interpreter.avm_class.method_names = ['testMethod']
+    interpreter.avm_class.method_pyfunctions = {}
+
+    # Mock function to be extracted
+    def mock_function(args):
+        return "MockFunctionCalled"
+
+    interpreter.extract_function = lambda avm_class, mname: mock_function
+
+    # Mock AVMClass and _ScopeDict for testing
+    class MockAVMClass:
+        def make_object(self):
+            return "NewObject"
+
+
+# Generated at 2024-03-18 09:44:41.190234
+# Unit test for method extract_function of class SWFInterpreter
+def test_SWFInterpreter_extract_function():    # Setup the SWFInterpreter instance and dependencies
+    interpreter = SWFInterpreter()
+    interpreter.constant_strings = ["Hello", "World"]
+    interpreter.multinames = ["length", "String", "split", "charCodeAt"]
+    interpreter.avm_class = MockAVMClass()
+    interpreter.registers = [None] * 4
+    interpreter.scopes = [MockScopeDict()]
+    interpreter._builtin_classes = {'String': MockStringClass}
+
+    # Mock the necessary methods and classes
+    class MockAVMClass:
+        def make_object(self):
+            return MockAVMClassObject()
+
+    class MockAVMClassObject:
+        avm_class = MockAVMClass()
+
+    class MockScopeDict(dict):
+        avm_class = MockAVMClass()
+
+    class MockStringClass:
+        @staticmethod
+        def make_object():
+            return "new string"
+
+    def mock_u30():
+        return 1
+
+
+# Generated at 2024-03-18 09:44:49.344589
+# Unit test for constructor of class SWFInterpreter
+def test_SWFInterpreter():    # Instantiate the SWFInterpreter class
+    interpreter = SWFInterpreter()
+
+    # Test the constructor to ensure it initializes the necessary attributes
+    assert hasattr(interpreter, 'constant_strings'), "Interpreter should have 'constant_strings' attribute"
+    assert hasattr(interpreter, 'multinames'), "Interpreter should have 'multinames' attribute"
+    assert hasattr(interpreter, 'scopes'), "Interpreter should have 'scopes' attribute"
+    assert hasattr(interpreter, 'stack'), "Interpreter should have 'stack' attribute"
+    assert hasattr(interpreter, 'registers'), "Interpreter should have 'registers' attribute"
+    assert hasattr(interpreter, 'avm_class'), "Interpreter should have 'avm_class' attribute"
+    assert hasattr(interpreter, 'method_pyfunctions'), "Interpreter should have 'method_pyfunctions' attribute"
+
+    # Test the initial state of the attributes
+
+# Generated at 2024-03-18 09:44:56.612628
+# Unit test for method extract_function of class SWFInterpreter
+def test_SWFInterpreter_extract_function():    # Setup the SWFInterpreter instance and dependencies
+    interpreter = SWFInterpreter()
+    interpreter.constant_strings = ["Hello", "World"]
+    interpreter.multinames = ["length", "String", "split", "charCodeAt"]
+    interpreter.avm_class = MockAVMClass()
+    interpreter.registers = [None] * 4
+    interpreter.scopes = [MockScopeDict()]
+    interpreter._builtin_classes = {'String': MockStringClass}
+
+    # Mocking necessary functions and classes
+    MockAVMClass.make_object = Mock()
+    MockAVMClass.make_object.return_value = 'MockObject'
+    MockScopeDict.__contains__ = Mock(return_value=True)
+    MockScopeDict.__getitem__ = Mock(return_value='ScopeValue')
+    MockStringClass.avm_class = MockAVMClass
+
+    # Define a mock function to be extracted
+    def mock_function(args):
+        return "MockFunctionResult"
+
+    # Mock the extract_function
+
+# Generated at 2024-03-18 09:45:10.766115
+# Unit test for method extract_class of class SWFInterpreter
+def test_SWFInterpreter_extract_class():    # Assuming the existence of a SWFInterpreter instance named interpreter
+    # and a mock SWF class structure for testing purposes.
+
+    # Mock data for testing
+    class MockSWFClass:
+        def __init__(self, name):
+            self.name = name
+            self.method_pyfunctions = {}
+
+    mock_class = MockSWFClass("TestClass")
+    interpreter.extract_class(mock_class)
+
+    # Test if the class has been extracted correctly
+    assert "TestClass" in interpreter.avm_class_names
+    assert interpreter.avm_class_names["TestClass"] == mock_class
+
+    # Test if the class methods have been extracted
+    # Assuming 'testMethod' is a method that should be extracted
+    assert "testMethod" in mock_class.method_pyfunctions
+    assert callable(mock_class.method_pyfunctions["testMethod"])
+
+    # Test if the method works as expected
+    # Assuming 'testMethod' should return a specific value when called
+    expected_value
+
+# Generated at 2024-03-18 09:45:17.944284
+# Unit test for method extract_class of class SWFInterpreter
+def test_SWFInterpreter_extract_class():    # Assuming the existence of a SWFInterpreter class with a method extract_class
+    interpreter = SWFInterpreter()
+    # Mock data for the test
+    class_data = {
+        'name': 'TestClass',
+        'methods': [
+            {
+                'name': 'testMethod',
+                'body': [0x66, 0x03, 0x47],  # construct, arg_count, returnvoid
+            }
+        ],
+        'properties': {
+            'testProperty': 'testValue'
+        }
+    }
+    # Expected results
+    expected_class_name = 'TestClass'
+    expected_methods = ['testMethod']
+    expected_properties = {'testProperty': 'testValue'}
+
+    # Execute the method
+    avm_class = interpreter.extract_class(class_data)
+
+    # Assertions to validate the results
+    assert avm_class.name == expected_class_name, "Class name does not match expected"
+
+# Generated at 2024-03-18 09:45:24.730560
+# Unit test for method extract_class of class SWFInterpreter
+def test_SWFInterpreter_extract_class():    # Assuming the existence of a SWFInterpreter class with an extract_class method
+    # and the necessary infrastructure to support the test.
+
+    # Create an instance of the SWFInterpreter
+    interpreter = SWFInterpreter()
+
+    # Mock data representing a class structure that the extract_class method would parse
+    class_data = {
+        'name': 'TestClass',
+        'super_name': 'Object',
+        'instance_methods': [
+            {'name': 'testMethod', 'body': '...'}  # Simplified method representation
+        ],
+        'static_methods': [],
+        'traits': []
+    }
+
+    # Call the extract_class method with the mock class data
+    test_class = interpreter.extract_class(class_data)
+
+    # Assertions to validate the behavior of extract_class
+    assert test_class.name == 'TestClass', "The class name should be 'TestClass'"
+    assert test_class.super_name == 'Object', "The superclass name should be 'Object'"
+
+# Generated at 2024-03-18 09:45:31.723442
+# Unit test for constructor of class SWFInterpreter
+def test_SWFInterpreter():    # Create an instance of the SWFInterpreter class
+    interpreter = SWFInterpreter()
+
+    # Test the constructor to ensure proper initialization
+    assert isinstance(interpreter.stack, list), "Stack should be initialized as a list"
+    assert isinstance(interpreter.scopes, list), "Scopes should be initialized as a list"
+    assert isinstance(interpreter.registers, list), "Registers should be initialized as a list"
+    assert isinstance(interpreter.constant_strings, list), "Constant strings should be initialized as a list"
+    assert isinstance(interpreter.multinames, list), "Multinames should be initialized as a list"
+    assert isinstance(interpreter.avm_class, _AVMClass), "AVM class should be an instance of _AVMClass"
+    assert isinstance(interpreter.method_pyfunctions, dict), "Method pyfunctions should be initialized as a dictionary"
+
+    # Test if the initial stack is empty

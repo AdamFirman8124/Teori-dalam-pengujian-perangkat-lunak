@@ -1,0 +1,1725 @@
+
+
+# Generated at 2024-03-18 07:16:14.458074
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+        tmpfile_name = tmpfile.name
+        tmpfile.write(b"Line 1\nLine 2\nLine 3\n")
+
+    # Test reading lines from a file
+    lines = list(islurp(tmpfile_name))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3\n"], "islurp should read lines correctly"
+
+    # Test reading lines from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Stdin Line 1\nStdin Line 2\n")
+    lines_from_stdin = list(islurp('-'))
+    assert lines_from_stdin == ["Stdin Line 1\n", "Stdin Line 2\n"], "islurp should read lines from stdin when '-' is given as filename"
+
+
+# Generated at 2024-03-18 07:16:20.230234
+    import tempfile
+    import shutil
+
+    # Create a temporary directory
+    temp_dir = tempfile.mkdtemp()
+
+    try:
+        # Test writing to a file
+        test_file_path = os.path.join(temp_dir, 'test.txt')
+        test_content = 'Hello, World!'
+        burp(test_file_path, test_content)
+        with open(test_file_path, 'r') as test_file:
+            content = test_file.read()
+            assert content == test_content, "Content written does not match expected content."
+
+        # Test writing to stdout
+        old_stdout = sys.stdout
+        try:
+            sys.stdout = io.StringIO()
+            burp('-', test_content, allow_stdout=True)
+            assert sys.stdout.getvalue() == test_content, "Content written to stdout does not match expected content."
+        finally:
+            sys.stdout = old_stdout
+
+        # Test expanduser and expandvars
+        test_file_path_with_user = os.path.join('~', 'test_expanduser.txt')
+
+
+# Generated at 2024-03-18 07:16:26.304749
+    import io
+    from unittest.mock import patch
+
+    # Test reading from a file
+    with patch('builtins.open', new_callable=io.StringIO) as mock_file:
+        mock_file.return_value = io.StringIO("line1\nline2\nline3")
+        result = list(islurp('testfile.txt'))
+        assert result == ["line1\n", "line2\n", "line3"]
+
+    # Test reading from stdin
+    with patch('sys.stdin', new=io.StringIO("input1\ninput2")) as mock_stdin:
+        result = list(islurp('-'))
+        assert result == ["input1\n", "input2"]
+
+    # Test reading in binary mode
+    with patch('builtins.open', new_callable=io.BytesIO) as mock_file:
+        mock_file.return_value = io.BytesIO(b"binarydata")
+        result = list(islurp('binaryfile.bin', mode='rb',
+
+# Generated at 2024-03-18 07:16:36.509443
+    import io
+    from unittest.mock import patch
+
+    # Test reading from a file
+    with patch('builtins.open', new_callable=io.StringIO) as mock_file:
+        mock_file.return_value = io.StringIO('line1\nline2\nline3')
+        result = list(islurp('testfile.txt'))
+        assert result == ['line1\n', 'line2\n', 'line3']
+
+    # Test reading from stdin
+    with patch('sys.stdin', new=io.StringIO('input1\ninput2\n')):
+        result = list(islurp('-'))
+        assert result == ['input1\n', 'input2\n']
+
+    # Test reading in chunks
+    with patch('builtins.open', new_callable=io.StringIO) as mock_file:
+        mock_file.return_value = io.StringIO('1234567890')
+        result = list(islurp('testfile.txt', iter_by=4))
+        assert
+
+# Generated at 2024-03-18 07:16:44.103242
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line 1\nLine 2\nLine 3")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line 1\n", "Line 2\n
+
+# Generated at 2024-03-18 07:16:50.534736
+```python
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading in chunks
+    chunks = list(islurp(tmp_filename, iter_by=7))
+    assert chunks == ["Line 1\nL", "ine 2\nLi", "ne 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line 1\nLine 2\nLine 3")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line 1\n", "Line
+
+# Generated at 2024-03-18 07:16:59.657677
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines from a file
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading lines from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+    sys.stdin = original_stdin
+
+    # Test reading fixed number of bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1",
+
+# Generated at 2024-03-18 07:17:08.775751
+    import tempfile
+    import shutil
+
+    # Create a temporary directory
+    temp_dir = tempfile.mkdtemp()
+
+    try:
+        # Test writing to a file
+        test_file_path = os.path.join(temp_dir, 'test.txt')
+        test_content = 'Hello, World!'
+        burp(test_file_path, test_content)
+        with open(test_file_path, 'r') as test_file:
+            assert test_file.read() == test_content
+
+        # Test writing to stdout
+        old_stdout = sys.stdout
+        sys.stdout = open(os.path.join(temp_dir, 'stdout.txt'), 'w')
+        try:
+            burp('-', test_content, allow_stdout=True)
+        finally:
+            sys.stdout.close()
+            sys.stdout = old_stdout
+        with open(os.path.join(temp_dir, 'stdout.txt'), 'r') as stdout_file:
+            assert stdout_file.read() == test_content
+
+        # Test expanduser and expandvars
+        user_test_file_path = os
+
+# Generated at 2024-03-18 07:17:18.671444
+    import io
+
+    # Mock the open function to return a StringIO object
+    def mock_open(mock=None, data=None):
+        if mock is None:
+            mock = io.StringIO(data)
+        return mock
+
+    # Mock sys.stdin to simulate input from stdin
+    sys.stdin = io.StringIO("line1\nline2\nline3\n")
+
+    # Test reading from stdin
+    result = list(islurp('-'))
+    assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read from stdin"
+
+    # Test reading from a file
+    with unittest.mock.patch('builtins.open', new=functools.partial(mock_open, data="line1\nline2\nline3\n")):
+        result = list(islurp('testfile.txt'))
+        assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read from file"
+
+    # Test reading from
+
+# Generated at 2024-03-18 07:17:24.641607
+    import io
+
+    # Mock the open function to return a StringIO object
+    def mock_open(mock=None, data=None):
+        if mock is None:
+            mock = io.StringIO(data)
+        return mock
+
+    # Mock sys.stdin to simulate input from stdin
+    sys.stdin = io.StringIO("line1\nline2\nline3\n")
+
+    # Test reading from stdin
+    result = list(islurp('-'))
+    assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from stdin"
+
+    # Test reading from a file
+    with unittest.mock.patch('builtins.open', new=functools.partial(mock_open, data="line1\nline2\nline3\n")):
+        result = list(islurp('testfile.txt'))
+        assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from file"
+
+    # Test
+
+# Generated at 2024-03-18 07:17:35.557834
+```python
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+        tmpfile_name = tmpfile.name
+        tmpfile.write(b"Line 1\nLine 2\nLine 3")
+
+    # Test reading lines from a file
+    lines = list(islurp(tmpfile_name))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading lines from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+    sys.stdin = original_stdin
+
+    # Test reading fixed number of bytes
+    chunks = list(islurp(tmpfile_name, iter_by=7))
+
+
+# Generated at 2024-03-18 07:17:43.668122
+    import tempfile
+    import shutil
+
+    # Create a temporary directory
+    temp_dir = tempfile.mkdtemp()
+
+    try:
+        # Test writing to a file
+        test_file_path = os.path.join(temp_dir, 'test.txt')
+        test_content = 'Hello, World!'
+        burp(test_file_path, test_content)
+        with open(test_file_path, 'r') as test_file:
+            content = test_file.read()
+            assert content == test_content, "Content written does not match expected content."
+
+        # Test writing to stdout
+        old_stdout = sys.stdout
+        try:
+            sys.stdout = io.StringIO()
+            burp('-', test_content, allow_stdout=True)
+            assert sys.stdout.getvalue() == test_content, "Content written to stdout does not match expected content."
+        finally:
+            sys.stdout = old_stdout
+
+        # Test expanduser and expandvars
+        test_file_path_with_vars = os.path.join(temp_dir, '${USER}_test.txt
+
+# Generated at 2024-03-18 07:17:49.711754
+    import tempfile
+    import shutil
+
+    # Create a temporary directory
+    temp_dir = tempfile.mkdtemp()
+
+    try:
+        # Test writing to a file
+        test_file_path = os.path.join(temp_dir, 'test.txt')
+        test_content = 'Hello, World!'
+        burp(test_file_path, test_content)
+        with open(test_file_path, 'r') as test_file:
+            assert test_file.read() == test_content, "Content written to file does not match"
+
+        # Test writing to stdout
+        old_stdout = sys.stdout
+        sys.stdout = open(os.path.join(temp_dir, 'stdout.txt'), 'w')
+        try:
+            burp('-', test_content, allow_stdout=True)
+            sys.stdout.close()
+            with open(os.path.join(temp_dir, 'stdout.txt'), 'r') as stdout_file:
+                assert stdout_file.read() == test_content, "Content written to stdout does not match"
+        finally:
+            sys.stdout = old
+
+# Generated at 2024-03-18 07:17:58.489483
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+
+
+# Generated at 2024-03-18 07:18:05.735634
+    import tempfile
+    import io
+
+    # Redirect stdout to capture it for testing
+    old_stdout = sys.stdout
+    sys.stdout = io.StringIO()
+
+    try:
+        # Test writing to stdout
+        test_content = "Hello, World!"
+        burp('-', test_content, allow_stdout=True)
+        assert sys.stdout.getvalue() == test_content
+
+        # Test writing to a file
+        with tempfile.NamedTemporaryFile(delete=False) as tmp:
+            tmp_filename = tmp.name
+
+        burp(tmp_filename, test_content, expanduser=False, expandvars=False)
+        with open(tmp_filename, 'r') as tmp:
+            file_content = tmp.read()
+        assert file_content == test_content
+
+        # Clean up temporary file
+        os.remove(tmp_filename)
+
+    finally:
+        # Restore original stdout
+        sys.stdout = old_stdout
+        if os.path.exists(tmp_filename):
+            os.remove(tmp_filename)
+
+# Generated at 2024-03-18 07:18:11.852928
+```python
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+        tmpfile_name = tmpfile.name
+        tmpfile.write(b"Line 1\nLine 2\nLine 3")
+
+    # Test reading lines from a file
+    lines = list(islurp(tmpfile_name))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading lines from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+    sys.stdin = original_stdin
+
+    # Test reading fixed number of bytes
+    bytes_content = list(islurp(tmpfile_name, iter_by=5
+
+# Generated at 2024-03-18 07:18:21.235047
+    import io
+    from unittest.mock import patch
+
+    # Test reading from a file
+    with patch('builtins.open', new_callable=io.StringIO) as mock_file:
+        mock_file.return_value = io.StringIO('line1\nline2\nline3')
+        result = list(islurp('testfile.txt'))
+        assert result == ['line1\n', 'line2\n', 'line3']
+
+    # Test reading from stdin
+    with patch('sys.stdin', new_callable=io.StringIO) as mock_stdin:
+        mock_stdin.return_value = io.StringIO('input1\ninput2\n')
+        result = list(islurp('-'))
+        assert result == ['input1\n', 'input2\n']
+
+    # Test reading with iter_by set to a specific chunk size
+    with patch('builtins.open', new_callable=io.StringIO) as mock_file:
+        mock_file.return_value = io.StringIO('123
+
+# Generated at 2024-03-18 07:18:29.195405
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line 1\nLine 2\nLine 3")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line 1\n", "Line 2\n
+
+# Generated at 2024-03-18 07:18:36.887019
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+
+
+# Generated at 2024-03-18 07:18:43.630186
+    import io
+
+    # Mock the open function to return a StringIO object
+    def mock_open(mock=None, data=None):
+        if mock is None:
+            mock = io.StringIO(data)
+        return mock
+
+    # Mock sys.stdin to simulate input from stdin
+    sys.stdin = io.StringIO("line1\nline2\nline3\n")
+
+    # Test reading from stdin
+    result = list(islurp('-'))
+    assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read from stdin"
+
+    # Test reading from a file
+    with unittest.mock.patch('builtins.open', new=functools.partial(mock_open, data="line1\nline2\nline3\n")):
+        result = list(islurp('testfile.txt'))
+        assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read from file"
+
+    # Test reading from
+
+# Generated at 2024-03-18 07:18:54.793549
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+        tmpfile_name = tmpfile.name
+        tmpfile.write(b"Line 1\nLine 2\nLine 3")
+
+    # Test reading lines from a file
+    lines = list(islurp(tmpfile_name))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"], "islurp should read lines correctly"
+
+    # Test reading lines from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Stdin Line 1\nStdin Line 2\nStdin Line 3")
+    stdin_lines = list(islurp('-'))
+    sys.stdin = original_stdin
+    assert stdin_lines == ["Stdin Line 1\n", "Stdin Line 2\n", "Stdin Line 3"], "isl
+
+# Generated at 2024-03-18 07:19:00.279947
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+        tmpfile_name = tmpfile.name
+        tmpfile.write(b"Line 1\nLine 2\nLine 3")
+
+    # Test reading lines from a file
+    lines = list(islurp(tmpfile_name))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading lines from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    sys.stdin = original_stdin
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+
+    # Test reading fixed number of bytes
+    chunks = list(islurp(tmpfile_name, iter_by=5))
+    assert chunks
+
+# Generated at 2024-03-18 07:19:06.435514
+    import io
+
+    # Mock the open function to return a StringIO object
+    def mock_open(mock=None, data=None):
+        if mock is None:
+            mock = io.StringIO(data)
+        return mock
+
+    # Mock sys.stdin to simulate input from stdin
+    sys.stdin = io.StringIO("line1\nline2\nline3\n")
+
+    # Test reading from stdin
+    result = list(islurp('-'))
+    assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from stdin"
+
+    # Test reading from a file
+    with unittest.mock.patch('builtins.open', new=functools.partial(mock_open, data="line1\nline2\nline3\n")):
+        result = list(islurp('testfile.txt'))
+        assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from file"
+
+    # Test
+
+# Generated at 2024-03-18 07:19:13.267563
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+
+
+# Generated at 2024-03-18 07:19:19.655253
+    import tempfile
+    import io
+
+    # Redirect stdout to capture it for testing
+    old_stdout = sys.stdout
+    sys.stdout = io.StringIO()
+
+    # Test writing to stdout
+    test_content = "Hello, World!"
+    burp('-', test_content, allow_stdout=True)
+    assert sys.stdout.getvalue() == test_content
+
+    # Reset stdout
+    sys.stdout = old_stdout
+
+    # Test writing to a file
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp_name = tmp.name
+
+    try:
+        burp(tmp_name, test_content, mode='w')
+        with open(tmp_name, 'r') as f:
+            file_content = f.read()
+        assert file_content == test_content
+    finally:
+        os.remove(tmp_name)
+
+    # Test expanduser and expandvars
+    with tempfile.NamedTemporaryFile(prefix='~', delete=False) as tmp:
+        tmp_name = tmp.name
+        expanded_name = os.path.expand
+
+# Generated at 2024-03-18 07:19:27.613079
+    import io
+
+    # Mock the open function to return a StringIO object
+    def mock_open(mock=None, data=None):
+        if mock is None:
+            mock = io.StringIO(data)
+        return mock
+
+    # Mock sys.stdin to simulate input from stdin
+    sys.stdin = io.StringIO("line1\nline2\nline3\n")
+
+    # Test reading from stdin
+    result = list(islurp('-'))
+    assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from stdin"
+
+    # Test reading from a file
+    with unittest.mock.patch('builtins.open', new=functools.partial(mock_open, data="line1\nline2\nline3\n")):
+        result = list(islurp('testfile.txt'))
+        assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from file"
+
+    # Test
+
+# Generated at 2024-03-18 07:19:35.724652
+    import io
+
+    # Mock the open function to return a StringIO object
+    def mock_open(mock=None, data=None):
+        if mock is None:
+            mock = io.StringIO(data)
+        return mock
+
+    # Test reading from stdin
+    sys.stdin = io.StringIO("line1\nline2\nline3\n")
+    result = list(islurp('-'))
+    assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from stdin"
+
+    # Test reading from a file
+    with unittest.mock.patch('builtins.open', new=functools.partial(mock_open, data="line1\nline2\nline3\n")):
+        result = list(islurp('testfile.txt'))
+        assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from file"
+
+    # Test reading fixed number of bytes
+    with unittest.mock.patch
+
+# Generated at 2024-03-18 07:19:45.034500
+    import tempfile
+    import shutil
+
+    # Create a temporary directory
+    temp_dir = tempfile.mkdtemp()
+    try:
+        # Test writing to a file
+        test_file_path = os.path.join(temp_dir, 'test.txt')
+        test_content = 'Hello, World!'
+        burp(test_file_path, test_content)
+        with open(test_file_path, 'r') as test_file:
+            assert test_file.read() == test_content, "Content written to file does not match"
+
+        # Test writing to stdout
+        old_stdout = sys.stdout
+        try:
+            sys.stdout = io.StringIO()
+            burp('-', test_content, allow_stdout=True)
+            assert sys.stdout.getvalue() == test_content, "Content written to stdout does not match"
+        finally:
+            sys.stdout = old_stdout
+
+        # Test expanduser and expandvars
+        test_file_path_with_vars = os.path.join(temp_dir, '${USER}_test.txt')
+        test_file_path_with
+
+# Generated at 2024-03-18 07:19:51.521292
+```python
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=7))
+    assert chunks == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line 1\nLine 2\nLine 3")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line 1\n", "Line 2
+
+# Generated at 2024-03-18 07:19:57.213833
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+        tmpfile_name = tmpfile.name
+        tmpfile.write(b"Line 1\nLine 2\nLine 3")
+
+    # Test reading lines from a file
+    lines = list(islurp(tmpfile_name))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading lines from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Stdin Line 1\nStdin Line 2\nStdin Line 3")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Stdin Line 1\n", "Stdin Line 2\n", "Stdin Line 3"]
+    sys.stdin = original_stdin
+
+    # Test reading fixed-size chunks
+    chunks =
+
+# Generated at 2024-03-18 07:20:13.843329
+```python
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line 1\nLine 2\nLine 3")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line 1\n", "Line
+
+# Generated at 2024-03-18 07:20:21.547348
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line 1\nLine 2\nLine 3")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line 1\n", "Line 2\n
+
+# Generated at 2024-03-18 07:20:26.904596
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line 1\nLine 2\nLine 3")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line 1\n", "Line 2\n
+
+# Generated at 2024-03-18 07:20:33.333134
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+
+
+# Generated at 2024-03-18 07:20:39.948190
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+
+
+# Generated at 2024-03-18 07:20:48.426187
+    import tempfile
+    import shutil
+
+    # Create a temporary directory
+    temp_dir = tempfile.mkdtemp()
+
+    try:
+        # Test writing to a file
+        test_file_path = os.path.join(temp_dir, 'test.txt')
+        test_content = 'Hello, World!'
+        burp(test_file_path, test_content)
+        with open(test_file_path, 'r') as test_file:
+            content = test_file.read()
+            assert content == test_content, "Content written does not match expected content."
+
+        # Test writing to stdout
+        old_stdout = sys.stdout
+        try:
+            sys.stdout = io.StringIO()
+            burp('-', test_content, allow_stdout=True)
+            assert sys.stdout.getvalue() == test_content, "Content written to stdout does not match expected content."
+        finally:
+            sys.stdout = old_stdout
+
+        # Test expanduser and expandvars
+        user_test_file_path = '~/test_expand.txt'
+        var_test_file_path = '${
+
+# Generated at 2024-03-18 07:20:55.716700
+    import tempfile
+    import shutil
+
+    # Create a temporary directory
+    temp_dir = tempfile.mkdtemp()
+
+    try:
+        # Test writing to a file
+        test_file_path = os.path.join(temp_dir, 'test.txt')
+        test_content = 'Hello, World!'
+        burp(test_file_path, test_content)
+        with open(test_file_path, 'r') as test_file:
+            assert test_file.read() == test_content, "Content written to file does not match"
+
+        # Test writing to stdout
+        old_stdout = sys.stdout
+        sys.stdout = open(os.path.join(temp_dir, 'stdout.txt'), 'w')
+        try:
+            burp('-', test_content, allow_stdout=True)
+        finally:
+            sys.stdout.close()
+            sys.stdout = old_stdout
+        with open(os.path.join(temp_dir, 'stdout.txt'), 'r') as stdout_file:
+            assert stdout_file.read() == test_content, "Content written to stdout does not
+
+# Generated at 2024-03-18 07:21:02.394686
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines from a file
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading lines from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+    sys.stdin = original_stdin
+
+    # Test reading chunks from a file
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1",
+
+# Generated at 2024-03-18 07:21:08.849386
+    import io
+    from unittest.mock import patch
+
+    # Test reading from a file
+    with patch('builtins.open', new_callable=io.StringIO) as mock_file:
+        mock_file.return_value = io.StringIO('line1\nline2\nline3')
+        result = list(islurp('testfile.txt'))
+        assert result == ['line1\n', 'line2\n', 'line3']
+
+    # Test reading from stdin
+    with patch('sys.stdin', new=io.StringIO('input1\ninput2\n')):
+        result = list(islurp('-'))
+        assert result == ['input1\n', 'input2\n']
+
+    # Test reading in binary mode
+    with patch('builtins.open', new_callable=io.BytesIO) as mock_file:
+        mock_file.return_value = io.BytesIO(b'binarydata')
+        result = list(islurp('binaryfile', mode='rb', iter_by=5
+
+# Generated at 2024-03-18 07:21:15.805089
+```python
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+        tmpfile_name = tmpfile.name
+        tmpfile.write(b"Line 1\nLine 2\nLine 3")
+
+    # Test reading lines from a file
+    lines = list(islurp(tmpfile_name))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading lines from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    lines_from_stdin = list(islurp('-'))
+    assert lines_from_stdin == ["Line A\n", "Line B\n", "Line C"]
+    sys.stdin = original_stdin
+
+    # Test reading fixed number of bytes
+    chunks = list(islurp(tmpfile_name, iter
+
+# Generated at 2024-03-18 07:21:29.598379
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+        tmpfile_name = tmpfile.name
+        tmpfile.write(b"Line 1\nLine 2\nLine 3")
+
+    # Test reading from a file by line
+    lines = list(islurp(tmpfile_name))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading from a file by a fixed number of bytes
+    chunks = list(islurp(tmpfile_name, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert
+
+# Generated at 2024-03-18 07:21:36.179564
+    import io
+
+    # Mock the open function to return a StringIO object
+    def mock_open(mock=None, data=None):
+        if mock is None:
+            mock = io.StringIO(data)
+        return mock
+
+    # Test reading from stdin
+    sys.stdin = io.StringIO("line1\nline2\nline3\n")
+    result = list(islurp('-'))
+    assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from stdin"
+
+    # Test reading from a file
+    with unittest.mock.patch('builtins.open', new=functools.partial(mock_open, data="line1\nline2\nline3\n")):
+        result = list(islurp('testfile.txt'))
+        assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from file"
+
+    # Test reading fixed number of bytes
+    with unittest.mock.patch
+
+# Generated at 2024-03-18 07:21:41.647647
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+        tmpfile_name = tmpfile.name
+        tmpfile.write(b"Line 1\nLine 2\nLine 3")
+
+    # Test reading lines from a file
+    lines = list(islurp(tmpfile_name))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading lines from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    sys.stdin = original_stdin
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+
+    # Test reading fixed number of bytes
+    chunks = list(islurp(tmpfile_name, iter_by=5))
+    assert chunks
+
+# Generated at 2024-03-18 07:21:48.584508
+    import io
+
+    # Mock the open function to return a StringIO object
+    def mock_open(mock=None, data=None):
+        if mock is None:
+            mock = io.StringIO(data)
+        return mock
+
+    # Mock sys.stdin to simulate input from stdin
+    sys.stdin = io.StringIO("line1\nline2\nline3\n")
+
+    # Test reading from stdin
+    result = list(islurp('-'))
+    assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from stdin"
+
+    # Test reading from a file
+    with mock_open(data="line1\nline2\nline3\n") as m:
+        with unittest.mock.patch('builtins.open', m):
+            result = list(islurp('testfile.txt'))
+            assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from file"
+
+    # Test reading
+
+# Generated at 2024-03-18 07:21:54.399183
+    import io
+
+    # Mock the open function to return a StringIO object
+    def mock_open(mock=None, data=None):
+        if mock is None:
+            mock = io.StringIO(data)
+        return mock
+
+    # Mock sys.stdin to simulate input from stdin
+    sys.stdin = io.StringIO("line1\nline2\nline3\n")
+
+    # Test reading from stdin
+    result = list(islurp('-'))
+    assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from stdin"
+
+    # Test reading from a file
+    with unittest.mock.patch('builtins.open', new=functools.partial(mock_open, data="line1\nline2\nline3\n")):
+        result = list(islurp('testfile.txt'))
+        assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from file"
+
+    # Test
+
+# Generated at 2024-03-18 07:22:01.251378
+```python
+    import io
+
+    # Mock the open function to return a StringIO object
+    def mock_open(mock=None, data=None):
+        if mock is None:
+            mock = io.StringIO(data)
+        return mock
+
+    # Test reading from stdin
+    sys.stdin = io.StringIO("line1\nline2\n")
+    for i, line in enumerate(islurp('-')):
+        assert line == f"line{i+1}\n", f"Expected line{i+1}, got {line}"
+    sys.stdin = sys.__stdin__
+
+    # Test reading from a file
+    test_filename = "test_file.txt"
+    test_contents = "line1\nline2\nline3\n"
+    with open(test_filename, 'w') as f:
+        f.write(test_contents)
+
+    for i, line in enumerate(islurp(test_filename)):
+        assert line == f"line{i+1}\n", f"Expected line{i+1},
+
+# Generated at 2024-03-18 07:22:07.728067
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp_name = tmp.name
+        tmp.write(b"Line 1\nLine 2\nLine 3\n")
+        tmp.flush()
+
+    # Test reading lines
+    lines = list(islurp(tmp_name))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3\n"], "islurp should read lines correctly"
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_name, iter_by=7))
+    assert chunks == ["Line 1\n", "Line 2\n", "Line 3\n"], "islurp should read 7 bytes at a time correctly"
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line 1\nLine 2\nLine 3
+
+# Generated at 2024-03-18 07:22:14.305098
+    import io
+
+    # Mock the open function to return a StringIO object
+    def mock_open(mock=None, data=None):
+        if mock is None:
+            mock = io.StringIO(data)
+        return mock
+
+    # Test reading from stdin
+    sys.stdin = io.StringIO("line1\nline2\nline3\n")
+    result = list(islurp('-'))
+    assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from stdin"
+
+    # Test reading from a file
+    with unittest.mock.patch('builtins.open', new=functools.partial(mock_open, data="line1\nline2\nline3\n")):
+        result = list(islurp('testfile.txt'))
+        assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from file"
+
+    # Test reading fixed number of bytes
+    with unittest.mock.patch
+
+# Generated at 2024-03-18 07:22:20.975746
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+        tmpfile_name = tmpfile.name
+        tmpfile.write(b"Line 1\nLine 2\nLine 3")
+
+    # Test reading lines from a file
+    lines = list(islurp(tmpfile_name))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading lines from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    lines_from_stdin = list(islurp('-'))
+    sys.stdin = original_stdin
+    assert lines_from_stdin == ["Line A\n", "Line B\n", "Line C"]
+
+    # Test reading fixed number of bytes
+    chunks = list(islurp(tmpfile_name, iter_by=5
+
+# Generated at 2024-03-18 07:22:30.056743
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+        tmpfile_name = tmpfile.name
+        tmpfile.write(b"Line 1\nLine 2\nLine 3")
+
+    # Test reading from a file normally
+    lines = list(islurp(tmpfile_name))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading from a file in binary mode
+    lines = list(islurp(tmpfile_name, mode='rb'))
+    assert lines == [b"Line 1\n", b"Line 2\n", b"Line 3"]
+
+    # Test reading from a file by chunks
+    chunks = list(islurp(tmpfile_name, iter_by=4))
+    assert chunks == ["Line", " 1\nL", "ine ", "2\nLi",
+
+# Generated at 2024-03-18 07:22:53.184821
+    import io
+
+    # Mock the open function to return a StringIO object
+    def mock_open(mock=None, data=None):
+        if mock is None:
+            mock = io.StringIO(data)
+        return mock
+
+    # Test reading from stdin
+    sys.stdin = io.StringIO("line1\nline2\nline3\n")
+    for i, line in enumerate(islurp('-')):
+        assert line.strip() == f"line{i+1}", f"Expected line{i+1}, got {line.strip()}"
+
+    # Test reading from a file
+    test_filename = 'test_file.txt'
+    test_contents = "line1\nline2\nline3\n"
+    with mock_open(data=test_contents) as m:
+        with open(test_filename, 'w') as f:
+            f.write(test_contents)
+        for i, line in enumerate(islurp(test_filename)):
+            assert line.strip() == f"line{i+1}", f"Expected
+
+# Generated at 2024-03-18 07:22:58.143599
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+
+
+# Generated at 2024-03-18 07:23:04.594228
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines from a file
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading lines from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    lines_from_stdin = list(islurp('-'))
+    sys.stdin = original_stdin
+    assert lines_from_stdin == ["Line A\n", "Line B\n", "Line C"]
+
+    # Test reading chunks from a file
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["
+
+# Generated at 2024-03-18 07:23:10.325710
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+
+
+# Generated at 2024-03-18 07:23:17.615802
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+
+
+# Generated at 2024-03-18 07:23:30.109916
+    import io
+
+    # Mock the open function to return a StringIO object
+    def mock_open(mock=None, data=None):
+        if mock is None:
+            mock = io.StringIO(data)
+        return mock
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("line1\nline2\nline3\n")
+    result = list(islurp('-'))
+    assert result == ["line1\n", "line2\n", "line3\n"], "Failed to read lines from stdin"
+    sys.stdin = original_stdin
+
+    # Test reading from a file
+    test_filename = 'testfile.txt'
+    test_contents = "line1\nline2\nline3\n"
+    with open(test_filename, 'w') as f:
+        f.write(test_contents)
+
+    result = list(islurp(test_filename))
+    assert result == ["line1\n", "line2\n", "line3
+
+# Generated at 2024-03-18 07:23:37.386181
+```python
+    import io
+
+    # Mock the open function to return a StringIO object
+    def mock_open(mock=None, data=None):
+        if mock is None:
+            mock = io.StringIO(data)
+        return mock
+
+    # Test reading from stdin
+    sys.stdin = io.StringIO("line1\nline2\n")
+    for i, line in enumerate(islurp('-')):
+        assert line.strip() == f"line{i+1}", f"Expected line{i+1}, got {line.strip()}"
+
+    # Reset stdin
+    sys.stdin = sys.__stdin__
+
+    # Test reading from a file
+    test_filename = 'test_file.txt'
+    test_contents = "line1\nline2\nline3\n"
+    with open(test_filename, 'w') as f:
+        f.write(test_contents)
+
+    with mock_open(data=test_contents) as m:
+        for i, line in enumerate(islurp(test_filename)):
+            assert line
+
+# Generated at 2024-03-18 07:23:43.180727
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines from a file
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"], "islurp should read lines correctly"
+
+    # Test reading chunks from a file
+    chunks = list(islurp(tmp_filename, iter_by=7))
+    assert chunks == ["Line 1\n", "Line 2\n", "Line 3"], "islurp should read chunks correctly"
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line 1\nLine 2\nLine 3")
+    stdin_lines = list(is
+
+# Generated at 2024-03-18 07:23:50.714162
+    import tempfile
+    import shutil
+
+    # Create a temporary directory
+    temp_dir = tempfile.mkdtemp()
+
+    try:
+        # Test writing to a file
+        test_file_path = os.path.join(temp_dir, 'test.txt')
+        test_content = 'Hello, World!'
+        burp(test_file_path, test_content)
+        with open(test_file_path, 'r') as test_file:
+            content = test_file.read()
+            assert content == test_content, "Content written does not match expected content."
+
+        # Test writing to stdout
+        old_stdout = sys.stdout
+        try:
+            sys.stdout = open(os.path.join(temp_dir, 'stdout.txt'), 'w')
+            burp('-', test_content, allow_stdout=True)
+            sys.stdout.close()
+            with open(os.path.join(temp_dir, 'stdout.txt'), 'r') as stdout_file:
+                stdout_content = stdout_file.read()
+                assert stdout_content == test_content, "Content written to stdout does not
+
+# Generated at 2024-03-18 07:24:00.050256
+    import io
+
+    # Mock the open function to return a StringIO object
+    def mock_open(*args, **kwargs):
+        if args[0] == 'testfile.txt':
+            return io.StringIO("line1\nline2\nline3")
+        else:
+            return open(*args, **kwargs)
+
+    # Mock os.path.expanduser to return the same path
+    def mock_expanduser(path):
+        return path
+
+    # Mock os.path.expandvars to return the same path
+    def mock_expandvars(path):
+        return path
+
+    # Replace the open, expanduser, and expandvars with mocks
+    original_open = os.open
+    original_expanduser = os.path.expanduser
+    original_expandvars = os.path.expandvars
+    os.open = mock_open
+    os.path.expanduser = mock_expanduser
+    os.path.expandvars = mock_expandvars
+
+    # Test reading from a file
+    lines = list(islurp('test
+
+# Generated at 2024-03-18 07:24:26.833769
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading from a file line by line
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading from a file in chunks of bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line 1\nLine 2\nLine 3")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line 
+
+# Generated at 2024-03-18 07:24:34.670454
+    import io
+    from unittest.mock import patch
+
+    # Test reading from a file
+    with patch('builtins.open', new_callable=io.StringIO) as mock_file:
+        mock_file.return_value = io.StringIO("line1\nline2\nline3\n")
+        result = list(islurp('testfile.txt'))
+        assert result == ["line1\n", "line2\n", "line3\n"]
+
+    # Test reading from stdin
+    with patch('sys.stdin', new_callable=io.StringIO) as mock_stdin:
+        mock_stdin.return_value = io.StringIO("input1\ninput2\n")
+        result = list(islurp('-'))
+        assert result == ["input1\n", "input2\n"]
+
+    # Test reading in chunks
+    with patch('builtins.open', new_callable=io.StringIO) as mock_file:
+        mock_file.return_value = io.StringIO("1234567890")
+       
+
+# Generated at 2024-03-18 07:24:45.826592
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+        tmpfile_name = tmpfile.name
+        tmpfile.write(b"Line 1\nLine 2\nLine 3")
+
+    # Test reading lines from a file
+    lines = list(islurp(tmpfile_name))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading lines from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Stdin Line 1\nStdin Line 2\nStdin Line 3")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Stdin Line 1\n", "Stdin Line 2\n", "Stdin Line 3"]
+    sys.stdin = original_stdin
+
+    # Test reading fixed-size chunks
+    chunks =
+
+# Generated at 2024-03-18 07:24:53.939071
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+
+
+# Generated at 2024-03-18 07:25:00.408949
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines from a file
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"], "islurp should read lines correctly"
+
+    # Test reading chunks from a file
+    chunks = list(islurp(tmp_filename, iter_by=7))
+    assert chunks == ["Line 1\n", "Line 2\n", "Line 3"], "islurp should read chunks correctly"
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line 1\nLine 2\nLine 3")
+    stdin_lines = list(is
+
+# Generated at 2024-03-18 07:25:08.196333
+    import io
+    from unittest.mock import patch
+
+    # Test reading from a file
+    with patch('builtins.open', new_callable=io.StringIO) as mock_file:
+        mock_file.return_value = io.StringIO("line1\nline2\nline3")
+        result = list(islurp('testfile.txt'))
+        assert result == ["line1\n", "line2\n", "line3"]
+
+    # Test reading from stdin
+    with patch('sys.stdin', new=io.StringIO("input1\ninput2\n")) as mock_stdin:
+        result = list(islurp('-'))
+        assert result == ["input1\n", "input2\n"]
+
+    # Test reading fixed number of bytes
+    with patch('builtins.open', new_callable=io.StringIO) as mock_file:
+        mock_file.return_value = io.StringIO("1234567890")
+        result = list(islurp('testfile.txt',
+
+# Generated at 2024-03-18 07:25:15.329785
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+
+
+# Generated at 2024-03-18 07:25:22.259487
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines from a file
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading lines from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+    sys.stdin = original_stdin
+
+    # Test reading chunks from a file
+    chunks = list(islurp(tmp_filename, iter_by=7))
+    assert chunks == ["Line 1\n
+
+# Generated at 2024-03-18 07:25:27.580576
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"], "islurp should read lines correctly"
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"], "islurp should read in chunks of specified bytes"
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp
+
+# Generated at 2024-03-18 07:25:33.304625
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading by bytes
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["Line 1", "\nLine ", "2\nLin", "e 3"]
+
+    # Test reading from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    stdin_lines = list(islurp('-'))
+    assert stdin_lines == ["Line A\n", "Line B\n", "Line C"]
+
+
+# Generated at 2024-03-18 07:25:57.290384
+    import tempfile
+    import shutil
+
+    # Create a temporary directory
+    temp_dir = tempfile.mkdtemp()
+
+    try:
+        # Test writing to a file
+        test_file_path = os.path.join(temp_dir, 'test_file.txt')
+        test_content = 'Hello, World!'
+        burp(test_file_path, test_content)
+        with open(test_file_path, 'r') as test_file:
+            content = test_file.read()
+            assert content == test_content, "Content written to file does not match."
+
+        # Test writing to stdout
+        old_stdout = sys.stdout
+        sys.stdout = open(os.path.join(temp_dir, 'stdout.txt'), 'w')
+        try:
+            burp('-', test_content, allow_stdout=True)
+            sys.stdout.close()
+            with open(os.path.join(temp_dir, 'stdout.txt'), 'r') as stdout_file:
+                stdout_content = stdout_file.read()
+                assert stdout_content == test_content, "Content written to stdout does
+
+# Generated at 2024-03-18 07:26:04.565776
+    import tempfile
+    import io
+
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"Line 1\nLine 2\nLine 3")
+        tmp_filename = tmp.name
+
+    # Test reading lines from a file
+    lines = list(islurp(tmp_filename))
+    assert lines == ["Line 1\n", "Line 2\n", "Line 3"]
+
+    # Test reading lines from stdin
+    original_stdin = sys.stdin
+    sys.stdin = io.StringIO("Line A\nLine B\nLine C")
+    lines_from_stdin = list(islurp('-'))
+    sys.stdin = original_stdin
+    assert lines_from_stdin == ["Line A\n", "Line B\n", "Line C"]
+
+    # Test reading chunks from a file
+    chunks = list(islurp(tmp_filename, iter_by=5))
+    assert chunks == ["

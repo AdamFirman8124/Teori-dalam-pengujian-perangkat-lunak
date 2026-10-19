@@ -1,0 +1,1847 @@
+
+
+# Generated at 2024-06-03 02:54:15.490412
+```python
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting
+    from decimal import Decimal
+    from datetime import date
+
+    # Define test data
+    period = DateRange(date(2023, 1, 1), date(2023, 12, 31))
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(date(2023, 1, 1), Quantity(Decimal(1000))),
+        account2: Balance(date(2023, 1, 1), Quantity(Decimal(0))),
+    }
+    journal_entries = [
+        JournalEntry(
+            date=date(2023, 1, 15),
+            description="Sale",
+            postings=[
+                Posting(account=account1, amount=Decimal(500), direction=1),
+
+
+# Generated at 2024-06-03 02:54:21.172731
+```python
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting
+    from decimal import Decimal
+    from datetime import date
+
+    # Define test data
+    period = DateRange(date(2023, 1, 1), date(2023, 12, 31))
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(date(2023, 1, 1), Decimal(1000)),
+        account2: Balance(date(2023, 1, 1), Decimal(0)),
+    }
+    journal_entries = [
+        JournalEntry(
+            date=date(2023, 1, 2),
+            description="Sale",
+            postings=[
+                Posting(account=account1, amount=Decimal(500), direction=1),
+                Posting(account=
+
+# Generated at 2024-06-03 02:54:24.695469
+```python
+    from ..commons.numbers import Amount, Quantity
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting, Direction
+
+    # Define test data
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(1000))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(0))),
+    }
+    journal_entries = [
+        JournalEntry(
+            date=datetime.date(2023, 1, 10),
+            description="Service Revenue",
+            postings=[
+                Posting(account=account1, amount=Amount
+
+# Generated at 2024-06-03 02:54:28.119346
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("500.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    result = read_initial_balances(period)
+
+    assert isinstance(result, dict)
+    assert len(result) == 2
+    assert Account("Cash") in result
+    assert Account("Revenue") in result
+    assert result[Account("Cash")].value == Quantity(Decimal("1000.00"))
+    assert result[Account("Revenue")].value == Quantity(Decimal("500.00"))
+```
+
+# Generated at 2024-06-03 02:54:31.389938
+```python
+    account = Account("Cash")
+    initial_balance = Balance(datetime.date(2023, 1, 1), Quantity(Decimal("1000.00")))
+    ledger = Ledger(account, initial_balance)
+
+    posting = Posting(
+        account=account,
+        amount=Amount(Decimal("200.00")),
+        date=datetime.date(2023, 1, 2),
+        direction=1,  # Assuming 1 represents a debit
+        journal=JournalEntry(
+            date=datetime.date(2023, 1, 2),
+            description="Test Entry",
+            postings=[]
+        )
+    )
+
+    entry = ledger.add(posting)
+
+    assert entry.ledger == ledger
+    assert entry.posting == posting
+    assert entry.balance == Quantity(Decimal("1200.00"))
+    assert entry.date == datetime.date(2023, 1, 2)
+    assert entry.description == "Test Entry"
+    assert entry.amount == Amount(Decimal("
+
+# Generated at 2024-06-03 02:54:34.443054
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+            }
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial Revenue",
+                    postings=[
+                        Posting(Account("Revenue"), Amount(Decimal("500.00")), direction=1),
+                        Posting(Account("Cash"), Amount(Decimal("500.00")), direction=-1),
+                    ],
+                )
+            ]
+
+    # Create a DateRange for the test
+    period = DateRange(datetime.date(2023, 1, 1),
+
+# Generated at 2024-06-03 02:54:38.164554
+```python
+    account = Account("Cash")
+    initial_balance = Balance(datetime.date(2023, 1, 1), Quantity(Decimal("1000.00")))
+    ledger = Ledger(account, initial_balance)
+
+    posting = Posting(
+        account=account,
+        amount=Amount(Decimal("200.00")),
+        date=datetime.date(2023, 1, 2),
+        direction=1,  # Assuming 1 represents a debit
+        journal=JournalEntry(
+            date=datetime.date(2023, 1, 2),
+            description="Test Entry",
+            postings=[]
+        )
+    )
+
+    entry = ledger.add(posting)
+
+    assert entry.ledger == ledger
+    assert entry.posting == posting
+    assert entry.balance == Quantity(Decimal("1200.00"))
+    assert entry.date == datetime.date(2023, 1, 2)
+    assert entry.description == "Test Entry"
+    assert entry.amount == Amount(Decimal("
+
+# Generated at 2024-06-03 02:54:40.722159
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("500.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    initial_balances = read_initial_balances(period)
+
+    assert initial_balances[Account("Cash")].value == Decimal("1000.00")
+    assert initial_balances[Account("Revenue")].value == Decimal("500.00")
+```
+
+# Generated at 2024-06-03 02:54:45.392856
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00")))}
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial entry",
+                    postings=[
+                        Posting(account=Account("Cash"), amount=Amount(Decimal("100.00")), direction=1),
+                        Posting(account=Account("Revenue"), amount=Amount(Decimal("100.00")), direction=-1),
+                    ],
+                )
+            ]
+
+    # Define the period
+    period = DateRange(since=datetime.date(2023, 1, 1), until=datetime.date(2023, 12, 31))
+
+    # Compile
+
+# Generated at 2024-06-03 02:54:48.377308
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("5000.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    initial_balances = read_initial_balances(period)
+
+    assert initial_balances[Account("Cash")].value == Quantity(Decimal("1000.00"))
+    assert initial_balances[Account("Revenue")].value == Quantity(Decimal("5000.00"))
+```
+
+# Generated at 2024-06-03 02:54:57.982145
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+            }
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial revenue",
+                    postings=[
+                        Posting(Account("Revenue"), Amount(Decimal("500.00")), 1),
+                        Posting(Account("Cash"), Amount(Decimal("500.00")), -1),
+                    ],
+                )
+            ]
+
+    # Create a DateRange for the test
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date
+
+# Generated at 2024-06-03 02:55:02.015275
+```python
+    from ..commons.numbers import Amount, Quantity
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting, Direction
+
+    # Define test data
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal("1000.00"))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal("0.00"))),
+    }
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    journal_entries = [
+        JournalEntry(
+            date=datetime.date(2023, 1, 10),
+            description="Service Revenue",
+            postings=[
+                Posting(account=
+
+# Generated at 2024-06-03 02:55:04.990021
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("500.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    initial_balances = read_initial_balances(period)
+
+    assert initial_balances[Account("Cash")].value == Quantity(Decimal("1000.00"))
+    assert initial_balances[Account("Revenue")].value == Quantity(Decimal("500.00"))
+```
+
+# Generated at 2024-06-03 02:55:08.493631
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("5000.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    initial_balances = read_initial_balances(period)
+
+    assert initial_balances[Account("Cash")].value == Quantity(Decimal("1000.00"))
+    assert initial_balances[Account("Revenue")].value == Quantity(Decimal("5000.00"))
+```
+
+# Generated at 2024-06-03 02:55:12.041102
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    def mock_read_initial_balances(period: DateRange) -> InitialBalances:
+        return {
+            Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+            Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+        }
+
+    def mock_read_journal_entries(period: DateRange) -> List[JournalEntry]:
+        return [
+            JournalEntry(
+                date=period.since,
+                description="Initial cash deposit",
+                postings=[
+                    Posting(account=Account("Cash"), amount=Amount(Decimal("1000.00")), direction=1),
+                    Posting(account=Account("Revenue"), amount=Amount(Decimal("1000.00")), direction=-1),
+                ],
+            )
+        ]
+
+    # Define the period for the test
+    period = DateRange(since=datetime.date(2023, 1, 1), until=datetime
+
+# Generated at 2024-06-03 02:55:15.176512
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("500.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    initial_balances = read_initial_balances(period)
+
+    assert initial_balances[Account("Cash")].value == Decimal("1000.00")
+    assert initial_balances[Account("Revenue")].value == Decimal("500.00")
+```
+
+# Generated at 2024-06-03 02:55:18.974110
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+            }
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial Revenue",
+                    postings=[
+                        Posting(Account("Revenue"), Amount(Decimal("500.00")), True),
+                        Posting(Account("Cash"), Amount(Decimal("500.00")), False),
+                    ],
+                )
+            ]
+
+    # Create a DateRange for the test
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(202
+
+# Generated at 2024-06-03 02:55:22.478904
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {Account("Cash"): Balance(period.since, Quantity(Decimal(1000)))}
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial Entry",
+                    postings=[
+                        Posting(account=Account("Cash"), amount=Amount(Decimal(1000)), direction=1),
+                        Posting(account=Account("Revenue"), amount=Amount(Decimal(1000)), direction=-1)
+                    ]
+                )
+            ]
+
+    # Create mock instances
+    mock_read_initial_balances = MockReadInitialBalances()
+    mock_read_journal_entries = MockReadJournalEntries()
+
+    # Compile the general ledger program
+    program = compile_general_ledger
+
+# Generated at 2024-06-03 02:55:27.117304
+```python
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting
+    from decimal import Decimal
+    from datetime import date
+
+    # Define test data
+    period = DateRange(date(2023, 1, 1), date(2023, 12, 31))
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(date(2023, 1, 1), Decimal(1000)),
+        account2: Balance(date(2023, 1, 1), Decimal(0)),
+    }
+    journal_entries = [
+        JournalEntry(
+            date=date(2023, 1, 2),
+            description="Sale",
+            postings=[
+                Posting(account=account1, amount=Decimal(500), direction=1),
+                Posting(account=
+
+# Generated at 2024-06-03 02:55:32.091562
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    def mock_read_initial_balances(period: DateRange) -> InitialBalances:
+        return {
+            Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+            Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+        }
+
+    def mock_read_journal_entries(period: DateRange) -> List[JournalEntry]:
+        return [
+            JournalEntry(
+                date=period.since,
+                description="Initial cash deposit",
+                postings=[
+                    Posting(account=Account("Cash"), amount=Amount(Decimal("1000.00")), direction=1),
+                    Posting(account=Account("Revenue"), amount=Amount(Decimal("1000.00")), direction=-1),
+                ],
+            )
+        ]
+
+    # Define the period for the test
+    period = DateRange(since=datetime.date(2023, 1, 1), until=datetime
+
+# Generated at 2024-06-03 02:55:40.213725
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    def mock_read_initial_balances(period: DateRange) -> InitialBalances:
+        return {
+            Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+            Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+        }
+
+    def mock_read_journal_entries(period: DateRange) -> List[JournalEntry]:
+        return [
+            JournalEntry(
+                date=period.since,
+                description="Initial revenue",
+                postings=[
+                    Posting(account=Account("Revenue"), amount=Amount(Decimal("500.00")), direction=1),
+                    Posting(account=Account("Cash"), amount=Amount(Decimal("500.00")), direction=-1),
+                ],
+            )
+        ]
+
+    # Define the period for the test
+    period = DateRange(since=datetime.date(2023, 1, 1), until=datetime.date(202
+
+# Generated at 2024-06-03 02:55:43.348013
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+            }
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial revenue",
+                    postings=[
+                        Posting(Account("Revenue"), Amount(Decimal("500.00")), 1),
+                        Posting(Account("Cash"), Amount(Decimal("500.00")), -1),
+                    ],
+                )
+            ]
+
+    # Create a DateRange for the test
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date
+
+# Generated at 2024-06-03 02:55:46.608468
+```python
+    # Create a mock account and initial balance
+    account = Account(name="Cash")
+    initial_balance = Balance(date=datetime.date(2023, 1, 1), value=Quantity(Decimal('1000.00')))
+
+    # Create a ledger for the account
+    ledger = Ledger(account=account, initial=initial_balance)
+
+    # Create a mock posting
+    journal_entry = JournalEntry(date=datetime.date(2023, 1, 2), description="Sale", postings=[])
+    posting = Posting(account=account, amount=Amount(Decimal('200.00')), direction=1, journal=journal_entry)
+
+    # Add the posting to the ledger
+    ledger_entry = ledger.add(posting)
+
+    # Assertions
+    assert ledger_entry.ledger == ledger
+    assert ledger_entry.posting == posting
+    assert ledger_entry.balance == Quantity(Decimal('1200.00'))
+    assert ledger.entries[-1] == ledger_entry
+```
+
+# Generated at 2024-06-03 02:55:49.494747
+```python
+    # Create a mock account and initial balance
+    account = Account(name="Cash")
+    initial_balance = Balance(date=datetime.date(2023, 1, 1), value=Quantity(Decimal(1000)))
+
+    # Create a ledger for the account
+    ledger = Ledger(account=account, initial=initial_balance)
+
+    # Create a mock posting
+    journal_entry = JournalEntry(date=datetime.date(2023, 1, 2), description="Sale", postings=[])
+    posting = Posting(account=account, amount=Amount(Decimal(200)), direction=1, journal=journal_entry)
+
+    # Add the posting to the ledger
+    ledger_entry = ledger.add(posting)
+
+    # Assertions
+    assert ledger_entry.ledger == ledger
+    assert ledger_entry.posting == posting
+    assert ledger_entry.balance == Quantity(Decimal(1200))
+    assert ledger.entries[-1] == ledger_entry
+```
+
+# Generated at 2024-06-03 02:55:53.071524
+```python
+    account = Account("Cash")
+    initial_balance = Balance(datetime.date(2023, 1, 1), Quantity(Decimal("1000.00")))
+    ledger = Ledger(account, initial_balance)
+
+    journal_entry = JournalEntry(
+        date=datetime.date(2023, 1, 2),
+        description="Sale",
+        postings=[
+            Posting(account=account, amount=Amount(Decimal("200.00")), direction=1, journal=None)
+        ]
+    )
+    posting = journal_entry.postings[0]
+
+    ledger_entry = ledger.add(posting)
+
+    assert ledger_entry.ledger == ledger
+    assert ledger_entry.posting == posting
+    assert ledger_entry.balance == Quantity(Decimal("1200.00"))
+    assert ledger.entries[-1] == ledger_entry
+```
+
+# Generated at 2024-06-03 02:55:57.009454
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {Account("Cash"): Balance(period.since, Quantity(Decimal(1000)))}
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial Entry",
+                    postings=[
+                        Posting(account=Account("Cash"), amount=Amount(Decimal(1000)), direction=1),
+                        Posting(account=Account("Revenue"), amount=Amount(Decimal(1000)), direction=-1)
+                    ]
+                )
+            ]
+
+    # Create mock instances
+    read_initial_balances = MockReadInitialBalances()
+    read_journal_entries = MockReadJournalEntries()
+
+    # Compile the general ledger program
+    program = compile_general_ledger_program(read
+
+# Generated at 2024-06-03 02:56:01.103654
+```python
+    # Define a mock DateRange
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+
+    # Define mock initial balances
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(1000))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(0))),
+    }
+
+    # Define mock journal entries
+    journal_entry1 = JournalEntry(
+        date=datetime.date(2023, 1, 2),
+        description="Sale",
+        postings=[
+            Posting(account=account1, amount=Amount(Decimal(500)), direction=1),
+            Posting(account=account2, amount=Amount(Decimal(500)), direction=-1),
+        ],
+    )
+    journal_entries
+
+# Generated at 2024-06-03 02:56:04.590052
+```python
+    from ..commons.numbers import Amount, Quantity
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting, Direction
+
+    # Define test data
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal("1000.00"))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal("0.00"))),
+    }
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    journal_entries = [
+        JournalEntry(
+            date=datetime.date(2023, 1, 10),
+            description="Sale",
+            postings=[
+                Posting(account=account
+
+# Generated at 2024-06-03 02:56:08.288058
+```python
+    from ..commons.numbers import Amount, Quantity
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting, Direction
+
+    # Define test data
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(1000))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(0))),
+    }
+    journal_entries = [
+        JournalEntry(
+            date=datetime.date(2023, 1, 15),
+            description="Service Revenue",
+            postings=[
+                Posting(account=account1, amount=Amount
+
+# Generated at 2024-06-03 02:56:11.515183
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("500.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    initial_balances = read_initial_balances(period)
+
+    assert initial_balances[Account("Cash")].value == Decimal("1000.00")
+    assert initial_balances[Account("Revenue")].value == Decimal("500.00")
+```
+
+# Generated at 2024-06-03 02:56:35.488287
+```python
+    from ..commons.numbers import Amount, Quantity
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting, Direction
+
+    # Define test data
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(1000))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(0))),
+    }
+    journal_entry = JournalEntry(
+        date=datetime.date(2023, 6, 1),
+        description="Service Revenue",
+        postings=[
+            Posting(account=account1, amount=Amount(Decimal
+
+# Generated at 2024-06-03 02:56:40.536953
+```python
+    from ..commons.numbers import Amount, Quantity
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting, Direction
+
+    # Define test data
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal("1000.00"))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal("0.00"))),
+    }
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    journal_entries = [
+        JournalEntry(
+            date=datetime.date(2023, 1, 2),
+            description="Sale",
+            postings=[
+                Posting(account=account
+
+# Generated at 2024-06-03 02:56:43.493094
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("5000.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    initial_balances = read_initial_balances(period)
+
+    assert initial_balances[Account("Cash")].value == Quantity(Decimal("1000.00"))
+    assert initial_balances[Account("Revenue")].value == Quantity(Decimal("5000.00"))
+```
+
+# Generated at 2024-06-03 02:56:47.003961
+```python
+    # Create a mock account and initial balance
+    account = Account(name="Cash")
+    initial_balance = Balance(date=datetime.date(2023, 1, 1), value=Quantity(Decimal(1000)))
+
+    # Create a ledger for the account
+    ledger = Ledger(account=account, initial=initial_balance)
+
+    # Create a mock posting
+    journal_entry = JournalEntry(date=datetime.date(2023, 1, 2), description="Sale", postings=[])
+    posting = Posting(account=account, amount=Amount(Decimal(200)), direction=1, journal=journal_entry)
+
+    # Add the posting to the ledger
+    ledger_entry = ledger.add(posting)
+
+    # Assertions
+    assert ledger_entry.ledger == ledger
+    assert ledger_entry.posting == posting
+    assert ledger_entry.balance == Quantity(Decimal(1200))
+    assert ledger.entries[-1] == ledger_entry
+```
+
+# Generated at 2024-06-03 02:56:53.026125
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    def mock_read_initial_balances(period: DateRange) -> InitialBalances:
+        return {
+            Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+            Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+        }
+
+    def mock_read_journal_entries(period: DateRange) -> List[JournalEntry]:
+        return [
+            JournalEntry(
+                date=period.since,
+                description="Initial revenue",
+                postings=[
+                    Posting(account=Account("Revenue"), amount=Amount(Decimal("500.00")), direction=1),
+                    Posting(account=Account("Cash"), amount=Amount(Decimal("500.00")), direction=-1),
+                ],
+            )
+        ]
+
+    # Define the period
+    period = DateRange(since=datetime.date(2023, 1, 1), until=datetime.date(2023, 
+
+# Generated at 2024-06-03 02:56:56.901655
+```python
+    # Create a mock account and initial balance
+    account = Account(name="Cash")
+    initial_balance = Balance(date=datetime.date(2023, 1, 1), value=Quantity(Decimal(1000)))
+
+    # Create a ledger for the account
+    ledger = Ledger(account=account, initial=initial_balance)
+
+    # Create a mock posting
+    journal_entry = JournalEntry(date=datetime.date(2023, 1, 2), description="Sale", postings=[])
+    posting = Posting(account=account, amount=Amount(Decimal(200)), direction=1, journal=journal_entry)
+
+    # Add the posting to the ledger
+    ledger_entry = ledger.add(posting)
+
+    # Assertions
+    assert ledger_entry.ledger == ledger
+    assert ledger_entry.posting == posting
+    assert ledger_entry.balance == Quantity(Decimal(1200))
+    assert ledger.entries[-1] == ledger_entry
+```
+
+# Generated at 2024-06-03 02:57:00.125248
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+            }
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial revenue",
+                    postings=[
+                        Posting(Account("Revenue"), Amount(Decimal("500.00")), direction=1),
+                        Posting(Account("Cash"), Amount(Decimal("500.00")), direction=-1),
+                    ],
+                )
+            ]
+
+    # Define the period for the test
+    period = DateRange(datetime.date(2023, 1, 1), datetime
+
+# Generated at 2024-06-03 02:57:03.408057
+```python
+    from ..commons.numbers import Amount, Quantity
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting, Direction
+
+    # Define test data
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(1000))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(0))),
+    }
+    journal_entries = [
+        JournalEntry(
+            date=datetime.date(2023, 1, 10),
+            description="Sale",
+            postings=[
+                Posting(account=account1, amount=Amount(
+
+# Generated at 2024-06-03 02:57:07.142939
+```python
+    # Create a mock account and initial balance
+    account = Account(name="Cash")
+    initial_balance = Balance(date=datetime.date(2023, 1, 1), value=Quantity(Decimal(1000)))
+
+    # Create a ledger for the account
+    ledger = Ledger(account=account, initial=initial_balance)
+
+    # Create a mock posting
+    journal_entry = JournalEntry(date=datetime.date(2023, 1, 2), description="Sale", postings=[])
+    posting = Posting(account=account, amount=Amount(Decimal(200)), direction=1, journal=journal_entry)
+
+    # Add the posting to the ledger
+    ledger_entry = ledger.add(posting)
+
+    # Assertions
+    assert ledger_entry.ledger == ledger
+    assert ledger_entry.posting == posting
+    assert ledger_entry.balance == Quantity(Decimal(1200))
+    assert ledger.entries[-1] == ledger_entry
+```
+
+# Generated at 2024-06-03 02:57:11.585455
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+            }
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial revenue",
+                    postings=[
+                        Posting(Account("Revenue"), Amount(Decimal("500.00")), direction=1),
+                        Posting(Account("Cash"), Amount(Decimal("500.00")), direction=-1),
+                    ],
+                )
+            ]
+
+    # Define the period for the test
+    period = DateRange(datetime.date(2023, 1, 1), datetime
+
+# Generated at 2024-06-03 02:57:28.156574
+```python
+    from ..commons.numbers import Amount, Quantity
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting, Direction
+
+    # Define test data
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal("1000.00"))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal("0.00"))),
+    }
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    journal_entries = [
+        JournalEntry(
+            date=datetime.date(2023, 1, 10),
+            description="Service Revenue",
+            postings=[
+                Posting(account=
+
+# Generated at 2024-06-03 02:57:31.885863
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+            }
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial Revenue",
+                    postings=[
+                        Posting(account=Account("Revenue"), amount=Amount(Decimal("500.00")), direction=1),
+                        Posting(account=Account("Cash"), amount=Amount(Decimal("500.00")), direction=-1),
+                    ],
+                )
+            ]
+
+    # Define the period for the test
+    period = DateRange(since=datetime.date(
+
+# Generated at 2024-06-03 02:57:35.314816
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("500.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    result = read_initial_balances(period)
+
+    assert isinstance(result, dict)
+    assert len(result) == 2
+    assert Account("Cash") in result
+    assert Account("Revenue") in result
+    assert result[Account("Cash")].value == Quantity(Decimal("1000.00"))
+    assert result[Account("Revenue")].value == Quantity(Decimal("500.00"))
+```
+
+# Generated at 2024-06-03 02:57:38.594396
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+            }
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial revenue",
+                    postings=[
+                        Posting(account=Account("Revenue"), amount=Amount(Decimal("500.00")), direction=1),
+                        Posting(account=Account("Cash"), amount=Amount(Decimal("500.00")), direction=-1),
+                    ],
+                )
+            ]
+
+    # Define the period for the test
+    period = DateRange(since=datetime.date(
+
+# Generated at 2024-06-03 02:57:42.971641
+```python
+    # Create a mock account and initial balance
+    account = Account(name="Cash")
+    initial_balance = Balance(date=datetime.date(2023, 1, 1), value=Quantity(Decimal(1000)))
+
+    # Create a ledger for the account
+    ledger = Ledger(account=account, initial=initial_balance)
+
+    # Create a mock posting
+    journal_entry = JournalEntry(date=datetime.date(2023, 1, 2), description="Sale", postings=[])
+    posting = Posting(account=account, amount=Amount(Decimal(200)), direction=1, journal=journal_entry)
+
+    # Add the posting to the ledger
+    ledger_entry = ledger.add(posting)
+
+    # Assertions
+    assert ledger_entry.ledger == ledger
+    assert ledger_entry.posting == posting
+    assert ledger_entry.balance == Quantity(Decimal(1200))
+    assert ledger.entries[-1] == ledger_entry
+```
+
+# Generated at 2024-06-03 02:57:46.743027
+```python
+    # Create a mock account and initial balance
+    account = Account(name="Cash")
+    initial_balance = Balance(date=datetime.date(2023, 1, 1), value=Quantity(Decimal('1000.00')))
+
+    # Create a ledger for the account
+    ledger = Ledger(account=account, initial=initial_balance)
+
+    # Create a mock posting
+    journal_entry = JournalEntry(date=datetime.date(2023, 1, 2), description="Sale", postings=[])
+    posting = Posting(account=account, amount=Amount(Decimal('200.00')), direction=1, journal=journal_entry)
+
+    # Add the posting to the ledger
+    ledger_entry = ledger.add(posting)
+
+    # Assertions
+    assert ledger_entry.ledger == ledger
+    assert ledger_entry.posting == posting
+    assert ledger_entry.balance == Quantity(Decimal('1200.00'))
+    assert ledger.entries[-1] == ledger_entry
+```
+
+# Generated at 2024-06-03 02:57:51.429220
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+            }
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial Revenue",
+                    postings=[
+                        Posting(Account("Revenue"), Amount(Decimal("500.00")), direction=1),
+                        Posting(Account("Cash"), Amount(Decimal("500.00")), direction=-1),
+                    ],
+                )
+            ]
+
+    # Define the period for the test
+    period = DateRange(datetime.date(2023, 1, 1), datetime
+
+# Generated at 2024-06-03 02:57:55.088803
+```python
+    from ..commons.numbers import Amount, Quantity
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting, Direction
+
+    # Define test data
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal("1000.00"))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal("0.00"))),
+    }
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    journal_entries = [
+        JournalEntry(
+            date=datetime.date(2023, 1, 2),
+            description="Sale",
+            postings=[
+                Posting(account=account
+
+# Generated at 2024-06-03 02:57:58.596745
+```python
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting
+    from decimal import Decimal
+    from datetime import date
+
+    # Define test data
+    period = DateRange(date(2023, 1, 1), date(2023, 12, 31))
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(date(2023, 1, 1), Quantity(Decimal(1000))),
+        account2: Balance(date(2023, 1, 1), Quantity(Decimal(0))),
+    }
+    journal_entries = [
+        JournalEntry(
+            date=date(2023, 1, 15),
+            description="Sale",
+            postings=[
+                Posting(account=account1, amount=Decimal(500), direction=1),
+
+
+# Generated at 2024-06-03 02:58:02.115858
+```python
+    account = Account("Cash")
+    initial_balance = Balance(datetime.date(2023, 1, 1), Quantity(Decimal("1000.00")))
+    ledger = Ledger(account, initial_balance)
+
+    posting = Posting(
+        account=account,
+        amount=Amount(Decimal("200.00")),
+        date=datetime.date(2023, 1, 2),
+        direction=1,  # Assuming 1 represents debit
+        journal=JournalEntry(
+            date=datetime.date(2023, 1, 2),
+            description="Test Entry",
+            postings=[]
+        )
+    )
+
+    entry = ledger.add(posting)
+
+    assert entry.ledger == ledger
+    assert entry.posting == posting
+    assert entry.balance == Quantity(Decimal("1200.00"))
+    assert entry.date == datetime.date(2023, 1, 2)
+    assert entry.description == "Test Entry"
+    assert entry.amount == Amount(Decimal("200
+
+# Generated at 2024-06-03 02:58:38.048711
+```python
+    account = Account("Cash")
+    initial_balance = Balance(datetime.date(2023, 1, 1), Quantity(Decimal("1000.00")))
+    ledger = Ledger(account, initial_balance)
+
+    posting = Posting(
+        account=account,
+        amount=Amount(Decimal("200.00")),
+        date=datetime.date(2023, 1, 2),
+        direction=1,  # Assuming 1 represents a debit
+        journal=JournalEntry(
+            date=datetime.date(2023, 1, 2),
+            description="Test Entry",
+            postings=[]
+        )
+    )
+
+    ledger_entry = ledger.add(posting)
+
+    assert ledger_entry.ledger == ledger
+    assert ledger_entry.posting == posting
+    assert ledger_entry.balance == Quantity(Decimal("1200.00"))
+    assert ledger.entries[-1] == ledger_entry
+```
+
+# Generated at 2024-06-03 02:58:41.476659
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+            }
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial Revenue",
+                    postings=[
+                        Posting(Account("Revenue"), Amount(Decimal("500.00")), 1),
+                        Posting(Account("Cash"), Amount(Decimal("500.00")), -1),
+                    ],
+                )
+            ]
+
+    # Define the period for the test
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(
+
+# Generated at 2024-06-03 02:58:50.943195
+```python
+    from ..commons.numbers import Amount
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting, Direction
+
+    # Define test data
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(1000))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(0))),
+    }
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    journal_entries = [
+        JournalEntry(
+            date=datetime.date(2023, 1, 10),
+            description="Sale",
+            postings=[
+                Posting(account=account1, amount=Amount(Decimal(
+
+# Generated at 2024-06-03 02:58:54.093968
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("5000.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    initial_balances = read_initial_balances(period)
+
+    assert initial_balances[Account("Cash")].value == Quantity(Decimal("1000.00"))
+    assert initial_balances[Account("Revenue")].value == Quantity(Decimal("5000.00"))
+```
+
+# Generated at 2024-06-03 02:58:57.443186
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00")))}
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial entry",
+                    postings=[
+                        Posting(account=Account("Cash"), amount=Amount(Decimal("1000.00")), direction=1),
+                        Posting(account=Account("Equity"), amount=Amount(Decimal("1000.00")), direction=-1),
+                    ],
+                )
+            ]
+
+    # Define the period
+    period = DateRange(since=datetime.date(2023, 1, 1), until=datetime.date(2023, 12, 31))
+
+
+
+# Generated at 2024-06-03 02:59:01.519745
+```python
+    # Create a mock account and initial balance
+    account = Account(name="Cash")
+    initial_balance = Balance(date=datetime.date(2023, 1, 1), value=Quantity(Decimal(1000)))
+
+    # Create a ledger for the account
+    ledger = Ledger(account=account, initial=initial_balance)
+
+    # Create a mock posting
+    journal_entry = JournalEntry(date=datetime.date(2023, 1, 2), description="Sale", postings=[])
+    posting = Posting(account=account, amount=Amount(Decimal(200)), direction=1, journal=journal_entry)
+
+    # Add the posting to the ledger
+    ledger_entry = ledger.add(posting)
+
+    # Assertions
+    assert ledger_entry.ledger == ledger
+    assert ledger_entry.posting == posting
+    assert ledger_entry.balance == Quantity(Decimal(1200))
+    assert ledger.entries[-1] == ledger_entry
+```
+
+# Generated at 2024-06-03 02:59:05.729679
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {Account("Cash"): Balance(period.since, Quantity(Decimal(1000)))}
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial entry",
+                    postings=[
+                        Posting(account=Account("Cash"), amount=Amount(Decimal(1000)), direction=1),
+                        Posting(account=Account("Revenue"), amount=Amount(Decimal(1000)), direction=-1),
+                    ],
+                )
+            ]
+
+    # Create mock instances
+    mock_read_initial_balances = MockReadInitialBalances()
+    mock_read_journal_entries = MockReadJournalEntries()
+
+    # Compile the general ledger program
+    program = compile_general_ledger
+
+# Generated at 2024-06-03 02:59:09.553362
+```python
+    from ..commons.numbers import Amount, Quantity
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting, Direction
+
+    # Define test data
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(1000))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(0))),
+    }
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    journal_entries = [
+        JournalEntry(
+            date=datetime.date(2023, 1, 10),
+            description="Service Revenue",
+            postings=[
+                Posting(account=account1, amount=Amount
+
+# Generated at 2024-06-03 02:59:12.936816
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+            }
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial revenue",
+                    postings=[
+                        Posting(Account("Revenue"), Amount(Decimal("500.00")), direction=1),
+                        Posting(Account("Cash"), Amount(Decimal("500.00")), direction=-1),
+                    ],
+                )
+            ]
+
+    # Define the period for the test
+    period = DateRange(datetime.date(2023, 1, 1), datetime
+
+# Generated at 2024-06-03 02:59:16.029339
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("5000.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    initial_balances = read_initial_balances(period)
+
+    assert initial_balances[Account("Cash")].value == Decimal("1000.00")
+    assert initial_balances[Account("Revenue")].value == Decimal("5000.00")
+```
+
+# Generated at 2024-06-03 03:00:10.707826
+```python
+    # Define a mock DateRange
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+
+    # Define mock initial balances
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(1000))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(0))),
+    }
+
+    # Define mock journal entries
+    journal_entry1 = JournalEntry(
+        date=datetime.date(2023, 1, 2),
+        description="Sale",
+        postings=[
+            Posting(account=account1, amount=Amount(Decimal(500)), direction=1),
+            Posting(account=account2, amount=Amount(Decimal(500)), direction=-1),
+        ],
+    )
+    journal_entries
+
+# Generated at 2024-06-03 03:00:14.262508
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    def mock_read_initial_balances(period: DateRange) -> InitialBalances:
+        return {
+            Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+            Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+        }
+
+    def mock_read_journal_entries(period: DateRange) -> List[JournalEntry]:
+        return [
+            JournalEntry(
+                date=period.since,
+                description="Initial revenue",
+                postings=[
+                    Posting(account=Account("Revenue"), amount=Amount(Decimal("500.00")), direction=1),
+                    Posting(account=Account("Cash"), amount=Amount(Decimal("500.00")), direction=-1),
+                ],
+            )
+        ]
+
+    # Define the period
+    period = DateRange(since=datetime.date(2023, 1, 1), until=datetime.date(2023, 
+
+# Generated at 2024-06-03 03:00:18.521556
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+            }
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial revenue",
+                    postings=[
+                        Posting(account=Account("Revenue"), amount=Amount(Decimal("500.00")), direction=1),
+                        Posting(account=Account("Cash"), amount=Amount(Decimal("500.00")), direction=-1),
+                    ],
+                )
+            ]
+
+    # Define the period for the test
+    period = DateRange(since=datetime.date(
+
+# Generated at 2024-06-03 03:00:21.482580
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("500.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    initial_balances = read_initial_balances(period)
+
+    assert initial_balances[Account("Cash")].value == Quantity(Decimal("1000.00"))
+    assert initial_balances[Account("Revenue")].value == Quantity(Decimal("500.00"))
+```
+
+# Generated at 2024-06-03 03:00:24.647258
+```python
+    # Define a mock DateRange
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+
+    # Define mock initial balances
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(1000))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(0))),
+    }
+
+    # Define mock journal entries
+    journal_entry1 = JournalEntry(
+        date=datetime.date(2023, 1, 15),
+        description="Sale",
+        postings=[
+            Posting(account=account1, amount=Amount(Decimal(500)), direction=1),
+            Posting(account=account2, amount=Amount(Decimal(500)), direction=-1),
+        ],
+    )
+    journal_entries
+
+# Generated at 2024-06-03 03:00:27.960381
+```python
+    from ..commons.numbers import Amount, Quantity
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting, Direction
+
+    # Define test data
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(1000))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(0))),
+    }
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    journal_entries = [
+        JournalEntry(
+            date=datetime.date(2023, 1, 10),
+            description="Service Revenue",
+            postings=[
+                Posting(account=account1, amount=Amount
+
+# Generated at 2024-06-03 03:00:36.938221
+```python
+    account = Account("Cash")
+    initial_balance = Balance(datetime.date(2023, 1, 1), Quantity(Decimal("1000.00")))
+    ledger = Ledger(account, initial_balance)
+
+    posting = Posting(
+        account=account,
+        amount=Amount(Decimal("200.00")),
+        date=datetime.date(2023, 1, 2),
+        direction=1,  # Assuming 1 represents debit
+        journal=JournalEntry(
+            date=datetime.date(2023, 1, 2),
+            description="Test Entry",
+            postings=[]
+        )
+    )
+
+    entry = ledger.add(posting)
+
+    assert entry.ledger == ledger
+    assert entry.posting == posting
+    assert entry.balance == Quantity(Decimal("1200.00"))
+    assert ledger.entries[-1] == entry
+```
+
+# Generated at 2024-06-03 03:00:40.391878
+```python
+    # Create a mock account and initial balance
+    account = Account(name="Cash")
+    initial_balance = Balance(date=datetime.date(2023, 1, 1), value=Quantity(Decimal('1000.00')))
+
+    # Create a ledger for the account
+    ledger = Ledger(account=account, initial=initial_balance)
+
+    # Create a mock posting
+    journal_entry = JournalEntry(date=datetime.date(2023, 1, 2), description="Sale", postings=[])
+    posting = Posting(account=account, amount=Amount(Decimal('200.00')), direction=1, journal=journal_entry)
+
+    # Add the posting to the ledger
+    ledger_entry = ledger.add(posting)
+
+    # Assertions
+    assert ledger_entry.ledger == ledger
+    assert ledger_entry.posting == posting
+    assert ledger_entry.balance == Quantity(Decimal('1200.00'))
+    assert ledger.entries[-1] == ledger_entry
+```
+
+# Generated at 2024-06-03 03:00:43.304674
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("5000.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    initial_balances = read_initial_balances(period)
+
+    assert initial_balances[Account("Cash")].value == Quantity(Decimal("1000.00"))
+    assert initial_balances[Account("Revenue")].value == Quantity(Decimal("5000.00"))
+```
+
+# Generated at 2024-06-03 03:00:46.538122
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("5000.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    initial_balances = read_initial_balances(period)
+
+    assert initial_balances[Account("Cash")].value == Quantity(Decimal("1000.00"))
+    assert initial_balances[Account("Revenue")].value == Quantity(Decimal("5000.00"))
+```
+
+# Generated at 2024-06-03 03:02:33.248036
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+            }
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial revenue",
+                    postings=[
+                        Posting(Account("Revenue"), Amount(Decimal("500.00")), direction=1),
+                        Posting(Account("Cash"), Amount(Decimal("500.00")), direction=-1),
+                    ],
+                )
+            ]
+
+    # Define the period for the test
+    period = DateRange(datetime.date(2023, 1, 1), datetime
+
+# Generated at 2024-06-03 03:02:37.170965
+```python
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting
+    from decimal import Decimal
+    from datetime import date
+
+    # Define test data
+    period = DateRange(date(2023, 1, 1), date(2023, 12, 31))
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(date(2023, 1, 1), Quantity(Decimal(1000))),
+        account2: Balance(date(2023, 1, 1), Quantity(Decimal(0))),
+    }
+    journal_entries = [
+        JournalEntry(
+            date=date(2023, 1, 15),
+            description="Sale",
+            postings=[
+                Posting(account=account1, amount=Decimal(500), direction=1),
+
+
+# Generated at 2024-06-03 03:02:41.602046
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+            }
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial revenue",
+                    postings=[
+                        Posting(Account("Revenue"), Amount(Decimal("500.00")), direction=1),
+                        Posting(Account("Cash"), Amount(Decimal("500.00")), direction=-1),
+                    ],
+                )
+            ]
+
+    # Create a DateRange for the test
+    period = DateRange(datetime.date(2023, 1, 1),
+
+# Generated at 2024-06-03 03:02:47.073462
+```python
+    # Mock implementations for ReadInitialBalances and ReadJournalEntries
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("0.00"))),
+            }
+
+    class MockReadJournalEntries:
+        def __call__(self, period: DateRange) -> List[JournalEntry]:
+            return [
+                JournalEntry(
+                    date=period.since,
+                    description="Initial revenue",
+                    postings=[
+                        Posting(account=Account("Revenue"), amount=Amount(Decimal("500.00")), direction=1),
+                        Posting(account=Account("Cash"), amount=Amount(Decimal("500.00")), direction=-1),
+                    ],
+                )
+            ]
+
+    # Define the period for the test
+    period = DateRange(since=datetime.date(
+
+# Generated at 2024-06-03 03:02:50.711587
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Inventory"): Balance(period.since, Quantity(Decimal("500.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    initial_balances = read_initial_balances(period)
+
+    assert initial_balances[Account("Cash")].value == Quantity(Decimal("1000.00"))
+    assert initial_balances[Account("Inventory")].value == Quantity(Decimal("500.00"))
+```
+
+# Generated at 2024-06-03 03:02:54.650283
+```python
+    # Create a mock account and initial balance
+    account = Account(name="Cash")
+    initial_balance = Balance(date=datetime.date(2023, 1, 1), value=Quantity(Decimal(1000)))
+
+    # Create a ledger for the account
+    ledger = Ledger(account=account, initial=initial_balance)
+
+    # Create a mock posting
+    journal_entry = JournalEntry(date=datetime.date(2023, 1, 2), description="Sale", postings=[])
+    posting = Posting(account=account, amount=Amount(Decimal(200)), direction=1, journal=journal_entry)
+
+    # Add the posting to the ledger
+    ledger_entry = ledger.add(posting)
+
+    # Assertions
+    assert ledger_entry.ledger == ledger
+    assert ledger_entry.posting == posting
+    assert ledger_entry.balance == Quantity(Decimal(1200))
+    assert ledger.entries[-1] == ledger_entry
+```
+
+# Generated at 2024-06-03 03:02:57.904054
+```python
+    from ..commons.numbers import Amount, Quantity
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting, Direction
+
+    # Define test data
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(1000))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(0))),
+    }
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    journal_entries = [
+        JournalEntry(
+            date=datetime.date(2023, 1, 10),
+            description="Sale",
+            postings=[
+                Posting(account=account1, amount=Amount(
+
+# Generated at 2024-06-03 03:03:01.315883
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("5000.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    initial_balances = read_initial_balances(period)
+
+    assert initial_balances[Account("Cash")].value == Quantity(Decimal("1000.00"))
+    assert initial_balances[Account("Revenue")].value == Quantity(Decimal("5000.00"))
+```
+
+# Generated at 2024-06-03 03:03:06.793799
+```python
+    class MockReadInitialBalances:
+        def __call__(self, period: DateRange) -> InitialBalances:
+            return {
+                Account("Cash"): Balance(period.since, Quantity(Decimal("1000.00"))),
+                Account("Revenue"): Balance(period.since, Quantity(Decimal("5000.00"))),
+            }
+
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    read_initial_balances = MockReadInitialBalances()
+    result = read_initial_balances(period)
+
+    assert isinstance(result, dict)
+    assert len(result) == 2
+    assert Account("Cash") in result
+    assert Account("Revenue") in result
+    assert result[Account("Cash")].value == Quantity(Decimal("1000.00"))
+    assert result[Account("Revenue")].value == Quantity(Decimal("5000.00"))
+```
+
+# Generated at 2024-06-03 03:03:11.059132
+```python
+    from ..commons.numbers import Amount, Quantity
+    from ..commons.zeitgeist import DateRange
+    from .accounts import Account
+    from .generic import Balance
+    from .journaling import JournalEntry, Posting, Direction
+
+    # Define test data
+    account1 = Account("Cash")
+    account2 = Account("Revenue")
+    initial_balances = {
+        account1: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(1000))),
+        account2: Balance(datetime.date(2023, 1, 1), Quantity(Decimal(0))),
+    }
+    period = DateRange(datetime.date(2023, 1, 1), datetime.date(2023, 12, 31))
+    journal_entries = [
+        JournalEntry(
+            date=datetime.date(2023, 1, 10),
+            description="Sale",
+            postings=[
+                Posting(account=account1, amount=Amount(

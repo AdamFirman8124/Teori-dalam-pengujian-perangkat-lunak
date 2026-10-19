@@ -1,0 +1,485 @@
+
+
+# Generated at 2024-06-02 23:12:59.673916
+```python
+    class MockNodeTransformer(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+    tree = ast.parse("from old_module import something")
+    transformer = MockNodeTransformer(tree)
+    result = transformer.visit_ImportFrom(tree.body[0])
+
+    assert isinstance(result, ast.Try)
+    assert isinstance(result.body[0], ast.ImportFrom)
+    assert result.body[0].module == 'new_module'
+    assert result.body[0].names[0].name == 'something'
+```
+
+# Generated at 2024-06-02 23:13:02.470178
+```python
+    class MockNode:
+        def __init__(self, name, asname=None):
+            self.name = name
+            self.asname = asname
+
+    class MockImport:
+        def __init__(self, names):
+            self.names = names
+
+    class MockTransformationResult:
+        def __init__(self, tree, tree_changed, dependencies):
+            self.tree = tree
+            self.tree_changed = tree_changed
+            self.dependencies = dependencies
+
+    class MockImportRewrite(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+    tree = MockImport([MockNode('old_module')])
+    transformer = MockImportRewrite(tree)
+    result = transformer.visit_Import(tree)
+
+    assert isinstance(result, ast.Try)
+    assert transformer._tree_changed is True
+```
+
+# Generated at 2024-06-02 23:13:05.967898
+```python
+    class MockNode:
+        def __init__(self, name, asname=None):
+            self.name = name
+            self.asname = asname
+
+    class MockImport:
+        def __init__(self, names):
+            self.names = names
+
+    class MockTry:
+        pass
+
+    class MockImportRewrite(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+        def _replace_import(self, node, from_, to):
+            return MockTry()
+
+    tree = ast.Module(body=[])
+    transformer = MockImportRewrite(tree)
+
+    # Test case where import matches rewrite
+    node = MockImport(names=[MockNode(name='old_module')])
+    result = transformer.visit_Import(node)
+    assert isinstance(result, MockTry), "Expected MockTry, got {}".format(type(result))
+
+    # Test case where import does not match rewrite
+    node = MockImport(names=[MockNode(name='another_module')])
+    result =
+
+# Generated at 2024-06-02 23:13:08.783026
+```python
+    class MockedImportFrom(ast.ImportFrom):
+        def __init__(self, module, names, level=0):
+            self.module = module
+            self.names = names
+            self.level = level
+
+    class MockedAlias(ast.alias):
+        def __init__(self, name, asname=None):
+            self.name = name
+            self.asname = asname
+
+    class TestTransformer(BaseImportRewrite):
+        rewrites = [
+            ('old_module', 'new_module'),
+            ('another_old', 'another_new')
+        ]
+
+    # Test case 1: Simple module rewrite
+    node = MockedImportFrom(module='old_module', names=[MockedAlias(name='submodule')])
+    transformer = TestTransformer(node)
+    result = transformer.visit_ImportFrom(node)
+    assert isinstance(result, ast.Try)
+    assert result.body[0].module == 'new_module'
+    assert result.body[0].names[0].name == '
+
+# Generated at 2024-06-02 23:13:10.650625
+```python
+    class TestTransformer(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+    tree = ast.parse("from old_module import something")
+    transformer = TestTransformer(tree)
+    transformer.visit(tree)
+
+    assert transformer._tree_changed is True
+    assert isinstance(tree.body[0], ast.Try)
+    assert isinstance(tree.body[0].body[0], ast.ImportFrom)
+    assert tree.body[0].body[0].module == 'new_module'
+    assert tree.body[0].body[0].names[0].name == 'something'
+```
+
+# Generated at 2024-06-02 23:13:13.804941
+```python
+    import ast
+    from ..types import TransformationResult
+
+    class TestImportRewrite(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+    source_code = """
+    from old_module import something
+    from old_module.submodule import another_thing
+    from another_module import yet_another_thing
+    """
+
+    tree = ast.parse(source_code)
+    transformer = TestImportRewrite(tree)
+    transformer.visit(tree)
+
+    assert transformer._tree_changed is True
+
+    expected_code = """
+    try:
+        from new_module import something
+    except ImportError:
+        from old_module import something
+
+    try:
+        from new_module.submodule import another_thing
+    except ImportError:
+        from old_module.submodule import another_thing
+
+    from another_module import yet_another_thing
+    """
+
+    expected_tree = ast.parse(expected_code)
+    assert ast.dump(tree) == ast.dump(expected_tree)
+```
+
+# Generated at 2024-06-02 23:13:16.905116
+```python
+    class MockNode:
+        def __init__(self, name, asname=None):
+            self.name = name
+            self.asname = asname
+
+    class MockImport:
+        def __init__(self, names):
+            self.names = names
+
+    class MockTry:
+        pass
+
+    class MockImportRewrite(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+        def _replace_import(self, node, from_, to):
+            return MockTry()
+
+    tree = ast.Module()
+    node = MockImport(names=[MockNode(name='old_module')])
+    transformer = MockImportRewrite(tree)
+    result = transformer.visit_Import(node)
+    
+    assert isinstance(result, MockTry), "The import should be replaced with a try/except block"
+    
+    node = MockImport(names=[MockNode(name='unrelated_module')])
+    result = transformer.visit_Import(node)
+    
+    assert result == node, "The import should
+
+# Generated at 2024-06-02 23:13:22.852944
+```python
+    import ast
+    from ..types import TransformationResult
+
+    class TestImportRewrite(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+    # Test case 1: ImportFrom with module that needs to be rewritten
+    tree = ast.parse("from old_module import something")
+    transformer = TestImportRewrite(tree)
+    result = transformer.visit_ImportFrom(tree.body[0])
+    assert isinstance(result, ast.Try)
+    assert isinstance(result.body[0], ast.ImportFrom)
+    assert result.body[0].module == 'new_module'
+    assert result.body[0].names[0].name == 'something'
+
+    # Test case 2: ImportFrom with module that does not need to be rewritten
+    tree = ast.parse("from another_module import something")
+    transformer = TestImportRewrite(tree)
+    result = transformer.visit_ImportFrom(tree.body[0])
+    assert isinstance(result, ast.ImportFrom)
+    assert result
+
+# Generated at 2024-06-02 23:13:27.148316
+```python
+    class MockNode:
+        def __init__(self, module, names, level=0):
+            self.module = module
+            self.names = names
+            self.level = level
+
+    class MockAlias:
+        def __init__(self, name, asname=None):
+            self.name = name
+            self.asname = asname
+
+    class MockTransformationResult:
+        def __init__(self, tree, tree_changed, dependencies):
+            self.tree = tree
+            self.tree_changed = tree_changed
+            self.dependencies = dependencies
+
+    class MockImportRewrite(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+    # Test case 1: No rewrite needed
+    node = MockNode(module='some_module', names=[MockAlias(name='some_name')])
+    transformer = MockImportRewrite(node)
+    result = transformer.visit_ImportFrom(node)
+    assert isinstance(result, MockNode)
+    assert result.module == 'some_module
+
+# Generated at 2024-06-02 23:13:31.339641
+```python
+    import ast
+    from ..types import CompilationTarget, TransformationResult
+
+    class TestImportRewrite(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+    source_code = """
+    from old_module import something
+    from old_module.submodule import another_thing
+    from another_module import yet_another_thing
+    """
+
+    tree = ast.parse(source_code)
+    transformer = TestImportRewrite(tree)
+    transformer.visit(tree)
+
+    assert transformer._tree_changed is True
+
+    import_from_nodes = [node for node in ast.walk(tree) if isinstance(node, ast.ImportFrom)]
+    assert len(import_from_nodes) == 3
+
+    assert isinstance(import_from_nodes[0], ast.Try)
+    assert isinstance(import_from_nodes[1], ast.Try)
+    assert isinstance(import_from_nodes[2], ast.ImportFrom)
+    assert import_from_nodes[2].module == 'another_module'
+```
+
+# Generated at 2024-06-02 23:13:41.025332
+```python
+    class MockNode:
+        def __init__(self, name, asname=None):
+            self.name = name
+            self.asname = asname
+
+    class MockImport:
+        def __init__(self, names):
+            self.names = names
+
+    class MockTry:
+        pass
+
+    class MockImportRewrite(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+        def _replace_import(self, node, from_, to):
+            return MockTry()
+
+    tree = ast.Module()
+    node = MockImport(names=[MockNode(name='old_module')])
+    transformer = MockImportRewrite(tree)
+    result = transformer.visit_Import(node)
+    
+    assert isinstance(result, MockTry), "visit_Import should return a MockTry instance when a rewrite is matched"
+    
+    node = MockImport(names=[MockNode(name='another_module')])
+    result = transformer.visit_Import(node)
+    
+    assert result == node, "visit
+
+# Generated at 2024-06-02 23:13:44.503850
+```python
+    class TestTransformer(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+    tree = ast.parse("import old_module")
+    transformer = TestTransformer(tree)
+    new_tree = transformer.visit(tree)
+
+    assert isinstance(new_tree.body[0], ast.Try)
+    assert isinstance(new_tree.body[0].body[0], ast.Import)
+    assert new_tree.body[0].body[0].names[0].name == 'new_module'
+    assert new_tree.body[0].body[0].names[0].asname == 'old_module'
+    assert transformer._tree_changed is True
+```
+
+# Generated at 2024-06-02 23:13:46.581128
+```python
+    class MockNodeTransformer(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+    tree = ast.parse("import old_module")
+    transformer = MockNodeTransformer(tree)
+    new_tree = transformer.visit(tree)
+
+    assert isinstance(new_tree.body[0], ast.Try)
+    assert isinstance(new_tree.body[0].body[0], ast.Import)
+    assert new_tree.body[0].body[0].names[0].name == 'new_module'
+    assert new_tree.body[0].body[0].names[0].asname == 'old_module'
+    assert transformer._tree_changed is True
+```
+
+# Generated at 2024-06-02 23:13:50.121357
+```python
+    class MockNodeTransformer(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+    tree = ast.parse("import old_module")
+    transformer = MockNodeTransformer(tree)
+    new_tree = transformer.visit(tree)
+
+    assert isinstance(new_tree.body[0], ast.Try)
+    assert isinstance(new_tree.body[0].body[0], ast.Import)
+    assert new_tree.body[0].body[0].names[0].name == 'new_module'
+    assert new_tree.body[0].body[0].names[0].asname == 'old_module'
+    assert transformer._tree_changed is True
+```
+
+# Generated at 2024-06-02 23:13:53.328203
+```python
+    class MockNode:
+        def __init__(self, name, asname=None):
+            self.name = name
+            self.asname = asname
+
+    class MockImport:
+        def __init__(self, names):
+            self.names = names
+
+    class MockTransformationResult:
+        def __init__(self, tree, tree_changed, dependencies):
+            self.tree = tree
+            self.tree_changed = tree_changed
+            self.dependencies = dependencies
+
+    class MockImportRewrite(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+    node = MockImport(names=[MockNode(name='old_module')])
+    transformer = MockImportRewrite(tree=node)
+    result = transformer.visit_Import(node)
+
+    assert isinstance(result, ast.Try)
+    assert transformer._tree_changed is True
+```
+
+# Generated at 2024-06-02 23:13:57.234017
+```python
+    class MockNodeTransformer(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+    tree = ast.parse("import old_module")
+    transformer = MockNodeTransformer(tree)
+    new_tree = transformer.visit(tree)
+
+    assert isinstance(new_tree.body[0], ast.Try)
+    assert isinstance(new_tree.body[0].body[0], ast.Import)
+    assert new_tree.body[0].body[0].names[0].name == 'new_module'
+    assert new_tree.body[0].body[0].names[0].asname == 'old_module'
+    assert transformer._tree_changed is True
+```
+
+# Generated at 2024-06-02 23:13:59.758953
+```python
+    class MockNode:
+        def __init__(self, name, asname=None):
+            self.name = name
+            self.asname = asname
+
+    class MockImport:
+        def __init__(self, names):
+            self.names = names
+
+    class MockTry:
+        pass
+
+    class MockImportRewrite(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+        def _replace_import(self, node, from_, to):
+            return MockTry()
+
+    tree = ast.Module()
+    node = MockImport(names=[MockNode(name='old_module')])
+    transformer = MockImportRewrite(tree)
+    result = transformer.visit_Import(node)
+    
+    assert isinstance(result, MockTry), "The import should be replaced with a try/except block"
+```
+
+# Generated at 2024-06-02 23:14:04.200502
+```python
+    class MockNode:
+        def __init__(self, module, names, level=0):
+            self.module = module
+            self.names = names
+            self.level = level
+
+    class MockAlias:
+        def __init__(self, name, asname=None):
+            self.name = name
+            self.asname = asname
+
+    class MockTransformationResult:
+        def __init__(self, tree, tree_changed, dependencies):
+            self.tree = tree
+            self.tree_changed = tree_changed
+            self.dependencies = dependencies
+
+    class MockImportRewrite(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+    tree = MockNode('old_module', [MockAlias('submodule')])
+    transformer = MockImportRewrite(tree)
+    result = transformer.visit_ImportFrom(tree)
+
+    assert isinstance(result, ast.Try)
+    assert transformer._tree_changed is True
+```
+
+# Generated at 2024-06-02 23:14:07.232306
+```python
+    class MockNodeTransformer(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+    tree = ast.parse("from old_module import something")
+    transformer = MockNodeTransformer(tree)
+    new_tree = transformer.visit(tree)
+
+    assert transformer._tree_changed is True
+    assert isinstance(new_tree.body[0], ast.Try)
+    assert isinstance(new_tree.body[0].body[0], ast.ImportFrom)
+    assert new_tree.body[0].body[0].module == 'new_module'
+    assert new_tree.body[0].body[0].names[0].name == 'something'
+```
+
+# Generated at 2024-06-02 23:14:09.296040
+```python
+    class MockNodeTransformer(BaseImportRewrite):
+        rewrites = [('old_module', 'new_module')]
+
+    tree = ast.parse("import old_module")
+    transformer = MockNodeTransformer(tree)
+    new_tree = transformer.visit(tree)
+
+    assert isinstance(new_tree.body[0], ast.Try)
+    assert isinstance(new_tree.body[0].body[0], ast.Import)
+    assert new_tree.body[0].body[0].names[0].name == 'new_module'
+    assert new_tree.body[0].body[0].names[0].asname == 'old_module'
+    assert transformer._tree_changed is True
+```

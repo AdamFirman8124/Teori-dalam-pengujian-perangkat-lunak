@@ -1,0 +1,1546 @@
+
+
+# Generated at 2024-06-03 07:37:57.374075
+```python
+    import asyncio
+
+    async def mock_streaming_fn(response):
+        pass
+
+    class MockStream:
+        async def send(self, data, end_stream):
+            self.data = data
+            self.end_stream = end_stream
+
+    response = StreamingHTTPResponse(mock_streaming_fn)
+    response.stream = MockStream()
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(response.write("test data"))
+
+    assert response.stream.data == b"test data"
+    assert response.stream.end_stream is False
+```
+
+# Generated at 2024-06-03 07:38:01.224034
+```python
+    import pytest
+    from unittest.mock import patch, mock_open
+    from sanic.response import file_stream
+    from sanic.headers import Range
+
+    @pytest.mark.asyncio
+    async def test_file_stream():
+        location = "test.txt"
+        content = b"Hello, world!"
+        chunk_size = 5
+        mime_type = "text/plain"
+        headers = {"Custom-Header": "value"}
+        filename = "test.txt"
+        _range = Range(start=0, end=4, size=5, total=13)
+
+        with patch("builtins.open", mock_open(read_data=content)) as mock_file:
+            response = await file_stream(
+                location=location,
+                chunk_size=chunk_size,
+                mime_type=mime_type,
+                headers=headers,
+                filename=filename,
+                _range=_range,
+            )
+
+            assert response.status == 206
+            assert response.headers["Content-Range"] == "bytes
+
+# Generated at 2024-06-03 07:38:05.112000
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, AsyncMock
+    from pathlib import PurePath
+
+    @pytest.mark.asyncio
+    async def test_file_stream():
+        location = "test.txt"
+        content = b"Hello, world!"
+        chunk_size = 5
+        mime_type = "text/plain"
+        headers = {"Custom-Header": "value"}
+        filename = "download.txt"
+
+        mock_file = mock_open(read_data=content)
+        with patch("builtins.open", mock_file):
+            response = await file_stream(
+                location=location,
+                chunk_size=chunk_size,
+                mime_type=mime_type,
+                headers=headers,
+                filename=filename,
+            )
+
+        assert response.status == 200
+        assert response.headers["Content-Disposition"] == f'attachment; filename="{filename}"'
+        assert response.headers["Custom-Header"] == "value"
+        assert response.content_type == mime_type
+
+        # Mock
+
+# Generated at 2024-06-03 07:38:08.665414
+```python
+    response = html("<h1>Hello, World!</h1>")
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Hello, World!</h1>"
+
+    response = html(b"<h1>Hello, World!</h1>")
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Hello, World!</h1>"
+
+    class CustomHTML:
+        def __html__(self):
+            return "<h1>Custom HTML</h1>"
+
+    response = html(CustomHTML())
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Custom HTML</h1>"
+
+    class CustomReprHTML:
+        def _repr_html_(self):
+           
+
+# Generated at 2024-06-03 07:38:10.735784
+```python
+    import asyncio
+    from unittest.mock import patch, mock_open
+
+    async def mock_open_async(file, mode):
+        return mock_open(read_data=b"file content").return_value
+
+    with patch("builtins.open", new_callable=mock_open) as mock_file:
+        with patch("sanic.compat.open_async", new=mock_open_async):
+            response = asyncio.run(file("dummy_path"))
+            assert response.status == 200
+            assert response.body == b"file content"
+            assert response.content_type == "text/plain"
+```
+
+# Generated at 2024-06-03 07:38:15.088139
+```python
+    import asyncio
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data="test data", end_stream=True)
+        assert response.stream.data == [b"test data"]
+        assert response.stream.end_stream is True
+
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data=None, end_stream=None)
+        assert response.stream.data == []
+        assert response.stream.end_stream is True
+
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data=None, end_stream=False)
+        assert response.stream.data == [b""]
+        assert response.stream.end_stream is False
+
+    asyncio.run(run_test
+
+# Generated at 2024-06-03 07:38:17.134132
+```python
+    import asyncio
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+
+        async def send(self, data, end_stream=None):
+            self.data.append((data, end_stream))
+
+    async def mock_streaming_fn(response):
+        await response.write("test")
+
+    async def run_test():
+        stream = MockStream()
+        response = StreamingHTTPResponse(mock_streaming_fn)
+        response.stream = stream
+        await response.write("test data")
+        assert stream.data == [(b"test data", None)]
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:38:21.814194
+```python
+    response = html("<h1>Hello, World!</h1>")
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Hello, World!</h1>"
+
+    response = html(b"<h1>Hello, World!</h1>")
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Hello, World!</h1>"
+
+    class CustomHTML:
+        def __html__(self):
+            return "<h1>Custom HTML</h1>"
+
+    response = html(CustomHTML())
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Custom HTML</h1>"
+
+    class CustomReprHTML:
+        def _repr_html_(self):
+           
+
+# Generated at 2024-06-03 07:38:25.619910
+```python
+    import asyncio
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data="test data", end_stream=True)
+        assert response.stream.data == [b"test data"]
+        assert response.stream.end_stream is True
+
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data=None, end_stream=None)
+        assert response.stream.data == []
+        assert response.stream.end_stream is True
+
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data="more data", end_stream=False)
+        assert response.stream.data == [b"more data"]
+        assert response.stream.end_stream is False
+
+   
+
+# Generated at 2024-06-03 07:38:29.103282
+```python
+    import asyncio
+    from unittest.mock import patch, mock_open
+
+    async def mock_open_async(file, mode):
+        return mock_open(read_data=b"file content").return_value
+
+    with patch("builtins.open", mock_open(read_data=b"file content")):
+        with patch("sanic.compat.open_async", mock_open_async):
+            response = asyncio.run(file("dummy_path"))
+            assert response.status == 200
+            assert response.body == b"file content"
+            assert response.content_type == "text/plain"
+```
+
+# Generated at 2024-06-03 07:38:51.629349
+```python
+    import asyncio
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data="test data", end_stream=True)
+        assert response.stream.data == [b"test data"]
+        assert response.stream.end_stream is True
+
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data=None, end_stream=None)
+        assert response.stream.data == []
+        assert response.stream.end_stream is True
+
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data=None, end_stream=False)
+        assert response.stream.data == [b""]
+        assert response.stream.end_stream is False
+
+    asyncio.run(run_test
+
+# Generated at 2024-06-03 07:38:53.286656
+```python
+    import asyncio
+
+    async def mock_streaming_fn(response):
+        pass
+
+    response = StreamingHTTPResponse(mock_streaming_fn)
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(response.write("test data"))
+
+    assert response.body == b"test data"
+```
+
+# Generated at 2024-06-03 07:38:58.010703
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, AsyncMock
+    from pathlib import PurePath
+
+    @pytest.mark.asyncio
+    async def test_file_stream():
+        location = "test.txt"
+        content = b"Hello, world!"
+        chunk_size = 5
+        mime_type = "text/plain"
+        headers = {"Custom-Header": "value"}
+        filename = "test.txt"
+
+        mock_file = mock_open(read_data=content)
+        with patch("builtins.open", mock_file):
+            response = await file_stream(
+                location=location,
+                chunk_size=chunk_size,
+                mime_type=mime_type,
+                headers=headers,
+                filename=filename,
+            )
+
+            assert response.status == 200
+            assert response.headers["Content-Disposition"] == f'attachment; filename="{filename}"'
+            assert response.headers["Custom-Header"] == "value"
+            assert response.content_type == mime_type
+
+            # Mock
+
+# Generated at 2024-06-03 07:39:00.642830
+```python
+    import asyncio
+
+    async def sample_streaming_fn(response):
+        await response.write("foo")
+        await asyncio.sleep(0.1)
+        await response.write("bar")
+        await asyncio.sleep(0.1)
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        mock_stream = MockStream()
+        response = StreamingHTTPResponse(sample_streaming_fn)
+        response.stream = mock_stream
+
+        await response.send()
+        assert mock_stream.data == [b"foo", b"bar"]
+        assert mock_stream.end_stream is True
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:39:03.780059
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, AsyncMock
+    from pathlib import PurePath
+
+    @pytest.mark.asyncio
+    async def test_file_stream():
+        location = "test.txt"
+        content = b"Hello, world!"
+        chunk_size = 5
+        mime_type = "text/plain"
+        headers = {"Custom-Header": "value"}
+        filename = "test.txt"
+
+        mock_file = mock_open(read_data=content)
+        with patch("builtins.open", mock_file):
+            with patch("aiofiles.open", mock_open(read_data=content)) as mock_aiofiles:
+                response = await file_stream(
+                    location=location,
+                    chunk_size=chunk_size,
+                    mime_type=mime_type,
+                    headers=headers,
+                    filename=filename,
+                )
+
+                assert response.status == 200
+                assert response.headers["Content-Disposition"] == f'attachment; filename="{filename}"'
+                assert response.headers
+
+# Generated at 2024-06-03 07:39:08.242579
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, AsyncMock
+    from pathlib import PurePath
+
+    @pytest.mark.asyncio
+    async def test_file_stream():
+        location = "test.txt"
+        content = b"Hello, world!"
+        chunk_size = 5
+        mime_type = "text/plain"
+        headers = {"Custom-Header": "value"}
+        filename = "test.txt"
+
+        mock_file = mock_open(read_data=content)
+        with patch("builtins.open", mock_file):
+            with patch("aiofiles.open", mock_file):
+                response = await file_stream(
+                    location=location,
+                    chunk_size=chunk_size,
+                    mime_type=mime_type,
+                    headers=headers,
+                    filename=filename,
+                )
+
+                assert response.status == 200
+                assert response.headers["Content-Disposition"] == f'attachment; filename="{filename}"'
+                assert response.headers["Custom-Header"] == "value"
+               
+
+# Generated at 2024-06-03 07:39:11.257951
+```python
+    import asyncio
+    from tempfile import NamedTemporaryFile
+
+    async def run_test():
+        # Create a temporary file
+        with NamedTemporaryFile(delete=False) as tmp_file:
+            tmp_file.write(b"Hello, world!")
+            tmp_file_path = tmp_file.name
+
+        # Test the file function
+        response = await file(tmp_file_path)
+        
+        # Check the response status
+        assert response.status == 200
+        
+        # Check the response body
+        assert response.body == b"Hello, world!"
+        
+        # Check the content type
+        assert response.content_type == "text/plain"
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:39:13.868459
+```python
+    import asyncio
+    from unittest.mock import patch, mock_open
+
+    async def mock_open_async(file, mode):
+        return mock_open(read_data=b"file content").return_value
+
+    with patch("builtins.open", new_callable=mock_open) as mock_file:
+        with patch("sanic.compat.open_async", new=mock_open_async):
+            response = asyncio.run(file("dummy_path"))
+            assert response.status == 200
+            assert response.body == b"file content"
+            assert response.content_type == "text/plain"
+            assert response.headers == {}
+```
+
+# Generated at 2024-06-03 07:39:17.704569
+```python
+    import asyncio
+    from tempfile import NamedTemporaryFile
+
+    async def run_test():
+        # Create a temporary file with some content
+        with NamedTemporaryFile(delete=False) as temp_file:
+            temp_file.write(b"Hello, world!")
+            temp_file_path = temp_file.name
+
+        # Test the file function
+        response = await file(temp_file_path)
+
+        assert response.status == 200
+        assert response.body == b"Hello, world!"
+        assert response.content_type == "text/plain"
+
+        # Clean up the temporary file
+        path.remove(temp_file_path)
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:39:20.743981
+```python
+    import asyncio
+    from tempfile import NamedTemporaryFile
+
+    async def run_test():
+        # Create a temporary file with some content
+        with NamedTemporaryFile(delete=False) as temp_file:
+            temp_file.write(b"Hello, world!")
+            temp_file_path = temp_file.name
+
+        # Test the file function
+        response = await file(temp_file_path)
+
+        # Check the response status
+        assert response.status == 200
+
+        # Check the response body
+        assert response.body == b"Hello, world!"
+
+        # Check the content type
+        assert response.content_type == "text/plain"
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:39:55.277844
+```python
+    import asyncio
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        
+        await response.send(data="Hello, World!", end_stream=True)
+        assert response.stream.data == [b"Hello, World!"]
+        assert response.stream.end_stream is True
+
+        response.stream = MockStream()
+        await response.send(data=None, end_stream=None)
+        assert response.stream.data == []
+        assert response.stream.end_stream is True
+
+        response.stream = MockStream()
+        await response.send(data="Another test", end_stream=False)
+        assert response.stream.data == [b"Another test"]
+        assert response.stream.end_stream is False
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:39:58.730453
+```python
+    import asyncio
+
+    async def sample_streaming_fn(response):
+        await response.write("foo")
+        await asyncio.sleep(0.1)
+        await response.write("bar")
+        await asyncio.sleep(0.1)
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        mock_stream = MockStream()
+        response = StreamingHTTPResponse(sample_streaming_fn)
+        response.stream = mock_stream
+
+        await response.send()
+        assert mock_stream.data == [b"foo", b"bar"]
+        assert mock_stream.end_stream is True
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:40:03.817469
+```python
+    import asyncio
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data="test data", end_stream=True)
+        assert response.stream.data == [b"test data"]
+        assert response.stream.end_stream is True
+
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data=None, end_stream=None)
+        assert response.stream.data == []
+        assert response.stream.end_stream is True
+
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data="more data", end_stream=False)
+        assert response.stream.data == [b"more data"]
+        assert response.stream.end_stream is False
+
+   
+
+# Generated at 2024-06-03 07:40:08.044964
+```python
+    response = json({"message": "Hello, World!"})
+    assert response.status == 200
+    assert response.content_type == "application/json"
+    assert response.body == b'{"message":"Hello, World!"}'
+
+    response = json({"error": "Not Found"}, status=404)
+    assert response.status == 404
+    assert response.content_type == "application/json"
+    assert response.body == b'{"error":"Not Found"}'
+
+    response = json({"data": [1, 2, 3]}, headers={"X-Custom-Header": "value"})
+    assert response.status == 200
+    assert response.content_type == "application/json"
+    assert response.body == b'{"data":[1,2,3]}'
+    assert response.headers["X-Custom-Header"] == "value"
+
+    response = json({"key": "value"}, content_type="application/vnd.api+json")
+    assert response.status == 200
+
+# Generated at 2024-06-03 07:40:09.454053
+```python
+    response = json({"message": "hello"}, status=201)
+    assert response.status == 201
+    assert response.content_type == "application/json"
+    assert response.body == b'{"message":"hello"}'
+    assert response.headers == Header({})
+```
+
+# Generated at 2024-06-03 07:40:12.535270
+```python
+    import asyncio
+    from unittest.mock import patch, mock_open
+
+    async def mock_open_async(file, mode):
+        return mock_open(read_data=b"file content").return_value
+
+    with patch("builtins.open", mock_open(read_data=b"file content")):
+        with patch("sanic.compat.open_async", mock_open_async):
+            response = asyncio.run(file("dummy_path"))
+            assert response.status == 200
+            assert response.body == b"file content"
+            assert response.content_type == "text/plain"
+```
+
+# Generated at 2024-06-03 07:40:15.830580
+```python
+    import asyncio
+
+    async def sample_streaming_fn(response):
+        await response.write("foo")
+        await asyncio.sleep(0.1)
+        await response.write("bar")
+        await asyncio.sleep(0.1)
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        mock_stream = MockStream()
+        response = StreamingHTTPResponse(sample_streaming_fn)
+        response.stream = mock_stream
+
+        await response.send()
+        assert mock_stream.data == [b"foo", b"bar"]
+        assert mock_stream.end_stream is True
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:40:20.170560
+```python
+    response = html("<h1>Hello, World!</h1>")
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Hello, World!</h1>"
+
+    response = html(b"<h1>Hello, World!</h1>", status=201)
+    assert response.status == 201
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Hello, World!</h1>"
+
+    class CustomHTML:
+        def __html__(self):
+            return "<h1>Custom HTML</h1>"
+
+    response = html(CustomHTML())
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Custom HTML</h1>"
+
+    class CustomReprHTML:
+        def _repr_html
+
+# Generated at 2024-06-03 07:40:22.459743
+```python
+    async def streaming_fn(response):
+        pass
+
+    response = StreamingHTTPResponse(streaming_fn)
+    await response.write("test data")
+    assert response.body == b"test data"
+```
+
+# Generated at 2024-06-03 07:40:27.100581
+```python
+    import asyncio
+    from unittest.mock import patch, mock_open
+
+    async def mock_open_async(file, mode):
+        return mock_open(read_data=b"file content").return_value
+
+    with patch("builtins.open", new_callable=mock_open) as mock_file:
+        with patch("sanic.compat.open_async", new=mock_open_async):
+            response = asyncio.run(file("test.txt"))
+            assert response.status == 200
+            assert response.body == b"file content"
+            assert response.headers["Content-Type"] == "text/plain"
+```
+
+# Generated at 2024-06-03 07:41:00.172889
+```python
+    import asyncio
+
+    async def mock_streaming_fn(response):
+        await response.write("initial")
+
+    response = StreamingHTTPResponse(mock_streaming_fn)
+    response.stream = Http(None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None
+
+# Generated at 2024-06-03 07:41:04.069250
+```python
+    async def streaming_fn(response):
+        pass
+
+    response = StreamingHTTPResponse(streaming_fn)
+    await response.write("test data")
+    assert response.body == b"test data"
+```
+
+# Generated at 2024-06-03 07:41:06.827968
+```python
+    import asyncio
+
+    async def sample_streaming_fn(response):
+        await response.write("foo")
+        await asyncio.sleep(0.1)
+        await response.write("bar")
+        await asyncio.sleep(0.1)
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        mock_stream = MockStream()
+        response = StreamingHTTPResponse(sample_streaming_fn)
+        response.stream = mock_stream
+
+        await response.send()
+        assert mock_stream.data == [b"foo", b"bar"]
+        assert mock_stream.end_stream is True
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:41:10.762256
+```python
+    import asyncio
+
+    async def sample_streaming_fn(response):
+        await response.write("foo")
+        await asyncio.sleep(0.1)
+        await response.write("bar")
+        await asyncio.sleep(0.1)
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        mock_stream = MockStream()
+        response = StreamingHTTPResponse(sample_streaming_fn)
+        response.stream = mock_stream
+
+        await response.send()
+        assert mock_stream.data == [b"foo", b"bar"]
+        assert mock_stream.end_stream is True
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:41:14.145481
+```python
+    import asyncio
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data="test", end_stream=True)
+        assert response.stream.data == [b"test"]
+        assert response.stream.end_stream is True
+
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data=None, end_stream=None)
+        assert response.stream.data == []
+        assert response.stream.end_stream is True
+
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data="test", end_stream=False)
+        assert response.stream.data == [b"test"]
+        assert response.stream.end_stream is False
+
+    asyncio.run(run_test
+
+# Generated at 2024-06-03 07:41:19.687547
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, AsyncMock
+    from pathlib import Path
+
+    @pytest.mark.asyncio
+    async def test_file_stream():
+        location = "test.txt"
+        content = b"Hello, World!"
+        chunk_size = 5
+        mime_type = "text/plain"
+        headers = {"Custom-Header": "Value"}
+        filename = "download.txt"
+
+        mock_file = mock_open(read_data=content)
+        with patch("builtins.open", mock_file):
+            response = await file_stream(
+                location=location,
+                chunk_size=chunk_size,
+                mime_type=mime_type,
+                headers=headers,
+                filename=filename,
+            )
+
+            assert response.status == 200
+            assert response.headers["Content-Disposition"] == f'attachment; filename="{filename}"'
+            assert response.headers["Custom-Header"] == "Value"
+            assert response.content_type == mime_type
+
+            # Mock the
+
+# Generated at 2024-06-03 07:41:23.419328
+```python
+    import asyncio
+
+    async def sample_streaming_fn(response):
+        await response.write("foo")
+        await asyncio.sleep(0.1)
+        await response.write("bar")
+        await asyncio.sleep(0.1)
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        mock_stream = MockStream()
+        response = StreamingHTTPResponse(sample_streaming_fn)
+        response.stream = mock_stream
+
+        await response.send()
+        assert mock_stream.data == [b"foo", b"bar"]
+        assert mock_stream.end_stream is True
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:41:27.962957
+```python
+    import asyncio
+
+    async def sample_streaming_fn(response):
+        await response.write("foo")
+        await asyncio.sleep(0.1)
+        await response.write("bar")
+        await asyncio.sleep(0.1)
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        mock_stream = MockStream()
+        response = StreamingHTTPResponse(sample_streaming_fn)
+        response.stream = mock_stream
+
+        await response.send()
+        assert mock_stream.data == [b"foo", b"bar"]
+        assert mock_stream.end_stream is True
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:41:31.636761
+```python
+    import asyncio
+    from unittest.mock import patch, mock_open
+
+    async def mock_open_async(file, mode):
+        return mock_open(read_data=b"file content").return_value
+
+    with patch("builtins.open", new_callable=mock_open) as mock_file:
+        with patch("sanic.compat.open_async", new=mock_open_async):
+            response = asyncio.run(file("dummy_path"))
+            assert response.status == 200
+            assert response.body == b"file content"
+            assert response.content_type == "text/plain"
+            assert response.headers == {}
+```
+
+# Generated at 2024-06-03 07:41:36.778586
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, AsyncMock
+    from pathlib import PurePath
+
+    @pytest.mark.asyncio
+    async def test_file_stream():
+        location = "test.txt"
+        content = b"Hello, world!"
+        chunk_size = 5
+        mime_type = "text/plain"
+        headers = {"Custom-Header": "value"}
+        filename = "download.txt"
+
+        mock_file = mock_open(read_data=content)
+        with patch("builtins.open", mock_file):
+            with patch("aiofiles.open", mock_file):
+                response = await file_stream(
+                    location=location,
+                    chunk_size=chunk_size,
+                    mime_type=mime_type,
+                    headers=headers,
+                    filename=filename,
+                )
+
+                assert response.status == 200
+                assert response.headers["Content-Disposition"] == f'attachment; filename="{filename}"'
+                assert response.headers["Custom-Header"] == "value"
+               
+
+# Generated at 2024-06-03 07:42:34.880870
+```python
+    import asyncio
+
+    async def sample_streaming_fn(response):
+        await response.write("foo")
+        await asyncio.sleep(0.1)
+        await response.write("bar")
+        await asyncio.sleep(0.1)
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        mock_stream = MockStream()
+        response = StreamingHTTPResponse(sample_streaming_fn)
+        response.stream = mock_stream
+
+        await response.send()
+        assert mock_stream.data == [b"foo", b"bar"]
+        assert mock_stream.end_stream is True
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:42:40.215532
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, AsyncMock
+    from pathlib import PurePath
+
+    @pytest.mark.asyncio
+    async def test_file_stream():
+        location = "test.txt"
+        content = b"Hello, world!"
+        chunk_size = 5
+        mime_type = "text/plain"
+        headers = {"Custom-Header": "value"}
+        filename = "test.txt"
+
+        mock_file = mock_open(read_data=content)
+        with patch("builtins.open", mock_file):
+            with patch("aiofiles.open", mock_file):
+                response = await file_stream(
+                    location=location,
+                    chunk_size=chunk_size,
+                    mime_type=mime_type,
+                    headers=headers,
+                    filename=filename,
+                )
+
+                assert response.status == 200
+                assert response.headers["Content-Disposition"] == f'attachment; filename="{filename}"'
+                assert response.headers["Custom-Header"] == "value"
+               
+
+# Generated at 2024-06-03 07:42:43.486433
+```python
+    import asyncio
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data="test data", end_stream=True)
+        assert response.stream.data == [b"test data"]
+        assert response.stream.end_stream is True
+
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data=None, end_stream=None)
+        assert response.stream.data == []
+        assert response.stream.end_stream is True
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:42:45.713718
+```python
+    import asyncio
+
+    async def mock_streaming_fn(response):
+        await response.write("initial")
+
+    response = StreamingHTTPResponse(mock_streaming_fn)
+    response.stream = Http(None, None, None, None, None, None, None, None)
+    response.stream.send = asyncio.coroutine(lambda data, end_stream: None)
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(response.write("test data"))
+
+    assert response.body == b"test data"
+```
+
+# Generated at 2024-06-03 07:42:49.019176
+```python
+    import asyncio
+
+    async def sample_streaming_fn(response):
+        await response.write("foo")
+        await asyncio.sleep(0.1)
+        await response.write("bar")
+        await asyncio.sleep(0.1)
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        mock_stream = MockStream()
+        response = StreamingHTTPResponse(sample_streaming_fn)
+        response.stream = mock_stream
+
+        await response.send()
+        assert mock_stream.data == [b"foo", b"bar"]
+        assert mock_stream.end_stream is True
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:42:52.206352
+```python
+    import asyncio
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data="test data", end_stream=True)
+        assert response.stream.data == [b"test data"]
+        assert response.stream.end_stream is True
+
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data=None, end_stream=True)
+        assert response.stream.data == [b""]
+        assert response.stream.end_stream is True
+
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data="test data", end_stream=False)
+        assert response.stream.data == [b"test data"]
+        assert response.stream.end_stream is
+
+# Generated at 2024-06-03 07:42:55.621951
+```python
+    import asyncio
+
+    async def sample_streaming_fn(response):
+        await response.write("foo")
+        await asyncio.sleep(0.1)
+        await response.write("bar")
+        await asyncio.sleep(0.1)
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        mock_stream = MockStream()
+        response = StreamingHTTPResponse(sample_streaming_fn)
+        response.stream = mock_stream
+
+        await response.send()
+        assert mock_stream.data == [b"foo", b"bar"]
+        assert mock_stream.end_stream is True
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:42:58.665769
+```python
+    import asyncio
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream_called = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            if end_stream:
+                self.end_stream_called = True
+
+    async def run_test():
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+
+        # Test sending data
+        await response.send(data="Hello, World!", end_stream=False)
+        assert response.stream.data == [b"Hello, World!"]
+        assert not response.stream.end_stream_called
+
+        # Test sending data with end_stream
+        await response.send(data="Goodbye, World!", end_stream=True)
+        assert response.stream.data == [b"Hello, World!", b"Goodbye, World!"]
+        assert response.stream.end_stream_called
+
+        # Test sending no data with end_stream
+        response.stream = MockStream()
+        await response.send(end
+
+# Generated at 2024-06-03 07:43:02.305470
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, AsyncMock
+    from pathlib import PurePath
+
+    @pytest.mark.asyncio
+    async def test_file_stream():
+        location = "testfile.txt"
+        content = b"Hello, world!"
+        chunk_size = 5
+        mime_type = "text/plain"
+        headers = {"Custom-Header": "value"}
+        filename = "download.txt"
+
+        mock_file = mock_open(read_data=content)
+        with patch("builtins.open", mock_file):
+            response = await file_stream(
+                location=location,
+                chunk_size=chunk_size,
+                mime_type=mime_type,
+                headers=headers,
+                filename=filename,
+            )
+
+        assert response.status == 200
+        assert response.headers["Content-Disposition"] == f'attachment; filename="{filename}"'
+        assert response.headers["Custom-Header"] == "value"
+        assert response.content_type == mime_type
+
+        #
+
+# Generated at 2024-06-03 07:43:05.732656
+```python
+    import asyncio
+
+    async def mock_streaming_fn(response):
+        await response.write("initial")
+
+    response = StreamingHTTPResponse(mock_streaming_fn)
+    response.stream = Http(None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None
+
+# Generated at 2024-06-03 07:45:05.904287
+```python
+    response = html("<h1>Hello, World!</h1>")
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Hello, World!</h1>"
+
+    response = html(b"<h1>Hello, World!</h1>")
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Hello, World!</h1>"
+
+    class CustomHTML:
+        def __html__(self):
+            return "<h1>Custom HTML</h1>"
+
+    response = html(CustomHTML())
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Custom HTML</h1>"
+
+    class CustomReprHTML:
+        def _repr_html_(self):
+           
+
+# Generated at 2024-06-03 07:45:08.546100
+```python
+    import asyncio
+    from unittest.mock import patch, mock_open
+
+    async def mock_open_async(file, mode):
+        return mock_open(read_data=b"file content").return_value
+
+    with patch("builtins.open", new_callable=mock_open) as mock_file:
+        with patch("sanic.compat.open_async", new=mock_open_async):
+            response = asyncio.run(file("dummy_path"))
+            assert response.status == 200
+            assert response.body == b"file content"
+            assert response.content_type == "text/plain"
+            assert response.headers == {}
+```
+
+# Generated at 2024-06-03 07:45:11.086161
+```python
+    import asyncio
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+
+        async def send(self, data, end_stream=None):
+            self.data.append((data, end_stream))
+
+    async def mock_streaming_fn(response):
+        await response.write("foo")
+        await response.write("bar")
+
+    response = StreamingHTTPResponse(mock_streaming_fn)
+    response.stream = MockStream()
+
+    asyncio.run(response.send())
+
+    assert response.stream.data == [
+        (b"foo", None),
+        (b"bar", None),
+        (b"", True)
+    ]
+```
+
+# Generated at 2024-06-03 07:45:13.505096
+```python
+    import asyncio
+    from unittest.mock import patch, mock_open
+
+    async def mock_open_async(file, mode):
+        return mock_open(read_data=b"test data").return_value
+
+    with patch("builtins.open", new_callable=mock_open) as mock_file:
+        with patch("sanic.compat.open_async", new=mock_open_async):
+            response = asyncio.run(file("test.txt"))
+            assert response.status == 200
+            assert response.body == b"test data"
+            assert response.content_type == "text/plain"
+            assert response.headers == {}
+```
+
+# Generated at 2024-06-03 07:45:17.037157
+```python
+    import pytest
+    from unittest.mock import patch, mock_open, AsyncMock
+    from pathlib import PurePath
+
+    @pytest.mark.asyncio
+    async def test_file_stream():
+        location = "test.txt"
+        content = b"Hello, world!"
+        chunk_size = 5
+        mime_type = "text/plain"
+        headers = {"Custom-Header": "value"}
+        filename = "test.txt"
+
+        mock_file = mock_open(read_data=content)
+        with patch("builtins.open", mock_file):
+            with patch("aiofiles.open", mock_open(read_data=content)) as mock_aiofiles:
+                response = await file_stream(
+                    location=location,
+                    chunk_size=chunk_size,
+                    mime_type=mime_type,
+                    headers=headers,
+                    filename=filename,
+                )
+
+                assert response.status == 200
+                assert response.headers["Content-Disposition"] == f'attachment; filename="{filename}"'
+                assert response.headers
+
+# Generated at 2024-06-03 07:45:19.914494
+```python
+    import asyncio
+
+    async def sample_streaming_fn(response):
+        await response.write("foo")
+        await asyncio.sleep(0.1)
+        await response.write("bar")
+        await asyncio.sleep(0.1)
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        mock_stream = MockStream()
+        response = StreamingHTTPResponse(sample_streaming_fn)
+        response.stream = mock_stream
+
+        await response.send()
+        assert mock_stream.data == [b"foo", b"bar"]
+        assert mock_stream.end_stream is True
+
+    asyncio.run(run_test())
+```
+
+# Generated at 2024-06-03 07:45:23.307804
+```python
+    import asyncio
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            self.end_stream = end_stream
+
+    async def run_test():
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data="test data", end_stream=True)
+        assert response.stream.data == [b"test data"]
+        assert response.stream.end_stream is True
+
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data=None, end_stream=None)
+        assert response.stream.data == []
+        assert response.stream.end_stream is True
+
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+        await response.send(data=None, end_stream=False)
+        assert response.stream.data == [b""]
+        assert response.stream.end_stream is False
+
+    asyncio.run(run_test
+
+# Generated at 2024-06-03 07:45:26.567812
+```python
+    response = html("<h1>Hello, World!</h1>")
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Hello, World!</h1>"
+
+    response = html(b"<h1>Hello, World!</h1>", status=201)
+    assert response.status == 201
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Hello, World!</h1>"
+
+    class CustomHTML:
+        def __html__(self):
+            return "<h1>Custom HTML</h1>"
+
+    response = html(CustomHTML())
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Custom HTML</h1>"
+
+    class CustomReprHTML:
+        def _repr_html
+
+# Generated at 2024-06-03 07:45:29.841372
+```python
+    import asyncio
+
+    class MockStream:
+        def __init__(self):
+            self.data = []
+            self.end_stream_called = False
+
+        async def send(self, data, end_stream):
+            self.data.append(data)
+            if end_stream:
+                self.end_stream_called = True
+
+    async def run_test():
+        response = BaseHTTPResponse()
+        response.stream = MockStream()
+
+        # Test sending data
+        await response.send(data="Hello, World!", end_stream=False)
+        assert response.stream.data == [b"Hello, World!"]
+        assert not response.stream.end_stream_called
+
+        # Test sending data with end_stream
+        await response.send(data="Goodbye, World!", end_stream=True)
+        assert response.stream.data == [b"Hello, World!", b"Goodbye, World!"]
+        assert response.stream.end_stream_called
+
+        # Test sending no data with end_stream
+        response.stream = MockStream()
+        await response.send(end
+
+# Generated at 2024-06-03 07:45:34.663094
+```python
+    response = html("<h1>Hello, World!</h1>")
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Hello, World!</h1>"
+
+    response = html(b"<h1>Hello, World!</h1>")
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Hello, World!</h1>"
+
+    class CustomHTML:
+        def __html__(self):
+            return "<h1>Custom HTML</h1>"
+
+    response = html(CustomHTML())
+    assert response.status == 200
+    assert response.content_type == "text/html; charset=utf-8"
+    assert response.body == b"<h1>Custom HTML</h1>"
+
+    class CustomReprHTML:
+        def _repr_html_(self):
+           

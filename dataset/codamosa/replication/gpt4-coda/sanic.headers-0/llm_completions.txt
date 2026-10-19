@@ -1,0 +1,1447 @@
+
+
+# Generated at 2024-03-18 07:29:04.029672
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a single Forwarded header
+    headers = MagicMock()
+    headers.getall.return_value = ['by=203.0.113.43;for=198.51.100.17;host=example.com;proto=https']
+
+    # Mock config with a matching FORWARDED_SECRET
+    config = MagicMock()
+    config.FORWARDED_SECRET = '198.51.100.17'
+
+    # Call the function with the mocked headers and config
+    result = parse_forwarded(headers, config)
+
+    # Assert the result is as expected
+    assert result == {
+        'for': '198.51.100.17',
+        'by': '203.0.113.43',
+        'host': 'example.com',
+        'proto': 'https'
+    }, "Failed to parse Forwarded header correctly"
+
+    # Test with no Forwarded header present
+    headers.getall.return_value = None
+
+# Generated at 2024-03-18 07:29:11.850300
+```python
+    assert parse_host("example.com:80") == ("example.com", 80)
+    assert parse_host("example.com") == ("example.com", None)
+    assert parse_host("[::1]:80") == ("::1", 80)
+    assert parse_host("[::1]") == ("::1", None)
+    assert parse_host("localhost:8080") == ("localhost", 8080)
+    assert parse_host("localhost") == ("localhost", None)
+    assert parse_host("invalid_host:99999") == (None, None)
+    assert parse_host("192.168.0.1:65535") == ("192.168.0.1", 65535)
+    assert parse_host("192.168.0.1") == ("192.168.0.1", None)
+    assert parse_host("") == (None, None)
+    assert parse_host("123.456.789.0:1234") ==
+
+# Generated at 2024-03-18 07:29:19.284921
+```python
+    # Mock configuration and headers
+    config = type('Config', (), {'FORWARDED_SECRET': 'secret123'})
+    headers = type('Headers', (), {'getall': lambda self, key, default: ['for=192.0.2.60;proto=http;by=secret123'] if key == 'forwarded' else default})()
+
+    # Test with valid secret
+    result = parse_forwarded(headers, config)
+    assert result == {'for': '192.0.2.60', 'proto': 'http', 'by': 'secret123'}, "Failed to parse Forwarded header with valid secret"
+
+    # Test with invalid secret
+    config.FORWARDED_SECRET = 'invalid_secret'
+    result = parse_forwarded(headers, config)
+    assert result is None, "Parsed Forwarded header with invalid secret"
+
+    # Test with no secret in config
+    config.FORWARDED_SECRET = None
+    result = parse_forwarded
+
+# Generated at 2024-03-18 07:29:27.086129
+```python
+    # Test normalization of forwarded header values
+    assert fwd_normalize([('for', '192.0.2.60'), ('proto', 'https'), ('by', '203.0.113.43')]) == {
+        'for': '192.0.2.60',
+        'proto': 'https',
+        'by': '203.0.113.43'
+    }
+    # Test normalization of IPv6 addresses
+    assert fwd_normalize([('for', '2001:db8:cafe::17')]) == {'for': '[2001:db8:cafe::17]'}
+    # Test normalization of obfuscated identifiers
+    assert fwd_normalize([('for', '_hidden')]) == {'for': '_hidden'}
+    # Test normalization with unknown address
+    try:
+        fwd_normalize([('for', 'unknown')])
+        assert False, "ValueError not raised for 'unknown' address"
+    except ValueError:
+        pass
+   
+
+# Generated at 2024-03-18 07:29:35.324897
+```python
+    # Setup
+    config = type('Config', (), {'FORWARDED_SECRET': 'secret123'})
+    headers = {
+        'forwarded': [
+            'for=192.0.2.60;proto=http;by=203.0.113.43',
+            'for=192.0.2.61;proto=https;by=secret123',
+            'for=192.0.2.62;proto=http;by=203.0.113.44'
+        ]
+    }
+
+    # Test parsing with correct secret
+    result = parse_forwarded(headers, config)
+    assert result == {'for': '192.0.2.61', 'proto': 'https', 'by': 'secret123'}, "Failed to parse Forwarded header with correct secret"
+
+    # Test parsing with incorrect secret
+    config.FORWARDED_SECRET = 'wrongsecret'
+    result = parse_forwarded(headers, config)
+    assert result is None
+
+# Generated at 2024-03-18 07:29:42.501465
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers and config
+    headers = MagicMock()
+    config = MagicMock()
+
+    # Test case 1: No X-Forwarded-For header and no proxies count
+    headers.getall.return_value = []
+    config.PROXIES_COUNT = 0
+    assert parse_xforwarded(headers, config) is None
+
+    # Test case 2: X-Forwarded-For header present, but proxies count is zero
+    headers.getall.return_value = ["192.168.1.1"]
+    config.PROXIES_COUNT = 0
+    assert parse_xforwarded(headers, config) is None
+
+    # Test case 3: X-Forwarded-For header present with single IP and proxies count is 1
+    headers.getall.return_value = ["192.168.1.1"]
+    config.PROXIES_COUNT = 1
+    assert parse_xforwarded(headers, config)
+
+# Generated at 2024-03-18 07:29:49.645451
+```python
+    # Setup headers and config for the test
+    headers = {
+        "x-forwarded-for": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    }
+    config = {
+        "REAL_IP_HEADER": "x-forwarded-for",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "x-forwarded-for"
+    }
+
+    # Call the function with the headers and config
+    options = parse_xforwarded(headers, config)
+
+    # Check the results
+    assert options is not None
+    assert options["for"] == "70.41.3.18"
+    assert options["proto"] == "https"
+    assert options
+
+# Generated at 2024-03-18 07:29:58.723720
+```python
+    # Test normalization of various forwarded header values
+    assert fwd_normalize([('for', '192.0.2.60'), ('proto', 'https'), ('by', '203.0.113.43')]) == {
+        'for': '192.0.2.60',
+        'proto': 'https',
+        'by': '203.0.113.43'
+    }
+    assert fwd_normalize([('for', '[2001:db8:cafe::17]'), ('proto', 'http'), ('by', 'unknown')]) == {
+        'for': '[2001:db8:cafe::17]',
+        'proto': 'http'
+    }
+    assert fwd_normalize([('for', '_secret'), ('proto', 'https'), ('by', '_hidden')]) == {
+        'for': '_secret',
+        'proto': 'https',
+        'by': '_hidden'
+    }
+    assert fwd_normalize([('for',
+
+# Generated at 2024-03-18 07:30:09.816122
+```python
+    # Setup headers and config for the test
+    headers = {
+        "x-forwarded-for": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com:8080",
+        "x-forwarded-port": "8080",
+        "x-forwarded-path": "/path",
+    }
+    config = {
+        "REAL_IP_HEADER": "x-forwarded-for",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "x-forwarded-for",
+    }
+
+    # Call the function with the headers and config
+    result = parse_xforwarded(headers, config)
+
+    # Expected result
+    expected = {
+        "for": "70.41.3.18",
+        "proto": "https",
+        "host": "example.com",
+       
+
+# Generated at 2024-03-18 07:30:18.313521
+```python
+    from unittest.mock import MagicMock
+
+    # Mock configuration with a secret
+    config = MagicMock()
+    config.FORWARDED_SECRET = "secret123"
+
+    # Mock headers with a single Forwarded header
+    headers = MagicMock()
+    headers.getall.return_value = ["for=192.0.2.60;proto=http;by=203.0.113.43;secret=secret123"]
+
+    # Call the function with the mocked headers and config
+    result = parse_forwarded(headers, config)
+
+    # Check if the result is as expected
+    assert result == {
+        "for": "192.0.2.60",
+        "proto": "http",
+        "by": "203.0.113.43",
+        "secret": "secret123"
+    }, "Failed to parse Forwarded header with a single entry"
+
+    # Mock headers with multiple Forwarded headers
+    headers.getall.return_value = [
+        "for=
+
+# Generated at 2024-03-18 07:30:31.661617
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a single Forwarded header
+    headers = MagicMock()
+    headers.getall.return_value = ['by=203.0.113.43;for=198.51.100.17;host=example.com;proto=https']
+
+    # Mock config with a matching secret
+    config = MagicMock()
+    config.FORWARDED_SECRET = '198.51.100.17'
+
+    # Call the function to test
+    result = parse_forwarded(headers, config)
+
+    # Assert the expected result
+    assert result == {
+        'by': '203.0.113.43',
+        'for': '198.51.100.17',
+        'host': 'example.com',
+        'proto': 'https'
+    }, "Failed to parse Forwarded header with correct secret"
+
+    # Test with no Forwarded header present
+    headers.getall.return_value = None
+    result = parse_forward
+
+# Generated at 2024-03-18 07:30:40.438222
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a dictionary
+    headers = {
+        "X-Forwarded-For": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "example.com",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Path": "/path"
+    }
+    headers.getall = lambda key, default=None: [headers[key]] if key in headers else default
+    headers.get = lambda key, default=None: headers[key] if key in headers else default
+
+    # Mock config with attributes
+    config = MagicMock()
+    config.REAL_IP_HEADER = "X-Forwarded-For"
+    config.PROXIES_COUNT = 2
+    config.FORWARDED_FOR_HEADER = "X-Forward
+
+# Generated at 2024-03-18 07:30:48.314923
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a single Forwarded header
+    headers = MagicMock()
+    headers.getall.return_value = ['by=203.0.113.43;for=198.51.100.17;host=example.com;proto=https']
+
+    # Mock config with a matching FORWARDED_SECRET
+    config = MagicMock()
+    config.FORWARDED_SECRET = '198.51.100.17'
+
+    # Call the function to test
+    result = parse_forwarded(headers, config)
+
+    # Assert the expected result
+    assert result == {
+        'for': '198.51.100.17',
+        'by': '203.0.113.43',
+        'host': 'example.com',
+        'proto': 'https'
+    }, "Failed to parse Forwarded header correctly"
+
+    # Test with no Forwarded header present
+    headers.getall.return_value = None
+    result = parse_forward
+
+# Generated at 2024-03-18 07:30:59.449417
+```python
+    # Test normalization of various forwarded header values
+    assert fwd_normalize([('for', '192.0.2.60'), ('proto', 'https'), ('by', '203.0.113.43')]) == {
+        'for': '192.0.2.60',
+        'proto': 'https',
+        'by': '203.0.113.43'
+    }
+    assert fwd_normalize([('for', '[2001:db8:cafe::17]'), ('proto', 'http'), ('by', 'unknown')]) == {
+        'for': '[2001:db8:cafe::17]',
+        'proto': 'http'
+    }
+    assert fwd_normalize([('for', '_secret'), ('proto', 'https'), ('by', '_hidden')]) == {
+        'for': '_secret',
+        'proto': 'https',
+        'by': '_hidden'
+    }
+    assert fwd_normalize([('for',
+
+# Generated at 2024-03-18 07:31:10.113671
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a dictionary
+    headers = {
+        "X-Forwarded-For": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "example.com:8080",
+        "X-Forwarded-Port": "8080",
+        "X-Forwarded-Path": "/path"
+    }
+    headers = MagicMock()
+    headers.getall.side_effect = lambda k: [headers_dict[k]] if k in headers_dict else []
+    headers.get.side_effect = lambda k: headers_dict.get(k)
+
+    # Mock config with an object
+    class Config:
+        REAL_IP_HEADER = "X-Forwarded-For"
+        PROXIES_COUNT = 2
+        FORWARDED_FOR_HEADER = "X-Forwarded-
+
+# Generated at 2024-03-18 07:31:20.122020
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a dictionary
+    headers = {
+        "X-Forwarded-For": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "example.com",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Path": "/path"
+    }
+    headers.getall = lambda key, default=None: [headers[key]] if key in headers else default
+    headers.get = lambda key, default=None: headers[key] if key in headers else default
+
+    # Mock config with an object
+    class Config:
+        REAL_IP_HEADER = "X-Real-IP"
+        PROXIES_COUNT = 2
+        FORWARDED_FOR_HEADER = "X-Forwarded-For"
+
+    config
+
+# Generated at 2024-03-18 07:31:27.030019
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a dictionary
+    headers = {
+        "X-Forwarded-For": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "example.com",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Path": "/path"
+    }
+    headers_mock = MagicMock()
+    headers_mock.getall.side_effect = lambda k: [headers[k]] if k in headers else []
+    headers_mock.get.side_effect = lambda k: headers.get(k)
+
+    # Mock config with a dictionary
+    config = {
+        "REAL_IP_HEADER": "X-Forwarded-For",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "X-Forwarded-For
+
+# Generated at 2024-03-18 07:31:39.372354
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a dictionary
+    headers = {
+        "X-Forwarded-For": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "example.com:8080",
+        "X-Forwarded-Port": "8080",
+        "X-Forwarded-Path": "/path",
+    }
+    headers.getall = lambda key, default=None: [headers[key]] if key in headers else default
+    headers.get = lambda key, default=None: headers[key] if key in headers else default
+
+    # Mock config with a dictionary
+    config = {
+        "REAL_IP_HEADER": "X-Forwarded-For",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "X
+
+# Generated at 2024-03-18 07:31:52.972362
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a single Forwarded header
+    headers = MagicMock()
+    headers.getall.return_value = ['by=203.0.113.43;for=198.51.100.17;host=example.com;proto=https']
+
+    # Mock config with a matching secret
+    config = MagicMock()
+    config.FORWARDED_SECRET = '198.51.100.17'
+
+    # Call the function with the mocked headers and config
+    result = parse_forwarded(headers, config)
+
+    # Check if the result is as expected
+    assert result == {
+        'by': '203.0.113.43',
+        'for': '198.51.100.17',
+        'host': 'example.com',
+        'proto': 'https'
+    }, "Failed to parse Forwarded header with correct secret"
+
+    # Test with no Forwarded header present
+    headers.getall.return_value =
+
+# Generated at 2024-03-18 07:32:01.234789
+```python
+    # Test with simple content-type
+    value, options = parse_content_header("text/plain")
+    assert value == "text/plain"
+    assert options == {}
+
+    # Test with complex content-disposition
+    value, options = parse_content_header('form-data; name="upload"; filename="file.txt"')
+    assert value == "form-data"
+    assert options == {"name": "upload", "filename": "file.txt"}
+
+    # Test with escaped quotes in filename
+    value, options = parse_content_header('attachment; filename="file\\"name.txt"')
+    assert value == "attachment"
+    assert options == {"filename": 'file"name.txt'}
+
+    # Test with multiple parameters and whitespace
+    value, options = parse_content_header('multipart/form-data; boundary="----WebKitFormBoundaryePkpFF7tjBAqx29L"; charset=utf-8')
+    assert value == "multipart/form-data"
+    assert options == {"boundary":
+
+# Generated at 2024-03-18 07:32:13.894579
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a single Forwarded header
+    headers = MagicMock()
+    headers.getall.return_value = ['by=203.0.113.43;for=198.51.100.17;host=example.com;proto=https']
+
+    # Mock config with a matching secret
+    config = MagicMock()
+    config.FORWARDED_SECRET = '198.51.100.17'
+
+    # Call the function with the mocked headers and config
+    result = parse_forwarded(headers, config)
+
+    # Check if the result is as expected
+    assert result == {
+        'by': '203.0.113.43',
+        'for': '198.51.100.17',
+        'host': 'example.com',
+        'proto': 'https'
+    }, "Failed to parse Forwarded header correctly"
+
+    # Test with no Forwarded header present
+    headers.getall.return_value = None
+
+
+# Generated at 2024-03-18 07:32:24.216740
+```python
+    # Setup headers and config for the test
+    headers = {
+        "x-forwarded-for": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com:8080",
+        "x-forwarded-port": "8080",
+        "x-forwarded-path": "/path",
+    }
+    config = {
+        "REAL_IP_HEADER": "x-forwarded-for",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "x-forwarded-for",
+    }
+
+    # Call the function with the headers and config
+    result = parse_xforwarded(headers, config)
+
+    # Expected result
+    expected = {
+        "for": "70.41.3.18",
+        "proto": "https",
+        "host": "example.com",
+       
+
+# Generated at 2024-03-18 07:32:33.795059
+```python
+    # Setup
+    config = type('Config', (), {'FORWARDED_SECRET': 'secret123'})
+    headers = {
+        'forwarded': [
+            'for=192.0.2.60;proto=http;by=203.0.113.43',
+            'for=192.0.2.61;proto=https;by=secret123',
+            'for=192.0.2.62;proto=http;by=203.0.113.44'
+        ]
+    }
+
+    # Test parsing with correct secret
+    result = parse_forwarded(headers, config)
+    assert result == {
+        'for': '192.0.2.61',
+        'proto': 'https',
+        'by': 'secret123'
+    }, "Failed to parse Forwarded header with correct secret"
+
+    # Test parsing with incorrect secret
+    config.FORWARDED_SECRET = 'wrongsecret'
+    result = parse_forwarded(headers, config
+
+# Generated at 2024-03-18 07:32:40.134795
+```python
+    from sanic.request import Request
+    from sanic.response import text
+    from sanic import Sanic
+    from sanic.testing import SanicTestClient
+
+    # Mock configuration object
+    class Config:
+        REAL_IP_HEADER = "x-real-ip"
+        PROXIES_COUNT = 1
+        FORWARDED_FOR_HEADER = "x-forwarded-for"
+
+    # Mock headers
+    headers = {
+        "x-real-ip": "123.123.123.123",
+        "x-forwarded-for": "proxy1, proxy2, 123.123.123.123",
+        "x-scheme": "https",
+        "x-forwarded-proto": "http",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "8080",
+        "x-forwarded-path": "/some/path"
+    }
+
+    # Create a Sanic app and test client
+    app = Sanic("TestApp
+
+# Generated at 2024-03-18 07:32:48.248210
+```python
+    # Setup
+    from unittest.mock import MagicMock
+
+    # Mock headers with a Forwarded header containing the secret
+    headers = MagicMock()
+    headers.getall.return_value = ['by=server;for=192.0.2.60;host=example.com;proto=http;secret=supersecret']
+
+    # Mock config with a matching FORWARDED_SECRET
+    config = MagicMock()
+    config.FORWARDED_SECRET = 'supersecret'
+
+    # Call the function with the mock objects
+    result = parse_forwarded(headers, config)
+
+    # Assert the result is as expected
+    assert result == {
+        'by': 'server',
+        'for': '192.0.2.60',
+        'host': 'example.com',
+        'proto': 'http',
+        'secret': 'supersecret'
+    }, "Failed to parse Forwarded header correctly"
+
+    # Test with no Forwarded header present
+    headers.getall.return_value = None
+
+# Generated at 2024-03-18 07:32:57.434344
+```python
+    # Test with simple content-type
+    value, options = parse_content_header("text/plain")
+    assert value == "text/plain"
+    assert options == {}
+
+    # Test with complex content-disposition
+    value, options = parse_content_header('form-data; name="upload"; filename="file.txt"')
+    assert value == "form-data"
+    assert options == {"name": "upload", "filename": "file.txt"}
+
+    # Test with escaped quotes in filename
+    value, options = parse_content_header('attachment; filename="file\\"name.txt"')
+    assert value == "attachment"
+    assert options == {"filename": 'file"name.txt'}
+
+    # Test with multiple parameters and whitespace
+    value, options = parse_content_header('multipart/form-data; boundary="----WebKitFormBoundaryePkpFF7tjBAqx29L"; charset=utf-8')
+    assert value == "multipart/form-data"
+    assert options == {"boundary":
+
+# Generated at 2024-03-18 07:33:05.019625
+```python
+    from sanic.request import Request
+    from sanic.response import text
+    from sanic import Sanic
+    from sanic.testing import SanicTestClient
+
+    app = Sanic("TestParseForwarded")
+
+    @app.route("/")
+    async def test(request: Request):
+        return text("OK")
+
+    client = SanicTestClient(app)
+
+    # Mock config with a FORWARDED_SECRET
+    class MockConfig:
+        FORWARDED_SECRET = "secretkey"
+
+    config = MockConfig()
+
+    # Test with no Forwarded header
+    headers = {}
+    assert parse_forwarded(headers, config) is None
+
+    # Test with Forwarded header but no secret
+    headers = {"forwarded": "for=192.0.2.60;proto=http;by=203.0.113.43"}
+    assert parse_forwarded(headers, config) is None
+
+    # Test with Forwarded header and secret
+    headers = {"
+
+# Generated at 2024-03-18 07:33:11.465814
+```python
+    headers = {
+        "X-Forwarded-For": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "X-Forwarded-Host": "example.com",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Path": "/path"
+    }
+    config = {
+        "REAL_IP_HEADER": "X-Real-IP",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "X-Forwarded-For"
+    }
+
+    expected = {
+        "for": "150.172.238.178",
+        "host": "example.com",
+        "proto": "https",
+        "port": 443,
+        "path": "/path"
+    }
+
+    assert parse_xforwarded(headers, config) == expected
+```
+
+# Generated at 2024-03-18 07:33:18.738247
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a dictionary
+    headers = {
+        "X-Forwarded-For": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "example.com",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Path": "/path"
+    }
+    headers_mock = MagicMock()
+    headers_mock.getall.side_effect = lambda k: [headers[k]] if k in headers else []
+    headers_mock.get.side_effect = lambda k: headers.get(k)
+
+    # Mock config with a dictionary
+    config = {
+        "REAL_IP_HEADER": "X-Forwarded-For",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "X-Forwarded-For
+
+# Generated at 2024-03-18 07:33:25.382556
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a dictionary
+    headers = {
+        "X-Forwarded-For": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "example.com",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Path": "/path"
+    }
+    headers_mock = MagicMock()
+    headers_mock.getall.side_effect = lambda k: [headers[k]] if k in headers else []
+    headers_mock.get.side_effect = lambda k: headers.get(k)
+
+    # Mock config with a dictionary
+    config = {
+        "REAL_IP_HEADER": "X-Forwarded-For",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "X-Forwarded-For
+
+# Generated at 2024-03-18 07:33:54.522885
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a single Forwarded header
+    headers = MagicMock()
+    headers.getall.return_value = ['by=203.0.113.43;for=198.51.100.17;host=example.com;proto=https']
+
+    # Mock config with a matching secret
+    config = MagicMock()
+    config.FORWARDED_SECRET = '198.51.100.17'
+
+    # Call the function with the mocked headers and config
+    result = parse_forwarded(headers, config)
+
+    # Check if the result is as expected
+    assert result == {
+        'by': '203.0.113.43',
+        'for': '198.51.100.17',
+        'host': 'example.com',
+        'proto': 'https'
+    }, "Failed to parse Forwarded header correctly"
+
+    # Test with no Forwarded header present
+    headers.getall.return_value = None
+
+
+# Generated at 2024-03-18 07:34:02.850587
+```python
+    headers = {
+        "X-Forwarded-For": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "X-Forwarded-Host": "example.com",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Path": "/path"
+    }
+    config = {
+        "REAL_IP_HEADER": "X-Real-IP",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "X-Forwarded-For"
+    }
+
+    # Mocking Headers.getall method
+    class Headers(dict):
+        def getall(self, key):
+            return [self[key]] if key in self else []
+
+    expected = {
+        "for": "150.172.238.178",
+        "host": "example.com",
+        "proto
+
+# Generated at 2024-03-18 07:34:09.451559
+```python
+    headers = {
+        "X-Forwarded-For": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "X-Forwarded-Host": "example.com",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Path": "/path"
+    }
+    config = {
+        "REAL_IP_HEADER": "X-Real-IP",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "X-Forwarded-For"
+    }
+
+    expected = {
+        "for": "150.172.238.178",
+        "host": "example.com",
+        "proto": "https",
+        "port": 443,
+        "path": "/path"
+    }
+
+    result = parse_xforwarded(headers, config)
+    assert result
+
+# Generated at 2024-03-18 07:34:15.549715
+```python
+    headers = {
+        "X-Forwarded-For": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "X-Forwarded-Host": "example.com",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Path": "/path"
+    }
+    config = {
+        "REAL_IP_HEADER": "X-Real-IP",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "X-Forwarded-For"
+    }
+
+    # Test with PROXIES_COUNT set to 2
+    expected = {
+        "for": "150.172.238.178",
+        "host": "example.com",
+        "proto": "https",
+        "port": 443,
+        "path": "/path"
+    }
+   
+
+# Generated at 2024-03-18 07:34:21.576327
+```python
+    # Setup a mock config with a FORWARDED_SECRET
+    class MockConfig:
+        FORWARDED_SECRET = "secret123"
+
+    config = MockConfig()
+
+    # Test with no Forwarded header
+    headers = {"other-header": "value"}
+    assert parse_forwarded(headers, config) is None
+
+    # Test with Forwarded header but no secret
+    headers = {"forwarded": "for=192.0.2.60;proto=http;by=203.0.113.43"}
+    assert parse_forwarded(headers, config) is None
+
+    # Test with Forwarded header containing the secret in 'by' field
+    headers = {"forwarded": "for=192.0.2.60;proto=http;by=secret123"}
+    expected = {'for': '192.0.2.60', 'proto': 'http', 'by': 'secret123'}
+    assert parse_forwarded(headers, config) ==
+
+# Generated at 2024-03-18 07:34:27.065969
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a dictionary
+    headers = {
+        "X-Forwarded-For": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "example.com",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Path": "/path"
+    }
+    headers.getall = lambda key, default=None: [headers[key]] if key in headers else default
+    headers.get = lambda key, default=None: headers[key] if key in headers else default
+
+    # Mock config with a dictionary
+    config = {
+        "REAL_IP_HEADER": "X-Forwarded-For",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "X-Forwarded-
+
+# Generated at 2024-03-18 07:34:35.706607
+```python
+    # Setup
+    from unittest.mock import MagicMock
+
+    # Mock headers with a Forwarded header containing the secret
+    headers = MagicMock()
+    headers.getall.return_value = ['by=server;for=192.0.2.60;host=example.com;proto=http;secret=supersecret']
+
+    # Mock config with a matching FORWARDED_SECRET
+    config = MagicMock()
+    config.FORWARDED_SECRET = 'supersecret'
+
+    # Call the function with the mock objects
+    result = parse_forwarded(headers, config)
+
+    # Assert the result is as expected
+    assert result == {
+        'by': 'server',
+        'for': '192.0.2.60',
+        'host': 'example.com',
+        'proto': 'http',
+        'secret': 'supersecret'
+    }, "Failed to parse Forwarded header correctly"
+
+    # Test with no Forwarded header present
+    headers.getall.return_value = None
+
+# Generated at 2024-03-18 07:34:41.424306
+```python
+    # Setup
+    from unittest.mock import MagicMock
+
+    # Mock headers with a Forwarded header containing the secret
+    headers = MagicMock()
+    headers.getall.return_value = ['by=server;for=192.0.2.60;host=example.com;proto=http;secret=supersecret']
+
+    # Mock config with a matching FORWARDED_SECRET
+    config = MagicMock()
+    config.FORWARDED_SECRET = 'supersecret'
+
+    # Call the function with the mock objects
+    result = parse_forwarded(headers, config)
+
+    # Assert the result is as expected
+    assert result == {
+        'by': 'server',
+        'for': '192.0.2.60',
+        'host': 'example.com',
+        'proto': 'http',
+        'secret': 'supersecret'
+    }, "Failed to parse Forwarded header correctly"
+
+    # Test with no Forwarded header present
+    headers.getall.return_value = None
+
+# Generated at 2024-03-18 07:34:48.663403
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a single Forwarded header
+    headers = MagicMock()
+    headers.getall.return_value = ["by=203.0.113.43, for=192.0.2.60;proto=http;host=example.com"]
+
+    # Mock config with a matching secret
+    config = MagicMock()
+    config.FORWARDED_SECRET = "203.0.113.43"
+
+    # Call the function to test
+    result = parse_forwarded(headers, config)
+
+    # Assert the expected result
+    assert result == {
+        "for": "192.0.2.60",
+        "proto": "http",
+        "host": "example.com"
+    }
+
+    # Test with no Forwarded header present
+    headers.getall.return_value = None
+    result = parse_forwarded(headers, config)
+    assert result is None
+
+    # Test with a non-matching secret
+    headers.get
+
+# Generated at 2024-03-18 07:34:54.121779
+```python
+    from sanic.request import RequestParameters
+
+    # Mock headers and config
+    headers = RequestParameters()
+    config = type('Config', (), {})()
+    config.FORWARDED_SECRET = 'secret'
+
+    # Test case 1: No Forwarded header
+    assert parse_forwarded(headers, config) is None
+
+    # Test case 2: Forwarded header without secret
+    headers['forwarded'] = 'for=192.0.2.60;proto=http;by=203.0.113.43'
+    assert parse_forwarded(headers, config) is None
+
+    # Test case 3: Forwarded header with secret, but not matching config
+    headers['forwarded'] = 'for=192.0.2.60;proto=http;by=203.0.113.43;secret=wrongsecret'
+    assert parse_forwarded(headers, config) is None
+
+    # Test case 4: Forwarded
+
+# Generated at 2024-03-18 07:35:30.240822
+```python
+    headers = {
+        "x-forwarded-for": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    }
+    config = {
+        "REAL_IP_HEADER": "x-forwarded-for",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "x-forwarded-for"
+    }
+
+    expected = {
+        "for": "70.41.3.18",
+        "proto": "https",
+        "host": "example.com",
+        "port": 443,
+        "path": "/path"
+    }
+
+    result = parse_xforwarded(headers, config)
+    assert result == expected, f"Expected {expected}, got {result
+
+# Generated at 2024-03-18 07:35:38.427902
+```python
+    headers = {
+        "X-Forwarded-For": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "X-Forwarded-Host": "example.com",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Path": "/path"
+    }
+    config = {
+        "REAL_IP_HEADER": "X-Real-IP",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "X-Forwarded-For"
+    }
+
+    expected_result = {
+        "for": "150.172.238.178",
+        "host": "example.com",
+        "proto": "https",
+        "port": 443,
+        "path": "/path"
+    }
+
+    result = parse_xforwarded(headers, config)
+    assert
+
+# Generated at 2024-03-18 07:35:49.162954
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers and config
+    headers = MagicMock()
+    config = MagicMock()
+
+    # Test case 1: No X-Forwarded-For header and no proxies count
+    headers.getall.return_value = []
+    config.PROXIES_COUNT = 0
+    assert parse_xforwarded(headers, config) is None
+
+    # Test case 2: X-Forwarded-For header present, but proxies count is zero
+    headers.getall.return_value = ["192.168.1.1"]
+    config.PROXIES_COUNT = 0
+    assert parse_xforwarded(headers, config) is None
+
+    # Test case 3: X-Forwarded-For header present with multiple IPs and a valid proxies count
+    headers.getall.return_value = ["192.168.1.1, 10.0.0.1"]
+    config.PROXIES_COUNT = 1
+    assert
+
+# Generated at 2024-03-18 07:35:57.185929
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a single Forwarded header
+    headers_single = MagicMock()
+    headers_single.getall.return_value = ['by=203.0.113.43;for=198.51.100.17;host=example.com;proto=https']
+    config_single = MagicMock()
+    config_single.FORWARDED_SECRET = '198.51.100.17'
+
+    # Test with single Forwarded header
+    result_single = parse_forwarded(headers_single, config_single)
+    assert result_single == {
+        'by': '203.0.113.43',
+        'for': '198.51.100.17',
+        'host': 'example.com',
+        'proto': 'https'
+    }
+
+    # Mock headers with multiple Forwarded headers
+    headers_multiple = MagicMock()
+    headers_multiple.getall.return_value = [
+        'by=203.0.113.43;for=198.51
+
+# Generated at 2024-03-18 07:36:05.205299
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a dictionary
+    headers = {
+        "X-Forwarded-For": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "example.com",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Path": "/path"
+    }
+    headers.getall = lambda key, default=None: [headers[key]] if key in headers else default
+    headers.get = lambda key, default=None: headers[key] if key in headers else default
+
+    # Mock config with a dictionary
+    config = {
+        "REAL_IP_HEADER": "X-Forwarded-For",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "X-Forwarded-
+
+# Generated at 2024-03-18 07:36:11.433502
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a single Forwarded header
+    headers = MagicMock()
+    headers.getall.return_value = ['by=203.0.113.43;for=198.51.100.17;host=example.com;proto=https']
+
+    # Mock config with a matching secret
+    config = MagicMock()
+    config.FORWARDED_SECRET = '198.51.100.17'
+
+    # Call the function with the mocked headers and config
+    result = parse_forwarded(headers, config)
+
+    # Check if the result is as expected
+    assert result == {
+        'by': '203.0.113.43',
+        'for': '198.51.100.17',
+        'host': 'example.com',
+        'proto': 'https'
+    }, f"Expected dictionary with parsed values, got: {result}"
+
+    # Test with no Forwarded header present
+    headers.getall.return
+
+# Generated at 2024-03-18 07:36:18.131596
+```python
+    # Mock configuration and headers
+    class Config:
+        FORWARDED_SECRET = "secret123"
+
+    config = Config()
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="secret123"',
+            'for=192.0.2.61;proto=https;by=203.0.113.44;secret="othersecret"'
+        ]
+    }
+
+    # Test with correct secret
+    result = parse_forwarded(headers, config)
+    assert result == {
+        "for": "192.0.2.60",
+        "proto": "http",
+        "by": "203.0.113.43",
+        "secret": "secret123"
+    }, f"Expected options with correct secret, got {result}"
+
+    # Test with incorrect secret
+    config.FORWARDED_SECRET = "wrongsecret"
+    result =
+
+# Generated at 2024-03-18 07:36:24.646081
+```python
+    # Setup a mock config with a secret
+    class MockConfig:
+        FORWARDED_SECRET = "secret123"
+
+    config = MockConfig()
+
+    # Test with a single Forwarded header containing the secret
+    headers = {"forwarded": "for=192.0.2.60;proto=http;by=secret123"}
+    result = parse_forwarded(headers, config)
+    assert result == {"for": "192.0.2.60", "proto": "http", "by": "secret123"}
+
+    # Test with multiple Forwarded headers, one of which contains the secret
+    headers = {
+        "forwarded": [
+            "for=192.0.2.60;proto=http",
+            "by=secret123;for=192.0.2.61;proto=https",
+        ]
+    }
+    result = parse_forwarded(headers, config)
+    assert result == {"for": "192.0.2.
+
+# Generated at 2024-03-18 07:36:35.750533
+```python
+    # Setup a mock config with a secret
+    class MockConfig:
+        FORWARDED_SECRET = "secret123"
+
+    config = MockConfig()
+
+    # Test with a single Forwarded header containing the secret
+    headers = {"forwarded": "for=192.0.2.60;proto=http;by=203.0.113.43;secret=secret123"}
+    result = parse_forwarded(headers, config)
+    assert result == {"for": "192.0.2.60", "proto": "http", "by": "203.0.113.43"}
+
+    # Test with multiple Forwarded headers, one of which contains the secret
+    headers = {
+        "forwarded": [
+            "for=192.0.2.60;proto=http",
+            "by=203.0.113.43;secret=secret123",
+        ]
+    }
+    result = parse_forwarded(headers, config)
+    assert
+
+# Generated at 2024-03-18 07:36:41.976076
+```python
+    # Mock headers and config for testing
+    headers = {
+        "x-forwarded-for": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    }
+    config = {
+        "REAL_IP_HEADER": "x-forwarded-for",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "x-forwarded-for"
+    }
+
+    # Test with PROXIES_COUNT set to 2
+    expected_result = {
+        "for": "70.41.3.18",
+        "proto": "https",
+        "host": "example.com",
+        "port": 443,
+        "path": "/path"
+    }
+    assert parse
+
+# Generated at 2024-03-18 07:37:23.561615
+```python
+    # Setup headers and config for the test
+    headers = {
+        "x-forwarded-for": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    }
+    config = {
+        "REAL_IP_HEADER": "x-forwarded-for",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "x-forwarded-for"
+    }
+
+    # Call the function with the headers and config
+    options = parse_xforwarded(headers, config)
+
+    # Expected result
+    expected_options = {
+        "for": "150.172.238.178",
+        "proto": "https",
+        "host": "example.com",
+        "port":
+
+# Generated at 2024-03-18 07:37:32.166317
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers and config
+    headers = MagicMock()
+    config = MagicMock()
+
+    # Test case 1: No headers, no config
+    headers.get.return_value = None
+    headers.getall.return_value = []
+    config.REAL_IP_HEADER = None
+    config.PROXIES_COUNT = None
+    assert parse_xforwarded(headers, config) is None
+
+    # Test case 2: REAL_IP_HEADER set, but no header value
+    config.REAL_IP_HEADER = "X-Real-IP"
+    headers.get.return_value = None
+    assert parse_xforwarded(headers, config) is None
+
+    # Test case 3: REAL_IP_HEADER set with header value
+    headers.get.return_value = "192.0.2.1"
+    expected = {'for': '192.0.2.1'}
+    assert parse_xforwarded(headers, config) == expected
+
+    # Test
+
+# Generated at 2024-03-18 07:37:38.463393
+```python
+    # Mock headers and config for testing
+    headers = {
+        "x-forwarded-for": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    }
+    config = {
+        "REAL_IP_HEADER": "x-forwarded-for",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "x-forwarded-for"
+    }
+
+    # Test with PROXIES_COUNT = 2
+    expected_result = {
+        "for": "70.41.3.18",
+        "proto": "https",
+        "host": "example.com",
+        "port": 443,
+        "path": "/path"
+    }
+    assert parse_x
+
+# Generated at 2024-03-18 07:37:48.640447
+Here is the completion for the unit test function `test_parse_xforwarded`:
+
+```python
+    # Mock headers and config for testing
+    headers = {
+        "x-forwarded-for": "203.0.113.195, 70.41.3.18, 150.172.238.178",
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path",
+    }
+    config = {
+        "REAL_IP_HEADER": "x-forwarded-for",
+        "PROXIES_COUNT": 2,
+        "FORWARDED_FOR_HEADER": "x-forwarded-for",
+    }
+
+    # Expected result
+    expected = {
+        "for": "70.41.3.18",
+        "proto": "https",
+        "host": "example.com",
+        "port": 443,
+        "path":
+
+# Generated at 2024-03-18 07:37:55.020080
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a single Forwarded header
+    headers = MagicMock()
+    headers.getall.return_value = ['by=203.0.113.43;for=198.51.100.17;host=example.com;proto=https']
+
+    # Mock config with a matching FORWARDED_SECRET
+    config = MagicMock()
+    config.FORWARDED_SECRET = '198.51.100.17'
+
+    # Call the function to test
+    result = parse_forwarded(headers, config)
+
+    # Assert the expected result
+    assert result == {
+        'by': '203.0.113.43',
+        'for': '198.51.100.17',
+        'host': 'example.com',
+        'proto': 'https'
+    }, "Failed to parse Forwarded header correctly"
+
+    # Test with no Forwarded header present
+    headers.getall.return_value = None
+    result = parse_forward
+
+# Generated at 2024-03-18 07:38:02.975812
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers and config
+    headers = MagicMock()
+    config = MagicMock()
+
+    # Test case 1: No headers, no config
+    headers.get.return_value = None
+    headers.getall.return_value = []
+    config.REAL_IP_HEADER = None
+    config.PROXIES_COUNT = None
+    assert parse_xforwarded(headers, config) is None
+
+    # Test case 2: REAL_IP_HEADER set, but no header value
+    config.REAL_IP_HEADER = "X-Real-IP"
+    headers.get.return_value = None
+    assert parse_xforwarded(headers, config) is None
+
+    # Test case 3: REAL_IP_HEADER set with header value
+    headers.get.return_value = "192.0.2.1"
+    expected = {'for': '192.0.2.1'}
+    assert parse_xforwarded(headers, config) == expected
+
+    # Test
+
+# Generated at 2024-03-18 07:38:08.161327
+```python
+    from unittest.mock import MagicMock
+
+    # Mock headers with a single Forwarded header
+    headers = MagicMock()
+    headers.getall.return_value = ['by=203.0.113.43;for=198.51.100.17;host=example.com;proto=https']
+
+    # Mock config with a matching secret
+    config = MagicMock()
+    config.FORWARDED_SECRET = '198.51.100.17'
+
+    # Call the function to test
+    result = parse_forwarded(headers, config)
+
+    # Check if the result is as expected
+    assert result == {
+        'by': '203.0.113.43',
+        'for': '198.51.100.17',
+        'host': 'example.com',
+        'proto': 'https'
+    }, "Failed to parse Forwarded header with correct secret"
+
+    # Test with no Forwarded header present
+    headers.getall.return_value = None
+    result
+
+# Generated at 2024-03-18 07:38:14.135518
+```python
+    # Test normalization of various forwarded header values
+    assert fwd_normalize([('for', '192.0.2.60')]) == {'for': '192.0.2.60'}
+    assert fwd_normalize([('for', '[2001:db8:cafe::17]')]) == {'for': '[2001:db8:cafe::17]'}
+    assert fwd_normalize([('for', 'unknown')]) == {}
+    assert fwd_normalize([('for', '_secret')]) == {'for': '_secret'}
+    assert fwd_normalize([('proto', 'HTTP')]) == {'proto': 'http'}
+    assert fwd_normalize([('proto', 'HTTPS')]) == {'proto': 'https'}
+    assert fwd_normalize([('host', 'example.com')]) == {'host': 'example.com'}
+    assert fwd_normalize([('port', '8080')]) == {'port': 8080}
+    assert fwd_normalize([('path', '/foo/bar')])
+
+# Generated at 2024-03-18 07:38:22.769397
+```python
+    # Setup a mock config with a secret
+    class MockConfig:
+        FORWARDED_SECRET = "secret123"
+
+    config = MockConfig()
+
+    # Test with no headers
+    headers = {}
+    assert parse_forwarded(headers, config) is None
+
+    # Test with no secret in config
+    config.FORWARDED_SECRET = None
+    headers = {"forwarded": "for=192.0.2.60;proto=http;by=203.0.113.43"}
+    assert parse_forwarded(headers, config) is None
+
+    # Reset secret in config for further tests
+    config.FORWARDED_SECRET = "secret123"
+
+    # Test with a single Forwarded header
+    headers = {"forwarded": "for=192.0.2.60;proto=http;by=203.0.113.43;secret=secret123"}
+    expected = {'for': '192.0.2.60', '
+
+# Generated at 2024-03-18 07:38:35.102357
+```python
+    # Test normalization of various forwarded header values
+    assert fwd_normalize([('for', '192.0.2.60'), ('proto', 'https'), ('by', '203.0.113.43')]) == {
+        'for': '192.0.2.60',
+        'proto': 'https',
+        'by': '203.0.113.43'
+    }
+    assert fwd_normalize([('for', '[2001:db8:cafe::17]'), ('proto', 'http'), ('by', 'unknown')]) == {
+        'for': '[2001:db8:cafe::17]',
+        'proto': 'http'
+    }
+    assert fwd_normalize([('for', '_secret'), ('proto', 'https'), ('by', '_hidden')]) == {
+        'for': '_secret',
+        'proto': 'https',
+        'by': '_hidden'
+    }
+    assert fwd_normalize([('for',

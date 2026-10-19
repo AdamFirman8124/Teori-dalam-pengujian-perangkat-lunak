@@ -1,0 +1,1943 @@
+
+
+# Generated at 2024-06-03 15:55:50.271829
+```python
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    class MockResolver(Resolver):
+        async def resolve(self, host, port, family=socket.AF_UNSPEC):
+            return [(family, (host, port))]
+
+    mock_resolver = MockResolver()
+    mapping = {
+        "example.com": "127.0.0.1",
+        ("login.example.com", 443): ("localhost", 1443),
+        ("login.example.com", 443, socket.AF_INET6): ("::1", 1443),
+    }
+    resolver = OverrideResolver(mock_resolver, mapping)
+
+    async def run_test():
+        result = await resolver.resolve("example.com", 80)
+        assert result == [(socket.AF_UNSPEC, ("127.0.0.1", 80))]
+
+        result = await resolver.resolve("login.example.com", 443)
+        assert result == [(socket.AF_UNSPEC, ("localhost", 
+
+# Generated at 2024-06-03 15:55:55.085370
+```python
+    resolver = Resolver()
+    host = "localhost"
+    port = 80
+    family = socket.AF_UNSPEC
+
+    async def run_test():
+        result = await resolver.resolve(host, port, family)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+        assert all(isinstance(item[0], int) and isinstance(item[1], tuple) for item in result)
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run_test())
+```
+
+# Generated at 2024-06-03 15:55:57.817629
+```python
+    resolver = Resolver()
+    host = "localhost"
+    port = 80
+    family = socket.AF_UNSPEC
+
+    async def run_test():
+        result = await resolver.resolve(host, port, family)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+        assert all(isinstance(item[0], int) and isinstance(item[1], tuple) for item in result)
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run_test())
+```
+
+# Generated at 2024-06-03 15:56:01.034230
+```python
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server_socket.bind(('localhost', 0))
+    server_socket.listen(1)
+
+    def callback(connection, address):
+        connection.sendall(b"Hello, World!")
+        connection.close()
+
+    remove_handler = add_accept_handler(server_socket, callback)
+
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect(server_socket.getsockname())
+    data = client_socket.recv(1024)
+    client_socket.close()
+
+    assert data == b"Hello, World!"
+
+    remove_handler()
+    server_socket.close()
+```
+
+# Generated at 2024-06-03 15:56:04.304478
+```python
+    resolver = Resolver()
+    host = "localhost"
+    port = 80
+    family = socket.AF_INET
+
+    async def run_test():
+        result = await resolver.resolve(host, port, family)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+        assert all(isinstance(item[0], int) and isinstance(item[1], tuple) for item in result)
+
+    IOLoop.current().run_sync(run_test)
+```
+
+# Generated at 2024-06-03 15:56:07.574200
+```python
+    assert is_valid_ip("192.168.1.1") == True
+    assert is_valid_ip("255.255.255.255") == True
+    assert is_valid_ip("::1") == True
+    assert is_valid_ip("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == True
+    assert is_valid_ip("invalid_ip") == False
+    assert is_valid_ip("") == False
+    assert is_valid_ip("256.256.256.256") == False
+    assert is_valid_ip("1234:5678:9abc:def0:1234:5678:9abc:def0:1234") == False
+```
+
+# Generated at 2024-06-03 15:56:12.223688
+```python
+    import tempfile
+    import os
+    import socket
+
+    # Create a temporary file to use as the socket file
+    with tempfile.NamedTemporaryFile() as temp:
+        socket_path = temp.name
+
+    # Test that the socket is created and bound correctly
+    sock = bind_unix_socket(socket_path)
+    assert isinstance(sock, socket.socket)
+    assert sock.family == socket.AF_UNIX
+    assert sock.getsockname() == socket_path
+
+    # Test that the socket file is created with the correct permissions
+    st = os.stat(socket_path)
+    assert stat.S_ISSOCK(st.st_mode)
+    assert oct(st.st_mode & 0o777) == oct(0o600)
+
+    # Clean up
+    sock.close()
+    os.remove(socket_path)
+```
+
+# Generated at 2024-06-03 15:56:16.459564
+```python
+    port = 8888
+    address = "localhost"
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    for sock in sockets:
+        assert sock.getsockname()[1] == port
+        sock.close()
+
+    port = 0  # Let the OS pick an available port
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    bound_port = sockets[0].getsockname()[1]
+    for sock in sockets:
+        assert sock.getsockname()[1] == bound_port
+        sock.close()
+
+    try:
+        bind_sockets(8888, "invalid_address")
+    except socket.gaierror:
+        pass
+    else:
+        assert False, "Expected socket.gaierror"
+
+    try:
+        bind_sockets(8888, reuse_port=True)
+    except ValueError:
+        pass
+    else:
+        assert hasattr(socket,
+
+# Generated at 2024-06-03 15:56:20.037976
+```python
+    import socket
+    from tornado.ioloop import IOLoop
+
+    def mock_callback(connection, address):
+        connection.close()
+
+    def test_callback_called():
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.bind(('localhost', 0))
+        sock.listen(1)
+        remove_handler = add_accept_handler(sock, mock_callback)
+        
+        client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_sock.connect(sock.getsockname())
+        
+        IOLoop.current().add_timeout(IOLoop.current().time() + 0.1, IOLoop.current().stop)
+        IOLoop.current().start()
+        
+        remove_handler()
+        client_sock.close()
+        sock.close()
+
+    test_callback_called()
+```
+
+# Generated at 2024-06-03 15:56:25.231167
+```python
+    resolver = ExecutorResolver()
+    resolver.initialize()
+    host = "localhost"
+    port = 80
+    family = socket.AF_INET
+
+    async def run_test():
+        result = await resolver.resolve(host, port, family)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+        assert all(isinstance(item[0], int) and isinstance(item[1], tuple) for item in result)
+
+    IOLoop.current().run_sync(run_test)
+```
+
+# Generated at 2024-06-03 15:56:41.737918
+```python
+    assert is_valid_ip("192.168.1.1") == True
+    assert is_valid_ip("255.255.255.255") == True
+    assert is_valid_ip("0.0.0.0") == True
+    assert is_valid_ip("::1") == True
+    assert is_valid_ip("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == True
+    assert is_valid_ip("1200::AB00:1234::2552:7777:1313") == False
+    assert is_valid_ip("256.256.256.256") == False
+    assert is_valid_ip("123.456.789.0") == False
+    assert is_valid_ip("") == False
+    assert is_valid_ip("invalid_ip") == False
+```
+
+# Generated at 2024-06-03 15:56:46.682010
+```python
+    file = "/tmp/test_socket"
+    mode = 0o600
+    backlog = 128
+
+    # Ensure the socket file does not exist before the test
+    try:
+        os.remove(file)
+    except FileNotFoundError:
+        pass
+
+    # Create the socket
+    sock = bind_unix_socket(file, mode, backlog)
+
+    # Check if the socket file is created
+    assert os.path.exists(file), "Socket file was not created"
+
+    # Check if the file is a socket
+    assert stat.S_ISSOCK(os.stat(file).st_mode), "File is not a socket"
+
+    # Check if the socket is bound and listening
+    assert sock.getsockname() == file, "Socket is not bound to the correct file"
+    assert sock.gettimeout() is None, "Socket is not in non-blocking mode"
+
+    # Clean up
+    sock.close()
+    os.remove(file)
+```
+
+# Generated at 2024-06-03 15:56:49.792482
+```python
+    resolver = ExecutorResolver()
+    resolver.initialize()
+    loop = IOLoop.current()
+
+    async def run_test():
+        result = await resolver.resolve("localhost", 80)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+        assert all(isinstance(item[0], int) for item in result)
+        assert all(isinstance(item[1], tuple) for item in result)
+
+    loop.run_sync(run_test)
+    resolver.close()
+```
+
+# Generated at 2024-06-03 15:56:53.622027
+```python
+    resolver = ExecutorResolver()
+    resolver.initialize()
+    loop = IOLoop.current()
+
+    async def run_test():
+        result = await resolver.resolve("localhost", 80)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+        assert all(isinstance(item[0], int) for item in result)
+        assert all(isinstance(item[1], tuple) for item in result)
+
+    loop.run_sync(run_test)
+    resolver.close()
+```
+
+# Generated at 2024-06-03 15:56:59.463775
+```python
+    resolver = DefaultExecutorResolver()
+    loop = IOLoop.current()
+
+    async def run_test():
+        # Test resolving a valid hostname
+        result = await resolver.resolve("localhost", 80)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+
+        # Test resolving an invalid hostname
+        try:
+            await resolver.resolve("invalid.hostname", 80)
+        except IOError:
+            pass
+        else:
+            assert False, "Expected IOError"
+
+        # Test resolving a valid IP address
+        result = await resolver.resolve("127.0.0.1", 80)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+
+    loop.run_sync(run_test)
+```
+
+# Generated at 2024-06-03 15:57:04.238152
+```python
+    import socket
+    from tornado.ioloop import IOLoop
+
+    def mock_callback(connection, address):
+        connection.close()
+
+    def test_callback_called():
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.bind(('localhost', 0))
+        sock.listen(1)
+        port = sock.getsockname()[1]
+
+        remove_handler = add_accept_handler(sock, mock_callback)
+
+        client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_sock.connect(('localhost', port))
+
+        io_loop = IOLoop.current()
+        io_loop.add_timeout(io_loop.time() + 0.1, io_loop.stop)
+        io_loop.start()
+
+        remove_handler()
+        sock.close()
+        client_sock.close()
+
+    test_callback_called()
+```
+
+# Generated at 2024-06-03 15:57:08.587526
+```python
+    import tempfile
+    import os
+    import socket
+
+    # Create a temporary file path for the Unix socket
+    with tempfile.NamedTemporaryFile() as temp_file:
+        socket_path = temp_file.name
+
+    # Ensure the file does not exist before binding
+    if os.path.exists(socket_path):
+        os.remove(socket_path)
+
+    # Bind the Unix socket
+    sock = bind_unix_socket(socket_path)
+
+    # Check if the socket file is created
+    assert os.path.exists(socket_path), "Socket file was not created"
+
+    # Check if the file is a socket
+    assert stat.S_ISSOCK(os.stat(socket_path).st_mode), "File is not a socket"
+
+    # Clean up
+    sock.close()
+    os.remove(socket_path)
+```
+
+# Generated at 2024-06-03 15:57:09.988230
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=True)
+    resolver.close()
+    assert resolver.executor is None
+```
+
+# Generated at 2024-06-03 15:57:12.723270
+```python
+    resolver = DefaultExecutorResolver()
+    loop = IOLoop.current()
+
+    async def run_test():
+        result = await resolver.resolve("localhost", 80)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+        assert all(isinstance(item[0], int) for item in result)
+        assert all(isinstance(item[1], tuple) for item in result)
+
+    loop.run_sync(run_test)
+```
+
+# Generated at 2024-06-03 15:57:17.336185
+```python
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server_socket.bind(('localhost', 0))
+    server_socket.listen(1)
+    
+    accepted_connections = []
+
+    def callback(connection, address):
+        accepted_connections.append((connection, address))
+        connection.close()
+
+    remove_handler = add_accept_handler(server_socket, callback)
+
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect(server_socket.getsockname())
+    client_socket.close()
+
+    IOLoop.current().add_timeout(IOLoop.current().time() + 0.1, IOLoop.current().stop)
+    IOLoop.current().start()
+
+    assert len(accepted_connections) == 1
+    assert accepted_connections[0][1] == client_socket.getsockname()
+
+    remove_handler()
+    server_socket.close()
+```
+
+# Generated at 2024-06-03 15:57:39.397644
+```python
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    class MockResolver(Resolver):
+        async def resolve(self, host, port, family=socket.AF_UNSPEC):
+            return [(family, (host, port))]
+
+    resolver = MockResolver()
+    mapping = {
+        "example.com": "127.0.0.1",
+        ("login.example.com", 443): ("localhost", 1443),
+        ("login.example.com", 443, socket.AF_INET6): ("::1", 1443),
+    }
+    override_resolver = OverrideResolver(resolver, mapping)
+
+    async def run_tests():
+        result = await override_resolver.resolve("example.com", 80)
+        assert result == [(socket.AF_UNSPEC, ("127.0.0.1", 80))]
+
+        result = await override_resolver.resolve("login.example.com", 443)
+        assert result == [(socket.AF_UNSPEC, ("
+
+# Generated at 2024-06-03 15:57:41.921486
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=True)
+    resolver.close()
+    assert resolver.executor is None
+
+    # Test with close_executor=False
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=False)
+    resolver.close()
+    assert resolver.executor is not None
+    executor.shutdown()
+```
+
+# Generated at 2024-06-03 15:57:46.562971
+```python
+    port = 8888
+    address = "localhost"
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    for sock in sockets:
+        assert sock.getsockname()[1] == port
+        sock.close()
+
+    port = 0  # Let the OS pick an available port
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    bound_port = sockets[0].getsockname()[1]
+    for sock in sockets:
+        assert sock.getsockname()[1] == bound_port
+        sock.close()
+
+    try:
+        bind_sockets(8888, "invalid_address")
+    except socket.gaierror:
+        pass
+    else:
+        assert False, "Expected socket.gaierror"
+
+    try:
+        bind_sockets(8888, reuse_port=True)
+    except ValueError:
+        pass
+    else:
+        assert hasattr(socket,
+
+# Generated at 2024-06-03 15:57:50.297291
+```python
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    ssl_options = {
+        "ssl_version": ssl.PROTOCOL_TLSv1_2,
+        "certfile": "path/to/certfile",
+        "keyfile": "path/to/keyfile",
+        "cert_reqs": ssl.CERT_REQUIRED,
+        "ca_certs": "path/to/ca_certs",
+        "ciphers": "ECDHE-RSA-AES256-GCM-SHA384"
+    }
+    wrapped_socket = ssl_wrap_socket(sock, ssl_options, server_hostname="example.com")
+    assert isinstance(wrapped_socket, ssl.SSLSocket)
+    assert wrapped_socket.context.protocol == ssl.PROTOCOL_TLSv1_2
+    assert wrapped_socket.context.verify_mode == ssl.CERT_REQUIRED
+    assert wrapped_socket.context.get_ciphers()[0]['name'] == "ECDHE-RSA-AES256-GCM-SHA384"
+    wrapped_socket.close()
+```
+
+# Generated at 2024-06-03 15:57:54.862485
+```python
+    port = 8888
+    address = "localhost"
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    for sock in sockets:
+        assert sock.getsockname()[1] == port
+        sock.close()
+
+    port = 0  # Let the OS pick an available port
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    bound_port = sockets[0].getsockname()[1]
+    for sock in sockets:
+        assert sock.getsockname()[1] == bound_port
+        sock.close()
+
+    port = 8888
+    address = None  # Bind to all interfaces
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    for sock in sockets:
+        assert sock.getsockname()[1] == port
+        sock.close()
+
+    try:
+        bind_sockets(port, address
+
+# Generated at 2024-06-03 15:57:57.527030
+```python
+    resolver = Resolver()
+    host = "localhost"
+    port = 80
+    family = socket.AF_UNSPEC
+
+    async def run_test():
+        result = await resolver.resolve(host, port, family)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run_test())
+```
+
+# Generated at 2024-06-03 15:57:59.574789
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=True)
+    resolver.close()
+    assert resolver.executor is None
+
+    # Test with close_executor=False
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=False)
+    resolver.close()
+    assert resolver.executor is not None
+    executor.shutdown()
+```
+
+# Generated at 2024-06-03 15:58:02.827042
+```python
+    resolver = Resolver()
+    host = "localhost"
+    port = 80
+    family = socket.AF_UNSPEC
+
+    async def run_test():
+        result = await resolver.resolve(host, port, family)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run_test())
+```
+
+# Generated at 2024-06-03 15:58:06.788089
+```python
+    assert is_valid_ip("127.0.0.1") == True
+    assert is_valid_ip("::1") == True
+    assert is_valid_ip("256.256.256.256") == False
+    assert is_valid_ip("invalid_ip") == False
+    assert is_valid_ip("") == False
+    assert is_valid_ip("192.168.1.1") == True
+    assert is_valid_ip("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == True
+    assert is_valid_ip("2001:db8::ff00:42:8329") == True
+    assert is_valid_ip("::ffff:192.0.2.128") == True
+    assert is_valid_ip("::ffff:192.0.2.256") == False
+```
+
+# Generated at 2024-06-03 15:58:10.516709
+```python
+    resolver = Resolver()
+    host = "localhost"
+    port = 80
+    family = socket.AF_UNSPEC
+
+    async def run_test():
+        result = await resolver.resolve(host, port, family)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run_test())
+```
+
+# Generated at 2024-06-03 15:58:25.570566
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=True)
+    resolver.close()
+    assert resolver.executor is None
+```
+
+# Generated at 2024-06-03 15:58:29.861905
+```python
+    port = 8888
+    address = "localhost"
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    for sock in sockets:
+        assert sock.getsockname()[1] == port
+        sock.close()
+
+    port = 0  # Let the OS pick an available port
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    bound_port = sockets[0].getsockname()[1]
+    for sock in sockets:
+        assert sock.getsockname()[1] == bound_port
+        sock.close()
+
+    try:
+        bind_sockets(8888, "invalid_address")
+    except socket.gaierror:
+        pass
+    else:
+        assert False, "Expected socket.gaierror"
+
+    try:
+        bind_sockets(8888, reuse_port=True)
+    except ValueError:
+        pass
+    else:
+        assert hasattr(socket,
+
+# Generated at 2024-06-03 15:58:32.929552
+```python
+    import socket
+    from tornado.ioloop import IOLoop
+
+    def mock_callback(connection, address):
+        connection.close()
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.bind(('localhost', 0))
+    sock.listen(5)
+
+    remove_handler = add_accept_handler(sock, mock_callback)
+
+    # Simulate a connection
+    client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_sock.connect(sock.getsockname())
+
+    io_loop = IOLoop.current()
+    io_loop.add_callback(remove_handler)
+    io_loop.start()
+
+    client_sock.close()
+    sock.close()
+```
+
+# Generated at 2024-06-03 15:58:35.592341
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=True)
+    resolver.close()
+    assert resolver.executor is None
+
+    # Test with close_executor=False
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=False)
+    resolver.close()
+    assert resolver.executor is not None
+    executor.shutdown()
+```
+
+# Generated at 2024-06-03 15:58:39.360637
+```python
+    import socket
+    from tornado.ioloop import IOLoop
+
+    def mock_callback(connection, address):
+        connection.close()
+
+    def test_callback_called():
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        sock.bind(('localhost', 0))
+        sock.listen(1)
+        port = sock.getsockname()[1]
+
+        remove_handler = add_accept_handler(sock, mock_callback)
+
+        client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_sock.connect(('localhost', port))
+
+        io_loop = IOLoop.current()
+        io_loop.add_timeout(io_loop.time() + 0.1, io_loop.stop)
+        io_loop.start()
+
+        remove_handler()
+        sock.close()
+        client_sock.close()
+
+    test_callback_called()
+```
+
+# Generated at 2024-06-03 15:58:43.673712
+```python
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server_socket.bind(('localhost', 0))
+    server_socket.listen(1)
+    
+    accepted_connections = []
+
+    def callback(connection, address):
+        accepted_connections.append((connection, address))
+        connection.close()
+
+    remove_handler = add_accept_handler(server_socket, callback)
+
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect(server_socket.getsockname())
+    client_socket.close()
+
+    IOLoop.current().add_timeout(IOLoop.current().time() + 0.1, IOLoop.current().stop)
+    IOLoop.current().start()
+
+    assert len(accepted_connections) == 1
+    assert accepted_connections[0][1] == client_socket.getsockname()
+
+    remove_handler()
+    server_socket.close()
+```
+
+# Generated at 2024-06-03 15:58:47.387975
+```python
+    import socket
+    from tornado.ioloop import IOLoop
+
+    def mock_callback(connection, address):
+        connection.close()
+
+    def test_callback_called():
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.bind(('localhost', 0))
+        sock.listen(1)
+        remove_handler = add_accept_handler(sock, mock_callback)
+        client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_sock.connect(sock.getsockname())
+        IOLoop.current().add_timeout(IOLoop.current().time() + 0.1, IOLoop.current().stop)
+        IOLoop.current().start()
+        remove_handler()
+        client_sock.close()
+        sock.close()
+
+    test_callback_called()
+```
+
+# Generated at 2024-06-03 15:58:49.013359
+```python
+    file = "/tmp/test_socket"
+    try:
+        sock = bind_unix_socket(file)
+        assert os.path.exists(file), "Socket file was not created"
+        assert stat.S_ISSOCK(os.stat(file).st_mode), "Created file is not a socket"
+        sock.close()
+    finally:
+        if os.path.exists(file):
+            os.remove(file)
+```
+
+# Generated at 2024-06-03 15:58:51.829125
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=True)
+    resolver.close()
+    assert resolver.executor is None
+
+    # Test with close_executor=False
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=False)
+    resolver.close()
+    assert resolver.executor is not None
+    executor.shutdown()
+```
+
+# Generated at 2024-06-03 15:58:54.560334
+```python
+    resolver = ExecutorResolver()
+    resolver.initialize()
+    host = "localhost"
+    port = 80
+    family = socket.AF_INET
+
+    async def run_test():
+        result = await resolver.resolve(host, port, family)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+        assert all(isinstance(item[0], int) and isinstance(item[1], tuple) for item in result)
+
+    IOLoop.current().run_sync(run_test)
+```
+
+# Generated at 2024-06-03 15:59:11.411427
+```python
+    resolver = Resolver()
+    host = "localhost"
+    port = 80
+    family = socket.AF_UNSPEC
+
+    async def run_test():
+        result = await resolver.resolve(host, port, family)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run_test())
+```
+
+# Generated at 2024-06-03 15:59:13.836441
+```python
+    resolver = DefaultExecutorResolver()
+    loop = IOLoop.current()
+
+    async def run_test():
+        result = await resolver.resolve("localhost", 80)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+        assert all(isinstance(item[0], int) for item in result)
+        assert all(isinstance(item[1], tuple) for item in result)
+
+    loop.run_sync(run_test)
+```
+
+# Generated at 2024-06-03 15:59:16.423983
+```python
+    resolver = Resolver()
+    host = "localhost"
+    port = 80
+    family = socket.AF_UNSPEC
+
+    async def run_test():
+        result = await resolver.resolve(host, port, family)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run_test())
+```
+
+# Generated at 2024-06-03 15:59:18.331402
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=True)
+    resolver.close()
+    assert resolver.executor is None
+```
+
+# Generated at 2024-06-03 15:59:20.733391
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=True)
+    resolver.close()
+    assert resolver.executor is None
+
+    # Test with close_executor=False
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=False)
+    resolver.close()
+    assert resolver.executor is not None
+    executor.shutdown()
+```
+
+# Generated at 2024-06-03 15:59:24.525458
+```python
+    import socket
+    from tornado.ioloop import IOLoop
+
+    def mock_callback(connection, address):
+        connection.close()
+
+    def test_callback_called():
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        sock.bind(('localhost', 0))
+        sock.listen(1)
+        port = sock.getsockname()[1]
+
+        remove_handler = add_accept_handler(sock, mock_callback)
+
+        client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_sock.connect(('localhost', port))
+
+        io_loop = IOLoop.current()
+        io_loop.add_timeout(io_loop.time() + 0.1, io_loop.stop)
+        io_loop.start()
+
+        remove_handler()
+        sock.close()
+        client_sock.close()
+
+    test_callback_called()
+```
+
+# Generated at 2024-06-03 15:59:28.425269
+```python
+    resolver = DefaultExecutorResolver()
+    loop = IOLoop.current()
+
+    async def run_test():
+        # Test resolving a valid hostname
+        result = await resolver.resolve("localhost", 80)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+
+        # Test resolving an invalid hostname
+        try:
+            await resolver.resolve("invalid.hostname", 80)
+        except IOError:
+            pass
+        else:
+            assert False, "Expected IOError"
+
+        # Test resolving a valid IP address
+        result = await resolver.resolve("127.0.0.1", 80)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+
+    loop.run_sync(run_test)
+```
+
+# Generated at 2024-06-03 15:59:29.853659
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=True)
+    resolver.close()
+    assert resolver.executor is None
+```
+
+# Generated at 2024-06-03 15:59:35.975512
+```python
+    resolver = ExecutorResolver()
+    resolver.initialize()
+    loop = IOLoop.current()
+
+    async def run_test():
+        result = await resolver.resolve("localhost", 80)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+        assert all(isinstance(item[0], int) for item in result)
+        assert all(isinstance(item[1], tuple) for item in result)
+
+    loop.run_sync(run_test)
+    resolver.close()
+```
+
+# Generated at 2024-06-03 15:59:39.787981
+```python
+    resolver = DefaultExecutorResolver()
+    loop = IOLoop.current()
+
+    async def run_test():
+        # Test resolving a valid hostname
+        result = await resolver.resolve("localhost", 80)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+
+        # Test resolving an invalid hostname
+        try:
+            await resolver.resolve("invalid.hostname", 80)
+        except IOError:
+            pass
+        else:
+            assert False, "Expected IOError"
+
+        # Test resolving a valid IP address
+        result = await resolver.resolve("127.0.0.1", 80)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+
+    loop.run_sync(run_test)
+```
+
+# Generated at 2024-06-03 16:00:12.509077
+```python
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server_socket.bind(('localhost', 0))
+    server_socket.listen(1)
+
+    accepted_connections = []
+
+    def callback(connection, address):
+        accepted_connections.append((connection, address))
+        connection.close()
+
+    remove_handler = add_accept_handler(server_socket, callback)
+
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect(server_socket.getsockname())
+    client_socket.close()
+
+    IOLoop.current().add_timeout(IOLoop.current().time() + 0.1, IOLoop.current().stop)
+    IOLoop.current().start()
+
+    assert len(accepted_connections) == 1
+    assert accepted_connections[0][1] == client_socket.getsockname()
+
+    remove_handler()
+    server_socket.close()
+```
+
+# Generated at 2024-06-03 16:00:15.825487
+```python
+    import socket
+    from tornado.ioloop import IOLoop
+
+    def mock_callback(connection, address):
+        connection.close()
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.bind(('localhost', 0))
+    sock.listen(1)
+
+    remove_handler = add_accept_handler(sock, mock_callback)
+
+    io_loop = IOLoop.current()
+
+    def stop_io_loop():
+        remove_handler()
+        io_loop.stop()
+
+    io_loop.add_timeout(io_loop.time() + 1, stop_io_loop)
+    io_loop.start()
+
+    sock.close()
+```
+
+# Generated at 2024-06-03 16:00:19.489489
+```python
+    import socket
+    from tornado.ioloop import IOLoop
+
+    def mock_callback(connection, address):
+        connection.close()
+
+    def test_callback_called():
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.bind(('localhost', 0))
+        sock.listen(1)
+        remove_handler = add_accept_handler(sock, mock_callback)
+        client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_sock.connect(sock.getsockname())
+        IOLoop.current().add_timeout(IOLoop.current().time() + 0.1, IOLoop.current().stop)
+        IOLoop.current().start()
+        remove_handler()
+        client_sock.close()
+        sock.close()
+
+    test_callback_called()
+```
+
+# Generated at 2024-06-03 16:00:21.293847
+```python
+    file = "/tmp/test_socket"
+    try:
+        sock = bind_unix_socket(file)
+        assert isinstance(sock, socket.socket)
+        assert sock.family == socket.AF_UNIX
+        assert sock.getsockname() == file
+    finally:
+        if os.path.exists(file):
+            os.remove(file)
+```
+
+# Generated at 2024-06-03 16:00:25.034990
+```python
+    assert is_valid_ip("192.168.1.1") == True
+    assert is_valid_ip("255.255.255.255") == True
+    assert is_valid_ip("0.0.0.0") == True
+    assert is_valid_ip("::1") == True
+    assert is_valid_ip("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == True
+    assert is_valid_ip("1200::AB00:1234::2552:7777:1313") == False
+    assert is_valid_ip("256.256.256.256") == False
+    assert is_valid_ip("123.456.789.0") == False
+    assert is_valid_ip("") == False
+    assert is_valid_ip("invalid_ip") == False
+```
+
+# Generated at 2024-06-03 16:00:29.294187
+```python
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    class MockResolver(Resolver):
+        async def resolve(self, host, port, family=socket.AF_UNSPEC):
+            return [(family, (host, port))]
+
+    mock_resolver = MockResolver()
+    mapping = {
+        "example.com": "127.0.0.1",
+        ("login.example.com", 443): ("localhost", 1443),
+        ("login.example.com", 443, socket.AF_INET6): ("::1", 1443),
+    }
+    resolver = OverrideResolver(mock_resolver, mapping)
+
+    async def run_tests():
+        result = await resolver.resolve("example.com", 80)
+        assert result == [(socket.AF_UNSPEC, ("127.0.0.1", 80))]
+
+        result = await resolver.resolve("login.example.com", 443)
+        assert result == [(socket.AF_UNSPEC, ("localhost", 
+
+# Generated at 2024-06-03 16:00:32.100619
+```python
+    resolver = Resolver()
+    host = "localhost"
+    port = 80
+    family = socket.AF_UNSPEC
+
+    async def run_test():
+        result = await resolver.resolve(host, port, family)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run_test())
+```
+
+# Generated at 2024-06-03 16:00:37.771224
+```python
+    port = 8888
+    address = "localhost"
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    for sock in sockets:
+        assert sock.getsockname()[1] == port
+        sock.close()
+
+    port = 0  # Let the OS pick an available port
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    bound_port = sockets[0].getsockname()[1]
+    for sock in sockets:
+        assert sock.getsockname()[1] == bound_port
+        sock.close()
+
+    try:
+        bind_sockets(8888, "invalid_address")
+    except socket.gaierror:
+        pass
+    else:
+        assert False, "Expected socket.gaierror"
+
+    try:
+        bind_sockets(8888, reuse_port=True)
+    except ValueError:
+        pass
+    else:
+        assert hasattr(socket,
+
+# Generated at 2024-06-03 16:00:45.117597
+```python
+    port = 8888
+    address = "localhost"
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    for sock in sockets:
+        assert sock.getsockname()[1] == port
+        sock.close()
+
+    port = 0  # Let the OS pick an available port
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    bound_port = sockets[0].getsockname()[1]
+    for sock in sockets:
+        assert sock.getsockname()[1] == bound_port
+        sock.close()
+
+    try:
+        bind_sockets(8888, "invalid_address")
+    except socket.gaierror:
+        pass
+    else:
+        assert False, "Expected socket.gaierror"
+
+    try:
+        bind_sockets(8888, reuse_port=True)
+    except ValueError:
+        pass
+    else:
+        assert hasattr(socket,
+
+# Generated at 2024-06-03 16:00:49.525055
+```python
+    import tempfile
+    import os
+    import socket
+
+    # Create a temporary file to use as the socket file
+    with tempfile.NamedTemporaryFile() as temp_file:
+        socket_path = temp_file.name
+
+    # Ensure the socket does not already exist
+    if os.path.exists(socket_path):
+        os.remove(socket_path)
+
+    # Call the function to create the socket
+    sock = bind_unix_socket(socket_path)
+
+    # Check that the socket file now exists
+    assert os.path.exists(socket_path)
+
+    # Check that the socket is bound and listening
+    assert sock.getsockname() == socket_path
+    assert sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR) == 1
+
+    # Clean up
+    sock.close()
+    os.remove(socket_path)
+```
+
+# Generated at 2024-06-03 16:01:23.230663
+```python
+    port = 8888
+    address = "localhost"
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    for sock in sockets:
+        assert sock.getsockname()[1] == port
+        sock.close()
+
+    port = 0  # Let the OS pick an available port
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    bound_port = sockets[0].getsockname()[1]
+    for sock in sockets:
+        assert sock.getsockname()[1] == bound_port
+        sock.close()
+
+    port = 8888
+    address = None  # Bind to all interfaces
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    for sock in sockets:
+        assert sock.getsockname()[1] == port
+        sock.close()
+
+    port = 8888
+    address =
+
+# Generated at 2024-06-03 16:01:26.036741
+```python
+    resolver = ExecutorResolver()
+    resolver.initialize()
+
+    async def run_test():
+        result = await resolver.resolve("localhost", 80)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+        assert all(isinstance(item[0], int) for item in result)
+        assert all(isinstance(item[1], tuple) for item in result)
+
+    IOLoop.current().run_sync(run_test)
+    resolver.close()
+```
+
+# Generated at 2024-06-03 16:01:27.847220
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=2)
+    resolver = ExecutorResolver()
+    resolver.initialize(executor=executor, close_executor=False)
+    assert resolver.executor == executor
+    assert resolver.close_executor == False
+
+    resolver.initialize(executor=None, close_executor=True)
+    assert resolver.executor == dummy_executor
+    assert resolver.close_executor == False
+```
+
+# Generated at 2024-06-03 16:01:35.698392
+```python
+    file = "/tmp/test_socket"
+    mode = 0o600
+    backlog = 128
+
+    # Ensure the socket file does not exist before the test
+    try:
+        os.remove(file)
+    except FileNotFoundError:
+        pass
+
+    # Create the socket
+    sock = bind_unix_socket(file, mode, backlog)
+
+    # Check if the socket file is created
+    assert os.path.exists(file), "Socket file was not created"
+
+    # Check if the file is a socket
+    assert stat.S_ISSOCK(os.stat(file).st_mode), "File is not a socket"
+
+    # Check if the socket is bound and listening
+    assert sock.getsockname() == file, "Socket is not bound to the correct file"
+    assert sock.gettimeout() is None, "Socket is not in non-blocking mode"
+
+    # Clean up
+    sock.close()
+    os.remove(file)
+```
+
+# Generated at 2024-06-03 16:01:36.809784
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=True)
+    resolver.close()
+    assert resolver.executor is None
+```
+
+# Generated at 2024-06-03 16:01:42.596559
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=2)
+    resolver = ExecutorResolver()
+    resolver.initialize(executor=executor, close_executor=False)
+    assert resolver.executor == executor
+    assert resolver.close_executor == False
+
+    resolver.initialize(executor=None, close_executor=True)
+    assert resolver.executor == dummy_executor
+    assert resolver.close_executor == False
+```
+
+# Generated at 2024-06-03 16:01:47.727844
+```python
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    class MockResolver(Resolver):
+        async def resolve(self, host, port, family=socket.AF_UNSPEC):
+            return [(family, (host, port))]
+
+    resolver = MockResolver()
+    mapping = {
+        "example.com": "127.0.0.1",
+        ("login.example.com", 443): ("localhost", 1443),
+        ("login.example.com", 443, socket.AF_INET6): ("::1", 1443),
+    }
+    override_resolver = OverrideResolver(resolver, mapping)
+
+    async def run_test():
+        result = await override_resolver.resolve("example.com", 80)
+        assert result == [(socket.AF_UNSPEC, ("127.0.0.1", 80))]
+
+        result = await override_resolver.resolve("login.example.com", 443)
+        assert result == [(socket.AF_UNSPEC, ("
+
+# Generated at 2024-06-03 16:01:52.875307
+```python
+    file = "/tmp/test_socket"
+    mode = 0o600
+    backlog = 128
+
+    # Ensure the socket file does not exist before the test
+    try:
+        os.remove(file)
+    except FileNotFoundError:
+        pass
+
+    # Create the socket
+    sock = bind_unix_socket(file, mode, backlog)
+
+    # Check if the socket file is created
+    assert os.path.exists(file), "Socket file was not created"
+
+    # Check if the file is a socket
+    assert stat.S_ISSOCK(os.stat(file).st_mode), "File is not a socket"
+
+    # Check if the socket is bound and listening
+    assert sock.getsockname() == file, "Socket is not bound to the correct file"
+    assert sock.gettimeout() is None, "Socket is not in non-blocking mode"
+
+    # Clean up
+    sock.close()
+    os.remove(file)
+```
+
+# Generated at 2024-06-03 16:01:56.956236
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=2)
+    resolver = ExecutorResolver()
+    resolver.initialize(executor=executor, close_executor=False)
+    assert resolver.executor == executor
+    assert resolver.close_executor == False
+
+    resolver.initialize(executor=None, close_executor=True)
+    assert resolver.executor == dummy_executor
+    assert resolver.close_executor == False
+```
+
+# Generated at 2024-06-03 16:02:01.038423
+```python
+    import socket
+    from tornado.ioloop import IOLoop
+
+    def mock_callback(connection, address):
+        connection.close()
+
+    def test_callback_called():
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        sock.bind(('localhost', 0))
+        sock.listen(1)
+        port = sock.getsockname()[1]
+
+        remove_handler = add_accept_handler(sock, mock_callback)
+
+        client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_sock.connect(('localhost', port))
+
+        io_loop = IOLoop.current()
+        io_loop.add_timeout(io_loop.time() + 0.1, io_loop.stop)
+        io_loop.start()
+
+        remove_handler()
+        client_sock.close()
+        sock.close()
+
+    test_callback_called()
+```
+
+# Generated at 2024-06-03 16:02:30.617164
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=True)
+    resolver.close()
+    assert resolver.executor is None
+```
+
+# Generated at 2024-06-03 16:02:33.262478
+```python
+    resolver = Resolver()
+    host = "localhost"
+    port = 80
+    family = socket.AF_UNSPEC
+
+    async def run_test():
+        result = await resolver.resolve(host, port, family)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+        assert all(isinstance(item[0], int) for item in result)
+        assert all(isinstance(item[1], tuple) for item in result)
+
+    IOLoop.current().run_sync(run_test)
+```
+
+# Generated at 2024-06-03 16:02:41.648256
+```python
+    port = 8888
+    address = "localhost"
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    for sock in sockets:
+        assert sock.getsockname()[1] == port
+        sock.close()
+
+    port = 0  # Let the OS pick an available port
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    bound_port = sockets[0].getsockname()[1]
+    for sock in sockets:
+        assert sock.getsockname()[1] == bound_port
+        sock.close()
+
+    try:
+        bind_sockets(8888, "invalid_address")
+    except socket.gaierror:
+        pass
+    else:
+        assert False, "Expected socket.gaierror"
+
+    try:
+        bind_sockets(8888, reuse_port=True)
+    except ValueError:
+        pass
+    else:
+        assert hasattr(socket,
+
+# Generated at 2024-06-03 16:02:46.990060
+```python
+    # Test with SSLContext object
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+    assert ssl_options_to_context(context) is context
+
+    # Test with dictionary containing ssl options
+    ssl_options = {
+        "ssl_version": ssl.PROTOCOL_TLSv1_2,
+        "certfile": "path/to/certfile",
+        "keyfile": "path/to/keyfile",
+        "cert_reqs": ssl.CERT_REQUIRED,
+        "ca_certs": "path/to/ca_certs",
+        "ciphers": "ECDHE-RSA-AES256-GCM-SHA384"
+    }
+    context = ssl_options_to_context(ssl_options)
+    assert isinstance(context, ssl.SSLContext)
+    assert context.protocol == ssl.PROTOCOL_TLSv1_2
+    assert context.verify_mode == ssl.CERT_REQUIRED
+    assert context.get_ciphers() == [{'name': 'ECDHE-RSA-AES256-GCM-S
+
+# Generated at 2024-06-03 16:02:51.777880
+```python
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server_socket.bind(('localhost', 0))
+    server_socket.listen(1)
+    
+    accepted_connections = []
+
+    def callback(connection, address):
+        accepted_connections.append((connection, address))
+        connection.close()
+
+    remove_handler = add_accept_handler(server_socket, callback)
+
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect(server_socket.getsockname())
+    client_socket.close()
+
+    IOLoop.current().add_timeout(IOLoop.current().time() + 0.1, IOLoop.current().stop)
+    IOLoop.current().start()
+
+    assert len(accepted_connections) == 1
+    assert accepted_connections[0][1] == client_socket.getsockname()
+
+    remove_handler()
+    server_socket.close()
+```
+
+# Generated at 2024-06-03 16:03:00.960773
+```python
+    import socket
+    from tornado.ioloop import IOLoop
+
+    def mock_callback(connection, address):
+        connection.close()
+
+    def test_callback_called():
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.bind(('localhost', 0))
+        sock.listen(1)
+        remove_handler = add_accept_handler(sock, mock_callback)
+        
+        client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_sock.connect(sock.getsockname())
+        
+        IOLoop.current().add_timeout(IOLoop.current().time() + 0.1, IOLoop.current().stop)
+        IOLoop.current().start()
+        
+        remove_handler()
+        client_sock.close()
+        sock.close()
+
+    test_callback_called()
+```
+
+# Generated at 2024-06-03 16:03:06.377115
+```python
+    port = 8888
+    address = "localhost"
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    for sock in sockets:
+        assert sock.getsockname()[1] == port
+        sock.close()
+
+    port = 0  # Let the OS pick an available port
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    bound_port = sockets[0].getsockname()[1]
+    for sock in sockets:
+        assert sock.getsockname()[1] == bound_port
+        sock.close()
+
+    try:
+        bind_sockets(8888, "invalid_address")
+    except socket.gaierror:
+        pass
+    else:
+        assert False, "Expected socket.gaierror"
+
+    try:
+        bind_sockets(8888, reuse_port=True)
+    except ValueError:
+        pass
+    else:
+        assert hasattr(socket,
+
+# Generated at 2024-06-03 16:03:08.408209
+```python
+    resolver = DefaultExecutorResolver()
+    loop = IOLoop.current()
+
+    async def run_test():
+        result = await resolver.resolve("localhost", 80)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+        assert all(isinstance(item[0], int) for item in result)
+        assert all(isinstance(item[1], tuple) for item in result)
+
+    loop.run_sync(run_test)
+```
+
+# Generated at 2024-06-03 16:03:14.007096
+```python
+    import socket
+    from tornado.ioloop import IOLoop
+
+    def mock_callback(connection, address):
+        connection.close()
+
+    def test_callback_called():
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        sock.bind(('localhost', 0))
+        sock.listen(1)
+        port = sock.getsockname()[1]
+
+        remove_handler = add_accept_handler(sock, mock_callback)
+
+        client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_sock.connect(('localhost', port))
+
+        io_loop = IOLoop.current()
+        io_loop.add_timeout(io_loop.time() + 0.1, io_loop.stop)
+        io_loop.start()
+
+        remove_handler()
+        sock.close()
+        client_sock.close()
+
+    test_callback_called()
+```
+
+# Generated at 2024-06-03 16:03:18.752918
+```python
+    resolver = Resolver()
+    host = "localhost"
+    port = 80
+    family = socket.AF_UNSPEC
+
+    async def run_test():
+        result = await resolver.resolve(host, port, family)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run_test())
+```
+
+# Generated at 2024-06-03 16:03:48.003248
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=True)
+    resolver.close()
+    assert resolver.executor is None
+```
+
+# Generated at 2024-06-03 16:03:51.454069
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=True)
+    resolver.close()
+    assert resolver.executor is None
+```
+
+# Generated at 2024-06-03 16:03:56.109063
+```python
+    port = 8888
+    address = "localhost"
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    for sock in sockets:
+        assert sock.getsockname()[1] == port
+        sock.close()
+
+    port = 0  # Let the OS pick an available port
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    bound_port = sockets[0].getsockname()[1]
+    for sock in sockets:
+        assert sock.getsockname()[1] == bound_port
+        sock.close()
+
+    port = 8888
+    address = None  # Bind to all interfaces
+    sockets = bind_sockets(port, address)
+    assert len(sockets) > 0
+    for sock in sockets:
+        assert sock.getsockname()[1] == port
+        sock.close()
+
+    try:
+        bind_sockets(port, address
+
+# Generated at 2024-06-03 16:03:58.889372
+```python
+    resolver = Resolver()
+    host = "localhost"
+    port = 80
+    family = socket.AF_UNSPEC
+
+    async def run_test():
+        result = await resolver.resolve(host, port, family)
+        assert isinstance(result, list)
+        assert all(isinstance(item, tuple) and len(item) == 2 for item in result)
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run_test())
+```
+
+# Generated at 2024-06-03 16:04:02.464239
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    resolver = ExecutorResolver(executor=executor, close_executor=True)
+    resolver.close()
+    assert resolver.executor is None
+```
+
+# Generated at 2024-06-03 16:04:06.830175
+```python
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    class MockResolver(Resolver):
+        async def resolve(self, host, port, family=socket.AF_UNSPEC):
+            return [(family, (host, port))]
+
+    resolver = MockResolver()
+    mapping = {
+        "example.com": "127.0.0.1",
+        ("login.example.com", 443): ("localhost", 1443),
+        ("login.example.com", 443, socket.AF_INET6): ("::1", 1443),
+    }
+    override_resolver = OverrideResolver(resolver, mapping)
+
+    async def run_test():
+        result = await override_resolver.resolve("example.com", 80)
+        assert result == [(socket.AF_UNSPEC, ("127.0.0.1", 80))]
+
+        result = await override_resolver.resolve("login.example.com", 443)
+        assert result == [(socket.AF_UNSPEC, ("
+
+# Generated at 2024-06-03 16:04:08.893108
+```python
+    file = "/tmp/test_socket"
+    try:
+        sock = bind_unix_socket(file)
+        assert isinstance(sock, socket.socket)
+        assert sock.family == socket.AF_UNIX
+        assert sock.type == socket.SOCK_STREAM
+        assert os.path.exists(file)
+        assert stat.S_ISSOCK(os.stat(file).st_mode)
+    finally:
+        if os.path.exists(file):
+            os.remove(file)
+```
+
+# Generated at 2024-06-03 16:04:13.554496
+```python
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    class MockResolver(Resolver):
+        async def resolve(self, host, port, family=socket.AF_UNSPEC):
+            return [(socket.AF_INET, (host, port))]
+
+    resolver = OverrideResolver(MockResolver(), {
+        "example.com": "127.0.0.1",
+        ("login.example.com", 443): ("localhost", 1443),
+        ("login.example.com", 443, socket.AF_INET6): ("::1", 1443),
+    })
+
+    async def run_test():
+        result = await resolver.resolve("example.com", 80)
+        assert result == [(socket.AF_INET, ("127.0.0.1", 80))]
+
+        result = await resolver.resolve("login.example.com", 443)
+        assert result == [(socket.AF_INET, ("localhost", 1443))]
+
+        result = await resolver.resolve("login.example.com
+
+# Generated at 2024-06-03 16:04:16.861930
+```python
+    import socket
+    from tornado.ioloop import IOLoop
+
+    def mock_callback(connection, address):
+        print(f"Accepted connection from {address}")
+
+    def test_callback(connection, address):
+        assert isinstance(connection, socket.socket)
+        assert isinstance(address, tuple)
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.bind(('localhost', 0))
+    sock.listen(5)
+
+    remove_handler = add_accept_handler(sock, test_callback)
+
+    io_loop = IOLoop.current()
+
+    def stop_loop():
+        remove_handler()
+        io_loop.stop()
+
+    io_loop.add_timeout(io_loop.time() + 1, stop_loop)
+    io_loop.start()
+
+    sock.close()
+```
+
+# Generated at 2024-06-03 16:04:22.719771
+```python
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    class MockResolver(Resolver):
+        async def resolve(self, host, port, family=socket.AF_UNSPEC):
+            return [(family, (host, port))]
+
+    resolver = MockResolver()
+    mapping = {
+        "example.com": "127.0.0.1",
+        ("login.example.com", 443): ("localhost", 1443),
+        ("login.example.com", 443, socket.AF_INET6): ("::1", 1443),
+    }
+    override_resolver = OverrideResolver(resolver, mapping)
+
+    async def run_tests():
+        result = await override_resolver.resolve("example.com", 80)
+        assert result == [(socket.AF_UNSPEC, ("127.0.0.1", 80))]
+
+        result = await override_resolver.resolve("login.example.com", 443)
+        assert result == [(socket.AF_UNSPEC, ("
+
+# Generated at 2024-06-03 16:04:51.748343
+```python
+    file = "/tmp/test_socket"
+    try:
+        sock = bind_unix_socket(file)
+        assert os.path.exists(file)
+        assert stat.S_ISSOCK(os.stat(file).st_mode)
+        sock.close()
+    finally:
+        if os.path.exists(file):
+            os.remove(file)
+```
+
+# Generated at 2024-06-03 16:04:53.860003
+```python
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=2)
+    resolver = ExecutorResolver()
+    resolver.initialize(executor=executor, close_executor=False)
+    assert resolver.executor == executor
+    assert resolver.close_executor == False
+
+    resolver.initialize(executor=None, close_executor=True)
+    assert resolver.executor == dummy_executor
+    assert resolver.close_executor == False
+```
+
+# Generated at 2024-06-03 16:04:59.561490
+```python
+    # Test with SSLContext instance
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+    assert ssl_options_to_context(context) is context
+
+    # Test with dictionary containing ssl options
+    ssl_options = {
+        "ssl_version": ssl.PROTOCOL_TLSv1_2,
+        "certfile": "path/to/certfile",
+        "keyfile": "path/to/keyfile",
+        "cert_reqs": ssl.CERT_REQUIRED,
+        "ca_certs": "path/to/ca_certs",
+        "ciphers": "ECDHE-RSA-AES256-GCM-SHA384"
+    }
+    context = ssl_options_to_context(ssl_options)
+    assert isinstance(context, ssl.SSLContext)
+    assert context.protocol == ssl.PROTOCOL_TLSv1_2
+    assert context.verify_mode == ssl.CERT_REQUIRED
+    assert context.get_ciphers()[0]['name'] == "ECDHE-RSA-AES256-GCM
+
+# Generated at 2024-06-03 16:05:03.931243
+```python
+    # Test with SSLContext instance
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+    assert ssl_options_to_context(context) is context
+
+    # Test with dictionary containing ssl options
+    ssl_options = {
+        "ssl_version": ssl.PROTOCOL_TLSv1_2,
+        "certfile": "path/to/certfile",
+        "keyfile": "path/to/keyfile",
+        "cert_reqs": ssl.CERT_REQUIRED,
+        "ca_certs": "path/to/ca_certs",
+        "ciphers": "ECDHE+AESGCM"
+    }
+    context = ssl_options_to_context(ssl_options)
+    assert isinstance(context, ssl.SSLContext)
+    assert context.protocol == ssl.PROTOCOL_TLSv1_2
+    assert context.verify_mode == ssl.CERT_REQUIRED
+    assert context.get_ciphers() == [{'name': 'ECDHE+AESGCM', 'protocol': 'TLSv1.2

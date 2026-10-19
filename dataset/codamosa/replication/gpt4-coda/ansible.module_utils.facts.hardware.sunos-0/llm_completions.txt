@@ -1,0 +1,671 @@
+
+
+# Generated at 2024-03-18 01:22:12.144817
+```python
+    def test_constructor(self):
+        collector = SunOSHardwareCollector()
+        self.assertIsInstance(collector, SunOSHardwareCollector)
+        self.assertEqual(collector._platform, 'SunOS')
+        self.assertEqual(collector.required_facts, set(['platform']))
+```
+
+# Generated at 2024-03-18 01:22:18.533320
+```python
+    from unittest.mock import MagicMock
+
+    def test_get_cpu_facts(self):
+        hardware = SunOSHardware()
+        hardware.module = MagicMock()
+        fake_cpu_info = """
+        module: cpu_info
+        brand: GenuineIntel
+        clock_MHz: 2593
+        implementation: x86 (chipid 0x4 GenuineIntel family 6 model 69 step 1 clock 2593 MHz)
+        chip_id: 0
+        module: cpu_info
+        brand: GenuineIntel
+        clock_MHz: 2593
+        implementation: x86 (chipid 0x4 GenuineIntel family 6 model 69 step 1 clock 2593 MHz)
+        chip_id: 1
+        """
+        hardware.module.run_command.return_value = (0, fake_cpu_info, '')
+        collected_facts = {'ansible_machine': 'i86pc'}
+        cpu_facts = hardware.get_cpu_facts(collected_facts=col
+
+# Generated at 2024-03-18 01:22:19.894045
+```python
+import unittest
+from mock import patch, MagicMock
+
+
+# Generated at 2024-03-18 01:22:24.820740
+```python
+    from unittest.mock import MagicMock
+
+    def test_get_cpu_facts(self):
+        hardware = SunOSHardware()
+        hardware.module = MagicMock()
+        hardware.module.run_command = MagicMock(return_value=(0, 'module: cpu_info\nbrand: GenuineIntel\nclock_MHz: 2500\nchip_id: 0\n', ''))
+        collected_facts = {'ansible_machine': 'i86pc'}
+
+        expected_cpu_facts = {
+            'processor': ['GenuineIntel @ 2500MHz'],
+            'processor_count': 1,
+            'processor_cores': 1
+        }
+
+        cpu_facts = hardware.get_cpu_facts(collected_facts=collected_facts)
+        assert cpu_facts == expected_cpu_facts, "CPU facts do not match expected facts"
+
+    # Run the test
+    test_get_cpu_facts(MagicMock())
+```
+
+# Generated at 2024-03-18 01:22:31.074474
+```python
+    def test_get_memory_facts(self):
+        hardware = SunOSHardware(module=MockModule())
+        with patch.object(hardware.module, 'run_command') as mock_run_command:
+            # Mock the output of the prtconf command
+            mock_run_command.side_effect = [
+                (0, 'Memory size: 8192 Megabytes', ''),
+                (0, 'total: 178488k bytes allocated + 62960k reserved = 241448k used, 1433272k available', '')
+            ]
+
+            memory_facts = hardware.get_memory_facts()
+
+            assert memory_facts['memtotal_mb'] == 8192
+            assert memory_facts['swapfree_mb'] == 1433272 // 1024
+            assert memory_facts['swaptotal_mb'] == (1433272 + 241448) // 1024
+            assert memory_facts['swap_allocated_mb'] == 178488 // 1024
+
+# Generated at 2024-03-18 01:22:32.358279
+```python
+import pytest
+from ansible.module_utils import basic
+from ansible.module_utils._text import to_bytes
+
+@pytest.fixture
+
+# Generated at 2024-03-18 01:22:33.478675
+```python
+import unittest
+from mock import patch
+
+
+# Generated at 2024-03-18 01:22:34.721533
+```python
+import unittest
+from unittest.mock import patch
+
+
+# Generated at 2024-03-18 01:22:35.936259
+```python
+import pytest
+from ansible.module_utils import basic
+from ansible.module_utils._text import to_bytes
+
+@pytest.fixture
+
+# Generated at 2024-03-18 01:22:44.081379
+```python
+    def test_get_device_facts(self):
+        hardware = SunOSHardware(module=MockModule())
+        with patch.object(hardware.module, 'run_command') as mock_run_command:
+            mock_run_command.return_value = (0, """
+sderr:0:sd0,err:Hard Errors     0
+sderr:0:sd0,err:Illegal Request 6
+sderr:0:sd0,err:Media Error     0
+sderr:0:sd0,err:Predictive Failure Analysis     0
+sderr:0:sd0,err:Product VBOX HARDDISK
+sderr:0:sd0,err:Revision        1.0
+sderr:0:sd0,err:Serial No       VB0ad2ec4d-074a
+sderr:0:sd0,err:Size    53687091200
+sderr:0:sd0,err:Soft Errors     0
+sd
+
+# Generated at 2024-03-18 01:23:02.834781
+```python
+import mock
+import time
+
+
+# Generated at 2024-03-18 01:23:04.159904
+```python
+import mock
+import pytest
+
+# Assuming the module structure and imports are correct and mock is available for testing
+
+@pytest.fixture
+
+# Generated at 2024-03-18 01:23:05.363412
+```python
+import unittest
+from mock import patch, MagicMock
+
+
+# Generated at 2024-03-18 01:23:10.594880
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    import pytest
+
+    @pytest.fixture
+    def mock_module(mocker):
+        module = AnsibleModule(argument_spec={})
+        mocker.patch.object(module, 'run_command')
+        return module
+
+    def test_get_dmi_facts(mock_module):
+        mock_module.run_command.return_value = (0, 'System Configuration: Oracle Corporation sun4v SPARC T4-1', '')
+        hardware = SunOSHardware(module=mock_module)
+        dmi_facts = hardware.get_dmi_facts()
+        assert dmi_facts['system_vendor'] == 'Oracle Corporation'
+        assert dmi_facts['product_name'] == 'sun4v SPARC T4-1'
+
+        mock_module.run_command.return_value = (0, 'System Configuration: Fujitsu M10-1', '')
+        dmi_facts = hardware.get_dmi_facts()
+        assert dmi_facts['system_vendor']
+
+# Generated at 2024-03-18 01:23:16.349025
+```python
+    def mock_run_command(cmd):
+        if cmd == '/usr/bin/uname -i':
+            return 0, 'sun4v', ''
+        elif 'prtdiag' in cmd:
+            return 0, 'System Configuration: Oracle Corporation sun4v SPARC T4-1', ''
+        else:
+            return 1, '', 'Command not found'
+
+    hardware = SunOSHardware(module=MagicMock())
+    hardware.module.run_command = mock_run_command
+
+    dmi_facts = hardware.get_dmi_facts()
+
+    assert 'system_vendor' in dmi_facts
+    assert dmi_facts['system_vendor'] == 'Oracle Corporation'
+    assert 'product_name' in dmi_facts
+    assert dmi_facts['product_name'] == 'sun4v SPARC T4-1'
+```
+
+# Generated at 2024-03-18 01:23:17.912299
+```python
+import unittest
+from mock import patch, MagicMock
+
+
+# Generated at 2024-03-18 01:23:18.714898
+```python
+import unittest
+from mock import patch
+
+
+# Generated at 2024-03-18 01:23:23.789239
+```python
+    def mock_run_command(cmd):
+        if cmd == '/usr/bin/uname -i':
+            return 0, 'sun4v', ''
+        elif 'prtdiag' in cmd:
+            return 1, 'System Configuration: Oracle Corporation sun4v SPARC T4-1', ''
+        else:
+            return 1, '', 'Command not found'
+
+    hardware = SunOSHardware()
+    hardware.module = type('Module', (object,), {'run_command': mock_run_command})
+
+    dmi_facts = hardware.get_dmi_facts()
+
+    assert 'system_vendor' in dmi_facts
+    assert dmi_facts['system_vendor'] == 'Oracle Corporation'
+    assert 'product_name' in dmi_facts
+    assert dmi_facts['product_name'] == 'sun4v SPARC T4-1'
+```
+
+# Generated at 2024-03-18 01:23:29.229339
+```python
+    def mock_run_command(cmd):
+        if cmd == ['/usr/bin/kstat', '-p', 'sderr:::Product', 'sderr:::Revision', 'sderr:::Serial No', 'sderr:::Size', 'sderr:::Vendor', 'sderr:::Hard Errors', 'sderr:::Soft Errors', 'sderr:::Transport Errors', 'sderr:::Media Error', 'sderr:::Predictive Failure Analysis', 'sderr:::Illegal Request']:
+            return 0, (
+                "sderr:0:sd0,err:Product\tVBOX HARDDISK\n"
+                "sderr:0:sd0,err:Revision\t1.0\n"
+                "sderr:0:sd0,err:Serial No\tVB0ad2ec4d-074a\n"
+                "sderr:0:sd0,err:Size\t53687091200\n"
+                "
+
+# Generated at 2024-03-18 01:23:34.967713
+```python
+    def test_get_cpu_facts(self):
+        hardware = SunOSHardware(module=MockModule())
+        collected_facts = {'ansible_machine': 'i86pc'}
+        cpu_facts = hardware.get_cpu_facts(collected_facts=collected_facts)
+
+        self.assertIn('processor', cpu_facts)
+        self.assertIn('processor_count', cpu_facts)
+        self.assertIn('processor_cores', cpu_facts)
+        self.assertTrue(isinstance(cpu_facts['processor'], list))
+        self.assertTrue(isinstance(cpu_facts['processor_count'], int))
+        self.assertTrue(isinstance(cpu_facts['processor_cores'], int) or cpu_facts['processor_cores'] == 'NA')
+
+        # Check for non-empty processor list
+        self.assertGreater(len(cpu_facts['processor']), 0)
+
+        # Check for positive integers for count and cores if not 'NA'
+        if cpu_facts['processor_cores'] != 'NA':
+            self.assertGreater(cpu_facts['processor_cores
+
+# Generated at 2024-03-18 01:24:10.297057
+```python
+import mock
+import time
+
+
+# Generated at 2024-03-18 01:24:11.272624
+```python
+import unittest
+from ansible.module_utils import basic
+from ansible.module_utils._text import to_bytes
+
+
+# Generated at 2024-03-18 01:24:27.045824
+```python
+    def mock_run_command(cmd):
+        if cmd == '/usr/bin/uname -i':
+            return 0, 'sun4v', ''
+        elif 'prtdiag' in cmd:
+            return 1, 'System Configuration: Oracle Corporation sun4v SPARC T4-1', ''
+        else:
+            return 1, '', 'Command not found'
+
+    hardware = SunOSHardware()
+    hardware.module = Mock()
+    hardware.module.run_command = mock_run_command
+
+    dmi_facts = hardware.get_dmi_facts()
+
+    assert 'system_vendor' in dmi_facts
+    assert dmi_facts['system_vendor'] == 'Oracle Corporation'
+    assert 'product_name' in dmi_facts
+    assert dmi_facts['product_name'] == 'sun4v SPARC T4-1'
+```
+
+# Generated at 2024-03-18 01:24:27.853239
+```python
+import unittest
+from mock import patch
+
+
+# Generated at 2024-03-18 01:24:35.561771
+```python
+    def test_get_cpu_facts(self):
+        hardware = SunOSHardware(module=MockModule())
+        collected_facts = {'ansible_machine': 'i86pc'}
+        cpu_facts = hardware.get_cpu_facts(collected_facts=collected_facts)
+
+        assert 'processor' in cpu_facts
+        assert 'processor_count' in cpu_facts
+        assert 'processor_cores' in cpu_facts
+
+        # Assuming the mock output from /usr/bin/kstat cpu_info is:
+        # module: cpu_info
+        # brand: GenuineIntel
+        # clock_MHz: 2593
+        # implementation: x86 (chipid 0x4 GenuineIntel family 6 model 158 step 10 clock 2593 MHz)
+        # chip_id: 0
+        # chip_id: 1
+        # chip_id: 2
+        # chip_id: 3
+        # The expected processor count and cores would
+
+# Generated at 2024-03-18 01:24:42.840385
+```python
+    def mock_run_command(cmd):
+        if cmd == ["/usr/sbin/prtconf"]:
+            return 0, "Memory size: 8192 Megabytes", ""
+        elif cmd == "/usr/sbin/swap -s":
+            return 0, "total: 178032k bytes allocated + 63240k reserved = 241272k used, 118556k available", ""
+        else:
+            return 1, "", "Command not found"
+
+    sunos_hw = SunOSHardware(None)
+    sunos_hw.module = Mock()
+    sunos_hw.module.run_command = mock_run_command
+
+    memory_facts = sunos_hw.get_memory_facts()
+
+    assert memory_facts['memtotal_mb'] == 8192
+    assert memory_facts['swapfree_mb'] == 115
+    assert memory_facts['swaptotal_mb'] == 235
+    assert memory_facts['swap_allocated_mb'] == 173
+   
+
+# Generated at 2024-03-18 01:24:44.599523
+```python
+import mock
+import time
+from ansible.module_utils.facts.hardware.sunos import SunOSHardware
+
+
+# Generated at 2024-03-18 01:24:45.738265
+```python
+import unittest
+from mock import patch
+
+
+# Generated at 2024-03-18 01:24:53.894468
+```python
+    from unittest.mock import MagicMock
+
+    def test_get_cpu_facts(self):
+        hardware = SunOSHardware()
+        hardware.module = MagicMock()
+        hardware.module.run_command = MagicMock(return_value=(0, """
+module: cpu_info
+  instance: 0
+  name: cpu_info0
+  class: misc
+  brand: GenuineIntel
+  clock_MHz: 2394
+  implementation: x86 (chipid 0x0 GenuineIntel family 6 model 69 step 1 clock 2394 MHz)
+  chip_id: 0
+module: cpu_info
+  instance: 1
+  name: cpu_info1
+  class: misc
+  brand: GenuineIntel
+  clock_MHz: 2394
+  implementation: x86 (chipid 0x1 GenuineIntel family 6 model 69 step 1 clock 2394 MHz)
+  chip_id: 1
+""", ""))
+
+        expected_cpu
+
+# Generated at 2024-03-18 01:24:55.222636
+```python
+import mock
+import time
+from ansible.module_utils.facts.hardware.sunos import SunOSHardware
+
+
+# Generated at 2024-03-18 01:26:03.101176
+```python
+import mock
+import time
+from ansible.module_utils.facts.hardware.sunos import SunOSHardware
+
+
+# Generated at 2024-03-18 01:26:09.840139
+```python
+    def test_get_cpu_facts(self):
+        hardware = SunOSHardware(module=MockModule())
+        collected_facts = {'ansible_machine': 'i86pc'}
+        cpu_facts = hardware.get_cpu_facts(collected_facts=collected_facts)
+
+        self.assertIn('processor', cpu_facts)
+        self.assertIn('processor_count', cpu_facts)
+        self.assertIn('processor_cores', cpu_facts)
+        self.assertTrue(isinstance(cpu_facts['processor'], list))
+        self.assertTrue(isinstance(cpu_facts['processor_count'], int))
+        self.assertTrue(isinstance(cpu_facts['processor_cores'], int) or cpu_facts['processor_cores'] == 'NA')
+
+        # Check for non-empty processor list
+        self.assertGreater(len(cpu_facts['processor']), 0)
+
+        # Check for positive integers for count and cores
+        if cpu_facts['processor_cores'] != 'NA':
+            self.assertGreater(cpu_facts['processor_cores'], 0)
+
+
+# Generated at 2024-03-18 01:26:15.502814
+```python
+    def mock_run_command(cmd):
+        if cmd == ['/usr/bin/kstat', '-p', 'sderr:::Product', 'sderr:::Revision', 'sderr:::Serial No', 'sderr:::Size', 'sderr:::Vendor', 'sderr:::Hard Errors', 'sderr:::Soft Errors', 'sderr:::Transport Errors', 'sderr:::Media Error', 'sderr:::Predictive Failure Analysis', 'sderr:::Illegal Request']:
+            return 0, (
+                "sderr:0:sd0,err:Product VBOX HARDDISK\n"
+                "sderr:0:sd0,err:Revision 1.0\n"
+                "sderr:0:sd0,err:Serial No VB0ad2ec4d-074a\n"
+                "sderr:0:sd0,err:Size 53687091200\n"
+                "sderr
+
+# Generated at 2024-03-18 01:26:20.575865
+```python
+    from unittest.mock import patch, MagicMock
+
+    def test_get_memory_facts(self):
+        hardware = SunOSHardware(module=MagicMock())
+
+        # Mock the output of the commands
+        with patch.object(hardware.module, 'run_command') as mock_run_command:
+            # Mock prtconf output
+            mock_run_command.side_effect = [
+                (0, 'Memory size: 8192 Megabytes', ''),
+                (0, 'total: 178488k bytes allocated + 62960k reserved = 241448k used, 1131040k available', '')
+            ]
+
+            memory_facts = hardware.get_memory_facts()
+
+            assert memory_facts['memtotal_mb'] == 8192
+            assert memory_facts['swapfree_mb'] == 1104
+            assert memory_facts['swaptotal_mb'] == 2356
+            assert memory_facts['swap_allocated_mb'] == 174
+            assert memory_facts
+
+# Generated at 2024-03-18 01:26:21.768989
+```python
+import mock
+import pytest
+
+# Assuming the module structure and imports are already defined in the test file
+
+@pytest.fixture
+
+# Generated at 2024-03-18 01:26:22.735699
+```python
+import pytest
+from ansible.module_utils import basic
+from ansible.module_utils._text import to_bytes
+
+@pytest.fixture
+
+# Generated at 2024-03-18 01:26:23.887519
+```python
+import unittest
+from unittest.mock import MagicMock
+
+
+# Generated at 2024-03-18 01:26:24.691480
+```python
+import mock
+import time
+
+
+# Generated at 2024-03-18 01:26:31.846360
+```python
+    from unittest.mock import patch, MagicMock
+
+    def test_get_memory_facts(self):
+        hardware = SunOSHardware()
+        hardware.module = MagicMock()
+        fake_prtconf_output = "System Configuration: Oracle Corporation sun4v Memory size: 16384 Megabytes"
+        fake_swap_output = "total: 178488k bytes allocated + 62464k reserved = 240952k used, 1433272k available"
+
+        with patch.object(hardware.module, 'run_command') as mock_run_command:
+            mock_run_command.side_effect = [
+                (0, fake_prtconf_output, ''),
+                (0, fake_swap_output, '')
+            ]
+
+            memory_facts = hardware.get_memory_facts()
+
+            assert memory_facts['memtotal_mb'] == 16384
+            assert memory_facts['swapfree_mb'] == 1433272 // 1024
+            assert memory_facts['swaptotal_mb'] == (143
+
+# Generated at 2024-03-18 01:26:34.202762
+```python
+import unittest
+from unittest.mock import patch
+from ansible.module_utils.facts.hardware.sunos import SunOSHardware
+
+
+# Generated at 2024-03-18 01:28:46.087938
+```python
+import pytest
+from ansible.module_utils import basic
+from ansible.module_utils._text import to_bytes
+
+@pytest.fixture
+
+# Generated at 2024-03-18 01:28:52.301877
+```python
+    def test_SunOSHardware_get_memory_facts(self):
+        hardware = SunOSHardware(module=MockModule())
+
+        # Mock the output of the commands
+        hardware.module.run_command = MagicMock(side_effect=[
+            (0, "System Configuration: Oracle Corporation sun4v SPARC T4-1\nMemory size: 32768 Megabytes", ""),
+            (0, "total: 178488k bytes allocated + 62936k reserved = 241424k used, 14332752k available", "")
+        ])
+
+        expected_memory_facts = {
+            'memtotal_mb': 32768,
+            'swapfree_mb': 14008,
+            'swaptotal_mb': 23584,
+            'swap_allocated_mb': 174,
+            'swap_reserved_mb': 61
+        }
+
+        memory_facts = hardware.get_memory_facts()
+        assert memory_facts == expected_memory_facts, "Memory facts do not match expected values
+
+# Generated at 2024-03-18 01:28:59.976646
+```python
+    def test_get_device_facts(self):
+        hardware = SunOSHardware(module=MockModule())
+        with patch.object(hardware.module, 'run_command') as mock_run_command:
+            mock_run_command.return_value = (0, """
+sderr:0:sd0,err:Hard Errors     0
+sderr:0:sd0,err:Illegal Request 6
+sderr:0:sd0,err:Media Error     0
+sderr:0:sd0,err:Predictive Failure Analysis     0
+sderr:0:sd0,err:Product VBOX HARDDISK
+sderr:0:sd0,err:Revision        1.0
+sderr:0:sd0,err:Serial No       VB0ad2ec4d-074a
+sderr:0:sd0,err:Size    53687091200
+sderr:0:sd0,err:Soft Errors     0
+sd
+
+# Generated at 2024-03-18 01:29:06.974088
+```python
+    def mock_run_command(cmd):
+        if cmd == '/usr/bin/uname -i':
+            return 0, 'sun4v', ''
+        elif 'prtdiag' in cmd:
+            return 1, 'System Configuration: Oracle Corporation sun4v SPARC T4-1', ''
+        else:
+            return 1, '', 'Command not found'
+
+    hardware = SunOSHardware(module=MagicMock())
+    hardware.module.run_command = mock_run_command
+
+    dmi_facts = hardware.get_dmi_facts()
+
+    assert 'system_vendor' in dmi_facts
+    assert dmi_facts['system_vendor'] == 'Oracle Corporation'
+    assert 'product_name' in dmi_facts
+    assert dmi_facts['product_name'] == 'sun4v SPARC T4-1'
+```
+
+# Generated at 2024-03-18 01:29:13.140668
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    import pytest
+
+    @pytest.fixture
+    def mock_module(monkeypatch):
+        module = AnsibleModule(argument_spec={})
+        monkeypatch.setattr(module, 'run_command', lambda x: (0, 'System Configuration: Oracle Corporation sun4v SPARC T4-1', ''))
+        return module
+
+    def test_get_dmi_facts(mock_module):
+        sunos_hardware = SunOSHardware(module=mock_module)
+        dmi_facts = sunos_hardware.get_dmi_facts()
+        assert dmi_facts['system_vendor'] == 'Oracle Corporation'
+        assert dmi_facts['product_name'] == 'sun4v SPARC T4-1'
+
+    # Run the test
+    test_get_dmi_facts(mock_module)
+```
+
+# Generated at 2024-03-18 01:29:18.054898
+```python
+    def test_get_device_facts(self):
+        hardware = SunOSHardware(module=MockModule())
+        with patch.object(hardware.module, 'run_command') as mock_run_command:
+            mock_run_command.return_value = (0, """
+sderr:0:sd0,err:Hard Errors     0
+sderr:0:sd0,err:Illegal Request 6
+sderr:0:sd0,err:Media Error     0
+sderr:0:sd0,err:Predictive Failure Analysis     0
+sderr:0:sd0,err:Product VBOX HARDDISK
+sderr:0:sd0,err:Revision        1.0
+sderr:0:sd0,err:Serial No       VB0ad2ec4d-074a
+sderr:0:sd0,err:Size    53687091200
+sderr:0:sd0,err:Soft Errors     0
+sd
+
+# Generated at 2024-03-18 01:29:19.431763
+```python
+    collector = SunOSHardwareCollector()
+    assert collector._fact_class == SunOSHardware
+    assert collector._platform == 'SunOS'
+    assert collector.required_facts == set(['platform'])
+```
+
+# Generated at 2024-03-18 01:29:21.082311
+```python
+import unittest
+from unittest.mock import patch
+from ansible.module_utils.facts.hardware.sunos import SunOSHardware
+
+
+# Generated at 2024-03-18 01:29:27.956504
+```python
+    from unittest.mock import MagicMock
+
+    def test_get_cpu_facts(self):
+        hardware = SunOSHardware()
+        hardware.module = MagicMock()
+        hardware.module.run_command = MagicMock(return_value=(0, """
+module: cpu_info
+  brand:            Intel(r) Xeon(r) CPU           E5-2690 0 @ 2.90GHz
+  clock_MHz:        2900
+  implementation:   x86
+  chip_id:          0
+module: cpu_info
+  brand:            Intel(r) Xeon(r) CPU           E5-2690 0 @ 2.90GHz
+  clock_MHz:        2900
+  implementation:   x86
+  chip_id:          1
+        """, ""))
+
+        expected_cpu_facts = {
+            'processor': [
+                'Intel(r) Xeon(r) CPU           E5-2690 0 @ 2.90GHz
+
+# Generated at 2024-03-18 01:29:34.933491
+```python
+    def test_get_memory_facts(self):
+        hardware = SunOSHardware(module=MockModule())
+        with patch.object(hardware.module, 'run_command') as mock_run_command:
+            # Mock the output of the prtconf command
+            mock_run_command.side_effect = [
+                (0, 'Memory size: 8192 Megabytes', ''),
+                (0, 'total: 178488k bytes allocated + 62960k reserved = 241448k used, 1433272k available', '')
+            ]
+
+            memory_facts = hardware.get_memory_facts()
+
+            assert memory_facts['memtotal_mb'] == 8192
+            assert memory_facts['swapfree_mb'] == 1433272 // 1024
+            assert memory_facts['swaptotal_mb'] == (1433272 + 241448) // 1024
+            assert memory_facts['swap_allocated_mb'] == 178488 // 1024

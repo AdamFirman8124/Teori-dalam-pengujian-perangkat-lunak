@@ -1,0 +1,972 @@
+
+
+# Generated at 2024-05-30 21:23:38.534823
+```python
+    blocks = [Block(), Block()]
+    host_state = HostState(blocks)
+    expected_str = ("HOST STATE: block=0, task=0, rescue=0, always=0, run_state=ITERATING_SETUP, fail_state=FAILED_NONE, pending_setup=False, tasks child state? (None), "
+                    "rescue child state? (None), always child state? (None), did rescue? False, did start at task? False")
+    assert str(host_state) == expected_str
+```
+
+# Generated at 2024-05-30 21:23:41.966707
+```python
+    # Mocking the necessary objects and states
+    class MockState:
+        def __init__(self, run_state, tasks_child_state=None, rescue_child_state=None, always_child_state=None):
+            self.run_state = run_state
+            self.tasks_child_state = tasks_child_state
+            self.rescue_child_state = rescue_child_state
+            self.always_child_state = always_child_state
+
+    ITERATING_TASKS = 'ITERATING_TASKS'
+    ITERATING_RESCUE = 'ITERATING_RESCUE'
+    ITERATING_ALWAYS = 'ITERATING_ALWAYS'
+    ITERATING_COMPLETE = 'ITERATING_COMPLETE'
+
+    # Creating nested states
+    innermost_state = MockState(ITERATING_COMPLETE)
+    inner_state = MockState(ITERATING_TASKS, tasks_child_state=innermost_state)
+    outer_state = MockState(ITERATING_TASKS, tasks_child_state=inner_state)
+
+    # Creating an instance of PlayIterator
+    play_iterator
+
+# Generated at 2024-05-30 21:23:46.862853
+```python
+    play_iterator = PlayIterator()
+    host1 = Host(name="host1")
+    host2 = Host(name="host2")
+    host3 = Host(name="host3")
+
+    # Simulate host states
+    play_iterator._host_states = {
+        host1.name: HostState(run_state=play_iterator.ITERATING_TASKS, fail_state=play_iterator.FAILED_TASKS),
+        host2.name: HostState(run_state=play_iterator.ITERATING_COMPLETE, fail_state=play_iterator.FAILED_NONE),
+        host3.name: HostState(run_state=play_iterator.ITERATING_RESCUE, fail_state=play_iterator.FAILED_RESCUE)
+    }
+
+    failed_hosts = play_iterator.get_failed_hosts()
+    assert failed_hosts == {host1.name: True, host3.name: True}
+```
+
+# Generated at 2024-05-30 21:23:52.850594
+```python
+    # Create a mock state with different run states
+    state_tasks = HostState(run_state=PlayIterator.ITERATING_TASKS)
+    state_rescue = HostState(run_state=PlayIterator.ITERATING_RESCUE)
+    state_always = HostState(run_state=PlayIterator.ITERATING_ALWAYS)
+    state_complete = HostState(run_state=PlayIterator.ITERATING_COMPLETE)
+
+    # Create a PlayIterator instance
+    play_iterator = PlayIterator()
+
+    # Test when the state is in rescue mode
+    assert play_iterator.is_any_block_rescuing(state_rescue) == True
+
+    # Test when the state is in tasks mode but has a child state in rescue mode
+    state_tasks.tasks_child_state = state_rescue
+    assert play_iterator.is_any_block_rescuing(state_tasks) == True
+
+    # Test when the state is in tasks mode and has a child state not in rescue mode
+    state_tasks.tasks_child_state = state
+
+# Generated at 2024-05-30 21:23:54.450764
+```python
+    play = Mock()
+    play._removed_hosts = []
+    host_states = {}
+    iterator = PlayIterator(play, host_states)
+    assert iterator._play == play
+    assert iterator._host_states == host_states
+```
+
+# Generated at 2024-05-30 21:24:01.877639
+```python
+    # Create a mock host and state
+    host = Mock()
+    host.name = "test_host"
+    
+    # Create an instance of PlayIterator
+    play_iterator = PlayIterator()
+    
+    # Mock the get_host_state method to return a state with FAILED_TASKS
+    state = Mock()
+    state.fail_state = play_iterator.FAILED_TASKS
+    state.run_state = play_iterator.ITERATING_TASKS
+    play_iterator.get_host_state = Mock(return_value=state)
+    
+    # Test when the host has failed
+    assert play_iterator.is_failed(host) == True
+    
+    # Mock the get_host_state method to return a state with no failures
+    state.fail_state = play_iterator.FAILED_NONE
+    play_iterator.get_host_state = Mock(return_value=state)
+    
+    # Test when the host has not failed
+    assert play_iterator.is_failed(host) == False
+```
+
+# Generated at 2024-05-30 21:24:05.299811
+```python
+    host = Mock()
+    host.name = "test_host"
+    
+    play_iterator = PlayIterator()
+    play_iterator._host_states = {
+        "test_host": Mock()
+    }
+    
+    play_iterator._check_failed_state = Mock(return_value=True)
+    
+    result = play_iterator.is_failed(host)
+    
+    assert result == True
+    play_iterator._check_failed_state.assert_called_once_with(play_iterator._host_states["test_host"])
+```
+
+# Generated at 2024-05-30 21:24:06.423271
+```python
+    host = Mock()
+    task = Mock()
+    play_iterator = PlayIterator()
+    
+    result = play_iterator.get_original_task(host, task)
+    
+    assert result == (None, None)
+```
+
+# Generated at 2024-05-30 21:24:09.606101
+```python
+    # Create a mock host and state
+    mock_host = Mock()
+    mock_host.name = "test_host"
+    
+    # Create an instance of PlayIterator
+    play_iterator = PlayIterator()
+    
+    # Mock the get_host_state method to return a state with FAILED_TASKS
+    mock_state = Mock()
+    mock_state.fail_state = play_iterator.FAILED_TASKS
+    play_iterator.get_host_state = Mock(return_value=mock_state)
+    
+    # Test when the host has failed tasks
+    assert play_iterator.is_failed(mock_host) == True
+    
+    # Mock the get_host_state method to return a state with no failures
+    mock_state.fail_state = play_iterator.FAILED_NONE
+    play_iterator.get_host_state = Mock(return_value=mock_state)
+    
+    # Test when the host has no failures
+    assert play_iterator.is_failed(mock_host) == False
+```
+
+# Generated at 2024-05-30 21:24:12.900502
+```python
+    # Create a mock state with different run states
+    state_tasks = HostState(run_state=PlayIterator.ITERATING_TASKS)
+    state_rescue = HostState(run_state=PlayIterator.ITERATING_RESCUE)
+    state_always = HostState(run_state=PlayIterator.ITERATING_ALWAYS)
+    state_complete = HostState(run_state=PlayIterator.ITERATING_COMPLETE)
+
+    # Create a PlayIterator instance
+    play_iterator = PlayIterator()
+
+    # Test when the state is in rescue mode
+    assert play_iterator.is_any_block_rescuing(state_rescue) == True
+
+    # Test when the state is in tasks mode with a child state in rescue mode
+    state_tasks.tasks_child_state = state_rescue
+    assert play_iterator.is_any_block_rescuing(state_tasks) == True
+
+    # Test when the state is in tasks mode with no child state in rescue mode
+    state_tasks.tasks_child_state = state_always
+
+
+# Generated at 2024-05-30 21:24:44.700176
+```python
+    # Create a mock state with nested child states
+    state = HostState()
+    state.run_state = PlayIterator.ITERATING_TASKS
+    state.tasks_child_state = HostState()
+    state.tasks_child_state.run_state = PlayIterator.ITERATING_RESCUE
+    state.tasks_child_state.rescue_child_state = HostState()
+    state.tasks_child_state.rescue_child_state.run_state = PlayIterator.ITERATING_ALWAYS
+    state.tasks_child_state.rescue_child_state.always_child_state = HostState()
+    state.tasks_child_state.rescue_child_state.always_child_state.run_state = PlayIterator.ITERATING_COMPLETE
+
+    # Create an instance of PlayIterator
+    play_iterator = PlayIterator()
+
+    # Call the method
+    active_state = play_iterator.get_active_state(state)
+
+    # Assert the active state is the deepest child state
+    assert active_state.run_state == PlayIterator.ITERATING_COMPLETE
+```
+
+# Generated at 2024-05-30 21:24:48.267769
+```python
+    blocks = [Block(), Block()]
+    original_state = HostState(blocks)
+    original_state.cur_block = 1
+    original_state.cur_regular_task = 2
+    original_state.cur_rescue_task = 3
+    original_state.cur_always_task = 4
+    original_state.run_state = 1
+    original_state.fail_state = 2
+    original_state.pending_setup = True
+    original_state.did_rescue = True
+    original_state.did_start_at_task = True
+
+    copied_state = original_state.copy()
+
+    assert copied_state == original_state
+    assert copied_state is not original_state
+    assert copied_state._blocks == original_state._blocks
+    assert copied_state.cur_block == original_state.cur_block
+    assert copied_state.cur_regular_task == original_state.cur_regular_task
+    assert copied_state.cur_rescue_task == original_state.cur_rescue_task
+    assert copied_state.cur_always_task == original_state.cur_always_task
+
+# Generated at 2024-05-30 21:24:52.295951
+```python
+    play_iterator = PlayIterator()
+    host = Host(name="test_host")
+    task_list = [Task(name="task1"), Task(name="task2")]
+
+    # Mock the get_host_state method to return a specific state
+    play_iterator.get_host_state = lambda x: HostState(blocks=[Block(block=task_list)])
+
+    # Call the method to be tested
+    play_iterator.add_tasks(host, task_list)
+
+    # Retrieve the state after adding tasks
+    state = play_iterator.get_host_state(host)
+
+    # Check if the tasks were added correctly
+    assert len(state._blocks[0].block) == 4
+    assert state._blocks[0].block[0].name == "task1"
+    assert state._blocks[0].block[1].name == "task2"
+    assert state._blocks[0].block[2].name == "task1"
+    assert state._blocks[0].block[3
+
+# Generated at 2024-05-30 21:24:55.362605
+```python
+    # Create a mock state with nested child states
+    state = HostState()
+    state.run_state = PlayIterator.ITERATING_TASKS
+    state.tasks_child_state = HostState()
+    state.tasks_child_state.run_state = PlayIterator.ITERATING_RESCUE
+    state.tasks_child_state.rescue_child_state = HostState()
+    state.tasks_child_state.rescue_child_state.run_state = PlayIterator.ITERATING_ALWAYS
+
+    # Create an instance of PlayIterator
+    play_iterator = PlayIterator()
+
+    # Call the method
+    active_state = play_iterator.get_active_state(state)
+
+    # Assert the active state is the innermost child state
+    assert active_state.run_state == PlayIterator.ITERATING_ALWAYS
+```
+
+# Generated at 2024-05-30 21:24:58.263906
+```python
+    play_iterator = PlayIterator()
+    host = Host(name="test_host")
+    state = HostState()
+    
+    # Test when state is None
+    play_iterator._host_states[host.name] = None
+    assert not play_iterator.is_failed(host)
+    
+    # Test when state is not failed
+    state.fail_state = play_iterator.FAILED_NONE
+    play_iterator._host_states[host.name] = state
+    assert not play_iterator.is_failed(host)
+    
+    # Test when state is failed
+    state.fail_state = play_iterator.FAILED_TASKS
+    play_iterator._host_states[host.name] = state
+    assert play_iterator.is_failed(host)
+    
+    # Test when state is in rescue mode and failed
+    state.run_state = play_iterator.ITERATING_RESCUE
+    state.fail_state = play_iterator.FAILED_RESCUE
+    play_iterator._host_states[host.name] = state
+    assert play
+
+# Generated at 2024-05-30 21:25:01.614078
+```python
+    host = Mock()
+    host.name = "test_host"
+    task_list = [Mock(), Mock()]
+
+    play_iterator = PlayIterator()
+    play_iterator._host_states = {}
+    play_iterator.get_host_state = Mock(return_value=Mock())
+    play_iterator._insert_tasks_into_state = Mock()
+
+    play_iterator.add_tasks(host, task_list)
+
+    play_iterator._insert_tasks_into_state.assert_called_once_with(play_iterator.get_host_state(host), task_list)
+    assert play_iterator._host_states[host.name] == play_iterator._insert_tasks_into_state.return_value
+```
+
+# Generated at 2024-05-30 21:25:02.825373
+```python
+    host = Mock()
+    task = Mock()
+    play_iterator = PlayIterator()
+    
+    result = play_iterator.get_original_task(host, task)
+    
+    assert result == (None, None)
+```
+
+# Generated at 2024-05-30 21:25:04.271599
+```python
+    play = Mock()
+    play._removed_hosts = []
+    host_states = {}
+    iterator = PlayIterator(play, host_states)
+    assert iterator._play == play
+    assert iterator._host_states == host_states
+```
+
+# Generated at 2024-05-30 21:25:09.230359
+```python
+    host = Host(name="test_host")
+    play_iterator = PlayIterator(play=Play(), hosts=[host])
+    
+    # Test when host state is not set
+    state = play_iterator.get_host_state(host)
+    assert state is not None, "Expected a new HostState object"
+    assert state.run_state == play_iterator.ITERATING_SETUP, "Expected initial run state to be ITERATING_SETUP"
+    
+    # Test when host state is already set
+    play_iterator._host_states[host.name] = HostState()
+    state = play_iterator.get_host_state(host)
+    assert state == play_iterator._host_states[host.name], "Expected the existing HostState object"
+```
+
+# Generated at 2024-05-30 21:25:13.716527
+```python
+    host = Mock()
+    host.name = "test_host"
+    task_list = [Mock(), Mock()]
+
+    play_iterator = PlayIterator()
+    play_iterator._host_states = {}
+    play_iterator.get_host_state = Mock(return_value=Mock())
+    play_iterator._insert_tasks_into_state = Mock()
+
+    play_iterator.add_tasks(host, task_list)
+
+    play_iterator._insert_tasks_into_state.assert_called_once_with(play_iterator.get_host_state(host), task_list)
+    assert play_iterator._host_states[host.name] == play_iterator._insert_tasks_into_state.return_value
+```
+
+# Generated at 2024-05-30 21:25:40.800682
+```python
+    # Create a mock PlayIterator object
+    play_iterator = PlayIterator()
+
+    # Mock the _host_states attribute with some test data
+    play_iterator._host_states = {
+        'host1': Mock(run_state=play_iterator.ITERATING_TASKS, fail_state=play_iterator.FAILED_NONE),
+        'host2': Mock(run_state=play_iterator.ITERATING_RESCUE, fail_state=play_iterator.FAILED_RESCUE),
+        'host3': Mock(run_state=play_iterator.ITERATING_ALWAYS, fail_state=play_iterator.FAILED_ALWAYS),
+        'host4': Mock(run_state=play_iterator.ITERATING_TASKS, fail_state=play_iterator.FAILED_TASKS),
+    }
+
+    # Mock the _check_failed_state method to return True for failed states
+    play_iterator._check_failed_state = Mock(side_effect=lambda state: state.fail_state != play_iterator.FAILED_NONE)
+
+    # Call the method under
+
+# Generated at 2024-05-30 21:25:47.358795
+```python
+    # Create a mock PlayIterator object
+    play_iterator = PlayIterator()
+
+    # Mock the _host_states attribute
+    play_iterator._host_states = {
+        'host1': Mock(run_state=play_iterator.ITERATING_TASKS, fail_state=play_iterator.FAILED_TASKS),
+        'host2': Mock(run_state=play_iterator.ITERATING_TASKS, fail_state=play_iterator.FAILED_NONE),
+        'host3': Mock(run_state=play_iterator.ITERATING_RESCUE, fail_state=play_iterator.FAILED_RESCUE),
+    }
+
+    # Mock the _check_failed_state method
+    play_iterator._check_failed_state = Mock(side_effect=lambda state: state.fail_state != play_iterator.FAILED_NONE)
+
+    # Call the method
+    failed_hosts = play_iterator.get_failed_hosts()
+
+    # Assert the expected result
+    assert failed_hosts == {'host1': True, 'host3': True}
+```
+
+# Generated at 2024-05-30 21:25:54.091326
+```python
+    # Create a mock host and state
+    host = Mock()
+    host.name = "test_host"
+    
+    # Create a PlayIterator instance
+    play_iterator = PlayIterator()
+    
+    # Mock the get_host_state method to return a state with FAILED_TASKS
+    state = Mock()
+    state.fail_state = play_iterator.FAILED_TASKS
+    state.run_state = play_iterator.ITERATING_TASKS
+    play_iterator.get_host_state = Mock(return_value=state)
+    
+    # Test when the host has failed
+    assert play_iterator.is_failed(host) == True
+    
+    # Mock the get_host_state method to return a state with no failures
+    state.fail_state = play_iterator.FAILED_NONE
+    play_iterator.get_host_state = Mock(return_value=state)
+    
+    # Test when the host has not failed
+    assert play_iterator.is_failed(host) == False
+```
+
+# Generated at 2024-05-30 21:25:55.449948
+```python
+    play = Mock()
+    play._removed_hosts = []
+    host_states = {}
+    iterator = PlayIterator(play, host_states)
+    assert iterator._play == play
+    assert iterator._host_states == host_states
+```
+
+# Generated at 2024-05-30 21:25:58.060532
+```python
+    blocks = [Block(), Block()]
+    host_state = HostState(blocks)
+    expected_str = ("HOST STATE: block=0, task=0, rescue=0, always=0, run_state=ITERATING_SETUP, fail_state=FAILED_NONE, pending_setup=False, tasks child state? (None), "
+                    "rescue child state? (None), always child state? (None), did rescue? False, did start at task? False")
+    assert str(host_state) == expected_str
+```
+
+# Generated at 2024-05-30 21:26:01.747883
+```python
+    # Create a mock PlayIterator object
+    play_iterator = PlayIterator()
+
+    # Mock the _host_states attribute
+    play_iterator._host_states = {
+        'host1': Mock(run_state=play_iterator.ITERATING_TASKS, fail_state=play_iterator.FAILED_TASKS),
+        'host2': Mock(run_state=play_iterator.ITERATING_TASKS, fail_state=play_iterator.FAILED_NONE),
+        'host3': Mock(run_state=play_iterator.ITERATING_RESCUE, fail_state=play_iterator.FAILED_RESCUE),
+    }
+
+    # Mock the _check_failed_state method
+    play_iterator._check_failed_state = Mock(side_effect=lambda state: state.fail_state != play_iterator.FAILED_NONE)
+
+    # Call the method
+    failed_hosts = play_iterator.get_failed_hosts()
+
+    # Assert the expected result
+    assert failed_hosts == {'host1': True, 'host3': True}
+```
+
+# Generated at 2024-05-30 21:26:04.188395
+```python
+    blocks = [Block(), Block()]
+    original_state = HostState(blocks)
+    original_state.cur_block = 1
+    original_state.cur_regular_task = 2
+    original_state.cur_rescue_task = 3
+    original_state.cur_always_task = 4
+    original_state.run_state = 1
+    original_state.fail_state = 2
+    original_state.pending_setup = True
+    original_state.did_rescue = True
+    original_state.did_start_at_task = True
+
+    copied_state = original_state.copy()
+
+    assert copied_state == original_state
+    assert copied_state is not original_state
+    assert copied_state._blocks is not original_state._blocks
+```
+
+# Generated at 2024-05-30 21:26:08.924673
+```python
+    # Create a mock PlayIterator object
+    play_iterator = PlayIterator()
+
+    # Mock the _host_states attribute
+    play_iterator._host_states = {
+        'host1': Mock(run_state=play_iterator.ITERATING_TASKS, fail_state=play_iterator.FAILED_TASKS),
+        'host2': Mock(run_state=play_iterator.ITERATING_TASKS, fail_state=play_iterator.FAILED_NONE),
+        'host3': Mock(run_state=play_iterator.ITERATING_RESCUE, fail_state=play_iterator.FAILED_RESCUE),
+    }
+
+    # Mock the _check_failed_state method
+    play_iterator._check_failed_state = Mock(side_effect=lambda state: state.fail_state != play_iterator.FAILED_NONE)
+
+    # Call the method
+    failed_hosts = play_iterator.get_failed_hosts()
+
+    # Assert the expected result
+    assert failed_hosts == {'host1': True, 'host3': True}
+```
+
+# Generated at 2024-05-30 21:26:12.352502
+```python
+    host = Mock()
+    host.name = "test_host"
+    task_list = [Mock(), Mock()]
+
+    play_iterator = PlayIterator()
+    play_iterator._host_states = {host.name: Mock()}
+    play_iterator.get_host_state = Mock(return_value=Mock())
+    play_iterator._insert_tasks_into_state = Mock(return_value=Mock())
+
+    play_iterator.add_tasks(host, task_list)
+
+    play_iterator.get_host_state.assert_called_once_with(host)
+    play_iterator._insert_tasks_into_state.assert_called_once_with(play_iterator.get_host_state.return_value, task_list)
+    assert play_iterator._host_states[host.name] == play_iterator._insert_tasks_into_state.return_value
+```
+
+# Generated at 2024-05-30 21:26:16.444889
+```python
+    # Create a mock state with nested child states
+    state = HostState()
+    state.run_state = PlayIterator.ITERATING_TASKS
+    state.tasks_child_state = HostState()
+    state.tasks_child_state.run_state = PlayIterator.ITERATING_RESCUE
+    state.tasks_child_state.rescue_child_state = HostState()
+    state.tasks_child_state.rescue_child_state.run_state = PlayIterator.ITERATING_ALWAYS
+
+    # Create an instance of PlayIterator
+    play_iterator = PlayIterator()
+
+    # Call the method
+    active_state = play_iterator.get_active_state(state)
+
+    # Assert the active state is the innermost child state
+    assert active_state.run_state == PlayIterator.ITERATING_ALWAYS
+```
+
+# Generated at 2024-05-30 21:27:08.038859
+```python
+    # Create a mock state with nested child states
+    state = HostState()
+    state.run_state = PlayIterator.ITERATING_TASKS
+    state.tasks_child_state = HostState()
+    state.tasks_child_state.run_state = PlayIterator.ITERATING_RESCUE
+    state.tasks_child_state.rescue_child_state = HostState()
+    state.tasks_child_state.rescue_child_state.run_state = PlayIterator.ITERATING_ALWAYS
+    state.tasks_child_state.rescue_child_state.always_child_state = HostState()
+    state.tasks_child_state.rescue_child_state.always_child_state.run_state = PlayIterator.ITERATING_TASKS
+
+    # Create an instance of PlayIterator
+    play_iterator = PlayIterator()
+
+    # Get the active state
+    active_state = play_iterator.get_active_state(state)
+
+    # Assert that the active state is the innermost child state
+    assert active_state.run_state == PlayIterator.ITERATING_TASKS
+    assert active_state
+
+# Generated at 2024-05-30 21:27:11.219115
+```python
+    # Create a mock state with nested child states
+    state = HostState()
+    state.run_state = PlayIterator.ITERATING_TASKS
+    state.tasks_child_state = HostState()
+    state.tasks_child_state.run_state = PlayIterator.ITERATING_RESCUE
+    state.tasks_child_state.rescue_child_state = HostState()
+    state.tasks_child_state.rescue_child_state.run_state = PlayIterator.ITERATING_ALWAYS
+    state.tasks_child_state.rescue_child_state.always_child_state = HostState()
+    state.tasks_child_state.rescue_child_state.always_child_state.run_state = PlayIterator.ITERATING_TASKS
+
+    # Create an instance of PlayIterator
+    play_iterator = PlayIterator()
+
+    # Get the active state
+    active_state = play_iterator.get_active_state(state)
+
+    # Assert that the active state is the innermost child state
+    assert active_state.run_state == PlayIterator.ITERATING_TASKS
+    assert active_state
+
+# Generated at 2024-05-30 21:27:14.552472
+```python
+    play_iterator = PlayIterator()
+    host = Host(name="test_host")
+    task_list = [Task(name="task1"), Task(name="task2")]
+
+    # Mock the get_host_state method to return a specific state
+    play_iterator.get_host_state = lambda h: HostState(blocks=[Block(block=task_list)])
+
+    # Call the method to be tested
+    play_iterator.add_tasks(host, task_list)
+
+    # Retrieve the state after adding tasks
+    state = play_iterator.get_host_state(host)
+
+    # Check if the tasks were added correctly
+    assert len(state._blocks[0].block) == 4
+    assert state._blocks[0].block[0].name == "task1"
+    assert state._blocks[0].block[1].name == "task2"
+    assert state._blocks[0].block[2].name == "task1"
+    assert state._blocks[0].block[3
+
+# Generated at 2024-05-30 21:27:19.533030
+```python
+    # Create a mock host and block
+    host = Mock()
+    block = Mock()
+    block.block = [Mock(), Mock()]
+    block.rescue = [Mock()]
+    block.always = [Mock()]
+
+    # Create a PlayIterator instance
+    play_iterator = PlayIterator()
+    play_iterator._play = Mock()
+    play_iterator._play._removed_hosts = []
+
+    # Create a HostState instance
+    state = HostState(blocks=[block])
+    state.run_state = play_iterator.ITERATING_TASKS
+    state.cur_regular_task = 0
+    state.cur_rescue_task = 0
+    state.cur_always_task = 0
+    state.fail_state = play_iterator.FAILED_NONE
+
+    # Mock methods
+    play_iterator._check_failed_state = Mock(return_value=False)
+    play_iterator._get_next_task_from_state = Mock(return_value=(None, None))
+    play_iterator._set_failed_state = Mock()
+
+   
+
+# Generated at 2024-05-30 21:27:23.157499
+```python
+    play_iterator = PlayIterator()
+    host = Host(name="test_host")
+    task_list = [Task(name="task1"), Task(name="task2")]
+
+    # Mock the get_host_state method to return a specific state
+    play_iterator.get_host_state = lambda x: HostState(blocks=[Block(block=task_list)])
+
+    # Call the method to be tested
+    play_iterator.add_tasks(host, task_list)
+
+    # Retrieve the state after adding tasks
+    state = play_iterator.get_host_state(host)
+
+    # Check if the tasks were added correctly
+    assert len(state._blocks[0].block) == 4
+    assert state._blocks[0].block[0].name == "task1"
+    assert state._blocks[0].block[1].name == "task2"
+    assert state._blocks[0].block[2].name == "task1"
+    assert state._blocks[0].block[3
+
+# Generated at 2024-05-30 21:27:30.536965
+```python
+    # Setup
+    play_iterator = PlayIterator()
+    host = Host(name="test_host")
+    block = Block(block=[Task(name="task1"), Task(name="task2")], rescue=[Task(name="rescue_task")], always=[Task(name="always_task")])
+    state = HostState(blocks=[block])
+    play_iterator._host_states[host.name] = state
+
+    # Test ITERATING_TASKS state
+    state.run_state = play_iterator.ITERATING_TASKS
+    next_state, next_task = play_iterator.get_next_task_for_host(host)
+    assert next_task.name == "task1"
+    assert next_state.cur_regular_task == 1
+
+    # Test ITERATING_RESCUE state
+    state.run_state = play_iterator.ITERATING_RESCUE
+    state.cur_regular_task = len(block.block)
+    next_state, next_task = play_iterator.get_next_task_for_host(host)
+    assert next_task.name == "
+
+# Generated at 2024-05-30 21:27:33.623309
+```python
+    # Setup
+    play_iterator = PlayIterator()
+    host = Host(name="test_host")
+    task_list = [Task(name="task1"), Task(name="task2")]
+    initial_state = HostState(blocks=[Block(block=[Task(name="initial_task")])])
+    play_iterator._host_states[host.name] = initial_state
+
+    # Execute
+    play_iterator.add_tasks(host, task_list)
+
+    # Verify
+    updated_state = play_iterator.get_host_state(host)
+    assert len(updated_state._blocks[0].block) == 3
+    assert updated_state._blocks[0].block[0].name == "initial_task"
+    assert updated_state._blocks[0].block[1].name == "task1"
+    assert updated_state._blocks[0].block[2].name == "task2"
+```
+
+# Generated at 2024-05-30 21:27:38.846813
+```python
+    host = Host(name="test_host")
+    task_list = [Task(name="task1"), Task(name="task2")]
+    play_iterator = PlayIterator(play=Play(), host_list=[host])
+
+    # Initial state setup
+    initial_state = HostState(blocks=[Block(block=[Task(name="initial_task")])])
+    play_iterator._host_states[host.name] = initial_state
+
+    # Call the method
+    play_iterator.add_tasks(host, task_list)
+
+    # Retrieve the updated state
+    updated_state = play_iterator.get_host_state(host)
+
+    # Assertions
+    assert len(updated_state._blocks) == 1
+    assert len(updated_state._blocks[0].block) == 3
+    assert updated_state._blocks[0].block[0].name == "initial_task"
+    assert updated_state._blocks[0].block[1].name == "task1"
+    assert updated_state._blocks[0].block[2
+
+# Generated at 2024-05-30 21:27:45.443729
+```python
+    # Setup
+    play_iterator = PlayIterator()
+    host = Host(name="test_host")
+    block = Block()
+    state = HostState(blocks=[block])
+    play_iterator._host_states[host.name] = state
+
+    # Test when state.run_state is ITERATING_TASKS and no tasks are present
+    state.run_state = play_iterator.ITERATING_TASKS
+    state.cur_regular_task = 0
+    block.block = []
+    result_state, task = play_iterator.get_next_task_for_host(host)
+    assert result_state.run_state == play_iterator.ITERATING_ALWAYS
+    assert task is None
+
+    # Test when state.run_state is ITERATING_RESCUE and no rescue tasks are present
+    state.run_state = play_iterator.ITERATING_RESCUE
+    state.cur_rescue_task = 0
+    block.rescue = []
+    result_state, task = play_iterator.get_next_task_for_host(host)
+    assert result_state
+
+# Generated at 2024-05-30 21:27:46.995643
+```python
+    host = Mock()
+    task = Mock()
+    play_iterator = PlayIterator()
+    
+    result = play_iterator.get_original_task(host, task)
+    
+    assert result == (None, None)
+```
+
+# Generated at 2024-05-30 21:29:20.245101
+```python
+    play_iterator = PlayIterator()
+    assert play_iterator is not None
+    assert isinstance(play_iterator, PlayIterator)
+```
+
+# Generated at 2024-05-30 21:29:22.173945
+```python
+    host = Mock()
+    host.name = "test_host"
+    play_iterator = PlayIterator()
+    play_iterator._host_states = {host.name: Mock()}
+    play_iterator._play = Mock()
+    play_iterator._play._removed_hosts = []
+
+    play_iterator.mark_host_failed(host)
+
+    assert host.name in play_iterator._play._removed_hosts
+    assert play_iterator._host_states[host.name].fail_state != play_iterator.FAILED_NONE
+```
+
+# Generated at 2024-05-30 21:29:26.691392
+```python
+    blocks1 = [Block(), Block()]
+    blocks2 = [Block(), Block()]
+    
+    state1 = HostState(blocks1)
+    state2 = HostState(blocks1)
+    state3 = HostState(blocks2)
+    
+    assert state1 == state2, "Identical states should be equal"
+    assert state1 != state3, "Different states should not be equal"
+    
+    state2.cur_block = 1
+    assert state1 != state2, "States with different cur_block should not be equal"
+    
+    state2.cur_block = 0
+    state2.cur_regular_task = 1
+    assert state1 != state2, "States with different cur_regular_task should not be equal"
+    
+    state2.cur_regular_task = 0
+    state2.cur_rescue_task = 1
+    assert state1 != state2, "States with different cur_rescue_task should not be equal"
+    
+    state
+
+# Generated at 2024-05-30 21:29:29.754001
+```python
+    play_iterator = PlayIterator()
+    host1 = Host(name="host1")
+    host2 = Host(name="host2")
+    host3 = Host(name="host3")
+
+    # Simulate host states
+    play_iterator._host_states = {
+        host1.name: HostState(run_state=play_iterator.ITERATING_TASKS, fail_state=play_iterator.FAILED_TASKS),
+        host2.name: HostState(run_state=play_iterator.ITERATING_COMPLETE, fail_state=play_iterator.FAILED_NONE),
+        host3.name: HostState(run_state=play_iterator.ITERATING_RESCUE, fail_state=play_iterator.FAILED_RESCUE)
+    }
+
+    failed_hosts = play_iterator.get_failed_hosts()
+
+    assert host1.name in failed_hosts
+    assert host3.name in failed_hosts
+    assert host2.name not in failed_hosts
+```
+
+# Generated at 2024-05-30 21:29:33.571927
+```python
+    # Create a mock PlayIterator object
+    play_iterator = PlayIterator()
+
+    # Mock the _host_states attribute with various states
+    play_iterator._host_states = {
+        'host1': HostState(run_state=play_iterator.ITERATING_TASKS, fail_state=play_iterator.FAILED_NONE),
+        'host2': HostState(run_state=play_iterator.ITERATING_RESCUE, fail_state=play_iterator.FAILED_RESCUE),
+        'host3': HostState(run_state=play_iterator.ITERATING_ALWAYS, fail_state=play_iterator.FAILED_ALWAYS),
+        'host4': HostState(run_state=play_iterator.ITERATING_TASKS, fail_state=play_iterator.FAILED_TASKS),
+    }
+
+    # Expected failed hosts
+    expected_failed_hosts = {
+        'host2': True,
+        'host3': True,
+        'host4': True,
+    }
+
+    # Call the method
+    failed_hosts
+
+# Generated at 2024-05-30 21:29:37.212728
+```python
+    play_iterator = PlayIterator()
+    host = Host(name="test_host")
+    task_list = [Task(name="task1"), Task(name="task2")]
+
+    # Mock the get_host_state method to return a specific state
+    play_iterator.get_host_state = lambda h: HostState(blocks=[Block(block=task_list)])
+
+    # Call the method to be tested
+    play_iterator.add_tasks(host, task_list)
+
+    # Retrieve the state after adding tasks
+    state = play_iterator.get_host_state(host)
+
+    # Check if the tasks were added correctly
+    assert len(state._blocks[0].block) == 4
+    assert state._blocks[0].block[0].name == "task1"
+    assert state._blocks[0].block[1].name == "task2"
+    assert state._blocks[0].block[2].name == "task1"
+    assert state._blocks[0].block[3
+
+# Generated at 2024-05-30 21:29:38.737517
+```python
+    host = Host(name="test_host")
+    play_iterator = PlayIterator(play=Play(), hosts=[host])
+    
+    # Test when host state is not set
+    assert play_iterator.get_host_state(host) is None
+    
+    # Set a host state and test retrieval
+    state = HostState(blocks=[])
+    play_iterator._host_states[host.name] = state
+    assert play_iterator.get_host_state(host) == state
+```
+
+# Generated at 2024-05-30 21:29:41.339305
+```python
+    blocks = [Block(), Block()]
+    host_state = HostState(blocks)
+    expected_str = ("HOST STATE: block=0, task=0, rescue=0, always=0, run_state=ITERATING_SETUP, fail_state=FAILED_NONE, pending_setup=False, tasks child state? (None), "
+                    "rescue child state? (None), always child state? (None), did rescue? False, did start at task? False")
+    assert str(host_state) == expected_str
+```
+
+# Generated at 2024-05-30 21:29:42.783327
+```python
+    play = Mock()
+    play._removed_hosts = []
+    host_states = {}
+    iterator = PlayIterator(play, host_states)
+    assert iterator._play == play
+    assert iterator._host_states == host_states
+```
+
+# Generated at 2024-05-30 21:29:46.378512
+```python
+    # Create a mock PlayIterator object
+    play_iterator = PlayIterator()
+
+    # Mock the _host_states attribute with various states
+    play_iterator._host_states = {
+        'host1': HostState(run_state=play_iterator.ITERATING_TASKS, fail_state=play_iterator.FAILED_NONE),
+        'host2': HostState(run_state=play_iterator.ITERATING_RESCUE, fail_state=play_iterator.FAILED_RESCUE),
+        'host3': HostState(run_state=play_iterator.ITERATING_ALWAYS, fail_state=play_iterator.FAILED_ALWAYS),
+        'host4': HostState(run_state=play_iterator.ITERATING_TASKS, fail_state=play_iterator.FAILED_TASKS),
+    }
+
+    # Expected failed hosts
+    expected_failed_hosts = {
+        'host2': True,
+        'host3': True,
+        'host4': True,
+    }
+
+    # Call the method and assert the result
+
+# Generated at 2024-05-30 21:32:50.380878
+```python
+    play = Mock()
+    host_states = {}
+    iterator = PlayIterator(play, host_states)
+    assert iterator._play == play
+    assert iterator._host_states == host_states
+```
+
+# Generated at 2024-05-30 21:32:54.169907
+```python
+    play_iterator = PlayIterator()
+    host = Host(name="test_host")
+    task_list = [Task(name="task1"), Task(name="task2")]
+
+    # Mock the get_host_state method to return a specific state
+    play_iterator.get_host_state = lambda h: HostState(blocks=[Block(block=task_list)])
+
+    # Call the method to be tested
+    play_iterator.add_tasks(host, task_list)
+
+    # Retrieve the state after adding tasks
+    state = play_iterator.get_host_state(host)
+
+    # Check if the tasks were added correctly
+    assert len(state._blocks[0].block) == 4
+    assert state._blocks[0].block[0].name == "task1"
+    assert state._blocks[0].block[1].name == "task2"
+    assert state._blocks[0].block[2].name == "task1"
+    assert state._blocks[0].block[3

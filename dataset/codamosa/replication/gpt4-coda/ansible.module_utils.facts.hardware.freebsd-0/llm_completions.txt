@@ -1,0 +1,946 @@
+
+
+# Generated at 2024-03-18 01:21:56.941285
+```python
+    # Create a mock module with necessary methods
+    class MockModule:
+        def get_bin_path(self, bin_name):
+            if bin_name == 'dmidecode':
+                return '/usr/sbin/dmidecode'
+            return None
+
+        def run_command(self, cmd, encoding=None, check_rc=False):
+            if 'dmidecode' in cmd:
+                # Simulate dmidecode output
+                sample_output = {
+                    '-s bios-vendor': (0, 'TestBIOSVendor\n', ''),
+                    '-s system-product-name': (0, 'TestProductName\n', ''),
+                    '-s system-serial-number': (0, 'TestSerialNumber\n', ''),
+                    # Add more as needed for testing
+                }
+                for arg, result in sample_output.items():
+                    if arg in cmd:
+                        return result
+            return 1, '', 'Command not found'
+
+    # Instantiate the class with the mock module
+    hardware = FreeBSDHardware
+
+# Generated at 2024-03-18 01:22:01.699851
+```python
+    # Setup the test environment and mocks
+    module_mock = MagicMock()
+    module_mock.get_bin_path.return_value = '/sbin/sysctl'
+    module_mock.run_command.side_effect = [
+        (0, "hw.pagesize: 4096\nhw.physmem: 17179869184\n", ""),
+        (0, "/dev/ada0p3 314368 0 314368 0%\n", "")
+    ]
+
+    freebsd_hardware = FreeBSDHardware(module=module_mock)
+
+    # Call the method
+    memory_facts = freebsd_hardware.get_memory_facts()
+
+    # Assertions to validate the results
+    assert memory_facts['memtotal_mb'] == 16384  # 17179869184 bytes / 1024 / 1024
+    assert memory_facts['memfree_mb'] == 0  # Assuming no free memory for the test
+    assert memory_facts['swaptotal_mb']
+
+# Generated at 2024-03-18 01:22:09.378461
+```python
+    from ansible.module_utils.basic import AnsibleModule
+
+    # Mock the AnsibleModule and its run_command method
+    module = AnsibleModule(argument_spec={})
+    module.run_command = lambda cmd: (0, "Mocked output", "")
+
+    # Create an instance of FreeBSDHardware with the mocked module
+    freebsd_hardware = FreeBSDHardware(module)
+
+    # Mock the get_bin_path method to return a fake dmidecode path
+    freebsd_hardware.module.get_bin_path = lambda bin_name: "/usr/sbin/" + bin_name if bin_name == "dmidecode" else None
+
+    # Perform the test
+    dmi_facts = freebsd_hardware.get_dmi_facts()
+
+    # Define expected results
+    expected_results = {
+        'bios_date': 'Mocked output',
+        'bios_vendor': 'Mocked output',
+        'bios_version': 'Mocked output',
+        'board_asset_tag': 'Mocked output
+
+# Generated at 2024-03-18 01:22:15.897605
+```python
+    from unittest.mock import patch, MagicMock
+    import time
+
+    def test_get_uptime_facts():
+        hardware = FreeBSDHardware()
+        hardware.module = MagicMock()
+
+        # Mock the current time to a fixed timestamp for predictability
+        current_time = 1609459200  # 2021-01-01 00:00:00 UTC
+        with patch.object(time, 'time', return_value=current_time):
+            # Mock the sysctl command output to simulate kern.boottime
+            # Assume the system booted 1 hour ago
+            boot_time = current_time - 3600  # 1 hour ago
+            sysctl_output = struct.pack('@L', boot_time)
+            hardware.module.run_command.return_value = (0, sysctl_output, '')
+
+            uptime_facts = hardware.get_uptime_facts()
+
+            # Verify that the uptime is approximately 1 hour
+            assert uptime_facts['uptime_seconds'] == 3600
+
+# Generated at 2024-03-18 01:22:27.217496
+```python
+    # Setup the test environment and mocks
+    module_mock = MagicMock()
+    module_mock.get_bin_path.return_value = '/usr/sbin/dmidecode'
+
+    freebsd_hardware = FreeBSDHardware(module=module_mock)
+
+    # Define the expected output from the dmidecode command
+    dmidecode_output = {
+        'bios-release-date': '01/01/2020',
+        'bios-vendor': 'TestVendor',
+        'bios-version': '1.0.0',
+        'baseboard-asset-tag': 'TestAssetTag',
+        'baseboard-product-name': 'TestBoardName',
+        'baseboard-serial-number': 'SN123456',
+        'baseboard-manufacturer': 'TestBoardVendor',
+        'baseboard-version': '1.0',
+        'chassis-asset-tag': 'ChassisAssetTag',
+        'chassis-serial-number': 'ChassisSN',
+        'chassis-manufacturer': '
+
+# Generated at 2024-03-18 01:22:32.137991
+```python
+    from ansible.module_utils.basic import AnsibleModule
+
+    # Mock the AnsibleModule and its methods used by FreeBSDHardware
+    mock_module = AnsibleModule(argument_spec={})
+    mock_module.get_bin_path = lambda command: '/usr/sbin/' + command if command == 'dmidecode' else None
+    mock_module.run_command = lambda command, **kwargs: (0, 'Mocked output', '')
+
+    # Create an instance of FreeBSDHardware with the mocked module
+    freebsd_hardware = FreeBSDHardware(mock_module)
+
+    # Call the get_dmi_facts method
+    dmi_facts = freebsd_hardware.get_dmi_facts()
+
+    # Define expected results
+    expected_results = {
+        'bios_date': 'Mocked output',
+        'bios_vendor': 'Mocked output',
+        'bios_version': 'Mocked output',
+        'board_asset_tag': 'Mocked output',
+        'board_name': 'Mocked output
+
+# Generated at 2024-03-18 01:22:37.158188
+```python
+    # Setup the test environment
+    hardware = FreeBSDHardware()
+    hardware.module = MagicMock()
+
+    # Define the expected DMI_DICT
+    expected_dmi_dict = {
+        'bios_date': '01/01/2020',
+        'bios_vendor': 'TestVendor',
+        'bios_version': '1.0.0',
+        'board_asset_tag': 'TestAssetTag',
+        'board_name': 'TestBoardName',
+        'board_serial': 'TestBoardSerial',
+        'board_vendor': 'TestBoardVendor',
+        'board_version': '1.0',
+        'chassis_asset_tag': 'TestChassisAssetTag',
+        'chassis_serial': 'TestChassisSerial',
+        'chassis_vendor': 'TestChassisVendor',
+        'chassis_version': '1.0',
+        'form_factor': 'TestFormFactor',
+        'product_name': 'TestProductName',
+        'product_serial': 'TestProductSerial
+
+# Generated at 2024-03-18 01:22:44.552963
+```python
+    from ansible.module_utils.basic import AnsibleModule
+
+    # Mock the AnsibleModule and its methods used by FreeBSDHardware
+    mock_module = AnsibleModule(argument_spec={})
+    mock_module.get_bin_path = lambda command: f"/usr/bin/{command}"
+    mock_module.run_command = lambda command, check_rc=False, encoding=None: (0, "4", "") if "hw.ncpu" in command else (0, "", "")
+
+    # Create an instance of FreeBSDHardware with the mocked module
+    freebsd_hardware = FreeBSDHardware(module=mock_module)
+
+    # Call the populate method
+    facts = freebsd_hardware.populate()
+
+    # Assertions to validate the facts
+    assert 'processor_count' in facts, "processor_count should be in the facts"
+    assert facts['processor_count'] == "4", "processor_count should be 4"
+    assert 'memtotal_mb' in facts, "memtotal_mb should be in the facts
+
+# Generated at 2024-03-18 01:22:50.342618
+```python
+    from ansible.module_utils.basic import AnsibleModule
+
+    # Mock the AnsibleModule and its methods used by FreeBSDHardware
+    mock_module = AnsibleModule(argument_spec={})
+    mock_module.get_bin_path = lambda command: f"/usr/bin/{command}"
+    mock_module.run_command = lambda command, check_rc=False, encoding=None: (0, "4", "") if "hw.ncpu" in command else (0, "", "")
+
+    # Create an instance of FreeBSDHardware with the mocked module
+    freebsd_hardware = FreeBSDHardware(module=mock_module)
+
+    # Mock the get_file_content function used by FreeBSDHardware
+    freebsd_hardware.get_file_content = lambda file_path: "CPU: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz\n" \
+                                                           "Logical CPUs per core: 2\n" if file_path == freebsd_hardware.DMESG_BOOT else ""
+
+    # Mock the
+
+# Generated at 2024-03-18 01:22:55.780436
+```python
+    # Setup the test environment
+    hardware = FreeBSDHardware()
+    hardware.module = MagicMock()
+
+    # Mock the get_bin_path method to return a fake dmidecode path
+    hardware.module.get_bin_path = MagicMock(return_value='/usr/sbin/dmidecode')
+
+    # Mock the run_command method to simulate dmidecode output
+    fake_dmidecode_output = {
+        'bios-release-date': '01/01/2020',
+        'bios-vendor': 'TestVendor',
+        'bios-version': '1.0.0',
+        'baseboard-asset-tag': 'TestAssetTag',
+        'baseboard-product-name': 'TestBoardName',
+        'baseboard-serial-number': 'TestBoardSerial',
+        'baseboard-manufacturer': 'TestBoardVendor',
+        'baseboard-version': '1.0',
+        'chassis-asset-tag': 'TestChassisAssetTag',
+        'chassis-serial-number': '
+
+# Generated at 2024-03-18 01:23:09.730505
+```python
+import unittest
+from unittest.mock import patch
+from ansible.module_utils.facts.hardware.freebsd import FreeBSDHardware
+
+
+# Generated at 2024-03-18 01:23:14.705862
+```python
+    # Setup the test environment
+    module = mock.Mock()
+    freebsd_hardware = FreeBSDHardware(module)
+
+    # Mock the sysctl command output
+    module.get_bin_path.return_value = '/sbin/sysctl'
+    module.run_command.side_effect = [
+        (0, '4096\n', ''),  # vm.stats.vm.v_page_size
+        (0, '1048576\n', ''),  # vm.stats.vm.v_page_count
+        (0, '262144\n', '')  # vm.stats.vm.v_free_count
+    ]
+
+    # Execute the get_memory_facts method
+    memory_facts = freebsd_hardware.get_memory_facts()
+
+    # Assert the expected results
+    assert memory_facts['memtotal_mb'] == 4096
+    assert memory_facts['memfree_mb'] == 1024
+```
+
+# Generated at 2024-03-18 01:23:19.710051
+```python
+    from ansible.module_utils.basic import AnsibleModule
+
+    def mock_run_command(cmd, check_rc=False, encoding=None):
+        if 'sysctl -n hw.ncpu' in cmd:
+            return (0, '4', '')
+        elif 'sysctl vm.stats' in cmd:
+            return (0, 'vm.stats.vm.v_page_size: 4096\nvm.stats.vm.v_page_count: 524288\nvm.stats.vm.v_free_count: 131072', '')
+        elif 'swapinfo -k' in cmd:
+            return (0, '/dev/ada0p3 8388608 0 8388608 0%', '')
+        elif 'sysctl -b kern.boottime' in cmd:
+            return (0, struct.pack('@L', int(time.time() - 3600)), '')  # Simulate 1 hour uptime
+        elif cmd == ['/sbin/sysctl', '-b', 'kern.boottime']:
+
+
+# Generated at 2024-03-18 01:23:26.239391
+```python
+    # Setup the test environment
+    module = mock.Mock()
+    freebsd_hardware = FreeBSDHardware(module)
+
+    # Mock the sysctl command output
+    module.get_bin_path.return_value = '/sbin/sysctl'
+    module.run_command.return_value = (0, "8\n", "")
+
+    # Mock the dmesg.boot file content
+    with mock.patch('ansible.module_utils.facts.hardware.freebsd.get_file_content', return_value="CPU: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz (2712.01-MHz K8-class CPU)\n  Logical CPUs per core: 2"):
+        cpu_facts = freebsd_hardware.get_cpu_facts()
+
+    # Assertions to validate the results
+    assert cpu_facts['processor_count'] == "8"
+    assert cpu_facts['processor'] == ["Intel(R) Core(TM) i7-8650U CPU @ 1.90
+
+# Generated at 2024-03-18 01:23:49.531589
+```python
+    # Mocking the necessary components for the test
+    module_mock = MagicMock()
+    module_mock.get_bin_path.side_effect = lambda x: "/usr/sbin/" + x
+
+    # Mocking run_command for sysctl calls
+    def mock_run_command(cmd, check_rc=False, encoding=None):
+        if cmd[0].endswith("sysctl"):
+            if "-n hw.ncpu" in cmd:
+                return (0, "4", "")
+            elif "vm.stats" in cmd:
+                return (0, "vm.stats.vm.v_page_size: 4096\nvm.stats.vm.v_page_count: 262144\nvm.stats.vm.v_free_count: 131072", "")
+            elif "-b kern.boottime" in cmd:
+                return (0, struct.pack('@L', int(time.time() - 100000)), "")
+        elif cmd[0].endswith("swapinfo"):
+            return (0, "/dev/ada0p3
+
+# Generated at 2024-03-18 01:23:54.117329
+```python
+    # Mocking the necessary components for the test
+    module_mock = MagicMock()
+    module_mock.get_bin_path = MagicMock(side_effect=lambda x: '/usr/sbin/' + x)
+    module_mock.run_command = MagicMock(side_effect=[
+        (0, '4', ''),  # Mocking sysctl -n hw.ncpu
+        (0, 'CPU: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz (2712.00-MHz K8-class CPU)\n', ''),  # Mocking dmesg output
+        (0, 'vm.stats.vm.v_page_size: 4096\nvm.stats.vm.v_page_count: 524288\nvm.stats.vm.v_free_count: 131072\n', ''),  # Mocking sysctl vm.stats
+        (0, 'Device          1M-blocks     Used    Avail Capacity\n/dev/ada0p3        314368        
+
+# Generated at 2024-03-18 01:24:04.379839
+```python
+    # Setup the test environment
+    module = mock.Mock()
+    freebsd_hardware = FreeBSDHardware(module)
+
+    # Mock the sysctl command output
+    module.get_bin_path.return_value = '/sbin/sysctl'
+    module.run_command.return_value = (0, "8\n", "")
+
+    # Mock the dmesg.boot file content
+    with mock.patch('ansible.module_utils.facts.hardware.freebsd.get_file_content', return_value="CPU: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz (2712.01-MHz K8-class CPU)\n  Logical CPUs per core: 2"):
+        cpu_facts = freebsd_hardware.get_cpu_facts()
+
+    # Verify the results
+    assert cpu_facts['processor_count'] == '8'
+    assert cpu_facts['processor'] == ['Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz (
+
+# Generated at 2024-03-18 01:24:05.861540
+```python
+import unittest
+from ansible.module_utils import basic
+from ansible.module_utils.facts.hardware.freebsd import FreeBSDHardware
+
+
+# Generated at 2024-03-18 01:24:10.689412
+```python
+    # Setup the test environment
+    hardware = FreeBSDHardware()
+    hardware.module = MagicMock()
+
+    # Define the expected DMI_DICT
+    expected_dmi_dict = {
+        'bios_date': '01/01/2000',
+        'bios_vendor': 'TestVendor',
+        'bios_version': '1.0.0',
+        'board_asset_tag': 'TestAssetTag',
+        'board_name': 'TestBoardName',
+        'board_serial': 'TestBoardSerial',
+        'board_vendor': 'TestBoardVendor',
+        'board_version': '1.0',
+        'chassis_asset_tag': 'TestChassisAssetTag',
+        'chassis_serial': 'TestChassisSerial',
+        'chassis_vendor': 'TestChassisVendor',
+        'chassis_version': '1.0',
+        'form_factor': 'TestFormFactor',
+        'product_name': 'TestProductName',
+        'product_serial': 'TestProductSerial
+
+# Generated at 2024-03-18 01:24:15.758195
+```python
+    # Setup the test environment
+    hardware = FreeBSDHardware()
+    hardware.module = MagicMock()
+
+    # Define the expected DMI_DICT
+    DMI_DICT = {
+        'bios_date': 'bios-release-date',
+        'bios_vendor': 'bios-vendor',
+        'bios_version': 'bios-version',
+        'board_asset_tag': 'baseboard-asset-tag',
+        'board_name': 'baseboard-product-name',
+        'board_serial': 'baseboard-serial-number',
+        'board_vendor': 'baseboard-manufacturer',
+        'board_version': 'baseboard-version',
+        'chassis_asset_tag': 'chassis-asset-tag',
+        'chassis_serial': 'chassis-serial-number',
+        'chassis_vendor': 'chassis-manufacturer',
+        'chassis_version': 'chassis-version',
+        'form_factor': 'chassis-type',
+        'product_name': 'system-product-name',
+        'product_serial': 'system
+
+# Generated at 2024-03-18 01:24:37.220155
+```python
+    # Setup the test environment
+    module = mock.Mock()
+    module.get_bin_path = mock.Mock(return_value='/usr/sbin/dmidecode')
+
+    # Create an instance of the FreeBSDHardware class
+    freebsd_hardware = FreeBSDHardware(module)
+
+    # Mock the run_command method to simulate dmidecode output
+    dmidecode_output = """
+# dmidecode 3.2
+Getting SMBIOS data from sysfs.
+SMBIOS 2.7 present.
+# SMBIOS implementations newer than version 3.2 are not
+# fully supported by this version of dmidecode.
+
+Handle 0x0001, DMI type 1, 27 bytes
+System Information
+    Manufacturer: ExampleCorp
+    Product Name: ExampleProduct
+    Version: 1.0
+    Serial Number: 1234-5678-9012-3456
+    UUID: 12345678-1234-5678-901
+
+# Generated at 2024-03-18 01:24:44.063749
+```python
+    from ansible.module_utils.basic import AnsibleModule
+
+    # Mock the AnsibleModule and its methods used by FreeBSDHardware
+    mock_module = AnsibleModule(argument_spec={})
+    mock_module.get_bin_path = lambda command: '/usr/sbin/' + command if command == 'dmidecode' else None
+    mock_module.run_command = lambda command, **kwargs: (0, 'Mocked output', '')
+
+    # Create an instance of FreeBSDHardware with the mocked module
+    freebsd_hardware = FreeBSDHardware(mock_module)
+
+    # Call the get_dmi_facts method
+    dmi_facts = freebsd_hardware.get_dmi_facts()
+
+    # Define the expected results
+    expected_results = {
+        'bios_date': 'Mocked output',
+        'bios_vendor': 'Mocked output',
+        'bios_version': 'Mocked output',
+        'board_asset_tag': 'Mocked output',
+        'board_name': 'Mocked
+
+# Generated at 2024-03-18 01:24:49.242871
+```python
+    # Setup the test environment
+    module = mock.Mock()
+    freebsd_hardware = FreeBSDHardware(module)
+
+    # Mock the sysctl command output
+    module.get_bin_path.return_value = '/sbin/sysctl'
+    module.run_command.side_effect = [
+        (0, '4', ''),  # Mock output for sysctl -n hw.ncpu
+        (0, 'CPU: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz\nLogical CPUs per core: 2', '')  # Mock output for dmesg
+    ]
+
+    # Call the method
+    cpu_facts = freebsd_hardware.get_cpu_facts()
+
+    # Assert the expected results
+    assert cpu_facts['processor_count'] == '4'
+    assert cpu_facts['processor'] == ['Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz']
+    assert cpu_facts['
+
+# Generated at 2024-03-18 01:24:55.965171
+```python
+    # Setup the test environment
+    hardware = FreeBSDHardware()
+    hardware.module = MagicMock()
+
+    # Mock the sysctl command and its output
+    hardware.module.get_bin_path.return_value = '/sbin/sysctl'
+    hardware.module.run_command.side_effect = [
+        (0, '4096\n', ''),  # vm.stats.vm.v_page_size
+        (0, '1048576\n', ''),  # vm.stats.vm.v_page_count
+        (0, '262144\n', '')  # vm.stats.vm.v_free_count
+    ]
+
+    # Mock the swapinfo command and its output
+    swapinfo_path = '/sbin/swapinfo'
+    hardware.module.get_bin_path.return_value = swapinfo_path
+    swapinfo_output = """Device          1M-blocks     Used    Avail Capacity
+/dev/ada0p3        314368        0   314368     0%
+"""
+    hardware.module.run_command.return_value
+
+# Generated at 2024-03-18 01:25:00.866482
+```python
+    from unittest.mock import patch, MagicMock
+
+    def test_get_uptime_facts(self):
+        hardware = FreeBSDHardware()
+        hardware.module = MagicMock()
+
+        # Mock the sysctl command and its output
+        hardware.module.get_bin_path.return_value = '/sbin/sysctl'
+        fake_boottime = struct.pack('@L', int(time.time() - 123456))
+        hardware.module.run_command.return_value = (0, fake_boottime, '')
+
+        # Call the method
+        uptime_facts = hardware.get_uptime_facts()
+
+        # Assert the expected result
+        self.assertEqual(uptime_facts['uptime_seconds'], 123456)
+
+# This is where you would typically call the test method, for example:
+# test = FreeBSDHardwareTest()
+# test.test_get_uptime_facts()
+```
+
+# Generated at 2024-03-18 01:25:07.043540
+```python
+    from unittest.mock import patch, MagicMock
+    import struct
+    import time
+
+    def test_get_uptime_facts():
+        hardware = FreeBSDHardware()
+        hardware.module = MagicMock()
+
+        # Mock the sysctl command output
+        sysctl_cmd = '/sbin/sysctl'
+        kern_boottime = int(time.time()) - 3600  # Let's assume the system has been up for 1 hour
+        packed_data = struct.pack('@L', kern_boottime)
+        hardware.module.run_command.return_value = (0, packed_data, '')
+
+        # Patch the get_bin_path to return our sysctl command
+        with patch.object(hardware.module, 'get_bin_path', return_value=sysctl_cmd):
+            uptime_facts = hardware.get_uptime_facts()
+
+        # Verify the uptime is approximately 1 hour
+        assert uptime_facts['uptime_seconds'] == 3600
+
+    test_get_uptime_facts()
+```
+
+# Generated at 2024-03-18 01:25:08.524014
+```python
+import unittest
+from unittest.mock import patch
+from ansible.module_utils.facts.hardware.freebsd import FreeBSDHardware
+
+
+# Generated at 2024-03-18 01:25:11.852112
+```python
+    # Setup the test environment
+    hardware = FreeBSDHardware()
+    hardware.module = MockModule()
+
+    # Mock the os.listdir method
+    with patch('os.listdir', return_value=['ada0', 'ada1', 'da0', 'da0s1', 'acd0']):
+        device_facts = hardware.get_device_facts()
+
+    # Expected results
+    expected_devices = {
+        'ada0': [],
+        'ada1': [],
+        'da0': ['da0s1'],
+    }
+
+    # Assert the results
+    assert device_facts['devices'] == expected_devices, "Device facts do not match expected facts"
+```
+
+# Generated at 2024-03-18 01:25:16.703973
+```python
+    # Setup the test environment
+    module = mock.Mock()
+    module.get_bin_path = mock.Mock(return_value='/usr/sbin/dmidecode')
+
+    # Create an instance of the FreeBSDHardware class
+    freebsd_hardware = FreeBSDHardware(module)
+
+    # Mock the run_command method to return predefined dmidecode output
+    dmidecode_output = """
+# dmidecode 3.2
+Getting SMBIOS data from sysfs.
+SMBIOS 2.7 present.
+
+Handle 0x0001, DMI type 1, 27 bytes
+System Information
+    Manufacturer: ExampleCorp
+    Product Name: ExampleServer
+    Version: 1.0
+    Serial Number: 12345
+    UUID: 12345678-1234-5678-1234-567812345678
+    Wake-up Type: Power Switch
+    SKU Number: Not Specified
+    Family: Server
+
+Handle 0x000
+
+# Generated at 2024-03-18 01:25:22.629567
+```python
+    # Mocking the module and its methods for the test
+    module_mock = MagicMock()
+    module_mock.get_bin_path = MagicMock(side_effect=lambda x: '/usr/sbin/' + x)
+    module_mock.run_command = MagicMock(side_effect=[
+        (0, '4', ''),  # Mocking sysctl -n hw.ncpu
+        (0, 'CPU: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz\nLogical CPUs per core: 2', ''),  # Mocking dmesg output
+        (0, 'vm.stats.vm.v_page_size: 4096\nvm.stats.vm.v_page_count: 524288\nvm.stats.vm.v_free_count: 131072', ''),  # Mocking sysctl vm.stats
+        (0, 'Device          1M-blocks     Used    Avail Capacity\n/dev/ada0p3        314368        0   314
+
+# Generated at 2024-03-18 01:26:04.569574
+```python
+    # Setup the test environment
+    module = mock.Mock()
+    module.get_bin_path = mock.Mock(return_value='/sbin/sysctl')
+
+    # Mock the run_command method to return predefined sysctl output
+    fake_sysctl_output = (
+        "vm.stats.vm.v_page_size: 4096\n"
+        "vm.stats.vm.v_page_count: 524288\n"
+        "vm.stats.vm.v_free_count: 102400\n"
+    )
+    module.run_command = mock.Mock(return_value=(0, fake_sysctl_output, ''))
+
+    # Create an instance of the FreeBSDHardware class
+    freebsd_hardware = FreeBSDHardware(module)
+
+    # Call the get_memory_facts method
+    memory_facts = freebsd_hardware.get_memory_facts()
+
+    # Assert the expected results
+    assert memory_facts['memtotal_mb'] == 2048  # 4096 * 524288 / 1024 / 1024
+   
+
+# Generated at 2024-03-18 01:26:10.780687
+```python
+    # Setup the test environment
+    module = mock.Mock()
+    freebsd_hardware = FreeBSDHardware(module)
+
+    # Mock the sysctl command output
+    module.get_bin_path.return_value = '/sbin/sysctl'
+    module.run_command.return_value = (0, "8\n", "")
+
+    # Mock the dmesg.boot file content
+    with mock.patch('ansible.module_utils.facts.hardware.freebsd.get_file_content', return_value="CPU: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz (2712.01-MHz K8-class CPU)\nLogical CPUs per core: 2"):
+        cpu_facts = freebsd_hardware.get_cpu_facts()
+
+    # Assertions to validate the results
+    assert cpu_facts['processor_count'] == "8"
+    assert cpu_facts['processor'] == ["Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz
+
+# Generated at 2024-03-18 01:26:15.366953
+```python
+    # Setup the test environment
+    module = mock.Mock()
+    freebsd_hardware = FreeBSDHardware(module)
+
+    # Mock the sysctl command output
+    module.get_bin_path.return_value = '/sbin/sysctl'
+    module.run_command.side_effect = [
+        (0, '4', ''),  # Mock output for sysctl -n hw.ncpu
+        (0, 'CPU: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz\nLogical CPUs per core: 2', '')  # Mock output for dmesg
+    ]
+
+    # Call the method
+    cpu_facts = freebsd_hardware.get_cpu_facts()
+
+    # Assert the expected results
+    assert cpu_facts['processor_count'] == '4'
+    assert cpu_facts['processor'] == ['Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz']
+    assert cpu_facts['
+
+# Generated at 2024-03-18 01:26:20.227783
+```python
+    # Setup the test environment and mocks
+    module_mock = MagicMock()
+    module_mock.get_bin_path.return_value = '/usr/sbin/dmidecode'
+
+    freebsd_hardware = FreeBSDHardware(module=module_mock)
+
+    # Define the expected output from the dmidecode command
+    dmidecode_output = {
+        'bios-release-date': '01/01/2020',
+        'bios-vendor': 'TestVendor',
+        'bios-version': '1.0.0',
+        'baseboard-asset-tag': 'TestAssetTag',
+        'baseboard-product-name': 'TestBoardName',
+        'baseboard-serial-number': 'SN123456',
+        'baseboard-manufacturer': 'TestBoardVendor',
+        'baseboard-version': '1.0',
+        'chassis-asset-tag': 'ChassisAssetTag',
+        'chassis-serial-number': 'ChassisSN',
+        'chassis-manufacturer': '
+
+# Generated at 2024-03-18 01:26:22.102822
+```python
+    collector = FreeBSDHardwareCollector()
+    assert collector._fact_class == FreeBSDHardware
+    assert collector._platform == 'FreeBSD'
+```
+
+# Generated at 2024-03-18 01:26:23.629348
+```python
+    collector = FreeBSDHardwareCollector()
+    assert collector._fact_class == FreeBSDHardware
+    assert collector._platform == 'FreeBSD'
+```
+
+# Generated at 2024-03-18 01:26:32.596798
+```python
+    # Mocking the module and its methods for the test
+    module_mock = MagicMock()
+    module_mock.get_bin_path = MagicMock(return_value='/sbin/sysctl')
+    module_mock.run_command = MagicMock(side_effect=[
+        (0, '4', ''),  # Mocking sysctl -n hw.ncpu
+        (0, 'CPU: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz (2712.00-MHz K8-class CPU)\nLogical CPUs per core: 2', '')  # Mocking dmesg output
+    ])
+
+    # Creating an instance of the FreeBSDHardware class with the mocked module
+    freebsd_hardware = FreeBSDHardware(module=module_mock)
+
+    # Running the get_cpu_facts method
+    cpu_facts = freebsd_hardware.get_cpu_facts()
+
+    # Assertions to validate the results
+    assert cpu_facts['processor_count'] == '4'
+   
+
+# Generated at 2024-03-18 01:26:37.897075
+```python
+    # Setup the test environment
+    module = mock.Mock()
+    module.run_command = mock.Mock(side_effect=[
+        (0, "vm.stats.vm.v_page_size: 4096\nvm.stats.vm.v_page_count: 262144\nvm.stats.vm.v_free_count: 131072", ''),
+        (0, "/dev/ada0p3        314368        0   314368     0%", '')
+    ])
+    module.get_bin_path = mock.Mock(return_value='/sbin/sysctl')
+
+    # Create an instance of the FreeBSDHardware class
+    freebsd_hardware = FreeBSDHardware(module)
+
+    # Call the get_memory_facts method
+    memory_facts = freebsd_hardware.get_memory_facts()
+
+    # Assert the expected results
+    assert memory_facts['memtotal_mb'] == 1024
+    assert memory_facts['memfree_mb'] == 512
+    assert memory_facts['swaptotal_mb
+
+# Generated at 2024-03-18 01:26:43.824125
+```python
+    # Mocking the module and its methods for the test
+    mock_module = MagicMock()
+    mock_module.get_bin_path = MagicMock(side_effect=lambda x: "/usr/sbin/" + x)
+    mock_module.run_command = MagicMock(side_effect=[
+        (0, "8", ""),  # Mocking sysctl -n hw.ncpu
+        (0, "CPU: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz\nLogical CPUs per core: 2", ""),  # Mocking dmesg output
+        (0, "vm.stats.vm.v_page_size: 4096\nvm.stats.vm.v_page_count: 524288\nvm.stats.vm.v_free_count: 131072", ""),  # Mocking sysctl vm.stats
+        (0, "/dev/ada0p3        314368        0   314368     0%", ""),  # Mocking swapinfo -k
+
+# Generated at 2024-03-18 01:26:44.997730
+```python
+import unittest
+from unittest.mock import patch
+from ansible.module_utils.facts.hardware.freebsd import FreeBSDHardware
+
+
+# Generated at 2024-03-18 01:28:15.772355
+```python
+    # Setup the test environment
+    module = mock.Mock()
+    module.get_bin_path = mock.Mock(return_value='/sbin/sysctl')
+
+    # Mock the run_command method to return predefined sysctl output
+    fake_sysctl_output = (
+        "0\n"
+        "vm.stats.vm.v_page_size: 4096\n"
+        "vm.stats.vm.v_page_count: 262144\n"
+        "vm.stats.vm.v_free_count: 131072\n"
+    )
+    module.run_command = mock.Mock(return_value=(0, fake_sysctl_output, ''))
+
+    # Create an instance of the FreeBSDHardware class
+    freebsd_hardware = FreeBSDHardware(module)
+
+    # Call the get_memory_facts method
+    memory_facts = freebsd_hardware.get_memory_facts()
+
+    # Assert the expected results
+    assert memory_facts['memtotal_mb'] == 1024  # 4096 * 262144 / 1024 /
+
+# Generated at 2024-03-18 01:28:21.364622
+```python
+    from ansible.module_utils.basic import AnsibleModule
+
+    # Mock the AnsibleModule and its methods used by FreeBSDHardware
+    mock_module = AnsibleModule(argument_spec={})
+    mock_module.get_bin_path = lambda command: '/usr/sbin/' + command if command == 'dmidecode' else None
+    mock_module.run_command = lambda command, **kwargs: (0, 'Mocked output', '') if 'dmidecode' in command else (1, '', 'Error')
+
+    # Create an instance of FreeBSDHardware with the mocked module
+    freebsd_hardware = FreeBSDHardware(module=mock_module)
+
+    # Call get_dmi_facts and store the result
+    dmi_facts = freebsd_hardware.get_dmi_facts()
+
+    # Define the expected results based on the mocked output
+    expected_dmi_facts = {
+        'bios_date': 'Mocked output',
+        'bios_vendor': 'Mocked output',
+       
+
+# Generated at 2024-03-18 01:28:26.999808
+```python
+    # Setup the test environment and mocks
+    module_mock = MagicMock()
+    module_mock.get_bin_path.return_value = '/sbin/sysctl'
+
+    # Create an instance of the FreeBSDHardware class with the mocked module
+    freebsd_hardware = FreeBSDHardware(module=module_mock)
+
+    # Define the expected output of the sysctl command
+    sysctl_output = (
+        "vm.stats.vm.v_page_size: 4096\n"
+        "vm.stats.vm.v_page_count: 262144\n"
+        "vm.stats.vm.v_free_count: 131072\n"
+    )
+
+    # Mock the run_command method to return the expected output
+    module_mock.run_command.return_value = (0, sysctl_output, '')
+
+    # Call the method under test
+    memory_facts = freebsd_hardware.get_memory_facts()
+
+    # Define the expected results
+    expected_memory_facts = {
+        'memtotal_mb': 1024,
+        'mem
+
+# Generated at 2024-03-18 01:28:32.513288
+```python
+    # Setup the test environment
+    hardware = FreeBSDHardware()
+    hardware.module = MagicMock()
+
+    # Define the expected DMI_DICT
+    expected_dmi_dict = {
+        'bios_date': '01/01/2000',
+        'bios_vendor': 'TestVendor',
+        'bios_version': '1.0.0',
+        'board_asset_tag': 'TestAssetTag',
+        'board_name': 'TestBoardName',
+        'board_serial': 'TestBoardSerial',
+        'board_vendor': 'TestBoardVendor',
+        'board_version': '1.0',
+        'chassis_asset_tag': 'TestChassisAssetTag',
+        'chassis_serial': 'TestChassisSerial',
+        'chassis_vendor': 'TestChassisVendor',
+        'chassis_version': '1.0',
+        'form_factor': 'TestFormFactor',
+        'product_name': 'TestProductName',
+        'product_serial': 'TestProductSerial
+
+# Generated at 2024-03-18 01:28:39.159627
+```python
+    # Setup the test environment
+    hardware = FreeBSDHardware()
+    hardware.module = MagicMock()
+
+    # Mock the sysctl command and its output
+    hardware.module.get_bin_path.return_value = '/sbin/sysctl'
+    hardware.module.run_command.side_effect = [
+        (0, '4096\n', ''),  # vm.stats.vm.v_page_size
+        (0, '1048576\n', ''),  # vm.stats.vm.v_page_count
+        (0, '262144\n', '')  # vm.stats.vm.v_free_count
+    ]
+
+    # Mock the swapinfo command and its output
+    swapinfo_output = """Device          1M-blocks     Used    Avail Capacity
+/dev/ada0p3        314368        0   314368     0%
+"""
+    hardware.module.run_command.side_effect.append((0, swapinfo_output, ''))
+
+    # Call the method under test
+    memory_facts = hardware
+
+# Generated at 2024-03-18 01:28:46.512288
+```python
+    # Setup the test environment
+    module = mock.Mock()
+    freebsd_hardware = FreeBSDHardware(module)
+
+    # Mock the sysctl command output
+    module.get_bin_path.return_value = '/sbin/sysctl'
+    module.run_command.return_value = (0, "8\n", "")
+
+    # Mock the dmesg.boot file content
+    with mock.patch('ansible.module_utils.facts.hardware.freebsd.get_file_content', return_value="CPU: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz (2712.01-MHz K8-class CPU)\n  Logical CPUs per core: 2"):
+        cpu_facts = freebsd_hardware.get_cpu_facts()
+
+    # Assertions to validate the results
+    assert cpu_facts['processor_count'] == "8"
+    assert cpu_facts['processor'] == ["Intel(R) Core(TM) i7-8650U CPU @ 1.90
+
+# Generated at 2024-03-18 01:28:48.151110
+```python
+import unittest
+from unittest.mock import patch
+from ansible.module_utils.facts.hardware.freebsd import FreeBSDHardware
+
+
+# Generated at 2024-03-18 01:28:49.766189
+```python
+    collector = FreeBSDHardwareCollector()
+    assert collector._fact_class == FreeBSDHardware
+    assert collector._platform == 'FreeBSD'
+```
+
+# Generated at 2024-03-18 01:28:58.502520
+```python
+    from ansible.module_utils.basic import AnsibleModule
+
+    # Mock the AnsibleModule and its methods used by FreeBSDHardware
+    mock_module = AnsibleModule(argument_spec={})
+    mock_module.get_bin_path = lambda command: '/usr/sbin/' + command if command == 'dmidecode' else None
+    mock_module.run_command = lambda command, **kwargs: (0, 'Mocked output', '')
+
+    # Create an instance of FreeBSDHardware with the mocked module
+    freebsd_hardware = FreeBSDHardware(module=mock_module)
+
+    # Call the get_dmi_facts method
+    dmi_facts = freebsd_hardware.get_dmi_facts()
+
+    # Define the expected results
+    expected_dmi_facts = {
+        'bios_date': 'Mocked output',
+        'bios_vendor': 'Mocked output',
+        'bios_version': 'Mocked output',
+        'board_asset_tag': 'Mocked output',
+        'board
+
+# Generated at 2024-03-18 01:29:03.746249
+```python
+    from ansible.module_utils.basic import AnsibleModule
+
+    # Mock the AnsibleModule and its methods used by FreeBSDHardware
+    mock_module = AnsibleModule(argument_spec={})
+    mock_module.get_bin_path = lambda command: f"/usr/bin/{command}"
+    mock_module.run_command = lambda command, check_rc=False, encoding=None: (0, "4", "") if "hw.ncpu" in command else (0, "", "")
+
+    # Create an instance of FreeBSDHardware with the mocked module
+    freebsd_hardware = FreeBSDHardware(module=mock_module)
+
+    # Mock the get_file_content function used by FreeBSDHardware
+    freebsd_hardware.get_file_content = lambda file_path: "CPU: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz\n" \
+                                                          "Logical CPUs per core: 2\n" if file_path == freebsd_hardware.DMESG_BOOT else ""
+
+    # Mock the

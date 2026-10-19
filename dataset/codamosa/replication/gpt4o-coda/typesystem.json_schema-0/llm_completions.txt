@@ -1,0 +1,1248 @@
+
+
+# Generated at 2024-06-04 19:57:40.128827
+```python
+    # Test case 1: Single type string
+    data = {"type": "string"}
+    definitions = SchemaDefinitions()
+    field = type_from_json_schema(data, definitions)
+    assert isinstance(field, String)
+
+    # Test case 2: Multiple type strings
+    data = {"type": ["string", "null"]}
+    field = type_from_json_schema(data, definitions)
+    assert isinstance(field, Union)
+    assert any(isinstance(item, String) for item in field.any_of)
+    assert field.allow_null is True
+
+    # Test case 3: No type strings, allow null
+    data = {"type": []}
+    field = type_from_json_schema(data, definitions)
+    assert isinstance(field, Const)
+    assert field.value is None
+
+    # Test case 4: No type strings, do not allow null
+    data = {"type": [], "nullable": False}
+    field = type_from_json_schema(data, definitions)
+    assert
+
+# Generated at 2024-06-04 19:57:45.687913
+```python
+    data = {
+        "oneOf": [
+            {"type": "string"},
+            {"type": "number"},
+        ],
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = one_of_from_json_schema(data, definitions)
+    
+    assert isinstance(field, OneOf)
+    assert len(field.one_of) == 2
+    assert isinstance(field.one_of[0], String)
+    assert isinstance(field.one_of[1], Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 19:57:50.953126
+```python
+    data = {
+        "anyOf": [
+            {"type": "string", "minLength": 5},
+            {"type": "integer", "minimum": 10}
+        ],
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = any_of_from_json_schema(data, definitions)
+    
+    assert isinstance(field, Union)
+    assert len(field.any_of) == 2
+    assert isinstance(field.any_of[0], String)
+    assert field.any_of[0].min_length == 5
+    assert isinstance(field.any_of[1], Integer)
+    assert field.any_of[1].minimum == 10
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 19:57:55.188669
+```python
+    schema_data = {
+        "allOf": [
+            {"type": "string", "minLength": 5},
+            {"type": "string", "maxLength": 10}
+        ],
+        "default": "default_value"
+    }
+    field = all_of_from_json_schema(schema_data, definitions)
+    assert isinstance(field, AllOf)
+    assert len(field.all_of) == 2
+    assert isinstance(field.all_of[0], String)
+    assert field.all_of[0].min_length == 5
+    assert isinstance(field.all_of[1], String)
+    assert field.all_of[1].max_length == 10
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 19:57:57.378959
+```python
+    definitions = SchemaDefinitions()
+    definitions["#/definitions/test"] = String()
+
+    data = {"$ref": "#/definitions/test"}
+    field = ref_from_json_schema(data, definitions)
+
+    assert isinstance(field, Reference)
+    assert field.to == "#/definitions/test"
+    assert field.definitions == definitions
+```
+
+# Generated at 2024-06-04 19:58:01.128877
+```python
+    data = {"const": "fixed_value", "default": "default_value"}
+    field = const_from_json_schema(data, definitions)
+    assert isinstance(field, Const)
+    assert field.const == "fixed_value"
+    assert field.default == "default_value"
+
+    data = {"const": 42}
+    field = const_from_json_schema(data, definitions)
+    assert isinstance(field, Const)
+    assert field.const == 42
+    assert field.default == NO_DEFAULT
+
+    data = {"const": None}
+    field = const_from_json_schema(data, definitions)
+    assert isinstance(field, Const)
+    assert field.const is None
+    assert field.default == NO_DEFAULT
+```
+
+# Generated at 2024-06-04 19:58:04.738625
+```python
+    schema_data = {
+        "allOf": [
+            {"type": "string", "minLength": 5},
+            {"type": "string", "maxLength": 10}
+        ],
+        "default": "default_value"
+    }
+    field = all_of_from_json_schema(schema_data, definitions)
+    assert isinstance(field, AllOf)
+    assert len(field.all_of) == 2
+    assert isinstance(field.all_of[0], String)
+    assert field.all_of[0].min_length == 5
+    assert isinstance(field.all_of[1], String)
+    assert field.all_of[1].max_length == 10
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 19:58:07.789471
+```python
+    data = {
+        "if": {"type": "string"},
+        "then": {"minLength": 5},
+        "else": {"type": "number"},
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = if_then_else_from_json_schema(data, definitions)
+
+    assert isinstance(field, IfThenElse)
+    assert isinstance(field.if_clause, String)
+    assert isinstance(field.then_clause, String)
+    assert field.then_clause.min_length == 5
+    assert isinstance(field.else_clause, Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 19:58:10.441105
+```python
+    data = {
+        "if": {"type": "string"},
+        "then": {"minLength": 5},
+        "else": {"type": "number"},
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = if_then_else_from_json_schema(data, definitions)
+
+    assert isinstance(field, IfThenElse)
+    assert isinstance(field.if_clause, String)
+    assert isinstance(field.then_clause, String)
+    assert field.then_clause.min_length == 5
+    assert isinstance(field.else_clause, Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 19:58:15.565219
+```python
+    from unittest import TestCase
+
+    class TestToJsonSchema(TestCase):
+        def test_any_field(self):
+            field = Any()
+            result = to_json_schema(field)
+            self.assertEqual(result, True)
+
+        def test_never_match_field(self):
+            field = NeverMatch()
+            result = to_json_schema(field)
+            self.assertEqual(result, False)
+
+        def test_string_field(self):
+            field = String(allow_null=True, min_length=1, max_length=5, pattern_regex=re.compile(r'^[a-z]+$'))
+            result = to_json_schema(field)
+            expected = {
+                "type": ["string", "null"],
+                "minLength": 1,
+                "maxLength": 5,
+                "pattern": "^[a-z]+$"
+            }
+            self.assertEqual(result, expected)
+
+        def test_integer_field(self):
+            field = Integer(allow_null=True, minimum=0, maximum=10)
+           
+
+# Generated at 2024-06-04 19:58:45.537377
+```python
+    data = {
+        "oneOf": [
+            {"type": "string"},
+            {"type": "number"},
+        ],
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = one_of_from_json_schema(data, definitions)
+    assert isinstance(field, OneOf)
+    assert len(field.one_of) == 2
+    assert isinstance(field.one_of[0], String)
+    assert isinstance(field.one_of[1], Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 19:58:49.924757
+```python
+    data = {
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 10,
+        "pattern": "^[a-zA-Z]+$",
+        "default": "default"
+    }
+    definitions = SchemaDefinitions()
+    field = from_json_schema_type(data, "string", False, definitions)
+    assert isinstance(field, String)
+    assert field.min_length == 5
+    assert field.max_length == 10
+    assert field.pattern == "^[a-zA-Z]+$"
+    assert field.default == "default"
+
+    data = {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100,
+        "default": 10
+    }
+    field = from_json_schema_type(data, "integer", False, definitions)
+    assert isinstance(field, Integer)
+    assert field.minimum == 1
+    assert field.maximum == 100
+    assert field.default == 
+
+# Generated at 2024-06-04 19:58:53.200518
+```python
+    # Test for type "number"
+    data = {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 10,
+        "exclusiveMinimum": 1,
+        "exclusiveMaximum": 9,
+        "multipleOf": 2,
+        "default": 5
+    }
+    field = from_json_schema_type(data, "number", False, definitions)
+    assert isinstance(field, Float)
+    assert field.minimum == 0
+    assert field.maximum == 10
+    assert field.exclusive_minimum == 1
+    assert field.exclusive_maximum == 9
+    assert field.multiple_of == 2
+    assert field.default == 5
+
+    # Test for type "integer"
+    data = {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 10,
+        "exclusiveMinimum": 1,
+        "exclusiveMaximum": 9,
+        "multiple
+
+# Generated at 2024-06-04 19:58:57.254505
+```python
+    # Test case for Any type
+    any_field = Any()
+    assert to_json_schema(any_field) == True
+
+    # Test case for NeverMatch type
+    never_match_field = NeverMatch()
+    assert to_json_schema(never_match_field) == False
+
+    # Test case for Reference type
+    reference_field = Reference(to="#/definitions/SomeType", definitions={})
+    expected_reference_schema = {
+        "$ref": "#/definitions/SomeType",
+        "definitions": {"SomeType": {}}
+    }
+    assert to_json_schema(reference_field) == expected_reference_schema
+
+    # Test case for String type
+    string_field = String(allow_null=True, min_length=1, max_length=10, pattern_regex=re.compile(r"^[a-z]+$"))
+    expected_string_schema = {
+        "type": ["string", "null"],
+        "minLength": 1,
+        "maxLength": 10,
+        "pattern":
+
+# Generated at 2024-06-04 19:58:59.958888
+```python
+    definitions = SchemaDefinitions()
+    definitions["#/definitions/test"] = String()
+
+    data = {"$ref": "#/definitions/test"}
+    field = ref_from_json_schema(data, definitions)
+    assert isinstance(field, Reference)
+    assert field.to == "#/definitions/test"
+    assert field.definitions == definitions
+
+    # Test with invalid reference
+    data = {"$ref": "invalid_ref"}
+    try:
+        ref_from_json_schema(data, definitions)
+    except AssertionError as e:
+        assert str(e) == "Unsupported $ref style in document."
+```
+
+# Generated at 2024-06-04 19:59:03.688154
+```python
+    # Test for type "number"
+    schema = {"type": "number", "minimum": 0, "maximum": 10}
+    field = from_json_schema_type(schema, "number", False, definitions)
+    assert isinstance(field, Float)
+    assert field.minimum == 0
+    assert field.maximum == 10
+
+    # Test for type "integer"
+    schema = {"type": "integer", "minimum": 0, "maximum": 10}
+    field = from_json_schema_type(schema, "integer", False, definitions)
+    assert isinstance(field, Integer)
+    assert field.minimum == 0
+    assert field.maximum == 10
+
+    # Test for type "string"
+    schema = {"type": "string", "minLength": 1, "maxLength": 5}
+    field = from_json_schema_type(schema, "string", False, definitions)
+    assert isinstance(field, String)
+    assert field.min_length == 
+
+# Generated at 2024-06-04 19:59:06.828675
+```python
+    schema_data = {
+        "anyOf": [
+            {"type": "string"},
+            {"type": "number"}
+        ],
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = any_of_from_json_schema(schema_data, definitions)
+    
+    assert isinstance(field, Union)
+    assert len(field.any_of) == 2
+    assert isinstance(field.any_of[0], String)
+    assert isinstance(field.any_of[1], Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 19:59:10.788290
+```python
+    from typing import Any, Dict, List, Union
+    import re
+
+    class Field:
+        pass
+
+    class SchemaDefinitions:
+        pass
+
+    class Reference(Field):
+        def __init__(self, to: str, definitions: SchemaDefinitions):
+            self.target_string = to
+            self.target = definitions
+
+    class String(Field):
+        def __init__(self, allow_null: bool = False, min_length: int = None, max_length: int = None, pattern_regex: re.Pattern = None, format: str = None):
+            self.allow_null = allow_null
+            self.min_length = min_length
+            self.max_length = max_length
+            self.pattern_regex = pattern_regex
+            self.format = format
+
+    class Integer(Field):
+        def __init__(self, allow_null: bool = False, minimum: int = None, maximum: int = None, exclusive_minimum: int = None, exclusive_maximum: int = None,
+
+# Generated at 2024-06-04 19:59:13.571440
+```python
+    definitions = SchemaDefinitions()
+    definitions["#/definitions/test"] = String()
+
+    data = {"$ref": "#/definitions/test"}
+    field = ref_from_json_schema(data, definitions)
+    assert isinstance(field, Reference)
+    assert field.to == "#/definitions/test"
+    assert field.definitions == definitions
+
+    # Test with invalid reference
+    data = {"$ref": "invalid_ref"}
+    try:
+        ref_from_json_schema(data, definitions)
+    except AssertionError as e:
+        assert str(e) == "Unsupported $ref style in document."
+```
+
+# Generated at 2024-06-04 19:59:17.727273
+```python
+    # Test case 1: Boolean schema
+    assert isinstance(from_json_schema(True), Any)
+    assert isinstance(from_json_schema(False), NeverMatch)
+
+    # Test case 2: Simple type schema
+    schema = {"type": "string"}
+    field = from_json_schema(schema)
+    assert isinstance(field, String)
+
+    # Test case 3: Enum schema
+    schema = {"enum": ["red", "green", "blue"]}
+    field = from_json_schema(schema)
+    assert isinstance(field, Choice)
+    assert field.choices == ["red", "green", "blue"]
+
+    # Test case 4: Const schema
+    schema = {"const": 42}
+    field = from_json_schema(schema)
+    assert isinstance(field, Const)
+    assert field.const == 42
+
+    # Test case 5: AllOf schema
+    schema = {"allOf": [{"type": "string"}, {"minLength": 2}]}
+    field
+
+# Generated at 2024-06-04 19:59:48.068022
+```python
+    data = {
+        "oneOf": [
+            {"type": "string"},
+            {"type": "number"},
+            {"type": "boolean"}
+        ],
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = one_of_from_json_schema(data, definitions)
+    
+    assert isinstance(field, OneOf)
+    assert len(field.one_of) == 3
+    assert isinstance(field.one_of[0], String)
+    assert isinstance(field.one_of[1], Float)
+    assert isinstance(field.one_of[2], Boolean)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 19:59:51.144494
+```python
+    data = {
+        "if": {"type": "string"},
+        "then": {"minLength": 5},
+        "else": {"type": "number"},
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = if_then_else_from_json_schema(data, definitions)
+
+    assert isinstance(field, IfThenElse)
+    assert isinstance(field.if_clause, String)
+    assert isinstance(field.then_clause, String)
+    assert field.then_clause.min_length == 5
+    assert isinstance(field.else_clause, Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 19:59:54.906328
+```python
+    definitions = SchemaDefinitions()
+    definitions["#/definitions/test"] = String()
+
+    data = {"$ref": "#/definitions/test"}
+    field = ref_from_json_schema(data, definitions)
+    assert isinstance(field, Reference)
+    assert field.to == "#/definitions/test"
+    assert field.definitions == definitions
+
+    # Test with invalid $ref
+    invalid_data = {"$ref": "invalid_ref"}
+    try:
+        ref_from_json_schema(invalid_data, definitions)
+    except AssertionError as e:
+        assert str(e) == "Unsupported $ref style in document."
+```
+
+# Generated at 2024-06-04 19:59:58.340463
+```python
+    data = {
+        "if": {"type": "string"},
+        "then": {"minLength": 5},
+        "else": {"type": "number"},
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = if_then_else_from_json_schema(data, definitions)
+
+    assert isinstance(field, IfThenElse)
+    assert isinstance(field.if_clause, String)
+    assert isinstance(field.then_clause, String)
+    assert field.then_clause.min_length == 5
+    assert isinstance(field.else_clause, Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 20:00:01.115170
+```python
+    definitions = SchemaDefinitions()
+    definitions["#/definitions/test"] = String()
+
+    data = {"$ref": "#/definitions/test"}
+    field = ref_from_json_schema(data, definitions)
+    assert isinstance(field, Reference)
+    assert field.to == "#/definitions/test"
+    assert field.definitions == definitions
+
+    # Test with invalid reference
+    data = {"$ref": "invalid_ref"}
+    try:
+        ref_from_json_schema(data, definitions)
+    except AssertionError as e:
+        assert str(e) == "Unsupported $ref style in document."
+```
+
+# Generated at 2024-06-04 20:00:04.727941
+```python
+    data = {
+        "anyOf": [
+            {"type": "string", "minLength": 5},
+            {"type": "number", "minimum": 10}
+        ],
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = any_of_from_json_schema(data, definitions)
+    
+    assert isinstance(field, Union)
+    assert len(field.any_of) == 2
+    assert isinstance(field.any_of[0], String)
+    assert field.any_of[0].min_length == 5
+    assert isinstance(field.any_of[1], Float)
+    assert field.any_of[1].minimum == 10
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 20:00:09.497588
+```python
+    definitions = SchemaDefinitions()
+    definitions["#/definitions/Test"] = String()
+
+    data = {"$ref": "#/definitions/Test"}
+    field = ref_from_json_schema(data, definitions)
+
+    assert isinstance(field, Reference)
+    assert field.to == "#/definitions/Test"
+    assert field.definitions == definitions
+```
+
+# Generated at 2024-06-04 20:00:13.706030
+```python
+    data = {
+        "if": {"type": "string"},
+        "then": {"minLength": 5},
+        "else": {"type": "number"},
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = if_then_else_from_json_schema(data, definitions)
+
+    assert isinstance(field, IfThenElse)
+    assert isinstance(field.if_clause, String)
+    assert isinstance(field.then_clause, String)
+    assert field.then_clause.min_length == 5
+    assert isinstance(field.else_clause, Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 20:00:16.741978
+```python
+    data = {
+        "if": {"type": "string"},
+        "then": {"minLength": 5},
+        "else": {"minLength": 1},
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = if_then_else_from_json_schema(data, definitions)
+    
+    assert isinstance(field, IfThenElse)
+    assert isinstance(field.if_clause, String)
+    assert field.if_clause.min_length is None
+    assert isinstance(field.then_clause, String)
+    assert field.then_clause.min_length == 5
+    assert isinstance(field.else_clause, String)
+    assert field.else_clause.min_length == 1
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 20:00:21.368156
+```python
+    # Test case for boolean schema
+    assert isinstance(from_json_schema(True), Any)
+    assert isinstance(from_json_schema(False), NeverMatch)
+
+    # Test case for simple type schema
+    schema = {"type": "string"}
+    field = from_json_schema(schema)
+    assert isinstance(field, String)
+
+    # Test case for enum schema
+    schema = {"enum": ["red", "green", "blue"]}
+    field = from_json_schema(schema)
+    assert isinstance(field, Choice)
+    assert field.choices == ["red", "green", "blue"]
+
+    # Test case for const schema
+    schema = {"const": "constant_value"}
+    field = from_json_schema(schema)
+    assert isinstance(field, Const)
+    assert field.const == "constant_value"
+
+    # Test case for allOf schema
+    schema = {"allOf": [{"type": "string"}, {"minLength": 2}]}
+    field = from_json_schema(schema)
+    assert
+
+# Generated at 2024-06-04 20:00:58.846444
+```python
+    data = {
+        "anyOf": [
+            {"type": "string"},
+            {"type": "number"}
+        ],
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = any_of_from_json_schema(data, definitions)
+    
+    assert isinstance(field, Union)
+    assert len(field.any_of) == 2
+    assert isinstance(field.any_of[0], String)
+    assert isinstance(field.any_of[1], Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 20:01:02.025122
+```python
+    data = {
+        "if": {"type": "string"},
+        "then": {"minLength": 5},
+        "else": {"minLength": 1},
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = if_then_else_from_json_schema(data, definitions)
+    
+    assert isinstance(field, IfThenElse)
+    assert isinstance(field.if_clause, String)
+    assert field.if_clause.min_length is None
+    assert isinstance(field.then_clause, String)
+    assert field.then_clause.min_length == 5
+    assert isinstance(field.else_clause, String)
+    assert field.else_clause.min_length == 1
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 20:01:03.593590
+```python
+    definitions = SchemaDefinitions()
+    definitions["#/definitions/Test"] = String()
+
+    data = {"$ref": "#/definitions/Test"}
+    field = ref_from_json_schema(data, definitions)
+
+    assert isinstance(field, Reference)
+    assert field.to == "#/definitions/Test"
+    assert field.definitions == definitions
+```
+
+# Generated at 2024-06-04 20:01:06.135243
+```python
+    definitions = SchemaDefinitions()
+    definitions["#/definitions/test"] = String()
+
+    data = {"$ref": "#/definitions/test"}
+    field = ref_from_json_schema(data, definitions)
+    assert isinstance(field, Reference)
+    assert field.to == "#/definitions/test"
+    assert field.definitions == definitions
+
+    # Test with invalid reference
+    data = {"$ref": "invalid_ref"}
+    try:
+        ref_from_json_schema(data, definitions)
+    except AssertionError as e:
+        assert str(e) == "Unsupported $ref style in document."
+```
+
+# Generated at 2024-06-04 20:01:10.928962
+```python
+    # Test case for Any type
+    any_field = Any()
+    assert to_json_schema(any_field) == True
+
+    # Test case for NeverMatch type
+    never_match_field = NeverMatch()
+    assert to_json_schema(never_match_field) == False
+
+    # Test case for Reference type
+    reference_field = Reference(to="#/definitions/Example", definitions={})
+    expected_reference_schema = {
+        "$ref": "#/definitions/Example",
+        "definitions": {"Example": {}}
+    }
+    assert to_json_schema(reference_field) == expected_reference_schema
+
+    # Test case for String type
+    string_field = String(allow_null=True, min_length=1, max_length=10, pattern_regex=re.compile(r'^[a-z]+$'))
+    expected_string_schema = {
+        "type": ["string", "null"],
+        "minLength": 1,
+        "maxLength": 10,
+        "pattern": "^[a
+
+# Generated at 2024-06-04 20:01:14.283370
+```python
+    definitions = SchemaDefinitions()
+    definitions["#/definitions/test"] = String()
+
+    data = {"$ref": "#/definitions/test"}
+    field = ref_from_json_schema(data, definitions)
+    assert isinstance(field, Reference)
+    assert field.to == "#/definitions/test"
+    assert field.definitions == definitions
+
+    # Test with invalid $ref
+    try:
+        data = {"$ref": "invalid_ref"}
+        ref_from_json_schema(data, definitions)
+    except AssertionError as e:
+        assert str(e) == "Unsupported $ref style in document."
+```
+
+# Generated at 2024-06-04 20:01:17.071049
+```python
+    data = {
+        "if": {"type": "string"},
+        "then": {"minLength": 5},
+        "else": {"type": "number"},
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = if_then_else_from_json_schema(data, definitions)
+
+    assert isinstance(field, IfThenElse)
+    assert isinstance(field.if_clause, String)
+    assert isinstance(field.then_clause, String)
+    assert field.then_clause.min_length == 5
+    assert isinstance(field.else_clause, Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 20:01:19.679309
+```python
+    data = {
+        "not": {
+            "type": "string"
+        }
+    }
+    definitions = SchemaDefinitions()
+    field = not_from_json_schema(data, definitions)
+    assert isinstance(field, Not)
+    assert isinstance(field.negated, String)
+```
+
+# Generated at 2024-06-04 20:01:23.209834
+```python
+    definitions = SchemaDefinitions()
+    definitions["#/definitions/test"] = String()
+
+    data = {"$ref": "#/definitions/test"}
+    field = ref_from_json_schema(data, definitions)
+    assert isinstance(field, Reference)
+    assert field.to == "#/definitions/test"
+    assert field.definitions == definitions
+
+    # Test with invalid reference
+    data = {"$ref": "invalid_ref"}
+    try:
+        ref_from_json_schema(data, definitions)
+    except AssertionError as e:
+        assert str(e) == "Unsupported $ref style in document."
+```
+
+# Generated at 2024-06-04 20:01:25.079055
+```python
+    data = {
+        "not": {
+            "type": "string"
+        }
+    }
+    definitions = SchemaDefinitions()
+    field = not_from_json_schema(data, definitions)
+    assert isinstance(field, Not)
+    assert isinstance(field.negated, String)
+```
+
+# Generated at 2024-06-04 20:02:38.639350
+```python
+    definitions = SchemaDefinitions()
+    definitions["#/definitions/Test"] = String()
+
+    data = {"$ref": "#/definitions/Test"}
+    field = ref_from_json_schema(data, definitions)
+
+    assert isinstance(field, Reference)
+    assert field.to == "#/definitions/Test"
+    assert field.definitions == definitions
+```
+
+# Generated at 2024-06-04 20:02:41.888373
+```python
+    definitions = SchemaDefinitions()
+    definitions["#/definitions/test"] = String()
+
+    data = {"$ref": "#/definitions/test"}
+    field = ref_from_json_schema(data, definitions)
+    assert isinstance(field, Reference)
+    assert field.to == "#/definitions/test"
+    assert field.definitions == definitions
+
+    # Test with invalid reference
+    data = {"$ref": "invalid_ref"}
+    try:
+        ref_from_json_schema(data, definitions)
+    except AssertionError as e:
+        assert str(e) == "Unsupported $ref style in document."
+```
+
+# Generated at 2024-06-04 20:02:52.946778
+```python
+    definitions = SchemaDefinitions()
+
+    # Test with a single type
+    data = {"type": "string"}
+    field = type_from_json_schema(data, definitions)
+    assert isinstance(field, String)
+
+    # Test with multiple types
+    data = {"type": ["string", "null"]}
+    field = type_from_json_schema(data, definitions)
+    assert isinstance(field, Union)
+    assert any(isinstance(item, String) for item in field.any_of)
+    assert field.allow_null is True
+
+    # Test with no type
+    data = {}
+    field = type_from_json_schema(data, definitions)
+    assert isinstance(field, NeverMatch)
+
+    # Test with invalid type
+    data = {"type": "invalid_type"}
+    try:
+        field = type_from_json_schema(data, definitions)
+    except ValueError:
+        pass
+    else:
+        assert False, "Expected ValueError for invalid type"
+
+    # Test with nested definitions
+    data = {
+
+
+# Generated at 2024-06-04 20:02:55.387542
+```python
+    schema_data = {
+        "anyOf": [
+            {"type": "string"},
+            {"type": "number"},
+        ],
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = any_of_from_json_schema(schema_data, definitions)
+
+    assert isinstance(field, Union)
+    assert len(field.any_of) == 2
+    assert isinstance(field.any_of[0], String)
+    assert isinstance(field.any_of[1], Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 20:02:57.712818
+```python
+    data = {
+        "if": {"type": "string"},
+        "then": {"minLength": 5},
+        "else": {"type": "number"},
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = if_then_else_from_json_schema(data, definitions)
+
+    assert isinstance(field, IfThenElse)
+    assert isinstance(field.if_clause, String)
+    assert isinstance(field.then_clause, String)
+    assert field.then_clause.min_length == 5
+    assert isinstance(field.else_clause, Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 20:02:59.797624
+```python
+    data = {
+        "oneOf": [
+            {"type": "string"},
+            {"type": "number"},
+        ],
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = one_of_from_json_schema(data, definitions)
+    
+    assert isinstance(field, OneOf)
+    assert len(field.one_of) == 2
+    assert isinstance(field.one_of[0], String)
+    assert isinstance(field.one_of[1], Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 20:03:11.031899
+```python
+    data = {
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 10,
+        "pattern": "^[a-zA-Z]+$",
+        "default": "default"
+    }
+    definitions = SchemaDefinitions()
+    field = from_json_schema_type(data, "string", False, definitions)
+    assert isinstance(field, String)
+    assert field.min_length == 5
+    assert field.max_length == 10
+    assert field.pattern == "^[a-zA-Z]+$"
+    assert field.default == "default"
+
+    data = {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100,
+        "default": 10
+    }
+    field = from_json_schema_type(data, "integer", False, definitions)
+    assert isinstance(field, Integer)
+    assert field.minimum == 1
+    assert field.maximum == 100
+    assert field.default == 
+
+# Generated at 2024-06-04 20:03:13.767479
+```python
+    data = {
+        "oneOf": [
+            {"type": "string"},
+            {"type": "number"},
+        ],
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = one_of_from_json_schema(data, definitions)
+    assert isinstance(field, OneOf)
+    assert len(field.one_of) == 2
+    assert isinstance(field.one_of[0], String)
+    assert isinstance(field.one_of[1], Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 20:03:17.436230
+```python
+    # Test case for Any type
+    any_field = Any()
+    assert to_json_schema(any_field) == True
+
+    # Test case for NeverMatch type
+    never_match_field = NeverMatch()
+    assert to_json_schema(never_match_field) == False
+
+    # Test case for Reference type
+    reference_field = Reference(to="some_ref", definitions={})
+    assert to_json_schema(reference_field) == {"$ref": "#/definitions/some_ref"}
+
+    # Test case for String type
+    string_field = String(allow_null=True, min_length=1, max_length=10, pattern_regex=re.compile(r"^\w+$"), format="email")
+    expected_string_schema = {
+        "type": ["string", "null"],
+        "minLength": 1,
+        "maxLength": 10,
+        "pattern": r"^\w+$",
+        "format": "email"
+    }
+    assert to_json_schema(string_field)
+
+# Generated at 2024-06-04 20:03:18.959389
+```python
+    definitions = SchemaDefinitions()
+    definitions["#/definitions/test"] = String()
+
+    data = {"$ref": "#/definitions/test"}
+    field = ref_from_json_schema(data, definitions)
+
+    assert isinstance(field, Reference)
+    assert field.to == "#/definitions/test"
+    assert field.definitions == definitions
+```
+
+# Generated at 2024-06-04 20:05:24.552511
+```python
+    # Test case for Any type
+    any_field = Any()
+    assert to_json_schema(any_field) == True
+
+    # Test case for NeverMatch type
+    never_match_field = NeverMatch()
+    assert to_json_schema(never_match_field) == False
+
+    # Test case for Reference type
+    reference_field = Reference(to="#/definitions/SomeType", definitions={})
+    expected_reference_schema = {
+        "$ref": "#/definitions/SomeType",
+        "definitions": {"SomeType": {}}
+    }
+    assert to_json_schema(reference_field) == expected_reference_schema
+
+    # Test case for String type
+    string_field = String(allow_null=True, min_length=1, max_length=10, pattern_regex=re.compile(r'^[a-z]+$'))
+    expected_string_schema = {
+        "type": ["string", "null"],
+        "minLength": 1,
+        "maxLength": 10,
+        "pattern":
+
+# Generated at 2024-06-04 20:05:27.503282
+```python
+    schema_data = {
+        "anyOf": [
+            {"type": "string", "minLength": 5},
+            {"type": "number", "minimum": 10}
+        ],
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = any_of_from_json_schema(schema_data, definitions)
+    
+    assert isinstance(field, Union)
+    assert len(field.any_of) == 2
+    assert isinstance(field.any_of[0], String)
+    assert field.any_of[0].min_length == 5
+    assert isinstance(field.any_of[1], Float)
+    assert field.any_of[1].minimum == 10
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 20:05:29.386455
+```python
+    schema = {
+        "not": {
+            "type": "string"
+        }
+    }
+    definitions = SchemaDefinitions()
+    field = not_from_json_schema(schema, definitions)
+    assert isinstance(field, Not)
+    assert isinstance(field.negated, String)
+```
+
+# Generated at 2024-06-04 20:05:32.171014
+```python
+    schema_data = {
+        "anyOf": [
+            {"type": "string"},
+            {"type": "number"},
+        ],
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = any_of_from_json_schema(schema_data, definitions)
+
+    assert isinstance(field, Union)
+    assert len(field.any_of) == 2
+    assert isinstance(field.any_of[0], String)
+    assert isinstance(field.any_of[1], Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 20:05:34.382438
+```python
+    definitions = SchemaDefinitions()
+    definitions["#/definitions/test"] = String()
+
+    data = {"$ref": "#/definitions/test"}
+    field = ref_from_json_schema(data, definitions)
+    assert isinstance(field, Reference)
+    assert field.to == "#/definitions/test"
+    assert field.definitions == definitions
+
+    # Test with invalid reference
+    data = {"$ref": "invalid_ref"}
+    try:
+        ref_from_json_schema(data, definitions)
+    except AssertionError as e:
+        assert str(e) == "Unsupported $ref style in document."
+```
+
+# Generated at 2024-06-04 20:05:38.282444
+```python
+    data = {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 10,
+        "exclusiveMinimum": 1,
+        "exclusiveMaximum": 9,
+        "multipleOf": 2,
+        "default": 4
+    }
+    field = from_json_schema_type(data, "number", False, definitions)
+    assert isinstance(field, Float)
+    assert field.minimum == 0
+    assert field.maximum == 10
+    assert field.exclusive_minimum == 1
+    assert field.exclusive_maximum == 9
+    assert field.multiple_of == 2
+    assert field.default == 4
+
+    data = {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 10,
+        "exclusiveMinimum": 1,
+        "exclusiveMaximum": 9,
+        "multipleOf": 2,
+        "default": 4
+    }
+    field
+
+# Generated at 2024-06-04 20:05:40.551843
+```python
+    data = {
+        "if": {"type": "string"},
+        "then": {"minLength": 5},
+        "else": {"type": "number"}
+    }
+    definitions = SchemaDefinitions()
+    field = if_then_else_from_json_schema(data, definitions)
+    
+    assert isinstance(field, IfThenElse)
+    assert isinstance(field.if_clause, String)
+    assert isinstance(field.then_clause, String)
+    assert field.then_clause.min_length == 5
+    assert isinstance(field.else_clause, Float)
+```
+
+# Generated at 2024-06-04 20:05:46.136465
+```python
+    # Test case for Any type
+    any_field = Any()
+    assert to_json_schema(any_field) == True
+
+    # Test case for NeverMatch type
+    never_match_field = NeverMatch()
+    assert to_json_schema(never_match_field) == False
+
+    # Test case for Reference type
+    reference_field = Reference(to="#/definitions/SomeType", definitions={})
+    expected_reference_schema = {
+        "$ref": "#/definitions/SomeType",
+        "definitions": {"SomeType": {}}
+    }
+    assert to_json_schema(reference_field) == expected_reference_schema
+
+    # Test case for String type
+    string_field = String(allow_null=True, min_length=1, max_length=10, pattern_regex=re.compile(r"^[a-z]+$"))
+    expected_string_schema = {
+        "type": ["string", "null"],
+        "minLength": 1,
+        "maxLength": 10,
+        "pattern":
+
+# Generated at 2024-06-04 20:05:49.506562
+```python
+    data = {
+        "anyOf": [
+            {"type": "string"},
+            {"type": "number"}
+        ],
+        "default": "default_value"
+    }
+    definitions = SchemaDefinitions()
+    field = any_of_from_json_schema(data, definitions)
+    
+    assert isinstance(field, Union)
+    assert len(field.any_of) == 2
+    assert isinstance(field.any_of[0], String)
+    assert isinstance(field.any_of[1], Float)
+    assert field.default == "default_value"
+```
+
+# Generated at 2024-06-04 20:05:53.152273
+```python
+    # Test case for Any type
+    any_field = Any()
+    assert to_json_schema(any_field) == True
+
+    # Test case for NeverMatch type
+    never_match_field = NeverMatch()
+    assert to_json_schema(never_match_field) == False
+
+    # Test case for Reference type
+    reference_field = Reference(to="some_ref", definitions={})
+    expected_reference_schema = {
+        "$ref": "#/definitions/some_ref",
+        "definitions": {"some_ref": {}}
+    }
+    assert to_json_schema(reference_field) == expected_reference_schema
+
+    # Test case for String type
+    string_field = String(allow_null=True, min_length=1, max_length=10, pattern_regex=re.compile(r'^[a-z]+$'))
+    expected_string_schema = {
+        "type": ["string", "null"],
+        "minLength": 1,
+        "maxLength": 10,
+        "pattern": "^[a

@@ -1,0 +1,1937 @@
+
+
+# Generated at 2024-03-18 01:12:21.616824
+```python
+    assert check_type_int(42) == 42
+    assert check_type_int("42") == 42
+    assert check_type_int(3.14) == 3
+    assert check_type_int("3.14") == 3
+    assert check_type_int(True) == 1
+    assert check_type_int(False) == 0
+    assert check_type_int("0x2A") == 42
+    assert check_type_int("0b101010") == 42
+    assert check_type_int("0o52") == 42
+
+    try:
+        check_type_int("not an int")
+    except TypeError as te:
+        assert str(te) == "'not an int' cannot be converted to an int"
+
+    try:
+        check_type_int(None)
+    except TypeError as te:
+        assert str(te) == "'NoneType' cannot be converted to an int"
+
+    try:
+        check_type_int([])
+    except TypeError
+
+# Generated at 2024-03-18 01:12:22.684263
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:12:23.792157
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:12:31.358648
+```python
+    # Test cases for check_required_together function
+    parameters = {
+        'name': 'test',
+        'state': 'present',
+        'enabled': True
+    }
+
+    # Test with no terms, should return an empty list
+    assert check_required_together(None, parameters) == []
+
+    # Test with terms that are not in parameters, should raise TypeError
+    try:
+        check_required_together([['missing1', 'missing2']], parameters)
+    except TypeError as e:
+        assert 'parameters are required together: missing1, missing2' in str(e)
+
+    # Test with one term present and one missing, should raise TypeError
+    try:
+        check_required_together([['name', 'missing']], parameters)
+    except TypeError as e:
+        assert 'parameters are required together: name, missing' in str(e)
+
+    # Test with all terms present, should return an empty list
+    assert check_required_together([['name
+
+# Generated at 2024-03-18 01:12:38.855904
+```python
+    # Test cases for check_required_if function
+    def test_check_required_if():
+        # Test case with no requirements
+        assert check_required_if(None, {}) == []
+
+        # Test case with requirements but no parameters
+        requirements = [
+            ['state', 'present', ['path']],
+            ['someint', 99, ['bool_param', 'string_param']]
+        ]
+        assert check_required_if(requirements, {}) == []
+
+        # Test case with requirements not met
+        parameters = {'state': 'present'}
+        with pytest.raises(TypeError) as excinfo:
+            check_required_if(requirements, parameters)
+        assert "missing required arguments: path" in str(excinfo.value)
+
+        # Test case with requirements met
+        parameters = {'state': 'present', 'path': '/some/path'}
+        assert check_required_if(requirements, parameters) == []
+
+        # Test case with conditional requirements met
+        parameters = {'someint': 99, 'bool
+
+# Generated at 2024-03-18 01:12:39.414742
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:12:46.543347
+```python
+    # Test cases for check_required_if function
+    def test_check_required_if():
+        argument_spec = {
+            'state': {'type': 'str', 'choices': ['present', 'absent']},
+            'path': {'type': 'str'},
+            'someint': {'type': 'int'},
+            'bool_param': {'type': 'bool'},
+            'string_param': {'type': 'str'}
+        }
+
+        # Test case 1: 'path' is required when 'state' is 'present'
+        parameters = {'state': 'present'}
+        requirements = [['state', 'present', ('path',)]]
+        try:
+            check_required_if(requirements, parameters)
+            assert False, "TypeError expected"
+        except TypeError as e:
+            assert "missing required arguments: path" in str(e), str(e)
+
+        # Test case 2: 'path' is not required when 'state' is 'absent'
+        parameters =
+
+# Generated at 2024-03-18 01:12:53.190944
+```python
+    # Define a sample argument_spec
+    argument_spec = {
+        'name': {'required': True, 'type': 'str'},
+        'age': {'required': True, 'type': 'int'},
+        'city': {'required': False, 'type': 'str'}
+    }
+
+    # Test with all required arguments present
+    parameters = {'name': 'John', 'age': 30}
+    assert test_check_required_arguments(argument_spec, parameters) == []
+
+    # Test with one required argument missing
+    parameters = {'name': 'John'}
+    try:
+        test_check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: age"
+
+    # Test with all required arguments missing
+    parameters = {'city': 'New York'}
+    try:
+        test_check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: age
+
+# Generated at 2024-03-18 01:13:00.092795
+```python
+    # Test with simple literal
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+
+    # Test with list literal
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+
+    # Test with tuple literal
+    assert safe_eval("(1, 2, 3)") == (1, 2, 3)
+
+    # Test with numeric literal
+    assert safe_eval("42") == 42
+
+    # Test with string literal
+    assert safe_eval("'hello world'") == 'hello world'
+
+    # Test with method call (should not evaluate)
+    assert safe_eval("os.path.join('a', 'b')") == "os.path.join('a', 'b')"
+
+    # Test with import statement (should not evaluate)
+    assert safe_eval("import os") == "import os"
+
+    # Test with non-string input (should return
+
+# Generated at 2024-03-18 01:13:08.002348
+```python
+    # Test cases for check_required_by function
+    def test_check_required_by():
+        # Test with no requirements
+        assert check_required_by(None, {}) == {}
+
+        # Test with empty requirements
+        assert check_required_by({}, {}) == {}
+
+        # Test with requirements that are not in parameters
+        assert check_required_by({'key1': 'value1'}, {}) == {}
+
+        # Test with a single requirement that is met
+        assert check_required_by({'key1': 'value1'}, {'key1': 'test', 'value1': 'test'}) == {}
+
+        # Test with a single requirement that is not met
+        try:
+            check_required_by({'key1': 'value1'}, {'key1': 'test'})
+        except TypeError as e:
+            assert str(e) == "missing parameter(s) required by 'key1': value1"
+
+        # Test with multiple requirements, some met and some not
+        try:
+            check_required_by
+
+# Generated at 2024-03-18 01:13:20.189809
+```python
+    # Test with a simple integer
+    assert safe_eval('1') == 1
+
+    # Test with a simple string
+    assert safe_eval('"test"') == "test"
+
+    # Test with a list
+    assert safe_eval('[1, 2, 3]') == [1, 2, 3]
+
+    # Test with a dictionary
+    assert safe_eval('{"key": "value"}') == {"key": "value"}
+
+    # Test with a tuple
+    assert safe_eval('(1, 2)') == (1, 2)
+
+    # Test with a method call (should not evaluate)
+    assert safe_eval('os.path.join("a", "b")') == 'os.path.join("a", "b")'
+
+    # Test with an import statement (should not evaluate)
+    assert safe_eval('import os') == 'import os'
+
+    # Test with include_exceptions flag set to True
+   
+
+# Generated at 2024-03-18 01:13:25.846836
+```python
+    # Test with no mutually exclusive terms
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive(None, parameters) == []
+
+    # Test with mutually exclusive terms that do not overlap
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive([['name', 'id']], parameters) == []
+
+    # Test with mutually exclusive terms where one is set
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive([['name', 'state']], parameters) == []
+
+    # Test with mutually exclusive terms where both are set
+    parameters = {'name': 'test', 'state': 'present', 'id': '123'}
+    try:
+        check_mutually_exclusive([['name', 'id']], parameters)
+        assert False, "check_mutually_exclusive did not raise TypeError"
+    except TypeError as
+
+# Generated at 2024-03-18 01:13:42.048248
+```python
+    # Test with no mutually exclusive terms
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive(None, parameters) == []
+
+    # Test with mutually exclusive terms that do not overlap
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive([['name', 'id'], ['state', 'status']], parameters) == []
+
+    # Test with mutually exclusive terms where one set overlaps
+    parameters = {'name': 'test', 'id': 1, 'state': 'present'}
+    try:
+        check_mutually_exclusive([['name', 'id'], ['state', 'status']], parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: name|id"
+
+    # Test with nested mutually exclusive terms
+    parameters = {'parent': {'child1': 'value1', 'child2': 'value2
+
+# Generated at 2024-03-18 01:13:52.859264
+```python
+    # Define a sample argument spec
+    argument_spec = {
+        'name': {'required': True, 'type': 'str'},
+        'state': {'required': False, 'type': 'str', 'choices': ['present', 'absent']},
+        'enabled': {'required': True, 'type': 'bool'}
+    }
+
+    # Test with all required arguments present
+    parameters = {'name': 'test', 'enabled': True}
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    # Test with one required argument missing
+    parameters = {'name': 'test'}
+    try:
+        check_required_arguments(argument_spec, parameters)
+        assert False, "TypeError expected"
+    except TypeError as e:
+        assert str(e) == "missing required arguments: enabled"
+
+    # Test with all required arguments missing
+    parameters = {'state': 'present'}
+    try:
+        check_required_arguments(argument_spec, parameters)
+        assert False, "
+
+# Generated at 2024-03-18 01:14:03.486117
+```python
+    # Define a sample parameters dictionary
+    parameters = {
+        'name': 'test',
+        'state': 'present',
+        'enabled': True
+    }
+
+    # Define terms that are required to be present
+    required_one_of = [
+        ['name', 'id'],
+        ['state', 'status'],
+        ['missing', 'another_missing', 'enabled']
+    ]
+
+    # Test with parameters that meet the criteria
+    assert check_required_one_of(required_one_of, parameters) == []
+
+    # Test with parameters that do not meet the criteria
+    parameters_missing = {
+        'state': 'present',
+        'enabled': True
+    }
+    try:
+        check_required_one_of(required_one_of, parameters_missing)
+        assert False, "TypeError expected but not raised"
+    except TypeError as e:
+        assert str(e) == "one of the following is required: name, id"
+
+    # Test with empty parameters
+    empty_parameters = {}
+   
+
+# Generated at 2024-03-18 01:14:14.244843
+```python
+    # Define a sample argument spec
+    argument_spec = {
+        'name': {'required': True, 'type': 'str'},
+        'state': {'required': False, 'type': 'str', 'default': 'present'},
+        'enabled': {'required': True, 'type': 'bool'}
+    }
+
+    # Test with all required arguments present
+    parameters = {'name': 'test', 'enabled': True}
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    # Test with one required argument missing
+    parameters = {'name': 'test'}
+    try:
+        check_required_arguments(argument_spec, parameters)
+        assert False, "TypeError expected but not raised"
+    except TypeError as e:
+        assert str(e) == "missing required arguments: enabled"
+
+    # Test with all required arguments missing
+    parameters = {}
+    try:
+        check_required_arguments(argument_spec, parameters)
+        assert False, "TypeError expected but not raised"
+
+
+# Generated at 2024-03-18 01:14:32.726525
+```python
+    # Test cases for check_required_by function
+    def test_requirements_met():
+        requirements = {'key1': 'req1', 'key2': ['req2', 'req3']}
+        parameters = {'key1': 'value1', 'req1': 'value2', 'key2': 'value3', 'req2': 'value4', 'req3': 'value5'}
+        assert check_required_by(requirements, parameters) == {}
+
+    def test_requirements_not_met():
+        requirements = {'key1': 'req1', 'key2': ['req2', 'req3']}
+        parameters = {'key1': 'value1', 'key2': 'value3', 'req2': 'value4'}
+        try:
+            check_required_by(requirements, parameters)
+        except TypeError as e:
+            assert str(e) == "missing parameter(s) required by 'key2': req3"
+
+    def test_requirements_partially_met():
+
+
+# Generated at 2024-03-18 01:14:39.925532
+```python
+    # Test cases for check_missing_parameters function
+    def test_check_missing_parameters():
+        # Test with no required parameters
+        assert check_missing_parameters({'param1': 'value1'}) == []
+
+        # Test with required parameters present
+        assert check_missing_parameters({'param1': 'value1', 'param2': 'value2'}, ['param1', 'param2']) == []
+
+        # Test with some required parameters missing
+        try:
+            check_missing_parameters({'param1': 'value1'}, ['param1', 'param2'])
+        except TypeError as e:
+            assert str(e) == "missing required arguments: param2"
+
+        # Test with all required parameters missing
+        try:
+            check_missing_parameters({}, ['param1', 'param2'])
+        except TypeError as e:
+            assert str(e) == "missing required arguments: param1, param2"
+
+        # Test with empty parameters and no required parameters
+        assert check_missing_parameters({}, [])
+
+# Generated at 2024-03-18 01:14:47.186585
+```python
+    # Test with no required parameters
+    assert check_missing_parameters({'param1': 'value1'}) == []
+
+    # Test with one required parameter present
+    assert check_missing_parameters({'param1': 'value1'}, ['param1']) == []
+
+    # Test with one required parameter missing
+    try:
+        check_missing_parameters({'param1': 'value1'}, ['param2'])
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param2"
+    else:
+        assert False, "Expected a TypeError"
+
+    # Test with multiple required parameters, one missing
+    try:
+        check_missing_parameters({'param1': 'value1', 'param2': 'value2'}, ['param1', 'param3'])
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+    else:
+        assert False, "Expected a TypeError"
+
+    # Test with multiple required parameters, all present
+   
+
+# Generated at 2024-03-18 01:14:53.597113
+```python
+    # Define a sample argument spec
+    argument_spec = {
+        'name': {'required': True, 'type': 'str'},
+        'state': {'required': False, 'type': 'str', 'choices': ['present', 'absent']},
+        'enabled': {'required': True, 'type': 'bool'}
+    }
+
+    # Test with all required arguments present
+    parameters = {'name': 'test', 'enabled': True}
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    # Test with one required argument missing
+    parameters = {'name': 'test'}
+    try:
+        check_required_arguments(argument_spec, parameters)
+        assert False, "TypeError expected"
+    except TypeError as e:
+        assert str(e) == "missing required arguments: enabled"
+
+    # Test with all required arguments missing
+    parameters = {'state': 'present'}
+    try:
+        check_required_arguments(argument_spec, parameters)
+        assert False, "
+
+# Generated at 2024-03-18 01:15:03.655182
+```python
+    # Test cases for check_required_together function
+    test_parameters = {
+        'name': 'test',
+        'state': 'present',
+        'enabled': True
+    }
+
+    # Test with no terms, should return an empty list
+    assert check_required_together(None, test_parameters) == []
+
+    # Test with terms that are all present, should return an empty list
+    assert check_required_together([['name', 'state']], test_parameters) == []
+
+    # Test with terms where one is missing, should raise TypeError
+    try:
+        check_required_together([['name', 'missing']], test_parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are required together: name, missing"
+
+    # Test with terms where all are missing, should not raise an error
+    assert check_required_together([['missing1', 'missing2']], test_parameters) == []
+
+    # Test with nested options context
+   
+
+# Generated at 2024-03-18 01:15:11.089708
+```python
+    # Test cases for check_required_together function
+    parameters = {
+        'name': 'test',
+        'state': 'present',
+        'enabled': True
+    }
+
+    # Test with all required parameters present
+    terms = [('name', 'state', 'enabled')]
+    assert check_required_together(terms, parameters) == []
+
+    # Test with one required parameter missing
+    terms = [('name', 'state', 'missing')]
+    try:
+        check_required_together(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are required together: name, state, missing"
+
+    # Test with all required parameters missing
+    terms = [('missing1', 'missing2')]
+    try:
+        check_required_together(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are required together: missing1, missing2"
+
+    # Test with no terms provided
+    terms =
+
+# Generated at 2024-03-18 01:15:16.293031
+```python
+    # Define a sample argument spec
+    argument_spec = {
+        'name': {'required': True, 'type': 'str'},
+        'state': {'required': False, 'type': 'str', 'choices': ['present', 'absent']},
+        'enabled': {'required': True, 'type': 'bool'}
+    }
+
+    # Test with all required arguments present
+    parameters = {'name': 'test', 'enabled': True}
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    # Test with one required argument missing
+    parameters = {'name': 'test'}
+    try:
+        check_required_arguments(argument_spec, parameters)
+        assert False, "TypeError expected"
+    except TypeError as e:
+        assert str(e) == "missing required arguments: enabled"
+
+    # Test with all required arguments missing
+    parameters = {'state': 'present'}
+    try:
+        check_required_arguments(argument_spec, parameters)
+        assert False, "
+
+# Generated at 2024-03-18 01:15:21.110102
+```python
+    # Test with no mutually exclusive terms
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive(None, parameters) == []
+
+    # Test with mutually exclusive terms that do not overlap
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive([['name', 'id']], parameters) == []
+
+    # Test with mutually exclusive terms where one is set
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive([['name', 'state']], parameters) == []
+
+    # Test with mutually exclusive terms where both are set
+    parameters = {'name': 'test', 'state': 'present', 'id': '123'}
+    try:
+        check_mutually_exclusive([['name', 'id']], parameters)
+        assert False, "TypeError not raised"
+    except TypeError as e:
+        assert str(e
+
+# Generated at 2024-03-18 01:15:25.889527
+```python
+    # Test with all parameters present
+    parameters = {'name': 'test', 'state': 'present', 'enabled': True}
+    terms = [('name', 'state', 'enabled')]
+    assert check_required_together(terms, parameters) == []
+
+    # Test with one parameter missing
+    parameters = {'name': 'test', 'state': 'present'}
+    terms = [('name', 'state', 'enabled')]
+    try:
+        check_required_together(terms, parameters)
+        assert False, "TypeError expected but not raised"
+    except TypeError as e:
+        assert str(e) == "parameters are required together: name, state, enabled"
+
+    # Test with all parameters missing
+    parameters = {}
+    terms = [('name', 'state', 'enabled')]
+    assert check_required_together(terms, parameters) == []
+
+    # Test with nested options context
+    parameters = {'parent': {'child': 'value'}}
+    terms = [('
+
+# Generated at 2024-03-18 01:15:32.307025
+```python
+    # Define a sample argument spec
+    argument_spec = {
+        'name': {'required': True, 'type': 'str'},
+        'state': {'required': False, 'type': 'str', 'choices': ['present', 'absent']},
+        'enabled': {'required': True, 'type': 'bool'}
+    }
+
+    # Test with all required arguments present
+    parameters = {'name': 'test', 'enabled': True}
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    # Test with one required argument missing
+    parameters = {'name': 'test'}
+    try:
+        check_required_arguments(argument_spec, parameters)
+        assert False, "TypeError expected"
+    except TypeError as e:
+        assert str(e) == "missing required arguments: enabled"
+
+    # Test with all required arguments missing
+    parameters = {'state': 'present'}
+    try:
+        check_required_arguments(argument_spec, parameters)
+        assert False, "
+
+# Generated at 2024-03-18 01:15:37.237695
+```python
+    # Define a sample argument spec
+    argument_spec = {
+        'name': {'required': True, 'type': 'str'},
+        'state': {'required': False, 'type': 'str', 'choices': ['present', 'absent']},
+        'enabled': {'required': True, 'type': 'bool'}
+    }
+
+    # Test with all required arguments present
+    parameters = {'name': 'test', 'enabled': True}
+    assert test_check_required_arguments(argument_spec, parameters) == []
+
+    # Test with one required argument missing
+    parameters = {'name': 'test'}
+    try:
+        test_check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert 'missing required arguments: enabled' in str(e)
+
+    # Test with all required arguments missing
+    parameters = {'state': 'present'}
+    try:
+        test_check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert 'missing
+
+# Generated at 2024-03-18 01:15:42.521566
+```python
+    assert check_type_int(1) == 1
+    assert check_type_int("2") == 2
+    assert check_type_int(3.0) == 3
+    try:
+        check_type_int("notanint")
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+    try:
+        check_type_int([])
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+    try:
+        check_type_int(None)
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+    try:
+        check_type_int({})
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+    try:
+        check_type_int(True)
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+    print("All tests passed for check_type_int")
+
+# Run the test
+test_check_type_int()
+```
+
+# Generated at 2024-03-18 01:15:43.416324
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:15:50.005449
+```python
+    # Define a sample argument spec
+    argument_spec = {
+        'name': {'required': True, 'type': 'str'},
+        'state': {'required': False, 'type': 'str', 'choices': ['present', 'absent']},
+        'enabled': {'required': True, 'type': 'bool'}
+    }
+
+    # Test cases
+    test_cases = [
+        ({'name': 'test', 'enabled': True}, []),  # All required arguments are present
+        ({'name': 'test'}, ['enabled']),  # Missing 'enabled'
+        ({'enabled': False}, ['name']),  # Missing 'name'
+        ({}, ['name', 'enabled']),  # Missing both 'name' and 'enabled'
+    ]
+
+    # Run the test cases
+    for parameters, expected in test_cases:
+        try:
+            missing = check_required_arguments(argument_spec, parameters)
+            assert missing == expected, f"Expected
+
+# Generated at 2024-03-18 01:16:02.754409
+```python
+    # Test with a simple integer
+    assert safe_eval('1') == 1
+
+    # Test with a simple string
+    assert safe_eval('"test"') == "test"
+
+    # Test with a list
+    assert safe_eval('[1, 2, 3]') == [1, 2, 3]
+
+    # Test with a dictionary
+    assert safe_eval('{"key": "value"}') == {"key": "value"}
+
+    # Test with a tuple
+    assert safe_eval('(1, 2)') == (1, 2)
+
+    # Test with a boolean
+    assert safe_eval('True') is True
+
+    # Test with a method call (should not evaluate)
+    assert safe_eval('os.path.join("a", "b")') == 'os.path.join("a", "b")'
+
+    # Test with an import statement (should not evaluate)
+    assert safe_eval('import os')
+
+# Generated at 2024-03-18 01:16:08.201785
+```python
+    # Test with simple literal
+    assert safe_eval("1") == 1
+    assert safe_eval("'string'") == 'string'
+    assert safe_eval("1.0") == 1.0
+    assert safe_eval("True") == True
+    assert safe_eval("None") == None
+
+    # Test with complex literal
+    assert safe_eval("{'key': 'value', 'num': 123}") == {'key': 'value', 'num': 123}
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+
+    # Test with non-literal string
+    assert safe_eval("os.environ['HOME']") == "os.environ['HOME']"
+
+    # Test with method calls (should not evaluate)
+    assert safe_eval("text_type.join(',', ['a', 'b', 'c'])") == "text_type.join(',', ['a', 'b', 'c
+
+# Generated at 2024-03-18 01:16:16.141539
+```python
+    # Test with simple literal
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+
+    # Test with list
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+
+    # Test with tuple
+    assert safe_eval("(1, 2, 3)") == (1, 2, 3)
+
+    # Test with non-literal string
+    assert safe_eval("os.path.join('a', 'b')") == "os.path.join('a', 'b')"
+
+    # Test with method call
+    assert safe_eval("text_type.join(',', ['a', 'b'])") == "text_type.join(',', ['a', 'b'])"
+
+    # Test with import statement
+    assert safe_eval("import os") == "import os"
+
+    # Test with include_exceptions flag
+    assert safe_eval("1/0", include_exceptions=True)
+
+# Generated at 2024-03-18 01:16:17.680084
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:16:18.630870
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:16:20.232341
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:16:24.822521
+```python
+    assert check_type_bytes('1KB') == 1024
+    assert check_type_bytes('1MB') == 1024 * 1024
+    assert check_type_bytes('1GB') == 1024 * 1024 * 1024
+    assert check_type_bytes('1') == 1
+    assert check_type_bytes(1024) == 1024
+    assert check_type_bytes('1024') == 1024
+    assert check_type_bytes('invalid') == 'TypeError'
+    assert check_type_bytes(None) == 'TypeError'
+    assert check_type_bytes('1TB') == 1024 * 1024 * 1024 * 1024
+    assert check_type_bytes('1PB') == 1024 * 1024 * 1024 * 1024 * 1024
+```
+
+# Generated at 2024-03-18 01:16:26.147756
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:16:31.448776
+```python
+    # Test with simple literal
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+
+    # Test with integer
+    assert safe_eval("42") == 42
+
+    # Test with string
+    assert safe_eval("'test_string'") == 'test_string'
+
+    # Test with tuple
+    assert safe_eval("(1, 2, 3)") == (1, 2, 3)
+
+    # Test with method calls (should return the original value)
+    assert safe_eval("datetime.now()") == "datetime.now()"
+
+    # Test with imports (should return the original value)
+    assert safe_eval("import os") == "import os"
+
+    # Test with invalid syntax (should return the original value)
+    assert safe_eval("invalid syntax") == "invalid syntax"
+
+    # Test with include_exceptions flag set to True
+    result, exception = safe_eval("1/0", include_exceptions=True
+
+# Generated at 2024-03-18 01:16:36.944003
+```python
+    # Test cases for check_required_by function
+    def test_requirements_met():
+        requirements = {'key1': 'req1', 'key2': ['req2', 'req3']}
+        parameters = {'key1': 'value1', 'req1': 'value2', 'key2': 'value3', 'req2': 'value4', 'req3': 'value5'}
+        assert check_required_by(requirements, parameters) == {}
+
+    def test_requirements_not_met():
+        requirements = {'key1': 'req1', 'key2': ['req2', 'req3']}
+        parameters = {'key1': 'value1', 'key2': 'value3', 'req2': 'value4'}
+        try:
+            check_required_by(requirements, parameters)
+            assert False, "TypeError expected"
+        except TypeError as e:
+            assert str(e) == "missing parameter(s) required by 'key2': req3"
+
+
+
+# Generated at 2024-03-18 01:16:43.566214
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:16:44.990536
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:16:45.893681
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:16:53.053366
+```python
+    # Test with simple literal
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+
+    # Test with list
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+
+    # Test with tuple
+    assert safe_eval("(1, 2, 3)") == (1, 2, 3)
+
+    # Test with boolean
+    assert safe_eval("True") is True
+
+    # Test with number
+    assert safe_eval("123") == 123
+
+    # Test with invalid string (method call)
+    assert safe_eval("os.path.join('a', 'b')") == "os.path.join('a', 'b')"
+
+    # Test with invalid string (import statement)
+    assert safe_eval("import os") == "import os"
+
+    # Test with include_exceptions flag
+    result, exception = safe_eval("1/0",
+
+# Generated at 2024-03-18 01:16:58.611328
+```python
+    # Test with no mutually exclusive terms
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive(None, parameters) == []
+
+    # Test with mutually exclusive terms that do not overlap
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive([['name', 'id'], ['state', 'status']], parameters) == []
+
+    # Test with mutually exclusive terms where one set overlaps
+    parameters = {'name': 'test', 'id': 1, 'state': 'present'}
+    try:
+        check_mutually_exclusive([['name', 'id'], ['state', 'status']], parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: name|id"
+
+    # Test with nested mutually exclusive terms
+    parameters = {'parent': {'child1': 'value1', 'child2': 'value2
+
+# Generated at 2024-03-18 01:16:59.551045
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:17:08.801744
+```python
+    assert check_type_bits('1Kb') == 1024
+    assert check_type_bits('1Mb') == 1048576
+    assert check_type_bits('1Gb') == 1073741824
+    assert check_type_bits('1Tb') == 1099511627776
+    assert check_type_bits('1024') == 1024
+    assert check_type_bits(1024) == 1024
+    assert check_type_bits('1024b') == 1024
+    assert check_type_bits('1024B') == 8192  # 'B' is bytes, so 1024 bytes * 8 = 8192 bits
+
+    try:
+        check_type_bits('invalid')
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+
+    try:
+        check_type_bits(None)
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+
+   
+
+# Generated at 2024-03-18 01:17:14.030802
+```python
+    # Define a sample argument spec
+    argument_spec = {
+        'name': {'required': True, 'type': 'str'},
+        'state': {'required': False, 'type': 'str', 'choices': ['present', 'absent']},
+        'enabled': {'required': True, 'type': 'bool'}
+    }
+
+    # Test with all required arguments present
+    parameters = {'name': 'test', 'enabled': True}
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    # Test with one required argument missing
+    parameters = {'name': 'test'}
+    try:
+        check_required_arguments(argument_spec, parameters)
+        assert False, "TypeError expected"
+    except TypeError as e:
+        assert str(e) == "missing required arguments: enabled"
+
+    # Test with all required arguments missing
+    parameters = {'state': 'present'}
+    try:
+        check_required_arguments(argument_spec, parameters)
+        assert False, "
+
+# Generated at 2024-03-18 01:17:20.622333
+```python
+    assert check_type_bytes('1K') == 1024
+    assert check_type_bytes('1M') == 1024 * 1024
+    assert check_type_bytes('1G') == 1024 * 1024 * 1024
+    assert check_type_bytes('1') == 1
+    assert check_type_bytes(1024) == 1024
+    assert check_type_bytes(b'1024') == 1024
+
+    try:
+        check_type_bytes('invalid')
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+
+    try:
+        check_type_bytes(None)
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+
+    try:
+        check_type_bytes([])
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+
+    try:
+        check_type_bytes({})
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+
+# Generated at 2024-03-18 01:17:26.312243
+```python
+    assert check_type_bytes('1KB') == 1024
+    assert check_type_bytes('1MB') == 1024**2
+    assert check_type_bytes('1GB') == 1024**3
+    assert check_type_bytes('1TB') == 1024**4
+    assert check_type_bytes('1024') == 1024
+    assert check_type_bytes(2048) == 2048
+
+    try:
+        check_type_bytes('invalid')
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+
+    try:
+        check_type_bytes(None)
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+
+    try:
+        check_type_bytes([])
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+
+    try:
+        check_type_bytes({})
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+
+    print("All
+
+# Generated at 2024-03-18 01:17:38.248856
+```python
+    # Test cases for check_required_by function
+    def test_requirements_met():
+        requirements = {'key1': 'req1', 'key2': ['req2', 'req3']}
+        parameters = {'key1': 'value1', 'req1': 'value2', 'key2': 'value3', 'req2': 'value4', 'req3': 'value5'}
+        assert check_required_by(requirements, parameters) == {}
+
+    def test_requirements_not_met():
+        requirements = {'key1': 'req1', 'key2': ['req2', 'req3']}
+        parameters = {'key1': 'value1', 'key2': 'value3', 'req2': 'value4'}
+        try:
+            check_required_by(requirements, parameters)
+        except TypeError as e:
+            assert str(e) == "missing parameter(s) required by 'key2': req3"
+
+    def test_requirements_partially_met():
+
+
+# Generated at 2024-03-18 01:17:46.191996
+```python
+    assert check_type_bits('1Kb') == 1024
+    assert check_type_bits('1Mb') == 1048576
+    assert check_type_bits('1Gb') == 1073741824
+    assert check_type_bits('1Tb') == 1099511627776
+    assert check_type_bits('1024') == 1024
+    assert check_type_bits(1024) == 1024
+    assert check_type_bits('1024b') == 1024
+    assert check_type_bits('1024B') == 8192  # 'B' is bytes, so 1024 bytes * 8 = 8192 bits
+
+    try:
+        check_type_bits('invalid')
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+
+    try:
+        check_type_bits(None)
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+
+   
+
+# Generated at 2024-03-18 01:17:56.399002
+```python
+    def test_check_type_bits():
+        # Test with valid bit strings
+        assert check_type_bits('1Kb') == 1024
+        assert check_type_bits('1Mb') == 1048576
+        assert check_type_bits('1Gb') == 1073741824
+        assert check_type_bits('1Tb') == 1099511627776
+
+        # Test with integers
+        assert check_type_bits(1024) == 1024
+        assert check_type_bits(1048576) == 1048576
+
+        # Test with invalid input
+        try:
+            check_type_bits('invalid')
+            assert False, "Expected a TypeError"
+        except TypeError:
+            assert True
+
+        try:
+            check_type_bits(None)
+            assert False, "Expected a TypeError"
+        except TypeError:
+            assert True
+
+        try:
+            check_type_bits([])
+            assert False, "Expected a TypeError"
+        except TypeError:
+           
+
+# Generated at 2024-03-18 01:17:57.515475
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:18:01.611754
+```python
+    assert check_type_int(1) == 1
+    assert check_type_int("2") == 2
+    assert check_type_int(3.0) == 3
+    try:
+        check_type_int("notanint")
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+    try:
+        check_type_int([])
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+    try:
+        check_type_int(None)
+        assert False, "Expected a TypeError"
+    except TypeError:
+        assert True
+    print("All tests passed for check_type_int")
+
+test_check_type_int()
+```
+
+# Generated at 2024-03-18 01:18:02.186075
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:18:07.983877
+```python
+    # Test cases for check_required_together function
+    parameters = {
+        'name': 'test',
+        'state': 'present',
+        'enabled': True
+    }
+
+    # Test with no terms, should return an empty list
+    assert check_required_together(None, parameters) == []
+
+    # Test with terms that are all present, should return an empty list
+    assert check_required_together([['name', 'state']], parameters) == []
+
+    # Test with terms where one is missing, should raise TypeError
+    try:
+        check_required_together([['name', 'missing']], parameters)
+        assert False, "Expected TypeError"
+    except TypeError as e:
+        assert str(e) == "parameters are required together: name, missing"
+
+    # Test with terms where all are missing, should not raise an error
+    assert check_required_together([['missing1', 'missing2']], parameters) == []
+
+    # Test with multiple groups
+
+# Generated at 2024-03-18 01:18:13.772103
+```python
+    # Test cases for check_required_by function
+    def test_check_required_by():
+        # Test with no requirements
+        assert check_required_by(None, {}) == {}
+
+        # Test with empty requirements
+        assert check_required_by({}, {}) == {}
+
+        # Test with requirements that are met
+        parameters = {'name': 'test', 'state': 'present'}
+        requirements = {'state': 'name'}
+        assert check_required_by(requirements, parameters) == {}
+
+        # Test with requirements that are not met
+        parameters = {'state': 'present'}
+        requirements = {'state': 'name'}
+        try:
+            check_required_by(requirements, parameters)
+        except TypeError as e:
+            assert str(e) == "missing parameter(s) required by 'state': name"
+        else:
+            assert False, "TypeError not raised"
+
+        # Test with multiple requirements, some met and some not
+        parameters = {'name': 'test', 'state': '
+
+# Generated at 2024-03-18 01:18:19.727896
+```python
+    assert check_type_bits('1Kb') == 1024
+    assert check_type_bits('1Mb') == 1048576
+    assert check_type_bits('1Gb') == 1073741824
+    assert check_type_bits('1Tb') == 1099511627776
+    assert check_type_bits('1024') == 1024
+    assert check_type_bits(1024) == 1024
+    assert check_type_bits('1024b') == 1024
+    assert check_type_bits('1024B') == 8192
+
+    try:
+        check_type_bits('invalid')
+    except TypeError as e:
+        assert str(e) == "'<class 'str'>' cannot be converted to a Bit value"
+
+    try:
+        check_type_bits(None)
+    except TypeError as e:
+        assert str(e) == "'<class 'NoneType'>' cannot be converted to a Bit value"
+
+   
+
+# Generated at 2024-03-18 01:18:25.351533
+```python
+    # Test with simple literal
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+
+    # Test with integer
+    assert safe_eval("42") == 42
+
+    # Test with string
+    assert safe_eval("'test_string'") == 'test_string'
+
+    # Test with tuple
+    assert safe_eval("(1, 2, 3)") == (1, 2, 3)
+
+    # Test with method calls (should return the original value)
+    assert safe_eval("datetime.now()") == "datetime.now()"
+
+    # Test with imports (should return the original value)
+    assert safe_eval("import os") == "import os"
+
+    # Test with invalid syntax (should return the original value)
+    assert safe_eval("invalid syntax") == "invalid syntax"
+
+    # Test with include_exceptions flag (should return a tuple with the original value and the exception)
+    _, exception = safe_eval
+
+# Generated at 2024-03-18 01:18:31.209203
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:18:36.705473
+```python
+    assert check_type_bits('1Kb') == 1024
+    assert check_type_bits('1Mb') == 1048576
+    assert check_type_bits('1Gb') == 1073741824
+    assert check_type_bits('1Tb') == 1099511627776
+    assert check_type_bits('1024') == 1024
+    assert check_type_bits(1024) == 1024
+    assert check_type_bits('1024b') == 1024
+    assert check_type_bits('1024B') == 8192  # 'B' is bytes, so 1024 bytes * 8 = 8192 bits
+
+    try:
+        check_type_bits('invalid')
+        assert False, "Expected a TypeError for invalid bit string"
+    except TypeError:
+        assert True
+
+    try:
+        check_type_bits(None)
+        assert False, "Expected a TypeError for None value"
+    except
+
+# Generated at 2024-03-18 01:18:37.785330
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:18:44.435042
+```python
+    # Test with no mutually exclusive terms
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive(None, parameters) == []
+
+    # Test with mutually exclusive terms that do not overlap
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive([['name', 'id'], ['state', 'status']], parameters) == []
+
+    # Test with mutually exclusive terms where one set overlaps
+    parameters = {'name': 'test', 'id': 1, 'state': 'present'}
+    try:
+        check_mutually_exclusive([['name', 'id'], ['state', 'status']], parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: name|id"
+
+    # Test with multiple sets of mutually exclusive terms overlapping
+    parameters = {'name': 'test', 'id': 1, 'state':
+
+# Generated at 2024-03-18 01:18:50.557681
+```python
+    # Test cases for check_required_together function
+    parameters = {
+        'name': 'test',
+        'state': 'present',
+        'enabled': True
+    }
+
+    # Test with no terms, should return an empty list
+    assert check_required_together(None, parameters) == []
+
+    # Test with terms that are not in parameters, should raise TypeError
+    try:
+        check_required_together([['missing1', 'missing2']], parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are required together: missing1, missing2"
+
+    # Test with one term present and one missing, should raise TypeError
+    try:
+        check_required_together([['name', 'missing']], parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are required together: name, missing"
+
+    # Test with all terms present, should return an empty list
+    assert check_required_together([['name
+
+# Generated at 2024-03-18 01:18:55.700536
+```python
+    # Test with simple literal
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+
+    # Test with integer
+    assert safe_eval("42") == 42
+
+    # Test with string
+    assert safe_eval("'test_string'") == 'test_string'
+
+    # Test with tuple
+    assert safe_eval("(1, 2, 3)") == (1, 2, 3)
+
+    # Test with method calls (should return the original value)
+    assert safe_eval("datetime.now()") == "datetime.now()"
+
+    # Test with imports (should return the original value)
+    assert safe_eval("import os") == "import os"
+
+    # Test with invalid syntax (should return the original value)
+    assert safe_eval("invalid syntax") == "invalid syntax"
+
+    # Test with include_exceptions flag (should return a tuple with the value and the exception)
+    value, exception = safe_eval
+
+# Generated at 2024-03-18 01:19:01.345005
+    assert check_type_int(1) == 1
+    assert check_type_int("2") == 2
+    assert check_type_int(3.0) == 3
+    try:
+        check_type_int("notanint")
+    except TypeError as te:
+        assert str(te) == "'notanint' cannot be converted to an int"
+    try:
+        check_type_int(None)
+    except TypeError as te:
+        assert str(te) == "'NoneType' cannot be converted to an int"
+    try:
+        check_type_int([4])
+    except TypeError as te:
+        assert str(te) == "'list' cannot be converted to an int"
+    print("All tests passed for check_type_int")
+
+# Run the unit test
+test_check_type_int()
+
+# Generated at 2024-03-18 01:19:07.476867
+```python
+    # Test with no mutually exclusive terms
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive(None, parameters) == []
+
+    # Test with mutually exclusive terms that do not overlap
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive([['name', 'id']], parameters) == []
+
+    # Test with mutually exclusive terms where one is present
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive([['name', 'state']], parameters) == []
+
+    # Test with mutually exclusive terms where both are present
+    parameters = {'name': 'test', 'state': 'present', 'id': '123'}
+    try:
+        check_mutually_exclusive([['name', 'id']], parameters)
+        assert False, "TypeError not raised"
+    except TypeError as e:
+        assert str(e
+
+# Generated at 2024-03-18 01:19:14.386260
+```python
+    # Test cases for check_required_by function
+    def test_requirements_met():
+        requirements = {'key1': 'req1', 'key2': ['req2', 'req3']}
+        parameters = {'key1': 'value1', 'req1': 'value2', 'key2': 'value3', 'req2': 'value4', 'req3': 'value5'}
+        assert check_required_by(requirements, parameters) == {}
+
+    def test_requirements_not_met():
+        requirements = {'key1': 'req1', 'key2': ['req2', 'req3']}
+        parameters = {'key1': 'value1', 'key2': 'value3', 'req2': 'value4'}
+        try:
+            check_required_by(requirements, parameters)
+            assert False, "TypeError expected but not raised"
+        except TypeError as e:
+            assert str(e) == "missing parameter(s) required by 'key2':
+
+# Generated at 2024-03-18 01:19:22.300204
+```python
+    # Test cases for check_required_if function
+    def test_check_required_if():
+        # Test case with no requirements
+        assert check_required_if(None, {}) == []
+
+        # Test case with requirements but no parameters
+        requirements = [
+            ['state', 'present', ['path']],
+            ['number', 5, ['size', 'color']]
+        ]
+        parameters = {}
+        try:
+            check_required_if(requirements, parameters)
+        except TypeError as e:
+            assert str(e) == "state is present but all of the following are missing: path"
+
+        # Test case with parameters that do not meet requirements
+        parameters = {'state': 'present'}
+        try:
+            check_required_if(requirements, parameters)
+        except TypeError as e:
+            assert str(e) == "state is present but all of the following are missing: path"
+
+        # Test case with parameters that meet requirements
+        parameters = {'state': 'present', 'path':
+
+# Generated at 2024-03-18 01:19:31.469171
+```python
+    # Test cases for check_required_by function
+    def test_check_required_by():
+        # Test with no requirements
+        assert check_required_by(None, {}) == {}
+
+        # Test with empty requirements
+        assert check_required_by({}, {}) == {}
+
+        # Test with requirements but no parameters
+        assert check_required_by({'key1': 'value1'}, {}) == {}
+
+        # Test with requirements not met
+        try:
+            check_required_by({'key1': 'value1'}, {'key1': True})
+        except TypeError as e:
+            assert str(e) == "missing parameter(s) required by 'key1': value1"
+
+        # Test with requirements partially met
+        try:
+            check_required_by({'key1': ['value1', 'value2']}, {'key1': True, 'value1': True})
+        except TypeError as e:
+            assert str(e) == "missing parameter(s) required by 'key1': value2"
+
+       
+
+# Generated at 2024-03-18 01:19:39.110793
+```python
+    def test_check_type_bits():
+        # Test with valid bit strings
+        assert check_type_bits('1Kb') == 1024
+        assert check_type_bits('1Mb') == 1048576
+        assert check_type_bits('1Gb') == 1073741824
+        assert check_type_bits('1Tb') == 1099511627776
+
+        # Test with integers
+        assert check_type_bits(1024) == 1024
+        assert check_type_bits(1048576) == 1048576
+
+        # Test with invalid input
+        try:
+            check_type_bits('invalid')
+            assert False, "Expected a TypeError"
+        except TypeError:
+            assert True
+
+        try:
+            check_type_bits(None)
+            assert False, "Expected a TypeError"
+        except TypeError:
+            assert True
+
+        try:
+            check_type_bits([])
+            assert False, "Expected a TypeError"
+        except TypeError:
+           
+
+# Generated at 2024-03-18 01:19:44.385555
+    assert check_type_int(1) == 1
+    assert check_type_int("2") == 2
+    assert check_type_int(3.0) == 3
+    try:
+        check_type_int("notanint")
+    except TypeError as te:
+        assert str(te) == "'notanint' cannot be converted to an int"
+    try:
+        check_type_int(None)
+    except TypeError as te:
+        assert str(te) == "'NoneType' cannot be converted to an int"
+    try:
+        check_type_int([])
+    except TypeError as te:
+        assert str(te) == "'list' cannot be converted to an int"
+    try:
+        check_type_int({})
+    except TypeError as te:
+        assert str(te) == "'dict' cannot be converted to an int"
+    print("All tests passed.")
+
+# Run the unit test
+test_check_type_int()
+
+# Generated at 2024-03-18 01:19:49.469845
+```python
+    # Test cases for check_required_by function
+    def test_check_required_by():
+        # Test with no requirements
+        assert check_required_by(None, {}) == {}
+
+        # Test with empty requirements
+        assert check_required_by({}, {}) == {}
+
+        # Test with requirements but no parameters
+        assert check_required_by({'key1': 'value1'}, {}) == {}
+
+        # Test with requirements not met
+        try:
+            check_required_by({'key1': 'value1'}, {'key1': True})
+        except TypeError as e:
+            assert str(e) == "missing parameter(s) required by 'key1': value1"
+
+        # Test with requirements met
+        assert check_required_by({'key1': 'value1'}, {'key1': True, 'value1': 'some_value'}) == {}
+
+        # Test with multiple requirements, some met and some not
+        try:
+            check_required_by({'key1': ['value1', 'value2
+
+# Generated at 2024-03-18 01:19:54.625344
+```python
+    # Test cases for check_required_together function
+    test_parameters = {
+        'name': 'test',
+        'state': 'present',
+        'enabled': True
+    }
+
+    # Test with no terms, should return an empty list
+    assert check_required_together(None, test_parameters) == []
+
+    # Test with terms that are all present, should return an empty list
+    assert check_required_together([['name', 'state']], test_parameters) == []
+
+    # Test with terms where one is missing, should raise TypeError
+    try:
+        check_required_together([['name', 'missing']], test_parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are required together: name, missing"
+
+    # Test with terms where all are missing, should not raise an error
+    assert check_required_together([['missing1', 'missing2']], test_parameters) == []
+
+    # Test with nested options context
+   
+
+# Generated at 2024-03-18 01:20:00.723729
+```python
+    # Test cases for check_required_together function
+    parameters = {
+        'name': 'test',
+        'state': 'present',
+        'enabled': True
+    }
+
+    # Test with no terms, should return an empty list
+    assert check_required_together(None, parameters) == []
+
+    # Test with terms that are not in parameters, should raise TypeError
+    try:
+        check_required_together([['missing1', 'missing2']], parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are required together: missing1, missing2"
+
+    # Test with one term present and one missing, should raise TypeError
+    try:
+        check_required_together([['name', 'missing']], parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are required together: name, missing"
+
+    # Test with all terms present, should return an empty list
+    assert check_required_together([['name
+
+# Generated at 2024-03-18 01:20:05.357867
+```python
+    # Test cases for check_required_by function
+    def test_check_required_by():
+        # Test with no requirements
+        assert check_required_by(None, {}) == {}
+
+        # Test with empty requirements
+        assert check_required_by({}, {}) == {}
+
+        # Test with requirements but no parameters
+        assert check_required_by({'key1': 'value1'}, {}) == {}
+
+        # Test with requirements not met
+        try:
+            check_required_by({'key1': 'value1'}, {'key1': True})
+        except TypeError as e:
+            assert str(e) == "missing parameter(s) required by 'key1': value1"
+
+        # Test with requirements partially met
+        try:
+            check_required_by({'key1': ['value1', 'value2']}, {'key1': True, 'value1': True})
+        except TypeError as e:
+            assert str(e) == "missing parameter(s) required by 'key1': value2"
+
+       
+
+# Generated at 2024-03-18 01:20:10.773529
+```python
+    # Test with no mutually exclusive terms
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive(None, parameters) == []
+
+    # Test with mutually exclusive terms that do not overlap
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive([['name', 'id'], ['state', 'status']], parameters) == []
+
+    # Test with mutually exclusive terms where one group overlaps
+    parameters = {'name': 'test', 'id': 1, 'state': 'present'}
+    try:
+        check_mutually_exclusive([['name', 'id'], ['state', 'status']], parameters)
+        assert False, "TypeError not raised"
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: name|id"
+
+    # Test with nested options context
+    parameters = {'nested': {'name': 'test', '
+
+# Generated at 2024-03-18 01:20:15.861691
+```python
+    # Test cases for check_required_by function
+    test_parameters = {
+        'name': 'test',
+        'state': 'present',
+        'enabled': True,
+        'config': None
+    }
+
+    # Test case 1: All required parameters are present
+    requirements_1 = {'state': ['name']}
+    assert check_required_by(requirements_1, test_parameters) == {}
+
+    # Test case 2: Required parameter is missing
+    requirements_2 = {'state': ['config']}
+    try:
+        check_required_by(requirements_2, test_parameters)
+        assert False, "TypeError expected but not raised"
+    except TypeError as e:
+        assert str(e) == "missing parameter(s) required by 'state': config"
+
+    # Test case 3: Key is not in parameters
+    requirements_3 = {'missing_key': ['name']}
+    assert check_required_by(requirements_3, test_parameters) == {}
+
+    #
+
+# Generated at 2024-03-18 01:20:22.845178
+```python
+    # Test with a simple integer
+    assert safe_eval('1') == 1
+
+    # Test with a simple string
+    assert safe_eval('"test"') == "test"
+
+    # Test with a list
+    assert safe_eval('[1, 2, 3]') == [1, 2, 3]
+
+    # Test with a dictionary
+    assert safe_eval('{"key": "value"}') == {"key": "value"}
+
+    # Test with a tuple
+    assert safe_eval('(1, 2)') == (1, 2)
+
+    # Test with a boolean
+    assert safe_eval('True') is True
+
+    # Test with a method call (should not evaluate)
+    assert safe_eval('os.path.join("a", "b")') == 'os.path.join("a", "b")'
+
+    # Test with an import statement (should not evaluate)
+    assert safe_eval('import os')
+
+# Generated at 2024-03-18 01:20:31.952366
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:20:36.790288
+```python
+    assert check_type_int(1) == 1
+    assert check_type_int("2") == 2
+    assert check_type_int(3.0) == 3
+    try:
+        check_type_int("not_an_int")
+    except TypeError as te:
+        assert str(te) == "'not_an_int' cannot be converted to an int"
+    try:
+        check_type_int(None)
+    except TypeError as te:
+        assert str(te) == "'NoneType' cannot be converted to an int"
+    try:
+        check_type_int([])
+    except TypeError as te:
+        assert str(te) == "'list' cannot be converted to an int"
+    try:
+        check_type_int({})
+    except TypeError as te:
+        assert str(te) == "'dict' cannot be converted to an int"
+    print("All tests passed for check_type_int")
+```
+
+# Generated at 2024-03-18 01:20:42.185884
+```python
+    # Test with all parameters present
+    parameters = {'name': 'test', 'state': 'present', 'enabled': True}
+    terms = [('name', 'state', 'enabled')]
+    assert check_required_together(terms, parameters) == []
+
+    # Test with one missing parameter
+    parameters = {'name': 'test', 'state': 'present'}
+    terms = [('name', 'state', 'enabled')]
+    try:
+        check_required_together(terms, parameters)
+        assert False, "TypeError expected but not raised"
+    except TypeError as e:
+        assert str(e) == "parameters are required together: name, state, enabled"
+
+    # Test with no parameters present
+    parameters = {}
+    terms = [('name', 'state', 'enabled')]
+    assert check_required_together(terms, parameters) == []
+
+    # Test with multiple groups of terms
+    parameters = {'name': 'test', 'mode': 'auto'}
+
+
+# Generated at 2024-03-18 01:20:43.418625
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:20:54.694853
+```python
+    # Test cases for check_required_one_of function
+    def test_check_required_one_of():
+        # Test with no terms and no parameters
+        assert check_required_one_of(None, {}) == []
+
+        # Test with terms but no matching parameters
+        try:
+            check_required_one_of([['opt1', 'opt2']], {})
+            assert False, "TypeError not raised"
+        except TypeError as e:
+            assert str(e) == "one of the following is required: opt1, opt2"
+
+        # Test with one matching parameter
+        assert check_required_one_of([['opt1', 'opt2']], {'opt1': 'value'}) == []
+
+        # Test with all matching parameters
+        assert check_required_one_of([['opt1', 'opt2']], {'opt1': 'value', 'opt2': 'value'}) == []
+
+        # Test with nested options context
+        try:
+            check_required_one_of([['opt1', 'opt
+
+# Generated at 2024-03-18 01:20:59.382224
+```python
+    # Define a sample argument spec
+    argument_spec = {
+        'name': {'required': True, 'type': 'str'},
+        'state': {'required': False, 'type': 'str', 'choices': ['present', 'absent']},
+        'enabled': {'required': True, 'type': 'bool'}
+    }
+
+    # Test cases
+    test_cases = [
+        ({'name': 'test', 'enabled': True}, []),  # All required arguments provided
+        ({'name': 'test'}, ['enabled']),  # Missing 'enabled'
+        ({'enabled': False}, ['name']),  # Missing 'name'
+        ({}, ['enabled', 'name']),  # Missing both 'name' and 'enabled'
+        ({'name': 'test', 'state': 'present', 'enabled': True}, []),  # Extra non-required argument provided
+    ]
+
+    # Run the test cases
+    for parameters,
+
+# Generated at 2024-03-18 01:21:04.456411
+```python
+    # Test with no mutually exclusive terms
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive(None, parameters) == []
+
+    # Test with mutually exclusive terms that do not overlap
+    parameters = {'name': 'test', 'state': 'present'}
+    assert check_mutually_exclusive([['name', 'id'], ['state', 'status']], parameters) == []
+
+    # Test with mutually exclusive terms where one set overlaps
+    parameters = {'name': 'test', 'id': 1, 'state': 'present'}
+    try:
+        check_mutually_exclusive([['name', 'id'], ['state', 'status']], parameters)
+        assert False, "TypeError not raised"
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: name|id"
+
+    # Test with nested options context
+    parameters = {'user': {'name': 'test', '
+
+# Generated at 2024-03-18 01:21:08.780749
+    assert check_type_int(1) == 1
+    assert check_type_int("2") == 2
+    assert check_type_int(3.0) == 3
+    try:
+        check_type_int("notanint")
+    except TypeError as te:
+        assert str(te) == "'notanint' cannot be converted to an int"
+    try:
+        check_type_int(None)
+    except TypeError as te:
+        assert str(te) == "'NoneType' cannot be converted to an int"
+    try:
+        check_type_int([4])
+    except TypeError as te:
+        assert str(te) == "'list' cannot be converted to an int"
+    print("All tests passed.")
+
+# Call the test function
+test_check_type_int()
+
+# Generated at 2024-03-18 01:21:16.925474
+```python
+    # Test cases for check_required_together function
+    parameters = {
+        'name': 'test',
+        'state': 'present',
+        'enabled': True
+    }
+
+    # Test with no terms, should return an empty list
+    assert check_required_together(None, parameters) == []
+
+    # Test with terms that are all present, should return an empty list
+    assert check_required_together([['name', 'state']], parameters) == []
+
+    # Test with one term missing, should raise TypeError
+    try:
+        check_required_together([['name', 'missing']], parameters)
+        assert False, "TypeError not raised"
+    except TypeError as e:
+        assert str(e) == "parameters are required together: name, missing"
+
+    # Test with multiple terms, some missing, should raise TypeError
+    try:
+        check_required_together([['name', 'state'], ['name', 'missing']], parameters)
+        assert False, "
+
+# Generated at 2024-03-18 01:21:18.195121
+```python
+import pytest
+
+
+# Generated at 2024-03-18 01:21:27.620268
+```python
+    # Test cases for check_required_by function
+    def test_check_required_by():
+        # Test with no requirements
+        assert check_required_by(None, {}) == {}
+
+        # Test with empty requirements
+        assert check_required_by({}, {}) == {}
+
+        # Test with requirements but no parameters
+        assert check_required_by({'key1': 'param1'}, {}) == {}
+
+        # Test with requirements not met
+        try:
+            check_required_by({'key1': 'param1'}, {'key1': 'value1'})
+        except TypeError as e:
+            assert str(e) == "missing parameter(s) required by 'key1': param1"
+
+        # Test with requirements met
+        assert check_required_by({'key1': 'param1'}, {'key1': 'value1', 'param1': 'value2'}) == {}
+
+        # Test with multiple requirements, one not met
+        try:
+            check_required_by({'key1': ['param1', '
+
+# Generated at 2024-03-18 01:21:40.795022
+```python
+    # Test with simple literal
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+
+    # Test with list literal
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+
+    # Test with tuple literal
+    assert safe_eval("(1, 2, 3)") == (1, 2, 3)
+
+    # Test with numeric literal
+    assert safe_eval("42") == 42
+
+    # Test with string literal
+    assert safe_eval("'test_string'") == 'test_string'
+
+    # Test with method calls (should not evaluate)
+    assert safe_eval("os.path.join('a', 'b')") == "os.path.join('a', 'b')"
+
+    # Test with imports (should not evaluate)
+    assert safe_eval("import os") == "import os"
+
+    # Test with invalid syntax (should return the value

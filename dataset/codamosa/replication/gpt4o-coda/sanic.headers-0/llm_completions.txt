@@ -1,0 +1,2488 @@
+
+
+# Generated at 2024-06-03 07:00:22.601963
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("::1") == "[::1]"
+    assert fwd_normalize_address("2001:db8::1") == "[2001:db8::1]"
+    assert fwd_normalize_address("UNKNOWN") == ValueError
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("example.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:00:26.609363
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def getall(self, key, default=None):
+            return self.headers.get(key, default)
+
+    class MockConfig:
+        def __init__(self, secret):
+            self.FORWARDED_SECRET = secret
+
+    headers = MockHeaders({"forwarded": ["for=192.0.2.60;by=203.0.113.43;secret=mysecret"]})
+    config = MockConfig("mysecret")
+    result = parse_forwarded(headers, config)
+    assert result == {"for": "192.0.2.60", "by": "203.0.113.43", "secret": "mysecret"}
+
+    headers = MockHeaders({"forwarded": ["for=192.0.2.60;by=203.0.113.43;secret=wrongsecret"]})
+    config = MockConfig("mysecret
+
+# Generated at 2024-06-03 07:00:32.726229
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    })
+   
+
+# Generated at 2024-06-03 07:00:36.356738
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:00:39.430619
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("::1") == "[::1]"
+    assert fwd_normalize_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]"
+    assert fwd_normalize_address("UNKNOWN") == ValueError
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("example.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:00:42.892771
+```python
+    # Test case 1: Normalizing a simple forwarded header
+    fwd = [("for", "192.168.0.1"), ("proto", "HTTP"), ("host", "example.com"), ("port", "8080"), ("path", "/test")]
+    expected = {"for": "192.168.0.1", "proto": "http", "host": "example.com", "port": 8080, "path": "/test"}
+    assert fwd_normalize(fwd) == expected
+
+    # Test case 2: Normalizing with an IPv6 address
+    fwd = [("for", "2001:0db8:85a3:0000:0000:8a2e:0370:7334"), ("proto", "HTTPS")]
+    expected = {"for": "[2001:0db8:85a3:0000:0000:8a2e:
+
+# Generated at 2024-06-03 07:00:46.414027
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("::1") == "[::1]"
+    assert fwd_normalize_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]"
+    assert fwd_normalize_address("UNKNOWN") == ValueError
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("example.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:00:50.159094
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:00:53.936281
+```python
+    fwd = [("for", "192.168.0.1"), ("proto", "HTTP"), ("host", "example.com"), ("port", "8080"), ("path", "/test")]
+    expected = {
+        "for": "192.168.0.1",
+        "proto": "http",
+        "host": "example.com",
+        "port": 8080,
+        "path": "/test"
+    }
+    assert fwd_normalize(fwd) == expected
+
+    fwd = [("for", "2001:0db8:85a3:0000:0000:8a2e:0370:7334"), ("proto", "HTTPS"), ("host", "EXAMPLE.COM"), ("port", "443"), ("path", "/test%20path")]
+    expected = {
+        "for": "[2001:0db8:85a3:0000:0000:8
+
+# Generated at 2024-06-03 07:00:58.173410
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="othersecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+
+    result = parse_forwarded(headers, config)
+    assert result == {
+        "for": "192.0.2.60",
+        "proto": "http",
+        "by": "203.0.113.43",
+        "secret": "mysecret"
+    }
+
+    config.FORWARDED_SECRET = "othersecret"
+    result = parse_forwarded(headers, config)
+    assert result == {
+        "for": "198.51.100.17",
+        "proto
+
+# Generated at 2024-06-03 07:01:10.820290
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-real-ip": "192.168.0.1",
+        "x-forwarded-for": ["192.168.0.2, 192.168.0.3"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path":
+
+# Generated at 2024-06-03 07:01:15.549015
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def getall(self, key, default=None):
+            return self.headers.get(key, default)
+
+    class MockConfig:
+        def __init__(self, secret):
+            self.FORWARDED_SECRET = secret
+
+    headers = MockHeaders({"forwarded": ["for=192.0.2.60;by=203.0.113.43;secret=topsecret"]})
+    config = MockConfig("topsecret")
+    result = parse_forwarded(headers, config)
+    assert result == {"for": "192.0.2.60", "by": "203.0.113.43", "secret": "topsecret"}
+
+    headers = MockHeaders({"forwarded": ["for=192.0.2.60;by=203.0.113.43"]})
+    config = MockConfig("topsecret")
+    result =
+
+# Generated at 2024-06-03 07:01:19.119773
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["192.168.1.1, 192.168.1.2"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/test/path"
+    })
+    config = MockConfig("x-real-ip
+
+# Generated at 2024-06-03 07:01:21.918521
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]"
+    assert fwd_normalize_address("UNKNOWN") == ValueError
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("example.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:01:25.380079
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="wrongsecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+
+    result = parse_forwarded(headers, config)
+    expected = {
+        "for": "192.0.2.60",
+        "proto": "http",
+        "by": "203.0.113.43",
+        "secret": "mysecret"
+    }
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=
+
+# Generated at 2024-06-03 07:01:30.408087
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:01:33.736552
+```python
+    assert parse_host("example.com") == ("example.com", None)
+    assert parse_host("example.com:80") == ("example.com", 80)
+    assert parse_host("[2001:db8::1]") == ("[2001:db8::1]", None)
+    assert parse_host("[2001:db8::1]:8080") == ("[2001:db8::1]", 8080)
+    assert parse_host("invalid_host:port") == (None, None)
+    assert parse_host("example.com:99999") == (None, None)
+    assert parse_host("example.com:abc") == (None, None)
+```
+
+# Generated at 2024-06-03 07:01:37.542661
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["192.168.0.1, 192.168.0.2"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/test"
+    })
+    config = MockConfig(real_ip_header=None,
+
+# Generated at 2024-06-03 07:01:40.378256
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("::1") == "[::1]"
+    assert fwd_normalize_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]"
+    assert fwd_normalize_address("unknown") == ValueError
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("EXAMPLE.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:01:45.031768
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:01:56.877734
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+
+    result = parse_forwarded(headers, config)
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=
+
+# Generated at 2024-06-03 07:02:01.098566
+```python
+    fwd = [("for", "192.168.0.1"), ("proto", "HTTP"), ("host", "example.com"), ("port", "8080"), ("path", "/test")]
+    expected = {
+        "for": "192.168.0.1",
+        "proto": "http",
+        "host": "example.com",
+        "port": 8080,
+        "path": "/test"
+    }
+    assert fwd_normalize(fwd) == expected
+
+    fwd = [("for", "unknown"), ("proto", "HTTPS"), ("host", "EXAMPLE.COM"), ("port", "443"), ("path", "/test%20path")]
+    expected = {
+        "proto": "https",
+        "host": "example.com",
+        "port": 443,
+        "path": "/test path"
+    }
+    assert fwd_normalize(fwd) == expected
+
+    fwd = [
+
+# Generated at 2024-06-03 07:02:04.626889
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:02:07.685429
+```python
+    assert parse_content_header('form-data; name=upload; filename="file.txt"') == (
+        'form-data', {'name': 'upload', 'filename': 'file.txt'}
+    )
+    assert parse_content_header('text/html; charset=UTF-8') == (
+        'text/html', {'charset': 'utf-8'}
+    )
+    assert parse_content_header('application/json') == (
+        'application/json', {}
+    )
+    assert parse_content_header('attachment; filename="foo%22bar.txt"') == (
+        'attachment', {'filename': 'foo"bar.txt'}
+    )
+    assert parse_content_header('inline; filename="foo\\"bar.txt"') == (
+        'inline', {'filename': 'foo"bar.txt'}
+    )
+```
+
+# Generated at 2024-06-03 07:02:11.455848
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    })
+   
+
+# Generated at 2024-06-03 07:02:14.774425
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "192.0.2.60",
+        "proto": "http",
+        "by": "203.0.113.43",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:02:17.943109
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("UNKNOWN") == ValueError
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]"
+    assert fwd_normalize_address("2001:db8::ff00:42:8329") == "[2001:db8::ff00:42:8329]"
+    assert fwd_normalize_address("example.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:02:22.699116
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    })
+   
+
+# Generated at 2024-06-03 07:02:27.615275
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    
+    expected = {
+        "for": "192.0.2.60",
+        "proto": "http",
+        "by": "203.0.113.43",
+        "secret": "mysecret"
+    }
+    
+    result = parse_forwarded(headers, config)
+    assert result == expected, f"Expected {expected}, but got {result}"
+```
+
+# Generated at 2024-06-03 07:02:30.709052
+```python
+    assert parse_content_header('form-data; name=upload; filename="file.txt"') == (
+        'form-data',
+        {'name': 'upload', 'filename': 'file.txt'}
+    )
+    assert parse_content_header('text/html; charset=UTF-8') == (
+        'text/html',
+        {'charset': 'utf-8'}
+    )
+    assert parse_content_header('application/json') == (
+        'application/json',
+        {}
+    )
+    assert parse_content_header('attachment; filename="f\\ile.txt"') == (
+        'attachment',
+        {'filename': 'file.txt'}
+    )
+    assert parse_content_header('inline; filename="f\\"ile.txt"') == (
+        'inline',
+        {'filename': 'f"ile.txt'}
+    )
+```
+
+# Generated at 2024-06-03 07:02:41.846291
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "192.0.2.60",
+        "proto": "http",
+        "by": "203.0.113.43",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:02:46.106000
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:02:50.080714
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+
+    result = parse_forwarded(headers, config)
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=
+
+# Generated at 2024-06-03 07:02:57.322248
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+
+    result = parse_forwarded(headers, config)
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=
+
+# Generated at 2024-06-03 07:02:59.942525
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("::1") == "[::1]"
+    assert fwd_normalize_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]"
+    assert fwd_normalize_address("UNKNOWN") == ValueError
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("example.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:03:05.681167
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:03:10.465943
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:03:14.258858
+```python
+    assert parse_host("example.com") == ("example.com", None)
+    assert parse_host("example.com:80") == ("example.com", 80)
+    assert parse_host("[2001:db8::1]") == ("[2001:db8::1]", None)
+    assert parse_host("[2001:db8::1]:8080") == ("[2001:db8::1]", 8080)
+    assert parse_host("invalid_host:port") == (None, None)
+    assert parse_host("example.com:invalid_port") == (None, None)
+    assert parse_host("") == (None, None)
+```
+
+# Generated at 2024-06-03 07:03:18.266603
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type("Config", (object,), {"FORWARDED_SECRET": "mysecret"})
+    
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    
+    result = parse_forwarded(headers, config)
+    assert result == expected, f"Expected {expected}, but got {result}"
+```
+
+# Generated at 2024-06-03 07:03:22.961272
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+
+    result = parse_forwarded(headers, config)
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    assert result == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrong
+
+# Generated at 2024-06-03 07:03:34.031657
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def getall(self, key, default=None):
+            return self.headers.get(key, default)
+
+    class MockConfig:
+        def __init__(self, forwarded_secret):
+            self.FORWARDED_SECRET = forwarded_secret
+
+    headers = MockHeaders({"forwarded": ["for=192.0.2.60;by=203.0.113.43;secret=topsecret"]})
+    config = MockConfig(forwarded_secret="topsecret")
+    result = parse_forwarded(headers, config)
+    assert result == {'for': '192.0.2.60', 'by': '203.0.113.43', 'secret': 'topsecret'}
+
+    headers = MockHeaders({"forwarded": ["for=192.0.2.60;by=203.0.113.43"]})
+    config = MockConfig(for
+
+# Generated at 2024-06-03 07:03:38.172953
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("::1") == "[::1]"
+    assert fwd_normalize_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]"
+    assert fwd_normalize_address("UNKNOWN") == ValueError
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("example.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:03:42.808659
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:03:46.352703
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+
+    result = parse_forwarded(headers, config)
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=
+
+# Generated at 2024-06-03 07:03:49.903652
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:03:54.683079
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-real-ip": "192.168.0.1",
+        "x-forwarded-for": ["192.168.0.2, 192.168.0.3"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path":
+
+# Generated at 2024-06-03 07:03:59.289287
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:04:03.986379
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    })
+   
+
+# Generated at 2024-06-03 07:04:07.586834
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-real-ip": "192.168.1.1",
+        "x-forwarded-for": ["192.168.1.2, 192.168.1.3", "192.168.1.4"]
+    })
+    config = MockConfig("x-real-ip", 2, "x-forwarded-for")
+
+    result = parse_xforwarded(headers,
+
+# Generated at 2024-06-03 07:04:11.597654
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("::1") == "[::1]"
+    assert fwd_normalize_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]"
+    assert fwd_normalize_address("UNKNOWN") == ValueError
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("example.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:04:22.257983
+```python
+    fwd = [("for", "192.168.0.1"), ("proto", "HTTP"), ("host", "example.com"), ("port", "8080"), ("path", "/test/path")]
+    expected = {
+        "for": "192.168.0.1",
+        "proto": "http",
+        "host": "example.com",
+        "port": 8080,
+        "path": "/test/path"
+    }
+    assert fwd_normalize(fwd) == expected
+
+    fwd = [("for", "2001:0db8:85a3:0000:0000:8a2e:0370:7334"), ("proto", "HTTPS"), ("host", "EXAMPLE.COM"), ("port", "443"), ("path", "/secure/path")]
+    expected = {
+        "for": "[2001:0db8:85a3:0000:0000:8
+
+# Generated at 2024-06-03 07:04:27.426952
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:04:31.938909
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-real-ip": "192.168.1.1",
+        "x-forwarded-for": ["192.168.1.2, 192.168.1.3"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path":
+
+# Generated at 2024-06-03 07:04:36.275514
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:04:40.051457
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("UNKNOWN") == ValueError
+    assert fwd_normalize_address("::1") == "[::1]"
+    assert fwd_normalize_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]"
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("example.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:04:43.422194
+```python
+    assert parse_host("example.com") == ("example.com", None)
+    assert parse_host("example.com:80") == ("example.com", 80)
+    assert parse_host("[2001:db8::1]") == ("[2001:db8::1]", None)
+    assert parse_host("[2001:db8::1]:8080") == ("[2001:db8::1]", 8080)
+    assert parse_host("invalid_host:port") == (None, None)
+    assert parse_host("example.com:99999") == (None, None)
+    assert parse_host("") == (None, None)
+```
+
+# Generated at 2024-06-03 07:04:48.297417
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:04:52.319016
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "192.0.2.60",
+        "proto": "http",
+        "by": "203.0.113.43",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:04:54.497164
+```python
+    assert parse_host("example.com") == ("example.com", None)
+    assert parse_host("example.com:80") == ("example.com", 80)
+    assert parse_host("[2001:db8::1]") == ("[2001:db8::1]", None)
+    assert parse_host("[2001:db8::1]:8080") == ("[2001:db8::1]", 8080)
+    assert parse_host("invalid_host:port") == (None, None)
+    assert parse_host("example.com:invalid_port") == (None, None)
+    assert parse_host("") == (None, None)
+```
+
+# Generated at 2024-06-03 07:04:59.017791
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:05:14.073027
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:05:17.516780
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:05:23.357001
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("::1") == "[::1]"
+    assert fwd_normalize_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]"
+    assert fwd_normalize_address("unknown") == ValueError
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("EXAMPLE.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:05:27.636465
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    })
+   
+
+# Generated at 2024-06-03 07:05:31.281757
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:05:35.260487
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    })
+   
+
+# Generated at 2024-06-03 07:05:41.543002
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def getall(self, key, default=None):
+            return self.headers.get(key, default)
+
+    class MockConfig:
+        def __init__(self, forwarded_secret):
+            self.FORWARDED_SECRET = forwarded_secret
+
+    headers = MockHeaders({"forwarded": ["for=192.0.2.60;by=203.0.113.43;secret=topsecret"]})
+    config = MockConfig("topsecret")
+    result = parse_forwarded(headers, config)
+    assert result == {'for': '192.0.2.60', 'by': '203.0.113.43', 'secret': 'topsecret'}
+
+    headers = MockHeaders({"forwarded": ["for=192.0.2.60;by=203.0.113.43"]})
+    config = MockConfig("topsecret")
+   
+
+# Generated at 2024-06-03 07:05:45.262296
+```python
+    assert parse_host("example.com") == ("example.com", None)
+    assert parse_host("example.com:80") == ("example.com", 80)
+    assert parse_host("[2001:db8::1]") == ("[2001:db8::1]", None)
+    assert parse_host("[2001:db8::1]:8080") == ("[2001:db8::1]", 8080)
+    assert parse_host("invalid_host:port") == (None, None)
+    assert parse_host("example.com:99999") == (None, None)
+    assert parse_host("example.com:") == (None, None)
+    assert parse_host(":80") == (None, None)
+```
+
+# Generated at 2024-06-03 07:05:49.488083
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    })
+   
+
+# Generated at 2024-06-03 07:05:55.690614
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "192.0.2.60",
+        "proto": "http",
+        "by": "203.0.113.43",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:06:08.552705
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:06:12.481657
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-real-ip": "192.168.0.1",
+        "x-forwarded-for": ["192.168.0.2, 192.168.0.3"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path":
+
+# Generated at 2024-06-03 07:06:16.821705
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:06:20.578268
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-real-ip": "192.168.0.1",
+        "x-forwarded-for": ["192.168.0.2, 192.168.0.3", "192.168.0.4"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "
+
+# Generated at 2024-06-03 07:06:24.477740
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-real-ip": "192.168.0.1",
+        "x-forwarded-for": ["192.168.0.2, 192.168.0.3"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path":
+
+# Generated at 2024-06-03 07:06:26.845237
+```python
+    assert parse_host("example.com:80") == ("example.com", 80)
+    assert parse_host("example.com") == ("example.com", None)
+    assert parse_host("[2001:db8::1]:8080") == ("[2001:db8::1]", 8080)
+    assert parse_host("[2001:db8::1]") == ("[2001:db8::1]", None)
+    assert parse_host("invalid_host:port") == (None, None)
+    assert parse_host("") == (None, None)
+```
+
+# Generated at 2024-06-03 07:06:30.672130
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:06:34.494226
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    })
+   
+
+# Generated at 2024-06-03 07:06:37.789779
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path/to/resource"
+   
+
+# Generated at 2024-06-03 07:06:42.698061
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-real-ip": "192.168.0.1",
+        "x-forwarded-for": ["192.168.0.2, 192.168.0.3"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path":
+
+# Generated at 2024-06-03 07:07:02.135771
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-real-ip": "192.168.0.1",
+        "x-forwarded-for": ["192.168.0.2, 192.168.0.3"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path":
+
+# Generated at 2024-06-03 07:07:05.636273
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "192.0.2.60",
+        "proto": "http",
+        "by": "203.0.113.43",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:07:09.555881
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type("Config", (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "192.0.2.60",
+        "proto": "http",
+        "by": "203.0.113.43",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:07:13.346542
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("::1") == "[::1]"
+    assert fwd_normalize_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]"
+    assert fwd_normalize_address("UNKNOWN") == ValueError
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("example.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:07:19.470512
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-real-ip": "192.168.0.1",
+        "x-forwarded-for": ["192.168.0.2, 192.168.0.3"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path":
+
+# Generated at 2024-06-03 07:07:25.145419
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    })
+   
+
+# Generated at 2024-06-03 07:07:30.615682
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("::1") == "[::1]"
+    assert fwd_normalize_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]"
+    assert fwd_normalize_address("UNKNOWN") == ValueError
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("example.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:07:36.184822
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+
+    result = parse_forwarded(headers, config)
+    assert result == {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:07:41.047139
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-real-ip": "192.168.1.1",
+        "x-forwarded-for": ["192.168.1.2, 192.168.1.3", "192.168.1.4"]
+    })
+    config = MockConfig("x-real-ip", 2, "x-forwarded-for")
+
+    result = parse_xforwarded(headers,
+
+# Generated at 2024-06-03 07:07:46.121372
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:07:57.895086
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["192.168.0.1, 192.168.0.2"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/test"
+    })
+    config = MockConfig(real_ip_header=None,
+
+# Generated at 2024-06-03 07:08:03.695990
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    })
+   
+
+# Generated at 2024-06-03 07:08:07.056188
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:08:10.927656
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    result = parse_forwarded(headers, config)
+    assert result == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret
+
+# Generated at 2024-06-03 07:08:14.427122
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("::1") == "[::1]"
+    assert fwd_normalize_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]"
+    assert fwd_normalize_address("unknown") == ValueError
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("EXAMPLE.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:08:20.531705
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-real-ip": "192.168.0.1",
+        "x-forwarded-for": ["192.168.0.2, 192.168.0.3", "192.168.0.4"]
+    })
+    config = MockConfig("x-real-ip", 2, "x-forwarded-for")
+
+    result = parse_xforwarded(headers,
+
+# Generated at 2024-06-03 07:08:25.646277
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "192.0.2.60",
+        "proto": "http",
+        "by": "203.0.113.43",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:08:28.753454
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:08:32.021311
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    
+    result = parse_forwarded(headers, config)
+    assert result == expected, f"Expected {expected}, but got {result}"
+```
+
+# Generated at 2024-06-03 07:08:35.984526
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    })
+   
+
+# Generated at 2024-06-03 07:08:51.312319
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def getall(self, key, default=None):
+            return self.headers.get(key, default)
+
+    class MockConfig:
+        def __init__(self, forwarded_secret):
+            self.FORWARDED_SECRET = forwarded_secret
+
+    headers = MockHeaders({"forwarded": ["for=192.0.2.60;by=203.0.113.43;secret=topsecret"]})
+    config = MockConfig("topsecret")
+    result = parse_forwarded(headers, config)
+    assert result == {"for": "192.0.2.60", "by": "203.0.113.43", "secret": "topsecret"}
+
+    headers = MockHeaders({"forwarded": ["for=192.0.2.60;by=203.0.113.43"]})
+    config = MockConfig("topsecret")
+   
+
+# Generated at 2024-06-03 07:08:57.259470
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-real-ip": "192.168.0.1",
+        "x-forwarded-for": ["192.168.0.2, 192.168.0.3"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path":
+
+# Generated at 2024-06-03 07:09:00.457040
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("::1") == "[::1]"
+    assert fwd_normalize_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]"
+    assert fwd_normalize_address("UNKNOWN") == ValueError
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("example.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:09:06.033343
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+
+    result = parse_forwarded(headers, config)
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=
+
+# Generated at 2024-06-03 07:09:10.187726
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "192.0.2.60",
+        "proto": "http",
+        "by": "203.0.113.43",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:09:17.302394
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:09:21.238615
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:09:24.366115
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for
+
+# Generated at 2024-06-03 07:09:28.036958
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:09:30.895502
+```python
+    assert fwd_normalize_address("192.168.0.1") == "192.168.0.1"
+    assert fwd_normalize_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334") == "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]"
+    assert fwd_normalize_address("UNKNOWN") == ValueError
+    assert fwd_normalize_address("_obfuscated") == "_obfuscated"
+    assert fwd_normalize_address("example.com") == "example.com"
+```
+
+# Generated at 2024-06-03 07:09:45.660252
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    })
+   
+
+# Generated at 2024-06-03 07:09:49.409003
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:09:53.619909
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/some/path"
+    })
+
+
+# Generated at 2024-06-03 07:09:57.871349
+```python
+    class MockHeaders:
+        def __init__(self, headers):
+            self.headers = headers
+
+        def get(self, key, default=None):
+            return self.headers.get(key, default)
+
+        def getall(self, key):
+            return self.headers.get(key, [])
+
+    class MockConfig:
+        def __init__(self, real_ip_header, proxies_count, forwarded_for_header):
+            self.REAL_IP_HEADER = real_ip_header
+            self.PROXIES_COUNT = proxies_count
+            self.FORWARDED_FOR_HEADER = forwarded_for_header
+
+    headers = MockHeaders({
+        "x-forwarded-for": ["203.0.113.195, 70.41.3.18, 150.172.238.178"],
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "example.com",
+        "x-forwarded-port": "443",
+        "x-forwarded-path": "/path"
+    })
+   
+
+# Generated at 2024-06-03 07:10:03.844205
+```python
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="mysecret"',
+            'for=198.51.100.17;proto=https;by=203.0.113.44;secret="mysecret"'
+        ]
+    }
+    config = type('Config', (object,), {"FORWARDED_SECRET": "mysecret"})
+    expected = {
+        "for": "198.51.100.17",
+        "proto": "https",
+        "by": "203.0.113.44",
+        "secret": "mysecret"
+    }
+    assert parse_forwarded(headers, config) == expected
+
+    headers = {
+        "forwarded": [
+            'for=192.0.2.60;proto=http;by=203.0.113.43;secret="wrongsecret"',
+            'for

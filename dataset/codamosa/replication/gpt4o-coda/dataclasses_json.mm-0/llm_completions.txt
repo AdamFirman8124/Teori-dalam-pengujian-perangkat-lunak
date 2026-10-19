@@ -1,0 +1,1485 @@
+
+
+# Generated at 2024-06-01 17:49:27.414281
+```python
+    from dataclasses import dataclass, field
+    from typing import Optional, List
+
+    @dataclass
+    class NestedDataClass:
+        value: int
+
+    @dataclass
+    class TestDataClass:
+        id: int
+        name: str
+        optional_field: Optional[str] = None
+        nested: NestedDataClass = field(default_factory=lambda: NestedDataClass(value=0))
+        values: List[int] = field(default_factory=list)
+
+    class NestedDataClassSchema(Schema):
+        value = fields.Int()
+
+    class TestDataClassSchema(Schema):
+        id = fields.Int()
+        name = fields.Str()
+        optional_field = fields.Str(allow_none=True)
+        nested = fields.Nested(NestedDataClassSchema)
+        values = fields.List(fields.Int())
+
+    TestDataClass.schema = lambda: TestDataClassSchema
+
+    schema_dict = schema(TestDataClass, mixin=None, infer_missing=True)
+
+    assert 'id
+
+# Generated at 2024-06-01 17:49:33.333003
+
+    from dataclasses import dataclass
+    from dataclasses_json import dataclass_json
+
+    @dataclass_json
+    @dataclass
+    class TestClass:
+        id: int
+        name: str
+        timestamp: datetime
+
+    class TestMixin:
+        pass
+
+    result = schema(TestClass, TestMixin, infer_missing=True)
+    assert 'id' in result
+    assert isinstance(result['id'], fields.Int)
+    assert 'name' in result
+    assert isinstance(result['name'], fields.Str)
+    assert 'timestamp' in result
+    assert isinstance(result['timestamp'], _TimestampField)
+
+    @dataclass_json
+    @dataclass
+    class NestedClass:
+        nested: TestClass
+
+    result = schema(NestedClass, TestMixin, infer_missing=True)
+    assert 'nested' in result
+    assert isinstance(result['nested'], fields.Nested)
+
+    @dataclass_json
+    @dataclass
+    class OptionalClass:
+       
+
+# Generated at 2024-06-01 17:49:36.023627
+```python
+    class ExampleSchema(SchemaF):
+        class Meta:
+            fields = ('name', 'age')
+
+    example_data = {'name': 'John Doe', 'age': 30}
+    schema = ExampleSchema()
+
+    # Test single object serialization
+    result = schema.dumps(example_data)
+    assert isinstance(result, str)
+    assert '"name": "John Doe"' in result
+    assert '"age": 30' in result
+
+    # Test list of objects serialization
+    example_data_list = [example_data, {'name': 'Jane Doe', 'age': 25}]
+    result_list = schema.dumps(example_data_list, many=True)
+    assert isinstance(result_list, str)
+    assert '"name": "John Doe"' in result_list
+    assert '"age": 30' in result_list
+    assert '"name": "Jane Doe"' in result_list
+    assert '"age": 25' in result_list
+```
+
+# Generated at 2024-06-01 17:49:40.406448
+```python
+    class ExampleSchema(SchemaF):
+        class Meta:
+            fields = ("name", "age")
+
+    example_data = {"name": "John", "age": 30}
+    example_list_data = [{"name": "John", "age": 30}, {"name": "Jane", "age": 25}]
+
+    schema = ExampleSchema()
+
+    # Test single object
+    result = schema.dump(example_data)
+    assert result == example_data, f"Expected {example_data}, got {result}"
+
+    # Test list of objects
+    result = schema.dump(example_list_data, many=True)
+    assert result == example_list_data, f"Expected {example_list_data}, got {result}"
+```
+
+# Generated at 2024-06-01 17:49:43.292821
+```python
+    class ExampleSchema(SchemaF):
+        class Meta:
+            unknown = 'EXCLUDE'
+
+        field1 = fields.Str()
+        field2 = fields.Int()
+
+    schema = ExampleSchema()
+
+    # Test loading a single object
+    json_data = '{"field1": "test", "field2": 123}'
+    result = schema.loads(json_data)
+    assert result == {'field1': 'test', 'field2': 123}
+
+    # Test loading a list of objects
+    json_data_list = '[{"field1": "test1", "field2": 123}, {"field1": "test2", "field2": 456}]'
+    result_list = schema.loads(json_data_list, many=True)
+    assert result_list == [{'field1': 'test1', 'field2': 123}, {'field1': 'test2', 'field2': 456}]
+
+    # Test loading with partial data
+    json_data
+
+# Generated at 2024-06-01 17:49:47.160685
+```python
+    from marshmallow import Schema, fields
+    from dataclasses import dataclass, field as dc_field
+    from typing import Optional
+
+    @dataclass
+    class TestClass:
+        name: str
+        age: int
+        email: Optional[str] = None
+
+    class TestMixin:
+        pass
+
+    schema_cls = build_schema(TestClass, TestMixin, infer_missing=True, partial=False)
+    schema_instance = schema_cls()
+
+    test_data = {
+        "name": "John Doe",
+        "age": 30,
+        "email": "john.doe@example.com"
+    }
+
+    # Test serialization
+    serialized_data = schema_instance.dump(TestClass(name="John Doe", age=30, email="john.doe@example.com"))
+    assert serialized_data == test_data
+
+    # Test deserialization
+    deserialized_data = schema_instance.load(test_data)
+    assert deserialized_data == TestClass(name="John Doe", age=30,
+
+# Generated at 2024-06-01 17:49:50.265466
+```python
+    from marshmallow import Schema, fields
+    from dataclasses import dataclass
+
+    @dataclass
+    class TestClass:
+        id: int
+        name: str
+
+    class TestMixin:
+        pass
+
+    schema_cls = build_schema(TestClass, TestMixin, infer_missing=False, partial=False)
+    assert issubclass(schema_cls, Schema)
+    assert hasattr(schema_cls, 'Meta')
+    assert hasattr(schema_cls, 'make_testclass')
+    assert hasattr(schema_cls, 'dumps')
+    assert hasattr(schema_cls, 'dump')
+
+    schema_instance = schema_cls()
+    data = {'id': 1, 'name': 'Test'}
+    obj = schema_instance.load(data)
+    assert isinstance(obj, TestClass)
+    assert obj.id == 1
+    assert obj.name == 'Test'
+
+    dumped_data = schema_instance.dump(obj)
+    assert dumped_data == data
+```
+
+# Generated at 2024-06-01 17:49:53.006626
+```python
+    class TestClass:
+        def __init__(self, field1: int, field2: str):
+            self.field1 = field1
+            self.field2 = field2
+
+    class TestMixin:
+        pass
+
+    schema_cls = build_schema(TestClass, TestMixin, infer_missing=True, partial=False)
+    assert schema_cls.Meta.fields == ('field1', 'field2')
+
+    instance = TestClass(field1=1, field2="test")
+    schema_instance = schema_cls()
+    dumped_data = schema_instance.dump(instance)
+    assert dumped_data == {'field1': 1, 'field2': 'test'}
+
+    loaded_instance = schema_instance.load({'field1': 1, 'field2': 'test'})
+    assert isinstance(loaded_instance, TestClass)
+    assert loaded_instance.field1 == 1
+    assert loaded_instance.field2 == 'test'
+```
+
+# Generated at 2024-06-01 17:49:56.578652
+```python
+    class ExampleEnum(Enum):
+        OPTION_A = "option_a"
+        OPTION_B = "option_b"
+
+    @dataclass
+    class ExampleDataClass:
+        id: int
+        name: str
+        timestamp: datetime
+        value: Decimal
+        uuid: UUID
+        enum_field: ExampleEnum
+
+    class ExampleSchema(SchemaF[ExampleDataClass]):
+        id = fields.Int(required=True)
+        name = fields.Str(required=True)
+        timestamp = _TimestampField(required=True)
+        value = fields.Decimal(required=True)
+        uuid = fields.UUID(required=True)
+        enum_field = EnumField(ExampleEnum, by_value=True, required=True)
+
+        @post_load
+        def make_object(self, data, **kwargs):
+            return ExampleDataClass(**data)
+
+    json_data = '''
+    [
+        {
+            "id": 1,
+            "name": "Test",
+            "timestamp": 1638316800,
+            "value": "
+
+# Generated at 2024-06-01 17:49:59.558394
+```python
+    class TestClass:
+        def __init__(self, field1: int, field2: str):
+            self.field1 = field1
+            self.field2 = field2
+
+    class TestMixin:
+        pass
+
+    schema_cls = build_schema(TestClass, TestMixin, infer_missing=True, partial=False)
+    assert schema_cls.Meta.fields == ('field1', 'field2')
+
+    instance = TestClass(field1=1, field2="test")
+    schema_instance = schema_cls()
+    dumped_data = schema_instance.dump(instance)
+    assert dumped_data == {'field1': 1, 'field2': 'test'}
+
+    loaded_instance = schema_instance.load({'field1': 1, 'field2': 'test'})
+    assert isinstance(loaded_instance, TestClass)
+    assert loaded_instance.field1 == 1
+    assert loaded_instance.field2 == 'test'
+```
+
+# Generated at 2024-06-01 17:50:15.964044
+```python
+    class ExampleSchema(SchemaF):
+        class Meta:
+            unknown = 'EXCLUDE'
+
+        field1 = fields.Str()
+        field2 = fields.Int()
+
+    schema = ExampleSchema()
+
+    # Test loading a single object
+    json_data_single = '{"field1": "test", "field2": 123}'
+    result_single = schema.loads(json_data_single)
+    assert result_single == {'field1': 'test', 'field2': 123}
+
+    # Test loading a list of objects
+    json_data_list = '[{"field1": "test1", "field2": 123}, {"field1": "test2", "field2": 456}]'
+    result_list = schema.loads(json_data_list, many=True)
+    assert result_list == [{'field1': 'test1', 'field2': 123}, {'field1': 'test2', 'field2': 456}]
+
+    # Test loading with partial data
+
+# Generated at 2024-06-01 17:50:19.287808
+```python
+    class TestSchema(SchemaF):
+        class Meta:
+            fields = ("name", "age")
+
+    data = {"name": "John", "age": 30}
+    schema = TestSchema()
+
+    # Test single object serialization
+    result = schema.dumps(data)
+    assert result == '{"name": "John", "age": 30}'
+
+    # Test list of objects serialization
+    data_list = [data, {"name": "Jane", "age": 25}]
+    result = schema.dumps(data_list, many=True)
+    assert result == '[{"name": "John", "age": 30}, {"name": "Jane", "age": 25}]'
+```
+
+# Generated at 2024-06-01 17:50:22.481228
+```python
+    from dataclasses import dataclass, field as dc_field
+    from marshmallow import Schema, fields
+    from marshmallow_enum import EnumField
+    from datetime import datetime
+    from enum import Enum
+
+    class TestEnum(Enum):
+        ONE = "one"
+        TWO = "two"
+
+    @dataclass
+    class TestClass:
+        id: int
+        name: str
+        timestamp: datetime
+        enum_field: TestEnum
+
+    class TestMixin:
+        pass
+
+    class TestSchema(Schema):
+        id = fields.Int()
+        name = fields.Str()
+        timestamp = _TimestampField()
+        enum_field = EnumField(TestEnum, by_value=True)
+
+    TestClass.schema = lambda: TestSchema
+
+    def test_case():
+        schema_dict = schema(TestClass, TestMixin, infer_missing=False)
+        assert isinstance(schema_dict['id'], fields.Int)
+        assert isinstance(schema_dict['name'], fields.Str)
+        assert isinstance(schema_dict
+
+# Generated at 2024-06-01 17:50:26.948338
+
+    from dataclasses import dataclass
+    from marshmallow import Schema, fields
+    from marshmallow_enum import EnumField
+    from enum import Enum
+
+    class MyEnum(Enum):
+        A = "A"
+        B = "B"
+
+    @dataclass
+    class NestedDataClass:
+        value: int
+
+    @dataclass
+    class MyDataClass:
+        enum_field: MyEnum
+        nested_field: NestedDataClass
+        optional_field: typing.Optional[int]
+        list_field: typing.List[int]
+
+    class NestedDataClassSchema(Schema):
+        value = fields.Int()
+
+    class MyDataClassSchema(Schema):
+        enum_field = EnumField(MyEnum, by_value=True)
+        nested_field = fields.Nested(NestedDataClassSchema)
+        optional_field = fields.Int(allow_none=True)
+        list_field = fields.List(fields.Int())
+
+    NestedDataClass.schema = NestedDataClassSchema
+    MyDataClass.schema = MyDataClassSchema
+
+# Generated at 2024-06-01 17:50:29.909281
+```python
+    class TestClass:
+        def __init__(self, field1: int, field2: str):
+            self.field1 = field1
+            self.field2 = field2
+
+    class TestMixin:
+        pass
+
+    schema_cls = build_schema(TestClass, TestMixin, infer_missing=True, partial=False)
+    assert issubclass(schema_cls, Schema)
+    assert hasattr(schema_cls, 'Meta')
+    assert hasattr(schema_cls, 'make_testclass')
+    assert hasattr(schema_cls, 'dumps')
+    assert hasattr(schema_cls, 'dump')
+
+    instance = TestClass(field1=1, field2="test")
+    schema_instance = schema_cls()
+    dumped_data = schema_instance.dump(instance)
+    assert dumped_data['field1'] == 1
+    assert dumped_data['field2'] == "test"
+
+    loaded_instance = schema_instance.load(dumped_data)
+    assert isinstance(loaded_instance, TestClass)
+    assert loaded_instance.field1 ==
+
+# Generated at 2024-06-01 17:50:38.877994
+```python
+    from marshmallow import Schema, fields
+    from dataclasses import dataclass
+
+    @dataclass
+    class TestClass:
+        name: str
+        age: int
+
+    class TestMixin:
+        pass
+
+    schema_cls = build_schema(TestClass, TestMixin, infer_missing=False, partial=False)
+    assert issubclass(schema_cls, Schema)
+    assert 'name' in schema_cls._declared_fields
+    assert 'age' in schema_cls._declared_fields
+    assert isinstance(schema_cls._declared_fields['name'], fields.Str)
+    assert isinstance(schema_cls._declared_fields['age'], fields.Int)
+
+    instance = TestClass(name="John", age=30)
+    schema_instance = schema_cls()
+    dumped_data = schema_instance.dump(instance)
+    assert dumped_data == {'name': 'John', 'age': 30}
+
+    loaded_instance = schema_instance.load({'name': 'John', 'age': 30})
+    assert
+
+# Generated at 2024-06-01 17:50:41.869803
+```python
+    from dataclasses import dataclass, field as dc_field
+    from marshmallow import Schema, fields
+    from marshmallow.decorators import post_load
+    from typing import Optional
+
+    @dataclass
+    class TestClass:
+        name: str
+        age: int
+        email: Optional[str] = None
+
+    class TestMixin:
+        pass
+
+    def test_partial():
+        return False
+
+    schema_cls = build_schema(TestClass, TestMixin, infer_missing=True, partial=test_partial)
+
+    assert issubclass(schema_cls, Schema)
+    assert hasattr(schema_cls, 'Meta')
+    assert hasattr(schema_cls, 'make_testclass')
+    assert hasattr(schema_cls, 'dumps')
+    assert hasattr(schema_cls, 'dump')
+
+    schema_instance = schema_cls()
+    data = {'name': 'John Doe', 'age': 30}
+    result = schema_instance.load(data)
+    assert isinstance(result, TestClass)
+    assert result.name == '
+
+# Generated at 2024-06-01 17:50:45.038282
+```python
+    class ExampleSchema(SchemaF):
+        class Meta:
+            unknown = 'EXCLUDE'
+
+        field1 = fields.Str()
+        field2 = fields.Int()
+
+    schema = ExampleSchema()
+
+    # Test loading a single object
+    json_data_single = '{"field1": "test", "field2": 123}'
+    result_single = schema.loads(json_data_single)
+    assert result_single == {'field1': 'test', 'field2': 123}
+
+    # Test loading a list of objects
+    json_data_list = '[{"field1": "test1", "field2": 123}, {"field1": "test2", "field2": 456}]'
+    result_list = schema.loads(json_data_list, many=True)
+    assert result_list == [{'field1': 'test1', 'field2': 123}, {'field1': 'test2', 'field2': 456}]
+
+    # Test loading with partial data
+
+# Generated at 2024-06-01 17:50:47.876643
+
+    from dataclasses import dataclass
+    from marshmallow import Schema, fields
+    from marshmallow_enum import EnumField
+    from enum import Enum
+
+    class TestEnum(Enum):
+        OPTION_A = "option_a"
+        OPTION_B = "option_b"
+
+    @dataclass
+    class NestedDataClass:
+        value: int
+
+    @dataclass
+    class TestDataClass:
+        enum_field: TestEnum
+        nested_field: NestedDataClass
+        optional_field: typing.Optional[str]
+        list_field: typing.List[int]
+
+    class NestedDataClassSchema(Schema):
+        value = fields.Int()
+
+    class TestDataClassSchema(Schema):
+        enum_field = EnumField(TestEnum, by_value=True)
+        nested_field = fields.Nested(NestedDataClassSchema)
+        optional_field = fields.Str(allow_none=True)
+        list_field = fields.List(fields.Int())
+
+    NestedDataClass.schema = NestedDataClassSchema
+    TestDataClass.schema =
+
+# Generated at 2024-06-01 17:50:50.960462
+def test__IsoField():
+    field = _IsoField(required=True)
+    
+    # Test serialization
+    dt = datetime(2023, 10, 1, 12, 0, 0)
+    assert field._serialize(dt, None, None) == "2023-10-01T12:00:00"
+    
+    # Test deserialization
+    iso_str = "2023-10-01T12:00:00"
+    assert field._deserialize(iso_str, None, None) == dt
+    
+    # Test serialization with None value
+    try:
+        field._serialize(None, None, None)
+    except ValidationError as e:
+        assert str(e) == field.default_error_messages["required"]
+    
+    # Test deserialization with None value
+    try:
+        field._deserialize(None, None, None)
+    except ValidationError as e:
+        assert str(e) == field.default_error_messages["required"]
+    
+    # Test optional
+
+# Generated at 2024-06-01 17:51:16.703265
+```python
+    class TestClass:
+        def __init__(self, name: str, age: int):
+            self.name = name
+            self.age = age
+
+    class TestMixin:
+        pass
+
+    schema_cls = build_schema(TestClass, TestMixin, infer_missing=True, partial=False)
+    assert schema_cls.Meta.fields == ('name', 'age')
+    assert hasattr(schema_cls, 'make_testclass')
+    assert hasattr(schema_cls, 'dumps')
+    assert hasattr(schema_cls, 'dump')
+
+    instance = TestClass(name="John", age=30)
+    schema_instance = schema_cls()
+    dumped_data = schema_instance.dump(instance)
+    assert dumped_data == {'name': 'John', 'age': 30}
+
+    loaded_instance = schema_instance.load({'name': 'John', 'age': 30})
+    assert isinstance(loaded_instance, TestClass)
+    assert loaded_instance.name == "John"
+    assert loaded_instance.age == 30
+```
+
+# Generated at 2024-06-01 17:51:18.997582
+```python
+    class ExampleSchema(SchemaF):
+        class Meta:
+            fields = ('name', 'age')
+
+    example_data = {'name': 'John Doe', 'age': 30}
+    schema = ExampleSchema()
+
+    # Test single object serialization
+    result = schema.dumps(example_data)
+    assert result == '{"name": "John Doe", "age": 30}'
+
+    # Test list of objects serialization
+    example_data_list = [example_data, {'name': 'Jane Doe', 'age': 25}]
+    result = schema.dumps(example_data_list, many=True)
+    assert result == '[{"name": "John Doe", "age": 30}, {"name": "Jane Doe", "age": 25}]'
+```
+
+# Generated at 2024-06-01 17:51:21.632398
+```python
+    class TestClass:
+        def __init__(self, field1: int, field2: str):
+            self.field1 = field1
+            self.field2 = field2
+
+    class TestMixin:
+        pass
+
+    schema_cls = build_schema(TestClass, TestMixin, infer_missing=True, partial=False)
+    schema_instance = schema_cls()
+
+    test_obj = TestClass(field1=123, field2="test")
+    dumped_data = schema_instance.dump(test_obj)
+    loaded_obj = schema_instance.load(dumped_data)
+
+    assert isinstance(schema_cls, type)
+    assert isinstance(schema_instance, Schema)
+    assert dumped_data == {'field1': 123, 'field2': 'test'}
+    assert isinstance(loaded_obj, TestClass)
+    assert loaded_obj.field1 == 123
+    assert loaded_obj.field2 == "test"
+```
+
+# Generated at 2024-06-01 17:51:25.730080
+```python
+    class TestClass:
+        def __init__(self, field1: int, field2: str):
+            self.field1 = field1
+            self.field2 = field2
+
+    class TestMixin:
+        pass
+
+    schema_cls = build_schema(TestClass, TestMixin, infer_missing=True, partial=False)
+    assert schema_cls.Meta.fields == ('field1', 'field2')
+
+    instance = TestClass(field1=1, field2="test")
+    schema_instance = schema_cls()
+    dumped_data = schema_instance.dump(instance)
+    assert dumped_data == {'field1': 1, 'field2': 'test'}
+
+    loaded_instance = schema_instance.load({'field1': 1, 'field2': 'test'})
+    assert loaded_instance.field1 == 1
+    assert loaded_instance.field2 == "test"
+```
+
+# Generated at 2024-06-01 17:51:28.470839
+
+    field = _TimestampField(required=True)
+    assert field.required is True
+
+    field = _TimestampField(required=False)
+    assert field.required is False
+
+    field = _TimestampField()
+    assert field.required is False
+
+    try:
+        field._serialize(None, None, None)
+    except ValidationError as e:
+        assert str(e) == field.default_error_messages["required"]
+
+    try:
+        field._deserialize(None, None, None)
+    except ValidationError as e:
+        assert str(e) == field.default_error_messages["required"]
+
+    timestamp = datetime.now().timestamp()
+    dt = datetime.fromtimestamp(timestamp)
+    assert field._serialize(dt, None, None) == timestamp
+    assert field._deserialize(timestamp, None, None) == dt
+
+# Generated at 2024-06-01 17:51:31.582512
+```python
+    from dataclasses import dataclass
+    from marshmallow import Schema, fields
+    from marshmallow_enum import EnumField
+    from enum import Enum
+
+    class TestEnum(Enum):
+        OPTION_A = "A"
+        OPTION_B = "B"
+
+    @dataclass
+    class NestedDataClass:
+        value: int
+
+    @dataclass
+    class TestDataClass:
+        name: str
+        age: int
+        nested: NestedDataClass
+        enum_field: TestEnum
+
+    class NestedDataClassSchema(Schema):
+        value = fields.Int()
+
+    class TestDataClassSchema(Schema):
+        name = fields.Str()
+        age = fields.Int()
+        nested = fields.Nested(NestedDataClassSchema)
+        enum_field = EnumField(TestEnum, by_value=True)
+
+    NestedDataClass.schema = NestedDataClassSchema
+    TestDataClass.schema = TestDataClassSchema
+
+    def test_basic_types():
+        assert isinstance(build_type
+
+# Generated at 2024-06-01 17:51:35.144609
+
+    from dataclasses import dataclass, field as dc_field
+    from marshmallow import Schema, fields
+    from marshmallow.exceptions import ValidationError
+    from marshmallow_enum import EnumField
+    from datetime import datetime
+    from decimal import Decimal
+    from uuid import UUID
+    from enum import Enum
+
+    class TestEnum(Enum):
+        OPTION_A = "A"
+        OPTION_B = "B"
+
+    @dataclass
+    class NestedDataClass:
+        nested_field: int
+
+    @dataclass
+    class TestDataClass:
+        int_field: int
+        str_field: str
+        float_field: float
+        bool_field: bool
+        datetime_field: datetime
+        uuid_field: UUID
+        decimal_field: Decimal
+        enum_field: TestEnum
+        nested_dataclass_field: NestedDataClass
+        optional_field: typing.Optional[str] = None
+
+    class TestMixin:
+        pass
+
+    def test_schema():
+        schema_dict =
+
+# Generated at 2024-06-01 17:51:38.781316
+def test__IsoField():
+    field = _IsoField(required=True)
+    
+    # Test serialization
+    dt = datetime(2023, 10, 1, 12, 0, 0)
+    assert field._serialize(dt, None, None) == "2023-10-01T12:00:00"
+    
+    # Test deserialization
+    iso_str = "2023-10-01T12:00:00"
+    assert field._deserialize(iso_str, None, None) == dt
+    
+    # Test serialization with None value
+    try:
+        field._serialize(None, None, None)
+    except ValidationError as e:
+        assert str(e) == field.default_error_messages["required"]
+    
+    # Test deserialization with None value
+    try:
+        field._deserialize(None, None, None)
+    except ValidationError as e:
+        assert str(e) == field.default_error_messages["required"]
+    
+    # Test optional
+
+# Generated at 2024-06-01 17:51:42.031542
+```python
+    class ExampleSchema(SchemaF):
+        class Meta:
+            unknown = 'EXCLUDE'
+
+    example_schema = ExampleSchema()
+
+    # Test loading a single object
+    data = {"key": "value"}
+    result = example_schema.load(data)
+    assert result == data
+
+    # Test loading a list of objects
+    data_list = [{"key": "value1"}, {"key": "value2"}]
+    result_list = example_schema.load(data_list, many=True)
+    assert result_list == data_list
+
+    # Test loading with partial data
+    partial_data = {"key": "partial_value"}
+    result_partial = example_schema.load(partial_data, partial=True)
+    assert result_partial == partial_data
+
+    # Test loading with unknown fields
+    data_with_unknown = {"key": "value", "unknown_key": "unknown_value"}
+    result_with_unknown = example_schema.load(data_with_unknown)
+    assert result_with_unknown == {"key": "value
+
+# Generated at 2024-06-01 17:51:45.126554
+```python
+    from dataclasses import dataclass
+    from marshmallow import Schema, fields
+    from marshmallow_enum import EnumField
+    from enum import Enum
+
+    class TestEnum(Enum):
+        A = "A"
+        B = "B"
+
+    @dataclass
+    class NestedDataClass:
+        value: int
+
+    @dataclass
+    class TestDataClass:
+        enum_field: TestEnum
+        nested_field: NestedDataClass
+        optional_field: typing.Optional[int]
+        list_field: typing.List[int]
+
+    class NestedDataClassSchema(Schema):
+        value = fields.Int()
+
+    class TestDataClassSchema(Schema):
+        enum_field = EnumField(TestEnum, by_value=True)
+        nested_field = fields.Nested(NestedDataClassSchema)
+        optional_field = fields.Int(allow_none=True)
+        list_field = fields.List(fields.Int())
+
+    NestedDataClass.schema = NestedDataClassSchema
+    TestDataClass.schema = TestData
+
+# Generated at 2024-06-01 17:52:35.424588
+```python
+    class ExampleSchema(SchemaF):
+        class Meta:
+            unknown = 'EXCLUDE'
+
+        name = fields.Str(required=True)
+        age = fields.Int(required=True)
+
+    schema = ExampleSchema()
+
+    # Test loading a single object
+    data = {"name": "John", "age": 30}
+    result = schema.load(data)
+    assert result == {"name": "John", "age": 30}
+
+    # Test loading multiple objects
+    data_list = [{"name": "John", "age": 30}, {"name": "Jane", "age": 25}]
+    result = schema.load(data_list, many=True)
+    assert result == [{"name": "John", "age": 30}, {"name": "Jane", "age": 25}]
+
+    # Test loading with partial data
+    partial_data = {"name": "John"}
+    result = schema.load(partial_data, partial=True)
+    assert result == {"
+
+# Generated at 2024-06-01 17:52:39.204317
+
+    field = _TimestampField(required=True)
+    assert field.required is True
+
+    field = _TimestampField(required=False)
+    assert field.required is False
+
+    field = _TimestampField()
+    assert field.required is False
+
+    try:
+        field._serialize(None, None, None)
+    except ValidationError:
+        pass
+    else:
+        assert False, "Expected ValidationError"
+
+    try:
+        field._deserialize(None, None, None)
+    except ValidationError:
+        pass
+    else:
+        assert False, "Expected ValidationError"
+
+    dt = datetime(2023, 1, 1)
+    assert field._serialize(dt, None, None) == dt.timestamp()
+
+    timestamp = 1672531200
+    assert field._deserialize(timestamp, None, None) == _timestamp_to_dt_aware(timestamp)
+
+# Generated at 2024-06-01 17:52:41.932496
+```python
+    class TestClass:
+        def __init__(self, name: str, age: int):
+            self.name = name
+            self.age = age
+
+    class TestClassSchema(Schema):
+        name = fields.Str()
+        age = fields.Int()
+
+    schema = build_schema(TestClass, mixin=None, infer_missing=False, partial=False)
+    assert schema.Meta.fields == ('name', 'age')
+    assert hasattr(schema, 'make_testclass')
+    assert hasattr(schema, 'dumps')
+    assert hasattr(schema, 'dump')
+
+    instance = TestClass(name="John", age=30)
+    serialized = schema().dump(instance)
+    assert serialized == {'name': 'John', 'age': 30}
+
+    deserialized = schema().load(serialized)
+    assert deserialized.name == "John"
+    assert deserialized.age == 30
+```
+
+# Generated at 2024-06-01 17:52:44.305697
+```python
+    class TestSchema(SchemaF):
+        class Meta:
+            fields = ("name", "age")
+
+    data = {"name": "John", "age": 30}
+    schema = TestSchema()
+
+    # Test single object serialization
+    result = schema.dumps(data)
+    assert result == '{"name": "John", "age": 30}'
+
+    # Test list of objects serialization
+    data_list = [data, {"name": "Jane", "age": 25}]
+    result = schema.dumps(data_list, many=True)
+    assert result == '[{"name": "John", "age": 30}, {"name": "Jane", "age": 25}]'
+```
+
+# Generated at 2024-06-01 17:52:50.898442
+```python
+    from dataclasses import dataclass, field
+    from dataclasses_json import dataclass_json
+    from marshmallow import fields as mm_fields
+
+    @dataclass_json
+    @dataclass
+    class TestClass:
+        id: int
+        name: str
+        created_at: datetime = field(default_factory=datetime.now)
+
+    class TestMixin:
+        pass
+
+    result = schema(TestClass, TestMixin, infer_missing=True)
+    
+    assert isinstance(result, dict)
+    assert 'id' in result
+    assert 'name' in result
+    assert 'created_at' in result
+    assert isinstance(result['id'], mm_fields.Int)
+    assert isinstance(result['name'], mm_fields.Str)
+    assert isinstance(result['created_at'], _TimestampField)
+```
+
+# Generated at 2024-06-01 17:52:53.177744
+```python
+    class TestSchema(SchemaF):
+        class Meta:
+            fields = ("name", "age")
+
+    data = {"name": "John", "age": 30}
+    schema = TestSchema()
+
+    # Test single object serialization
+    result = schema.dumps(data)
+    assert result == '{"name": "John", "age": 30}'
+
+    # Test list of objects serialization
+    data_list = [data, {"name": "Jane", "age": 25}]
+    result = schema.dumps(data_list, many=True)
+    assert result == '[{"name": "John", "age": 30}, {"name": "Jane", "age": 25}]'
+```
+
+# Generated at 2024-06-01 17:52:55.939974
+```python
+    class ExampleSchema(SchemaF):
+        class Meta:
+            unknown = 'EXCLUDE'
+
+        field1 = fields.Str()
+        field2 = fields.Int()
+
+    schema = ExampleSchema()
+
+    # Test loading a single object
+    json_data = '{"field1": "test", "field2": 123}'
+    result = schema.loads(json_data)
+    assert result == {'field1': 'test', 'field2': 123}
+
+    # Test loading a list of objects
+    json_data_list = '[{"field1": "test1", "field2": 123}, {"field1": "test2", "field2": 456}]'
+    result_list = schema.loads(json_data_list, many=True)
+    assert result_list == [{'field1': 'test1', 'field2': 123}, {'field1': 'test2', 'field2': 456}]
+
+    # Test loading with partial data
+    json_data
+
+# Generated at 2024-06-01 17:53:00.175903
+```python
+    from marshmallow import Schema, fields
+    from dataclasses import dataclass, field as dc_field
+    from typing import Optional
+
+    @dataclass
+    class TestClass:
+        id: int
+        name: str
+        value: Optional[int] = None
+
+    class TestMixin:
+        pass
+
+    TestSchema = build_schema(TestClass, TestMixin, infer_missing=True, partial=False)
+
+    assert issubclass(TestSchema, Schema)
+    assert hasattr(TestSchema, 'Meta')
+    assert hasattr(TestSchema, 'make_testclass')
+    assert hasattr(TestSchema, 'dumps')
+    assert hasattr(TestSchema, 'dump')
+
+    schema_instance = TestSchema()
+    data = {'id': 1, 'name': 'test', 'value': 42}
+    obj = schema_instance.load(data)
+    assert isinstance(obj, TestClass)
+    assert obj.id == 1
+    assert obj.name == 'test'
+    assert obj.value
+
+# Generated at 2024-06-01 17:53:02.734917
+```python
+    class ExampleSchema(SchemaF):
+        class Meta:
+            unknown = 'EXCLUDE'
+
+        name = fields.Str(required=True)
+        age = fields.Int(required=True)
+
+    schema = ExampleSchema()
+
+    # Test loading a single object
+    json_data = '{"name": "John", "age": 30}'
+    result = schema.loads(json_data)
+    assert result == {"name": "John", "age": 30}
+
+    # Test loading multiple objects
+    json_data = '[{"name": "John", "age": 30}, {"name": "Jane", "age": 25}]'
+    result = schema.loads(json_data, many=True)
+    assert result == [{"name": "John", "age": 30}, {"name": "Jane", "age": 25}]
+
+    # Test loading with partial data
+    json_data = '{"name": "John"}'
+    result = schema.loads(json_data, partial=True)
+   
+
+# Generated at 2024-06-01 17:53:06.004574
+
+    from dataclasses import dataclass
+    from marshmallow import Schema, fields
+    from marshmallow_enum import EnumField
+    from enum import Enum
+
+    class TestEnum(Enum):
+        OPTION_A = "A"
+        OPTION_B = "B"
+
+    @dataclass
+    class NestedDataClass:
+        value: int
+
+    @dataclass
+    class TestDataClass:
+        name: str
+        age: int
+        nested: NestedDataClass
+        enum_field: TestEnum
+
+    class NestedDataClassSchema(Schema):
+        value = fields.Int()
+
+    class TestDataClassSchema(Schema):
+        name = fields.Str()
+        age = fields.Int()
+        nested = fields.Nested(NestedDataClassSchema)
+        enum_field = EnumField(TestEnum, by_value=True)
+
+    NestedDataClass.schema = NestedDataClassSchema
+    TestDataClass.schema = TestDataClassSchema
+
+    def test_case(type_, expected_field_type):
+        field =
+
+# Generated at 2024-06-01 17:54:40.252458
+```python
+    class TestClass:
+        def __init__(self, field1: int, field2: str):
+            self.field1 = field1
+            self.field2 = field2
+
+    class TestMixin:
+        pass
+
+    schema_cls = build_schema(TestClass, TestMixin, infer_missing=True, partial=False)
+    assert schema_cls.Meta.fields == ('field1', 'field2')
+
+    instance = TestClass(field1=123, field2="test")
+    schema_instance = schema_cls()
+    dumped_data = schema_instance.dump(instance)
+    assert dumped_data == {'field1': 123, 'field2': 'test'}
+
+    loaded_instance = schema_instance.load({'field1': 123, 'field2': 'test'})
+    assert isinstance(loaded_instance, TestClass)
+    assert loaded_instance.field1 == 123
+    assert loaded_instance.field2 == "test"
+```
+
+# Generated at 2024-06-01 17:54:43.424468
+
+    from dataclasses import dataclass, field as dc_field
+    from marshmallow import Schema, fields
+    from marshmallow.exceptions import ValidationError
+    from marshmallow_enum import EnumField
+    from datetime import datetime
+    from decimal import Decimal
+    from uuid import UUID
+    from enum import Enum
+    import typing
+
+    class TestEnum(Enum):
+        OPTION_A = "A"
+        OPTION_B = "B"
+
+    @dataclass
+    class TestDataClass:
+        id: int
+        name: str
+        timestamp: datetime
+        uuid: UUID
+        amount: Decimal
+        enum_field: TestEnum
+        optional_field: typing.Optional[str] = None
+
+    class TestDataClassSchema(Schema):
+        id = fields.Int(required=True)
+        name = fields.Str(required=True)
+        timestamp = _TimestampField(required=True)
+        uuid = fields.UUID(required=True)
+        amount = fields.Decimal(required=True)
+        enum_field = EnumField(Test
+
+# Generated at 2024-06-01 17:54:46.101116
+
+    from dataclasses import dataclass, field as dc_field
+    from marshmallow import Schema, fields
+    from dataclasses_json import dataclass_json
+
+    @dataclass_json
+    @dataclass
+    class TestClass:
+        id: int
+        name: str
+        timestamp: datetime = dc_field(default_factory=datetime.now)
+
+    class TestClassSchema(Schema):
+        id = fields.Int()
+        name = fields.Str()
+        timestamp = _TimestampField()
+
+    schema_instance = schema(TestClass, dataclass_json, infer_missing=True)
+    expected_schema = {
+        'id': fields.Int(),
+        'name': fields.Str(),
+        'timestamp': _TimestampField()
+    }
+
+    assert schema_instance.keys() == expected_schema.keys()
+    for key in schema_instance:
+        assert isinstance(schema_instance[key], type(expected_schema[key]))
+
+# Generated at 2024-06-01 17:54:49.090514
+
+    from dataclasses import dataclass
+    from dataclasses_json import dataclass_json
+
+    @dataclass_json
+    @dataclass
+    class TestClass:
+        id: int
+        name: str
+        timestamp: datetime
+
+    class TestMixin:
+        pass
+
+    result = schema(TestClass, TestMixin, infer_missing=True)
+    assert 'id' in result
+    assert isinstance(result['id'], fields.Int)
+    assert 'name' in result
+    assert isinstance(result['name'], fields.Str)
+    assert 'timestamp' in result
+    assert isinstance(result['timestamp'], _TimestampField)
+
+    @dataclass_json
+    @dataclass
+    class NestedClass:
+        nested: TestClass
+
+    result = schema(NestedClass, TestMixin, infer_missing=True)
+    assert 'nested' in result
+    assert isinstance(result['nested'], fields.Nested)
+
+    @dataclass_json
+    @dataclass
+    class OptionalClass:
+       
+
+# Generated at 2024-06-01 17:54:50.117155
+
+    field = _TimestampField(required=True)
+    assert field.required is True
+
+    field = _TimestampField(required=False)
+    assert field.required is False
+
+    field = _TimestampField()
+    assert field.required is False
+
+# Generated at 2024-06-01 17:54:53.000205
+```python
+    from dataclasses import dataclass, field
+    from dataclasses_json import dataclass_json
+    from marshmallow import fields as mm_fields
+
+    @dataclass_json
+    @dataclass
+    class TestClass:
+        id: int
+        name: str
+        created_at: datetime = field(default_factory=datetime.now)
+
+    class TestMixin:
+        pass
+
+    result = schema(TestClass, TestMixin, infer_missing=True)
+    
+    assert isinstance(result, dict)
+    assert 'id' in result
+    assert 'name' in result
+    assert 'created_at' in result
+    assert isinstance(result['id'], mm_fields.Int)
+    assert isinstance(result['name'], mm_fields.Str)
+    assert isinstance(result['created_at'], _TimestampField)
+```
+
+# Generated at 2024-06-01 17:54:56.014664
+def test__IsoField():
+    field = _IsoField(required=True)
+    
+    # Test serialization
+    dt = datetime(2023, 10, 1, 12, 0, 0)
+    assert field._serialize(dt, None, None) == "2023-10-01T12:00:00"
+    
+    # Test deserialization
+    iso_str = "2023-10-01T12:00:00"
+    assert field._deserialize(iso_str, None, None) == dt
+    
+    # Test serialization with None value
+    try:
+        field._serialize(None, None, None)
+    except ValidationError as e:
+        assert str(e) == field.default_error_messages["required"]
+    
+    # Test deserialization with None value
+    try:
+        field._deserialize(None, None, None)
+    except ValidationError as e:
+        assert str(e) == field.default_error_messages["required"]
+    
+    # Test optional
+
+# Generated at 2024-06-01 17:54:59.528680
+```python
+    class TestClass:
+        def __init__(self, field1: int, field2: str):
+            self.field1 = field1
+            self.field2 = field2
+
+    class TestMixin:
+        pass
+
+    schema_cls = build_schema(TestClass, TestMixin, infer_missing=True, partial=False)
+    assert schema_cls.Meta.fields == ('field1', 'field2')
+
+    instance = TestClass(field1=1, field2='test')
+    schema_instance = schema_cls()
+    dumped_data = schema_instance.dump(instance)
+    assert dumped_data == {'field1': 1, 'field2': 'test'}
+
+    loaded_instance = schema_instance.load({'field1': 1, 'field2': 'test'})
+    assert isinstance(loaded_instance, TestClass)
+    assert loaded_instance.field1 == 1
+    assert loaded_instance.field2 == 'test'
+```
+
+# Generated at 2024-06-01 17:55:01.829744
+```python
+    class ExampleSchema(SchemaF):
+        class Meta:
+            fields = ("name", "age")
+
+    example_data = {"name": "John", "age": 30}
+    schema = ExampleSchema()
+
+    # Test single object
+    result = schema.dump(example_data)
+    assert result == example_data, f"Expected {example_data}, got {result}"
+
+    # Test list of objects
+    example_data_list = [example_data, {"name": "Jane", "age": 25}]
+    result_list = schema.dump(example_data_list, many=True)
+    assert result_list == example_data_list, f"Expected {example_data_list}, got {result_list}"
+```
+
+# Generated at 2024-06-01 17:55:04.727707
+```python
+    class ExampleSchema(SchemaF):
+        class Meta:
+            fields = ('name', 'age')
+
+    example_data = {'name': 'John Doe', 'age': 30}
+    schema = ExampleSchema()
+
+    # Test single object serialization
+    result = schema.dumps(example_data)
+    assert isinstance(result, str)
+    assert '"name": "John Doe"' in result
+    assert '"age": 30' in result
+
+    # Test list of objects serialization
+    example_data_list = [example_data, {'name': 'Jane Doe', 'age': 25}]
+    result_list = schema.dumps(example_data_list, many=True)
+    assert isinstance(result_list, str)
+    assert '"name": "John Doe"' in result_list
+    assert '"age": 30' in result_list
+    assert '"name": "Jane Doe"' in result_list
+    assert '"age": 25' in result_list
+```
+
+# Generated at 2024-06-01 17:59:02.620473
+
+    from dataclasses import dataclass, field as dc_field
+    from dataclasses_json import dataclass_json
+    from marshmallow import fields
+
+    @dataclass_json
+    @dataclass
+    class Nested:
+        value: int
+
+    @dataclass_json
+    @dataclass
+    class Example:
+        id: int
+        name: str
+        nested: Nested
+
+    class ExampleSchema(Schema):
+        id = fields.Int()
+        name = fields.Str()
+        nested = fields.Nested(Nested.schema())
+
+    def test_schema():
+        example_schema = schema(Example, dataclass_json, infer_missing=False)
+        expected_schema = {
+            'id': fields.Int(),
+            'name': fields.Str(),
+            'nested': fields.Nested(Nested.schema())
+        }
+
+        assert isinstance(example_schema, dict)
+        assert set(example_schema.keys()) == set(expected_schema.keys())
+        for key in expected_schema:
+            assert isinstance(example_schema[key], type(expected
+
+# Generated at 2024-06-01 17:59:07.509069
+```python
+    from dataclasses import dataclass
+    from marshmallow import Schema, fields
+    from marshmallow_enum import EnumField
+    from datetime import datetime
+    from decimal import Decimal
+    from uuid import UUID
+    from enum import Enum
+
+    class TestEnum(Enum):
+        OPTION_A = "A"
+        OPTION_B = "B"
+
+    @dataclass
+    class NestedDataClass:
+        value: int
+
+    @dataclass
+    class TestDataClass:
+        int_field: int
+        str_field: str
+        float_field: float
+        bool_field: bool
+        datetime_field: datetime
+        uuid_field: UUID
+        decimal_field: Decimal
+        enum_field: TestEnum
+        nested_field: NestedDataClass
+
+    class NestedDataClassSchema(Schema):
+        value = fields.Int()
+
+    class TestDataClassSchema(Schema):
+        int_field = fields.Int()
+        str_field = fields.Str()
+        float_field = fields
+
+# Generated at 2024-06-01 17:59:12.450277
+
+    from dataclasses import dataclass
+    from dataclasses_json import dataclass_json
+
+    @dataclass_json
+    @dataclass
+    class TestClass:
+        id: int
+        name: str
+        timestamp: datetime
+
+    class TestMixin:
+        pass
+
+    result = schema(TestClass, TestMixin, infer_missing=True)
+    assert 'id' in result
+    assert isinstance(result['id'], fields.Int)
+    assert 'name' in result
+    assert isinstance(result['name'], fields.Str)
+    assert 'timestamp' in result
+    assert isinstance(result['timestamp'], _TimestampField)
+
+    @dataclass_json
+    @dataclass
+    class NestedClass:
+        nested: TestClass
+
+    result = schema(NestedClass, TestMixin, infer_missing=True)
+    assert 'nested' in result
+    assert isinstance(result['nested'], fields.Nested)
+
+    @dataclass_json
+    @dataclass
+    class OptionalClass:
+       

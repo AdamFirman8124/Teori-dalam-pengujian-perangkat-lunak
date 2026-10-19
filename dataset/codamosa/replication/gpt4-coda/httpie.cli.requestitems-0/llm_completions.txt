@@ -1,0 +1,1393 @@
+
+
+# Generated at 2024-03-18 05:40:54.748804
+```python
+    # Assume the existence of a temporary file for testing purposes
+    test_file_path = '/tmp/test_load_text_file.txt'
+    test_file_content = 'Sample text content'
+    with open(test_file_path, 'w') as test_file:
+        test_file.write(test_file_content)
+
+    # Test loading the content of an existing text file
+    test_arg = KeyValueArg(key='test', value=test_file_path, sep=':', orig='test:' + test_file_path)
+    assert load_text_file(test_arg) == test_file_content
+
+    # Test loading a non-existing file
+    non_existing_file_path = '/tmp/non_existing_file.txt'
+    test_arg = KeyValueArg(key='test', value=non_existing_file_path, sep=':', orig='test:' + non_existing_file_path)
+    try:
+        load_text_file(test_arg)
+        assert False, 'Expected a ParseError due to non-existing file'
+    except ParseError as e:
+        assert str
+
+# Generated at 2024-03-18 05:41:02.327558
+```python
+    # Assume the existence of a temporary file for testing purposes
+    test_file_path = '/tmp/test_file.txt'
+    test_file_content = 'Sample text content'
+    with open(test_file_path, 'w') as test_file:
+        test_file.write(test_file_content)
+
+    # Test case: Successfully loading text file
+    test_key_value_arg = KeyValueArg(key='test', value=test_file_path, sep=':', orig='test:' + test_file_path)
+    assert load_text_file(test_key_value_arg) == test_file_content
+
+    # Test case: File does not exist
+    non_existing_file_path = '/tmp/non_existing_file.txt'
+    test_key_value_arg = KeyValueArg(key='test', value=non_existing_file_path, sep=':', orig='test:' + non_existing_file_path)
+    try:
+        load_text_file(test_key_value_arg)
+        assert False, 'Expected ParseError due to non-existing file'
+    except ParseError as e
+
+# Generated at 2024-03-18 05:41:08.441634
+```python
+    # Test with valid JSON string
+    arg = KeyValueArg('field', SEPARATOR_DATA_RAW_JSON, '{"key": "value"}')
+    assert process_data_raw_json_embed_arg(arg) == {"key": "value"}
+
+    # Test with invalid JSON string
+    invalid_arg = KeyValueArg('field', SEPARATOR_DATA_RAW_JSON, '{"key": "value"')
+    try:
+        process_data_raw_json_embed_arg(invalid_arg)
+    except ParseError as e:
+        assert str(e) == '"field={": Expecting property name enclosed in double quotes: line 1 column 2 (char 1)'
+
+    # Test with JSON array
+    array_arg = KeyValueArg('field', SEPARATOR_DATA_RAW_JSON, '[1, 2, 3]')
+    assert process_data_raw_json_embed_arg(array_arg) == [1, 2, 3]
+
+    # Test with JSON null
+    null_arg = KeyValueArg('field', SE
+
+# Generated at 2024-03-18 05:41:14.100148
+```python
+    # Mocking KeyValueArg and load_text_file function
+    mock_load_text_file = mocker.patch(
+        'path.to.module.load_text_file',
+        return_value='{"key": "value"}'
+    )
+    mock_arg = mocker.Mock(spec=KeyValueArg)
+    mock_arg.value = 'path/to/file.json'
+    mock_arg.orig = 'key==@path/to/file.json'
+
+    # Call the function with the mocked objects
+    result = process_data_embed_raw_json_file_arg(mock_arg)
+
+    # Assert that load_text_file was called with the correct argument
+    mock_load_text_file.assert_called_once_with(mock_arg)
+
+    # Assert that the result is as expected
+    assert result == {"key": "value"}
+```
+
+# Generated at 2024-03-18 05:41:22.138428
+```python
+    # Setup a temporary file for testing
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write(b'Test file content')
+        tmp_file.flush()
+
+    try:
+        # Test without MIME type
+        arg = KeyValueArg(f'file@{tmp_file_name}', 'file', SEPARATOR_FILE_UPLOAD)
+        result = process_file_upload_arg(arg)
+        assert result[0] == 'file'
+        assert result[1].read() == b'Test file content'
+        assert result[2] == 'text/plain'  # Assuming the default MIME type is text/plain
+
+        # Reset file pointer for next test
+        result[1].seek(0)
+
+        # Test with MIME type
+        mime_type = 'application/octet-stream'
+        arg = KeyValueArg(f'file@{tmp_file_name};type={mime_type}', 'file', SEPARATOR_FILE_UPLOAD)
+        result
+
+# Generated at 2024-03-18 05:41:27.303117
+```python
+    # Setup a temporary file with JSON content
+    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmp_file:
+        json_content = '{"key": "value"}'
+        tmp_file.write(json_content)
+        tmp_file_name = tmp_file.name
+
+    # Create a KeyValueArg object with the temporary file path
+    arg = KeyValueArg(key='test', value=tmp_file_name, sep=SEPARATOR_DATA_EMBED_RAW_JSON_FILE, orig='test@' + tmp_file_name)
+
+    # Process the KeyValueArg object
+    result = process_data_embed_raw_json_file_arg(arg)
+
+    # Assert that the result is the expected JSON content
+    assert result == {"key": "value"}
+
+    # Clean up the temporary file
+    os.unlink(tmp_file_name)
+```
+
+# Generated at 2024-03-18 05:41:29.218485
+```python
+import json
+from unittest.mock import patch
+
+@patch('builtins.open', new_callable=mock_open, read_data='{"key": "value"}')
+
+# Generated at 2024-03-18 05:41:37.445516
+```python
+    # Test loading a valid text file
+    valid_file = 'test_data/valid_text.txt'
+    with open(valid_file, 'w') as f:
+        f.write('Hello, world!')
+    valid_item = KeyValueArg(key='key', value=valid_file, sep=':', orig='key@' + valid_file)
+    assert load_text_file(valid_item) == 'Hello, world!'
+
+    # Test loading a non-existent file
+    non_existent_file = 'test_data/non_existent.txt'
+    non_existent_item = KeyValueArg(key='key', value=non_existent_file, sep=':', orig='key@' + non_existent_file)
+    try:
+        load_text_file(non_existent_item)
+        assert False, 'Expected ParseError for non-existent file'
+    except ParseError as e:
+        assert str(e) == '"key@{}": [Errno 2] No such file or directory: \'{}\'
+
+# Generated at 2024-03-18 05:41:46.371536
+```python
+    # Setup a temporary file to simulate file upload
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write(b'Test file content')
+        tmp_file.flush()
+
+    try:
+        # Test without specifying MIME type
+        arg = KeyValueArg(f'file@{tmp_file_name}', SEPARATOR_FILE_UPLOAD)
+        result = process_file_upload_arg(arg)
+        assert result[0] == os.path.basename(tmp_file_name)
+        assert result[1].read() == b'Test file content'
+        assert result[2] == get_content_type(tmp_file_name)
+
+        # Reset the file pointer for the next test
+        result[1].seek(0)
+
+        # Test with specifying MIME type
+        mime_type = 'text/plain'
+        arg = KeyValueArg(f'file@{tmp_file_name}:{mime_type}', SEPARATOR_FILE_UPLOAD)
+        result_with_type = process_file_upload_arg
+
+# Generated at 2024-03-18 05:41:47.607557
+```python
+import pytest
+from unittest.mock import mock_open, patch
+
+# Assuming the existence of a fixture that provides a temporary directory
+@pytest.fixture
+
+# Generated at 2024-03-18 05:41:57.722728
+```python
+import json
+from unittest.mock import patch, mock_open
+
+@patch('httpie.cli.argtypes.load_text_file', return_value='{"name": "John", "age": 30}')
+
+# Generated at 2024-03-18 05:42:08.426123
+```python
+    # Valid JSON string
+    arg = KeyValueArg('field', SEPARATOR_DATA_RAW_JSON, '{"key": "value"}')
+    assert process_data_raw_json_embed_arg(arg) == {"key": "value"}
+
+    # Invalid JSON string
+    invalid_arg = KeyValueArg('field', SEPARATOR_DATA_RAW_JSON, '{"key": "value"')
+    try:
+        process_data_raw_json_embed_arg(invalid_arg)
+    except ParseError as e:
+        assert str(e) == '"field:=\'{"key": "value"\'": Expecting property name enclosed in double quotes: line 1 column 2 (char 1)'
+
+    # JSON array
+    array_arg = KeyValueArg('field', SEPARATOR_DATA_RAW_JSON, '[1, 2, 3]')
+    assert process_data_raw_json_embed_arg(array_arg) == [1, 2, 3]
+
+    # JSON null
+    null_arg = KeyValueArg('field', SE
+
+# Generated at 2024-03-18 05:42:15.175509
+```python
+    # Assume the existence of a file named 'testfile.txt' with the content 'data'
+    # and a file named 'image.png' with some image data for this test.
+
+    # Test with a file that exists and no specified MIME type
+    arg = KeyValueArg('file', 'testfile.txt', SEPARATOR_FILE_UPLOAD)
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'testfile.txt'
+    assert result[1].read() == b'data'
+    assert result[2] == 'text/plain'  # Assuming the MIME type is detected as text/plain
+    result[1].close()
+
+    # Test with a file that exists and a specified MIME type
+    arg = KeyValueArg('image', 'image.png' + SEPARATOR_FILE_UPLOAD_TYPE + 'image/png', SEPARATOR_FILE_UPLOAD)
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'image.png'
+   
+
+# Generated at 2024-03-18 05:42:20.775477
+```python
+    # Valid JSON string
+    arg = KeyValueArg('field', '{"key": "value"}', SEPARATOR_DATA_RAW_JSON)
+    assert process_data_raw_json_embed_arg(arg) == {"key": "value"}
+
+    # Invalid JSON string
+    invalid_arg = KeyValueArg('field', '{"key": "value"', SEPARATOR_DATA_RAW_JSON)
+    try:
+        process_data_raw_json_embed_arg(invalid_arg)
+    except ParseError as e:
+        assert str(e) == '"field={\\"key\\": \\"value\\"": Expecting \',\' delimiter: line 1 column 15 (char 14)'
+
+    # JSON array
+    array_arg = KeyValueArg('field', '[1, 2, 3]', SEPARATOR_DATA_RAW_JSON)
+    assert process_data_raw_json_embed_arg(array_arg) == [1, 2, 3]
+
+    # JSON null
+    null_arg = KeyValueArg('field', 'null', SE
+
+# Generated at 2024-03-18 05:42:28.132555
+```python
+    # Assume the existence of a temporary file for testing purposes
+    test_file_path = 'test_file.txt'
+    test_file_content = 'Sample text content'
+    with open(test_file_path, 'w', encoding='utf-8') as test_file:
+        test_file.write(test_file_content)
+
+    # Test loading the text file
+    test_key_value_arg = KeyValueArg(key='test', value=test_file_path, sep=':', orig='test:test_file.txt')
+    loaded_content = load_text_file(test_key_value_arg)
+    assert loaded_content == test_file_content, f"Expected content: '{test_file_content}', got: '{loaded_content}'"
+
+    # Clean up the temporary file
+    os.remove(test_file_path)
+
+    # Test loading a non-existent file
+    non_existent_file_path = 'non_existent_file.txt'
+    test_key_value_arg = KeyValueArg(key='test', value=non_existent_file_path, sep=':', orig='
+
+# Generated at 2024-03-18 05:42:37.539188
+```python
+    # Test with a valid file and no specified MIME type
+    arg = KeyValueArg('file@/path/to/file.txt')
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'file.txt'
+    assert isinstance(result[1], IO)
+    assert result[2] == 'text/plain'
+
+    # Test with a valid file and a specified MIME type
+    arg = KeyValueArg('file@/path/to/image.png;type=image/png')
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'image.png'
+    assert isinstance(result[1], IO)
+    assert result[2] == 'image/png'
+
+    # Test with a non-existent file
+    arg = KeyValueArg('file@/path/to/nonexistent.txt')
+    try:
+        process_file_upload_arg(arg)
+    except ParseError as e:
+        assert str(e) == '"file@/path/to/nonexistent.txt": [Err
+
+# Generated at 2024-03-18 05:42:46.763827
+```python
+    # Setup a temporary file for testing
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write(b'Test file content')
+        tmp_file.flush()
+
+    try:
+        # Test without specifying MIME type
+        arg = KeyValueArg(f'file@{tmp_file_name}', 'file', SEPARATOR_FILE_UPLOAD)
+        result = process_file_upload_arg(arg)
+        assert result[0] == 'file'
+        assert result[1].read() == b'Test file content'
+        assert result[2] == 'text/plain'  # Assuming the default MIME type is text/plain
+
+        # Reset the file pointer for the next test
+        result[1].seek(0)
+
+        # Test with specifying MIME type
+        mime_type = 'application/octet-stream'
+        arg = KeyValueArg(f'file@{tmp_file_name};type={mime_type}', 'file', SEPARATOR_FILE
+
+# Generated at 2024-03-18 05:42:48.832674
+```python
+import pytest
+from unittest.mock import mock_open, patch
+
+# Assuming the existence of a fixture that provides a temporary directory
+@pytest.fixture
+
+# Generated at 2024-03-18 05:42:56.692652
+```python
+    # Setup a temporary file with JSON content
+    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmp_file:
+        json_content = '{"key": "value"}'
+        tmp_file.write(json_content)
+        tmp_file.flush()
+
+        # Create a KeyValueArg object with the path to the temp file
+        arg = KeyValueArg(key='json', value=tmp_file.name, sep=SEPARATOR_DATA_EMBED_RAW_JSON_FILE, orig='json@' + tmp_file.name)
+
+    # Call the function with the KeyValueArg object
+    result = process_data_embed_raw_json_file_arg(arg)
+
+    # Verify that the result is the expected JSON object
+    assert result == {"key": "value"}
+
+    # Clean up the temporary file
+    os.unlink(tmp_file.name)
+```
+
+# Generated at 2024-03-18 05:43:05.366699
+```python
+    # Test with a valid file path and no specified MIME type
+    arg = KeyValueArg('file@/path/to/file.txt')
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'file.txt'
+    assert isinstance(result[1], IO)
+    assert result[2] == 'text/plain'
+
+    # Test with a valid file path and a specified MIME type
+    arg = KeyValueArg('file@/path/to/image.png;type=image/png')
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'image.png'
+    assert isinstance(result[1], IO)
+    assert result[2] == 'image/png'
+
+    # Test with a non-existent file
+    arg = KeyValueArg('file@/non/existent/file.txt')
+    try:
+        process_file_upload_arg(arg)
+        assert False, "Expected a ParseError due to non-existent file"
+    except ParseError as e:
+       
+
+# Generated at 2024-03-18 05:43:23.272572
+```python
+import pytest
+from unittest.mock import mock_open, patch
+
+# Assuming the existence of a fixture that provides a temporary directory
+@pytest.fixture
+
+# Generated at 2024-03-18 05:43:29.563896
+```python
+    # Test loading a valid text file
+    valid_file = 'test_data/valid_text.txt'
+    with open(valid_file, 'w') as f:
+        f.write('Hello, world!')
+    valid_item = KeyValueArg(orig='key=@test_data/valid_text.txt', key='key', sep='@', value=valid_file)
+    assert load_text_file(valid_item) == 'Hello, world!'
+
+    # Test loading a non-existent file
+    non_existent_file = 'test_data/non_existent.txt'
+    non_existent_item = KeyValueArg(orig='key=@test_data/non_existent.txt', key='key', sep='@', value=non_existent_file)
+    try:
+        load_text_file(non_existent_item)
+        assert False, 'Expected ParseError for non-existent file'
+    except ParseError as e:
+        assert str(e) == '"key=@test_data/non_existent.txt": [Errno 2]
+
+# Generated at 2024-03-18 05:43:35.526028
+```python
+    # Setup a temporary file with JSON content
+    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmp_file:
+        json_content = '{"key": "value"}'
+        tmp_file.write(json_content)
+        tmp_file.flush()
+
+        # Create a KeyValueArg for the test
+        arg = KeyValueArg(key='test', value=tmp_file.name, sep=SEPARATOR_DATA_EMBED_RAW_JSON_FILE, orig='test@' + tmp_file.name)
+
+    # Call the function with the KeyValueArg
+    result = process_data_embed_raw_json_file_arg(arg)
+
+    # Verify the result is as expected
+    assert result == {"key": "value"}
+
+    # Cleanup the temporary file
+    os.unlink(tmp_file.name)
+```
+
+# Generated at 2024-03-18 05:43:42.978945
+```python
+    # Assume the existence of a file named 'test.txt' with the content 'Hello, world!'
+    test_file_path = 'test.txt'
+    test_file_content = 'Hello, world!'
+    with open(test_file_path, 'w') as f:
+        f.write(test_file_content)
+
+    # Test successful file loading
+    test_arg = KeyValueArg(key='test', value=test_file_path, sep=':', orig='test:@test.txt')
+    assert load_text_file(test_arg) == test_file_content
+
+    # Test file not found error
+    non_existing_file_arg = KeyValueArg(key='test', value='non_existing.txt', sep=':', orig='test:@non_existing.txt')
+    try:
+        load_text_file(non_existing_file_arg)
+        assert False, "Expected ParseError for non-existing file"
+    except ParseError as e:
+        assert str(e) == '"test:@non_existing.txt": [Errno 2] No such file or
+
+# Generated at 2024-03-18 05:43:47.754815
+```python
+    # Setup a temporary file to simulate file upload
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write(b'Test file content')
+        tmp_file.flush()
+
+    try:
+        # Test without specifying MIME type
+        arg = KeyValueArg(key='file', value=tmp_file_name, sep=SEPARATOR_FILE_UPLOAD, orig='file@' + tmp_file_name)
+        result = process_file_upload_arg(arg)
+        assert result[0] == os.path.basename(tmp_file_name)
+        assert result[1].read() == b'Test file content'
+        assert result[2] == get_content_type(tmp_file_name)
+
+        # Reset the file pointer for the next test
+        result[1].seek(0)
+
+        # Test with specifying MIME type
+        mime_type = 'text/plain'
+        arg_with_type = KeyValueArg(key='file', value=tmp_file_name + SEPARATOR_FILE
+
+# Generated at 2024-03-18 05:43:55.969784
+```python
+    # Test loading a valid text file
+    valid_text_file = 'test_data/valid_text.txt'
+    with open(valid_text_file, 'w') as f:
+        f.write('Hello, world!')
+    assert load_text_file(KeyValueArg(key='test', value=valid_text_file, sep=':')) == 'Hello, world!'
+
+    # Test loading a non-existent file
+    non_existent_file = 'test_data/non_existent.txt'
+    try:
+        load_text_file(KeyValueArg(key='test', value=non_existent_file, sep=':'))
+        assert False, "Expected a ParseError due to non-existent file"
+    except ParseError as e:
+        assert str(e) == '"test:non_existent.txt": [Errno 2] No such file or directory: \'test_data/non_existent.txt\''
+
+    # Test loading a binary file
+    binary_file = 'test_data/binary.dat'
+   
+
+# Generated at 2024-03-18 05:44:03.609334
+```python
+    # Setup
+    file_path = 'testfile.txt'
+    file_content = b'Hello, world!'
+    with open(file_path, 'wb') as f:
+        f.write(file_content)
+
+    # Test without MIME type
+    arg = KeyValueArg('file', f'{file_path}', SEPARATOR_FILE_UPLOAD)
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'testfile.txt'
+    assert result[1].read() == file_content
+    assert result[2] == 'text/plain'
+
+    # Test with MIME type
+    mime_type = 'text/plain'
+    arg_with_type = KeyValueArg('file', f'{file_path}{SEPARATOR_FILE_UPLOAD_TYPE}{mime_type}', SEPARATOR_FILE_UPLOAD)
+    result_with_type = process_file_upload_arg(arg_with_type)
+    assert result_with_type[0] == 'testfile.txt'
+    assert result_with_type[1].read() == file_content
+    assert
+
+# Generated at 2024-03-18 05:44:08.909527
+```python
+    # Setup a temporary file with JSON content
+    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmp_file:
+        json_content = '{"key": "value"}'
+        tmp_file.write(json_content)
+        tmp_file.flush()
+
+        # Create a KeyValueArg object with the path to the temp file
+        arg = KeyValueArg(key='json_data', value=tmp_file.name, sep=SEPARATOR_DATA_EMBED_RAW_JSON_FILE, orig='json_data@' + tmp_file.name)
+
+    # Call the function with the KeyValueArg object
+    result = process_data_embed_raw_json_file_arg(arg)
+
+    # Clean up the temporary file
+    os.unlink(tmp_file.name)
+
+    # Assert the result is as expected
+    assert result == {"key": "value"}, f"Expected {{'key': 'value'}}, got {result}"
+```
+
+# Generated at 2024-03-18 05:44:16.711346
+```python
+    # Setup a temporary file for testing
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write(b'Test file content')
+        tmp_file.flush()
+
+    try:
+        # Test without specifying MIME type
+        arg = KeyValueArg(key='file', value=tmp_file_name, sep=SEPARATOR_FILE_UPLOAD, orig='file@' + tmp_file_name)
+        result = process_file_upload_arg(arg)
+        assert result[0] == os.path.basename(tmp_file_name)
+        assert result[1].read() == b'Test file content'
+        assert result[2] == 'application/octet-stream'  # Default MIME type
+
+        # Reset the file pointer for the next test
+        result[1].seek(0)
+
+        # Test with specifying MIME type
+        mime_type = 'text/plain'
+        arg_with_type = KeyValueArg(key='file', value=tmp_file_name + SE
+
+# Generated at 2024-03-18 05:44:24.479033
+```python
+    # Setup
+    file_path = 'testfile.txt'
+    file_content = b'Hello, world!'
+    with open(file_path, 'wb') as f:
+        f.write(file_content)
+
+    # Test without MIME type
+    arg = KeyValueArg('file', f'{file_path}', SEPARATOR_FILE_UPLOAD)
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'testfile.txt'
+    assert result[1].read() == file_content
+    assert result[2] == 'text/plain'
+    result[1].close()
+
+    # Test with MIME type
+    mime_type = 'text/plain'
+    arg = KeyValueArg('file', f'{file_path}{SEPARATOR_FILE_UPLOAD_TYPE}{mime_type}', SEPARATOR_FILE_UPLOAD)
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'testfile.txt'
+    assert result[1].read() == file_content
+    assert result[2
+
+# Generated at 2024-03-18 05:44:43.458045
+```python
+import pytest
+from unittest.mock import mock_open, patch
+
+
+# Generated at 2024-03-18 05:44:47.407806
+```python
+    # Setup: Create a temporary file with some text
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write(b'Hello, world!')
+
+    # Test: Load the text from the temporary file
+    try:
+        item = KeyValueArg(key='test', value=tmp_file_name, sep=':', orig='test:%s' % tmp_file_name)
+        content = load_text_file(item)
+        assert content == 'Hello, world!'
+    finally:
+        # Cleanup: Remove the temporary file
+        os.unlink(tmp_file_name)
+```
+
+# Generated at 2024-03-18 05:44:53.682799
+```python
+    # Setup
+    file_path = 'testfile.txt'
+    file_content = b'Hello, world!'
+    with open(file_path, 'wb') as f:
+        f.write(file_content)
+
+    # Test without MIME type
+    arg = KeyValueArg('file', f'{file_path}', SEPARATOR_FILE_UPLOAD)
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'testfile.txt'
+    assert result[1].read() == file_content
+    assert result[2] == 'text/plain'
+    result[1].close()
+
+    # Test with MIME type
+    mime_type = 'text/plain'
+    arg_with_type = KeyValueArg('file', f'{file_path}{SEPARATOR_FILE_UPLOAD_TYPE}{mime_type}', SEPARATOR_FILE_UPLOAD)
+    result_with_type = process_file_upload_arg(arg_with_type)
+    assert result_with_type[0] == 'testfile.txt'
+    assert result_with_type[1].read
+
+# Generated at 2024-03-18 05:45:01.344944
+```python
+    # Setup a temporary file to simulate file upload
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write(b'Test file content')
+        tmp_file.flush()
+
+    try:
+        # Test without specifying MIME type
+        arg = KeyValueArg(f'file@{tmp_file_name}', 'file', SEPARATOR_FILE_UPLOAD)
+        result = process_file_upload_arg(arg)
+        assert result[0] == 'file'
+        assert result[1].read() == b'Test file content'
+        assert result[2] == 'text/plain'  # Assuming the default MIME type is text/plain
+
+        # Reset file pointer for next test
+        result[1].seek(0)
+
+        # Test with specifying MIME type
+        mime_type = 'application/octet-stream'
+        arg = KeyValueArg(f'file@{tmp_file_name};type={mime_type}', 'file', SEPARATOR_FILE
+
+# Generated at 2024-03-18 05:45:08.441410
+```python
+    # Test with a valid text file
+    with tempfile.NamedTemporaryFile(mode='w', delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write('Test content')
+    try:
+        arg = KeyValueArg(key='test', value=tmp_file_name, sep=':', orig='test:' + tmp_file_name)
+        content = load_text_file(arg)
+        assert content == 'Test content'
+    finally:
+        os.unlink(tmp_file_name)
+
+    # Test with a non-existent file
+    arg = KeyValueArg(key='test', value='nonexistent.txt', sep=':', orig='test:nonexistent.txt')
+    with pytest.raises(ParseError) as excinfo:
+        load_text_file(arg)
+    assert 'nonexistent.txt' in str(excinfo.value)
+
+    # Test with a binary file
+    with tempfile.NamedTemporaryFile(mode='wb', delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+
+
+# Generated at 2024-03-18 05:45:11.544105
+```python
+import json
+from unittest.mock import patch
+
+# Assuming the existence of a test JSON file named 'test.json' with the content: {"key": "value"}
+test_json_file_path = 'test.json'
+test_json_content = '{"key": "value"}'
+
+@patch('builtins.open')
+
+# Generated at 2024-03-18 05:45:19.751657
+```python
+    # Setup a temporary file to simulate file upload
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write(b'Test file content')
+        tmp_file.flush()
+
+    try:
+        # Test without MIME type
+        arg = KeyValueArg(key='file', value=tmp_file_name, sep=SEPARATOR_FILE_UPLOAD, orig='file@' + tmp_file_name)
+        result = process_file_upload_arg(arg)
+        assert result[0] == os.path.basename(tmp_file_name)
+        assert result[1].read() == b'Test file content'
+        assert result[2] == get_content_type(tmp_file_name)
+
+        # Reset the file pointer for the next test
+        result[1].seek(0)
+
+        # Test with MIME type
+        mime_type = 'text/plain'
+        arg_with_type = KeyValueArg(key='file', value=tmp_file_name + SEPARATOR_FILE_UPLOAD_TYPE
+
+# Generated at 2024-03-18 05:45:26.289867
+```python
+    # Test with a valid file path and no specified MIME type
+    arg = KeyValueArg('file@/path/to/file.txt')
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'file.txt'
+    assert isinstance(result[1], IO)
+    assert result[2] == 'text/plain'
+
+    # Test with a valid file path and a specified MIME type
+    arg = KeyValueArg('file@/path/to/image.png;type=image/png')
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'image.png'
+    assert isinstance(result[1], IO)
+    assert result[2] == 'image/png'
+
+    # Test with a non-existent file
+    arg = KeyValueArg('file@/non/existent/file.txt')
+    try:
+        process_file_upload_arg(arg)
+    except ParseError as e:
+        assert str(e) == '"file@/non/existent/file.txt":
+
+# Generated at 2024-03-18 05:45:32.992825
+```python
+    # Setup a temporary file with JSON content
+    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmp_file:
+        json_content = '{"key": "value"}'
+        tmp_file.write(json_content)
+        tmp_file_name = tmp_file.name
+
+    # Create a KeyValueArg object with the temporary file path
+    arg = KeyValueArg(key='json_data', value=tmp_file_name, sep=SEPARATOR_DATA_EMBED_RAW_JSON_FILE, orig='json_data@' + tmp_file_name)
+
+    # Process the KeyValueArg object
+    processed_value = process_data_embed_raw_json_file_arg(arg)
+
+    # Assert that the processed value matches the JSON content
+    assert processed_value == json.loads(json_content)
+
+    # Clean up the temporary file
+    os.unlink(tmp_file_name)
+```
+
+# Generated at 2024-03-18 05:45:39.861394
+```python
+    # Setup a temporary file with JSON content
+    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmp_file:
+        json_content = '{"key": "value"}'
+        tmp_file.write(json_content)
+        tmp_file_name = tmp_file.name
+
+    # Create a KeyValueArg object with the temporary file path
+    arg = KeyValueArg(key='test', value=tmp_file_name, sep=SEPARATOR_DATA_EMBED_RAW_JSON_FILE, orig='test@' + tmp_file_name)
+
+    # Process the KeyValueArg object
+    result = process_data_embed_raw_json_file_arg(arg)
+
+    # Assert that the result is the expected JSON content
+    assert result == {"key": "value"}
+
+    # Clean up the temporary file
+    os.unlink(tmp_file_name)
+```
+
+# Generated at 2024-03-18 05:46:05.156545
+```python
+    # Test with a valid text file
+    with tempfile.NamedTemporaryFile(mode='w', delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write('Test content')
+    try:
+        arg = KeyValueArg(key='test', value=tmp_file_name, sep=':', orig='test.txt')
+        content = load_text_file(arg)
+        assert content == 'Test content'
+    finally:
+        os.unlink(tmp_file_name)
+
+    # Test with a non-existent file
+    arg = KeyValueArg(key='test', value='nonexistent.txt', sep=':', orig='nonexistent.txt')
+    with pytest.raises(ParseError) as excinfo:
+        load_text_file(arg)
+    assert 'nonexistent.txt' in str(excinfo.value)
+
+    # Test with a binary file
+    with tempfile.NamedTemporaryFile(mode='wb', delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write(b'\
+
+# Generated at 2024-03-18 05:46:12.798469
+```python
+    # Setup
+    file_path = 'testfile.txt'
+    file_content = b'Hello, world!'
+    with open(file_path, 'wb') as f:
+        f.write(file_content)
+
+    # Test without MIME type
+    arg = KeyValueArg('file', f'{file_path}', SEPARATOR_FILE_UPLOAD)
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'testfile.txt'
+    assert result[1].read() == file_content
+    assert result[2] == 'text/plain'
+    result[1].close()
+
+    # Test with MIME type
+    mime_type = 'text/plain'
+    arg_with_type = KeyValueArg('file', f'{file_path}{SEPARATOR_FILE_UPLOAD_TYPE}{mime_type}', SEPARATOR_FILE_UPLOAD)
+    result_with_type = process_file_upload_arg(arg_with_type)
+    assert result_with_type[0] == 'testfile.txt'
+    assert result_with_type[1].read
+
+# Generated at 2024-03-18 05:46:20.806634
+```python
+    # Assume the existence of a file named 'test.txt' with the content 'Hello, world!'
+    test_file_path = 'test.txt'
+    test_file_content = 'Hello, world!'
+
+    # Mock KeyValueArg
+    mock_arg = KeyValueArg(key='test', value=test_file_path, sep=':', orig='test:@test.txt')
+
+    # Test successful file loading
+    assert load_text_file(mock_arg) == test_file_content, "The file content should match 'Hello, world!'"
+
+    # Test file not found error
+    mock_arg.value = 'nonexistent.txt'
+    try:
+        load_text_file(mock_arg)
+        assert False, "Expected a ParseError due to a nonexistent file"
+    except ParseError as e:
+        assert str(e) == '"test:@nonexistent.txt": [Errno 2] No such file or directory: \'nonexistent.txt\''
+
+    # Test non-UTF8/ASCII file error
+
+
+# Generated at 2024-03-18 05:46:26.519645
+```python
+    # Setup a temporary file to simulate file upload
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write(b'Test file content')
+        tmp_file.flush()
+
+    try:
+        # Test without specifying MIME type
+        arg = KeyValueArg(key='file', value=tmp_file_name, sep=SEPARATOR_FILE_UPLOAD, orig='file@' + tmp_file_name)
+        result = process_file_upload_arg(arg)
+        assert result[0] == os.path.basename(tmp_file_name)
+        assert result[1].read() == b'Test file content'
+        assert result[2] == get_content_type(tmp_file_name)
+
+        # Reset the file pointer for the next test
+        result[1].seek(0)
+
+        # Test with specifying MIME type
+        mime_type = 'text/plain'
+        arg_with_type = KeyValueArg(key='file', value=tmp_file_name + SEPARATOR_FILE
+
+# Generated at 2024-03-18 05:46:33.846057
+```python
+    # Setup a temporary file to simulate file upload
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write(b'Test file content')
+        tmp_file.flush()
+
+    try:
+        # Test without MIME type
+        arg = KeyValueArg('file', f'{tmp_file_name}', SEPARATOR_FILE_UPLOAD)
+        result = process_file_upload_arg(arg)
+        assert result[0] == os.path.basename(tmp_file_name)
+        assert result[1].read() == b'Test file content'
+        assert result[2] == get_content_type(tmp_file_name)
+
+        # Reset file pointer for next read
+        result[1].seek(0)
+
+        # Test with MIME type
+        mime_type = 'text/plain'
+        arg = KeyValueArg('file', f'{tmp_file_name}{SEPARATOR_FILE_UPLOAD_TYPE}{mime_type}', SEPARATOR_FILE_UPLOAD)
+        result_with_type = process_file
+
+# Generated at 2024-03-18 05:46:42.052518
+```python
+    # Test loading a valid text file
+    valid_file = 'test_data/valid_text.txt'
+    with open(valid_file, 'w') as f:
+        f.write('Hello, world!')
+    valid_item = KeyValueArg(key='key', value=valid_file, sep=':', orig='key@' + valid_file)
+    assert load_text_file(valid_item) == 'Hello, world!'
+    os.remove(valid_file)
+
+    # Test loading a non-existent file
+    non_existent_file = 'test_data/non_existent.txt'
+    non_existent_item = KeyValueArg(key='key', value=non_existent_file, sep=':', orig='key@' + non_existent_file)
+    try:
+        load_text_file(non_existent_item)
+        assert False, 'Expected ParseError for non-existent file'
+    except ParseError as e:
+        assert str(e) == '"key@{}": [Errno 2] No such file or
+
+# Generated at 2024-03-18 05:46:48.234485
+```python
+    # Assume the existence of a file named 'test.txt' with the content 'Hello, world!'
+    test_file_path = 'test.txt'
+    test_file_content = 'Hello, world!'
+    with open(test_file_path, 'w') as f:
+        f.write(test_file_content)
+
+    # Test loading the file
+    test_key_value_arg = KeyValueArg(key='test', value=test_file_path, sep=':', orig='test:test.txt')
+    assert load_text_file(test_key_value_arg) == test_file_content
+
+    # Clean up the test file
+    os.remove(test_file_path)
+
+    # Test loading a non-existent file
+    non_existent_file_arg = KeyValueArg(key='test', value='non_existent.txt', sep=':', orig='test:non_existent.txt')
+    try:
+        load_text_file(non_existent_file_arg)
+        assert False, "Expected a ParseError for a non-existent file"
+    except ParseError as
+
+# Generated at 2024-03-18 05:46:54.831464
+```python
+    # Assume the existence of a file named 'test.txt' with the content 'Hello, world!'
+    test_file_path = 'test.txt'
+    test_file_content = 'Hello, world!'
+
+    # Mock KeyValueArg for testing
+    mock_arg = KeyValueArg(key='test', value=test_file_path, sep=':', orig='test:' + test_file_path)
+
+    # Test successful file loading
+    assert load_text_file(mock_arg) == test_file_content, "The file content should match 'Hello, world!'"
+
+    # Test file not found error
+    non_existing_file_arg = KeyValueArg(key='test', value='non_existing.txt', sep=':', orig='test:non_existing.txt')
+    try:
+        load_text_file(non_existing_file_arg)
+        assert False, "Expected a ParseError due to a non-existing file"
+    except ParseError as e:
+        assert 'non_existing.txt' in str(e), "The error message should contain
+
+# Generated at 2024-03-18 05:47:07.153959
+```python
+    # Test loading a valid text file
+    valid_file = 'test_data/valid_text.txt'
+    with open(valid_file, 'w') as f:
+        f.write('Hello, world!')
+    valid_item = KeyValueArg(key='key', value=valid_file, sep=':', orig=valid_file)
+    assert load_text_file(valid_item) == 'Hello, world!'
+
+    # Test loading a non-existent file
+    non_existent_file = 'test_data/non_existent.txt'
+    non_existent_item = KeyValueArg(key='key', value=non_existent_file, sep=':', orig=non_existent_file)
+    try:
+        load_text_file(non_existent_item)
+        assert False, 'Expected ParseError for non-existent file'
+    except ParseError as e:
+        assert str(e) == '"test_data/non_existent.txt": [Errno 2] No such file or directory: \'test_data/non_existent.txt\'
+
+# Generated at 2024-03-18 05:47:13.676320
+```python
+    # Test with a valid text file
+    with tempfile.NamedTemporaryFile(mode='w', delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write('Test content')
+    assert load_text_file(KeyValueArg(key='test', value=tmp_file_name, sep=':', orig='test:'+tmp_file_name)) == 'Test content'
+    os.unlink(tmp_file_name)
+
+    # Test with a non-existent file
+    with pytest.raises(ParseError) as excinfo:
+        load_text_file(KeyValueArg(key='test', value='nonexistent.txt', sep=':', orig='test:nonexistent.txt'))
+    assert 'nonexistent.txt' in str(excinfo.value)
+
+    # Test with a binary file
+    with tempfile.NamedTemporaryFile(mode='wb', delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write(b'\xff\xfe\xff\xfe')
+    with pytest.raises(ParseError
+
+# Generated at 2024-03-18 05:47:54.481051
+```python
+    # Setup a temporary file with JSON content
+    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmp_file:
+        json_content = '{"key": "value"}'
+        tmp_file.write(json_content)
+        tmp_file.flush()
+
+        # Create a KeyValueArg for the test
+        arg = KeyValueArg(key='test', value=tmp_file.name, sep=SEPARATOR_DATA_EMBED_RAW_JSON_FILE, orig='test@' + tmp_file.name)
+
+    # Call the function with the KeyValueArg
+    result = process_data_embed_raw_json_file_arg(arg)
+
+    # Verify the result is as expected
+    assert result == {"key": "value"}
+
+    # Clean up the temporary file
+    os.unlink(tmp_file.name)
+```
+
+# Generated at 2024-03-18 05:47:59.803460
+```python
+    # Setup
+    file_path = 'testfile.txt'
+    file_content = b'Hello, world!'
+    with open(file_path, 'wb') as f:
+        f.write(file_content)
+
+    # Test without MIME type
+    arg = KeyValueArg('file', f'{file_path}', SEPARATOR_FILE_UPLOAD)
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'testfile.txt'
+    assert result[1].read() == file_content
+    assert result[2] == 'text/plain'
+
+    # Test with MIME type
+    mime_type = 'text/plain'
+    arg_with_type = KeyValueArg('file', f'{file_path}{SEPARATOR_FILE_UPLOAD_TYPE}{mime_type}', SEPARATOR_FILE_UPLOAD)
+    result_with_type = process_file_upload_arg(arg_with_type)
+    assert result_with_type[0] == 'testfile.txt'
+    assert result_with_type[1].read() == file_content
+    assert
+
+# Generated at 2024-03-18 05:48:04.789550
+```python
+    # Assume the existence of a temporary file for testing purposes
+    test_file_path = 'test_file.txt'
+    test_file_content = 'Sample text content'
+    with open(test_file_path, 'w') as test_file:
+        test_file.write(test_file_content)
+
+    # Test loading the text file
+    test_item = KeyValueArg(key='test', value=test_file_path, sep=':', orig='test:test_file.txt')
+    assert load_text_file(test_item) == test_file_content
+
+    # Clean up the temporary file
+    os.remove(test_file_path)
+
+    # Test loading a non-existent file
+    non_existent_file_path = 'non_existent_file.txt'
+    test_item = KeyValueArg(key='test', value=non_existent_file_path, sep=':', orig='test:non_existent_file.txt')
+    try:
+        load_text_file(test_item)
+        assert False, "Expected a ParseError due to non-existent file"
+    except
+
+# Generated at 2024-03-18 05:48:10.129360
+```python
+    # Setup a temporary file with JSON content
+    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmp_file:
+        json_content = '{"key": "value"}'
+        tmp_file.write(json_content)
+        tmp_file.flush()
+
+        # Create a KeyValueArg object with the temporary file path
+        arg = KeyValueArg(key='json', value=tmp_file.name, sep=SEPARATOR_DATA_EMBED_RAW_JSON_FILE, orig='json@' + tmp_file.name)
+
+    # Call the function with the KeyValueArg object
+    result = process_data_embed_raw_json_file_arg(arg)
+
+    # Verify the result is as expected
+    assert result == {"key": "value"}
+
+    # Clean up the temporary file
+    os.unlink(tmp_file.name)
+```
+
+# Generated at 2024-03-18 05:48:17.531309
+```python
+    # Setup a temporary file to simulate file upload
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write(b'Test file content')
+        tmp_file.flush()
+
+    try:
+        # Test without specifying MIME type
+        arg = KeyValueArg(key='file', value=tmp_file_name, sep=SEPARATOR_FILE_UPLOAD, orig='file@' + tmp_file_name)
+        result = process_file_upload_arg(arg)
+        assert result[0] == os.path.basename(tmp_file_name)
+        assert result[1].read() == b'Test file content'
+        assert result[2] == get_content_type(tmp_file_name)
+
+        # Reset the file pointer for the next test
+        result[1].seek(0)
+
+        # Test with specifying MIME type
+        mime_type = 'text/plain'
+        arg_with_type = KeyValueArg(key='file', value=tmp_file_name + SEPARATOR_FILE
+
+# Generated at 2024-03-18 05:48:25.862671
+```python
+    # Test with a valid file path and no specified MIME type
+    arg = KeyValueArg('file', 'testfile.txt')
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'testfile.txt'
+    assert isinstance(result[1], IO)
+    assert result[2] == get_content_type('testfile.txt')
+    result[1].close()  # Close the file after the test
+
+    # Test with a valid file path and a specified MIME type
+    arg = KeyValueArg('file', 'testfile.txt;type=image/png')
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'testfile.txt'
+    assert isinstance(result[1], IO)
+    assert result[2] == 'image/png'
+    result[1].close()  # Close the file after the test
+
+    # Test with a non-existent file
+    arg = KeyValueArg('file', 'nonexistent.txt
+
+# Generated at 2024-03-18 05:48:32.069286
+```python
+    # Setup a temporary file with JSON content
+    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmp_file:
+        json_content = '{"key": "value"}'
+        tmp_file.write(json_content)
+        tmp_file.flush()
+
+        # Create a KeyValueArg for the test
+        arg = KeyValueArg(key='test', value=tmp_file.name, sep=SEPARATOR_DATA_EMBED_RAW_JSON_FILE, orig='test@' + tmp_file.name)
+
+    # Call the function with the KeyValueArg
+    result = process_data_embed_raw_json_file_arg(arg)
+
+    # Assert the result is as expected
+    assert result == {"key": "value"}
+
+    # Cleanup the temporary file
+    os.unlink(tmp_file.name)
+```
+
+# Generated at 2024-03-18 05:48:39.601205
+```python
+    # Setup
+    file_path = 'testfile.txt'
+    file_content = b'Hello, world!'
+    with open(file_path, 'wb') as f:
+        f.write(file_content)
+
+    # Test without MIME type
+    arg = KeyValueArg('file', f'{file_path}', SEPARATOR_FILE_UPLOAD)
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'testfile.txt'
+    assert result[1].read() == file_content
+    assert result[2] == 'text/plain'
+
+    # Test with MIME type
+    mime_type = 'text/plain'
+    arg_with_type = KeyValueArg('file', f'{file_path}{SEPARATOR_FILE_UPLOAD_TYPE}{mime_type}', SEPARATOR_FILE_UPLOAD)
+    result_with_type = process_file_upload_arg(arg_with_type)
+    assert result_with_type[0] == 'testfile.txt'
+    assert result_with_type[1].read() == file_content
+    assert
+
+# Generated at 2024-03-18 05:48:46.645334
+```python
+    # Test loading a valid text file
+    valid_text_file = 'test_data/valid_text.txt'
+    with open(valid_text_file, 'w') as f:
+        f.write('Hello, world!')
+    assert load_text_file(KeyValueArg(key='test', value=valid_text_file, sep=':')) == 'Hello, world!'
+    os.remove(valid_text_file)
+
+    # Test loading a non-existent file
+    non_existent_file = 'test_data/non_existent.txt'
+    try:
+        load_text_file(KeyValueArg(key='test', value=non_existent_file, sep=':'))
+    except ParseError as e:
+        assert str(e) == '"test:non_existent.txt": [Errno 2] No such file or directory: \'test_data/non_existent.txt\''
+
+    # Test loading a binary file
+    binary_file = 'test_data/binary.dat'
+    with open(binary_file, 'wb') as
+
+# Generated at 2024-03-18 05:48:53.016034
+```python
+    # Assume the existence of a temporary file for testing purposes
+    test_file_path = 'test_file.txt'
+    test_file_content = 'Sample text content'
+    with open(test_file_path, 'w', encoding='utf-8') as test_file:
+        test_file.write(test_file_content)
+
+    # Test successful loading of text file
+    test_key_value_arg = KeyValueArg(key='test', value=test_file_path, sep='@', orig='test@' + test_file_path)
+    assert load_text_file(test_key_value_arg) == test_file_content
+
+    # Test file not found error
+    non_existing_file_arg = KeyValueArg(key='test', value='non_existing.txt', sep='@', orig='test@non_existing.txt')
+    try:
+        load_text_file(non_existing_file_arg)
+        assert False, "Expected ParseError due to non-existing file"
+    except ParseError as e:
+        assert str(e) == '"test@non
+
+# Generated at 2024-03-18 05:49:35.877158
+```python
+    # Test loading a valid text file
+    test_file_path = 'test_file.txt'
+    test_file_content = 'Sample text content'
+    with open(test_file_path, 'w') as test_file:
+        test_file.write(test_file_content)
+    test_arg = KeyValueArg(key='test', value=test_file_path, sep=':', orig='test:test_file.txt')
+    assert load_text_file(test_arg) == test_file_content
+    os.remove(test_file_path)
+
+    # Test loading a non-existent file
+    non_existent_file_path = 'non_existent.txt'
+    test_arg = KeyValueArg(key='test', value=non_existent_file_path, sep=':', orig='test:non_existent.txt')
+    try:
+        load_text_file(test_arg)
+        assert False, "Expected a ParseError"
+    except ParseError as e:
+        assert str(e) == '"test:non_existent.txt": [Errno 2] No such
+
+# Generated at 2024-03-18 05:49:43.747450
+```python
+    # Setup
+    file_path = 'testfile.txt'
+    file_content = b'Hello, world!'
+    with open(file_path, 'wb') as f:
+        f.write(file_content)
+
+    # Test without MIME type
+    arg = KeyValueArg('file', f'{file_path}', SEPARATOR_FILE_UPLOAD)
+    result = process_file_upload_arg(arg)
+    assert result[0] == 'testfile.txt'
+    assert result[1].read() == file_content
+    assert result[2] == 'text/plain'
+
+    # Test with MIME type
+    mime_type = 'text/plain'
+    arg_with_type = KeyValueArg('file', f'{file_path}{SEPARATOR_FILE_UPLOAD_TYPE}{mime_type}', SEPARATOR_FILE_UPLOAD)
+    result_with_type = process_file_upload_arg(arg_with_type)
+    assert result_with_type[0] == 'testfile.txt'
+    assert result_with_type[1].read() == file_content
+    assert
+
+# Generated at 2024-03-18 05:49:48.812394
+```python
+    # Test loading a valid text file
+    valid_file = 'test_data/valid_text.txt'
+    with open(valid_file, 'w') as f:
+        f.write('Hello, world!')
+    valid_item = KeyValueArg(orig='file@' + valid_file, key='file', sep='@', value=valid_file)
+    assert load_text_file(valid_item) == 'Hello, world!'
+
+    # Test loading a non-existent file
+    non_existent_file = 'test_data/non_existent.txt'
+    non_existent_item = KeyValueArg(orig='file@' + non_existent_file, key='file', sep='@', value=non_existent_file)
+    try:
+        load_text_file(non_existent_item)
+        assert False, 'Expected ParseError for non-existent file'
+    except ParseError as e:
+        assert str(e) == '"file@test_data/non_existent.txt": [Errno 2] No such file
+
+# Generated at 2024-03-18 05:49:54.810106
+```python
+    # Setup a temporary file to simulate file upload
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file_name = tmp_file.name
+        tmp_file.write(b'Test file content')
+        tmp_file.flush()
+
+    try:
+        # Test without specifying MIME type
+        arg = KeyValueArg(key='file', value=tmp_file_name, sep=SEPARATOR_FILE_UPLOAD, orig='file@' + tmp_file_name)
+        result = process_file_upload_arg(arg)
+        assert result[0] == os.path.basename(tmp_file_name)
+        assert result[1].read() == b'Test file content'
+        assert result[2] == get_content_type(tmp_file_name)
+
+        # Reset the file pointer for the next test
+        result[1].seek(0)
+
+        # Test with specifying MIME type
+        mime_type = 'text/plain'
+        arg_with_type = KeyValueArg(key='file', value=tmp_file_name + SEPARATOR_FILE
+
+# Generated at 2024-03-18 05:50:02.207537
+```python
+    # Assume the existence of a temporary file for testing purposes
+    test_file_path = '/tmp/test_file.txt'
+    test_file_content = 'Sample text content'
+    with open(test_file_path, 'w') as test_file:
+        test_file.write(test_file_content)
+
+    # Test case: Successfully loading text file
+    test_key_value_arg = KeyValueArg(key='test', value=test_file_path, sep=':', orig='test:' + test_file_path)
+    assert load_text_file(test_key_value_arg) == test_file_content
+
+    # Test case: File not found
+    non_existing_file_path = '/tmp/non_existing_file.txt'
+    test_key_value_arg = KeyValueArg(key='test', value=non_existing_file_path, sep=':', orig='test:' + non_existing_file_path)
+    try:
+        load_text_file(test_key_value_arg)
+        assert False, 'Expected ParseError due to non-existing file'
+    except ParseError as e:
+
+
+# Generated at 2024-03-18 05:50:07.514671
+```python
+    # Setup a KeyValueArg for testing
+    key = 'test_json'
+    value = 'tests/fixtures/file.json'
+    separator = SEPARATOR_DATA_EMBED_RAW_JSON_FILE
+    arg = KeyValueArg(key=key, value=value, sep=separator, orig=f'{key}{separator}{value}')
+
+    # Mock the load_text_file function to return a JSON string
+    def mock_load_text_file(item: KeyValueArg) -> str:
+        assert item == arg
+        return '{"name": "HTTPie", "version": "1.0.0"}'
+
+    # Mock the load_json function to parse the JSON string
+    def mock_load_json(item: KeyValueArg, contents: str) -> JSONType:
+        assert item == arg
+        assert contents == '{"name": "HTTPie", "version": "1.0.0"}'
+        return {"name": "HTTPie", "version": "1.0.0"}
+
+    # Patch the
+
+# Generated at 2024-03-18 05:50:17.912745
+```python
+    # Setup a temporary file with JSON content
+    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmp_file:
+        json_content = '{"key": "value"}'
+        tmp_file.write(json_content)
+        tmp_file.flush()
+
+        # Create a KeyValueArg object with the temporary file path
+        arg = KeyValueArg(key='json', value=tmp_file.name, sep=SEPARATOR_DATA_EMBED_RAW_JSON_FILE, orig='json@' + tmp_file.name)
+
+    # Call the function with the KeyValueArg object
+    result = process_data_embed_raw_json_file_arg(arg)
+
+    # Assert that the result is the expected JSON content as a dictionary
+    assert result == {"key": "value"}
+
+    # Clean up the temporary file
+    os.unlink(tmp_file.name)
+```
+
+# Generated at 2024-03-18 05:50:19.936789
+```python
+import pytest
+from unittest.mock import mock_open, patch
+
+# Assuming the existence of a function named `test_process_file_upload_arg`
+# Here is the completion of the unit test function.
+
+
+# Generated at 2024-03-18 05:50:26.933469
+```python
+    # Setup a temporary file with JSON content
+    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmp_file:
+        json_content = '{"key": "value"}'
+        tmp_file.write(json_content)
+        tmp_file.flush()
+
+        # Create a KeyValueArg object with the path to the temp file
+        arg = KeyValueArg(key='json_data', value=tmp_file.name, sep=SEPARATOR_DATA_EMBED_RAW_JSON_FILE, orig='json_data@' + tmp_file.name)
+
+    # Call the function with the KeyValueArg object
+    result = process_data_embed_raw_json_file_arg(arg)
+
+    # Clean up the temporary file
+    os.unlink(tmp_file.name)
+
+    # Assert the result is as expected
+    assert result == {"key": "value"}, f'Expected {{"key": "value"}}, but got {result}'
+```
+
+# Generated at 2024-03-18 05:50:34.138101
+```python
+    # Test loading a valid text file
+    valid_file = 'test_data/valid_text.txt'
+    with open(valid_file, 'w') as f:
+        f.write('Hello, world!')
+    item = KeyValueArg(key='key', value=valid_file, sep=':', orig=valid_file)
+    assert load_text_file(item) == 'Hello, world!'
+    os.remove(valid_file)
+
+    # Test loading a non-existent file
+    non_existent_file = 'test_data/non_existent.txt'
+    item = KeyValueArg(key='key', value=non_existent_file, sep=':', orig=non_existent_file)
+    try:
+        load_text_file(item)
+        assert False, 'Expected ParseError due to non-existent file'
+    except ParseError as e:
+        assert str(e) == '"test_data/non_existent.txt": [Errno 2] No such file or directory: \'test_data/non_existent.txt\''
+
+   

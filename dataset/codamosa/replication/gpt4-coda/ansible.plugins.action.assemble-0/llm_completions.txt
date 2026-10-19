@@ -1,0 +1,1298 @@
+
+
+# Generated at 2024-03-18 03:10:21.897298
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_assemble_from_fragments_with_delimiter(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        mock_execute_module.return_value = {}
+
+        # Set up the parameters for the action plugin
+        action_module._task.args = {
+            'src': '/path/to/fragments',
+            'dest': '/path/to/destination/file',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': '.*\\.txt$',
+            'ignore_hidden': True,
+            'decrypt': True
+        }
+
+        # Mock the methods used by the run method
+        action_module._find_needle = MagicMock(return_value='/path/to/fragments')
+        action_module._remote_expand_user = MagicMock
+
+# Generated at 2024-03-18 03:10:29.500898
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_ActionModule_run(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+
+        # Set up mock values
+        mock_execute_module.return_value = {}
+        task_vars = {
+            'ansible_facts': {},
+            'ansible_playbook_python': '/usr/bin/python'
+        }
+        action_module._task.args = {
+            'src': '/path/to/src',
+            'dest': '/path/to/dest',
+            'remote_src': 'no'
+        }
+        action_module._remote_expand_user = MagicMock(return_value='/path/to/dest')
+        action_module._execute_remote_stat = MagicMock(return_value={'checksum': '12345'})
+        action_module._transfer_file = MagicMock(return_value='/remote/path/to/src')
+        action_module._fix
+
+# Generated at 2024-03-18 03:10:35.946164
+```python
+    from unittest.mock import MagicMock, patch
+
+    def test_ActionModule_run():
+        # Setup mock objects and variables
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        fake_task_vars = {'fake_var': 'fake_value'}
+        fake_tmp = '/fake/tmp/dir'
+        fake_src = '/fake/src/dir'
+        fake_dest = '/fake/dest/file'
+        fake_delimiter = '---\n'
+        fake_regexp = '.*\\.txt$'
+        fake_ignore_hidden = True
+        fake_decrypt = True
+
+        # Set task arguments
+        action_module._task.args = {
+            'src': fake_src,
+            'dest': fake_dest,
+            'delimiter': fake_delimiter,
+            'remote_src': 'no',
+            'regexp': fake_regexp,
+            'ignore_hidden': fake_ignore_hidden,
+            'decrypt': fake_decrypt
+        }
+
+       
+
+# Generated at 2024-03-18 03:10:41.396587
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_assemble_from_fragments_with_delimiter(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        mock_execute_module.return_value = {}
+
+        # Set up the parameters for the action plugin
+        action_module._task.args = {
+            'src': '/path/to/fragments',
+            'dest': '/path/to/destination/file',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+
+        # Mock the necessary methods
+        action_module._find_needle = MagicMock(return_value='/path/to/fragments')
+        action_module._remote_expand_user = MagicMock(return_value='/path/to/destination/file
+
+# Generated at 2024-03-18 03:10:48.107785
+```python
+    # Create a temporary directory to simulate the source directory with fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Create an instance of the ActionModule with a task containing the necessary arguments
+        task = {
+            'src': src_dir,
+            'dest': '/tmp/destination.txt',
+            'delimiter': '---\n'
+        }
+        task_vars = {}
+        action_module = ActionModule(task, None, None, None, None, None)
+
+        # Run the action module
+        result = action_module.run(task_vars=task_vars)
+
+        # Check if the file was assembled correctly
+        with open(result['dest'], 'r') as
+
+# Generated at 2024-03-18 03:10:53.957981
+```python
+    # Create a temporary directory to simulate the source directory
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files in the source directory
+        for i in range(3):
+            with open(os.path.join(src_dir, f"fragment{i}.txt"), 'w') as f:
+                f.write(f"This is fragment {i}\n")
+
+        # Create an instance of the ActionModule
+        action_module = ActionModule()
+
+        # Set up the task variables
+        task_vars = {
+            'src': src_dir,
+            'dest': '/tmp/destination.txt',
+            'delimiter': '---\n',
+            'remote_src': False,
+            'regexp': None,
+            'follow': False,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+
+        # Set up the task args
+        action_module._task = MagicMock()
+        action_module._task.args = task_vars
+
+        # Set up the
+
+# Generated at 2024-03-18 03:11:01.578708
+```python
+    # Create a temporary directory to simulate source fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Initialize the action module with a task and a loader
+        task = MagicMock()
+        loader = MagicMock()
+        connection = MagicMock()
+        play_context = MagicMock()
+        action_module = ActionModule(task, connection, play_context, loader, MagicMock(), MagicMock())
+
+        # Set task arguments
+        task.args = {
+            'src': src_dir,
+            'dest': '/destination/path',
+            'delimiter': None,
+            'remote_src': 'no',
+            'regexp': None,
+            'follow': False,
+            'ignore_hidden': False,
+            'decrypt
+
+# Generated at 2024-03-18 03:11:10.269235
+```python
+    # Create a temporary directory to simulate the source directory with fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Create an instance of the ActionModule with mock task and loader
+        task = MagicMock()
+        task.args = {
+            'src': src_dir,
+            'dest': '/path/to/destination',
+            'delimiter': None,
+            'remote_src': False,
+            'regexp': None,
+            'follow': False,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+        loader = MagicMock()
+        connection = MagicMock()
+        play_context = MagicMock()
+        action_module = ActionModule(task, connection, play_context, loader
+
+# Generated at 2024-03-18 03:11:17.236000
+```python
+    # Create a temporary directory to simulate the source directory with fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Create an instance of the ActionModule with a task containing the necessary arguments
+        task = {
+            'src': src_dir,
+            'dest': '/tmp/destination.txt',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': True,
+            'decrypt': True
+        }
+        action_module = ActionModule(task, None, None, None, None, None)
+
+        # Run the action module
+        result = action_module.run()
+
+        # Check if
+
+# Generated at 2024-03-18 03:11:24.311271
+```python
+    from ansible.plugins.loader import action_loader
+    from ansible.template import Templar
+    from ansible.playbook.play_context import PlayContext
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.inventory.host import Host
+    from ansible.inventory.manager import InventoryManager
+    from ansible.vars.manager import VariableManager
+    from ansible.utils.context_objects import CLIArgs
+    from ansible import context
+    import pytest
+
+    # Setup test environment
+    def setup_module(module):
+        context.CLIARGS = CLIArgs([])
+        fake_loader = None
+        fake_inventory = InventoryManager(loader=fake_loader)
+        fake_variable_manager = VariableManager(loader=fake_loader, inventory=fake_inventory)
+        host = Host(name='testhost')
+        fake_inventory.add_host(host=host)
+        play_context = PlayContext()
+        play_context.check_mode = False
+        play_context.remote_addr = 'testhost'
+        new_stdin =
+
+# Generated at 2024-03-18 03:11:42.620406
+```python
+    from unittest.mock import MagicMock, patch
+
+    def test_ActionModule_run():
+        # Setup mock objects and variables
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        fake_task_vars = {'fake_var': 'fake_value'}
+        fake_tmp = '/fake/tmp/dir'
+        fake_src = '/fake/src/dir'
+        fake_dest = '/fake/dest/file'
+        fake_delimiter = '---\n'
+        fake_regexp = '.*\\.txt$'
+        fake_ignore_hidden = True
+        fake_decrypt = True
+        fake_follow = False
+        fake_checksum = '1234567890abcdef'
+        fake_diff = {'before': '', 'after': 'fake_content'}
+
+        # Mock methods and attributes
+        action_module._task.args = {
+            'src': fake_src,
+            'dest': fake_dest,
+            'delimiter': fake_delimiter,
+            '
+
+# Generated at 2024-03-18 03:11:50.468060
+```python
+    # Create a temporary directory to simulate the source directory with fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Create an instance of the ActionModule with a task containing the necessary arguments
+        task = {
+            'src': src_dir,
+            'dest': '/tmp/destination.txt',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': True,
+            'decrypt': True
+        }
+        action_module = ActionModule(task, None, None, None, None, None)
+
+        # Run the action module
+        result = action_module.run(task_vars={})
+
+       
+
+# Generated at 2024-03-18 03:11:59.233493
+```python
+    from ansible.plugins.loader import action_loader
+    from ansible.template import Templar
+    from ansible.playbook.play_context import PlayContext
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.inventory.host import Host
+    from ansible.inventory.manager import InventoryManager
+    from ansible.vars.manager import VariableManager
+    from ansible.utils.context_objects import CLIArgs
+
+    # Mock objects
+    mock_loader = None
+    mock_shared_loader_obj = None
+    mock_inventory = InventoryManager(loader=mock_loader)
+    mock_variable_manager = VariableManager(loader=mock_loader, inventory=mock_inventory)
+    mock_templar = Templar(loader=mock_loader)
+    mock_play_context = PlayContext()
+    mock_task_executor = TaskExecutor(host=Host(name='fake_host'), task=None, connection=None, play_context=mock_play_context, loader=mock_loader, shared_loader_obj=mock_shared_loader_obj, variable_manager=
+
+# Generated at 2024-03-18 03:12:08.350169
+```python
+    # Create a temporary directory to act as the source of fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Write some test fragments into the directory
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Instantiate the ActionModule with a mock loader and connection
+        mock_loader = mock.MagicMock()
+        mock_connection = mock.MagicMock()
+        action_module = ActionModule(mock_loader, mock_connection, None, None, None, None, None)
+
+        # Set up the task arguments
+        action_module._task = mock.MagicMock()
+        action_module._task.args = {
+            'src': src_dir,
+            'dest': '/path/to/destination',
+            'remote_src': 'no'
+        }
+
+        # Run the action
+
+# Generated at 2024-03-18 03:12:14.765177
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_assemble_from_fragments_with_delimiter(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        action_module._task.args = {
+            'src': '/path/to/fragments',
+            'dest': '/path/to/destination/file',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+        action_module._connection = MagicMock()
+        action_module._connection._shell = MagicMock()
+        action_module._connection._shell.tmpdir = '/tmp'
+        action_module._connection._shell.join_path = os.path.join
+        action_module._loader = MagicMock()
+        action_module._loader.get_real_file
+
+# Generated at 2024-03-18 03:12:20.944999
+```python
+    # Create a temporary directory to simulate source fragments
+    with tempfile.TemporaryDirectory() as tmp_src_dir:
+        # Create some fragment files
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(tmp_src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Create an instance of the ActionModule with mock task and loader
+        task = mock.Mock()
+        loader = mock.Mock()
+        connection = mock.Mock()
+        play_context = mock.Mock()
+        action_module = ActionModule(task, connection, play_context, loader, mock.Mock(), mock.Mock())
+
+        # Set task arguments
+        task.args = {
+            'src': tmp_src_dir,
+            'dest': '/path/to/destination/file',
+            'delimiter': '---\n'
+        }
+
+        # Run the action module
+        result = action
+
+# Generated at 2024-03-18 03:12:27.030081
+```python
+    # Create a temporary directory to act as the source of fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Write some test fragments into the directory
+        fragments = ['part1', 'part2', 'part3']
+        for i, fragment in enumerate(fragments, start=1):
+            with open(os.path.join(src_dir, f"fragment{i}.txt"), 'w') as f:
+                f.write(fragment)
+
+        # Initialize the action module with a mock loader and connection
+        mock_loader = MagicMock()
+        mock_connection = MagicMock()
+
+        # Set up task arguments
+        task_args = {
+            'src': src_dir,
+            'dest': '/path/to/destination/file',
+            'delimiter': '\n---\n',
+            'remote_src': False
+        }
+        mock_task = MagicMock(args=task_args)
+
+        # Create an instance of the ActionModule
+        action_module = ActionModule(task=mock_task, connection
+
+# Generated at 2024-03-18 03:12:33.704915
+```python
+    # Create a temporary directory to act as the source of fragments
+    with tempfile.TemporaryDirectory() as tmp_src_dir:
+        # Create some fragment files
+        fragments = ['fragment1', 'fragment2', 'fragment3']
+        for fragment in fragments:
+            with open(os.path.join(tmp_src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Create an instance of the ActionModule with mock task and loader
+        task = mock.Mock()
+        task.args = {
+            'src': tmp_src_dir,
+            'dest': '/path/to/destination',
+            'delimiter': None,
+            'remote_src': False,
+            'regexp': None,
+            'follow': False,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+        loader = mock.Mock()
+        connection = mock.Mock()
+        play_context = mock.Mock()
+        action_module = ActionModule(task, connection,
+
+# Generated at 2024-03-18 03:12:40.486450
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_assemble_from_fragments_success(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        mock_execute_module.return_value = {}
+
+        # Set up the parameters for the action module
+        action_module._task.args = {
+            'src': '/path/to/src',
+            'dest': '/path/to/dest',
+            'remote_src': 'no'
+        }
+        action_module._remote_expand_user = MagicMock(return_value='/path/to/dest')
+        action_module._execute_remote_stat = MagicMock(return_value={'checksum': '12345'})
+        action_module._transfer_file = MagicMock(return_value='/remote/path/to/src')
+        action_module._fixup_perms2 = MagicMock()
+        action_module._remove_tmp_path = MagicMock()
+        action_module
+
+# Generated at 2024-03-18 03:12:47.305114
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_assemble_from_fragments_with_delimiter(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        mock_execute_module.return_value = {}
+
+        # Set up the parameters for the action module
+        action_module._task.args = {
+            'src': '/path/to/fragments',
+            'dest': '/path/to/destination/file',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': '.*\\.txt$',
+            'ignore_hidden': True,
+            'decrypt': True
+        }
+
+        # Mock the necessary methods
+        action_module._find_needle = MagicMock(return_value='/path/to/fragments')
+        action_module._assemble_from_fragments = MagicMock(return_value='/
+
+# Generated at 2024-03-18 03:13:17.426764
+```python
+    # Create a temporary directory to simulate the source directory with fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Create an instance of the ActionModule with a task containing the necessary arguments
+        task = {
+            'src': src_dir,
+            'dest': '/tmp/destination.txt',
+            'delimiter': '---\n'
+        }
+        task_vars = {}
+        action_module = ActionModule(task, None, None, None, None, None)
+
+        # Run the action module
+        result = action_module.run(task_vars=task_vars)
+
+        # Check if the file was assembled correctly
+        with open(result['dest'], 'r') as
+
+# Generated at 2024-03-18 03:13:26.782804
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_run_success(_execute_module_mock):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        task_vars = {
+            'src': '/path/to/src',
+            'dest': '/path/to/dest',
+            'delimiter': '---\n',
+            'remote_src': False,
+            'regexp': '.*',
+            'follow': False,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+        action_module._task.args = task_vars
+        action_module._remote_expand_user = MagicMock(return_value='/path/to/dest')
+        action_module._execute_remote_stat = MagicMock(return_value={'checksum': '12345'})
+        action_module._transfer_file = MagicMock(return_value='/remote/path/to/src')
+        action_module._fix
+
+# Generated at 2024-03-18 03:13:32.763967
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_ActionModule_run(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+
+        # Set up mock values
+        task_vars = {
+            'src': '/path/to/src',
+            'dest': '/path/to/dest',
+            'delimiter': '---',
+            'remote_src': False,
+            'regexp': None,
+            'follow': False,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+        action_module._task.args = task_vars
+        action_module._remote_expand_user = MagicMock(return_value='/path/to/dest')
+        action_module._execute_remote_stat = MagicMock(return_value={'checksum': '12345'})
+        action_module._assemble_from_fragments = MagicMock(return_value='/local/temp/path')
+
+
+# Generated at 2024-03-18 03:13:39.179349
+```python
+    # Create a temporary directory to act as the source of fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Write some test fragments into the directory
+        fragments = ['fragment1', 'fragment2', 'fragment3']
+        for i, fragment in enumerate(fragments, start=1):
+            with open(os.path.join(src_dir, f'file{i}.txt'), 'w') as f:
+                f.write(fragment)
+
+        # Initialize the action module with a mock loader and connection
+        mock_loader = MagicMock()
+        mock_connection = MagicMock()
+        action_module = ActionModule(mock_loader, mock_connection, None, None, None, None)
+
+        # Set up the task arguments
+        args = {
+            'src': src_dir,
+            'dest': '/path/to/destination/file.txt',
+            'delimiter': None,
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': False,
+            'decrypt
+
+# Generated at 2024-03-18 03:13:51.022754
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_assemble_from_fragments(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+
+        # Set up mock values
+        mock_execute_module.return_value = {}
+        fake_task_vars = {'fake_var': 'fake_value'}
+        fake_args = {
+            'src': '/fake/src',
+            'dest': '/fake/dest',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': '.*',
+            'follow': False,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+        action_module._task.args = fake_args
+
+        # Mock methods used in the run method
+        action_module._find_needle = MagicMock(return_value='/fake/src')
+        action
+
+# Generated at 2024-03-18 03:13:59.672789
+```python
+    # Create a temporary directory to act as the source of fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Write some test fragments into the directory
+        fragments = ['fragment1', 'fragment2', 'fragment3']
+        for i, fragment in enumerate(fragments, start=1):
+            with open(os.path.join(src_dir, f'file{i}.txt'), 'w') as f:
+                f.write(fragment)
+
+        # Instantiate the ActionModule with a mock loader and connection
+        mock_loader = MagicMock()
+        mock_connection = MagicMock()
+        action_module = ActionModule(mock_loader, mock_connection, None, None, None, None, None)
+
+        # Set up the task arguments
+        action_module._task = MagicMock()
+        action_module._task.args = {
+            'src': src_dir,
+            'dest': '/path/to/destination',
+            'delimiter': None,
+            'remote_src': 'no',
+            'regexp':
+
+# Generated at 2024-03-18 03:14:06.434143
+```python
+    # Create a temporary directory to simulate source fragments
+    with tempfile.TemporaryDirectory() as tmp_src_dir:
+        # Create some fragment files
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(tmp_src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Create an instance of the ActionModule with mock task and loader
+        task = MagicMock()
+        task.args = {
+            'src': tmp_src_dir,
+            'dest': '/tmp/destination.txt',
+            'delimiter': None,
+            'remote_src': 'no',
+            'regexp': None,
+            'follow': False,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+        loader = MagicMock()
+        connection = MagicMock()
+        play_context = MagicMock()
+        action_module = ActionModule(task, connection, play_context,
+
+# Generated at 2024-03-18 03:14:13.186871
+```python
+    # Create a temporary directory to simulate source fragments
+    with tempfile.TemporaryDirectory() as tmp_src_dir:
+        # Write some test fragments into the directory
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(tmp_src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Create an instance of the ActionModule
+        action_module = ActionModule()
+
+        # Set up the task arguments
+        task_vars = {
+            'src': tmp_src_dir,
+            'dest': '/tmp/destination.txt',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': True,
+            'decrypt': True
+        }
+        action_module._task = MagicMock(args=task_vars)
+        action_module._loader = MagicMock()
+        action_module._
+
+# Generated at 2024-03-18 03:14:26.608539
+```python
+    # Create a temporary directory to simulate the source directory
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files in the source directory
+        for i in range(3):
+            with open(os.path.join(src_dir, f"fragment{i}.txt"), 'w') as f:
+                f.write(f"This is fragment {i}\n")
+
+        # Create an instance of the ActionModule with mock task and loader
+        task = MagicMock()
+        task.args = {
+            'src': src_dir,
+            'dest': '/path/to/destination/file',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': True,
+            'decrypt': True
+        }
+        loader = MagicMock()
+        connection = MagicMock()
+        play_context = MagicMock()
+        action_module = ActionModule(task, connection, play_context, loader, None, None)
+
+        # Run the action
+
+# Generated at 2024-03-18 03:14:34.614801
+```python
+    # Create a temporary directory to simulate the source directory with fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Create an instance of the ActionModule with a task containing the necessary arguments
+        task = {
+            'src': src_dir,
+            'dest': '/tmp/destination.txt',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': True,
+            'decrypt': True
+        }
+        action_module = ActionModule(task, None)
+
+        # Run the action module
+        result = action_module.run(task_vars={})
+
+        # Check that the result indicates a successful
+
+# Generated at 2024-03-18 03:15:25.825992
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_assemble_from_fragments_success(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        mock_execute_module.return_value = {'changed': True, 'msg': 'Test Message'}
+
+        # Set up the parameters for the action plugin
+        action_module._task.args = {
+            'src': '/path/to/src',
+            'dest': '/path/to/dest',
+            'remote_src': 'no'
+        }
+        action_module._remote_expand_user = MagicMock(return_value='/path/to/dest')
+        action_module._execute_remote_stat = MagicMock(return_value={'checksum': '12345'})
+        action_module._transfer_file = MagicMock(return_value='/remote/path/to/src')
+        action_module._fixup_perms2 = MagicMock()
+        action
+
+# Generated at 2024-03-18 03:15:33.010257
+```python
+    # Create a temporary directory to simulate the source directory with fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write(f"Contents of {fragment}\n")
+
+        # Create an instance of the ActionModule with a task containing the necessary arguments
+        task = {
+            'src': src_dir,
+            'dest': '/tmp/destination.txt',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': True,
+            'decrypt': True
+        }
+        action_module = ActionModule(task=task, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+
+        # Run the action module
+
+
+# Generated at 2024-03-18 03:15:40.656980
+```python
+    # Create a temporary directory to simulate the source directory with fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files
+        fragment_files = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for filename in fragment_files:
+            with open(os.path.join(src_dir, filename), 'w') as f:
+                f.write(f"Contents of {filename}\n")
+
+        # Create an instance of the ActionModule
+        action_module = ActionModule()
+
+        # Set up the task variables
+        task_vars = {
+            'src': src_dir,
+            'dest': '/path/to/destination/file',
+            'delimiter': '---\n',
+            'remote_src': False,
+            'regexp': None,
+            'follow': False,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+
+        # Set up the task args
+        action_module._task = MagicMock()
+        action_module
+
+# Generated at 2024-03-18 03:15:46.567676
+```python
+    # Create a temporary directory to simulate source fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files
+        fragments = ['fragment1', 'fragment2', 'fragment3']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Initialize the action module with a task and a loader
+        task = MagicMock()
+        loader = MagicMock()
+        connection = MagicMock()
+        play_context = MagicMock()
+        templar = MagicMock()
+        shared_loader_obj = MagicMock()
+        action_module = ActionModule(task, connection, play_context, loader, templar, shared_loader_obj)
+
+        # Set the task arguments
+        task.args = {
+            'src': src_dir,
+            'dest': '/path/to/destination',
+            'remote_src': 'no',
+            'delimiter': None
+        }
+
+        # Run the
+
+# Generated at 2024-03-18 03:15:59.099557
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_assemble_from_fragments_success(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        mock_execute_module.return_value = {}
+
+        # Set up the parameters for the action plugin
+        action_module._task.args = {
+            'src': '/path/to/src',
+            'dest': '/path/to/dest',
+            'remote_src': 'no'
+        }
+
+        # Mock the methods used by the run method
+        action_module._find_needle = MagicMock(return_value='/path/to/src')
+        action_module._assemble_from_fragments = MagicMock(return_value='/path/to/tempfile')
+        action_module._execute_remote_stat = MagicMock(return_value={'checksum': '12345'})
+        action_module._remote_expand_user = MagicMock(return_value='/
+
+# Generated at 2024-03-18 03:16:06.207097
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_assemble_from_fragments_with_delimiter(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        mock_execute_module.return_value = {}
+
+        # Set up the parameters for the action plugin
+        action_module._task.args = {
+            'src': '/path/to/fragments',
+            'dest': '/path/to/destination/file',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': True,
+            'decrypt': True
+        }
+
+        # Mock the necessary methods
+        action_module._find_needle = MagicMock(return_value='/path/to/fragments')
+        action_module._assemble_from_fragments = MagicMock(return_value='/path/to/tempfile
+
+# Generated at 2024-03-18 03:16:15.318254
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_run_success(_execute_module_mock):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        task_vars = {
+            'src': '/path/to/src',
+            'dest': '/path/to/dest',
+            'delimiter': '---\n',
+            'remote_src': False,
+            'regexp': None,
+            'follow': False,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+        action_module._task.args = task_vars
+        action_module._remote_expand_user = MagicMock(return_value='/path/to/dest')
+        action_module._execute_remote_stat = MagicMock(return_value={'checksum': '12345'})
+        action_module._transfer_file = MagicMock(return_value='/remote/path/to/src')
+        action_module._fixup
+
+# Generated at 2024-03-18 03:16:24.411500
+```python
+    # Create a temporary directory to simulate the source directory with fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some dummy fragment files
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Create an instance of the ActionModule with a task containing the necessary arguments
+        task = {
+            'src': src_dir,
+            'dest': '/tmp/destination.txt',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': True,
+            'decrypt': True
+        }
+        action_module = ActionModule(task, None, None, None, None, None)
+
+        # Run the action module
+        result = action_module.run(task_vars={})
+
+
+
+# Generated at 2024-03-18 03:16:30.143666
+```python
+    # Create a temporary directory to simulate the source directory with fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Create an instance of the ActionModule with a task containing the necessary arguments
+        task = {
+            'src': src_dir,
+            'dest': '/tmp/destination.txt',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': True,
+            'decrypt': True
+        }
+        action_module = ActionModule(task, None, None, None, None, None)
+
+        # Run the action module
+        result = action_module.run()
+
+        # Check if
+
+# Generated at 2024-03-18 03:16:36.198936
+```python
+    # Create a temporary directory to simulate source fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files
+        fragments = ['fragment1', 'fragment2', 'fragment3']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Create an instance of the ActionModule
+        action_module = ActionModule()
+
+        # Set up the task variables
+        task_vars = {
+            'src': src_dir,
+            'dest': '/tmp/destination',
+            'delimiter': None,
+            'remote_src': False,
+            'regexp': None,
+            'follow': False,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+
+        # Set up the task args
+        action_module._task = MagicMock(args=task_vars)
+
+        # Mock the necessary methods
+        action_module._execute
+
+# Generated at 2024-03-18 03:18:10.764712
+```python
+    # Create a temporary directory to simulate the source directory with fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Create an instance of the ActionModule with a task containing the necessary arguments
+        task = {
+            'src': src_dir,
+            'dest': '/tmp/destination.txt',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': True,
+            'decrypt': True
+        }
+        action_module = ActionModule(task=task, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+
+        # Run the action module
+
+
+# Generated at 2024-03-18 03:18:16.143941
+```python
+    # Create a temporary directory to simulate source fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Write some test fragments into the directory
+        fragments = ['fragment1.txt', 'fragment2.txt', 'hidden.txt']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Initialize the ActionModule with a task containing the necessary arguments
+        task = {
+            'src': src_dir,
+            'dest': '/tmp/destination.txt',
+            'delimiter': '---\n',
+            'ignore_hidden': True
+        }
+        action_module = ActionModule(task=task, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+
+        # Run the action module
+        result = action_module.run(task_vars={})
+
+        # Assert the expected results
+        assert 'failed' not in
+
+# Generated at 2024-03-18 03:18:24.976267
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_ActionModule_run(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+
+        # Set up mock values
+        mock_execute_module.return_value = {}
+        task_vars = {
+            'src': '/path/to/src',
+            'dest': '/path/to/dest',
+            'delimiter': '---\n',
+            'remote_src': False,
+            'regexp': '.*',
+            'follow': False,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+        action_module._task.args = task_vars
+        action_module._remote_expand_user = MagicMock(return_value='/path/to/dest')
+        action_module._execute_remote_stat = MagicMock(return_value={'checksum': '12345'})
+        action_module._transfer_file
+
+# Generated at 2024-03-18 03:18:32.194172
+```python
+    from ansible.plugins.loader import action_loader
+    from ansible.template import Templar
+    from ansible.playbook.play_context import PlayContext
+    from ansible.executor.task_executor import TaskExecutor
+    from ansible.executor.task_result import TaskResult
+    from ansible.inventory.host import Host
+    from ansible.inventory.manager import InventoryManager
+    from ansible.vars.manager import VariableManager
+    from ansible.playbook.task import Task
+    from ansible.utils.context_objects import CLIArgs
+    from io import StringIO
+    import json
+
+    # Mock the Ansible framework components necessary for the ActionModule
+    fake_loader = None
+    fake_inventory = InventoryManager(loader=fake_loader, sources='localhost,')
+    fake_variable_manager = VariableManager(loader=fake_loader, inventory=fake_inventory)
+    fake_host = Host(name='fake-host')
+    fake_task = Task()
+    fake_task.args = dict(src='/fake/src', dest='/fake/dest')
+    fake_play_context = PlayContext()
+
+
+# Generated at 2024-03-18 03:18:38.230756
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_assemble_from_fragments_with_delimiter(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        mock_execute_module.return_value = {}
+
+        # Set up the parameters for the action plugin
+        action_module._task.args = {
+            'src': '/path/to/fragments',
+            'dest': '/path/to/destination/file',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+
+        # Mock the necessary methods
+        with patch.object(action_module, '_find_needle', return_value='/path/to/fragments'), \
+             patch.object(action_module, '_assemble_from_fragments') as
+
+# Generated at 2024-03-18 03:18:46.202961
+```python
+    from unittest.mock import MagicMock, patch
+
+    def test_ActionModule_run():
+        # Create instance of ActionModule with mock parameters
+        action_module = ActionModule(task=MagicMock(), connection=MagicMock(), play_context=MagicMock(), loader=MagicMock(), templar=MagicMock(), shared_loader_obj=MagicMock())
+
+        # Set task variables
+        task_vars = {
+            'src': '/path/to/src',
+            'dest': '/path/to/dest',
+            'delimiter': '---\n',
+            'remote_src': False,
+            'regexp': '.*\\.txt$',
+            'follow': False,
+            'ignore_hidden': True,
+            'decrypt': True
+        }
+
+        # Mock methods called by run
+        action_module._execute_module = MagicMock()
+        action_module._execute_remote_stat = MagicMock()
+        action_module._remote_expand_user = MagicMock(return_value='/path/to/dest')
+        action_module._assemble_from_fragments =
+
+# Generated at 2024-03-18 03:18:51.973879
+```python
+    # Create a temporary directory to simulate the source directory with fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files
+        fragments = ['fragment1.txt', 'fragment2.txt', 'fragment3.txt']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Create an instance of the ActionModule with a task containing the necessary arguments
+        task = {
+            'src': src_dir,
+            'dest': '/tmp/destination.txt',
+            'delimiter': '---\n'
+        }
+        task_vars = {}
+        action_module = ActionModule(task, None, None, None, None, None)
+
+        # Run the action module
+        result = action_module.run(task_vars=task_vars)
+
+        # Verify the results
+        assert 'failed' not in result, "The action module reported a
+
+# Generated at 2024-03-18 03:18:58.733523
+```python
+    # Create a temporary directory to simulate source fragments
+    with tempfile.TemporaryDirectory() as src_dir:
+        # Create some fragment files
+        fragments = ['fragment1', 'fragment2', 'fragment3']
+        for fragment in fragments:
+            with open(os.path.join(src_dir, fragment), 'w') as f:
+                f.write("content of {}\n".format(fragment))
+
+        # Initialize the action module with a task and a loader
+        task = MagicMock()
+        loader = MagicMock()
+        connection = MagicMock()
+        play_context = MagicMock()
+        action_module = ActionModule(task, connection, play_context, loader, None, None)
+
+        # Set up the arguments for the action module
+        task.args = {
+            'src': src_dir,
+            'dest': '/path/to/destination',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': False,
+            '
+
+# Generated at 2024-03-18 03:19:05.603654
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_assemble_from_fragments_with_delimiter(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        mock_execute_module.return_value = {}
+
+        # Set up the parameters for the action plugin
+        action_module._task.args = {
+            'src': '/path/to/src',
+            'dest': '/path/to/dest',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+
+        # Mock the methods used by run
+        action_module._find_needle = MagicMock(return_value='/path/to/src')
+        action_module._assemble_from_fragments = MagicMock(return_value='/path/to/tempfile')
+        action
+
+# Generated at 2024-03-18 03:19:11.742257
+```python
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    @patch('ansible.plugins.action.ActionBase._execute_module')
+    def test_assemble_from_fragments_with_delimiter(mock_execute_module):
+        action_module = ActionModule(task={}, connection=None, play_context=None, loader=None, templar=None, shared_loader_obj=None)
+        mock_execute_module.return_value = {}
+
+        # Set up the parameters for the action plugin
+        action_module._task.args = {
+            'src': '/path/to/fragments',
+            'dest': '/path/to/destination/file',
+            'delimiter': '---\n',
+            'remote_src': 'no',
+            'regexp': None,
+            'follow': False,
+            'ignore_hidden': False,
+            'decrypt': True
+        }
+
+        # Mock the methods used by the run method
+        action_module._find_needle = MagicMock(return_value='/path/to/fragments')
+        action_module._assemble_from_f

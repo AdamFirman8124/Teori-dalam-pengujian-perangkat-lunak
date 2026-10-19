@@ -1,0 +1,1533 @@
+
+
+# Generated at 2024-03-18 06:30:46.366293
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a yield and a return statement
+    function_def = ast.FunctionDef(
+        name='test_gen',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[]
+    )
+
+    # Apply the transformer
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the tree was marked as changed
+    assert transformer._tree_changed
+
+    # Check if the return statement was replaced with the exception raising
+    assert isinstance(transformed_function_def.body[-2], ast.Assign)
+    assert isinstance(transformed_function_def.body[-1], ast.Raise)
+    assert isinstance(transformed_function_def.body[-1].exc, ast.Name)
+    assert transformed_function_def
+
+# Generated at 2024-03-18 06:30:50.900437
+```python
+    # Arrange
+    source_code = """
+    def generator_function():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def generator_function():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:30:58.176620
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a return statement in a generator
+    function_def = ast.parse(
+        "def generator():\n"
+        "    yield 1\n"
+        "    return 5"
+    ).body[0]
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the tree was changed
+    assert transformer._tree_changed
+
+    # Check if the return statement was replaced with the exception raising
+    assert isinstance(transformed_function_def.body[1], ast.Raise)
+    assert isinstance(transformed_function_def.body[1].exc, ast.Call)
+    assert isinstance(transformed_function_def.body[1].exc.func, ast.Name)
+    assert transformed_function_def.body[1].exc.func.id == 'StopIteration'
+    assert isinstance(transformed_function_def.body[1].exc.args[0], ast.Num)
+    assert transformed_function_def.body[1
+
+# Generated at 2024-03-18 06:31:04.072330
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a yield and a return statement
+    function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[]
+    )
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the function body has been transformed correctly
+    assert len(transformed_function_def.body) == 2
+    assert isinstance(transformed_function_def.body[0], ast.Expr)
+    assert isinstance(transformed_function_def.body[0].value, ast.Yield)
+    assert transformed_function_def.body[0].value.value.n == 1
+    assert isinstance(transformed_function_def.body
+
+# Generated at 2024-03-18 06:31:08.603295
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:31:13.037060
+```python
+    # Arrange
+    source_code = """
+    def generator_function():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def generator_function():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Parse source code into an AST
+    parsed_source = ast.parse(source_code)
+    expected_ast = ast.parse(expected_code)
+
+    # Act
+    transformed_ast = transformer.visit_FunctionDef(parsed_source.body[0])
+
+    # Assert
+    assert ast.dump(transformed_ast) == ast.dump(expected_ast.body[0]), "The AST nodes do not match after transformation."
+```
+
+# Generated at 2024-03-18 06:31:17.312638
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:31:21.081080
+```python
+    # Arrange
+    source_code = """
+    def generator_function():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def generator_function():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:31:27.807023
+```python
+    # Arrange
+    source_code = """
+    def generator_function():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def generator_function():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Parse source code into an AST
+    parsed_source = ast.parse(source_code)
+    expected_ast = ast.parse(expected_code)
+
+    # Act
+    transformed_ast = transformer.visit_FunctionDef(parsed_source.body[0])
+
+    # Assert
+    assert ast.dump(transformed_ast) == ast.dump(expected_ast.body[0]), "The AST nodes do not match after transformation."
+```
+
+# Generated at 2024-03-18 06:31:31.708669
+```python
+    # Arrange
+    source_code = """
+    def generator_function():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def generator_function():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:31:44.860689
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a yield and a return statement
+    function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[]
+    )
+
+    # Apply the transformer
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the tree was changed
+    assert transformer._tree_changed
+
+    # Check if the return statement was replaced with the exception raising
+    assert isinstance(transformed_function_def.body[-2], ast.Assign)
+    assert isinstance(transformed_function_def.body[-1], ast.Raise)
+    assert isinstance(transformed_function_def.body[-1].exc, ast.Call)
+    assert isinstance(transformed_function_def
+
+# Generated at 2024-03-18 06:31:48.027616
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+
+    # Assert
+    assert ast.dump(transformed_ast) == ast.dump(ast.parse(expected_code))
+```
+
+# Generated at 2024-03-18 06:31:59.560017
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a yield and a return statement
+    function_def = ast.parse(
+        "def generator():\n"
+        "    yield 1\n"
+        "    return 5"
+    ).body[0]
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the tree has changed
+    assert transformer._tree_changed
+
+    # Check if the return statement is replaced with the exception raising
+    assert isinstance(transformed_function_def.body[1], ast.Expr)
+    assert isinstance(transformed_function_def.body[1].value, ast.Raise)
+    assert isinstance(transformed_function_def.body[1].value.exc, ast.Call)
+    assert isinstance(transformed_function_def.body[1].value.exc.func, ast.Name)
+    assert transformed_function_def.body[1].value.exc.func.id == 'StopIteration'
+    assert isinstance(transformed_function_def.body
+
+# Generated at 2024-03-18 06:32:09.742606
+```python
+    # Arrange
+    transformer = ReturnFromGeneratorTransformer()
+    function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[]
+    )
+
+    expected_function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Assign(
+                targets=[ast.Name(id='exc', ctx=ast.Store())],
+                value=ast.Call(
+                    func=ast.Name(id='StopIteration', ctx=ast.Load()),
+                    args=[],
+                    keywords=[]
+                )
+
+
+# Generated at 2024-03-18 06:32:17.841050
+```python
+    # Create a sample ast.FunctionDef node representing a generator function
+    function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[],
+        returns=None
+    )
+
+    # Instantiate the transformer
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the tree has been marked as changed
+    assert transformer._tree_changed
+
+    # Check if the return statement has been replaced with the exception raising
+    assert isinstance(transformed_function_def.body[-2], ast.Assign)
+    assert isinstance(transformed_function_def.body[-1], ast.Raise)
+
+    # Check if the exception
+
+# Generated at 2024-03-18 06:32:26.459965
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a yield and a return statement
+    function_def = ast.parse(
+        "def generator_function():\n"
+        "    yield 1\n"
+        "    return 5"
+    ).body[0]
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the tree has changed
+    assert transformer._tree_changed
+
+    # Check if the return statement is replaced with the exception raising
+    assert isinstance(transformed_function_def.body[1], ast.Expr)
+    assert isinstance(transformed_function_def.body[1].value, ast.Call)
+    assert isinstance(transformed_function_def.body[1].value.func, ast.Name)
+    assert transformed_function_def.body[1].value.func.id == 'StopIteration'
+    assert isinstance(transformed_function_def.body[1].value.args[0], ast.Num)
+    assert transformed_function_def.body[
+
+# Generated at 2024-03-18 06:32:30.124104
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+
+    # Assert
+    transformed_code = ast.unparse(transformed_ast)
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:32:39.477704
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a yield and a return statement
+    function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[]
+    )
+
+    # Apply the transformer
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the tree was changed
+    assert transformer._tree_changed
+
+    # Check if the return statement was replaced with the exception raising
+    assert isinstance(transformed_function_def.body[-2], ast.Assign)
+    assert isinstance(transformed_function_def.body[-1], ast.Raise)
+    assert isinstance(transformed_function_def.body[-1].exc, ast.Call)
+    assert isinstance(transformed_function_def
+
+# Generated at 2024-03-18 06:32:42.736666
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:32:50.121456
+```python
+    # Create a sample ast.FunctionDef node representing a generator function
+    function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[],
+        returns=None
+    )
+
+    # Instantiate the transformer
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the body of the transformed function definition has been modified correctly
+    assert len(transformed_function_def.body) == 3, "The body should contain three statements after transformation."
+    assert isinstance(transformed_function_def.body[0], ast.Expr), "The first statement should remain a yield expression."
+    assert isinstance(transformed
+
+# Generated at 2024-03-18 06:33:04.840729
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a yield and a return statement
+    function_def = ast.parse(
+        "def generator():\n"
+        "    yield 1\n"
+        "    return 5"
+    ).body[0]
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the tree was changed
+    assert transformer._tree_changed
+
+    # Check if the return statement was replaced with the exception raising
+    assert isinstance(transformed_function_def.body[1], ast.Expr)
+    assert isinstance(transformed_function_def.body[1].value, ast.Raise)
+    assert isinstance(transformed_function_def.body[1].value.exc, ast.Call)
+    assert isinstance(transformed_function_def.body[1].value.exc.func, ast.Name)
+    assert transformed_function_def.body[1].value.exc.func.id == 'StopIteration'
+    assert isinstance(transformed_function_def.body
+
+# Generated at 2024-03-18 06:33:12.254785
+```python
+    # Create a sample ast.FunctionDef node representing a generator function
+    function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[],
+        returns=None
+    )
+
+    # Instantiate the transformer
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the body of the transformed function definition has been modified correctly
+    assert len(transformed_function_def.body) == 3, "The body should contain three statements after transformation."
+    assert isinstance(transformed_function_def.body[0], ast.Expr), "The first statement should remain a yield expression."
+    assert isinstance(transformed
+
+# Generated at 2024-03-18 06:33:16.647309
+```python
+    # Arrange
+    source_code = """
+    def generator_function():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def generator_function():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:33:21.024754
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+
+    # Assert
+    assert ast.dump(transformed_ast) == ast.dump(ast.parse(expected_code))
+```
+
+# Generated at 2024-03-18 06:33:30.142356
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a yield and a return statement
+    function_def = ast.FunctionDef(
+        name='test_gen',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[],
+        returns=None
+    )
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the return statement is replaced with the exception raising
+    assert len(transformed_function_def.body) == 2
+    assert isinstance(transformed_function_def.body[1], ast.Raise)
+    assert isinstance(transformed_function_def.body[1].exc, ast.Call)
+    assert isinstance(transformed_function_def.body[1].exc.func, ast.Name)
+   
+
+# Generated at 2024-03-18 06:33:33.232083
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+
+    # Assert
+    assert ast.dump(transformed_ast) == ast.dump(ast.parse(expected_code))
+```
+
+# Generated at 2024-03-18 06:33:36.900411
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+
+    # Assert
+    assert ast.dump(transformed_ast) == ast.dump(ast.parse(expected_code))
+```
+
+# Generated at 2024-03-18 06:33:40.605574
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:33:45.394790
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:33:49.850818
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:34:08.106716
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:34:13.269435
+```python
+    # Arrange
+    source_code = """
+    def generator_function():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def generator_function():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Parse source code into an AST
+    parsed_source = ast.parse(source_code)
+    expected_ast = ast.parse(expected_code)
+
+    # Act
+    transformed_ast = transformer.visit_FunctionDef(parsed_source.body[0])
+
+    # Assert
+    assert ast.dump(transformed_ast) == ast.dump(expected_ast.body[0]), "The AST nodes do not match after transformation."
+```
+
+# Generated at 2024-03-18 06:34:19.135097
+```python
+    # Arrange
+    transformer = ReturnFromGeneratorTransformer()
+    function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[],
+        returns=None
+    )
+
+    expected_function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Assign(
+                targets=[ast.Name(id='exc', ctx=ast.Store())],
+                value=ast.Call(
+                    func=ast.Name(id='StopIteration', ctx=ast.Load()),
+                    args=[],
+
+
+# Generated at 2024-03-18 06:34:27.868996
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a yield and a return statement
+    function_def = ast.parse(
+        "def generator_function():\n"
+        "    yield 1\n"
+        "    return 5"
+    ).body[0]
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the tree was changed
+    assert transformer._tree_changed
+
+    # Check if the return statement was replaced with the exception raising
+    assert isinstance(transformed_function_def.body[-2], ast.Assign)
+    assert isinstance(transformed_function_def.body[-1], ast.Raise)
+    assert isinstance(transformed_function_def.body[-1].exc, ast.Call)
+    assert transformed_function_def.body[-1].exc.func.id == 'StopIteration'
+    assert transformed_function_def.body[-1].exc.args[0].value == 5
+```
+
+# Generated at 2024-03-18 06:34:30.795655
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:34:36.743449
+```python
+    # Arrange
+    transformer = ReturnFromGeneratorTransformer()
+    function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[]
+    )
+
+    expected_function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Assign(
+                targets=[ast.Name(id='exc', ctx=ast.Store())],
+                value=ast.Call(
+                    func=ast.Name(id='StopIteration', ctx=ast.Load()),
+                    args=[],
+                    keywords=[]
+                )
+
+
+# Generated at 2024-03-18 06:34:48.392966
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a yield and a return statement
+    function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[]
+    )
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the return statement is replaced with the exception raising
+    assert len(transformed_function_def.body) == 2
+    assert isinstance(transformed_function_def.body[0], ast.Expr)
+    assert isinstance(transformed_function_def.body[0].value, ast.Yield)
+    assert isinstance(transformed_function_def.body[1], ast.Raise)
+    assert isinstance(transformed_function_def.body
+
+# Generated at 2024-03-18 06:34:53.466907
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Parse source code into an AST
+    parsed_source = ast.parse(source_code)
+    expected_ast = ast.parse(expected_code)
+
+    # Act
+    transformed_ast = transformer.visit_FunctionDef(parsed_source.body[0])
+
+    # Assert
+    assert ast.dump(transformed_ast) == ast.dump(expected_ast.body[0]), "The AST nodes do not match after transformation."
+```
+
+# Generated at 2024-03-18 06:34:58.664632
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:35:04.159956
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a yield and a return statement
+    function_def = ast.parse(
+        "def generator():\n"
+        "    yield 1\n"
+        "    return 5"
+    ).body[0]
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the tree was changed
+    assert transformer._tree_changed
+
+    # Check if the return statement was replaced with the exception raising
+    assert isinstance(transformed_function_def.body[-2], ast.Assign)
+    assert isinstance(transformed_function_def.body[-1], ast.Raise)
+    assert isinstance(transformed_function_def.body[-1].exc, ast.Call)
+    assert transformed_function_def.body[-1].exc.func.id == 'StopIteration'
+    assert transformed_function_def.body[-1].exc.args[0].value == 5
+```
+
+# Generated at 2024-03-18 06:35:39.442579
+```python
+    # Arrange
+    source_code = """
+    def generator_function():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def generator_function():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:35:43.137987
+```python
+    # Arrange
+    source_code = """
+    def generator_function():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def generator_function():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:35:51.122275
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a yield and a return statement
+    function_def = ast.FunctionDef(
+        name='test_gen',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[],
+        returns=None
+    )
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the tree was changed
+    assert transformer._tree_changed
+
+    # Check if the return statement was replaced with the exception raising
+    assert isinstance(transformed_function_def.body[-2], ast.Assign)
+    assert isinstance(transformed_function_def.body[-1], ast.Raise)
+    assert isinstance(transformed_function_def.body[-1].exc, ast.Call)
+   
+
+# Generated at 2024-03-18 06:35:54.135422
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+
+    # Assert
+    assert ast.dump(transformed_ast) == ast.dump(ast.parse(expected_code))
+```
+
+# Generated at 2024-03-18 06:36:02.685704
+```python
+    # Arrange
+    transformer = ReturnFromGeneratorTransformer()
+    function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[]
+    )
+
+    expected_function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Assign(
+                targets=[ast.Name(id='exc', ctx=ast.Store())],
+                value=ast.Call(
+                    func=ast.Name(id='StopIteration', ctx=ast.Load()),
+                    args=[],
+                    keywords=[]
+                )
+
+
+# Generated at 2024-03-18 06:36:08.949690
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a yield and a return statement
+    function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[]
+    )
+
+    # Apply the transformer
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the tree has changed
+    assert transformer._tree_changed
+
+    # Check if the return statement has been replaced with the exception raising
+    assert isinstance(transformed_function_def.body[-2], ast.Assign)
+    assert isinstance(transformed_function_def.body[-1], ast.Raise)
+    assert isinstance(transformed_function_def.body[-1].exc, ast.Call)
+    assert isinstance(transformed_function
+
+# Generated at 2024-03-18 06:36:15.496563
+```python
+    # Create a sample ast.FunctionDef node representing a generator function
+    function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[],
+        returns=None
+    )
+
+    # Instantiate the transformer
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the body of the transformed function definition has the correct form
+    assert len(transformed_function_def.body) == 3, "The body should contain three statements."
+    assert isinstance(transformed_function_def.body[0], ast.Expr), "The first statement should be an expression."
+    assert isinstance(transformed_function_def.body
+
+# Generated at 2024-03-18 06:36:20.152092
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:36:27.845151
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a yield and a return statement
+    function_def = ast.FunctionDef(
+        name='test_generator',
+        args=ast.arguments(args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+        body=[
+            ast.Expr(value=ast.Yield(value=ast.Num(n=1))),
+            ast.Return(value=ast.Num(n=5))
+        ],
+        decorator_list=[]
+    )
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the return statement is replaced with the exception raising
+    assert len(transformed_function_def.body) == 3, "The body should contain three statements after transformation."
+    assert isinstance(transformed_function_def.body[1], ast.Assign), "The second statement should be an assignment of StopIteration."
+    assert isinstance(transformed_function_def.body[2], ast.Raise), "The third
+
+# Generated at 2024-03-18 06:36:32.772884
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:37:50.733632
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:37:54.412340
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:38:04.045767
+```python
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Define a function with a return statement in a generator
+    function_def = ast.parse(
+        "def generator():\n"
+        "    yield 1\n"
+        "    return 5"
+    ).body[0]
+
+    # Transform the function definition
+    transformed_function_def = transformer.visit_FunctionDef(function_def)
+
+    # Check if the tree was changed
+    assert transformer._tree_changed
+
+    # Check if the return statement was replaced with the exception raising
+    assert isinstance(transformed_function_def.body[1], ast.Raise)
+    assert isinstance(transformed_function_def.body[1].exc, ast.Call)
+    assert isinstance(transformed_function_def.body[1].exc.func, ast.Name)
+    assert transformed_function_def.body[1].exc.func.id == 'StopIteration'
+    assert isinstance(transformed_function_def.body[1].exc.args[0], ast.Num)
+    assert transformed_function_def.body[1
+
+# Generated at 2024-03-18 06:38:07.494185
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+
+    # Assert
+    assert ast.dump(transformed_ast) == ast.dump(ast.parse(expected_code))
+```
+
+# Generated at 2024-03-18 06:38:11.964163
+```python
+    # Arrange
+    source_code = """
+    def generator_function():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def generator_function():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Parse source code into an AST
+    parsed_source = ast.parse(source_code)
+    expected_ast = ast.parse(expected_code)
+
+    # Act
+    transformed_ast = transformer.visit_FunctionDef(parsed_source.body[0])
+
+    # Assert
+    assert ast.dump(transformed_ast) == ast.dump(expected_ast.body[0]), "The AST nodes do not match after transformation."
+```
+
+# Generated at 2024-03-18 06:38:17.356352
+```python
+    # Arrange
+    source_code = """
+    def generator_function():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def generator_function():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:38:21.642374
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```
+
+# Generated at 2024-03-18 06:38:25.018725
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+
+    # Assert
+    assert ast.dump(transformed_ast) == ast.dump(ast.parse(expected_code))
+```
+
+# Generated at 2024-03-18 06:38:29.900292
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+
+    # Assert
+    assert ast.dump(transformed_ast) == ast.dump(ast.parse(expected_code))
+```
+
+# Generated at 2024-03-18 06:38:33.412854
+```python
+    # Arrange
+    source_code = """
+    def test_gen():
+        yield 1
+        return 5
+    """
+    expected_code = """
+    def test_gen():
+        yield 1
+        exc = StopIteration()
+        exc.value = 5
+        raise exc
+    """
+    transformer = ReturnFromGeneratorTransformer()
+
+    # Act
+    transformed_ast = transformer.visit(ast.parse(source_code))
+    transformed_code = ast.unparse(transformed_ast)
+
+    # Assert
+    assert transformed_code.strip() == expected_code.strip()
+```

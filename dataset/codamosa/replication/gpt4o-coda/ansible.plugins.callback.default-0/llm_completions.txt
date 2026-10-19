@@ -1,0 +1,1897 @@
+
+
+# Generated at 2024-06-01 04:39:51.410699
+```python
+    from unittest.mock import Mock
+
+    # Create a mock display object
+    mock_display = Mock()
+    mock_handler = Mock()
+    mock_host = Mock()
+    mock_handler.get_name.return_value = "test_handler"
+    mock_host.get_name.return_value = "test_host"
+
+    # Create an instance of the class with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = mock_display
+
+    # Set verbosity to a value greater than 1 to trigger the display
+    callback_module._display.verbosity = 2
+
+    # Call the method
+    callback_module.v2_playbook_on_notify(mock_handler, mock_host)
+
+    # Check if the display method was called with the expected message
+    mock_display.display.assert_called_with("NOTIFIED HANDLER test_handler for test_host", color=C.COLOR_VERBOSE, screen_only=True)
+```
+
+# Generated at 2024-06-01 04:39:55.018375
+```python
+    from unittest.mock import Mock
+
+    # Create a mock display object
+    mock_display = Mock()
+
+    # Create a mock task object
+    mock_task = Mock()
+    mock_task.get_name.return_value = "test_task"
+
+    # Create a mock host
+    mock_host = "test_host"
+
+    # Create an instance of the CallbackModule with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = mock_display
+
+    # Set the option to show per host start
+    callback_module.get_option = Mock(return_value=True)
+
+    # Call the method
+    callback_module.v2_runner_on_start(mock_host, mock_task)
+
+    # Check if the display method was called with the correct parameters
+    mock_display.display.assert_called_with(" [started test_task on test_host]", color=C.COLOR_OK)
+```
+
+# Generated at 2024-06-01 04:39:58.048692
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock result object
+    result = Mock()
+    result.task_name = "Sample Task"
+    result._task = "Sample Task"
+    result._result = {'retries': 5, 'attempts': 2}
+    result._host = Mock()
+    result._host.get_name.return_value = "localhost"
+
+    # Create a mock display object
+    display = Mock()
+
+    # Create an instance of CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+
+    # Call the method
+    callback.v2_runner_retry(result)
+
+    # Check if the display method was called with the expected message
+    expected_msg = "FAILED - RETRYING: [localhost]: Sample Task (3 retries left)."
+    display.display.assert_called_with(expected_msg, color='blue')
+```
+
+# Generated at 2024-06-01 04:40:01.165801
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+    from ansible.executor.task_result import TaskResult
+
+    # Create a mock display object
+    display = Mock()
+
+    # Create a mock task object
+    task = Mock()
+    task.no_log = False
+    task.args = {'arg1': 'value1'}
+    task._uuid = '1234'
+    task.get_name.return_value = 'Test Task'
+    task.check_mode = False
+
+    # Create a mock result object
+    result = Mock(spec=TaskResult)
+    result._task = task
+    result._host.get_name.return_value = 'localhost'
+    result._result = {'changed': True, 'item': 'item1'}
+    result.task_name = 'Test Task'
+
+    # Create an instance of CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+    callback._last_task_banner = None
+
+
+# Generated at 2024-06-01 04:40:04.057747
+```python
+    from ansible.plugins.callback import CallbackModule
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.manager import InventoryManager
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.executor.playbook_executor import PlaybookExecutor
+    from ansible import context
+
+    # Create a mock options object
+    class MockOptions:
+        def __init__(self):
+            self.display_skipped_hosts = True
+            self.display_ok_hosts = True
+            self.show_per_host_start = True
+            self.check_mode_markers = True
+            self.show_custom_stats = True
+
+    # Create a mock display object
+    class MockDisplay:
+        def __init__(self):
+            self.verbosity = 2
+
+        def display(self, msg, color=None, screen_only=False, log_only=False, stderr=False):
+            pass
+
+        def banner(self, msg):
+
+
+# Generated at 2024-06-01 04:40:06.842874
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock display object
+    display_mock = MagicMock()
+
+    # Create a mock task object
+    task_mock = MagicMock()
+    task_mock.loop = True
+    task_mock._uuid = '1234'
+    task_mock.get_name.return_value = 'Test Task'
+
+    # Create a mock result object
+    result_mock = MagicMock()
+    result_mock._task = task_mock
+    result_mock._result = {
+        'results': [
+            {'diff': 'diff content', 'changed': True}
+        ]
+    }
+
+    # Create an instance of the CallbackModule with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = display_mock
+    callback_module._last_task_banner = None
+
+    # Call the method
+    callback_module.v2_on_file_diff(result_mock)
+
+    # Assertions
+    display_mock.banner.assert_called_once_with('TASK [Test Task diff content]')
+
+
+# Generated at 2024-06-01 04:40:10.613769
+```python
+    from unittest.mock import Mock
+
+    # Create a mock result object
+    result = Mock()
+    result._task._uuid = '1234'
+    result._host.get_name.return_value = 'localhost'
+    result._result = {'failed': True, 'msg': 'An error occurred'}
+
+    # Create a mock display object
+    display = Mock()
+
+    # Create an instance of the CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+    callback._last_task_banner = None
+
+    # Call the method
+    callback.v2_runner_on_failed(result)
+
+    # Assertions
+    display.display.assert_called()
+    assert display.display.call_args[0][0].startswith("failed: [localhost]")
+    assert callback._last_task_banner == '1234'
+```
+
+# Generated at 2024-06-01 04:40:17.559169
+```python
+    from ansible.plugins.callback import CallbackModule
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.manager import InventoryManager
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.executor.playbook_executor import PlaybookExecutor
+    from ansible import context
+
+    # Create a mock display object
+    class MockDisplay:
+        def __init__(self):
+            self.messages = []
+
+        def display(self, msg, color=None, screen_only=False, log_only=False):
+            self.messages.append(msg)
+
+        def banner(self, msg):
+            self.messages.append(msg)
+
+    # Create a mock options object
+    class MockOptions:
+        def __init__(self, **kwargs):
+            self.__dict__.update(kwargs)
+
+    # Initialize the necessary objects
+    display = MockDisplay()
+    options = MockOptions()
+    loader = DataLoader()
+    inventory = Inventory
+
+# Generated at 2024-06-01 04:40:20.099435
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock for the display object
+    display_mock = Mock()
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+    callback_module._display = display_mock
+
+    # Create a mock for the options
+    options_mock = Mock()
+    options_mock.display_skipped_hosts = True
+    options_mock.display_ok_hosts = True
+    options_mock.show_per_host_start = True
+    options_mock.show_custom_stats = True
+
+    # Call the set_options method
+    callback_module.set_options(options=options_mock)
+
+    # Assert that the options were set correctly
+    assert callback_module.display_skipped_hosts == options_mock.display_skipped_hosts
+    assert callback_module.display_ok_hosts == options_mock.display_ok_hosts
+    assert callback_module.show_per_host_start == options_mock.show_per_host_start
+    assert callback_module.show_custom_stats == options_mock.show
+
+# Generated at 2024-06-01 04:40:22.533383
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock play object
+    play = Mock()
+    play.get_name.return_value = "Test Play"
+    play.check_mode = False
+
+    # Create a mock display object
+    display = Mock()
+    display.verbosity = 1
+
+    # Create an instance of CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+    callback.check_mode_markers = True
+
+    # Call the method
+    callback.v2_playbook_on_play_start(play)
+
+    # Assertions
+    display.banner.assert_called_once_with("PLAY [Test Play]")
+    assert callback._play == play
+```
+
+# Generated at 2024-06-01 04:40:40.109028
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock result object
+    result = MagicMock()
+    result._task._uuid = '1234'
+    result._host.get_name.return_value = 'localhost'
+    result._result = {
+        'failed': True,
+        'item': 'test_item',
+        'msg': 'An error occurred'
+    }
+
+    # Create a mock display object
+    display = MagicMock()
+
+    # Create an instance of the CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+    callback._last_task_banner = None
+
+    # Call the method
+    callback.v2_runner_item_on_failed(result)
+
+    # Assertions
+    display.display.assert_called()
+    assert display.display.call_args[0][0].startswith("failed: [localhost] (item=test_item) =>")
+```
+
+# Generated at 2024-06-01 04:40:43.211922
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock result object
+    result = Mock()
+    result.task_name = "Sample Task"
+    result._task = "Sample Task"
+    result._result = {'retries': 5, 'attempts': 2}
+    result._host.get_name.return_value = "localhost"
+
+    # Create an instance of the CallbackModule
+    callback = CallbackModule()
+    callback._display = Mock()
+    callback.host_label = Mock(return_value="localhost")
+    callback._run_is_verbose = Mock(return_value=False)
+    callback._dump_results = Mock(return_value="Sample Result")
+
+    # Call the method
+    callback.v2_runner_retry(result)
+
+    # Assertions
+    callback._display.display.assert_called_once_with(
+        "FAILED - RETRYING: [localhost]: Sample Task (3 retries left).",
+        color=C.COLOR_DEBUG
+    )
+```
+
+# Generated at 2024-06-01 04:40:46.883805
+```python
+    from unittest.mock import Mock
+
+    # Create a mock result object
+    result = Mock()
+    result._task = Mock()
+    result._task._uuid = '1234'
+    result._task.action = 'test_action'
+    result._result = {'changed': True}
+    result._host = Mock()
+    result._host.get_name.return_value = 'localhost'
+
+    # Create a mock display object
+    display = Mock()
+    display.verbosity = 1
+
+    # Create an instance of the CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+    callback._last_task_banner = None
+    callback.display_ok_hosts = True
+
+    # Call the method
+    callback.v2_runner_on_ok(result)
+
+    # Assertions
+    display.display.assert_called()
+    assert callback._last_task_banner == '1234'
+```
+
+# Generated at 2024-06-01 04:40:50.114117
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock result object
+    result = MagicMock()
+    result._task._uuid = '1234'
+    result._host.get_name.return_value = 'localhost'
+    result._result = {'failed': True, 'msg': 'An error occurred'}
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+    callback_module._last_task_banner = None
+    callback_module._print_task_banner = MagicMock()
+    callback_module.host_label = MagicMock(return_value='localhost')
+    callback_module._clean_results = MagicMock()
+    callback_module._handle_exception = MagicMock()
+    callback_module._handle_warnings = MagicMock()
+    callback_module._display = MagicMock()
+    callback_module.display_failed_stderr = True
+
+    # Call the method
+    callback_module.v2_runner_item_on_failed(result)
+
+    # Assertions
+    callback_module._print_task_banner.assert_called_once_with(result
+
+# Generated at 2024-06-01 04:40:54.434533
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock result object
+    result = MagicMock()
+    result._task.loop = True
+    result._result = {
+        'results': [
+            {'diff': 'diff content', 'changed': True},
+            {'diff': '', 'changed': False},
+            {'diff': 'another diff content', 'changed': True}
+        ]
+    }
+    result._task._uuid = 'task-uuid'
+
+    # Create a mock display object
+    display = MagicMock()
+
+    # Create an instance of the CallbackModule with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = display
+    callback_module._last_task_banner = None
+
+    # Mock the _get_diff method to return the diff content
+    callback_module._get_diff = MagicMock(side_effect=lambda diff: diff)
+
+    # Call the method
+    callback_module.v2_on_file_diff(result)
+
+    # Assertions
+
+
+# Generated at 2024-06-01 04:40:57.641365
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock display object
+    mock_display = Mock()
+
+    # Create a mock result object
+    mock_result = Mock()
+    mock_result._host.get_name.return_value = 'test_host'
+    mock_result._result.get.side_effect = lambda key: {
+        'ansible_job_id': '12345',
+        'started': '2023-10-01 12:00:00',
+        'finished': '2023-10-01 12:05:00'
+    }.get(key)
+
+    # Instantiate the CallbackModule and set the mock display
+    callback = CallbackModule()
+    callback._display = mock_display
+
+    # Call the method
+    callback.v2_runner_on_async_poll(mock_result)
+
+    # Assert the display method was called with the expected message
+    mock_display.display.assert_called_with(
+        'ASYNC POLL on test_host
+
+# Generated at 2024-06-01 04:41:02.453131
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock display object
+    mock_display = Mock()
+
+    # Create an instance of CallbackModule with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = mock_display
+
+    # Define options to set
+    options = {
+        'display_skipped_hosts': True,
+        'display_ok_hosts': True,
+        'show_per_host_start': True,
+        'show_custom_stats': True,
+        'check_mode_markers': True,
+        'display_failed_stderr': True
+    }
+
+    # Set options
+    callback_module.set_options(options)
+
+    # Assert that options are set correctly
+    assert callback_module.display_skipped_hosts == options['display_skipped_hosts']
+    assert callback_module.display_ok_hosts == options['display_ok_hosts']
+    assert callback_module.show_per_host_start == options['show_per_host_start']
+    assert callback_module.show
+
+# Generated at 2024-06-01 04:41:05.688681
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+    from ansible.executor.task_result import TaskResult
+    from ansible.playbook.task import Task
+
+    # Create a mock display object
+    display = Mock()
+
+    # Create a mock task object
+    task = Mock(spec=Task)
+    task.no_log = False
+    task.args = {'arg1': 'value1'}
+    task.get_name.return_value = 'Test Task'
+    task._uuid = '1234'
+
+    # Create a mock result object
+    result = Mock(spec=TaskResult)
+    result._task = task
+    result._host.get_name.return_value = 'localhost'
+    result._result = {'changed': True, 'item': 'item1'}
+    result._task.action = 'action'
+
+    # Create an instance of CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+    callback.display
+
+# Generated at 2024-06-01 04:41:09.093490
+```python
+    from unittest.mock import Mock
+
+    # Create a mock result object
+    result = Mock()
+    result._task = Mock()
+    result._task._uuid = '1234'
+    result._task.action = 'test_action'
+    result._result = {'changed': True}
+    result._host = Mock()
+    result._host.get_name.return_value = 'localhost'
+
+    # Create a mock display object
+    display = Mock()
+    display.verbosity = 1
+
+    # Create an instance of the CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+    callback._last_task_banner = None
+    callback.display_ok_hosts = True
+
+    # Call the method
+    callback.v2_runner_on_ok(result)
+
+    # Assertions
+    display.display.assert_called()
+    assert callback._last_task_banner == '1234'
+```
+
+# Generated at 2024-06-01 04:41:12.480647
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+    from ansible.executor.task_result import TaskResult
+
+    # Create a mock display object
+    display = Mock()
+
+    # Create a mock result object
+    result = Mock(spec=TaskResult)
+    result._host.get_name.return_value = 'localhost'
+    result._result = {'ansible_job_id': '12345'}
+
+    # Create an instance of the CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+
+    # Call the method
+    callback.v2_runner_on_async_failed(result)
+
+    # Check that the display method was called with the expected message
+    display.display.assert_called_with("ASYNC FAILED on localhost: jid=12345", color='blue')
+```
+
+# Generated at 2024-06-01 04:41:30.152511
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+    from ansible.executor.task_result import TaskResult
+
+    # Create a mock display object
+    display = Mock()
+
+    # Create a mock task object
+    task = Mock()
+    task._uuid = '1234'
+    task.action = 'test_action'
+
+    # Create a mock result object
+    result = Mock(spec=TaskResult)
+    result._task = task
+    result._host.get_name.return_value = 'localhost'
+    result._result = {'changed': True, 'item': 'test_item'}
+
+    # Create an instance of CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+    callback._last_task_banner = None
+    callback.display_ok_hosts = True
+
+    # Call the method
+    callback.v2_runner_item_on_ok(result)
+
+    # Assertions
+    display.display.assert_called()
+    assert callback._
+
+# Generated at 2024-06-01 04:41:33.387520
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock result object
+    result = MagicMock()
+    result._host.get_name.return_value = 'test_host'
+    result._result = {'ansible_job_id': '12345'}
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+    callback_module._display = MagicMock()
+
+    # Call the method
+    callback_module.v2_runner_on_async_failed(result)
+
+    # Assert the display method was called with the expected message
+    callback_module._display.display.assert_called_with("ASYNC FAILED on test_host: jid=12345", color=C.COLOR_DEBUG)
+```
+
+# Generated at 2024-06-01 04:41:36.357741
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock result object
+    result = MagicMock()
+    result._task.loop = True
+    result._result = {
+        'results': [
+            {'diff': 'diff content', 'changed': True},
+            {'diff': '', 'changed': False},
+            {'diff': 'another diff content', 'changed': True}
+        ]
+    }
+    result._task._uuid = '1234'
+
+    # Create a mock display object
+    display = MagicMock()
+    
+    # Create an instance of the class with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = display
+    callback_module._last_task_banner = None
+
+    # Mock the methods used within v2_on_file_diff
+    callback_module._get_diff = MagicMock(side_effect=lambda x: x)
+    callback_module._print_task_banner = MagicMock()
+
+    # Call the method
+    callback_module.v2
+
+# Generated at 2024-06-01 04:41:39.358281
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+    from ansible.executor.task_result import TaskResult
+
+    # Create a mock display object
+    display = Mock()
+
+    # Create a mock task object
+    task = Mock()
+    task.no_log = False
+    task.args = {'arg1': 'value1'}
+    task._uuid = '1234'
+    task.get_name.return_value = 'Test Task'
+    task.check_mode = False
+
+    # Create a mock result object
+    result = Mock(spec=TaskResult)
+    result._task = task
+    result._host.get_name.return_value = 'localhost'
+    result._result = {'changed': True}
+    result._task._uuid = '1234'
+
+    # Create an instance of the CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+    callback.display_ok_hosts = True
+    callback._last_task
+
+# Generated at 2024-06-01 04:41:41.416135
+```python
+    from unittest.mock import Mock
+
+    # Create a mock display object
+    mock_display = Mock()
+
+    # Create an instance of the class with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = mock_display
+
+    # Set the option to show per host start
+    callback_module.get_option = Mock(return_value=True)
+
+    # Create mock host and task
+    host = "localhost"
+    task = "test_task"
+
+    # Call the method
+    callback_module.v2_runner_on_start(host, task)
+
+    # Assert that the display method was called with the correct message
+    mock_display.display.assert_called_with(" [started test_task on localhost]", color=C.COLOR_OK)
+```
+
+# Generated at 2024-06-01 04:41:44.610331
+```python
+    from unittest.mock import Mock
+
+    # Create a mock display object
+    mock_display = Mock()
+
+    # Create a mock stats object
+    mock_stats = Mock()
+    mock_stats.processed = {'host1': {}, 'host2': {}}
+    mock_stats.summarize.side_effect = [
+        {'ok': 1, 'changed': 2, 'unreachable': 0, 'failures': 0, 'skipped': 1, 'rescued': 0, 'ignored': 0},
+        {'ok': 2, 'changed': 1, 'unreachable': 0, 'failures': 1, 'skipped': 0, 'rescued': 0, 'ignored': 0}
+    ]
+    mock_stats.custom = {}
+
+    # Create an instance of the CallbackModule with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = mock_display
+
+    # Call
+
+# Generated at 2024-06-01 04:41:47.008586
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock result object
+    result = MagicMock()
+    result._task = MagicMock()
+    result._task._uuid = '1234'
+    result._task.action = 'test_action'
+    result._result = {'changed': True}
+    result._host.get_name.return_value = 'localhost'
+
+    # Create a mock display object
+    display = MagicMock()
+    
+    # Create an instance of the CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+    callback._last_task_banner = None
+    callback.display_ok_hosts = True
+
+    # Call the method
+    callback.v2_runner_on_ok(result)
+
+    # Assertions
+    display.display.assert_called()
+    assert callback._last_task_banner == '1234'
+```
+
+# Generated at 2024-06-01 04:41:50.227731
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock result object
+    result = MagicMock()
+    result._task = MagicMock()
+    result._task._uuid = '1234'
+    result._task.action = 'test_action'
+    result._result = {'changed': True}
+    result._host.get_name.return_value = 'localhost'
+
+    # Create a mock display object
+    display = MagicMock()
+    
+    # Create an instance of the CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+    callback._last_task_banner = None
+    callback.display_ok_hosts = True
+
+    # Call the method
+    callback.v2_runner_on_ok(result)
+
+    # Assertions
+    display.display.assert_called()
+    assert callback._last_task_banner == '1234'
+```
+
+# Generated at 2024-06-01 04:41:53.840197
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock display object
+    mock_display = Mock()
+    mock_context = Mock()
+    mock_context.CLIARGS = {'check': False}
+
+    # Create an instance of the CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = mock_display
+    callback.check_mode_markers = True
+
+    # Create a mock playbook object
+    mock_playbook = Mock()
+    mock_playbook._file_name = 'test_playbook.yml'
+
+    # Test with verbosity > 1
+    mock_display.verbosity = 2
+    callback.v2_playbook_on_start(mock_playbook)
+    mock_display.banner.assert_called_with("PLAYBOOK: test_playbook.yml")
+
+    # Test with verbosity <= 1
+    mock_display.reset_mock()
+    mock_display.verbosity = 1
+    callback.v2_playbook_on_start(mock_playbook
+
+# Generated at 2024-06-01 04:41:57.585718
+```python
+    from unittest.mock import Mock
+
+    # Create a mock result object
+    result = Mock()
+    result._task = Mock()
+    result._task._uuid = '1234'
+    result._host = Mock()
+    result._host.get_name.return_value = 'localhost'
+    result._result = {'item': 'test_item'}
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+    callback_module._last_task_banner = None
+    callback_module.display_skipped_hosts = True
+    callback_module._print_task_banner = Mock()
+    callback_module._clean_results = Mock()
+    callback_module._run_is_verbose = Mock(return_value=False)
+    callback_module._dump_results = Mock()
+    callback_module._display = Mock()
+
+    # Call the method
+    callback_module.v2_runner_on_skipped(result)
+
+    # Assertions
+    callback_module._print_task_banner.assert_called_once_with(result._task)
+    callback_module._clean_results
+
+# Generated at 2024-06-01 04:42:15.122875
+```python
+    callback_module = CallbackModule()
+    options = {
+        'display_skipped_hosts': True,
+        'display_ok_hosts': True,
+        'show_per_host_start': True,
+        'show_custom_stats': True,
+        'check_mode_markers': True
+    }
+    callback_module.set_options(options)
+    assert callback_module.display_skipped_hosts == True
+    assert callback_module.display_ok_hosts == True
+    assert callback_module.show_per_host_start == True
+    assert callback_module.show_custom_stats == True
+    assert callback_module.check_mode_markers == True
+```
+
+# Generated at 2024-06-01 04:42:17.632009
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock result object
+    result = Mock()
+    result._host.get_name.return_value = 'test_host'
+    result._result.get.side_effect = lambda key: 'test_jid' if key == 'ansible_job_id' else None
+
+    # Create a mock display object
+    display = Mock()
+
+    # Create an instance of CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+
+    # Call the method
+    callback.v2_runner_on_async_failed(result)
+
+    # Assert the display method was called with the expected message
+    display.display.assert_called_with("ASYNC FAILED on test_host: jid=test_jid", color='blue')
+```
+
+# Generated at 2024-06-01 04:42:20.225521
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock display object
+    mock_display = Mock()
+
+    # Create an instance of the CallbackModule with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = mock_display
+
+    # Create a mock result object
+    mock_result = Mock()
+    mock_result._host.get_name.return_value = 'test_host'
+    mock_result._result.get.return_value = 'test_jid'
+
+    # Call the method
+    callback_module.v2_runner_on_async_ok(mock_result)
+
+    # Assert the display method was called with the expected message
+    mock_display.display.assert_called_with("ASYNC OK on test_host: jid=test_jid", color='blue')
+```
+
+# Generated at 2024-06-01 04:42:22.987473
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock result object
+    result = MagicMock()
+    result._task._uuid = '1234'
+    result._host.get_name.return_value = 'localhost'
+    result._result = {'failed': True, 'msg': 'An error occurred'}
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+    callback_module._last_task_banner = '5678'
+    callback_module._print_task_banner = MagicMock()
+    callback_module.host_label = MagicMock(return_value='localhost')
+    callback_module._clean_results = MagicMock()
+    callback_module._handle_exception = MagicMock()
+    callback_module._handle_warnings = MagicMock()
+    callback_module._display = MagicMock()
+    callback_module.display_failed_stderr = True
+
+    # Call the method
+    callback_module.v2_runner_item_on_failed(result)
+
+    # Assertions
+    callback_module._print_task_banner.assert_called_once
+
+# Generated at 2024-06-01 04:42:26.001771
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock result object
+    result = Mock()
+    result._host.get_name.return_value = 'localhost'
+    result._result.get.side_effect = lambda key: {
+        'ansible_job_id': '12345',
+        'started': '2023-10-01 12:00:00',
+        'finished': '2023-10-01 12:05:00'
+    }.get(key)
+
+    # Create a mock display object
+    display = Mock()
+
+    # Create an instance of CallbackModule and set the display attribute
+    callback = CallbackModule()
+    callback._display = display
+
+    # Call the method
+    callback.v2_runner_on_async_poll(result)
+
+    # Assert the display method was called with the expected message
+    display.display.assert_called_with(
+        'ASYNC POLL on localhost: jid=12345 started=
+
+# Generated at 2024-06-01 04:42:29.924668
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+    from ansible.playbook.included_file import IncludedFile
+
+    # Create a mock display object
+    display = Mock()
+
+    # Create an instance of the CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+
+    # Create a mock included_file object
+    included_file = Mock(spec=IncludedFile)
+    included_file._filename = 'test_file.yml'
+    included_file._hosts = [Mock(name='host1'), Mock(name='host2')]
+    included_file._vars = {}
+
+    # Call the method
+    callback.v2_playbook_on_include(included_file)
+
+    # Check that the display method was called with the expected message
+    expected_msg = 'included: test_file.yml for host1, host2'
+    display.display.assert_called_with(expected_msg, color=C.COLOR_SKIP)
+```
+
+# Generated at 2024-06-01 04:42:31.725504
+```python
+    callback_module = CallbackModule()
+    options = {
+        'display_skipped_hosts': True,
+        'display_ok_hosts': True,
+        'show_per_host_start': True,
+        'show_custom_stats': True,
+        'check_mode_markers': True
+    }
+    callback_module.set_options(options)
+    assert callback_module.display_skipped_hosts == True
+    assert callback_module.display_ok_hosts == True
+    assert callback_module.show_per_host_start == True
+    assert callback_module.show_custom_stats == True
+    assert callback_module.check_mode_markers == True
+```
+
+# Generated at 2024-06-01 04:42:35.677504
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+    from ansible.executor.task_result import TaskResult
+
+    # Create a mock display object
+    display = Mock()
+
+    # Create a mock task object
+    task = Mock()
+    task._uuid = '1234'
+    task.action = 'test_action'
+
+    # Create a mock result object
+    result = Mock(spec=TaskResult)
+    result._task = task
+    result._result = {'changed': True}
+    result._host = Mock()
+    result._host.get_name.return_value = 'localhost'
+
+    # Create an instance of CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+    callback._last_task_banner = None
+    callback.display_ok_hosts = True
+
+    # Call the method
+    callback.v2_runner_item_on_ok(result)
+
+    # Assertions
+    display.display.assert_called()
+    assert callback._
+
+# Generated at 2024-06-01 04:42:38.768418
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock result object
+    result = Mock()
+    result.task_name = "Sample Task"
+    result._task = "Sample Task"
+    result._result = {'retries': 5, 'attempts': 2}
+    result._host = Mock()
+    result._host.get_name.return_value = "localhost"
+
+    # Create a mock display object
+    display = Mock()
+
+    # Create an instance of CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+
+    # Call the method
+    callback.v2_runner_retry(result)
+
+    # Check if the display method was called with the expected message
+    expected_msg = "FAILED - RETRYING: [localhost]: Sample Task (3 retries left)."
+    display.display.assert_called_with(expected_msg, color='blue')
+```
+
+# Generated at 2024-06-01 04:42:42.345276
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock result object
+    result = Mock()
+    result._host.get_name.return_value = 'test_host'
+    result._result.get.side_effect = lambda key: 'test_jid' if key == 'ansible_job_id' else None
+
+    # Create a mock display object
+    display = Mock()
+
+    # Create an instance of CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+
+    # Call the method
+    callback.v2_runner_on_async_failed(result)
+
+    # Assert the display method was called with the expected message
+    display.display.assert_called_with("ASYNC FAILED on test_host: jid=test_jid", color='blue')
+```
+
+# Generated at 2024-06-01 04:43:15.163034
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock display object
+    display_mock = MagicMock()
+
+    # Create a mock task object
+    task_mock = MagicMock()
+    task_mock.loop = True
+    task_mock._uuid = "1234"
+    task_mock.no_log = False
+    task_mock.args = {"arg1": "value1"}
+    task_mock.get_name.return_value = "Test Task"
+
+    # Create a mock result object
+    result_mock = MagicMock()
+    result_mock._task = task_mock
+    result_mock._result = {
+        'results': [
+            {'diff': 'diff content', 'changed': True}
+        ]
+    }
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+    callback_module._display = display_mock
+    callback_module._last_task_banner = None
+    callback_module._task_type_cache = {}
+    callback_module.check_mode_markers = True
+   
+
+# Generated at 2024-06-01 04:43:18.876338
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock result object
+    result = MagicMock()
+    result._task._uuid = '1234'
+    result._host.get_name.return_value = 'test_host'
+    result._result = {'item': 'test_item'}
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+    callback_module._last_task_banner = None
+    callback_module.display_skipped_hosts = True
+    callback_module._print_task_banner = MagicMock()
+    callback_module._clean_results = MagicMock()
+    callback_module._run_is_verbose = MagicMock(return_value=False)
+    callback_module._display = MagicMock()
+
+    # Call the method
+    callback_module.v2_runner_on_skipped(result)
+
+    # Assertions
+    callback_module._print_task_banner.assert_called_once_with(result._task)
+    callback_module._clean_results.assert_called_once_with(result._result, result._task.action)
+    callback_module
+
+# Generated at 2024-06-01 04:43:22.972355
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock result object
+    result = MagicMock()
+    result._task._uuid = '1234'
+    result._host.get_name.return_value = 'test_host'
+    result._result = {'failed': True, 'msg': 'An error occurred'}
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+    callback_module._last_task_banner = None
+    callback_module._print_task_banner = MagicMock()
+    callback_module.host_label = MagicMock(return_value='test_host')
+    callback_module._clean_results = MagicMock()
+    callback_module._handle_exception = MagicMock()
+    callback_module._handle_warnings = MagicMock()
+    callback_module._display = MagicMock()
+    callback_module.display_failed_stderr = True
+
+    # Call the method
+    callback_module.v2_runner_item_on_failed(result)
+
+    # Assertions
+    callback_module._print_task_banner.assert_called_once
+
+# Generated at 2024-06-01 04:43:25.315139
+```python
+    from unittest.mock import Mock
+
+    # Create a mock play object
+    play = Mock()
+    play.get_name.return_value = "Test Play"
+    play.check_mode = False
+
+    # Create a mock display object
+    display = Mock()
+    display.verbosity = 1
+
+    # Create an instance of the CallbackModule with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = display
+    callback_module.check_mode_markers = True
+
+    # Call the method with the mock play object
+    callback_module.v2_playbook_on_play_start(play)
+
+    # Assert that the display banner method was called with the correct message
+    display.banner.assert_called_with("PLAY [Test Play]")
+```
+
+# Generated at 2024-06-01 04:43:28.134093
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock display object
+    mock_display = Mock()
+
+    # Create an instance of CallbackModule with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = mock_display
+
+    # Define options to set
+    options = {
+        'display_skipped_hosts': True,
+        'display_ok_hosts': True,
+        'show_per_host_start': True,
+        'show_custom_stats': True,
+        'check_mode_markers': True,
+        'display_failed_stderr': True
+    }
+
+    # Set options
+    callback_module.set_options(options)
+
+    # Assert that options are set correctly
+    assert callback_module.display_skipped_hosts == options['display_skipped_hosts']
+    assert callback_module.display_ok_hosts == options['display_ok_hosts']
+    assert callback_module.show_per_host_start == options['show_per_host_start']
+    assert callback_module.show
+
+# Generated at 2024-06-01 04:43:30.845522
+```python
+    from unittest.mock import Mock
+
+    # Create a mock display object
+    mock_display = Mock()
+    mock_display.display = Mock()
+
+    # Create a mock task object
+    mock_task = Mock()
+    mock_task.get_name.return_value = "test_task"
+
+    # Create an instance of the CallbackModule with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = mock_display
+    callback_module.get_option = Mock(return_value=True)
+
+    # Call the method with test data
+    callback_module.v2_runner_on_start("test_host", mock_task)
+
+    # Assert that the display method was called with the expected message
+    mock_display.display.assert_called_with(" [started test_task on test_host]", color=C.COLOR_OK)
+```
+
+# Generated at 2024-06-01 04:43:33.803507
+```python
+    from unittest.mock import Mock
+
+    # Create a mock result object
+    result = Mock()
+    result._task._uuid = '1234-uuid'
+    result._host.get_name.return_value = 'localhost'
+    result._result = {'failed': True, 'msg': 'An error occurred'}
+    result._task.action = 'test_action'
+
+    # Create a mock display object
+    display = Mock()
+    display_failed_stderr = True
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+    callback_module._display = display
+    callback_module.display_failed_stderr = display_failed_stderr
+    callback_module._last_task_banner = None
+
+    # Call the method
+    callback_module.v2_runner_on_failed(result)
+
+    # Assertions
+    display.display.assert_called()
+    assert display.display.call_args[0][0].startswith("failed: [localhost]")
+    assert display.display.call_args[1]['color']
+
+# Generated at 2024-06-01 04:43:38.351456
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock display object
+    mock_display = Mock()
+    mock_display.verbosity = 2
+
+    # Create a mock playbook object
+    mock_playbook = Mock()
+    mock_playbook._file_name = 'test_playbook.yml'
+
+    # Create an instance of CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = mock_display
+
+    # Set CLIARGS and check_mode_markers
+    context.CLIARGS = {'check': False, 'args': []}
+    callback.check_mode_markers = True
+
+    # Call the method
+    callback.v2_playbook_on_start(mock_playbook)
+
+    # Assertions
+    mock_display.banner.assert_called_with("PLAYBOOK: test_playbook.yml")
+```
+
+# Generated at 2024-06-01 04:43:40.231006
+```python
+    callback_module = CallbackModule()
+    options = {
+        'display_skipped_hosts': True,
+        'display_ok_hosts': True,
+        'show_per_host_start': True,
+        'show_custom_stats': True,
+        'check_mode_markers': True
+    }
+    callback_module.set_options(options)
+    assert callback_module.display_skipped_hosts == True
+    assert callback_module.display_ok_hosts == True
+    assert callback_module.show_per_host_start == True
+    assert callback_module.show_custom_stats == True
+    assert callback_module.check_mode_markers == True
+```
+
+# Generated at 2024-06-01 04:43:42.749632
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock display object
+    mock_display = Mock()
+
+    # Create an instance of the CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = mock_display
+
+    # Set the option to show per host start
+    callback.get_option = Mock(return_value=True)
+
+    # Create mock host and task
+    host = 'localhost'
+    task = 'test_task'
+
+    # Call the method
+    callback.v2_runner_on_start(host, task)
+
+    # Assert that the display method was called with the correct message
+    mock_display.display.assert_called_with(" [started test_task on localhost]", color=Mock.ANY)
+```
+
+# Generated at 2024-06-01 04:44:43.879194
+```python
+    callback_module = CallbackModule()
+    result = MagicMock()
+    result._host.get_name.return_value = 'localhost'
+    result._result = {'msg': 'Host unreachable'}
+    result._task = MagicMock()
+    result._task._uuid = '1234'
+    
+    callback_module._last_task_banner = '5678'
+    callback_module._print_task_banner = MagicMock()
+    callback_module._display = MagicMock()
+    callback_module.display_failed_stderr = True
+
+    callback_module.v2_runner_on_unreachable(result)
+
+    callback_module._print_task_banner.assert_called_once_with(result._task)
+    callback_module._display.display.assert_called_once_with(
+        "fatal: [localhost]: UNREACHABLE! => {'msg': 'Host unreachable'}",
+        color=C.COLOR_UNREACHABLE,
+        stderr=True
+    )
+```
+
+# Generated at 2024-06-01 04:44:46.934429
+```python
+    from unittest.mock import Mock
+
+    # Create a mock result object
+    result = Mock()
+    result._task = Mock()
+    result._task._uuid = '1234'
+    result._host = Mock()
+    result._host.get_name.return_value = 'localhost'
+    result._result = {'item': 'test_item'}
+
+    # Create a mock display object
+    display = Mock()
+    display_skipped_hosts = True
+
+    # Create an instance of the CallbackModule with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = display
+    callback_module.display_skipped_hosts = display_skipped_hosts
+    callback_module._last_task_banner = None
+
+    # Call the method
+    callback_module.v2_runner_on_skipped(result)
+
+    # Assertions
+    display.display.assert_called_once_with("skipping: [localhost] => (item=test_item) ", color=C.COLOR_SKIP)
+```
+
+# Generated at 2024-06-01 04:44:50.400802
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock display object
+    mock_display = Mock()
+
+    # Create a mock stats object
+    mock_stats = Mock()
+    mock_stats.processed = {
+        'host1': {'ok': 1, 'changed': 2, 'unreachable': 0, 'failures': 0, 'skipped': 1, 'rescued': 0, 'ignored': 0},
+        'host2': {'ok': 3, 'changed': 1, 'unreachable': 0, 'failures': 1, 'skipped': 0, 'rescued': 0, 'ignored': 0}
+    }
+    mock_stats.custom = {}
+
+    # Create an instance of CallbackModule and set the display attribute
+    callback_module = CallbackModule()
+    callback_module._display = mock_display
+
+    # Call the method
+
+# Generated at 2024-06-01 04:44:53.178197
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock display object
+    mock_display = Mock()
+
+    # Create a mock stats object
+    mock_stats = Mock()
+    mock_stats.processed = {
+        'host1': {},
+        'host2': {}
+    }
+    mock_stats.summarize.side_effect = [
+        {'ok': 1, 'changed': 2, 'unreachable': 0, 'failures': 1, 'skipped': 0, 'rescued': 0, 'ignored': 0},
+        {'ok': 3, 'changed': 1, 'unreachable': 0, 'failures': 0, 'skipped': 1, 'rescued': 0, 'ignored': 0}
+    ]
+    mock_stats.custom = {}
+
+    # Create an instance of CallbackModule and set the display attribute
+    callback_module = Callback
+
+# Generated at 2024-06-01 04:44:55.577794
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock display object
+    mock_display = Mock()
+
+    # Create a mock result object
+    mock_result = Mock()
+    mock_result._host.get_name.return_value = 'test_host'
+    mock_result._result.get.return_value = 'test_jid'
+
+    # Instantiate the CallbackModule and set the display to the mock display
+    callback_module = CallbackModule()
+    callback_module._display = mock_display
+
+    # Call the method
+    callback_module.v2_runner_on_async_ok(mock_result)
+
+    # Assert the display method was called with the expected message
+    mock_display.display.assert_called_once_with("ASYNC OK on test_host: jid=test_jid", color='blue')
+```
+
+# Generated at 2024-06-01 04:44:58.814340
+```python
+    callback = CallbackModule()
+    result = MagicMock()
+    result._host.get_name.return_value = 'localhost'
+    result._result = {'msg': 'Host unreachable'}
+    result._task = MagicMock()
+    result._task._uuid = '1234'
+
+    callback._last_task_banner = None
+    callback._print_task_banner = MagicMock()
+    callback._display = MagicMock()
+
+    callback.v2_runner_on_unreachable(result)
+
+    callback._print_task_banner.assert_called_once_with(result._task)
+    callback._display.display.assert_called_once_with(
+        "fatal: [localhost]: UNREACHABLE! => {'msg': 'Host unreachable'}",
+        color=C.COLOR_UNREACHABLE
+    )
+```
+
+# Generated at 2024-06-01 04:45:03.132346
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock result object
+    result = MagicMock()
+    result._task._uuid = '1234'
+    result._host.get_name.return_value = 'localhost'
+    result._result = {'failed': True, 'msg': 'An error occurred'}
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+    callback_module._last_task_banner = None
+    callback_module._print_task_banner = MagicMock()
+    callback_module.host_label = MagicMock(return_value='localhost')
+    callback_module._clean_results = MagicMock()
+    callback_module._handle_exception = MagicMock()
+    callback_module._handle_warnings = MagicMock()
+    callback_module._display = MagicMock()
+    callback_module.display_failed_stderr = True
+
+    # Call the method
+    callback_module.v2_runner_item_on_failed(result)
+
+    # Assertions
+    callback_module._print_task_banner.assert_called_once_with(result
+
+# Generated at 2024-06-01 04:45:05.628046
+```python
+    from unittest.mock import Mock
+
+    # Create a mock display object
+    mock_display = Mock()
+
+    # Create an instance of the CallbackModule with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = mock_display
+
+    # Set the option to show per host start
+    callback_module.get_option = Mock(return_value=True)
+
+    # Create mock host and task
+    mock_host = 'localhost'
+    mock_task = 'test_task'
+
+    # Call the method
+    callback_module.v2_runner_on_start(mock_host, mock_task)
+
+    # Check if the display method was called with the correct message
+    mock_display.display.assert_called_with(" [started test_task on localhost]", color=C.COLOR_OK)
+```
+
+# Generated at 2024-06-01 04:45:07.782972
+```python
+    from unittest.mock import Mock
+
+    # Create a mock display object
+    mock_display = Mock()
+    mock_display.display = Mock()
+
+    # Create a mock task object
+    mock_task = Mock()
+    mock_task.get_name = Mock(return_value="test_task")
+
+    # Create an instance of the CallbackModule with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = mock_display
+    callback_module.get_option = Mock(return_value=True)
+
+    # Call the method with test data
+    callback_module.v2_runner_on_start("test_host", mock_task)
+
+    # Assert that the display method was called with the expected message
+    mock_display.display.assert_called_with(" [started test_task on test_host]", color=C.COLOR_OK)
+```
+
+# Generated at 2024-06-01 04:45:12.499074
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock result object
+    result = MagicMock()
+    result._task._uuid = '1234'
+    result._host.get_name.return_value = 'test_host'
+    result._result = {'item': 'test_item'}
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+    callback_module._last_task_banner = None
+    callback_module.display_skipped_hosts = True
+    callback_module._print_task_banner = MagicMock()
+    callback_module._clean_results = MagicMock()
+    callback_module._run_is_verbose = MagicMock(return_value=False)
+    callback_module._display = MagicMock()
+
+    # Call the method
+    callback_module.v2_runner_item_on_skipped(result)
+
+    # Assertions
+    callback_module._print_task_banner.assert_called_once_with(result._task)
+    callback_module._clean_results.assert_called_once_with(result._result, result._task.action)
+    callback
+
+# Generated at 2024-06-01 04:47:13.413388
+```python
+    callback_module = CallbackModule()
+    options = {
+        'display_skipped_hosts': True,
+        'display_ok_hosts': True,
+        'show_per_host_start': False,
+        'show_custom_stats': True,
+        'check_mode_markers': True
+    }
+    callback_module.set_options(options)
+    
+    assert callback_module.display_skipped_hosts == True
+    assert callback_module.display_ok_hosts == True
+    assert callback_module.show_per_host_start == False
+    assert callback_module.show_custom_stats == True
+    assert callback_module.check_mode_markers == True
+```
+
+# Generated at 2024-06-01 04:47:16.205435
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock display object
+    display_mock = MagicMock()
+
+    # Create a mock task object
+    task_mock = MagicMock()
+    task_mock.loop = True
+    task_mock._uuid = '1234'
+    task_mock.get_name.return_value = 'Test Task'
+
+    # Create a mock result object
+    result_mock = MagicMock()
+    result_mock._task = task_mock
+    result_mock._result = {
+        'results': [
+            {'diff': 'diff content', 'changed': True}
+        ]
+    }
+
+    # Create an instance of the CallbackModule with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = display_mock
+    callback_module._last_task_banner = None
+
+    # Call the method
+    callback_module.v2_on_file_diff(result_mock)
+
+    # Assertions
+    display_mock.banner.assert_called_once_with('TASK [Test Task diff content]')
+
+
+# Generated at 2024-06-01 04:47:19.963327
+```python
+    from ansible.plugins.callback import CallbackModule
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.manager import InventoryManager
+    from ansible.executor.playbook_executor import PlaybookExecutor
+    from ansible import context
+
+    # Create a mock options object
+    class MockOptions:
+        def __init__(self):
+            self.display_skipped_hosts = True
+            self.display_ok_hosts = True
+            self.show_per_host_start = True
+            self.check_mode_markers = True
+            self.show_custom_stats = True
+
+    # Initialize the necessary objects
+    loader = DataLoader()
+    inventory = InventoryManager(loader=loader, sources=[])
+    variable_manager = VariableManager(loader=loader, inventory=inventory)
+    options = MockOptions()
+    context.CLIARGS = options
+
+    # Create an instance of CallbackModule
+    callback_module = CallbackModule()
+
+    # Call
+
+# Generated at 2024-06-01 04:47:23.157777
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock result object
+    result = MagicMock()
+    result._task._uuid = '1234-uuid'
+    result._host.get_name.return_value = 'test_host'
+    result._result = {'failed': True, 'msg': 'An error occurred'}
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+    callback_module._last_task_banner = None
+    callback_module._print_task_banner = MagicMock()
+    callback_module.host_label = MagicMock(return_value='test_host')
+    callback_module._clean_results = MagicMock()
+    callback_module._handle_exception = MagicMock()
+    callback_module._handle_warnings = MagicMock()
+    callback_module._display = MagicMock()
+    callback_module.display_failed_stderr = True
+
+    # Call the method
+    callback_module.v2_runner_item_on_failed(result)
+
+    # Assertions
+    callback_module._print_task_banner.assert
+
+# Generated at 2024-06-01 04:47:30.529230
+```python
+    from unittest.mock import MagicMock
+
+    # Create a mock result object
+    result = MagicMock()
+    result._task._uuid = '1234'
+    result._host.get_name.return_value = 'localhost'
+    result._result = {'failed': True, 'msg': 'An error occurred'}
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+    callback_module._last_task_banner = None
+    callback_module._print_task_banner = MagicMock()
+    callback_module.host_label = MagicMock(return_value='localhost')
+    callback_module._clean_results = MagicMock()
+    callback_module._handle_exception = MagicMock()
+    callback_module._handle_warnings = MagicMock()
+    callback_module._display = MagicMock()
+    callback_module.display_failed_stderr = True
+
+    # Call the method
+    callback_module.v2_runner_item_on_failed(result)
+
+    # Assertions
+    callback_module._print_task_banner.assert_called_once_with(result
+
+# Generated at 2024-06-01 04:47:34.288161
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock result object
+    result = Mock()
+    result.task_name = "Sample Task"
+    result._task = "Sample Task"
+    result._result = {'retries': 5, 'attempts': 2}
+    result._host.get_name.return_value = "localhost"
+
+    # Create a mock display object
+    display = Mock()
+
+    # Create an instance of CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = display
+
+    # Call the method
+    callback.v2_runner_retry(result)
+
+    # Check if the display method was called with the expected message
+    expected_msg = "FAILED - RETRYING: [localhost]: Sample Task (3 retries left)."
+    display.display.assert_called_with(expected_msg, color=C.COLOR_DEBUG)
+```
+
+# Generated at 2024-06-01 04:47:36.359165
+```python
+    from unittest.mock import Mock
+
+    # Create a mock play object
+    play = Mock()
+    play.get_name.return_value = "Test Play"
+    play.check_mode = False
+
+    # Create a mock display object
+    display = Mock()
+    display.verbosity = 1
+
+    # Create an instance of the CallbackModule with the mock display
+    callback_module = CallbackModule()
+    callback_module._display = display
+    callback_module.check_mode_markers = True
+
+    # Call the method
+    callback_module.v2_playbook_on_play_start(play)
+
+    # Assertions
+    display.banner.assert_called_once_with("PLAY [Test Play]")
+    assert callback_module._play == play
+```
+
+# Generated at 2024-06-01 04:47:39.733800
+```python
+    from ansible.plugins.callback import CallbackModule
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.manager import InventoryManager
+    from ansible.executor.playbook_executor import PlaybookExecutor
+    from ansible import context
+
+    # Create a mock options object
+    class MockOptions:
+        def __init__(self):
+            self.display_skipped_hosts = True
+            self.display_ok_hosts = True
+            self.show_per_host_start = True
+            self.check_mode_markers = True
+            self.show_custom_stats = True
+
+    # Initialize the necessary objects
+    loader = DataLoader()
+    inventory = InventoryManager(loader=loader, sources=())
+    variable_manager = VariableManager(loader=loader, inventory=inventory)
+    options = MockOptions()
+    context.CLIARGS = options
+
+    # Create an instance of CallbackModule
+    callback_module = CallbackModule()
+
+    # Call
+
+# Generated at 2024-06-01 04:47:42.339887
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+    from ansible.executor.task_result import TaskResult
+
+    # Create a mock display object
+    mock_display = Mock()
+
+    # Create a mock result object
+    mock_result = Mock(spec=TaskResult)
+    mock_result._host.get_name.return_value = 'localhost'
+    mock_result._result = {'ansible_job_id': '12345'}
+
+    # Create an instance of CallbackModule and set the display attribute
+    callback = CallbackModule()
+    callback._display = mock_display
+
+    # Call the method
+    callback.v2_runner_on_async_failed(mock_result)
+
+    # Assert the display method was called with the expected message
+    mock_display.display.assert_called_with("ASYNC FAILED on localhost: jid=12345", color='blue')
+```
+
+# Generated at 2024-06-01 04:47:44.960585
+```python
+    from unittest.mock import Mock
+    from ansible.plugins.callback import CallbackModule
+
+    # Create a mock display object
+    mock_display = Mock()
+
+    # Create an instance of the CallbackModule with the mock display
+    callback = CallbackModule()
+    callback._display = mock_display
+
+    # Create a mock included_file object
+    included_file = Mock()
+    included_file._filename = 'test_file.yml'
+    included_file._hosts = [Mock(name='host1'), Mock(name='host2')]
+
+    # Call the method
+    callback.v2_playbook_on_include(included_file)
+
+    # Check that the display method was called with the correct message
+    expected_msg = 'included: test_file.yml for host1, host2'
+    mock_display.display.assert_called_with(expected_msg, color='cyan')
+```

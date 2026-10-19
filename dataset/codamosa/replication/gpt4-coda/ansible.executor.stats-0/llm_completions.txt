@@ -1,0 +1,1652 @@
+
+
+# Generated at 2024-03-18 00:51:12.068437
+    stats = AggregateStats()
+
+    # Set up initial counts
+    host = 'test_host'
+    stats.increment('failures', host)
+    stats.increment('failures', host)
+    stats.increment('ok', host)
+
+    # Test decrementing
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 1, "Failures count should be decremented to 1"
+
+    # Test decrementing to zero
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 0, "Failures count should be decremented to 0"
+
+    # Test decrementing below zero
+    try:
+        stats.decrement('failures', host)
+        assert False, "Decrementing below zero should raise a KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "The KeyError message should be 'Don't be so negative'"
+
+    # Test
+
+# Generated at 2024-03-18 00:51:18.376377
+    stats = AggregateStats()
+
+    # Test updating custom stats with a dictionary
+    stats.set_custom_stats('dict_stat', {'a': 1}, 'host1')
+    stats.update_custom_stats('dict_stat', {'b': 2}, 'host1')
+    assert stats.custom['host1']['dict_stat'] == {'a': 1, 'b': 2}
+
+    # Test updating custom stats with an integer
+    stats.set_custom_stats('int_stat', 10, 'host1')
+    stats.update_custom_stats('int_stat', 5, 'host1')
+    assert stats.custom['host1']['int_stat'] == 15
+
+    # Test updating custom stats with a list
+    stats.set_custom_stats('list_stat', [1, 2], 'host1')
+    stats.update_custom_stats('list_stat', [3, 4], 'host1')
+    assert stats.custom['host1']['list_stat'] == [1, 2
+
+# Generated at 2024-03-18 00:51:26.832245
+```python
+    stats = AggregateStats()
+    host = "localhost"
+
+    # Test decrementing a non-existing host
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Decrementing non-existing host should set failures to 0"
+
+    # Test decrementing an existing host with count > 1
+    stats.failures[host] = 2
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 1, "Decrementing existing host should decrease failures by 1"
+
+    # Test decrementing an existing host with count == 1
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Decrementing existing host with count 1 should set failures to 0"
+
+    # Test decrementing an existing host with count == 0
+    stats.decrement('failures', host)
+    assert
+
+# Generated at 2024-03-18 00:51:31.743478
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('failures', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host2')
+
+    # Test decrement
+    stats.decrement('failures', 'host1')
+    stats.decrement('ok', 'host2')
+
+    # Check results
+    assert stats.failures['host1'] == 1, "host1 should have 1 failure"
+    assert stats.ok.get('host2', 0) == 0, "host2 should have 0 ok"
+    assert 'host2' not in stats.ok, "host2 should not be in ok dict after decrement to 0"
+
+    # Test decrement non-existing host
+    try:
+        stats.decrement('ok', 'host3')
+        assert 'host3' not in stats.ok, "host3 should not be
+
+# Generated at 2024-03-18 00:51:38.007073
+    # Create an instance of AggregateStats
+    stats = AggregateStats()
+
+    # Define a test host
+    test_host = 'test_host'
+
+    # Increment 'ok' for test_host
+    stats.increment('ok', test_host)
+    assert stats.ok[test_host] == 1, "Increment of 'ok' failed"
+
+    # Increment 'failures' for test_host
+    stats.increment('failures', test_host)
+    assert stats.failures[test_host] == 1, "Increment of 'failures' failed"
+
+    # Increment 'ok' again for test_host
+    stats.increment('ok', test_host)
+    assert stats.ok[test_host] == 2, "Second increment of 'ok' failed"
+
+    # Increment 'dark' (unreachable) for test_host
+    stats.increment('dark', test_host)
+    assert stats.dark[test_host] == 1, "Increment of 'dark' failed"
+
+    # Increment 'changed' for test
+
+# Generated at 2024-03-18 00:51:43.104501
+```python
+    stats = AggregateStats()
+    host = 'localhost'
+
+    # Test decrementing a non-existing host
+    stats.decrement('ok', host)
+    assert stats.ok.get(host) == 0, "Decrementing non-existing host should result in 0"
+
+    # Test decrementing an existing host
+    stats.ok[host] = 3
+    stats.decrement('ok', host)
+    assert stats.ok.get(host) == 2, "Decrementing existing host should decrease count"
+
+    # Test decrementing below 0
+    stats.ok[host] = 0
+    try:
+        stats.decrement('ok', host)
+        assert False, "Decrementing below 0 should raise KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "KeyError message should be 'Don't be so negative'"
+```
+
+# Generated at 2024-03-18 00:51:51.872672
+```python
+    stats = AggregateStats()
+    host = 'localhost'
+
+    # Test decrementing a non-existing host
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Decrement non-existing host should set to 0"
+
+    # Test decrementing below 0
+    try:
+        stats.decrement('failures', host)
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "Should not allow decrementing below 0"
+
+    # Setup for further tests
+    stats.increment('failures', host)
+    stats.increment('failures', host)  # failures[host] is now 2
+
+    # Test normal decrement
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 1, "Decrement should decrease by 1"
+
+    # Test decrement to 0
+    stats.decrement('failures', host
+
+# Generated at 2024-03-18 00:51:59.519468
+```python
+    stats = AggregateStats()
+    host = "test_host"
+    stats.increment('failures', host)
+    assert stats.failures[host] == 1, "Initial increment failed"
+    
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 0, "Decrement failed to reduce count"
+    
+    try:
+        stats.decrement('failures', host)
+        assert False, "Decrement below zero did not raise KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "Unexpected KeyError message"
+    
+    # Test decrement on non-existent host
+    non_existent_host = "ghost_host"
+    stats.decrement('failures', non_existent_host)
+    assert stats.failures.get(non_existent_host) == 0, "Decrement on non-existent host failed to initialize to 0"
+```
+
+# Generated at 2024-03-18 00:52:05.828211
+```python
+    stats = AggregateStats()
+    host = 'localhost'
+
+    # Test incrementing 'ok' stat
+    stats.increment('ok', host)
+    assert stats.ok[host] == 1, "Increment of 'ok' stat failed"
+
+    # Test incrementing 'failures' stat
+    stats.increment('failures', host)
+    assert stats.failures[host] == 1, "Increment of 'failures' stat failed"
+
+    # Test incrementing 'changed' stat
+    stats.increment('changed', host)
+    assert stats.changed[host] == 1, "Increment of 'changed' stat failed"
+
+    # Test incrementing 'skipped' stat
+    stats.increment('skipped', host)
+    assert stats.skipped[host] == 1, "Increment of 'skipped' stat failed"
+
+    # Test incrementing 'rescued' stat
+    stats.increment('rescued', host)
+    assert stats
+
+# Generated at 2024-03-18 00:52:11.839188
+    stats = AggregateStats()
+
+    # Set up initial counts
+    host = 'test_host'
+    stats.increment('failures', host)
+    stats.increment('failures', host)
+    stats.increment('ok', host)
+
+    # Test decrementing
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 1, "Failures count should be decremented to 1"
+
+    stats.decrement('ok', host)
+    assert stats.ok[host] == 0, "OK count should be decremented to 0"
+
+    # Test decrementing non-existing host
+    non_existing_host = 'non_existing_host'
+    stats.decrement('ok', non_existing_host)
+    assert stats.ok.get(non_existing_host) == 0, "OK count for non-existing host should be 0"
+
+    # Test decrementing below zero
+    try:
+        stats.decrement('failures', host)
+        stats.decrement('failures
+
+# Generated at 2024-03-18 00:52:21.593878
+```python
+    stats = AggregateStats()
+    host = "test_host"
+    stats.increment('failures', host)
+    assert stats.failures[host] == 1
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 0
+
+    # Test that decrementing below 0 raises an error
+    try:
+        stats.decrement('failures', host)
+        assert False, "Decrementing below 0 did not raise an error"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative"
+
+    # Test that decrementing a non-existent host sets the count to 0
+    non_existent_host = "non_existent_host"
+    stats.decrement('failures', non_existent_host)
+    assert stats.failures[non_existent_host] == 0
+```
+
+# Generated at 2024-03-18 00:52:26.391948
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('failures', 'host2')
+    stats.increment('dark', 'host3')
+
+    # Decrement counts
+    stats.decrement('ok', 'host1')
+    stats.decrement('failures', 'host2')
+    stats.decrement('dark', 'host3')
+
+    # Check if the counts are decremented correctly
+    assert stats.ok['host1'] == 1, "ok count for host1 should be 1"
+    assert stats.failures['host2'] == 0, "failures count for host2 should be 0"
+    assert stats.dark['host3'] == 0, "unreachable count for host3 should be 0"
+
+    # Check for negative decrement handling
+    try:
+        stats.decrement('ok', 'host1')
+       
+
+# Generated at 2024-03-18 00:52:31.188686
+    stats = AggregateStats()
+
+    # Setup initial counts
+    stats.increment('failures', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host2')
+
+    # Test decrement
+    stats.decrement('failures', 'host1')
+    stats.decrement('ok', 'host2')
+
+    # Check results
+    assert stats.failures['host1'] == 1, "host1 should have 1 failure"
+    assert stats.ok.get('host2', 0) == 0, "host2 should have 0 ok"
+    assert 'host2' not in stats.ok, "host2 should not be in ok dict after decrement to 0"
+
+    # Test decrement non-existing host
+    try:
+        stats.decrement('ok', 'host3')
+        assert 'host3' not in stats.ok, "host3 should not be in
+
+# Generated at 2024-03-18 00:52:37.319163
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('failures', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host2')
+
+    # Test decrementing
+    stats.decrement('failures', 'host1')
+    stats.decrement('ok', 'host2')
+
+    # Check results
+    assert stats.failures['host1'] == 1, "host1 should have 1 failure"
+    assert stats.ok.get('host2', 0) == 0, "host2 should have 0 ok"
+    assert 'host2' not in stats.ok, "host2 should not be in ok dict after decrement to 0"
+
+    # Test decrementing non-existent host
+    try:
+        stats.decrement('ok', 'host3')
+        assert 'host3' not in stats.ok, "host3 should
+
+# Generated at 2024-03-18 00:52:42.890123
+    # Create an instance of AggregateStats
+    stats = AggregateStats()
+
+    # Define test data
+    host = 'localhost'
+    custom_stat_key = 'data_processed'
+    initial_value = 10
+    additional_value = 5
+    expected_value = 15
+
+    # Set initial custom stat
+    stats.set_custom_stats(custom_stat_key, initial_value, host)
+
+    # Update custom stat
+    stats.update_custom_stats(custom_stat_key, additional_value, host)
+
+    # Retrieve updated custom stats
+    updated_stats = stats.custom.get(host, {}).get(custom_stat_key)
+
+    # Assert that the custom stat was updated correctly
+    assert updated_stats == expected_value, f"Expected {expected_value}, got {updated_stats}"
+
+    # Test updating with a different type (should not update)
+    stats.update_custom_stats(custom_stat_key, "should not add", host)
+
+    # Retrieve custom stats after failed update
+    updated_stats_after_fail = stats.custom.get(host,
+
+# Generated at 2024-03-18 00:52:50.253600
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('failures', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host1')
+
+    # Test decrementing
+    stats.decrement('ok', 'host1')
+    assert stats.ok['host1'] == 1
+
+    # Test decrementing to zero
+    stats.decrement('failures', 'host1')
+    assert stats.failures['host1'] == 0
+
+    # Test decrementing non-existent host
+    try:
+        stats.decrement('ok', 'host2')
+        assert stats.ok.get('host2') == 0
+    except KeyError:
+        assert False, "KeyError should not have been raised"
+
+    # Test decrementing below zero
+    try:
+        stats.decrement('ok', 'host1')
+        stats.decrement('ok', 'host1')
+        assert False, "Expected an exception
+
+# Generated at 2024-03-18 00:52:55.197493
+    stats = AggregateStats()
+
+    # Set up initial counts
+    host = 'test_host'
+    stats.increment('failures', host)
+    stats.increment('failures', host)
+    stats.increment('ok', host)
+
+    # Test decrementing
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 1, "Failures count should be decremented to 1"
+
+    stats.decrement('ok', host)
+    assert stats.ok[host] == 0, "OK count should be decremented to 0"
+
+    # Test decrementing non-existing host
+    try:
+        stats.decrement('ok', 'non_existing_host')
+        assert False, "Should have raised a KeyError"
+    except KeyError:
+        pass
+
+    # Test decrementing below zero
+    try:
+        stats.decrement('ok', host)
+        assert False, "Should have raised a KeyError because of negative count"
+    except KeyError as e:
+
+
+# Generated at 2024-03-18 00:53:01.779551
+    stats = AggregateStats()
+
+    # Set up initial counts
+    host = 'test_host'
+    stats.increment('failures', host)
+    stats.increment('failures', host)
+    stats.increment('ok', host)
+
+    # Test decrementing
+    stats.decrement('failures', host)
+    stats.decrement('ok', host)
+
+    # Check results
+    assert stats.failures[host] == 1, "Failures count should be decremented to 1"
+    assert stats.ok[host] == 0, "OK count should be decremented to 0"
+
+    # Test decrementing below zero
+    try:
+        stats.decrement('ok', host)
+        assert False, "Decrementing below zero should raise a KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "KeyError should have message 'Don't be so negative'"
+
+    # Test decrementing a non-existent host
+
+
+# Generated at 2024-03-18 00:53:08.754063
+```python
+    stats = AggregateStats()
+    host = 'localhost'
+
+    # Test decrementing a non-existing host
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Decrement non-existing host should set to 0"
+
+    # Test decrementing an existing host with count > 1
+    stats.failures[host] = 2
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 1, "Decrement existing host should decrement by 1"
+
+    # Test decrementing an existing host with count == 1
+    stats.failures[host] = 1
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Decrement existing host with count 1 should set to 0"
+
+    # Test decrementing an existing host with count == 0
+    stats.failures[host]
+
+# Generated at 2024-03-18 00:53:13.666650
+    stats = AggregateStats()
+
+    # Setup the stats for testing
+    host = 'test_host'
+    stats.increment('failures', host)
+    stats.increment('failures', host)
+    stats.increment('ok', host)
+
+    # Test decrementing a stat that has a positive count
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 1
+
+    # Test decrementing a stat that would go negative
+    try:
+        stats.decrement('failures', host)
+        stats.decrement('failures', host)
+    except KeyError as e:
+        assert str(e) == "Don't be so negative"
+
+    # Test decrementing a stat that does not exist for the host
+    stats.decrement('changed', host)
+    assert stats.changed[host] == 0
+
+    # Test decrementing a stat that is not initialized
+    new_host = 'new_host'
+    stats.decrement('ok', new_host
+
+# Generated at 2024-03-18 00:53:24.722038
+```python
+    stats = AggregateStats()
+    host = "localhost"
+
+    # Test decrementing a non-existing host
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Failures for non-existing host should be 0"
+
+    # Test decrementing an existing host with count > 1
+    stats.failures[host] = 2
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 1, "Failures should decrement by 1"
+
+    # Test decrementing an existing host with count = 1
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Failures should decrement to 0"
+
+    # Test decrementing an existing host with count = 0
+    # Should raise a KeyError as per the method definition
+    try:
+        stats.decrement('failures', host)
+       
+
+# Generated at 2024-03-18 00:53:32.383031
+    stats = AggregateStats()
+
+    # Test updating custom stats with a dictionary
+    stats.set_custom_stats('dict_stat', {'a': 1}, 'host1')
+    stats.update_custom_stats('dict_stat', {'b': 2}, 'host1')
+    assert stats.custom['host1']['dict_stat'] == {'a': 1, 'b': 2}
+
+    # Test updating custom stats with an integer
+    stats.set_custom_stats('int_stat', 10, 'host1')
+    stats.update_custom_stats('int_stat', 5, 'host1')
+    assert stats.custom['host1']['int_stat'] == 15
+
+    # Test updating custom stats with a list
+    stats.set_custom_stats('list_stat', [1, 2], 'host1')
+    stats.update_custom_stats('list_stat', [3, 4], 'host1')
+    assert stats.custom['host1']['list_stat'] == [1, 2
+
+# Generated at 2024-03-18 00:53:36.943913
+    stats = AggregateStats()
+
+    # Set up initial counts
+    host = 'test_host'
+    stats.increment('ok', host)
+    stats.increment('ok', host)
+    stats.increment('failures', host)
+    stats.increment('changed', host)
+
+    # Test decrementing 'ok' stat
+    stats.decrement('ok', host)
+    assert stats.ok[host] == 1, "Decrementing 'ok' should result in 1"
+
+    # Test decrementing 'failures' stat
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 0, "Decrementing 'failures' should result in 0"
+
+    # Test decrementing 'changed' stat
+    stats.decrement('changed', host)
+    assert stats.changed[host] == 0, "Decrementing 'changed' should result in 0"
+
+    # Test decrementing non-existent stat
+    try:
+        stats
+
+# Generated at 2024-03-18 00:53:43.689350
+```python
+    stats = AggregateStats()
+    host = "localhost"
+
+    # Test decrementing a non-existing host
+    stats.decrement('ok', host)
+    assert stats.ok.get(host) == 0, "Decrement non-existing host should set to 0"
+
+    # Test decrementing an existing host
+    stats.ok[host] = 3
+    stats.decrement('ok', host)
+    assert stats.ok.get(host) == 2, "Decrement existing host should decrease by 1"
+
+    # Test decrementing below 0
+    stats.ok[host] = 0
+    try:
+        stats.decrement('ok', host)
+        assert False, "Decrement below 0 should raise KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "KeyError message should be 'Don't be so negative'"
+
+    # Test decrementing a non-integer value
+    stats.ok[
+
+# Generated at 2024-03-18 00:53:49.220324
+    stats = AggregateStats()
+
+    # Setup the stats for testing
+    host = 'test_host'
+    stats.increment('failures', host)
+    stats.increment('failures', host)
+    stats.increment('ok', host)
+
+    # Test decrementing a stat that has a positive count
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 1, "Expected failures to be decremented to 1"
+
+    # Test decrementing a stat that would go negative
+    try:
+        stats.decrement('failures', host)
+        stats.decrement('failures', host)
+        assert False, "Expected an exception to be raised when decrementing below zero"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "Expected a KeyError with a specific message"
+
+    # Test decrementing a stat that does not exist for the host
+    stats.decrement('ok', 'non_existent_host
+
+# Generated at 2024-03-18 00:54:01.086151
+```python
+    stats = AggregateStats()
+
+    # Test updating custom stats with a new host and key
+    stats.update_custom_stats('new_stat', 1, 'host1')
+    assert stats.custom['host1']['new_stat'] == 1
+
+    # Test updating custom stats with an existing host and key
+    stats.update_custom_stats('new_stat', 2, 'host1')
+    assert stats.custom['host1']['new_stat'] == 3
+
+    # Test updating custom stats with a new key for an existing host
+    stats.update_custom_stats('another_stat', {'key': 'value'}, 'host1')
+    assert stats.custom['host1']['another_stat'] == {'key': 'value'}
+
+    # Test updating custom stats with a dictionary merge
+    stats.update_custom_stats('another_stat', {'new_key': 'new_value'}, 'host1')
+    assert stats.custom['host1']['another_stat'] == {'key': 'value', '
+
+# Generated at 2024-03-18 00:54:05.455933
+```python
+    stats = AggregateStats()
+    host = 'localhost'
+
+    # Test decrementing a non-existing host
+    stats.decrement('ok', host)
+    assert stats.ok.get(host) == 0, "Decrement non-existing host should set to 0"
+
+    # Test decrementing an existing host
+    stats.ok[host] = 3
+    stats.decrement('ok', host)
+    assert stats.ok.get(host) == 2, "Decrement existing host should decrease count"
+
+    # Test decrementing below 0
+    stats.ok[host] = 0
+    try:
+        stats.decrement('ok', host)
+        assert False, "Decrement below 0 should raise KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "KeyError message should be 'Don't be so negative'"
+```
+
+# Generated at 2024-03-18 00:54:11.236995
+    stats = AggregateStats()
+
+    # Setup the stats
+    host = 'localhost'
+    stats.increment('failures', host)
+    stats.increment('ok', host)
+    stats.increment('ok', host)  # Increment 'ok' twice
+
+    # Test decrement
+    stats.decrement('ok', host)
+    assert stats.ok[host] == 1, "Decrement did not work for 'ok'"
+
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 0, "Decrement did not work for 'failures'"
+
+    # Test decrement below zero
+    try:
+        stats.decrement('failures', host)
+        assert False, "Decrement below zero did not raise KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "Unexpected KeyError message"
+
+    # Test decrement on non-existent host
+    non_existent_host = 'nonexistent'
+    stats
+
+# Generated at 2024-03-18 00:54:15.477037
+```python
+    # Create an instance of AggregateStats
+    stats = AggregateStats()
+
+    # Define a host and custom stats
+    host = 'localhost'
+    custom_stat_key = 'data_processed'
+    initial_value = 10
+
+    # Set initial custom stat
+    stats.set_custom_stats(custom_stat_key, initial_value, host)
+
+    # Update custom stat with an integer
+    update_value = 5
+    stats.update_custom_stats(custom_stat_key, update_value, host)
+    assert stats.custom[host][custom_stat_key] == initial_value + update_value, "Failed to update integer custom stat"
+
+    # Update custom stat with a dictionary
+    update_dict = {'files': 3, 'records': 7}
+    stats.update_custom_stats(custom_stat_key, update_dict, host)
+    assert stats.custom[host][custom_stat_key] == {'files': 3, 'records': 7}, "Failed to update dictionary custom stat"
+
+    # Update
+
+# Generated at 2024-03-18 00:54:20.253299
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('dark', 'host2')
+
+    # Decrement counts
+    stats.decrement('ok', 'host1')
+    stats.decrement('failures', 'host1')
+    stats.decrement('dark', 'host2')
+
+    # Check if the counts are decremented correctly
+    assert stats.ok['host1'] == 1, "Expected ok count of 1 for host1, got {}".format(stats.ok['host1'])
+    assert stats.failures['host1'] == 0, "Expected failure count of 0 for host1, got {}".format(stats.failures['host1'])
+    assert stats.dark['host2'] == 0, "Expected unreachable count of 0 for host2, got {}".format(stats.dark['
+
+# Generated at 2024-03-18 00:54:34.058786
+    stats = AggregateStats()
+
+    # Set up initial counts
+    host = 'test_host'
+    stats.increment('failures', host)
+    stats.increment('failures', host)
+    stats.increment('ok', host)
+
+    # Test decrementing
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 1, "Failures count should be decremented to 1"
+
+    stats.decrement('ok', host)
+    assert stats.ok[host] == 0, "OK count should be decremented to 0"
+
+    # Test decrementing non-existing host
+    non_existing_host = 'non_existing_host'
+    stats.decrement('ok', non_existing_host)
+    assert stats.ok.get(non_existing_host) == 0, "OK count for non-existing host should be 0"
+
+    # Test decrementing below zero
+    try:
+        stats.decrement('failures', host)
+        stats.decrement('failures
+
+# Generated at 2024-03-18 00:54:41.192877
+    stats = AggregateStats()
+
+    # Set up initial counts
+    host = 'test_host'
+    stats.increment('failures', host)
+    stats.increment('failures', host)
+    stats.increment('ok', host)
+
+    # Test decrementing
+    stats.decrement('failures', host)
+    stats.decrement('ok', host)
+
+    # Check results
+    assert stats.failures[host] == 1, "Failures count should be decremented to 1"
+    assert stats.ok[host] == 0, "OK count should be decremented to 0"
+
+    # Test decrementing below zero
+    try:
+        stats.decrement('ok', host)
+        assert False, "Decrementing below zero should raise a KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "KeyError should have message 'Don't be so negative'"
+
+    # Test decrementing a non-existent host
+
+
+# Generated at 2024-03-18 00:54:46.650704
+```python
+    stats = AggregateStats()
+    host = 'localhost'
+    stats.increment('failures', host)
+    assert stats.failures[host] == 1, "Initial increment failed"
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 0, "Decrement failed"
+    try:
+        stats.decrement('failures', host)
+        assert False, "Decrement below zero did not raise KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "Incorrect KeyError message"
+```
+
+# Generated at 2024-03-18 00:54:52.994768
+    stats = AggregateStats()
+
+    # Set up initial counts
+    host = 'test_host'
+    stats.increment('failures', host)
+    stats.increment('failures', host)
+    stats.increment('ok', host)
+
+    # Test decrementing
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 1, "Failures count should be decremented to 1"
+
+    # Test decrementing to zero
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 0, "Failures count should be decremented to 0"
+
+    # Test decrementing below zero
+    try:
+        stats.decrement('failures', host)
+        assert False, "Should have raised a KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "KeyError should have message 'Don't be so negative'"
+
+    # Test decrementing a stat
+
+# Generated at 2024-03-18 00:55:00.849941
+```python
+    stats = AggregateStats()
+    host = "localhost"
+
+    # Test decrementing a non-existing host
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Failures for non-existing host should be 0"
+
+    # Test decrementing an existing host with count > 1
+    stats.failures[host] = 2
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 1, "Failures should decrement by 1"
+
+    # Test decrementing an existing host with count == 1
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Failures should decrement to 0"
+
+    # Test decrementing an existing host with count == 0
+    try:
+        stats.decrement('failures', host)
+        assert stats.failures.get(host) == 0, "
+
+# Generated at 2024-03-18 00:55:06.078204
+    stats = AggregateStats()
+
+    # Setup the stats for testing
+    host = 'test_host'
+    stats.increment('failures', host)
+    stats.increment('failures', host)
+    stats.increment('ok', host)
+
+    # Test decrementing a stat that has a positive count
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 1, "Failures count should be decremented to 1"
+
+    # Test decrementing a stat that would go negative
+    try:
+        stats.decrement('failures', host)
+        stats.decrement('failures', host)
+        assert False, "Should have raised a KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "KeyError should have message about being negative"
+
+    # Test decrementing a stat that does not exist for the host
+    stats.decrement('ok', 'nonexistent_host')
+    assert stats.ok
+
+# Generated at 2024-03-18 00:55:09.659178
+```python
+    stats = AggregateStats()
+    host = 'localhost'
+    stats.increment('failures', host)
+    assert stats.failures[host] == 1, "Initial increment failed"
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 0, "Decrement failed"
+    try:
+        stats.decrement('failures', host)
+        assert False, "Decrement below zero did not raise KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "Unexpected KeyError message"
+```
+
+# Generated at 2024-03-18 00:55:12.962186
+```python
+    stats = AggregateStats()
+    host = 'localhost'
+    stats.increment('failures', host)
+    assert stats.failures[host] == 1, "Initial increment failed"
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 0, "Decrement failed"
+    try:
+        stats.decrement('failures', host)
+        assert False, "Decrement below zero did not raise KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "Incorrect KeyError message"
+```
+
+# Generated at 2024-03-18 00:55:21.724766
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('failures', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host2')
+
+    # Test decrement
+    stats.decrement('failures', 'host1')
+    stats.decrement('ok', 'host2')
+
+    # Check results
+    assert stats.failures['host1'] == 1, "host1 should have 1 failure"
+    assert stats.ok.get('host2', 0) == 0, "host2 should have 0 ok"
+    assert 'host2' not in stats.ok, "host2 should not be in ok dict after decrement to 0"
+
+    # Test decrement non-existing host
+    try:
+        stats.decrement('ok', 'host3')
+        assert 'host3' not in stats.ok, "host3 should not be
+
+# Generated at 2024-03-18 00:55:28.224976
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('failures', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host2')
+
+    # Test decrement
+    stats.decrement('failures', 'host1')
+    stats.decrement('ok', 'host2')
+
+    # Check results
+    assert stats.failures['host1'] == 1, "Failures for host1 should be decremented to 1"
+    assert stats.ok.get('host2', 0) == 0, "OK for host2 should be decremented to 0"
+
+    # Test decrement on non-existent host
+    try:
+        stats.decrement('ok', 'host3')
+        assert stats.ok.get('host3', 0) == 0, "OK for host3 should be initialized to 0"
+    except KeyError:
+       
+
+# Generated at 2024-03-18 00:55:47.672388
+```python
+    stats = AggregateStats()
+    host = "localhost"
+
+    # Set initial values
+    stats.ok[host] = 2
+    stats.failures[host] = 1
+    stats.changed[host] = 3
+
+    # Decrement 'ok' stat
+    stats.decrement('ok', host)
+    assert stats.ok[host] == 1
+
+    # Decrement 'failures' stat
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 0
+
+    # Decrement 'changed' stat twice
+    stats.decrement('changed', host)
+    stats.decrement('changed', host)
+    assert stats.changed[host] == 1
+
+    # Attempt to decrement 'ok' stat below zero
+    try:
+        stats.decrement('ok', host)
+        stats.decrement('ok', host)
+        assert False, "Expected an exception to be raised"
+    except KeyError
+
+# Generated at 2024-03-18 00:55:55.842759
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('failures', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host2')
+
+    # Test decrement
+    stats.decrement('failures', 'host1')
+    stats.decrement('ok', 'host2')
+
+    # Check results
+    assert stats.failures['host1'] == 1, "Expected 1 failure for host1, got {}".format(stats.failures['host1'])
+    assert stats.ok.get('host2', 0) == 0, "Expected 0 ok for host2, got {}".format(stats.ok.get('host2', 0))
+
+    # Test decrement on non-existent host
+    try:
+        stats.decrement('ok', 'host3')
+        assert stats.ok.get('host3', 0) == 0, "Expected 
+
+# Generated at 2024-03-18 00:56:03.289706
+    stats = AggregateStats()
+
+    # Set up initial counts
+    host = 'test_host'
+    stats.increment('failures', host)
+    stats.increment('failures', host)
+    stats.increment('ok', host)
+
+    # Test decrementing
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 1, "Failures count should be decremented to 1"
+
+    stats.decrement('ok', host)
+    assert stats.ok[host] == 0, "OK count should be decremented to 0"
+
+    # Test decrementing non-existing host
+    try:
+        stats.decrement('ok', 'non_existing_host')
+        assert False, "Decrementing non-existing host should raise KeyError"
+    except KeyError:
+        assert True
+
+    # Test decrementing below zero
+    try:
+        stats.decrement('ok', host)
+        assert False, "Decrementing below zero should raise KeyError"
+    except
+
+# Generated at 2024-03-18 00:56:07.942330
+```python
+    stats = AggregateStats()
+    host = "localhost"
+    stats.increment('failures', host)
+    assert stats.failures[host] == 1, "Initial increment failed"
+    
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 0, "Decrement failed"
+    
+    try:
+        stats.decrement('failures', host)
+        assert False, "Decrement below zero did not raise KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "Incorrect error message for decrement below zero"
+    
+    # Test decrement on non-existent host
+    non_existent_host = "nonexistent"
+    stats.decrement('failures', non_existent_host)
+    assert stats.failures[non_existent_host] == 0, "Decrement on non-existent host failed"
+```
+
+# Generated at 2024-03-18 00:56:14.227629
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('changed', 'host2')
+
+    # Decrement counts
+    stats.decrement('ok', 'host1')
+    stats.decrement('failures', 'host1')
+    stats.decrement('changed', 'host2')
+
+    # Check if the counts are decremented properly
+    assert stats.ok['host1'] == 1, "ok count for host1 should be 1"
+    assert stats.failures['host1'] == 0, "failures count for host1 should be 0"
+    assert stats.changed['host2'] == 0, "changed count for host2 should be 0"
+
+    # Check if KeyError is raised when decrementing non-existent host
+    try:
+        stats.decrement('ok',
+
+# Generated at 2024-03-18 00:56:23.659862
+```python
+    stats = AggregateStats()
+    host = "localhost"
+
+    # Test decrementing a non-existing host
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Failures for non-existing host should be 0"
+
+    # Test decrementing an existing host with count > 1
+    stats.failures[host] = 2
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 1, "Failures should decrement by 1"
+
+    # Test decrementing an existing host with count == 1
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 0, "Failures should decrement to 0"
+
+    # Test decrementing an existing host with count == 0
+    try:
+        stats.decrement('failures', host)
+        assert False, "Should have raised a KeyError"
+    except
+
+# Generated at 2024-03-18 00:56:28.312290
+```python
+    stats = AggregateStats()
+    host = 'localhost'
+    
+    # Test decrementing a non-existing host
+    stats.decrement('ok', host)
+    assert stats.ok.get(host) == 0, "Decrementing non-existing host should result in 0"
+    
+    # Test decrementing an existing host with count > 1
+    stats.ok[host] = 2
+    stats.decrement('ok', host)
+    assert stats.ok.get(host) == 1, "Decrementing existing host with count > 1 should decrement count"
+    
+    # Test decrementing an existing host with count == 1
+    stats.decrement('ok', host)
+    assert stats.ok.get(host) == 0, "Decrementing existing host with count == 1 should result in 0"
+    
+    # Test decrementing an existing host with count == 0
+    stats.decrement('ok', host)
+    assert stats.ok.get
+
+# Generated at 2024-03-18 00:56:34.549151
+    stats = AggregateStats()
+
+    # Setup the stats
+    host = 'localhost'
+    stats.increment('failures', host)
+    stats.increment('ok', host)
+    stats.increment('ok', host)  # Increment 'ok' twice for testing
+
+    # Test decrementing 'ok' stat
+    stats.decrement('ok', host)
+    assert stats.ok[host] == 1, "Expected 'ok' to be decremented to 1"
+
+    # Test decrementing 'failures' stat
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 0, "Expected 'failures' to be decremented to 0"
+
+    # Test decrementing non-existent stat
+    try:
+        stats.decrement('non_existent_stat', host)
+        assert False, "Expected KeyError for decrementing non-existent stat"
+    except KeyError:
+        pass
+
+    # Test decrementing to negative
+    try:
+       
+
+# Generated at 2024-03-18 00:56:39.437206
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('failures', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host2')
+
+    # Decrement counts
+    stats.decrement('failures', 'host1')
+    stats.decrement('ok', 'host2')
+
+    # Check results
+    assert stats.failures['host1'] == 1, "Failures for host1 should be decremented to 1"
+    assert stats.ok.get('host2', 0) == 0, "OK for host2 should be decremented to 0"
+
+    # Check for negative decrement handling
+    try:
+        stats.decrement('ok', 'host2')
+        assert False, "Decrementing below 0 should raise a KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so
+
+# Generated at 2024-03-18 00:56:44.123942
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('failures', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host2')
+
+    # Test decrementing
+    stats.decrement('failures', 'host1')
+    stats.decrement('ok', 'host2')
+
+    # Check results
+    assert stats.failures['host1'] == 1, "Failures for host1 should be 1"
+    assert stats.ok.get('host2', 0) == 0, "OK for host2 should be 0"
+
+    # Test decrementing non-existing host
+    try:
+        stats.decrement('ok', 'host3')
+        assert 'host3' not in stats.ok or stats.ok['host3'] == 0, "OK for host3 should not exist or be 0"
+    except KeyError:
+
+
+# Generated at 2024-03-18 00:57:18.571232
+```python
+    stats = AggregateStats()
+    host = "localhost"
+
+    # Test decrementing a non-existing host
+    try:
+        stats.decrement('ok', host)
+    except KeyError as e:
+        assert str(e) == "Don't be so negative"
+
+    # Test decrementing an existing host with count > 0
+    stats.ok[host] = 2
+    stats.decrement('ok', host)
+    assert stats.ok[host] == 1
+
+    # Test decrementing an existing host with count == 0
+    stats.ok[host] = 0
+    try:
+        stats.decrement('ok', host)
+    except KeyError as e:
+        assert str(e) == "Don't be so negative"
+```
+
+# Generated at 2024-03-18 00:57:25.830426
+```python
+    stats = AggregateStats()
+    host = "localhost"
+
+    # Test decrementing a non-existing host
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Failures for non-existing host should be 0"
+
+    # Test decrementing an existing host with count > 1
+    stats.failures[host] = 2
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 1, "Failures should decrement by 1"
+
+    # Test decrementing an existing host with count == 1
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 0, "Failures should decrement to 0"
+
+    # Test decrementing an existing host with count == 0
+    try:
+        stats.decrement('failures', host)
+        assert False, "Should have raised a KeyError"
+    except
+
+# Generated at 2024-03-18 00:57:31.264030
+    # Create an instance of AggregateStats
+    stats = AggregateStats()
+
+    # Define a host and custom stats
+    host = 'localhost'
+    custom_stat_key = 'data_processed'
+    initial_value = 100
+
+    # Set initial custom stat
+    stats.set_custom_stats(custom_stat_key, initial_value, host)
+
+    # Update custom stat with an integer
+    update_value = 50
+    stats.update_custom_stats(custom_stat_key, update_value, host)
+    assert stats.custom[host][custom_stat_key] == initial_value + update_value, "Failed to update integer custom stat"
+
+    # Update custom stat with a dictionary
+    update_dict = {'files_processed': 10}
+    stats.update_custom_stats(custom_stat_key, update_dict, host)
+    assert stats.custom[host][custom_stat_key] == {'data_processed': 150, 'files_processed': 10}, "Failed to update dictionary custom stat"
+
+    # Update custom stat with a non-m
+
+# Generated at 2024-03-18 00:57:36.416327
+```python
+    stats = AggregateStats()
+
+    # Test updating custom stats with a dictionary
+    stats.set_custom_stats('dict_stat', {'key1': 'value1'}, 'host1')
+    stats.update_custom_stats('dict_stat', {'key2': 'value2'}, 'host1')
+    assert stats.custom['host1']['dict_stat'] == {'key1': 'value1', 'key2': 'value2'}
+
+    # Test updating custom stats with an integer
+    stats.set_custom_stats('int_stat', 1, 'host1')
+    stats.update_custom_stats('int_stat', 2, 'host1')
+    assert stats.custom['host1']['int_stat'] == 3
+
+    # Test updating custom stats with a list
+    stats.set_custom_stats('list_stat', [1, 2], 'host1')
+    stats.update_custom_stats('list_stat', [3, 4], 'host1')
+    assert stats.custom['host
+
+# Generated at 2024-03-18 00:57:41.066641
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('dark', 'host2')
+
+    # Decrement counts
+    stats.decrement('ok', 'host1')
+    stats.decrement('failures', 'host1')
+    stats.decrement('dark', 'host2')
+
+    # Check results
+    assert stats.ok['host1'] == 1, "Expected ok count of 1 for host1, got {}".format(stats.ok['host1'])
+    assert stats.failures['host1'] == 0, "Expected failure count of 0 for host1, got {}".format(stats.failures['host1'])
+    assert stats.dark['host2'] == 0, "Expected unreachable count of 0 for host2, got {}".format(stats.dark['host2'])
+
+    # Check
+
+# Generated at 2024-03-18 00:57:46.191263
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('failures', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host2')
+
+    # Test decrementing
+    stats.decrement('failures', 'host1')
+    stats.decrement('ok', 'host2')
+
+    # Check results
+    assert stats.failures['host1'] == 1, "Failures for host1 should be 1"
+    assert stats.ok.get('host2', 0) == 0, "OK for host2 should be 0"
+
+    # Test decrementing non-existing host
+    try:
+        stats.decrement('ok', 'host3')
+        assert 'host3' not in stats.ok or stats.ok['host3'] == 0, "OK for host3 should be 0 or not set"
+    except KeyError:
+
+
+# Generated at 2024-03-18 00:57:51.954054
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('failures', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host2')
+
+    # Test decrementing
+    stats.decrement('failures', 'host1')
+    stats.decrement('ok', 'host2')
+
+    # Check results
+    assert stats.failures['host1'] == 1, "host1 should have 1 failure"
+    assert stats.ok.get('host2', 0) == 0, "host2 should have 0 ok"
+    assert 'host2' not in stats.ok, "host2 should not be in ok dict after decrement to 0"
+
+    # Test decrementing non-existing host
+    try:
+        stats.decrement('ok', 'host3')
+        assert 'host3' not in stats.ok, "host3 should
+
+# Generated at 2024-03-18 00:57:59.152127
+```python
+    stats = AggregateStats()
+
+    # Test updating custom stats with a new host and stat
+    stats.update_custom_stats('stat1', 1, 'host1')
+    assert stats.custom['host1']['stat1'] == 1
+
+    # Test updating custom stats with an existing host and new stat
+    stats.update_custom_stats('stat2', 2, 'host1')
+    assert stats.custom['host1']['stat2'] == 2
+
+    # Test updating custom stats with an existing host and existing stat
+    stats.update_custom_stats('stat1', 3, 'host1')
+    assert stats.custom['host1']['stat1'] == 4
+
+    # Test updating custom stats with a dictionary
+    stats.update_custom_stats('stat3', {'key1': 'value1'}, 'host1')
+    assert stats.custom['host1']['stat3'] == {'key1': 'value1'}
+
+    # Test merging custom stats
+
+# Generated at 2024-03-18 00:58:06.666568
+```python
+    stats = AggregateStats()
+    host = 'localhost'
+
+    # Test decrementing a non-existing host
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Decrementing non-existing host should set failures to 0"
+
+    # Test decrementing an existing host with count greater than 1
+    stats.failures[host] = 2
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 1, "Decrementing existing host should decrease failures by 1"
+
+    # Test decrementing an existing host with count of 1
+    stats.failures[host] = 1
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Decrementing existing host with count of 1 should set failures to 0"
+
+    # Test decrementing an existing host with count of 0
+
+# Generated at 2024-03-18 00:58:14.837719
+```python
+    stats = AggregateStats()
+    host = "localhost"
+
+    # Test decrementing a non-existing host
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Decrementing non-existing host should set to 0"
+
+    # Test decrementing an existing host with count > 1
+    stats.failures[host] = 2
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 1, "Decrementing existing host should decrement count"
+
+    # Test decrementing an existing host with count = 1
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Decrementing to zero should work"
+
+    # Test decrementing an existing host with count = 0
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Dec
+
+# Generated at 2024-03-18 00:59:19.469865
+```python
+    stats = AggregateStats()
+    host = 'localhost'
+
+    # Test decrementing an uninitialized host
+    stats.decrement('ok', host)
+    assert stats.ok.get(host) == 0, "Decrementing uninitialized 'ok' should result in 0"
+
+    # Initialize and increment 'ok' for host
+    stats.increment('ok', host)
+    assert stats.ok.get(host) == 1, "Incrementing 'ok' should result in 1"
+
+    # Decrement 'ok' for host
+    stats.decrement('ok', host)
+    assert stats.ok.get(host) == 0, "Decrementing 'ok' should result in 0"
+
+    # Test decrementing below 0 raises an error
+    try:
+        stats.decrement('ok', host)
+        assert False, "Decrementing 'ok' below 0 should raise a KeyError"
+    except KeyError as e:
+        assert str(e) == "Don
+
+# Generated at 2024-03-18 00:59:24.427386
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('dark', 'host2')
+
+    # Decrement counts
+    stats.decrement('ok', 'host1')
+    stats.decrement('failures', 'host1')
+    stats.decrement('dark', 'host2')
+
+    # Check if the counts are decremented correctly
+    assert stats.ok['host1'] == 1, "Expected ok count for host1 to be 1"
+    assert stats.failures['host1'] == 0, "Expected failures count for host1 to be 0"
+    assert stats.dark['host2'] == 0, "Expected dark count for host2 to be 0"
+
+    # Check if KeyError is raised when decrementing non-existent host
+    try:
+        stats.decrement('
+
+# Generated at 2024-03-18 00:59:32.492277
+```python
+    stats = AggregateStats()
+    host = "localhost"
+    
+    # Test decrementing an uninitialized host
+    stats.decrement('ok', host)
+    assert stats.ok.get(host) == 0, "Decrementing uninitialized 'ok' should result in 0"
+    
+    # Test decrementing below zero
+    try:
+        stats.decrement('ok', host)
+    except KeyError as e:
+        assert str(e) == "Don't be so negative", "Decrementing below zero should raise a 'Don't be so negative' KeyError"
+    
+    # Initialize and increment 'ok' for host
+    stats.increment('ok', host)
+    stats.increment('ok', host)
+    assert stats.ok.get(host) == 2, "After incrementing twice, 'ok' should be 2"
+    
+    # Test normal decrement
+    stats.decrement('ok', host)
+    assert stats.ok.get(host) == 1, "After decrement
+
+# Generated at 2024-03-18 00:59:38.935804
+    # Create an instance of AggregateStats
+    stats = AggregateStats()
+
+    # Define test data
+    host = 'localhost'
+    custom_stat_key = 'data_processed'
+    initial_value = 10
+    additional_value = 5
+    expected_value = 15
+
+    # Set initial custom stat
+    stats.set_custom_stats(custom_stat_key, initial_value, host)
+
+    # Update custom stat
+    stats.update_custom_stats(custom_stat_key, additional_value, host)
+
+    # Retrieve updated custom stats
+    updated_stats = stats.custom.get(host, {}).get(custom_stat_key)
+
+    # Assert that the custom stat has been updated correctly
+    assert updated_stats == expected_value, f"Expected custom stat '{custom_stat_key}' to be {expected_value}, but found {updated_stats}"
+
+    # Test updating with a different type should return None
+    non_matching_type_update = stats.update_custom_stats(custom_stat_key, "string_value", host)
+    assert non_matching_type_update
+
+# Generated at 2024-03-18 00:59:43.706357
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('failures', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host2')
+
+    # Test decrementing
+    stats.decrement('failures', 'host1')
+    stats.decrement('ok', 'host2')
+
+    # Check results
+    assert stats.failures['host1'] == 1, "Failures for host1 should be decremented to 1"
+    assert stats.ok.get('host2', 0) == 0, "OK for host2 should be decremented to 0"
+
+    # Test decrementing non-existent host
+    try:
+        stats.decrement('ok', 'host3')
+        assert stats.ok.get('host3', 0) == 0, "OK for host3 should be initialized to 0"
+    except KeyError:
+
+
+# Generated at 2024-03-18 00:59:49.382365
+```python
+    stats = AggregateStats()
+    host = 'localhost'
+
+    # Test decrementing a non-existing host
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Decrement non-existing host should set to 0"
+
+    # Test decrementing an existing host with count > 1
+    stats.failures[host] = 2
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 1, "Decrement existing host should decrement by 1"
+
+    # Test decrementing an existing host with count == 1
+    stats.failures[host] = 1
+    stats.decrement('failures', host)
+    assert stats.failures.get(host) == 0, "Decrement existing host with count 1 should set to 0"
+
+    # Test decrementing an existing host with count == 0
+    stats.failures[host]
+
+# Generated at 2024-03-18 00:59:55.473239
+    stats = AggregateStats()
+
+    # Set up initial counts
+    host = 'test_host'
+    stats.ok[host] = 2
+    stats.failures[host] = 1
+    stats.changed[host] = 3
+
+    # Test decrementing
+    stats.decrement('ok', host)
+    assert stats.ok[host] == 1, "Decrement of 'ok' failed"
+
+    stats.decrement('failures', host)
+    assert stats.failures[host] == 0, "Decrement of 'failures' failed"
+
+    stats.decrement('changed', host)
+    assert stats.changed[host] == 2, "Decrement of 'changed' failed"
+
+    # Test decrementing below zero
+    try:
+        stats.decrement('failures', host)
+        assert False, "Decrement below zero did not raise KeyError"
+    except KeyError as e:
+        assert str(e) == "Don't be so negative
+
+# Generated at 2024-03-18 01:00:00.609192
+    stats = AggregateStats()
+
+    # Set up initial counts
+    stats.increment('failures', 'host1')
+    stats.increment('failures', 'host1')
+    stats.increment('ok', 'host1')
+    stats.increment('ok', 'host2')
+
+    # Test decrement
+    stats.decrement('failures', 'host1')
+    stats.decrement('ok', 'host2')
+
+    # Check results
+    assert stats.failures['host1'] == 1, "host1 should have 1 failure"
+    assert stats.ok.get('host2', 0) == 0, "host2 should have 0 ok"
+    assert stats.ok.get('host1', 0) == 1, "host1 should have 1 ok"
+
+    # Test decrement non-existing host
+    try:
+        stats.decrement('ok', 'host3')
+        assert stats.ok.get('host3', 0) == 0, "host
+
+# Generated at 2024-03-18 01:00:05.358213
+    stats = AggregateStats()
+
+    # Test updating custom stats with a new host and key
+    stats.update_custom_stats('new_stat', 1, 'host1')
+    assert stats.custom['host1']['new_stat'] == 1
+
+    # Test updating custom stats with an existing host and key
+    stats.update_custom_stats('new_stat', 2, 'host1')
+    assert stats.custom['host1']['new_stat'] == 3
+
+    # Test updating custom stats with a new key for an existing host
+    stats.update_custom_stats('another_stat', {'key': 'value'}, 'host1')
+    assert stats.custom['host1']['another_stat'] == {'key': 'value'}
+
+    # Test updating custom stats with a dictionary merge
+    stats.update_custom_stats('another_stat', {'new_key': 'new_value'}, 'host1')
+    assert stats.custom['host1']['another_stat'] == {'key': 'value', 'new_key':
+
+# Generated at 2024-03-18 01:00:10.106062
+    # Create an instance of AggregateStats
+    stats = AggregateStats()
+
+    # Define a host and custom stats
+    host = 'localhost'
+    custom_stat_key = 'data_processed'
+    initial_value = 100
+
+    # Set initial custom stat
+    stats.set_custom_stats(custom_stat_key, initial_value, host)
+
+    # Update custom stat with an integer
+    update_value = 50
+    stats.update_custom_stats(custom_stat_key, update_value, host)
+    assert stats.custom[host][custom_stat_key] == initial_value + update_value, "Failed to update integer custom stat"
+
+    # Update custom stat with a dictionary
+    update_dict = {'files': 2, 'records': 200}
+    stats.update_custom_stats(custom_stat_key, update_dict, host)
+    assert stats.custom[host][custom_stat_key] == {'files': 2, 'records': 200}, "Failed to update dictionary custom stat"
+
+    # Update custom stat with

@@ -1,0 +1,1804 @@
+
+
+# Generated at 2024-03-18 05:53:01.902144
+```python
+    env = Environment()
+    groups = ['group1', 'group2']
+    kwargs = {'arg1': 'value1', 'arg2': 'value2'}
+
+    # Mocking the plugin manager to return a list of mock formatters
+    mock_formatters_group1 = [type('MockFormatter1', (object,), {'enabled': True})]
+    mock_formatters_group2 = [type('MockFormatter2', (object,), {'enabled': False}),
+                              type('MockFormatter3', (object,), {'enabled': True})]
+
+    with unittest.mock.patch('httpie.plugins.registry.plugin_manager.get_formatters_grouped') as mock_get_formatters_grouped:
+        mock_get_formatters_grouped.return_value = {
+            'group1': mock_formatters_group1,
+            'group2': mock_formatters_group2
+        }
+
+        formatting = Formatting(groups, env, **kwargs)
+
+        # Check that only enabled plugins are added
+        assert len
+
+# Generated at 2024-03-18 05:53:07.740575
+    # Setup
+    test_mime = 'application/json'
+    expected_converter_class = None
+
+    # Register a mock converter plugin for testing
+    class MockConverterPlugin(ConverterPlugin):
+        @classmethod
+        def supports(cls, mime: str) -> bool:
+            return mime == test_mime
+
+    plugin_manager.register(MockConverterPlugin)
+
+    # Test that the correct converter is returned for a supported MIME type
+    converter = Conversion.get_converter(test_mime)
+    assert isinstance(converter, MockConverterPlugin)
+
+    # Test that None is returned for an unsupported MIME type
+    unsupported_mime = 'unsupported/mime'
+    converter = Conversion.get_converter(unsupported_mime)
+    assert converter is None
+
+    # Test that None is returned for an invalid MIME type
+    invalid_mime = 'invalid-mime'
+    converter = Conversion.get_converter(invalid_mime)
+    assert converter is None
+
+    # Cleanup
+    plugin_manager.unregister(MockConverterPlugin)
+
+# Generated at 2024-03-18 05:53:13.599420
+```python
+    # Setup
+    test_mime = 'application/json'
+    expected_converter_class = None
+
+    # Register a mock converter that supports 'application/json'
+    class MockConverter(ConverterPlugin):
+        @classmethod
+        def supports(cls, mime: str) -> bool:
+            return mime == test_mime
+
+    plugin_manager.register(MockConverter)
+
+    # Test that the correct converter is returned for a supported MIME type
+    converter = Conversion.get_converter(test_mime)
+    assert isinstance(converter, MockConverter)
+
+    # Test that None is returned for an unsupported MIME type
+    unsupported_mime = 'unsupported/mime'
+    converter = Conversion.get_converter(unsupported_mime)
+    assert converter is None
+
+    # Cleanup
+    plugin_manager.unregister(MockConverter)
+```
+
+# Generated at 2024-03-18 05:53:18.970096
+```python
+    env = Environment()
+    groups = ['json', 'xml']
+    formatting = Formatting(groups, env)
+
+    # Check if the correct plugins are enabled based on the groups
+    enabled_plugins_classes = [plugin.__class__ for plugin in formatting.enabled_plugins]
+    for group in groups:
+        for cls in plugin_manager.get_formatters_grouped()[group]:
+            assert (cls in enabled_plugins_classes) == cls(env=env).enabled
+
+    # Check if the enabled_plugins list does not contain plugins from other groups
+    other_groups = set(plugin_manager.get_formatters_grouped().keys()) - set(groups)
+    for group in other_groups:
+        for cls in plugin_manager.get_formatters_grouped()[group]:
+            assert cls not in enabled_plugins_classes
+```
+
+# Generated at 2024-03-18 05:53:26.392451
+```python
+    env = Environment()
+    formatting = Formatting(groups=['json'], env=env)
+
+    # Test with valid MIME type and content
+    valid_mime = 'application/json'
+    valid_content = '{"key": "value"}'
+    formatted_content = formatting.format_body(valid_content, valid_mime)
+    assert formatted_content == valid_content  # Assuming no formatting changes for simplicity
+
+    # Test with invalid MIME type
+    invalid_mime = 'invalid/mime'
+    invalid_content = 'This should not change'
+    formatted_invalid_content = formatting.format_body(invalid_content, invalid_mime)
+    assert formatted_invalid_content == invalid_content  # No formatting should occur
+
+    # Test with no MIME type
+    no_mime_content = 'This should also not change'
+    formatted_no_mime_content = formatting.format_body(no_mime_content, None)
+    assert formatted_no_mime_content == no_mime_content  # No formatting should occur
+
+    # Test with valid MIME type but no corresponding formatter
+   
+
+# Generated at 2024-03-18 05:53:33.346314
+```python
+    env = Environment()
+    groups = ['json', 'xml']
+    kwargs = {'option': 'value'}
+
+    # Mock the plugin manager to return a list of mock formatters
+    mock_formatters = {
+        'json': [type('MockJsonFormatter', (object,), {'enabled': True, 'format_headers': lambda self, h: f'json-{h}', 'format_body': lambda self, b, m: f'json-{b}'})],
+        'xml': [type('MockXmlFormatter', (object,), {'enabled': False}), type('MockXmlFormatter2', (object,), {'enabled': True, 'format_headers': lambda self, h: f'xml-{h}', 'format_body': lambda self, b, m: f'xml-{b}'})]
+    }
+    plugin_manager.get_formatters_grouped = lambda: mock_formatters
+
+    formatting = Formatting(groups, env, **kwargs)
+
+    # Check that
+
+# Generated at 2024-03-18 05:53:37.371312
+    env = Environment()
+    headers = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 13"
+    formatted_headers = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 13\n"
+
+    class MockFormatter:
+        def __init__(self, env, **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return headers + "\n"
+
+    plugin_manager.register(MockFormatter, group='headers')
+
+    formatting = Formatting(groups=['headers'], env=env)
+    result = formatting.format_headers(headers)
+
+    assert result == formatted_headers
+
+    plugin_manager.unregister(MockFormatter, group='headers')
+
+# Generated at 2024-03-18 05:53:42.445250
+    # Setup
+    converter_mime = 'application/json'
+    non_converter_mime = 'application/non-existent'
+    expected_converter = 'MockConverterPlugin'
+
+    # Mocking a converter plugin
+    class MockConverterPlugin(ConverterPlugin):
+        @classmethod
+        def supports(cls, mime: str) -> bool:
+            return mime == converter_mime
+
+    # Registering the mock plugin
+    plugin_manager.register(MockConverterPlugin)
+
+    # Test valid MIME type with registered converter
+    converter = Conversion.get_converter(converter_mime)
+    assert converter is not None, "Converter should not be None for supported MIME type"
+    assert isinstance(converter, MockConverterPlugin), f"Expected converter of type {expected_converter}, got {type(converter).__name__}"
+
+    # Test valid MIME type without registered converter
+    converter = Conversion.get_converter(non_converter_mime)
+    assert converter is None, "Converter should be None for unsupported MIME type"
+
+    # Test invalid MIME type
+    invalid_mime
+
+# Generated at 2024-03-18 05:53:45.953676
+```python
+    env = Environment()
+    groups = ['group1', 'group2']
+    formatting = Formatting(groups, env)
+
+    assert len(formatting.enabled_plugins) > 0, "No plugins enabled"
+    for plugin in formatting.enabled_plugins:
+        assert plugin.env is env, "Environment not passed correctly to plugins"
+        assert plugin.__class__.__name__ in [cls.__name__ for group in groups for cls in plugin_manager.get_formatters_grouped()[group]], "Plugin not in specified groups"
+```
+
+# Generated at 2024-03-18 05:53:53.340288
+```python
+    env = Environment()
+    headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"
+    formatted_headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=utf-8"
+
+    # Mock formatter plugin
+    class MockFormatterPlugin:
+        def __init__(self, env, **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return headers.lower()
+
+    # Register mock plugin
+    plugin_manager.register(MockFormatterPlugin, group='headers')
+
+    # Create Formatting instance with the mock plugin group
+    formatting = Formatting(groups=['headers'], env=env)
+
+    # Test format_headers method
+    result = formatting.format_headers(headers)
+    assert result == formatted_headers, f"Expected headers to be formatted to {formatted_headers}, but got {result}"
+
+    # Unregister mock plugin to clean up
+    plugin_manager.unregister(MockFormatterPlugin, group='
+
+# Generated at 2024-03-18 05:54:03.705354
+```python
+    env = Environment()
+    groups = ['json', 'xml']
+    kwargs = {'option': 'value'}
+
+    # Mock the plugin manager to return a list of mock formatters
+    mock_formatters_grouped = {
+        'json': [MockFormatter],
+        'xml': [MockFormatter]
+    }
+    plugin_manager.get_formatters_grouped = lambda: mock_formatters_grouped
+
+    # Create an instance of Formatting with the mock environment and groups
+    formatting = Formatting(groups, env, **kwargs)
+
+    # Check if the enabled plugins are correctly initialized
+    assert len(formatting.enabled_plugins) == len(groups)
+    for plugin in formatting.enabled_plugins:
+        assert isinstance(plugin, MockFormatter)
+        assert plugin.env is env
+        assert plugin.option == 'value'
+```
+
+# Generated at 2024-03-18 05:54:10.900677
+```python
+    env = Environment()
+    content = '{"key": "value"}'
+    mime = 'application/json'
+    expected_content = '{\n    "key": "value"\n}'
+
+    # Mock formatter plugin
+    class MockFormatterPlugin:
+        def __init__(self, *args, **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            if mime == 'application/json':
+                return json.dumps(json.loads(content), indent=4)
+            return content
+
+    # Mock plugin manager to return our mock plugin
+    original_get_formatters_grouped = plugin_manager.get_formatters_grouped
+    plugin_manager.get_formatters_grouped = lambda: {'mock': [MockFormatterPlugin]}
+
+    formatting = Formatting(groups=['mock'], env=env)
+    result_content = formatting.format_body(content, mime)
+
+    # Restore the original plugin manager method
+    plugin
+
+# Generated at 2024-03-18 05:54:17.276165
+```python
+    env = Environment()
+    formatting = Formatting(groups=['headers'], env=env)
+    raw_headers = 'Content-Type: text/plain\nUser-Agent: HTTPie'
+    expected_formatted_headers = 'Content-Type: text/plain\nUser-Agent: HTTPie'
+
+    # Assuming that no plugins are actually modifying the headers for simplicity
+    formatted_headers = formatting.format_headers(raw_headers)
+    assert formatted_headers == expected_formatted_headers, \
+        f"Expected headers to be '{expected_formatted_headers}', got '{formatted_headers}'"
+```
+
+# Generated at 2024-03-18 05:54:22.779542
+    # Setup
+    test_mime = 'application/json'
+    expected_converter_class = None
+
+    # Register a mock converter that supports 'application/json'
+    class MockConverter(ConverterPlugin):
+        @classmethod
+        def supports(cls, mime: str) -> bool:
+            return mime == test_mime
+
+    plugin_manager.register(MockConverter)
+
+    # Test that the correct converter is returned for a supported MIME type
+    converter = Conversion.get_converter(test_mime)
+    assert isinstance(converter, MockConverter), "Expected MockConverter instance for supported MIME type"
+
+    # Test that None is returned for an unsupported MIME type
+    unsupported_mime = 'unsupported/mime'
+    converter = Conversion.get_converter(unsupported_mime)
+    assert converter is None, "Expected None for unsupported MIME type"
+
+    # Cleanup
+    plugin_manager.unregister(MockConverter)
+
+# Generated at 2024-03-18 05:54:30.295413
+```python
+    env = Environment()
+    headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"
+    formatted_headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=utf-8"
+
+    # Mock formatter plugin
+    class MockFormatterPlugin:
+        def __init__(self, env=Environment(), **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return headers.lower()
+
+    # Register mock formatter plugin for the test
+    plugin_manager.register(MockFormatterPlugin, group='headers')
+
+    # Create Formatting instance with the mock group
+    formatting = Formatting(groups=['headers'], env=env)
+
+    # Test format_headers method
+    result = formatting.format_headers(headers)
+    assert result == formatted_headers, f"Expected headers to be formatted to {formatted_headers}, but got {result}"
+
+    # Unregister mock formatter plugin after the test
+    plugin_manager.unregister
+
+# Generated at 2024-03-18 05:54:39.857033
+```python
+    env = Environment()
+    formatting = Formatting(groups=['body'], env=env)
+
+    # Test with valid MIME type and content
+    valid_mime = 'application/json'
+    valid_content = '{"key": "value"}'
+    expected_content = '{"key": "value"}'  # Assuming no formatting changes for simplicity
+    assert formatting.format_body(valid_content, valid_mime) == expected_content
+
+    # Test with invalid MIME type
+    invalid_mime = 'invalid/mime'
+    invalid_content = 'Some content'
+    # Should return the original content since the MIME type is invalid
+    assert formatting.format_body(invalid_content, invalid_mime) == invalid_content
+
+    # Test with no MIME type
+    no_mime_content = 'Some content'
+    # Should return the original content since no MIME type is provided
+    assert formatting.format_body(no_mime_content, '') == no_mime_content
+
+    # Test with valid MIME type but no enabled plugins
+    # Assuming
+
+# Generated at 2024-03-18 05:54:50.727723
+    env = Environment()
+    groups = ['json', 'xml']
+    kwargs = {'option': 'value'}
+
+    # Mock the plugin manager to return a list of mock formatters
+    mock_formatters_grouped = {
+        'json': [MockFormatter],
+        'xml': [MockFormatter]
+    }
+    plugin_manager.get_formatters_grouped = lambda: mock_formatters_grouped
+
+    # Mock a formatter class
+    class MockFormatter(ConverterPlugin):
+        def __init__(self, env, **kwargs):
+            super().__init__(env=env, **kwargs)
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return f"Formatted headers: {headers}"
+
+        def format_body(self, content, mime):
+            return f"Formatted body: {content}"
+
+    # Instantiate the Formatting class
+    formatting = Formatting(groups, env, **kwargs)
+
+    # Check if the enabled_plugins list is populated correctly
+    assert len(formatting.enabled
+
+# Generated at 2024-03-18 05:54:57.402561
+```python
+    env = Environment()
+    formatter = Formatting(groups=['json'], env=env)
+    original_body = '{"key": "value"}'
+    mime_type = 'application/json'
+
+    # Mock a plugin that prettifies JSON
+    class MockJsonFormatterPlugin:
+        def __init__(self, env, **kwargs):
+            self.enabled = True
+
+        def format_body(self, content, mime):
+            if mime == 'application/json':
+                return content.replace(' ', '').replace('\n', '')
+            return content
+
+    # Register the mock plugin
+    plugin_manager.register(MockJsonFormatterPlugin)
+
+    # Test that the body is formatted correctly
+    formatted_body = formatter.format_body(original_body, mime_type)
+    assert formatted_body == '{"key":"value"}', f"Expected '{{\"key\":\"value\"}}', got '{formatted_body}'"
+
+    # Unregister the mock plugin after the test
+    plugin_manager.unregister(MockJsonFormatterPlugin)
+```
+
+# Generated at 2024-03-18 05:55:03.938838
+```python
+    env = Environment()
+    headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"
+    formatted_headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8\n"
+
+    # Mock formatter plugin
+    class MockFormatterPlugin:
+        def __init__(self, env=Environment(), **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return headers + "\n"
+
+    # Register mock plugin
+    plugin_manager.register(MockFormatterPlugin)
+
+    # Create Formatting instance with mock plugin
+    formatting = Formatting(groups=['headers'], env=env)
+
+    # Test format_headers method
+    result = formatting.format_headers(headers)
+    assert result == formatted_headers
+
+    # Unregister mock plugin to avoid side effects
+    plugin_manager.unregister(MockFormatterPlugin)
+```
+
+# Generated at 2024-03-18 05:55:17.632253
+```python
+    env = Environment()
+    headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"
+    formatted_headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=utf-8"
+
+    # Mock formatter plugin
+    class MockFormatterPlugin:
+        def __init__(self, env, **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return headers.lower()
+
+    # Register mock plugin
+    plugin_manager.register(MockFormatterPlugin, group='headers')
+
+    # Create Formatting instance with the 'headers' group
+    formatting = Formatting(groups=['headers'], env=env)
+
+    # Unregister mock plugin to clean up
+    plugin_manager.unregister(MockFormatterPlugin, group='headers')
+
+    # Assert that the headers are formatted correctly
+    assert formatting.format_headers(headers) == formatted_headers
+```
+
+# Generated at 2024-03-18 05:55:30.017678
+```python
+    env = Environment()
+    groups = ['headers']
+    formatting = Formatting(groups, env)
+
+    # Mock headers
+    headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"
+    expected_formatted_headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"  # Assuming no formatting changes
+
+    # Call the method
+    formatted_headers = formatting.format_headers(headers)
+
+    # Assert the result
+    assert formatted_headers == expected_formatted_headers, f"Expected headers to be '{expected_formatted_headers}', but got '{formatted_headers}'"
+```
+
+# Generated at 2024-03-18 05:55:35.214592
+```python
+    env = Environment()
+    groups = ['json', 'xml']
+    kwargs = {'option': 'value'}
+
+    # Mock the plugin manager to return a list of mock formatters
+    mock_formatters_grouped = {
+        'json': [MockFormatter],
+        'xml': [MockFormatter]
+    }
+    plugin_manager.get_formatters_grouped = lambda: mock_formatters_grouped
+
+    # Create an instance of Formatting with the mock environment and groups
+    formatting = Formatting(groups, env, **kwargs)
+
+    # Check if the enabled plugins are correctly initialized
+    assert len(formatting.enabled_plugins) == len(groups)
+    for plugin in formatting.enabled_plugins:
+        assert isinstance(plugin, MockFormatter)
+        assert plugin.env is env
+        assert plugin.option == 'value'
+```
+
+# Generated at 2024-03-18 05:55:41.184793
+```python
+    env = Environment()
+    formatter = Formatting(groups=['json'], env=env)
+    original_body = '{"key": "value"}'
+    mime_type = 'application/json'
+
+    # Test with valid MIME type
+    formatted_body = formatter.format_body(original_body, mime_type)
+    assert formatted_body == original_body  # Assuming no formatting changes for simplicity
+
+    # Test with invalid MIME type
+    invalid_mime_type = 'invalid/mime'
+    formatted_body = formatter.format_body(original_body, invalid_mime_type)
+    assert formatted_body == original_body  # No formatting should occur
+
+    # Test with no MIME type
+    no_mime_type = ''
+    formatted_body = formatter.format_body(original_body, no_mime_type)
+    assert formatted_body == original_body  # No formatting should occur
+```
+
+# Generated at 2024-03-18 05:55:48.537839
+```python
+    env = Environment()
+    groups = ['headers']
+    formatting = Formatting(groups, env)
+
+    # Mock headers
+    headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"
+    expected_headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"
+
+    # Call the method
+    formatted_headers = formatting.format_headers(headers)
+
+    # Assert the result
+    assert formatted_headers == expected_headers, f"Expected headers to be unchanged, got: {formatted_headers}"
+```
+
+# Generated at 2024-03-18 05:55:53.700724
+```python
+    env = Environment()
+    formatter = Formatting(groups=['json'], env=env)
+    original_body = '{"key": "value"}'
+    mime_type = 'application/json'
+
+    # Test with valid MIME type
+    formatted_body = formatter.format_body(original_body, mime_type)
+    assert formatted_body == original_body  # Assuming no formatting changes for simplicity
+
+    # Test with invalid MIME type
+    invalid_mime_type = 'invalid/mime'
+    formatted_body = formatter.format_body(original_body, invalid_mime_type)
+    assert formatted_body == original_body  # No formatting should occur
+
+    # Test with no MIME type
+    no_mime_type = ''
+    formatted_body = formatter.format_body(original_body, no_mime_type)
+    assert formatted_body == original_body  # No formatting should occur
+```
+
+# Generated at 2024-03-18 05:56:00.471393
+```python
+    env = Environment()
+    formatting = Formatting(groups=['json'], env=env)
+
+    # Test with valid MIME type and content that should be formatted
+    mime = 'application/json'
+    content = '{"key": "value"}'
+    expected_content = '{\n    "key": "value"\n}'  # assuming the formatter indents JSON
+    formatted_content = formatting.format_body(content, mime)
+    assert formatted_content == expected_content, f"Expected formatted content to be {expected_content}, but got {formatted_content}"
+
+    # Test with invalid MIME type, content should not be formatted
+    invalid_mime = 'invalid/mime'
+    content = '{"key": "value"}'
+    formatted_content = formatting.format_body(content, invalid_mime)
+    assert formatted_content == content, "Content should not be formatted for invalid MIME types"
+
+    # Test with valid MIME type but no enabled plugins for that type, content should remain unchanged
+    formatting_no_plugins =
+
+# Generated at 2024-03-18 05:56:04.562678
+```python
+    env = Environment()
+    formatting = Formatting(groups=['headers'], env=env)
+    raw_headers = 'Content-Type: text/plain\nContent-Length: 13'
+    expected_formatted_headers = 'Content-Type: text/plain\nContent-Length: 13'  # Assuming no formatting changes for simplicity
+
+    formatted_headers = formatting.format_headers(raw_headers)
+
+    assert formatted_headers == expected_formatted_headers, f"Expected headers to be '{expected_formatted_headers}', but got '{formatted_headers}'"
+```
+
+# Generated at 2024-03-18 05:56:12.696431
+```python
+    env = Environment()
+    groups = ['group1', 'group2']
+    kwargs = {'option1': 'value1', 'option2': 'value2'}
+
+    # Mocking the plugin manager's response
+    plugin_manager.get_formatters_grouped = lambda: {
+        'group1': [MockFormatterPlugin1, MockFormatterPlugin2],
+        'group2': [MockFormatterPlugin3]
+    }
+
+    # Mock formatter plugins
+    class MockFormatterPlugin1(ConverterPlugin):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return f"Plugin1: {headers}"
+
+        def format_body(self, content, mime):
+            return f"Plugin1: {content}"
+
+    class MockFormatterPlugin2(ConverterPlugin):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*
+
+# Generated at 2024-03-18 05:56:20.556454
+```python
+    env = Environment()
+    headers = "Content-Type: application/json\nAuthorization: Bearer token"
+    formatted_headers = "Content-Type: application/json\nAuthorization: ***"
+
+    class MockFormatter:
+        def __init__(self, env, **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return headers.replace("Bearer token", "***")
+
+    # Mock the plugin manager to return our MockFormatter
+    plugin_manager.get_formatters_grouped = lambda: {'headers': [MockFormatter]}
+
+    formatting = Formatting(groups=['headers'], env=env)
+    result = formatting.format_headers(headers)
+
+    assert result == formatted_headers, f"Expected headers to be formatted to {formatted_headers}, but got {result}"
+```
+
+# Generated at 2024-03-18 05:56:27.798587
+```python
+    env = Environment()
+    content = '{"key": "value"}'
+    mime = 'application/json'
+    groups = ['json']
+    formatting = Formatting(groups, env)
+
+    # Mock a plugin that prettifies JSON
+    class MockJsonPlugin:
+        def __init__(self, env, **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            if mime == 'application/json':
+                return f'pretty {content}'
+            return content
+
+    # Register the mock plugin for the test
+    plugin_manager.register(MockJsonPlugin, group='json')
+
+    # Test that the body is formatted correctly
+    formatted_content = formatting.format_body(content, mime)
+    assert formatted_content == 'pretty {"key": "value"}'
+
+    # Unregister the mock plugin after the test
+    plugin_manager.unregister(MockJsonPlugin, group='json')
+```
+
+# Generated at 2024-03-18 05:56:39.617522
+    # Setup
+    test_mime = 'application/json'
+    expected_converter_class = None
+
+    # Register a mock converter that supports 'application/json'
+    class MockConverter(ConverterPlugin):
+        @classmethod
+        def supports(cls, mime: str) -> bool:
+            return mime == test_mime
+
+    plugin_manager.register(MockConverter)
+
+    # Test that the correct converter is returned for a supported MIME type
+    converter = Conversion.get_converter(test_mime)
+    assert isinstance(converter, MockConverter), "Expected MockConverter instance for supported MIME type"
+
+    # Test that None is returned for an unsupported MIME type
+    unsupported_mime = 'unsupported/mime'
+    converter = Conversion.get_converter(unsupported_mime)
+    assert converter is None, "Expected None for unsupported MIME type"
+
+    # Cleanup
+    plugin_manager.unregister(MockConverter)
+
+# Generated at 2024-03-18 05:56:43.658406
+```python
+    env = Environment()
+    formatting = Formatting(groups=['headers'], env=env)
+    raw_headers = 'Content-Type: text/plain\nContent-Length: 13'
+    expected_formatted_headers = 'Content-Type: text/plain\nContent-Length: 13'  # Assuming no formatting changes for simplicity
+
+    formatted_headers = formatting.format_headers(raw_headers)
+
+    assert formatted_headers == expected_formatted_headers, f"Expected headers to be '{expected_formatted_headers}', but got '{formatted_headers}'"
+```
+
+# Generated at 2024-03-18 05:56:50.799513
+```python
+    env = Environment()
+    headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"
+    formatted_headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8\n"
+
+    # Mock formatter plugin
+    class MockFormatterPlugin:
+        def __init__(self, env, **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return headers + "\n"
+
+    # Register mock plugin
+    plugin_manager.register(MockFormatterPlugin, group='headers')
+
+    # Create Formatting instance with mock plugin group
+    formatting = Formatting(groups=['headers'], env=env)
+
+    # Test format_headers method
+    result = formatting.format_headers(headers)
+    assert result == formatted_headers, f"Expected headers to be formatted with an additional newline. Got: {result}"
+
+    # Unregister mock plugin to avoid side effects on other tests
+    plugin_manager.unregister
+
+# Generated at 2024-03-18 05:56:56.258456
+    # Setup
+    test_mime = 'application/json'
+    expected_converter = ConverterPlugin(test_mime)
+
+    # Register a mock converter that supports the test MIME type
+    class MockConverter(ConverterPlugin):
+        @classmethod
+        def supports(cls, mime: str) -> bool:
+            return mime == test_mime
+
+    plugin_manager.register(MockConverter)
+
+    # Test
+    converter = Conversion.get_converter(test_mime)
+
+    # Verify
+    assert converter is not None
+    assert isinstance(converter, MockConverter)
+
+    # Cleanup
+    plugin_manager.unregister(MockConverter)
+
+# Generated at 2024-03-18 05:57:07.103207
+```python
+    # Setup
+    test_mime = 'application/json'
+    expected_converter_class = None
+
+    # Register a mock converter that supports 'application/json'
+    class MockConverter(ConverterPlugin):
+        @classmethod
+        def supports(cls, mime: str) -> bool:
+            return mime == test_mime
+
+    plugin_manager.register(MockConverter)
+
+    # Test that the correct converter is returned for a supported MIME type
+    converter = Conversion.get_converter(test_mime)
+    assert isinstance(converter, MockConverter)
+
+    # Test that None is returned for an unsupported MIME type
+    unsupported_mime = 'unsupported/mime'
+    converter = Conversion.get_converter(unsupported_mime)
+    assert converter is None
+
+    # Test that None is returned for an invalid MIME type
+    invalid_mime = 'invalid-mime'
+    converter = Conversion.get_converter(invalid_mime)
+    assert converter is None
+
+    # Cleanup
+    plugin_manager.unregister(MockConverter)
+```
+
+# Generated at 2024-03-18 05:57:13.451416
+    env = Environment()
+    headers = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 13"
+    formatted_headers = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 13\n"
+
+    # Mock formatter plugin
+    class MockFormatterPlugin:
+        def __init__(self, env=Environment(), **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return headers + "\n"
+
+    # Mock plugin manager to return our mock formatter
+    original_get_formatters_grouped = plugin_manager.get_formatters_grouped
+    plugin_manager.get_formatters_grouped = lambda: {'mock': [MockFormatterPlugin]}
+
+    # Instantiate Formatting with the mock group
+    formatting = Formatting(groups=['mock'], env=env)
+
+    # Test the format_headers method
+    assert formatting.format_headers(headers) == formatted_headers
+
+    # Restore the original plugin manager method
+
+
+# Generated at 2024-03-18 05:57:20.140104
+```python
+    env = Environment()
+    groups = ['json', 'xml']
+    kwargs = {'option': 'value'}
+
+    # Mock the plugin manager to return a list of mock formatters
+    mock_formatters_grouped = {
+        'json': [MockFormatter],
+        'xml': [MockFormatter],
+        'html': []  # Assume no formatters for HTML for this test
+    }
+    plugin_manager.get_formatters_grouped = lambda: mock_formatters_grouped
+
+    # Create an instance of Formatting with the mock environment and groups
+    formatting = Formatting(groups=groups, env=env, **kwargs)
+
+    # Check if the correct plugins are enabled
+    assert len(formatting.enabled_plugins) == 2
+    for plugin in formatting.enabled_plugins:
+        assert isinstance(plugin, MockFormatter)
+        assert plugin.env is env
+        assert plugin.option == 'value'
+```
+
+# Generated at 2024-03-18 05:57:28.165124
+```python
+    env = Environment()
+    groups = ['headers']
+    formatting = Formatting(groups, env)
+
+    # Mock headers
+    headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"
+    expected_formatted_headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"
+
+    # Assume that no plugins are actually enabled for simplicity
+    assert formatting.format_headers(headers) == expected_formatted_headers, "Headers should remain unchanged"
+
+    # Now let's test with a mock plugin that reverses header names
+    class MockPlugin:
+        def __init__(self, env, **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return '\n'.join([' '.join(h.split()[::-1]) for h in headers.split('\n')])
+
+    plugin_manager.register(MockPlugin, group='headers')
+    formatting_with_mock = Formatting(groups, env)
+   
+
+# Generated at 2024-03-18 05:57:34.952794
+    # Setup
+    converter_plugin_mock = type(
+        'ConverterPluginMock',
+        (ConverterPlugin,),
+        {
+            'supports': staticmethod(lambda mime: mime == 'application/mock'),
+            '__init__': lambda self, mime: None
+        }
+    )
+    plugin_manager.register(converter_plugin_mock)
+
+    # Test valid MIME type with a supported converter
+    converter = Conversion.get_converter('application/mock')
+    assert isinstance(converter, ConverterPlugin), "Converter should be an instance of ConverterPlugin"
+
+    # Test valid MIME type with no supported converter
+    converter = Conversion.get_converter('application/unsupported')
+    assert converter is None, "Converter should be None for unsupported MIME types"
+
+    # Test invalid MIME type
+    converter = Conversion.get_converter('invalid-mime-type')
+    assert converter is None, "Converter should be None for invalid MIME types"
+
+    # Cleanup
+    plugin_manager.unregister(converter_plugin_mock)
+
+# Generated at 2024-03-18 05:57:43.745981
+```python
+    env = Environment()
+    groups = ['json', 'xml']
+    kwargs = {'option': 'value'}
+
+    # Mock the plugin manager to return a list of mock formatters
+    mock_formatters_grouped = {
+        'json': [MockFormatter],
+        'xml': [MockFormatter]
+    }
+    plugin_manager.get_formatters_grouped = lambda: mock_formatters_grouped
+
+    # Create an instance of Formatting with mock data
+    formatting = Formatting(groups, env, **kwargs)
+
+    # Check if the enabled plugins are correctly initialized
+    assert len(formatting.enabled_plugins) == len(groups)
+    for plugin in formatting.enabled_plugins:
+        assert isinstance(plugin, MockFormatter)
+        assert plugin.env is env
+        assert plugin.option == 'value'
+```
+
+# Generated at 2024-03-18 05:57:57.544736
+```python
+    env = Environment()
+    formatter = Formatting(groups=['json'], env=env)
+    original_body = '{"key": "value"}'
+    mime_type = 'application/json'
+
+    # Test with valid MIME type
+    formatted_body = formatter.format_body(original_body, mime_type)
+    assert formatted_body == original_body  # Assuming no formatting changes for simplicity
+
+    # Test with invalid MIME type
+    invalid_mime_type = 'invalid/mime'
+    formatted_body = formatter.format_body(original_body, invalid_mime_type)
+    assert formatted_body == original_body  # No formatting should occur
+
+    # Test with no MIME type
+    no_mime_type = ''
+    formatted_body = formatter.format_body(original_body, no_mime_type)
+    assert formatted_body == original_body  # No formatting should occur
+```
+
+# Generated at 2024-03-18 05:58:04.417008
+```python
+    env = Environment()
+    formatting = Formatting(groups=['json'], env=env)
+
+    # Test with valid MIME type and content
+    valid_mime = 'application/json'
+    content = '{"key": "value"}'
+    expected_content = '{\n    "key": "value"\n}'  # assuming the formatter indents JSON
+    assert formatting.format_body(content, valid_mime) == expected_content
+
+    # Test with invalid MIME type
+    invalid_mime = 'invalid/mime'
+    assert formatting.format_body(content, invalid_mime) == content  # should return the original content
+
+    # Test with no enabled plugins
+    formatting_no_plugins = Formatting(groups=[], env=env)
+    assert formatting_no_plugins.format_body(content, valid_mime) == content  # should return the original content
+```
+
+# Generated at 2024-03-18 05:58:11.290462
+```python
+    env = Environment()
+    headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"
+    formatted_headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=utf-8"
+
+    # Mock formatter plugin
+    class MockFormatterPlugin:
+        def __init__(self, env, **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return headers.lower()
+
+    # Register mock formatter plugin for the test
+    plugin_manager.register(MockFormatterPlugin, group='headers')
+
+    # Create Formatting instance with the mock group
+    formatting = Formatting(groups=['headers'], env=env)
+
+    # Test the format_headers method
+    result = formatting.format_headers(headers)
+    assert result == formatted_headers, f"Expected headers to be formatted to {formatted_headers}, but got {result}"
+
+    # Unregister mock formatter plugin after the test
+    plugin_manager.unregister(Mock
+
+# Generated at 2024-03-18 05:58:19.363194
+```python
+    # Setup
+    test_mime = 'application/json'
+    expected_converter = None
+
+    # Register a mock converter for the test
+    class MockConverter(ConverterPlugin):
+        @classmethod
+        def supports(cls, mime: str) -> bool:
+            return mime == test_mime
+
+        def __init__(self, mime: str):
+            super().__init__(mime)
+
+    plugin_manager.register(MockConverter)
+
+    # Test that the correct converter is returned for a supported MIME type
+    converter = Conversion.get_converter(test_mime)
+    assert isinstance(converter, MockConverter), "Converter should be an instance of MockConverter"
+
+    # Test that None is returned for an unsupported MIME type
+    unsupported_mime = 'unsupported/mime'
+    converter = Conversion.get_converter(unsupported_mime)
+    assert converter is None, "Converter should be None for an unsupported MIME type"
+
+    # Cleanup
+    plugin_manager.unregister(MockConverter)
+```
+
+# Generated at 2024-03-18 05:58:24.768604
+```python
+    env = Environment()
+    formatting = Formatting(groups=['json'], env=env)
+    original_body = '{"key": "value"}'
+    mime_type = 'application/json'
+
+    # Test with valid MIME type
+    formatted_body = formatting.format_body(original_body, mime_type)
+    assert formatted_body == original_body  # Assuming no formatting changes for simplicity
+
+    # Test with invalid MIME type
+    invalid_mime_type = 'invalid/mime'
+    formatted_body_with_invalid_mime = formatting.format_body(original_body, invalid_mime_type)
+    assert formatted_body_with_invalid_mime == original_body  # No formatting should occur
+
+    # Test with no MIME type
+    formatted_body_with_no_mime = formatting.format_body(original_body, None)
+    assert formatted_body_with_no_mime == original_body  # No formatting should occur
+```
+
+# Generated at 2024-03-18 05:58:31.170971
+```python
+    env = Environment()
+    groups = ['json', 'xml']
+    kwargs = {'option': 'value'}
+
+    # Mock the plugin manager to return a list of mock formatters
+    mock_formatters = {
+        'json': [MockFormatter],
+        'xml': [MockFormatter]
+    }
+    plugin_manager.get_formatters_grouped = lambda: mock_formatters
+
+    # Create an instance of Formatting with the mock environment and groups
+    formatting = Formatting(groups=groups, env=env, **kwargs)
+
+    # Check if the enabled plugins are correctly initialized
+    assert len(formatting.enabled_plugins) == 2
+    for plugin in formatting.enabled_plugins:
+        assert isinstance(plugin, MockFormatter)
+        assert plugin.env is env
+        assert plugin.option == 'value'
+```
+
+# Generated at 2024-03-18 05:58:40.591374
+```python
+    env = Environment()
+    groups = ['headers']
+    formatting = Formatting(groups, env)
+
+    # Mock headers
+    headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"
+    expected_formatted_headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"
+
+    # Mock formatter plugin
+    class MockFormatterPlugin:
+        def __init__(self, env, **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            # Mock formatting logic
+            return headers.upper()
+
+    # Register mock plugin
+    plugin_manager.register(MockFormatterPlugin, group='headers')
+
+    # Test formatting
+    formatted_headers = formatting.format_headers(headers)
+    assert formatted_headers == expected_formatted_headers, f"Expected headers to be formatted to {expected_formatted_headers}, but got {formatted_headers}"
+
+    # Unregister mock plugin to clean up
+    plugin_manager.unregister
+
+# Generated at 2024-03-18 05:58:46.209832
+```python
+    env = Environment()
+    formatter = Formatting(groups=['json'], env=env)
+    original_body = '{"key": "value"}'
+    mime_type = 'application/json'
+
+    # Test with valid MIME type
+    formatted_body = formatter.format_body(original_body, mime_type)
+    assert formatted_body == original_body  # Assuming no formatting changes for simplicity
+
+    # Test with invalid MIME type
+    invalid_mime_type = 'invalid/mime'
+    formatted_body_with_invalid_mime = formatter.format_body(original_body, invalid_mime_type)
+    assert formatted_body_with_invalid_mime == original_body  # No formatting should occur
+
+    # Test with no MIME type
+    formatted_body_with_no_mime = formatter.format_body(original_body, None)
+    assert formatted_body_with_no_mime == original_body  # No formatting should occur
+```
+
+# Generated at 2024-03-18 05:58:52.427039
+```python
+    # Setup
+    test_mime = 'application/json'
+    expected_converter = None
+
+    # Register a mock converter that supports 'application/json'
+    class MockConverter(ConverterPlugin):
+        @classmethod
+        def supports(cls, mime: str) -> bool:
+            return mime == test_mime
+
+    plugin_manager.register(MockConverter)
+
+    # Test
+    converter = Conversion.get_converter(test_mime)
+
+    # Verify that the correct converter is returned
+    assert isinstance(converter, MockConverter)
+
+    # Cleanup
+    plugin_manager.unregister(MockConverter)
+```
+
+# Generated at 2024-03-18 05:59:04.162362
+    env = Environment()
+    groups = ['json', 'xml']
+    kwargs = {'option': 'value'}
+
+    # Mock the plugin manager to return a list of mock formatters
+    mock_formatters_grouped = {
+        'json': [MockFormatter],
+        'xml': [MockFormatter]
+    }
+    plugin_manager.get_formatters_grouped = lambda: mock_formatters_grouped
+
+    # Mock a formatter class that will be used in the test
+    class MockFormatter(ConverterPlugin):
+        def __init__(self, env, **kwargs):
+            super().__init__(env=env, **kwargs)
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return f"Formatted headers: {headers}"
+
+        def format_body(self, content, mime):
+            return f"Formatted {mime} body: {content}"
+
+    # Instantiate the Formatting class with mock data
+    formatting = Formatting(groups, env, **kwargs)
+
+    # Check if the
+
+# Generated at 2024-03-18 05:59:20.861811
+```python
+    env = Environment()
+    formatter = Formatting(groups=['json'], env=env)
+    original_body = '{"key": "value"}'
+    mime_type = 'application/json'
+
+    # Test with valid MIME type
+    formatted_body = formatter.format_body(original_body, mime_type)
+    assert formatted_body == original_body  # Assuming no formatting changes for simplicity
+
+    # Test with invalid MIME type
+    invalid_mime_type = 'invalid/mime'
+    formatted_body = formatter.format_body(original_body, invalid_mime_type)
+    assert formatted_body == original_body  # No formatting should occur
+
+    # Test with no MIME type
+    no_mime_type = ''
+    formatted_body = formatter.format_body(original_body, no_mime_type)
+    assert formatted_body == original_body  # No formatting should occur
+```
+
+# Generated at 2024-03-18 05:59:30.721029
+```python
+    env = Environment()
+    formatting = Formatting(groups=['json'], env=env)
+
+    # Test with valid MIME type and content
+    valid_mime = 'application/json'
+    content = '{"key": "value"}'
+    formatted_content = formatting.format_body(content, valid_mime)
+    assert formatted_content == content  # Assuming no formatting changes the content
+
+    # Test with invalid MIME type
+    invalid_mime = 'invalid/mime'
+    content = 'Some content'
+    formatted_content = formatting.format_body(content, invalid_mime)
+    assert formatted_content == content  # Content should remain unchanged
+
+    # Test with valid MIME type but no enabled plugins
+    formatting_no_plugins = Formatting(groups=[], env=env)
+    formatted_content_no_plugins = formatting_no_plugins.format_body(content, valid_mime)
+    assert formatted_content_no_plugins == content  # Content should remain unchanged
+```
+
+# Generated at 2024-03-18 05:59:41.189722
+```python
+    env = Environment()
+    formatting = Formatting(groups=['json'], env=env)
+
+    # Test with valid MIME type and content
+    valid_mime = 'application/json'
+    valid_content = '{"key": "value"}'
+    formatted_content = formatting.format_body(valid_content, valid_mime)
+    assert formatted_content == valid_content  # Assuming no formatting changes for simplicity
+
+    # Test with invalid MIME type
+    invalid_mime = 'invalid/mime'
+    invalid_content = 'This should not change'
+    formatted_invalid_content = formatting.format_body(invalid_content, invalid_mime)
+    assert formatted_invalid_content == invalid_content  # Content should remain unchanged
+
+    # Test with no MIME type
+    no_mime_content = 'This should also not change'
+    formatted_no_mime_content = formatting.format_body(no_mime_content, None)
+    assert formatted_no_mime_content == no_mime_content  # Content should remain unchanged
+
+    # Test with valid MIME type but no corresponding formatter
+   
+
+# Generated at 2024-03-18 05:59:50.760423
+```python
+    env = Environment()
+    groups = ['json', 'xml']
+    kwargs = {'option': 'value'}
+
+    # Mock the plugin manager to return a list of mock formatters
+    mock_formatters_grouped = {
+        'json': [MockFormatter],
+        'xml': [MockFormatter]
+    }
+    plugin_manager.get_formatters_grouped = lambda: mock_formatters_grouped
+
+    # Create an instance of Formatting with the mock environment and groups
+    formatting = Formatting(groups, env, **kwargs)
+
+    # Check if the enabled plugins are correctly initialized
+    assert len(formatting.enabled_plugins) == 2
+    for plugin in formatting.enabled_plugins:
+        assert isinstance(plugin, MockFormatter)
+        assert plugin.env is env
+        assert plugin.option == 'value'
+```
+
+# Generated at 2024-03-18 05:59:58.754529
+```python
+    env = Environment()
+    groups = ['json', 'xml']
+    kwargs = {'option': 'value'}
+
+    # Mock the plugin manager to return a list of mock formatters
+    mock_formatters = {
+        'json': [MockFormatter],
+        'xml': [MockFormatter]
+    }
+    plugin_manager.get_formatters_grouped = lambda: mock_formatters
+
+    # Create an instance of Formatting with the mock environment and groups
+    formatting = Formatting(groups, env, **kwargs)
+
+    # Check if the enabled plugins are correctly initialized
+    assert len(formatting.enabled_plugins) == len(groups)
+    for plugin in formatting.enabled_plugins:
+        assert isinstance(plugin, MockFormatter)
+        assert plugin.env is env
+        for key, value in kwargs.items():
+            assert getattr(plugin, key) == value
+```
+
+# Generated at 2024-03-18 06:00:07.596396
+    env = Environment()
+    groups = ['json', 'xml']
+    kwargs = {'option': 'value'}
+
+    # Mock the plugin manager to return a list of mock formatters
+    mock_formatters_grouped = {
+        'json': [MockFormatter],
+        'xml': [MockFormatter]
+    }
+    plugin_manager.get_formatters_grouped = lambda: mock_formatters_grouped
+
+    # Mock a formatter class that will be used in the test
+    class MockFormatter:
+        def __init__(self, env, **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return f"Formatted headers: {headers}"
+
+        def format_body(self, content, mime):
+            return f"Formatted {mime} body: {content}"
+
+    # Instantiate the Formatting class with mock data
+    formatting = Formatting(groups, env, **kwargs)
+
+    # Check if the enabled_plugins list is populated correctly
+    assert len(formatting.enabled_plugins)
+
+# Generated at 2024-03-18 06:00:22.223640
+```python
+    env = Environment()
+    groups = ['headers']
+    formatting = Formatting(groups, env)
+
+    # Mock headers to be formatted
+    headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"
+    expected_headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8\n"
+
+    # Mock a plugin that appends a newline to headers
+    class NewlineAppenderPlugin:
+        def __init__(self, env, **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return headers + '\n'
+
+    # Register the mock plugin
+    plugin_manager.register(NewlineAppenderPlugin, group='headers')
+
+    # Perform the formatting
+    formatted_headers = formatting.format_headers(headers)
+
+    # Unregister the mock plugin to avoid side effects
+    plugin_manager.unregister(NewlineAppenderPlugin)
+
+    # Assert the expected result
+   
+
+# Generated at 2024-03-18 06:00:28.838817
+    # Setup
+    test_mime_supported = 'application/json'
+    test_mime_unsupported = 'application/unsupported'
+
+    # Mocking a converter plugin that supports 'application/json'
+    class MockConverterPlugin(ConverterPlugin):
+        @classmethod
+        def supports(cls, mime: str) -> bool:
+            return mime == test_mime_supported
+
+    # Registering the mock plugin
+    plugin_manager.register(MockConverterPlugin)
+
+    # Test for supported MIME type
+    converter = Conversion.get_converter(test_mime_supported)
+    assert converter is not None, "Converter should be found for supported MIME type"
+    assert isinstance(converter, MockConverterPlugin), "Converter should be an instance of MockConverterPlugin"
+
+    # Test for unsupported MIME type
+    converter = Conversion.get_converter(test_mime_unsupported)
+    assert converter is None, "Converter should not be found for unsupported MIME type"
+
+    # Cleanup
+    plugin_manager.unregister(MockConverterPlugin)
+
+# Generated at 2024-03-18 06:00:35.101543
+    # Setup
+    mock_mime_supported = 'application/json'
+    mock_mime_unsupported = 'application/unsupported'
+    mock_converter = type('MockConverter', (ConverterPlugin,), {
+        'supports': staticmethod(lambda mime: mime == mock_mime_supported),
+        '__init__': lambda self, mime: None
+    })
+
+    # Register the mock converter
+    plugin_manager.register(mock_converter)
+
+    # Test with a supported MIME type
+    converter = Conversion.get_converter(mock_mime_supported)
+    assert converter is not None, "Expected a converter for supported MIME type"
+    assert isinstance(converter, ConverterPlugin), "Converter should be an instance of ConverterPlugin"
+
+    # Test with an unsupported MIME type
+    converter = Conversion.get_converter(mock_mime_unsupported)
+    assert converter is None, "Expected no converter for unsupported MIME type"
+
+    # Test with an invalid MIME type
+    invalid_mime = 'invalid-mime-type'
+    converter = Conversion.get_converter(invalid_mime)
+   
+
+# Generated at 2024-03-18 06:00:44.692546
+    # Setup
+    mock_mime_supported = 'application/json'
+    mock_mime_unsupported = 'application/unsupported'
+    mock_converter_plugin = type('MockConverterPlugin', (ConverterPlugin,), {
+        'supports': staticmethod(lambda mime: mime == mock_mime_supported),
+        '__init__': lambda self, mime: None
+    })
+
+    # Register the mock plugin
+    plugin_manager.register(mock_converter_plugin)
+
+    # Test with a supported MIME type
+    converter = Conversion.get_converter(mock_mime_supported)
+    assert converter is not None, "Expected a converter for supported MIME type"
+    assert isinstance(converter, ConverterPlugin), "Converter should be an instance of ConverterPlugin"
+
+    # Test with an unsupported MIME type
+    converter = Conversion.get_converter(mock_mime_unsupported)
+    assert converter is None, "Expected no converter for unsupported MIME type"
+
+    # Test with an invalid MIME type
+    invalid_mime = 'invalid-mime-type'
+    converter = Conversion.get_converter(invalid
+
+# Generated at 2024-03-18 06:01:03.617517
+```python
+    # Setup
+    env = Environment()
+    formatting = Formatting(groups=['body'], env=env)
+
+    # Test with valid MIME type and content
+    valid_mime = 'application/json'
+    valid_content = '{"key": "value"}'
+    expected_valid_content = '{"key": "value"}'  # Assuming no formatting changes
+    assert formatting.format_body(valid_content, valid_mime) == expected_valid_content
+
+    # Test with invalid MIME type
+    invalid_mime = 'invalid/mime'
+    invalid_content = 'Some content'
+    # Content should remain unchanged since MIME is invalid
+    assert formatting.format_body(invalid_content, invalid_mime) == invalid_content
+
+    # Test with no MIME type
+    no_mime_content = 'Some content'
+    # Content should remain unchanged since no MIME type is provided
+    assert formatting.format_body(no_mime_content, '') == no_mime_content
+
+    # Test with valid MIME type but no enabled plugins
+    # Assuming
+
+# Generated at 2024-03-18 06:01:08.377911
+```python
+    env = Environment()
+    groups = ['group1', 'group2']
+    kwargs = {'arg1': 'value1', 'arg2': 'value2'}
+    formatting = Formatting(groups, env, **kwargs)
+
+    assert len(formatting.enabled_plugins) > 0, "No plugins enabled"
+    for plugin in formatting.enabled_plugins:
+        assert isinstance(plugin, ConverterPlugin), "Enabled plugin is not an instance of ConverterPlugin"
+        assert plugin.enabled, "Plugin is not enabled"
+        assert plugin.env is env, "Plugin environment is not set correctly"
+        assert all(getattr(plugin, k) == v for k, v in kwargs.items()), "Plugin kwargs not set correctly"
+```
+
+# Generated at 2024-03-18 06:01:16.549847
+    env = Environment()
+    groups = ['json', 'xml']
+    kwargs = {'option': 'value'}
+
+    # Mock the plugin manager to return a list of mock formatters
+    mock_formatters_grouped = {
+        'json': [MockFormatter],
+        'xml': [MockFormatter]
+    }
+    plugin_manager.get_formatters_grouped = lambda: mock_formatters_grouped
+
+    # Mock a formatter class
+    class MockFormatter:
+        def __init__(self, env, **kwargs):
+            self.env = env
+            self.kwargs = kwargs
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return f"Formatted headers: {headers}"
+
+        def format_body(self, content, mime):
+            return f"Formatted {mime} body: {content}"
+
+    # Instantiate the Formatting class
+    formatting = Formatting(groups, env, **kwargs)
+
+    # Check if the enabled_plugins list is populated correctly
+    assert len(formatting.enabled
+
+# Generated at 2024-03-18 06:01:23.039494
+```python
+    env = Environment()
+    groups = ['json', 'xml']
+    formatting = Formatting(groups, env)
+
+    # Check if the correct plugins are enabled based on the groups
+    enabled_plugins_classes = [plugin.__class__ for plugin in formatting.enabled_plugins]
+    for group in groups:
+        for cls in plugin_manager.get_formatters_grouped()[group]:
+            assert (cls in enabled_plugins_classes) == cls(env=env).enabled
+
+    # Check if the enabled_plugins list does not contain plugins from other groups
+    all_plugins = set()
+    for group_plugins in plugin_manager.get_formatters_grouped().values():
+        all_plugins.update(group_plugins)
+    for plugin_cls in all_plugins:
+        if plugin_cls not in [cls for cls_list in plugin_manager.get_formatters_grouped().values() for cls in cls_list]:
+            assert plugin_cls not in enabled_plugins_classes
+```
+
+# Generated at 2024-03-18 06:01:30.838712
+    # Setup
+    converter_mime = 'application/json'
+    non_converter_mime = 'application/non-existent'
+    expected_converter = 'MockConverterPlugin'
+
+    # Mocking a converter plugin that supports 'application/json'
+    class MockConverterPlugin(ConverterPlugin):
+        @classmethod
+        def supports(cls, mime: str) -> bool:
+            return mime == converter_mime
+
+    # Registering the mock plugin
+    plugin_manager.register(MockConverterPlugin)
+
+    # Test valid MIME type with a registered converter
+    converter = Conversion.get_converter(converter_mime)
+    assert converter is not None, "Converter should not be None for a supported MIME type"
+    assert isinstance(converter, MockConverterPlugin), f"Expected converter to be an instance of {expected_converter}, got {type(converter)}"
+
+    # Test valid MIME type with no registered converter
+    converter = Conversion.get_converter(non_converter_mime)
+    assert converter is None, "Converter should be None for an unsupported MIME type"
+
+
+
+# Generated at 2024-03-18 06:01:38.393495
+    # Setup
+    converter_mime = 'application/json'
+    non_converter_mime = 'application/non-existent'
+    expected_converter = 'JsonConverterPlugin'
+
+    # Mocking a converter plugin that supports 'application/json'
+    class JsonConverterPlugin(ConverterPlugin):
+        @classmethod
+        def supports(cls, mime: str) -> bool:
+            return mime == converter_mime
+
+    # Registering the mock plugin
+    plugin_manager.register(JsonConverterPlugin)
+
+    # Test valid MIME type with a registered converter
+    converter = Conversion.get_converter(converter_mime)
+    assert converter is not None, "Converter should not be None for a supported MIME type"
+    assert isinstance(converter, JsonConverterPlugin), f"Expected converter type {expected_converter}, got {type(converter).__name__}"
+
+    # Test valid MIME type with no registered converter
+    converter = Conversion.get_converter(non_converter_mime)
+    assert converter is None, "Converter should be None for an unsupported MIME type"
+
+    #
+
+# Generated at 2024-03-18 06:01:45.371463
+```python
+    env = Environment()
+    headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8"
+    formatted_headers = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=UTF-8\n"
+
+    # Mock formatter plugin
+    class MockFormatterPlugin:
+        def __init__(self, env=Environment(), **kwargs):
+            self.enabled = True
+
+        def format_headers(self, headers):
+            return headers + "\n"
+
+    # Register mock formatter plugin for the test
+    plugin_manager.register(MockFormatterPlugin)
+
+    # Create a Formatting instance with the mock group
+    formatting = Formatting(groups=['mock'], env=env)
+
+    # Test the format_headers method
+    assert formatting.format_headers(headers) == formatted_headers
+
+    # Unregister mock formatter plugin after the test
+    plugin_manager.unregister(MockFormatterPlugin)
+```
+
+# Generated at 2024-03-18 06:01:48.685374
+```python
+    env = Environment()
+    groups = ['json', 'xml']
+    formatting = Formatting(groups, env)
+
+    # Check if the correct plugins are enabled based on the groups
+    enabled_plugins_classes = [plugin.__class__ for plugin in formatting.enabled_plugins]
+    for group in groups:
+        for cls in plugin_manager.get_formatters_grouped()[group]:
+            assert (cls in enabled_plugins_classes) == cls(env=env).enabled
+```
+
+# Generated at 2024-03-18 06:01:57.901809
+```python
+    env = Environment()
+    groups = ['json', 'xml']
+    formatting = Formatting(groups, env)
+
+    # Check if the correct plugins are enabled based on the groups
+    assert len(formatting.enabled_plugins) > 0, "No plugins enabled"
+    for plugin in formatting.enabled_plugins:
+        assert plugin.__class__.__name__ in [cls.__name__ for group in groups for cls in plugin_manager.get_formatters_grouped()[group]], "Unexpected plugin enabled"
+
+    # Check if the plugins are initialized with the correct environment
+    for plugin in formatting.enabled_plugins:
+        assert plugin.env is env, "Plugin initialized with incorrect environment"
+```
+
+# Generated at 2024-03-18 06:02:05.377143
+```python
+    env = Environment()
+    formatting = Formatting(groups=['json'], env=env)
+
+    # Test with valid MIME type and content
+    valid_mime = 'application/json'
+    content = '{"key": "value"}'
+    formatted_content = formatting.format_body(content, valid_mime)
+    assert formatted_content == content  # Assuming no formatting changes the content
+
+    # Test with invalid MIME type
+    invalid_mime = 'invalid/mime'
+    content = 'Some content'
+    formatted_content = formatting.format_body(content, invalid_mime)
+    assert formatted_content == content  # Content should remain unchanged
+
+    # Test with valid MIME type but no plugins enabled
+    formatting_no_plugins = Formatting(groups=[], env=env)
+    formatted_content_no_plugins = formatting_no_plugins.format_body(content, valid_mime)
+    assert formatted_content_no_plugins == content  # Content should remain unchanged
+```
+
+# Generated at 2024-03-18 06:02:29.237587
+```python
+    env = Environment()
+    content = '{"key": "value"}'
+    mime = 'application/json'
+
+    # Mock a formatter plugin that supports JSON
+    class MockJsonFormatterPlugin:
+        def __init__(self, env=Environment(), **kwargs):
+            self.enabled = True
+
+        def format_body(self, content: str, mime: str) -> str:
+            if mime == 'application/json':
+                return content.replace(' ', '').replace('\n', '')
+            return content
+
+    # Register the mock plugin
+    plugin_manager.register(MockJsonFormatterPlugin)
+
+    # Create a Formatting instance with the mock plugin enabled
+    formatting = Formatting(groups=['response'], env=env)
+
+    # Format the JSON content
+    formatted_content = formatting.format_body(content, mime)
+
+    # Unregister the mock plugin to avoid side effects
+    plugin_manager.unregister(MockJsonFormatterPlugin)
+
+    # Assert that the content has been formatted correctly
+    assert formatted_content == '{"key
+
+# Generated at 2024-03-18 06:02:36.316447
+    # Setup
+    mock_mime_supported = 'application/json'
+    mock_mime_unsupported = 'application/unsupported'
+    mock_converter_plugin = type('MockConverterPlugin', (ConverterPlugin,), {
+        'supports': staticmethod(lambda mime: mime == mock_mime_supported),
+        '__init__': lambda self, mime: None
+    })
+
+    # Register the mock plugin
+    plugin_manager.register(mock_converter_plugin)
+
+    # Test with a supported MIME type
+    converter = Conversion.get_converter(mock_mime_supported)
+    assert converter is not None, "Expected a converter for supported MIME type"
+    assert isinstance(converter, ConverterPlugin), "Converter should be an instance of ConverterPlugin"
+
+    # Test with an unsupported MIME type
+    converter = Conversion.get_converter(mock_mime_unsupported)
+    assert converter is None, "Expected no converter for unsupported MIME type"
+
+    # Test with an invalid MIME type
+    invalid_mime = 'invalid-mime-type'
+    converter = Conversion.get_converter(invalid
+
+# Generated at 2024-03-18 06:02:42.689727
+```python
+    # Setup
+    test_mime = 'application/json'
+    expected_converter = None
+
+    # Register a mock converter that supports 'application/json'
+    class MockConverter(ConverterPlugin):
+        @classmethod
+        def supports(cls, mime: str) -> bool:
+            return mime == test_mime
+
+    plugin_manager.register(MockConverter)
+
+    # Test
+    converter = Conversion.get_converter(test_mime)
+
+    # Assert
+    assert converter is not None, "Converter should not be None for supported MIME type"
+    assert isinstance(converter, MockConverter), "Converter should be an instance of MockConverter"
+
+    # Cleanup
+    plugin_manager.unregister(MockConverter)
+```
+
+# Generated at 2024-03-18 06:02:50.069259
+    # Setup
+    mock_mime_supported = 'application/json'
+    mock_mime_unsupported = 'application/unsupported'
+    mock_converter_plugin = type('MockConverterPlugin', (ConverterPlugin,), {
+        'supports': staticmethod(lambda mime: mime == mock_mime_supported),
+        '__init__': lambda self, mime: None
+    })
+
+    # Register the mock plugin
+    plugin_manager.register(mock_converter_plugin)
+
+    # Test with a supported MIME type
+    converter = Conversion.get_converter(mock_mime_supported)
+    assert converter is not None, "Expected a converter for supported MIME type"
+    assert isinstance(converter, ConverterPlugin), "Converter should be an instance of ConverterPlugin"
+
+    # Test with an unsupported MIME type
+    converter = Conversion.get_converter(mock_mime_unsupported)
+    assert converter is None, "Expected no converter for unsupported MIME type"
+
+    # Test with an invalid MIME type
+    invalid_mime = 'invalid-mime-type'
+    converter = Conversion.get_converter(invalid
+
+# Generated at 2024-03-18 06:02:58.215388
+    # Setup
+    mock_mime_supported = 'application/json'
+    mock_mime_unsupported = 'application/unsupported'
+    mock_converter_plugin = type('MockConverterPlugin', (ConverterPlugin,), {
+        'supports': staticmethod(lambda mime: mime == mock_mime_supported),
+        '__init__': lambda self, mime: None
+    })
+
+    # Register the mock plugin
+    plugin_manager.register(mock_converter_plugin)
+
+    # Test with supported MIME type
+    converter = Conversion.get_converter(mock_mime_supported)
+    assert converter is not None, "Expected a converter for supported MIME type"
+    assert isinstance(converter, ConverterPlugin), "Converter should be an instance of ConverterPlugin"
+
+    # Test with unsupported MIME type
+    converter = Conversion.get_converter(mock_mime_unsupported)
+    assert converter is None, "Expected no converter for unsupported MIME type"
+
+    # Cleanup
+    plugin_manager.unregister(mock_converter_plugin)

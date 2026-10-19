@@ -1,0 +1,1199 @@
+
+
+# Generated at 2024-03-18 03:00:06.641337
+    # Test parsing from simple string
+    role_str = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'custom_name', 'src': 'my_role', 'version': '1.0.0'}
+
+    # Test parsing from string without version and custom name
+    role_str = 'my_role'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'version': None}
+
+    # Test parsing from dict with all fields
+    role_dict = {'role': 'my_role', 'src': 'http://example.com/roles/my_role.git', 'version': '1.0.0'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result == {'name': 'my_role', 'src': 'http://example.com/roles/my_role.git', '
+
+# Generated at 2024-03-18 03:00:14.545383
+    # Test parsing from simple string
+    role_str = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'custom_name', 'src': 'my_role', 'version': '1.0.0'}
+
+    # Test parsing from dict with src and version
+    role_dict = {'src': 'git+http://git.example.com/repos/repo.git', 'version': 'v2.0.1'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result == {'name': 'repo', 'src': 'http://git.example.com/repos/repo.git', 'scm': 'git', 'version': 'v2.0.1'}
+
+    # Test parsing from dict with role key
+    role_dict = {'role': 'my_role_name'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result == {'name': '
+
+# Generated at 2024-03-18 03:00:20.693023
+    # Test parsing from simple string
+    role_string = 'my_role,1.0.0,custom_name'
+    expected_result = {'name': 'custom_name', 'src': 'my_role', 'version': '1.0.0'}
+    assert RoleRequirement.role_yaml_parse(role_string) == expected_result
+
+    # Test parsing from dict with src and version
+    role_dict = {'src': 'git+http://example.com/my_role.git', 'version': '1.0.0'}
+    expected_result = {'name': 'my_role', 'src': 'http://example.com/my_role.git', 'scm': 'git', 'version': '1.0.0'}
+    assert RoleRequirement.role_yaml_parse(role_dict) == expected_result
+
+    # Test parsing from dict with role key
+    role_dict = {'role': 'my_role'}
+    expected_result = {'name': 'my_role', 'src': None, 'scm
+
+# Generated at 2024-03-18 03:00:31.572673
+    # Test with standard repo URL
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+    # Test with SSH format URL
+    assert RoleRequirement.repo_url_to_role_name("git@git.example.com:repos/repo.git") == "repo"
+    # Test with URL containing .tar.gz
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.tar.gz") == "repo"
+    # Test with URL containing a branch or tag
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git,branch_name") == "repo"
+    # Test with a simple role name
+    assert RoleRequirement.repo_url_to_role_name("repo") == "repo"
+    # Test with a role name containing a comma
+    assert RoleRequirement.repo_url_to_role_name("repo,version") == "repo"
+    # Test with a role name containing
+
+# Generated at 2024-03-18 03:00:37.128691
+    # Test with standard repo URL ending in .git
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+
+    # Test with URL not ending in .git
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo") == "repo"
+
+    # Test with URL containing .tar.gz
+    assert RoleRequirement.repo_url_to_role_name("http://example.com/archives/repo.tar.gz") == "repo"
+
+    # Test with URL containing a branch or tag specifier
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git,branch_name") == "repo"
+
+    # Test with a simple role name without URL
+    assert RoleRequirement.repo_url_to_role_name("simple_role") == "simple_role"
+
+    # Test with a role name containing special characters
+    assert RoleRequirement.repo_url_to_role_name("role-name_with.chars") ==
+
+# Generated at 2024-03-18 03:00:47.407689
+```python
+    # Test with string input
+    role_str = "git+http://example.com/path/to/repo.git,1.0.0,myrole"
+    expected_result_str = {
+        'name': 'myrole',
+        'src': 'http://example.com/path/to/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'src': 'git+http://example.com/path/to/repo.git',
+        'version': '1.0.0',
+        'name': 'myrole'
+    }
+    expected_result_dict = {
+        'name': 'myrole',
+        'src': 'http://example.com/path/to/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+   
+
+# Generated at 2024-03-18 03:00:58.144292
+    # Test parsing from simple string
+    role_str = 'my_role'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': None}, "Failed parsing role from string"
+
+    # Test parsing with version
+    role_str_with_version = 'my_role,1.0.0'
+    result = RoleRequirement.role_yaml_parse(role_str_with_version)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': '1.0.0'}, "Failed parsing role with version"
+
+    # Test parsing with version and name
+    role_str_with_version_and_name = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str_with_version_and_name)
+    assert result == {'name': 'custom_name', 'src': '
+
+# Generated at 2024-03-18 03:01:04.593639
+    # Test with standard URL ending in .git
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+
+    # Test with URL not ending in .git
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo") == "repo"
+
+    # Test with URL containing .tar.gz
+    assert RoleRequirement.repo_url_to_role_name("http://example.com/archives/repo.tar.gz") == "repo"
+
+    # Test with URL containing a branch or tag
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git,branch_name") == "repo"
+
+    # Test with URL containing a username and @ symbol
+    assert RoleRequirement.repo_url_to_role_name("git@example.com:repos/repo.git") == "repo"
+
+    # Test with URL containing a username and @ symbol without .git suffix
+    assert RoleRequirement.repo_url_to
+
+# Generated at 2024-03-18 03:01:13.891308
+    # Test parsing from simple string
+    role_str = 'my_role'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': None}, "Failed parsing role from string"
+
+    # Test parsing from string with version
+    role_str_version = 'my_role,1.0.0'
+    result = RoleRequirement.role_yaml_parse(role_str_version)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': '1.0.0'}, "Failed parsing role with version"
+
+    # Test parsing from string with version and name
+    role_str_version_name = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str_version_name)
+    assert result == {'name': 'custom_name', 'src': 'my_role
+
+# Generated at 2024-03-18 03:01:20.243081
+    # Test with standard repo URL
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+    # Test with repo URL ending with .tar.gz
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.tar.gz") == "repo"
+    # Test with repo URL containing a branch or tag
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git,branch_name") == "repo"
+    # Test with a simple role name without URL
+    assert RoleRequirement.repo_url_to_role_name("simple_role") == "simple_role"
+    # Test with SSH format URL
+    assert RoleRequirement.repo_url_to_role_name("git@git.example.com:repos/repo.git") == "repo"
+    # Test with URL containing multiple paths
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/namespace/repo.git
+
+# Generated at 2024-03-18 03:01:44.323865
+    # Test with standard repo URL
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+    # Test with repo URL ending with .tar.gz
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.tar.gz") == "repo"
+    # Test with repo URL containing a comma
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo,version") == "repo"
+    # Test with a simple role name without URL
+    assert RoleRequirement.repo_url_to_role_name("simple_role") == "simple_role"
+    # Test with SSH format URL
+    assert RoleRequirement.repo_url_to_role_name("git@git.example.com:repos/repo.git") == "repo"
+    # Test with URL containing branch info
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git,branch_name") == "
+
+# Generated at 2024-03-18 03:01:49.957493
+    # Test with standard git URL
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+    # Test with SSH git URL
+    assert RoleRequirement.repo_url_to_role_name("git@git.example.com:repos/repo.git") == "repo"
+    # Test with trailing slash
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git/") == "repo"
+    # Test with tar.gz archive URL
+    assert RoleRequirement.repo_url_to_role_name("http://example.com/releases/repo.tar.gz") == "repo"
+    # Test with a URL containing a comma
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo,version.git") == "repo"
+    # Test with a simple role name without URL
+    assert RoleRequirement.repo_url_to_role_name("simple_role") == "simple_role"
+    # Test with a role
+
+# Generated at 2024-03-18 03:01:55.677553
+    # Test parsing from simple string
+    role_string = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_string)
+    assert result == {'name': 'custom_name', 'src': 'my_role', 'version': '1.0.0'}
+
+    # Test parsing from dict with src and version
+    role_dict = {'src': 'git+http://git.example.com/repos/repo.git', 'version': 'v2.0.1'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result == {'name': 'repo', 'src': 'http://git.example.com/repos/repo.git', 'scm': 'git', 'version': 'v2.0.1'}
+
+    # Test parsing from dict with role key
+    role_dict_with_role_key = {'role': 'my_role_name'}
+    result = RoleRequirement.role_yaml_parse(role_dict_with_role_key)
+    assert
+
+# Generated at 2024-03-18 03:02:03.579080
+    # Test parsing from simple string
+    role_string = 'my_role'
+    result = RoleRequirement.role_yaml_parse(role_string)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': None}, "Failed parsing simple role string"
+
+    # Test parsing with version
+    role_string_with_version = 'my_role,1.0.0'
+    result = RoleRequirement.role_yaml_parse(role_string_with_version)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': '1.0.0'}, "Failed parsing role string with version"
+
+    # Test parsing with version and name
+    role_string_with_version_and_name = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_string_with_version_and_name)
+    assert result == {'name': 'custom_name', 'src':
+
+# Generated at 2024-03-18 03:02:10.321375
+    # Test with standard repo URL
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+    # Test with repo URL ending with .tar.gz
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.tar.gz") == "repo"
+    # Test with repo URL containing a branch name
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git,branch_name") == "repo"
+    # Test with a simple role name without URL
+    assert RoleRequirement.repo_url_to_role_name("simple_role") == "simple_role"
+    # Test with SSH format URL
+    assert RoleRequirement.repo_url_to_role_name("git@git.example.com:repos/repo.git") == "repo"
+    # Test with URL containing multiple paths
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/namespace/repo.git")
+
+# Generated at 2024-03-18 03:02:17.966145
+    # Test parsing from simple string
+    role_str = 'my_role'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': None}, "Failed parsing simple role string"
+
+    # Test parsing from string with version
+    role_str_version = 'my_role,1.0.0'
+    result = RoleRequirement.role_yaml_parse(role_str_version)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': '1.0.0'}, "Failed parsing role string with version"
+
+    # Test parsing from string with version and name
+    role_str_version_name = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str_version_name)
+    assert result == {'name': 'custom_name', 'src': 'my
+
+# Generated at 2024-03-18 03:02:26.495369
+    # Test with standard URL ending in .git
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+    # Test with URL not ending in .git
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo") == "repo"
+    # Test with URL containing .tar.gz
+    assert RoleRequirement.repo_url_to_role_name("http://example.com/archives/repo.tar.gz") == "repo"
+    # Test with URL containing a comma
+    assert RoleRequirement.repo_url_to_role_name("http://example.com/repos/repo,version") == "repo"
+    # Test with URL containing a git+ prefix
+    assert RoleRequirement.repo_url_to_role_name("git+http://git.example.com/repos/repo.git") == "repo"
+    # Test with URL containing a ssh schema
+    assert RoleRequirement.repo_url_to_role_name("git@example.com:repos/re
+
+# Generated at 2024-03-18 03:02:35.235821
+    # Test with standard repo URL
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+    # Test with repo URL ending with .tar.gz
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.tar.gz") == "repo"
+    # Test with repo URL containing a comma
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo,version") == "repo"
+    # Test with a simple role name without URL
+    assert RoleRequirement.repo_url_to_role_name("simple_role") == "simple_role"
+    # Test with a role name with a path
+    assert RoleRequirement.repo_url_to_role_name("roles/complex_role") == "complex_role"
+    # Test with a role name with a path and .git extension
+    assert RoleRequirement.repo_url_to_role_name("roles/complex_role.git") == "complex_role"
+
+
+# Generated at 2024-03-18 03:02:42.133104
+    # Test cases for various repository URL formats
+    test_cases = {
+        'http://git.example.com/repos/repo.git': 'repo',
+        'https://github.com/ansible/ansible-role.git': 'ansible-role',
+        'git@github.com:ansible/ansible-role.git': 'ansible-role',
+        'git+https://github.com/ansible/ansible-role.git': 'ansible-role',
+        'ansible-role.tar.gz': 'ansible-role',
+        'ansible-role,version': 'ansible-role',
+        'ansible-role,version,name': 'ansible-role',
+        'repo': 'repo',
+        'git+ssh://git.example.com/repos/repo.git': 'repo',
+        'ssh://git.example.com/repos/repo.git': 'repo',
+        'git://git.example.com/repos/repo.git': 'repo',
+        'http://git.example.com/repos/repo': 'repo',
+        'http://git.example.com/repos/repo,version': 'repo
+
+# Generated at 2024-03-18 03:02:48.914224
+    # Test parsing from simple string
+    role_str = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'custom_name', 'src': 'my_role', 'version': '1.0.0'}
+
+    # Test parsing from dict with src and version
+    role_dict = {'src': 'git+http://git.example.com/repos/repo.git', 'version': 'v1.2.3'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result == {'name': 'repo', 'src': 'http://git.example.com/repos/repo.git', 'scm': 'git', 'version': 'v1.2.3'}
+
+    # Test parsing from dict with role key
+    role_dict = {'role': 'my_role_name'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result == {'name': '
+
+# Generated at 2024-03-18 03:03:22.406775
+    # Test with standard git URL
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+    # Test with SSH git URL
+    assert RoleRequirement.repo_url_to_role_name("git@git.example.com:repos/repo.git") == "repo"
+    # Test with trailing slash
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git/") == "repo"
+    # Test with .tar.gz extension
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.tar.gz") == "repo"
+    # Test with a URL containing a comma
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo,version.tar.gz") == "repo"
+    # Test with a simple role name without URL
+    assert RoleRequirement.repo_url_to_role_name("simple_role") == "simple_role"
+    # Test with
+
+# Generated at 2024-03-18 03:03:30.529854
+```python
+    # Test with a simple role name
+    role_name = 'my_role'
+    result = RoleRequirement.role_yaml_parse(role_name)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': None}, "Failed parsing simple role name"
+
+    # Test with a role name and version
+    role_name_version = 'my_role,1.0.0'
+    result = RoleRequirement.role_yaml_parse(role_name_version)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': '1.0.0'}, "Failed parsing role name with version"
+
+    # Test with a role name, version, and custom name
+    role_name_version_custom = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_name_version_custom)
+    assert result == {'name': '
+
+# Generated at 2024-03-18 03:03:36.522565
+    # Test parsing from simple string
+    role_string = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_string)
+    assert result == {'name': 'custom_name', 'src': 'my_role', 'version': '1.0.0', 'scm': None}
+
+    # Test parsing from dict with src and version
+    role_dict = {'src': 'git+http://example.com/path/to/repo.git', 'version': 'v2.0.1'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result == {'name': 'repo', 'src': 'http://example.com/path/to/repo.git', 'version': 'v2.0.1', 'scm': 'git'}
+
+    # Test parsing from dict with role key
+    role_dict = {'role': 'my_role_name'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert
+
+# Generated at 2024-03-18 03:03:44.703076
+```python
+    # Test with simple role string
+    role_str = 'my_role'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': None}, "Failed parsing simple role string"
+
+    # Test with role string with version
+    role_str_version = 'my_role,1.0.0'
+    result = RoleRequirement.role_yaml_parse(role_str_version)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': '1.0.0'}, "Failed parsing role string with version"
+
+    # Test with role string with version and name
+    role_str_version_name = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str_version_name)
+    assert result == {'name': 'custom_name', 'src
+
+# Generated at 2024-03-18 03:03:51.306634
+    # Test with standard repo URL
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+    # Test with repo URL ending with .tar.gz
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.tar.gz") == "repo"
+    # Test with repo URL containing a branch or tag
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git,branch_name") == "repo"
+    # Test with a simple role name without URL
+    assert RoleRequirement.repo_url_to_role_name("simple_role") == "simple_role"
+    # Test with SSH format URL
+    assert RoleRequirement.repo_url_to_role_name("git@git.example.com:repos/repo.git") == "repo"
+    # Test with URL containing username and password
+    assert RoleRequirement.repo_url_to_role_name("https://username:password@git.example.com/repos
+
+# Generated at 2024-03-18 03:04:00.793613
+    # Test with standard repo URL
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+    # Test with repo URL ending with .tar.gz
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.tar.gz") == "repo"
+    # Test with repo URL containing a branch name
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git,branch_name") == "repo"
+    # Test with repo URL without protocol
+    assert RoleRequirement.repo_url_to_role_name("git.example.com:repos/repo.git") == "repo"
+    # Test with just the role name
+    assert RoleRequirement.repo_url_to_role_name("repo") == "repo"
+    # Test with SSH protocol
+    assert RoleRequirement.repo_url_to_role_name("git@git.example.com:repos/repo.git") == "repo"
+    # Test with
+
+# Generated at 2024-03-18 03:04:10.192614
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repos/repo.git,1.0.0,myrole"
+    expected_result_str = {
+        'name': 'myrole',
+        'src': 'http://example.com/repos/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'src': 'git+http://example.com/repos/repo.git',
+        'version': '1.0.0',
+        'name': 'myrole'
+    }
+    expected_result_dict = {
+        'name': 'myrole',
+        'src': 'http://example.com/repos/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert Role
+
+# Generated at 2024-03-18 03:04:18.560038
+    # Test with standard repo URL
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+    # Test with repo URL ending with .tar.gz
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.tar.gz") == "repo"
+    # Test with repo URL containing a comma
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo,version") == "repo"
+    # Test with a simple role name without URL
+    assert RoleRequirement.repo_url_to_role_name("simple_role") == "simple_role"
+    # Test with SSH format URL
+    assert RoleRequirement.repo_url_to_role_name("git@git.example.com:repos/repo.git") == "repo"
+    # Test with URL containing branch info
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git,branch_name") == "
+
+# Generated at 2024-03-18 03:04:24.537417
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repo.git,1.0.0,myrole"
+    expected_result_str = {
+        'name': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input without 'role' key
+    role_dict = {
+        'src': 'http://example.com/repo.git',
+        'version': '1.0.0',
+        'name': 'myrole'
+    }
+    expected_result_dict = role_dict.copy()
+    assert RoleRequirement.role_yaml_parse(role_dict) == expected_result_dict
+
+    # Test with dict input with 'role' key
+    role_dict_with_role = {
+        'role': 'myrole',
+       
+
+# Generated at 2024-03-18 03:04:30.629899
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+    assert RoleRequirement.repo_url_to_role_name("https://github.com/ansible/ansible-role.git") == "ansible-role"
+    assert RoleRequirement.repo_url_to_role_name("git+https://github.com/ansible/ansible-role.git") == "ansible-role"
+    assert RoleRequirement.repo_url_to_role_name("git@github.com:ansible/ansible-role.git") == "ansible-role"
+    assert RoleRequirement.repo_url_to_role_name("ansible-role") == "ansible-role"
+    assert RoleRequirement.repo_url_to_role_name("http://example.com/roles/ansible-role.tar.gz") == "ansible-role"
+    assert RoleRequirement.repo_url_to_role_name("http://example.com/roles/ansible-role.tar.gz,version=1.0") == "ansible-role"
+    assert RoleRequirement.repo_url_to_role_name("http://example.com/roles/ansible
+
+# Generated at 2024-03-18 03:04:48.838555
+```python
+    # Test with simple role string
+    role_str = 'my_role'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': None}, "Failed parsing simple role string"
+
+    # Test with role string with version
+    role_str_version = 'my_role,1.0.0'
+    result = RoleRequirement.role_yaml_parse(role_str_version)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': '1.0.0'}, "Failed parsing role string with version"
+
+    # Test with role string with version and name
+    role_str_version_name = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str_version_name)
+    assert result == {'name': 'custom_name', 'src
+
+# Generated at 2024-03-18 03:04:57.171280
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repos/repo.git,1.0.0,myrole"
+    expected_result_str = {
+        'name': 'myrole',
+        'src': 'http://example.com/repos/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'src': 'git+http://example.com/repos/repo.git',
+        'version': '1.0.0',
+        'name': 'myrole'
+    }
+    expected_result_dict = {
+        'name': 'myrole',
+        'src': 'http://example.com/repos/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert Role
+
+# Generated at 2024-03-18 03:05:03.788493
+    # Test parsing from simple string
+    role_str = 'my_role'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': None}, "Failed parsing simple role string"
+
+    # Test parsing from string with version
+    role_str_with_version = 'my_role,1.0.0'
+    result = RoleRequirement.role_yaml_parse(role_str_with_version)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': '1.0.0'}, "Failed parsing role string with version"
+
+    # Test parsing from string with version and name
+    role_str_with_version_and_name = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str_with_version_and_name)
+    assert result == {'name': 'custom_name
+
+# Generated at 2024-03-18 03:05:12.488520
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+    assert RoleRequirement.repo_url_to_role_name("https://github.com/ansible/ansible-role-my_role.git") == "ansible-role-my_role"
+    assert RoleRequirement.repo_url_to_role_name("git+https://github.com/ansible/ansible-role-my_role.git") == "ansible-role-my_role"
+    assert RoleRequirement.repo_url_to_role_name("git@github.com:ansible/ansible-role-my_role.git") == "ansible-role-my_role"
+    assert RoleRequirement.repo_url_to_role_name("ansible-role-my_role") == "ansible-role-my_role"
+    assert RoleRequirement.repo_url_to_role_name("https://example.com/roles/ansible-role-my_role.tar.gz") == "ansible-role-my_role"
+    assert RoleRequirement.repo_url_to_role_name("https://example.com/roles/ansible-role-my_role.tar.gz,version=1.0") ==
+
+# Generated at 2024-03-18 03:05:17.982564
+```python
+    # Test with string input without commas
+    role_str_no_commas = 'some_role'
+    expected_no_commas = {'name': 'some_role', 'src': 'some_role', 'scm': None, 'version': None}
+    assert RoleRequirement.role_yaml_parse(role_str_no_commas) == expected_no_commas
+
+    # Test with string input with one comma
+    role_str_one_comma = 'some_role,1.0.0'
+    expected_one_comma = {'name': 'some_role', 'src': 'some_role', 'scm': None, 'version': '1.0.0'}
+    assert RoleRequirement.role_yaml_parse(role_str_one_comma) == expected_one_comma
+
+    # Test with string input with two commas
+    role_str_two_commas = 'some_role,1.0.0,custom_name'
+    expected_two_commas = {'name': 'custom_name', 'src
+
+# Generated at 2024-03-18 03:05:25.126465
+    # Test parsing from simple string
+    role_str = 'my_role'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': None}, "Failed parsing role from string"
+
+    # Test parsing from string with version
+    role_str_version = 'my_role,1.0.0'
+    result = RoleRequirement.role_yaml_parse(role_str_version)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': '1.0.0'}, "Failed parsing role with version"
+
+    # Test parsing from string with version and name
+    role_str_version_name = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str_version_name)
+    assert result == {'name': 'custom_name', 'src': 'my_role
+
+# Generated at 2024-03-18 03:05:37.765879
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repo.git,1.0.0,myrole"
+    expected_result_str = {
+        'name': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'src': 'git+http://example.com/repo.git',
+        'version': '1.0.0',
+        'name': 'myrole'
+    }
+    expected_result_dict = {
+        'name': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse
+
+# Generated at 2024-03-18 03:05:45.583599
+```python
+    # Test with string input
+    role_str = "git+http://example.com/path/to/repo.git,1.0.0,my_role"
+    expected_result_str = {
+        'name': 'my_role',
+        'src': 'http://example.com/path/to/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'role': 'my_role',
+        'src': 'http://example.com/path/to/repo.tar.gz',
+        'version': '1.0.0'
+    }
+    expected_result_dict = {
+        'name': 'my_role',
+        'src': 'http://example.com/path/to/repo.tar.gz',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse
+
+# Generated at 2024-03-18 03:05:51.863894
+    # Test with standard URL ending in .git
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git") == "repo"
+
+    # Test with URL not ending in .git
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo") == "repo"
+
+    # Test with URL containing .tar.gz
+    assert RoleRequirement.repo_url_to_role_name("http://example.com/archives/repo.tar.gz") == "repo"
+
+    # Test with URL containing a branch or tag specifier
+    assert RoleRequirement.repo_url_to_role_name("http://git.example.com/repos/repo.git,branch_name") == "repo"
+
+    # Test with a simple role name without URL
+    assert RoleRequirement.repo_url_to_role_name("simple_role") == "simple_role"
+
+    # Test with SSH format URL
+    assert RoleRequirement.repo_url_to_role_name("git@git.example.com:repos/repo.git
+
+# Generated at 2024-03-18 03:05:58.643245
+    # Test parsing from simple string
+    role_str = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'custom_name', 'src': 'my_role', 'version': '1.0.0', 'scm': None}
+
+    # Test parsing from dict with src and version
+    role_dict = {'src': 'git+http://example.com/repos/repo.git', 'version': 'v1.2.3'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result == {'name': 'repo', 'src': 'http://example.com/repos/repo.git', 'version': 'v1.2.3', 'scm': 'git'}
+
+    # Test parsing from dict with role key
+    role_dict = {'role': 'my_role_name'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result ==
+
+# Generated at 2024-03-18 03:06:19.063353
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repos/repo.git,1.0.0,my_role"
+    expected_result_str = {
+        'name': 'my_role',
+        'src': 'http://example.com/repos/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'src': 'git+http://example.com/repos/repo.git',
+        'version': '1.0.0',
+        'name': 'my_role'
+    }
+    expected_result_dict = {
+        'name': 'my_role',
+        'src': 'http://example.com/repos/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert Role
+
+# Generated at 2024-03-18 03:06:24.748035
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repo.git,1.0.0,myrole"
+    expected_result_str = {
+        'name': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input containing 'role' key
+    role_dict_with_role_key = {
+        'role': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'version': '1.0.0'
+    }
+    expected_result_dict_with_role_key = {
+        'name': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml
+
+# Generated at 2024-03-18 03:06:32.612024
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repo.git,1.0.0,my_role"
+    expected_result_str = {
+        'name': 'my_role',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'src': 'git+http://example.com/repo.git',
+        'version': '1.0.0',
+        'name': 'my_role'
+    }
+    expected_result_dict = {
+        'name': 'my_role',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse
+
+# Generated at 2024-03-18 03:06:39.684141
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repo.git,1.0.0,myrole"
+    expected_result_str = {
+        'name': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'src': 'git+http://example.com/repo.git',
+        'version': '1.0.0',
+        'name': 'myrole'
+    }
+    expected_result_dict = {
+        'name': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse
+
+# Generated at 2024-03-18 03:06:47.763943
+```python
+    # Test with a simple role name
+    role_name = 'my_role'
+    result = RoleRequirement.role_yaml_parse(role_name)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': None}, "Failed parsing simple role name"
+
+    # Test with a role name and version
+    role_name_version = 'my_role,1.0.0'
+    result = RoleRequirement.role_yaml_parse(role_name_version)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': '1.0.0'}, "Failed parsing role name with version"
+
+    # Test with a role name, version, and custom name
+    role_name_version_custom = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_name_version_custom)
+    assert result == {'name': '
+
+# Generated at 2024-03-18 03:06:55.474626
+    # Test parsing from simple string
+    role_str = 'my_galaxy_role'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'my_galaxy_role', 'src': 'my_galaxy_role', 'scm': None, 'version': None}, "Failed parsing simple role string"
+
+    # Test parsing with version
+    role_str_with_version = 'my_galaxy_role,1.2.3'
+    result = RoleRequirement.role_yaml_parse(role_str_with_version)
+    assert result == {'name': 'my_galaxy_role', 'src': 'my_galaxy_role', 'scm': None, 'version': '1.2.3'}, "Failed parsing role string with version"
+
+    # Test parsing with version and name
+    role_str_with_version_and_name = 'my_galaxy_role,1.2.3,custom_name'
+    result = RoleRequirement.role_yaml_parse
+
+# Generated at 2024-03-18 03:07:03.572272
+    # Test parsing from simple string
+    role_str = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'custom_name', 'src': 'my_role', 'version': '1.0.0', 'scm': None}
+
+    # Test parsing from dict with src and version
+    role_dict = {'src': 'git+http://example.com/path/to/repo.git', 'version': 'v2.0.1'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result == {'name': 'repo', 'src': 'http://example.com/path/to/repo.git', 'version': 'v2.0.1', 'scm': 'git'}
+
+    # Test parsing from dict with role key
+    role_dict = {'role': 'my_role_name'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert
+
+# Generated at 2024-03-18 03:07:08.922648
+```python
+    # Test with a simple role name
+    role_name = 'my_role'
+    result = RoleRequirement.role_yaml_parse(role_name)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': None}, "Failed parsing simple role name"
+
+    # Test with a role name and version
+    role_name_version = 'my_role,1.0.0'
+    result = RoleRequirement.role_yaml_parse(role_name_version)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': '1.0.0'}, "Failed parsing role name with version"
+
+    # Test with a role name, version, and custom name
+    role_name_version_custom = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_name_version_custom)
+    assert result == {'name': '
+
+# Generated at 2024-03-18 03:07:16.419352
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repo.git,1.0.0,my_role"
+    expected_result_str = {
+        'name': 'my_role',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'src': 'git+http://example.com/repo.git',
+        'version': '1.0.0',
+        'name': 'my_role'
+    }
+    expected_result_dict = {
+        'name': 'my_role',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse
+
+# Generated at 2024-03-18 03:07:22.609094
+    # Test parsing from simple string
+    role_str = 'my_role'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': None}, "Failed parsing role from string"
+
+    # Test parsing from string with version
+    role_str_version = 'my_role,1.0.0'
+    result = RoleRequirement.role_yaml_parse(role_str_version)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': '1.0.0'}, "Failed parsing role with version"
+
+    # Test parsing from string with version and name
+    role_str_version_name = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str_version_name)
+    assert result == {'name': 'custom_name', 'src': 'my_role
+
+# Generated at 2024-03-18 03:07:47.463991
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repo.git,1.0.0,myrole"
+    expected_result_str = {
+        'name': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'src': 'git+http://example.com/repo.git',
+        'version': '1.0.0',
+        'name': 'myrole'
+    }
+    expected_result_dict = {
+        'name': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse
+
+# Generated at 2024-03-18 03:07:54.287226
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repo.git,1.0.0,myrole"
+    expected_result_str = {
+        'name': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'role': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'version': '1.0.0'
+    }
+    expected_result_dict = {
+        'name': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_dict) == expected_result_dict
+
+    #
+
+# Generated at 2024-03-18 03:08:02.813161
+```python
+    # Test with string input
+    role_str = "git+http://example.com/path/to/repo.git,1.0.0,myrole"
+    expected_result_str = {
+        'name': 'myrole',
+        'src': 'http://example.com/path/to/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'src': 'git+http://example.com/path/to/repo.git',
+        'version': '1.0.0',
+        'name': 'myrole'
+    }
+    expected_result_dict = {
+        'name': 'myrole',
+        'src': 'http://example.com/path/to/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+   
+
+# Generated at 2024-03-18 03:08:09.150802
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repo.git,1.0.0,myrole"
+    expected_result_str = {
+        'name': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'src': 'git+http://example.com/repo.git',
+        'version': '1.0.0',
+        'name': 'myrole'
+    }
+    expected_result_dict = {
+        'name': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse
+
+# Generated at 2024-03-18 03:08:22.694536
+    # Test parsing from simple string
+    role_str = 'my_role'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': None}, "Failed parsing role from string"
+
+    # Test parsing from string with version
+    role_str_version = 'my_role,1.0.0'
+    result = RoleRequirement.role_yaml_parse(role_str_version)
+    assert result == {'name': 'my_role', 'src': 'my_role', 'scm': None, 'version': '1.0.0'}, "Failed parsing role with version"
+
+    # Test parsing from string with version and name
+    role_str_version_name = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str_version_name)
+    assert result == {'name': 'custom_name', 'src': 'my_role
+
+# Generated at 2024-03-18 03:08:29.261739
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repos/repo.git,1.0.0,my_role"
+    expected_result_str = {
+        'name': 'my_role',
+        'src': 'http://example.com/repos/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'src': 'git+http://example.com/repos/repo.git',
+        'version': '1.0.0',
+        'name': 'my_role'
+    }
+    expected_result_dict = {
+        'name': 'my_role',
+        'src': 'http://example.com/repos/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert Role
+
+# Generated at 2024-03-18 03:08:37.948401
+```python
+    # Test with string input
+    role_str = "git+http://example.com/path/to/repo.git,1.0.0,myrole"
+    expected_result_str = {
+        'name': 'myrole',
+        'src': 'http://example.com/path/to/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'src': 'git+http://example.com/path/to/repo.git',
+        'version': '1.0.0',
+        'name': 'myrole'
+    }
+    expected_result_dict = {
+        'name': 'myrole',
+        'src': 'http://example.com/path/to/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+   
+
+# Generated at 2024-03-18 03:08:43.825027
+    # Test parsing from simple string
+    role_str = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'custom_name', 'src': 'my_role', 'version': '1.0.0'}
+
+    # Test parsing from dict with src and version
+    role_dict = {'src': 'git+http://git.example.com/repos/repo.git', 'version': 'v1.2.3'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result == {'name': 'repo', 'src': 'http://git.example.com/repos/repo.git', 'scm': 'git', 'version': 'v1.2.3'}
+
+    # Test parsing from dict with role key
+    role_dict = {'role': 'my_role_name'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result == {'name': '
+
+# Generated at 2024-03-18 03:08:50.790777
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repo.git,1.0.0,my_role"
+    expected_result_str = {
+        'name': 'my_role',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'src': 'git+http://example.com/repo.git',
+        'version': '1.0.0',
+        'name': 'my_role'
+    }
+    expected_result_dict = {
+        'name': 'my_role',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse
+
+# Generated at 2024-03-18 03:08:57.525522
+    # Test parsing from simple string
+    role_str = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'custom_name', 'src': 'my_role', 'version': '1.0.0', 'scm': None}
+
+    # Test parsing from dict with src and version
+    role_dict = {'src': 'git+http://example.com/repos/repo.git', 'version': 'v1.2.3'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result == {'name': 'repo', 'src': 'http://example.com/repos/repo.git', 'version': 'v1.2.3', 'scm': 'git'}
+
+    # Test parsing from dict with role key
+    role_dict = {'role': 'my_role_name'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result ==
+
+# Generated at 2024-03-18 03:09:38.372721
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repo.git,1.0.0,myrole"
+    expected_result_str = {
+        'name': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input containing 'role' key
+    role_dict_with_role_key = {'role': 'myrole', 'src': 'http://example.com/repo.git', 'version': '1.0.0'}
+    expected_result_dict_with_role_key = {
+        'name': 'myrole',
+        'src': 'http://example.com/repo.git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_dict_with_role_key
+
+# Generated at 2024-03-18 03:09:43.982733
+    # Test parsing from simple string
+    role_str = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'custom_name', 'src': 'my_role', 'version': '1.0.0', 'scm': None}
+
+    # Test parsing from dict with src and version
+    role_dict = {'src': 'git+http://example.com/my_role.git', 'version': 'commitish'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result == {'name': 'my_role', 'src': 'http://example.com/my_role.git', 'version': 'commitish', 'scm': 'git'}
+
+    # Test parsing from dict with role key
+    role_dict = {'role': 'my_role'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result == {'name': 'my_role', 'src':
+
+# Generated at 2024-03-18 03:09:52.004808
+```python
+    # Test with string input
+    role_str = "git+http://example.com/repos/repo.git,1.0.0,my_role"
+    expected_result_str = {
+        'name': 'my_role',
+        'src': 'http://example.com/repos/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert RoleRequirement.role_yaml_parse(role_str) == expected_result_str
+
+    # Test with dict input
+    role_dict = {
+        'src': 'git+http://example.com/repos/repo.git',
+        'version': '1.0.0',
+        'name': 'my_role'
+    }
+    expected_result_dict = {
+        'name': 'my_role',
+        'src': 'http://example.com/repos/repo.git',
+        'scm': 'git',
+        'version': '1.0.0'
+    }
+    assert Role
+
+# Generated at 2024-03-18 03:09:59.695933
+    # Test parsing from simple string
+    role_str = 'my_role,1.0.0,custom_name'
+    result = RoleRequirement.role_yaml_parse(role_str)
+    assert result == {'name': 'custom_name', 'src': 'my_role', 'version': '1.0.0', 'scm': None}
+
+    # Test parsing from dict with src and version
+    role_dict = {'src': 'git+http://example.com/repos/repo.git', 'version': 'v1.2.3'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result == {'name': 'repo', 'src': 'http://example.com/repos/repo.git', 'version': 'v1.2.3', 'scm': 'git'}
+
+    # Test parsing from dict with role key
+    role_dict = {'role': 'my_role_name'}
+    result = RoleRequirement.role_yaml_parse(role_dict)
+    assert result ==

@@ -1,0 +1,1231 @@
+
+
+# Generated at 2024-06-03 15:35:40.043373
+```python
+    import asyncio
+    from tornado.locks import Lock
+
+    async def test():
+        lock = Lock()
+        async with lock:
+            assert lock._block._value == 0  # Lock should be acquired
+        assert lock._block._value == 1  # Lock should be released
+
+    asyncio.run(test())
+```
+
+# Generated at 2024-06-03 15:35:43.117290
+```python
+    sem = Semaphore(1)
+
+    async def test():
+        async with sem:
+            assert sem._value == 0
+        assert sem._value == 1
+
+    IOLoop.current().run_sync(test)
+```
+
+# Generated at 2024-06-03 15:35:46.619585
+```python
+    import pytest
+    from tornado.ioloop import IOLoop
+
+    async def test_coroutine():
+        lock = Lock()
+        await lock.acquire()
+        assert lock._block._value == 0  # Lock should be acquired
+
+        await lock.__aexit__(None, None, None)
+        assert lock._block._value == 1  # Lock should be released
+
+    IOLoop.current().run_sync(test_coroutine)
+```
+
+# Generated at 2024-06-03 15:35:50.664990
+```python
+    import pytest
+    from tornado.ioloop import IOLoop
+    from tornado import gen
+
+    async def test_coroutine():
+        lock = Lock()
+        await lock.acquire()
+        assert lock._block._value == 0  # Lock should be acquired
+
+        await lock.__aexit__(None, None, None)
+        assert lock._block._value == 1  # Lock should be released
+
+    IOLoop.current().run_sync(test_coroutine)
+```
+
+# Generated at 2024-06-03 15:35:53.739842
+```python
+    from tornado.ioloop import IOLoop
+    from tornado.locks import Semaphore
+    from tornado import gen
+    import datetime
+
+    async def test_acquire():
+        sem = Semaphore(1)
+        assert sem._value == 1
+
+        await sem.acquire()
+        assert sem._value == 0
+
+        # Test timeout
+        try:
+            await sem.acquire(timeout=datetime.timedelta(seconds=1))
+        except gen.TimeoutError:
+            pass
+        else:
+            assert False, "Expected TimeoutError"
+
+        sem.release()
+        assert sem._value == 1
+
+    IOLoop.current().run_sync(test_acquire)
+```
+
+# Generated at 2024-06-03 15:35:58.056153
+```python
+    condition = Condition()
+    results = []
+
+    async def waiter():
+        result = await condition.wait()
+        results.append(result)
+
+    async def runner():
+        await gen.multi([waiter(), waiter(), waiter()])
+        condition.notify_all()
+        await gen.sleep(0.1)  # Give the IOLoop a chance to run the callbacks
+
+    ioloop.IOLoop.current().run_sync(runner)
+    assert results == [True, True, True]
+```
+
+# Generated at 2024-06-03 15:36:00.517857
+```python
+    condition = Condition()
+    assert repr(condition) == "<Condition>"
+
+    # Add a waiter and check the representation
+    condition._waiters.append(Future())
+    assert repr(condition) == "<Condition waiters[1]>"
+
+    # Add another waiter and check the representation
+    condition._waiters.append(Future())
+    assert repr(condition) == "<Condition waiters[2]>"
+```
+
+# Generated at 2024-06-03 15:36:04.689031
+```python
+    condition = Condition()
+    waiter1 = condition.wait()
+    waiter2 = condition.wait()
+    
+    condition.notify(1)
+    
+    assert waiter1.done() == True
+    assert waiter1.result() == True
+    assert waiter2.done() == False
+    
+    condition.notify(1)
+    
+    assert waiter2.done() == True
+    assert waiter2.result() == True
+```
+
+# Generated at 2024-06-03 15:36:07.909042
+```python
+    sem = Semaphore(1)
+
+    async def test():
+        async with sem:
+            assert sem._value == 0
+        assert sem._value == 1
+
+    IOLoop.current().run_sync(test)
+```
+
+# Generated at 2024-06-03 15:36:11.928048
+```python
+    io_loop = ioloop.IOLoop.current()
+    condition = Condition()
+
+    async def waiter():
+        result = await condition.wait()
+        return result
+
+    async def notifier():
+        await gen.sleep(0.1)
+        condition.notify()
+
+    async def runner():
+        wait_task = waiter()
+        notify_task = notifier()
+        result = await wait_task
+        return result
+
+    result = io_loop.run_sync(runner)
+    assert result is True
+```
+
+# Generated at 2024-06-03 15:36:35.518097
+```python
+    sem = Semaphore(2)
+
+    async def worker(worker_id):
+        await sem.acquire()
+        try:
+            print(f"Worker {worker_id} is working")
+        finally:
+            print(f"Worker {worker_id} is done")
+            sem.release()
+
+    async def runner():
+        await gen.multi([worker(i) for i in range(3)])
+
+    IOLoop.current().run_sync(runner)
+```
+
+# Generated at 2024-06-03 15:36:38.104466
+```python
+    io_loop = ioloop.IOLoop.current()
+    condition = Condition()
+
+    async def waiter():
+        result = await condition.wait()
+        return result
+
+    async def notifier():
+        await gen.sleep(0.1)
+        condition.notify()
+
+    async def runner():
+        wait_task = waiter()
+        notify_task = notifier()
+        result = await wait_task
+        return result
+
+    result = io_loop.run_sync(runner)
+    assert result is True
+```
+
+# Generated at 2024-06-03 15:36:39.808456
+```python
+    import asyncio
+    from tornado.locks import Lock
+
+    async def test():
+        lock = Lock()
+        async with lock:
+            assert lock._block._value == 0  # Lock should be acquired
+        assert lock._block._value == 1  # Lock should be released
+
+    asyncio.run(test())
+```
+
+# Generated at 2024-06-03 15:36:41.667996
+```python
+    sem = Semaphore(2)
+
+    async def worker(worker_id):
+        await sem.acquire()
+        try:
+            print(f"Worker {worker_id} is working")
+        finally:
+            print(f"Worker {worker_id} is done")
+            sem.release()
+
+    async def test():
+        await gen.multi([worker(i) for i in range(3)])
+
+    IOLoop.current().run_sync(test)
+```
+
+# Generated at 2024-06-03 15:36:43.500889
+```python
+    import asyncio
+    from tornado.locks import Lock
+
+    async def test():
+        lock = Lock()
+        async with lock:
+            assert lock._block._value == 0  # Lock should be acquired
+        assert lock._block._value == 1  # Lock should be released
+
+    asyncio.run(test())
+```
+
+# Generated at 2024-06-03 15:36:46.604963
+```python
+    import pytest
+    from tornado.ioloop import IOLoop
+
+    async def test_coroutine():
+        lock = Lock()
+        await lock.acquire()
+        assert lock._block._value == 0  # Lock should be acquired
+
+        await lock.__aexit__(None, None, None)
+        assert lock._block._value == 1  # Lock should be released
+
+    IOLoop.current().run_sync(test_coroutine)
+```
+
+# Generated at 2024-06-03 15:36:48.584612
+```python
+    sem = BoundedSemaphore(2)
+    sem.release()  # This should raise a ValueError because the semaphore is already at its initial value
+    try:
+        sem.release()
+    except ValueError as e:
+        assert str(e) == "Semaphore released too many times"
+    else:
+        assert False, "Expected ValueError not raised"
+```
+
+# Generated at 2024-06-03 15:36:52.217246
+```python
+    sem = Semaphore(2)
+
+    async def worker(worker_id):
+        await sem.acquire()
+        try:
+            print(f"Worker {worker_id} is working")
+        finally:
+            print(f"Worker {worker_id} is done")
+            sem.release()
+
+    async def runner():
+        await gen.multi([worker(i) for i in range(3)])
+
+    IOLoop.current().run_sync(runner)
+
+    assert sem._value == 2, f"Expected semaphore value to be 2, but got {sem._value}"
+```
+
+# Generated at 2024-06-03 15:36:54.211521
+```python
+    sem = Semaphore(2)
+
+    async def worker(worker_id):
+        await sem.acquire()
+        try:
+            print(f"Worker {worker_id} is working")
+        finally:
+            print(f"Worker {worker_id} is done")
+            sem.release()
+
+    async def runner():
+        await gen.multi([worker(i) for i in range(3)])
+
+    IOLoop.current().run_sync(runner)
+```
+
+# Generated at 2024-06-03 15:36:56.233171
+```python
+    sem = Semaphore(1)
+
+    async def test():
+        async with sem:
+            assert sem._value == 0
+        assert sem._value == 1
+
+    IOLoop.current().run_sync(test)
+```
+
+# Generated at 2024-06-03 15:37:19.046931
+```python
+    import asyncio
+    from tornado.locks import Lock
+
+    async def test():
+        lock = Lock()
+        async with lock:
+            assert lock._block._value == 0  # Lock should be acquired
+        assert lock._block._value == 1  # Lock should be released
+
+    asyncio.run(test())
+```
+
+# Generated at 2024-06-03 15:37:21.721387
+```python
+    io_loop = ioloop.IOLoop.current()
+    event = Event()
+
+    async def waiter():
+        result = await event.wait()
+        return result
+
+    async def setter():
+        event.set()
+
+    async def runner():
+        waiter_future = waiter()
+        io_loop.add_callback(setter)
+        result = await waiter_future
+        return result
+
+    result = io_loop.run_sync(runner)
+    assert result is None
+```
+
+# Generated at 2024-06-03 15:37:24.104089
+```python
+    io_loop = ioloop.IOLoop.current()
+    condition = Condition()
+
+    async def waiter():
+        result = await condition.wait()
+        return result
+
+    async def notifier():
+        await gen.sleep(0.1)
+        condition.notify()
+
+    async def runner():
+        wait_task = waiter()
+        notify_task = notifier()
+        results = await gen.multi([wait_task, notify_task])
+        return results[0]
+
+    result = io_loop.run_sync(runner)
+    assert result is True
+```
+
+# Generated at 2024-06-03 15:37:25.870363
+```python
+    sem = BoundedSemaphore(2)
+    sem.release()  # This should raise a ValueError because the initial value is 2 and we haven't acquired it yet.
+```
+
+# Generated at 2024-06-03 15:37:27.379334
+```python
+    sem = Semaphore(1)
+
+    async def test():
+        async with sem:
+            assert sem._value == 0
+        assert sem._value == 1
+
+    IOLoop.current().run_sync(test)
+```
+
+# Generated at 2024-06-03 15:37:30.886022
+```python
+    from tornado.ioloop import IOLoop
+    from tornado.locks import Semaphore
+    from tornado import gen
+    import datetime
+
+    async def test_acquire():
+        sem = Semaphore(1)
+        assert sem._value == 1
+
+        await sem.acquire()
+        assert sem._value == 0
+
+        # Test timeout
+        try:
+            await sem.acquire(timeout=datetime.timedelta(seconds=1))
+        except gen.TimeoutError:
+            pass
+        else:
+            assert False, "Expected TimeoutError"
+
+        sem.release()
+        assert sem._value == 1
+
+    IOLoop.current().run_sync(test_acquire)
+```
+
+# Generated at 2024-06-03 15:37:36.941320
+```python
+    from tornado.ioloop import IOLoop
+    from tornado.locks import Semaphore
+    from tornado import gen
+    import datetime
+
+    async def test_acquire():
+        sem = Semaphore(1)
+        assert sem._value == 1
+
+        await sem.acquire()
+        assert sem._value == 0
+
+        # Test timeout
+        try:
+            await sem.acquire(timeout=datetime.timedelta(seconds=1))
+        except gen.TimeoutError:
+            pass
+        else:
+            assert False, "Expected TimeoutError"
+
+        sem.release()
+        assert sem._value == 1
+
+    IOLoop.current().run_sync(test_acquire)
+```
+
+# Generated at 2024-06-03 15:37:38.908698
+```python
+    import asyncio
+    from tornado.locks import Lock
+
+    async def test():
+        lock = Lock()
+        async with lock:
+            assert lock._block._value == 0  # Lock should be acquired
+        assert lock._block._value == 1  # Lock should be released
+
+    asyncio.run(test())
+```
+
+# Generated at 2024-06-03 15:37:40.927257
+```python
+    import asyncio
+    from tornado.locks import Lock
+
+    async def test():
+        lock = Lock()
+        async with lock:
+            assert lock._block._value == 0  # Lock should be acquired
+        assert lock._block._value == 1  # Lock should be released
+
+    asyncio.run(test())
+```
+
+# Generated at 2024-06-03 15:37:44.729843
+```python
+    from tornado.ioloop import IOLoop
+    from tornado.locks import Semaphore
+    from tornado import gen
+    import datetime
+
+    async def test_acquire():
+        sem = Semaphore(1)
+        assert sem._value == 1
+
+        await sem.acquire()
+        assert sem._value == 0
+
+        # Test timeout
+        try:
+            await sem.acquire(timeout=datetime.timedelta(seconds=1))
+        except gen.TimeoutError:
+            pass
+        else:
+            assert False, "Expected TimeoutError"
+
+        sem.release()
+        assert sem._value == 1
+
+    IOLoop.current().run_sync(test_acquire)
+```
+
+# Generated at 2024-06-03 15:38:08.520634
+```python
+    sem = Semaphore(2)
+
+    async def worker(worker_id):
+        await sem.acquire()
+        try:
+            print(f"Worker {worker_id} is working")
+        finally:
+            print(f"Worker {worker_id} is done")
+            sem.release()
+
+    async def runner():
+        await gen.multi([worker(i) for i in range(3)])
+
+    IOLoop.current().run_sync(runner)
+```
+
+# Generated at 2024-06-03 15:38:10.891983
+```python
+    condition = Condition()
+    io_loop = ioloop.IOLoop.current()
+
+    async def waiter():
+        result = await condition.wait()
+        return result
+
+    async def notifier():
+        await gen.sleep(0.1)
+        condition.notify()
+
+    async def runner():
+        wait_task = waiter()
+        notify_task = notifier()
+        result = await wait_task
+        return result
+
+    result = io_loop.run_sync(runner)
+    assert result is True
+```
+
+# Generated at 2024-06-03 15:38:13.632654
+```python
+    sem = Semaphore(2)
+
+    async def worker(worker_id):
+        await sem.acquire()
+        try:
+            print(f"Worker {worker_id} is working")
+        finally:
+            print(f"Worker {worker_id} is done")
+            sem.release()
+
+    async def runner():
+        await gen.multi([worker(i) for i in range(3)])
+
+    IOLoop.current().run_sync(runner)
+```
+
+# Generated at 2024-06-03 15:38:16.384629
+```python
+    io_loop = ioloop.IOLoop.current()
+    event = Event()
+
+    async def waiter():
+        result = await event.wait()
+        return result
+
+    async def setter():
+        event.set()
+
+    async def runner():
+        wait_task = waiter()
+        set_task = setter()
+        await gen.sleep(0.1)
+        await set_task
+        result = await wait_task
+        return result
+
+    result = io_loop.run_sync(runner)
+    assert result is None
+```
+
+# Generated at 2024-06-03 15:38:18.517313
+```python
+    import asyncio
+    from tornado.locks import Lock
+
+    async def test():
+        lock = Lock()
+        async with lock:
+            assert lock._block._value == 0  # Lock should be acquired
+        assert lock._block._value == 1  # Lock should be released
+
+    asyncio.run(test())
+```
+
+# Generated at 2024-06-03 15:38:20.620410
+```python
+    condition = Condition()
+    waiter1 = condition.wait()
+    waiter2 = condition.wait()
+    
+    condition.notify()
+    
+    assert waiter1.done() == True
+    assert waiter2.done() == False
+    
+    condition.notify()
+    
+    assert waiter2.done() == True
+```
+
+# Generated at 2024-06-03 15:38:22.311025
+```python
+    condition = Condition()
+    result = []
+
+    async def waiter():
+        result.append(await condition.wait())
+
+    async def notifier():
+        condition.notify()
+
+    async def runner():
+        await gen.multi([waiter(), notifier()])
+
+    ioloop.IOLoop.current().run_sync(runner)
+    assert result == [True]
+```
+
+# Generated at 2024-06-03 15:38:24.553815
+```python
+    condition = Condition()
+    result = []
+
+    async def waiter():
+        result.append(await condition.wait())
+
+    async def notifier():
+        condition.notify()
+
+    async def runner():
+        await gen.multi([waiter(), notifier()])
+
+    ioloop.IOLoop.current().run_sync(runner)
+    assert result == [True]
+```
+
+# Generated at 2024-06-03 15:38:26.893718
+```python
+    io_loop = ioloop.IOLoop.current()
+    condition = Condition()
+
+    async def waiter():
+        result = await condition.wait()
+        return result
+
+    async def notifier():
+        await gen.sleep(0.1)
+        condition.notify()
+
+    async def runner():
+        wait_task = waiter()
+        notify_task = notifier()
+        results = await gen.multi([wait_task, notify_task])
+        return results[0]
+
+    result = io_loop.run_sync(runner)
+    assert result is True
+```
+
+# Generated at 2024-06-03 15:38:28.114063
+```python
+    event = Event()
+    assert not event.is_set()
+    event.set()
+    assert event.is_set()
+    fut = event.wait()
+    assert fut.done()
+```
+
+# Generated at 2024-06-03 15:39:13.511388
+```python
+    condition = Condition()
+    results = []
+
+    async def waiter():
+        result = await condition.wait()
+        results.append(result)
+
+    async def notifier():
+        condition.notify()
+
+    async def runner():
+        await gen.multi([waiter(), waiter(), notifier()])
+
+    ioloop.IOLoop.current().run_sync(runner)
+    assert results == [True, True]
+```
+
+# Generated at 2024-06-03 15:39:15.917421
+```python
+    condition = Condition()
+    results = []
+
+    async def waiter():
+        result = await condition.wait()
+        results.append(result)
+
+    async def runner():
+        await gen.multi([waiter(), waiter(), waiter()])
+        condition.notify_all()
+        await gen.sleep(0.1)  # Give some time for all waiters to be notified
+
+    ioloop.IOLoop.current().run_sync(runner)
+    assert results == [True, True, True]
+```
+
+# Generated at 2024-06-03 15:39:17.455810
+```python
+    sem = Semaphore(1)
+
+    async def test():
+        async with sem:
+            assert sem._value == 0
+        assert sem._value == 1
+
+    IOLoop.current().run_sync(test)
+```
+
+# Generated at 2024-06-03 15:39:19.810018
+```python
+    condition = Condition()
+    results = []
+
+    async def waiter():
+        result = await condition.wait()
+        results.append(result)
+
+    async def runner():
+        await gen.multi([waiter(), waiter(), waiter()])
+        condition.notify_all()
+        await gen.sleep(0.1)  # Give the IOLoop a chance to run the callbacks
+
+    ioloop.IOLoop.current().run_sync(runner)
+    assert results == [True, True, True]
+```
+
+# Generated at 2024-06-03 15:39:22.078337
+```python
+    async def test_Semaphore_acquire():
+        sem = Semaphore(2)
+
+        async def worker(worker_id):
+            await sem.acquire()
+            try:
+                print(f"Worker {worker_id} is working")
+            finally:
+                print(f"Worker {worker_id} is done")
+                sem.release()
+
+        async def runner():
+            await gen.multi([worker(i) for i in range(3)])
+
+        IOLoop.current().run_sync(runner)
+
+    test_Semaphore_acquire()
+```
+
+# Generated at 2024-06-03 15:39:25.214950
+```python
+    condition = Condition()
+    io_loop = ioloop.IOLoop.current()
+
+    async def waiter():
+        result = await condition.wait()
+        return result
+
+    async def notifier():
+        await gen.sleep(0.1)
+        condition.notify()
+
+    async def runner():
+        wait_task = waiter()
+        notify_task = notifier()
+        results = await gen.multi([wait_task, notify_task])
+        return results[0]
+
+    result = io_loop.run_sync(runner)
+    assert result is True
+```
+
+# Generated at 2024-06-03 15:39:27.289632
+```python
+    condition = Condition()
+    assert repr(condition) == "<Condition>"
+
+    # Add a waiter and check the representation
+    condition._waiters.append(Future())
+    assert repr(condition) == "<Condition waiters[1]>"
+
+    # Add another waiter and check the representation
+    condition._waiters.append(Future())
+    assert repr(condition) == "<Condition waiters[2]>"
+```
+
+# Generated at 2024-06-03 15:39:28.741623
+```python
+    async def test_Semaphore___aenter__():
+        sem = Semaphore(1)
+        async with sem:
+            assert sem._value == 0
+        assert sem._value == 1
+
+    IOLoop.current().run_sync(test_Semaphore___aenter__)
+```
+
+# Generated at 2024-06-03 15:39:31.100994
+```python
+    condition = Condition()
+    result = []
+
+    async def waiter():
+        result.append(await condition.wait())
+
+    async def notifier():
+        condition.notify()
+
+    async def runner():
+        await gen.multi([waiter(), notifier()])
+
+    ioloop.IOLoop.current().run_sync(runner)
+    assert result == [True]
+```
+
+# Generated at 2024-06-03 15:39:33.119845
+```python
+    condition = Condition()
+    results = []
+
+    async def waiter():
+        result = await condition.wait()
+        results.append(result)
+
+    async def notifier():
+        await gen.sleep(0.1)
+        condition.notify()
+
+    async def runner():
+        await gen.multi([waiter(), waiter(), notifier()])
+
+    ioloop.IOLoop.current().run_sync(runner)
+    assert results == [True, False]
+```
+
+# Generated at 2024-06-03 15:41:00.781101
+```python
+    import asyncio
+    from tornado.locks import Lock
+
+    async def test():
+        lock = Lock()
+        async with lock:
+            assert lock._block._value == 0  # Lock should be acquired
+        assert lock._block._value == 1  # Lock should be released
+
+    asyncio.run(test())
+```
+
+# Generated at 2024-06-03 15:41:02.952703
+```python
+    io_loop = ioloop.IOLoop.current()
+    event = Event()
+
+    async def waiter():
+        result = await event.wait()
+        return result
+
+    async def setter():
+        event.set()
+
+    async def runner():
+        wait_task = io_loop.run_in_executor(None, waiter)
+        await gen.sleep(0.1)
+        await setter()
+        return await wait_task
+
+    result = io_loop.run_sync(runner)
+    assert result is None
+```
+
+# Generated at 2024-06-03 15:41:05.359423
+```python
+    lock = Lock()
+
+    async def acquire_and_release():
+        await lock.acquire()
+        lock.release()
+
+    async def test():
+        await acquire_and_release()
+        try:
+            lock.release()
+        except RuntimeError as e:
+            assert str(e) == "release unlocked lock"
+
+    IOLoop.current().run_sync(test)
+```
+
+# Generated at 2024-06-03 15:41:06.983790
+```python
+    sem = Semaphore(1)
+
+    async def worker():
+        async with sem:
+            assert sem._value == 0
+        assert sem._value == 1
+
+    IOLoop.current().run_sync(worker)
+```
+
+# Generated at 2024-06-03 15:41:09.121865
+```python
+    condition = Condition()
+    assert repr(condition) == "<Condition>"
+
+    # Add a waiter and check the representation
+    condition._waiters.append(Future())
+    assert repr(condition) == "<Condition waiters[1]>"
+
+    # Add another waiter and check the representation
+    condition._waiters.append(Future())
+    assert repr(condition) == "<Condition waiters[2]>"
+```
+
+# Generated at 2024-06-03 15:41:11.815885
+```python
+    sem = Semaphore(2)
+
+    async def worker(worker_id):
+        await sem.acquire()
+        try:
+            print(f"Worker {worker_id} is working")
+        finally:
+            print(f"Worker {worker_id} is done")
+            sem.release()
+
+    async def runner():
+        await gen.multi([worker(i) for i in range(3)])
+
+    IOLoop.current().run_sync(runner)
+```
+
+# Generated at 2024-06-03 15:41:15.268011
+```python
+    condition = Condition()
+    results = []
+
+    async def waiter():
+        result = await condition.wait()
+        results.append(result)
+
+    async def runner():
+        await gen.multi([waiter(), waiter(), waiter()])
+        condition.notify_all()
+        await gen.sleep(0.1)  # Give some time for all waiters to be notified
+
+    ioloop.IOLoop.current().run_sync(runner)
+    assert results == [True, True, True]
+```
+
+# Generated at 2024-06-03 15:41:17.437237
+```python
+    import asyncio
+    from tornado.locks import Lock
+
+    async def test():
+        lock = Lock()
+        async with lock:
+            assert lock._block._value == 0  # Lock should be acquired
+        assert lock._block._value == 1  # Lock should be released
+
+    asyncio.run(test())
+```
+
+# Generated at 2024-06-03 15:41:19.171900
+```python
+    lock = Lock()
+
+    async def acquire_and_release():
+        await lock.acquire()
+        lock.release()
+
+    async def test():
+        await acquire_and_release()
+        try:
+            lock.release()
+        except RuntimeError as e:
+            assert str(e) == "release unlocked lock"
+
+    IOLoop.current().run_sync(test)
+```
+
+# Generated at 2024-06-03 15:41:23.659211
+```python
+    lock = Lock()
+
+    async def acquire_and_release():
+        await lock.acquire()
+        lock.release()
+
+    IOLoop.current().run_sync(acquire_and_release)
+
+    # Test releasing an unlocked lock should raise RuntimeError
+    try:
+        lock.release()
+    except RuntimeError as e:
+        assert str(e) == "release unlocked lock"
+    else:
+        assert False, "Expected RuntimeError"
+```
+
+# Generated at 2024-06-03 15:44:15.371846
+```python
+    sem = Semaphore(2)
+
+    async def worker(worker_id):
+        await sem.acquire()
+        try:
+            print(f"Worker {worker_id} is working")
+        finally:
+            print(f"Worker {worker_id} is done")
+            sem.release()
+
+    async def runner():
+        await gen.multi([worker(i) for i in range(3)])
+
+    IOLoop.current().run_sync(runner)
+```
+
+# Generated at 2024-06-03 15:44:17.774831
+```python
+    sem = Semaphore(2)
+
+    async def worker(worker_id):
+        await sem.acquire()
+        try:
+            print(f"Worker {worker_id} is working")
+        finally:
+            print(f"Worker {worker_id} is done")
+            sem.release()
+
+    async def runner():
+        await gen.multi([worker(i) for i in range(3)])
+
+    IOLoop.current().run_sync(runner)
+```
+
+# Generated at 2024-06-03 15:44:19.973358
+```python
+    condition = Condition()
+    results = []
+
+    async def waiter():
+        result = await condition.wait()
+        results.append(result)
+
+    async def notifier():
+        condition.notify()
+
+    async def runner():
+        await gen.multi([waiter(), notifier()])
+
+    ioloop.IOLoop.current().run_sync(runner)
+    assert results == [True]
+```
+
+# Generated at 2024-06-03 15:44:21.621648
+```python
+    sem = Semaphore(2)
+    assert repr(sem) == "<Semaphore [unlocked,value:2]>"
+
+    sem._value = 0
+    sem._waiters.append(Future())
+    assert repr(sem) == "<Semaphore [locked,waiters:1]>"
+```
+
+# Generated at 2024-06-03 15:44:24.166642
+```python
+    condition = Condition()
+    assert repr(condition) == "<Condition>"
+
+    # Add a waiter and check the representation
+    future = Future()
+    condition._waiters.append(future)
+    assert repr(condition) == "<Condition waiters[1]>"
+
+    # Add another waiter and check the representation
+    future2 = Future()
+    condition._waiters.append(future2)
+    assert repr(condition) == "<Condition waiters[2]>"
+```
+
+# Generated at 2024-06-03 15:44:26.542955
+```python
+    condition = Condition()
+    results = []
+
+    async def waiter():
+        result = await condition.wait()
+        results.append(result)
+
+    async def runner():
+        await gen.multi([waiter(), waiter(), waiter()])
+        condition.notify_all()
+        await gen.sleep(0.1)  # Allow time for all waiters to be notified
+
+    ioloop.IOLoop.current().run_sync(runner)
+    assert results == [True, True, True]
+```
+
+# Generated at 2024-06-03 15:44:28.068956
+```python
+    import asyncio
+    from tornado.locks import Semaphore
+
+    async def test():
+        sem = Semaphore(1)
+        async with sem:
+            assert sem._value == 0
+        assert sem._value == 1
+
+    asyncio.run(test())
+```
+
+# Generated at 2024-06-03 15:44:32.681471
+```python
+    from tornado.ioloop import IOLoop
+    from tornado.locks import Semaphore
+    from tornado import gen
+    import datetime
+
+    async def test_acquire():
+        sem = Semaphore(1)
+        assert sem._value == 1
+
+        # Acquire the semaphore
+        await sem.acquire()
+        assert sem._value == 0
+
+        # Try to acquire again with a timeout
+        try:
+            await sem.acquire(timeout=datetime.timedelta(seconds=1))
+        except gen.TimeoutError:
+            pass
+        assert sem._value == 0
+
+        # Release the semaphore
+        sem.release()
+        assert sem._value == 1
+
+    IOLoop.current().run_sync(test_acquire)
+```
+
+# Generated at 2024-06-03 15:44:34.840980
+```python
+    import pytest
+    from tornado.ioloop import IOLoop
+
+    async def test_coroutine():
+        lock = Lock()
+        await lock.acquire()
+        assert lock._block._value == 0  # Lock should be acquired
+
+        await lock.__aexit__(None, None, None)
+        assert lock._block._value == 1  # Lock should be released
+
+    IOLoop.current().run_sync(test_coroutine)
+```
+
+# Generated at 2024-06-03 15:44:38.654001
+```python
+    from tornado.ioloop import IOLoop
+    from tornado.locks import Semaphore
+    from tornado import gen
+    import unittest
+
+    class TestSemaphoreRelease(unittest.TestCase):
+        def test_release(self):
+            sem = Semaphore(1)
+
+            async def worker():
+                await sem.acquire()
+                self.assertEqual(sem._value, 0)
+                sem.release()
+                self.assertEqual(sem._value, 1)
+
+            IOLoop.current().run_sync(worker)
+
+    if __name__ == "__main__":
+        unittest.main()
+```

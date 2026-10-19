@@ -1,5 +1,34 @@
 # Perbandingan CoverUp vs CodaMOSA sebagai Generator Test Otomatis
 
+
+## Benchmark paper (pipeline aktif)
+
+Pipeline aktif memakai suite paper yang ada di `dataset/`, bukan checkout MuTAP
+lama di root:
+
+- **MT:** tepat 163 task `f001`–`f163` dari
+  `dataset/coverup-eval/MuTAP-benchmarks` untuk RQ1/RQ2.
+- **CM:** tepat 425 modul / 24 package dari manifest
+  `dataset/codamosa/replication/test-apps/cm_modules.csv`; checkout CodaMOSA
+  tervalidasi pada commit `17a4c2a2ecb40b60e32a7e4a437db03573612f11`.
+- **MuTAP generator tidak dijalankan di perangkat ini.** Hasil rekan digabung
+  sesudah run melalui `tools/merge_collaborator_results.py`.
+
+Validasi layout sebelum memakai API:
+
+```powershell
+.venv\Scripts\python.exe tools\validate_benchmarks.py
+```
+
+Urutan run: pilot MT (`TASK_FILTER=MT:f001`), MT penuh, pilot CM
+(`TASK_FILTER=CM:flutils.objutils`), lalu CM penuh. Setelah hasil tersedia:
+
+```powershell
+.venv\Scripts\python.exe tools\module_characteristics.py experiment_results\module_characteristics.csv
+.venv\Scripts\python.exe tools\rq_tables.py experiment_results\rows.csv experiment_results\paper_tables
+```
+
+
 ## Struktur repositori
 
 ```text
@@ -8,7 +37,8 @@ experiments_codamosa_coverup.ipynb  satu-satunya notebook eksperimen
 src/                            evaluator, storage, discovery, loop helpers
 tools/                          post-run, rescore, tabel RQ, provider log
 scripts/                        runner alternatif
-MuTAP/                          dataset HumanEval + Refactory (WAJIB)
+dataset/                        suite paper: MT (f001-f163) + CM (425 modul)
+MuTAP/                          checkout MuTAP lama (arsip, tidak dipakai pipeline)
 codamosa/                      source + Docker runner CodaMOSA
 coverup/                       source runner CoverUp
 docs/                           protokol, batasan, laporan, referensi
@@ -71,12 +101,13 @@ experiment_results/
 - Mutation score dari `EVAL_MUTANT_LIMIT=25` tidak setara dengan skor paper;
   gunakan `EVAL_MUTANT_LIMIT=0` untuk hasil final.
 
-Repositori ini menjalankan dua metode pembuat test otomatis — **CoverUp** dan
-**CodaMOSA** — pada dua dataset (**HumanEval** dan **Refactory** dari paket
-MuTAP), lalu mengukur hasilnya untuk menjawab dua pertanyaan riset:
+Repositori ini menjalankan **CoverUp** dan **CodaMOSA** pada suite paper **MT**
+(163 task `f001`–`f163`) dan **CM** (425 modul/24 package). MuTAP generation
+akan digabung dari device kolaborator. RQ3 dihitung pada CM saja.
 
-- **RQ1 (Performa utama):** Coverage, Pass Rate, Mutation Score
-- **RQ2 (Backbone):** Coverage, Pass Rate, Waktu, dan Biaya
+- **RQ1:** MT memakai mutation score; CM memakai branch/line coverage.
+- **RQ2:** efek backbone, waktu, dan biaya.
+- **RQ3:** Spearman parsial karakteristik modul vs keunggulan branch coverage CM.
 
 > Panduan teknis tambahan ada di [`docs/EXPERIMENT_FLOW.md`](docs/EXPERIMENT_FLOW.md)
 > (alur dari awal sampai akhir, titik pemanggilan model & token),
@@ -308,8 +339,10 @@ Akan mencetak verdict **SIAP PAPER / BELUM SIAP PAPER** beserta alasannya.
 - **Metode:** CoverUp (coverage-guided LLM, berjalan native) dan CodaMOSA
   (search-based Pynguin + LLM saat coverage plateau, berjalan di Docker
   `pynguin-runner:latest`, Python 3.10).
-- **Dataset:** HumanEval (164 task) dan Refactory (5 task) dari struktur MuTAP;
-  setiap task menyediakan PUT, mutant, dan baseline suite.
+- **Dataset:** MT = 163 task CoverUp (`dataset/coverup-eval/MuTAP-benchmarks`,
+  PUT + `package.txt`); CM = 425 modul dari
+  `dataset/codamosa/replication/test-apps/cm_modules.csv` (paket multi-file).
+  Mutation score hanya dihitung pada MT; CM memakai coverage (sesuai protokol).
 - **Model LLM:** satu model tetap `gpt-5.6-sol` (keputusan kelompok), dikirim
   bare oleh CodaMOSA dan dengan prefix transport `openai/` oleh CoverUp melalui
   LiteLLM — ID model yang sampai ke provider identik.

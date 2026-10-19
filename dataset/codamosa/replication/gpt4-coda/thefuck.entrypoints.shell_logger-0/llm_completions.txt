@@ -1,0 +1,1468 @@
+
+
+# Generated at 2024-03-18 07:44:13.721791
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123  # Fake file descriptor
+        mock_spawn.return_value = 0  # Fake return code
+
+        shell_logger('/fake/output/path')
+
+        mock_open.assert_called_once_with('/fake/output/path', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(123, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_mmap.assert_called_once_with(123, const.LOG_SIZE_IN_BYTES,
+
+# Generated at 2024-03-18 07:44:18.531550
+    from unittest.mock import patch, MagicMock
+
+    with patch('os.environ.get', return_value='/bin/bash'), \
+         patch('os.open', return_value=1), \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('sys.exit') as mock_exit, \
+         patch.object(const, 'LOG_SIZE_IN_BYTES', 1024), \
+         patch.object(const, 'LOG_SIZE_TO_CLEAN', 512), \
+         patch('_spawn', return_value=0):
+
+        mock_mmap.return_value = MagicMock()
+        shell_logger('test_output.log')
+        mock_exit.assert_called_with(0)
+
+# Generated at 2024-03-18 07:44:25.404864
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            with patch('..shell_logger._spawn') as mock_spawn:
+                mock_spawn.return_value = 0
+                shell_logger('test_output.log')
+                mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                mock_write.assert_called_once_with(mock_fd, b'\x00' * const.LOG_SIZE_IN_BYTES)
+                mock
+
+# Generated at 2024-03-18 07:44:34.243259
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_return_code = 0
+
+    with patch('os.environ.get', return_value=shell), \
+         patch('os.open', return_value=fake_fd), \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_return_code)), \
+         patch('sys.exit') as mock_exit, \
+         patch('pty.fork', return_value=(fake_pid, fake_fd)), \
+         patch('os.close') as mock_close:
+
+        shell_logger(output)
+
+        mock_exit.assert_called_with(fake_return_code)
+        mock_close.assert_called_with(fake_fd)
+        mock_mmap.assert_called_with(fake_fd, const.LOG_SIZE_IN_BYTES, mmap
+
+# Generated at 2024-03-18 07:44:42.715116
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_return_code = 0
+
+    with patch('os.environ.get', return_value=shell) as mock_getenv, \
+         patch('os.open', return_value=fake_fd) as mock_open, \
+         patch('os.write') as mock_write, \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_return_code)) as mock_waitpid, \
+         patch('sys.exit') as mock_exit, \
+         patch('..logs.warn') as mock_warn, \
+         patch('_spawn', return_value=fake_return_code) as mock_spawn:
+
+        shell_logger(output)
+
+        mock_getenv.assert_called_once_with('SHELL')
+        mock_open.assert_called
+
+# Generated at 2024-03-18 07:44:48.462404
+    with unittest.mock.patch('os.environ.get', return_value='/bin/bash'), \
+         unittest.mock.patch('os.open', return_value=10), \
+         unittest.mock.patch('os.write'), \
+         unittest.mock.patch('mmap.mmap', return_value=unittest.mock.MagicMock()), \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn'), \
+         unittest.mock.patch('_spawn', return_value=0):
+
+        shell_logger('/path/to/logfile')
+        mock_exit.assert_called_with(0)
+
+# Generated at 2024-03-18 07:44:59.839193
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123
+        mock_spawn.return_value = 0
+        buffer_mock = unittest.mock.MagicMock()
+        mock_mmap.return_value = buffer_mock
+
+        shell_logger('test_output.log')
+
+        mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(123, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_mmap.assert_called_once_with
+
+# Generated at 2024-03-18 07:45:07.980138
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123
+        mock_spawn.return_value = 0
+        buffer_mock = unittest.mock.MagicMock()
+        mock_mmap.return_value = buffer_mock
+
+        shell_logger('test_output.log')
+
+        mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(123, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_mmap.assert_called_once_with
+
+# Generated at 2024-03-18 07:45:14.101708
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_master_fd = 3
+    fake_return_code = 0
+
+    with patch('os.environ.get', return_value=shell), \
+         patch('os.open', return_value=fake_fd), \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_return_code)), \
+         patch('sys.exit') as mock_exit, \
+         patch('pty.fork', return_value=(fake_pid, fake_master_fd)), \
+         patch('os.execlp') as mock_execlp, \
+         patch('tty.tcgetattr'), \
+         patch('tty.setraw'), \
+         patch('pty._copy') as mock_copy,
+
+# Generated at 2024-03-18 07:45:20.342392
+    with unittest.mock.patch('os.environ.get', return_value='/bin/bash'):
+        with unittest.mock.patch('os.open') as mock_open:
+            with unittest.mock.patch('mmap.mmap') as mock_mmap:
+                with unittest.mock.patch('sys.exit') as mock_exit:
+                    mock_open.return_value = 123
+                    mock_mmap.return_value = unittest.mock.MagicMock()
+                    shell_logger('test_output.log')
+                    mock_open.assert_called_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                    mock_mmap.assert_called_with(123, const.LOG_SIZE_IN_BYTES, mmap.MAP_SHARED, mmap.PROT_WRITE)
+                    mock_exit.assert_called()
+
+# Generated at 2024-03-18 07:45:35.925342
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123
+        mock_spawn.return_value = 0
+        buffer_mock = unittest.mock.MagicMock()
+        mock_mmap.return_value = buffer_mock
+
+        test_output = 'test_output.log'
+        shell_logger(test_output)
+
+        mock_open.assert_called_once_with(test_output, os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(123, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_m
+
+# Generated at 2024-03-18 07:45:44.092026
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123
+        mock_spawn.return_value = 0
+        buffer_mock = unittest.mock.MagicMock()
+        mock_mmap.return_value = buffer_mock
+
+        shell_logger('test_output.log')
+
+        mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(123, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_mmap.assert_called_once_with
+
+# Generated at 2024-03-18 07:45:50.095661
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_master_fd = 3
+    fake_status = 256
+
+    with patch('os.environ.get', return_value=shell) as mock_getenv, \
+         patch('os.open', return_value=fake_fd) as mock_open, \
+         patch('os.write') as mock_write, \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_status)) as mock_waitpid, \
+         patch('sys.exit') as mock_exit, \
+         patch('..logs.warn') as mock_warn, \
+         patch('pty.fork', return_value=(fake_pid, fake_master_fd)) as mock_pty_fork, \
+         patch('pty._copy')
+
+# Generated at 2024-03-18 07:45:57.426758
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_master_fd = 3
+    fake_return_code = 0
+
+    with patch('os.environ', {'SHELL': shell}), \
+         patch('os.open', MagicMock(return_value=fake_fd)), \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', MagicMock(return_value=(fake_pid, fake_return_code))), \
+         patch('sys.exit') as mock_exit, \
+         patch('pty.fork', MagicMock(return_value=(fake_pid, fake_master_fd))), \
+         patch('os.close') as mock_close, \
+         patch.object(builtins, 'open', mock_open()):
+
+        shell_logger(output)
+
+        os.open.assert_called_once_with(output,
+
+# Generated at 2024-03-18 07:45:58.730809
+```python
+import unittest
+from unittest.mock import patch, mock_open, MagicMock
+from io import BytesIO
+
+
+# Generated at 2024-03-18 07:46:07.375586
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_master_fd = 3
+    fake_return_code = 0
+
+    with patch('os.environ.get', return_value=shell), \
+         patch('os.open', return_value=fake_fd), \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_return_code)), \
+         patch('sys.exit') as mock_exit, \
+         patch('pty.fork', return_value=(fake_pid, fake_master_fd)), \
+         patch('os.close'), \
+         patch('os.execlp') as mock_execlp, \
+         patch('tty.tcgetattr'), \
+         patch('tty.setraw'), \
+         patch('tty
+
+# Generated at 2024-03-18 07:46:15.985090
+    from unittest.mock import patch, MagicMock
+
+    # Mock the environment variable SHELL
+    with patch.dict('os.environ', {'SHELL': '/bin/bash'}):
+        # Mock the os.open function to return a fake file descriptor
+        with patch('os.open', return_value=42) as mock_open:
+            # Mock the os.write function
+            with patch('os.write') as mock_write:
+                # Mock mmap.mmap to return a MagicMock object
+                with patch('mmap.mmap', return_value=MagicMock()) as mock_mmap:
+                    # Mock the _spawn function to return a fake return code
+                    with patch('__main__._spawn', return_value=0) as mock_spawn:
+                        # Call the function under test
+                        test_shell_logger()
+
+                        # Assert that os.open was called with the correct arguments
+                        mock_open.assert_called_once_with('output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+
+                        # Assert
+
+# Generated at 2024-03-18 07:46:22.747484
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_return_code = 0
+
+    with patch('os.environ', {'SHELL': shell}), \
+         patch('os.open', return_value=fake_fd) as mock_open, \
+         patch('os.write') as mock_write, \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_return_code)) as mock_waitpid, \
+         patch('sys.exit') as mock_exit, \
+         patch('..logs.warn') as mock_warn, \
+         patch('pty.fork', return_value=(fake_pid, fake_fd)) as mock_pty_fork, \
+         patch('pty._copy') as mock_pty_copy:
+
+        test_buffer = MagicMock()
+
+
+# Generated at 2024-03-18 07:46:30.511881
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            mock_partial = MagicMock()
+            with patch('functools.partial', return_value=mock_partial):
+                with patch('..shell_logger._spawn') as mock_spawn:
+                    mock_spawn.return_value = 0
+                    shell_logger('test_output.log')
+                    mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                    mock_write
+
+# Generated at 2024-03-18 07:46:40.053434
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_master_fd = 3
+    fake_status = 256
+
+    with patch('os.environ.get', return_value=shell), \
+         patch('os.open', return_value=fake_fd), \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_status)), \
+         patch('sys.exit') as mock_exit, \
+         patch('pty.fork', return_value=(fake_pid, fake_master_fd)), \
+         patch('os.close') as mock_close, \
+         patch('os.execlp') as mock_execlp, \
+         patch('tty.tcgetattr') as mock_tcgetattr, \
+         patch('tty.set
+
+# Generated at 2024-03-18 07:46:54.516051
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 10
+        mock_mmap.return_value = unittest.mock.MagicMock()
+        mock_spawn.return_value = 0
+
+        shell_logger('test_output.log')
+
+        mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(10, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_mmap.assert_called_once_with(10, const.LOG_SIZE_IN
+
+# Generated at 2024-03-18 07:47:01.161835
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+
+    with patch('os.environ.get', return_value=shell), \
+         patch('os.open', mock_open()) as mocked_open, \
+         patch('os.write'), \
+         patch('mmap.mmap') as mocked_mmap, \
+         patch('sys.exit') as mocked_exit, \
+         patch.object(logs, 'warn') as mocked_warn, \
+         patch('_spawn', return_value=0) as mocked_spawn:
+
+        mocked_mmap.return_value = MagicMock()
+        test_shell_logger()
+
+        mocked_open.assert_called_once_with(output, os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mocked_mmap.assert_called_once_with(mocked_open(), const.LOG_SIZE_IN_BYTES, mmap.MAP_SHARED, mmap.PROT_WRITE)
+        mocked_spawn.assert_called_once_with(shell, partial(_read, mocked_mmap.return
+
+# Generated at 2024-03-18 07:47:07.124438
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            mock_partial = MagicMock()
+            with patch('functools.partial', return_value=mock_partial):
+                with patch('..shell_logger._spawn', return_value=0) as mock_spawn:
+                    shell_logger('test_output.log')
+                    mock_spawn.assert_called_once_with('/bin/bash', mock_partial)
+                    mock_exit.assert_called_once_with(0)
+
+        @patch('os.environ.get
+
+# Generated at 2024-03-18 07:47:14.045166
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123
+        mock_spawn.return_value = 0
+        buffer_mock = unittest.mock.MagicMock()
+        mock_mmap.return_value = buffer_mock
+
+        shell_logger('test_output.log')
+
+        mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(123, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_mmap.assert_called_once_with
+
+# Generated at 2024-03-18 07:47:20.050595
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123
+        mock_mmap.return_value = unittest.mock.MagicMock()
+        mock_spawn.return_value = 0
+
+        shell_logger('/path/to/logfile')
+
+        mock_open.assert_called_once_with('/path/to/logfile', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(123, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_mmap.assert_called_once_with(123, const.LOG
+
+# Generated at 2024-03-18 07:47:28.237736
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123
+        mock_spawn.return_value = 0
+        buffer_mock = unittest.mock.MagicMock()
+        mock_mmap.return_value = buffer_mock
+
+        shell_logger('test_output.log')
+
+        mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(123, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_mmap.assert_called_once_with
+
+# Generated at 2024-03-18 07:47:43.176245
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_master_fd = 3
+    fake_return_code = 0
+
+    with patch('os.environ.get', return_value=shell), \
+         patch('os.open', return_value=fake_fd), \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_return_code)), \
+         patch('pty.fork', return_value=(fake_pid, fake_master_fd)), \
+         patch('sys.exit') as mock_exit, \
+         patch.object(builtins, 'open', mock_open()), \
+         patch('os.close') as mock_close:
+
+        shell_logger(output)
+
+        mock_mmap.assert_called_with(fake_fd, const.LOG_SIZE
+
+# Generated at 2024-03-18 07:47:51.184381
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_return_code = 0
+
+    with patch('os.environ.get', return_value=shell), \
+         patch('os.open', return_value=fake_fd), \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_return_code)), \
+         patch('sys.exit') as mock_exit, \
+         patch.object(builtins, 'open', mock_open()), \
+         patch('pty.fork', return_value=(fake_pid, fake_fd)), \
+         patch('pty._copy') as mock_copy:
+
+        shell_logger(output)
+
+        mock_exit.assert_called_with(fake_return_code)
+        os.open.assert_called_with(output, os.O_CREAT
+
+# Generated at 2024-03-18 07:47:59.108412
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write'), \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123
+        mock_mmap.return_value = unittest.mock.MagicMock()
+        mock_spawn.return_value = 0
+
+        shell_logger('test_output.log')
+
+        mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_mmap.assert_called_once_with(123, const.LOG_SIZE_IN_BYTES, mmap.MAP_SHARED, mmap.PROT_WRITE)
+        mock_spawn.assert_called_once_with('/bin/bash', unittest.mock.A
+
+# Generated at 2024-03-18 07:48:08.238427
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            mock_exit.return_value = 0
+
+            with patch.object(logs, 'warn') as mock_warn:
+                with patch('_spawn') as mock_spawn:
+                    mock_spawn.return_value = 0
+                    shell_logger('test_output.log')
+
+                    mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                    mock_write.assert_called
+
+# Generated at 2024-03-18 07:48:27.088517
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_return_code = 0
+
+    with patch('os.environ.get', return_value=shell), \
+         patch('os.open', return_value=fake_fd), \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_return_code)), \
+         patch('sys.exit') as mock_exit, \
+         patch('pty.fork', return_value=(fake_pid, fake_fd)), \
+         patch.object(builtins, 'open', mock_open()), \
+         patch('os.close') as mock_close:
+
+        shell_logger(output)
+
+        mock_exit.assert_called_with(fake_return_code)
+        mock_close.assert_called_with(fake_fd)
+        mock_m
+
+# Generated at 2024-03-18 07:48:34.531233
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123  # Fake file descriptor
+        mock_spawn.return_value = 0  # Fake return code
+
+        shell_logger('/path/to/logfile')
+
+        mock_open.assert_called_once_with('/path/to/logfile', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(123, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_mmap.assert_called_once_with(123, const.LOG_SIZE_IN
+
+# Generated at 2024-03-18 07:48:40.845737
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123
+        mock_spawn.return_value = 0
+        buffer_mock = unittest.mock.MagicMock()
+        mock_mmap.return_value = buffer_mock
+
+        shell_logger('test_output.log')
+
+        mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(123, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_mmap.assert_called_once_with
+
+# Generated at 2024-03-18 07:48:51.132253
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_return_code = 0
+
+    with patch('os.environ.get', return_value=shell), \
+         patch('os.open', return_value=fake_fd), \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_return_code)), \
+         patch('sys.exit') as mock_exit, \
+         patch('..logs.warn') as mock_warn, \
+         patch('pty.fork', return_value=(fake_pid, fake_fd)), \
+         patch('os.close') as mock_close, \
+         patch.object(builtins, 'open', mock_open()):
+
+        shell_logger(output)
+
+        mock_exit.assert_called_once_with(fake_return
+
+# Generated at 2024-03-18 07:48:57.991827
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            mock_exit.return_value = 0
+
+            with patch.object(__builtins__, 'open', mock_open()):
+                shell_logger('/path/to/logfile')
+
+            mock_get_shell.assert_called_once_with('SHELL')
+            mock_open.assert_called_once_with('/path/to/logfile', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+            mock_write.assert_called_once_with(mock_fd,
+
+# Generated at 2024-03-18 07:49:06.322197
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            with patch('builtins.open', mock_open()):
+                shell_logger('/path/to/logfile')
+                mock_open.assert_called_once_with('/path/to/logfile', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                mock_write.assert_called_once_with(mock_fd, b'\x00' * const.LOG_SIZE_IN_BYTES)
+                mock_mmap.assert_called_once_with(mock_fd, const
+
+# Generated at 2024-03-18 07:49:12.289375
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_return_code = 0
+
+    with patch('os.environ.get', return_value=shell) as mock_getenv, \
+         patch('os.open', return_value=fake_fd) as mock_open, \
+         patch('os.write') as mock_write, \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_return_code)) as mock_waitpid, \
+         patch('sys.exit') as mock_exit, \
+         patch.object(logs, 'warn') as mock_warn, \
+         patch('..const.LOG_SIZE_IN_BYTES', 1024), \
+         patch('..const.LOG_SIZE_TO_CLEAN', 512), \
+         patch('_spawn', return_value
+
+# Generated at 2024-03-18 07:49:23.976145
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            mock_exit.return_value = 0
+
+            with patch.object(logs, 'warn') as mock_warn:
+                with patch('os.spawn', return_value=(0, 0)) as mock_spawn:
+                    shell_logger('test_output.log')
+
+                    mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                    mock_write.assert_called
+
+# Generated at 2024-03-18 07:49:33.555155
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123  # Mock file descriptor
+        mock_spawn.return_value = 0  # Mock return code
+
+        test_output = 'test_output.log'
+        test_return_code = 0
+
+        shell_logger(test_output)
+
+        mock_open.assert_called_once_with(test_output, os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(123, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_mmap
+
+# Generated at 2024-03-18 07:49:37.866030
+    from unittest.mock import patch, MagicMock
+
+    with patch('os.environ.get', return_value='/bin/bash'), \
+         patch('os.open', return_value=1), \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('sys.exit') as mock_exit, \
+         patch.object(const, 'LOG_SIZE_IN_BYTES', 1024), \
+         patch.object(const, 'LOG_SIZE_TO_CLEAN', 512), \
+         patch('_spawn', return_value=0):
+
+        mock_mmap.return_value = MagicMock()
+        shell_logger('test_output.log')
+        mock_exit.assert_called_with(0)
+
+# Generated at 2024-03-18 07:49:56.528093
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            mock_exit.return_value = 0
+
+            with patch.object(logs, 'warn') as mock_warn:
+                with patch('_spawn') as mock_spawn:
+                    mock_spawn.return_value = 0
+                    shell_logger('test_output.log')
+
+                    mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                    mock_write.assert_called
+
+# Generated at 2024-03-18 07:50:03.116761
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123
+        mock_spawn.return_value = 0
+        buffer_mock = unittest.mock.MagicMock()
+        mock_mmap.return_value = buffer_mock
+
+        shell_logger('test_output.log')
+
+        mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(123, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_mmap.assert_called_once_with
+
+# Generated at 2024-03-18 07:50:09.280957
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+
+    with patch('os.environ', {'SHELL': shell}), \
+         patch('os.open', mock_open()) as mock_file_open, \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.write') as mock_os_write, \
+         patch('sys.exit') as mock_sys_exit, \
+         patch.object(logs, 'warn') as mock_logs_warn, \
+         patch('_spawn') as mock_spawn:
+
+        mock_spawn.return_value = 0
+        mock_mmap_instance = MagicMock()
+        mock_mmap.return_value = mock_mmap_instance
+
+        shell_logger(output)
+
+        mock_file_open.assert_called_once_with(output, os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_os_write.assert_called_once_with(mock_file_open.return_value, b'\x00' * const
+
+# Generated at 2024-03-18 07:50:16.330453
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            with patch('..shell_logger._spawn') as mock_spawn:
+                mock_spawn.return_value = 0
+                shell_logger('test_output.log')
+                mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                mock_write.assert_called_once_with(mock_fd, b'\x00' * const.LOG_SIZE_IN_BYTES)
+                mock
+
+# Generated at 2024-03-18 07:50:24.578800
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_return_code = 0
+
+    with patch('os.environ', {'SHELL': shell}), \
+         patch('os.open', mock_open()) as mock_file_open, \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_return_code)) as mock_waitpid, \
+         patch('..logs.warn') as mock_warn, \
+         patch('sys.exit') as mock_sys_exit, \
+         patch('pty.fork', return_value=(fake_pid, fake_fd)) as mock_pty_fork, \
+         patch('pty._copy') as mock_pty_copy:
+
+        mock_file_open.return_value = fake_fd
+       
+
+# Generated at 2024-03-18 07:50:32.506968
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_return_code = 0
+
+    with patch('os.environ.get', return_value=shell) as mock_get_shell, \
+         patch('os.open', return_value=fake_fd) as mock_open, \
+         patch('os.write') as mock_write, \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_return_code)) as mock_waitpid, \
+         patch('sys.exit') as mock_exit, \
+         patch.object(logs, 'warn') as mock_warn, \
+         patch('_spawn', return_value=fake_return_code) as mock_spawn:
+
+        test_shell_logger()
+
+        mock_get_shell.assert_called_once_with('SHELL')
+        mock_open
+
+# Generated at 2024-03-18 07:50:40.178594
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            with patch('builtins.open', mock_open()):
+                shell_logger('/path/to/logfile')
+                mock_open.assert_called_once_with('/path/to/logfile', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                mock_write.assert_called_once_with(mock_fd, b'\x00' * const.LOG_SIZE_IN_BYTES)
+                mock_mmap.assert_called_once_with(mock_fd, const
+
+# Generated at 2024-03-18 07:50:47.423356
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_master_fd = 3
+    fake_return_code = 0
+
+    with patch('os.environ.get', return_value=shell), \
+         patch('os.open', return_value=fake_fd), \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_return_code)), \
+         patch('sys.exit') as mock_exit, \
+         patch('pty.fork', return_value=(fake_pid, fake_master_fd)), \
+         patch('os.close'), \
+         patch('os.execlp') as mock_execlp, \
+         patch('tty.tcgetattr'), \
+         patch('tty.setraw'), \
+         patch('tty
+
+# Generated at 2024-03-18 07:50:54.881925
+    from unittest.mock import patch, MagicMock
+
+    # Mock the environment variable SHELL
+    with patch.dict('os.environ', {'SHELL': '/bin/bash'}):
+        # Mock the os.open function to return a fake file descriptor
+        with patch('os.open', return_value=42) as mock_open:
+            # Mock the os.write function to do nothing
+            with patch('os.write') as mock_write:
+                # Mock the mmap.mmap function to return a MagicMock object
+                with patch('mmap.mmap', return_value=MagicMock()) as mock_mmap:
+                    # Mock the _spawn function to return a fake return code
+                    with patch('__main__._spawn', return_value=0) as mock_spawn:
+                        # Mock the sys.exit function to catch the exit code
+                        with patch('sys.exit') as mock_exit:
+                            # Call the function under test
+                            shell_logger('test_output.log')
+
+                            # Assert that os.open was
+
+# Generated at 2024-03-18 07:51:01.265808
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            with patch('builtins.open', mock_open()):
+                shell_logger('test_output.log')
+                mock_open.assert_called_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                mock_write.assert_called_with(mock_fd, b'\x00' * const.LOG_SIZE_IN_BYTES)
+                mock_mmap.assert_called_with(mock_fd, const.LOG_SIZE_IN_BYTES,
+
+# Generated at 2024-03-18 07:51:20.336894
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            with patch('..logs.warn') as mock_warn, \
+                 patch('_spawn') as mock_spawn:
+                mock_spawn.return_value = 0
+                shell_logger('/path/to/output.log')
+                mock_open.assert_called_once_with('/path/to/output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                mock_write.assert_called_once_with(mock_fd, b'\x00
+
+# Generated at 2024-03-18 07:51:26.854653
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            with patch('builtins.open', mock_open()):
+                shell_logger('/path/to/logfile')
+                mock_open.assert_called_once_with('/path/to/logfile', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                mock_write.assert_called_once_with(mock_fd, b'\x00' * const.LOG_SIZE_IN_BYTES)
+                mock_mmap.assert_called_once_with(mock_fd, const
+
+# Generated at 2024-03-18 07:51:34.409389
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123  # Mock file descriptor
+        mock_spawn.return_value = 0  # Mock return code
+
+        test_output = 'test_output.log'
+        test_return_code = 0
+
+        shell_logger(test_output)
+
+        mock_open.assert_called_once_with(test_output, os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(123, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_mmap
+
+# Generated at 2024-03-18 07:51:42.335633
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            with patch('..shell_logger._spawn') as mock_spawn:
+                mock_spawn.return_value = 0
+                shell_logger('/path/to/logfile')
+                mock_open.assert_called_once_with('/path/to/logfile', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                mock_write.assert_called_once_with(mock_fd, b'\x00' * const.LOG_SIZE_IN_BYTES)
+
+
+# Generated at 2024-03-18 07:51:50.198394
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            with patch('builtins.open', mock_open()):
+                shell_logger('test_output.log')
+                mock_open.assert_called_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                mock_write.assert_called_with(mock_fd, b'\x00' * const.LOG_SIZE_IN_BYTES)
+                mock_mmap.assert_called_with(mock_fd, const.LOG_SIZE_IN_BYTES,
+
+# Generated at 2024-03-18 07:51:58.764927
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_master_fd = 3
+    fake_return_code = 0
+
+    with patch('os.environ.get', return_value=shell), \
+         patch('os.open', return_value=fake_fd), \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_return_code)), \
+         patch('sys.exit') as mock_exit, \
+         patch('pty.fork', return_value=(fake_pid, fake_master_fd)), \
+         patch('os.execlp') as mock_execlp, \
+         patch('tty.tcgetattr'), \
+         patch('tty.setraw'), \
+         patch('pty._copy') as mock_copy,
+
+# Generated at 2024-03-18 07:52:02.406447
+    with unittest.mock.patch('os.environ.get', return_value='/bin/bash'):
+        with unittest.mock.patch('os.open', return_value=1):
+            with unittest.mock.patch('os.write'):
+                with unittest.mock.patch('mmap.mmap') as mock_mmap:
+                    with unittest.mock.patch('sys.exit') as mock_exit:
+                        shell_logger('test_output.log')
+                        mock_mmap.assert_called_with(1, const.LOG_SIZE_IN_BYTES, mmap.MAP_SHARED, mmap.PROT_WRITE)
+                        mock_exit.assert_called()
+
+# Generated at 2024-03-18 07:52:12.669077
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            with patch('..shell_logger._spawn') as mock_spawn:
+                mock_spawn.return_value = 0
+                shell_logger('test_output.log')
+                mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                mock_write.assert_called_once_with(mock_fd, b'\x00' * const.LOG_SIZE_IN_BYTES)
+                mock_spawn
+
+# Generated at 2024-03-18 07:52:19.350194
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_master_fd = 3
+    fake_status = 256
+
+    with patch('os.environ.get', return_value=shell), \
+         patch('os.open', return_value=fake_fd), \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_status)), \
+         patch('sys.exit') as mock_exit, \
+         patch('pty.fork', return_value=(fake_pid, fake_master_fd)), \
+         patch('os.close') as mock_close, \
+         patch('builtins.open', mock_open()) as mock_file:
+
+        test_buffer = MagicMock()
+        mock_mmap.return_value = test_buffer
+
+        test_shell
+
+# Generated at 2024-03-18 07:52:25.436634
+    with unittest.mock.patch('os.environ.get', return_value='/bin/bash'), \
+         unittest.mock.patch('os.open', return_value=1), \
+         unittest.mock.patch('os.write'), \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn', return_value=0):
+
+        shell_logger('test_output.log')
+
+        mock_warn.assert_not_called()
+        mock_exit.assert_called_once_with(0)
+        mock_mmap.assert_called_once_with(1, const.LOG_SIZE_IN_BYTES, mmap.MAP_SHARED, mmap.PROT_WRITE)
+        os.open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+
+# Generated at 2024-03-18 07:52:44.491897
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123
+        mock_spawn.return_value = 0
+        buffer_mock = unittest.mock.MagicMock()
+        mock_mmap.return_value = buffer_mock
+
+        shell_logger('test_output.log')
+
+        mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(123, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_mmap.assert_called_once_with
+
+# Generated at 2024-03-18 07:52:50.676644
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            output_file = 'test_output.log'
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+
+            with patch('..logs.warn') as mock_warn, \
+                 patch('._spawn') as mock_spawn:
+                mock_spawn.return_value = 0
+                shell_logger(output_file)
+
+                mock_open.assert_called_once_with(output_file, os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                mock_write.assert_called_once_with(mock_fd,
+
+# Generated at 2024-03-18 07:52:56.848764
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            mock_exit.return_value = 0
+
+            with patch('builtins.open', mock_open()):
+                shell_logger('/path/to/logfile')
+
+            mock_get_shell.assert_called_once_with('SHELL')
+            mock_open.assert_called_once_with('/path/to/logfile', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+            mock_write.assert_called_once_with(mock_fd, b'\x
+
+# Generated at 2024-03-18 07:53:05.301454
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            mock_exit.return_value = 0
+
+            with patch('..shell_logger._spawn') as mock_spawn:
+                mock_spawn.return_value = 0
+                shell_logger('test_output.log')
+
+                mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                mock_write.assert_called_once_with(mock_fd, b'\x00'
+
+# Generated at 2024-03-18 07:53:06.391926
+```python
+import unittest
+from unittest.mock import patch, mock_open, MagicMock
+from io import BytesIO
+
+
+# Generated at 2024-03-18 07:53:14.785301
+    with unittest.mock.patch('os.environ', {'SHELL': '/bin/bash'}), \
+         unittest.mock.patch('os.open') as mock_open, \
+         unittest.mock.patch('os.write') as mock_write, \
+         unittest.mock.patch('mmap.mmap') as mock_mmap, \
+         unittest.mock.patch('sys.exit') as mock_exit, \
+         unittest.mock.patch.object(logs, 'warn') as mock_warn, \
+         unittest.mock.patch('_spawn') as mock_spawn:
+
+        mock_open.return_value = 123
+        mock_spawn.return_value = 0
+        buffer_mock = unittest.mock.MagicMock()
+        mock_mmap.return_value = buffer_mock
+
+        shell_logger('test_output.log')
+
+        mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+        mock_write.assert_called_once_with(123, b'\x00' * const.LOG_SIZE_IN_BYTES)
+        mock_mmap.assert_called_once_with
+
+# Generated at 2024-03-18 07:53:21.397852
+    from unittest.mock import patch, mock_open, MagicMock
+    import builtins
+
+    shell = '/bin/bash'
+    output = 'test_output.log'
+    fake_fd = 10
+    fake_pid = 1000
+    fake_master_fd = 3
+    fake_return_code = 0
+
+    with patch('os.environ.get', return_value=shell), \
+         patch('os.open', return_value=fake_fd), \
+         patch('os.write'), \
+         patch('mmap.mmap') as mock_mmap, \
+         patch('os.waitpid', return_value=(fake_pid, fake_return_code)), \
+         patch('sys.exit') as mock_exit, \
+         patch('pty.fork', return_value=(fake_pid, fake_master_fd)), \
+         patch('os.execlp') as mock_execlp, \
+         patch('tty.tcgetattr'), \
+         patch('tty.setraw'), \
+         patch('pty._copy') as mock_copy,
+
+# Generated at 2024-03-18 07:53:29.179100
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            mock_partial = MagicMock()
+            with patch('builtins.open', mock_open()), patch('functools.partial', return_value=mock_partial):
+                shell_logger('test_output.log')
+                mock_open.assert_called_once_with('test_output.log', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                mock_write.assert_called_once_with(mock_fd, b'\x00' * const
+
+# Generated at 2024-03-18 07:53:36.598485
+```python
+    from unittest.mock import patch, mock_open, MagicMock
+    import unittest
+
+    class TestShellLogger(unittest.TestCase):
+        @patch('os.environ.get', return_value='/bin/bash')
+        @patch('os.open')
+        @patch('os.write')
+        @patch('mmap.mmap')
+        @patch('sys.exit')
+        def test_shell_logger_success(self, mock_exit, mock_mmap, mock_write, mock_open, mock_get_shell):
+            mock_fd = mock_open.return_value
+            mock_buffer = MagicMock()
+            mock_mmap.return_value = mock_buffer
+            with patch('builtins.open', mock_open()):
+                shell_logger('/path/to/logfile')
+                mock_open.assert_called_once_with('/path/to/logfile', os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+                mock_write.assert_called_once_with(mock_fd, b'\x00' * const.LOG_SIZE_IN_BYTES)
+                mock_mmap.assert_called_once_with(mock_fd, const
+
+# Generated at 2024-03-18 07:53:51.192169
+    from unittest.mock import patch, MagicMock
+
+    # Mock the environment variable SHELL
+    with patch.dict('os.environ', {'SHELL': '/bin/bash'}):
+        # Mock the os.open function to return a fake file descriptor
+        with patch('os.open', return_value=42) as mock_open:
+            # Mock the os.write function to do nothing
+            with patch('os.write') as mock_write:
+                # Mock the mmap.mmap function to return a MagicMock object
+                with patch('mmap.mmap', return_value=MagicMock()) as mock_mmap:
+                    # Mock the _spawn function to return a fake return code
+                    with patch('__main__._spawn', return_value=0) as mock_spawn:
+                        # Mock the sys.exit function to capture the exit code
+                        with patch('sys.exit') as mock_exit:
+                            # Call the function under test
+                            shell_logger('test_output.log')
+
+                            # Assert that os.open was

@@ -1,0 +1,738 @@
+
+
+# Generated at 2024-03-18 00:41:20.362046
+```python
+    # Unit test for method execute_create of class VaultCLI
+    def test_VaultCLI_execute_create(self):
+        # Setup the test environment
+        fake_loader = FakeLoader()
+        fake_vault_id = 'test_vault_id'
+        fake_encrypt_secret = 'test_secret'
+        fake_filename = 'test_file.yml'
+        fake_args = [fake_filename]
+        fake_context = FakeContext(CLIARGS={'args': fake_args})
+        vault_cli = VaultCLI(loader=fake_loader, context=fake_context)
+        vault_cli.encrypt_vault_id = fake_vault_id
+        vault_cli.encrypt_secret = fake_encrypt_secret
+
+        # Mock the editor's create_file method
+        with patch.object(VaultEditor, 'create_file') as mock_create_file:
+            # Call the method under test
+            vault_cli.execute_create()
+
+            # Assert the create_file method was called with the correct parameters
+            mock_create_file.assert_called_once_with(fake_filename, fake_encrypt
+
+# Generated at 2024-03-18 00:41:24.913680
+```python
+    @mock.patch('ansible.cli.vault.VaultEditor')
+    def test_VaultCLI_execute_edit(self, mock_vault_editor):
+        fake_args = ['file1.yml', 'file2.yml']
+        context.CLIARGS = {'args': fake_args}
+
+        vault_cli = VaultCLI(args=[])
+        vault_cli.editor = mock_vault_editor.return_value
+
+        vault_cli.execute_edit()
+
+        # Assert that edit_file is called for each file in fake_args
+        calls = [mock.call(f) for f in fake_args]
+        mock_vault_editor.return_value.edit_file.assert_has_calls(calls, any_order=True)
+```
+
+# Generated at 2024-03-18 00:41:30.677708
+```python
+    # Unit test for method execute_create of class VaultCLI
+    def test_VaultCLI_execute_create(self):
+        # Setup the test environment
+        fake_loader = FakeLoader()
+        fake_vault_id = 'test_vault_id'
+        fake_encrypt_secret = 'test_secret'
+        fake_args = ['test_file.yml']
+        fake_context = FakeContext(CLIARGS={'args': fake_args})
+        fake_editor = FakeVaultEditor()
+
+        # Create a VaultCLI instance with the fake environment
+        vault_cli = VaultCLI(loader=fake_loader, args=fake_args)
+        vault_cli.encrypt_vault_id = fake_vault_id
+        vault_cli.encrypt_secret = fake_encrypt_secret
+        vault_cli.editor = fake_editor
+
+        # Set the context to our fake context
+        vault_cli.context = fake_context
+
+        # Call the execute_create method
+        vault_cli.execute_create()
+
+        # Assert that the create_file method was called with the correct parameters
+       
+
+# Generated at 2024-03-18 00:41:36.044447
+```python
+    @patch('ansible.cli.vault.VaultCLI._format_output_vault_strings')
+    @patch('ansible.cli.vault.display')
+    def test_execute_encrypt_string(self, mock_display, mock_format_output):
+        mock_vault_editor = MagicMock()
+        mock_vault_editor.encrypt_bytes.return_value = b'encrypted'
+        self.vault_cli.editor = mock_vault_editor
+
+        # Set up the context for the test
+        context.CLIARGS = ImmutableDict({
+            'encrypt_string_prompt': False,
+            'encrypt_string_stdin_name': None,
+            'encrypt_string_names': [],
+            'args': ['mysecret'],
+            'encrypt_vault_id': 'test_vault_id',
+            'show_string_input': False
+        })
+
+        self.vault_cli.encrypt_vault_id = 'test_vault_id'
+        self.vault_cli.encrypt_secret = b'mysecretkey'
+
+        # Call the method we're testing
+        self.vault_cli.execute
+
+# Generated at 2024-03-18 00:41:41.525037
+```python
+    @patch('ansible.cli.vault.VaultCLI._format_output_vault_strings')
+    @patch('ansible.cli.vault.display')
+    def test_execute_encrypt_string(self, mock_display, mock_format_output):
+        mock_vault_editor = MagicMock()
+        mock_vault_editor.encrypt_bytes.return_value = b'encrypted'
+        self.vault_cli.editor = mock_vault_editor
+
+        # Set up the context for the test
+        context.CLIARGS = ImmutableDict({
+            'encrypt_string_prompt': False,
+            'encrypt_string_stdin_name': None,
+            'encrypt_string_names': [],
+            'args': ['mysecret'],
+            'show_string_input': False
+        })
+        self.vault_cli.encrypt_vault_id = 'test_vault_id'
+        self.vault_cli.encrypt_secret = b'mysecretkey'
+
+        # Expected calls
+        expected_plaintext_list = [(to_bytes('mysecret'), self.vault_cli.FROM_ARGS, None
+
+# Generated at 2024-03-18 00:41:47.356947
+```python
+    # Unit test for method run of class VaultCLI
+    def test_VaultCLI_run(self):
+        mock_loader = MagicMock()
+        mock_editor = MagicMock()
+        mock_display = MagicMock()
+        mock_context = MagicMock()
+        mock_os = MagicMock()
+
+        with patch('ansible.cli.vault.VaultCLI.loader', mock_loader), \
+             patch('ansible.cli.vault.VaultCLI.editor', mock_editor), \
+             patch('ansible.cli.vault.display', mock_display), \
+             patch('ansible.cli.vault.context.CLIARGS', mock_context), \
+             patch('ansible.cli.vault.os', mock_os):
+
+            # Setup mock context for different actions
+            mock_context.__getitem__.side_effect = lambda x: {
+                'action': 'encrypt',
+                'output_file': None,
+                'args': ['file1', 'file2'],
+                'encrypt_vault_id': 'test_vault_id',
+                'new_vault_id': None,
+                '
+
+# Generated at 2024-03-18 00:41:49.821942
+```python
+# Assuming the following imports and setup code exist in the test file
+import os
+import tempfile
+import unittest
+from ansible.cli.vault import VaultCLI
+from ansible.errors import AnsibleOptionsError
+from ansible.parsing.dataloader import DataLoader
+from ansible.utils.display import Display
+
+display = Display()
+
+
+# Generated at 2024-03-18 00:41:52.726928
+```python
+    @mock.patch('ansible.cli.vault.VaultCLI.editor')
+    def test_VaultCLI_execute_view(self, mock_editor):
+        mock_editor.plaintext.return_value = b"decrypted content"
+        vault_cli = VaultCLI(args=['view', 'test_vault_file.yml'], mock_loader)
+        vault_cli.execute_view()
+        mock_editor.plaintext.assert_called_once_with('test_vault_file.yml')
+        self.pager.assert_called_once_with("decrypted content")
+```
+
+# Generated at 2024-03-18 00:42:15.395113
+```python
+    @mock.patch('ansible.cli.vault.VaultEditor.decrypt_file')
+    @mock.patch('ansible.cli.vault.display')
+    def test_execute_decrypt(self, mock_display, mock_decrypt_file):
+        vault_cli = VaultCLI(args=['ansible-vault', 'decrypt', 'test_file.yml'], mock_loader=True)
+        vault_cli.context.CLIARGS['args'] = ['test_file.yml']
+        vault_cli.context.CLIARGS['output_file'] = None
+
+        # Test with a file argument
+        vault_cli.execute_decrypt()
+        mock_decrypt_file.assert_called_once_with('test_file.yml', output_file=None)
+        mock_display.display.assert_called_once_with("Decryption successful", stderr=True)
+
+        # Reset mock
+        mock_decrypt_file.reset_mock()
+        mock_display.reset_mock()
+
+        # Test with stdin and isatty returning True
+        with mock.patch('sys.stdin.isatty', return_value=True):
+            vault_cli.context.CLIARGS['args'] = []
+           
+
+# Generated at 2024-03-18 00:42:21.378983
+```python
+from unittest.mock import patch, MagicMock
+import ansible.constants as C
+from ansible.errors import AnsibleOptionsError
+from ansible.cli.vault import VaultCLI
+from ansible.utils.display import Display
+
+# Mock the global display to avoid actual prints during the test
+display = Display()
+display.display = MagicMock()
+display.warning = MagicMock()
+display.error = MagicMock()
+display.prompt = MagicMock(return_value='mocked secret')
+
+# Mock context.CLIARGS
+context.CLIARGS = MagicMock()
+context.CLIARGS.__getitem__.side_effect = lambda x: {
+    'encrypt_string_prompt': False,
+    'show_string_input': False,
+    'encrypt_string_stdin_name': None,
+    'encrypt_string_names': [],
+    'args': ['my_secret_data'],
+    'output_file': None
+}.get(x, None)
+
+# Mock sys.stdin
+stdin_mock = MagicMock()
+stdin_mock.isatty.return_value = True
+stdin_mock.read.return_value = 'my_secret_data_from_stdin
+
+# Generated at 2024-03-18 00:42:56.781176
+```python
+    @mock.patch('ansible.cli.vault.VaultCLI.display')
+    @mock.patch('ansible.cli.vault.VaultEditor.encrypt_file')
+    def test_VaultCLI_execute_encrypt(self, mock_encrypt_file, mock_display):
+        vault_cli = VaultCLI(args=['ansible-vault', 'encrypt', 'test_file.txt'], mock_loader=True)
+        vault_cli.encrypt_secret = b'secret'
+        vault_cli.encrypt_vault_id = 'test_vault_id'
+        context.CLIARGS['output_file'] = None
+        context.CLIARGS['args'] = ['test_file.txt']
+
+        vault_cli.execute_encrypt()
+
+        mock_encrypt_file.assert_called_once_with('test_file.txt', b'secret', vault_id='test_vault_id', output_file=None)
+        mock_display.display.assert_called_with("Encryption successful", stderr=True)
+```
+
+# Generated at 2024-03-18 00:42:57.665280
+```python
+
+# Generated at 2024-03-18 00:43:02.545230
+```python
+    # Unit test for method execute_create of class VaultCLI
+    def test_VaultCLI_execute_create(self):
+        # Setup the test environment
+        mock_context = MagicMock()
+        mock_context.CLIARGS = {'args': ['test_vault_file.yml']}
+        mock_encrypt_secret = MagicMock()
+        mock_encrypt_vault_id = MagicMock()
+        mock_editor = MagicMock()
+
+        # Assign the mock objects to the VaultCLI instance
+        vault_cli = VaultCLI()
+        vault_cli.context = mock_context
+        vault_cli.encrypt_secret = mock_encrypt_secret
+        vault_cli.encrypt_vault_id = mock_encrypt_vault_id
+        vault_cli.editor = mock_editor
+
+        # Call the method to test
+        vault_cli.execute_create()
+
+        # Assert the expected calls were made
+        mock_editor.create_file.assert_called_once_with('test_vault_file.yml', mock_encrypt_secret, vault_id=mock_encrypt_vault_id)
+```
+
+# Generated at 2024-03-18 00:43:07.544803
+```python
+    @mock.patch('ansible.cli.vault.VaultEditor')
+    def test_VaultCLI_execute_edit(self, mock_vault_editor):
+        fake_args = ['file1.yml', 'file2.yml']
+        context.CLIARGS = {'args': fake_args}
+
+        vault_cli = VaultCLI(args=[])
+        vault_cli.editor = mock_vault_editor.return_value
+
+        vault_cli.execute_edit()
+
+        # Ensure edit_file is called for each file in the args
+        calls = [mock.call('file1.yml'), mock.call('file2.yml')]
+        mock_vault_editor.return_value.edit_file.assert_has_calls(calls, any_order=True)
+```
+
+# Generated at 2024-03-18 00:43:11.956359
+```python
+    @patch('ansible.cli.vault.VaultEditor')
+    def test_execute_edit(self, mock_vault_editor):
+        # Setup the VaultCLI object
+        vault_cli = VaultCLI(args=['edit', 'test_vault_file.yml'], mock_loader)
+        vault_cli.encrypt_vault_id = 'test_vault_id'
+        vault_cli.encrypt_secret = 'test_secret'
+
+        # Mock the edit_file method
+        mock_editor_instance = mock_vault_editor.return_value
+        mock_editor_instance.edit_file.return_value = None
+
+        # Call the execute_edit method
+        vault_cli.execute_edit()
+
+        # Assert that the edit_file method was called with the correct parameters
+        mock_editor_instance.edit_file.assert_called_once_with('test_vault_file.yml')
+```
+
+# Generated at 2024-03-18 00:43:21.054312
+```python
+    @mock.patch('ansible.cli.vault.VaultEditor.create_file')
+    def test_VaultCLI_execute_create(self, mock_create_file):
+        vault_cli = VaultCLI(args=['create', 'new_vault_file.yml'], mock_loader)
+        vault_cli.encrypt_vault_id = 'test_vault_id'
+        vault_cli.encrypt_secret = 'test_secret'
+
+        # Run the execute_create method
+        vault_cli.execute_create()
+
+        # Check that create_file was called with the correct parameters
+        mock_create_file.assert_called_once_with('new_vault_file.yml', 'test_secret', vault_id='test_vault_id')
+```
+
+# Generated at 2024-03-18 00:43:26.744093
+```python
+    # Unit test for method run of class VaultCLI
+    def test_VaultCLI_run(self):
+        with patch('ansible.cli.vault.VaultCLI.execute_encrypt') as mock_execute_encrypt, \
+             patch('ansible.cli.vault.VaultCLI.execute_decrypt') as mock_execute_decrypt, \
+             patch('ansible.cli.vault.VaultCLI.execute_create') as mock_execute_create, \
+             patch('ansible.cli.vault.VaultCLI.execute_edit') as mock_execute_edit, \
+             patch('ansible.cli.vault.VaultCLI.execute_view') as mock_execute_view, \
+             patch('ansible.cli.vault.VaultCLI.execute_rekey') as mock_execute_rekey, \
+             patch('ansible.cli.vault.VaultCLI.execute_encrypt_string') as mock_execute_encrypt_string, \
+             patch('ansible.cli.arguments.option_helpers.context.CLIARGS') as mock_CLIARGS, \
+             patch('ansible.cli.vault.display') as mock_display:
+
+            mock_CLIARGS.__getitem
+
+# Generated at 2024-03-18 00:43:33.910893
+```python
+    # Unit test for method post_process_args of class VaultCLI
+    def test_VaultCLI_post_process_args(self):
+        # Setup test
+        mock_context = MagicMock()
+        mock_context.CLIARGS = {
+            'encrypt_vault_id': None,
+            'new_vault_id': 'new_vault_id',
+            'new_vault_password_file': 'new_vault_password_file',
+            'ask_vault_pass': False,
+            'output_file': None,
+            'args': ['file_to_encrypt'],
+            'func': MagicMock(),
+            'encrypt_string_prompt': False,
+            'show_string_input': False,
+            'encrypt_string_stdin_name': None,
+            'encrypt_string_names': [],
+        }
+        mock_loader = MagicMock()
+        mock_VaultLib = MagicMock()
+        mock_VaultEditor = MagicMock()
+        mock_os = MagicMock()
+        mock_display = MagicMock()
+        mock_to_text = MagicMock(side_effect=lambda x: x.decode('utf-
+
+# Generated at 2024-03-18 00:43:39.404958
+```python
+    @mock.patch('ansible.cli.vault.VaultCLI.display')
+    @mock.patch('ansible.cli.vault.VaultEditor.encrypt_file')
+    def test_execute_encrypt(self, mock_encrypt_file, mock_display):
+        vault_cli = VaultCLI(args=['ansible-vault', 'encrypt', 'test_file.txt'], mock_loader=True)
+        vault_cli.encrypt_secret = 'fake_secret'
+        vault_cli.encrypt_vault_id = 'fake_id'
+        vault_cli.editor = mock.MagicMock()
+
+        with mock.patch('ansible.cli.vault.context.CLIARGS', {'args': ['test_file.txt'], 'output_file': None}):
+            vault_cli.execute_encrypt()
+
+        mock_encrypt_file.assert_called_once_with('test_file.txt', 'fake_secret', vault_id='fake_id', output_file=None)
+        mock_display.display.assert_called_with("Encryption successful", stderr=True)
+```
+
+# Generated at 2024-03-18 00:43:40.229519
+```python
+
+# Generated at 2024-03-18 00:44:37.004641
+```python
+    @mock.patch('ansible.cli.vault.VaultEditor.create_file')
+    def test_VaultCLI_execute_create(self, mock_create_file):
+        cli = VaultCLI(args=['create', 'new_vault_file.yml'])
+        cli.parse()
+        cli.encrypt_vault_id = 'test_vault_id'
+        cli.encrypt_secret = 'test_secret'
+        cli.execute_create()
+        mock_create_file.assert_called_once_with('new_vault_file.yml', 'test_secret', vault_id='test_vault_id')
+```
+
+# Generated at 2024-03-18 00:44:40.514676
+```python
+    @mock.patch('ansible.cli.vault.VaultEditor')
+    def test_VaultCLI_execute_edit(self, mock_vault_editor):
+        fake_args = ['file1.yml', 'file2.yml']
+        context.CLIARGS = {'args': fake_args}
+
+        vault_cli = VaultCLI(args=[])
+        vault_cli.editor = mock_vault_editor.return_value
+
+        vault_cli.execute_edit()
+
+        # Assert that edit_file is called for each file in the args
+        calls = [mock.call(f) for f in fake_args]
+        mock_vault_editor.return_value.edit_file.assert_has_calls(calls, any_order=True)
+```
+
+# Generated at 2024-03-18 00:44:43.259304
+```python
+    @mock.patch('ansible.cli.vault.VaultEditor.create_file')
+    def test_VaultCLI_execute_create(self, mock_create_file):
+        cli = VaultCLI(args=['create', 'new_vault_file.yml'])
+        cli.parse()
+        cli.encrypt_vault_id = 'test_vault_id'
+        cli.encrypt_secret = 'test_secret'
+        cli.execute_create()
+        mock_create_file.assert_called_once_with('new_vault_file.yml', 'test_secret', vault_id='test_vault_id')
+```
+
+# Generated at 2024-03-18 00:44:48.315317
+```python
+    @patch('ansible.cli.vault.VaultCLI._format_output_vault_strings')
+    @patch('ansible.cli.vault.display')
+    def test_execute_encrypt_string(self, mock_display, mock_format_output):
+        mock_vault_editor = MagicMock()
+        mock_vault_editor.encrypt_bytes.return_value = b'encrypted'
+        self.vault_cli.editor = mock_vault_editor
+
+        # Set up the context for the test
+        context.CLIARGS = ImmutableDict({
+            'encrypt_string_prompt': False,
+            'encrypt_string_stdin_name': None,
+            'encrypt_string_names': [],
+            'args': ['mysecret'],
+            'encrypt_vault_id': 'test_vault_id',
+            'show_string_input': False
+        })
+
+        self.vault_cli.encrypt_vault_id = 'test_vault_id'
+        self.vault_cli.encrypt_secret = b'mysecretkey'
+
+        # Mock the static method format_ciphertext_yaml
+        VaultCLI.format
+
+# Generated at 2024-03-18 00:44:53.696473
+```python
+    # Mocking the AnsibleOptionsError for the test context
+    class AnsibleOptionsError(Exception):
+        pass
+
+    # Mocking the display object for the test context
+    class DisplayMock:
+        def display(self, msg, stderr=False):
+            print(msg)
+
+    # Mocking the context object for the test context
+    class ContextMock:
+        CLIARGS = {
+            'args': ['test_vault_file.yml']
+        }
+
+    # Mocking the VaultEditor for the test context
+    class VaultEditorMock:
+        def create_file(self, filename, secret, vault_id):
+            print(f"Creating and encrypting file {filename} with vault_id {vault_id}")
+
+    # Mocking the VaultCLI class for the test context
+    class VaultCLIMock:
+        def __init__(self):
+            self.encrypt_secret = 'fake_secret'
+            self.encrypt_vault_id = 'fake_vault_id'
+            self.editor = VaultEditorMock
+
+# Generated at 2024-03-18 00:44:58.231669
+```python
+    @mock.patch('ansible.cli.vault.VaultEditor.create_file')
+    def test_VaultCLI_execute_create(self, mock_create_file):
+        cli = VaultCLI(args=['create', 'new_vault.yml'])
+        cli.parse()
+        cli.encrypt_vault_id = 'myVaultID'
+        cli.encrypt_secret = 'mySecret'
+        cli.execute_create()
+        mock_create_file.assert_called_once_with('new_vault.yml', 'mySecret', vault_id='myVaultID')
+```
+
+# Generated at 2024-03-18 00:44:58.922027
+```python
+
+# Generated at 2024-03-18 00:45:01.595496
+```python
+    @mock.patch('ansible.cli.vault.VaultEditor.create_file')
+    def test_execute_create(self, mock_create_file):
+        vault_cli = VaultCLI(args=['create', 'testfile.yml'], mock_loader=True)
+        vault_cli.encrypt_vault_id = 'test_vault_id'
+        vault_cli.encrypt_secret = 'test_secret'
+        vault_cli.execute_create()
+        mock_create_file.assert_called_once_with('testfile.yml', 'test_secret', vault_id='test_vault_id')
+```
+
+# Generated at 2024-03-18 00:45:06.492876
+```python
+    @mock.patch('ansible.cli.vault.VaultCLI.display')
+    @mock.patch('ansible.cli.vault.VaultEditor.encrypt_file')
+    def test_VaultCLI_execute_encrypt(self, mock_encrypt_file, mock_display):
+        vault_cli = VaultCLI(args=['ansible-vault', 'encrypt', 'test_file.txt'], mock_loader=True)
+        vault_cli.encrypt_secret = b'my_secret'
+        vault_cli.encrypt_vault_id = 'my_vault_id'
+        context.CLIARGS = {'args': ['test_file.txt'], 'output_file': None}
+
+        vault_cli.execute_encrypt()
+
+        mock_encrypt_file.assert_called_once_with('test_file.txt', b'my_secret', vault_id='my_vault_id', output_file=None)
+        mock_display.display.assert_called_with("Encryption successful", stderr=True)
+```
+
+# Generated at 2024-03-18 00:45:12.036800
+```python
+    @mock.patch('ansible.cli.vault.VaultCLI.display')
+    @mock.patch('ansible.cli.vault.VaultEditor')
+    def test_VaultCLI_execute_decrypt(self, mock_vault_editor, mock_display):
+        mock_args = ['--vault-password-file', 'password-file', 'encrypted-file.yml']
+        mock_cli_args = {
+            'args': mock_args,
+            'output_file': None
+        }
+        with mock.patch('ansible.cli.vault.context.CLIARGS', mock_cli_args):
+            vault_cli = VaultCLI(args=mock_args)
+            vault_cli.editor = mock_vault_editor
+            vault_cli.execute_decrypt()
+
+            # Check if decrypt_file was called with the correct file
+            mock_vault_editor.decrypt_file.assert_called_once_with('encrypted-file.yml', output_file=None)
+
+            # Check if the success message was displayed
+            mock_display.display.assert_called_with("Decryption successful", stderr=True)
+```
+
+# Generated at 2024-03-18 00:48:21.260716
+```python
+    # Unit test for method run of class VaultCLI
+    def test_VaultCLI_run(self):
+        with patch('ansible.cli.vault.VaultCLI.execute_encrypt') as mock_execute_encrypt, \
+             patch('ansible.cli.vault.VaultCLI.execute_decrypt') as mock_execute_decrypt, \
+             patch('ansible.cli.vault.VaultCLI.execute_create') as mock_execute_create, \
+             patch('ansible.cli.vault.VaultCLI.execute_edit') as mock_execute_edit, \
+             patch('ansible.cli.vault.VaultCLI.execute_view') as mock_execute_view, \
+             patch('ansible.cli.vault.VaultCLI.execute_rekey') as mock_execute_rekey, \
+             patch('ansible.cli.vault.VaultCLI.execute_encrypt_string') as mock_execute_encrypt_string, \
+             patch('ansible.cli.vault.display') as mock_display:
+
+            vault_cli = VaultCLI(['ansible-vault', 'encrypt', 'file1', 'file2'])
+            vault_cli
+
+# Generated at 2024-03-18 00:48:26.243843
+```python
+    @mock.patch('ansible.cli.vault.VaultCLI.editor')
+    @mock.patch('ansible.cli.vault.display')
+    @mock.patch('ansible.cli.vault.context.CLIARGS')
+    @mock.patch('sys.stdin.isatty', return_value=True)
+    def test_execute_decrypt_with_stdin(self, mock_isatty, mock_CLIARGS, mock_display, mock_editor):
+        mock_CLIARGS.__getitem__.side_effect = lambda key: {'args': None, 'output_file': None}[key]
+        vault_cli = VaultCLI(args=[])
+        vault_cli.execute_decrypt()
+        mock_display.display.assert_called_once_with("Reading ciphertext input from stdin", stderr=True)
+        mock_editor.decrypt_file.assert_called_once_with('-', output_file=None)
+
+    @mock.patch('ansible.cli.vault.VaultCLI.editor')
+    @mock.patch('ansible.cli.vault.display')
+    @mock.patch('ansible.cli.vault.context.CLIARGS')
+    @mock.patch('sys.stdin.is
+
+# Generated at 2024-03-18 00:48:32.456002
+```python
+    @mock.patch('ansible.cli.vault.VaultCLI.display')
+    @mock.patch('ansible.cli.vault.VaultEditor')
+    def test_VaultCLI_execute_decrypt(self, mock_VaultEditor, mock_display):
+        # Setup the context for the test
+        mock_args = ['file1.yml', 'file2.yml']
+        context.CLIARGS = {'args': mock_args, 'output_file': None}
+
+        # Create a VaultCLI instance
+        vault_cli = VaultCLI(args=[])
+
+        # Set the editor attribute to the mock VaultEditor
+        vault_cli.editor = mock_VaultEditor()
+
+        # Call the method to test
+        vault_cli.execute_decrypt()
+
+        # Assert that decrypt_file was called for each file in mock_args
+        calls = [mock.call(f, output_file=None) for f in mock_args]
+        mock_VaultEditor().decrypt_file.assert_has_calls(calls, any_order=True)
+
+        # Assert that the success message
+
+# Generated at 2024-03-18 00:48:39.971176
+```python
+    # Unit test for method run of class VaultCLI
+    def test_VaultCLI_run(self):
+        mock_loader = MagicMock()
+        mock_loader.set_vault_secrets = MagicMock()
+        mock_vaultlib = MagicMock()
+        mock_editor = MagicMock()
+        mock_context = MagicMock()
+        mock_display = MagicMock()
+        mock_os = MagicMock()
+
+        with patch('ansible.cli.vault.VaultLib', return_value=mock_vaultlib):
+            with patch('ansible.cli.vault.VaultEditor', return_value=mock_editor):
+                with patch('ansible.cli.vault.display', mock_display):
+                    with patch('ansible.cli.vault.os', mock_os):
+                        vault_cli = VaultCLI(mock_loader, mock_context)
+                        vault_cli.run()
+
+                        mock_loader.set_vault_secrets.assert_called_once()
+                        mock_vaultlib.assert_called_once()
+                        mock_editor.assert_called_once()
+                        mock_context.CLIARGS['func'].assert_called_once()
+                        mock_os.umask
+
+# Generated at 2024-03-18 00:48:46.935447
+```python
+    # Unit test for method run of class VaultCLI
+    def test_VaultCLI_run(self):
+        # Setup the context for the test
+        mock_context = MagicMock()
+        mock_context.CLIARGS = {
+            'action': 'encrypt',
+            'encrypt_vault_id': None,
+            'new_vault_id': None,
+            'new_vault_password_file': None,
+            'ask_vault_pass': False,
+            'output_file': None,
+            'args': ['test_file.txt'],
+            'func': MagicMock(),
+            'encrypt_string_prompt': False,
+            'show_string_input': False,
+            'encrypt_string_stdin_name': None,
+            'encrypt_string_names': [],
+        }
+        mock_loader = MagicMock()
+        mock_display = MagicMock()
+        mock_os = MagicMock()
+        mock_VaultLib = MagicMock()
+        mock_VaultEditor = MagicMock()
+        mock_AnsibleOptionsError = MagicMock()
+
+        # Create an instance of the Vault
+
+# Generated at 2024-03-18 00:48:51.053143
+```python
+    @mock.patch('ansible.cli.vault.VaultCLI.pager')
+    @mock.patch('ansible.cli.vault.VaultCLI.editor')
+    def test_execute_view(self, mock_editor, mock_pager):
+        mock_editor.plaintext.return_value = b"decrypted content"
+        vault_cli = VaultCLI(args=['view', 'test_vault_file.yml'])
+        vault_cli.execute_view()
+        mock_editor.plaintext.assert_called_once_with('test_vault_file.yml')
+        mock_pager.assert_called_once_with('decrypted content')
+```
+
+# Generated at 2024-03-18 00:49:00.937742
+```python
+    @patch('ansible.cli.vault.VaultCLI._format_output_vault_strings')
+    @patch('ansible.cli.vault.display')
+    def test_execute_encrypt_string(self, mock_display, mock_format_output):
+        mock_vault_editor = MagicMock()
+        mock_vault_editor.encrypt_bytes.return_value = b'encrypted'
+        self.vault_cli.editor = mock_vault_editor
+
+        # Set up the context for the test
+        context.CLIARGS = ImmutableDict({
+            'encrypt_string_prompt': False,
+            'encrypt_string_stdin_name': None,
+            'encrypt_string_names': [],
+            'args': ['mysecret'],
+            'encrypt_vault_id': 'test_vault_id',
+            'show_string_input': False
+        })
+
+        self.vault_cli.encrypt_vault_id = 'test_vault_id'
+        self.vault_cli.encrypt_secret = b'mysecretkey'
+
+        # Call the method we're testing
+        self.vault_cli.execute
+
+# Generated at 2024-03-18 00:49:05.302943
+```python
+    @mock.patch('ansible.cli.vault.VaultEditor.decrypt_file')
+    @mock.patch('ansible.cli.vault.display')
+    def test_execute_decrypt(self, mock_display, mock_decrypt_file):
+        vault_cli = VaultCLI(args=['ansible-vault', 'decrypt', 'test_file.yml'], mock_loader)
+        vault_cli.execute_decrypt()
+
+        mock_decrypt_file.assert_called_once_with('test_file.yml', output_file=None)
+        mock_display.display.assert_called_once_with("Decryption successful", stderr=True)
+```
+
+# Generated at 2024-03-18 00:49:10.178398
+```python
+    # Unit test for method run of class VaultCLI
+    def test_VaultCLI_run(self):
+        with patch('ansible.cli.vault.VaultCLI.execute_encrypt') as mock_execute_encrypt, \
+             patch('ansible.cli.vault.VaultCLI.execute_decrypt') as mock_execute_decrypt, \
+             patch('ansible.cli.vault.VaultCLI.execute_create') as mock_execute_create, \
+             patch('ansible.cli.vault.VaultCLI.execute_edit') as mock_execute_edit, \
+             patch('ansible.cli.vault.VaultCLI.execute_view') as mock_execute_view, \
+             patch('ansible.cli.vault.VaultCLI.execute_rekey') as mock_execute_rekey, \
+             patch('ansible.cli.vault.VaultCLI.execute_encrypt_string') as mock_execute_encrypt_string, \
+             patch('ansible.cli.vault.display') as mock_display, \
+             patch('ansible.cli.vault.os.umask') as mock_umask:
+
+            mock_umask.return_value = 
+
+# Generated at 2024-03-18 00:49:16.855477
+```python
+    @mock.patch('ansible.cli.vault.VaultCLI.pager')
+    @mock.patch('ansible.cli.vault.VaultCLI.editor')
+    def test_VaultCLI_execute_view(self, mock_editor, mock_pager):
+        # Setup the VaultCLI object
+        vault_cli = VaultCLI(args=['view', 'test_vault_file.yml'], mock_loader)
+        vault_cli.encrypt_vault_id = 'test_vault_id'
+        vault_cli.encrypt_secret = 'test_secret'
+
+        # Mock the plaintext returned by the editor
+        mock_editor.plaintext.return_value = b'secret data'
+
+        # Execute the view method
+        vault_cli.execute_view()
+
+        # Check that the editor's plaintext method was called with the correct file
+        mock_editor.plaintext.assert_called_once_with('test_vault_file.yml')
+
+        # Check that the pager was called with the expected plaintext data
+        mock_pager.assert_called_once_with('secret data')
+```

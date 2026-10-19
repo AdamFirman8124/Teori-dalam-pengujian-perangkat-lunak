@@ -1,0 +1,1375 @@
+
+
+# Generated at 2024-05-30 20:00:51.157253
+```python
+    lock_path = "/tmp/test_lock_file"
+    try:
+        with file_lock(lock_path):
+            # Check if the lock file is created
+            assert os.path.exists(lock_path)
+            # Try to acquire the lock again in a non-blocking way to ensure it's locked
+            lock_fd = os.open(lock_path, os.O_RDWR | os.O_CREAT, 0o600)
+            try:
+                fcntl.lockf(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                assert False, "Lock should not be acquired"
+            except IOError as e:
+                assert e.errno == errno.EAGAIN, "Expected EAGAIN error"
+            finally:
+                os.close(lock_fd)
+    finally:
+        if os.path.exists(lock_path):
+            os.remove(lock_path)
+```
+
+# Generated at 2024-05-30 20:00:54.474411
+```python
+    lock_path = "test.lock"
+    try:
+        with file_lock(lock_path):
+            # Check if the lock file is created
+            assert os.path.exists(lock_path)
+            # Try to acquire the lock again in a non-blocking way to ensure it's locked
+            lock_fd = os.open(lock_path, os.O_RDWR | os.O_CREAT, 0o600)
+            try:
+                fcntl.lockf(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                assert False, "Lock should not be acquired"
+            except IOError as e:
+                assert e.errno in (errno.EACCES, errno.EAGAIN), "Unexpected error when trying to acquire lock"
+            finally:
+                os.close(lock_fd)
+    finally:
+        if os.path.exists(lock_path):
+            os.remove(lock_path)
+```
+
+# Generated at 2024-05-30 20:01:01.380075
+```python
+    socket_path = "/tmp/test_socket"
+    lock_path = unfrackpath("%s/.ansible_pc_lock_%s" % os.path.split(socket_path))
+
+    # Create a dummy connection process
+    play_context = PlayContext()
+    connection_process = ConnectionProcess(None, play_context, socket_path, "/tmp")
+
+    # Create dummy socket and lock files
+    open(socket_path, 'a').close()
+    open(lock_path, 'a').close()
+
+    # Mock methods and attributes
+    connection_process.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    connection_process.connection = Connection(None, play_context, "/dev/null")
+    connection_process.connection.get_option = lambda x: False
+    connection_process.connection.close = lambda: None
+    connection_process.connection.pop_messages = lambda: []
+
+    # Call the shutdown method
+    connection_process.shutdown()
+
+    # Assertions
+    assert not os.path.exists(socket_path), "Socket file should be removed
+
+# Generated at 2024-05-30 20:01:05.398816
+```python
+    import sys
+    from io import StringIO
+    import json
+    import os
+    import cPickle
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    @patch('sys.stdin', new_callable=StringIO)
+    @patch('sys.stdout', new_callable=StringIO)
+    @patch('sys.stderr', new_callable=StringIO)
+    @patch('os.pipe', return_value=(0, 1))
+    @patch('os.fork', return_value=0)
+    @patch('os._exit')
+    @patch('os.fdopen', new_callable=mock_open)
+    @patch('os.path.exists', return_value=False)
+    @patch('os.getcwd', return_value='/tmp')
+    @patch('ansible.plugins.loader.connection_loader.get')
+    @patch('ansible.utils.path.unfrackpath', return_value='/tmp/socket')
+    @patch('ansible.utils.path.makedirs_safe')
+
+
+# Generated at 2024-05-30 20:01:09.618336
+```python
+    # Test case 1: Normal case
+    byte_stream = StringIO("4\nabcd\n" + hashlib.sha1(b"abcd").hexdigest() + "\n")
+    assert read_stream(byte_stream) == b"abcd"
+
+    # Test case 2: EOF before data is complete
+    byte_stream = StringIO("5\nabcd\n")
+    try:
+        read_stream(byte_stream)
+        assert False, "Expected Exception for EOF before data was complete"
+    except Exception as e:
+        assert str(e) == "EOF found before data was complete"
+
+    # Test case 3: Checksum mismatch
+    byte_stream = StringIO("4\nabcd\nwrongchecksum\n")
+    try:
+        read_stream(byte_stream)
+        assert False, "Expected Exception for checksum mismatch"
+    except Exception as e:
+        assert str(e) == "Read 4 bytes, but data did not match checksum"
+
+    # Test case 4: Data with
+
+# Generated at 2024-05-30 20:01:12.302622
+```python
+    play_context = PlayContext()
+    connection_process = ConnectionProcess(fd=None, play_context=play_context, socket_path='/tmp/test_socket', original_path='/tmp')
+    connection_process.connection = connection_loader.get('local', play_context, '/dev/null')
+    
+    try:
+        connection_process.command_timeout(signum=signal.SIGALRM, frame=None)
+    except Exception as e:
+        assert str(e) == 'command timeout triggered, timeout value is 30 secs.\nSee the timeout setting options in the Network Debug and Troubleshooting Guide.'
+```
+
+# Generated at 2024-05-30 20:01:16.923385
+```python
+    import sys
+    from io import StringIO
+    import json
+    import cPickle
+    import os
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    @patch('sys.stdin', new_callable=StringIO)
+    @patch('sys.stdout', new_callable=StringIO)
+    @patch('sys.stderr', new_callable=StringIO)
+    @patch('os.pipe', return_value=(0, 1))
+    @patch('os.fork', return_value=0)
+    @patch('os.fdopen', new_callable=mock_open)
+    @patch('os.close')
+    @patch('os.getcwd', return_value='/tmp')
+    @patch('os.path.exists', return_value=False)
+    @patch('ansible.plugins.loader.connection_loader.get')
+    @patch('ansible.utils.path.unfrackpath', return_value='/tmp/socket')
+    @patch('ansible.utils.path.makedirs_safe')
+   
+
+# Generated at 2024-05-30 20:01:20.459239
+```python
+    socket_path = "/tmp/test_socket"
+    lock_path = unfrackpath("%s/.ansible_pc_lock_%s" % os.path.split(socket_path))
+    
+    # Create a dummy connection process
+    fd = StringIO()
+    play_context = PlayContext()
+    connection_process = ConnectionProcess(fd, play_context, socket_path, "/tmp")
+
+    # Create dummy socket file and lock file
+    open(socket_path, 'a').close()
+    open(lock_path, 'a').close()
+
+    # Call the shutdown method
+    connection_process.shutdown()
+
+    # Check if the socket file and lock file are removed
+    assert not os.path.exists(socket_path)
+    assert not os.path.exists(lock_path)
+```
+
+# Generated at 2024-05-30 20:01:25.473259
+```python
+    # Test case 1: Normal case
+    byte_stream = StringIO("4\nabcd\n" + hashlib.sha1(b"abcd").hexdigest() + "\n")
+    assert read_stream(byte_stream) == b"abcd"
+
+    # Test case 2: Incomplete data
+    byte_stream = StringIO("4\nabc\n" + hashlib.sha1(b"abcd").hexdigest() + "\n")
+    try:
+        read_stream(byte_stream)
+        assert False, "Expected Exception for incomplete data"
+    except Exception as e:
+        assert str(e) == "EOF found before data was complete"
+
+    # Test case 3: Checksum mismatch
+    byte_stream = StringIO("4\nabcd\n" + hashlib.sha1(b"abce").hexdigest() + "\n")
+    try:
+        read_stream(byte_stream)
+        assert False, "Expected Exception for checksum mismatch"
+    except Exception as e:
+        assert str(e)
+
+# Generated at 2024-05-30 20:01:29.778561
+```python
+    # Test case 1: Normal case
+    byte_stream = StringIO("4\nabcd\n" + hashlib.sha1(b"abcd").hexdigest() + "\n")
+    assert read_stream(byte_stream) == b"abcd"
+
+    # Test case 2: Data size mismatch
+    byte_stream = StringIO("4\nabc\n" + hashlib.sha1(b"abc").hexdigest() + "\n")
+    try:
+        read_stream(byte_stream)
+    except Exception as e:
+        assert str(e) == "EOF found before data was complete"
+
+    # Test case 3: Checksum mismatch
+    byte_stream = StringIO("4\nabcd\nwrongchecksum\n")
+    try:
+        read_stream(byte_stream)
+    except Exception as e:
+        assert str(e) == "Read 4 bytes, but data did not match checksum"
+
+    # Test case 4: Data with escaped \r characters
+    byte_stream = StringIO("
+
+# Generated at 2024-05-30 20:02:44.760858
+```python
+    connection_process = ConnectionProcess(
+        fd=None,
+        play_context=PlayContext(),
+        socket_path='/tmp/test_socket',
+        original_path='/tmp',
+        task_uuid='test-uuid',
+        ansible_playbook_pid=1234
+    )
+
+    connection_process.connection = connection_loader.get('local', connection_process.play_context, '/dev/null')
+    connection_process.connection.set_option('persistent_command_timeout', 5)
+
+    try:
+        connection_process.command_timeout(signal.SIGALRM, None)
+    except Exception as e:
+        assert str(e) == 'command timeout triggered, timeout value is 5 secs.\nSee the timeout setting options in the Network Debug and Troubleshooting Guide.'
+```
+
+# Generated at 2024-05-30 20:02:46.328326
+```python
+    display = Display()
+    connection_process = ConnectionProcess(None, None, None, None)
+    signum = signal.SIGTERM
+    frame = None
+
+    try:
+        connection_process.handler(signum, frame)
+    except Exception as e:
+        assert str(e) == 'signal handler called with signal %s.' % signum
+```
+
+# Generated at 2024-05-30 20:02:51.299283
+```python
+    import sys
+    from io import StringIO
+    import json
+    import os
+    import cPickle
+    import traceback
+    from ansible.constants import C
+    from ansible.utils.display import Display
+    from ansible.utils.path import unfrackpath, makedirs_safe
+    from ansible.plugins.loader import connection_loader
+    from ansible.playbook.play_context import PlayContext
+    from ansible.utils.jsonrpc import JsonRpcServer
+    from ansible.module_utils.service import fork_process
+    from ansible.parsing.ajson import AnsibleJSONEncoder, AnsibleJSONDecoder
+
+    def mock_read_stream(byte_stream):
+        return byte_stream.read()
+
+    def mock_fork_process():
+        return 0
+
+    def mock_unfrackpath(path):
+        return path
+
+    def mock_makedirs_safe(path):
+        pass
+
+    def mock_connection_loader_get(name, class_only=False):
+        class MockConnection:
+           
+
+# Generated at 2024-05-30 20:02:53.472022
+```python
+    play_context = PlayContext()
+    connection_process = ConnectionProcess(fd=None, play_context=play_context, socket_path='/tmp/test_socket', original_path='/tmp')
+    connection_process.connection = connection_loader.get('local', play_context, '/dev/null')
+    
+    with pytest.raises(Exception) as excinfo:
+        connection_process.connect_timeout(signum=signal.SIGALRM, frame=None)
+    
+    assert 'persistent connection idle timeout triggered' in str(excinfo.value)
+```
+
+# Generated at 2024-05-30 20:02:59.693957
+```python
+    import sys
+    from io import StringIO
+    import pytest
+    from unittest.mock import patch, mock_open
+
+    @patch('sys.stdin', new_callable=StringIO)
+    @patch('sys.stdout', new_callable=StringIO)
+    @patch('sys.stderr', new_callable=StringIO)
+    @patch('os.path.exists', return_value=False)
+    @patch('os.getcwd', return_value='/tmp')
+    @patch('os.pipe', return_value=(0, 1))
+    @patch('os.close')
+    @patch('os.fdopen', new_callable=mock_open)
+    @patch('os.fork', return_value=0)
+    @patch('ansible.plugins.loader.connection_loader.get')
+    @patch('ansible.utils.path.unfrackpath', return_value='/tmp/socket')
+    @patch('ansible.utils.path.makedirs_safe')
+    @patch('ansible.utils.display.Display.display')
+    def test_main(mock_display,
+
+# Generated at 2024-05-30 20:03:03.795796
+```python
+    socket_path = "/tmp/test_socket"
+    lock_path = unfrackpath("%s/.ansible_pc_lock_%s" % os.path.split(socket_path))
+
+    # Create a dummy connection process
+    play_context = PlayContext()
+    connection_process = ConnectionProcess(None, play_context, socket_path, "/tmp")
+
+    # Create dummy socket and lock files
+    open(socket_path, 'a').close()
+    open(lock_path, 'a').close()
+
+    # Mock the connection and its methods
+    connection_process.connection = Connection(None)
+    connection_process.connection.close = lambda: None
+    connection_process.connection.get_option = lambda x: False
+    connection_process.connection.pop_messages = lambda: []
+
+    # Mock the socket
+    connection_process.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    connection_process.sock.close = lambda: None
+
+    # Call the shutdown method
+    connection_process.shutdown()
+
+    # Check if the socket and lock
+
+# Generated at 2024-05-30 20:03:09.709247
+```python
+    fd = StringIO()
+    play_context = PlayContext()
+    socket_path = "/tmp/test_socket"
+    original_path = "/tmp"
+    task_uuid = "1234-5678"
+    ansible_playbook_pid = 12345
+
+    conn_process = ConnectionProcess(fd, play_context, socket_path, original_path, task_uuid, ansible_playbook_pid)
+    variables = {"var1": "value1", "var2": "value2"}
+
+    conn_process.start(variables)
+
+    fd.seek(0)
+    result = json.loads(fd.read())
+
+    assert "messages" in result
+    assert any("control socket path is" in msg[1] for msg in result["messages"])
+    assert "error" not in result
+```
+
+# Generated at 2024-05-30 20:03:17.272670
+```python
+    # Test case 1: Normal case
+    byte_stream = StringIO("4\nabcd\n" + hashlib.sha1(b"abcd").hexdigest() + "\n")
+    assert read_stream(byte_stream) == b"abcd"
+
+    # Test case 2: Incomplete data
+    byte_stream = StringIO("4\nabc\n" + hashlib.sha1(b"abcd").hexdigest() + "\n")
+    try:
+        read_stream(byte_stream)
+    except Exception as e:
+        assert str(e) == "EOF found before data was complete"
+
+    # Test case 3: Checksum mismatch
+    byte_stream = StringIO("4\nabcd\n" + hashlib.sha1(b"abce").hexdigest() + "\n")
+    try:
+        read_stream(byte_stream)
+    except Exception as e:
+        assert str(e) == "Read 4 bytes, but data did not match checksum"
+
+    # Test case 4: Data
+
+# Generated at 2024-05-30 20:03:22.482917
+```python
+    display = Display()
+    connection_process = ConnectionProcess(None, None, None, None)
+    signum = signal.SIGTERM
+    frame = None
+
+    with pytest.raises(Exception) as excinfo:
+        connection_process.handler(signum, frame)
+
+    assert str(excinfo.value) == 'signal handler called with signal %s.' % signum
+```
+
+# Generated at 2024-05-30 20:03:25.740032
+```python
+    connection_process = ConnectionProcess(None, None, None, None)
+    connection_process.connection = type('mock', (object,), {'get_option': lambda x: 30})()
+    with pytest.raises(Exception) as excinfo:
+        connection_process.command_timeout(None, None)
+    assert 'command timeout triggered, timeout value is 30 secs.' in str(excinfo.value)
+```
+
+# Generated at 2024-05-30 20:04:27.270963
+```python
+    lock_path = "test.lock"
+    try:
+        with file_lock(lock_path):
+            # Check if the lock file is created
+            assert os.path.exists(lock_path)
+            # Try to acquire the lock again in a non-blocking way to ensure it's locked
+            lock_fd = os.open(lock_path, os.O_RDWR | os.O_CREAT, 0o600)
+            try:
+                fcntl.lockf(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                assert False, "Lock should not be acquired"
+            except IOError as e:
+                assert e.errno in (errno.EACCES, errno.EAGAIN)
+            finally:
+                os.close(lock_fd)
+    finally:
+        if os.path.exists(lock_path):
+            os.remove(lock_path)
+```
+
+# Generated at 2024-05-30 20:04:35.825793
+```python
+    # Test case 1: Normal case
+    byte_stream = StringIO("4\nabcd\n" + hashlib.sha1(b"abcd").hexdigest() + "\n")
+    assert read_stream(byte_stream) == b"abcd"
+
+    # Test case 2: Data size mismatch
+    byte_stream = StringIO("4\nabc\n" + hashlib.sha1(b"abc").hexdigest() + "\n")
+    try:
+        read_stream(byte_stream)
+    except Exception as e:
+        assert str(e) == "EOF found before data was complete"
+
+    # Test case 3: Checksum mismatch
+    byte_stream = StringIO("4\nabcd\nwrongchecksum\n")
+    try:
+        read_stream(byte_stream)
+    except Exception as e:
+        assert str(e) == "Read 4 bytes, but data did not match checksum"
+
+    # Test case 4: Data with escaped \r characters
+    byte_stream = StringIO("
+
+# Generated at 2024-05-30 20:04:42.558119
+```python
+    socket_path = "/tmp/test_socket"
+    lock_path = unfrackpath("%s/.ansible_pc_lock_%s" % os.path.split(socket_path))
+
+    # Create a dummy socket file and lock file
+    open(socket_path, 'a').close()
+    open(lock_path, 'a').close()
+
+    # Mock connection object
+    mock_connection = type('MockConnection', (object,), {
+        'close': lambda self: None,
+        'get_option': lambda self, option: False,
+        'pop_messages': lambda self: []
+    })()
+
+    # Create an instance of ConnectionProcess
+    cp = ConnectionProcess(fd=None, play_context=None, socket_path=socket_path, original_path=None)
+    cp.connection = mock_connection
+    cp.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+
+    # Call the shutdown method
+    cp.shutdown()
+
+    # Assertions
+    assert not os.path.exists(socket_path), "Socket
+
+# Generated at 2024-05-30 20:04:44.532958
+```python
+    play_context = PlayContext()
+    connection_process = ConnectionProcess(fd=None, play_context=play_context, socket_path='/tmp/test_socket', original_path='/tmp')
+    try:
+        connection_process.command_timeout(signum=14, frame=None)
+    except Exception as e:
+        assert str(e) == 'command timeout triggered, timeout value is None secs.\nSee the timeout setting options in the Network Debug and Troubleshooting Guide.'
+```
+
+# Generated at 2024-05-30 20:04:48.663065
+```python
+    # Test case 1: Normal case
+    byte_stream = StringIO("4\nabcd\n" + hashlib.sha1(b"abcd").hexdigest() + "\n")
+    assert read_stream(byte_stream) == b"abcd"
+
+    # Test case 2: Data with escaped \r characters
+    byte_stream = StringIO("6\nab\\rcd\n" + hashlib.sha1(b"ab\rcd").hexdigest() + "\n")
+    assert read_stream(byte_stream) == b"ab\rcd"
+
+    # Test case 3: EOF before data is complete
+    byte_stream = StringIO("4\nabc\n" + hashlib.sha1(b"abcd").hexdigest() + "\n")
+    try:
+        read_stream(byte_stream)
+        assert False, "Expected Exception for incomplete data"
+    except Exception as e:
+        assert str(e) == "EOF found before data was complete"
+
+    # Test case 4
+
+# Generated at 2024-05-30 20:04:52.743383
+```python
+    play_context = PlayContext()
+    socket_path = "/tmp/test_socket"
+    original_path = "/tmp"
+    fd = StringIO()
+    connection_process = ConnectionProcess(fd, play_context, socket_path, original_path)
+
+    # Mock methods and attributes
+    connection_process.connection = Connection(play_context, "/dev/null")
+    connection_process.connection._conn_closed = False
+    connection_process.connection.get_option = lambda x: 1
+    connection_process.connection._connect = lambda: None
+    connection_process.connection.close = lambda: None
+    connection_process.connection.pop_messages = lambda: []
+    connection_process.srv.handle_request = lambda x: json.dumps({"result": "success"})
+    connection_process.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    connection_process.sock.bind(socket_path)
+    connection_process.sock.listen(1)
+
+    def mock_recv_data(sock):
+        return json.dumps({"method": "exec_command"}).encode()
+
+    def mock_send
+
+# Generated at 2024-05-30 20:04:58.768839
+```python
+    play_context = PlayContext()
+    socket_path = "/tmp/test_socket"
+    original_path = "/tmp"
+    fd = StringIO()
+    connection_process = ConnectionProcess(fd, play_context, socket_path, original_path)
+
+    # Mock methods and attributes
+    connection_process.connection = Connection(play_context, "/dev/null")
+    connection_process.connection._conn_closed = False
+    connection_process.connection.get_option = lambda x: 1
+    connection_process.connection._connect = lambda: None
+    connection_process.connection.close = lambda: None
+    connection_process.connection.pop_messages = lambda: []
+    connection_process.srv.handle_request = lambda x: json.dumps({"result": "success"})
+    connection_process.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    connection_process.sock.bind(socket_path)
+    connection_process.sock.listen(1)
+
+    def mock_recv_data(s):
+        return json.dumps({"method": "exec_command"}).encode()
+
+    def mock_send
+
+# Generated at 2024-05-30 20:05:04.661539
+```python
+    import sys
+    from io import StringIO
+    import pytest
+    from unittest.mock import patch, mock_open
+
+    @patch('sys.stdin', new_callable=StringIO)
+    @patch('sys.stdout', new_callable=StringIO)
+    @patch('sys.stderr', new_callable=StringIO)
+    @patch('os.path.exists', return_value=False)
+    @patch('os.getcwd', return_value='/tmp')
+    @patch('os.pipe', return_value=(0, 1))
+    @patch('os.fork', return_value=0)
+    @patch('os.close')
+    @patch('os.fdopen', new_callable=mock_open)
+    @patch('ansible.plugins.loader.connection_loader.get')
+    @patch('ansible.utils.path.unfrackpath', return_value='/tmp/socket')
+    @patch('ansible.utils.path.makedirs_safe')
+    @patch('ansible.utils.display.Display.display')
+    def test_main(mock_display,
+
+# Generated at 2024-05-30 20:05:09.722632
+```python
+    import sys
+    from io import StringIO
+    import pytest
+
+    def test_main(monkeypatch):
+        # Mocking sys.stdin, sys.stdout, and sys.stderr
+        mock_stdin = StringIO()
+        mock_stdout = StringIO()
+        mock_stderr = StringIO()
+        monkeypatch.setattr(sys, 'stdin', mock_stdin)
+        monkeypatch.setattr(sys, 'stdout', mock_stdout)
+        monkeypatch.setattr(sys, 'stderr', mock_stderr)
+
+        # Mocking sys.argv
+        monkeypatch.setattr(sys, 'argv', ['main', '1234', '5678'])
+
+        # Mocking other dependencies
+        monkeypatch.setattr('os.getcwd', lambda: '/mock/path')
+        monkeypatch.setattr('os.path.exists', lambda x: False)
+        monkeypatch.setattr('os.pipe', lambda: (0, 1))
+        monkeypatch.setattr('os.close', lambda x: None)
+
+
+# Generated at 2024-05-30 20:05:14.336556
+```python
+    # Test case 1: Normal case
+    byte_stream = StringIO("4\nabcd\n" + hashlib.sha1(b"abcd").hexdigest() + "\n")
+    assert read_stream(byte_stream) == b"abcd"
+
+    # Test case 2: Incomplete data
+    byte_stream = StringIO("4\nabc\n" + hashlib.sha1(b"abcd").hexdigest() + "\n")
+    try:
+        read_stream(byte_stream)
+    except Exception as e:
+        assert str(e) == "EOF found before data was complete"
+
+    # Test case 3: Checksum mismatch
+    byte_stream = StringIO("4\nabcd\n" + hashlib.sha1(b"abce").hexdigest() + "\n")
+    try:
+        read_stream(byte_stream)
+    except Exception as e:
+        assert str(e) == "Read 4 bytes, but data did not match checksum"
+
+    # Test case 4: Data
+
+# Generated at 2024-05-30 20:06:08.208556
+```python
+    lock_path = "test.lock"
+    try:
+        with file_lock(lock_path):
+            # Check if the lock file is created
+            assert os.path.exists(lock_path)
+            # Try to acquire the lock again in a non-blocking way to ensure it's locked
+            lock_fd = os.open(lock_path, os.O_RDWR | os.O_CREAT, 0o600)
+            try:
+                fcntl.lockf(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                assert False, "Lock should be held and not re-acquirable"
+            except IOError as e:
+                assert e.errno in (errno.EACCES, errno.EAGAIN), "Expected lock to be held"
+            finally:
+                os.close(lock_fd)
+    finally:
+        if os.path.exists(lock_path):
+            os.remove(lock_path)
+```
+
+# Generated at 2024-05-30 20:06:12.013747
+```python
+    lock_path = "test.lock"
+    try:
+        with file_lock(lock_path):
+            # Check if the lock file is created
+            assert os.path.exists(lock_path)
+            # Try to acquire the lock again in a non-blocking way to ensure it's locked
+            lock_fd = os.open(lock_path, os.O_RDWR | os.O_CREAT, 0o600)
+            try:
+                fcntl.lockf(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                assert False, "Lock should not be acquired"
+            except IOError as e:
+                assert e.errno in (errno.EACCES, errno.EAGAIN)
+            finally:
+                os.close(lock_fd)
+    finally:
+        if os.path.exists(lock_path):
+            os.remove(lock_path)
+```
+
+# Generated at 2024-05-30 20:06:17.645367
+```python
+    play_context = PlayContext()
+    socket_path = "/tmp/test_socket"
+    original_path = "/tmp"
+    fd = StringIO()
+    connection_process = ConnectionProcess(fd, play_context, socket_path, original_path)
+
+    # Mock methods and attributes
+    connection_process.connection = Connection(play_context, "/dev/null")
+    connection_process.connection._conn_closed = False
+    connection_process.connection.get_option = lambda x: 1
+    connection_process.connection._connect = lambda: None
+    connection_process.connection.close = lambda: None
+    connection_process.connection.pop_messages = lambda: []
+    connection_process.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    connection_process.sock.accept = lambda: (socket.socket(socket.AF_UNIX, socket.SOCK_STREAM), None)
+    connection_process.srv.handle_request = lambda x: json.dumps({"result": "success"})
+
+    # Run the method
+    connection_process.run()
+
+    # Assertions
+    assert
+
+# Generated at 2024-05-30 20:06:20.853055
+```python
+    lock_path = "test.lock"
+    try:
+        with file_lock(lock_path):
+            # Check if the lock file is created
+            assert os.path.exists(lock_path)
+            # Try to acquire the lock again in a non-blocking way to ensure it's locked
+            lock_fd = os.open(lock_path, os.O_RDWR | os.O_CREAT, 0o600)
+            try:
+                fcntl.lockf(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                assert False, "Lock should be held and not re-acquirable"
+            except IOError as e:
+                assert e.errno in (errno.EACCES, errno.EAGAIN), "Expected lock to be held"
+            finally:
+                os.close(lock_fd)
+    finally:
+        if os.path.exists(lock_path):
+            os.remove(lock_path)
+```
+
+# Generated at 2024-05-30 20:06:26.064961
+```python
+    # Setup
+    socket_path = "/tmp/test_socket"
+    play_context = PlayContext()
+    original_path = "/tmp"
+    fd = StringIO()
+    connection_process = ConnectionProcess(fd, play_context, socket_path, original_path)
+
+    # Create a dummy socket file to simulate an existing socket
+    with open(socket_path, 'w') as f:
+        f.write("dummy socket")
+
+    # Create a dummy lock file to simulate an existing lock
+    lock_path = unfrackpath("%s/.ansible_pc_lock_%s" % os.path.split(socket_path))
+    with open(lock_path, 'w') as f:
+        f.write("dummy lock")
+
+    # Mock the connection and its methods
+    connection_process.connection = Connection(play_context, "/dev/null")
+    connection_process.connection.close = lambda: None
+    connection_process.connection.get_option = lambda x: False
+    connection_process.connection.pop_messages = lambda: []
+
+    # Call the
+
+# Generated at 2024-05-30 20:06:30.024509
+```python
+    # Test case 1: Normal case
+    byte_stream = StringIO("4\nabcd\n" + hashlib.sha1(b"abcd").hexdigest() + "\n")
+    assert read_stream(byte_stream) == b"abcd"
+
+    # Test case 2: Incomplete data
+    byte_stream = StringIO("4\nabc\n" + hashlib.sha1(b"abcd").hexdigest() + "\n")
+    try:
+        read_stream(byte_stream)
+    except Exception as e:
+        assert str(e) == "EOF found before data was complete"
+
+    # Test case 3: Checksum mismatch
+    byte_stream = StringIO("4\nabcd\n" + hashlib.sha1(b"abce").hexdigest() + "\n")
+    try:
+        read_stream(byte_stream)
+    except Exception as e:
+        assert str(e) == "Read 4 bytes, but data did not match checksum"
+
+    # Test case 4: Data
+
+# Generated at 2024-05-30 20:06:36.694855
+```python
+    import sys
+    from io import StringIO
+    import pytest
+    from unittest.mock import patch, mock_open
+
+    @patch('sys.stdin', new_callable=StringIO)
+    @patch('sys.stdout', new_callable=StringIO)
+    @patch('sys.stderr', new_callable=StringIO)
+    @patch('os.path.exists', return_value=False)
+    @patch('os.getcwd', return_value='/tmp')
+    @patch('os.pipe', return_value=(0, 1))
+    @patch('os.fork', return_value=0)
+    @patch('os.close')
+    @patch('os.fdopen', new_callable=mock_open)
+    @patch('ansible.plugins.loader.connection_loader.get')
+    @patch('ansible.utils.path.unfrackpath', return_value='/tmp/socket')
+    @patch('ansible.utils.path.makedirs_safe')
+    @patch('ansible.utils.display.Display.display')
+    def test_main(mock_display,
+
+# Generated at 2024-05-30 20:06:38.765624
+```python
+    play_context = PlayContext()
+    connection_process = ConnectionProcess(fd=None, play_context=play_context, socket_path='/tmp/test_socket', original_path='/tmp')
+    connection_process.connection = connection_loader.get('local', play_context, '/dev/null')
+    
+    with pytest.raises(Exception) as excinfo:
+        connection_process.connect_timeout(signum=signal.SIGALRM, frame=None)
+    
+    assert 'persistent connection idle timeout triggered' in str(excinfo.value)
+```
+
+# Generated at 2024-05-30 20:06:42.451447
+```python
+    lock_path = "test.lock"
+    try:
+        with file_lock(lock_path):
+            # Check if the lock file is created
+            assert os.path.exists(lock_path)
+            # Try to acquire the lock again in a non-blocking way to ensure it's locked
+            lock_fd = os.open(lock_path, os.O_RDWR | os.O_CREAT, 0o600)
+            try:
+                fcntl.lockf(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                locked = False
+            except IOError as e:
+                if e.errno in (errno.EACCES, errno.EAGAIN):
+                    locked = True
+                else:
+                    raise
+            assert locked
+            os.close(lock_fd)
+    finally:
+        if os.path.exists(lock_path):
+            os.remove(lock_path)
+```
+
+# Generated at 2024-05-30 20:06:46.522478
+```python
+    play_context = PlayContext()
+    socket_path = "/tmp/test_socket"
+    original_path = "/tmp"
+    fd = StringIO()
+    connection_process = ConnectionProcess(fd, play_context, socket_path, original_path)
+
+    # Mock methods and attributes
+    connection_process.connection = connection_loader.get('local', play_context, '/dev/null')
+    connection_process.connection._conn_closed = False
+    connection_process.connection.get_option = lambda x: 1
+    connection_process.connection._connect = lambda: None
+    connection_process.connection.close = lambda: None
+    connection_process.connection.pop_messages = lambda: []
+    connection_process.connection.get_option = lambda x: False if x == 'persistent_log_messages' else 1
+    connection_process.srv.handle_request = lambda x: json.dumps({"result": "success"})
+    connection_process.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    connection_process.sock.bind(socket_path)
+    connection_process.sock.listen
+
+# Generated at 2024-05-30 20:07:36.228493
+```python
+    socket_path = "/tmp/test_socket"
+    lock_path = unfrackpath("%s/.ansible_pc_lock_%s" % os.path.split(socket_path))
+
+    # Create a dummy socket file and lock file
+    open(socket_path, 'a').close()
+    open(lock_path, 'a').close()
+
+    # Create a ConnectionProcess instance
+    cp = ConnectionProcess(None, None, socket_path, None)
+
+    # Mock the connection and its methods
+    cp.connection = type('MockConnection', (object,), {
+        'close': lambda: None,
+        'get_option': lambda x: False,
+        'pop_messages': lambda: []
+    })()
+
+    # Mock the socket
+    cp.sock = type('MockSocket', (object,), {
+        'close': lambda: None
+    })()
+
+    # Call the shutdown method
+    cp.shutdown()
+
+    # Check if the socket file and lock file are removed
+    assert not os.path
+
+# Generated at 2024-05-30 20:07:38.396320
+```python
+    play_context = PlayContext()
+    connection_process = ConnectionProcess(fd=None, play_context=play_context, socket_path='/tmp/test_socket', original_path='/tmp')
+    connection_process.connection = connection_loader.get('local', play_context, '/dev/null')
+    
+    with pytest.raises(Exception) as excinfo:
+        connection_process.connect_timeout(signum=signal.SIGALRM, frame=None)
+    
+    assert 'persistent connection idle timeout triggered' in str(excinfo.value)
+```
+
+# Generated at 2024-05-30 20:07:42.784337
+```python
+    socket_path = "/tmp/test_socket"
+    lock_path = unfrackpath("%s/.ansible_pc_lock_%s" % os.path.split(socket_path))
+
+    # Create a dummy socket file and lock file
+    open(socket_path, 'a').close()
+    open(lock_path, 'a').close()
+
+    # Mock the connection object
+    connection_mock = type('ConnectionMock', (object,), {
+        'close': lambda self: None,
+        'get_option': lambda self, option: False,
+        'pop_messages': lambda self: []
+    })()
+
+    # Create an instance of ConnectionProcess
+    cp = ConnectionProcess(None, None, socket_path, None)
+    cp.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    cp.connection = connection_mock
+
+    # Call the shutdown method
+    cp.shutdown()
+
+    # Check if the socket file and lock file are removed
+    assert not os.path.exists(socket_path)
+
+
+# Generated at 2024-05-30 20:07:46.639046
+```python
+    import sys
+    from io import StringIO
+    import json
+    import os
+    import cPickle
+    import traceback
+    from ansible.module_utils.common.text.converters import to_text
+    from ansible.playbook.play_context import PlayContext
+    from ansible.plugins.loader import connection_loader
+    from ansible.utils.path import unfrackpath, makedirs_safe
+    from ansible.utils.display import Display
+    from ansible.utils.jsonrpc import JsonRpcServer
+    from ansible.module_utils.service import fork_process
+    from ansible.parsing.ajson import AnsibleJSONEncoder, AnsibleJSONDecoder
+    from contextlib import contextmanager
+    import fcntl
+    import socket
+    import signal
+    import time
+    import errno
+    import hashlib
+
+    # Mocking necessary functions and classes
+    class MockConnection:
+        def __init__(self, *args, **kwargs):
+            self
+
+# Generated at 2024-05-30 20:07:50.670104
+```python
+    socket_path = "/tmp/test_socket"
+    lock_path = unfrackpath("%s/.ansible_pc_lock_%s" % os.path.split(socket_path))
+
+    # Create a dummy socket file and lock file
+    open(socket_path, 'a').close()
+    open(lock_path, 'a').close()
+
+    # Mock connection object
+    class MockConnection:
+        def __init__(self):
+            self._socket_path = socket_path
+            self._connected = True
+
+        def close(self):
+            pass
+
+        def get_option(self, option):
+            return False
+
+        def pop_messages(self):
+            return []
+
+    # Create instance of ConnectionProcess with mock connection
+    cp = ConnectionProcess(fd=None, play_context=None, socket_path=socket_path, original_path=None)
+    cp.connection = MockConnection()
+    cp.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+
+    # Call shutdown method
+    cp.shutdown()
+
+    # Assertions
+
+# Generated at 2024-05-30 20:07:56.807312
+```python
+    # Test case 1: Normal case
+    byte_stream = StringIO("4\nabcd\n" + hashlib.sha1(b"abcd").hexdigest() + "\n")
+    assert read_stream(byte_stream) == b"abcd"
+
+    # Test case 2: Incomplete data
+    byte_stream = StringIO("4\nabc\n" + hashlib.sha1(b"abc").hexdigest() + "\n")
+    try:
+        read_stream(byte_stream)
+    except Exception as e:
+        assert str(e) == "EOF found before data was complete"
+
+    # Test case 3: Checksum mismatch
+    byte_stream = StringIO("4\nabcd\nwrongchecksum\n")
+    try:
+        read_stream(byte_stream)
+    except Exception as e:
+        assert str(e) == "Read 4 bytes, but data did not match checksum"
+
+    # Test case 4: Data with escaped \r characters
+    byte_stream = StringIO("
+
+# Generated at 2024-05-30 20:08:04.327467
+```python
+    play_context = PlayContext()
+    socket_path = "/tmp/test_socket"
+    original_path = "/tmp"
+    fd = StringIO()
+    connection_process = ConnectionProcess(fd, play_context, socket_path, original_path)
+
+    # Mock methods and attributes
+    connection_process.connection = Connection(play_context, "/dev/null")
+    connection_process.connection._conn_closed = False
+    connection_process.connection.get_option = lambda x: 1
+    connection_process.connection._connect = lambda: None
+    connection_process.connection.close = lambda: None
+    connection_process.connection.pop_messages = lambda: []
+    connection_process.srv.handle_request = lambda x: json.dumps({"result": "success"})
+    connection_process.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    connection_process.sock.bind(socket_path)
+    connection_process.sock.listen(1)
+
+    def mock_recv_data(sock):
+        return json.dumps({"method": "exec_command"}).encode()
+
+    def mock_send
+
+# Generated at 2024-05-30 20:08:08.814116
+```python
+    play_context = PlayContext()
+    socket_path = "/tmp/test_socket"
+    original_path = "/tmp"
+    fd = StringIO()
+    connection_process = ConnectionProcess(fd, play_context, socket_path, original_path)
+
+    # Mock methods and attributes
+    connection_process.connection = Connection(play_context, "/dev/null")
+    connection_process.connection._conn_closed = False
+    connection_process.connection.get_option = lambda x: 1
+    connection_process.connection._connect = lambda: None
+    connection_process.connection.close = lambda: None
+    connection_process.connection.pop_messages = lambda: []
+    connection_process.connection.connected = False
+    connection_process.srv.handle_request = lambda x: json.dumps({"result": "success"})
+    connection_process.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    connection_process.sock.bind(socket_path)
+    connection_process.sock.listen(1)
+
+    def mock_recv_data(sock):
+        return json.dumps({"method": "exec_command
+
+# Generated at 2024-05-30 20:08:12.157271
+```python
+    # Test case 1: Normal case
+    byte_stream = StringIO("4\nabcd\n" + hashlib.sha1(b"abcd").hexdigest() + "\n")
+    assert read_stream(byte_stream) == b"abcd"
+
+    # Test case 2: Incomplete data
+    byte_stream = StringIO("4\nabc\n" + hashlib.sha1(b"abc").hexdigest() + "\n")
+    try:
+        read_stream(byte_stream)
+    except Exception as e:
+        assert str(e) == "EOF found before data was complete"
+
+    # Test case 3: Checksum mismatch
+    byte_stream = StringIO("4\nabcd\nwrongchecksum\n")
+    try:
+        read_stream(byte_stream)
+    except Exception as e:
+        assert str(e) == "Read 4 bytes, but data did not match checksum"
+
+    # Test case 4: Data with escaped \r characters
+    byte_stream = StringIO("
+
+# Generated at 2024-05-30 20:08:15.769239
+```python
+    import sys
+    from io import StringIO
+    import json
+    import os
+    import cPickle
+    import traceback
+    from ansible.module_utils.common.text.converters import to_text
+    from ansible.utils.display import Display
+    from ansible.playbook.play_context import PlayContext
+    from ansible.plugins.loader import connection_loader
+    from ansible.utils.path import unfrackpath, makedirs_safe
+    from ansible.utils.jsonrpc import JsonRpcServer
+    from ansible.module_utils.service import fork_process
+    from ansible.parsing.ajson import AnsibleJSONEncoder, AnsibleJSONDecoder
+
+    # Mocking necessary functions and classes
+    class MockConnection:
+        def __init__(self, socket_path):
+            self.socket_path = socket_path
+
+        def set_options(self, var_options):
+            pass
+
+        def update_play_context(self, pc_data):
+            pass
+
+        def set_check_prompt(self
+
+# Generated at 2024-05-30 20:09:20.182743
+```python
+    play_context = PlayContext()
+    socket_path = "/tmp/test_socket"
+    original_path = "/tmp"
+    fd = StringIO()
+    connection_process = ConnectionProcess(fd, play_context, socket_path, original_path)
+
+    # Mock methods and attributes
+    connection_process.connection = connection_loader.get('local', play_context, '/dev/null')
+    connection_process.connection._conn_closed = False
+    connection_process.connection.get_option = lambda x: 1
+    connection_process.connection._connect = lambda: None
+    connection_process.connection.close = lambda: None
+    connection_process.connection.pop_messages = lambda: []
+    connection_process.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    connection_process.sock.bind(socket_path)
+    connection_process.sock.listen(1)
+    connection_process.srv.handle_request = lambda x: json.dumps({"result": "success"})
+
+    # Run the method
+    try:
+        connection_process.run()
+    except Exception as e
+
+# Generated at 2024-05-30 20:09:23.739544
+```python
+    fd = StringIO()
+    play_context = PlayContext()
+    socket_path = "/tmp/test_socket"
+    original_path = "/tmp"
+    task_uuid = "1234-5678"
+    ansible_playbook_pid = 12345
+
+    conn_process = ConnectionProcess(fd, play_context, socket_path, original_path, task_uuid, ansible_playbook_pid)
+    variables = {"var1": "value1", "var2": "value2"}
+
+    conn_process.start(variables)
+
+    fd.seek(0)
+    result = json.loads(fd.read())
+
+    assert "messages" in result
+    assert any("control socket path is /tmp/test_socket" in msg for level, msg in result["messages"])
+    assert conn_process.connection is not None
+    assert conn_process.sock is not None
+```
+
+# Generated at 2024-05-30 20:09:27.561359
+```python
+    import sys
+    from io import StringIO
+    import json
+    import os
+    import cPickle
+    import traceback
+    from ansible.module_utils.common.text.converters import to_text
+    from ansible.constants import C
+    from ansible.utils.display import Display
+    from ansible.plugins.loader import connection_loader
+    from ansible.playbook.play_context import PlayContext
+    from ansible.utils.path import unfrackpath, makedirs_safe
+    from ansible.utils.jsonrpc import JsonRpcServer
+    from ansible.module_utils.service import fork_process
+    from ansible.parsing.ajson import AnsibleJSONEncoder, AnsibleJSONDecoder
+    from contextlib import contextmanager
+    import fcntl
+    import socket
+    import signal
+    import time
+    import errno
+    import hashlib
+
+    # Mocking necessary components
+    class MockConnection:
+        def __init__(self, *args
+
+# Generated at 2024-05-30 20:09:32.628516
+```python
+    import sys
+    from io import StringIO
+    import json
+    import os
+    import cPickle
+    import traceback
+    from ansible.constants import C
+    from ansible.utils.display import Display
+    from ansible.utils.path import unfrackpath, makedirs_safe
+    from ansible.plugins.loader import connection_loader
+    from ansible.playbook.play_context import PlayContext
+    from ansible.module_utils.service import fork_process
+    from ansible.utils.jsonrpc import JsonRpcServer
+    from ansible.parsing.ajson import AnsibleJSONEncoder, AnsibleJSONDecoder
+
+    def mock_read_stream(byte_stream):
+        return byte_stream.read()
+
+    def mock_fork_process():
+        return 0
+
+    def mock_unfrackpath(path):
+        return path
+
+    def mock_makedirs_safe(path):
+        pass
+
+    def mock_connection_loader_get(name, class_only=False):
+        class MockConnection:
+           
+
+# Generated at 2024-05-30 20:09:36.498135
+```python
+    import sys
+    from io import StringIO
+    import json
+    import os
+    import cPickle
+    import traceback
+    from ansible.module_utils.service import fork_process
+    from ansible.parsing.ajson import AnsibleJSONEncoder, AnsibleJSONDecoder
+    from ansible.playbook.play_context import PlayContext
+    from ansible.plugins.loader import connection_loader
+    from ansible.utils.path import unfrackpath, makedirs_safe
+    from ansible.utils.display import Display
+    from ansible.utils.jsonrpc import JsonRpcServer
+    from contextlib import contextmanager
+    import fcntl
+    import hashlib
+    import socket
+    import signal
+    import time
+    import errno
+
+    # Mocking necessary components
+    class MockConnection:
+        def __init__(self, *args, **kwargs):
+            self._conn_closed = False
+
+        def set_options(self, var_options):
+           
+
+# Generated at 2024-05-30 20:09:40.528830
+```python
+    import sys
+    from io import StringIO
+    import json
+    import os
+    import cPickle
+    import pytest
+    from unittest.mock import patch, mock_open, MagicMock
+
+    @patch('sys.stdin', new_callable=StringIO)
+    @patch('sys.stdout', new_callable=StringIO)
+    @patch('sys.stderr', new_callable=StringIO)
+    @patch('os.pipe')
+    @patch('os.fork')
+    @patch('os.close')
+    @patch('os.fdopen')
+    @patch('os.getcwd')
+    @patch('os.path.exists')
+    @patch('ansible.plugins.loader.connection_loader.get')
+    @patch('ansible.utils.path.unfrackpath')
+    @patch('ansible.utils.path.makedirs_safe')
+    @patch('ansible.utils.display.Display.display')
+    @patch('ansible.utils.jsonrpc.JsonRpcServer')
+    @patch('ansible.playbook.play_context.Play
+
+# Generated at 2024-05-30 20:09:46.453786
+```python
+    play_context = PlayContext()
+    socket_path = "/tmp/test_socket"
+    original_path = "/tmp"
+    fd = StringIO()
+    connection_process = ConnectionProcess(fd, play_context, socket_path, original_path)
+
+    # Mock methods and attributes
+    connection_process.connection = connection_loader.get('local', play_context, '/dev/null')
+    connection_process.connection._conn_closed = False
+    connection_process.connection.get_option = lambda x: 1
+    connection_process.connection._connect = lambda: None
+    connection_process.connection.close = lambda: None
+    connection_process.connection.pop_messages = lambda: []
+    connection_process.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    connection_process.sock.bind(socket_path)
+    connection_process.sock.listen(1)
+
+    def mock_recv_data(s):
+        return json.dumps({"method": "exec_command"}).encode()
+
+    def mock_send_data(s, data):
+        pass
+
+    def mock_handle_request(data
+
+# Generated at 2024-05-30 20:09:49.828529
+```python
+    fd = StringIO()
+    play_context = PlayContext()
+    socket_path = "/tmp/test_socket"
+    original_path = "/tmp"
+    task_uuid = "1234-5678"
+    ansible_playbook_pid = 12345
+
+    conn_process = ConnectionProcess(fd, play_context, socket_path, original_path, task_uuid, ansible_playbook_pid)
+    
+    variables = {"var1": "value1", "var2": "value2"}
+    
+    conn_process.start(variables)
+    
+    fd.seek(0)
+    result = json.load(fd)
+    
+    assert 'messages' in result
+    assert any('control socket path is' in msg[1] for msg in result['messages'])
+    assert 'error' not in result
+```
+
+# Generated at 2024-05-30 20:09:52.893123
+```python
+    lock_path = "test.lock"
+    try:
+        with file_lock(lock_path):
+            # Check if the lock file is created
+            assert os.path.exists(lock_path)
+            # Try to acquire the lock again in a non-blocking way to ensure it's locked
+            lock_fd = os.open(lock_path, os.O_RDWR | os.O_CREAT, 0o600)
+            try:
+                fcntl.lockf(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                assert False, "Lock should be held and not re-acquirable"
+            except IOError as e:
+                assert e.errno in (errno.EACCES, errno.EAGAIN)
+            finally:
+                os.close(lock_fd)
+    finally:
+        if os.path.exists(lock_path):
+            os.remove(lock_path)
+```
+
+# Generated at 2024-05-30 20:09:57.162275
+```python
+    import sys
+    from io import StringIO
+    import json
+    import os
+    import cPickle
+    import traceback
+    from ansible.module_utils.common.text.converters import to_text
+    from ansible.utils.display import Display
+    from ansible.playbook.play_context import PlayContext
+    from ansible.plugins.loader import connection_loader
+    from ansible.utils.path import unfrackpath, makedirs_safe
+    from ansible.utils.jsonrpc import JsonRpcServer
+    from ansible.module_utils.service import fork_process
+    from ansible.parsing.ajson import AnsibleJSONEncoder, AnsibleJSONDecoder
+
+    # Mocking necessary functions and classes
+    class MockConnection:
+        def __init__(self, socket_path):
+            self.socket_path = socket_path
+
+        def set_options(self, var_options):
+            pass
+
+        def update_play_context(self, pc_data):
+            pass
+
+        def set_check_prompt(self

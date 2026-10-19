@@ -1,0 +1,1314 @@
+
+
+# Generated at 2024-03-18 05:54:14.510883
+```python
+    from unittest.mock import Mock, patch
+
+    # Mock the environment and arguments
+    env = Mock(spec=Environment)
+    env.stdout = Mock(spec=IO)
+    env.stdout_isatty = True
+    env.stderr = Mock(spec=IO)
+    env.is_windows = False
+    args = Mock(spec=argparse.Namespace)
+    args.prettify = None
+    args.stream = False
+    args.debug = False
+    args.traceback = False
+    args.style = None
+    args.json = False
+    args.format_options = {}
+
+    # Mock a requests message
+    requests_message = Mock(spec=requests.PreparedRequest)
+
+    # Test with neither headers nor body
+    write_message(requests_message, env, args, with_headers=False, with_body=False)
+    env.stdout.write.assert_not_called()
+
+    # Test with headers only
+    with patch('httpie.output.writer.write_stream') as mock_write_stream:
+        write_message(requests_message
+
+# Generated at 2024-03-18 05:54:22.632599
+```python
+    # Mocking the necessary arguments and environment
+    class MockEnvironment(Environment):
+        stdout_isatty = True
+        is_windows = False
+
+    class MockArgs:
+        prettify = 'all'
+        stream = False
+        style = 'default'
+        json = False
+        format_options = {}
+
+    env = MockEnvironment()
+    args = MockArgs()
+
+    # Mocking a requests.Response object
+    response = requests.Response()
+    response.status_code = 200
+    response.headers = {'Content-Type': 'application/json'}
+    response._content = b'{"key": "value"}'
+
+    # Test with headers only
+    stream = build_output_stream_for_message(args, env, response, with_headers=True, with_body=False)
+    assert isinstance(stream, BufferedPrettyStream), "Expected BufferedPrettyStream for headers only"
+
+    # Test with body only
+    stream = build_output_stream_for_message(args, env, response, with_headers=False, with
+
+# Generated at 2024-03-18 05:54:29.365779
+```python
+    # Mocking the necessary arguments and environment
+    class MockEnvironment(Environment):
+        stdout_isatty = True
+        is_windows = False
+
+    class MockArgs:
+        prettify = None
+        stream = False
+        style = 'default'
+        json = False
+        format_options = {}
+
+    env = MockEnvironment()
+    args = MockArgs()
+
+    # Mocking a requests message
+    class MockPreparedRequest(requests.PreparedRequest):
+        pass
+
+    mock_request = MockPreparedRequest()
+
+    # Test with headers only
+    stream = build_output_stream_for_message(
+        args=args,
+        env=env,
+        requests_message=mock_request,
+        with_headers=True,
+        with_body=False
+    )
+    assert isinstance(next(stream), bytes)
+    assert b'HTTP/' in next(stream)  # Assuming the headers start with the HTTP version
+
+    # Test with body only
+    stream = build_output_stream_for_message(
+        args
+
+# Generated at 2024-03-18 05:54:36.172883
+```python
+    # Mocking the necessary arguments and environment
+    class MockEnvironment(Environment):
+        stdout_isatty = True
+        is_windows = False
+
+    class MockArgs:
+        prettify = 'all'
+        stream = False
+        style = 'default'
+        json = False
+        format_options = {}
+
+    env = MockEnvironment()
+    args = MockArgs()
+    request = requests.PreparedRequest()
+    response = requests.Response()
+
+    # Test for a PreparedRequest with headers only
+    stream = build_output_stream_for_message(args, env, request, with_headers=True, with_body=False)
+    assert isinstance(next(stream), bytes)
+    assert b'GET' in next(stream)
+
+    # Test for a Response with body only
+    stream = build_output_stream_for_message(args, env, response, with_headers=False, with_body=True)
+    assert isinstance(next(stream), bytes)
+    assert next(stream).endswith(MESSAGE_SEPARATOR_BYTES)
+
+    # Test for a
+
+# Generated at 2024-03-18 05:54:37.399259
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+
+# Generated at 2024-03-18 05:54:46.041407
+```python
+    # Mocking the necessary arguments and environment
+    class MockEnvironment(Environment):
+        stdout_isatty = True
+        is_windows = False
+
+    class MockArgs:
+        prettify = None
+        stream = False
+        style = 'default'
+        json = False
+        format_options = {}
+
+    env = MockEnvironment()
+    args = MockArgs()
+
+    # Test with a PreparedRequest and no prettify, no stream
+    request = requests.PreparedRequest()
+    request.prepare(method='GET', url='http://example.com')
+    stream_class, stream_kwargs = build_output_stream_for_message(
+        args=args,
+        env=env,
+        requests_message=request,
+        with_headers=True,
+        with_body=True
+    )
+    assert stream_class == EncodedStream
+    assert stream_kwargs == {'env': env}
+
+    # Test with a Response and prettify enabled
+    args.prettify = 'all'
+    response = requests.Response()
+
+
+# Generated at 2024-03-18 05:54:47.259639
+```python
+from io import StringIO
+from unittest.mock import MagicMock
+
+
+# Generated at 2024-03-18 05:54:48.099436
+```python
+from unittest.mock import MagicMock, call
+
+
+# Generated at 2024-03-18 05:54:54.526509
+```python
+    # Mocking the Environment and argparse.Namespace
+    mock_env = Environment()
+    mock_args = argparse.Namespace()
+
+    # Case 1: stdout is not a TTY and prettify is not set
+    mock_env.stdout_isatty = False
+    mock_args.prettify = None
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(mock_env, mock_args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Case 2: stdout is not a TTY and prettify is set with streaming
+    mock_args.stream = True
+    mock_args.prettify = ['all']
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(mock_env, mock_args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Case 3: stdout is a TTY and prett
+
+# Generated at 2024-03-18 05:55:03.436294
+```python
+    # Mocking the Environment and argparse.Namespace
+    mock_env = Environment()
+    mock_args = argparse.Namespace()
+
+    # Case 1: stdout is not a TTY and prettify is not set
+    mock_env.stdout_isatty = False
+    mock_args.prettify = None
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(mock_env, mock_args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Case 2: stdout is not a TTY and prettify is set with streaming
+    mock_args.stream = True
+    mock_args.prettify = ['colors']
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(mock_env, mock_args)
+    assert stream_class == PrettyStream
+    assert 'env' in stream_kwargs
+    assert isinstance(stream_kwargs['conversion'], Conversion)
+    assert isinstance(stream_kwargs['formatting'], Formatting)
+
+   
+
+# Generated at 2024-03-18 05:55:11.667826
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+
+# Generated at 2024-03-18 05:55:13.087278
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+
+# Generated at 2024-03-18 05:55:14.481448
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+
+# Generated at 2024-03-18 05:55:15.283013
+```python
+from unittest.mock import Mock, patch
+
+
+# Generated at 2024-03-18 05:55:21.977267
+```python
+    # Mocking the necessary arguments and environment
+    class MockEnvironment(Environment):
+        stdout_isatty = True
+        is_windows = False
+
+    class MockArgs:
+        prettify = 'all'
+        stream = False
+        style = 'default'
+        json = False
+        format_options = {}
+
+    env = MockEnvironment()
+    args = MockArgs()
+
+    # Mocking a requests.Response object
+    response = requests.Response()
+    response.status_code = 200
+    response.headers = {'Content-Type': 'application/json'}
+    response._content = b'{"key": "value"}'
+
+    # Test with headers and body
+    stream = build_output_stream_for_message(args, env, response, with_headers=True, with_body=True)
+    assert isinstance(stream, BufferedPrettyStream), "Expected BufferedPrettyStream when prettify is 'all' and stream is False"
+
+    # Test with headers only
+    stream = build_output_stream_for_message(args
+
+# Generated at 2024-03-18 05:55:32.751348
+```python
+    # Mocking the necessary arguments and environment
+    class MockEnvironment(Environment):
+        stdout_isatty = True
+        is_windows = False
+
+    class MockArgs:
+        prettify = None
+        stream = False
+        style = 'default'
+        json = False
+        format_options = {}
+
+    mock_env = MockEnvironment()
+    mock_args = MockArgs()
+
+    # Test case for a PreparedRequest with headers only
+    mock_request = requests.PreparedRequest()
+    mock_request.prepare(method='GET', url='http://example.com')
+    stream = build_output_stream_for_message(
+        args=mock_args,
+        env=mock_env,
+        requests_message=mock_request,
+        with_headers=True,
+        with_body=False
+    )
+    assert isinstance(next(stream), bytes)
+    assert b'GET' in next(stream)
+    assert b'http://example.com' in next(stream)
+
+    # Test case for a Response with body only
+    mock_response =
+
+# Generated at 2024-03-18 05:55:41.781187
+```python
+    # Mocking the necessary arguments and environment
+    class MockArgs:
+        prettify = None
+        stream = False
+        style = None
+        json = False
+        format_options = {}
+
+    class MockEnv:
+        stdout_isatty = False
+
+    args = MockArgs()
+    env = MockEnv()
+
+    # Test with a PreparedRequest and no prettify, headers, or body
+    request = requests.PreparedRequest()
+    request.prepare(method='GET', url='http://example.com')
+    stream = build_output_stream_for_message(args, env, request, with_headers=False, with_body=False)
+    assert isinstance(stream, RawStream), "Expected RawStream for non-tty output without prettify"
+
+    # Test with a Response and prettify enabled
+    args.prettify = 'all'
+    response = requests.Response()
+    response.status_code = 200
+    response.url = 'http://example.com'
+    stream
+
+# Generated at 2024-03-18 05:55:51.411392
+```python
+    # Mocking the necessary arguments and environment
+    class MockEnvironment(Environment):
+        stdout_isatty = True
+        is_windows = False
+
+    class MockArgs:
+        prettify = None
+        stream = False
+        style = None
+        json = False
+        format_options = {}
+
+    env = MockEnvironment()
+    args = MockArgs()
+
+    # Test case for a PreparedRequest without headers and body
+    request = requests.PreparedRequest()
+    stream = build_output_stream_for_message(args, env, request, with_headers=False, with_body=False)
+    assert isinstance(stream, EncodedStream), "Expected EncodedStream for PreparedRequest without headers and body"
+
+    # Test case for a Response with headers and body
+    response = requests.Response()
+    response.headers['content-type'] = 'text/plain'
+    args.prettify = 'all'
+    stream = build_output_stream_for_message(args, env, response, with_headers=True, with_body
+
+# Generated at 2024-03-18 05:55:52.515721
+```python
+from unittest.mock import Mock, patch
+
+
+# Generated at 2024-03-18 05:55:54.364064
+```python
+from unittest.mock import Mock, patch
+
+
+# Generated at 2024-03-18 05:56:09.682442
+```python
+    # Mocking the necessary arguments and environment
+    class MockEnvironment(Environment):
+        stdout_isatty = False
+        colors = 256
+        stdin_isatty = True
+        stdin_encoding = 'utf-8'
+        stdout_encoding = 'utf-8'
+        stderr_isatty = True
+        stderr_encoding = 'utf-8'
+        config_dir = '/mock/config'
+        download_dir = '/mock/downloads'
+        is_windows = False
+
+    class MockArgs:
+        prettify = None
+        stream = False
+        style = 'default'
+        json = False
+        format_options = {}
+
+    mock_env = MockEnvironment()
+    mock_args = MockArgs()
+
+    # Mocking a requests message
+    mock_request = requests.PreparedRequest()
+    mock_request.prepare(method='GET', url='http://example.com')
+
+    # Test non-pretty, non-streaming output
+    stream = build_output_stream_for_message(
+        args=mock_args
+
+# Generated at 2024-03-18 05:56:17.035434
+```python
+    # Setup environment and argparse Namespace for test
+    env = Environment()
+    args = argparse.Namespace()
+
+    # Test case for non-tty output without prettify
+    env.stdout_isatty = False
+    args.prettify = None
+    args.stream = False
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Test case for non-tty output with streaming
+    args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Test case for tty output with prettify
+    env.stdout_isatty = True
+    args.prettify = ['colors']
+    args.style = 'default'
+    args.json = False
+
+
+# Generated at 2024-03-18 05:56:23.988966
+```python
+    # Mocking the necessary arguments and environment
+    class MockEnvironment(Environment):
+        stdout_isatty = False
+        is_windows = False
+
+    class MockArgs:
+        prettify = None
+        stream = False
+        style = None
+        json = False
+        format_options = {}
+
+    mock_env = MockEnvironment()
+    mock_args = MockArgs()
+
+    # Test case for RawStream without prettify and without TTY
+    stream_class, stream_kwargs = build_output_stream_for_message(
+        args=mock_args,
+        env=mock_env,
+        requests_message=requests.PreparedRequest(),
+        with_headers=True,
+        with_body=True
+    )
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Test case for EncodedStream with TTY but without prettify
+    mock_env.stdout_isatty = True
+    stream_class, stream_kwargs = build_output_stream_for
+
+# Generated at 2024-03-18 05:56:25.529835
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+@patch('httpie.output.streams.sys')
+
+# Generated at 2024-03-18 05:56:27.084642
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+
+# Generated at 2024-03-18 05:56:28.366777
+```python
+from unittest.mock import Mock, patch
+
+
+# Generated at 2024-03-18 05:56:29.948178
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+@patch('sys.stdout', new_callable=mock_open)
+
+# Generated at 2024-03-18 05:56:30.758119
+```python
+from unittest.mock import MagicMock, call
+
+
+# Generated at 2024-03-18 05:56:31.775140
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+
+# Generated at 2024-03-18 05:56:40.622179
+```python
+    # Setup environment and argparse Namespace for test
+    env = Environment()
+    args = argparse.Namespace()
+
+    # Test case for non-tty output without prettify
+    env.stdout_isatty = False
+    args.prettify = None
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class is RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Test case for non-tty output with streaming
+    args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class is RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Test case for tty output with prettify
+    env.stdout_isatty = True
+    args.prettify = ['colors']
+    args.style = 'default'
+    args.json = False
+    args.format_options = {}
+
+
+# Generated at 2024-03-18 05:57:03.468029
+```python
+    # Mocking the Environment and argparse.Namespace
+    mock_env = Environment()
+    mock_args = argparse.Namespace()
+
+    # Case 1: stdout is not a TTY and prettify is not set
+    mock_env.stdout_isatty = False
+    mock_args.prettify = None
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(mock_env, mock_args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Case 2: stdout is not a TTY and prettify is set with streaming
+    mock_args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(mock_env, mock_args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Case 3: stdout is a TTY and prettify is set without streaming
+    mock_env.stdout
+
+# Generated at 2024-03-18 05:57:12.200735
+```python
+    # Setup environment and argument namespace
+    env = Environment()
+    args = argparse.Namespace()
+
+    # Test case for non-tty output without prettify
+    env.stdout_isatty = False
+    args.prettify = None
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Test case for non-tty output with streaming
+    args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Test case for tty output with prettify
+    env.stdout_isatty = True
+    args.prettify = ['colors']
+    args.style = 'default'
+    args.json = False
+    args.format_options = {}
+    stream
+
+# Generated at 2024-03-18 05:57:19.237320
+```python
+    # Setup environment and argparse Namespace for test
+    env = Environment()
+    args = argparse.Namespace()
+
+    # Test case for non-tty output without prettify
+    env.stdout_isatty = False
+    args.prettify = None
+    args.stream = False
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Test case for non-tty output with streaming
+    args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Test case for tty output with prettify
+    env.stdout_isatty = True
+    args.prettify = ['all']
+    args.style = 'default'
+    args.json = False
+
+
+# Generated at 2024-03-18 05:57:28.019094
+```python
+    # Setup environment and argparse Namespace for test
+    env = Environment()
+    args = argparse.Namespace()
+
+    # Test case for non-tty output without prettify
+    env.stdout_isatty = False
+    args.prettify = None
+    args.stream = False
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Test case for non-tty output with streaming
+    args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Test case for tty output with prettify
+    env.stdout_isatty = True
+    args.prettify = ['colors']
+    args.style = 'default'
+    args.json = False
+
+
+# Generated at 2024-03-18 05:57:28.827208
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+
+# Generated at 2024-03-18 05:57:35.021389
+```python
+    # Mocking the necessary arguments and environment
+    class MockEnvironment(Environment):
+        stdout_isatty = True
+        is_windows = False
+
+    class MockArgs:
+        prettify = None
+        stream = False
+        style = None
+        json = False
+        format_options = {}
+
+    env = MockEnvironment()
+    args = MockArgs()
+
+    # Test with a PreparedRequest and no prettify, no stream
+    request = requests.PreparedRequest()
+    stream_class, stream_kwargs = build_output_stream_for_message(
+        args=args,
+        env=env,
+        requests_message=request,
+        with_headers=True,
+        with_body=True
+    )
+    assert stream_class == EncodedStream
+    assert stream_kwargs == {'env': env}
+
+    # Test with a Response and prettify enabled
+    args.prettify = 'all'
+    response = requests.Response()
+    stream_class, stream_kwargs = build_output_stream_for_message(
+        args
+
+# Generated at 2024-03-18 05:57:36.293163
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+
+# Generated at 2024-03-18 05:57:37.348662
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+@patch('httpie.output.streams.sys')
+
+# Generated at 2024-03-18 05:57:38.166652
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+
+# Generated at 2024-03-18 05:57:45.047994
+```python
+    # Mocking the necessary arguments and environment
+    class MockEnvironment(Environment):
+        stdout_isatty = True
+        is_windows = False
+
+    class MockArgs:
+        prettify = 'all'
+        stream = False
+        style = 'default'
+        json = False
+        format_options = {}
+
+    env = MockEnvironment()
+    args = MockArgs()
+    request = requests.PreparedRequest()
+    response = requests.Response()
+
+    # Test for a PreparedRequest with headers only
+    stream = build_output_stream_for_message(args, env, request, with_headers=True, with_body=False)
+    assert isinstance(next(stream), bytes)
+    assert b'GET' in next(stream)  # Assuming the request method is GET
+
+    # Test for a Response with body only
+    stream = build_output_stream_for_message(args, env, response, with_headers=False, with_body=True)
+    assert isinstance(next(stream), bytes)
+    assert next(stream).endswith(M
+
+# Generated at 2024-03-18 05:58:22.147540
+```python
+    # Setup environment and argparse Namespace for test
+    env = Environment()
+    args = argparse.Namespace()
+
+    # Test case for non-tty output without prettify
+    env.stdout_isatty = False
+    args.prettify = None
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Test case for non-tty output with streaming
+    args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Test case for tty output with prettify
+    env.stdout_isatty = True
+    args.prettify = ['colors']
+    args.style = 'default'
+    args.json = False
+    args.format_options = {}
+
+
+# Generated at 2024-03-18 05:58:23.235208
+```python
+from io import StringIO
+from unittest.mock import MagicMock
+
+
+# Generated at 2024-03-18 05:58:36.223301
+```python
+    # Mocking the necessary arguments and environment
+    class MockEnvironment(Environment):
+        stdout_isatty = True
+        is_windows = False
+
+    class MockArgs:
+        prettify = 'all'
+        stream = False
+        style = 'default'
+        json = False
+        format_options = {}
+
+    env = MockEnvironment()
+    args = MockArgs()
+    request = requests.PreparedRequest()
+    response = requests.Response()
+
+    # Test for a PreparedRequest with headers only
+    stream = build_output_stream_for_message(args, env, request, with_headers=True, with_body=False)
+    assert isinstance(next(stream), bytes)
+    assert b'GET' in next(stream)  # Assuming the request method is GET
+
+    # Test for a Response with body only
+    stream = build_output_stream_for_message(args, env, response, with_headers=False, with_body=True)
+    assert isinstance(next(stream), bytes)
+    assert next(stream).endswith(M
+
+# Generated at 2024-03-18 05:58:43.375551
+```python
+    # Mocking the necessary arguments and environment
+    class MockEnvironment(Environment):
+        stdout_isatty = True
+        is_windows = False
+
+    class MockArgs:
+        prettify = 'all'
+        stream = False
+        style = 'default'
+        json = False
+        format_options = {}
+
+    env = MockEnvironment()
+    args = MockArgs()
+
+    # Mocking a requests.Response object
+    response = requests.Response()
+    response.status_code = 200
+    response.headers = {'Content-Type': 'application/json'}
+    response._content = b'{"key": "value"}'
+
+    # Test with headers and without body
+    stream = build_output_stream_for_message(args, env, response, with_headers=True, with_body=False)
+    assert isinstance(stream, BufferedPrettyStream), "Expected a BufferedPrettyStream for headers only"
+
+    # Test with body and without headers
+    stream = build_output_stream_for_message(args, env, response,
+
+# Generated at 2024-03-18 05:58:52.015133
+```python
+    # Mocking the argparse.Namespace with relevant attributes
+    args = argparse.Namespace(
+        prettify=None,
+        stream=False,
+        json=False,
+        style='default',
+        format_options={}
+    )
+    env = Environment(stdout_isatty=False)
+
+    # Test with a PreparedRequest and no prettify, no stream
+    request = requests.PreparedRequest()
+    request.prepare(method='GET', url='http://example.com')
+    stream = build_output_stream_for_message(args, env, request, with_headers=True, with_body=True)
+    assert isinstance(next(stream), bytes)
+
+    # Test with a Response and prettify enabled
+    args.prettify = 'all'
+    response = requests.Response()
+    response.status_code = 200
+    response._content = b'{"key": "value"}'
+    response.headers['Content-Type'] = 'application/json'
+    stream = build_output_stream_for_message(args, env, response, with_headers=True
+
+# Generated at 2024-03-18 05:59:00.929797
+```python
+    # Setup environment and argparse Namespace for testing
+    env = Environment()
+    args = argparse.Namespace()
+
+    # Test case for non-tty output without prettify
+    env.stdout_isatty = False
+    args.prettify = None
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Test case for non-tty output with streaming
+    args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Test case for tty output with prettify
+    env.stdout_isatty = True
+    args.prettify = ['all']
+    args.style = 'default'
+    args.json = False
+    args.format_options = {}
+
+
+# Generated at 2024-03-18 05:59:01.651415
+```python
+from unittest.mock import MagicMock
+
+
+# Generated at 2024-03-18 05:59:09.086844
+```python
+    # Setup test environment and arguments
+    env = Environment()
+    args = argparse.Namespace(
+        prettify=None,
+        stream=False,
+        style=None,
+        json=False,
+        format_options={}
+    )
+    env.stdout_isatty = False
+
+    # Test with a PreparedRequest and no headers or body
+    request = requests.PreparedRequest()
+    stream = build_output_stream_for_message(
+        args=args,
+        env=env,
+        requests_message=request,
+        with_headers=False,
+        with_body=False
+    )
+    assert isinstance(stream, RawStream), "Expected RawStream for PreparedRequest without headers or body"
+
+    # Test with a Response and both headers and body
+    response = requests.Response()
+    response.headers['content-type'] = 'text/plain'
+    response._content = b'Hello, world!'
+    env.stdout_isatty = True
+    args.prettify = 'all'
+    stream = build_output_stream_for_message(
+        args=args
+
+# Generated at 2024-03-18 05:59:17.536045
+```python
+    # Setup environment and argparse Namespace for test
+    env = Environment()
+    args = argparse.Namespace()
+
+    # Test case for non-tty output without prettify
+    env.stdout_isatty = False
+    args.prettify = None
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class is RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Test case for non-tty output with streaming
+    args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class is RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Test case for tty output with prettify
+    env.stdout_isatty = True
+    args.prettify = ['all']
+    args.style = 'default'
+    args.json = False
+    args.format_options = {}
+
+
+# Generated at 2024-03-18 05:59:18.762704
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+
+# Generated at 2024-03-18 05:59:57.636223
+```python
+    # Mock environment and arguments
+    mock_env = Environment()
+    mock_args = argparse.Namespace(
+        prettify=None,
+        stream=False,
+        style=None,
+        json=False,
+        format_options={}
+    )
+
+    # Test case for non-tty output without prettify
+    mock_env.stdout_isatty = False
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(mock_env, mock_args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Test case for non-tty output with streaming
+    mock_args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(mock_env, mock_args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Test case for tty output with prettify
+    mock_env.stdout_isatty = True
+    mock_args.prettify
+
+# Generated at 2024-03-18 05:59:59.312296
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+@patch('sys.stdout', new_callable=mock_open)
+
+# Generated at 2024-03-18 06:00:09.301556
+```python
+    # Mock environment and arguments
+    mock_env = Environment()
+    mock_args = argparse.Namespace()
+
+    # Test case for non-tty output without prettify
+    mock_env.stdout_isatty = False
+    mock_args.prettify = None
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(mock_env, mock_args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Test case for non-tty output with streaming
+    mock_args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(mock_env, mock_args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Test case for tty output with prettify
+    mock_env.stdout_isatty = True
+    mock_args.prettify = ['colors']
+    mock_args.style = 'default'
+    mock_args
+
+# Generated at 2024-03-18 06:00:10.528903
+```python
+from unittest.mock import Mock, patch
+
+
+# Generated at 2024-03-18 06:00:18.983844
+```python
+    # Setup test environment and arguments
+    env = Environment()
+    args = argparse.Namespace(prettify=None, stream=False, json=False, style='default', format_options={})
+
+    # Test with a PreparedRequest and only headers
+    prepared_request = requests.PreparedRequest()
+    prepared_request.prepare(method='GET', url='http://example.com')
+    stream = build_output_stream_for_message(args, env, prepared_request, with_headers=True, with_body=False)
+    assert isinstance(stream, EncodedStream), "Expected EncodedStream for PreparedRequest with only headers"
+
+    # Test with a Response and both headers and body
+    response = requests.Response()
+    response.status_code = 200
+    response._content = b'{"key": "value"}'
+    response.headers['Content-Type'] = 'application/json'
+    args.prettify = ['all']
+    stream = build_output_stream_for_message(args, env, response, with_headers=True, with_body
+
+# Generated at 2024-03-18 06:00:19.914554
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+
+# Generated at 2024-03-18 06:00:27.516759
+```python
+    # Setup test environment and arguments
+    env = Environment()
+    args = argparse.Namespace(prettify=None, stream=False, json=False, style='default', format_options={})
+
+    # Test with a PreparedRequest and only headers
+    prepared_request = requests.PreparedRequest()
+    prepared_request.prepare(method='GET', url='http://example.com')
+    stream = build_output_stream_for_message(args, env, prepared_request, with_headers=True, with_body=False)
+    assert isinstance(next(stream), bytes)
+    assert b'GET' in next(stream)
+    assert b'example.com' in next(stream)
+
+    # Test with a Response and both headers and body
+    response = requests.Response()
+    response.status_code = 200
+    response._content = b'OK'
+    response.headers['Content-Type'] = 'text/plain'
+    stream = build_output_stream_for_message(args, env, response, with_headers=True, with_body=True)
+    assert isinstance(next
+
+# Generated at 2024-03-18 06:00:28.986351
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+
+# Generated at 2024-03-18 06:00:43.366034
+```python
+    # Setup environment and argparse Namespace for test
+    env = Environment()
+    args = argparse.Namespace()
+
+    # Test case for non-tty output without prettify
+    env.stdout_isatty = False
+    args.prettify = None
+    args.stream = False
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class is RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Test case for non-tty output with streaming
+    args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class is RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Test case for tty output with prettify
+    env.stdout_isatty = True
+    args.prettify = ['all']
+    args.style = 'default'
+    args.json = False
+
+
+# Generated at 2024-03-18 06:00:52.572494
+```python
+    # Mocking the necessary arguments and environment
+    class MockEnvironment(Environment):
+        stdout_isatty = True
+        is_windows = False
+
+    class MockArgs:
+        prettify = None
+        stream = False
+        style = 'default'
+        json = False
+        format_options = {}
+
+    env = MockEnvironment()
+    args = MockArgs()
+
+    # Mocking a requests message
+    class MockPreparedRequest(requests.PreparedRequest):
+        pass
+
+    class MockResponse(requests.Response):
+        pass
+
+    # Test with a PreparedRequest and headers only
+    mock_request = MockPreparedRequest()
+    stream_class, stream_kwargs = build_output_stream_for_message(
+        args=args,
+        env=env,
+        requests_message=mock_request,
+        with_headers=True,
+        with_body=False
+    )
+    assert stream_class == EncodedStream
+    assert stream_kwargs == {'env': env}
+
+    # Test with a Response and both headers
+
+# Generated at 2024-03-18 06:02:00.311078
+```python
+    # Setup environment and argparse Namespace for test
+    env = Environment()
+    args = argparse.Namespace()
+
+    # Test case for non-tty output without prettify
+    env.stdout_isatty = False
+    args.prettify = None
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class is RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Test case for non-tty output with streaming
+    args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class is RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Test case for tty output with prettify
+    env.stdout_isatty = True
+    args.prettify = ['colors']
+    args.style = 'default'
+    args.json = False
+    args.format_options = {}
+
+
+# Generated at 2024-03-18 06:02:09.525576
+```python
+    # Mocking the Environment and argparse.Namespace
+    mock_env = Environment()
+    mock_args = argparse.Namespace()
+
+    # Case 1: stdout is not a TTY and prettify is not set
+    mock_env.stdout_isatty = False
+    mock_args.prettify = None
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(mock_env, mock_args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Case 2: stdout is not a TTY and prettify is set with streaming
+    mock_args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(mock_env, mock_args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Case 3: stdout is a TTY and prettify is set without streaming
+    mock_env.stdout
+
+# Generated at 2024-03-18 06:02:17.581090
+```python
+    # Setup environment and argparse Namespace for test
+    env = Environment()
+    args = argparse.Namespace()
+
+    # Test case for non-tty output without prettify
+    env.stdout_isatty = False
+    args.prettify = None
+    args.stream = False
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Test case for non-tty output with streaming
+    args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Test case for tty output with prettify
+    env.stdout_isatty = True
+    args.prettify = ['all']
+    args.style = 'default'
+    args.json = False
+
+
+# Generated at 2024-03-18 06:02:26.569296
+```python
+    # Setup test environment and arguments
+    env = Environment()
+    args = argparse.Namespace(
+        prettify=None,
+        stream=False,
+        style=None,
+        json=False,
+        format_options={}
+    )
+    request = requests.PreparedRequest()
+    response = requests.Response()
+
+    # Test with PreparedRequest and headers only
+    args.prettify = ['all']
+    stream = build_output_stream_for_message(args, env, request, with_headers=True, with_body=False)
+    assert isinstance(next(stream), BufferedPrettyStream)
+
+    # Test with Response and body only
+    stream = build_output_stream_for_message(args, env, response, with_headers=False, with_body=True)
+    assert isinstance(next(stream), BufferedPrettyStream)
+
+    # Test with Response, headers and body
+    stream = build_output_stream_for_message(args, env, response, with_headers=True, with_body=True)
+    assert isinstance(next(stream), BufferedPrettyStream)
+
+    # Test with no pret
+
+# Generated at 2024-03-18 06:02:38.231390
+```python
+    # Setup environment and argument namespace
+    env = Environment()
+    args = argparse.Namespace()
+
+    # Test case for non-tty output without prettify
+    env.stdout_isatty = False
+    args.prettify = None
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert 'chunk_size' in stream_kwargs
+
+    # Test case for non-tty output with prettify
+    args.prettify = 'all'
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == PrettyStream or stream_class == BufferedPrettyStream
+    assert 'env' in stream_kwargs
+    assert 'conversion' in stream_kwargs
+    assert 'formatting' in stream_kwargs
+
+    # Test case for tty output without prettify
+    env.stdout_isatty = True
+    args.prettify = None
+    stream_class,
+
+# Generated at 2024-03-18 06:02:40.397206
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+
+# Generated at 2024-03-18 06:02:41.545471
+```python
+from unittest.mock import MagicMock, mock_open, patch
+
+
+# Generated at 2024-03-18 06:02:48.374640
+```python
+    # Setup environment and argparse Namespace for test
+    env = Environment()
+    args = argparse.Namespace()
+
+    # Test case for non-tty output without prettify
+    env.stdout_isatty = False
+    args.prettify = None
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE}
+
+    # Test case for non-tty output with streaming
+    args.stream = True
+    stream_class, stream_kwargs = get_stream_type_and_kwargs(env, args)
+    assert stream_class == RawStream
+    assert stream_kwargs == {'chunk_size': RawStream.CHUNK_SIZE_BY_LINE}
+
+    # Test case for tty output with prettify
+    env.stdout_isatty = True
+    args.prettify = ['all']
+    args.style = 'default'
+    args.json = False
+    args.format_options = {}
+
+
+# Generated at 2024-03-18 06:02:49.263505
+```python
+from unittest.mock import Mock, patch
+
+
+# Generated at 2024-03-18 06:02:59.478299
+```python
+    # Setup test environment and arguments
+    env = Environment()
+    args = argparse.Namespace(
+        prettify=None,
+        stream=False,
+        style=None,
+        json=False,
+        format_options={}
+    )
+    request = requests.PreparedRequest()
+    response = requests.Response()
+
+    # Test with PreparedRequest and headers only
+    args.prettify = 'none'
+    stream = build_output_stream_for_message(args, env, request, with_headers=True, with_body=False)
+    assert isinstance(next(stream), RawStream)
+
+    # Test with Response and body only
+    stream = build_output_stream_for_message(args, env, response, with_headers=False, with_body=True)
+    assert isinstance(next(stream), RawStream)
+
+    # Test with prettify and BufferedPrettyStream
+    args.prettify = 'all'
+    stream = build_output_stream_for_message(args, env, response, with_headers=True, with_body=True)
+    assert isinstance(next(stream), Buffered

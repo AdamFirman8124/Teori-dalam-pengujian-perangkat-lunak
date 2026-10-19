@@ -1,0 +1,646 @@
+
+
+# Generated at 2024-06-01 15:19:59.669621
+```python
+    resolver = Resolver(root="test", alias={})
+    node = Constant(value="test_value")
+    result = resolver.visit_Constant(node)
+    assert isinstance(result, Constant)
+    assert result.value == "test_value"
+
+    node = Constant(value="123")
+    result = resolver.visit_Constant(node)
+    assert isinstance(result, Constant)
+    assert result.value == "123"
+
+    node = Constant(value="invalid syntax")
+    result = resolver.visit_Constant(node)
+    assert isinstance(result, Constant)
+    assert result.value == "invalid syntax"
+
+    node = Constant(value="42")
+    result = resolver.visit_Constant(node)
+    assert isinstance(result, Constant)
+    assert result.value == "42"
+```
+
+# Generated at 2024-06-01 15:20:03.069353
+```python
+    parser = Parser()
+    root = 'test_module'
+    module = ModuleType(root)
+    
+    # Mocking the module's attributes and their docstrings
+    module.func = lambda: None
+    module.func.__doc__ = "Function docstring"
+    module.Class = type('Class', (), {})
+    module.Class.__doc__ = "Class docstring"
+    
+    parser.doc = {
+        f'{root}.func': '',
+        f'{root}.Class': ''
+    }
+    
+    parser.load_docstring(root, module)
+    
+    assert parser.docstring[f'{root}.func'] == "Function docstring"
+    assert parser.docstring[f'{root}.Class'] == "Class docstring"
+```
+
+# Generated at 2024-06-01 15:20:09.307250
+```python
+    parser = Parser()
+    parser.imp = {
+        'module': {'public_func', 'PublicClass', 'public_var'},
+        'module.submodule': {'sub_public_func', 'SubPublicClass', 'sub_public_var'}
+    }
+    parser.root = {
+        'module.public_func': 'module',
+        'module.PublicClass': 'module',
+        'module.public_var': 'module',
+        'module._private_func': 'module',
+        'module._PrivateClass': 'module',
+        'module._private_var': 'module',
+        'module.submodule.sub_public_func': 'module.submodule',
+        'module.submodule.SubPublicClass': 'module.submodule',
+        'module.submodule.sub_public_var': 'module.submodule',
+        'module.submodule._sub_private_func': 'module.submodule',
+        'module.submodule._SubPrivateClass': 'module.submodule',
+        'module.submodule._sub_private_var': 'module.submodule
+
+# Generated at 2024-06-01 15:20:11.765941
+```python
+    resolver = Resolver(root="test", alias={})
+    node = Constant(value="test_value")
+    result = resolver.visit_Constant(node)
+    assert isinstance(result, Constant)
+    assert result.value == "test_value"
+
+    node = Constant(value="123")
+    result = resolver.visit_Constant(node)
+    assert isinstance(result, Constant)
+    assert result.value == "123"
+
+    node = Constant(value="invalid syntax")
+    result = resolver.visit_Constant(node)
+    assert isinstance(result, Constant)
+    assert result.value == "invalid syntax"
+
+    node = Constant(value="42")
+    result = resolver.visit_Constant(node)
+    assert isinstance(result, Constant)
+    assert result.value == "42"
+```
+
+# Generated at 2024-06-01 15:20:14.808774
+```python
+    resolver = Resolver(root="", alias={})
+    
+    # Test case 1: Attribute with typing prefix
+    node = Attribute(value=Name(id='typing', ctx=Load()), attr='List', ctx=Load())
+    result = resolver.visit_Attribute(node)
+    assert isinstance(result, Name)
+    assert result.id == 'List'
+    
+    # Test case 2: Attribute without typing prefix
+    node = Attribute(value=Name(id='collections', ctx=Load()), attr='deque', ctx=Load())
+    result = resolver.visit_Attribute(node)
+    assert isinstance(result, Attribute)
+    assert result.value.id == 'collections'
+    assert result.attr == 'deque'
+    
+    # Test case 3: Attribute with non-Name value
+    node = Attribute(value=Attribute(value=Name(id='a', ctx=Load()), attr='b', ctx=Load()), attr='c', ctx=Load())
+    result = resolver.visit_Attribute(node)
+   
+
+# Generated at 2024-06-01 15:20:19.050784
+```python
+    parser = Parser()
+    root = "test_module"
+    name = "TestClass"
+    bases = [Name(id='BaseClass', ctx=Load())]
+    body = [
+        AnnAssign(target=Name(id='attr1', ctx=Store()), annotation=Name(id='int', ctx=Load()), value=None, simple=1),
+        Assign(targets=[Name(id='attr2', ctx=Store())], value=Constant(value=42)),
+        FunctionDef(name='method1', args=arguments(posonlyargs=[], args=[], kwonlyargs=[], kw_defaults=[], defaults=[]), body=[], decorator_list=[]),
+        ClassDef(name='InnerClass', bases=[], keywords=[], body=[], decorator_list=[])
+    ]
+    
+    parser.class_api(root, name, bases, body)
+    
+    assert 'test_module.TestClass' in parser.doc
+    assert 'Bases' in parser.doc['test_module.TestClass']
+    assert 'Members' in parser.doc['test
+
+# Generated at 2024-06-01 15:20:21.674927
+```python
+    parser = Parser()
+    root = "test_module"
+    name = "test_function"
+    args = arguments(
+        args=[arg(arg='x', annotation=Name(id='int', ctx=Load()))],
+        vararg=None,
+        kwonlyargs=[],
+        kw_defaults=[],
+        kwarg=None,
+        defaults=[]
+    )
+    returns = Name(id='str', ctx=Load())
+    parser.func_api(root, name, args, returns, has_self=False, cls_method=False)
+    expected_doc = (
+        "test_function\n\n"
+        "*Full name:* `test_module.test_function`\n\n"
+        "| x | return |\n"
+        "|---|--------|\n"
+        "| int | str |\n"
+    )
+    assert parser.doc[name] == expected_doc
+```
+
+# Generated at 2024-06-01 15:20:24.757230
+```python
+    # Test case 1: PEP604 - Union
+    node = Subscript(value=Name(id='Union', ctx=Load()), slice=Tuple(elts=[Name(id='int', ctx=Load()), Name(id='str', ctx=Load())], ctx=Load()), ctx=Load())
+    resolver = Resolver(root='', alias={'Union': 'typing.Union'})
+    result = resolver.visit_Subscript(node)
+    assert isinstance(result, BinOp)
+    assert isinstance(result.left, Name) and result.left.id == 'int'
+    assert isinstance(result.op, BitOr)
+    assert isinstance(result.right, Name) and result.right.id == 'str'
+
+    # Test case 2: PEP604 - Optional
+    node = Subscript(value=Name(id='Optional', ctx=Load()), slice=Name(id='int', ctx=Load()), ctx=Load())
+    resolver = Resolver(root='', alias={'Optional': 'typing.Optional'})
+    result = resolver
+
+# Generated at 2024-06-01 15:20:28.087135
+```python
+    resolver = Resolver(root="root", alias={"root.SomeAlias": "SomeActualValue"})
+    
+    # Test with a non-string constant
+    node = Constant(value=42)
+    result = resolver.visit_Constant(node)
+    assert isinstance(result, Constant)
+    assert result.value == 42
+
+    # Test with a string that is not a valid expression
+    node = Constant(value="not a valid expression")
+    result = resolver.visit_Constant(node)
+    assert isinstance(result, Constant)
+    assert result.value == "not a valid expression"
+
+    # Test with a string that is a valid expression
+    node = Constant(value="SomeAlias")
+    result = resolver.visit_Constant(node)
+    assert isinstance(result, Name)
+    assert result.id == "SomeActualValue"
+```
+
+# Generated at 2024-06-01 15:20:31.755492
+```python
+    assert doctest(">>> print('Hello, world!')\nHello, world!") == "```python\n>>> print('Hello, world!')\nHello, world!\n```"
+    assert doctest(">>> x = 1 + 1\n>>> x\n2") == "```python\n>>> x = 1 + 1\n>>> x\n2\n```"
+    assert doctest("No doctest here.") == "No doctest here."
+    assert doctest(">>> a = 5\n>>> b = 10\n>>> a + b\n15") == "```python\n>>> a = 5\n>>> b = 10\n>>> a + b\n15\n```"
+    assert doctest(">>> for i in range(3):\n...     print(i)\n0\n1\n2") == "```python\n>>> for i in range(3):\n...     print(i)\n0
+
+# Generated at 2024-06-01 15:22:00.491291
+```python
+    from ast import parse, If, Try, Expr, Constant
+
+    # Test case 1: Simple body with no If or Try
+    body = [Expr(value=Constant(value=1)), Expr(value=Constant(value=2))]
+    result = list(walk_body(body))
+    assert len(result) == 2
+    assert isinstance(result[0], Expr)
+    assert isinstance(result[1], Expr)
+
+    # Test case 2: Body with If statement
+    body = [
+        If(
+            test=Constant(value=True),
+            body=[Expr(value=Constant(value=3))],
+            orelse=[Expr(value=Constant(value=4))]
+        )
+    ]
+    result = list(walk_body(body))
+    assert len(result) == 2
+    assert isinstance(result[0], Expr)
+    assert isinstance(result[1], Expr)
+
+    # Test case 3: Body with Try statement
+    body = [
+        Try(
+            body=[
+
+# Generated at 2024-06-01 15:22:04.526934
+```python
+    # Test case 1: Name is self_ty
+    resolver = Resolver(root="root", alias={}, self_ty="self")
+    node = Name(id="self", ctx=Load())
+    result = resolver.visit_Name(node)
+    assert isinstance(result, Name)
+    assert result.id == "Self"
+
+    # Test case 2: Name is in alias and not in its own alias value
+    resolver = Resolver(root="root", alias={"root.name": "alias_value"})
+    node = Name(id="name", ctx=Load())
+    result = resolver.visit_Name(node)
+    assert isinstance(result, Expr)
+    assert unparse(result) == "alias_value"
+
+    # Test case 3: Name is in alias and in its own alias value
+    resolver = Resolver(root="root", alias={"root.name": "root.name"})
+    node = Name(id="name", ctx=Load())
+    result = resolver.visit_Name(node)
+    assert isinstance(result, Name
+
+# Generated at 2024-06-01 15:22:07.880346
+```python
+    parser = Parser()
+    parser.alias = {
+        'module1.func1': 'module1.func1',
+        'module1.Class1': 'module1.Class1',
+        'module2.func2': 'module2.func2'
+    }
+    parser.doc = {
+        'module1.func1': '## func1()\n\n*Full name:* `module1.func1`\n\n',
+        'module1.Class1': '## class Class1\n\n*Full name:* `module1.Class1`\n\n',
+        'module2.func2': '## func2()\n\n*Full name:* `module2.func2`\n\n'
+    }
+    parser.docstring = {
+        'module1.func1': 'Function docstring for func1',
+        'module1.Class1': 'Class docstring for Class1',
+        'module2.func2': 'Function docstring for func2'
+    }
+    parser.root = {
+
+
+# Generated at 2024-06-01 15:22:10.786556
+```python
+    from ast import Subscript, Name, Load, Tuple, Constant, BinOp, BitOr
+    from .pep585 import PEP585
+
+    # Test case 1: PEP585 replacement
+    node = Subscript(value=Name(id='List', ctx=Load()), slice=Name(id='int', ctx=Load()), ctx=Load())
+    resolver = Resolver(root='', alias={'List': 'typing.List'})
+    result = resolver.visit_Subscript(node)
+    assert isinstance(result, Subscript)
+    assert result.value.id == 'list'
+
+    # Test case 2: PEP604 replacement for Union
+    node = Subscript(value=Name(id='Union', ctx=Load()), slice=Tuple(elts=[Name(id='int', ctx=Load()), Name(id='str', ctx=Load())], ctx=Load()), ctx=Load())
+    resolver = Resolver(root='', alias={'Union': 'typing.Union'})
+    result = resolver.visit
+
+# Generated at 2024-06-01 15:22:14.716192
+```python
+    assert const_type(Constant(value=42)) == "int"
+    assert const_type(Constant(value="hello")) == "str"
+    assert const_type(Tuple(elts=[Constant(value=1), Constant(value=2)])) == "tuple[int]"
+    assert const_type(List(elts=[Constant(value=1), Constant(value=2)])) == "list[int]"
+    assert const_type(Set(elts=[Constant(value=1), Constant(value=2)])) == "set[int]"
+    assert const_type(Dict(keys=[Constant(value=1)], values=[Constant(value="a")])) == "dict[int, str]"
+    assert const_type(Call(func=Name(id='int', ctx=Load()), args=[], keywords=[])) == "int"
+    assert const_type(Call(func=Name(id='str', ctx=Load()), args=[], keywords=[])) == "str"
+    assert const_type(Call(func=Attribute(value=Name(id='PEP585', ctx=Load
+
+# Generated at 2024-06-01 15:22:17.914592
+```python
+    parser = Parser()
+    root = "test_root"
+    args = [
+        arg(arg='self', annotation=Name(id='Self', ctx=Load())),
+        arg(arg='x', annotation=Name(id='int', ctx=Load())),
+        arg(arg='y', annotation=Name(id='str', ctx=Load())),
+        arg(arg='*', annotation=None),
+        arg(arg='z', annotation=Name(id='float', ctx=Load())),
+        arg(arg='**kwargs', annotation=Name(id='Any', ctx=Load())),
+        arg(arg='return', annotation=Name(id='None', ctx=Load()))
+    ]
+    expected_annotations = [
+        'Self',
+        'int',
+        'str',
+        '',
+        'float',
+        'Any',
+        'None'
+    ]
+    result = list(parser.func_ann(root, args, has_self=True, cls_method=False))
+    assert result == expected_annotations, f"Expected {expected_annotations}, but
+
+# Generated at 2024-06-01 15:22:21.618537
+```python
+    parser = Parser()
+    root = "test_module"
+    name = "test_function"
+    args = arguments(
+        posonlyargs=[],
+        args=[arg(arg='x', annotation=Name(id='int', ctx=Load()))],
+        vararg=None,
+        kwonlyargs=[],
+        kw_defaults=[],
+        defaults=[]
+    )
+    returns = Name(id='int', ctx=Load())
+    parser.func_api(root, name, args, returns, has_self=False, cls_method=False)
+    expected_doc = (
+        "### test_function()\n\n"
+        "*Full name:* `test_module.test_function`\n\n"
+        "| x | return |\n"
+        "|---|--------|\n"
+        "| int | int |\n"
+    )
+    assert parser.doc[name] == expected_doc
+```
+
+# Generated at 2024-06-01 15:22:24.920754
+```python
+    from ast import parse, If, Try, Expr, Constant
+
+    # Test case 1: Simple body with no If or Try
+    body = [Expr(value=Constant(value=1)), Expr(value=Constant(value=2))]
+    result = list(walk_body(body))
+    assert len(result) == 2
+    assert isinstance(result[0], Expr)
+    assert isinstance(result[1], Expr)
+
+    # Test case 2: Body with If statement
+    body = [
+        If(
+            test=Constant(value=True),
+            body=[Expr(value=Constant(value=3))],
+            orelse=[Expr(value=Constant(value=4))]
+        )
+    ]
+    result = list(walk_body(body))
+    assert len(result) == 2
+    assert isinstance(result[0], Expr)
+    assert isinstance(result[1], Expr)
+
+    # Test case 3: Body with Try statement
+    body = [
+        Try(
+            body=[
+
+# Generated at 2024-06-01 15:22:28.093662
+```python
+    parser = Parser()
+    root = "test_module"
+    name = "test_function"
+    args = arguments(
+        args=[arg(arg='x', annotation=Name(id='int', ctx=Load()))],
+        vararg=None,
+        kwonlyargs=[],
+        kw_defaults=[],
+        kwarg=None,
+        defaults=[]
+    )
+    returns = Name(id='int', ctx=Load())
+    parser.func_api(root, name, args, returns, has_self=False, cls_method=False)
+    expected_doc = (
+        "### test_function()\n\n"
+        "*Full name:* `test_module.test_function`\n\n"
+        "| Argument | Type |\n"
+        "|----------|------|\n"
+        "| x        | int  |\n"
+        "| return   | int  |\n"
+    )
+    assert parser.doc[name] == expected_doc
+```
+
+# Generated at 2024-06-01 15:22:32.526315
+```python
+    assert table('a', 'b', items=[['c', 'd'], ['e', 'f']]) == (
+        "| a | b |\n"
+        "|:---:|:---:|\n"
+        "| c | d |\n"
+        "| e | f |\n\n"
+    )
+    assert table('name', 'age', items=[['Alice', '30'], ['Bob', '25']]) == (
+        "| name | age |\n"
+        "|:----:|:----:|\n"
+        "| Alice | 30 |\n"
+        "| Bob | 25 |\n\n"
+    )
+    assert table('x', 'y', 'z', items=[['1', '2', '3'], ['4', '5', '6']]) == (
+        "| x | y | z |\n"
+        "|:---:|:---:|:---:|\n"
+        "| 1
+
+# Generated at 2024-06-01 15:23:47.687190
+```python
+    parser = Parser()
+    root = "test_root"
+    name = "test_func"
+    node = arguments(
+        args=[arg(arg='x', annotation=Name(id='int', ctx=Load()))],
+        vararg=None,
+        kwonlyargs=[],
+        kw_defaults=[],
+        defaults=[]
+    )
+    returns = Name(id='str', ctx=Load())
+    parser.func_api(root, name, node, returns, has_self=False, cls_method=False)
+    expected_doc = (
+        "test_root.test_func\n\n"
+        "*Full name:* `test_root.test_func`\n\n"
+        "| x | return |\n"
+        "|---|--------|\n"
+        "| int | str |\n"
+    )
+    assert parser.doc[name] == expected_doc
+```
+
+# Generated at 2024-06-01 15:23:50.084036
+```python
+    resolver = Resolver(root="", alias={})
+    node = Attribute(value=Name(id='typing', ctx=Load()), attr='List', ctx=Load())
+    result = resolver.visit_Attribute(node)
+    assert isinstance(result, Name)
+    assert result.id == 'List'
+
+    node = Attribute(value=Name(id='not_typing', ctx=Load()), attr='List', ctx=Load())
+    result = resolver.visit_Attribute(node)
+    assert isinstance(result, Attribute)
+    assert result.value.id == 'not_typing'
+    assert result.attr == 'List'
+```
+
+# Generated at 2024-06-01 15:23:53.751766
+```python
+    parser = Parser()
+    root = "test_module"
+    
+    # Test AnnAssign with Name target and non-None value
+    ann_assign_node = AnnAssign(
+        target=Name(id="MY_CONSTANT", ctx=Store()),
+        annotation=Name(id="int", ctx=Load()),
+        value=Constant(value=42)
+    )
+    parser.globals(root, ann_assign_node)
+    assert parser.alias[_m(root, "MY_CONSTANT")] == "42"
+    assert parser.const[_m(root, "MY_CONSTANT")] == "int"
+    assert parser.root[_m(root, "MY_CONSTANT")] == root
+
+    # Test Assign with Name target and type_comment
+    assign_node = Assign(
+        targets=[Name(id="MY_VAR", ctx=Store())],
+        value=Constant(value="Hello"),
+        type_comment="str"
+    )
+    parser.globals(root, assign_node)
+    assert parser.alias[_m(root, "MY_VAR")] == "'
+
+# Generated at 2024-06-01 15:23:57.055021
+```python
+    parser = Parser()
+    root = "test_module"
+    name = "TestClass"
+    bases = [Name(id='BaseClass', ctx=Load())]
+    body = [
+        AnnAssign(target=Name(id='attr1', ctx=Store()), annotation=Name(id='int', ctx=Load()), value=None, simple=1),
+        Assign(targets=[Name(id='attr2', ctx=Store())], value=Constant(value=42)),
+        FunctionDef(name='method1', args=arguments(posonlyargs=[], args=[], vararg=None, kwonlyargs=[], kw_defaults=[], defaults=[]), body=[], decorator_list=[]),
+        ClassDef(name='InnerClass', bases=[], keywords=[], body=[], decorator_list=[])
+    ]
+    parser.class_api(root, name, bases, body)
+    
+    assert 'test_module.TestClass' in parser.doc
+    assert 'Bases' in parser.doc['test_module.TestClass']
+    assert 'Members' in parser
+
+# Generated at 2024-06-01 15:24:00.350313
+```python
+    parser = Parser()
+    root = "test_root"
+    args = [
+        arg(arg='self', annotation=Name(id='Self', ctx=Load())),
+        arg(arg='x', annotation=Name(id='int', ctx=Load())),
+        arg(arg='y', annotation=Name(id='str', ctx=Load())),
+        arg(arg='*', annotation=None),
+        arg(arg='z', annotation=Name(id='float', ctx=Load())),
+        arg(arg='**kwargs', annotation=Name(id='Any', ctx=Load())),
+        arg(arg='return', annotation=Name(id='None', ctx=Load()))
+    ]
+    expected_annotations = [
+        'Self', 'int', 'str', '', 'float', 'Any', 'None'
+    ]
+    result = list(parser.func_ann(root, args, has_self=True, cls_method=False))
+    assert result == expected_annotations, f"Expected {expected_annotations}, but got {result}"
+```
+
+# Generated at 2024-06-01 15:24:03.050217
+```python
+    parser = Parser()
+    root = 'test_module'
+    module = ModuleType(root)
+    
+    # Mocking the module with attributes and their docstrings
+    module.func = lambda: None
+    module.func.__doc__ = "Function docstring"
+    module.Class = type('Class', (), {})
+    module.Class.__doc__ = "Class docstring"
+    
+    parser.doc = {
+        'test_module.func': '',
+        'test_module.Class': ''
+    }
+    
+    parser.load_docstring(root, module)
+    
+    assert parser.docstring['test_module.func'] == "Function docstring"
+    assert parser.docstring['test_module.Class'] == "Class docstring"
+```
+
+# Generated at 2024-06-01 15:24:05.819483
+```python
+    parser = Parser()
+    root = 'test_module'
+    module = ModuleType(root)
+    
+    # Mocking the module with attributes and their docstrings
+    module.attr1 = lambda: None
+    module.attr1.__doc__ = "Docstring for attr1"
+    module.attr2 = lambda: None
+    module.attr2.__doc__ = "Docstring for attr2"
+    
+    parser.doc = {
+        f'{root}.attr1': '',
+        f'{root}.attr2': '',
+    }
+    
+    parser.load_docstring(root, module)
+    
+    assert parser.docstring[f'{root}.attr1'] == "Docstring for attr1"
+    assert parser.docstring[f'{root}.attr2'] == "Docstring for attr2"
+```
+
+# Generated at 2024-06-01 15:24:09.043073
+```python
+    parser = Parser()
+    parser.alias = {
+        'module1.func1': 'module1.func1',
+        'module1.Class1': 'module1.Class1',
+        'module2.func2': 'module2.func2'
+    }
+    parser.doc = {
+        'module1.func1': '## func1()\n\n*Full name:* `module1.func1`\n\n',
+        'module1.Class1': '## class Class1\n\n*Full name:* `module1.Class1`\n\n',
+        'module2.func2': '## func2()\n\n*Full name:* `module2.func2`\n\n'
+    }
+    parser.docstring = {
+        'module1.func1': 'Function func1 documentation.',
+        'module1.Class1': 'Class Class1 documentation.',
+        'module2.func2': 'Function func2 documentation.'
+    }
+    parser.const = {
+        'module1.CONST
+
+# Generated at 2024-06-01 15:24:12.337058
+```python
+    parser = Parser()
+    parser.alias = {
+        'module1.func1': 'module1.func1',
+        'module1.Class1': 'module1.Class1',
+        'module2.func2': 'module2.func2',
+    }
+    parser.doc = {
+        'module1.func1': '### func1()\n\n*Full name:* `module1.func1`\n\n',
+        'module1.Class1': '### class Class1\n\n*Full name:* `module1.Class1`\n\n',
+        'module2.func2': '### func2()\n\n*Full name:* `module2.func2`\n\n',
+    }
+    parser.docstring = {
+        'module1.func1': 'Function func1 documentation.',
+        'module1.Class1': 'Class Class1 documentation.',
+        'module2.func2': 'Function func2 documentation.',
+    }
+    parser.root = {
+        'module1.func1
+
+# Generated at 2024-06-01 15:24:15.038478
+```python
+    parser = Parser()
+    root = "test_module"
+    name = "test_function"
+    args = arguments(
+        args=[arg(arg='x', annotation=Name(id='int', ctx=Load()))],
+        vararg=None,
+        kwonlyargs=[],
+        kw_defaults=[],
+        kwarg=None,
+        defaults=[]
+    )
+    returns = Name(id='int', ctx=Load())
+    parser.func_api(root, name, args, returns, has_self=False, cls_method=False)
+    expected_doc = (
+        "test_module.test_function\n\n"
+        "*Full name:* `test_module.test_function`\n\n"
+        "| x | return |\n"
+        "|---|--------|\n"
+        "| int | int |\n"
+    )
+    assert parser.doc[name] == expected_doc
+```

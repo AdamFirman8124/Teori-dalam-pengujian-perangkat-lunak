@@ -1,0 +1,595 @@
+
+
+# Generated at 2024-03-18 01:01:21.246078
+```python
+    retries = 5
+    delay_base = 2
+    delay_threshold = 10
+    backoff = list(generate_jittered_backoff(retries, delay_base, delay_threshold))
+
+    assert len(backoff) == retries, "Number of backoff entries should be equal to retries"
+    for delay in backoff:
+        assert 0 <= delay <= delay_threshold, "Delay should be within the threshold"
+        assert isinstance(delay, int), "Delay should be an integer"
+```
+
+# Generated at 2024-03-18 01:01:28.839370
+```python
+    @rate_limit(rate=2, rate_limit=5)
+    def limited_function():
+        return "Function call"
+
+    start_time = time.time()
+    limited_function()
+    first_call_duration = time.time() - start_time
+
+    start_time = time.time()
+    limited_function()
+    second_call_duration = time.time() - start_time
+
+    assert first_call_duration < 2.5, "First call should not be rate limited"
+    assert second_call_duration >= 2.5, "Second call should be rate limited to at least 2.5 seconds"
+```
+
+# Generated at 2024-03-18 01:01:38.331931
+```python
+    def should_retry_test_exception(exception):
+        return isinstance(exception, ValueError)
+
+    @retry_with_delays_and_condition(
+        backoff_iterator=generate_jittered_backoff(retries=3, delay_base=1, delay_threshold=5),
+        should_retry_error=should_retry_test_exception
+    )
+    def function_that_might_fail(attempt):
+        if attempt < 2:
+            raise ValueError("Failing as part of the test")
+        return "Success"
+
+    # Test successful retry
+    assert function_that_might_fail(2) == "Success"
+
+    # Test retry until failure
+    try:
+        function_that_might_fail(0)
+    except ValueError as e:
+        assert str(e) == "Failing as part of the test"
+    else:
+        assert False, "Expected a ValueError to be raised"
+
+    # Test no retry on different exception
+    try:
+        @retry_with_delays_and_condition(
+            backoff_iterator=
+
+# Generated at 2024-03-18 01:01:43.613077
+```python
+    @rate_limit(rate=2, rate_limit=5)
+    def limited_function():
+        return "Function call"
+
+    start_time = time.time()
+    limited_function()
+    first_call_duration = time.time() - start_time
+
+    start_time = time.time()
+    limited_function()
+    second_call_duration = time.time() - start_time
+
+    assert first_call_duration < 2.5, "First call should not be rate limited"
+    assert second_call_duration >= 2.5, "Second call should be rate limited to maintain the rate of 2 calls per 5 seconds"
+```
+
+# Generated at 2024-03-18 01:01:46.394519
+```python
+    @retry(retries=3, retry_pause=0.1)
+    def sample_function():
+        raise Exception("Sample failure")
+
+    try:
+        sample_function()
+    except Exception as e:
+        assert str(e) == "Retry limit exceeded: 3"
+```
+
+# Generated at 2024-03-18 01:01:52.917294
+```python
+    @rate_limit(rate=2, rate_limit=4)
+    def limited_function():
+        return "Function called"
+
+    start_time = time.time()
+    limited_function()
+    first_call_duration = time.time() - start_time
+
+    start_time = time.time()
+    limited_function()
+    second_call_duration = time.time() - start_time
+
+    # Since the rate is 2 calls per 4 seconds, the second call should not be delayed.
+    assert first_call_duration < 0.1, "First call should not be delayed"
+    assert second_call_duration < 0.1, "Second call should not be delayed"
+
+    # Now test with a delay
+    @rate_limit(rate=1, rate_limit=2)
+    def delayed_function():
+        return "Delayed function called"
+
+    start_time = time.time()
+    delayed_function()
+    first_call_duration = time.time() - start_time
+
+    start_time = time.time()
+    delayed_function()
+
+
+# Generated at 2024-03-18 01:01:57.111849
+```python
+    @rate_limit(rate=2, rate_limit=1)
+    def limited_function():
+        return "Function call"
+
+    start_time = time.time()
+    limited_function()
+    first_call_duration = time.time() - start_time
+
+    start_time = time.time()
+    limited_function()
+    second_call_duration = time.time() - start_time
+
+    assert first_call_duration < 0.5, "First call should not be delayed"
+    assert second_call_duration >= 0.5, "Second call should be delayed by rate limit"
+```
+
+# Generated at 2024-03-18 01:02:00.708919
+```python
+    retries = 5
+    delay_base = 2
+    delay_threshold = 10
+    backoff = list(generate_jittered_backoff(retries, delay_base, delay_threshold))
+
+    assert len(backoff) == retries, "Number of backoff entries should be equal to retries"
+    for delay in backoff:
+        assert 0 <= delay <= delay_threshold, "Delay should be within the threshold"
+        assert delay <= delay_base * 2 ** backoff.index(delay), "Delay should not exceed exponential backoff calculation"
+```
+
+# Generated at 2024-03-18 01:02:06.796836
+```python
+    @rate_limit(rate=2, rate_limit=4)
+    def limited_function():
+        return "Function call"
+
+    start_time = time.time()
+    limited_function()
+    first_call_duration = time.time() - start_time
+
+    start_time = time.time()
+    limited_function()
+    second_call_duration = time.time() - start_time
+
+    # Since the rate is 2 per 4 seconds, we expect the second call to be delayed
+    assert first_call_duration < 0.1, "First call should not be delayed"
+    assert second_call_duration >= 2, "Second call should be delayed by at least 2 seconds"
+```
+
+# Generated at 2024-03-18 01:02:10.000428
+```python
+    @retry(retries=3, retry_pause=0.1)
+    def sample_function():
+        raise Exception("Sample exception for testing retry")
+
+    try:
+        sample_function()
+        assert False, "sample_function did not raise an exception"
+    except Exception as e:
+        assert str(e) == "Retry limit exceeded: 3", "Unexpected exception message: {}".format(str(e))
+```
+
+# Generated at 2024-03-18 01:02:21.207445
+```python
+    @retry(retries=3, retry_pause=0.1)
+    def function_that_might_fail():
+        if random.choice([True, False]):
+            raise ValueError("Random failure occurred")
+        return "Success"
+
+    try:
+        result = function_that_might_fail()
+        assert result == "Success", "Function did not return success after retries"
+    except Exception as e:
+        assert isinstance(e, ValueError), "Unexpected exception type raised"
+        assert str(e) == "Retry limit exceeded: 3", "Incorrect exception message for retry limit exceeded"
+```
+
+# Generated at 2024-03-18 01:02:26.166037
+```python
+    @rate_limit(rate=2, rate_limit=5)
+    def limited_function():
+        return "Function called"
+
+    start_time = time.time()
+    limited_function()
+    first_call_duration = time.time() - start_time
+
+    start_time = time.time()
+    limited_function()
+    second_call_duration = time.time() - start_time
+
+    # Since the rate is 2 calls per 5 seconds, the second call should be delayed
+    # so that there is at least a 5 second gap between the calls.
+    assert first_call_duration < 0.1, "First call should not be delayed"
+    assert second_call_duration >= 2.5, "Second call should be delayed to maintain rate limit"
+```
+
+# Generated at 2024-03-18 01:02:31.103983
+```python
+    @retry(retries=3, retry_pause=0.1)
+    def sample_function():
+        return "sample result"
+
+    @retry(retries=3, retry_pause=0.1)
+    def failing_function():
+        raise Exception("Fail")
+
+    # Test successful execution
+    assert sample_function() == "sample result", "The sample_function did not return the expected result."
+
+    # Test retries and exception raising
+    try:
+        failing_function()
+        assert False, "The failing_function did not raise an exception as expected."
+    except Exception as e:
+        assert str(e) == "Retry limit exceeded: 3", "The failing_function did not raise the correct exception message."
+```
+
+# Generated at 2024-03-18 01:02:35.677721
+```python
+    @retry(retries=3, retry_pause=0.1)
+    def sample_function():
+        return "sample result"
+
+    @retry(retries=3, retry_pause=0.1)
+    def failing_function():
+        raise Exception("Fail")
+
+    # Test successful execution
+    assert sample_function() == "sample result", "The sample_function did not return the expected result."
+
+    # Test retries and exception raising
+    try:
+        failing_function()
+        assert False, "The failing_function did not raise an exception as expected."
+    except Exception as e:
+        assert str(e) == "Retry limit exceeded: 3", "The failing_function did not raise the correct exception message."
+```
+
+# Generated at 2024-03-18 01:02:43.814000
+```python
+    # Test with default parameters
+    delays = list(generate_jittered_backoff())
+    assert len(delays) == 10
+    assert all(0 <= delay <= 60 for delay in delays)
+
+    # Test with custom parameters
+    custom_retries = 5
+    custom_delay_base = 2
+    custom_delay_threshold = 30
+    custom_delays = list(generate_jittered_backoff(retries=custom_retries, delay_base=custom_delay_base, delay_threshold=custom_delay_threshold))
+    assert len(custom_delays) == custom_retries
+    assert all(0 <= delay <= custom_delay_threshold for delay in custom_delays)
+    assert all(delay <= custom_delay_base * 2 ** i for i, delay in enumerate(custom_delays))
+
+    # Test with a large number of retries to ensure exponential growth is capped by delay_threshold
+    large_retries = 20
+    large_delays = list(generate
+
+# Generated at 2024-03-18 01:02:47.821784
+```python
+    @retry(retries=3, retry_pause=0.1)
+    def sample_function():
+        return "sample response"
+
+    @retry(retries=3, retry_pause=0.1)
+    def failing_function():
+        raise Exception("Fail")
+
+    # Test successful execution
+    assert sample_function() == "sample response", "The sample_function did not return the expected response"
+
+    # Test retries and exception
+    try:
+        failing_function()
+        assert False, "failing_function did not raise an exception"
+    except Exception as e:
+        assert str(e) == "Retry limit exceeded: 3", "The exception message was not as expected"
+```
+
+# Generated at 2024-03-18 01:02:51.364603
+```python
+    @retry(retries=3, retry_pause=0.1)
+    def function_that_might_fail():
+        if random.choice([True, False]):
+            raise ValueError("Random failure occurred")
+        return "Success"
+
+    try:
+        result = function_that_might_fail()
+        assert result == "Success", "Function did not return success after retries"
+    except Exception as e:
+        assert isinstance(e, ValueError), "Unexpected exception type raised"
+        assert str(e) == "Retry limit exceeded: 3", "Incorrect exception message for retry limit exceeded"
+```
+
+# Generated at 2024-03-18 01:02:57.234575
+```python
+    @retry(retries=3, retry_pause=0.1)
+    def sample_function():
+        return "sample result"
+
+    # Mocking a function that raises an exception to test retries
+    class CustomException(Exception):
+        pass
+
+    @retry(retries=3, retry_pause=0.1)
+    def failing_function():
+        raise CustomException("Function failed")
+
+    # Test successful execution without retries
+    assert sample_function() == "sample result", "The function did not return the expected result"
+
+    # Test retries and exception handling
+    try:
+        failing_function()
+        assert False, "The function should have raised an exception after retries"
+    except CustomException as e:
+        assert str(e) == "Function failed", "The function did not raise the expected exception"
+```
+
+# Generated at 2024-03-18 01:03:00.933270
+```python
+    retries = 5
+    delay_base = 2
+    delay_threshold = 10
+    backoff = list(generate_jittered_backoff(retries, delay_base, delay_threshold))
+
+    assert len(backoff) == retries
+    for delay in backoff:
+        assert 0 <= delay <= delay_threshold
+        assert delay <= delay_base * 2 ** backoff.index(delay)
+
+    # Test that the delays increase
+    for i in range(1, len(backoff)):
+        assert backoff[i] >= backoff[i - 1] or backoff[i] == 0
+```
+
+# Generated at 2024-03-18 01:03:06.325979
+```python
+    def should_retry_test_exception(exception):
+        return isinstance(exception, TestException)
+
+    class TestException(Exception):
+        pass
+
+    class OtherException(Exception):
+        pass
+
+    # Test function that will raise TestException until max_attempts is reached
+    max_attempts = 3
+    attempt_counter = [0]  # Using a list to modify the counter in the nested function
+
+    def test_function():
+        attempt_counter[0] += 1
+        if attempt_counter[0] < max_attempts:
+            raise TestException("Test exception occurred")
+        return "Success"
+
+    # Create a backoff iterator with no delay for testing purposes
+    backoff = (0 for _ in range(max_attempts))
+
+    # Wrap the test function with the retry decorator
+    retry_test_function = retry_with_delays_and_condition(
+        backoff_iterator=backoff,
+        should_retry_error=should_retry_test_exception
+    )(test_function)
+
+    # Test successful retry
+    assert
+
+# Generated at 2024-03-18 01:03:17.427567
+```python
+    @rate_limit(rate=2, rate_limit=5)
+    def limited_function():
+        return "Function called"
+
+    start_time = time.time()
+    limited_function()
+    first_call_duration = time.time() - start_time
+
+    start_time = time.time()
+    limited_function()
+    second_call_duration = time.time() - start_time
+
+    # Since the rate is 2 calls per 5 seconds, the second call should be delayed
+    # so that there is at least a 5 second gap between the two calls.
+    assert first_call_duration < 0.1, "First call should not be delayed"
+    assert second_call_duration >= 2.5, "Second call should be delayed to maintain rate limit"
+```
+
+# Generated at 2024-03-18 01:03:19.944412
+```python
+    @retry(retries=3, retry_pause=0.1)
+    def sample_function():
+        raise Exception("Sample failure")
+
+    try:
+        sample_function()
+    except Exception as e:
+        assert str(e) == "Retry limit exceeded: 3"
+```
+
+# Generated at 2024-03-18 01:03:23.396256
+```python
+    @retry(retries=3, retry_pause=0.1)
+    def sample_function():
+        return "sample response"
+
+    @retry(retries=3, retry_pause=0.1)
+    def failing_function():
+        raise Exception("Fail")
+
+    # Test successful execution
+    assert sample_function() == "sample response", "Function did not return expected result"
+
+    # Test retries and exception
+    try:
+        failing_function()
+        assert False, "Exception was expected but not raised"
+    except Exception as e:
+        assert str(e) == "Retry limit exceeded: 3", "Unexpected exception message: {}".format(str(e))
+```
+
+# Generated at 2024-03-18 01:03:27.463463
+```python
+    @retry(retries=3, retry_pause=0.1)
+    def function_that_might_fail():
+        if random.choice([True, False]):
+            raise ValueError("Random failure occurred")
+        return "Success"
+
+    try:
+        result = function_that_might_fail()
+        assert result == "Success", "Function did not return success as expected"
+    except Exception as e:
+        assert isinstance(e, ValueError), "Unexpected exception type raised"
+        assert str(e) == "Retry limit exceeded: 3", "Unexpected exception message"
+
+    print("test_retry passed")
+
+test_retry()
+```
+
+# Generated at 2024-03-18 01:03:32.221171
+```python
+    @rate_limit(rate=2, rate_limit=4)
+    def limited_function():
+        return "Function called"
+
+    start_time = time.time()
+    limited_function()  # First call should not be delayed
+    first_call_time = time.time() - start_time
+
+    limited_function()  # Second call should be delayed
+    second_call_time = time.time() - start_time
+
+    assert first_call_time < 1, "First call was delayed"
+    assert second_call_time >= 2, "Second call was not delayed properly"
+    assert second_call_time < 3, "Second call was delayed too long"
+```
+
+# Generated at 2024-03-18 01:03:38.871994
+```python
+    @retry(retries=3, retry_pause=0.1)
+    def sample_function():
+        return "sample result"
+
+    # Test with a function that should not raise an exception
+    try:
+        result = sample_function()
+        assert result == "sample result", "Function did not return the expected result."
+    except Exception as e:
+        assert False, f"Function raised an unexpected exception: {e}"
+
+    # Test with a function that should raise an exception on the first two calls and succeed on the third
+    call_count = [0]
+
+    @retry(retries=3, retry_pause=0.1)
+    def failing_function():
+        call_count[0] += 1
+        if call_count[0] < 3:
+            raise ValueError("Function failed as expected")
+        return "success"
+
+    try:
+        result = failing_function()
+        assert result == "success", "Function did not return success on the third attempt."
+
+
+# Generated at 2024-03-18 01:03:43.004043
+```python
+    @rate_limit(rate=2, rate_limit=4)
+    def limited_function():
+        return "Function called"
+
+    start_time = time.time()
+    limited_function()
+    first_call_duration = time.time() - start_time
+
+    start_time = time.time()
+    limited_function()
+    second_call_duration = time.time() - start_time
+
+    # Since the rate is 2 calls per 4 seconds, the second call should be delayed
+    # so that there is at least a 2-second gap between the calls.
+    assert first_call_duration < 0.1, "First call should not be delayed"
+    assert second_call_duration >= 2, "Second call should be delayed by at least 2 seconds"
+```
+
+# Generated at 2024-03-18 01:03:46.339637
+```python
+    @retry(retries=3, retry_pause=0.1)
+    def function_that_might_fail():
+        if random.choice([True, False]):
+            raise ValueError("Random failure occurred")
+        return "Success"
+
+    try:
+        result = function_that_might_fail()
+        assert result == "Success", "Function did not return success as expected"
+    except Exception as e:
+        assert isinstance(e, ValueError), "Unexpected exception type raised"
+        assert str(e) == "Retry limit exceeded: 3", "Unexpected exception message"
+```
+
+# Generated at 2024-03-18 01:03:51.261694
+```python
+    def should_retry_on_value_error(exception):
+        return isinstance(exception, ValueError)
+
+    @retry_with_delays_and_condition(generate_jittered_backoff(retries=3, delay_base=1), should_retry_error=should_retry_on_value_error)
+    def function_that_may_fail(attempt):
+        if attempt < 2:
+            raise ValueError("Failing as part of the test")
+        return "Success"
+
+    # Test successful retry
+    assert function_that_may_fail(3) == "Success"
+
+    # Test retry limit exceeded
+    try:
+        function_that_may_fail(1)
+    except ValueError as e:
+        assert str(e) == "Failing as part of the test"
+    else:
+        assert False, "Expected a ValueError but did not get one"
+
+    # Test no retry on different exception
+    try:
+        @retry_with_delays_and_condition(generate_jittered_backoff(retries=3, delay_base=
+
+# Generated at 2024-03-18 01:03:54.312929
+```python
+    @rate_limit(rate=2, rate_limit=5)
+    def limited_function():
+        return "Function called"
+
+    start_time = time.time()
+    limited_function()
+    first_call_duration = time.time() - start_time
+
+    start_time = time.time()
+    limited_function()
+    second_call_duration = time.time() - start_time
+
+    assert first_call_duration < 2.5, "First call should not be rate limited"
+    assert second_call_duration >= 2.5, "Second call should be delayed to enforce rate limiting"
+```

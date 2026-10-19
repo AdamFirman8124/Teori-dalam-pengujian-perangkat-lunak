@@ -1,0 +1,1556 @@
+
+
+# Generated at 2024-03-18 07:34:42.688093
+```python
+    # Setup the router with a valid dynamic route
+    router = Router()
+    router.add(uri="/test/<param>", methods=["GET"], handler=lambda x: x)
+
+    # Finalize the router without any issues
+    router.finalize()
+
+    # Setup the router with an invalid dynamic route
+    router = Router()
+    router.add(uri="/test/<__invalid__param__>", methods=["GET"], handler=lambda x: x)
+
+    # Expecting an exception due to invalid route parameter name
+    try:
+        router.finalize()
+        assert False, "SanicException was not raised for invalid route parameter name"
+    except SanicException as e:
+        assert str(e) == "Invalid route: <Route: name=None path='/test/<__invalid__param__>' methods={'GET'}>. Parameter names cannot use '__'."
+```
+
+# Generated at 2024-03-18 07:34:49.366361
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    @router.add(uri="/dummy", methods=["GET"], handler=lambda x: x)
+    def dummy_handler(request):
+        return "dummy response"
+
+    route, handler, extras = router.get("/dummy", "GET", None)
+    assert route.uri == "/dummy"
+    assert handler(None) == "dummy response"
+    assert extras == {}
+
+    # Test that NotFound is raised for non-existent route
+    try:
+        router.get("/nonexistent", "GET", None)
+        assert False, "NotFound exception not raised"
+    except NotFound:
+        assert True
+
+    #
+
+# Generated at 2024-03-18 07:34:53.504617
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx == {}
+    assert router.finalized is False
+    assert router._get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.find_route_by_view_name.cache_info().maxsize == ROUTER_CACHE_SIZE
+```
+
+# Generated at 2024-03-18 07:34:59.654240
+```python
+    # Setup the router
+    router = Router()
+
+    # Add a valid dynamic route
+    router.add(uri="/valid/<param>", methods=["GET"], handler=lambda x: x)
+
+    # Add a route with an invalid parameter name
+    router.add(uri="/invalid/<__param__>", methods=["GET"], handler=lambda x: x)
+
+    # Finalize the router and expect an exception for the invalid route
+    try:
+        router.finalize()
+        assert False, "SanicException was not raised for invalid route parameter"
+    except SanicException as e:
+        assert str(e) == "Invalid route: <Route: GET /invalid/<__param__>>. Parameter names cannot use '__'."
+```
+
+# Generated at 2024-03-18 07:35:07.878843
+```python
+    # Setup the router with a valid dynamic route
+    router = Router()
+    router.add('/test/<param>', ['GET'], lambda request: 'OK')
+
+    # Finalize the router without any issues
+    router.finalize()
+
+    # Add a route with an invalid parameter name
+    router.add('/test/__invalid__', ['GET'], lambda request: 'OK')
+
+    # Expecting an exception when finalizing the router with an invalid route
+    try:
+        router.finalize()
+        assert False, "SanicException was not raised for invalid route parameter"
+    except SanicException as e:
+        assert str(e) == "Invalid route: <Route: /test/__invalid__ [GET]>. Parameter names cannot use '__'."
+```
+
+# Generated at 2024-03-18 07:35:14.191984
+```python
+    # Setup
+    router = Router()
+
+    # Test finalize with valid dynamic route
+    router.add(uri="/test/<param>", methods=["GET"], handler=lambda x: x)
+    router.finalize()
+
+    # Test finalize with invalid dynamic route
+    try:
+        router.add(uri="/test/__invalid__param__", methods=["GET"], handler=lambda x: x)
+        router.finalize()
+    except SanicException as e:
+        assert str(e) == "Invalid route: <Route: name=None path='/test/<__invalid__param__>' methods={'GET'}>. Parameter names cannot use '__'."
+
+    # Test finalize with allowed label
+    router.add(uri="/test/<__file_uri__>", methods=["GET"], handler=lambda x: x)
+    router.finalize()
+```
+
+# Generated at 2024-03-18 07:35:20.574146
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    async def dummy_handler(request):
+        return "dummy response"
+
+    route = router.add(uri="/dummy", methods=["GET"], handler=dummy_handler)
+    assert route.handler == dummy_handler
+    assert route.methods == {"GET"}
+    assert router.routes_all.get("/dummy") == route
+
+    # Test that the route can be retrieved by the get method
+    resolved_route, handler, extras = router.get(path="/dummy", method="GET", host=None)
+    assert resolved_route == route
+    assert handler == dummy_handler
+    assert extras == {}
+
+    # Test that
+
+# Generated at 2024-03-18 07:35:33.457485
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    async def dummy_handler(request):
+        return "dummy response"
+
+    route = router.add(uri="/dummy", methods=["GET"], handler=dummy_handler)
+    assert route.handler == dummy_handler
+    assert route.methods == {"GET"}
+    assert router.routes_all.get("/dummy") == route
+
+    # Test that the route can be retrieved by the _get method
+    resolved_route, handler, extras = router._get("/dummy", "GET", None)
+    assert resolved_route == route
+    assert handler == dummy_handler
+
+    # Test that a non-existent route raises a
+
+# Generated at 2024-03-18 07:35:39.698944
+```python
+    # Setup
+    router = Router()
+
+    # Test finalize with valid dynamic route
+    router.add('/test/<param>', ['GET'], lambda x: x)
+    router.finalize()
+    assert len(router.routes_dynamic) == 1
+
+    # Test finalize with invalid dynamic route
+    try:
+        router.add('/test/<__invalid_param__>', ['GET'], lambda x: x)
+        router.finalize()
+    except SanicException as e:
+        assert str(e) == "Invalid route: <Route: name=None path='/test/<__invalid_param__>' methods={'GET'}>. Parameter names cannot use '__'."
+
+    # Test finalize with allowed label
+    router.add('/test/<__file_uri__>', ['GET'], lambda x: x)
+    router.finalize()
+    assert len(router.routes_dynamic) == 2  # Assuming the previous invalid route was not added
+```
+
+# Generated at 2024-03-18 07:35:48.102673
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    @router.add(uri="/dummy", methods=["GET"], handler=lambda x: x)
+    def dummy_handler(request):
+        return "dummy response"
+
+    route, handler, extras = router.get("/dummy", "GET", None)
+    assert route is not None
+    assert handler is not None
+    assert extras == {}
+
+    # Test that NotFound is raised for non-existent route
+    try:
+        router.get("/nonexistent", "GET", None)
+    except NotFound as e:
+        assert str(e) == "Requested URL /nonexistent not found"
+
+    # Test
+
+# Generated at 2024-03-18 07:35:59.478598
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+    assert router.ctx.app is None
+    assert router.ctx.router == router
+    assert router.ctx.route_name == ""
+```
+
+# Generated at 2024-03-18 07:36:04.694908
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx == {}
+    assert router.finalized is False
+    assert router._get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.find_route_by_view_name.cache_info().maxsize == ROUTER_CACHE_SIZE
+```
+
+# Generated at 2024-03-18 07:36:08.141611
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == [None]
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:36:18.200455
+```python
+    # Setup router instance
+    router = Router()
+
+    # Define a simple handler function
+    def handler(request):
+        return "Hello, world!"
+
+    # Add a route to the router
+    route = router.add(uri="/test", methods=["GET"], handler=handler)
+
+    # Check if the route is added correctly
+    assert isinstance(route, Route)
+    assert route.path == "/test"
+    assert "GET" in route.methods
+    assert route.handler == handler
+
+    # Add a route with a version
+    route_with_version = router.add(uri="/versioned", methods=["GET"], handler=handler, version=1)
+
+    # Check if the versioned route is added correctly
+    assert isinstance(route_with_version, Route)
+    assert route_with_version.path == "/v1/versioned"
+    assert "GET" in route_with_version.methods
+    assert route_with_version.handler == handler
+
+    # Add a route with a custom name
+    named
+
+# Generated at 2024-03-18 07:36:24.511731
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:36:29.608359
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == [None]
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:36:40.401077
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    async def dummy_handler(request):
+        return "dummy response"
+
+    route = router.add(uri="/dummy", methods=["GET"], handler=dummy_handler)
+    assert route.handler == dummy_handler
+    assert route.methods == {"GET"}
+    assert router.routes_all.get("/dummy") == route
+
+    # Test that the route can be retrieved by the _get method
+    resolved_route, handler, extras = router._get("/dummy", "GET", None)
+    assert resolved_route == route
+    assert handler == dummy_handler
+
+    # Test that the route can be retrieved by
+
+# Generated at 2024-03-18 07:36:46.849735
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx == {}
+    assert router.finalized is False
+    assert router._get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.find_route_by_view_name.cache_info().maxsize == ROUTER_CACHE_SIZE
+```
+
+# Generated at 2024-03-18 07:36:50.277839
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:36:55.885947
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx == {}
+    assert router.finalized is False
+    assert router._get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.find_route_by_view_name.cache_info().maxsize == ROUTER_CACHE_SIZE
+```
+
+# Generated at 2024-03-18 07:37:13.794866
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    async def dummy_handler(request):
+        return "dummy response"
+
+    route = router.add(uri="/dummy", methods=["GET"], handler=dummy_handler)
+    assert route.handler == dummy_handler
+    assert route.methods == {"GET"}
+    assert router.routes_all.get("/dummy") == route
+
+    # Test that the route can be retrieved by the get method
+    resolved_route, handler, extras = router.get(path="/dummy", method="GET", host=None)
+    assert resolved_route == route
+    assert handler == dummy_handler
+    assert extras == {}
+
+    # Test that
+
+# Generated at 2024-03-18 07:37:21.815016
+```python
+    # Instantiate a Router object
+    router = Router()
+
+    # Check if the router is an instance of BaseRouter
+    assert isinstance(router, BaseRouter), "Router must be an instance of BaseRouter"
+
+    # Check if the default method is set correctly
+    assert router.DEFAULT_METHOD == "GET", "Default method should be GET"
+
+    # Check if the allowed methods are set correctly
+    assert router.ALLOWED_METHODS == HTTP_METHODS, "Allowed methods should match HTTP_METHODS"
+
+    # Check if the cache size is set correctly
+    assert router.get.cache_info().maxsize == ROUTER_CACHE_SIZE, "Cache size should be set to ROUTER_CACHE_SIZE"
+
+    # Check if the find_route_by_view_name cache size is set correctly
+    assert router.find_route_by_view_name.cache_info().maxsize == ROUTER_CACHE_SIZE, "Cache size should be set to ROUTER_CACHE_SIZE"
+
+    # Check if the router has the correct
+
+# Generated at 2024-03-18 07:37:30.668303
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    @router.add(uri="/dummy", methods=["GET"], handler=lambda x: x)
+    def dummy_handler(request):
+        return "dummy response"
+
+    route, handler, extras = router.get("/dummy", "GET", None)
+    assert route.uri == "/dummy"
+    assert handler.__name__ == "dummy_handler"
+    assert extras == {}
+
+    # Test that NotFound is raised for non-existent route
+    try:
+        router.get("/nonexistent", "GET", None)
+    except NotFound as e:
+        assert str(e) == "Requested URL /nonexistent not
+
+# Generated at 2024-03-18 07:37:37.751117
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    async def dummy_handler(request):
+        return "dummy response"
+
+    route = router.add(uri="/dummy", methods=["GET"], handler=dummy_handler)
+    assert route.handler == dummy_handler
+    assert route.methods == {"GET"}
+    assert "/dummy" in router.routes_all
+
+    # Test that the route can be retrieved by the view name
+    route_by_name = router.find_route_by_view_name("dummy_handler")
+    assert route_by_name == route
+
+    # Test that the route can be retrieved by the path
+    resolved_route, handler, extras = router.get
+
+# Generated at 2024-03-18 07:37:40.754985
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:37:46.180367
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:37:53.249655
+```python
+    # Setup
+    router = Router()
+    handler = lambda request: 'response'
+    uri = '/test'
+    methods = ['GET']
+
+    # Test adding a route
+    route = router.add(uri, methods, handler)
+    assert isinstance(route, Route)
+    assert route.path == uri
+    assert route.handler == handler
+    assert 'GET' in route.methods
+
+    # Test adding a route with a version
+    versioned_route = router.add(uri, methods, handler, version=1)
+    assert isinstance(versioned_route, Route)
+    assert versioned_route.path == '/v1/test'
+
+    # Test adding a route with a host
+    host_route = router.add(uri, methods, handler, host='example.com')
+    assert isinstance(host_route, Route)
+    assert 'example.com' in host_route.ctx.hosts
+
+    # Test adding a route with strict slashes
+    strict_route = router.add(uri, methods, handler, strict
+
+# Generated at 2024-03-18 07:38:02.348209
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:38:07.925136
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:38:11.266037
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == [None]
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:38:36.690801
+```python
+    # Setup
+    router = Router()
+    handler = lambda request: 'response'
+    uri = '/test'
+    methods = ['GET']
+
+    # Test adding a route
+    route = router.add(uri, methods, handler)
+    assert isinstance(route, Route)
+    assert route.path == uri
+    assert route.handler == handler
+    assert set(route.methods) == set(methods)
+
+    # Test adding a route with a version
+    versioned_route = router.add(uri, methods, handler, version=1)
+    assert isinstance(versioned_route, Route)
+    assert versioned_route.path == '/v1/test'
+
+    # Test adding a route with a host
+    host_route = router.add(uri, methods, handler, host='example.com')
+    assert isinstance(host_route, Route)
+    assert 'example.com' in host_route.ctx.hosts
+
+    # Test adding a route with strict slashes
+    strict_route = router.add(uri, methods, handler
+
+# Generated at 2024-03-18 07:38:40.238702
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:38:43.877726
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == [None]
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:38:52.673878
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    @router.add(uri="/dummy", methods=["GET"], handler=lambda x: x)
+    def dummy_handler(request):
+        return "dummy response"
+
+    route, handler, extras = router.get("/dummy", "GET", None)
+    assert route.uri == "/dummy"
+    assert handler(None) == "dummy response"
+    assert extras == {}
+
+    # Test that NotFound is raised for a non-existent route
+    try:
+        router.get("/nonexistent", "GET", None)
+        assert False, "NotFound exception not raised"
+    except NotFound:
+        assert True
+
+   
+
+# Generated at 2024-03-18 07:38:59.277873
+```python
+    # Setup router instance
+    router = Router()
+
+    # Define a simple handler function
+    def handler(request):
+        return "OK"
+
+    # Add a route to the router
+    route = router.add(uri="/test", methods=["GET"], handler=handler)
+
+    # Check if the route is added correctly
+    assert isinstance(route, Route)
+    assert route.path == "/test"
+    assert "GET" in route.methods
+    assert route.handler == handler
+
+    # Add a route with a version
+    route_with_version = router.add(uri="/test", methods=["GET"], handler=handler, version=1)
+
+    # Check if the route with version is added correctly
+    assert isinstance(route_with_version, Route)
+    assert route_with_version.path == "/v1/test"
+    assert "GET" in route_with_version.methods
+    assert route_with_version.handler == handler
+
+    # Add a route with a custom name
+    named_route = router.add
+
+# Generated at 2024-03-18 07:39:05.001697
+```python
+    # Create an instance of the Router
+    router = Router()
+
+    # Check if the router is an instance of BaseRouter
+    assert isinstance(router, BaseRouter)
+
+    # Check if the default method is set correctly
+    assert router.DEFAULT_METHOD == "GET"
+
+    # Check if the allowed methods are set correctly
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+
+    # Check if the cache size is set correctly
+    assert router.get.cache_info().maxsize == ROUTER_CACHE_SIZE
+
+    # Check if the find_route_by_view_name cache size is set correctly
+    assert router.find_route_by_view_name.cache_info().maxsize == ROUTER_CACHE_SIZE
+
+    # Check if the router has no routes initially
+    assert len(router.routes_all) == 0
+    assert len(router.routes_static) == 0
+    assert len(router.routes_dynamic) == 0
+    assert len(router.routes_regex) == 0
+
+    print
+
+# Generated at 2024-03-18 07:39:12.137440
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:39:22.305812
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    @router.add(uri="/dummy", methods=["GET"], handler=lambda x: x)
+    def dummy_handler(request):
+        return "dummy response"
+
+    route, handler, extras = router.get("/dummy", "GET", None)
+    assert route.uri == "/dummy"
+    assert handler(None) == "dummy response"
+    assert extras == {}
+
+    # Test adding a route with a version
+    @router.add(uri="/versioned", methods=["GET"], handler=lambda x: x, version=1)
+    def versioned_handler(request):
+        return "versioned response"
+
+
+
+# Generated at 2024-03-18 07:39:27.978117
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    async def dummy_handler(request):
+        return "dummy response"
+
+    route = router.add(uri="/dummy", methods=["GET"], handler=dummy_handler)
+    assert route in router.routes_all.values()
+
+    # Test that the route can be retrieved by the _get method
+    resolved_route, handler, extras = router._get("/dummy", "GET", None)
+    assert resolved_route == route
+    assert handler == dummy_handler
+    assert extras == {}
+
+    # Test that the route can be retrieved by the get method (cached)
+    resolved_route, handler, extras =
+
+# Generated at 2024-03-18 07:39:35.489249
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:39:56.897724
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx == {}
+    assert router.finalized is False
+    assert router.stack == []
+    assert router._get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.find_route_by_view_name.cache_info().maxsize == ROUTER_CACHE_SIZE
+```
+
+# Generated at 2024-03-18 07:40:00.193483
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == [None]
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:40:09.211228
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    @router.add(uri="/dummy", methods=["GET"], handler=lambda x: x)
+    def dummy_handler(request):
+        return "dummy response"
+
+    route, handler, extras = router.get("/dummy", "GET", None)
+    assert route is not None
+    assert handler is not None
+    assert extras == {}
+
+    # Test that NotFound is raised for a non-existent route
+    try:
+        router.get("/nonexistent", "GET", None)
+        assert False, "NotFound exception not raised"
+    except NotFound:
+        assert True
+
+    # Test that Method
+
+# Generated at 2024-03-18 07:40:14.575968
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx == {}
+    assert router.finalized is False
+    assert router._get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.find_route_by_view_name.cache_info().maxsize == ROUTER_CACHE_SIZE
+```
+
+# Generated at 2024-03-18 07:40:18.109163
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == [None]
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:40:25.566213
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    async def dummy_handler(request):
+        return "dummy response"
+
+    route = router.add(uri="/dummy", methods=["GET"], handler=dummy_handler)
+    assert route.handler == dummy_handler
+    assert route.methods == {"GET"}
+    assert router.routes_all.get("/dummy") == route
+
+    # Test that the route can be retrieved by the _get method
+    resolved_route, handler, extras = router._get("/dummy", "GET", None)
+    assert resolved_route == route
+    assert handler == dummy_handler
+
+    # Test that the route can be retrieved by
+
+# Generated at 2024-03-18 07:40:32.335337
+```python
+    # Create an instance of the Router
+    router = Router()
+
+    # Check if the router is an instance of BaseRouter
+    assert isinstance(router, BaseRouter)
+
+    # Check if the default method is set correctly
+    assert router.DEFAULT_METHOD == "GET"
+
+    # Check if the allowed methods are set correctly
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+
+    # Check if the cache size is set correctly
+    assert router.get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.find_route_by_view_name.cache_info().maxsize == ROUTER_CACHE_SIZE
+
+    # Check if the router has no routes initially
+    assert len(router.routes_all) == 0
+    assert len(router.routes_static) == 0
+    assert len(router.routes_dynamic) == 0
+    assert len(router.routes_regex) == 0
+
+    # Check if the router raises an exception for invalid route parameters
+    with pytest.raises
+
+# Generated at 2024-03-18 07:40:36.333832
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+    assert router.ctx.app is None
+    assert router.ctx.router == router
+    assert router.ctx.route_name == ""
+```
+
+# Generated at 2024-03-18 07:40:39.923533
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == [None]
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:40:42.905853
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:41:22.369467
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    @router.add(uri="/dummy", methods=["GET"], handler=lambda x: x)
+    def dummy_handler(request):
+        return "dummy response"
+
+    route, handler, extras = router.get("/dummy", "GET", None)
+    assert route.uri == "/dummy"
+    assert handler(None) == "dummy response"
+    assert extras == {}
+
+    # Test that NotFound is raised for non-existent route
+    try:
+        router.get("/nonexistent", "GET", None)
+        assert False, "NotFound exception not raised"
+    except NotFound:
+        assert True
+
+    #
+
+# Generated at 2024-03-18 07:41:27.185447
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == [None]
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:41:36.326737
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.routes == []
+    assert router.ctx.hosts == {}
+    assert router.ctx.exceptions == {}
+    assert router.ctx.static_files == {}
+    assert router.ctx.websocket_routes == {}
+    assert router.ctx.middleware == {"request": [], "response": []}
+    assert router.ctx.error_handlers == {}
+    assert router.ctx.listeners == {"before_server_start": [], "after_server_start": [], "before_server_stop": [], "after_server_stop": []}
+    assert router.ctx.named_middleware == {}
+    assert router.ctx.app is None
+```
+
+# Generated at 2024-03-18 07:41:43.206960
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    async def dummy_handler(request):
+        return "dummy response"
+
+    route = router.add(uri="/dummy", methods=["GET"], handler=dummy_handler)
+    assert route.handler == dummy_handler
+    assert route.methods == {"GET"}
+    assert router.routes_all.get("/dummy") == route
+
+    # Test that the route can be retrieved by the get method
+    resolved_route, handler, extras = router.get(path="/dummy", method="GET", host=None)
+    assert resolved_route == route
+    assert handler == dummy_handler
+    assert extras == {}
+
+    # Test that
+
+# Generated at 2024-03-18 07:41:49.402880
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx == {}
+    assert router.finalized is False
+    assert router._get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.find_route_by_view_name.cache_info().maxsize == ROUTER_CACHE_SIZE
+```
+
+# Generated at 2024-03-18 07:41:57.046973
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    async def dummy_handler(request):
+        return "dummy response"
+
+    route = router.add(uri="/dummy", methods=["GET"], handler=dummy_handler)
+    assert route.handler == dummy_handler
+    assert route.methods == {"GET"}
+    assert "/dummy" in router.routes_all
+
+    # Test that the route can be retrieved by the _get method
+    resolved_route, handler, extras = router._get("/dummy", "GET", None)
+    assert resolved_route == route
+    assert handler == dummy_handler
+
+    # Test that the route can be retrieved by the get
+
+# Generated at 2024-03-18 07:42:06.232469
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    @router.add(uri="/dummy", methods=["GET"], handler=lambda x: x)
+    def dummy_handler(request):
+        return "dummy response"
+
+    route, handler, extras = router.get("/dummy", "GET", None)
+    assert route is not None
+    assert handler is not None
+    assert extras == {}
+
+    # Test that the route can be retrieved by name
+    route_by_name = router.find_route_by_view_name("dummy_handler")
+    assert route_by_name is not None
+    assert route_by_name.handler == dummy_handler
+
+    # Test NotFound exception
+
+# Generated at 2024-03-18 07:42:08.863318
+```python
+    # Arrange
+    router = Router()
+
+    # Assert
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+```
+
+# Generated at 2024-03-18 07:42:15.828221
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    async def dummy_handler(request):
+        return "dummy response"
+
+    route = router.add(uri="/dummy", methods=["GET"], handler=dummy_handler)
+    assert route.handler == dummy_handler
+    assert route.methods == {"GET"}
+    assert router.routes_all == {route.path: route}
+    assert router.find_route_by_view_name(route.name) == route
+
+    # Test that the router raises an exception for invalid route parameters
+    try:
+        router.add(uri="/invalid__param", methods=["GET"], handler=dummy_handler)
+        assert False, "Router did not raise
+
+# Generated at 2024-03-18 07:42:18.172445
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+```
+
+# Generated at 2024-03-18 07:43:24.193666
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:43:30.180481
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:43:36.518499
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    async def dummy_handler(request):
+        return "dummy response"
+
+    route = router.add(uri="/dummy", methods=["GET"], handler=dummy_handler)
+    assert route.handler == dummy_handler
+    assert "/dummy" in router.routes_all
+
+    # Test that the route can be retrieved by the GET method
+    resolved_route, handler, extras = router.get("/dummy", "GET", None)
+    assert resolved_route == route
+    assert handler == dummy_handler
+
+    # Test that a non-existent route raises a NotFound exception
+    try:
+        router.get("/nonexistent
+
+# Generated at 2024-03-18 07:43:41.296410
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx == {}
+    assert router.finalized is False
+    assert router._get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.get.cache_info().maxsize == ROUTER_CACHE_SIZE
+    assert router.find_route_by_view_name.cache_info().maxsize == ROUTER_CACHE_SIZE
+```
+
+# Generated at 2024-03-18 07:43:48.107854
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+    assert router.ctx.app is None
+    assert router.ctx.router == router
+    assert router.ctx.token is None
+    assert router.ctx.url_hash == {}
+    assert router.ctx.labels == {}
+    assert router.ctx.requirements == {}
+    assert router.ctx.websocket is False
+    assert router.ctx.version is None
+    assert router.ctx.name is None
+    assert router.ctx.unquote is False
+    assert router.ctx.strict is False
+    assert router.ctx.alt is False
+    assert router.ctx.methods ==
+
+# Generated at 2024-03-18 07:43:51.910639
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx == {}
+    assert router.finalized is False
+    assert router.stack == []
+    assert router.parameter_pattern == "<(.+?)>"
+    assert router.regex_types == {}
+```
+
+# Generated at 2024-03-18 07:43:56.964549
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+    assert router.ctx.app is None
+    assert router.ctx.router == router
+    assert router.ctx.middleware == {"request": [], "response": []}
+    assert router.ctx.exceptions == {}
+    assert router.ctx.error_handler is None
+```
+
+# Generated at 2024-03-18 07:44:04.677293
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.find_route_by_view_name("nonexistent") is None
+
+    # Add a dummy route and test retrieval
+    async def dummy_handler(request):
+        return "dummy response"
+
+    route = router.add(uri="/dummy", methods=["GET"], handler=dummy_handler)
+    assert route.handler == dummy_handler
+    assert route.methods == {"GET"}
+    assert router.routes_all.get("/dummy") == route
+
+    # Test that the route can be retrieved by the get method
+    resolved_route, handler, extras = router.get(path="/dummy", method="GET", host=None)
+    assert resolved_route == route
+    assert handler == dummy_handler
+    assert extras == {}
+
+    # Test that
+
+# Generated at 2024-03-18 07:44:09.997417
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == {}
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == []
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```
+
+# Generated at 2024-03-18 07:44:13.312624
+```python
+    router = Router()
+
+    assert router.DEFAULT_METHOD == "GET"
+    assert router.ALLOWED_METHODS == HTTP_METHODS
+    assert router.routes_all == {}
+    assert router.routes_static == []
+    assert router.routes_dynamic == {}
+    assert router.routes_regex == {}
+    assert router.name_index == {}
+    assert router.ctx.hosts == [None]
+    assert router.ctx.ignore_body is False
+    assert router.ctx.stream is False
+    assert router.ctx.static is False
+```

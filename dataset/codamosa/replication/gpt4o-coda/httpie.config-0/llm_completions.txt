@@ -1,0 +1,4070 @@
+
+
+# Generated at 2024-06-02 15:43:00.208660
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        temp_dir.rmdir()
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:43:03.398163
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON to the file
+        valid_data = {"key": "value"}
+        temp_path.write_text(json.dumps(valid_data))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the data
+        config.load()
+        
+        # Assert the data is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON to the file
+        temp_path.write_text("{invalid json}")
+        
+        # Assert that loading invalid JSON raises ConfigFileError
+        try:
+            config.load()
+        except ConfigFileError:
+            pass
+        else:
+            assert False, "Expected ConfigFileError"
+        
+        # Remove the file to simulate file not found
+        temp
+
+# Generated at 2024-06-02 15:43:05.510007
+```python
+    config_path = Path('test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists(), "Config file was not created"
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value', "Config data was not saved correctly"
+        assert '__meta__' in data, "Meta information was not saved"
+        assert data['__meta__']['httpie'] == __version__, "HTTPie version was not saved in meta"
+
+    config_path.unlink()  # Clean up after test
+```
+
+# Generated at 2024-06-02 15:43:07.147499
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:43:10.348325
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test case 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test case 2: Running on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test case 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+    # Test case 4: X
+
+# Generated at 2024-06-02 15:43:13.260393
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:43:15.100931
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists()
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:43:16.482898
+```python
+    config_path = Path('test_config.json')
+    config_data = {"key": "value"}
+    config_path.write_text(json.dumps(config_data))
+
+    config = BaseConfigDict(config_path)
+    config.load()
+
+    assert config["key"] == "value"
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:43:18.664887
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:43:21.741541
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:43:29.807025
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to ensure the directory is created
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:43:32.900116
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test 2: Windows environment
+    if is_windows:
+        del os.environ[ENV_HTTPIE_CONFIG_DIR]
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()
+
+    # Test 
+
+# Generated at 2024-06-02 15:43:34.807912
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        temp_dir.rmdir()
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:43:37.872191
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {
+            "key": "value"
+        }
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert that the content is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text("{invalid_json}")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e).lower()
+        
+        #
+
+# Generated at 2024-06-02 15:43:39.910595
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists(), "Config file was not created"
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value', "Config data was not saved correctly"
+        assert '__meta__' in data, "Meta information was not saved"
+        assert data['__meta__']['httpie'] == __version__, "HTTPie version was not saved in meta"
+
+    # Clean up
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:43:43.194092
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {
+            "key": "value"
+        }
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert that the content is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text("{ invalid json }")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e)
+        
+        # Remove
+
+# Generated at 2024-06-02 15:43:44.589925
+```python
+    config_path = Path('test_config.json')
+    config_data = {"key": "value"}
+    config_path.write_text(json.dumps(config_data))
+
+    config = BaseConfigDict(config_path)
+    config.load()
+
+    assert config["key"] == "value"
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:43:47.493930
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {
+            "key": "value"
+        }
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert that the content is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text("{invalid_json}")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e).lower()
+        
+        #
+
+# Generated at 2024-06-02 15:43:49.823223
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:43:52.862851
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {
+            "key": "value",
+            "__meta__": {
+                "httpie": "2.4.0"
+            }
+        }
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert the content is loaded correctly
+        assert config['key'] == 'value'
+        assert config['__meta__']['httpie'] == '2.4.0'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text("{ invalid json }")
+        
+        # Attempt to load the invalid
+
+# Generated at 2024-06-02 15:44:00.682361
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:44:02.389095
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:44:05.471716
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON to the file
+        valid_data = {"key": "value"}
+        temp_path.write_text(json.dumps(valid_data))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the data
+        config.load()
+        
+        # Assert the data is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON to the file
+        temp_path.write_text("{invalid json}")
+        
+        # Assert that loading invalid JSON raises ConfigFileError
+        try:
+            config.load()
+        except ConfigFileError:
+            pass
+        else:
+            assert False, "Expected ConfigFileError"
+        
+        # Remove the file and assert that loading non-existent file does
+
+# Generated at 2024-06-02 15:44:08.343860
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test 2: Windows environment
+    if is_windows:
+        del os.environ[ENV_HTTPIE_CONFIG_DIR]
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()
+
+    # Test 
+
+# Generated at 2024-06-02 15:44:11.480658
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:44:13.326758
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:44:16.625677
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {
+            "key": "value"
+        }
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert that the content is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text("{invalid_json}")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e).lower()
+        
+        #
+
+# Generated at 2024-06-02 15:44:19.754733
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    temp_dir = tempfile.TemporaryDirectory()
+    temp_file_path = Path(temp_dir.name) / 'test_config.json'
+
+    # Write a valid JSON to the temp file
+    valid_json_content = {"key": "value"}
+    temp_file_path.write_text(json.dumps(valid_json_content))
+
+    # Initialize BaseConfigDict with the temp file path
+    config = BaseConfigDict(path=temp_file_path)
+
+    # Load the config
+    config.load()
+
+    # Assert that the config was loaded correctly
+    assert config['key'] == 'value'
+
+    # Write an invalid JSON to the temp file
+    temp_file_path.write_text("{invalid_json}")
+
+    # Assert that loading invalid JSON raises ConfigFileError
+    try:
+        config.load()
+    except ConfigFileError:
+        pass
+    else:
+        assert False, "Expected ConfigFileError"
+
+    # Clean up
+    temp_dir
+
+# Generated at 2024-06-02 15:44:23.166731
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON to the file
+        valid_data = {"key": "value"}
+        temp_path.write_text(json.dumps(valid_data))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the data
+        config.load()
+        
+        # Assert the data is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON to the file
+        temp_path.write_text("{invalid json}")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e)
+        
+        # Remove the file to simulate file not found
+        temp
+
+# Generated at 2024-06-02 15:44:26.470901
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as tempdir:
+        temp_path = Path(tempdir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {
+            "key": "value"
+        }
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert that the content is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text("{ invalid json }")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e)
+        
+        # Remove
+
+# Generated at 2024-06-02 15:44:36.262791
+```python
+    config_path = Path('test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists(), "Config file was not created"
+    with config_path.open('r') as f:
+        data = json.load(f)
+        assert data['key'] == 'value', "Config data was not saved correctly"
+        assert '__meta__' in data, "Meta information was not saved"
+        assert data['__meta__']['httpie'] == __version__, "HTTPie version was not saved correctly"
+
+    config_path.unlink()  # Clean up
+```
+
+# Generated at 2024-06-02 15:44:38.860873
+```python
+    config_path = Path('test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists(), "Config file was not created"
+    with config_path.open('r') as f:
+        data = json.load(f)
+        assert data['key'] == 'value', "Config data was not saved correctly"
+        assert '__meta__' in data, "Meta information was not saved"
+        assert data['__meta__']['httpie'] == __version__, "HTTPie version was not saved in meta"
+
+    config_path.unlink()  # Clean up after test
+```
+
+# Generated at 2024-06-02 15:44:41.909620
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:44:44.661592
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {
+            "key": "value"
+        }
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert that the content is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text("{ invalid json }")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e).lower()
+        
+       
+
+# Generated at 2024-06-02 15:44:46.547302
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:44:49.441333
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:44:52.692273
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON to the file
+        valid_data = {"key": "value"}
+        temp_path.write_text(json.dumps(valid_data))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the data
+        config.load()
+        
+        # Assert the data is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON to the file
+        temp_path.write_text("{invalid json}")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e)
+        
+        # Remove the file to test IOError
+        temp_path.unlink
+
+# Generated at 2024-06-02 15:44:56.161276
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:44:57.863556
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists()
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:44:59.746905
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:45:07.260512
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:45:10.190578
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:45:13.160056
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:45:16.192098
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:45:19.710860
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test case 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test case 2: Windows environment
+    if is_windows:
+        del os.environ[ENV_HTTPIE_CONFIG_DIR]
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test case 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir() 
+
+# Generated at 2024-06-02 15:45:23.996396
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {
+            "key": "value"
+        }
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert that the content is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text("{invalid_json}")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e).lower()
+        
+        #
+
+# Generated at 2024-06-02 15:45:26.921560
+```python
+    config_path = Path('test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists(), "Config file was not created"
+    with config_path.open('r') as f:
+        data = json.load(f)
+        assert data['key'] == 'value', "Config data was not saved correctly"
+        assert '__meta__' in data, "Meta information was not saved"
+        assert data['__meta__']['httpie'] == __version__, "HTTPie version was not saved in meta"
+
+    config_path.unlink()  # Clean up after test
+```
+
+# Generated at 2024-06-02 15:45:30.981064
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:45:33.084523
+```python
+    config_path = Path('test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists(), "Config file was not created"
+    with config_path.open('r') as f:
+        data = json.load(f)
+        assert data['key'] == 'value', "Config data was not saved correctly"
+        assert '__meta__' in data, "Meta information was not saved"
+        assert data['__meta__']['httpie'] == __version__, "HTTPie version was not saved in meta"
+
+    config_path.unlink()  # Clean up
+```
+
+# Generated at 2024-06-02 15:45:36.655927
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as tempdir:
+        temp_path = Path(tempdir) / 'config.json'
+        
+        # Write a valid JSON to the file
+        valid_data = {"key": "value"}
+        temp_path.write_text(json.dumps(valid_data))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the data
+        config.load()
+        
+        # Assert the data is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON to the file
+        temp_path.write_text("{invalid json}")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e)
+        
+        # Remove the file to simulate file not found
+        temp
+
+# Generated at 2024-06-02 15:45:44.465570
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to ensure the directory is created
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:45:47.493099
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:45:49.475003
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to ensure the directory is created
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:45:52.749318
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:45:54.563363
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:45:57.848097
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:46:01.117338
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test 2: Windows environment
+    if is_windows:
+        del os.environ[ENV_HTTPIE_CONFIG_DIR]
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+# Generated at 2024-06-02 15:46:03.861072
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:46:06.931600
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:46:07.423977
+```python
+
+# Generated at 2024-06-02 15:46:15.163426
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:46:18.774820
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test case 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test case 2: Running on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test case 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+    # Test case 4: X
+
+# Generated at 2024-06-02 15:46:21.092635
+```python
+    config_path = Path('test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists(), "Config file was not created"
+    with config_path.open('r') as f:
+        data = json.load(f)
+        assert data['key'] == 'value', "Config data was not saved correctly"
+        assert '__meta__' in data, "Meta information was not saved"
+        assert data['__meta__']['httpie'] == __version__, "HTTPie version was not saved in meta"
+
+    config_path.unlink()  # Clean up
+```
+
+# Generated at 2024-06-02 15:46:25.161890
+```python
+    # Backup original environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test case 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test case 2: Running on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test case 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+    # Test case 4:
+
+# Generated at 2024-06-02 15:46:27.197540
+```python
+    config_path = Path('test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists(), "Config file was not created"
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value', "Config data was not saved correctly"
+        assert '__meta__' in data, "Meta information was not saved"
+        assert data['__meta__']['httpie'] == __version__, "HTTPie version was not saved in meta"
+
+    config_path.unlink()  # Clean up after test
+```
+
+# Generated at 2024-06-02 15:46:30.826185
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists()
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:46:35.859187
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:46:38.301856
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:46:41.257023
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    from unittest import mock
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {'key': 'value'}
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Create an instance of BaseConfigDict with the temp file path
+        config = BaseConfigDict(path=temp_path)
+        
+        # Load the config
+        config.load()
+        
+        # Assert that the content was loaded correctly
+        assert config['key'] == 'value'
+        
+        # Test with invalid JSON content
+        temp_path.write_text('invalid json')
+        
+        # Create a new instance of BaseConfigDict with the temp file path
+        config = BaseConfigDict(path=temp_path)
+        
+        # Assert that loading invalid JSON raises ConfigFileError
+        try
+
+# Generated at 2024-06-02 15:46:46.557794
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test case 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test case 2: Running on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test case 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+    # Test case 4: X
+
+# Generated at 2024-06-02 15:46:54.259678
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:46:57.953618
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {
+            "key": "value"
+        }
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert that the content is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text("{invalid_json}")
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Assert that loading invalid JSON raises ConfigFileError
+        try:
+            config.load()
+        except ConfigFileError:
+           
+
+# Generated at 2024-06-02 15:46:59.586404
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:47:01.858510
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:47:03.789016
+```python
+    config_path = Path('test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists()
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:47:07.900524
+```python
+    config_path = Path('test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists(), "Config file was not created"
+    with config_path.open('r') as f:
+        data = json.load(f)
+        assert data['key'] == 'value', "Config data was not saved correctly"
+        assert '__meta__' in data, "Meta information was not saved"
+        assert data['__meta__']['httpie'] == __version__, "HTTPie version was not saved in meta"
+
+    config_path.unlink()  # Clean up after test
+```
+
+# Generated at 2024-06-02 15:47:10.772319
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:47:13.857133
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    from unittest import mock
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {'key': 'value'}
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Test loading the valid JSON content
+        config = BaseConfigDict(temp_path)
+        config.load()
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text('invalid json')
+        
+        # Test loading the invalid JSON content
+        config = BaseConfigDict(temp_path)
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e).lower()
+        
+        # Test loading from a non-existent file
+        non_existent
+
+# Generated at 2024-06-02 15:47:15.938385
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:47:18.891682
+```python
+    # Create a temporary directory for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Test case 1: Valid JSON file
+        valid_data = {"key": "value"}
+        temp_path.write_text(json.dumps(valid_data))
+        config = BaseConfigDict(temp_path)
+        config.load()
+        assert config == valid_data
+
+        # Test case 2: Invalid JSON file
+        temp_path.write_text("{invalid json}")
+        config = BaseConfigDict(temp_path)
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert "invalid baseconfigdict file" in str(e)
+
+        # Test case 3: Non-existent file
+        non_existent_path = Path(temp_dir) / 'non_existent.json'
+        config = BaseConfigDict(non_existent_path)
+        config.load()  # Should not raise an exception
+
+
+# Generated at 2024-06-02 15:47:26.987092
+```python
+    # Backup original environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test case 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test case 2: Running on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test case 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+    # Test case 4:
+
+# Generated at 2024-06-02 15:47:30.285704
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:47:33.301303
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test 2: Windows environment
+    if is_windows:
+        del os.environ[ENV_HTTPIE_CONFIG_DIR]
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test 3: Legacy config directory exists
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()  # Clean up
+
+    # Test
+
+# Generated at 2024-06-02 15:47:36.271409
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as tempdir:
+        temp_path = Path(tempdir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {
+            "key": "value"
+        }
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert that the content is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text("{invalid_json}")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e).lower()
+        
+        #
+
+# Generated at 2024-06-02 15:47:39.834547
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:47:42.159680
+```python
+    config_path = Path('test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists(), "Config file was not created"
+    with config_path.open('r') as f:
+        data = json.load(f)
+        assert data['key'] == 'value', "Config data was not saved correctly"
+        assert '__meta__' in data, "Meta information was not saved"
+        assert data['__meta__']['httpie'] == __version__, "HTTPie version was not saved in meta"
+
+    config_path.unlink()  # Clean up after test
+```
+
+# Generated at 2024-06-02 15:47:43.981402
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:47:47.411309
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test 2: Windows environment
+    if is_windows:
+        del os.environ[ENV_HTTPIE_CONFIG_DIR]
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+# Generated at 2024-06-02 15:47:49.846690
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to ensure the directory is created
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:47:52.952778
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:47:59.310560
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:48:01.045047
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:48:03.592389
+```python
+    config_path = Path('test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists(), "Config file was not created"
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value', "Config data was not saved correctly"
+        assert '__meta__' in data, "Meta information was not saved"
+        assert data['__meta__']['httpie'] == __version__, "HTTPie version was not saved in meta"
+
+    config_path.unlink()  # Clean up after test
+```
+
+# Generated at 2024-06-02 15:48:05.844040
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:48:09.565700
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test 2: Windows environment
+    if is_windows:
+        del os.environ[ENV_HTTPIE_CONFIG_DIR]
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()
+
+    # Test 
+
+# Generated at 2024-06-02 15:48:12.644641
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test 2: Windows environment
+    if is_windows:
+        del os.environ[ENV_HTTPIE_CONFIG_DIR]
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+# Generated at 2024-06-02 15:48:15.993734
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:48:18.009453
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to ensure the directory is created
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:48:21.080274
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {
+            "key": "value"
+        }
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert that the content is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text("{invalid_json}")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e).lower()
+        
+        #
+
+# Generated at 2024-06-02 15:48:23.006733
+```python
+    config_path = Path('test_config.json')
+    config_data = {"key": "value"}
+    config_path.write_text(json.dumps(config_data))
+
+    config = BaseConfigDict(config_path)
+    config.load()
+
+    assert config["key"] == "value"
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:48:29.202779
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:48:30.872378
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:48:33.874253
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:48:37.224408
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:48:40.347276
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {
+            "key": "value"
+        }
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert that the content is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text("{invalid_json}")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e)
+        
+        # Remove the
+
+# Generated at 2024-06-02 15:48:44.865481
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    from unittest import mock
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON to the file
+        valid_data = {"key": "value"}
+        temp_path.write_text(json.dumps(valid_data))
+        
+        # Test loading valid JSON
+        config = BaseConfigDict(temp_path)
+        config.load()
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON to the file
+        temp_path.write_text("{invalid json}")
+        
+        # Test loading invalid JSON
+        config = BaseConfigDict(temp_path)
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e)
+        
+        # Test file not found
+        non_existent_path = Path(temp_dir) / 'non_existent.json'
+
+
+# Generated at 2024-06-02 15:48:47.129171
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:48:50.561722
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test 2: Windows environment
+    if is_windows:
+        del os.environ[ENV_HTTPIE_CONFIG_DIR]
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()
+
+    # Test 
+
+# Generated at 2024-06-02 15:48:54.552052
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:48:56.237137
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists()
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:49:02.048303
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:49:03.755635
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists()
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert 'httpie' in data['__meta__']
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:49:05.261359
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert 'httpie' in data['__meta__']
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:49:08.099860
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:49:11.089251
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:49:14.186830
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:49:16.881608
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:49:18.584724
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:49:22.206389
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:49:23.373613
+```python
+    config_path = Path('test_config.json')
+    config_data = {"key": "value"}
+    config_path.write_text(json.dumps(config_data))
+
+    config = BaseConfigDict(config_path)
+    config.load()
+
+    assert config["key"] == "value"
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:49:29.053711
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:49:30.662448
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:49:32.328320
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:49:36.554135
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_path = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_path.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_path
+    legacy_path.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:49:39.186047
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:49:41.066905
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to ensure the directory is created
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:49:44.268942
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {
+            "key": "value"
+        }
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert that the content is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text("{invalid_json}")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e).lower()
+        
+        #
+
+# Generated at 2024-06-02 15:49:47.289245
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:49:49.237877
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:49:50.923917
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists()
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:49:57.315012
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/config/dir'
+    assert get_default_config_dir() == Path('/custom/config/dir')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:49:59.978098
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:50:01.878349
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:50:05.151641
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:50:07.888715
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON to the file
+        valid_data = {"key": "value"}
+        temp_path.write_text(json.dumps(valid_data))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert the data is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON to the file
+        temp_path.write_text("{invalid_json}")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e).lower()
+        
+        # Remove the file and attempt to load, should
+
+# Generated at 2024-06-02 15:50:12.087195
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:50:14.105154
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:50:17.673025
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test 2: Windows environment
+    if is_windows:
+        del os.environ[ENV_HTTPIE_CONFIG_DIR]
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()
+
+    # Test 
+
+# Generated at 2024-06-02 15:50:21.275058
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:50:24.350591
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test 2: Windows environment
+    if is_windows:
+        del os.environ[ENV_HTTPIE_CONFIG_DIR]
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+# Generated at 2024-06-02 15:50:32.762619
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {
+            "key": "value"
+        }
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert that the content is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text("{invalid_json}")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e).lower()
+        
+        #
+
+# Generated at 2024-06-02 15:50:35.347592
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:50:38.876820
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test 2: Windows environment
+    if is_windows:
+        del os.environ[ENV_HTTPIE_CONFIG_DIR]
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+# Generated at 2024-06-02 15:50:40.974044
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to ensure the directory is created
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:50:43.082767
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:50:46.991499
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test 2: Windows environment
+    if is_windows:
+        del os.environ[ENV_HTTPIE_CONFIG_DIR]
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+# Generated at 2024-06-02 15:50:48.866069
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:50:50.960099
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:50:55.415599
+```python
+    # Backup original environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test case 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test case 2: Running on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test case 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+    # Test case 4:
+
+# Generated at 2024-06-02 15:50:59.702890
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+    # Test
+
+# Generated at 2024-06-02 15:51:04.928328
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to ensure the directory is created
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:51:08.046430
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test 2: Windows environment
+    if is_windows:
+        del os.environ[ENV_HTTPIE_CONFIG_DIR]
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+# Generated at 2024-06-02 15:51:11.152967
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:51:14.757401
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:51:16.954484
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:51:19.841508
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:51:22.730808
+```python
+    config_path = Path('/tmp/test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists()
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:51:29.839892
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test 2: Windows environment
+    if is_windows:
+        del os.environ[ENV_HTTPIE_CONFIG_DIR]
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test 3: Legacy config directory exists
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()  # Clean up
+
+    # Test
+
+# Generated at 2024-06-02 15:51:31.587143
+```python
+    config_path = Path('test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists()
+    with config_path.open('r') as f:
+        data = json.load(f)
+        assert data['key'] == 'value'
+        assert '__meta__' in data
+        assert data['__meta__']['httpie'] == __version__
+
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:51:34.310872
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:51:40.527527
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:51:43.564048
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test case 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test case 2: Running on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test case 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+    # Test case 4: X
+
+# Generated at 2024-06-02 15:51:45.635662
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:51:47.912299
+```python
+    config_path = Path('test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists(), "Config file was not created"
+    with config_path.open('r') as f:
+        data = json.load(f)
+        assert data['key'] == 'value', "Config data was not saved correctly"
+        assert '__meta__' in data, "Meta information was not saved"
+        assert data['__meta__']['httpie'] == __version__, "HTTPie version was not saved in meta"
+
+    config_path.unlink()  # Clean up after test
+```
+
+# Generated at 2024-06-02 15:51:49.964795
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:51:52.182749
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:51:54.531405
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    os.rmdir(temp_dir)
+```
+
+# Generated at 2024-06-02 15:51:57.225037
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:51:59.743015
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:52:02.202496
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before calling ensure_directory
+    if temp_dir.exists():
+        temp_dir.rmdir()
+
+    base_config.ensure_directory()
+
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    config_path.unlink(missing_ok=True)
+    temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:52:07.680870
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to ensure the directory is created
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:52:10.974581
+```python
+    # Backup original environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test case 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test case 2: Running on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test case 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+    # Test case 4:
+
+# Generated at 2024-06-02 15:52:13.281940
+```python
+    config_path = Path('test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists(), "Config file was not created"
+    with config_path.open('r') as f:
+        data = json.load(f)
+        assert data['key'] == 'value', "Config data was not saved correctly"
+        assert '__meta__' in data, "Meta information was not saved"
+        assert data['__meta__']['httpie'] == __version__, "HTTPie version was not saved in meta"
+
+    config_path.unlink()  # Clean up after test
+```
+
+# Generated at 2024-06-02 15:52:21.178675
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy config directory
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG config directory
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME]
+
+
+
+# Generated at 2024-06-02 15:52:27.089953
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON content to the file
+        valid_json_content = {
+            "key": "value"
+        }
+        temp_path.write_text(json.dumps(valid_json_content))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the configuration
+        config.load()
+        
+        # Assert that the content is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON content to the file
+        temp_path.write_text("{invalid_json}")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e)
+        
+        # Remove the
+
+# Generated at 2024-06-02 15:52:30.179690
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_dir
+    legacy_dir.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:52:32.350591
+```python
+    temp_dir = Path('temp_test_dir')
+    config_path = temp_dir / 'config.json'
+    base_config = BaseConfigDict(config_path)
+
+    # Ensure the directory does not exist before the test
+    if temp_dir.exists():
+        os.rmdir(temp_dir)
+
+    # Call the method to create the directory
+    base_config.ensure_directory()
+
+    # Check if the directory was created
+    assert temp_dir.exists() and temp_dir.is_dir()
+
+    # Clean up
+    if config_path.exists():
+        config_path.unlink()
+    if temp_dir.exists():
+        temp_dir.rmdir()
+```
+
+# Generated at 2024-06-02 15:52:33.727561
+```python
+    config_path = Path('test_config.json')
+    config_data = {'key': 'value'}
+    config_path.write_text(json.dumps(config_data))
+
+    config = BaseConfigDict(config_path)
+    config.load()
+
+    assert config['key'] == 'value'
+    config_path.unlink()
+```
+
+# Generated at 2024-06-02 15:52:36.690941
+```python
+    # Create a temporary directory and file for testing
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir) / 'config.json'
+        
+        # Write a valid JSON to the file
+        valid_data = {"key": "value"}
+        temp_path.write_text(json.dumps(valid_data))
+        
+        # Initialize BaseConfigDict with the path
+        config = BaseConfigDict(temp_path)
+        
+        # Load the data
+        config.load()
+        
+        # Assert the data is loaded correctly
+        assert config['key'] == 'value'
+        
+        # Write an invalid JSON to the file
+        temp_path.write_text("{invalid json}")
+        
+        # Attempt to load the invalid JSON and catch the exception
+        try:
+            config.load()
+        except ConfigFileError as e:
+            assert 'invalid baseconfigdict file' in str(e)
+        
+        # Remove the file to simulate file not found
+        temp
+
+# Generated at 2024-06-02 15:52:39.947979
+```python
+    # Test when ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+    del os.environ[ENV_HTTPIE_CONFIG_DIR]
+
+    # Test on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test legacy ~/.httpie
+    legacy_path = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_path.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_path
+    legacy_path.rmdir()
+
+    # Test XDG_CONFIG_HOME
+    os.environ[ENV_XDG_CONFIG_HOME] = '/custom/xdg/config'
+    assert get_default_config_dir() == Path('/custom/xdg/config') / DEFAULT_CONFIG_DIRNAME
+    del os.environ[ENV_XDG_CONFIG_HOME
+
+# Generated at 2024-06-02 15:52:46.227825
+```python
+    # Backup environment variables
+    original_httpie_config_dir = os.environ.get(ENV_HTTPIE_CONFIG_DIR)
+    original_xdg_config_home = os.environ.get(ENV_XDG_CONFIG_HOME)
+
+    # Test case 1: ENV_HTTPIE_CONFIG_DIR is set
+    os.environ[ENV_HTTPIE_CONFIG_DIR] = '/custom/httpie/config'
+    assert get_default_config_dir() == Path('/custom/httpie/config')
+
+    # Test case 2: Running on Windows
+    if is_windows:
+        assert get_default_config_dir() == DEFAULT_WINDOWS_CONFIG_DIR
+
+    # Test case 3: Legacy config directory exists
+    legacy_config_dir = Path.home() / DEFAULT_RELATIVE_LEGACY_CONFIG_DIR
+    legacy_config_dir.mkdir(parents=True, exist_ok=True)
+    assert get_default_config_dir() == legacy_config_dir
+    legacy_config_dir.rmdir()  # Clean up
+
+    # Test case 4: X
+
+# Generated at 2024-06-02 15:52:48.734707
+```python
+    config_path = Path('test_config.json')
+    config = BaseConfigDict(config_path)
+    config['key'] = 'value'
+    config.save()
+
+    assert config_path.exists(), "Config file was not created"
+    with config_path.open('rt') as f:
+        data = json.load(f)
+        assert data['key'] == 'value', "Config data was not saved correctly"
+        assert '__meta__' in data, "Meta information was not saved"
+        assert data['__meta__']['httpie'] == __version__, "HTTPie version was not saved correctly"
+
+    config_path.unlink()  # Clean up
+```

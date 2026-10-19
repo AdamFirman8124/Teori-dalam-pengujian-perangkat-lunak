@@ -1,0 +1,1719 @@
+
+
+# Generated at 2024-03-18 04:16:30.935716
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.errors import AnsibleFileNotFound
+
+    def mock_loader_get_file_contents(file_name):
+        if file_name == "existent_template.j2":
+            return (to_bytes("Hello {{ name }}!"), True)
+        else:
+            raise AnsibleFileNotFound("File not found")
+
+    def mock_find_file_in_search_path(variables, dirname, basename):
+        if basename == "existent_template.j2":
+            return "/path/to/templates/existent_template.j2"
+        else:
+            return None
+
+    lookup_module = LookupModule()
+
+    # Mocking internal methods used by the run method
+    lookup_module._loader._get_file_contents = mock_loader_get_file_contents
+    lookup_module.find_file_in_search_path = mock_find_file_in_search_path
+
+    # Mocking the templar object and its methods
+    class MockTemplar:
+        def template(self, template_data, **kwargs):
+            return
+
+# Generated at 2024-03-18 04:16:36.869813
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+    import pytest
+    import tempfile
+    import os
+
+    def test_LookupModule_run():
+        # Create a temporary file to act as a fake template
+        with tempfile.NamedTemporaryFile(delete=False) as tmp:
+            tmp.write(b"Hello, {{ name }}!")
+            tmp_path = tmp.name
+
+        # Set up the data loader and templar
+        loader = DataLoader()
+        templar = Templar(loader=loader)
+
+        # Create an instance of our LookupModule with the templar
+        lookup = LookupModule(loader=loader, templar=templar)
+
+        # Define the variables to pass into the lookup
+        variables = {
+            'name': 'World'
+        }
+
+        # Run the lookup
+        try:
+            result = lookup.run([tmp
+
+# Generated at 2024-03-18 04:16:46.937376
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+
+    # Mocking the Ansible environment
+    mock_loader = DataLoader()
+    mock_templar = Templar(loader=mock_loader)
+
+    # Create an instance of our LookupModule
+    lookup_module = LookupModule(loader=mock_loader, templar=mock_templar)
+
+    # Define test variables and terms
+    test_terms = ["test_template.j2"]
+    test_variables = {
+        'ansible_search_path': ['/test/search/path'],
+        'template_var1': 'value1',
+        'template_var2': 'value2'
+    }
+    test_kwargs = {
+        'convert_data': True,
+        'template_vars': {'additional_var': 'additional_value'},
+        'jinja2_native': False,
+        'variable_start_string': '{{',
+        'variable_end
+
+# Generated at 2024-03-18 04:16:51.740996
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.errors import AnsibleFileNotFound
+
+    def mock_loader_get_file_contents(file_name):
+        if file_name == "existent_template.j2":
+            return (to_bytes("Hello {{ name }}!"), True)
+        else:
+            raise AnsibleFileNotFound("File not found")
+
+    lookup = LookupModule()
+    lookup._loader = MagicMock()
+    lookup._loader._get_file_contents = mock_loader_get_file_contents
+    lookup._templar = MagicMock()
+    lookup._templar.template = MagicMock(side_effect=lambda x, **kw: x.strip())
+
+    # Test with existent template
+    variables = {'name': 'Ansible'}
+    result = lookup.run(["existent_template.j2"], variables)
+    assert result == ["Hello Ansible!"], "Template rendering failed with existent template"
+
+    # Test with non-existent template
+    try:
+        lookup.run(["non_existent_template.j2"],
+
+# Generated at 2024-03-18 04:17:00.365064
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    def mock_loader():
+        loader = DataLoader()
+        loader.set_basedir('/some/path')
+        return loader
+
+    def mock_templar(loader):
+        return Templar(loader=loader)
+
+    # Mocking the AnsibleError exception for testing purpose
+    class MockAnsibleError(Exception):
+        pass
+
+    # Mocking the Display class for testing purpose
+    class MockDisplay:
+        def debug(self, msg):
+            pass
+
+        def vvvv(self, msg):
+            pass
+
+    # Replace the actual classes with mocks
+    LookupModule._templar = mock_templar(mock_loader())
+    LookupModule._loader = mock_loader()
+    LookupModule.find_file_in_search_path = lambda self, variables, dirname, main: '/mocked/path/' + main
+    LookupModule._loader._get_file_contents
+
+# Generated at 2024-03-18 04:17:06.247422
+```python
+    from ansible.template import Templar
+    from ansible.utils.sanitize import sanitize_keys
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.inventory.manager import InventoryManager
+    from ansible.vars.manager import VariableManager
+
+    # Mocking the Ansible environment setup
+    loader = DataLoader()
+    inventory = InventoryManager(loader=loader)
+    variable_manager = VariableManager(loader=loader, inventory=inventory)
+
+    # Create an instance of the LookupModule with mocked environment
+    lookup_module = LookupModule(loader, templar=Templar(loader=loader))
+
+    # Define test variables and terms
+    test_terms = ['test_template.j2']
+    test_variables = {
+        'ansible_search_path': ['/path/to/templates'],
+        'template_var1': 'value1',
+        'template_var2': 'value2'
+    }
+    test_kwargs = {
+        'convert_data': True,
+        'template_vars': {'additional_var': 'additional_value'},
+       
+
+# Generated at 2024-03-18 04:17:11.353972
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+
+    # Mocking the Ansible environment
+    mock_loader = DataLoader()
+    mock_templar = Templar(loader=mock_loader)
+
+    # Mocking the display object to prevent actual printing
+    display_mock = MagicMock()
+    with patch('ansible.plugins.lookup.template.display', display_mock):
+
+        # Create an instance of our LookupModule
+        lookup = LookupModule(loader=mock_loader, templar=mock_templar)
+
+        # Define test variables and terms
+        test_variables = {
+            'ansible_search_path': ['/some/path'],
+            'template_var1': 'value1'
+        }
+        test_terms = ['test_template.j2']
+        test_kwargs = {
+            'convert_data': True,
+            'template_vars': {'extra_var': 'extra_value'},
+            '
+
+# Generated at 2024-03-18 04:17:16.089007
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+
+    # Mocking the Ansible environment
+    mock_loader = DataLoader()
+    mock_templar = Templar(loader=mock_loader)
+
+    # Create an instance of our LookupModule
+    lookup_module = LookupModule(loader=mock_loader, templar=mock_templar)
+
+    # Define test variables and terms
+    test_terms = ["test_template.j2"]
+    test_variables = {
+        'ansible_search_path': ['/some/path'],
+        'template_var1': 'value1',
+        'template_var2': 'value2'
+    }
+    test_kwargs = {
+        'convert_data': True,
+        'template_vars': {'extra_var': 'extra_value'},
+        'jinja2_native': False,
+        'variable_start_string': '{{',
+        'variable_end_string
+
+# Generated at 2024-03-18 04:17:21.665226
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    # Mocking the Ansible templating environment
+    class MockLoader(DataLoader):
+        def _get_file_contents(self, file_name):
+            if file_name == "valid_template.j2":
+                return (to_bytes("Hello {{ name }}!"), True)
+            else:
+                raise AnsibleError("Mocked exception: file not found")
+
+    class MockTemplar(Templar):
+        def template(self, template_data, **kwargs):
+            return template_data.replace("{{ name }}", "Alice")
+
+    # Mocking the Ansible lookup plugin environment
+    class MockLookupModule(LookupModule):
+        def find_file_in_search_path(self, variables, subdir, term):
+            return term if term == "valid_template.j2" else None
+
+    # Test cases
+    def test_valid_template():
+       
+
+# Generated at 2024-03-18 04:17:26.976782
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.errors import AnsibleError
+
+    def mock_loader_get_file_contents(file_name):
+        if file_name == "existent_template.j2":
+            return (to_bytes("Hello {{ name }}!"), True)
+        elif file_name == "missing_template.j2":
+            raise AnsibleError("mock file not found")
+        else:
+            return (to_bytes(""), False)
+
+    def mock_find_file_in_search_path(variables, dirname, filename):
+        if filename == "existent_template.j2":
+            return "/path/to/existent_template.j2"
+        elif filename == "missing_template.j2":
+            return None
+        else:
+            return None
+
+    lookup_module = LookupModule()
+    lookup_module._loader = Mock()
+    lookup_module._loader._get_file_contents = mock_loader_get_file_contents
+    lookup_module.find_file_in_search_path = mock_find_file_in_search_path
+    lookup_module._templ
+
+# Generated at 2024-03-18 04:17:39.540227
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+
+    # Mocking the Ansible environment
+    mock_loader = DataLoader()
+    mock_templar = Templar(loader=mock_loader)
+
+    # Create an instance of our LookupModule
+    lookup_module = LookupModule(loader=mock_loader, templar=mock_templar)
+
+    # Define test variables and terms
+    test_terms = ["test_template.j2"]
+    test_variables = {
+        'ansible_search_path': ['/path/to/templates'],
+        'template_var1': 'value1',
+        'template_var2': 'value2'
+    }
+    test_kwargs = {
+        'convert_data': True,
+        'template_vars': {'extra_var': 'extra_value'},
+        'variable_start_string': '{{',
+        'variable_end_string': '}}',
+        'comment_start
+
+# Generated at 2024-03-18 04:17:47.048489
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.errors import AnsibleFileNotFound
+
+    def mock_loader_get_file_contents(file_name):
+        if file_name == "existent_template.j2":
+            return (to_bytes("Hello {{ name }}!"), False)
+        else:
+            raise AnsibleFileNotFound("File not found")
+
+    def mock_find_file_in_search_path(variables, subdir, term):
+        if term == "existent_template.j2":
+            return "/path/to/existent_template.j2"
+        else:
+            return None
+
+    lookup_module = LookupModule(loader=None, templar=None)
+    lookup_module._loader = type('MockLoader', (object,), {'_get_file_contents': mock_loader_get_file_contents})
+    lookup_module.find_file_in_search_path = mock_find_file_in_search_path
+
+    # Test with existent template
+    variables = {'name': 'John Doe'}
+    terms = ['existent_template.j2']
+    result
+
+# Generated at 2024-03-18 04:17:54.364821
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    # Mocking the Ansible templating environment
+    class MockLoader(DataLoader):
+        def _get_file_contents(self, file_name):
+            if file_name == "test_template.j2":
+                return to_bytes("Hello {{ name }}!"), True
+            raise IOError("File not found")
+
+    # Mocking the Ansible Templar
+    class MockTemplar(Templar):
+        def template(self, *args, **kwargs):
+            return "Hello John Doe!"
+
+    # Mocking the Display class
+    class MockDisplay(Display):
+        def debug(self, msg):
+            pass
+
+        def vvvv(self, msg):
+            pass
+
+    # Test cases
+    def test_with_existing_template():
+        lookup_module = LookupModule()
+        lookup_module._loader = MockLoader()
+        lookup_module._templ
+
+# Generated at 2024-03-18 04:18:01.353202
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.errors import AnsibleFileNotFound
+
+    def mock_loader_get_file_contents(file_name):
+        if file_name == "existent_template.j2":
+            return to_bytes("Hello {{ name }}!"), True
+        else:
+            raise AnsibleFileNotFound("File not found")
+
+    def mock_find_file_in_search_path(variables, subdir, term):
+        if term == "existent_template.j2":
+            return "/path/to/templates/existent_template.j2"
+        else:
+            return None
+
+    lookup_module = LookupModule()
+
+    # Mocking internal methods used by the run method
+    lookup_module._loader._get_file_contents = mock_loader_get_file_contents
+    lookup_module.find_file_in_search_path = mock_find_file_in_search_path
+
+    # Mocking the templar object and its methods
+    class MockTemplar:
+        def template(self, template_data, **kwargs):
+            return template
+
+# Generated at 2024-03-18 04:18:08.039430
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+
+    # Mocking the Ansible environment
+    mock_loader = DataLoader()
+    mock_templar = Templar(loader=mock_loader)
+
+    # Create an instance of our LookupModule
+    lookup_module = LookupModule(loader=mock_loader, templar=mock_templar)
+
+    # Define test variables and terms
+    test_terms = ["test_template.j2"]
+    test_variables = {
+        'ansible_search_path': ['/test/search/path'],
+        'template_var1': 'value1',
+        'template_var2': 'value2'
+    }
+    test_kwargs = {
+        'convert_data': True,
+        'template_vars': {'extra_var': 'extra_value'},
+        'jinja2_native': False,
+        'variable_start_string': '{{',
+        'variable_end
+
+# Generated at 2024-03-18 04:18:14.448631
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    # Mocking the Ansible templating environment
+    class MockEnvironment(AnsibleEnvironment):
+        def __init__(self, *args, **kwargs):
+            super(MockEnvironment, self).__init__(*args, **kwargs)
+
+    # Mocking the Ansible Templar
+    class MockTemplar(Templar):
+        def __init__(self, loader=None, shared_loader_obj=None, environment_class=MockEnvironment):
+            super(MockTemplar, self).__init__(loader=loader, shared_loader_obj=shared_loader_obj)
+            self.environment_class = environment_class
+
+    # Mocking the DataLoader
+    class MockDataLoader(DataLoader):
+        def _get_file_contents(self, file_name):
+            if file_name == "valid_template.j2":
+                return to_bytes("Hello, {{ name }}!"),
+
+# Generated at 2024-03-18 04:18:20.399164
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    def mock_loader():
+        loader = DataLoader()
+        loader.set_basedir('/some/path')
+        return loader
+
+    def mock_templar(loader):
+        return Templar(loader=loader)
+
+    def test_existing_template():
+        lookup_module = LookupModule()
+        lookup_module._loader = mock_loader()
+        lookup_module._templar = mock_templar(lookup_module._loader)
+
+        variables = {'ansible_search_path': ['/some/path']}
+        terms = ['test_template.j2']
+        kwargs = {
+            'convert_data': True,
+            'template_vars': {'key': 'value'},
+            'jinja2_native': False,
+            'variable_start_string': '{{',
+            'variable_end_string': '}}',
+            'comment_start_string': '{#',
+            'comment_end_string': '#}'
+        }
+
+        #
+
+# Generated at 2024-03-18 04:18:27.111397
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    def mock_loader():
+        loader = DataLoader()
+        loader.set_basedir('/some/path')
+        return loader
+
+    def mock_templar(loader):
+        return Templar(loader=loader)
+
+    # Mocking the AnsibleError exception for testing purpose
+    class MockAnsibleError(Exception):
+        pass
+
+    # Mocking the Display class for testing purpose
+    class MockDisplay:
+        def debug(self, msg):
+            pass
+
+        def vvvv(self, msg):
+            pass
+
+    # Replace the actual classes with mocks
+    ansible.errors.AnsibleError = MockAnsibleError
+    ansible.utils.display.Display = MockDisplay
+
+    # Create an instance of the LookupModule with mocked loader and templar
+    lookup_module = LookupModule()
+    lookup_module._loader = mock_loader()
+    lookup_module._
+
+# Generated at 2024-03-18 04:18:32.562097
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+
+    # Mocking the Ansible environment
+    mock_loader = DataLoader()
+    mock_templar = Templar(loader=mock_loader)
+
+    # Create an instance of our LookupModule
+    lookup_module = LookupModule(loader=mock_loader, templar=mock_templar)
+
+    # Define test variables
+    test_terms = ["test_template.j2"]
+    test_variables = {
+        'ansible_search_path': ['/path/to/templates'],
+        'template_var1': 'value1',
+        'template_var2': 'value2'
+    }
+    test_kwargs = {
+        'convert_data': True,
+        'template_vars': {'extra_var': 'extra_value'},
+        'jinja2_native': False,
+        'variable_start_string': '{{',
+        'variable_end_string':
+
+# Generated at 2024-03-18 04:18:38.644179
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+
+    # Mocking the Ansible environment
+    mock_loader = DataLoader()
+    mock_templar = Templar(loader=mock_loader)
+
+    # Create an instance of our LookupModule
+    lookup_module = LookupModule(loader=mock_loader, templar=mock_templar)
+
+    # Define test variables and terms
+    test_terms = ["test_template.j2"]
+    test_variables = {
+        'ansible_search_path': ['/test/search/path'],
+        'template_var1': 'value1',
+        'template_var2': 'value2'
+    }
+    test_kwargs = {
+        'convert_data': True,
+        'template_vars': {'extra_var': 'extra_value'},
+        'jinja2_native': False,
+        'variable_start_string': '{{',
+        'variable_end
+
+# Generated at 2024-03-18 04:18:55.613100
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+    import pytest
+    import tempfile
+    import os
+
+    # Create a temporary directory to act as the search path
+    with tempfile.TemporaryDirectory() as tmp_dir_path:
+        # Create a temporary template file within the temporary directory
+        template_content = "Hello, {{ name }}!"
+        template_file_path = os.path.join(tmp_dir_path, 'greeting.j2')
+        with open(template_file_path, 'w') as template_file:
+            template_file.write(template_content)
+
+        # Initialize DataLoader and Templar
+        loader = DataLoader()
+        templar = Templar(loader=loader)
+
+        # Instantiate the LookupModule with the DataLoader and Templar
+        lookup_module = LookupModule(loader=loader, templar=templar)
+
+        # Define the variables to be used
+
+# Generated at 2024-03-18 04:19:02.449236
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.errors import AnsibleFileNotFound
+
+    def mock_loader_get_file_contents(file_name):
+        if file_name == "existent_template.j2":
+            return (to_bytes("Hello {{ name }}!"), True)
+        else:
+            raise AnsibleFileNotFound("File not found")
+
+    def mock_find_file_in_search_path(variables, dirname, filename):
+        if filename == "existent_template.j2":
+            return "/path/to/existent_template.j2"
+        else:
+            return None
+
+    lookup_module = LookupModule()
+    lookup_module._loader = Mock()
+    lookup_module._loader._get_file_contents = Mock(side_effect=mock_loader_get_file_contents)
+    lookup_module.find_file_in_search_path = Mock(side_effect=mock_find_file_in_search_path)
+    lookup_module._templar = Mock()
+
+    # Test with existent template
+    variables = {'name': 'John Doe'}
+    terms
+
+# Generated at 2024-03-18 04:19:08.831524
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    def mock_loader():
+        loader = DataLoader()
+        loader._FILE_CACHE = {
+            '/path/to/template.j2': (b'Template Content', '/path/to/template.j2')
+        }
+        return loader
+
+    def test_with_valid_template():
+        lookup = LookupModule()
+        lookup._loader = mock_loader()
+        lookup._templar = Templar(loader=lookup._loader)
+        variables = {'ansible_search_path': ['/path/to']}
+        terms = ['/path/to/template.j2']
+        result = lookup.run(terms, variables)
+        assert result == ['Template Content'], "Expected 'Template Content' but got %s" % result
+
+    def test_with_missing_template():
+        lookup = LookupModule()
+        lookup._loader = mock_loader()
+        lookup._templar = Templar(loader=lookup._loader)
+
+
+# Generated at 2024-03-18 04:19:14.508550
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    def mock_loader():
+        loader = DataLoader()
+        loader._FILE_CACHE = {
+            '/path/to/template.j2': (b'Template Content', '/path/to/template.j2')
+        }
+        return loader
+
+    def test_with_valid_template():
+        lookup = LookupModule()
+        lookup._loader = mock_loader()
+        lookup._templar = Templar(loader=lookup._loader)
+        variables = {'ansible_search_path': ['/path/to']}
+        terms = ['/path/to/template.j2']
+        result = lookup.run(terms, variables)
+        assert result == ['Template Content'], "Expected 'Template Content' but got '%s'" % result
+
+    def test_with_missing_template():
+        lookup = LookupModule()
+        lookup._loader = mock_loader()
+        lookup._templar = Templar(loader=lookup._loader)
+
+
+# Generated at 2024-03-18 04:19:20.419454
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    # Mocking the Ansible Templar and DataLoader
+    mock_loader = DataLoader()
+    mock_templar = Templar(loader=mock_loader)
+
+    # Mocking the LookupModule methods and attributes
+    lookup_module = LookupModule(loader=mock_loader, templar=mock_templar)
+    lookup_module._templar = mock_templar
+    lookup_module._loader = mock_loader
+    lookup_module.find_file_in_search_path = lambda variables, subdir, term: '/mocked/path/' + term
+
+    # Mocking the file contents
+    mock_loader._get_file_contents = lambda file_name: (to_bytes("{{ mock_variable }}"), False)
+
+    # Test cases
+    test_cases = [
+        (
+            ['test_template.j2'],
+            {'mock_variable': 'Hello, World!'},
+           
+
+# Generated at 2024-03-18 04:19:26.213635
+```python
+    from ansible.template import Templar
+    from ansible.utils.sanitize import sanitize_keys
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.inventory.manager import InventoryManager
+    from ansible.vars.manager import VariableManager
+
+    # Mocking the Ansible environment setup
+    loader = DataLoader()
+    inventory = InventoryManager(loader=loader)
+    variable_manager = VariableManager(loader=loader, inventory=inventory)
+
+    # Create an instance of the LookupModule with mocked environment
+    lookup_module = LookupModule(loader, templar=Templar(loader=loader))
+
+    # Define test variables and terms
+    test_terms = ['test_template.j2']
+    test_variables = {
+        'ansible_search_path': ['/path/to/templates'],
+        'template_var1': 'value1',
+        'template_var2': 'value2'
+    }
+    test_kwargs = {
+        'convert_data': True,
+        'template_vars': {'additional_var': 'additional_value'},
+       
+
+# Generated at 2024-03-18 04:19:34.682344
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    def mock_loader():
+        loader = DataLoader()
+        loader.set_basedir('/some/path')
+        return loader
+
+    def mock_templar(loader):
+        return Templar(loader=loader)
+
+    def test_existing_template():
+        lookup_module = LookupModule()
+        lookup_module._loader = mock_loader()
+        lookup_module._templar = mock_templar(lookup_module._loader)
+
+        variables = {
+            'ansible_search_path': ['/some/path'],
+            'template_var': 'value'
+        }
+        terms = ['test_template.j2']
+        kwargs = {
+            'convert_data': True,
+            'template_vars': {'extra_var': 'extra_value'},
+            'variable_start_string': '{{',
+            'variable_end_string': '}}'
+        }
+
+        # Mock the file contents retrieval
+        def mock_get_file_contents
+
+# Generated at 2024-03-18 04:19:40.288374
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    def mock_loader():
+        loader = DataLoader()
+        loader.set_basedir('/some/path')
+        return loader
+
+    def mock_templar(loader):
+        return Templar(loader=loader)
+
+    def test_existing_template():
+        lookup_module = LookupModule()
+        lookup_module._loader = mock_loader()
+        lookup_module._templar = mock_templar(lookup_module._loader)
+
+        terms = ['test_template.j2']
+        variables = {'ansible_search_path': ['/some/path']}
+        kwargs = {
+            'convert_data': True,
+            'template_vars': {'key': 'value'},
+            'jinja2_native': False,
+            'variable_start_string': '{{',
+            'variable_end_string': '}}',
+            'comment_start_string': '{#',
+            'comment_end_string': '#}'
+        }
+
+        #
+
+# Generated at 2024-03-18 04:19:45.225563
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    # Mocking the Ansible templating environment
+    class MockLoader(DataLoader):
+        def _get_file_contents(self, file_name):
+            if file_name == "valid_template.j2":
+                return (to_bytes("Hello {{ name }}!"), True)
+            else:
+                raise AnsibleError("Mocked exception: file not found")
+
+    class MockTemplar(Templar):
+        def template(self, template_data, **kwargs):
+            return template_data.replace("{{ name }}", "Alice")
+
+    # Mocking the Ansible lookup plugin environment
+    class MockLookupModule(LookupModule):
+        def find_file_in_search_path(self, variables, subdir, term):
+            return term if term == "valid_template.j2" else None
+
+    # Test cases
+    def test_valid_template():
+       
+
+# Generated at 2024-03-18 04:19:50.064034
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    def mock_loader():
+        loader = DataLoader()
+        loader.set_basedir('/some/path')
+        return loader
+
+    def mock_templar(loader):
+        return Templar(loader=loader)
+
+    def test_existing_template():
+        lookup_module = LookupModule()
+        lookup_module._loader = mock_loader()
+        lookup_module._templar = mock_templar(lookup_module._loader)
+
+        variables = {'ansible_search_path': ['/some/path']}
+        terms = ['test_template.j2']
+        kwargs = {
+            'convert_data': True,
+            'template_vars': {'key': 'value'},
+            'jinja2_native': False,
+            'variable_start_string': '{{',
+            'variable_end_string': '}}',
+            'comment_start_string': '{#',
+            'comment_end_string': '#}'
+        }
+
+        #
+
+# Generated at 2024-03-18 04:20:18.306507
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+    import pytest
+    import mock
+    import tempfile
+    import os
+
+    def test_template_not_found():
+        lookup = LookupModule()
+        lookup._loader = DataLoader()
+        lookup._templar = Templar(loader=lookup._loader)
+        with pytest.raises(AnsibleError) as excinfo:
+            lookup.run(["nonexistent_template.j2"], {})
+        assert "could not be found for the lookup" in str(excinfo.value)
+
+    def test_template_rendering():
+        # Create a temporary file to act as a template
+        with tempfile.NamedTemporaryFile(delete=False) as tmp:
+            tmp.write(b"Hello, {{ name }}!")
+            tmp_path = tmp.name
+
+        try:
+            # Mock the find_file_in_search_path method to return our temp file
+
+
+# Generated at 2024-03-18 04:20:23.519263
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    # Mocking the Ansible templating environment
+    class MockLoader(DataLoader):
+        def _get_file_contents(self, file_name):
+            if file_name == "valid_template.j2":
+                return (to_bytes("Hello {{ name }}!"), True)
+            else:
+                raise FileNotFoundError("File not found")
+
+    # Mocking the Ansible Templar
+    class MockTemplar(Templar):
+        def template(self, *args, **kwargs):
+            return "Hello John Doe!"
+
+    # Mocking the Display class
+    class MockDisplay(Display):
+        def debug(self, msg):
+            pass
+
+        def vvvv(self, msg):
+            pass
+
+    # Mocking the AnsibleEnvironment
+    class MockAnsibleEnvironment(AnsibleEnvironment):
+        pass
+
+    # Mocking the USE
+
+# Generated at 2024-03-18 04:20:30.716386
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+    import pytest
+    import mock
+    import tempfile
+    import os
+
+    def test_template_not_found():
+        lookup = LookupModule()
+        lookup._loader = DataLoader()
+        lookup._templar = Templar(loader=lookup._loader)
+        with pytest.raises(AnsibleError) as excinfo:
+            lookup.run(["nonexistent_template.j2"], {})
+        assert "could not be found for the lookup" in str(excinfo.value)
+
+    def test_template_rendering():
+        # Create a temporary file to act as a fake template
+        with tempfile.NamedTemporaryFile(delete=False) as tmp:
+            tmp.write(b"Hello, {{ name }}!")
+            tmp.flush()
+            template_path = tmp.name
+
+        # Mock the file finding function to return our temporary file
+       
+
+# Generated at 2024-03-18 04:20:36.280235
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    # Mocking the Ansible templating environment
+    class MockLoader(DataLoader):
+        def _get_file_contents(self, file_name):
+            if file_name == "valid_template.j2":
+                return (to_bytes("Hello {{ name }}!"), True)
+            else:
+                raise AnsibleError("Mocked exception: file not found")
+
+    class MockTemplar(Templar):
+        def template(self, template_data, **kwargs):
+            return template_data.replace("{{ name }}", "Alice")
+
+    # Mocking the display object
+    class MockDisplay(Display):
+        def __init__(self):
+            self.messages = []
+
+        def debug(self, msg):
+            self.messages.append(msg)
+
+        def vvvv(self, msg):
+            self.messages.append(msg)
+
+    # Test cases
+    def test_valid
+
+# Generated at 2024-03-18 04:20:41.432622
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    # Mocking the Ansible templating environment
+    class MockLoader(DataLoader):
+        def _get_file_contents(self, file_name):
+            if file_name == "test_template.j2":
+                return to_bytes("Hello {{ name }}!"), True
+            raise IOError("File not found")
+
+    class MockTemplar(Templar):
+        def template(self, template_data, **kwargs):
+            return template_data.replace("{{ name }}", "Alice")
+
+    # Mocking the display object
+    class MockDisplay(Display):
+        def __init__(self):
+            self.messages = []
+
+        def debug(self, msg):
+            self.messages.append(msg)
+
+        def vvvv(self, msg):
+            self.messages.append(msg)
+
+    # Mocking the AnsibleEnvironment
+    class MockAnsibleEnvironment(AnsibleEnvironment
+
+# Generated at 2024-03-18 04:20:46.561681
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+    import pytest
+    import mock
+    import io
+
+    # Mock the DataLoader and Templar
+    mock_loader = mock.MagicMock(spec=DataLoader)
+    mock_templar = mock.MagicMock(spec=Templar)
+
+    # Create an instance of the LookupModule with the mocked DataLoader and Templar
+    lookup_module = LookupModule(loader=mock_loader, templar=mock_templar)
+
+    # Define test variables and options
+    test_terms = ["test_template.j2"]
+    test_variables = {"ansible_search_path": ["/test/search/path"]}
+    test_options = {
+        "convert_data": True,
+        "template_vars": {"test_var": "value"},
+        "jinja2_native": False,
+        "variable_start_string": "{{",
+       
+
+# Generated at 2024-03-18 04:20:54.848859
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.errors import AnsibleFileNotFound
+
+    def mock_loader_get_file_contents(file_name):
+        if file_name == "existent_template.j2":
+            return (to_bytes("Hello {{ name }}!"), True)
+        else:
+            raise AnsibleFileNotFound("File not found")
+
+    def mock_generate_ansible_template_vars(template, template_path):
+        return {'template_path': template_path, 'template_mtime': 123456789}
+
+    lookup = LookupModule()
+    lookup._loader = MagicMock()
+    lookup._loader._get_file_contents = MagicMock(side_effect=mock_loader_get_file_contents)
+    lookup._templar = MagicMock()
+    lookup._templar.template = MagicMock(return_value="Hello John Doe!")
+    lookup._templar.copy_with_new_env = MagicMock(return_value=lookup._templar)
+    lookup.find_file_in_search_path = MagicMock(return_value="existent_template.j2")
+
+    variables = {'name
+
+# Generated at 2024-03-18 04:21:03.930964
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    def mock_loader():
+        loader = DataLoader()
+        loader.set_basedir('/some/fake/path')
+        return loader
+
+    def mock_templar(loader):
+        return Templar(loader=loader)
+
+    def test_existing_template():
+        lookup = LookupModule()
+        lookup._loader = mock_loader()
+        lookup._templar = mock_templar(lookup._loader)
+
+        result = lookup.run(["test_template.j2"], {})
+        assert result == ["Expected content"], "Template content did not match expected content"
+
+    def test_non_existing_template():
+        lookup = LookupModule()
+        lookup._loader = mock_loader()
+        lookup._templar = mock_templar(lookup._loader)
+
+        try:
+            lookup.run(["non_existing_template.j2"], {})
+        except AnsibleError as e:
+            assert "could not
+
+# Generated at 2024-03-18 04:21:09.184947
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+    import pytest
+    import tempfile
+    import os
+
+    def test_LookupModule_run():
+        # Create a temporary directory to act as the search path
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create a temporary template file within the search path
+            template_path = os.path.join(tmpdir, 'test_template.j2')
+            with open(template_path, 'w') as template_file:
+                template_file.write("Hello, {{ name }}!")
+
+            # Set up the data loader and templar
+            data_loader = DataLoader()
+            templar = Templar(loader=data_loader)
+
+            # Instantiate the lookup module
+            lookup_module = LookupModule(loader=data_loader, templar=templar)
+
+            # Define the variables to pass to the template
+           
+
+# Generated at 2024-03-18 04:21:17.017887
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    # Mocking the Ansible templating environment
+    class MockEnvironment(AnsibleEnvironment):
+        def __init__(self, *args, **kwargs):
+            super(MockEnvironment, self).__init__(*args, **kwargs)
+
+    # Mocking the Ansible Templar
+    class MockTemplar(Templar):
+        def __init__(self, loader=None, shared_loader_obj=None, environment_class=MockEnvironment):
+            super(MockTemplar, self).__init__(loader=loader, shared_loader_obj=shared_loader_obj)
+            self.environment_class = environment_class
+
+    # Mocking the DataLoader
+    class MockDataLoader(DataLoader):
+        def _get_file_contents(self, file_name):
+            if file_name == "valid_template.j2":
+                return to_bytes("Hello {{ name }}!"), True
+
+# Generated at 2024-03-18 04:22:05.655970
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    # Mocking the Ansible Templar and DataLoader
+    mock_loader = DataLoader()
+    mock_templar = Templar(loader=mock_loader)
+
+    # Mocking the LookupModule methods and attributes
+    lookup_module = LookupModule(loader=mock_loader, templar=mock_templar)
+    lookup_module._templar = mock_templar
+    lookup_module._loader = mock_loader
+    lookup_module.find_file_in_search_path = lambda variables, subdir, term: "/mocked/path/" + term
+
+    # Mocking the file contents
+    mock_loader._get_file_contents = lambda file_name: (to_bytes("mocked file contents"), True)
+
+    # Test cases
+    test_cases = [
+        (
+            ["test_template.j2"],
+            {"ansible_search_path": ["/some/path"]},
+
+
+# Generated at 2024-03-18 04:22:10.841564
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    # Mocking the Ansible templating environment
+    class MockLoader(DataLoader):
+        def _get_file_contents(self, file_name):
+            if file_name == "valid_template.j2":
+                return (to_bytes("Hello {{ name }}!"), True)
+            else:
+                raise AnsibleError("Mocked exception: file not found")
+
+    class MockTemplar(Templar):
+        def template(self, template_data, **kwargs):
+            return template_data.replace("{{ name }}", "Alice")
+
+    # Mocking the Ansible lookup plugin environment
+    class MockLookupModule(LookupModule):
+        def __init__(self, loader=None, templar=None):
+            super(MockLookupModule, self).__init__(loader=loader, templar=templar)
+            self._loader = loader or Mock
+
+# Generated at 2024-03-18 04:22:16.160745
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+    import pytest
+    import tempfile
+    import os
+
+    def test_LookupModule_run():
+        # Create a temporary file to act as a fake template
+        with tempfile.NamedTemporaryFile(delete=False) as tmp:
+            tmp.write(b"Hello, {{ name }}!")
+            tmp_path = tmp.name
+
+        # Set up fake variables and options
+        fake_variables = {'name': 'Ansible'}
+        fake_options = {
+            'convert_data': True,
+            'template_vars': {},
+            'jinja2_native': False,
+            'variable_start_string': '{{',
+            'variable_end_string': '}}',
+            'comment_start_string': '{#',
+            'comment_end_string': '#}'
+        }
+
+        # Initialize the lookup plugin with a DataLoader and Templar
+
+# Generated at 2024-03-18 04:22:20.950892
+```python
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.errors import AnsibleError
+    import pytest
+    import mock
+    import tempfile
+    import os
+
+    def fake_loader():
+        return DataLoader()
+
+    def fake_templar(loader=None):
+        if loader is None:
+            loader = fake_loader()
+        return Templar(loader=loader)
+
+    # Create a temporary file to act as a fake template
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(b"{{ test_variable }}")
+        tmp_path = tmp.name
+
+    try:
+        # Test with existing template file
+        with mock.patch.object(LookupModule, '_loader', fake_loader()), \
+             mock.patch.object(LookupModule, '_templar', fake_templar()), \
+             mock.patch.object(LookupModule, 'find_file_in_search_path')
+
+# Generated at 2024-03-18 04:22:26.976333
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+
+    # Mocking the Ansible environment
+    mock_loader = DataLoader()
+    mock_templar = Templar(loader=mock_loader)
+
+    # Create an instance of our LookupModule
+    lookup_module = LookupModule(loader=mock_loader, templar=mock_templar)
+
+    # Define test variables and terms
+    test_terms = ["test_template.j2"]
+    test_variables = {
+        'ansible_search_path': ['/test/search/path'],
+        'template_var1': 'value1',
+        'template_var2': 'value2'
+    }
+    test_kwargs = {
+        'convert_data': True,
+        'template_vars': {'extra_var': 'extra_value'},
+        'jinja2_native': False,
+        'variable_start_string': '{{',
+        'variable_end
+
+# Generated at 2024-03-18 04:22:32.055785
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    # Mocking the Ansible templating environment
+    class MockLoader(DataLoader):
+        def _get_file_contents(self, file_name):
+            if file_name == "valid_template.j2":
+                return (to_bytes("Hello {{ name }}!"), True)
+            else:
+                raise AnsibleError("Mocked exception: file not found")
+
+    class MockTemplar(Templar):
+        def template(self, template_data, **kwargs):
+            return template_data.replace("{{ name }}", "Alice")
+
+    # Mocking the display object
+    class MockDisplay(Display):
+        def __init__(self):
+            pass
+
+        def debug(self, msg):
+            pass
+
+        def vvvv(self, msg):
+            pass
+
+    # Replace the global display object with our mock
+    global display
+    display
+
+# Generated at 2024-03-18 04:22:42.265606
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    def mock_loader():
+        loader = DataLoader()
+        loader.set_basedir('/some/path')
+        return loader
+
+    def mock_templar(loader):
+        return Templar(loader=loader)
+
+    def test_with_valid_template():
+        lookup = LookupModule()
+        lookup._loader = mock_loader()
+        lookup._templar = mock_templar(lookup._loader)
+
+        terms = ['valid_template.j2']
+        variables = {'ansible_search_path': ['/some/path']}
+        kwargs = {
+            'convert_data': True,
+            'template_vars': {'key': 'value'},
+            'jinja2_native': False,
+            'variable_start_string': '{{',
+            'variable_end_string': '}}',
+            'comment_start_string': '{#',
+            'comment_end_string': '#}'
+        }
+
+        # Mock the actual
+
+# Generated at 2024-03-18 04:22:47.648147
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    # Mocking the Ansible Templar and DataLoader
+    mock_loader = DataLoader()
+    mock_templar = Templar(loader=mock_loader)
+
+    # Mocking the display object to capture debug messages
+    display = Display()
+
+    # Create an instance of the LookupModule with the mocked Templar and DataLoader
+    lookup_module = LookupModule(loader=mock_loader, templar=mock_templar)
+
+    # Define test variables and options
+    test_variables = {
+        'ansible_search_path': ['/test/search/path'],
+        'test_var': 'value1'
+    }
+    test_options = {
+        'convert_data': True,
+        'template_vars': {'additional_var': 'value2'},
+        'jinja2_native': False,
+        'variable_start_string': '{{',
+        'variable_end_string': '
+
+# Generated at 2024-03-18 04:22:54.750802
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.errors import AnsibleError
+
+    def mock_loader_get_file_contents(file_name):
+        if file_name == "valid_template.j2":
+            return (to_bytes("Hello {{ name }}!"), False)
+        elif file_name == "invalid_template.j2":
+            return (to_bytes("{{ unclosed_variable"), False)
+        else:
+            raise AnsibleError("File not found")
+
+    def mock_find_file_in_search_path(variables, dirname, filename):
+        if filename in ["valid_template.j2", "invalid_template.j2"]:
+            return "/some/path/" + filename
+        return None
+
+    lookup_module = LookupModule()
+    lookup_module._loader = LookupBase()
+    lookup_module._loader._get_file_contents = mock_loader_get_file_contents
+    lookup_module.find_file_in_search_path = mock_find_file_in_search_path
+    lookup_module._templar = LookupBase()._templar
+
+
+
+# Generated at 2024-03-18 04:22:59.497775
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+
+    # Mocking the Ansible environment
+    mock_loader = DataLoader()
+    mock_templar = Templar(loader=mock_loader)
+
+    # Create an instance of our LookupModule
+    lookup_module = LookupModule(loader=mock_loader, templar=mock_templar)
+
+    # Define test variables and terms
+    test_terms = ["test_template.j2"]
+    test_variables = {
+        'ansible_search_path': ['/test/search/path'],
+        'template_var1': 'value1',
+        'template_var2': 'value2'
+    }
+    test_kwargs = {
+        'convert_data': True,
+        'template_vars': {'extra_var': 'extra_value'},
+        'jinja2_native': False,
+        'variable_start_string': '{{',
+        'variable_end
+
+# Generated at 2024-03-18 04:24:31.633800
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.errors import AnsibleFileNotFound
+
+    def mock_loader_get_file_contents(file_name):
+        if file_name == "existent_template.j2":
+            return (to_bytes("Hello {{ name }}!"), True)
+        else:
+            raise AnsibleFileNotFound("File not found")
+
+    def mock_find_file_in_search_path(variables, subdir, term):
+        if term == "existent_template.j2":
+            return "/path/to/existent_template.j2"
+        else:
+            return None
+
+    lookup_module = LookupModule()
+
+    # Mocking internal methods used by the run method
+    lookup_module._loader._get_file_contents = mock_loader_get_file_contents
+    lookup_module.find_file_in_search_path = mock_find_file_in_search_path
+
+    # Mocking the templar object and its methods
+    class MockTemplar:
+        def template(self, template_data, **kwargs):
+            return template
+
+# Generated at 2024-03-18 04:24:39.467393
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.errors import AnsibleFileNotFound
+
+    def mock_loader_get_file_contents(file_name):
+        if file_name == "existent_template.j2":
+            return (to_bytes("Hello {{ name }}!"), True)
+        else:
+            raise AnsibleFileNotFound("File not found")
+
+    def mock_find_file_in_search_path(variables, dirname, filename):
+        if filename == "existent_template.j2":
+            return "/path/to/templates/existent_template.j2"
+        else:
+            return None
+
+    lookup_module = LookupModule(loader=None, templar=None)
+    lookup_module._loader = type('MockLoader', (object,), {'_get_file_contents': mock_loader_get_file_contents})
+    lookup_module.find_file_in_search_path = mock_find_file_in_search_path
+
+    # Test with existent template
+    variables = {'name': 'John Doe'}
+    terms = ['existent_template.j2']
+   
+
+# Generated at 2024-03-18 04:24:44.501564
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    def mock_loader():
+        loader = DataLoader()
+        loader._FILE_CACHE = {
+            '/path/to/template.j2': (b'Template Content', '/path/to/template.j2')
+        }
+        return loader
+
+    def test_existing_template():
+        lookup = LookupModule()
+        lookup._loader = mock_loader()
+        lookup._templar = Templar(loader=lookup._loader)
+        variables = {'ansible_search_path': ['/path/to']}
+        terms = ['template.j2']
+        result = lookup.run(terms, variables)
+        assert result == ['Template Content'], "Expected 'Template Content' but got '%s'" % result
+
+    def test_non_existing_template():
+        lookup = LookupModule()
+        lookup._loader = mock_loader()
+        lookup._templar = Templar(loader=lookup._loader)
+        variables =
+
+# Generated at 2024-03-18 04:24:51.202383
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+
+    # Mocking the Ansible environment
+    mock_loader = DataLoader()
+    mock_templar = Templar(loader=mock_loader)
+
+    # Create an instance of our LookupModule
+    lookup_module = LookupModule(loader=mock_loader, templar=mock_templar)
+
+    # Define test variables and terms
+    test_terms = ["test_template.j2"]
+    test_variables = {
+        'ansible_search_path': ['/test/search/path'],
+        'template_var1': 'value1',
+        'template_var2': 'value2'
+    }
+    test_kwargs = {
+        'convert_data': True,
+        'template_vars': {'extra_var': 'extra_value'},
+        'jinja2_native': False,
+        'variable_start_string': '{{',
+        'variable_end
+
+# Generated at 2024-03-18 04:24:56.974159
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError
+    import pytest
+    import mock
+    import tempfile
+    import os
+
+    def test_LookupModule_run():
+        # Create a temporary file to act as a fake template
+        with tempfile.NamedTemporaryFile(delete=False) as tmp:
+            tmp.write(b"{{ test_variable }}")
+            tmp_path = tmp.name
+
+        # Set up the variables that will be used in the template
+        variables = {
+            'test_variable': 'success',
+            'ansible_search_path': ['/some/path']
+        }
+
+        # Mock the Ansible templating environment
+        loader = DataLoader()
+        templar = Templar(loader=loader)
+
+        # Create an instance of our LookupModule
+        lookup = LookupModule(loader=loader, templar=templar)
+
+        # Mock the
+
+# Generated at 2024-03-18 04:25:04.070797
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.errors import AnsibleFileNotFound
+
+    def mock_loader_get_file_contents(file_name):
+        if file_name == "existent_template.j2":
+            return (to_bytes("Hello {{ name }}!"), True)
+        else:
+            raise AnsibleFileNotFound("File not found")
+
+    def mock_find_file_in_search_path(variables, subdir, term):
+        if term == "existent_template.j2":
+            return "/path/to/existent_template.j2"
+        else:
+            return None
+
+    lookup_module = LookupModule()
+    lookup_module._loader = MagicMock()
+    lookup_module._loader._get_file_contents = MagicMock(side_effect=mock_loader_get_file_contents)
+    lookup_module.find_file_in_search_path = MagicMock(side_effect=mock_find_file_in_search_path)
+    lookup_module._templar = MagicMock()
+
+    # Test with existent template
+    variables = {'name': 'John Doe'}
+    terms
+
+# Generated at 2024-03-18 04:25:10.102364
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    def mock_loader():
+        loader = DataLoader()
+        loader.set_basedir('/some/path')
+        return loader
+
+    def mock_templar(loader):
+        return Templar(loader=loader)
+
+    def test_existing_template():
+        lookup = LookupModule()
+        lookup._loader = mock_loader()
+        lookup._templar = mock_templar(lookup._loader)
+
+        result = lookup.run(["test_template.j2"], {})
+        assert result == ["expected content"], "Template content did not match expected content"
+
+    def test_non_existing_template():
+        lookup = LookupModule()
+        lookup._loader = mock_loader()
+        lookup._templar = mock_templar(lookup._loader)
+
+        try:
+            lookup.run(["non_existing_template.j2"], {})
+        except AnsibleError as e:
+            assert "could not be found
+
+# Generated at 2024-03-18 04:25:15.970131
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.errors import AnsibleFileNotFound
+
+    # Mocking the Ansible templating environment and file loader
+    mock_loader = MagicMock()
+    mock_loader._get_file_contents.return_value = (b"Hello, {{ name }}!", None)
+    mock_templar = MagicMock()
+    mock_templar.template.return_value = "Hello, John Doe!"
+
+    # Mocking the display object
+    mock_display = MagicMock()
+
+    # Creating an instance of the LookupModule with the mocked loader and templar
+    lookup = LookupModule(loader=mock_loader, templar=mock_templar)
+    lookup._display = mock_display
+
+    # Variables that would be passed to the lookup plugin
+    variables = {
+        'name': 'John Doe',
+        'ansible_search_path': ['/some/path']
+    }
+
+    # Running the lookup plugin with a single term and checking the result
+    result = lookup
+
+# Generated at 2024-03-18 04:25:21.695546
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.template import Templar
+    from ansible.parsing.dataloader import DataLoader
+
+    # Mocking the Ansible Templar and DataLoader
+    mock_loader = DataLoader()
+    mock_templar = Templar(loader=mock_loader)
+
+    # Mocking the LookupModule methods and attributes
+    lookup_module = LookupModule(loader=mock_loader, templar=mock_templar)
+    lookup_module._templar = mock_templar
+    lookup_module._loader = mock_loader
+    lookup_module.find_file_in_search_path = lambda variables, dirname, main: '/path/to/template.j2'
+
+    # Mocking the file contents
+    mock_loader._get_file_contents = lambda file_name: (to_bytes("{{ test_variable }}"), False)
+
+    # Test variables
+    test_variables = {
+        'test_variable': 'success',
+        'ansible_search_path': ['/path/to']
+    }
+
+    #
+
+# Generated at 2024-03-18 04:25:33.624147
+```python
+    from ansible.utils.sanitize_exceptions import sanitize_exception
+    from ansible.errors import AnsibleFileNotFound
+
+    def mock_loader_get_file_contents(file_name):
+        if file_name == "/fake/path/to/template.j2":
+            return (to_bytes("Hello {{ name }}!"), True)
+        else:
+            raise AnsibleFileNotFound("File not found")
+
+    def mock_find_file_in_search_path(variables, dirname, main):
+        return "/fake/path/to/template.j2" if main == "template.j2" else None
+
+    lookup_module = LookupModule()
+    lookup_module._loader = LookupBase.Loader()
+    lookup_module._loader._get_file_contents = mock_loader_get_file_contents
+    lookup_module.find_file_in_search_path = mock_find_file_in_search_path
+    lookup_module._templar = LookupBase.Templar(loader=lookup_module._loader)
+
+    variables = {'name': 'John Doe'}
+    terms = ['template.j2']
+    kwargs =

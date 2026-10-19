@@ -1,0 +1,1327 @@
+
+
+# Generated at 2024-06-04 21:06:53.555713
+```python
+    downloader = FileDownloader()
+    old_filename = 'old_file.txt'
+    new_filename = 'new_file.txt'
+
+    # Create a dummy file to rename
+    with open(old_filename, 'w') as f:
+        f.write('dummy content')
+
+    # Test renaming the file
+    downloader.try_rename(old_filename, new_filename)
+    assert os.path.exists(new_filename), "File was not renamed"
+    assert not os.path.exists(old_filename), "Old file still exists"
+
+    # Clean up
+    os.remove(new_filename)
+
+    # Test renaming a non-existent file
+    try:
+        downloader.try_rename('non_existent_file.txt', 'new_file.txt')
+    except Exception as e:
+        assert isinstance(e, (IOError, OSError)), "Expected IOError or OSError"
+
+    # Test renaming to the same filename
+    with open(old_filename, 'w') as f:
+        f.write('dummy content')
+    downloader
+
+# Generated at 2024-06-04 21:06:57.552799
+```python
+    downloader = FileDownloader()
+    downloader.params = {'nopart': False}
+
+    # Test case 1: Normal filename
+    filename = "example.txt"
+    expected = "example.txt.part"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 2: Filename with 'nopart' parameter set to True
+    downloader.params['nopart'] = True
+    filename = "example.txt"
+    expected = "example.txt"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 3: Filename is '-'
+    downloader.params['nopart'] = False
+    filename = "-"
+    expected = "-"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 4: Filename exists and is not a file
+    filename = "example_dir"
+    os.mkdir(filename)
+    expected = "example_dir"
+    assert downloader.temp_name(filename) == expected
+    os.rmdir(filename)
+
+    # Test case 
+
+# Generated at 2024-06-04 21:06:59.617278
+```python
+    downloader = FileDownloader()
+    assert downloader.best_block_size(0.0005, 1000) == 4194304
+    assert downloader.best_block_size(2, 1000) == 500
+    assert downloader.best_block_size(2, 10000000) == 4194304
+    assert downloader.best_block_size(2, 1) == 1
+    assert downloader.best_block_size(0.5, 1000) == 2000
+```
+
+# Generated at 2024-06-04 21:07:02.691376
+```python
+    downloader = FileDownloader()
+    assert downloader.best_block_size(0.0005, 1000) == 4194304  # Test for very small elapsed time
+    assert downloader.best_block_size(2, 1000) == 500  # Test for normal case
+    assert downloader.best_block_size(2, 10000000) == 4194304  # Test for large byte size
+    assert downloader.best_block_size(2, 1) == 1  # Test for very small byte size
+    assert downloader.best_block_size(0.5, 1000) == 2000  # Test for rate within min and max bounds
+```
+
+# Generated at 2024-06-04 21:07:06.436482
+```python
+    import os
+    import tempfile
+    from unittest.mock import Mock, patch
+
+    # Create a mock for the FileDownloader class
+    mock_ydl = Mock()
+    mock_params = {
+        'nooverwrites': False,
+        'continuedl': True,
+        'nopart': False,
+        'sleep_interval': None,
+        'verbose': False
+    }
+    mock_ydl.params = mock_params
+
+    class TestFileDownloader(FileDownloader):
+        def __init__(self, ydl):
+            self.ydl = ydl
+            self._progress_hooks = []
+
+        def real_download(self, filename, info_dict):
+            with open(filename, 'w') as f:
+                f.write('test content')
+            return True
+
+    downloader = TestFileDownloader(mock_ydl)
+
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_filename = tmp_file.name
+
+    try:
+        # Test case where file does
+
+# Generated at 2024-06-04 21:07:10.364263
+```python
+    import os
+    import time
+    from unittest.mock import patch, MagicMock
+
+    fd = FileDownloader()
+
+    # Test case 1: last_modified_hdr is None
+    with patch('os.path.isfile', return_value=True) as mock_isfile:
+        result = fd.try_utime('testfile', None)
+        assert result is None
+        mock_isfile.assert_not_called()
+
+    # Test case 2: file does not exist
+    with patch('os.path.isfile', return_value=False) as mock_isfile:
+        result = fd.try_utime('testfile', 'Wed, 21 Oct 2015 07:28:00 GMT')
+        assert result is None
+        mock_isfile.assert_called_once_with('testfile')
+
+    # Test case 3: invalid date
+    with patch('os.path.isfile', return_value=True) as mock_isfile:
+        with patch('timeconvert', return_value=0) as mock
+
+# Generated at 2024-06-04 21:07:12.368486
+```python
+    downloader = FileDownloader()
+    assert downloader.calc_percent(50, 100) == 50
+    assert downloader.calc_percent(0, 100) == 0
+    assert downloader.calc_percent(100, 100) == 100
+    assert downloader.calc_percent(25, 100) == 25
+    assert downloader.calc_percent(50, 200) == 25
+    assert downloader.calc_percent(0, 0) == 0
+```
+
+# Generated at 2024-06-04 21:07:15.556135
+```python
+    import os
+    import tempfile
+    from unittest.mock import patch, MagicMock
+
+    # Create a mock instance of FileDownloader
+    downloader = FileDownloader()
+    downloader.params = {
+        'nooverwrites': False,
+        'continuedl': True,
+        'nopart': False,
+        'sleep_interval': None,
+    }
+    downloader._progress_hooks = []
+
+    # Mock methods
+    downloader.report_file_already_downloaded = MagicMock()
+    downloader._hook_progress = MagicMock()
+    downloader.to_screen = MagicMock()
+    downloader.real_download = MagicMock(return_value=True)
+
+    # Create a temporary file to simulate an existing download
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        filename = tmp_file.name
+
+    info_dict = {}
+
+    # Test case: File already exists and continuedl is True
+    result = downloader.download(filename, info_dict)
+    assert result is True
+    downloader.report_file_already_downloaded
+
+# Generated at 2024-06-04 21:07:18.747490
+```python
+    downloader = FileDownloader()
+    downloader.params = {'noprogress': False}
+    downloader.to_screen = lambda x: x
+    downloader.to_console_title = lambda x: x
+
+    # Test case 1: Download finished
+    status = {
+        'status': 'finished',
+        'total_bytes': 1024,
+        'elapsed': 2
+    }
+    result = downloader.report_progress(status)
+    assert result == '[download] 100% of 1.00KiB in 00:02', f"Unexpected result: {result}"
+
+    # Test case 2: Downloading with known ETA and speed
+    status = {
+        'status': 'downloading',
+        'downloaded_bytes': 512,
+        'total_bytes': 1024,
+        'eta': 2,
+        'speed': 256
+    }
+    result = downloader.report_progress(status)
+    assert result == '[download] 50.0%
+
+# Generated at 2024-06-04 21:07:20.690967
+```python
+    downloader = FileDownloader()
+    downloader.to_screen = lambda x: x  # Mock the to_screen method
+    file_name = "example_file.txt"
+    
+    result = downloader.report_file_already_downloaded(file_name)
+    assert result == '[download] example_file.txt has already been downloaded'
+    
+    file_name_unicode = "example_file_äöü.txt"
+    result_unicode = downloader.report_file_already_downloaded(file_name_unicode)
+    assert result_unicode == '[download] example_file_äöü.txt has already been downloaded'
+```
+
+# Generated at 2024-06-04 21:07:37.669069
+```python
+    assert FileDownloader.parse_bytes('1024') == 1024
+    assert FileDownloader.parse_bytes('1K') == 1024
+    assert FileDownloader.parse_bytes('1k') == 1024
+    assert FileDownloader.parse_bytes('1M') == 1024 * 1024
+    assert FileDownloader.parse_bytes('1G') == 1024 * 1024 * 1024
+    assert FileDownloader.parse_bytes('1T') == 1024 * 1024 * 1024 * 1024
+    assert FileDownloader.parse_bytes('1P') == 1024 * 1024 * 1024 * 1024 * 1024
+    assert FileDownloader.parse_bytes('1E') == 1024 * 1024 * 1024 * 1024 * 1024 * 1024
+    assert FileDownloader.parse_bytes('1Z') == 1024 * 102
+
+# Generated at 2024-06-04 21:07:41.182978
+```python
+    downloader = FileDownloader()
+    downloader.params = {'nopart': False}
+
+    # Test case 1: Normal filename
+    filename = "example.txt"
+    expected = "example.txt.part"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 2: Filename with 'nopart' parameter set to True
+    downloader.params['nopart'] = True
+    filename = "example.txt"
+    expected = "example.txt"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 3: Filename is '-'
+    downloader.params['nopart'] = False
+    filename = "-"
+    expected = "-"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 4: Filename exists and is not a file
+    filename = "example_dir"
+    os.mkdir(filename)
+    expected = "example_dir"
+    assert downloader.temp_name(filename) == expected
+    os.rmdir(filename)
+
+    # Test case 
+
+# Generated at 2024-06-04 21:07:42.799289
+```python
+    downloader = FileDownloader()
+    downloader.to_screen = lambda x: x  # Mock the to_screen method
+    file_name = 'testfile.txt'
+    result = downloader.report_file_already_downloaded(file_name)
+    assert result == '[download] testfile.txt has already been downloaded'
+```
+
+# Generated at 2024-06-04 21:07:46.132834
+```python
+    downloader = FileDownloader()
+    downloader.params = {'nopart': False}
+
+    # Test case 1: Normal filename
+    filename = "example.txt"
+    expected = "example.txt.part"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 2: Filename with 'nopart' parameter set to True
+    downloader.params['nopart'] = True
+    filename = "example.txt"
+    expected = "example.txt"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 3: Filename is '-'
+    downloader.params['nopart'] = False
+    filename = "-"
+    expected = "-"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 4: Filename exists and is not a file
+    filename = "example_dir"
+    os.mkdir(filename)
+    expected = "example_dir"
+    assert downloader.temp_name(filename) == expected
+    os.rmdir(filename)
+
+    # Test case 
+
+# Generated at 2024-06-04 21:07:50.677409
+```python
+    downloader = FileDownloader()
+    downloader.params = {'nopart': False}
+
+    # Test case 1: Normal filename
+    filename = "example.txt"
+    expected = "example.txt.part"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 2: Filename with 'nopart' parameter set to True
+    downloader.params['nopart'] = True
+    filename = "example.txt"
+    expected = "example.txt"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 3: Filename is '-'
+    downloader.params['nopart'] = False
+    filename = "-"
+    expected = "-"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 4: Filename exists and is not a file
+    filename = "example_dir"
+    os.mkdir(filename)
+    expected = "example_dir"
+    assert downloader.temp_name(filename) == expected
+    os.rmdir(filename)
+
+    # Test case 
+
+# Generated at 2024-06-04 21:07:54.853513
+```python
+    downloader = FileDownloader()
+    downloader.params = {'noprogress': False}
+    downloader.to_screen = lambda x: print(x)
+    downloader.to_console_title = lambda x: print(x)
+    downloader.format_seconds = lambda x: f"{int(x // 60)}:{int(x % 60):02d}"
+    downloader.format_percent = lambda x: f"{x:.1f}%"
+    downloader.format_speed = lambda x: f"{x:.1f}B/s"
+    downloader.format_eta = lambda x: f"{int(x // 60)}:{int(x % 60):02d}"
+    
+    # Test case 1: Download finished
+    s = {
+        'status': 'finished',
+        'total_bytes': 1024,
+        'elapsed': 10
+    }
+    downloader.report_progress(s)
+    
+    # Test case 2: Downloading with known ETA and speed
+    s = {
+        'status': '
+
+# Generated at 2024-06-04 21:07:58.336131
+```python
+    downloader = FileDownloader()
+    assert downloader.best_block_size(0.5, 1024) == 1024
+    assert downloader.best_block_size(0.5, 2048) == 2048
+    assert downloader.best_block_size(0.0005, 1024) == 2097152
+    assert downloader.best_block_size(1, 1024) == 512
+    assert downloader.best_block_size(1, 4194304) == 4194304
+    assert downloader.best_block_size(1, 8388608) == 4194304
+    assert downloader.best_block_size(0.5, 1) == 1
+    assert downloader.best_block_size(0.5, 0) == 1
+```
+
+# Generated at 2024-06-04 21:08:01.436672
+```python
+    assert FileDownloader.format_seconds(0) == '00:00'
+    assert FileDownloader.format_seconds(59) == '00:59'
+    assert FileDownloader.format_seconds(60) == '01:00'
+    assert FileDownloader.format_seconds(3599) == '59:59'
+    assert FileDownloader.format_seconds(3600) == '1:00:00'
+    assert FileDownloader.format_seconds(3661) == '1:01:01'
+    assert FileDownloader.format_seconds(86399) == '23:59:59'
+    assert FileDownloader.format_seconds(86400) == '1 day, 00:00:00'
+    assert FileDownloader.format_seconds(90061) == '1 day, 01:01:01'
+    assert FileDownloader.format_seconds(172800) == '2 days, 00:00:00'
+```
+
+# Generated at 2024-06-04 21:08:04.243400
+```python
+    downloader = FileDownloader()
+    assert downloader.best_block_size(0.0005, 1000) == 4194304  # Test for very small elapsed time
+    assert downloader.best_block_size(2, 1000) == 500  # Test for normal case
+    assert downloader.best_block_size(2, 10000000) == 4194304  # Test for large bytes
+    assert downloader.best_block_size(2, 1) == 1  # Test for very small bytes
+    assert downloader.best_block_size(2, 0) == 1  # Test for zero bytes
+    assert downloader.best_block_size(0.0005, 0) == 1  # Test for zero bytes and very small elapsed time
+```
+
+# Generated at 2024-06-04 21:08:09.184526
+```python
+    assert FileDownloader.format_seconds(0) == '00:00'
+    assert FileDownloader.format_seconds(59) == '00:59'
+    assert FileDownloader.format_seconds(60) == '01:00'
+    assert FileDownloader.format_seconds(3599) == '59:59'
+    assert FileDownloader.format_seconds(3600) == '1:00:00'
+    assert FileDownloader.format_seconds(3661) == '1:01:01'
+    assert FileDownloader.format_seconds(86399) == '23:59:59'
+    assert FileDownloader.format_seconds(86400) == '1 day, 00:00:00'
+    assert FileDownloader.format_seconds(90061) == '1 day, 01:01:01'
+    assert FileDownloader.format_seconds(172800) == '2 days, 00:00:00'
+```
+
+# Generated at 2024-06-04 21:08:39.453773
+```python
+    import os
+    import tempfile
+    from unittest.mock import patch, MagicMock
+
+    # Create a mock instance of FileDownloader
+    downloader = FileDownloader()
+    downloader.params = {
+        'nooverwrites': False,
+        'continuedl': True,
+        'nopart': False,
+        'sleep_interval': None,
+        'max_sleep_interval': None,
+    }
+    downloader._progress_hooks = []
+    downloader.to_screen = MagicMock()
+    downloader._hook_progress = MagicMock()
+
+    # Create a temporary file to simulate an existing download
+    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+        filename = tmpfile.name
+
+    info_dict = {}
+
+    # Test case: File already downloaded
+    with patch('os.path.exists', return_value=True), \
+         patch('os.path.isfile', return_value=True), \
+         patch('os.path.getsize', return_value=100):
+        result = downloader.download(filename, info_dict)
+       
+
+# Generated at 2024-06-04 21:08:41.970712
+```python
+    downloader = FileDownloader()
+    assert downloader.best_block_size(0.0005, 1000) == 4194304  # Test for very small elapsed time
+    assert downloader.best_block_size(2, 1000) == 500  # Test for normal case
+    assert downloader.best_block_size(2, 10000000) == 4194304  # Test for large byte size
+    assert downloader.best_block_size(2, 1) == 1  # Test for very small byte size
+    assert downloader.best_block_size(0.5, 1000) == 2000  # Test for rate within min and max bounds
+```
+
+# Generated at 2024-06-04 21:08:43.276803
+```python
+    fd = FileDownloader()
+    assert fd.undo_temp_name('example.part') == 'example'
+    assert fd.undo_temp_name('example') == 'example'
+    assert fd.undo_temp_name('example.part.part') == 'example.part'
+```
+
+# Generated at 2024-06-04 21:08:47.983728
+```python
+    assert FileDownloader.parse_bytes('1024') == 1024
+    assert FileDownloader.parse_bytes('1K') == 1024
+    assert FileDownloader.parse_bytes('1M') == 1024 * 1024
+    assert FileDownloader.parse_bytes('1G') == 1024 * 1024 * 1024
+    assert FileDownloader.parse_bytes('1T') == 1024 * 1024 * 1024 * 1024
+    assert FileDownloader.parse_bytes('1P') == 1024 * 1024 * 1024 * 1024 * 1024
+    assert FileDownloader.parse_bytes('1E') == 1024 * 1024 * 1024 * 1024 * 1024 * 1024
+    assert FileDownloader.parse_bytes('1Z') == 1024 * 1024 * 1024 * 1024 * 1024 * 
+
+# Generated at 2024-06-04 21:08:51.491906
+```python
+    fd = FileDownloader()
+    filename = 'testfile'
+    last_modified_hdr = 'Wed, 21 Oct 2015 07:28:00 GMT'
+
+    # Create a test file
+    with open(filename, 'w') as f:
+        f.write('test')
+
+    # Test setting the last modified time
+    fd.try_utime(filename, last_modified_hdr)
+    filetime = timeconvert(last_modified_hdr)
+    assert os.path.getmtime(filename) == filetime
+
+    # Clean up
+    os.remove(filename)
+```
+
+# Generated at 2024-06-04 21:08:55.810706
+```python
+    import time
+    from unittest.mock import Mock, patch
+
+    # Mocking the FileDownloader class
+    class MockFileDownloader:
+        def __init__(self, params):
+            self.params = params
+
+        def slow_down(self, start_time, now, byte_counter):
+            rate_limit = self.params.get('ratelimit')
+            if rate_limit is None or byte_counter == 0:
+                return
+            if now is None:
+                now = time.time()
+            elapsed = now - start_time
+            if elapsed <= 0.0:
+                return
+            speed = float(byte_counter) / elapsed
+            if speed > rate_limit:
+                sleep_time = float(byte_counter) / rate_limit - elapsed
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
+
+    # Test cases
+    def test_no_rate_limit():
+        downloader = MockFileDownloader(params={})
+        with patch('time.sleep') as mock_sleep:
+            downloader
+
+# Generated at 2024-06-04 21:08:59.787110
+```python
+    downloader = FileDownloader()
+    downloader.params = {'nopart': False}
+
+    # Test case 1: Normal filename
+    filename = "example.txt"
+    expected = "example.txt.part"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 2: Filename with 'nopart' parameter set to True
+    downloader.params['nopart'] = True
+    filename = "example.txt"
+    expected = "example.txt"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 3: Filename is '-'
+    downloader.params['nopart'] = False
+    filename = "-"
+    expected = "-"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 4: Filename exists and is not a file
+    filename = "example_dir"
+    os.mkdir(filename)
+    expected = "example_dir"
+    assert downloader.temp_name(filename) == expected
+    os.rmdir(filename)
+
+    # Test case 
+
+# Generated at 2024-06-04 21:09:04.955059
+```python
+    fd = FileDownloader()
+    filename = 'testfile'
+    last_modified_hdr = 'Wed, 21 Oct 2015 07:28:00 GMT'
+
+    # Create a test file
+    with open(filename, 'w') as f:
+        f.write('test content')
+
+    # Test setting the last modified time
+    fd.try_utime(filename, last_modified_hdr)
+    filetime = os.path.getmtime(filename)
+    expected_time = timeconvert(last_modified_hdr)
+    assert abs(filetime - expected_time) < 1, f"Expected {expected_time}, but got {filetime}"
+
+    # Clean up
+    os.remove(filename)
+```
+
+# Generated at 2024-06-04 21:09:09.043701
+```python
+    downloader = FileDownloader()
+    downloader.params = {'nopart': False}
+
+    # Test case 1: Normal filename
+    filename = "example.txt"
+    expected = "example.txt.part"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 2: Filename with 'nopart' parameter set to True
+    downloader.params['nopart'] = True
+    filename = "example.txt"
+    expected = "example.txt"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 3: Filename is '-'
+    downloader.params['nopart'] = False
+    filename = "-"
+    expected = "-"
+    assert downloader.temp_name(filename) == expected
+
+    # Test case 4: Filename exists and is not a file
+    filename = "example_dir"
+    os.mkdir(filename)
+    expected = "example_dir"
+    assert downloader.temp_name(filename) == expected
+    os.rmdir(filename)
+
+    # Test case 
+
+# Generated at 2024-06-04 21:09:10.318050
+```python
+    downloader = FileDownloader()
+    downloader.ydl = Mock()
+    file_name = 'testfile.txt'
+    
+    downloader.report_file_already_downloaded(file_name)
+    
+    downloader.ydl.to_screen.assert_called_with('[download] testfile.txt has already been downloaded')
+```
+
+# Generated at 2024-06-04 21:09:31.619461
+```python
+    downloader = FileDownloader()
+    downloader.params = {
+        'nooverwrites': False,
+        'continuedl': True,
+        'nopart': False,
+        'sleep_interval': None,
+    }
+    downloader._progress_hooks = []
+    filename = 'testfile'
+    info_dict = {}
+
+    # Mock methods
+    downloader.report_file_already_downloaded = lambda x: None
+    downloader._hook_progress = lambda x: None
+    downloader.to_screen = lambda x: None
+    downloader.real_download = lambda x, y: True
+
+    # Test case: file does not exist
+    assert downloader.download(filename, info_dict) == True
+
+    # Test case: file exists and nooverwrites is True
+    downloader.params['nooverwrites'] = True
+    with open(filename, 'w') as f:
+        f.write('test')
+    assert downloader.download(filename, info_dict) == True
+    os.remove(filename)
+
+    # Test
+
+# Generated at 2024-06-04 21:09:33.545921
+```python
+    fd = FileDownloader()
+    assert fd.undo_temp_name("example.part") == "example"
+    assert fd.undo_temp_name("example") == "example"
+    assert fd.undo_temp_name("example.part.part") == "example.part"
+```
+
+# Generated at 2024-06-04 21:09:37.583419
+```python
+    assert FileDownloader.parse_bytes('1024') == 1024
+    assert FileDownloader.parse_bytes('1K') == 1024
+    assert FileDownloader.parse_bytes('1k') == 1024
+    assert FileDownloader.parse_bytes('1M') == 1024 ** 2
+    assert FileDownloader.parse_bytes('1G') == 1024 ** 3
+    assert FileDownloader.parse_bytes('1T') == 1024 ** 4
+    assert FileDownloader.parse_bytes('1P') == 1024 ** 5
+    assert FileDownloader.parse_bytes('1E') == 1024 ** 6
+    assert FileDownloader.parse_bytes('1Z') == 1024 ** 7
+    assert FileDownloader.parse_bytes('1Y') == 1024 ** 8
+    assert FileDownloader.parse_bytes('1.5K') == int(1.5 * 1024)
+    assert File
+
+# Generated at 2024-06-04 21:09:41.436842
+```python
+    assert FileDownloader.parse_bytes('1024') == 1024
+    assert FileDownloader.parse_bytes('1K') == 1024
+    assert FileDownloader.parse_bytes('1k') == 1024
+    assert FileDownloader.parse_bytes('1M') == 1024 * 1024
+    assert FileDownloader.parse_bytes('1G') == 1024 * 1024 * 1024
+    assert FileDownloader.parse_bytes('1T') == 1024 * 1024 * 1024 * 1024
+    assert FileDownloader.parse_bytes('1P') == 1024 * 1024 * 1024 * 1024 * 1024
+    assert FileDownloader.parse_bytes('1E') == 1024 * 1024 * 1024 * 1024 * 1024 * 1024
+    assert FileDownloader.parse_bytes('1Z') == 1024 * 102
+
+# Generated at 2024-06-04 21:09:42.826003
+```python
+    fd = FileDownloader()
+    assert fd.undo_temp_name('example.part') == 'example'
+    assert fd.undo_temp_name('example') == 'example'
+    assert fd.undo_temp_name('example.part.part') == 'example.part'
+```
+
+# Generated at 2024-06-04 21:09:46.561600
+```python
+    downloader = FileDownloader()
+    downloader.params = {'noprogress': False}
+    downloader.to_screen = lambda x: print(x)
+    downloader.to_console_title = lambda x: None
+
+    # Test case 1: Download finished
+    s = {
+        'status': 'finished',
+        'total_bytes': 1024,
+        'elapsed': 2
+    }
+    downloader.report_progress(s)
+
+    # Test case 2: Downloading with known ETA and speed
+    s = {
+        'status': 'downloading',
+        'downloaded_bytes': 512,
+        'total_bytes': 1024,
+        'eta': 2,
+        'speed': 256
+    }
+    downloader.report_progress(s)
+
+    # Test case 3: Downloading with unknown ETA and speed
+    s = {
+        'status': 'downloading',
+        'downloaded_bytes': 512,
+        'total_bytes': 1024
+   
+
+# Generated at 2024-06-04 21:09:50.599807
+```python
+    class MockYDL:
+        def __init__(self):
+            self.output = []
+
+        def to_screen(self, message, skip_eol=False):
+            self.output.append(message)
+
+        def to_console_title(self, message):
+            pass
+
+    mock_ydl = MockYDL()
+    fd = FileDownloader(mock_ydl)
+    fd.params = {'noprogress': False}
+
+    # Test case: Download finished
+    fd.report_progress({
+        'status': 'finished',
+        'total_bytes': 1024,
+        'elapsed': 2
+    })
+    assert '[download] 100% of 1.00KiB in 00:02' in mock_ydl.output[-1]
+
+    # Test case: Downloading with known ETA and speed
+    fd.report_progress({
+        'status': 'downloading',
+        'downloaded_bytes': 512,
+        'total_bytes': 1024,
+        'eta': 
+
+# Generated at 2024-06-04 21:09:54.347461
+```python
+    fd = FileDownloader()
+    filename = 'testfile'
+    last_modified_hdr = 'Wed, 21 Oct 2015 07:28:00 GMT'
+
+    # Create a test file
+    with open(filename, 'w') as f:
+        f.write('test content')
+
+    # Test with valid last_modified_hdr
+    fd.try_utime(filename, last_modified_hdr)
+    assert os.path.getmtime(filename) == timeconvert(last_modified_hdr)
+
+    # Test with None last_modified_hdr
+    fd.try_utime(filename, None)
+    assert os.path.getmtime(filename) == timeconvert(last_modified_hdr)
+
+    # Test with invalid last_modified_hdr
+    invalid_last_modified_hdr = 'invalid date'
+    fd.try_utime(filename, invalid_last_modified_hdr)
+    assert os.path.getmtime(filename) == timeconvert(last_modified_hdr)
+
+    # Clean up
+    os.remove(filename)
+```
+
+# Generated at 2024-06-04 21:09:56.989905
+```python
+    fd = FileDownloader()
+    filename = 'testfile'
+    last_modified_hdr = 'Wed, 21 Oct 2015 07:28:00 GMT'
+    
+    # Create a test file
+    with open(filename, 'w') as f:
+        f.write('test content')
+    
+    # Test setting the last modified time
+    fd.try_utime(filename, last_modified_hdr)
+    filetime = os.path.getmtime(filename)
+    expected_time = timeconvert(last_modified_hdr)
+    
+    assert abs(filetime - expected_time) < 1, f"Expected {expected_time}, but got {filetime}"
+    
+    # Clean up
+    os.remove(filename)
+```
+
+# Generated at 2024-06-04 21:10:02.237094
+```python
+    downloader = FileDownloader()
+    downloader.params = {'noprogress': False}
+    downloader.to_screen = lambda x: print(x)
+    downloader.to_console_title = lambda x: None
+
+    # Test case 1: Download finished
+    status = {
+        'status': 'finished',
+        'total_bytes': 1024,
+        'elapsed': 2
+    }
+    downloader.report_progress(status)
+
+    # Test case 2: Downloading with known ETA and speed
+    status = {
+        'status': 'downloading',
+        'downloaded_bytes': 512,
+        'total_bytes': 1024,
+        'eta': 2,
+        'speed': 256
+    }
+    downloader.report_progress(status)
+
+    # Test case 3: Downloading with unknown ETA and speed
+    status = {
+        'status': 'downloading',
+        'downloaded_bytes': 512,
+        'total_bytes': 1024
+   
+
+# Generated at 2024-06-04 21:10:58.064875
+```python
+    fd = FileDownloader()
+    filename = 'testfile'
+    last_modified_hdr = 'Wed, 21 Oct 2015 07:28:00 GMT'
+    
+    # Create a test file
+    with open(filename, 'w') as f:
+        f.write('test content')
+    
+    # Test setting the last modified time
+    fd.try_utime(filename, last_modified_hdr)
+    filetime = os.path.getmtime(filename)
+    expected_time = time.mktime(time.strptime(last_modified_hdr, '%a, %d %b %Y %H:%M:%S %Z'))
+    
+    assert abs(filetime - expected_time) < 1, f"Expected {expected_time}, but got {filetime}"
+    
+    # Clean up
+    os.remove(filename)
+```
+
+# Generated at 2024-06-04 21:11:01.910813
+```python
+    downloader = FileDownloader()
+    downloader.params = {'noprogress': False}
+    downloader.to_screen = lambda x: x
+    downloader.to_console_title = lambda x: x
+
+    # Test case 1: Download finished
+    s = {
+        'status': 'finished',
+        'total_bytes': 1024,
+        'elapsed': 2
+    }
+    downloader.report_progress(s)
+    assert s['_total_bytes_str'] == '1.00KiB'
+    assert s['_elapsed_str'] == '00:02'
+
+    # Test case 2: Downloading with known ETA and speed
+    s = {
+        'status': 'downloading',
+        'downloaded_bytes': 512,
+        'total_bytes': 1024,
+        'eta': 2,
+        'speed': 256
+    }
+    downloader.report_progress(s)
+    assert s['_percent_str'] == '50.0%'
+    assert s['_eta
+
+# Generated at 2024-06-04 21:11:06.967487
+```python
+    downloader = FileDownloader()
+    downloader.params = {'noprogress': False}
+    downloader.to_screen = lambda x: print(x)
+    downloader.to_console_title = lambda x: None
+
+    # Test case 1: Download finished
+    status = {
+        'status': 'finished',
+        'total_bytes': 1024,
+        'elapsed': 2
+    }
+    downloader.report_progress(status)
+
+    # Test case 2: Downloading with known ETA and speed
+    status = {
+        'status': 'downloading',
+        'downloaded_bytes': 512,
+        'total_bytes': 1024,
+        'eta': 2,
+        'speed': 256
+    }
+    downloader.report_progress(status)
+
+    # Test case 3: Downloading with unknown ETA and speed
+    status = {
+        'status': 'downloading',
+        'downloaded_bytes': 512,
+        'total_bytes': 1024
+   
+
+# Generated at 2024-06-04 21:11:10.442340
+```python
+    downloader = FileDownloader()
+    downloader.params = {'noprogress': False}
+    downloader.to_screen = lambda x: x
+    downloader.to_console_title = lambda x: x
+
+    # Test case 1: Download finished
+    s = {
+        'status': 'finished',
+        'total_bytes': 1024,
+        'elapsed': 2
+    }
+    result = downloader.report_progress(s)
+    assert result == '[download] 100% of 1.00KiB in 00:02', f"Unexpected result: {result}"
+
+    # Test case 2: Downloading with known ETA and speed
+    s = {
+        'status': 'downloading',
+        'downloaded_bytes': 512,
+        'total_bytes': 1024,
+        'eta': 2,
+        'speed': 256
+    }
+    result = downloader.report_progress(s)
+    assert result == '[download] 50.0%
+
+# Generated at 2024-06-04 21:11:13.685855
+```python
+    fd = FileDownloader()
+    filename = 'testfile'
+    last_modified_hdr = 'Wed, 21 Oct 2015 07:28:00 GMT'
+
+    # Create a test file
+    with open(filename, 'w') as f:
+        f.write('test')
+
+    # Test setting the last modified time
+    fd.try_utime(filename, last_modified_hdr)
+    filetime = os.path.getmtime(filename)
+    expected_time = time.mktime(time.strptime(last_modified_hdr, '%a, %d %b %Y %H:%M:%S %Z'))
+    assert abs(filetime - expected_time) < 1, f"Expected {expected_time}, but got {filetime}"
+
+    # Clean up
+    os.remove(filename)
+```
+
+# Generated at 2024-06-04 21:11:16.281183
+```python
+    fd = FileDownloader()
+    filename = 'testfile'
+    last_modified_hdr = 'Wed, 21 Oct 2015 07:28:00 GMT'
+    
+    # Create a test file
+    with open(filename, 'w') as f:
+        f.write('test content')
+    
+    # Test setting the last modified time
+    result = fd.try_utime(filename, last_modified_hdr)
+    assert result == timeconvert(last_modified_hdr)
+    
+    # Check if the file's last modified time was set correctly
+    assert os.path.getmtime(filename) == result
+    
+    # Clean up
+    os.remove(filename)
+```
+
+# Generated at 2024-06-04 21:11:21.265385
+```python
+    downloader = FileDownloader()
+    downloader.params = {'noprogress': False}
+    downloader.to_screen = lambda x: print(x)
+    downloader.to_console_title = lambda x: None
+
+    # Test case 1: Download finished
+    status = {
+        'status': 'finished',
+        'total_bytes': 1024,
+        'elapsed': 2
+    }
+    downloader.report_progress(status)
+
+    # Test case 2: Downloading with known ETA and speed
+    status = {
+        'status': 'downloading',
+        'downloaded_bytes': 512,
+        'total_bytes': 1024,
+        'eta': 2,
+        'speed': 256
+    }
+    downloader.report_progress(status)
+
+    # Test case 3: Downloading with unknown ETA and speed
+    status = {
+        'status': 'downloading',
+        'downloaded_bytes': 512,
+        'total_bytes': 1024
+   
+
+# Generated at 2024-06-04 21:11:25.256240
+```python
+    import os
+    import tempfile
+    from unittest.mock import Mock, patch
+
+    # Create a mock instance of FileDownloader
+    downloader = FileDownloader()
+    downloader.params = {
+        'nooverwrites': False,
+        'continuedl': True,
+        'nopart': False,
+        'sleep_interval': None,
+        'max_sleep_interval': None,
+    }
+    downloader._progress_hooks = []
+    downloader.to_screen = Mock()
+    downloader._hook_progress = Mock()
+
+    # Create a temporary file to simulate an existing download
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_filename = tmp_file.name
+
+    # Test case: File already downloaded
+    with patch('os.path.exists', return_value=True), \
+         patch('os.path.isfile', return_value=True), \
+         patch('os.path.getsize', return_value=1024):
+        result = downloader.download(tmp_filename, {})
+        assert result is True
+        downloader
+
+# Generated at 2024-06-04 21:11:29.369989
+```python
+    import time
+    from unittest.mock import Mock, patch
+
+    # Mocking the FileDownloader class
+    class MockFileDownloader:
+        def __init__(self, params):
+            self.params = params
+
+        def slow_down(self, start_time, now, byte_counter):
+            rate_limit = self.params.get('ratelimit')
+            if rate_limit is None or byte_counter == 0:
+                return
+            if now is None:
+                now = time.time()
+            elapsed = now - start_time
+            if elapsed <= 0.0:
+                return
+            speed = float(byte_counter) / elapsed
+            if speed > rate_limit:
+                sleep_time = float(byte_counter) / rate_limit - elapsed
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
+
+    # Test case 1: No rate limit
+    downloader = MockFileDownloader(params={})
+    with patch('time.sleep', return_value=None) as mock_sleep
+
+# Generated at 2024-06-04 21:11:34.541745
+```python
+    import time
+    from unittest.mock import Mock, patch
+
+    # Mocking the FileDownloader class
+    class MockFileDownloader:
+        def __init__(self, params):
+            self.params = params
+
+        def slow_down(self, start_time, now, byte_counter):
+            rate_limit = self.params.get('ratelimit')
+            if rate_limit is None or byte_counter == 0:
+                return
+            if now is None:
+                now = time.time()
+            elapsed = now - start_time
+            if elapsed <= 0.0:
+                return
+            speed = float(byte_counter) / elapsed
+            if speed > rate_limit:
+                sleep_time = float(byte_counter) / rate_limit - elapsed
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
+
+    # Test case 1: No rate limit
+    downloader = MockFileDownloader(params={})
+    with patch('time.sleep') as mock_sleep:
+        downloader.s
+
+# Generated at 2024-06-04 21:13:57.609913
+```python
+    assert FileDownloader.format_retries(float('inf')) == 'inf'
+    assert FileDownloader.format_retries(0) == '0'
+    assert FileDownloader.format_retries(1) == '1'
+    assert FileDownloader.format_retries(1.5) == '2'
+    assert FileDownloader.format_retries(2.4) == '2'
+    assert FileDownloader.format_retries(2.5) == '3'
+```
+
+# Generated at 2024-06-04 21:14:01.178260
+```python
+    import time
+    from unittest.mock import Mock, patch
+
+    # Mocking the FileDownloader class
+    class MockFileDownloader:
+        def __init__(self, params):
+            self.params = params
+
+        def slow_down(self, start_time, now, byte_counter):
+            rate_limit = self.params.get('ratelimit')
+            if rate_limit is None or byte_counter == 0:
+                return
+            if now is None:
+                now = time.time()
+            elapsed = now - start_time
+            if elapsed <= 0.0:
+                return
+            speed = float(byte_counter) / elapsed
+            if speed > rate_limit:
+                sleep_time = float(byte_counter) / rate_limit - elapsed
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
+
+    # Test case 1: No rate limit
+    downloader = MockFileDownloader(params={})
+    with patch('time.sleep') as mock_sleep:
+        downloader.s
+
+# Generated at 2024-06-04 21:14:02.434025
+```python
+    fd = FileDownloader()
+    assert fd.undo_temp_name("example.part") == "example"
+    assert fd.undo_temp_name("example") == "example"
+    assert fd.undo_temp_name("example.part.part") == "example.part"
+```
+
+# Generated at 2024-06-04 21:14:06.681863
+```python
+    downloader = FileDownloader()
+    downloader.params = {'noprogress': False}
+    downloader.to_screen = lambda x: print(x)
+    downloader.to_console_title = lambda x: None
+
+    # Test case 1: Download finished
+    status = {
+        'status': 'finished',
+        'total_bytes': 1024,
+        'elapsed': 2
+    }
+    downloader.report_progress(status)
+
+    # Test case 2: Downloading with known ETA and speed
+    status = {
+        'status': 'downloading',
+        'downloaded_bytes': 512,
+        'total_bytes': 1024,
+        'eta': 2,
+        'speed': 256
+    }
+    downloader.report_progress(status)
+
+    # Test case 3: Downloading with unknown ETA and speed
+    status = {
+        'status': 'downloading',
+        'downloaded_bytes': 512,
+        'total_bytes': 1024
+   
+
+# Generated at 2024-06-04 21:14:10.560382
+```python
+    import time
+    from unittest.mock import Mock
+
+    # Create a mock instance of FileDownloader
+    fd = FileDownloader()
+    fd.params = {'ratelimit': 1000}  # Set rate limit to 1000 bytes per second
+
+    # Mock the time.sleep method to avoid actual sleeping during the test
+    time.sleep = Mock()
+
+    # Test case where byte_counter is 0
+    fd.slow_down(time.time(), time.time(), 0)
+    time.sleep.assert_not_called()
+
+    # Test case where rate limit is not exceeded
+    start_time = time.time()
+    now = start_time + 1  # 1 second later
+    byte_counter = 500  # 500 bytes downloaded
+    fd.slow_down(start_time, now, byte_counter)
+    time.sleep.assert_not_called()
+
+    # Test case where rate limit is exceeded
+    byte_counter = 2000  # 2000 bytes downloaded in
+
+# Generated at 2024-06-04 21:14:14.410990
+```python
+    import time
+    from unittest.mock import Mock
+
+    # Mocking the necessary parts
+    downloader = FileDownloader()
+    downloader.params = {'ratelimit': 1000}  # 1000 bytes per second
+    downloader.ydl = Mock()
+
+    # Test case where byte_counter is 0
+    start_time = time.time()
+    now = start_time + 1
+    byte_counter = 0
+    downloader.slow_down(start_time, now, byte_counter)
+    # No sleep should occur, so no assertion needed
+
+    # Test case where rate limit is not set
+    downloader.params = {}
+    byte_counter = 1000
+    downloader.slow_down(start_time, now, byte_counter)
+    # No sleep should occur, so no assertion needed
+
+    # Test case where speed is below rate limit
+    downloader.params = {'ratelimit': 2000}  # 2000 bytes per second
+   
+
+# Generated at 2024-06-04 21:14:17.966167
+```python
+    import os
+    import time
+    from unittest.mock import patch, MagicMock
+
+    fd = FileDownloader()
+
+    # Test case: last_modified_hdr is None
+    assert fd.try_utime('testfile', None) is None
+
+    # Test case: file does not exist
+    with patch('os.path.isfile', return_value=False):
+        assert fd.try_utime('testfile', 'Wed, 21 Oct 2015 07:28:00 GMT') is None
+
+    # Test case: invalid date
+    with patch('os.path.isfile', return_value=True):
+        with patch('timeconvert', return_value=0):
+            assert fd.try_utime('testfile', 'Invalid Date') is None
+
+    # Test case: valid date
+    with patch('os.path.isfile', return_value=True):
+        with patch('timeconvert', return_value=1445412480):
+            with patch('os.utime') as mock_ut
+
+# Generated at 2024-06-04 21:14:20.878086
+```python
+    fd = FileDownloader()
+    filename = 'testfile'
+    last_modified_hdr = 'Wed, 21 Oct 2015 07:28:00 GMT'
+
+    # Create a test file
+    with open(filename, 'w') as f:
+        f.write('test content')
+
+    # Test setting the last modified time
+    fd.try_utime(filename, last_modified_hdr)
+    filetime = timeconvert(last_modified_hdr)
+    assert os.path.getmtime(filename) == filetime
+
+    # Clean up
+    os.remove(filename)
+```
+
+# Generated at 2024-06-04 21:14:24.817844
+```python
+    downloader = FileDownloader()
+    downloader.params = {'noprogress': False}
+    downloader.to_screen = lambda x: x
+    downloader.to_console_title = lambda x: x
+
+    # Mocking format methods
+    downloader.format_eta = lambda x: '00:00'
+    downloader.format_percent = lambda x: '100%'
+    downloader.format_speed = lambda x: '1000.00KiB/s'
+    downloader.format_seconds = lambda x: '00:00'
+
+    # Test case 1: Download finished
+    status = {
+        'status': 'finished',
+        'total_bytes': 1024,
+        'elapsed': 2
+    }
+    downloader.report_progress(status)
+
+    # Test case 2: Downloading with known ETA and speed
+    status = {
+        'status': 'downloading',
+        'eta': 60,
+        'total_bytes': 2048,
+        'downloaded_bytes': 1024,
+
+
+# Generated at 2024-06-04 21:14:28.121833
+```python
+    downloader = FileDownloader()
+    assert downloader.best_block_size(0.5, 1024) == 1024
+    assert downloader.best_block_size(0.0005, 1024) == 2048
+    assert downloader.best_block_size(1, 1024) == 1024
+    assert downloader.best_block_size(1, 512) == 512
+    assert downloader.best_block_size(1, 4194304) == 4194304
+    assert downloader.best_block_size(1, 8388608) == 4194304
+    assert downloader.best_block_size(0.5, 8388608) == 4194304
+    assert downloader.best_block_size(0.5, 1) == 2
+    assert downloader.best_block_size(0.5, 0) == 1
+```

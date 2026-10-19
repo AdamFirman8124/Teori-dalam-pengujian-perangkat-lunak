@@ -1,0 +1,1103 @@
+
+
+# Generated at 2024-03-18 01:03:22.893448
+```python
+import os
+from ansible.errors import AnsibleFallbackNotFound
+
+# Assuming the existence of the following functions and classes based on the context provided:
+# AnsibleValidationErrorMultiple, ElementError, ArgumentTypeError, ArgumentValueError, SubParameterTypeError,
+# AliasError, NoLogError, MutuallyExclusiveError, RequiredError, _get_type_validator, _validate_elements,
+# _handle_aliases, _list_no_log_values, _get_legal_inputs, _get_unsupported_parameters, check_mutually_exclusive,
+# _set_defaults, check_required_arguments, _validate_argument_types, _validate_argument_values, _validate_sub_spec,
+# string_types, to_native, KeysView, Sequence, binary_type, text_type, lenient_lowercase, BOOLEANS_FALSE,
+# BOOLEANS_TRUE
+
+# Test function for set_fallbacks
+
+# Generated at 2024-03-18 01:03:29.136410
+```python
+    # Mocking os.environ for testing environment variables
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        argument_spec = {
+            'param1': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR', 'DEFAULT_ENV_VAR'], {'default': 'default_value'}),
+                'no_log': False
+            },
+            'param2': {
+                'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR'], {'default': 'default_value'}),
+                'no_log': True
+            },
+            'param3': {
+                'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR']),
+                'no_log': False
+            }
+        }
+        parameters = {}
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param1'] == 'test_value', "Expected 'param1' to fall back to 'test_value'"
+        assert 'param2'
+
+# Generated at 2024-03-18 01:03:35.766360
+```python
+    # Mocking os.environ for testing environment variable fallbacks
+    with patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        argument_spec = {
+            'param_with_env_fallback': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR'])
+            },
+            'param_with_default': {
+                'fallback': (env_fallback, ['NON_EXISTENT_VAR'], {'default': 'default_value'})
+            },
+            'param_with_no_fallback': {
+                'fallback': (None,)
+            },
+            'param_no_log': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+                'no_log': True
+            }
+        }
+        parameters = {}
+
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param_with_env_fallback'] == 'test_value'
+        assert parameters['param_with_default'] == 'default_value'
+        assert 'param_with_no_fallback'
+
+# Generated at 2024-03-18 01:03:41.900960
+```python
+    # Define a mock environment variable for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+
+    # Define a simple argument spec with a fallback to an environment variable
+    argument_spec = {
+        'param1': {
+            'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            'no_log': False
+        },
+        'param2': {
+            'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR']),
+            'no_log': False
+        },
+        'param3': {
+            'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            'no_log': True
+        }
+    }
+
+    # Define parameters, missing 'param1' and 'param3' to trigger fallback
+    parameters = {
+        'param2': 'explicit_value'
+    }
+
+    # Call the function with the argument spec and parameters
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    # Assert
+
+# Generated at 2024-03-18 01:03:47.822799
+```python
+    # Set up environment variables for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+    os.environ['ANOTHER_ENV_VAR'] = 'another_test_value'
+
+    # Test that the correct value is returned for a known environment variable
+    assert env_fallback('TEST_ENV_VAR') == 'test_value', "env_fallback did not return the expected value for 'TEST_ENV_VAR'"
+
+    # Test that the second argument is used if the first is not set
+    assert env_fallback('NON_EXISTENT_VAR', 'ANOTHER_ENV_VAR') == 'another_test_value', "env_fallback did not return the expected value for 'ANOTHER_ENV_VAR' when the first argument was not set"
+
+    # Test that AnsibleFallbackNotFound is raised when none of the environment variables are set
+    try:
+        env_fallback('NON_EXISTENT_VAR', 'ANOTHER_NON_EXISTENT_VAR')
+        assert False, "env_fallback did
+
+# Generated at 2024-03-18 01:03:49.655643
+```python
+import os
+from ansible.errors import AnsibleFallbackNotFound
+
+# Assuming the existence of the set_fallbacks function and related classes/constants
+
+
+# Generated at 2024-03-18 01:03:59.425126
+```python
+    def test_sanitize_keys():
+        no_log_strings = {"secret", "password"}
+        ignore_keys = {"ignore_this_key"}
+
+        # Test with a dictionary containing no_log values as keys
+        data = {
+            "username": "admin",
+            "password": "secret_value",
+            "nested": {
+                "password": "another_secret",
+                "safe": "value"
+            },
+            "ignore_this_key": "should_not_be_sanitized"
+        }
+        sanitized_data = sanitize_keys(data, no_log_strings, ignore_keys)
+        assert sanitized_data["password"] == "VALUE_SPECIFIED_IN_NO_LOG_PARAMETER"
+        assert sanitized_data["nested"]["password"] == "VALUE_SPECIFIED_IN_NO_LOG_PARAMETER"
+        assert sanitized_data["ignore_this_key"] == "should_not_be_sanitized"
+
+        # Test with a list containing dictionaries with no_log values as keys
+        data = [
+            {
+                "username": "admin",
+                "password": "
+
+# Generated at 2024-03-18 01:04:01.685474
+```python
+import os
+from ansible.errors import AnsibleFallbackNotFound
+
+# Assuming the existence of the set_fallbacks function and necessary imports
+
+
+# Generated at 2024-03-18 01:04:11.848811
+```python
+    # Mocking os.environ for testing environment variable fallbacks
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        argument_spec = {
+            'param_with_env_fallback': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR'])
+            },
+            'param_with_default': {
+                'fallback': (env_fallback, ['NON_EXISTENT_VAR'], {'default': 'default_value'})
+            },
+            'param_with_no_fallback': {
+                'fallback': (None,)
+            },
+            'param_with_no_log': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+                'no_log': True
+            }
+        }
+        parameters = {}
+
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param_with_env_fallback'] == 'test_value'
+        assert parameters['param_with_default'] == 'default_value'
+        assert 'param_with_no_f
+
+# Generated at 2024-03-18 01:04:17.547460
+```python
+    # Mocking os.environ for testing environment variable fallbacks
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        argument_spec = {
+            'param_with_env_fallback': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR'])
+            },
+            'param_with_default': {
+                'fallback': (env_fallback, ['NON_EXISTENT_VAR'], {'default': 'default_value'})
+            },
+            'param_with_no_fallback': {
+                'fallback': (None,)
+            },
+            'param_no_log': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+                'no_log': True
+            }
+        }
+        parameters = {}
+
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param_with_env_fallback'] == 'test_value'
+        assert parameters['param_with_default'] == 'default_value'
+        assert 'param_with_no_fallback
+
+# Generated at 2024-03-18 01:04:57.940760
+```python
+    # Mocking the os.environ for testing environment variable fallbacks
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        argument_spec = {
+            'param1': {'fallback': (env_fallback, ['TEST_ENV_VAR'])},
+            'param2': {'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR'], {'default': 'default_value'})},
+            'param3': {'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR'])},
+            'param4': {'no_log': True, 'fallback': (env_fallback, ['TEST_ENV_VAR'])},
+        }
+        parameters = {}
+
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param1'] == 'test_value'
+        assert parameters['param2'] == 'default_value'
+        assert 'param3' not in parameters
+        assert parameters['param4'] == 'test_value'
+
+
+# Generated at 2024-03-18 01:05:03.646654
+```python
+    # Set up environment variables for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+    os.environ['ANOTHER_ENV_VAR'] = 'another_test_value'
+
+    # Test that the correct value is returned for a present environment variable
+    assert env_fallback('TEST_ENV_VAR') == 'test_value'
+
+    # Test that the first present environment variable is the one used
+    assert env_fallback('NON_EXISTENT_VAR', 'ANOTHER_ENV_VAR') == 'another_test_value'
+
+    # Test that AnsibleFallbackNotFound is raised when no environment variables are present
+    with pytest.raises(AnsibleFallbackNotFound):
+        env_fallback('NON_EXISTENT_VAR', 'ANOTHER_NON_EXISTENT_VAR')
+
+    # Clean up environment variables
+    del os.environ['TEST_ENV_VAR']
+    del os.environ['ANOTHER_ENV_VAR']
+```
+
+# Generated at 2024-03-18 01:05:08.788785
+```python
+    # Test cases for remove_values function
+    def test_remove_values():
+        # Test with simple string
+        assert remove_values("password=12345", {"12345"}) == "password=VALUE_SPECIFIED_IN_NO_LOG_PARAMETER"
+        # Test with list containing no_log string
+        assert remove_values(["password=12345", "username=admin"], {"12345"}) == ["password=VALUE_SPECIFIED_IN_NO_LOG_PARAMETER", "username=admin"]
+        # Test with dict containing no_log string
+        assert remove_values({"password": "12345", "username": "admin"}, {"12345"}) == {"password": "VALUE_SPECIFIED_IN_NO_LOG_PARAMETER", "username": "admin"}
+        # Test with nested dict containing no_log string
+        assert remove_values({"user": {"password": "12345", "username": "admin"}}, {"12345"}) == {"user": {"password": "VALUE_SPECIFIED_IN_NO_LOG_PARAMETER", "username":
+
+# Generated at 2024-03-18 01:05:11.215347
+```python
+import os
+from ansible.errors import AnsibleFallbackNotFound
+
+# Assuming the existence of the set_fallbacks function and related classes/constants
+
+
+# Generated at 2024-03-18 01:05:21.733678
+```python
+    # Mocking os.environ for testing environment variable fallbacks
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        # Test case with environment variable fallback
+        argument_spec = {
+            'param_with_env_fallback': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR'])
+            },
+            'param_with_default': {
+                'fallback': (env_fallback, ['NON_EXISTENT_VAR'], {'default': 'default_value'})
+            },
+            'param_with_no_fallback': {
+                'fallback': (None,)
+            },
+            'param_with_no_log': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+                'no_log': True
+            }
+        }
+        parameters = {}
+
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param_with_env_fallback'] == 'test_value'
+        assert parameters['param_with_default'] == 'default
+
+# Generated at 2024-03-18 01:05:26.837894
+```python
+    def test_sanitize_keys():
+        # Test cases for sanitize_keys function
+        no_log_strings = {"secret", "password"}
+        ignore_keys = {"ignore_this_key"}
+
+        # Test with a dictionary containing no_log strings
+        data = {
+            "username": "user1",
+            "password": "secret",
+            "nested": {
+                "password": "shouldbesanitized",
+                "safe": "value"
+            },
+            "ignore_this_key": "shouldnotbesanitized"
+        }
+        sanitized_data = sanitize_keys(data, no_log_strings, ignore_keys)
+        assert sanitized_data["password"] == "VALUE_SPECIFIED_IN_NO_LOG_PARAMETER"
+        assert sanitized_data["nested"]["password"] == "VALUE_SPECIFIED_IN_NO_LOG_PARAMETER"
+        assert sanitized_data["ignore_this_key"] == "shouldnotbesanitized"
+
+        # Test with a list containing no_log strings
+        data = ["user1", "secret", {"password":
+
+# Generated at 2024-03-18 01:05:28.073022
+```python
+import os
+import pytest
+
+
+# Generated at 2024-03-18 01:05:34.054481
+```python
+    # Define a mock environment variable for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+
+    # Define a simple argument spec with a fallback to an environment variable
+    argument_spec = {
+        'param1': {
+            'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            'no_log': False
+        },
+        'param2': {
+            'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR']),
+            'no_log': False
+        },
+        'param3': {
+            'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            'no_log': True
+        }
+    }
+
+    # Define parameters that are missing 'param1' and 'param3', but include 'param2'
+    parameters = {
+        'param2': 'explicit_value'
+    }
+
+    # Call the function with the argument spec and parameters
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+
+
+# Generated at 2024-03-18 01:05:39.720086
+Here is the completion of the unit test function `test_sanitize_keys()`:
+
+```python
+    def test_sanitize_keys():
+        no_log_strings = {'secret', 'password'}
+        ignore_keys = {'ignore_this_key'}
+        data = {
+            'username': 'admin',
+            'password': 'secret',
+            'nested': {
+                'password': 'shouldbesanitized',
+                'safe': 'value',
+                'ignore_this_key': 'ignoreme'
+            },
+            'list_of_dicts': [
+                {'password': 'anothersecret', 'key': 'value'},
+                {'safekey': 'safevalue'}
+            ],
+            'set_of_values': {'secret', 'another', 'values'}
+        }
+
+        sanitized_data = sanitize_keys(data, no_log_strings, ignore_keys)
+
+        assert sanitized_data['password'] == 'VALUE_SPECIFIED_IN_NO_LOG_PARAMETER'
+        assert sanitized_data['nested']['password'] == 'VALUE_SPECIFIED_IN_NO_LOG_PARAMETER'
+        assert
+
+# Generated at 2024-03-18 01:05:45.485121
+```python
+    # Set up environment variables for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+    os.environ['ANOTHER_ENV_VAR'] = 'another_test_value'
+
+    # Test that the first matching environment variable is returned
+    assert env_fallback('TEST_ENV_VAR', 'ANOTHER_ENV_VAR') == 'test_value'
+
+    # Test that the second matching environment variable is returned if the first is not set
+    del os.environ['TEST_ENV_VAR']  # Remove the first environment variable
+    assert env_fallback('TEST_ENV_VAR', 'ANOTHER_ENV_VAR') == 'another_test_value'
+
+    # Test that AnsibleFallbackNotFound is raised if none of the environment variables are set
+    del os.environ['ANOTHER_ENV_VAR']  # Remove the second environment variable
+    try:
+        env_fallback('TEST_ENV_VAR', 'ANOTHER_ENV_VAR')
+        assert False, "AnsibleFallbackNotFound was not raised"
+    except
+
+# Generated at 2024-03-18 01:06:18.420397
+```python
+    def test_sanitize_keys():
+        no_log_strings = {"secret", "password"}
+        ignore_keys = {"ignore_this_key"}
+
+        # Test with a dictionary
+        data = {
+            "username": "user1",
+            "password": "secret",
+            "nested": {
+                "password": "shouldbesanitized",
+                "safe": "value",
+                "ignore_this_key": "ignoreme"
+            },
+            "ignore_this_key": "ignoreme"
+        }
+        expected = {
+            "username": "user1",
+            "password": "VALUE_SPECIFIED_IN_NO_LOG_PARAMETER",
+            "nested": {
+                "password": "VALUE_SPECIFIED_IN_NO_LOG_PARAMETER",
+                "safe": "value",
+                "ignore_this_key": "ignoreme"
+            },
+            "ignore_this_key": "ignoreme"
+        }
+        assert sanitize_keys(data, no_log_strings, ignore_keys) == expected
+
+        # Test with a list
+       
+
+# Generated at 2024-03-18 01:06:23.507612
+```python
+    # Mocking os.environ for testing environment variable fallbacks
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        # Test case with environment variable fallback
+        argument_spec = {
+            'param_with_env_fallback': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR'])
+            },
+            'param_with_no_fallback': {},
+            'param_with_default_fallback': {
+                'fallback': (env_fallback, ['NON_EXISTENT_VAR'], {'default': 'default_value'})
+            },
+            'param_with_no_log': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+                'no_log': True
+            }
+        }
+        parameters = {}
+        expected_no_log_values = {'test_value'}
+
+        # Run the function
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        # Assertions
+        assert parameters['param_with_env_fallback'] == 'test
+
+# Generated at 2024-03-18 01:06:29.633855
+```python
+    # Mocking os.environ for testing environment variables
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        argument_spec = {
+            'param1': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            },
+            'param2': {
+                'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR']),
+            },
+            'param3': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR'], {'default': 'default_value'}),
+            },
+            'param4': {
+                'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR'], {'default': 'default_value'}),
+            },
+            'param5': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+                'no_log': True,
+            },
+        }
+        parameters = {}
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param1']
+
+# Generated at 2024-03-18 01:06:34.310821
+```python
+    # Set up environment variables for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+    os.environ['ANOTHER_ENV_VAR'] = 'another_test_value'
+
+    # Test that the correct value is returned for a present environment variable
+    assert env_fallback('TEST_ENV_VAR') == 'test_value'
+
+    # Test that the first present environment variable is the one used
+    assert env_fallback('NON_EXISTENT_VAR', 'ANOTHER_ENV_VAR') == 'another_test_value'
+
+    # Test that AnsibleFallbackNotFound is raised when no environment variables are present
+    with pytest.raises(AnsibleFallbackNotFound):
+        env_fallback('NON_EXISTENT_VAR', 'ANOTHER_NON_EXISTENT_VAR')
+
+    # Clean up environment variables
+    del os.environ['TEST_ENV_VAR']
+    del os.environ['ANOTHER_ENV_VAR']
+```
+
+# Generated at 2024-03-18 01:06:39.591114
+```python
+    # Test cases for remove_values function
+    def test_remove_values():
+        # Test with simple string
+        assert remove_values('password=12345', {'12345'}) == 'password=********'
+
+        # Test with list containing no_log string
+        assert remove_values(['password=12345', 'hello'], {'12345'}) == ['password=********', 'hello']
+
+        # Test with dict containing no_log string
+        assert remove_values({'key': 'password=12345'}, {'12345'}) == {'key': 'password=********'}
+
+        # Test with nested dict containing no_log string
+        assert remove_values({'outer': {'inner': 'password=12345'}}, {'12345'}) == {'outer': {'inner': 'password=********'}}
+
+        # Test with set containing no_log string
+        assert remove_values({'password=12345', 'world'}, {'12345'}) == {'password=********', 'world'}
+
+        #
+
+# Generated at 2024-03-18 01:06:45.004256
+```python
+    # Mocking os.environ for testing environment variable fallbacks
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        argument_spec = {
+            'param_with_env_fallback': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR'])
+            },
+            'param_with_default': {
+                'fallback': (env_fallback, ['NON_EXISTENT_VAR'], {'default': 'default_value'})
+            },
+            'param_with_no_fallback': {
+                'fallback': (None,)
+            },
+            'param_no_log': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+                'no_log': True
+            }
+        }
+        parameters = {}
+
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param_with_env_fallback'] == 'test_value'
+        assert parameters['param_with_default'] == 'default_value'
+        assert 'param_with_no_fallback
+
+# Generated at 2024-03-18 01:06:53.832858
+```python
+    # Mocking os.environ for testing environment variable fallbacks
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        argument_spec = {
+            'param_with_env_fallback': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            },
+            'param_with_default': {
+                'fallback': (env_fallback, ['NON_EXISTENT_VAR'], {'default': 'default_value'}),
+            },
+            'param_with_no_fallback': {
+                'fallback': (None,),
+            },
+            'param_no_log': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+                'no_log': True,
+            },
+        }
+        parameters = {}
+
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param_with_env_fallback'] == 'test_value'
+        assert parameters['param_with_default'] == 'default_value'
+        assert 'param_with_no_fallback
+
+# Generated at 2024-03-18 01:06:58.673064
+```python
+    # Mocking os.environ for testing environment variables
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        argument_spec = {
+            'param1': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            },
+            'param2': {
+                'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR']),
+            },
+            'param3': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR'], {'default': 'default_value'}),
+            },
+            'param4': {
+                'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR'], {'default': 'default_value'}),
+            },
+            'param5': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+                'no_log': True,
+            },
+        }
+        parameters = {}
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param1']
+
+# Generated at 2024-03-18 01:07:07.099702
+```python
+    # Set up environment variables for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+    os.environ['ANOTHER_ENV_VAR'] = 'another_test_value'
+
+    # Test with a single environment variable
+    assert env_fallback('TEST_ENV_VAR') == 'test_value', "env_fallback did not return the correct value for 'TEST_ENV_VAR'"
+
+    # Test with multiple environment variables where the first is set
+    assert env_fallback('TEST_ENV_VAR', 'NON_EXISTENT_VAR') == 'test_value', "env_fallback did not return the correct value for 'TEST_ENV_VAR' when multiple env vars are provided"
+
+    # Test with multiple environment variables where a later one is set
+    assert env_fallback('NON_EXISTENT_VAR', 'ANOTHER_ENV_VAR') == 'another_test_value', "env_fallback did not return the correct value for 'ANOTHER_ENV_VAR' when it is not the first in the
+
+# Generated at 2024-03-18 01:07:15.523179
+```python
+    # Define a mock environment variable for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+
+    # Define a simple argument spec with a fallback to an environment variable
+    argument_spec = {
+        'param1': {
+            'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            'no_log': False
+        },
+        'param2': {
+            'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR']),
+            'no_log': False
+        },
+        'param3': {
+            'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            'no_log': True
+        }
+    }
+
+    # Define parameters, initially empty
+    parameters = {}
+
+    # Call the set_fallbacks function
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    # Assert that the parameters are set correctly
+    assert parameters['param1'] == 'test_value', "param1 should be
+
+# Generated at 2024-03-18 01:08:22.807351
+```python
+    # Set up environment variables for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+    os.environ['ANOTHER_ENV_VAR'] = 'another_test_value'
+
+    # Test that the correct value is returned for a present environment variable
+    assert env_fallback('TEST_ENV_VAR') == 'test_value', "env_fallback did not return the correct value for 'TEST_ENV_VAR'"
+
+    # Test that the correct value is returned when multiple environment variables are provided
+    assert env_fallback('NON_EXISTENT_VAR', 'ANOTHER_ENV_VAR') == 'another_test_value', "env_fallback did not return the correct value for 'ANOTHER_ENV_VAR' when multiple options are given"
+
+    # Test that AnsibleFallbackNotFound is raised when none of the environment variables are set
+    try:
+        env_fallback('NON_EXISTENT_VAR', 'ANOTHER_NON_EXISTENT_VAR')
+        assert False, "env_fallback did not raise
+
+# Generated at 2024-03-18 01:08:29.852536
+```python
+    # Define a mock environment variable for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+
+    # Define a simple argument spec with a fallback to an environment variable
+    argument_spec = {
+        'param1': {
+            'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            'no_log': False
+        },
+        'param2': {
+            'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR']),
+            'no_log': False
+        },
+        'param3': {
+            'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            'no_log': True
+        }
+    }
+
+    # Define parameters that are missing 'param1' and 'param2', but include 'param3'
+    parameters = {
+        'param3': 'explicit_value'
+    }
+
+    # Call set_fallbacks with the argument spec and parameters
+    no_log_values = set_fallbacks(argument_spec,
+
+# Generated at 2024-03-18 01:08:36.256251
+```python
+    def test_set_fallbacks():
+        argument_spec = {
+            'param1': {'fallback': (env_fallback, 'ENV_PARAM1')},
+            'param2': {'fallback': (env_fallback, 'ENV_PARAM2', {'default': 'default_value'}), 'no_log': True},
+            'param3': {'fallback': (env_fallback, 'ENV_PARAM3'), 'no_log': False},
+            'param4': {'no_log': False}  # No fallback
+        }
+        parameters = {}
+
+        with mock.patch.dict('os.environ', {'ENV_PARAM1': 'value1', 'ENV_PARAM3': 'value3'}):
+            no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters == {'param1': 'value1', 'param2': 'default_value', 'param3': 'value3'}
+        assert no_log_values == {'default_value'}
+```
+
+# Generated at 2024-03-18 01:08:40.869991
+```python
+    # Mocking os.environ for testing environment variables
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        argument_spec = {
+            'param1': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            },
+            'param2': {
+                'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR']),
+            },
+            'param3': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR'], {'default': 'default_value'}),
+            },
+            'param4': {
+                'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR'], {'default': 'default_value'}),
+            },
+            'param5': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR'], {'default': 'default_value'}),
+                'no_log': True,
+            },
+        }
+        parameters = {}
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+
+
+# Generated at 2024-03-18 01:08:45.560746
+```python
+    # Mocking os.environ for testing environment variable fallbacks
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        # Test case with environment variable fallback
+        argument_spec = {
+            'param_with_env_fallback': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR'])
+            },
+            'param_with_default_fallback': {
+                'fallback': (env_fallback, ['NON_EXISTENT_VAR'], {'default': 'default_value'}),
+            },
+            'param_with_no_fallback': {
+                'fallback': (None,)
+            },
+            'param_with_no_log': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+                'no_log': True
+            }
+        }
+        parameters = {}
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param_with_env_fallback'] == 'test_value'
+        assert parameters['param_with_default_fallback
+
+# Generated at 2024-03-18 01:08:51.800867
+```python
+    # Set up environment variables for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+    os.environ['ANOTHER_ENV_VAR'] = 'another_test_value'
+
+    # Test with a single environment variable
+    assert env_fallback('TEST_ENV_VAR') == 'test_value', "env_fallback did not return the correct value for 'TEST_ENV_VAR'"
+
+    # Test with multiple environment variables where the first is set
+    assert env_fallback('TEST_ENV_VAR', 'NON_EXISTENT_VAR') == 'test_value', "env_fallback did not return the correct value for 'TEST_ENV_VAR' when multiple env vars are provided"
+
+    # Test with multiple environment variables where a later one is set
+    assert env_fallback('NON_EXISTENT_VAR', 'ANOTHER_ENV_VAR') == 'another_test_value', "env_fallback did not return the correct value for 'ANOTHER_ENV_VAR' when the first env var does not exist
+
+# Generated at 2024-03-18 01:08:58.193419
+```python
+    # Set up environment variables for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+    os.environ['ANOTHER_ENV_VAR'] = 'another_test_value'
+
+    # Test that the correct value is returned for a present environment variable
+    assert env_fallback('TEST_ENV_VAR') == 'test_value'
+
+    # Test that the first present environment variable is the one used
+    assert env_fallback('NON_EXISTENT_VAR', 'ANOTHER_ENV_VAR', 'TEST_ENV_VAR') == 'another_test_value'
+
+    # Test that AnsibleFallbackNotFound is raised when no environment variables are present
+    with pytest.raises(AnsibleFallbackNotFound):
+        env_fallback('NON_EXISTENT_VAR')
+
+    # Clean up environment variables
+    del os.environ['TEST_ENV_VAR']
+    del os.environ['ANOTHER_ENV_VAR']
+```
+
+# Generated at 2024-03-18 01:09:04.676669
+```python
+    # Define a mock environment variable for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+
+    # Define a simple argument spec with a fallback to an environment variable
+    argument_spec = {
+        'param1': {
+            'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            'no_log': False
+        },
+        'param2': {
+            'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR']),
+            'no_log': False
+        },
+        'param3': {
+            'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            'no_log': True
+        }
+    }
+
+    # Define parameters, initially empty
+    parameters = {}
+
+    # Call the set_fallbacks function
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    # Assert that the parameters are set correctly
+    assert parameters['param1'] == 'test_value', "param1 should be
+
+# Generated at 2024-03-18 01:09:11.951018
+```python
+    def test_set_fallbacks():
+        argument_spec = {
+            'param1': {'fallback': (env_fallback, 'ENV_PARAM1')},
+            'param2': {'fallback': (env_fallback, 'ENV_PARAM2', {'default': 'default_value'}), 'no_log': True},
+            'param3': {'fallback': (env_fallback, 'ENV_PARAM3', {'default': None})},
+            'param4': {'fallback': None}
+        }
+        parameters = {}
+
+        with mock.patch.dict('os.environ', {'ENV_PARAM1': 'env_value1', 'ENV_PARAM3': 'env_value3'}):
+            no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters == {
+            'param1': 'env_value1',
+            'param2': 'default_value',
+            'param3': 'env_value3'
+        }
+        assert no_log_values == {'default_value'}
+```
+
+# Generated at 2024-03-18 01:09:16.780423
+```python
+    # Set up environment variables for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+    os.environ['ANOTHER_ENV_VAR'] = 'another_test_value'
+
+    # Test that the correct value is returned for a present environment variable
+    assert env_fallback('TEST_ENV_VAR') == 'test_value'
+
+    # Test that the first present environment variable is the one used
+    assert env_fallback('NON_EXISTENT_VAR', 'ANOTHER_ENV_VAR', 'TEST_ENV_VAR') == 'another_test_value'
+
+    # Test that AnsibleFallbackNotFound is raised when no environment variables are present
+    with pytest.raises(AnsibleFallbackNotFound):
+        env_fallback('NON_EXISTENT_VAR')
+
+    # Clean up environment variables
+    del os.environ['TEST_ENV_VAR']
+    del os.environ['ANOTHER_ENV_VAR']
+```
+
+# Generated at 2024-03-18 01:10:50.878749
+```python
+    # Mocking os.environ for testing environment variable fallbacks
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        # Test case with environment variable fallback
+        argument_spec = {
+            'param_with_env_fallback': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR'])
+            },
+            'param_with_default': {
+                'fallback': (env_fallback, ['NON_EXISTENT_VAR'], {'default': 'default_value'})
+            },
+            'param_with_no_fallback': {
+                'fallback': (None,)
+            },
+            'param_no_log': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+                'no_log': True
+            }
+        }
+        parameters = {}
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param_with_env_fallback'] == 'test_value'
+        assert parameters['param_with_default'] == 'default_value
+
+# Generated at 2024-03-18 01:10:56.753230
+```python
+    # Mocking os.environ for testing environment variable fallbacks
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        argument_spec = {
+            'param_with_env_fallback': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR'])
+            },
+            'param_with_default': {
+                'fallback': (env_fallback, ['NON_EXISTENT_VAR'], {'default': 'default_value'})
+            },
+            'param_with_no_fallback': {
+                'fallback': (None,)
+            },
+            'param_no_log': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+                'no_log': True
+            }
+        }
+        parameters = {}
+
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param_with_env_fallback'] == 'test_value'
+        assert parameters['param_with_default'] == 'default_value'
+        assert 'param_with_no_fallback
+
+# Generated at 2024-03-18 01:11:03.839337
+```python
+    # Define a mock environment variable for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+
+    # Define a simple argument spec with a fallback to an environment variable
+    argument_spec = {
+        'param1': {
+            'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            'no_log': False
+        },
+        'param2': {
+            'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR']),
+            'no_log': False
+        },
+        'param3': {
+            'fallback': (env_fallback, ['TEST_ENV_VAR']),
+            'no_log': True
+        }
+    }
+
+    # Define parameters that are missing 'param1' and 'param3', but include 'param2'
+    parameters = {
+        'param2': 'explicit_value'
+    }
+
+    # Call set_fallbacks with the argument spec and parameters
+    no_log_values = set_fallbacks(argument_spec,
+
+# Generated at 2024-03-18 01:11:12.712124
+```python
+    # Mocking os.environ for testing environment variable fallbacks
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        argument_spec = {
+            'param_with_env_fallback': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR'])
+            },
+            'param_with_default': {
+                'fallback': (env_fallback, ['NON_EXISTENT_VAR'], {'default': 'default_value'})
+            },
+            'param_with_no_fallback': {
+                'fallback': (None,)
+            },
+            'param_no_log': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+                'no_log': True
+            }
+        }
+        parameters = {}
+
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param_with_env_fallback'] == 'test_value'
+        assert parameters['param_with_default'] == 'default_value'
+        assert 'param_with_no_fallback
+
+# Generated at 2024-03-18 01:11:17.164125
+```python
+    # Set up environment variables for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+    os.environ['ANOTHER_ENV_VAR'] = 'another_test_value'
+
+    # Test that the correct value is returned for a present environment variable
+    assert env_fallback('TEST_ENV_VAR') == 'test_value'
+
+    # Test that the first present environment variable is the one used
+    assert env_fallback('NON_EXISTENT_VAR', 'ANOTHER_ENV_VAR') == 'another_test_value'
+
+    # Test that AnsibleFallbackNotFound is raised when no environment variables are present
+    with pytest.raises(AnsibleFallbackNotFound):
+        env_fallback('NON_EXISTENT_VAR', 'ANOTHER_NON_EXISTENT_VAR')
+
+    # Clean up environment variables
+    del os.environ['TEST_ENV_VAR']
+    del os.environ['ANOTHER_ENV_VAR']
+```
+
+# Generated at 2024-03-18 01:11:22.284549
+```python
+    # Mocking os.environ for testing environment variable fallbacks
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        # Test case with environment variable fallback
+        argument_spec = {
+            'param_with_env_fallback': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR'])
+            },
+            'param_with_default_fallback': {
+                'fallback': (env_fallback, ['NON_EXISTENT_VAR'], {'default': 'default_value'})
+            },
+            'param_with_no_fallback': {
+                'fallback': (None,)
+            },
+            'param_with_no_log': {
+                'fallback': (env_fallback, ['TEST_ENV_VAR']),
+                'no_log': True
+            }
+        }
+        parameters = {}
+
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param_with_env_fallback'] == 'test_value'
+        assert parameters['param_with_default_fallback
+
+# Generated at 2024-03-18 01:11:23.694385
+```python
+import os
+import pytest
+
+
+# Generated at 2024-03-18 01:11:27.602778
+```python
+import os
+from ansible.errors import AnsibleFallbackNotFound
+
+
+# Generated at 2024-03-18 01:11:33.125698
+```python
+    # Mocking os.environ for testing environment variable fallbacks
+    with mock.patch.dict('os.environ', {'TEST_ENV_VAR': 'test_value'}):
+        argument_spec = {
+            'param1': {'fallback': (env_fallback, ['TEST_ENV_VAR'])},
+            'param2': {'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR'], {'default': 'default_value'})},
+            'param3': {'fallback': (env_fallback, ['NON_EXISTENT_ENV_VAR'])},
+            'param4': {'no_log': True, 'fallback': (env_fallback, ['TEST_ENV_VAR'])},
+        }
+        parameters = {}
+
+        no_log_values = set_fallbacks(argument_spec, parameters)
+
+        assert parameters['param1'] == 'test_value'
+        assert parameters['param2'] == 'default_value'
+        assert 'param3' not in parameters
+        assert parameters['param4'] == 'test_value'
+       
+
+# Generated at 2024-03-18 01:11:38.353917
+```python
+    # Set up environment variables for testing
+    os.environ['TEST_ENV_VAR'] = 'test_value'
+    os.environ['ANOTHER_ENV_VAR'] = 'another_test_value'
+
+    # Test with a single environment variable
+    assert env_fallback('TEST_ENV_VAR') == 'test_value'
+
+    # Test with multiple environment variables where the first one is set
+    assert env_fallback('TEST_ENV_VAR', 'NON_EXISTENT_VAR') == 'test_value'
+
+    # Test with multiple environment variables where a later one is set
+    assert env_fallback('NON_EXISTENT_VAR', 'ANOTHER_ENV_VAR') == 'another_test_value'
+
+    # Test with multiple environment variables where none are set
+    with pytest.raises(AnsibleFallbackNotFound):
+        env_fallback('NON_EXISTENT_VAR', 'ANOTHER_NON_EXISTENT_VAR')
+
+    # Clean up environment variables
+    del os.environ['TEST_ENV_VAR']
+    del os.environ['ANOTHER_ENV

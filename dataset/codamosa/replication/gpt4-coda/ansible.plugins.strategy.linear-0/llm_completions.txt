@@ -1,0 +1,954 @@
+
+
+# Generated at 2024-03-18 04:27:24.143040
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+
+    # Create instances of the objects we will need
+    tqm = TaskQueueManager()
+    play_context = PlayContext()
+    iterator = MagicMock()
+    strategy = StrategyModule(tqm)
+
+    # Set up the mocks for the objects and methods used in the run method
+    strategy._tqm = tqm
+    strategy._tqm._terminated = False
+    strategy._set_hosts_cache = MagicMock()
+    strategy.get_hosts_left = MagicMock(return_value=['host1', 'host2'])
+
+
+# Generated at 2024-03-18 04:27:28.965991
+```python
+    # Create a mock context for the StrategyModule
+    mock_tqm = MagicMock()
+    mock_loader = MagicMock()
+    mock_variable_manager = MagicMock()
+    mock_play = MagicMock()
+
+    # Instantiate the StrategyModule
+    strategy_module = StrategyModule(mock_tqm, mock_loader, mock_variable_manager)
+
+    # Assert that the StrategyModule was created with the correct attributes
+    assert strategy_module._tqm == mock_tqm
+    assert strategy_module._loader == mock_loader
+    assert strategy_module._variable_manager == mock_variable_manager
+    assert isinstance(strategy_module._hosts_cache, dict)
+    assert isinstance(strategy_module._hosts_cache_all, dict)
+    assert isinstance(strategy_module._blocked_hosts, dict)
+    assert strategy_module._pending_results == 0
+    assert strategy_module._final_results == []
+```
+
+# Generated at 2024-03-18 04:27:37.139625
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.inventory.host import Host
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+
+    # Create instances of the objects we will need
+    tqm = TaskQueueManager()
+    play_context = PlayContext()
+    iterator = MagicMock()
+    strategy = StrategyModule(tqm)
+
+    # Set up the mocks for the objects
+    tqm._terminated = False
+    iterator._play = MagicMock()
+    iterator._play.hosts = [Host('host1'), Host('host2')]
+    iterator.get_next_task_for_host = MagicMock(return_value
+
+# Generated at 2024-03-18 04:27:41.897521
+```python
+    # Mock objects and methods to simulate the environment and interactions
+    mock_iterator = MagicMock()
+    mock_play_context = MagicMock()
+    mock_tqm = MagicMock()
+    mock_tqm.RUN_OK = 0
+    mock_tqm.RUN_FAILED_BREAK_PLAY = 1
+    mock_tqm.RUN_UNKNOWN_ERROR = 2
+    mock_tqm._terminated = False
+    mock_tqm._failed_hosts = {}
+    mock_tqm._workers = [MagicMock() for _ in range(5)]
+    mock_tqm.send_callback = MagicMock()
+
+    # Create an instance of the StrategyModule with the mocked TaskQueueManager
+    strategy_module = StrategyModule()
+    strategy_module._tqm = mock_tqm
+    strategy_module._set_hosts_cache = MagicMock()
+    strategy_module.get_hosts_left = MagicMock(return_value=['host1', 'host2'])
+    strategy_module._get_next_task_lockstep = MagicMock(return_value=[('host1', 'task1'), ('host
+
+# Generated at 2024-03-18 04:27:44.391424
+```python
+from unittest.mock import MagicMock, patch
+import pytest
+
+# Assuming StrategyModule is part of a module named 'strategy'
+from strategy import StrategyModule
+
+@pytest.fixture
+
+# Generated at 2024-03-18 04:27:51.814992
+```python
+from unittest.mock import MagicMock, patch
+from ansible.executor.task_queue_manager import TaskQueueManager
+from ansible.playbook.play_context import PlayContext
+from ansible.playbook.task import Task
+from ansible.plugins.strategy.linear import StrategyModule
+from ansible.template import Templar
+from ansible.utils.display import Display
+
+# Mock the display object to prevent output during tests
+display = Display()
+display.debug = MagicMock()
+display.error = MagicMock()
+
+# Create a mock TaskQueueManager
+tqm = TaskQueueManager()
+tqm._failed_hosts = {}
+tqm._terminated = False
+
+# Create a mock iterator
+iterator = MagicMock()
+iterator._play = MagicMock()
+iterator.batch_size = 2
+iterator.get_next_task_for_host.return_value = (None, None)
+
+# Create a mock PlayContext
+play_context = PlayContext()
+
+# Create a mock Task
+task = Task()
+task.action = 'debug'
+task.async_val = False
+task.poll = 0
+task.name = 'test
+
+# Generated at 2024-03-18 04:27:58.479748
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.host import Host
+    from ansible.executor.task_result import TaskResult
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+
+    # Create instances of the objects we will need
+    tqm = TaskQueueManager()
+    tqm._failed_hosts = {}
+    tqm._terminated = False
+    play_context = PlayContext()
+    variable_manager = VariableManager()
+    loader = MagicMock()
+    templar = Templar(loader=loader)
+
+    # Create a mock iterator that returns a single
+
+# Generated at 2024-03-18 04:28:05.470492
+```python
+    # Mock objects and methods to simulate environment and interactions
+    mock_iterator = MagicMock()
+    mock_play_context = MagicMock()
+    mock_tqm = MagicMock()
+    mock_tqm.RUN_OK = 0
+    mock_tqm.RUN_FAILED_BREAK_PLAY = 1
+    mock_tqm.RUN_UNKNOWN_ERROR = 2
+    mock_tqm._terminated = False
+    mock_tqm._failed_hosts = {}
+    mock_tqm._workers = [MagicMock() for _ in range(5)]
+    mock_tqm.send_callback = MagicMock()
+
+    strategy_module = StrategyModule()
+    strategy_module._tqm = mock_tqm
+    strategy_module._set_hosts_cache = MagicMock()
+    strategy_module.get_hosts_left = MagicMock(return_value=['host1', 'host2'])
+    strategy_module._get_next_task_lockstep = MagicMock(return_value=[('host1', 'task1'), ('host2', 'task2')])
+    strategy_module._variable_manager = MagicMock()
+    strategy
+
+# Generated at 2024-03-18 04:28:12.616927
+```python
+    # Mock objects and methods to simulate environment and interactions
+    mock_iterator = MagicMock()
+    mock_play_context = MagicMock()
+    mock_tqm = MagicMock()
+    mock_tqm.RUN_OK = 0
+    mock_tqm.RUN_FAILED_BREAK_PLAY = 1
+    mock_tqm.RUN_UNKNOWN_ERROR = 2
+    mock_tqm._terminated = False
+    mock_tqm._failed_hosts = {}
+    mock_tqm._workers = [MagicMock() for _ in range(5)]
+    mock_tqm.send_callback = MagicMock()
+
+    mock_strategy_module = StrategyModule()
+    mock_strategy_module._tqm = mock_tqm
+    mock_strategy_module._set_hosts_cache = MagicMock()
+    mock_strategy_module.get_hosts_left = MagicMock(return_value=[])
+    mock_strategy_module._get_next_task_lockstep = MagicMock(return_value=[])
+    mock_strategy_module._execute_meta = MagicMock(return_value=[])
+    mock_strategy_module._step = False
+    mock_strategy_module._
+
+# Generated at 2024-03-18 04:28:18.027419
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.host import Host
+    from ansible.executor.task_result import TaskResult
+    from ansible.errors import AnsibleError
+    from ansible import constants as C
+    from collections import namedtuple
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+    display.warning = MagicMock()
+
+    # Create a mock TaskQueueManager
+    tqm = TaskQueueManager()
+    tqm._failed_hosts = {}
+    tqm._terminated = False
+    tqm.RUN_OK = 0
+    tqm
+
+# Generated at 2024-03-18 04:28:55.984888
+```python
+    # Create a mock context for the StrategyModule
+    mock_context = MagicMock(spec=PlayContext)
+    mock_loader = MagicMock(spec=DataLoader)
+    mock_variable_manager = MagicMock(spec=VariableManager)
+    mock_tqm = MagicMock(spec=TaskQueueManager)
+
+    # Instantiate the StrategyModule with the mocked objects
+    strategy_module = StrategyModule(mock_loader, mock_variable_manager, mock_tqm)
+
+    # Assert that the StrategyModule was created with the correct attributes
+    assert strategy_module._loader == mock_loader
+    assert strategy_module._variable_manager == mock_variable_manager
+    assert strategy_module._tqm == mock_tqm
+    assert isinstance(strategy_module, StrategyModule)
+```
+
+# Generated at 2024-03-18 04:29:01.513399
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.host import Host
+    from ansible.executor.task_result import TaskResult
+    from collections import namedtuple
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+
+    # Create a mock TaskQueueManager
+    tqm = TaskQueueManager()
+    tqm._failed_hosts = {}
+    tqm._terminated = False
+    tqm.RUN_OK = 0
+    tqm.RUN_FAILED_BREAK_PLAY = 1
+    tqm.RUN_UNKNOWN_ERROR = 2
+
+    # Create a mock
+
+# Generated at 2024-03-18 04:29:06.327435
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.host import Host
+    from ansible.executor.task_result import TaskResult
+    from ansible.errors import AnsibleError
+    from collections import namedtuple
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+
+    # Create a mock TaskQueueManager
+    tqm = TaskQueueManager()
+    tqm._failed_hosts = {}
+    tqm._terminated = False
+    tqm.RUN_OK = 0
+    tqm.RUN_FAILED_BREAK_PLAY = 1
+    tqm.RUN_UNKNOWN_ERROR
+
+# Generated at 2024-03-18 04:29:11.678529
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.host import Host
+    from ansible.executor.task_result import TaskResult
+    from ansible.errors import AnsibleError
+    from collections import namedtuple
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+    display.warning = MagicMock()
+
+    # Create a mock TaskQueueManager
+    tqm = TaskQueueManager()
+    tqm._failed_hosts = {}
+    tqm._terminated = False
+    tqm.RUN_OK = 0
+    tqm.RUN_FAILED_BREAK_PLAY = 1
+
+
+# Generated at 2024-03-18 04:29:13.329821
+```python
+import unittest
+from mock import Mock, patch
+
+
+# Generated at 2024-03-18 04:29:18.912247
+```python
+    # Create a mock PlayContext, TaskQueueManager, and iterator
+    mock_play_context = MagicMock(spec=PlayContext)
+    mock_tqm = MagicMock(spec=TaskQueueManager)
+    mock_iterator = MagicMock(spec=PlayIterator)
+
+    # Instantiate the StrategyModule with the mocks
+    strategy_module = StrategyModule(mock_tqm, mock_play_context)
+
+    # Assert that the StrategyModule was created with the correct TaskQueueManager and PlayContext
+    assert strategy_module._tqm == mock_tqm
+    assert strategy_module._play_context == mock_play_context
+
+    # Assert that the StrategyModule has the expected attributes initialized
+    assert hasattr(strategy_module, '_hosts_cache')
+    assert hasattr(strategy_module, '_hosts_cache_all')
+    assert hasattr(strategy_module, '_blocked_hosts')
+    assert hasattr(strategy_module, '_pending_results')
+    assert hasattr(strategy_module, '_final_results')
+    assert hasattr(strategy_module, '_variable_manager')
+    assert hasattr(strategy_module, '_loader
+
+# Generated at 2024-03-18 04:29:24.591592
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.host import Host
+    from ansible.executor.task_result import TaskResult
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+
+    # Create instances of the objects we will need
+    tqm = TaskQueueManager()
+    tqm._failed_hosts = {}
+    tqm._terminated = False
+    play_context = PlayContext()
+    variable_manager = VariableManager()
+    loader = MagicMock()
+    templar = Templar(loader=loader)
+
+    # Create a mock iterator
+    iterator =
+
+# Generated at 2024-03-18 04:29:29.383092
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+
+    # Create instances of the objects we will need
+    tqm = TaskQueueManager()
+    play_context = PlayContext()
+    iterator = MagicMock()
+    strategy = StrategyModule(tqm)
+
+    # Mock the methods used by the run function
+    strategy._set_hosts_cache = MagicMock()
+    strategy.get_hosts_left = MagicMock(return_value=[])
+    strategy._get_next_task_lockstep = MagicMock(return_value=[])
+    strategy._variable_manager = MagicMock()
+    strategy.add_tqm_variables = MagicMock()
+
+
+# Generated at 2024-03-18 04:29:35.104380
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.host import Host
+    from ansible.executor.task_result import TaskResult
+    from ansible.errors import AnsibleError
+    from ansible.playbook.included_file import IncludedFile
+    from ansible.playbook.block import Block
+    from ansible import constants as C
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+    display.warning = MagicMock()
+
+    # Mock the TaskQueueManager
+    tqm = TaskQueueManager()
+    tqm._failed_hosts = {}
+    tqm._terminated =
+
+# Generated at 2024-03-18 04:29:39.424709
+```python
+import pytest
+from ansible.executor.task_queue_manager import TaskQueueManager
+from ansible.playbook.play_context import PlayContext
+from ansible.playbook.task import Task
+from ansible.plugins.strategy.linear import StrategyModule as LinearStrategyModule
+from ansible.utils.display import Display
+
+# Mock display to prevent output during tests
+display = Display()
+display.display = lambda *args, **kwargs: None
+display.debug = lambda *args, **kwargs: None
+display.warning = lambda *args, **kwargs: None
+display.error = lambda *args, **kwargs: None
+
+# Mock TaskQueueManager
+
+# Generated at 2024-03-18 04:30:48.611917
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.host import Host
+    from ansible.inventory.manager import InventoryManager
+    from ansible.executor.task_result import TaskResult
+    from collections import namedtuple
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+
+    # Create a mock TaskQueueManager
+    tqm = TaskQueueManager()
+    tqm._failed_hosts = {}
+    tqm._terminated = False
+    tqm.RUN_OK = 0
+    tqm.RUN_FAILED_BREAK_PLAY = 1
+    tqm.RUN_UNKNOWN_ERROR
+
+# Generated at 2024-03-18 04:30:55.837799
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.inventory.host import Host
+    from ansible.vars.manager import VariableManager
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+
+    # Create instances of the objects we will need
+    tqm = TaskQueueManager()
+    tqm._failed_hosts = {}
+    tqm._terminated = False
+    play_context = PlayContext()
+    variable_manager = VariableManager()
+    loader = MagicMock()
+
+    # Create a mock iterator that returns a single host and a single task
+    iterator = MagicMock()
+    iterator._play = MagicMock()
+    iterator
+
+# Generated at 2024-03-18 04:31:00.845758
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.host import Host
+    from ansible.executor.task_result import TaskResult
+    from ansible.errors import AnsibleError
+    from collections import namedtuple
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+
+    # Create a mock TaskQueueManager
+    tqm = TaskQueueManager()
+    tqm._failed_hosts = {}
+    tqm._terminated = False
+    tqm.RUN_OK = 0
+    tqm.RUN_FAILED_BREAK_PLAY = 1
+    tqm.RUN_UNKNOWN_ERROR
+
+# Generated at 2024-03-18 04:31:13.427340
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.host import Host
+    from ansible.inventory.manager import InventoryManager
+    from ansible.executor.task_result import TaskResult
+    from ansible.errors import AnsibleError
+    from io import StringIO
+    import pytest
+
+    # Mock the display object to capture output
+    display = Display()
+    display.display = MagicMock()
+
+    # Create a mock TaskQueueManager
+    tqm = TaskQueueManager()
+    tqm._failed_hosts = {}
+    tqm._terminated = False
+
+    # Create a mock PlayContext
+    play_context = PlayContext()
+
+    # Create a mock iterator
+
+# Generated at 2024-03-18 04:31:15.386184
+```python
+# Assuming the StrategyModule class and all necessary imports and global variables are defined elsewhere
+# This is a mock test function for the StrategyModule.run method
+
+from unittest.mock import MagicMock, patch
+import pytest
+
+@pytest.fixture
+
+# Generated at 2024-03-18 04:31:17.806919
+```python
+import pytest
+from ansible.executor.task_queue_manager import TaskQueueManager
+from ansible.playbook.play_context import PlayContext
+from ansible.plugins.strategy.linear import StrategyModule as LinearStrategyModule
+from ansible.template import Templar
+from ansible.utils.display import Display
+
+# Mock display to prevent output during tests
+display = Display()
+display.debug = lambda *args, **kwargs: None
+
+# Mock the TaskQueueManager
+
+# Generated at 2024-03-18 04:31:23.654774
+```python
+    # Mock objects and methods to simulate environment and interactions
+    mock_iterator = MagicMock()
+    mock_play_context = MagicMock()
+    mock_tqm = MagicMock()
+    mock_tqm.RUN_OK = 0
+    mock_tqm.RUN_FAILED_BREAK_PLAY = 1
+    mock_tqm.RUN_UNKNOWN_ERROR = 2
+    mock_tqm._terminated = False
+    mock_tqm._workers = [MagicMock() for _ in range(5)]
+    mock_tqm._failed_hosts = {}
+    mock_tqm.send_callback = MagicMock()
+
+    # Create instance of StrategyModule
+    strategy_module = StrategyModule()
+    strategy_module._tqm = mock_tqm
+    strategy_module._set_hosts_cache = MagicMock()
+    strategy_module.get_hosts_left = MagicMock(return_value=[])
+    strategy_module._get_next_task_lockstep = MagicMock(return_value=[])
+    strategy_module._variable_manager = MagicMock()
+    strategy_module.add_tqm_variables = MagicMock()
+    strategy_module._loader
+
+# Generated at 2024-03-18 04:31:24.723834
+```python
+import unittest
+from mock import Mock, patch
+
+
+# Generated at 2024-03-18 04:31:30.355585
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.host import Host
+    from ansible.executor.task_result import TaskResult
+    from ansible.errors import AnsibleError
+    from collections import namedtuple
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+
+    # Create a mock TaskQueueManager
+    tqm = TaskQueueManager()
+    tqm._failed_hosts = {}
+    tqm._terminated = False
+    tqm.RUN_OK = 0
+    tqm.RUN_FAILED_BREAK_PLAY = 1
+    tqm.RUN_UNKNOWN_ERROR
+
+# Generated at 2024-03-18 04:31:34.209805
+```python
+    # Create a mock context for the StrategyModule
+    mock_tqm = MagicMock()
+    mock_loader = MagicMock()
+    mock_variable_manager = MagicMock()
+    mock_play_context = MagicMock()
+
+    # Instantiate the StrategyModule with the mocked objects
+    strategy_module = StrategyModule(mock_tqm, mock_loader, mock_variable_manager)
+
+    # Assert that the StrategyModule was created with the expected properties
+    assert strategy_module._tqm == mock_tqm
+    assert strategy_module._loader == mock_loader
+    assert strategy_module._variable_manager == mock_variable_manager
+    assert isinstance(strategy_module, StrategyModule)
+```
+
+# Generated at 2024-03-18 04:33:41.003068
+```python
+    # Create a mock context for the StrategyModule
+    mock_tqm = MagicMock()
+    mock_loader = MagicMock()
+    mock_variable_manager = MagicMock()
+    mock_play = MagicMock()
+
+    # Instantiate the StrategyModule
+    strategy_module = StrategyModule(mock_tqm, mock_loader, mock_variable_manager)
+
+    # Assert that the StrategyModule was created with the correct attributes
+    assert strategy_module._tqm == mock_tqm
+    assert strategy_module._loader == mock_loader
+    assert strategy_module._variable_manager == mock_variable_manager
+    assert strategy_module._hosts_cache == {}
+    assert strategy_module._hosts_cache_all == {}
+    assert strategy_module._blocked_hosts == {}
+    assert strategy_module._pending_results == 0
+    assert strategy_module._step == False
+```
+
+# Generated at 2024-03-18 04:33:48.962154
+```python
+    # Mock objects and methods to simulate environment and interactions
+    mock_iterator = MagicMock()
+    mock_play_context = MagicMock()
+    mock_tqm = MagicMock()
+    mock_tqm.RUN_OK = 0
+    mock_tqm.RUN_FAILED_BREAK_PLAY = 1
+    mock_tqm.RUN_UNKNOWN_ERROR = 2
+    mock_tqm._terminated = False
+    mock_tqm._failed_hosts = {}
+    mock_tqm._workers = [MagicMock() for _ in range(5)]
+    mock_tqm.send_callback = MagicMock()
+
+    strategy_module = StrategyModule()
+    strategy_module._tqm = mock_tqm
+    strategy_module._set_hosts_cache = MagicMock()
+    strategy_module.get_hosts_left = MagicMock(return_value=[])
+    strategy_module._get_next_task_lockstep = MagicMock(return_value=[])
+    strategy_module._variable_manager = MagicMock()
+    strategy_module._loader = MagicMock()
+    strategy_module.add_tqm_variables = MagicMock()
+    strategy_module._execute
+
+# Generated at 2024-03-18 04:33:52.917623
+```python
+    # Create a mock context for the StrategyModule
+    mock_tqm = MagicMock()
+    mock_loader = MagicMock()
+    mock_variable_manager = MagicMock()
+    mock_play_context = MagicMock()
+
+    # Instantiate the StrategyModule with the mocked objects
+    strategy_module = StrategyModule(mock_tqm, mock_loader, mock_variable_manager, mock_play_context)
+
+    # Assert that the StrategyModule was created with the correct attributes
+    assert strategy_module._tqm == mock_tqm
+    assert strategy_module._loader == mock_loader
+    assert strategy_module._variable_manager == mock_variable_manager
+    assert strategy_module._play_context == mock_play_context
+    assert isinstance(strategy_module, StrategyModule)
+```
+
+# Generated at 2024-03-18 04:33:58.297131
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.host import Host
+    from ansible.executor.task_result import TaskResult
+    from ansible.errors import AnsibleError
+    from collections import namedtuple
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+
+    # Create a mock TaskQueueManager
+    tqm = TaskQueueManager()
+    tqm._failed_hosts = {}
+    tqm._terminated = False
+    tqm.RUN_OK = 0
+    tqm.RUN_FAILED_BREAK_PLAY = 1
+    tqm.RUN_UNKNOWN_ERROR
+
+# Generated at 2024-03-18 04:34:03.677679
+```python
+    # Create a mock TaskQueueManager and PlayContext
+    tqm = mock.MagicMock()
+    play_context = mock.MagicMock()
+
+    # Instantiate the StrategyModule
+    strategy_module = StrategyModule(tqm)
+
+    # Assert that the _tqm attribute is set correctly
+    assert strategy_module._tqm == tqm
+
+    # Assert that the play_context attribute is set correctly
+    assert strategy_module._play_context == play_context
+
+    # Assert that the _hosts_cache attribute is initialized as an empty dictionary
+    assert strategy_module._hosts_cache == {}
+
+    # Assert that the _hosts_cache_all attribute is initialized as an empty dictionary
+    assert strategy_module._hosts_cache_all == {}
+
+    # Assert that the _blocked_hosts attribute is initialized as an empty dictionary
+    assert strategy_module._blocked_hosts == {}
+
+    # Assert that the _pending_results attribute is initialized to 0
+    assert strategy_module._pending_results == 0
+
+    # Assert
+
+# Generated at 2024-03-18 04:34:10.844075
+```python
+    # Create a mock context for the StrategyModule
+    mock_tqm = MagicMock()
+    mock_loader = MagicMock()
+    mock_variable_manager = MagicMock()
+    mock_play = MagicMock()
+
+    # Instantiate the StrategyModule with the mocked objects
+    strategy_module = StrategyModule(mock_tqm, mock_loader, mock_variable_manager)
+
+    # Assert that the StrategyModule was created with the correct attributes
+    assert strategy_module._tqm == mock_tqm
+    assert strategy_module._loader == mock_loader
+    assert strategy_module._variable_manager == mock_variable_manager
+    assert isinstance(strategy_module._hosts_cache, dict)
+    assert isinstance(strategy_module._hosts_cache_all, dict)
+    assert isinstance(strategy_module._blocked_hosts, dict)
+    assert strategy_module._pending_results == 0
+    assert strategy_module._step is False
+```
+
+# Generated at 2024-03-18 04:34:15.956837
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+    from ansible.vars.manager import VariableManager
+    from ansible.inventory.host import Host
+    from ansible.executor.task_result import TaskResult
+    from ansible.errors import AnsibleError
+    from collections import namedtuple
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+
+    # Create a mock TaskQueueManager
+    tqm = TaskQueueManager()
+    tqm._failed_hosts = {}
+    tqm._terminated = False
+    tqm.RUN_OK = 0
+    tqm.RUN_FAILED_BREAK_PLAY = 1
+    tqm.RUN_UNKNOWN_ERROR
+
+# Generated at 2024-03-18 04:34:23.036724
+```python
+    from unittest.mock import MagicMock, patch
+    from ansible.executor.task_queue_manager import TaskQueueManager
+    from ansible.playbook.play_context import PlayContext
+    from ansible.playbook.task import Task
+    from ansible.plugins.strategy.linear import StrategyModule
+    from ansible.inventory.host import Host
+    from ansible.vars.manager import VariableManager
+    from ansible.template import Templar
+    from ansible.utils.display import Display
+
+    # Mock the display object to prevent output during tests
+    display = Display()
+    display.debug = MagicMock()
+    display.error = MagicMock()
+
+    # Create instances of the objects we will need
+    tqm = TaskQueueManager()
+    tqm._failed_hosts = {}
+    tqm._terminated = False
+    play_context = PlayContext()
+    variable_manager = VariableManager()
+    loader = MagicMock()
+
+    # Create a mock iterator that returns a single host and a single task
+    iterator = MagicMock()
+    iterator._play = MagicMock()
+    iterator
+
+# Generated at 2024-03-18 04:34:29.934831
+```python
+    # Create a mock TaskQueueManager and PlayContext
+    tqm = mock.MagicMock()
+    play_context = mock.MagicMock()
+
+    # Instantiate the StrategyModule
+    strategy_module = StrategyModule(tqm)
+
+    # Assert that the _tqm attribute is set correctly
+    assert strategy_module._tqm == tqm
+
+    # Assert that the play_context attribute is set correctly
+    assert strategy_module._play_context == play_context
+
+    # Assert that the _hosts_cache attribute is initialized as an empty dictionary
+    assert strategy_module._hosts_cache == {}
+
+    # Assert that the _hosts_cache_all attribute is initialized as an empty dictionary
+    assert strategy_module._hosts_cache_all == {}
+
+    # Assert that the _blocked_hosts attribute is initialized as an empty dictionary
+    assert strategy_module._blocked_hosts == {}
+
+    # Assert that the _pending_results attribute is initialized to 0
+    assert strategy_module._pending_results == 0
+
+    # Assert
+
+# Generated at 2024-03-18 04:34:33.147316
+```python
+    # Create a mock context for the StrategyModule
+    mock_tqm = MagicMock()
+    mock_loader = MagicMock()
+    mock_variable_manager = MagicMock()
+    mock_play = MagicMock()
+
+    # Instantiate the StrategyModule
+    strategy_module = StrategyModule(mock_tqm, mock_loader, mock_variable_manager)
+
+    # Assertions to ensure the object is created correctly
+    assert strategy_module._tqm == mock_tqm
+    assert strategy_module._loader == mock_loader
+    assert strategy_module._variable_manager == mock_variable_manager
+    assert isinstance(strategy_module, StrategyModule)
+```

@@ -1,0 +1,677 @@
+
+
+# Generated at 2024-06-03 11:33:14.400984
+```python
+    parser = RoughParser()
+    parser.str = "some test string"
+    parser.goodlines = [0, 1, 2]
+    parser.continuation = C_NONE
+    parser._study1 = lambda: None  # Mock _study1 method
+
+    result = parser.get_continuation_type()
+    assert result == C_NONE, f"Expected {C_NONE}, got {result}"
+
+    parser.continuation = C_STRING_FIRST_LINE
+    result = parser.get_continuation_type()
+    assert result == C_STRING_FIRST_LINE, f"Expected {C_STRING_FIRST_LINE}, got {result}"
+
+    parser.continuation = C_STRING_NEXT_LINES
+    result = parser.get_continuation_type()
+    assert result == C_STRING_NEXT_LINES, f"Expected {C_STRING_NEXT_LINES}, got {result}"
+
+    parser.continuation = C_BRACKET
+    result = parser.get_continuation_type()
+    assert result == C_BRACKET,
+
+# Generated at 2024-06-03 11:33:16.164802
+```python
+    non_defaults = {ord('a'): ord('x'), ord('b'): ord('y')}
+    default_value = ord('z')
+    mapping = StringTranslatePseudoMapping(non_defaults, default_value)
+    result = list(mapping)
+    expected = list(non_defaults)
+    assert result == expected, f"Expected {expected}, but got {result}"
+```
+
+# Generated at 2024-06-03 11:33:20.229117
+```python
+    parser = RoughParser()
+    parser.str = "def foo():\n    if True:\n        print('Hello')\n"
+    parser.study_level = 0
+    parser.goodlines = [0, 1, 2, 3]
+    parser.find_good_parse_start()
+    assert parser.goodlines == [0, 1, 2, 3]
+    assert parser.continuation == C_NONE
+
+    parser.str = "def foo():\n    if True:\n        print('Hello\\\nWorld')\n"
+    parser.study_level = 0
+    parser.goodlines = [0, 1, 2, 3]
+    parser.find_good_parse_start()
+    assert parser.goodlines == [0, 1, 2, 3]
+    assert parser.continuation == C_STRING_NEXT_LINES
+
+    parser.str = "def foo():\n    if True:\n        print('Hello
+
+# Generated at 2024-06-03 11:33:25.980964
+```python
+    parser = RoughParser()
+    parser.str = "def example_function():\n    return (\\\n        42\n    )\n"
+    parser.goodlines = [0, 1, 2, 3, 4]
+    parser.continuation = C_BACKSLASH
+    parser.indent_width = 4
+    parser.tabwidth = 4
+    parser.study_level = 0
+
+    expected_indent = 9  # "    return (\\\n" -> 4 spaces + 1 for backslash continuation
+    assert parser.compute_backslash_indent() == expected_indent
+
+    parser.str = "x = 1 + \\\n    2\n"
+    parser.goodlines = [0, 1, 2]
+    parser.continuation = C_BACKSLASH
+    parser.study_level = 0
+
+    expected_indent = 5  # "x = 1 + \\\n"
+
+# Generated at 2024-06-03 11:33:33.346766
+```python
+    text = MockText("def foo():\n    pass\n")
+    parser = HyperParser(text, "1.0")
+    
+    # Test setting index within the same statement
+    parser.set_index("1.4")
+    assert parser.indexinrawtext == 4
+    assert parser.indexbracket == 0
+    
+    # Test setting index at the start of the statement
+    parser.set_index("1.0")
+    assert parser.indexinrawtext == 0
+    assert parser.indexbracket == 0
+    
+    # Test setting index at the end of the statement
+    parser.set_index("1.8")
+    assert parser.indexinrawtext == 8
+    assert parser.indexbracket == 0
+    
+    # Test setting index outside the analyzed statement
+    try:
+        parser.set_index("2.0")
+    except ValueError as e:
+        assert str(e) == "Index 2.0 precedes the analyzed
+
+# Generated at 2024-06-03 11:33:37.932152
+```python
+    text_mock = Mock()
+    text_mock.index.return_value = "1.0"
+    text_mock.get.return_value = "print('Hello, World!')\n"
+
+    parser = HyperParser(text_mock, "1.0")
+    parser.set_index("1.0")
+    assert parser.is_in_code() == True
+
+    text_mock.get.return_value = "# This is a comment\n"
+    parser = HyperParser(text_mock, "1.0")
+    parser.set_index("1.0")
+    assert parser.is_in_code() == False
+
+    text_mock.get.return_value = "'This is a string'\n"
+    parser = HyperParser(text_mock, "1.0")
+    parser.set_index("1.0")
+    assert parser.is_in_code() == False
+
+    text_mock.get.return_value = "42\n"
+    parser = HyperParser(text_mock, "1.0")
+    parser.set_index("1.0")
+    assert parser
+
+# Generated at 2024-06-03 11:33:42.301671
+```python
+    parser = RoughParser()
+    parser.str = "def foo():\n    if True:\n        print('Hello')\n"
+    parser.study_level = 0
+    parser.goodlines = [0, 1, 2, 3]
+    parser.find_good_parse_start()
+    assert parser.goodlines == [0, 1, 2, 3]
+    assert parser.continuation == C_NONE
+
+    parser.str = "def foo():\n    if True:\n        print('Hello\\\nWorld')\n"
+    parser.study_level = 0
+    parser.goodlines = [0, 1, 2, 3]
+    parser.find_good_parse_start()
+    assert parser.goodlines == [0, 1, 2, 3]
+    assert parser.continuation == C_STRING_NEXT_LINES
+
+    parser.str = "def foo():\n    if True:\n        print('Hello
+
+# Generated at 2024-06-03 11:33:45.711037
+```python
+    text_mock = Mock()
+    text_mock.index.return_value = "1.0"
+    text_mock.get.return_value = 'print("Hello, World!")'
+    text_mock.indent_width = 4
+    text_mock.tabwidth = 4
+
+    parser = HyperParser(text_mock, "1.0")
+    parser.set_index("1.7")  # Inside the string "Hello, World!"
+    assert parser.is_in_string() == True
+
+    parser.set_index("1.0")  # Outside the string
+    assert parser.is_in_string() == False
+
+    parser.set_index("1.18")  # Outside the string
+    assert parser.is_in_string() == False
+```
+
+# Generated at 2024-06-03 11:33:49.312402
+```python
+    parser = RoughParser()
+    parser.str = "def example_function():\n    return (\\\n        42\n    )\n"
+    parser.indent_width = 4
+    parser.tabwidth = 4
+    parser.study_level = 0
+    parser.goodlines = [0, 1, 2, 3, 4]
+    parser.continuation = C_BACKSLASH
+    parser.stmt_start = 0
+    parser.stmt_end = len(parser.str)
+    
+    expected_indent = 8  # 4 spaces for the function + 4 spaces for the return statement
+    assert parser.compute_backslash_indent() == expected_indent
+
+    parser.str = "x = 1 + \\\n    2\n"
+    parser.goodlines = [0, 1, 2]
+    parser.stmt_start = 0
+    parser.stmt_end = len(parser.str)
+    
+    expected
+
+# Generated at 2024-06-03 11:33:53.001865
+```python
+    from unittest.mock import Mock
+
+    # Mock text object with necessary methods
+    text = Mock()
+    text.index.return_value = "1.0"
+    text.get.return_value = "a = b + c"
+
+    # Create HyperParser instance
+    parser = HyperParser(text, "1.0")
+
+    # Test cases
+    test_cases = [
+        ("1.0", "c"),
+        ("1.2", "b"),
+        ("1.4", "a"),
+        ("1.6", ""),
+    ]
+
+    for index, expected in test_cases:
+        parser.set_index(index)
+        assert parser.get_expression() == expected, f"Failed for index {index}"
+
+    print("All test cases passed.")
+
+# Run the test
+test_HyperParser_get_expression()
+```
+
+# Generated at 2024-06-03 11:35:09.021975
+```python
+    parser = RoughParser()
+    parser.str = "def foo():\n    if True:\n        print('Hello')\n"
+    parser.study_level = 0
+    parser.goodlines = [0, 1, 2, 3]
+    parser.find_good_parse_start()
+    assert parser.goodlines == [0, 1, 2, 3]
+    assert parser.continuation == C_NONE
+
+    parser.str = "def foo():\n    if True:\n        print('Hello\\\nWorld')\n"
+    parser.study_level = 0
+    parser.goodlines = [0, 1, 2, 3]
+    parser.find_good_parse_start()
+    assert parser.goodlines == [0, 1, 2, 3]
+    assert parser.continuation == C_STRING_NEXT_LINES
+
+    parser.str = "def foo():\n    if True:\n        print('Hello
+
+# Generated at 2024-06-03 11:35:12.952565
+```python
+    from unittest.mock import Mock
+
+    # Mock text object with necessary methods
+    text = Mock()
+    text.index.return_value = "1.0"
+    text.get.return_value = "a = b + c"
+
+    # Create HyperParser instance
+    parser = HyperParser(text, "1.0")
+
+    # Test cases
+    test_cases = [
+        ("1.0", "a"),
+        ("1.2", "a"),
+        ("1.4", "b"),
+        ("1.6", "b"),
+        ("1.8", "c"),
+        ("1.10", "c"),
+    ]
+
+    for index, expected in test_cases:
+        parser.set_index(index)
+        assert parser.get_expression() == expected, f"Failed for index {index}"
+
+    print("All test cases passed.")
+
+# Run the test
+test_HyperParser_get_expression()
+```
+
+# Generated at 2024-06-03 11:35:17.439031
+```python
+    text_mock = Mock()
+    text_mock.index.return_value = "1.0"
+    text_mock.get.return_value = "def foo():\n    pass\n"
+    text_mock.indent_width = 4
+    text_mock.tabwidth = 4
+
+    parser = HyperParser(text_mock, "1.0")
+
+    # Test valid index within the analyzed statement
+    parser.set_index("1.0")
+    assert parser.indexinrawtext == 0
+    assert parser.indexbracket == 0
+
+    # Test invalid index that precedes the analyzed statement
+    with pytest.raises(ValueError):
+        parser.set_index("0.0")
+
+    # Test index at the end of the analyzed statement
+    parser.set_index("1.10")
+    assert parser.indexinrawtext == 10
+    assert parser.indexbracket == 0
+```
+
+# Generated at 2024-06-03 11:35:22.279234
+```python
+    from unittest.mock import Mock
+
+    # Mock text object with necessary methods
+    text = Mock()
+    text.index.side_effect = lambda x: int(float(x.split('.')[0])) * 10 + int(float(x.split('.')[1]))
+    text.get.side_effect = lambda start, end: "def foo():\n    if (a == b):\n        pass\n"
+
+    # Create HyperParser instance
+    parser = HyperParser(text, "2.10")
+
+    # Test case 1: Brackets surrounding the index
+    result = parser.get_surrounding_brackets()
+    assert result == ("2.4", "2.11"), f"Expected ('2.4', '2.11'), but got {result}"
+
+    # Test case 2: No surrounding brackets
+    parser.set_index("1.0")
+    result = parser.get_surrounding_brackets()
+    assert result is None, f"Expected None, but got
+
+# Generated at 2024-06-03 11:35:27.028692
+```python
+    text_mock = Mock()
+    text_mock.index.return_value = "1.0"
+    text_mock.get.return_value = 'print("Hello, World!")\n'
+    text_mock.indent_width = 4
+    text_mock.tabwidth = 4
+
+    parser = HyperParser(text_mock, "1.0")
+    parser.set_index("1.7")  # Inside the string "Hello, World!"
+    assert parser.is_in_string() == True
+
+    parser.set_index("1.0")  # Outside the string
+    assert parser.is_in_string() == False
+
+    parser.set_index("1.18")  # Just after the string
+    assert parser.is_in_string() == False
+```
+
+# Generated at 2024-06-03 11:35:31.220895
+```python
+    text_mock = Mock()
+    text_mock.index.return_value = "1.0"
+    text_mock.get.return_value = 'print("Hello, World!")'
+    text_mock.indent_width = 4
+    text_mock.tabwidth = 4
+
+    parser = HyperParser(text_mock, "1.0")
+    parser.set_index("1.7")  # Inside the string "Hello, World!"
+    assert parser.is_in_string() == True
+
+    parser.set_index("1.0")  # Outside the string
+    assert parser.is_in_string() == False
+
+    parser.set_index("1.18")  # Just after the string
+    assert parser.is_in_string() == False
+```
+
+# Generated at 2024-06-03 11:35:38.423935
+```python
+    from unittest.mock import Mock
+
+    # Mock text object with necessary methods
+    text = Mock()
+    text.index.side_effect = lambda x: x
+    text.get.side_effect = lambda start, end: "def foo():\n    if (a > b):\n        print(a)\n"
+
+    # Create HyperParser instance
+    parser = HyperParser(text, "2.10")
+
+    # Test case 1: Brackets surrounding the index
+    result = parser.get_surrounding_brackets()
+    assert result == ("2.7", "2.13"), f"Expected ('2.7', '2.13'), but got {result}"
+
+    # Test case 2: No surrounding brackets
+    parser.set_index("1.0")
+    result = parser.get_surrounding_brackets()
+    assert result is None, f"Expected None, but got {result}"
+
+    # Test case 3: Brackets with must
+
+# Generated at 2024-06-03 11:35:43.354328
+```python
+    parser = RoughParser()
+    parser.str = "x = 1 + \\\n2"
+    parser.goodlines = [0, 1, 2]
+    parser.continuation = C_BACKSLASH
+    parser.indent_width = 4
+    parser.tabwidth = 4
+    parser.study_level = 1
+    parser.stmt_start = 0
+    parser.stmt_end = len(parser.str)
+    assert parser.compute_backslash_indent() == 5
+
+    parser.str = "y = (1 + \\\n2)"
+    parser.goodlines = [0, 1, 2]
+    parser.continuation = C_BACKSLASH
+    parser.indent_width = 4
+    parser.tabwidth = 4
+    parser.study_level = 1
+    parser.stmt_start = 0
+    parser.stmt_end = len(parser.str)
+    assert parser.compute_backslash_indent() == 5
+
+# Generated at 2024-06-03 11:35:49.747017
+```python
+    from unittest.mock import Mock
+
+    # Mock text object with necessary methods
+    text = Mock()
+    text.index.return_value = "1.0"
+    text.get.return_value = "a = b + c"
+
+    # Create HyperParser instance
+    parser = HyperParser(text, "1.0")
+
+    # Test cases
+    test_cases = [
+        ("1.0", "a"),
+        ("1.2", "a"),
+        ("1.4", "b"),
+        ("1.6", "b"),
+        ("1.8", "c"),
+        ("1.10", "c"),
+    ]
+
+    for index, expected in test_cases:
+        parser.set_index(index)
+        assert parser.get_expression() == expected, f"Failed at index {index}"
+
+    print("All test cases passed.")
+
+# Run the test
+test_HyperParser_get_expression()
+```
+
+# Generated at 2024-06-03 11:35:55.250090
+```python
+    from unittest.mock import Mock
+
+    # Mock text object with necessary methods
+    text = Mock()
+    text.index.side_effect = lambda idx: idx
+    text.get.side_effect = lambda start, end: "def foo():\n    if (a == b):\n        pass\n"
+
+    # Create HyperParser instance
+    parser = HyperParser(text, "2.10")
+
+    # Test case 1: Brackets surrounding the index
+    result = parser.get_surrounding_brackets()
+    assert result == ("2.7", "2.14"), f"Expected ('2.7', '2.14'), but got {result}"
+
+    # Test case 2: No surrounding brackets
+    parser.set_index("1.0")
+    result = parser.get_surrounding_brackets()
+    assert result is None, f"Expected None, but got {result}"
+
+    # Test case 3: Brackets with mustclose=True
+
+# Generated at 2024-06-03 11:38:40.839870
+```python
+    text_mock = Mock()
+    text_mock.index.return_value = "1.0"
+    text_mock.get.return_value = "print('Hello, World!')\n"
+    text_mock.indent_width = 4
+    text_mock.tabwidth = 4
+
+    parser = HyperParser(text_mock, "1.0")
+    parser.set_index("1.0")
+    assert parser.is_in_code() == True
+
+    text_mock.get.return_value = "# This is a comment\n"
+    parser = HyperParser(text_mock, "1.0")
+    parser.set_index("1.0")
+    assert parser.is_in_code() == False
+
+    text_mock.get.return_value = "'This is a string'\n"
+    parser = HyperParser(text_mock, "1.0")
+    parser.set_index("1.0")
+    assert parser.is_in_code() == False
+```
+
+# Generated at 2024-06-03 11:38:45.266004
+```python
+    text_mock = Mock()
+    text_mock.index.return_value = "1.0"
+    text_mock.get.return_value = 'print("Hello, World!")'
+    text_mock.indent_width = 4
+    text_mock.tabwidth = 4
+
+    parser = HyperParser(text_mock, "1.0")
+    parser.set_index("1.7")  # Inside the string "Hello, World!"
+    assert parser.is_in_string() == True
+
+    parser.set_index("1.0")  # Outside the string
+    assert parser.is_in_string() == False
+
+    parser.set_index("1.18")  # Inside the string "Hello, World!"
+    assert parser.is_in_string() == True
+
+    parser.set_index("1.20")  # Outside the string
+    assert parser.is_in_string() == False
+```
+
+# Generated at 2024-06-03 11:38:50.019316
+```python
+    from unittest.mock import Mock
+
+    # Mocking the text object with necessary methods and attributes
+    text = Mock()
+    text.indent_width = 4
+    text.tabwidth = 4
+    text.index.return_value = "1.0"
+    text.get.return_value = "def foo():\n    pass\n"
+
+    # Creating an instance of HyperParser
+    parser = HyperParser(text, "1.0")
+
+    # Assertions to verify the state of the parser
+    assert parser.text == text
+    assert parser.rawtext == "def foo():\n    pass"
+    assert parser.stopatindex == "1.end"
+    assert parser.bracketing == [(0, 0), (4, 1), (5, 1), (6, 1), (7, 1), (8, 1), (9, 1), (10, 1), (11, 1), (12
+
+# Generated at 2024-06-03 11:39:02.471672
+```python
+    from unittest.mock import Mock
+
+    # Mock text object with necessary methods
+    text = Mock()
+    text.index.return_value = "1.0"
+    text.get.return_value = "a = b + c"
+
+    # Create HyperParser instance
+    parser = HyperParser(text, "1.0")
+
+    # Test cases
+    test_cases = [
+        ("1.0", "a"),
+        ("1.2", "a"),
+        ("1.4", "b"),
+        ("1.6", "b"),
+        ("1.8", "c"),
+        ("1.10", "c"),
+    ]
+
+    for index, expected in test_cases:
+        parser.set_index(index)
+        assert parser.get_expression() == expected, f"Failed at index {index}"
+
+    print("All test cases passed.")
+
+# Run the test
+test_HyperParser_get_expression()
+```
+
+# Generated at 2024-06-03 11:39:08.886050
+```python
+    from unittest.mock import Mock
+
+    # Mocking the text object
+    text = Mock()
+    text.index.return_value = "1.0"
+    text.get.return_value = "def foo():\n    pass\n"
+    text.indent_width = 4
+    text.tabwidth = 4
+
+    # Creating an instance of HyperParser
+    parser = HyperParser(text, "1.0")
+
+    # Assertions to verify the state of the parser
+    assert parser.text == text
+    assert parser.rawtext == "def foo():\n    pass"
+    assert parser.stopatindex == "1.end"
+    assert parser.bracketing == [(0, 0), (3, 1), (4, 0), (5, 0), (9, 0), (14, 0)]
+    assert parser.isopener == [False, True, False, False, False, False]
+    assert parser.indexin
+
+# Generated at 2024-06-03 11:39:13.942959
+```python
+    from unittest.mock import Mock
+
+    # Mocking the text object with necessary methods and attributes
+    text = Mock()
+    text.indent_width = 4
+    text.tabwidth = 4
+    text.index.return_value = "1.0"
+    text.get.return_value = "def foo():\n    pass\n"
+
+    # Creating an instance of HyperParser
+    parser = HyperParser(text, "1.0")
+
+    # Assertions to verify the constructor behavior
+    assert parser.text == text
+    assert parser.rawtext == "def foo():\n    pass"
+    assert parser.stopatindex == "1.end"
+    assert parser.bracketing == [(0, 0), (3, 1), (10, 0)]
+    assert parser.isopener == [False, True, False]
+    assert parser.indexinrawtext == 0
+    assert parser.indexbracket == 0
+
+    print("All tests
+
+# Generated at 2024-06-03 11:39:18.364261
+```python
+    from unittest.mock import Mock
+
+    # Mocking the text object with necessary methods and attributes
+    text = Mock()
+    text.indent_width = 4
+    text.tabwidth = 4
+    text.index.return_value = "1.0"
+    text.get.return_value = "def foo():\n    pass\n"
+
+    # Creating an instance of HyperParser
+    parser = HyperParser(text, "1.0")
+
+    # Assertions to verify the state of the parser
+    assert parser.text == text
+    assert parser.rawtext == "def foo():\n    pass"
+    assert parser.stopatindex == "1.end"
+    assert parser.bracketing == [(0, 0), (3, 1), (10, 0)]
+    assert parser.isopener == [False, True, False]
+    assert parser.indexinrawtext == 0
+    assert parser.indexbracket == 0
+
+    # Test
+
+# Generated at 2024-06-03 11:39:24.582342
+```python
+    from unittest.mock import Mock
+
+    # Mocking the text object
+    text = Mock()
+    text.indent_width = 4
+    text.tabwidth = 4
+    text.index.return_value = "1.0"
+    text.get.return_value = "def foo():\n    pass\n"
+
+    # Creating an instance of HyperParser
+    parser = HyperParser(text, "1.0")
+
+    # Assertions to check if the object is initialized correctly
+    assert parser.text == text
+    assert parser.rawtext == "def foo():\n    pass"
+    assert parser.stopatindex == "1.end"
+    assert parser.bracketing == [(0, 0), (3, 1), (4, 1), (5, 0)]
+    assert parser.isopener == [False, True, False, False]
+    assert parser.indexinrawtext == 0
+    assert parser.indexbracket == 0
+
+# Generated at 2024-06-03 11:39:27.927841
+```python
+    parser = RoughParser()
+    parser.set_lo(5)
+    assert parser.lo == 5, f"Expected lo to be 5, but got {parser.lo}"
+    
+    parser.set_lo(10)
+    assert parser.lo == 10, f"Expected lo to be 10, but got {parser.lo}"
+    
+    parser.set_lo(0)
+    assert parser.lo == 0, f"Expected lo to be 0, but got {parser.lo}"
+```
+
+# Generated at 2024-06-03 11:39:32.045408
+```python
+    text_mock = Mock()
+    text_mock.index.return_value = "1.0"
+    text_mock.get.return_value = 'print("Hello, World!")\n'
+    text_mock.indent_width = 4
+    text_mock.tabwidth = 4
+
+    parser = HyperParser(text_mock, "1.0")
+    parser.set_index("1.7")  # Inside the string "Hello, World!"
+    assert parser.is_in_string() == True
+
+    parser.set_index("1.0")  # Outside the string
+    assert parser.is_in_string() == False
+
+    parser.set_index("1.18")  # Inside the string "Hello, World!"
+    assert parser.is_in_string() == True
+
+    parser.set_index("1.20")  # Outside the string
+    assert parser.is_in_string() == False
+```

@@ -1,0 +1,1843 @@
+
+
+# Generated at 2024-05-31 00:31:48.012334
+```python
+    import os
+    from ansible.errors import AnsibleFallbackNotFound
+
+    # Test case 1: Environment variable is set
+    os.environ['TEST_VAR'] = 'test_value'
+    assert env_fallback('TEST_VAR') == 'test_value'
+    del os.environ['TEST_VAR']
+
+    # Test case 2: Environment variable is not set
+    try:
+        env_fallback('NON_EXISTENT_VAR')
+    except AnsibleFallbackNotFound:
+        pass
+    else:
+        assert False, "Expected AnsibleFallbackNotFound exception"
+
+    # Test case 3: Multiple environment variables, first one is set
+    os.environ['TEST_VAR1'] = 'value1'
+    assert env_fallback('TEST_VAR1', 'TEST_VAR2') == 'value1'
+    del os.environ['TEST_VAR1']
+
+    # Test case 4: Multiple environment variables, second one is set
+    os.environ['TEST_VAR2']
+
+# Generated at 2024-05-31 00:31:51.117184
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': False},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2']), 'no_log': True},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3']), 'no_log': False},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value2' in no_log_values
+    assert 'value1' not in no_log_values
+
+    # Clean up environment variables
+    del
+
+# Generated at 2024-05-31 00:31:55.217711
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, 'ENV_VAR1'), 'no_log': True},
+        'param2': {'fallback': (env_fallback, 'ENV_VAR2')},
+        'param3': {'fallback': (env_fallback, 'ENV_VAR3', {'default': 'default_value'})},
+        'param4': {'fallback': (None,)},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert parameters['param3'] == 'default_value'
+    assert 'param4' not in parameters
+    assert 'value1' in no_log_values
+
+
+# Generated at 2024-05-31 00:31:58.730305
+```python
+    no_log_strings = {"secret", "password"}
+    
+    # Test with a simple string
+    assert remove_values("this is a secret", no_log_strings) == "this is a "
+    
+    # Test with a list
+    assert remove_values(["this is a secret", "no secret here"], no_log_strings) == ["this is a ", "no secret here"]
+    
+    # Test with a dictionary
+    assert remove_values({"key1": "this is a secret", "key2": "no secret here"}, no_log_strings) == {"key1": "this is a ", "key2": "no secret here"}
+    
+    # Test with nested structures
+    nested_structure = {
+        "level1": {
+            "level2": ["this is a secret", {"level3": "password"}]
+        }
+    }
+    expected_output = {
+        "level1": {
+            "level2": ["this is a ", {"level
+
+# Generated at 2024-05-31 00:32:02.396403
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': False},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2']), 'no_log': True},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3']), 'no_log': False},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value2' in no_log_values
+    assert 'value1' not in no_log_values
+
+    # Clean up environment variables
+    del
+
+# Generated at 2024-05-31 00:32:06.632188
+```python
+    import os
+    from unittest import TestCase, main
+
+    class TestEnvFallback(TestCase):
+        def setUp(self):
+            self.env_vars = {
+                'TEST_VAR1': 'value1',
+                'TEST_VAR2': 'value2',
+                'TEST_VAR3': 'value3'
+            }
+            os.environ.update(self.env_vars)
+
+        def tearDown(self):
+            for var in self.env_vars:
+                del os.environ[var]
+
+        def test_single_existing_var(self):
+            self.assertEqual(env_fallback('TEST_VAR1'), 'value1')
+
+        def test_multiple_existing_vars(self):
+            self.assertEqual(env_fallback('TEST_VAR2', 'TEST_VAR3'), 'value2')
+
+        def test_non_existing_var(self):
+            with self.assertRaises(AnsibleFallbackNotFound):
+                env_fallback('NON_EXISTENT_VAR')
+
+        def test_mixed_existing_and_non_existing_vars(self):
+            self.assertEqual(env_fallback('NON
+
+# Generated at 2024-05-31 00:32:13.929767
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:32:18.120885
+```python
+    import os
+    from ansible.errors import AnsibleFallbackNotFound
+
+    # Test case 1: Environment variable is set
+    os.environ['TEST_VAR'] = 'test_value'
+    assert env_fallback('TEST_VAR') == 'test_value'
+    del os.environ['TEST_VAR']
+
+    # Test case 2: Environment variable is not set
+    try:
+        env_fallback('NON_EXISTENT_VAR')
+    except AnsibleFallbackNotFound:
+        pass
+    else:
+        assert False, "Expected AnsibleFallbackNotFound exception"
+```
+
+# Generated at 2024-05-31 00:32:22.156015
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, 'ENV_VAR1'), 'no_log': True},
+        'param2': {'fallback': (env_fallback, 'ENV_VAR2')},
+        'param3': {'fallback': (env_fallback, 'ENV_VAR3', {'default': 'default_value'})},
+        'param4': {'fallback': (None,)},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert parameters['param3'] == 'default_value'
+    assert 'param4' not in parameters
+    assert 'value1' in no_log_values
+
+
+# Generated at 2024-05-31 00:32:26.585892
+```python
+    assert remove_values("secret", {"secret"}) == ""
+    assert remove_values("public", {"secret"}) == "public"
+    assert remove_values(["secret", "public"], {"secret"}) == ["", "public"]
+    assert remove_values({"key": "secret", "key2": "public"}, {"secret"}) == {"key": "", "key2": "public"}
+    assert remove_values({"key": ["secret", "public"]}, {"secret"}) == {"key": ["", "public"]}
+    assert remove_values({"key": {"subkey": "secret"}}, {"secret"}) == {"key": {"subkey": ""}}
+    assert remove_values({"key": {"subkey": ["secret", "public"]}}, {"secret"}) == {"key": {"subkey": ["", "public"]}}
+    assert remove_values({"key": {"subkey": {"subsubkey": "secret"}}}, {"secret"}) == {"key": {"subkey":
+
+# Generated at 2024-05-31 00:33:26.174803
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:33:29.939506
+```python
+    no_log_strings = {"secret", "password"}
+    
+    # Test with a simple string
+    assert remove_values("this is a secret", no_log_strings) == "this is a "
+    
+    # Test with a list
+    assert remove_values(["this is a secret", "no secret here"], no_log_strings) == ["this is a ", "no secret here"]
+    
+    # Test with a dictionary
+    assert remove_values({"key1": "this is a secret", "key2": "no secret here"}, no_log_strings) == {"key1": "this is a ", "key2": "no secret here"}
+    
+    # Test with nested structures
+    nested_structure = {
+        "level1": {
+            "level2": ["this is a secret", {"level3": "password"}]
+        }
+    }
+    expected_output = {
+        "level1": {
+            "level2": ["this is a ", {"level
+
+# Generated at 2024-05-31 00:33:33.378781
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': False},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2']), 'no_log': True},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3']), 'no_log': False},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+    os.environ['ENV_VAR3'] = 'value3'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert parameters['param3'] == 'value3'
+    assert 'value2' in no_log_values
+    assert 'value1'
+
+# Generated at 2024-05-31 00:33:36.828829
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:33:40.509578
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:33:45.089349
+```python
+    obj = {
+        'password': 'secret',
+        'user': 'admin',
+        'nested': {
+            'token': 'abc123',
+            'data': 'value'
+        },
+        'list': [
+            {'key': 'value1', 'secret': 'hidden1'},
+            {'key': 'value2', 'secret': 'hidden2'}
+        ]
+    }
+    no_log_strings = {'secret', 'abc123', 'hidden1', 'hidden2'}
+    ignore_keys = {'user'}
+
+    sanitized = sanitize_keys(obj, no_log_strings, ignore_keys)
+
+    assert sanitized['password'] == 'VALUE_SPECIFIED_AS_NO_LOG_PARAMETER'
+    assert sanitized['user'] == 'admin'
+    assert sanitized['nested']['token'] == 'VALUE_SPECIFIED_AS_NO_LOG_PARAMETER'
+    assert sanitized['nested']['data'] == 'value'
+    assert sanitized['list'][0]['key'] == 'value1'
+    assert sanitized['list'][
+
+# Generated at 2024-05-31 00:33:48.742177
+```python
+    import os
+    from unittest import TestCase, main
+
+    class TestEnvFallback(TestCase):
+        def setUp(self):
+            self.env_vars = {
+                'TEST_ENV_VAR_1': 'value1',
+                'TEST_ENV_VAR_2': 'value2'
+            }
+            os.environ.update(self.env_vars)
+
+        def tearDown(self):
+            for var in self.env_vars:
+                del os.environ[var]
+
+        def test_env_fallback_single_var(self):
+            self.assertEqual(env_fallback('TEST_ENV_VAR_1'), 'value1')
+
+        def test_env_fallback_multiple_vars(self):
+            self.assertEqual(env_fallback('TEST_ENV_VAR_1', 'TEST_ENV_VAR_2'), 'value1')
+            self.assertEqual(env_fallback('TEST_ENV_VAR_2', 'TEST_ENV_VAR_1'), 'value2')
+
+        def test_env_fallback_var_not_set(self):
+            with self.assertRaises(AnsibleFallbackNotFound
+
+# Generated at 2024-05-31 00:33:56.579452
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:33:59.839454
+```python
+    import os
+    from unittest import TestCase, main
+
+    class TestEnvFallback(TestCase):
+        def setUp(self):
+            self.env_vars = {
+                'TEST_VAR1': 'value1',
+                'TEST_VAR2': 'value2',
+                'TEST_VAR3': 'value3'
+            }
+            os.environ.update(self.env_vars)
+
+        def tearDown(self):
+            for var in self.env_vars:
+                del os.environ[var]
+
+        def test_single_existing_var(self):
+            self.assertEqual(env_fallback('TEST_VAR1'), 'value1')
+
+        def test_multiple_existing_vars(self):
+            self.assertEqual(env_fallback('TEST_VAR2', 'TEST_VAR3'), 'value2')
+
+        def test_non_existing_var(self):
+            with self.assertRaises(AnsibleFallbackNotFound):
+                env_fallback('NON_EXISTENT_VAR')
+
+        def test_mixed_existing_and_non_existing_vars(self):
+            self.assertEqual(env_fallback('NON
+
+# Generated at 2024-05-31 00:34:03.573044
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:34:29.228007
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:34:33.031375
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': False},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2']), 'no_log': True},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3']), 'no_log': False},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+    os.environ['ENV_VAR3'] = 'value3'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert parameters['param3'] == 'value3'
+    assert 'value2' in no_log_values
+    assert 'value1'
+
+# Generated at 2024-05-31 00:34:37.230800
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': False},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2']), 'no_log': True},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3']), 'no_log': False},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value2' in no_log_values
+    assert 'value1' not in no_log_values
+
+    # Clean up environment variables
+    del
+
+# Generated at 2024-05-31 00:34:41.736900
+```python
+    no_log_strings = {"secret", "password"}
+    
+    # Test with a simple string
+    assert remove_values("this is a secret", no_log_strings) == "this is a "
+    
+    # Test with a list
+    assert remove_values(["this is a secret", "no secret here"], no_log_strings) == ["this is a ", "no secret here"]
+    
+    # Test with a dictionary
+    assert remove_values({"key1": "this is a secret", "key2": "no secret here"}, no_log_strings) == {"key1": "this is a ", "key2": "no secret here"}
+    
+    # Test with nested structures
+    nested_structure = {
+        "level1": {
+            "level2": ["this is a secret", {"key": "password"}]
+        }
+    }
+    expected_output = {
+        "level1": {
+            "level2": ["this is a ", {"key":
+
+# Generated at 2024-05-31 00:34:45.471274
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:34:49.566509
+```python
+    import os
+    from ansible.errors import AnsibleFallbackNotFound
+
+    # Test case 1: Environment variable is set
+    os.environ['TEST_VAR'] = 'test_value'
+    assert env_fallback('TEST_VAR') == 'test_value'
+
+    # Test case 2: Environment variable is not set
+    try:
+        env_fallback('NON_EXISTENT_VAR')
+    except AnsibleFallbackNotFound:
+        pass
+    else:
+        assert False, "Expected AnsibleFallbackNotFound exception"
+
+    # Test case 3: Multiple environment variables, first one is set
+    os.environ['TEST_VAR_1'] = 'value1'
+    os.environ['TEST_VAR_2'] = 'value2'
+    assert env_fallback('TEST_VAR_1', 'TEST_VAR_2') == 'value1'
+
+    # Test case 4: Multiple environment variables, second one is set
+    del os.environ['TEST_VAR_
+
+# Generated at 2024-05-31 00:34:53.588293
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (None,)},
+        'param4': {'fallback': (env_fallback, ['ENV_VAR4'])}
+    }
+    parameters = {
+        'param3': 'value3'
+    }
+
+    os.environ['ENV_VAR1'] = 'secret_value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'secret_value1'
+    assert parameters['param2'] == 'value2'
+    assert parameters['param3'] == 'value3'
+    assert 'param4' not in parameters
+    assert 'secret_value1' in no_log_values
+   
+
+# Generated at 2024-05-31 00:34:56.836173
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': False},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2']), 'no_log': True},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3']), 'no_log': False},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value2' in no_log_values
+    assert 'value1' not in no_log_values
+
+    # Clean up environment variables
+    del
+
+# Generated at 2024-05-31 00:35:00.247563
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': False},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2']), 'no_log': True},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3']), 'no_log': False},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value2' in no_log_values
+    assert 'value1' not in no_log_values
+
+    # Clean up environment variables
+    del
+
+# Generated at 2024-05-31 00:35:03.939743
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:35:49.532520
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (None,)},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os.environ['ENV_VAR2']
+```
+
+# Generated at 2024-05-31 00:35:52.845560
+```python
+    import os
+    from unittest import TestCase, main
+
+    class TestEnvFallback(TestCase):
+        def setUp(self):
+            self.env_vars = {
+                'TEST_ENV_VAR_1': 'value1',
+                'TEST_ENV_VAR_2': 'value2'
+            }
+            os.environ.update(self.env_vars)
+
+        def tearDown(self):
+            for var in self.env_vars:
+                del os.environ[var]
+
+        def test_single_existing_var(self):
+            self.assertEqual(env_fallback('TEST_ENV_VAR_1'), 'value1')
+
+        def test_multiple_existing_vars(self):
+            self.assertEqual(env_fallback('TEST_ENV_VAR_1', 'TEST_ENV_VAR_2'), 'value1')
+
+        def test_non_existing_var(self):
+            with self.assertRaises(AnsibleFallbackNotFound):
+                env_fallback('NON_EXISTING_VAR')
+
+        def test_mixed_existing_and_non_existing_vars(self):
+            self.assertEqual(env_fallback('NON
+
+# Generated at 2024-05-31 00:35:56.255315
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:35:59.435481
+```python
+    import os
+    from unittest import TestCase, main
+
+    class TestEnvFallback(TestCase):
+        def setUp(self):
+            self.env_vars = {
+                'TEST_VAR1': 'value1',
+                'TEST_VAR2': 'value2',
+                'TEST_VAR3': 'value3'
+            }
+            os.environ.update(self.env_vars)
+
+        def tearDown(self):
+            for var in self.env_vars:
+                del os.environ[var]
+
+        def test_single_existing_var(self):
+            self.assertEqual(env_fallback('TEST_VAR1'), 'value1')
+
+        def test_multiple_existing_vars(self):
+            self.assertEqual(env_fallback('TEST_VAR2', 'TEST_VAR3'), 'value2')
+
+        def test_non_existing_var(self):
+            with self.assertRaises(AnsibleFallbackNotFound):
+                env_fallback('NON_EXISTENT_VAR')
+
+        def test_mixed_existing_and_non_existing_vars(self):
+            self.assertEqual(env_fallback('NON
+
+# Generated at 2024-05-31 00:36:02.907506
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:36:07.026319
+```python
+    import os
+    from unittest import TestCase, main
+
+    class TestEnvFallback(TestCase):
+        def setUp(self):
+            self.env_vars = {
+                'TEST_VAR1': 'value1',
+                'TEST_VAR2': 'value2'
+            }
+            os.environ.update(self.env_vars)
+
+        def tearDown(self):
+            for var in self.env_vars:
+                del os.environ[var]
+
+        def test_single_existing_var(self):
+            self.assertEqual(env_fallback('TEST_VAR1'), 'value1')
+
+        def test_multiple_existing_vars(self):
+            self.assertEqual(env_fallback('TEST_VAR1', 'TEST_VAR2'), 'value1')
+
+        def test_non_existing_var(self):
+            with self.assertRaises(AnsibleFallbackNotFound):
+                env_fallback('NON_EXISTENT_VAR')
+
+        def test_mixed_existing_and_non_existing_vars(self):
+            self.assertEqual(env_fallback('NON_EXISTENT_VAR', 'TEST_VAR2'), '
+
+# Generated at 2024-05-31 00:36:10.600313
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (None,)},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os.environ['ENV_VAR2']
+```
+
+# Generated at 2024-05-31 00:36:15.295450
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (None,)},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os.environ['ENV_VAR2']
+```
+
+# Generated at 2024-05-31 00:36:19.515904
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (None,)},
+        'param4': {'fallback': (env_fallback, ['ENV_VAR4'])},
+    }
+    parameters = {
+        'param3': 'value3'
+    }
+
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert parameters['param3'] == 'value3'
+    assert 'param4' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value
+
+# Generated at 2024-05-31 00:36:22.889662
+```python
+    import os
+    from ansible.errors import AnsibleFallbackNotFound
+
+    # Test case 1: Environment variable is set
+    os.environ['TEST_VAR'] = 'test_value'
+    assert env_fallback('TEST_VAR') == 'test_value'
+    del os.environ['TEST_VAR']
+
+    # Test case 2: Environment variable is not set
+    try:
+        env_fallback('NON_EXISTENT_VAR')
+    except AnsibleFallbackNotFound:
+        pass
+    else:
+        assert False, "Expected AnsibleFallbackNotFound exception"
+
+    # Test case 3: Multiple environment variables, first one is set
+    os.environ['TEST_VAR1'] = 'value1'
+    os.environ['TEST_VAR2'] = 'value2'
+    assert env_fallback('TEST_VAR1', 'TEST_VAR2') == 'value1'
+    del os.environ['TEST_VAR1']
+    del os.environ['TEST_VAR2']
+
+    #
+
+# Generated at 2024-05-31 00:37:02.568118
+```python
+    import os
+    from ansible.errors import AnsibleFallbackNotFound
+
+    # Test case 1: Environment variable is set
+    os.environ['TEST_VAR'] = 'test_value'
+    assert env_fallback('TEST_VAR') == 'test_value'
+    del os.environ['TEST_VAR']
+
+    # Test case 2: Environment variable is not set
+    try:
+        env_fallback('NON_EXISTENT_VAR')
+    except AnsibleFallbackNotFound:
+        pass
+    else:
+        assert False, "Expected AnsibleFallbackNotFound exception"
+
+    # Test case 3: Multiple environment variables, first one is set
+    os.environ['TEST_VAR1'] = 'value1'
+    os.environ['TEST_VAR2'] = 'value2'
+    assert env_fallback('TEST_VAR1', 'TEST_VAR2') == 'value1'
+    del os.environ['TEST_VAR1']
+    del os.environ['TEST_VAR2']
+
+    #
+
+# Generated at 2024-05-31 00:37:06.508081
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': False},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2']), 'no_log': True},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3']), 'no_log': False},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value2' in no_log_values
+    assert 'value1' not in no_log_values
+
+    # Clean up environment variables
+    del
+
+# Generated at 2024-05-31 00:37:09.891084
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:37:13.734143
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': False},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2']), 'no_log': True},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3']), 'no_log': False},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+    os.environ['ENV_VAR3'] = 'value3'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert parameters['param3'] == 'value3'
+    assert 'value2' in no_log_values
+    assert 'value1'
+
+# Generated at 2024-05-31 00:37:16.978487
+```python
+    import os
+    from unittest import TestCase, main
+
+    class TestEnvFallback(TestCase):
+        def setUp(self):
+            self.env_vars = {
+                'TEST_ENV_VAR_1': 'value1',
+                'TEST_ENV_VAR_2': 'value2'
+            }
+            os.environ.update(self.env_vars)
+
+        def tearDown(self):
+            for var in self.env_vars:
+                del os.environ[var]
+
+        def test_env_fallback_single_var(self):
+            self.assertEqual(env_fallback('TEST_ENV_VAR_1'), 'value1')
+
+        def test_env_fallback_multiple_vars(self):
+            self.assertEqual(env_fallback('NON_EXISTENT_VAR', 'TEST_ENV_VAR_2'), 'value2')
+
+        def test_env_fallback_no_var_found(self):
+            with self.assertRaises(AnsibleFallbackNotFound):
+                env_fallback('NON_EXISTENT_VAR_1', 'NON_EXISTENT_VAR_2')
+
+    if __name__
+
+# Generated at 2024-05-31 00:37:21.006376
+```python
+    no_log_strings = {"secret", "password"}
+    
+    # Test with a simple string
+    assert remove_values("this is a secret", no_log_strings) == "this is a "
+    
+    # Test with a list
+    assert remove_values(["this is a secret", "no secret here"], no_log_strings) == ["this is a ", "no secret here"]
+    
+    # Test with a dictionary
+    assert remove_values({"key1": "this is a secret", "key2": "no secret here"}, no_log_strings) == {"key1": "this is a ", "key2": "no secret here"}
+    
+    # Test with nested structures
+    nested_structure = {
+        "level1": {
+            "level2": ["this is a secret", {"level3": "password"}]
+        }
+    }
+    expected_output = {
+        "level1": {
+            "level2": ["this is a ", {"level
+
+# Generated at 2024-05-31 00:37:26.287592
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:37:29.830172
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:37:33.599284
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': False},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2']), 'no_log': True},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3']), 'no_log': False},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value2' in no_log_values
+    assert 'value1' not in no_log_values
+
+    # Clean up environment variables
+    del
+
+# Generated at 2024-05-31 00:37:36.973724
+```python
+    obj = {
+        'password': 'secret',
+        'user': 'admin',
+        'nested': {
+            'token': 'abc123',
+            'data': 'value'
+        },
+        'list': [
+            {'key': 'value1', 'secret': 'hidden1'},
+            {'key': 'value2', 'secret': 'hidden2'}
+        ]
+    }
+    no_log_strings = {'secret', 'abc123', 'hidden1', 'hidden2'}
+    expected_output = {
+        'password': 'secret',
+        'user': 'admin',
+        'nested': {
+            'token': 'VALUE_SPECIFIED_IN_NO_LOG_PARAMETER',
+            'data': 'value'
+        },
+        'list': [
+            {'key': 'value1', 'secret': 'VALUE_SPECIFIED_IN_NO_LOG_PARAMETER'},
+            {'key': 'value2', 'secret': 'VALUE_SPECIFIED_IN_NO_LOG_PARAMETER'}
+        ]
+    }
+    sanitized_obj
+
+# Generated at 2024-05-31 00:38:18.183719
+```python
+    import os
+    from unittest import TestCase, main
+
+    class TestEnvFallback(TestCase):
+        def setUp(self):
+            self.env_vars = {
+                'TEST_ENV_VAR_1': 'value1',
+                'TEST_ENV_VAR_2': 'value2'
+            }
+            os.environ.update(self.env_vars)
+
+        def tearDown(self):
+            for var in self.env_vars:
+                del os.environ[var]
+
+        def test_env_fallback_single_var(self):
+            self.assertEqual(env_fallback('TEST_ENV_VAR_1'), 'value1')
+
+        def test_env_fallback_multiple_vars(self):
+            self.assertEqual(env_fallback('NON_EXISTENT_VAR', 'TEST_ENV_VAR_2'), 'value2')
+
+        def test_env_fallback_no_var_found(self):
+            with self.assertRaises(AnsibleFallbackNotFound):
+                env_fallback('NON_EXISTENT_VAR_1', 'NON_EXISTENT_VAR_2')
+
+    if __name__
+
+# Generated at 2024-05-31 00:38:22.968680
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:38:28.339369
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:38:33.608512
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:38:37.201955
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (None,)},
+        'param4': {'fallback': (env_fallback, ['ENV_VAR4'])}
+    }
+    parameters = {
+        'param3': 'value3'
+    }
+
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert parameters['param3'] == 'value3'
+    assert 'param4' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value
+
+# Generated at 2024-05-31 00:38:43.620998
+```python
+    no_log_strings = {"secret", "password"}
+    
+    # Test with a simple string
+    assert remove_values("this is a secret", no_log_strings) == "this is a "
+    
+    # Test with a list
+    assert remove_values(["this is a secret", "no secret here"], no_log_strings) == ["this is a ", "no secret here"]
+    
+    # Test with a dictionary
+    assert remove_values({"key1": "this is a secret", "key2": "no secret here"}, no_log_strings) == {"key1": "this is a ", "key2": "no secret here"}
+    
+    # Test with nested structures
+    nested_structure = {
+        "level1": {
+            "level2": ["this is a secret", {"level3": "password"}]
+        }
+    }
+    expected_output = {
+        "level1": {
+            "level2": ["this is a ", {"level
+
+# Generated at 2024-05-31 00:38:47.453609
+```python
+    obj = {
+        'password': 'secret',
+        'user': 'admin',
+        'nested': {
+            'token': 'abc123',
+            'data': 'value'
+        },
+        'list': [
+            {'key': 'value1', 'secret': 'hidden1'},
+            {'key': 'value2', 'secret': 'hidden2'}
+        ]
+    }
+    no_log_strings = {'secret', 'abc123', 'hidden1', 'hidden2'}
+    ignore_keys = {'user'}
+
+    sanitized = sanitize_keys(obj, no_log_strings, ignore_keys)
+
+    assert sanitized == {
+        'password': '********',
+        'user': 'admin',
+        'nested': {
+            'token': '********',
+            'data': 'value'
+        },
+        'list': [
+            {'key': 'value1', 'secret': '********'},
+            {'key': 'value2', 'secret': '********'}
+        ]
+    }
+
+
+# Generated at 2024-05-31 00:38:51.569655
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:38:56.043237
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:38:59.357758
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:39:44.637379
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:39:47.824324
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:39:54.227874
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (None,)},
+        'param4': {'fallback': (env_fallback, ['ENV_VAR4'], {'default': 'default_value'})},
+    }
+
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert parameters['param4'] == 'default_value'
+    assert 'value1' in no_log_values
+
+
+# Generated at 2024-05-31 00:39:57.734256
+```python
+    import os
+    from ansible.errors import AnsibleFallbackNotFound
+
+    # Test case 1: Environment variable is set
+    os.environ['TEST_VAR'] = 'test_value'
+    assert env_fallback('TEST_VAR') == 'test_value'
+    del os.environ['TEST_VAR']
+
+    # Test case 2: Environment variable is not set
+    try:
+        env_fallback('NON_EXISTENT_VAR')
+    except AnsibleFallbackNotFound:
+        pass
+    else:
+        assert False, "Expected AnsibleFallbackNotFound exception"
+
+    # Test case 3: Multiple environment variables, first one is set
+    os.environ['TEST_VAR1'] = 'value1'
+    assert env_fallback('TEST_VAR1', 'TEST_VAR2') == 'value1'
+    del os.environ['TEST_VAR1']
+
+    # Test case 4: Multiple environment variables, second one is set
+    os.environ['TEST_VAR2']
+
+# Generated at 2024-05-31 00:40:01.187265
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:40:06.276739
+```python
+    import os
+    from unittest import TestCase, main
+
+    class TestEnvFallback(TestCase):
+        def setUp(self):
+            self.env_vars = {
+                'TEST_ENV_VAR_1': 'value1',
+                'TEST_ENV_VAR_2': 'value2'
+            }
+            os.environ.update(self.env_vars)
+
+        def tearDown(self):
+            for var in self.env_vars:
+                del os.environ[var]
+
+        def test_env_fallback_single_var(self):
+            self.assertEqual(env_fallback('TEST_ENV_VAR_1'), 'value1')
+
+        def test_env_fallback_multiple_vars(self):
+            self.assertEqual(env_fallback('NON_EXISTENT_VAR', 'TEST_ENV_VAR_2'), 'value2')
+
+        def test_env_fallback_no_var_found(self):
+            with self.assertRaises(AnsibleFallbackNotFound):
+                env_fallback('NON_EXISTENT_VAR_1', 'NON_EXISTENT_VAR_2')
+
+    if __name__
+
+# Generated at 2024-05-31 00:40:09.289281
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:40:13.067333
+```python
+    import os
+    from unittest import TestCase, main
+
+    class TestEnvFallback(TestCase):
+        def setUp(self):
+            self.env_vars = {
+                'TEST_VAR1': 'value1',
+                'TEST_VAR2': 'value2',
+                'TEST_VAR3': 'value3'
+            }
+            os.environ.update(self.env_vars)
+
+        def tearDown(self):
+            for var in self.env_vars:
+                del os.environ[var]
+
+        def test_single_existing_var(self):
+            self.assertEqual(env_fallback('TEST_VAR1'), 'value1')
+
+        def test_multiple_existing_vars(self):
+            self.assertEqual(env_fallback('TEST_VAR2', 'TEST_VAR3'), 'value2')
+
+        def test_non_existing_var(self):
+            with self.assertRaises(AnsibleFallbackNotFound):
+                env_fallback('NON_EXISTENT_VAR')
+
+        def test_mixed_existing_and_non_existing_vars(self):
+            self.assertEqual(env_fallback('NON
+
+# Generated at 2024-05-31 00:40:16.494229
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:40:20.120028
+```python
+    import os
+    from ansible.errors import AnsibleFallbackNotFound
+
+    # Test case 1: Environment variable is set
+    os.environ['TEST_VAR'] = 'test_value'
+    assert env_fallback('TEST_VAR') == 'test_value'
+    del os.environ['TEST_VAR']
+
+    # Test case 2: Environment variable is not set
+    try:
+        env_fallback('NON_EXISTENT_VAR')
+    except AnsibleFallbackNotFound:
+        pass
+    else:
+        assert False, "Expected AnsibleFallbackNotFound exception"
+
+    # Test case 3: Multiple environment variables, first one is set
+    os.environ['TEST_VAR1'] = 'value1'
+    assert env_fallback('TEST_VAR1', 'TEST_VAR2') == 'value1'
+    del os.environ['TEST_VAR1']
+
+    # Test case 4: Multiple environment variables, second one is set
+    os.environ['TEST_VAR2']
+
+# Generated at 2024-05-31 00:41:03.756057
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:41:06.999451
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os
+
+# Generated at 2024-05-31 00:41:15.659547
+```python
+    argument_spec = {
+        'param1': {'fallback': (env_fallback, ['ENV_VAR1']), 'no_log': True},
+        'param2': {'fallback': (env_fallback, ['ENV_VAR2'])},
+        'param3': {'fallback': (env_fallback, ['ENV_VAR3'])},
+    }
+    parameters = {}
+
+    # Set environment variables for testing
+    os.environ['ENV_VAR1'] = 'value1'
+    os.environ['ENV_VAR2'] = 'value2'
+
+    no_log_values = set_fallbacks(argument_spec, parameters)
+
+    assert parameters['param1'] == 'value1'
+    assert parameters['param2'] == 'value2'
+    assert 'param3' not in parameters
+    assert 'value1' in no_log_values
+    assert 'value2' not in no_log_values
+
+    # Clean up environment variables
+    del os.environ['ENV_VAR1']
+    del os

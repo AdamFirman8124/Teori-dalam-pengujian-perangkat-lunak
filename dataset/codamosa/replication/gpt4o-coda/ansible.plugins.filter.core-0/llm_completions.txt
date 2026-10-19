@@ -1,0 +1,2715 @@
+
+
+# Generated at 2024-06-01 05:51:20.813745
+```python
+    assert comment("This is a test") == "# This is a test"
+    assert comment("This is a test", style='erlang') == "% This is a test"
+    assert comment("This is a test", style='c') == "// This is a test"
+    assert comment("This is a test", style='cblock') == "/*\n * This is a test\n */"
+    assert comment("This is a test", style='xml') == "<!--\n - This is a test\n-->"
+    assert comment("This is a test", style='plain', decoration='// ') == "// This is a test"
+    assert comment("This is a test", style='plain', prefix='//') == "//This is a test"
+    assert comment("This is a test", style='plain', prefix_count=2) == "# \n# \n# This is a test"
+    assert comment("This is a test
+
+# Generated at 2024-06-01 05:51:23.166230
+```python
+    assert regex_escape("a.b*c") == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='posix_basic') == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='python') == "a\\.b\\*c"
+    try:
+        regex_escape("a.b*c", re_type='posix_extended')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Regex type (posix_extended) not yet implemented'
+    try:
+        regex_escape("a.b*c", re_type='invalid_type')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Invalid regex type (invalid_type)'
+```
+
+# Generated at 2024-06-01 05:51:24.914775
+```python
+    data = "test data"
+    assert get_hash(data, 'sha1') == hashlib.sha1(data.encode()).hexdigest()
+    assert get_hash(data, 'md5') == hashlib.md5(data.encode()).hexdigest()
+    assert get_hash(data, 'sha256') == hashlib.sha256(data.encode()).hexdigest()
+    try:
+        get_hash(data, 'unsupported_hash')
+    except AnsibleFilterError:
+        pass
+    else:
+        assert False, "Expected AnsibleFilterError for unsupported hash type"
+```
+
+# Generated at 2024-06-01 05:51:27.663400
+```python
+    obj = [{"name": "alice", "groups": ["wheel"], "authorized": ["/tmp/alice/onekey.pub"]}]
+    assert subelements(obj, 'groups') == [({'name': 'alice', 'groups': ['wheel'], 'authorized': ['/tmp/alice/onekey.pub']}, 'wheel')]
+    assert subelements(obj, 'authorized') == [({'name': 'alice', 'groups': ['wheel'], 'authorized': ['/tmp/alice/onekey.pub']}, '/tmp/alice/onekey.pub')]
+
+    obj = [{"name": "bob", "groups": ["admin", "users"], "authorized": ["/tmp/bob/onekey.pub", "/tmp/bob/twokey.pub"]}]
+    assert subelements(obj, 'groups') == [
+        ({'name': 'bob', 'groups': ['admin', 'users'], 'authorized': ['/tmp/bob/onekey.pub', '/
+
+# Generated at 2024-06-01 05:51:30.553964
+```python
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is undefined without a name
+    try:
+        mandatory(Undefined())
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable not defined."
+```
+
+# Generated at 2024-06-01 05:51:33.313954
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default error message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom error message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is None
+    assert mandatory(None) is None
+
+    # Test case 5: Variable is an empty string
+    assert mandatory("") == ""
+
+    print("All test cases passed.")
+
+test_mandatory()
+
+# Generated at 2024-06-01 05:51:36.207590
+```python
+    from jinja2.runtime import Undefined
+
+    # Test case where variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case where variable is undefined and has a name
+    undefined_var_with_name = Undefined(name="undefined_var")
+    try:
+        mandatory(undefined_var_with_name)
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_var' not defined."
+
+    # Test case where variable is undefined and has no name
+    undefined_var_no_name = Undefined()
+    try:
+        mandatory(undefined_var_no_name)
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable not defined."
+
+    # Test case where variable is undefined with a custom message
+    try:
+        mandatory(undefined_var_with_name, msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+```
+
+# Generated at 2024-06-01 05:51:38.916817
+
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"hello (\w+)", "\\1") == ["world"]
+    assert regex_search("hello world", r"hello (?P<word>\w+)", "\\g<word>") == ["world"]
+    assert regex_search("hello world", r"HELLO", ignorecase=True) == "hello"
+    assert regex_search("hello\nworld", r"^world$", multiline=True) == "world"
+    assert regex_search("hello world", r"goodbye") is None
+    try:
+        regex_search("hello world", r"hello (\w+)", "\\2")
+    except AnsibleFilterError:
+        pass
+    else:
+        assert False, "Expected AnsibleFilterError"
+
+# Generated at 2024-06-01 05:51:41.968209
+```python
+    assert regex_escape("a.b*c") == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='python') == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='posix_basic') == "a\\.b\\*c"
+    try:
+        regex_escape("a.b*c", re_type='posix_extended')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Regex type (posix_extended) not yet implemented'
+    try:
+        regex_escape("a.b*c", re_type='invalid_type')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Invalid regex type (invalid_type)'
+```
+
+# Generated at 2024-06-01 05:51:45.113727
+```python
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is undefined without a name
+    try:
+        mandatory(Undefined())
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable not defined."
+```
+
+# Generated at 2024-06-01 05:51:56.921011
+```python
+    environment = {
+        'getitem': lambda container, key: container[key]
+    }
+    container = {
+        'a': {
+            'b': {
+                'c': 42
+            }
+        }
+    }
+
+    assert extract(environment, 'a', container) == {'b': {'c': 42}}
+    assert extract(environment, 'b', container['a']) == {'c': 42}
+    assert extract(environment, 'c', container['a']['b']) == 42
+    assert extract(environment, 'a', container, 'b') == {'c': 42}
+    assert extract(environment, 'a', container, ['b', 'c']) == 42
+    assert extract(environment, 'a', container, 'b') == {'c': 42}
+    assert extract(environment, 'a', container, ['b']) == {'c': 42}
+
+    print("All tests passed.")
+
+test_extract()
+```
+
+# Generated at 2024-06-01 05:51:59.790239
+```python
+    data = {'key': 'value', 'list': [1, 2, 3]}
+    expected_output = "key: value\nlist:\n  - 1\n  - 2\n  - 3\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'nested': {'key': 'value'}}
+    expected_output = "nested:\n    key: value\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'unicode': 'üñîçødë'}
+    expected_output = "unicode: üñîçødë\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'special_chars': '!@#$%^&*()'}
+    expected_output = "special_chars: !@#$%^&*()\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'multiline': 'line1\nline2
+
+# Generated at 2024-06-01 05:52:02.406364
+
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"hello (\w+)", "\\1") == ["world"]
+    assert regex_search("hello world", r"hello (?P<word>\w+)", "\\g<word>") == ["world"]
+    assert regex_search("hello world", r"HELLO", ignorecase=True) == "hello"
+    assert regex_search("hello\nworld", r"^world$", multiline=True) == "world"
+    assert regex_search("hello world", r"goodbye") is None
+    try:
+        regex_search("hello world", r"hello (\w+)", "\\2")
+    except AnsibleFilterError:
+        pass
+    else:
+        assert False, "Expected AnsibleFilterError"
+
+# Generated at 2024-06-01 05:52:05.673692
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\2") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1", "\\2") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<2>") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>", "\\g<2>") == ["hello", "world"]
+    assert regex_search("HELLO world", r"hello", ignore
+
+# Generated at 2024-06-01 05:52:08.102505
+```python
+    test_path = "/tmp/test_fileglob"
+    os.makedirs(test_path, exist_ok=True)
+    
+    # Create some test files
+    test_files = ["file1.txt", "file2.txt", "file3.log"]
+    for file in test_files:
+        with open(os.path.join(test_path, file), 'w') as f:
+            f.write("test")
+
+    # Test fileglob function
+    result = fileglob(os.path.join(test_path, "*.txt"))
+    expected = [os.path.join(test_path, "file1.txt"), os.path.join(test_path, "file2.txt")]
+    assert sorted(result) == sorted(expected), f"Expected {expected}, but got {result}"
+
+    # Clean up
+    for file in test_files:
+        os.remove(os.path.join(test_path, file))
+    os.rmdir(test_path)
+```
+
+# Generated at 2024-06-01 05:52:10.806047
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\2") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1", "\\2") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<2>") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>", "\\g<2>") == ["hello", "world"]
+    assert regex_search("hello world", r"notfound") is
+
+# Generated at 2024-06-01 05:52:17.830232
+```python
+    data = {
+        'name': 'Ansible',
+        'version': 2.9,
+        'features': ['automation', 'configuration management', 'orchestration']
+    }
+    expected_output = "features:\n- automation\n- configuration management\n- orchestration\nname: Ansible\nversion: 2.9\n"
+    assert to_yaml(data) == expected_output
+
+    data_with_unicode = {
+        'greeting': 'こんにちは',
+        'farewell': 'さようなら'
+    }
+    expected_output_with_unicode = "farewell: さようなら\ngreeting: こんにちは\n"
+    assert to_yaml(data_with_unicode) == expected_output_with_unicode
+
+    data_with_special_chars = {
+        'key': 'value with special chars: !@#$%^&*()'
+    }
+    expected_output_with_special_chars = "key: 'value with special chars: !@#$%^&*()'\n"
+   
+
+# Generated at 2024-06-01 05:52:20.645087
+```python
+    input_list = [1, 2, 3, 4, 5]
+    seed = 12345
+
+    # Test with seed
+    randomized_list = randomize_list(input_list, seed)
+    assert randomized_list == [2, 3, 1, 5, 4], f"Expected [2, 3, 1, 5, 4], but got {randomized_list}"
+
+    # Test without seed
+    randomized_list_no_seed = randomize_list(input_list)
+    assert set(randomized_list_no_seed) == set(input_list), f"Expected elements {set(input_list)}, but got {set(randomized_list_no_seed)}"
+
+    # Test with empty list
+    empty_list = []
+    randomized_empty_list = randomize_list(empty_list)
+    assert randomized_empty_list == [], f"Expected [], but got {randomized_empty_list}"
+
+    # Test with single element list
+    single_element_list = [
+
+# Generated at 2024-06-01 05:52:23.427229
+```python
+    from jinja2 import Environment
+    env = Environment()
+
+    data = [
+        {'name': 'apple', 'type': 'fruit'},
+        {'name': 'carrot', 'type': 'vegetable'},
+        {'name': 'banana', 'type': 'fruit'},
+        {'name': 'lettuce', 'type': 'vegetable'}
+    ]
+
+    result = do_groupby(env, data, 'type')
+    expected = [
+        ('fruit', [{'name': 'apple', 'type': 'fruit'}, {'name': 'banana', 'type': 'fruit'}]),
+        ('vegetable', [{'name': 'carrot', 'type': 'vegetable'}, {'name': 'lettuce', 'type': 'vegetable'}])
+    ]
+
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+test_do_groupby()
+```
+
+# Generated at 2024-06-01 05:52:26.480212
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default error message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom error message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is None
+    assert mandatory(None) is None
+
+    # Test case 5: Variable is an empty string
+    assert mandatory("") == ""
+
+    print("All test cases passed.")
+
+test_mandatory()
+
+# Generated at 2024-06-01 05:52:33.111915
+```python
+    environment = {
+        'getitem': lambda container, key: container[key]
+    }
+
+    container = {
+        'a': {
+            'b': {
+                'c': 42
+            }
+        }
+    }
+
+    assert extract(environment, 'a', container) == {'b': {'c': 42}}
+    assert extract(environment, 'b', container['a']) == {'c': 42}
+    assert extract(environment, 'c', container['a']['b']) == 42
+    assert extract(environment, 'a', container, 'b') == {'c': 42}
+    assert extract(environment, 'a', container, ['b', 'c']) == 42
+
+    print("All tests passed.")
+
+test_extract()
+```
+
+# Generated at 2024-06-01 05:52:36.153876
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\2") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1", "\\2") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<2>") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>", "\\g<2>") == ["hello", "world"]
+    assert regex_search("HELLO world", r"hello", ignore
+
+# Generated at 2024-06-01 05:52:38.753265
+```python
+    assert to_bool(True) == True
+    assert to_bool(False) == False
+    assert to_bool(None) == None
+    assert to_bool('yes') == True
+    assert to_bool('no') == False
+    assert to_bool('on') == True
+    assert to_bool('off') == False
+    assert to_bool('1') == True
+    assert to_bool('0') == False
+    assert to_bool('true') == True
+    assert to_bool('false') == False
+    assert to_bool(1) == True
+    assert to_bool(0) == False
+    assert to_bool('YES') == True
+    assert to_bool('NO') == False
+    assert to_bool('ON') == True
+    assert to_bool('OFF') == False
+    assert to_bool('TRUE') == True
+    assert to_bool('FALSE') == False
+```
+
+# Generated at 2024-06-01 05:52:41.949946
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\2") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1", "\\2") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<2>") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>", "\\g<2>") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+) (\
+
+# Generated at 2024-06-01 05:52:46.035123
+```python
+    environment = {
+        'getitem': lambda container, key: container[key]
+    }
+    container = {
+        'a': {
+            'b': {
+                'c': 42
+            }
+        }
+    }
+
+    # Test single key extraction
+    assert extract(environment, 'a', container) == {'b': {'c': 42}}
+
+    # Test multiple keys extraction
+    assert extract(environment, 'a', container, 'b') == {'c': 42}
+    assert extract(environment, 'a', container, ['b', 'c']) == 42
+
+    # Test key not found
+    try:
+        extract(environment, 'x', container)
+    except KeyError:
+        pass
+    else:
+        assert False, "Expected KeyError"
+
+    # Test morekeys not a list
+    assert extract(environment, 'a', container, 'b') == {'c': 42}
+
+    print("All tests passed.")
+
+test_extract()
+
+
+# Generated at 2024-06-01 05:52:48.998711
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"hello (\w+)", "\\1") == ["world"]
+    assert regex_search("hello world", r"hello (?P<word>\w+)", "\\g<word>") == ["world"]
+    assert regex_search("hello world", r"hello (?P<word>\w+)", "\\g<word>", ignorecase=True) == ["world"]
+    assert regex_search("hello\nworld", r"^world$", multiline=True) == "world"
+    assert regex_search("hello world", r"goodbye") is None
+    assert regex_search("hello world", r"hello (\w+)", "\\2") == []
+```
+
+# Generated at 2024-06-01 05:52:52.517265
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default error message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom error message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is None
+    assert mandatory(None) is None
+
+    # Test case 5: Variable is an empty string
+    assert mandatory("") == ""
+
+    print("All test cases passed.")
+
+test_mandatory()
+
+# Generated at 2024-06-01 05:52:54.422222
+```python
+    data = "test data"
+    assert get_hash(data, 'sha1') == hashlib.sha1(data.encode()).hexdigest()
+    assert get_hash(data, 'md5') == hashlib.md5(data.encode()).hexdigest()
+    assert get_hash(data, 'sha256') == hashlib.sha256(data.encode()).hexdigest()
+    try:
+        get_hash(data, 'unsupported')
+    except AnsibleFilterError:
+        pass
+    else:
+        assert False, "Expected AnsibleFilterError for unsupported hash type"
+```
+
+# Generated at 2024-06-01 05:52:56.992705
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\2") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1", "\\2") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<2>") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>", "\\g<2>") == ["hello", "world"]
+    assert regex_search("hello world", r"(\d+)",
+
+# Generated at 2024-06-01 05:52:59.537162
+```python
+    test_path = "/tmp/test_fileglob"
+    os.makedirs(test_path, exist_ok=True)
+    
+    # Create some test files
+    test_files = ["file1.txt", "file2.txt", "file3.log"]
+    for file in test_files:
+        with open(os.path.join(test_path, file), 'w') as f:
+            f.write("test content")
+    
+    # Test fileglob function
+    result = fileglob(os.path.join(test_path, "*.txt"))
+    expected = [os.path.join(test_path, "file1.txt"), os.path.join(test_path, "file2.txt")]
+    
+    assert sorted(result) == sorted(expected), f"Expected {expected}, but got {result}"
+    
+    # Clean up
+    for file in test_files:
+        os.remove(os.path.join(test_path, file))
+    os.rmdir(test_path)
+```
+
+# Generated at 2024-06-01 05:53:06.141573
+```python
+    assert regex_replace("Hello World", "World", "Universe") == "Hello Universe"
+    assert regex_replace("Hello World", "world", "Universe", ignorecase=True) == "Hello Universe"
+    assert regex_replace("Hello\nWorld", "^World", "Universe", multiline=True) == "Hello\nUniverse"
+    assert regex_replace("123-456-7890", r"\d", "X") == "XXX-XXX-XXXX"
+    assert regex_replace("Hello World", "World", "") == "Hello "
+    assert regex_replace("Hello World", "o", "0") == "Hell0 W0rld"
+    assert regex_replace("Hello World", "l", "L", ignorecase=True) == "HeLLo WorLd"
+```
+
+# Generated at 2024-06-01 05:53:08.977289
+```python
+    assert comment("This is a test") == "# This is a test"
+    assert comment("This is a test", style='erlang') == "% This is a test"
+    assert comment("This is a test", style='c') == "// This is a test"
+    assert comment("This is a test", style='cblock') == "/*\n * This is a test\n */"
+    assert comment("This is a test", style='xml') == "<!--\n - This is a test\n-->"
+    assert comment("This is a test", style='plain', decoration='// ') == "// This is a test"
+    assert comment("This is a test", style='plain', prefix_count=2) == "# \n# \n# This is a test"
+    assert comment("This is a test", style='plain', postfix_count=2) == "# This is a test\n# \n# "
+    assert
+
+# Generated at 2024-06-01 05:53:12.178553
+```python
+    data = {'key': 'value', 'list': [1, 2, 3], 'nested': {'a': 'b'}}
+    expected_output = "key: value\nlist:\n- 1\n- 2\n- 3\nnested:\n  a: b\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data_with_unicode = {'key': 'value', 'unicode': 'üñîçødë'}
+    expected_output_with_unicode = "key: value\nunicode: üñîçødë\n"
+    assert to_nice_yaml(data_with_unicode) == expected_output_with_unicode
+
+    data_with_indent = {'key': 'value', 'list': [1, 2, 3], 'nested': {'a': 'b'}}
+    expected_output_with_indent = "key: value\nlist:\n    - 1\n    - 2\n    - 3\nnested:\
+
+# Generated at 2024-06-01 05:53:14.234460
+```python
+    assert strftime("%Y-%m-%d", 0) == "1970-01-01"
+    assert strftime("%H:%M:%S", 0) == "00:00:00"
+    assert strftime("%Y-%m-%d %H:%M:%S", 1609459200) == "2021-01-01 00:00:00"
+    assert strftime("%A", 1609459200) == "Friday"
+    try:
+        strftime("%Y-%m-%d", "invalid")
+    except AnsibleFilterError:
+        pass
+    else:
+        assert False, "Expected AnsibleFilterError"
+```
+
+# Generated at 2024-06-01 05:53:19.372295
+```python
+    filter_module = FilterModule()
+    filters = filter_module.filters()
+
+    # Check if the filters dictionary is not empty
+    assert filters, "Filters dictionary should not be empty"
+
+    # Check if specific filters are present
+    expected_filters = [
+        'groupby', 'b64decode', 'b64encode', 'to_uuid', 'to_json', 'to_nice_json', 'from_json',
+        'to_yaml', 'to_nice_yaml', 'from_yaml', 'from_yaml_all', 'basename', 'dirname', 'expanduser',
+        'expandvars', 'path_join', 'realpath', 'relpath', 'splitext', 'win_basename', 'win_dirname',
+        'win_splitdrive', 'fileglob', 'bool', 'to_datetime', 'strftime', 'quote', 'md5', 'sha1',
+        'checksum', 'password_hash', 'hash', 'regex_replace', 'regex_escape', 'regex
+
+# Generated at 2024-06-01 05:53:22.000017
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"(\w+)", "\\1") == ["hello"]
+    assert regex_search("hello world", r"(hello) (world)", "\\1", "\\2") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+)", ignorecase=True) == "hello"
+    assert regex_search("hello\nworld", r"^world$", multiline=True) == "world"
+    assert regex_search("hello world", r"notfound") is None
+    assert regex_search("hello world", r"(hello) (world)", "\\g<1>", "\\g<2>") == ["hello", "world"]
+```
+
+# Generated at 2024-06-01 05:53:25.468537
+```python
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is undefined without a name
+    try:
+        mandatory(Undefined())
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable  not defined."
+
+    print("All tests passed.")
+
+test_mandatory()
+```
+
+# Generated at 2024-06-01 05:53:27.965406
+```python
+    assert strftime("%Y-%m-%d", 0) == "1970-01-01"
+    assert strftime("%H:%M:%S", 0) == "00:00:00"
+    assert strftime("%Y-%m-%d %H:%M:%S", 1609459200) == "2021-01-01 00:00:00"
+    assert strftime("%A", 1609459200) == "Friday"
+    assert strftime("%Y-%m-%d", 1609459200) == "2021-01-01"
+    try:
+        strftime("%Y-%m-%d", "invalid")
+    except AnsibleFilterError:
+        pass
+    else:
+        assert False, "Expected AnsibleFilterError"
+```
+
+# Generated at 2024-06-01 05:53:30.048565
+```python
+    data = "test data"
+    assert get_hash(data, 'sha1') == hashlib.sha1(data.encode()).hexdigest()
+    assert get_hash(data, 'md5') == hashlib.md5(data.encode()).hexdigest()
+    assert get_hash(data, 'sha256') == hashlib.sha256(data.encode()).hexdigest()
+    try:
+        get_hash(data, 'unsupported')
+    except AnsibleFilterError:
+        pass
+    else:
+        assert False, "Expected AnsibleFilterError for unsupported hash type"
+```
+
+# Generated at 2024-06-01 05:53:32.259253
+```python
+    assert strftime("%Y-%m-%d", 0) == "1970-01-01"
+    assert strftime("%H:%M:%S", 0) == "00:00:00"
+    assert strftime("%Y-%m-%d %H:%M:%S", 1609459200) == "2021-01-01 00:00:00"
+    assert strftime("%Y-%m-%d", 1609459200) == "2021-01-01"
+    assert strftime("%H:%M:%S", 1609459200) == "00:00:00"
+    try:
+        strftime("%Y-%m-%d", "invalid")
+    except AnsibleFilterError:
+        pass
+```
+
+# Generated at 2024-06-01 05:53:44.554325
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"(\w+)", "\\1") == ["hello"]
+    assert regex_search("hello world", r"(hello) (world)", "\\1", "\\2") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+)", ignorecase=True) == "hello"
+    assert regex_search("hello\nworld", r"^world$", multiline=True) == "world"
+    assert regex_search("hello world", r"notfound") is None
+    assert regex_search("hello world", r"(hello) (world)", "\\g<1>", "\\g<2>") == ["hello", "world"]
+```
+
+# Generated at 2024-06-01 05:53:46.989711
+
+    assert regex_search("hello world", r"hello") == "hello"
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"o w") == "o w"
+    assert regex_search("hello world", r"notfound") is None
+    assert regex_search("hello world", r"(hello) (world)", r"\1") == ["hello"]
+    assert regex_search("hello world", r"(hello) (world)", r"\2") == ["world"]
+    assert regex_search("hello world", r"(hello) (world)", r"\1", r"\2") == ["hello", "world"]
+    assert regex_search("hello world", r"HELLO", ignorecase=True) == "hello"
+    assert regex_search("hello\nworld", r"^world$", multiline=True) == "world"
+    assert regex_search("hello\nworld", r"^world$")
+
+# Generated at 2024-06-01 05:53:51.550576
+```python
+    data = {
+        'name': 'Ansible',
+        'version': 2.9,
+        'features': ['automation', 'configuration management', 'orchestration']
+    }
+    expected_output = "features:\n- automation\n- configuration management\n- orchestration\nname: Ansible\nversion: 2.9\n"
+    assert to_yaml(data) == expected_output
+
+    data_with_unicode = {
+        'greeting': 'こんにちは',
+        'farewell': 'さようなら'
+    }
+    expected_output_with_unicode = "farewell: さようなら\ngreeting: こんにちは\n"
+    assert to_yaml(data_with_unicode) == expected_output_with_unicode
+
+    data_with_special_chars = {
+        'key': 'value with special chars: !@#$%^&*()'
+    }
+    expected_output_with_special_chars = "key: 'value with special chars: !@#$%^&*()'\n"
+   
+
+# Generated at 2024-06-01 05:53:55.928318
+```python
+    test_path = "/tmp/test_fileglob"
+    os.makedirs(test_path, exist_ok=True)
+    
+    # Create some test files
+    test_files = ["file1.txt", "file2.txt", "file3.log"]
+    for file in test_files:
+        with open(os.path.join(test_path, file), 'w') as f:
+            f.write("test content")
+    
+    # Test fileglob function
+    result = fileglob(os.path.join(test_path, "*.txt"))
+    expected = [os.path.join(test_path, "file1.txt"), os.path.join(test_path, "file2.txt")]
+    
+    assert sorted(result) == sorted(expected), f"Expected {expected}, but got {result}"
+    
+    # Clean up
+    for file in test_files:
+        os.remove(os.path.join(test_path, file))
+    os.rmdir(test_path)
+```
+
+# Generated at 2024-06-01 05:53:58.662014
+```python
+    from jinja2 import Environment
+    env = Environment()
+
+    data = [
+        {'name': 'apple', 'type': 'fruit'},
+        {'name': 'banana', 'type': 'fruit'},
+        {'name': 'carrot', 'type': 'vegetable'},
+        {'name': 'lettuce', 'type': 'vegetable'}
+    ]
+
+    result = do_groupby(env, data, 'type')
+    expected = [
+        ('fruit', [{'name': 'apple', 'type': 'fruit'}, {'name': 'banana', 'type': 'fruit'}]),
+        ('vegetable', [{'name': 'carrot', 'type': 'vegetable'}, {'name': 'lettuce', 'type': 'vegetable'}])
+    ]
+
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+test_do_groupby()
+```
+
+# Generated at 2024-06-01 05:54:00.545891
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"hello (\w+)", "\\1") == ["world"]
+    assert regex_search("hello world", r"hello (?P<word>\w+)", "\\g<word>") == ["world"]
+    assert regex_search("hello world", r"HELLO", ignorecase=True) == "hello"
+    assert regex_search("hello\nworld", r"^world$", multiline=True) == "world"
+    assert regex_search("hello world", r"goodbye") is None
+```
+
+# Generated at 2024-06-01 05:54:02.997891
+```python
+    test_path = "/tmp/test_fileglob"
+    os.makedirs(test_path, exist_ok=True)
+    
+    # Create some test files
+    test_files = ["file1.txt", "file2.txt", "file3.log"]
+    for file in test_files:
+        with open(os.path.join(test_path, file), 'w') as f:
+            f.write("test")
+    
+    # Test fileglob function
+    result = fileglob(os.path.join(test_path, "*.txt"))
+    expected = [os.path.join(test_path, "file1.txt"), os.path.join(test_path, "file2.txt")]
+    
+    assert sorted(result) == sorted(expected), f"Expected {expected}, but got {result}"
+    
+    # Clean up
+    for file in test_files:
+        os.remove(os.path.join(test_path, file))
+    os.rmdir(test_path)
+```
+
+# Generated at 2024-06-01 05:54:04.812789
+```python
+    data = "test data"
+    assert get_hash(data, 'sha1') == hashlib.sha1(data.encode()).hexdigest()
+    assert get_hash(data, 'md5') == hashlib.md5(data.encode()).hexdigest()
+    assert get_hash(data, 'sha256') == hashlib.sha256(data.encode()).hexdigest()
+    try:
+        get_hash(data, 'unsupported_hash')
+    except AnsibleFilterError:
+        pass
+    else:
+        assert False, "Expected AnsibleFilterError for unsupported hash type"
+```
+
+# Generated at 2024-06-01 05:54:07.630878
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"hello (\w+)", "\\1") == ["world"]
+    assert regex_search("hello world", r"hello (?P<word>\w+)", "\\g<word>") == ["world"]
+    assert regex_search("hello world", r"HELLO", ignorecase=True) == "hello"
+    assert regex_search("hello\nworld", r"^world$", multiline=True) == "world"
+    assert regex_search("hello world", r"goodbye") is None
+    assert regex_search("hello world", r"hello (\w+)", "\\1", ignorecase=True) == ["world"]
+    assert regex_search("hello world", r"hello (?P<word>\w+)", "\\g<word>", multiline=True) == ["world"]
+```
+
+# Generated at 2024-06-01 05:54:10.407531
+```python
+    from jinja2.runtime import Undefined
+
+    # Test case where variable is defined
+    assert mandatory("defined_value") == "defined_value"
+
+    # Test case where variable is undefined and has a name
+    undefined_var_with_name = Undefined(name="test_var")
+    try:
+        mandatory(undefined_var_with_name)
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'test_var' not defined."
+
+    # Test case where variable is undefined and has no name
+    undefined_var_no_name = Undefined()
+    try:
+        mandatory(undefined_var_no_name)
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable  not defined."
+
+    # Test case where variable is undefined and custom message is provided
+    try:
+        mandatory(undefined_var_with_name, msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    print("All
+
+# Generated at 2024-06-01 05:54:25.281282
+```python
+    test_path = "/tmp/test_fileglob"
+    os.makedirs(test_path, exist_ok=True)
+    
+    # Create some test files
+    test_files = ["file1.txt", "file2.txt", "file3.log"]
+    for file in test_files:
+        with open(os.path.join(test_path, file), 'w') as f:
+            f.write("test")
+    
+    # Test fileglob function
+    result = fileglob(os.path.join(test_path, "*.txt"))
+    expected = [os.path.join(test_path, "file1.txt"), os.path.join(test_path, "file2.txt")]
+    
+    assert sorted(result) == sorted(expected), f"Expected {expected}, but got {result}"
+    
+    # Clean up
+    for file in test_files:
+        os.remove(os.path.join(test_path, file))
+    os.rmdir(test_path)
+```
+
+# Generated at 2024-06-01 05:54:27.889619
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default error message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom error message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is undefined without a name
+    try:
+        mandatory(Undefined())
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable not defined."
+
+    print("All test cases passed.")
+
+test_mandatory()
+
+# Generated at 2024-06-01 05:54:30.058617
+```python
+    assert to_bool(True) == True
+    assert to_bool(False) == False
+    assert to_bool(None) == None
+    assert to_bool('yes') == True
+    assert to_bool('no') == False
+    assert to_bool('on') == True
+    assert to_bool('off') == False
+    assert to_bool('1') == True
+    assert to_bool('0') == False
+    assert to_bool('true') == True
+    assert to_bool('false') == False
+    assert to_bool(1) == True
+    assert to_bool(0) == False
+    assert to_bool('random_string') == False
+```
+
+# Generated at 2024-06-01 05:54:32.545834
+```python
+    test_path = "/tmp/test_fileglob"
+    os.makedirs(test_path, exist_ok=True)
+    
+    # Create some test files
+    test_files = ["file1.txt", "file2.txt", "file3.log"]
+    for file in test_files:
+        with open(os.path.join(test_path, file), 'w') as f:
+            f.write("test")
+    
+    # Test fileglob function
+    result = fileglob(os.path.join(test_path, "*.txt"))
+    expected = [os.path.join(test_path, "file1.txt"), os.path.join(test_path, "file2.txt")]
+    
+    assert sorted(result) == sorted(expected), f"Expected {expected}, but got {result}"
+    
+    # Clean up
+    for file in test_files:
+        os.remove(os.path.join(test_path, file))
+    os.rmdir(test_path)
+```
+
+# Generated at 2024-06-01 05:54:35.872897
+```python
+    data = {
+        'name': 'example',
+        'value': 42,
+        'nested': {
+            'key': 'value'
+        }
+    }
+    expected_output = "name: example\nvalue: 42\nnested:\n  key: value\n"
+    assert to_yaml(data) == expected_output
+
+    data_with_unicode = {
+        'name': 'exämple',
+        'value': 42,
+        'nested': {
+            'key': 'välue'
+        }
+    }
+    expected_output_with_unicode = "name: exämple\nvalue: 42\nnested:\n  key: välue\n"
+    assert to_yaml(data_with_unicode) == expected_output_with_unicode
+
+    data_with_special_chars = {
+        'name': 'example',
+        'value': 42,
+        'nested': {
+            'key': 'value\nwith\nnewlines'
+        }
+    }
+    expected_output_with_special_chars =
+
+# Generated at 2024-06-01 05:54:38.047902
+```python
+    assert to_bool(True) == True
+    assert to_bool(False) == False
+    assert to_bool(None) == None
+    assert to_bool('yes') == True
+    assert to_bool('no') == False
+    assert to_bool('on') == True
+    assert to_bool('off') == False
+    assert to_bool('1') == True
+    assert to_bool('0') == False
+    assert to_bool('true') == True
+    assert to_bool('false') == False
+    assert to_bool(1) == True
+    assert to_bool(0) == False
+    assert to_bool('YES') == True
+    assert to_bool('NO') == False
+```
+
+# Generated at 2024-06-01 05:54:40.404657
+```python
+    assert regex_escape("a.b*c") == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='posix_basic') == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='python') == "a\\.b\\*c"
+    try:
+        regex_escape("a.b*c", re_type='posix_extended')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Regex type (posix_extended) not yet implemented'
+    try:
+        regex_escape("a.b*c", re_type='invalid_type')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Invalid regex type (invalid_type)'
+```
+
+# Generated at 2024-06-01 05:54:43.392367
+```python
+    assert regex_escape("a.b*c") == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='posix_basic') == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='python') == "a\\.b\\*c"
+    try:
+        regex_escape("a.b*c", re_type='posix_extended')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Regex type (posix_extended) not yet implemented'
+    try:
+        regex_escape("a.b*c", re_type='invalid_type')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Invalid regex type (invalid_type)'
+```
+
+# Generated at 2024-06-01 05:54:45.886342
+```python
+    test_path = "/tmp/test_fileglob"
+    os.makedirs(test_path, exist_ok=True)
+    
+    # Create some test files
+    test_files = ["file1.txt", "file2.txt", "file3.log"]
+    for file in test_files:
+        with open(os.path.join(test_path, file), 'w') as f:
+            f.write("test")
+    
+    # Test fileglob function
+    result = fileglob(os.path.join(test_path, "*.txt"))
+    expected = [os.path.join(test_path, "file1.txt"), os.path.join(test_path, "file2.txt")]
+    
+    assert sorted(result) == sorted(expected), f"Expected {expected}, but got {result}"
+    
+    # Clean up
+    for file in test_files:
+        os.remove(os.path.join(test_path, file))
+    os.rmdir(test_path)
+```
+
+# Generated at 2024-06-01 05:54:48.700930
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default error message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom error message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is undefined without a name
+    try:
+        mandatory(Undefined())
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable not defined."
+
+    print("All test cases passed.")
+
+test_mandatory()
+
+# Generated at 2024-06-01 05:55:00.929597
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\2") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1", "\\2") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<2>") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>", "\\g<2>") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+) (\
+
+# Generated at 2024-06-01 05:55:04.213912
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default error message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom error message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is None
+    assert mandatory(None) is None
+
+    # Test case 5: Variable is an empty string
+    assert mandatory("") == ""
+
+    # Test case 6: Variable is a number
+    assert mandatory(123) == 123
+
+# Generated at 2024-06-01 05:55:09.107316
+```python
+    assert comment("This is a test") == "# This is a test"
+    assert comment("This is a test", style='erlang') == "% This is a test"
+    assert comment("This is a test", style='c') == "// This is a test"
+    assert comment("This is a test", style='cblock') == "/*\n * This is a test\n */"
+    assert comment("This is a test", style='xml') == "<!--\n - This is a test\n-->"
+    assert comment("This is a test", style='plain', decoration='// ') == "// This is a test"
+    assert comment("This is a test", style='plain', prefix_count=2) == "# \n# This is a test"
+    assert comment("This is a test", style='plain', postfix_count=2) == "# This is a test\n# "
+    assert comment("This is a test
+
+# Generated at 2024-06-01 05:55:10.801497
+```python
+    data = "test"
+    assert get_hash(data, 'sha1') == hashlib.sha1(data.encode()).hexdigest()
+    assert get_hash(data, 'md5') == hashlib.md5(data.encode()).hexdigest()
+    assert get_hash(data, 'sha256') == hashlib.sha256(data.encode()).hexdigest()
+    try:
+        get_hash(data, 'unsupported_hash')
+    except AnsibleFilterError:
+        pass
+    else:
+        assert False, "Expected AnsibleFilterError for unsupported hash type"
+```
+
+# Generated at 2024-06-01 05:55:14.625608
+```python
+    data = {
+        'name': 'Ansible',
+        'version': 2.9,
+        'features': ['automation', 'configuration management', 'orchestration']
+    }
+    expected_output = "features:\n- automation\n- configuration management\n- orchestration\nname: Ansible\nversion: 2.9\n"
+    assert to_yaml(data) == expected_output
+
+    data_with_unicode = {
+        'greeting': 'こんにちは',
+        'farewell': 'さようなら'
+    }
+    expected_output_with_unicode = "farewell: さようなら\ngreeting: こんにちは\n"
+    assert to_yaml(data_with_unicode) == expected_output_with_unicode
+
+    data_with_special_chars = {
+        'key': 'value with special chars: !@#$%^&*()'
+    }
+    expected_output_with_special_chars = "key: 'value with special chars: !@#$%^&*()'\n"
+   
+
+# Generated at 2024-06-01 05:55:17.090630
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined without custom message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is None
+    assert mandatory(None) is None
+
+    # Test case 5: Variable is an empty string
+    assert mandatory("") == ""
+
+# Generated at 2024-06-01 05:55:19.922831
+```python
+    from jinja2.runtime import Undefined
+
+    # Test case where variable is defined
+    assert mandatory("defined_value") == "defined_value"
+
+    # Test case where variable is undefined and no custom message is provided
+    try:
+        mandatory(Undefined(name="undefined_var"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_var' not defined."
+
+    # Test case where variable is undefined and a custom message is provided
+    try:
+        mandatory(Undefined(name="undefined_var"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case where variable is undefined and has no name
+    try:
+        mandatory(Undefined())
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable  not defined."
+```
+
+# Generated at 2024-06-01 05:55:23.200516
+```python
+    assert regex_escape("a.b*c") == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='posix_basic') == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='python') == "a\\.b\\*c"
+    try:
+        regex_escape("a.b*c", re_type='posix_extended')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Regex type (posix_extended) not yet implemented'
+    try:
+        regex_escape("a.b*c", re_type='invalid_type')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Invalid regex type (invalid_type)'
+```
+
+# Generated at 2024-06-01 05:55:26.126814
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"hello (\w+)", "\\1") == ["world"]
+    assert regex_search("hello world", r"hello (?P<word>\w+)", "\\g<word>") == ["world"]
+    assert regex_search("hello world", r"HELLO", ignorecase=True) == "hello"
+    assert regex_search("hello\nworld", r"^world$", multiline=True) == "world"
+    assert regex_search("hello world", r"goodbye") is None
+```
+
+# Generated at 2024-06-01 05:55:29.555342
+```python
+    from jinja2 import Environment
+
+    env = Environment()
+
+    data = [
+        {'name': 'apple', 'type': 'fruit'},
+        {'name': 'carrot', 'type': 'vegetable'},
+        {'name': 'banana', 'type': 'fruit'},
+        {'name': 'broccoli', 'type': 'vegetable'}
+    ]
+
+    result = do_groupby(env, data, 'type')
+    expected = [
+        ('fruit', [{'name': 'apple', 'type': 'fruit'}, {'name': 'banana', 'type': 'fruit'}]),
+        ('vegetable', [{'name': 'carrot', 'type': 'vegetable'}, {'name': 'broccoli', 'type': 'vegetable'}])
+    ]
+
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+test_do_groupby()
+```
+
+# Generated at 2024-06-01 05:55:40.964121
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"hello (\w+)", "\\1") == ["world"]
+    assert regex_search("hello world", r"hello (?P<word>\w+)", "\\g<word>") == ["world"]
+    assert regex_search("hello world", r"HELLO", ignorecase=True) == "hello"
+    assert regex_search("hello\nworld", r"^world$", multiline=True) == "world"
+    assert regex_search("hello world", r"goodbye") is None
+```
+
+# Generated at 2024-06-01 05:55:43.433504
+```python
+    assert regex_escape("a.b*c") == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='posix_basic') == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='python') == "a\\.b\\*c"
+    try:
+        regex_escape("a.b*c", re_type='posix_extended')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Regex type (posix_extended) not yet implemented'
+    try:
+        regex_escape("a.b*c", re_type='invalid_type')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Invalid regex type (invalid_type)'
+```
+
+# Generated at 2024-06-01 05:55:46.417232
+```python
+    from jinja2.runtime import Undefined
+
+    # Test case where variable is defined
+    assert mandatory("defined_value") == "defined_value"
+
+    # Test case where variable is undefined and no custom message is provided
+    try:
+        mandatory(Undefined(name="undefined_var"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_var' not defined."
+
+    # Test case where variable is undefined and a custom message is provided
+    try:
+        mandatory(Undefined(name="undefined_var"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case where variable is undefined and has no name
+    try:
+        mandatory(Undefined())
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable not defined."
+```
+
+# Generated at 2024-06-01 05:55:49.678070
+```python
+    input_list = [1, 2, 3, 4, 5]
+    seed = 12345
+
+    # Test with seed
+    randomized_list = randomize_list(input_list, seed)
+    assert randomized_list == [2, 3, 1, 5, 4], f"Expected [2, 3, 1, 5, 4], but got {randomized_list}"
+
+    # Test without seed
+    randomized_list_no_seed = randomize_list(input_list)
+    assert set(randomized_list_no_seed) == set(input_list), f"Expected elements {set(input_list)}, but got {set(randomized_list_no_seed)}"
+
+    # Test with empty list
+    empty_list = []
+    randomized_empty_list = randomize_list(empty_list)
+    assert randomized_empty_list == [], f"Expected [], but got {randomized_empty_list}"
+
+    # Test with single element list
+    single_element_list = [
+
+# Generated at 2024-06-01 05:55:52.360527
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\2") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1", "\\2") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<2>") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>", "\\g<2>") == ["hello", "world"]
+    assert regex_search("hello world", r"HELLO", ignore
+
+# Generated at 2024-06-01 05:55:55.445964
+```python
+    test_path = "/tmp/test_fileglob"
+    os.makedirs(test_path, exist_ok=True)
+    
+    # Create some test files
+    test_files = ["file1.txt", "file2.txt", "file3.log"]
+    for file in test_files:
+        with open(os.path.join(test_path, file), 'w') as f:
+            f.write("test")
+    
+    # Test fileglob function
+    result = fileglob(os.path.join(test_path, "*.txt"))
+    expected = [os.path.join(test_path, "file1.txt"), os.path.join(test_path, "file2.txt")]
+    
+    assert sorted(result) == sorted(expected), f"Expected {expected}, but got {result}"
+    
+    # Clean up
+    for file in test_files:
+        os.remove(os.path.join(test_path, file))
+    os.rmdir(test_path)
+```
+
+# Generated at 2024-06-01 05:55:58.322527
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"hello (\w+)", "\\1") == ["world"]
+    assert regex_search("hello world", r"hello (?P<word>\w+)", "\\g<word>") == ["world"]
+    assert regex_search("hello world", r"HELLO", ignorecase=True) == "hello"
+    assert regex_search("hello\nworld", r"^world$", multiline=True) == "world"
+    assert regex_search("hello world", r"goodbye") is None
+```
+
+# Generated at 2024-06-01 05:56:01.212298
+```python
+    assert strftime("%Y-%m-%d", 0) == "1970-01-01"
+    assert strftime("%H:%M:%S", 0) == "00:00:00"
+    assert strftime("%Y-%m-%d %H:%M:%S", 1609459200) == "2021-01-01 00:00:00"
+    assert strftime("%Y-%m-%d", 1609459200) == "2021-01-01"
+    assert strftime("%H:%M:%S", 1609459200) == "00:00:00"
+    try:
+        strftime("%Y-%m-%d", "invalid")
+    except AnsibleFilterError:
+        pass
+```
+
+# Generated at 2024-06-01 05:56:04.065936
+```python
+    data = {
+        'name': 'Ansible',
+        'version': 2.9,
+        'features': ['automation', 'configuration management', 'orchestration']
+    }
+    expected_output = "features:\n- automation\n- configuration management\n- orchestration\nname: Ansible\nversion: 2.9\n"
+    assert to_yaml(data) == expected_output
+
+    data_with_unicode = {
+        'greeting': 'こんにちは',
+        'farewell': 'さようなら'
+    }
+    expected_output_with_unicode = "farewell: さようなら\ngreeting: こんにちは\n"
+    assert to_yaml(data_with_unicode) == expected_output_with_unicode
+
+    data_with_special_chars = {
+        'key': 'value with special chars: !@#$%^&*()'
+    }
+    expected_output_with_special_chars = "key: 'value with special chars: !@#$%^&*()'\n"
+   
+
+# Generated at 2024-06-01 05:56:07.225745
+```python
+    data = {
+        'name': 'Ansible',
+        'version': 2.9,
+        'features': ['automation', 'configuration management', 'orchestration']
+    }
+    expected_output = "features:\n- automation\n- configuration management\n- orchestration\nname: Ansible\nversion: 2.9\n"
+    assert to_yaml(data) == expected_output
+
+    data_with_unicode = {
+        'greeting': 'こんにちは',
+        'farewell': 'さようなら'
+    }
+    expected_output_with_unicode = "farewell: さようなら\ngreeting: こんにちは\n"
+    assert to_yaml(data_with_unicode) == expected_output_with_unicode
+
+    data_with_special_chars = {
+        'key': 'value with special chars: !@#$%^&*()'
+    }
+    expected_output_with_special_chars = "key: 'value with special chars: !@#$%^&*()'\n"
+   
+
+# Generated at 2024-06-01 05:56:20.259160
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default error message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom error message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is None
+    assert mandatory(None) is None
+
+    # Test case 5: Variable is an empty string
+    assert mandatory("") == ""
+
+    print("All test cases passed.")
+
+# Run the unit test
+test_mandatory()
+
+# Generated at 2024-06-01 05:56:23.183014
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\2") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1", "\\2") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<2>") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>", "\\g<2>") == ["hello", "world"]
+    assert regex_search("hello world", r"HELLO", ignore
+
+# Generated at 2024-06-01 05:56:25.364567
+```python
+    assert regex_escape("a.b*c") == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='posix_basic') == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='python') == "a\\.b\\*c"
+    try:
+        regex_escape("a.b*c", re_type='posix_extended')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Regex type (posix_extended) not yet implemented'
+    try:
+        regex_escape("a.b*c", re_type='invalid_type')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Invalid regex type (invalid_type)'
+```
+
+# Generated at 2024-06-01 05:56:27.672209
+```python
+    from jinja2 import Environment
+    env = Environment()
+
+    data = [
+        {'name': 'apple', 'type': 'fruit'},
+        {'name': 'banana', 'type': 'fruit'},
+        {'name': 'carrot', 'type': 'vegetable'},
+        {'name': 'lettuce', 'type': 'vegetable'}
+    ]
+
+    result = do_groupby(env, data, 'type')
+    expected = [
+        ('fruit', [{'name': 'apple', 'type': 'fruit'}, {'name': 'banana', 'type': 'fruit'}]),
+        ('vegetable', [{'name': 'carrot', 'type': 'vegetable'}, {'name': 'lettuce', 'type': 'vegetable'}])
+    ]
+
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+test_do_groupby()
+```
+
+# Generated at 2024-06-01 05:56:29.983404
+```python
+    from jinja2 import Environment
+
+    env = Environment()
+
+    data = [
+        {'name': 'apple', 'type': 'fruit'},
+        {'name': 'banana', 'type': 'fruit'},
+        {'name': 'carrot', 'type': 'vegetable'},
+        {'name': 'lettuce', 'type': 'vegetable'},
+    ]
+
+    result = do_groupby(env, data, 'type')
+    expected = [
+        ('fruit', [{'name': 'apple', 'type': 'fruit'}, {'name': 'banana', 'type': 'fruit'}]),
+        ('vegetable', [{'name': 'carrot', 'type': 'vegetable'}, {'name': 'lettuce', 'type': 'vegetable'}])
+    ]
+
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+test_do_groupby()
+```
+
+# Generated at 2024-06-01 05:56:32.468569
+```python
+    data = {'key': 'value', 'list': [1, 2, 3]}
+    expected_output = "key: value\nlist:\n  - 1\n  - 2\n  - 3\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'nested': {'key': 'value'}}
+    expected_output = "nested:\n    key: value\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'unicode': 'üñîçødë'}
+    expected_output = "unicode: üñîçødë\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'special_chars': '!@#$%^&*()'}
+    expected_output = "special_chars: '!@#$%^&*()'\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'boolean': True, 'none': None
+
+# Generated at 2024-06-01 05:56:34.747683
+```python
+    assert strftime("%Y-%m-%d", 0) == "1970-01-01"
+    assert strftime("%H:%M:%S", 0) == "00:00:00"
+    assert strftime("%Y-%m-%d %H:%M:%S", 1609459200) == "2021-01-01 00:00:00"
+    assert strftime("%A", 1609459200) == "Friday"
+    assert strftime("%Y-%m-%d", 1633046400) == "2021-10-01"
+    try:
+        strftime("%Y-%m-%d", "invalid")
+    except AnsibleFilterError:
+        pass
+```
+
+# Generated at 2024-06-01 05:56:37.566590
+```python
+    from jinja2 import Environment
+    env = Environment()
+
+    data = [
+        {'name': 'apple', 'type': 'fruit'},
+        {'name': 'carrot', 'type': 'vegetable'},
+        {'name': 'banana', 'type': 'fruit'},
+        {'name': 'lettuce', 'type': 'vegetable'}
+    ]
+
+    result = do_groupby(env, data, 'type')
+    expected = [
+        ('fruit', [{'name': 'apple', 'type': 'fruit'}, {'name': 'banana', 'type': 'fruit'}]),
+        ('vegetable', [{'name': 'carrot', 'type': 'vegetable'}, {'name': 'lettuce', 'type': 'vegetable'}])
+    ]
+
+    assert result == expected, f"Expected {expected}, but got {result}"
+```
+
+# Generated at 2024-06-01 05:56:40.014121
+```python
+    test_path = "/tmp/test_fileglob"
+    os.makedirs(test_path, exist_ok=True)
+    
+    # Create some test files
+    test_files = ["file1.txt", "file2.txt", "file3.log"]
+    for file in test_files:
+        with open(os.path.join(test_path, file), 'w') as f:
+            f.write("test content")
+    
+    # Test fileglob function
+    result = fileglob(os.path.join(test_path, "*.txt"))
+    expected = [os.path.join(test_path, "file1.txt"), os.path.join(test_path, "file2.txt")]
+    
+    assert sorted(result) == sorted(expected), f"Expected {expected}, but got {result}"
+    
+    # Clean up
+    for file in test_files:
+        os.remove(os.path.join(test_path, file))
+    os.rmdir(test_path)
+```
+
+# Generated at 2024-06-01 05:56:42.340759
+
+    env = Environment()
+    data = [
+        {'name': 'apple', 'type': 'fruit'},
+        {'name': 'banana', 'type': 'fruit'},
+        {'name': 'carrot', 'type': 'vegetable'},
+        {'name': 'broccoli', 'type': 'vegetable'}
+    ]
+    result = do_groupby(env, data, 'type')
+    expected = [
+        ('fruit', [{'name': 'apple', 'type': 'fruit'}, {'name': 'banana', 'type': 'fruit'}]),
+        ('vegetable', [{'name': 'carrot', 'type': 'vegetable'}, {'name': 'broccoli', 'type': 'vegetable'}])
+    ]
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+# Generated at 2024-06-01 05:56:54.348954
+```python
+    from jinja2.runtime import Undefined
+
+    # Test case where variable is defined
+    assert mandatory("defined_value") == "defined_value"
+
+    # Test case where variable is undefined and no custom message is provided
+    try:
+        mandatory(Undefined(name="undefined_var"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_var' not defined."
+
+    # Test case where variable is undefined and a custom message is provided
+    try:
+        mandatory(Undefined(name="undefined_var"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case where variable is undefined and no name is provided
+    try:
+        mandatory(Undefined())
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable not defined."
+```
+
+# Generated at 2024-06-01 05:56:56.864723
+```python
+    from jinja2 import Environment
+    env = Environment()
+
+    data = [
+        {'name': 'apple', 'type': 'fruit'},
+        {'name': 'banana', 'type': 'fruit'},
+        {'name': 'carrot', 'type': 'vegetable'},
+        {'name': 'lettuce', 'type': 'vegetable'},
+    ]
+
+    result = do_groupby(env, data, 'type')
+    expected = [
+        ('fruit', [{'name': 'apple', 'type': 'fruit'}, {'name': 'banana', 'type': 'fruit'}]),
+        ('vegetable', [{'name': 'carrot', 'type': 'vegetable'}, {'name': 'lettuce', 'type': 'vegetable'}])
+    ]
+
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+test_do_groupby()
+```
+
+# Generated at 2024-06-01 05:56:59.693766
+```python
+    test_path = "/tmp/test_fileglob"
+    os.makedirs(test_path, exist_ok=True)
+    
+    # Create some test files
+    test_files = ["file1.txt", "file2.txt", "file3.log"]
+    for file in test_files:
+        with open(os.path.join(test_path, file), 'w') as f:
+            f.write("test content")
+    
+    # Test fileglob function
+    result = fileglob(os.path.join(test_path, "*.txt"))
+    expected = [os.path.join(test_path, "file1.txt"), os.path.join(test_path, "file2.txt")]
+    assert sorted(result) == sorted(expected), f"Expected {expected}, but got {result}"
+    
+    # Clean up
+    for file in test_files:
+        os.remove(os.path.join(test_path, file))
+    os.rmdir(test_path)
+```
+
+# Generated at 2024-06-01 05:57:06.762432
+```python
+    from jinja2 import Environment
+
+    env = Environment()
+
+    data = [
+        {'name': 'apple', 'type': 'fruit'},
+        {'name': 'banana', 'type': 'fruit'},
+        {'name': 'carrot', 'type': 'vegetable'},
+        {'name': 'lettuce', 'type': 'vegetable'},
+    ]
+
+    result = do_groupby(env, data, 'type')
+    expected = [
+        ('fruit', [{'name': 'apple', 'type': 'fruit'}, {'name': 'banana', 'type': 'fruit'}]),
+        ('vegetable', [{'name': 'carrot', 'type': 'vegetable'}, {'name': 'lettuce', 'type': 'vegetable'}])
+    ]
+
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+test_do_groupby()
+```
+
+# Generated at 2024-06-01 05:57:10.909647
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default error message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom error message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is None
+    assert mandatory(None) is None
+
+    # Test case 5: Variable is an empty string
+    assert mandatory("") == ""
+
+    print("All test cases passed.")
+
+# Run the unit test
+test_mandatory()
+
+# Generated at 2024-06-01 05:57:13.521852
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default error message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom error message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is None
+    assert mandatory(None) is None
+
+    # Test case 5: Variable is an empty string
+    assert mandatory("") == ""
+
+    print("All test cases passed.")
+
+# Run the unit test
+test_mandatory()
+
+# Generated at 2024-06-01 05:57:15.354887
+```python
+    data = "test data"
+    assert get_hash(data, 'sha1') == hashlib.sha1(data.encode()).hexdigest()
+    assert get_hash(data, 'md5') == hashlib.md5(data.encode()).hexdigest()
+    assert get_hash(data, 'sha256') == hashlib.sha256(data.encode()).hexdigest()
+    try:
+        get_hash(data, 'unsupported_hash')
+    except AnsibleFilterError:
+        pass
+    else:
+        assert False, "Expected AnsibleFilterError for unsupported hash type"
+```
+
+# Generated at 2024-06-01 05:57:18.312502
+```python
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default error message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom error message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is undefined without a name
+    try:
+        mandatory(Undefined())
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable not defined."
+```
+
+# Generated at 2024-06-01 05:57:21.133363
+```python
+    assert to_bool(True) == True
+    assert to_bool(False) == False
+    assert to_bool(None) == None
+    assert to_bool('yes') == True
+    assert to_bool('no') == False
+    assert to_bool('on') == True
+    assert to_bool('off') == False
+    assert to_bool('1') == True
+    assert to_bool('0') == False
+    assert to_bool('true') == True
+    assert to_bool('false') == False
+    assert to_bool(1) == True
+    assert to_bool(0) == False
+    assert to_bool('YES') == True
+    assert to_bool('NO') == False
+    assert to_bool('ON') == True
+    assert to_bool('OFF') == False
+    assert to_bool('TRUE') == True
+    assert to_bool('FALSE') == False
+```
+
+# Generated at 2024-06-01 05:57:23.159336
+```python
+    assert regex_escape("a.b*c") == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='posix_basic') == "a\\.b\\*c"
+    assert regex_escape("a.b*c", re_type='python') == "a\\.b\\*c"
+    try:
+        regex_escape("a.b*c", re_type='posix_extended')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Regex type (posix_extended) not yet implemented'
+    try:
+        regex_escape("a.b*c", re_type='invalid_type')
+    except AnsibleFilterError as e:
+        assert str(e) == 'Invalid regex type (invalid_type)'
+```
+
+# Generated at 2024-06-01 05:57:35.142370
+```python
+    data = {'key': 'value', 'list': [1, 2, 3]}
+    expected_output = "key: value\nlist:\n  - 1\n  - 2\n  - 3\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'nested': {'key': 'value'}}
+    expected_output = "nested:\n    key: value\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'unicode': 'üñîçødë'}
+    expected_output = "unicode: üñîçødë\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'special_chars': '!@#$%^&*()'}
+    expected_output = "special_chars: '!@#$%^&*()'\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'boolean': True, 'none': None
+
+# Generated at 2024-06-01 05:57:40.326155
+```python
+    from jinja2 import Environment
+
+    env = Environment()
+
+    data = [
+        {'name': 'apple', 'type': 'fruit'},
+        {'name': 'carrot', 'type': 'vegetable'},
+        {'name': 'banana', 'type': 'fruit'},
+        {'name': 'broccoli', 'type': 'vegetable'}
+    ]
+
+    result = do_groupby(env, data, 'type')
+    expected = [
+        ('fruit', [{'name': 'apple', 'type': 'fruit'}, {'name': 'banana', 'type': 'fruit'}]),
+        ('vegetable', [{'name': 'carrot', 'type': 'vegetable'}, {'name': 'broccoli', 'type': 'vegetable'}])
+    ]
+
+    assert result == expected, f"Expected {expected}, but got {result}"
+```
+
+# Generated at 2024-06-01 05:57:42.307559
+```python
+    data = "test data"
+    assert get_hash(data, 'sha1') == hashlib.sha1(data.encode()).hexdigest()
+    assert get_hash(data, 'md5') == hashlib.md5(data.encode()).hexdigest()
+    assert get_hash(data, 'sha256') == hashlib.sha256(data.encode()).hexdigest()
+    try:
+        get_hash(data, 'unsupported')
+    except AnsibleFilterError:
+        pass
+    else:
+        assert False, "Expected AnsibleFilterError for unsupported hash type"
+```
+
+# Generated at 2024-06-01 05:57:45.544458
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default error message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom error message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is None
+    assert mandatory(None) is None
+
+    # Test case 5: Variable is an empty string
+    assert mandatory("") == ""
+
+    # Test case 6: Variable is a number
+    assert mandatory(123) == 123
+
+    print
+
+# Generated at 2024-06-01 05:57:48.461759
+```python
+    data = {
+        'name': 'Ansible',
+        'version': 2.9,
+        'features': ['automation', 'configuration management', 'orchestration']
+    }
+    expected_output = "features:\n- automation\n- configuration management\n- orchestration\nname: Ansible\nversion: 2.9\n"
+    assert to_yaml(data) == expected_output
+
+    data_with_unicode = {
+        'greeting': 'こんにちは',
+        'farewell': 'さようなら'
+    }
+    expected_output_with_unicode = "farewell: さようなら\ngreeting: こんにちは\n"
+    assert to_yaml(data_with_unicode) == expected_output_with_unicode
+
+    data_with_special_chars = {
+        'key': 'value with special chars: !@#$%^&*()'
+    }
+    expected_output_with_special_chars = "key: 'value with special chars: !@#$%^&*()'\n"
+   
+
+# Generated at 2024-06-01 05:57:51.007019
+```python
+    test_path = "/tmp/test_fileglob"
+    os.makedirs(test_path, exist_ok=True)
+    
+    # Create some test files
+    test_files = ["file1.txt", "file2.txt", "file3.log"]
+    for file in test_files:
+        with open(os.path.join(test_path, file), 'w') as f:
+            f.write("test")
+    
+    # Test fileglob function
+    result = fileglob(os.path.join(test_path, "*.txt"))
+    expected = [os.path.join(test_path, "file1.txt"), os.path.join(test_path, "file2.txt")]
+    
+    assert sorted(result) == sorted(expected), f"Expected {expected}, but got {result}"
+    
+    # Clean up
+    for file in test_files:
+        os.remove(os.path.join(test_path, file))
+    os.rmdir(test_path)
+```
+
+# Generated at 2024-06-01 05:57:55.707633
+
+    env = Environment()
+    data = [
+        {'name': 'apple', 'type': 'fruit'},
+        {'name': 'banana', 'type': 'fruit'},
+        {'name': 'carrot', 'type': 'vegetable'},
+        {'name': 'broccoli', 'type': 'vegetable'}
+    ]
+    result = do_groupby(env, data, 'type')
+    expected = [
+        ('fruit', [{'name': 'apple', 'type': 'fruit'}, {'name': 'banana', 'type': 'fruit'}]),
+        ('vegetable', [{'name': 'carrot', 'type': 'vegetable'}, {'name': 'broccoli', 'type': 'vegetable'}])
+    ]
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+# Generated at 2024-06-01 05:57:58.069313
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"hello (\w+)", "\\1") == ["world"]
+    assert regex_search("hello world", r"hello (?P<word>\w+)", "\\g<word>") == ["world"]
+    assert regex_search("hello world", r"HELLO", ignorecase=True) == "hello"
+    assert regex_search("hello\nworld", r"^world$", multiline=True) == "world"
+    assert regex_search("hello world", r"goodbye") is None
+```
+
+# Generated at 2024-06-01 05:58:03.461942
+```python
+    assert comment("This is a test") == "# This is a test"
+    assert comment("This is a test", style='erlang') == "% This is a test"
+    assert comment("This is a test", style='c') == "// This is a test"
+    assert comment("This is a test", style='cblock') == "/*\n * This is a test\n */"
+    assert comment("This is a test", style='xml') == "<!--\n - This is a test\n-->"
+    assert comment("This is a test", style='plain', decoration='// ') == "// This is a test"
+    assert comment("This is a test\nWith multiple lines", style='plain') == "# This is a test\n# With multiple lines"
+    assert comment("This is a test\nWith multiple lines", style='cblock') == "/*\n * This is a test\n * With multiple lines\n
+
+# Generated at 2024-06-01 05:58:10.352261
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is undefined without a name
+    try:
+        mandatory(Undefined())
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable not defined."
+
+    print("All tests passed.")
+
+test_mandatory()
+
+# Generated at 2024-06-01 05:58:23.228121
+```python
+    environment = {
+        'getitem': lambda container, key: container[key]
+    }
+    container = {'a': {'b': {'c': 42}}}
+
+    # Test single key extraction
+    assert extract(environment, 'a', container) == {'b': {'c': 42}}
+
+    # Test multiple keys extraction
+    assert extract(environment, 'a', container, 'b') == {'c': 42}
+    assert extract(environment, 'a', container, ['b', 'c']) == 42
+
+    # Test key not found
+    try:
+        extract(environment, 'x', container)
+    except KeyError:
+        pass
+    else:
+        assert False, "Expected KeyError"
+
+    # Test with morekeys as a single key
+    assert extract(environment, 'a', container, 'b') == {'c': 42}
+
+    # Test with morekeys as a list of keys
+    assert extract(environment, 'a
+
+# Generated at 2024-06-01 05:58:25.876728
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\2") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1", "\\2") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<2>") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>", "\\g<2>") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+) (\
+
+# Generated at 2024-06-01 05:58:28.650712
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined without custom message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is undefined without a name
+    try:
+        mandatory(Undefined())
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable not defined."
+
+    print("All tests passed.")
+
+test_mandatory()
+
+# Generated at 2024-06-01 05:58:33.226584
+```python
+    assert comment("This is a test") == "# This is a test"
+    assert comment("This is a test", style='erlang') == "% This is a test"
+    assert comment("This is a test", style='c') == "// This is a test"
+    assert comment("This is a test", style='cblock') == "/*\n * This is a test\n */"
+    assert comment("This is a test", style='xml') == "<!--\n - This is a test\n-->"
+    assert comment("This is a test", decoration='>>> ') == ">>> This is a test"
+    assert comment("This is a test\nWith multiple lines", style='plain') == "# This is a test\n# With multiple lines"
+    assert comment("This is a test\nWith multiple lines", style='cblock') == "/*\n * This is a test\n * With multiple lines\n */"
+   
+
+# Generated at 2024-06-01 05:58:37.482854
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"hello (\w+)", "\\1") == ["world"]
+    assert regex_search("hello world", r"hello (?P<word>\w+)", "\\g<word>") == ["world"]
+    assert regex_search("hello world", r"hello (?P<word>\w+)", "\\g<word>", ignorecase=True) == ["world"]
+    assert regex_search("hello world", r"HELLO (?P<word>\w+)", "\\g<word>", ignorecase=True) == ["world"]
+    assert regex_search("hello world", r"HELLO (?P<word>\w+)", "\\g<word>", ignorecase=False) == []
+    assert regex_search("hello\nworld", r"hello\n(\w+)", "\\1", multiline=True) == ["world"]
+    assert regex_search("hello\n
+
+# Generated at 2024-06-01 05:58:40.519689
+```python
+    assert comment("This is a test") == "# This is a test"
+    assert comment("This is a test", style='erlang') == "% This is a test"
+    assert comment("This is a test", style='c') == "// This is a test"
+    assert comment("This is a test", style='cblock') == "/*\n * This is a test\n */"
+    assert comment("This is a test", style='xml') == "<!--\n - This is a test\n-->"
+    assert comment("This is a test", decoration='// ') == "// This is a test"
+    assert comment("This is a test", style='plain', decoration='// ') == "// This is a test"
+    assert comment("This is a test\nWith multiple lines", style='plain') == "# This is a test\n# With multiple lines"
+    assert comment("This is a test\nWith multiple lines", style
+
+# Generated at 2024-06-01 05:58:43.358781
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\2") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\1", "\\2") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>") == ["hello"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<2>") == ["world"]
+    assert regex_search("hello world", r"(\w+) (\w+)", "\\g<1>", "\\g<2>") == ["hello", "world"]
+    assert regex_search("HELLO world", r"hello", ignore
+
+# Generated at 2024-06-01 05:58:44.984249
+```python
+    data = "test data"
+    assert get_hash(data, 'sha1') == hashlib.sha1(data.encode()).hexdigest()
+    assert get_hash(data, 'md5') == hashlib.md5(data.encode()).hexdigest()
+    assert get_hash(data, 'sha256') == hashlib.sha256(data.encode()).hexdigest()
+    try:
+        get_hash(data, 'unsupported')
+    except AnsibleFilterError:
+        pass
+    else:
+        assert False, "Expected AnsibleFilterError for unsupported hash type"
+```
+
+# Generated at 2024-06-01 05:58:47.801275
+```python
+    data = {'key': 'value', 'list': [1, 2, 3]}
+    expected_output = "key: value\nlist:\n  - 1\n  - 2\n  - 3\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'nested': {'key': 'value'}}
+    expected_output = "nested:\n    key: value\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'unicode': 'üñîçødë'}
+    expected_output = "unicode: üñîçødë\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'special_chars': '!@#$%^&*()'}
+    expected_output = "special_chars: '!@#$%^&*()'\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data = {'boolean': True, 'none': None
+
+# Generated at 2024-06-01 05:58:51.834688
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default error message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom error message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is None
+    assert mandatory(None) is None
+
+    # Test case 5: Variable is an empty string
+    assert mandatory("") == ""
+
+    print("All test cases passed.")
+
+test_mandatory()
+
+# Generated at 2024-06-01 05:59:04.525442
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is undefined without a name
+    try:
+        mandatory(Undefined())
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable not defined."
+
+    print("All test cases passed.")
+
+test_mandatory()
+
+# Generated at 2024-06-01 05:59:12.189402
+```python
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is None
+    assert mandatory(None) is None
+
+    # Test case 5: Variable is an empty string
+    assert mandatory("") == ""
+```
+
+# Generated at 2024-06-01 05:59:14.171214
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"hello (\w+)", "\\1") == ["world"]
+    assert regex_search("hello world", r"hello (?P<word>\w+)", "\\g<word>") == ["world"]
+    assert regex_search("hello world", r"HELLO", ignorecase=True) == "hello"
+    assert regex_search("hello\nworld", r"^world$", multiline=True) == "world"
+    assert regex_search("hello world", r"goodbye") is None
+```
+
+# Generated at 2024-06-01 05:59:17.060980
+```python
+    data = {'key': 'value', 'list': [1, 2, 3], 'nested': {'subkey': 'subvalue'}}
+    expected_output = "key: value\nlist:\n- 1\n- 2\n- 3\nnested:\n    subkey: subvalue\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data_empty = {}
+    expected_output_empty = "{}\n"
+    assert to_nice_yaml(data_empty) == expected_output_empty
+
+    data_with_unicode = {'key': 'value', 'unicode': 'üñîçødë'}
+    expected_output_unicode = "key: value\nunicode: üñîçødë\n"
+    assert to_nice_yaml(data_with_unicode) == expected_output_unicode
+
+    data_with_special_chars = {'key': 'value', 'special': '!@#$%^&*()'}
+    expected_output_special = "key: value\n
+
+# Generated at 2024-06-01 05:59:20.377506
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default error message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom error message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is undefined without a name
+    try:
+        mandatory(Undefined())
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable not defined."
+
+    print("All test cases passed.")
+
+# Run the unit test
+test_mandatory()
+
+# Generated at 2024-06-01 05:59:27.591322
+```python
+    env = Environment()
+    data = [
+        {'name': 'apple', 'type': 'fruit'},
+        {'name': 'banana', 'type': 'fruit'},
+        {'name': 'carrot', 'type': 'vegetable'},
+        {'name': 'lettuce', 'type': 'vegetable'},
+        {'name': 'orange', 'type': 'fruit'}
+    ]
+    result = do_groupby(env, data, 'type')
+    expected = [
+        ('fruit', [{'name': 'apple', 'type': 'fruit'}, {'name': 'banana', 'type': 'fruit'}, {'name': 'orange', 'type': 'fruit'}]),
+        ('vegetable', [{'name': 'carrot', 'type': 'vegetable'}, {'name': 'lettuce', 'type': 'vegetable'}])
+    ]
+    assert result == expected, f"Expected {expected}, but got {result}"
+```
+
+# Generated at 2024-06-01 05:59:31.174680
+```python
+    environment = {
+        'getitem': lambda container, key: container[key]
+    }
+
+    container = {
+        'a': {
+            'b': {
+                'c': 42
+            }
+        }
+    }
+
+    assert extract(environment, 'a', container) == {'b': {'c': 42}}
+    assert extract(environment, 'b', container['a']) == {'c': 42}
+    assert extract(environment, 'c', container['a']['b']) == 42
+    assert extract(environment, 'a', container, 'b') == {'c': 42}
+    assert extract(environment, 'a', container, ['b', 'c']) == 42
+
+    print("All tests passed.")
+
+test_extract()
+```
+
+# Generated at 2024-06-01 05:59:34.101975
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined without custom message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is undefined without a name
+    try:
+        mandatory(Undefined())
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable not defined."
+
+    print("All tests passed.")
+
+test_mandatory()
+
+# Generated at 2024-06-01 05:59:37.151392
+
+    from jinja2.runtime import Undefined
+
+    # Test case 1: Variable is defined
+    assert mandatory("defined_variable") == "defined_variable"
+
+    # Test case 2: Variable is undefined with default error message
+    try:
+        mandatory(Undefined(name="undefined_variable"))
+    except AnsibleFilterError as e:
+        assert str(e) == "Mandatory variable 'undefined_variable' not defined."
+
+    # Test case 3: Variable is undefined with custom error message
+    try:
+        mandatory(Undefined(name="undefined_variable"), msg="Custom error message")
+    except AnsibleFilterError as e:
+        assert str(e) == "Custom error message"
+
+    # Test case 4: Variable is None
+    assert mandatory(None) is None
+
+    # Test case 5: Variable is an empty string
+    assert mandatory("") == ""
+
+    print("All test cases pass")
+
+test_mandatory()
+
+# Generated at 2024-06-01 05:59:39.830450
+```python
+    test_path = "/tmp/test_fileglob"
+    os.makedirs(test_path, exist_ok=True)
+    
+    # Create some test files
+    test_files = ["file1.txt", "file2.txt", "file3.log"]
+    for file in test_files:
+        with open(os.path.join(test_path, file), 'w') as f:
+            f.write("test")
+    
+    # Test fileglob function
+    result = fileglob(os.path.join(test_path, "*.txt"))
+    expected = [os.path.join(test_path, "file1.txt"), os.path.join(test_path, "file2.txt")]
+    assert sorted(result) == sorted(expected), f"Expected {expected}, but got {result}"
+    
+    # Clean up
+    for file in test_files:
+        os.remove(os.path.join(test_path, file))
+    os.rmdir(test_path)
+```
+
+# Generated at 2024-06-01 06:00:01.967466
+```python
+    test_path = "/tmp/test_fileglob"
+    os.makedirs(test_path, exist_ok=True)
+    
+    # Create some test files
+    test_files = ["file1.txt", "file2.txt", "file3.log"]
+    for file in test_files:
+        with open(os.path.join(test_path, file), 'w') as f:
+            f.write("test")
+    
+    # Test fileglob function
+    result = fileglob(os.path.join(test_path, "*.txt"))
+    expected = [os.path.join(test_path, "file1.txt"), os.path.join(test_path, "file2.txt")]
+    
+    assert sorted(result) == sorted(expected), f"Expected {expected}, but got {result}"
+    
+    # Clean up
+    for file in test_files:
+        os.remove(os.path.join(test_path, file))
+    os.rmdir(test_path)
+```
+
+# Generated at 2024-06-01 06:00:04.039075
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"(\w+)", "\\1") == ["hello"]
+    assert regex_search("hello world", r"(hello) (world)", "\\1", "\\2") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+)", "\\1", ignorecase=True) == ["hello"]
+    assert regex_search("hello\nworld", r"world", multiline=True) == "world"
+    assert regex_search("hello world", r"notfound") is None
+```
+
+# Generated at 2024-06-01 06:00:06.858316
+```python
+    data = {'key': 'value', 'list': [1, 2, 3], 'nested': {'a': 'b'}}
+    expected_output = "key: value\nlist:\n- 1\n- 2\n- 3\nnested:\n    a: b\n"
+    assert to_nice_yaml(data) == expected_output
+
+    data_empty = {}
+    expected_output_empty = "{}\n"
+    assert to_nice_yaml(data_empty) == expected_output_empty
+
+    data_with_unicode = {'key': 'välue'}
+    expected_output_unicode = "key: välue\n"
+    assert to_nice_yaml(data_with_unicode) == expected_output_unicode
+
+    data_with_special_chars = {'key': 'value\nwith\nnewlines'}
+    expected_output_special_chars = "key: |-\n  value\n  with\n  newlines\n"
+    assert to_nice_yaml(data_with_special_chars) == expected_output_special
+
+# Generated at 2024-06-01 06:00:14.197929
+```python
+    env = Environment()
+    data = [
+        {'name': 'apple', 'type': 'fruit'},
+        {'name': 'banana', 'type': 'fruit'},
+        {'name': 'carrot', 'type': 'vegetable'},
+        {'name': 'lettuce', 'type': 'vegetable'},
+        {'name': 'orange', 'type': 'fruit'}
+    ]
+    result = do_groupby(env, data, 'type')
+    expected = [
+        ('fruit', [{'name': 'apple', 'type': 'fruit'}, {'name': 'banana', 'type': 'fruit'}, {'name': 'orange', 'type': 'fruit'}]),
+        ('vegetable', [{'name': 'carrot', 'type': 'vegetable'}, {'name': 'lettuce', 'type': 'vegetable'}])
+    ]
+    assert result == expected, f"Expected {expected}, but got {result}"
+```
+
+# Generated at 2024-06-01 06:00:16.833385
+```python
+    from jinja2 import Environment
+    env = Environment()
+
+    data = [
+        {'name': 'apple', 'type': 'fruit'},
+        {'name': 'carrot', 'type': 'vegetable'},
+        {'name': 'banana', 'type': 'fruit'},
+        {'name': 'lettuce', 'type': 'vegetable'}
+    ]
+
+    result = do_groupby(env, data, 'type')
+    expected = [
+        ('fruit', [{'name': 'apple', 'type': 'fruit'}, {'name': 'banana', 'type': 'fruit'}]),
+        ('vegetable', [{'name': 'carrot', 'type': 'vegetable'}, {'name': 'lettuce', 'type': 'vegetable'}])
+    ]
+
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+test_do_groupby()
+```
+
+# Generated at 2024-06-01 06:00:19.194163
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"(\w+)", "\\1") == ["hello"]
+    assert regex_search("hello world", r"(hello) (world)", "\\1", "\\2") == ["hello", "world"]
+    assert regex_search("hello world", r"(\w+)", ignorecase=True) == "hello"
+    assert regex_search("hello\nworld", r"^world$", multiline=True) == "world"
+    assert regex_search("hello world", r"notfound") is None
+    assert regex_search("hello world", r"(hello) (world)", "\\g<1>", "\\g<2>") == ["hello", "world"]
+```
+
+# Generated at 2024-06-01 06:00:22.137810
+```python
+    assert comment("This is a test") == "# This is a test"
+    assert comment("This is a test", style='erlang') == "% This is a test"
+    assert comment("This is a test", style='c') == "// This is a test"
+    assert comment("This is a test", style='cblock') == "/*\n * This is a test\n */"
+    assert comment("This is a test", style='xml') == "<!--\n - This is a test\n-->"
+    assert comment("This is a test", decoration='>>> ') == ">>> This is a test"
+    assert comment("This is a test", style='plain', prefix_count=2) == "# \n# This is a test"
+    assert comment("This is a test", style='plain', postfix_count=2) == "# This is a test\n# "
+    assert comment("This is a test", style='
+
+# Generated at 2024-06-01 06:00:24.949182
+
+    env = Environment()
+    data = [
+        {'name': 'apple', 'type': 'fruit'},
+        {'name': 'banana', 'type': 'fruit'},
+        {'name': 'carrot', 'type': 'vegetable'},
+        {'name': 'broccoli', 'type': 'vegetable'}
+    ]
+    result = do_groupby(env, data, 'type')
+    expected = [
+        ('fruit', [{'name': 'apple', 'type': 'fruit'}, {'name': 'banana', 'type': 'fruit'}]),
+        ('vegetable', [{'name': 'carrot', 'type': 'vegetable'}, {'name': 'broccoli', 'type': 'vegetable'}])
+    ]
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+# Generated at 2024-06-01 06:00:27.873034
+```python
+    assert regex_search("hello world", r"world") == "world"
+    assert regex_search("hello world", r"hello (\w+)", "\\1") == ["world"]
+    assert regex_search("hello world", r"hello (?P<word>\w+)", "\\g<word>") == ["world"]
+    assert regex_search("hello world", r"HELLO", ignorecase=True) == "hello"
+    assert regex_search("hello\nworld", r"^world$", multiline=True) == "world"
+    assert regex_search("hello world", r"goodbye") is None
+    try:
+        regex_search("hello world", r"hello (\w+)", "\\2")
+    except AnsibleFilterError:
+        pass
+    else:
+        assert False, "Expected AnsibleFilterError"
+```
+
+# Generated at 2024-06-01 06:00:30.603115
+```python
+    environment = {
+        'getitem': lambda container, key: container[key]
+    }
+
+    container = {
+        'a': {
+            'b': {
+                'c': 42
+            }
+        }
+    }
+
+    assert extract(environment, 'a', container) == {'b': {'c': 42}}
+    assert extract(environment, 'b', container['a']) == {'c': 42}
+    assert extract(environment, 'c', container['a']['b']) == 42
+    assert extract(environment, 'a', container, 'b') == {'c': 42}
+    assert extract(environment, 'a', container, ['b', 'c']) == 42
+
+    print("All tests passed.")
+
+test_extract()
+```

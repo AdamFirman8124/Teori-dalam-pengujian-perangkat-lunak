@@ -1,0 +1,1123 @@
+
+
+# Generated at 2024-03-18 08:41:48.093538
+```python
+    # Setup fields for the test
+    if_clause = NeverMatch()
+    then_clause = Field()
+    else_clause = Field()
+
+    # Create an instance of IfThenElse with the setup fields
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+
+    # Test the 'else' branch by passing a value that will not satisfy the 'if_clause'
+    value = "test_value"
+    result = conditional_field.validate(value)
+    assert result == value, "The 'else' clause did not return the original value when 'if_clause' is not satisfied."
+
+    # Now, let's test the 'then' branch by making sure the 'if_clause' is satisfied
+    # For this, we need to replace the 'if_clause' with a Field that always validates
+    conditional_field.if_clause = Field()
+
+    # Test the 'then' branch by passing a value that will satisfy the
+
+# Generated at 2024-03-18 08:41:55.565080
+```python
+    # Setup fields for the test
+    if_clause = Any()
+    then_clause = Any()
+    else_clause = NeverMatch()
+
+    # Create an instance of IfThenElse with the setup fields
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+
+    # Test the 'then' branch
+    value = "test value"
+    assert conditional_field.validate(value) == value, "The 'then' clause did not validate as expected."
+
+    # Test the 'else' branch
+    conditional_field.if_clause = NeverMatch()  # Change the if_clause to always fail
+    try:
+        conditional_field.validate(value)
+        assert False, "The 'else' clause should have raised a validation error."
+    except conditional_field.validation_error as exc:
+        assert exc.code == "never", "The 'else' clause did not raise the expected validation error."
+```
+
+# Generated at 2024-03-18 08:42:05.814286
+```python
+    # Test that the constructor correctly assigns the `all_of` parameter
+    field1 = Field()
+    field2 = Field()
+    all_of_field = AllOf([field1, field2])
+    assert all_of_field.all_of == [field1, field2], "Constructor must assign the `all_of` parameter"
+
+    # Test that the constructor raises an AssertionError if `allow_null` is passed in kwargs
+    try:
+        AllOf([field1, field2], allow_null=True)
+        assert False, "Constructor should not accept `allow_null` in kwargs"
+    except AssertionError:
+        assert True
+
+    # Test that the constructor does not raise an error for additional kwargs
+    try:
+        AllOf([field1, field2], example_kwarg="example")
+        assert True, "Constructor should accept additional kwargs"
+    except Exception as e:
+        assert False, f"Constructor should not raise an error for additional kwargs: {e}"
+
+
+# Generated at 2024-03-18 08:42:09.483937
+```python
+    # Test that the constructor raises an AssertionError if 'allow_null' is in kwargs
+    try:
+        field = NeverMatch(allow_null=True)
+        assert False, "AssertionError not raised"
+    except AssertionError:
+        pass
+
+    # Test that the constructor does not raise an error if 'allow_null' is not in kwargs
+    try:
+        field = NeverMatch()
+    except AssertionError:
+        assert False, "AssertionError raised unexpectedly"
+```
+
+# Generated at 2024-03-18 08:42:19.559350
+```python
+    # Setup fields for the test
+    if_clause = NeverMatch()
+    then_clause = Field()
+    else_clause = Field()
+
+    # Create an instance of IfThenElse with the setup fields
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+
+    # Test the 'if' clause failing and 'else' clause succeeding
+    value = "test_value"
+    result = conditional_field.validate(value)
+    assert result == value, "The 'else' clause should validate when the 'if' clause fails."
+
+    # Test the 'if' clause succeeding and 'then' clause succeeding
+    if_clause = Field()
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause)
+    result = conditional_field.validate(value)
+    assert result == value, "The 'then' clause should validate when the 'if' clause succeeds."
+
+    # Test the 'if'
+
+# Generated at 2024-03-18 08:42:20.120074
+```python
+
+# Generated at 2024-03-18 08:42:24.486028
+```python
+    # Test that the constructor correctly initializes the 'negated' field
+    field = Any()
+    not_field = Not(negated=field)
+    assert not_field.negated == field, "Constructor must initialize 'negated' field"
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is in kwargs
+    try:
+        Not(negated=field, allow_null=True)
+        assert False, "Constructor should not accept 'allow_null' kwarg"
+    except AssertionError:
+        assert True
+```
+
+# Generated at 2024-03-18 08:42:30.065058
+```python
+    # Test that the constructor correctly initializes the `negated` field
+    negated_field = Any()
+    not_field = Not(negated=negated_field)
+    assert not_field.negated == negated_field, "Constructor failed to initialize `negated` field"
+
+    # Test that the constructor raises an AssertionError if `allow_null` is passed in kwargs
+    try:
+        Not(negated=negated_field, allow_null=True)
+        assert False, "Constructor should not accept `allow_null` kwarg"
+    except AssertionError:
+        assert True
+```
+
+# Generated at 2024-03-18 08:42:34.382292
+```python
+    # Test that the constructor correctly assigns the 'one_of' attribute
+    field1 = Any()
+    field2 = Any()
+    one_of_field = OneOf([field1, field2])
+    assert one_of_field.one_of == [field1, field2], "Constructor failed to assign 'one_of' attribute"
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is in kwargs
+    try:
+        OneOf([field1, field2], allow_null=True)
+        assert False, "Constructor should not accept 'allow_null' kwarg"
+    except AssertionError:
+        assert True
+```
+
+# Generated at 2024-03-18 08:42:42.193087
+```python
+    # Create a field that always fails validation
+    always_fail = NeverMatch()
+
+    # Create a Not field with the always_fail field
+    not_field = Not(always_fail)
+
+    # Test that the Not field validates correctly
+    assert not_field.validate("any value") == "any value", "Should validate since the inner field always fails"
+
+    # Create a field that always passes validation
+    always_pass = Field()
+
+    # Create a Not field with the always_pass field
+    not_field_with_pass = Not(always_pass)
+
+    # Test that the Not field raises a validation error
+    try:
+        not_field_with_pass.validate("any value")
+        assert False, "Should raise a validation error since the inner field always passes"
+    except not_field_with_pass.validation_error as exc:
+        assert exc.code == "negated", "Should raise a 'negated' validation error"
+```
+
+# Generated at 2024-03-18 08:42:52.608508
+```python
+    # Create a field that always validates
+    always_valid_field = Any()
+
+    # Create a field that never validates
+    never_valid_field = NeverMatch()
+
+    # Test that Not with a field that always validates raises a validation error
+    not_always_valid = Not(always_valid_field)
+    try:
+        not_always_valid.validate("any value")
+        assert False, "Should have raised a validation error"
+    except not_always_valid.validation_error as exc:
+        assert exc.code == "negated", "Error code should be 'negated'"
+
+    # Test that Not with a field that never validates passes
+    not_never_valid = Not(never_valid_field)
+    try:
+        result = not_never_valid.validate("any value")
+        assert result == "any value", "Should have returned the input value"
+    except not_never_valid.validation_error:
+        assert False, "Should not have raised a validation error"
+```
+
+# Generated at 2024-03-18 08:42:59.255689
+```python
+    # Create instances of Field that will be used for testing
+    always_valid = Any()
+    never_valid = NeverMatch()
+    integer_field = Field(types=int)
+
+    # Test case where no sub-item matches
+    one_of_no_match = OneOf([never_valid, never_valid])
+    try:
+        one_of_no_match.validate("test")
+        assert False, "Should have raised a validation error for no matches."
+    except one_of_no_match.validation_error as exc:
+        assert exc.code == "no_match", "Error code should be 'no_match'."
+
+    # Test case where exactly one sub-item matches
+    one_of_single_match = OneOf([never_valid, always_valid])
+    assert one_of_single_match.validate("test") == "test", "Should have validated as it matches the 'always_valid' field."
+
+    # Test case where more than one sub-item matches
+    one_of_multiple_matches = OneOf([always_valid, integer_field])
+
+
+# Generated at 2024-03-18 08:43:08.952423
+```python
+    string_field = typesystem.fields.String()
+    integer_field = typesystem.fields.Integer()
+    one_of_field = OneOf([string_field, integer_field])
+
+    # Test with a value that matches the first type (string)
+    assert one_of_field.validate("test") == "test"
+
+    # Test with a value that matches the second type (integer)
+    assert one_of_field.validate(123) == 123
+
+    # Test with a value that matches both types (should raise an error)
+    try:
+        one_of_field.validate("123")
+        assert False, "Should have raised a validation error for multiple matches."
+    except one_of_field.ValidationError as e:
+        assert str(e) == one_of_field.errors["multiple_matches"]
+
+    # Test with a value that matches none of the types (should raise an error)
+    try:
+        one_of_field.validate([])
+        assert False, "Should have raised a validation error for no match."
+    except one_of
+
+# Generated at 2024-03-18 08:43:09.961720
+```python
+
+# Generated at 2024-03-18 08:43:23.945454
+```python
+    # Test that the constructor correctly assigns the `one_of` parameter
+    field1 = Field()
+    field2 = Field()
+    one_of_field = OneOf(one_of=[field1, field2])
+    assert one_of_field.one_of == [field1, field2], "Constructor must assign `one_of` parameter"
+
+    # Test that the constructor raises an AssertionError if `allow_null` is passed in kwargs
+    try:
+        OneOf(one_of=[field1, field2], allow_null=True)
+        assert False, "Constructor should not accept `allow_null` in kwargs"
+    except AssertionError:
+        assert True
+
+    # Test that the constructor does not raise an error for other kwargs
+    try:
+        OneOf(one_of=[field1, field2], example="example")
+        assert True
+    except AssertionError:
+        assert False, "Constructor should accept other kwargs"
+```
+
+# Generated at 2024-03-18 08:43:32.319554
+```python
+    # Create instances of Field that will be used for testing
+    always_valid = Any()
+    never_valid = NeverMatch()
+
+    # Create a OneOf instance with fields that will always and never validate
+    one_of_field = OneOf([always_valid, never_valid])
+
+    # Test case where the value should validate against exactly one field
+    assert one_of_field.validate("test value") == "test value", "Should match the always valid field"
+
+    # Test case where the value should not validate against any field
+    try:
+        one_of_field.validate(None)
+    except one_of_field.validation_error as exc:
+        assert exc.code == "no_match", "Should not match any field"
+
+    # Create a OneOf instance with fields that will always validate
+    one_of_always_valid = OneOf([always_valid, Any()])
+
+    # Test case where the value should validate against multiple fields
+    try:
+        one_of_always_valid.validate("
+
+# Generated at 2024-03-18 08:43:32.873485
+```python
+
+# Generated at 2024-03-18 08:43:54.222873
+```python
+    # Create a field that always fails validation
+    always_fail = NeverMatch()
+
+    # Create a Not field with the always_fail field as the negated field
+    not_field = Not(always_fail)
+
+    # Test that the Not field validates successfully since the negated field fails
+    assert not_field.validate("any value") == "any value", "Should validate since the negated field always fails"
+
+    # Create a field that always passes validation
+    always_pass = Field()
+
+    # Create a Not field with the always_pass field as the negated field
+    not_field_with_pass = Not(always_pass)
+
+    # Test that the Not field raises a validation error since the negated field passes
+    try:
+        not_field_with_pass.validate("any value")
+        assert False, "Should raise a validation error since the negated field always passes"
+    except not_field_with_pass.validation_error as exc:
+        assert exc.code == "negated", "Error
+
+# Generated at 2024-03-18 08:43:59.472086
+```python
+    if_clause = NeverMatch()
+    then_clause = Any()
+    else_clause = Any()
+
+    # Test with both then and else clauses provided
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional_field.then_clause == then_clause
+    assert conditional_field.else_clause == else_clause
+
+    # Test with only if clause provided (then and else should default to Any)
+    conditional_field_default = IfThenElse(if_clause=if_clause)
+    assert conditional_field_default.if_clause == if_clause
+    assert isinstance(conditional_field_default.then_clause, Any)
+    assert isinstance(conditional_field_default.else_clause, Any)
+```
+
+# Generated at 2024-03-18 08:44:04.835616
+```python
+    # Test that the constructor correctly initializes the 'negated' field
+    field = Field()
+    not_field = Not(negated=field)
+    assert not_field.negated == field, "Constructor must initialize 'negated' field"
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is in kwargs
+    try:
+        Not(negated=field, allow_null=True)
+        assert False, "Constructor should not accept 'allow_null' kwarg"
+    except AssertionError:
+        pass
+```
+
+# Generated at 2024-03-18 08:44:10.107976
+```python
+
+# Generated at 2024-03-18 08:44:14.217953
+```python
+    # Test that the constructor correctly assigns the `all_of` parameter
+    field1 = Field()
+    field2 = Field()
+    all_of_field = AllOf([field1, field2])
+    assert all_of_field.all_of == [field1, field2], "Constructor must assign the `all_of` parameter"
+
+    # Test that the constructor raises an AssertionError if `allow_null` is passed in kwargs
+    try:
+        AllOf([field1, field2], allow_null=True)
+        assert False, "Constructor should not accept `allow_null` as a kwarg"
+    except AssertionError:
+        pass
+```
+
+# Generated at 2024-03-18 08:44:24.392635
+```python
+    if_clause = NeverMatch()
+    then_clause = Any()
+    else_clause = Any()
+
+    # Test with both then and else clauses provided
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional_field.then_clause == then_clause
+    assert conditional_field.else_clause == else_clause
+
+    # Test with only if clause provided (then and else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause)
+    assert conditional_field.if_clause == if_clause
+    assert isinstance(conditional_field.then_clause, Any)
+    assert isinstance(conditional_field.else_clause, Any)
+
+    # Test with if and then clauses provided (else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional
+
+# Generated at 2024-03-18 08:44:26.823963
+```python
+    # Test that the constructor correctly initializes the `negated` field
+    field = Any()
+    not_field = Not(negated=field)
+    assert not_field.negated == field, "The `negated` field should be initialized with the provided field"
+```
+
+# Generated at 2024-03-18 08:44:32.592772
+```python
+    # Test that the constructor raises an AssertionError if 'allow_null' is in kwargs
+    try:
+        field = NeverMatch(allow_null=True)
+        assert False, "AssertionError not raised"
+    except AssertionError:
+        pass
+
+    # Test that the constructor does not raise an error when 'allow_null' is not in kwargs
+    try:
+        field = NeverMatch()
+        assert True
+    except AssertionError:
+        assert False, "AssertionError raised unexpectedly"
+```
+
+# Generated at 2024-03-18 08:44:37.262637
+```python
+    # Test that the constructor correctly assigns the `all_of` parameter
+    field1 = Field()
+    field2 = Field()
+    all_of_field = AllOf([field1, field2])
+    assert all_of_field.all_of == [field1, field2], "Constructor must assign the `all_of` parameter"
+
+    # Test that the constructor raises an AssertionError if `allow_null` is in kwargs
+    try:
+        AllOf([field1, field2], allow_null=True)
+        assert False, "Constructor should not accept `allow_null` in kwargs"
+    except AssertionError:
+        assert True
+```
+
+# Generated at 2024-03-18 08:44:45.041672
+```python
+    # Test that the constructor correctly assigns the 'one_of' parameter
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf([field1, field2])
+    assert one_of_field.one_of == [field1, field2], "Constructor did not assign 'one_of' correctly"
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is passed in kwargs
+    try:
+        OneOf([field1, field2], allow_null=True)
+        assert False, "Constructor should not accept 'allow_null' as a kwarg"
+    except AssertionError:
+        assert True, "Constructor correctly raised an AssertionError for 'allow_null' kwarg"
+```
+
+# Generated at 2024-03-18 08:44:50.835537
+```python
+    # Test that the constructor correctly initializes the `negated` field
+    field = Any()
+    not_field = Not(negated=field)
+    assert not_field.negated == field, "The `negated` field should be initialized with the passed argument."
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is in kwargs
+    try:
+        Not(negated=field, allow_null=True)
+        assert False, "AssertionError should be raised when 'allow_null' is in kwargs"
+    except AssertionError:
+        pass
+```
+
+# Generated at 2024-03-18 08:44:59.179083
+```python
+    # Test that the constructor correctly initializes the `all_of` attribute
+    field1 = Field()
+    field2 = Field()
+    all_of_field = AllOf([field1, field2])
+    assert all_of_field.all_of == [field1, field2], "Constructor must initialize the `all_of` attribute with the provided fields"
+
+    # Test that the constructor raises an AssertionError if `allow_null` is passed in kwargs
+    try:
+        AllOf([field1, field2], allow_null=True)
+        assert False, "Constructor should not accept `allow_null` as a kwarg"
+    except AssertionError:
+        assert True
+
+    # Test that the constructor does not raise an error for other kwargs
+    try:
+        AllOf([field1, field2], example="example")
+        assert True, "Constructor should accept other kwargs"
+    except Exception as e:
+        assert False, f"Constructor raised an unexpected exception: {e}"
+
+
+# Generated at 2024-03-18 08:45:07.777817
+```python
+    # Test that the constructor correctly assigns the `all_of` parameter
+    field1 = Field()
+    field2 = Field()
+    all_of_field = AllOf([field1, field2])
+    assert all_of_field.all_of == [field1, field2], "Constructor must assign the `all_of` parameter"
+
+    # Test that the constructor raises an AssertionError if `allow_null` is in kwargs
+    try:
+        AllOf([field1, field2], allow_null=True)
+        assert False, "Constructor should not accept `allow_null` in kwargs"
+    except AssertionError:
+        pass
+```
+
+# Generated at 2024-03-18 08:45:19.883951
+```python
+    if_clause = NeverMatch()
+    then_clause = Any()
+    else_clause = Any()
+
+    # Test with both then and else clauses provided
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional_field.then_clause == then_clause
+    assert conditional_field.else_clause == else_clause
+
+    # Test with only if clause provided (then and else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause)
+    assert conditional_field.if_clause == if_clause
+    assert isinstance(conditional_field.then_clause, Any)
+    assert isinstance(conditional_field.else_clause, Any)
+
+    # Test with if and then clauses provided (else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional
+
+# Generated at 2024-03-18 08:45:22.685137
+```python
+    # Test that the constructor correctly initializes the 'negated' field
+    field = Any()
+    not_field = Not(negated=field)
+    assert not_field.negated == field, "The 'negated' field should be initialized with the provided field"
+```
+
+# Generated at 2024-03-18 08:45:31.720363
+```python
+    if_clause = NeverMatch()
+    then_clause = Any()
+    else_clause = Any()
+
+    # Test with both then and else clauses provided
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional_field.then_clause == then_clause
+    assert conditional_field.else_clause == else_clause
+
+    # Test with only if clause provided (then and else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause)
+    assert conditional_field.if_clause == if_clause
+    assert isinstance(conditional_field.then_clause, Any)
+    assert isinstance(conditional_field.else_clause, Any)
+
+    # Test with if and then clauses provided (else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional
+
+# Generated at 2024-03-18 08:45:38.835482
+```python
+    # Test that the constructor correctly assigns the 'one_of' parameter
+    field1 = Any()
+    field2 = Any()
+    one_of_field = OneOf([field1, field2])
+    assert one_of_field.one_of == [field1, field2], "Constructor failed to assign 'one_of' parameter correctly"
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is passed in kwargs
+    try:
+        OneOf([field1, field2], allow_null=True)
+        assert False, "Constructor should not accept 'allow_null' as a kwarg"
+    except AssertionError:
+        assert True, "Constructor correctly raised an AssertionError for 'allow_null' kwarg"
+```
+
+# Generated at 2024-03-18 08:45:39.391329
+```python
+
+# Generated at 2024-03-18 08:45:46.744022
+```python
+    # Test that the constructor correctly assigns the `one_of` parameter
+    field1 = Field()
+    field2 = Field()
+    one_of_field = OneOf(one_of=[field1, field2])
+    assert one_of_field.one_of == [field1, field2], "Constructor must assign `one_of` parameter"
+
+    # Test that the constructor raises an AssertionError if `allow_null` is passed in kwargs
+    try:
+        OneOf(one_of=[field1, field2], allow_null=True)
+        assert False, "Constructor should not accept `allow_null` in kwargs"
+    except AssertionError:
+        assert True
+
+    # Test that the constructor does not raise an error for other kwargs
+    try:
+        OneOf(one_of=[field1, field2], example_kwarg=True)
+        assert True, "Constructor should accept other kwargs"
+    except Exception as e:
+        assert False, f"Constructor should not raise an error for other kwargs
+
+# Generated at 2024-03-18 08:45:48.919299
+```python
+    negated_field = Any()
+    not_field = Not(negated=negated_field)
+    assert not_field.negated == negated_field, "Constructor must assign negated field correctly"
+```
+
+# Generated at 2024-03-18 08:45:52.707246
+```python
+    # Test that the constructor correctly initializes the 'negated' field
+    negated_field = Any()
+    not_field = Not(negated=negated_field)
+    assert not_field.negated == negated_field, "Constructor failed to initialize 'negated' field"
+```
+
+# Generated at 2024-03-18 08:45:54.905394
+```python
+    # Test that the constructor correctly initializes the 'negated' field
+    field = Any()
+    not_field = Not(negated=field)
+    assert not_field.negated == field, "The 'negated' field should be initialized with the provided field"
+```
+
+# Generated at 2024-03-18 08:45:57.722616
+```python
+    # Test that the constructor correctly initializes the `negated` field
+    field = Any()
+    not_field = Not(negated=field)
+    assert not_field.negated == field, "The `negated` field should be initialized with the passed argument"
+```
+
+# Generated at 2024-03-18 08:46:09.702249
+```python
+    # Test that the constructor correctly assigns the 'one_of' parameter
+    field1 = Field()
+    field2 = Field()
+    one_of_field = OneOf(one_of=[field1, field2])
+    assert one_of_field.one_of == [field1, field2], "Constructor failed to assign 'one_of' parameter correctly"
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is passed in kwargs
+    try:
+        OneOf(one_of=[field1, field2], allow_null=True)
+        assert False, "Constructor should not accept 'allow_null' as a kwarg"
+    except AssertionError:
+        assert True
+```
+
+# Generated at 2024-03-18 08:46:20.862601
+```python
+    # Test that the constructor correctly assigns the `one_of` parameter
+    field1 = Field()
+    field2 = Field()
+    one_of_field = OneOf(one_of=[field1, field2])
+    assert one_of_field.one_of == [field1, field2], "Constructor failed to assign one_of"
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is in kwargs
+    try:
+        OneOf(one_of=[field1, field2], allow_null=True)
+        assert False, "Constructor should not accept 'allow_null' as a kwarg"
+    except AssertionError:
+        assert True
+
+    # Test that the constructor correctly passes other kwargs to the parent class
+    example_kwarg = "example_value"
+    one_of_field_with_kwargs = OneOf(one_of=[field1, field2], example_kwarg=example_kwarg)
+    assert one_of_field_with_kwargs.example_kwarg == example_kwarg, "Constructor failed
+
+# Generated at 2024-03-18 08:46:28.895778
+```python
+    # Test that the constructor correctly assigns the 'one_of' parameter
+    field1 = Field()
+    field2 = Field()
+    one_of_field = OneOf(one_of=[field1, field2])
+    assert one_of_field.one_of == [field1, field2], "Constructor failed to assign 'one_of' parameter correctly"
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is passed in kwargs
+    try:
+        OneOf(one_of=[field1, field2], allow_null=True)
+        assert False, "Constructor should not accept 'allow_null' as a kwarg"
+    except AssertionError:
+        assert True
+
+    # Test that the constructor correctly passes other kwargs to the parent class
+    one_of_field_with_kwargs = OneOf(one_of=[field1, field2], title="Test Title", description="Test Description")
+    assert one_of_field_with_kwargs.title == "Test Title", "Constructor failed to pass 'title
+
+# Generated at 2024-03-18 08:46:31.345558
+```python
+    # Test that the constructor correctly initializes the `negated` field
+    field = Field()
+    not_field = Not(negated=field)
+    assert not_field.negated == field, "The `negated` field should be initialized with the provided field"
+```
+
+# Generated at 2024-03-18 08:46:36.540389
+```python
+    if_clause = NeverMatch()
+    then_clause = Any()
+    else_clause = Any()
+
+    # Test with both then and else clauses provided
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional_field.then_clause == then_clause
+    assert conditional_field.else_clause == else_clause
+
+    # Test with only if clause provided (then and else should default to Any)
+    conditional_field_default = IfThenElse(if_clause=if_clause)
+    assert conditional_field_default.if_clause == if_clause
+    assert isinstance(conditional_field_default.then_clause, Any)
+    assert isinstance(conditional_field_default.else_clause, Any)
+```
+
+# Generated at 2024-03-18 08:46:44.461488
+```python
+    if_clause = NeverMatch()
+    then_clause = Any()
+    else_clause = Any()
+
+    # Test with both then and else clauses provided
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional_field.then_clause == then_clause
+    assert conditional_field.else_clause == else_clause
+
+    # Test with only if clause provided (then and else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause)
+    assert conditional_field.if_clause == if_clause
+    assert isinstance(conditional_field.then_clause, Any)
+    assert isinstance(conditional_field.else_clause, Any)
+
+    # Test with if and then clauses provided (else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional
+
+# Generated at 2024-03-18 08:46:53.977061
+```python
+    if_clause = NeverMatch()
+    then_clause = Any()
+    else_clause = Any()
+
+    # Test with both then and else clauses provided
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional_field.then_clause == then_clause
+    assert conditional_field.else_clause == else_clause
+
+    # Test with only if clause provided (then and else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause)
+    assert conditional_field.if_clause == if_clause
+    assert isinstance(conditional_field.then_clause, Any)
+    assert isinstance(conditional_field.else_clause, Any)
+
+    # Test with if and then clauses provided (else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional
+
+# Generated at 2024-03-18 08:46:54.938062
+```python
+
+# Generated at 2024-03-18 08:46:59.766907
+```python
+    # Test that the constructor correctly assigns the 'one_of' attribute
+    field1 = Field()
+    field2 = Field()
+    one_of_field = OneOf([field1, field2])
+    assert one_of_field.one_of == [field1, field2], "Constructor failed to assign 'one_of' attribute correctly"
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is in kwargs
+    try:
+        OneOf([field1, field2], allow_null=True)
+        assert False, "Constructor should not accept 'allow_null' kwarg"
+    except AssertionError:
+        assert True
+```
+
+# Generated at 2024-03-18 08:47:09.390193
+```python
+    # Test that the constructor correctly assigns the 'one_of' attribute
+    field1 = Field()
+    field2 = Field()
+    one_of_field = OneOf([field1, field2])
+    assert one_of_field.one_of == [field1, field2], "Constructor must assign 'one_of' attribute"
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is in kwargs
+    try:
+        OneOf([field1, field2], allow_null=True)
+        assert False, "'allow_null' should not be accepted by the constructor"
+    except AssertionError:
+        assert True
+
+    # Test that the constructor does not raise an error for other kwargs
+    try:
+        OneOf([field1, field2], example="example")
+        assert True, "Constructor should accept other kwargs"
+    except AssertionError:
+        assert False, "Constructor should not raise an error for other kwargs"
+```
+
+# Generated at 2024-03-18 08:47:33.446717
+```python
+    if_clause = NeverMatch()
+    then_clause = Any()
+    else_clause = Any()
+
+    # Test with both then and else clauses provided
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional_field.then_clause == then_clause
+    assert conditional_field.else_clause == else_clause
+
+    # Test with only if clause provided (then and else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause)
+    assert conditional_field.if_clause == if_clause
+    assert isinstance(conditional_field.then_clause, Any)
+    assert isinstance(conditional_field.else_clause, Any)
+
+    # Test with if and then clauses provided (else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional
+
+# Generated at 2024-03-18 08:47:39.232551
+```python
+    if_clause = NeverMatch()
+    then_clause = Any()
+    else_clause = Any()
+
+    # Test with both then and else clauses provided
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional_field.then_clause == then_clause
+    assert conditional_field.else_clause == else_clause
+
+    # Test with only if clause provided (then and else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause)
+    assert conditional_field.if_clause == if_clause
+    assert isinstance(conditional_field.then_clause, Any)
+    assert isinstance(conditional_field.else_clause, Any)
+
+    # Test with if and then clauses provided (else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional
+
+# Generated at 2024-03-18 08:47:46.510788
+```python
+    # Test that the constructor correctly assigns the `one_of` parameter
+    field1 = Field()
+    field2 = Field()
+    one_of_field = OneOf(one_of=[field1, field2])
+    assert one_of_field.one_of == [field1, field2], "Constructor must assign `one_of` parameter"
+
+    # Test that the constructor raises an AssertionError if `allow_null` is passed in kwargs
+    try:
+        OneOf(one_of=[field1, field2], allow_null=True)
+        assert False, "Constructor should not accept `allow_null` in kwargs"
+    except AssertionError:
+        assert True
+
+    # Test that the constructor correctly passes other kwargs to the parent class
+    example_kwargs = {'example_key': 'example_value'}
+    one_of_field_with_kwargs = OneOf(one_of=[field1, field2], **example_kwargs)
+    assert one_of_field_with_kwargs.example_key == 'example_value', "Constructor should pass
+
+# Generated at 2024-03-18 08:47:53.010486
+```python
+    # Test that the constructor correctly initializes the `negated` field
+    field = Any()
+    not_field = Not(negated=field)
+    assert not_field.negated == field, "The `negated` field should be initialized with the passed argument."
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is in kwargs
+    try:
+        Not(negated=field, allow_null=True)
+        assert False, "AssertionError should be raised when 'allow_null' is in kwargs"
+    except AssertionError:
+        assert True, "AssertionError was raised as expected"
+```
+
+# Generated at 2024-03-18 08:47:59.289985
+```python
+    if_clause = NeverMatch()
+    then_clause = Any()
+    else_clause = Any()
+
+    # Test with both then and else clauses provided
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional_field.then_clause == then_clause
+    assert conditional_field.else_clause == else_clause
+
+    # Test with only if clause provided (then and else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause)
+    assert conditional_field.if_clause == if_clause
+    assert isinstance(conditional_field.then_clause, Any)
+    assert isinstance(conditional_field.else_clause, Any)
+
+    # Test with if and then clauses provided (else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional
+
+# Generated at 2024-03-18 08:48:03.820588
+```python
+    if_clause = NeverMatch()
+    then_clause = Any()
+    else_clause = Any()
+
+    # Test with both then and else clauses provided
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional_field.then_clause == then_clause
+    assert conditional_field.else_clause == else_clause
+
+    # Test with only if clause provided (then and else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause)
+    assert conditional_field.if_clause == if_clause
+    assert isinstance(conditional_field.then_clause, Any)
+    assert isinstance(conditional_field.else_clause, Any)
+```
+
+# Generated at 2024-03-18 08:48:08.366078
+```python
+    # Test that the constructor correctly assigns the 'one_of' attribute
+    field1 = Field()
+    field2 = Field()
+    one_of_field = OneOf([field1, field2])
+    assert one_of_field.one_of == [field1, field2], "Constructor failed to assign 'one_of' attribute correctly"
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is in kwargs
+    try:
+        OneOf([field1, field2], allow_null=True)
+        assert False, "Constructor should not accept 'allow_null' as a keyword argument"
+    except AssertionError:
+        assert True
+```
+
+# Generated at 2024-03-18 08:48:20.104546
+```python
+    # Test that the constructor correctly initializes the 'negated' field
+    negated_field = Any()
+    not_field = Not(negated=negated_field)
+    assert not_field.negated == negated_field, "Constructor failed to initialize 'negated' field"
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is passed in kwargs
+    try:
+        Not(negated=negated_field, allow_null=True)
+        assert False, "Constructor should not accept 'allow_null' kwarg"
+    except AssertionError:
+        pass
+```
+
+# Generated at 2024-03-18 08:48:20.837209
+```python
+
+# Generated at 2024-03-18 08:48:27.721638
+```python
+    # Test that the constructor correctly assigns the 'one_of' attribute
+    field1 = Field()
+    field2 = Field()
+    one_of_field = OneOf([field1, field2])
+    assert one_of_field.one_of == [field1, field2], "Constructor must assign 'one_of' attribute"
+
+    # Test that the constructor raises an assertion error if 'allow_null' is in kwargs
+    try:
+        OneOf([field1, field2], allow_null=True)
+        assert False, "'allow_null' should not be accepted by the OneOf constructor"
+    except AssertionError:
+        assert True
+
+    # Test that the constructor does not raise an error for other kwargs
+    try:
+        OneOf([field1, field2], example="example")
+        assert True, "Constructor should accept other kwargs"
+    except AssertionError:
+        assert False, "Constructor should not raise an error for other kwargs"
+```
+
+# Generated at 2024-03-18 08:49:07.265284
+```python
+    # Test that the constructor correctly initializes the 'negated' field
+    field = Any()
+    not_field = Not(negated=field)
+    assert not_field.negated == field, "The 'negated' field should be initialized with the provided field"
+```
+
+# Generated at 2024-03-18 08:49:15.957047
+```python
+    if_clause = NeverMatch()
+    then_clause = Any()
+    else_clause = Any()
+
+    # Test with both then and else clauses provided
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional_field.then_clause == then_clause
+    assert conditional_field.else_clause == else_clause
+
+    # Test with only if clause provided (then and else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause)
+    assert conditional_field.if_clause == if_clause
+    assert isinstance(conditional_field.then_clause, Any)
+    assert isinstance(conditional_field.else_clause, Any)
+
+    # Test with if and then clauses provided (else should default to Any)
+    conditional_field = IfThenElse(if_clause=if_clause, then_clause=then_clause)
+    assert conditional_field.if_clause == if_clause
+    assert conditional
+
+# Generated at 2024-03-18 08:49:17.123768
+```python
+
+# Generated at 2024-03-18 08:49:19.715173
+```python
+    negated_field = Any()
+    not_field = Not(negated=negated_field)
+
+    assert isinstance(not_field, Not)
+    assert not_field.negated is negated_field
+```
+
+# Generated at 2024-03-18 08:49:24.818241
+```python
+    # Test that the constructor correctly initializes the 'negated' field
+    negated_field = Any()
+    not_field = Not(negated=negated_field)
+    assert not_field.negated == negated_field, "Constructor failed to initialize 'negated' field"
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is passed in kwargs
+    try:
+        Not(negated=negated_field, allow_null=True)
+        assert False, "Constructor should not accept 'allow_null' kwarg"
+    except AssertionError:
+        assert True
+```
+
+# Generated at 2024-03-18 08:49:27.044614
+```python
+    # Test that the constructor correctly initializes the 'negated' field
+    field = Any()
+    not_field = Not(negated=field)
+    assert not_field.negated == field, "The 'negated' field should be initialized with the provided field"
+```
+
+# Generated at 2024-03-18 08:49:35.159330
+```python
+    # Test that the constructor correctly assigns the `one_of` parameter
+    field1 = Field()
+    field2 = Field()
+    one_of_field = OneOf(one_of=[field1, field2])
+    assert one_of_field.one_of == [field1, field2], "Constructor must assign `one_of` parameter"
+
+    # Test that the constructor raises an AssertionError if `allow_null` is passed in kwargs
+    try:
+        OneOf(one_of=[field1, field2], allow_null=True)
+        assert False, "Constructor should not accept `allow_null` in kwargs"
+    except AssertionError:
+        assert True
+
+    # Test that the constructor correctly passes other kwargs to the parent class
+    title = "Test Title"
+    description = "Test Description"
+    one_of_field_with_kwargs = OneOf(one_of=[field1, field2], title=title, description=description)
+    assert one_of_field_with_kwargs.title == title, "Constructor
+
+# Generated at 2024-03-18 08:49:35.788887
+```python
+
+# Generated at 2024-03-18 08:49:46.258766
+```python
+    # Test that the constructor correctly assigns the 'one_of' parameter
+    field1 = Any()
+    field2 = Any()
+    one_of_field = OneOf([field1, field2])
+    assert one_of_field.one_of == [field1, field2], "Constructor must assign 'one_of' parameter"
+
+    # Test that the constructor raises an AssertionError if 'allow_null' is in kwargs
+    try:
+        OneOf([field1, field2], allow_null=True)
+        assert False, "Constructor should not accept 'allow_null' in kwargs"
+    except AssertionError:
+        assert True
+
+    # Test that the constructor correctly passes other kwargs to the parent class
+    example_kwargs = {'example_key': 'example_value'}
+    one_of_field_with_kwargs = OneOf([field1, field2], **example_kwargs)
+    assert one_of_field_with_kwargs.example_key == 'example_value', "Constructor must pass kwargs to parent class"
+```
+
+# Generated at 2024-03-18 08:49:51.747760
+```python
+    # Test that the constructor correctly assigns the `one_of` parameter
+    string_field = typesystem.fields.String()
+    integer_field = typesystem.fields.Integer()
+    one_of_field = OneOf([string_field, integer_field])
+    assert one_of_field.one_of == [string_field, integer_field], "Constructor failed to assign `one_of`"
+
+    # Test that the constructor raises an AssertionError if `allow_null` is passed in kwargs
+    try:
+        one_of_field_with_null = OneOf([string_field, integer_field], allow_null=True)
+    except AssertionError:
+        pass
+    else:
+        assert False, "Constructor should not accept `allow_null` as a kwarg"
+```

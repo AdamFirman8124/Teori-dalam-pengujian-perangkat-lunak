@@ -1,0 +1,1530 @@
+
+
+# Generated at 2024-06-02 16:49:46.413334
+```python
+    class MockHTTPMessage(HTTPMessage):
+        def __init__(self, headers, body):
+            self.headers = headers
+            self.body = body
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    headers = 'Content-Type: text/plain'
+    body = b'Hello, World!'
+    msg = MockHTTPMessage(headers, body)
+
+    # Test with headers and body
+    stream = BaseStream(msg, with_headers=True, with_body=True)
+    result = b''.join(stream)
+    assert result == b'Content-Type: text/plain\r\n\r\nHello, World!'
+
+    # Test with headers only
+    stream = BaseStream(msg, with_headers=True, with_body=False)
+    result = b''.join(stream)
+    assert result == b'Content-Type: text/plain\r\n\r\n'
+
+    # Test with body
+
+# Generated at 2024-06-02 16:49:49.725038
+```python
+    class MockHTTPMessage(HTTPMessage):
+        def __init__(self, headers, body):
+            self.headers = headers
+            self.body = body
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    headers = 'HTTP/1.1 200 OK\r\nContent-Type: text/plain'
+    body = b'Hello, World!'
+    msg = MockHTTPMessage(headers, body)
+
+    # Test with headers and body
+    stream = BaseStream(msg, with_headers=True, with_body=True)
+    result = b''.join(stream)
+    expected = headers.encode('utf8') + b'\r\n\r\n' + body
+    assert result == expected, f'Expected {expected}, but got {result}'
+
+    # Test with headers only
+    stream = BaseStream(msg, with_headers=True, with_body=False)
+   
+
+# Generated at 2024-06-02 16:49:51.650968
+```python
+    class MockHTTPMessage:
+        def __init__(self, headers, content_type):
+            self.headers = headers
+            self.content_type = content_type
+
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers
+
+    msg = MockHTTPMessage(headers="Test-Headers", content_type="text/plain")
+    formatting = MockFormatting()
+    conversion = Conversion()
+    stream = PrettyStream(msg=msg, formatting=formatting, conversion=conversion)
+
+    expected_headers = b"Test-Headers"
+    assert stream.get_headers() == expected_headers
+```
+
+# Generated at 2024-06-02 16:49:53.220804
+```python
+    msg = HTTPMessage(headers="Test-Headers", body="Test-Body", encoding="utf8")
+    env = Environment()
+    stream = EncodedStream(msg=msg, env=env, with_headers=True, with_body=True)
+    
+    assert stream.msg == msg
+    assert stream.with_headers is True
+    assert stream.with_body is True
+    assert stream.output_encoding == (env.stdout_encoding or 'utf8')
+```
+
+# Generated at 2024-06-02 16:49:55.317131
+```python
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers
+
+    class MockHTTPMessage:
+        def __init__(self, headers):
+            self.headers = headers
+            self.content_type = 'text/plain'
+
+    headers = 'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n'
+    msg = MockHTTPMessage(headers)
+    formatting = MockFormatting()
+    conversion = Conversion()
+    stream = PrettyStream(msg=msg, conversion=conversion, formatting=formatting)
+    
+    assert stream.get_headers() == headers.encode('utf8')
+```
+
+# Generated at 2024-06-02 16:49:58.228153
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8', content_type='text/plain'):
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+            self.headers = 'HTTP/1.1 200 OK\r\nContent-Type: text/plain'
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    msg = MockHTTPMessage(b'Hello, World!')
+    conversion = MockConversion()
+    formatting = MockFormatting()
+    stream = BufferedPrettyStream(msg=msg, conversion=conversion, formatting=formatting)
+
+    result = b''.join
+
+# Generated at 2024-06-02 16:50:01.429717
+```python
+    from unittest.mock import Mock
+
+    # Mock the necessary components
+    mock_msg = Mock()
+    mock_conversion = Mock()
+    mock_formatting = Mock()
+    mock_env = Mock()
+
+    # Set up the mock message
+    mock_msg.content_type = 'text/plain'
+    mock_msg.encoding = 'utf8'
+    mock_msg.headers = 'Mock Headers'
+    mock_msg.iter_body.return_value = [b'chunk1', b'chunk2']
+    mock_msg.iter_lines.return_value = [(b'line1', b'\n'), (b'line2', b'\n')]
+
+    # Set up the mock environment
+    mock_env.stdout_isatty = True
+    mock_env.stdout_encoding = 'utf8'
+
+    # Create an instance of BufferedPrettyStream
+    stream = BufferedPrettyStream(
+        msg=mock_msg,
+        conversion=mock_conversion,
+        formatting=mock_formatting,
+        env=mock_env
+    )
+
+    #
+
+# Generated at 2024-06-02 16:50:04.556441
+```python
+    from httpie.models import HTTPResponse
+    from httpie.output.processing import Conversion, Formatting
+
+    # Mock objects
+    class MockConversion(Conversion):
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting(Formatting):
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    # Mock HTTPResponse
+    class MockHTTPResponse(HTTPResponse):
+        def __init__(self, headers, body, content_type):
+            self.headers = headers
+            self.body = body
+            self.content_type = content_type
+
+        def iter_lines(self, chunk_size):
+            for line in self.body.splitlines(keepends=True):
+                yield line, b'\n'
+
+    # Test data
+    headers = "HTTP/1.1 200 OK"
+    body = "Hello, World!\nThis is a test."
+    content_type = "text/plain; charset
+
+# Generated at 2024-06-02 16:50:07.449859
+```python
+    from httpie.models import HTTPResponse
+    from httpie.context import Environment
+    from httpie.output.processing import Conversion, Formatting
+
+    # Mock objects
+    class MockHTTPResponse(HTTPResponse):
+        def __init__(self, headers, body, encoding='utf8', content_type='text/plain'):
+            self.headers = headers
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+
+        def iter_lines(self, chunk_size):
+            for line in self.body.splitlines(keepends=True):
+                yield line.encode(self.encoding), b'\n'
+
+    class MockConversion(Conversion):
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting(Formatting):
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    # Test data
+    headers = 'HTTP/1.1 200 OK\r\nContent-Type:
+
+# Generated at 2024-06-02 16:50:08.966277
+```python
+    msg = HTTPMessage(headers="Test-Headers", body="Test-Body", encoding="utf8")
+    env = Environment()
+    stream = EncodedStream(msg=msg, env=env, with_headers=True, with_body=True)
+    
+    assert stream.msg == msg
+    assert stream.with_headers is True
+    assert stream.with_body is True
+    assert stream.output_encoding == (env.stdout_encoding or 'utf8')
+```
+
+# Generated at 2024-06-02 16:50:20.742420
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8'):
+            self.body = body
+            self.encoding = encoding
+
+        def iter_lines(self, chunk_size):
+            lines = self.body.split(b'\n')
+            for line in lines:
+                yield line, b'\n'
+
+    env = Environment()
+    env.stdout_isatty = True
+    env.stdout_encoding = 'utf8'
+
+    # Test case 1: Normal text body
+    msg = MockHTTPMessage(b'Hello\nWorld\n')
+    stream = EncodedStream(msg=msg, env=env)
+    result = b''.join(stream.iter_body())
+    assert result == b'Hello\nWorld\n'
+
+    # Test case 2: Binary data in body
+    msg = MockHTTPMessage(b'Hello\0World\n')
+    stream = EncodedStream(msg=msg, env=env)
+    try:
+        result = b''.join(stream
+
+# Generated at 2024-06-02 16:50:22.766955
+```python
+    msg = HTTPMessage(headers="Test-Headers", body="Test-Body", encoding="utf8")
+    env = Environment()
+    stream = EncodedStream(msg=msg, env=env, with_headers=True, with_body=True)
+    
+    assert stream.msg == msg
+    assert stream.with_headers is True
+    assert stream.with_body is True
+    assert stream.output_encoding == (env.stdout_encoding or 'utf8')
+```
+
+# Generated at 2024-06-02 16:50:27.248008
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8', content_type='text/plain'):
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+            self.headers = 'HTTP/1.1 200 OK\r\nContent-Type: {}\r\n'.format(content_type)
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    body = b'Hello, World!'
+    msg = MockHTTPMessage(body)
+    conversion = MockConversion()
+    formatting = MockFormatting()
+    stream = BufferedPrettyStream(msg=msg, conversion=conversion,
+
+# Generated at 2024-06-02 16:50:31.095146
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8'):
+            self.body = body
+            self.encoding = encoding
+
+        def iter_lines(self, chunk_size):
+            lines = self.body.split(b'\n')
+            for line in lines:
+                yield line, b'\n'
+
+    env = Environment()
+    env.stdout_isatty = True
+    env.stdout_encoding = 'utf8'
+
+    # Test case 1: Normal text body
+    msg = MockHTTPMessage(b'Hello\nWorld')
+    stream = EncodedStream(msg=msg, env=env)
+    result = b''.join(stream.iter_body())
+    assert result == b'Hello\nWorld\n'
+
+    # Test case 2: Binary data in body
+    msg = MockHTTPMessage(b'Hello\0World')
+    stream = EncodedStream(msg=msg, env=env)
+    try:
+        result = b''.join(stream.iter_body
+
+# Generated at 2024-06-02 16:50:33.759867
+```python
+    class MockHTTPMessage:
+        def __init__(self, body):
+            self.body = body
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    body = b"Test body content for RawStream"
+    msg = MockHTTPMessage(body)
+    stream = RawStream(msg=msg)
+
+    result = b"".join(stream.iter_body())
+    assert result == body, f"Expected {body}, but got {result}"
+```
+
+# Generated at 2024-06-02 16:50:36.817856
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8', content_type='text/plain'):
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+            self.headers = 'HTTP/1.1 200 OK\r\nContent-Type: {}\r\n'.format(content_type)
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    msg = MockHTTPMessage(b'Hello, World!')
+    conversion = MockConversion()
+    formatting = MockFormatting()
+    stream = BufferedPrettyStream(msg=msg, conversion=conversion, formatting=formatting)
+
+   
+
+# Generated at 2024-06-02 16:50:40.098537
+```python
+    class MockMessage:
+        def __init__(self, body, encoding='utf8'):
+            self.body = body
+            self.encoding = encoding
+
+        def iter_lines(self, chunk_size):
+            lines = self.body.split(b'\n')
+            for line in lines:
+                yield line, b'\n'
+
+    # Test case 1: Normal text body
+    msg = MockMessage(b"Hello\nWorld", encoding='utf8')
+    stream = EncodedStream(msg=msg)
+    result = b''.join(stream.iter_body())
+    assert result == b"Hello\nWorld\n"
+
+    # Test case 2: Binary data in body
+    msg = MockMessage(b"Hello\0World", encoding='utf8')
+    stream = EncodedStream(msg=msg)
+    try:
+        result = b''.join(stream.iter_body())
+        assert False, "Expected BinarySuppressedError"
+    except BinarySuppressedError:
+        pass
+
+    #
+
+# Generated at 2024-06-02 16:50:41.343297
+```python
+    msg = HTTPMessage(headers="Test-Headers", body=b"Test-Body")
+    stream = RawStream(msg=msg, with_headers=True, with_body=True)
+    assert stream.msg == msg
+    assert stream.with_headers is True
+    assert stream.with_body is True
+    assert stream.chunk_size == RawStream.CHUNK_SIZE
+```
+
+# Generated at 2024-06-02 16:50:42.749927
+```python
+    msg = HTTPMessage(headers="Test-Headers", body=b"Test-Body")
+    stream = BaseStream(msg=msg, with_headers=True, with_body=True)
+    
+    result = b''.join(stream)
+    
+    expected = b"Test-Headers\r\n\r\nTest-Body"
+    assert result == expected, f"Expected {expected}, but got {result}"
+```
+
+# Generated at 2024-06-02 16:50:45.169835
+```python
+    class MockHTTPMessage:
+        def __init__(self, body):
+            self.body = body
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    body = b"Test body content for RawStream"
+    msg = MockHTTPMessage(body)
+    stream = RawStream(msg=msg, chunk_size=10)
+
+    expected_chunks = [body[i:i + 10] for i in range(0, len(body), 10)]
+    actual_chunks = list(stream.iter_body())
+
+    assert actual_chunks == expected_chunks, f"Expected {expected_chunks}, but got {actual_chunks}"
+```
+
+# Generated at 2024-06-02 16:51:04.084978
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8'):
+            self.body = body
+            self.encoding = encoding
+
+        def iter_lines(self, chunk_size):
+            lines = self.body.split(b'\n')
+            for line in lines:
+                yield line, b'\n'
+
+    env = Environment()
+    env.stdout_isatty = True
+    env.stdout_encoding = 'utf8'
+
+    # Test case 1: Normal text body
+    msg = MockHTTPMessage(b'Hello\nWorld\n')
+    stream = EncodedStream(msg=msg, env=env)
+    result = b''.join(stream.iter_body())
+    assert result == b'Hello\nWorld\n'
+
+    # Test case 2: Binary data in body
+    msg = MockHTTPMessage(b'Hello\0World\n')
+    stream = EncodedStream(msg=msg, env=env)
+    try:
+        result = b''.join(stream
+
+# Generated at 2024-06-02 16:51:07.862785
+```python
+    from httpie.models import HTTPResponse
+    from httpie.output.processing import Conversion, Formatting
+
+    # Mock objects
+    class MockHTTPResponse(HTTPResponse):
+        def __init__(self, headers, body, encoding='utf8', content_type='text/plain'):
+            self.headers = headers
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    class MockConversion(Conversion):
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting(Formatting):
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    # Test data
+    headers = 'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n'
+    body
+
+# Generated at 2024-06-02 16:51:12.302990
+```python
+    class MockMessage:
+        def __init__(self, body, encoding='utf8'):
+            self.body = body
+            self.encoding = encoding
+
+        def iter_lines(self, chunk_size):
+            lines = self.body.split(b'\n')
+            for line in lines:
+                yield line, b'\n'
+
+    env = Environment()
+    env.stdout_isatty = True
+    env.stdout_encoding = 'utf8'
+
+    # Test case 1: Normal text body
+    msg = MockMessage(b'Hello\nWorld')
+    stream = EncodedStream(msg=msg, env=env)
+    result = b''.join(stream.iter_body())
+    assert result == b'Hello\nWorld\n'
+
+    # Test case 2: Binary data in body
+    msg = MockMessage(b'Hello\0World')
+    stream = EncodedStream(msg=msg, env=env)
+    try:
+        result = b''.join(stream.iter_body())
+    except
+
+# Generated at 2024-06-02 16:51:14.803702
+```python
+    msg = HTTPMessage(headers="Test-Headers", body=b"Test-Body")
+    stream = RawStream(msg=msg, with_headers=True, with_body=True)
+    assert stream.msg == msg
+    assert stream.with_headers is True
+    assert stream.with_body is True
+    assert stream.chunk_size == RawStream.CHUNK_SIZE
+```
+
+# Generated at 2024-06-02 16:51:18.239232
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8', content_type='text/plain'):
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+            self.headers = 'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n'
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    msg = MockHTTPMessage(b'Hello, World!')
+    conversion = MockConversion()
+    formatting = MockFormatting()
+    stream = BufferedPrettyStream(msg=msg, conversion=conversion, formatting=formatting)
+
+    result = b
+
+# Generated at 2024-06-02 16:51:23.622332
+```python
+    from httpie.models import HTTPResponse
+    from httpie.context import Environment
+    from httpie.output.processing import Conversion, Formatting
+
+    # Mock objects
+    class MockHTTPResponse(HTTPResponse):
+        def __init__(self, headers, body, encoding='utf8', content_type='text/plain'):
+            self.headers = headers
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+
+        def iter_lines(self, chunk_size):
+            for line in self.body.splitlines(keepends=True):
+                yield line.encode(self.encoding), b'\n'
+
+    class MockConversion(Conversion):
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting(Formatting):
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    # Test data
+    headers = 'HTTP/1.1 200 OK\r\nContent-Type:
+
+# Generated at 2024-06-02 16:51:25.479637
+```python
+    msg = HTTPMessage(headers="Test-Headers", body="Test-Body", encoding="utf8")
+    env = Environment()
+    stream = EncodedStream(msg=msg, env=env, with_headers=True, with_body=True)
+    
+    assert stream.msg == msg
+    assert stream.with_headers is True
+    assert stream.with_body is True
+    assert stream.output_encoding == (env.stdout_encoding or 'utf8')
+```
+
+# Generated at 2024-06-02 16:51:28.599105
+```python
+    from httpie.models import HTTPResponse
+    from httpie.context import Environment
+    from httpie.output.processing import Conversion, Formatting
+
+    # Mock objects
+    class MockHTTPResponse(HTTPResponse):
+        def __init__(self, headers, body, encoding='utf8', content_type='text/plain'):
+            self.headers = headers
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+
+        def iter_lines(self, chunk_size):
+            for line in self.body.splitlines(keepends=True):
+                yield line.encode(self.encoding), b'\n'
+
+    class MockConversion(Conversion):
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting(Formatting):
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    # Test data
+    headers = 'HTTP/1.1 200 OK\r\nContent-Type:
+
+# Generated at 2024-06-02 16:51:31.248172
+```python
+    from httpie.models import HTTPMessage
+    from httpie.output.processing import Formatting, Conversion
+
+    class MockHTTPMessage(HTTPMessage):
+        def __init__(self, headers, content_type):
+            self.headers = headers
+            self.content_type = content_type
+
+    class MockFormatting(Formatting):
+        def format_headers(self, headers):
+            return f"Formatted: {headers}"
+
+    msg = MockHTTPMessage(headers="Test-Headers", content_type="text/plain")
+    formatting = MockFormatting()
+    conversion = Conversion()
+
+    stream = PrettyStream(msg=msg, formatting=formatting, conversion=conversion)
+    headers = stream.get_headers()
+
+    assert headers == b"Formatted: Test-Headers"
+```
+
+# Generated at 2024-06-02 16:51:34.221035
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8', content_type='text/plain'):
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+            self.headers = 'HTTP/1.1 200 OK\r\nContent-Type: {}\r\n'.format(content_type)
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    msg = MockHTTPMessage(b'Hello, World!')
+    conversion = MockConversion()
+    formatting = MockFormatting()
+    stream = BufferedPrettyStream(msg=msg, conversion=conversion, formatting=formatting)
+
+   
+
+# Generated at 2024-06-02 16:52:23.345895
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8', content_type='text/plain'):
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+            self.headers = 'HTTP/1.1 200 OK\r\nContent-Type: {}\r\n'.format(content_type)
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    msg = MockHTTPMessage(b'Hello, World!')
+    conversion = MockConversion()
+    formatting = MockFormatting()
+    stream = BufferedPrettyStream(msg=msg, conversion=conversion, formatting=formatting)
+
+   
+
+# Generated at 2024-06-02 16:52:26.565785
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8'):
+            self.body = body
+            self.encoding = encoding
+
+        def iter_lines(self, chunk_size):
+            lines = self.body.split(b'\n')
+            for line in lines:
+                yield line, b'\n'
+
+    env = Environment()
+    env.stdout_isatty = True
+    env.stdout_encoding = 'utf8'
+
+    # Test case 1: Normal text body
+    msg = MockHTTPMessage(b'Hello\nWorld')
+    stream = EncodedStream(msg=msg, env=env)
+    result = b''.join(stream.iter_body())
+    assert result == b'Hello\nWorld\n'
+
+    # Test case 2: Binary data in body
+    msg = MockHTTPMessage(b'Hello\0World')
+    stream = EncodedStream(msg=msg, env=env)
+    try:
+        result = b''.join(stream.iter_body
+
+# Generated at 2024-06-02 16:52:30.060163
+```python
+    class MockHTTPMessage:
+        def __init__(self, headers, body, encoding='utf8', content_type='text/plain'):
+            self.headers = headers
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+
+        def iter_lines(self, chunk_size):
+            lines = self.body.split(b'\n')
+            for line in lines:
+                yield line, b'\n'
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    msg = MockHTTPMessage(
+        headers="HTTP/1.1 200 OK\nContent-Type: text/plain",
+        body=b"Hello\nWorld\n"
+    )
+    conversion = MockConversion()
+    formatting = MockFormatting()
+    stream = PrettyStream(msg=msg, conversion=conversion, formatting
+
+# Generated at 2024-06-02 16:52:33.471833
+```python
+    class MockHTTPMessage(HTTPMessage):
+        def __init__(self, headers, body):
+            self.headers = headers
+            self.body = body
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    headers = 'HTTP/1.1 200 OK\r\nContent-Type: text/plain'
+    body = b'Hello, world!'
+    msg = MockHTTPMessage(headers, body)
+
+    # Test with headers and body
+    stream = BaseStream(msg, with_headers=True, with_body=True)
+    result = b''.join(stream)
+    expected = headers.encode('utf8') + b'\r\n\r\n' + body
+    assert result == expected, f'Expected {expected}, but got {result}'
+
+    # Test with headers only
+    stream = BaseStream(msg, with_headers=True, with_body=False)
+   
+
+# Generated at 2024-06-02 16:52:35.259009
+```python
+    msg = HTTPMessage(headers="Test-Headers", body="Test-Body", encoding="utf8")
+    env = Environment()
+    stream = EncodedStream(msg=msg, env=env, with_headers=True, with_body=True)
+    
+    assert stream.msg == msg
+    assert stream.with_headers is True
+    assert stream.with_body is True
+    assert stream.output_encoding == (env.stdout_encoding or 'utf8')
+```
+
+# Generated at 2024-06-02 16:52:38.383720
+```python
+    class MockHTTPMessage(HTTPMessage):
+        def __init__(self, headers, body):
+            self.headers = headers
+            self.body = body
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    headers = 'HTTP/1.1 200 OK\r\nContent-Type: text/plain'
+    body = b'Hello, world!'
+    msg = MockHTTPMessage(headers, body)
+
+    # Test with headers and body
+    stream = BaseStream(msg, with_headers=True, with_body=True)
+    result = b''.join(stream)
+    expected = headers.encode('utf8') + b'\r\n\r\n' + body
+    assert result == expected
+
+    # Test with headers only
+    stream = BaseStream(msg, with_headers=True, with_body=False)
+    result = b''.join(stream)
+    expected = headers.encode
+
+# Generated at 2024-06-02 16:52:40.707029
+```python
+    class MockMessage:
+        encoding = 'utf8'
+        content_type = 'text/plain; charset=utf8'
+        headers = 'Content-Type: text/plain; charset=utf8'
+
+    class MockFormatting:
+        def format_body(self, content, mime):
+            return content.upper()
+
+        def format_headers(self, headers):
+            return headers
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    msg = MockMessage()
+    formatting = MockFormatting()
+    conversion = MockConversion()
+    stream = PrettyStream(msg=msg, formatting=formatting, conversion=conversion)
+
+    input_chunk = "hello world"
+    expected_output = b"HELLO WORLD"
+
+    assert stream.process_body(input_chunk) == expected_output
+```
+
+# Generated at 2024-06-02 16:52:43.974803
+```python
+    from httpie.models import HTTPResponse
+    from httpie.context import Environment
+    from httpie.output.processing import Conversion, Formatting
+
+    # Mock objects
+    class MockHTTPResponse(HTTPResponse):
+        def __init__(self, headers, body, encoding='utf8', content_type='text/plain'):
+            self.headers = headers
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+
+        def iter_lines(self, chunk_size):
+            for line in self.body.splitlines(keepends=True):
+                yield line.encode(self.encoding), b'\n'
+
+    class MockConversion(Conversion):
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting(Formatting):
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    # Test data
+    headers = 'HTTP/1.1 200 OK\r\nContent-Type:
+
+# Generated at 2024-06-02 16:52:46.690652
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8'):
+            self.body = body
+            self.encoding = encoding
+
+        def iter_lines(self, chunk_size):
+            lines = self.body.split(b'\n')
+            for line in lines:
+                yield line, b'\n'
+
+    env = Environment()
+    env.stdout_isatty = True
+    env.stdout_encoding = 'utf8'
+
+    # Test case 1: Normal text body
+    msg = MockHTTPMessage(b'Hello\nWorld\n')
+    stream = EncodedStream(msg=msg, env=env)
+    result = b''.join(stream.iter_body())
+    assert result == b'Hello\nWorld\n'
+
+    # Test case 2: Binary data in body
+    msg = MockHTTPMessage(b'Hello\0World\n')
+    stream = EncodedStream(msg=msg, env=env)
+    try:
+        result = b''.join(stream
+
+# Generated at 2024-06-02 16:52:49.425139
+```python
+    from httpie.models import HTTPMessage
+    from httpie.output.processing import Conversion, Formatting
+
+    class MockHTTPMessage(HTTPMessage):
+        def __init__(self, headers, body, encoding='utf8', content_type='text/plain'):
+            self.headers = headers
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+        def iter_lines(self, chunk_size):
+            lines = self.body.split(b'\n')
+            for line in lines:
+                yield line, b'\n'
+
+    headers = 'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n'
+    body = b'Hello, world!\nThis is a test.\n'
+    msg = MockHTTPMessage(headers, body)
+
+    conversion = Conversion
+
+# Generated at 2024-06-02 16:54:09.772913
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8', content_type='text/plain'):
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+            self.headers = 'HTTP/1.1 200 OK\r\nContent-Type: {}\r\n'.format(content_type)
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    msg = MockHTTPMessage(b'Hello, world!')
+    conversion = MockConversion()
+    formatting = MockFormatting()
+    stream = BufferedPrettyStream(msg=msg, conversion=conversion, formatting=formatting)
+
+   
+
+# Generated at 2024-06-02 16:54:14.338574
+```python
+    from unittest.mock import Mock
+
+    # Mock the necessary components
+    mock_msg = Mock()
+    mock_conversion = Mock()
+    mock_formatting = Mock()
+    mock_env = Mock()
+
+    # Set up the mock environment
+    mock_env.stdout_isatty = True
+    mock_env.stdout_encoding = 'utf8'
+    mock_msg.content_type = 'text/plain'
+    mock_msg.encoding = 'utf8'
+    mock_msg.headers = 'Mock Headers'
+
+    # Create an instance of BufferedPrettyStream
+    stream = BufferedPrettyStream(
+        msg=mock_msg,
+        conversion=mock_conversion,
+        formatting=mock_formatting,
+        env=mock_env
+    )
+
+    # Assertions to verify the constructor behavior
+    assert stream.msg == mock_msg
+    assert stream.conversion == mock_conversion
+    assert stream.formatting == mock_formatting
+    assert stream.output_encoding == 'utf8'
+    assert stream.mime == 'text/plain'
+```
+
+# Generated at 2024-06-02 16:54:17.487487
+```python
+    class MockMessage:
+        encoding = 'utf8'
+        content_type = 'text/plain; charset=utf8'
+        headers = 'Content-Type: text/plain; charset=utf8'
+
+    class MockFormatting:
+        def format_body(self, content, mime):
+            return f"Formatted: {content}"
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    msg = MockMessage()
+    formatting = MockFormatting()
+    conversion = MockConversion()
+    stream = PrettyStream(msg=msg, formatting=formatting, conversion=conversion)
+
+    # Test with bytes input
+    input_bytes = b"Hello, World!"
+    expected_output = b"Formatted: Hello, World!"
+    assert stream.process_body(input_bytes) == expected_output
+
+    # Test with string input
+    input_str = "Hello, World!"
+    expected_output = b"Formatted: Hello, World!"
+    assert stream.process_body(input_str) == expected_output
+```
+
+# Generated at 2024-06-02 16:54:20.886535
+```python
+    class MockHTTPMessage:
+        def __init__(self, headers, body, encoding='utf8', content_type='text/plain'):
+            self.headers = headers
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+
+        def iter_lines(self, chunk_size):
+            lines = self.body.split(b'\n')
+            for line in lines:
+                yield line, b'\n'
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    msg = MockHTTPMessage(
+        headers="HTTP/1.1 200 OK",
+        body=b"line1\nline2\nline3\n"
+    )
+    conversion = MockConversion()
+    formatting = MockFormatting()
+    stream = PrettyStream(msg=msg, conversion=conversion, formatting=format
+
+# Generated at 2024-06-02 16:54:24.265559
+```python
+    class MockHTTPMessage:
+        def __init__(self, headers, body, encoding='utf8', content_type='text/plain'):
+            self.headers = headers
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+
+        def iter_lines(self, chunk_size):
+            lines = self.body.split(b'\n')
+            for line in lines:
+                yield line, b'\n'
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    msg = MockHTTPMessage(
+        headers="HTTP/1.1 200 OK\nContent-Type: text/plain",
+        body=b"Hello\nWorld\n"
+    )
+    conversion = MockConversion()
+    formatting = MockFormatting()
+    stream = PrettyStream(msg=msg, conversion=conversion, formatting
+
+# Generated at 2024-06-02 16:54:26.491207
+```python
+    class MockHTTPMessage:
+        def __init__(self, headers, content_type):
+            self.headers = headers
+            self.content_type = content_type
+
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers.upper()
+
+    msg = MockHTTPMessage(headers="Content-Type: text/html", content_type="text/html")
+    formatting = MockFormatting()
+    conversion = Conversion()
+    stream = PrettyStream(msg=msg, formatting=formatting, conversion=conversion)
+
+    expected_headers = b"CONTENT-TYPE: TEXT/HTML"
+    assert stream.get_headers() == expected_headers
+```
+
+# Generated at 2024-06-02 16:54:29.466662
+```python
+    from httpie.models import HTTPMessage
+    from httpie.output.processing import Conversion, Formatting
+
+    class MockHTTPMessage(HTTPMessage):
+        def __init__(self, headers, body, encoding='utf8', content_type='text/plain'):
+            self.headers = headers
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    class MockConversion(Conversion):
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting(Formatting):
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    msg = MockHTTPMessage(headers="HTTP/1.1 200 OK", body=b"Hello, World!")
+    conversion = MockConversion()
+    formatting = Mock
+
+# Generated at 2024-06-02 16:54:33.321528
+```python
+    class MockHTTPMessage:
+        def __init__(self, headers, body, encoding='utf8', content_type='text/plain'):
+            self.headers = headers
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+
+        def iter_lines(self, chunk_size):
+            lines = self.body.split(b'\n')
+            for line in lines:
+                yield line, b'\n'
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    msg = MockHTTPMessage(
+        headers="HTTP/1.1 200 OK\nContent-Type: text/plain",
+        body=b"Hello\nWorld\n"
+    )
+    conversion = MockConversion()
+    formatting = MockFormatting()
+    stream = PrettyStream(msg=msg, conversion=conversion, formatting
+
+# Generated at 2024-06-02 16:54:37.844610
+```python
+    class MockHTTPMessage(HTTPMessage):
+        def __init__(self, headers, body):
+            self.headers = headers
+            self.body = body
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    headers = 'HTTP/1.1 200 OK\r\nContent-Type: text/plain'
+    body = b'Hello, world!'
+    msg = MockHTTPMessage(headers, body)
+
+    # Test with headers and body
+    stream = BaseStream(msg, with_headers=True, with_body=True)
+    result = b''.join(stream)
+    expected = headers.encode('utf8') + b'\r\n\r\n' + body
+    assert result == expected, f'Expected {expected}, but got {result}'
+
+    # Test with headers only
+    stream = BaseStream(msg, with_headers=True, with_body=False)
+   
+
+# Generated at 2024-06-02 16:54:40.170227
+```python
+    class MockHTTPMessage:
+        def __init__(self, body):
+            self.body = body
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    body = b"Test body content for RawStream"
+    msg = MockHTTPMessage(body)
+    stream = RawStream(msg=msg, chunk_size=10)
+
+    expected_chunks = [body[i:i + 10] for i in range(0, len(body), 10)]
+    actual_chunks = list(stream.iter_body())
+
+    assert actual_chunks == expected_chunks
+```
+
+# Generated at 2024-06-02 16:57:16.737092
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8'):
+            self.body = body
+            self.encoding = encoding
+
+        def iter_lines(self, chunk_size):
+            lines = self.body.split(b'\n')
+            for line in lines:
+                yield line, b'\n'
+
+    env = Environment()
+    env.stdout_isatty = True
+    env.stdout_encoding = 'utf8'
+
+    # Test case 1: Normal text body
+    msg = MockHTTPMessage(b'Hello\nWorld\n')
+    stream = EncodedStream(msg=msg, env=env)
+    result = b''.join(stream.iter_body())
+    assert result == b'Hello\nWorld\n'
+
+    # Test case 2: Binary data in body
+    msg = MockHTTPMessage(b'Hello\0World\n')
+    stream = EncodedStream(msg=msg, env=env)
+    try:
+        result = b''.join(stream
+
+# Generated at 2024-06-02 16:57:20.410012
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8', content_type='text/plain'):
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+            self.headers = 'HTTP/1.1 200 OK\r\nContent-Type: {}\r\n'.format(content_type)
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    msg = MockHTTPMessage(b'Hello, world!')
+    conversion = MockConversion()
+    formatting = MockFormatting()
+    stream = BufferedPrettyStream(msg=msg, conversion=conversion, formatting=formatting)
+
+   
+
+# Generated at 2024-06-02 16:57:22.558723
+```python
+    class MockMessage:
+        encoding = 'utf8'
+        content_type = 'text/plain; charset=utf8'
+        headers = 'Content-Type: text/plain; charset=utf8'
+
+    class MockFormatting:
+        def format_body(self, content, mime):
+            return content.upper()
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    msg = MockMessage()
+    formatting = MockFormatting()
+    conversion = MockConversion()
+    stream = PrettyStream(msg=msg, formatting=formatting, conversion=conversion)
+
+    input_chunk = "test body"
+    expected_output = b"TEST BODY"
+
+    assert stream.process_body(input_chunk) == expected_output
+```
+
+# Generated at 2024-06-02 16:57:24.798209
+```python
+    from httpie.models import HTTPMessage
+    from httpie.output.processing import Formatting, Conversion
+
+    class MockHTTPMessage(HTTPMessage):
+        def __init__(self, headers, content_type):
+            self.headers = headers
+            self.content_type = content_type
+
+    class MockFormatting(Formatting):
+        def format_headers(self, headers):
+            return headers.upper()
+
+    msg = MockHTTPMessage(headers="Content-Type: text/html", content_type="text/html")
+    formatting = MockFormatting()
+    conversion = Conversion()
+
+    stream = PrettyStream(msg=msg, conversion=conversion, formatting=formatting)
+    headers = stream.get_headers()
+
+    assert headers == b"CONTENT-TYPE: TEXT/HTML"
+```
+
+# Generated at 2024-06-02 16:57:29.819733
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8', content_type='text/plain'):
+            self.body = body
+            self.encoding = encoding
+            self.content_type = content_type
+            self.headers = 'HTTP/1.1 200 OK\r\nContent-Type: {}\r\n'.format(content_type)
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    class MockFormatting:
+        def format_headers(self, headers):
+            return headers
+
+        def format_body(self, content, mime):
+            return content
+
+    msg = MockHTTPMessage(b'Hello, World!')
+    conversion = MockConversion()
+    formatting = MockFormatting()
+    stream = BufferedPrettyStream(msg=msg, conversion=conversion, formatting=formatting)
+
+   
+
+# Generated at 2024-06-02 16:57:32.672182
+```python
+    class MockHTTPMessage(HTTPMessage):
+        def __init__(self, headers, body):
+            self.headers = headers
+            self.body = body
+
+        def iter_body(self, chunk_size):
+            for i in range(0, len(self.body), chunk_size):
+                yield self.body[i:i + chunk_size]
+
+    headers = 'HTTP/1.1 200 OK\r\nContent-Type: text/plain'
+    body = b'Hello, world!'
+    msg = MockHTTPMessage(headers, body)
+
+    # Test with headers and body
+    stream = BaseStream(msg, with_headers=True, with_body=True)
+    result = b''.join(stream)
+    expected = headers.encode('utf8') + b'\r\n\r\n' + body
+    assert result == expected
+
+    # Test with headers only
+    stream = BaseStream(msg, with_headers=True, with_body=False)
+    result = b''.join(stream)
+    expected = headers.encode
+
+# Generated at 2024-06-02 16:57:34.228665
+```python
+    msg = HTTPMessage(headers="Test-Headers", body="Test-Body", encoding="utf8")
+    env = Environment()
+    stream = EncodedStream(msg=msg, env=env, with_headers=True, with_body=True)
+    
+    assert stream.msg == msg
+    assert stream.with_headers is True
+    assert stream.with_body is True
+    assert stream.output_encoding == (env.stdout_encoding or 'utf8')
+```
+
+# Generated at 2024-06-02 16:57:36.658219
+```python
+    class MockMessage:
+        encoding = 'utf8'
+        content_type = 'text/plain; charset=utf8'
+        headers = 'Content-Type: text/plain; charset=utf8'
+
+    class MockFormatting:
+        def format_body(self, content, mime):
+            return content.upper()
+
+        def format_headers(self, headers):
+            return headers
+
+    class MockConversion:
+        def get_converter(self, mime):
+            return None
+
+    msg = MockMessage()
+    formatting = MockFormatting()
+    conversion = MockConversion()
+    stream = PrettyStream(msg=msg, formatting=formatting, conversion=conversion)
+
+    input_chunk = "hello world"
+    expected_output = b"HELLO WORLD"
+
+    assert stream.process_body(input_chunk) == expected_output
+```
+
+# Generated at 2024-06-02 16:57:39.365901
+```python
+    class MockHTTPMessage:
+        def __init__(self, body, encoding='utf8'):
+            self.body = body
+            self.encoding = encoding
+
+        def iter_lines(self, chunk_size):
+            lines = self.body.split(b'\n')
+            for line in lines:
+                yield line, b'\n'
+
+    env = Environment()
+    env.stdout_isatty = True
+    env.stdout_encoding = 'utf8'
+
+    # Test case 1: Normal text body
+    msg = MockHTTPMessage(b'Hello\nWorld\n')
+    stream = EncodedStream(msg=msg, env=env)
+    result = b''.join(stream.iter_body())
+    assert result == b'Hello\nWorld\n'
+
+    # Test case 2: Binary data in body
+    msg = MockHTTPMessage(b'Hello\0World\n')
+    stream = EncodedStream(msg=msg, env=env)
+    try:
+        result = b''.join(stream
+
+# Generated at 2024-06-02 16:57:40.923689
+```python
+    msg = HTTPMessage(headers="Test-Headers", body="Test-Body", encoding="utf8")
+    env = Environment()
+    stream = EncodedStream(msg=msg, env=env, with_headers=True, with_body=True)
+    
+    assert stream.msg == msg
+    assert stream.with_headers is True
+    assert stream.with_body is True
+    assert stream.output_encoding == (env.stdout_encoding or 'utf8')
+```

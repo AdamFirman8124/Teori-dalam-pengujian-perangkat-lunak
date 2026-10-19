@@ -1,0 +1,1421 @@
+
+
+# Generated at 2024-03-18 07:36:52.439981
+```python
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        module_name = os.path.basename(temp_file.name)
+        temp_file.write(b'foo = "bar"\n')
+        temp_file.flush()
+        os.environ['TEST_ENV_VAR'] = os.path.dirname(temp_file.name)
+        loaded_module = load_module_from_file_location(
+            f"{module_name.split('.')[0]}",
+            f"/${{TEST_ENV_VAR}}/{module_name}"
+        )
+        assert loaded_module.foo == "bar"
+        os.unlink(temp_file.name)
+        del os.environ['TEST_ENV_VAR']
+
+    # Test loading module from a file without environment variable in path
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        module_name = os.path.basename(temp_file.name)
+        temp_file.write(b'baz = "qux"\n')
+        temp_file.flush()
+
+
+# Generated at 2024-03-18 07:37:04.280940
+```python
+    # Set up environment variable for testing
+    os_environ["TEST_ENV_VAR"] = "test_value"
+
+    # Test with a direct path
+    module_name = "test_module"
+    test_file_path = "/tmp/test_module.py"
+    with open(test_file_path, "w") as test_file:
+        test_file.write("test_variable = 'test_success'")
+    loaded_module = load_module_from_file_location(test_file_path)
+    assert hasattr(loaded_module, "test_variable"), "Module should have 'test_variable'"
+    assert loaded_module.test_variable == "test_success", "The 'test_variable' should be 'test_success'"
+
+    # Test with an environment variable in the path
+    test_file_path_with_env = "/tmp/${TEST_ENV_VAR}/test_module.py"
+    Path("/tmp/test_value").mkdir(parents=True, exist_ok=True)
+    loaded_module_env = load_module_from_file_location(test_file_path_with_env)
+    assert hasattr(
+
+# Generated at 2024-03-18 07:37:11.620792
+```python
+    from unittest.mock import patch, mock_open
+
+    # Test loading from a string path
+    with patch("builtins.open", mock_open(read_data="foo = 'bar'")):
+        module = load_module_from_file_location("path/to/fake_module.py")
+        assert module.foo == 'bar'
+
+    # Test loading from a Path object
+    fake_path = Path("path/to/fake_module.py")
+    with patch("builtins.open", mock_open(read_data="foo = 'baz'")):
+        module = load_module_from_file_location(fake_path)
+        assert module.foo == 'baz'
+
+    # Test loading from a bytes path
+    with patch("builtins.open", mock_open(read_data="foo = 'qux'")):
+        module = load_module_from_file_location(b"path/to/fake_module.py")
+        assert module.foo == 'qux'
+
+    # Test loading with environment variable in path
+    with patch.dict(os_environ,
+
+# Generated at 2024-03-18 07:37:22.557000
+```python
+    assert str_to_bool("y") is True
+    assert str_to_bool("yes") is True
+    assert str_to_bool("YEP") is True
+    assert str_to_bool("yup") is True
+    assert str_to_bool("T") is True
+    assert str_to_bool("true") is True
+    assert str_to_bool("on") is True
+    assert str_to_bool("enable") is True
+    assert str_to_bool("enabled") is True
+    assert str_to_bool("1") is True
+
+    assert str_to_bool("n") is False
+    assert str_to_bool("no") is False
+    assert str_to_bool("f") is False
+    assert str_to_bool("false") is False
+    assert str_to_bool("off") is False
+    assert str_to_bool("disable") is False
+    assert str_to_bool("disabled") is False
+    assert str_to_bool("0")
+
+# Generated at 2024-03-18 07:37:29.666523
+```python
+    assert str_to_bool("y") is True
+    assert str_to_bool("yes") is True
+    assert str_to_bool("YEP") is True
+    assert str_to_bool("Yup") is True
+    assert str_to_bool("t") is True
+    assert str_to_bool("True") is True
+    assert str_to_bool("ON") is True
+    assert str_to_bool("enable") is True
+    assert str_to_bool("Enabled") is True
+    assert str_to_bool("1") is True
+
+    assert str_to_bool("n") is False
+    assert str_to_bool("no") is False
+    assert str_to_bool("N") is False
+    assert str_to_bool("f") is False
+    assert str_to_bool("False") is False
+    assert str_to_bool("off") is False
+    assert str_to_bool("disable") is False
+    assert str_to_bool("Disabled")
+
+# Generated at 2024-03-18 07:37:41.537870
+```python
+    assert str_to_bool("y") is True
+    assert str_to_bool("yes") is True
+    assert str_to_bool("YEP") is True
+    assert str_to_bool("Yup") is True
+    assert str_to_bool("t") is True
+    assert str_to_bool("True") is True
+    assert str_to_bool("ON") is True
+    assert str_to_bool("enable") is True
+    assert str_to_bool("Enabled") is True
+    assert str_to_bool("1") is True
+
+    assert str_to_bool("n") is False
+    assert str_to_bool("no") is False
+    assert str_to_bool("N") is False
+    assert str_to_bool("f") is False
+    assert str_to_bool("False") is False
+    assert str_to_bool("off") is False
+    assert str_to_bool("disable") is False
+    assert str_to_bool("Disabled")
+
+# Generated at 2024-03-18 07:37:50.105919
+```python
+    assert str_to_bool("y")
+    assert str_to_bool("yes")
+    assert str_to_bool("YEP")
+    assert str_to_bool("Yup")
+    assert str_to_bool("t")
+    assert str_to_bool("True")
+    assert str_to_bool("ON")
+    assert str_to_bool("enable")
+    assert str_to_bool("Enabled")
+    assert str_to_bool("1")
+
+    assert not str_to_bool("n")
+    assert not str_to_bool("no")
+    assert not str_to_bool("F")
+    assert not str_to_bool("false")
+    assert not str_to_bool("Off")
+    assert not str_to_bool("disable")
+    assert not str_to_bool("Disabled")
+    assert not str_to_bool("0")
+
+    try:
+        str_to_bool("maybe")
+    except ValueError as e:
+        assert str(e) == "Invalid truth value maybe"
+    else:
+        assert False, "ValueError was not raised for '
+
+# Generated at 2024-03-18 07:38:01.563550
+```python
+    assert str_to_bool("y") is True
+    assert str_to_bool("yes") is True
+    assert str_to_bool("YEP") is True
+    assert str_to_bool("yup") is True
+    assert str_to_bool("T") is True
+    assert str_to_bool("true") is True
+    assert str_to_bool("on") is True
+    assert str_to_bool("enable") is True
+    assert str_to_bool("enabled") is True
+    assert str_to_bool("1") is True
+
+    assert str_to_bool("n") is False
+    assert str_to_bool("no") is False
+    assert str_to_bool("f") is False
+    assert str_to_bool("false") is False
+    assert str_to_bool("off") is False
+    assert str_to_bool("disable") is False
+    assert str_to_bool("disabled") is False
+    assert str_to_bool("0")
+
+# Generated at 2024-03-18 07:38:09.587499
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+            module_content = "foo = 'bar'"
+            temp_file.write(module_content.encode('utf-8'))
+            temp_file.close()
+
+            env_var = 'TEST_LOAD_MODULE_PATH'
+            os.environ[env_var] = os.path.dirname(temp_file.name)
+            file_name = os.path.basename(temp_file.name)
+
+            try:
+                module = load_module_from_file_location(
+                    f"${{{env_var}}}/{file_name}"
+                )
+                assert module.foo == 'bar'
+            finally:
+                os.unlink(temp_file.name)
+                del os.environ[env_var]
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file
+
+# Generated at 2024-03-18 07:38:19.597488
+```python
+    # Test with a valid file path
+    module_name = "test_module"
+    test_file_path = "/tmp/test_module.py"
+    with open(test_file_path, "w") as test_module:
+        test_module.write("test_variable = 'test_value'")
+    loaded_module = load_module_from_file_location(test_file_path)
+    assert hasattr(loaded_module, "test_variable"), "Module does not have the expected attribute"
+    assert loaded_module.test_variable == "test_value", "Module attribute does not have the expected value"
+
+    # Test with a non-existent file path
+    non_existent_file_path = "/tmp/non_existent_module.py"
+    try:
+        load_module_from_file_location(non_existent_file_path)
+        assert False, "Expected LoadFileException for non-existent file path"
+    except LoadFileException:
+        pass
+
+    # Test with environment variable in file path
+    os_environ["TEST_ENV_VAR"] = "/tmp"
+    env
+
+# Generated at 2024-03-18 07:38:31.513924
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp:
+            module_name = os.path.basename(temp.name).replace(".py", "")
+            temp.write(b'foo = "bar"')
+            temp.flush()
+            os.environ["TEST_ENV_VAR"] = os.path.dirname(temp.name)
+            module = load_module_from_file_location(
+                f"{module_name}.py", "/tmp/${TEST_ENV_VAR}"
+            )
+            assert module.foo == "bar"
+            os.unlink(temp.name)
+            del os.environ["TEST_ENV_VAR"]
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp:
+            module_name = os.path.basename(temp.name).replace(".py
+
+# Generated at 2024-03-18 07:38:38.700921
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test with a simple Python file
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).replace(".py", "")
+        tmp.write(b"foo = 'bar'")
+        tmp.seek(0)
+        module = load_module_from_file_location(tmp.name)
+        assert module.foo == 'bar', "Module variable 'foo' should be 'bar'"
+
+    # Test with environment variable in file path
+    os.environ['TEST_ENV_VAR'] = 'test_env_value'
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).replace(".py", "")
+        tmp.write(b"env_var = 'test_env_value'")
+        tmp.seek(0)
+        file_path = f"/some/path/${{TEST_ENV_VAR}}/{module_name}.py"
+        module = load
+
+# Generated at 2024-03-18 07:38:39.448611
+```python
+import pytest
+import tempfile
+import os
+
+
+# Generated at 2024-03-18 07:38:47.113125
+```python
+    import tempfile
+    import os
+
+    # Test with a simple Python file
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).split('.')[0]
+        tmp.write(b'foo = "bar"\n')
+        tmp.flush()
+        module = load_module_from_file_location(tmp.name)
+        assert module.foo == "bar"
+
+    # Test with environment variable in file path
+    os.environ['TEST_ENV_VAR'] = 'test_env_var_value'
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).split('.')[0]
+        tmp.write(b'baz = "qux"\n')
+        tmp.flush()
+        file_path_with_env = f"/tmp/${{TEST_ENV_VAR}}/{module_name}.py"
+        module = load_module_from_file_location(file_path_with_env)
+        assert module.baz == "qux
+
+# Generated at 2024-03-18 07:38:53.785897
+```python
+    # Mock environment variables for testing
+    os_environ["TEST_VAR"] = "test_value"
+
+    # Test with a direct path
+    module_name = "test_module"
+    test_file_path = f"/tmp/{module_name}.py"
+    with open(test_file_path, "w") as test_file:
+        test_file.write("test_variable = 'test_success'")
+    loaded_module = load_module_from_file_location(test_file_path)
+    assert hasattr(loaded_module, "test_variable")
+    assert loaded_module.test_variable == "test_success"
+    os.remove(test_file_path)
+
+    # Test with an environment variable in the path
+    test_file_path_env = "/tmp/${TEST_VAR}.py"
+    with open(test_file_path_env.replace("${TEST_VAR}", os_environ["TEST_VAR"]), "w") as test_file:
+        test_file.write("test_variable = 'test_success_env'")
+    loaded_module_env = load_module_from_file_location(test_file_path_env
+
+# Generated at 2024-03-18 07:39:05.586779
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a valid Python file
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).replace(".py", "")
+        tmp.write(b"foo = 'bar'")
+        tmp.seek(0)
+        module = load_module_from_file_location(tmp.name)
+        assert module.foo == 'bar', "Module variable 'foo' should be 'bar'"
+
+    # Test loading module with environment variable in path
+    os.environ['TEST_ENV_VAR'] = 'test_env_value'
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).replace(".py", "")
+        tmp.write(b"foo = 'baz'")
+        tmp.seek(0)
+        module = load_module_from_file_location(f"/some/path/${{TEST_ENV_VAR}}/{module_name}.py")
+
+
+# Generated at 2024-03-18 07:39:17.995755
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".py") as temp:
+            module_content = "foo = 'bar'"
+            temp.write(module_content.encode('utf-8'))
+            temp.close()
+
+            env_var = "SANIC_TEST_TEMP_FILE"
+            os.environ[env_var] = temp.name
+            try:
+                module = load_module_from_file_location(f"/some/path/${{{env_var}}}")
+                assert module.foo == 'bar'
+            finally:
+                os.unlink(temp.name)
+                del os.environ[env_var]
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".py") as temp:
+            module_content = "foo = 'baz'"
+            temp.write(module
+
+# Generated at 2024-03-18 07:39:26.875774
+```python
+    # Setup environment variable for testing
+    os_environ["TEST_ENV_VAR"] = "test_value"
+
+    # Test with a direct path
+    module = load_module_from_file_location("tests/test_config.py")
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module should have attribute SOME_CONFIG_VAR"
+
+    # Test with an environment variable in the path
+    module = load_module_from_file_location("/some/path/${TEST_ENV_VAR}/test_config.py")
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module should have attribute SOME_CONFIG_VAR after loading with environment variable"
+
+    # Test with a Path object
+    module = load_module_from_file_location(Path("tests/test_config.py"))
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module should have attribute SOME_CONFIG_VAR when loaded with a Path object"
+
+    # Test with bytes path
+    module = load_module_from_file_location(b"tests/test_config.py")
+    assert hasattr(module, '
+
+# Generated at 2024-03-18 07:39:27.684275
+```python
+import pytest
+import tempfile
+import os
+
+
+# Generated at 2024-03-18 07:39:58.225817
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a valid Python file
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).replace(".py", "")
+        tmp.write(b"foo = 'bar'")
+        tmp.seek(0)
+        module = load_module_from_file_location(tmp.name)
+        assert module.foo == 'bar', "Module variable does not match expected value."
+
+    # Test loading module with environment variable in path
+    os.environ['TEST_ENV_VAR'] = 'test_env_value'
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).replace(".py", "")
+        tmp.write(b"env_var = 'test_env_value'")
+        tmp.seek(0)
+        module = load_module_from_file_location(f"/some/path/${{TEST_ENV_VAR}}/{module_name}.py")
+
+
+# Generated at 2024-03-18 07:40:09.776591
+```python
+    import tempfile
+    import os
+
+    # Test with a simple Python file
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).split('.')[0]
+        tmp.write(b'foo = "bar"\n')
+        tmp.flush()
+        module = load_module_from_file_location(tmp.name)
+        assert module.foo == "bar", "Module variable 'foo' should be 'bar'"
+
+    # Test with an environment variable in the file path
+    os.environ['TEST_ENV_VAR'] = 'test_env_var_value'
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).split('.')[0]
+        tmp.write(b'baz = "qux"\n')
+        tmp.flush()
+        file_path_with_env = f"/tmp/${{TEST_ENV_VAR}}/{module_name}.py"
+        os.symlink(tmp.name, file
+
+# Generated at 2024-03-18 07:40:15.704380
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a valid Python file
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).replace(".py", "")
+        tmp.write(b"foo = 'bar'")
+        tmp.flush()
+        module = load_module_from_file_location(tmp.name)
+        assert module.foo == 'bar'
+
+    # Test loading module with environment variable in path
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.environ['TEST_ENV_VAR'] = tmpdir
+        file_path = os.path.join(tmpdir, "test_module.py")
+        with open(file_path, "w") as f:
+            f.write("foo = 'baz'")
+        module = load_module_from_file_location("${TEST_ENV_VAR}/test_module.py")
+        assert module.foo == 'baz'
+        del os.environ['TEST_ENV_VAR']
+
+    # Test loading module from
+
+# Generated at 2024-03-18 07:40:24.965989
+```python
+    # Mock environment variables for testing
+    os_environ["TEST_VAR"] = "test_value"
+
+    # Test with a direct path
+    module_name = "test_module"
+    test_file_path = f"/tmp/{module_name}.py"
+    with open(test_file_path, "w") as test_file:
+        test_file.write("test_variable = 'test_success'")
+    loaded_module = load_module_from_file_location(test_file_path)
+    assert hasattr(loaded_module, "test_variable")
+    assert loaded_module.test_variable == "test_success"
+    os.remove(test_file_path)
+
+    # Test with an environment variable in the path
+    test_file_path_env = "/tmp/${TEST_VAR}.py"
+    with open(test_file_path_env.replace("${TEST_VAR}", os_environ["TEST_VAR"]), "w") as test_file:
+        test_file.write("test_variable = 'test_success_env'")
+    loaded_module_env = load_module_from_file_location(test_file_path_env
+
+# Generated at 2024-03-18 07:40:31.610777
+```python
+    from unittest.mock import patch
+
+    # Test loading module from a file with environment variable in path
+    with patch.dict(os_environ, {"MODULE_PATH": "test_module"}), \
+         patch("builtins.open", mock_open(read_data="foo = 'bar'")):
+        module = load_module_from_file_location("${MODULE_PATH}.py")
+        assert module.foo == 'bar'
+
+    # Test loading module from a file without environment variable in path
+    with patch("builtins.open", mock_open(read_data="foo = 'baz'")):
+        module = load_module_from_file_location("test_module.py")
+        assert module.foo == 'baz'
+
+    # Test loading module from a file with missing environment variable
+    with patch.dict(os_environ, clear=True):
+        with pytest.raises(LoadFileException):
+            load_module_from_file_location("${NON_EXISTENT_VAR}.py")
+
+    # Test loading module from a non-py file
+    with patch
+
+# Generated at 2024-03-18 07:40:37.427457
+```python
+    import tempfile
+    import os
+
+    # Test with a simple Python file
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).split('.')[0]
+        tmp.write(b'foo = "bar"\n')
+        tmp.flush()
+        module = load_module_from_file_location(tmp.name)
+        assert module.foo == "bar", "Module variable 'foo' should be 'bar'"
+
+    # Test with an environment variable in the file path
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).split('.')[0]
+        tmp.write(b'baz = "qux"\n')
+        tmp.flush()
+        env_var = "TEST_ENV_VAR_FOR_MODULE_LOADING"
+        os.environ[env_var] = os.path.dirname(tmp.name)
+        module = load_module_from_file_location(f"${{{env_var}}}/{module_name}.
+
+# Generated at 2024-03-18 07:40:43.303201
+```python
+    import tempfile
+    import os
+
+    # Test with a simple Python file
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).replace(".py", "")
+        tmp.write(b"foo = 'bar'")
+        tmp.seek(0)
+        module = load_module_from_file_location(tmp.name)
+        assert module.foo == 'bar', "Module variable 'foo' should be 'bar'"
+
+    # Test with environment variable in file path
+    os.environ['TEST_ENV_VAR'] = 'test_env_value'
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).replace(".py", "")
+        tmp.write(b"env_var = 'test_env_value'")
+        tmp.seek(0)
+        location_with_env = f"/some/path/${{TEST_ENV_VAR}}/{module_name}.py"
+        module = load_module_from_file
+
+# Generated at 2024-03-18 07:40:51.929187
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp:
+            module_content = "foo = 'bar'"
+            temp.write(module_content.encode('utf-8'))
+            temp.close()
+
+            env_var = "SANIC_TEST_TEMP_FILE"
+            os.environ[env_var] = temp.name
+            try:
+                module = load_module_from_file_location(f"/some/path/${{{env_var}}}")
+                assert module.foo == 'bar'
+            finally:
+                os.unlink(temp.name)
+                del os.environ[env_var]
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp:
+            module_content = "foo = 'baz'"
+            temp.write(module
+
+# Generated at 2024-03-18 07:40:59.101462
+```python
+    import tempfile
+    import os
+
+    # Test with a simple Python file
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).replace(".py", "")
+        tmp.write(b'foo = "bar"\n')
+        tmp.flush()
+        os.environ["TEST_ENV_VAR"] = os.path.dirname(tmp.name)
+        module = load_module_from_file_location(f"{module_name}", f"${{TEST_ENV_VAR}}/{module_name}.py")
+        assert module.foo == "bar", "Module did not load correctly with environment variable"
+
+    # Test with a non-existent environment variable
+    try:
+        load_module_from_file_location("non_existent_module", "/path/${NON_EXISTENT_VAR}/module.py")
+        assert False, "LoadFileException not raised for non-existent environment variable"
+    except LoadFileException:
+        pass
+
+    # Test with a non-Python file
+    with tempfile
+
+# Generated at 2024-03-18 07:41:05.591136
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.py') as temp:
+            module_content = "foo = 'bar'"
+            temp.write(module_content.encode('utf-8'))
+            temp.close()
+
+            env_var = 'TEST_ENV_VAR_FOR_MODULE_LOADING'
+            os.environ[env_var] = os.path.dirname(temp.name)
+            module_name = os.path.basename(temp.name)[:-3]  # remove .py extension
+
+            try:
+                module = load_module_from_file_location(
+                    f"{module_name}",
+                    f"/${env_var}/{module_name}.py"
+                )
+                assert hasattr(module, 'foo')
+                assert module.foo == 'bar'
+            finally:
+                os.unlink(temp.name)
+                del os.environ[env_var]
+
+    # Test loading module from a file without environment
+
+# Generated at 2024-03-18 07:41:12.725135
+```python
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        module_content = "TEST_VARIABLE = 'test_value'"
+        temp_file.write(module_content.encode('utf-8'))
+        temp_file.close()
+
+        env_var_name = "TEST_ENV_VAR_FOR_MODULE_LOADING"
+        os.environ[env_var_name] = os.path.dirname(temp_file.name)
+        module_name = os.path.basename(temp_file.name).replace('.py', '')
+
+        try:
+            loaded_module = load_module_from_file_location(
+                f"{module_name}",
+                f"/${env_var_name}/{module_name}.py"
+            )
+            assert hasattr(loaded_module, 'TEST_VARIABLE'), "Module does not have attribute TEST_VARIABLE"
+            assert loaded_module.TEST_VARIABLE == 'test_value', "TEST_VARIABLE does not equal 'test_value'"
+        finally:
+            os.remove(temp_file.name)
+            del os
+
+# Generated at 2024-03-18 07:41:30.452698
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+            module_content = "foo = 'bar'"
+            tmp.write(module_content.encode('utf-8'))
+            tmp.seek(0)
+            os.environ['TEST_ENV_VAR'] = os.path.dirname(tmp.name)
+            module_name = os.path.basename(tmp.name).replace('.py', '')
+            module_path = "${TEST_ENV_VAR}/" + module_name + ".py"
+            loaded_module = load_module_from_file_location(module_path)
+            assert hasattr(loaded_module, 'foo')
+            assert loaded_module.foo == 'bar'
+            os.unlink(tmp.name)
+            del os.environ['TEST_ENV_VAR']
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile
+
+# Generated at 2024-03-18 07:41:41.464748
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp:
+            module_content = "foo = 'bar'"
+            temp.write(module_content.encode('utf-8'))
+            temp.close()
+
+            env_var = "SANIC_TEST_TEMP_FILE"
+            os.environ[env_var] = temp.name
+            try:
+                module = load_module_from_file_location(f"/some/path/${{{env_var}}}")
+                assert module.foo == 'bar'
+            finally:
+                os.unlink(temp.name)
+                del os.environ[env_var]
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp:
+            module_content = "foo = 'baz'"
+            temp.write(module
+
+# Generated at 2024-03-18 07:41:49.978352
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+            module_content = "foo = 'bar'"
+            temp_file.write(module_content.encode('utf-8'))
+            temp_file.close()
+
+            env_var = 'TEST_LOAD_MODULE_PATH'
+            os.environ[env_var] = os.path.dirname(temp_file.name)
+            file_name = os.path.basename(temp_file.name)
+
+            try:
+                module = load_module_from_file_location(
+                    f"${{{env_var}}}/{file_name}"
+                )
+                assert module.foo == 'bar'
+            finally:
+                os.unlink(temp_file.name)
+                del os.environ[env_var]
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file
+
+# Generated at 2024-03-18 07:42:02.176592
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+            module_content = "foo = 'bar'"
+            temp_file.write(module_content.encode('utf-8'))
+            temp_file.close()
+
+            env_var = 'TEST_LOAD_MODULE_PATH'
+            os.environ[env_var] = os.path.dirname(temp_file.name)
+            file_name = os.path.basename(temp_file.name)
+
+            try:
+                module = load_module_from_file_location(
+                    f"${{{env_var}}}/{file_name}"
+                )
+                assert module.foo == 'bar'
+            finally:
+                os.unlink(temp_file.name)
+                del os.environ[env_var]
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file
+
+# Generated at 2024-03-18 07:42:13.506840
+```python
+    import tempfile
+    import os
+
+    # Test with a simple Python file
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).split('.')[0]
+        tmp.write(b'foo = "bar"\n')
+        tmp.flush()
+        module = load_module_from_file_location(tmp.name)
+        assert module.foo == "bar", "Module did not load correctly with .py file"
+
+    # Cleanup the temporary file
+    os.unlink(tmp.name)
+
+    # Test with environment variable in file path
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).split('.')[0]
+        tmp.write(b'baz = "qux"\n')
+        tmp.flush()
+        env_var = "TEST_ENV_VAR_FOR_MODULE_LOADING"
+        os.environ[env_var] = os.path.dirname(tmp.name)
+        module = load_module_from_file_location
+
+# Generated at 2024-03-18 07:42:20.871942
+```python
+    # Mock environment variables for testing
+    os_environ["TEST_ENV_VAR"] = "test_value"
+
+    # Test with a direct path
+    module_name = "test_module"
+    test_file_path = "/tmp/test_module.py"
+    with open(test_file_path, "w") as f:
+        f.write("test_variable = 'test_success'")
+    loaded_module = load_module_from_file_location(test_file_path)
+    assert hasattr(loaded_module, "test_variable")
+    assert loaded_module.test_variable == "test_success"
+
+    # Test with an environment variable in the path
+    test_file_path_with_env = "/tmp/${TEST_ENV_VAR}_module.py"
+    loaded_module_env = load_module_from_file_location(test_file_path_with_env)
+    assert hasattr(loaded_module_env, "test_variable")
+    assert loaded_module_env.test_variable == "test_success"
+
+    # Test with a non-Python file
+    non_python_file_path = "/tmp/test_config.cfg
+
+# Generated at 2024-03-18 07:42:30.141677
+```python
+    from unittest.mock import patch
+
+    # Test loading module from a file path
+    with patch("builtins.open", mock_open(read_data="test_var = 'test'")):
+        module = load_module_from_file_location("test_module.py")
+        assert module.test_var == 'test'
+
+    # Test loading module with environment variable in path
+    with patch.dict(os_environ, {"MODULE_PATH": "test/path"}), \
+         patch("builtins.open", mock_open(read_data="env_var = 'env_test'")):
+        module = load_module_from_file_location("test_module_name", "/${MODULE_PATH}/test_module.py")
+        assert module.env_var == 'env_test'
+
+    # Test loading module from a string reference
+    with patch("sanic.helpers.import_string") as mock_import_string:
+        mock_import_string.return_value = types.ModuleType("string_module")
+        module = load_module_from_file_location("string_module")
+        assert isinstance(module
+
+# Generated at 2024-03-18 07:42:39.283522
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp:
+            module_name = os.path.basename(temp.name).replace(".py", "")
+            temp.write(b'foo = "bar"\n')
+            temp.flush()
+            os.environ["TEST_ENV_VAR"] = os.path.dirname(temp.name)
+            module = load_module_from_file_location(
+                f"{module_name}.py", "/tmp/${TEST_ENV_VAR}"
+            )
+            assert module.foo == "bar"
+            os.unlink(temp.name)
+            del os.environ["TEST_ENV_VAR"]
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp:
+            module_name = os.path.basename(temp.name).replace(".
+
+# Generated at 2024-03-18 07:42:46.866582
+```python
+    # Setup environment variable for testing
+    os_environ["TEST_ENV_VAR"] = "test_value"
+
+    # Test with a direct path
+    module = load_module_from_file_location("tests/test_config.py")
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module should have attribute SOME_CONFIG_VAR"
+
+    # Test with an environment variable in the path
+    module = load_module_from_file_location("/some/path/${TEST_ENV_VAR}/test_config.py")
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module should have attribute SOME_CONFIG_VAR"
+
+    # Test with a Path object
+    module = load_module_from_file_location(Path("tests/test_config.py"))
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module should have attribute SOME_CONFIG_VAR"
+
+    # Test with bytes path
+    module = load_module_from_file_location(b"tests/test_config.py")
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module should have attribute SOME
+
+# Generated at 2024-03-18 07:42:56.095888
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+            module_content = "foo = 'bar'"
+            tmp.write(module_content.encode('utf-8'))
+            tmp.seek(0)
+            os.environ['TEST_ENV_VAR'] = os.path.dirname(tmp.name)
+            module_name = os.path.basename(tmp.name)[:-3]  # Remove .py extension
+            module_path = "${TEST_ENV_VAR}/" + module_name
+            loaded_module = load_module_from_file_location(module_path)
+            assert hasattr(loaded_module, 'foo')
+            assert loaded_module.foo == 'bar'
+            os.unlink(tmp.name)
+            del os.environ['TEST_ENV_VAR']
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+       
+
+# Generated at 2024-03-18 07:43:14.995946
+```python
+    # Setup environment variable for testing
+    os_environ["TEST_ENV_VAR"] = "test_value"
+
+    # Test with a direct path
+    module = load_module_from_file_location("tests/test_config.py")
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module should have attribute SOME_CONFIG_VAR"
+
+    # Test with an environment variable in the path
+    module = load_module_from_file_location("tests/${TEST_ENV_VAR}/config.py")
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module should have attribute SOME_CONFIG_VAR"
+
+    # Test with a Path object
+    module = load_module_from_file_location(Path("tests/test_config.py"))
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module should have attribute SOME_CONFIG_VAR"
+
+    # Test with a bytes object
+    module = load_module_from_file_location(b"tests/test_config.py")
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module should have attribute SOME_CONFIG
+
+# Generated at 2024-03-18 07:43:21.275392
+```python
+    from unittest.mock import patch, mock_open
+
+    # Test loading from a string path
+    with patch("builtins.open", mock_open(read_data="test_var = 'test'")):
+        module = load_module_from_file_location("test_module.py")
+        assert module.test_var == 'test'
+
+    # Test loading from a Path object
+    path = Path("test_module.py")
+    with patch("builtins.open", mock_open(read_data="test_var = 'test'")):
+        module = load_module_from_file_location(path)
+        assert module.test_var == 'test'
+
+    # Test loading from a bytes path
+    with patch("builtins.open", mock_open(read_data="test_var = 'test'")):
+        module = load_module_from_file_location(b"test_module.py")
+        assert module.test_var == 'test'
+
+    # Test loading with environment variable in path
+    with patch.dict(os_environ, {"MODULE_PATH": "test
+
+# Generated at 2024-03-18 07:43:27.782746
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp:
+            module_name = os.path.basename(temp.name).replace(".py", "")
+            temp.write(b'foo = "bar"\n')
+            temp.flush()
+            os.environ["TEST_ENV_VAR"] = os.path.dirname(temp.name)
+            module = load_module_from_file_location(
+                f"{module_name}", "${TEST_ENV_VAR}/" + os.path.basename(temp.name)
+            )
+            assert module.foo == "bar"
+            os.unlink(temp.name)
+            del os.environ["TEST_ENV_VAR"]
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp:
+            module_name = os.path.basename(temp
+
+# Generated at 2024-03-18 07:43:38.631776
+```python
+    # Setup environment variable for testing
+    os_environ["TEST_ENV_VAR"] = "test_value"
+
+    # Test with a direct path
+    module = load_module_from_file_location("tests/test_config.py")
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module does not have the attribute."
+
+    # Test with an environment variable in the path
+    module = load_module_from_file_location("tests/${TEST_ENV_VAR}/test_config.py")
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module does not have the attribute after loading with env var."
+
+    # Test with a Path object
+    module = load_module_from_file_location(Path("tests/test_config.py"))
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module does not have the attribute when loaded with a Path object."
+
+    # Test with a non-existent file
+    try:
+        load_module_from_file_location("non_existent_file.py")
+    except IOError:
+        pass
+
+
+# Generated at 2024-03-18 07:43:46.524153
+```python
+    # Setup environment variable for testing
+    os_environ["TEST_ENV_VAR"] = "test_value"
+
+    # Test with a direct path
+    module_name = "test_module"
+    test_file_path = "/tmp/test_module.py"
+    with open(test_file_path, "w") as test_file:
+        test_file.write("test_variable = 'test_success'")
+    loaded_module = load_module_from_file_location(test_file_path)
+    assert hasattr(loaded_module, "test_variable"), "Module should have 'test_variable'"
+    assert loaded_module.test_variable == "test_success", "The 'test_variable' should be 'test_success'"
+
+    # Test with an environment variable in the path
+    test_file_path_with_env = "/tmp/${TEST_ENV_VAR}_module.py"
+    with open(test_file_path_with_env.replace("${TEST_ENV_VAR}", os_environ["TEST_ENV_VAR"]), "w") as test_file:
+        test_file.write("test_variable = '
+
+# Generated at 2024-03-18 07:43:52.360502
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+            module_content = "foo = 'bar'"
+            tmp.write(module_content.encode())
+            tmp.seek(0)
+            os.environ['TEST_ENV_VAR'] = os.path.dirname(tmp.name)
+            module_name = os.path.basename(tmp.name)[:-3]
+            module_path = "${TEST_ENV_VAR}/" + module_name
+            loaded_module = load_module_from_file_location(module_path)
+            assert hasattr(loaded_module, 'foo')
+            assert loaded_module.foo == 'bar'
+            os.unlink(tmp.name)
+            del os.environ['TEST_ENV_VAR']
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False
+
+# Generated at 2024-03-18 07:43:58.853262
+```python
+    # Mock environment variables for testing
+    os_environ["TEST_ENV_VAR"] = "test_value"
+
+    # Test with a direct path
+    module_name = "test_module"
+    test_file_path = "/tmp/test_module.py"
+    with open(test_file_path, "w") as f:
+        f.write("test_variable = 'test_success'")
+    loaded_module = load_module_from_file_location(test_file_path)
+    assert hasattr(loaded_module, "test_variable")
+    assert loaded_module.test_variable == "test_success"
+    os.remove(test_file_path)
+
+    # Test with an environment variable in the path
+    test_file_path_env = "/tmp/${TEST_ENV_VAR}.py"
+    with open(test_file_path_env.replace("${TEST_ENV_VAR}", os_environ["TEST_ENV_VAR"]), "w") as f:
+        f.write("test_variable_env = 'test_success_env'")
+    loaded_module_env = load_module_from_file_location(test_file_path_env)
+   
+
+# Generated at 2024-03-18 07:44:05.537957
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp:
+            module_name = os.path.basename(temp.name).replace(".py", "")
+            temp.write(b'foo = "bar"')
+            temp.flush()
+            os.environ["TEST_ENV_VAR"] = os.path.dirname(temp.name)
+            module = load_module_from_file_location(
+                f"{module_name}.py", "/tmp/${TEST_ENV_VAR}"
+            )
+            assert module.foo == "bar"
+            os.unlink(temp.name)
+            del os.environ["TEST_ENV_VAR"]
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp:
+            module_name = os.path.basename(temp.name).replace(".py
+
+# Generated at 2024-03-18 07:44:28.331040
+```python
+    import tempfile
+    import os
+
+    # Test with a simple Python file
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name)[:-3]
+        tmp.write(b'foo = "bar"\n')
+        tmp.flush()
+        os.environ["TEST_ENV_VAR"] = os.path.dirname(tmp.name)
+        module = load_module_from_file_location(
+            f"{module_name}", f"${{TEST_ENV_VAR}}/{module_name}.py"
+        )
+        assert module.foo == "bar", "Module did not load correctly with environment variable"
+
+    # Test with non-existent environment variable
+    try:
+        load_module_from_file_location("non_existent_module", "/path/${NON_EXISTENT_VAR}/module.py")
+        assert False, "LoadFileException not raised for non-existent environment variable"
+    except LoadFileException:
+        pass
+
+    # Test with non-Python file
+    with tempfile
+
+# Generated at 2024-03-18 07:44:39.731360
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+            module_content = "foo = 'bar'"
+            temp_file.write(module_content.encode('utf-8'))
+            temp_file.close()
+
+            env_var = 'TEST_LOAD_MODULE_PATH'
+            os.environ[env_var] = os.path.dirname(temp_file.name)
+            file_name = os.path.basename(temp_file.name)
+
+            try:
+                module = load_module_from_file_location(
+                    f"${{{env_var}}}/{file_name}"
+                )
+                assert module.foo == 'bar'
+            finally:
+                os.unlink(temp_file.name)
+                del os.environ[env_var]
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file
+
+# Generated at 2024-03-18 07:45:04.306118
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a valid file path
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).replace(".py", "")
+        tmp.write(b"foo = 'bar'")
+        tmp.seek(0)
+        module = load_module_from_file_location(tmp.name)
+        assert hasattr(module, 'foo')
+        assert module.foo == 'bar'
+        os.unlink(tmp.name)
+
+    # Test loading module with environment variable in path
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.environ['TEST_ENV_VAR'] = tmpdir
+        file_path = os.path.join(tmpdir, 'test_module.py')
+        with open(file_path, 'w') as f:
+            f.write("foo = 'baz'")
+        module = load_module_from_file_location("${TEST_ENV_VAR}/test_module.py")
+        assert hasattr(module, 'foo
+
+# Generated at 2024-03-18 07:45:12.205610
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp:
+            module_name = os.path.basename(temp.name).replace(".py", "")
+            temp.write(b'foo = "bar"')
+            temp.flush()
+            os.environ["TEST_ENV_VAR"] = os.path.dirname(temp.name)
+            module = load_module_from_file_location(
+                f"{module_name}", "${TEST_ENV_VAR}/" + os.path.basename(temp.name)
+            )
+            assert module.foo == "bar"
+            os.unlink(temp.name)
+            del os.environ["TEST_ENV_VAR"]
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp:
+            module_name = os.path.basename(temp.name
+
+# Generated at 2024-03-18 07:45:19.691674
+```python
+    # Setup environment variable for testing
+    os_environ["TEST_ENV_VAR"] = "test_value"
+
+    # Test with a direct path
+    module = load_module_from_file_location("tests/test_config.py")
+    assert hasattr(module, "SOME_CONFIG_VAR"), "Module should have SOME_CONFIG_VAR"
+
+    # Test with an environment variable in the path
+    module = load_module_from_file_location("/some/path/${TEST_ENV_VAR}/test_config.py")
+    assert hasattr(module, "SOME_CONFIG_VAR"), "Module should have SOME_CONFIG_VAR"
+
+    # Test with a Path object
+    module = load_module_from_file_location(Path("tests/test_config.py"))
+    assert hasattr(module, "SOME_CONFIG_VAR"), "Module should have SOME_CONFIG_VAR"
+
+    # Test with a non-existent environment variable
+    try:
+        load_module_from_file_location("/some/path/${NON_EXISTENT_VAR}/test_config.py")
+        assert False, "LoadFileException should have
+
+# Generated at 2024-03-18 07:45:27.131582
+```python
+    import pytest
+    import tempfile
+    import os
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var():
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+            module_content = "foo = 'bar'"
+            temp_file.write(module_content.encode('utf-8'))
+            temp_file.close()
+
+            env_var = 'TEST_LOAD_MODULE_PATH'
+            os.environ[env_var] = os.path.dirname(temp_file.name)
+            file_name = os.path.basename(temp_file.name)
+
+            try:
+                module = load_module_from_file_location(
+                    f"${{{env_var}}}/{file_name}"
+                )
+                assert module.foo == 'bar'
+            finally:
+                os.unlink(temp_file.name)
+                del os.environ[env_var]
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file
+
+# Generated at 2024-03-18 07:45:33.819341
+```python
+    import tempfile
+    import os
+
+    # Test with a simple Python file
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).split('.')[0]
+        tmp.write(b'foo = "bar"\n')
+        tmp.flush()
+        module = load_module_from_file_location(tmp.name)
+        assert module.foo == "bar", "Module variable 'foo' should be 'bar'"
+
+    # Test with environment variable in file path
+    os.environ['TEST_ENV_VAR'] = 'test_env_value'
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).split('.')[0]
+        tmp.write(b'baz = "qux"\n')
+        tmp.flush()
+        env_path = f"/some/path/${{TEST_ENV_VAR}}/{module_name}.py"
+        module = load_module_from_file_location(env_path)
+       
+
+# Generated at 2024-03-18 07:45:40.184478
+```python
+    from unittest.mock import patch
+
+    # Test loading module from a file with environment variable in path
+    with patch.dict(os_environ, {"MODULE_PATH": "test_module"}), \
+         patch("builtins.open", mock_open(read_data="foo = 'bar'")):
+        module = load_module_from_file_location("${MODULE_PATH}.py")
+        assert module.foo == 'bar'
+
+    # Test loading module from a file without environment variable in path
+    with patch("builtins.open", mock_open(read_data="foo = 'baz'")):
+        module = load_module_from_file_location("test_module.py")
+        assert module.foo == 'baz'
+
+    # Test loading module from a file with missing environment variable
+    with patch.dict(os_environ, {}), \
+         pytest.raises(LoadFileException) as excinfo:
+        load_module_from_file_location("${NON_EXISTENT_VAR}.py")
+    assert "environment variables are not set" in str(exc
+
+# Generated at 2024-03-18 07:45:50.168246
+```python
+    import tempfile
+    import os
+
+    # Test with a simple Python file
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).split('.')[0]
+        tmp.write(b'foo = "bar"\n')
+        tmp.flush()
+        module = load_module_from_file_location(tmp.name)
+        assert module.foo == "bar"
+
+    # Test with environment variable in file path
+    os.environ['TEST_ENV_VAR'] = 'test_env_value'
+    with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+        module_name = os.path.basename(tmp.name).split('.')[0]
+        tmp.write(b'baz = "qux"\n')
+        tmp.flush()
+        env_path = f"/some/path/${{TEST_ENV_VAR}}/{module_name}.py"
+        os.symlink(tmp.name, env_path.replace("${TEST_ENV_VAR}", os.environ['TEST_ENV_VAR']))
+        module
+
+# Generated at 2024-03-18 07:45:59.918520
+```python
+    # Setup environment variable for testing
+    os_environ["TEST_ENV_VAR"] = "test_value"
+
+    # Test with a direct path
+    module = load_module_from_file_location("tests/test_config.py")
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module should have attribute SOME_CONFIG_VAR"
+
+    # Test with an environment variable in the path
+    module = load_module_from_file_location("tests/${TEST_ENV_VAR}/config.py")
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module should have attribute SOME_CONFIG_VAR"
+
+    # Test with a Path object
+    module = load_module_from_file_location(Path("tests/test_config.py"))
+    assert hasattr(module, 'SOME_CONFIG_VAR'), "Module should have attribute SOME_CONFIG_VAR"
+
+    # Test with a non-existent file
+    try:
+        load_module_from_file_location("non_existent.py")
+        assert False, "Should have raised an IOError"
+    except IOError:
+        assert
+
+# Generated at 2024-03-18 07:46:08.825629
+```python
+    # Setup environment variable for testing
+    os_environ["TEST_ENV_VAR"] = "test_value"
+
+    # Test with a direct path
+    direct_path = "/path/to/some_module.py"
+    module = load_module_from_file_location(direct_path)
+    assert module.__name__ == "some_module"
+
+    # Test with an environment variable in the path
+    env_path = "/path/to/${TEST_ENV_VAR}_module.py"
+    module = load_module_from_file_location(env_path)
+    assert module.__name__ == "test_value_module"
+
+    # Test with a Path object
+    path_obj = Path("/path/to/some_module.py")
+    module = load_module_from_file_location(path_obj)
+    assert module.__name__ == "some_module"
+
+    # Test with a non-Python file
+    non_py_path = "/path/to/config.cfg"
+    module = load_module_from_file_location(non_py_path)
+    assert module.__file__ ==
+
+# Generated at 2024-03-18 07:46:16.851215
+```python
+    import tempfile
+    import pytest
+
+    # Test loading module from a file with environment variable in path
+    def test_load_module_with_env_var(monkeypatch):
+        monkeypatch.setenv("TEST_ENV_VAR", "test_module")
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+            tmp.write(b'foo = "bar"')
+            tmp.flush()
+            module_name = f"{tmp.name.split('/')[-1].split('.')[0]}"
+            monkeypatch.setenv("TEST_ENV_VAR", module_name)
+            module = load_module_from_file_location(
+                f"/tmp/${{TEST_ENV_VAR}}.py"
+            )
+            assert module.foo == "bar"
+
+    # Test loading module from a file without environment variable in path
+    def test_load_module_without_env_var():
+        with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as tmp:
+            tmp.write(b'foo = "baz"')
+            tmp.flush()
+            module =

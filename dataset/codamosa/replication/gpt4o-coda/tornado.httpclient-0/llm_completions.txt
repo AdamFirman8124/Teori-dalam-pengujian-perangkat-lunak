@@ -1,0 +1,1934 @@
+
+
+# Generated at 2024-06-04 16:37:39.516287
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    # Backup the original stdout and argv
+    original_stdout = sys.stdout
+    original_argv = sys.argv
+
+    try:
+        # Redirect stdout to capture print statements
+        sys.stdout = StringIO()
+        # Set up the command line arguments
+        sys.argv = ['main', '--print_headers=False', '--print_body=True', 'http://example.com']
+        
+        # Mock the HTTPClient and its fetch method
+        class MockHTTPClient:
+            def fetch(self, url, follow_redirects, validate_cert, proxy_host, proxy_port):
+                class MockResponse:
+                    headers = {'Content-Type': 'text/html'}
+                    body = b'<html><body>Example Domain</body></html>'
+                return MockResponse()
+            def close(self):
+                pass
+        
+        # Replace the HTTPClient with the mock
+        global HTTPClient
+        HTTPClient = MockHTTP
+
+# Generated at 2024-06-04 16:37:40.789234
+```python
+    client = AsyncHTTPClient()
+    client.initialize(defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+```
+
+# Generated at 2024-06-04 16:37:42.076371
+```python
+    io_loop = IOLoop()
+    client = AsyncHTTPClient(force_instance=True)
+    client.close()
+    assert client._closed
+    assert client.io_loop not in client._async_clients()
+```
+
+# Generated at 2024-06-04 16:37:43.617867
+```python
+    client = HTTPClient()
+    try:
+        response = client.fetch("http://www.example.com/")
+        assert response.code == 200
+        assert isinstance(response.body, bytes)
+    except Exception as e:
+        assert False, f"Exception raised: {e}"
+    finally:
+        client.close()
+```
+
+# Generated at 2024-06-04 16:37:48.659092
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    # Backup the original stdout and command line arguments
+    original_stdout = sys.stdout
+    original_argv = sys.argv
+
+    try:
+        # Redirect stdout to capture print statements
+        sys.stdout = StringIO()
+        # Set command line arguments
+        sys.argv = ['main', '--print_headers=False', '--print_body=True', 'http://example.com']
+        
+        # Mock the HTTPClient and its fetch method
+        class MockHTTPClient:
+            def fetch(self, url, follow_redirects, validate_cert, proxy_host, proxy_port):
+                class MockResponse:
+                    def __init__(self):
+                        self.headers = {'Content-Type': 'text/html'}
+                        self.body = b'<html><body>Example Domain</body></html>'
+                return MockResponse()
+            def close(self):
+                pass
+
+        # Replace the HTTPClient with the mock
+        global
+
+# Generated at 2024-06-04 16:37:49.821691
+```python
+    io_loop = IOLoop()
+    client = AsyncHTTPClient(force_instance=True)
+    client.close()
+    assert client._closed
+    assert client.io_loop not in client._async_clients()
+```
+
+# Generated at 2024-06-04 16:37:52.359669
+```python
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request: "HTTPRequest", callback: Callable[["HTTPResponse"], None]) -> None:
+            response = HTTPResponse(request, 200, buffer=BytesIO(b"Mock response"))
+            callback(response)
+
+    client = MockAsyncHTTPClient(force_instance=True)
+    request = HTTPRequest(url="http://example.com")
+    future = client.fetch(request)
+
+    def handle_future(fut):
+        assert fut.result().code == 200
+        assert fut.result().body == b"Mock response"
+
+    future.add_done_callback(handle_future)
+    IOLoop.current().run_sync(lambda: future)
+```
+
+# Generated at 2024-06-04 16:38:00.838280
+```python
+    import tornado.testing
+    from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+    class TestAsyncHTTPClient(tornado.testing.AsyncTestCase):
+        @tornado.testing.gen_test
+        async def test_fetch_success(self):
+            client = AsyncHTTPClient(force_instance=True)
+            response = HTTPResponse(HTTPRequest("http://example.com"), 200, buffer=BytesIO(b"Hello, world"))
+            client.fetch_impl = lambda request, callback: callback(response)
+            result = await client.fetch("http://example.com")
+            self.assertEqual(result.code, 200)
+            self.assertEqual(result.body, b"Hello, world")
+
+        @tornado.testing.gen_test
+        async def test_fetch_error(self):
+            client = AsyncHTTPClient(force_instance=True)
+            response = HTTPResponse(HTTPRequest("http://example.com"), 404, buffer=BytesIO(b"Not Found"), error=HTTPError(404))
+            client.fetch_impl = lambda
+
+# Generated at 2024-06-04 16:38:04.963772
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    def run_main_with_args(args):
+        old_argv = sys.argv
+        sys.argv = args
+        old_stdout = sys.stdout
+        sys.stdout = StringIO()
+        try:
+            main()
+            return sys.stdout.getvalue()
+        finally:
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+
+    # Test case 1: Test with default options and a valid URL
+    def test_main_valid_url():
+        options.print_headers = False
+        options.print_body = True
+        options.follow_redirects = True
+        options.validate_cert = True
+        options.proxy_host = None
+        options.proxy_port = None
+        output = run_main_with_args(['main', 'http://example.com'])
+        assert 'Example Domain' in output
+
+    # Test case 2: Test with invalid URL
+    def test_main_invalid_url():
+        options
+
+# Generated at 2024-06-04 16:38:08.196703
+```python
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request: "HTTPRequest", callback: Callable[["HTTPResponse"], None]) -> None:
+            response = HTTPResponse(request, 200, buffer=BytesIO(b"Mock response"))
+            callback(response)
+
+    client = MockAsyncHTTPClient()
+    request = HTTPRequest(url="http://example.com")
+    future = client.fetch(request)
+
+    def handle_future(fut):
+        assert fut.result().code == 200
+        assert fut.result().body == b"Mock response"
+
+    future.add_done_callback(handle_future)
+    IOLoop.current().run_sync(lambda: future)
+```
+
+# Generated at 2024-06-04 16:38:20.453796
+```python
+    io_loop = IOLoop()
+    client = AsyncHTTPClient(force_instance=True)
+    client.close()
+    assert client._closed
+    assert client.io_loop not in client._async_clients()
+```
+
+# Generated at 2024-06-04 16:38:21.550748
+```python
+    io_loop = IOLoop()
+    client = AsyncHTTPClient(force_instance=True)
+    client.close()
+    assert client._closed is True
+    assert client.io_loop not in client._async_clients()
+```
+
+# Generated at 2024-06-04 16:38:23.777347
+```python
+    request = HTTPRequest(url="http://example.com")
+    defaults = {"timeout": 10, "proxy_host": "proxy.example.com"}
+    proxy = _RequestProxy(request, defaults)
+
+    # Test attribute present in request
+    assert proxy.url == "http://example.com"
+
+    # Test attribute present in defaults
+    assert proxy.timeout == 10
+
+    # Test attribute not present in either
+    assert proxy.non_existent_attribute is None
+```
+
+# Generated at 2024-06-04 16:38:26.398926
+```python
+    request = HTTPRequest(url="http://example.com")
+    response = HTTPResponse(request, 200)
+    try:
+        response.rethrow()
+    except Exception:
+        assert False, "rethrow() raised an exception unexpectedly for a successful response"
+
+    error_response = HTTPResponse(request, 404)
+    try:
+        error_response.rethrow()
+    except HTTPError as e:
+        assert e.code == 404, f"Expected HTTPError with code 404, got {e.code}"
+    else:
+        assert False, "rethrow() did not raise HTTPError for an error response"
+```
+
+# Generated at 2024-06-04 16:38:29.733693
+```python
+    class MockHTTPRequest:
+        def __init__(self, url):
+            self.url = url
+            self.headers = {}
+
+    class MockHTTPResponse:
+        def __init__(self, error=None):
+            self.error = error
+            self._error_is_response_code = False
+
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request, callback):
+            if request.url == "http://example.com/success":
+                response = MockHTTPResponse()
+            else:
+                response = MockHTTPResponse(error=Exception("Error"))
+            callback(response)
+
+    async def run_test():
+        client = MockAsyncHTTPClient(force_instance=True)
+        request = MockHTTPRequest("http://example.com/success")
+        response = await client.fetch(request)
+        assert response.error is None
+
+        request = MockHTTPRequest("http://example.com/fail")
+        try:
+            response = await client.fetch(request)
+        except Exception as e:
+            assert str(e)
+
+# Generated at 2024-06-04 16:38:32.623101
+```python
+    io_loop = IOLoop()
+    IOLoop.clear_current()
+    IOLoop.set_current(io_loop)
+    
+    # Test without force_instance
+    client1 = AsyncHTTPClient()
+    client2 = AsyncHTTPClient()
+    assert client1 is client2, "Expected the same instance without force_instance"
+
+    # Test with force_instance
+    client3 = AsyncHTTPClient(force_instance=True)
+    client4 = AsyncHTTPClient(force_instance=True)
+    assert client3 is not client4, "Expected different instances with force_instance"
+
+    # Clean up
+    client1.close()
+    client3.close()
+    client4.close()
+    io_loop.close()
+```
+
+# Generated at 2024-06-04 16:38:34.234276
+```python
+    io_loop = IOLoop()
+    client = AsyncHTTPClient(force_instance=True)
+    client.close()
+    assert client._closed is True
+    assert client.io_loop not in client._async_clients()
+```
+
+# Generated at 2024-06-04 16:38:38.006617
+```python
+    class MockHTTPRequest:
+        def __init__(self, url):
+            self.url = url
+            self.headers = {}
+
+    class MockHTTPResponse:
+        def __init__(self, error=None):
+            self.error = error
+            self._error_is_response_code = False
+
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request, callback):
+            if request.url == "http://example.com/success":
+                response = MockHTTPResponse()
+            else:
+                response = MockHTTPResponse(error=Exception("Error"))
+            callback(response)
+
+    client = MockAsyncHTTPClient(force_instance=True)
+    request = MockHTTPRequest("http://example.com/success")
+    future = client.fetch(request)
+    response = IOLoop.current().run_sync(lambda: future)
+    assert response.error is None
+
+    request = MockHTTPRequest("http://example.com/fail")
+    future = client.fetch(request)
+    try:
+        response = IOL
+
+# Generated at 2024-06-04 16:38:42.352533
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    # Backup the original stdout and argv
+    original_stdout = sys.stdout
+    original_argv = sys.argv
+
+    try:
+        # Redirect stdout to capture print statements
+        sys.stdout = StringIO()
+        # Mock command line arguments
+        sys.argv = ['main', 'http://example.com']
+        options.print_headers = False
+        options.print_body = True
+        options.follow_redirects = True
+        options.validate_cert = True
+        options.proxy_host = None
+        options.proxy_port = None
+
+        main()
+
+        # Get the output and reset stdout
+        output = sys.stdout.getvalue()
+        sys.stdout = original_stdout
+
+        # Check if the output contains expected content
+        assert "Example Domain" in output
+    finally:
+        # Restore original stdout and argv
+        sys.stdout = original_stdout
+        sys.argv = original_argv
+```
+
+# Generated at 2024-06-04 16:38:43.878725
+```python
+    io_loop = IOLoop()
+    client = AsyncHTTPClient(force_instance=True)
+    client.close()
+    assert client._closed is True
+    assert client.io_loop not in client._async_clients()
+```
+
+# Generated at 2024-06-04 16:39:04.503336
+```python
+    import pytest
+    from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request, callback):
+            if request.url == "http://example.com/success":
+                response = HTTPResponse(request, 200, buffer=BytesIO(b"Success"))
+            elif request.url == "http://example.com/error":
+                response = HTTPResponse(request, 500, buffer=BytesIO(b"Error"), error=HTTPError(500))
+            else:
+                response = HTTPResponse(request, 404, buffer=BytesIO(b"Not Found"), error=HTTPError(404))
+            callback(response)
+
+    @pytest.mark.asyncio
+    async def test_fetch_success():
+        client = MockAsyncHTTPClient()
+        response = await client.fetch("http://example.com/success")
+        assert response.code == 200
+        assert response.body == b"Success"
+
+    @pytest
+
+# Generated at 2024-06-04 16:39:08.698038
+```python
+    class MockHTTPRequest:
+        def __init__(self, url):
+            self.url = url
+            self.headers = {}
+
+    class MockHTTPResponse:
+        def __init__(self, error=None):
+            self.error = error
+            self._error_is_response_code = False
+
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request, callback):
+            if request.url == "http://example.com/success":
+                response = MockHTTPResponse()
+            else:
+                response = MockHTTPResponse(error=Exception("Error"))
+            callback(response)
+
+    client = MockAsyncHTTPClient(force_instance=True)
+    request = MockHTTPRequest("http://example.com/success")
+    future = client.fetch(request)
+    response = IOLoop.current().run_sync(lambda: future)
+    assert response.error is None
+
+    request = MockHTTPRequest("http://example.com/fail")
+    future = client.fetch(request)
+    try:
+        response = IOL
+
+# Generated at 2024-06-04 16:39:10.874230
+```python
+    io_loop = IOLoop()
+    client = AsyncHTTPClient(force_instance=True)
+    client.close()
+    assert client._closed
+    assert client.io_loop not in client._async_clients()
+```
+
+# Generated at 2024-06-04 16:39:12.375017
+```python
+    client = HTTPClient()
+    try:
+        response = client.fetch("http://www.example.com/")
+        assert response.code == 200
+        assert "Example Domain" in response.body.decode()
+    except Exception as e:
+        assert False, f"Unexpected exception: {e}"
+    finally:
+        client.close()
+```
+
+# Generated at 2024-06-04 16:39:16.352073
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    # Backup the original stdout and argv
+    original_stdout = sys.stdout
+    original_argv = sys.argv
+
+    try:
+        # Redirect stdout to capture print statements
+        sys.stdout = StringIO()
+        # Mock command line arguments
+        sys.argv = ['main', '--print_body=False', '--print_headers=True', 'http://example.com']
+
+        # Mock options
+        options.print_headers = True
+        options.print_body = False
+        options.follow_redirects = True
+        options.validate_cert = True
+        options.proxy_host = None
+        options.proxy_port = None
+
+        # Call the main function
+        main()
+
+        # Get the output
+        output = sys.stdout.getvalue()
+
+        # Check if headers are printed and body is not printed
+        assert 'Content-Type' in output
+        assert 'body' not in output
+
+    finally:
+
+
+# Generated at 2024-06-04 16:39:21.724395
+```python
+    class TestAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request: "HTTPRequest", callback: Callable[["HTTPResponse"], None]) -> None:
+            response = HTTPResponse(request, 200, buffer=BytesIO(b"Test response"))
+            callback(response)
+
+    client = TestAsyncHTTPClient(force_instance=True)
+    request = HTTPRequest(url="http://example.com")
+    future = client.fetch(request)
+    response = IOLoop.current().run_sync(lambda: future)
+    assert response.code == 200
+    assert response.body == b"Test response"
+```
+
+# Generated at 2024-06-04 16:39:28.732581
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    # Backup the original stdout and argv
+    original_stdout = sys.stdout
+    original_argv = sys.argv
+
+    try:
+        # Redirect stdout to capture print statements
+        sys.stdout = StringIO()
+        # Set up the command line arguments
+        sys.argv = ['test_main', '--print_body=False', 'http://example.com']
+
+        # Mock the HTTPClient and its fetch method
+        class MockHTTPClient:
+            def fetch(self, url, follow_redirects, validate_cert, proxy_host, proxy_port):
+                return HTTPResponse(
+                    request=HTTPRequest(url),
+                    code=200,
+                    headers=httputil.HTTPHeaders({"Content-Type": "text/html"}),
+                    buffer=BytesIO(b"<html><body>Example</body></html>")
+                )
+
+            def close(self):
+                pass
+
+        # Replace the HTTPClient with the mock
+        original
+
+# Generated at 2024-06-04 16:39:33.196229
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    # Backup the original stdout and command line arguments
+    original_stdout = sys.stdout
+    original_argv = sys.argv
+
+    try:
+        # Redirect stdout to capture print statements
+        sys.stdout = StringIO()
+        # Set command line arguments
+        sys.argv = ['test_main', '--print_body=False', 'http://example.com']
+        # Set options
+        options.print_headers = False
+        options.print_body = False
+        options.follow_redirects = True
+        options.validate_cert = True
+        options.proxy_host = None
+        options.proxy_port = None
+
+        # Call the main function
+        main()
+
+        # Get the output
+        output = sys.stdout.getvalue()
+        assert output == "", f"Expected no output, but got: {output}"
+
+    finally:
+        # Restore the original stdout and command line arguments
+        sys.stdout = original
+
+# Generated at 2024-06-04 16:39:35.566395
+```python
+    client = HTTPClient()
+    try:
+        response = client.fetch("http://www.example.com/")
+        assert response.code == 200
+        assert response.body is not None
+    except Exception as e:
+        assert False, f"Exception occurred: {e}"
+    finally:
+        client.close()
+```
+
+# Generated at 2024-06-04 16:39:37.755970
+```python
+    io_loop = IOLoop()
+    client = AsyncHTTPClient(force_instance=True)
+    client.close()
+    assert client._closed
+    assert client.io_loop not in client._async_clients()
+```
+
+# Generated at 2024-06-04 16:39:51.853733
+```python
+    request = HTTPRequest(url="http://example.com")
+    response = HTTPResponse(request=request, code=200)
+    try:
+        response.rethrow()
+    except Exception:
+        assert False, "rethrow() raised an exception unexpectedly for a successful response"
+
+    error_response = HTTPResponse(request=request, code=404)
+    try:
+        error_response.rethrow()
+        assert False, "rethrow() did not raise an exception for an error response"
+    except HTTPError as e:
+        assert e.code == 404, f"Expected HTTPError with code 404, got {e.code}"
+```
+
+# Generated at 2024-06-04 16:39:55.469173
+```python
+    class MockHTTPRequest:
+        def __init__(self, url):
+            self.url = url
+            self.headers = {}
+
+    class MockHTTPResponse:
+        def __init__(self, error=None):
+            self.error = error
+            self._error_is_response_code = False
+
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request, callback):
+            if request.url == "http://example.com/success":
+                response = MockHTTPResponse()
+            else:
+                response = MockHTTPResponse(error=Exception("Error"))
+            callback(response)
+
+    client = MockAsyncHTTPClient(force_instance=True)
+    request = MockHTTPRequest("http://example.com/success")
+    future = client.fetch(request)
+    response = IOLoop.current().run_sync(lambda: future)
+    assert response.error is None
+
+    request = MockHTTPRequest("http://example.com/fail")
+    future = client.fetch(request)
+    try:
+        response = IOL
+
+# Generated at 2024-06-04 16:39:58.245901
+```python
+    io_loop = IOLoop()
+    IOLoop.clear_current()
+    IOLoop.set_current(io_loop)
+    
+    # Test without force_instance
+    client1 = AsyncHTTPClient()
+    client2 = AsyncHTTPClient()
+    assert client1 is client2, "Expected the same instance without force_instance"
+
+    # Test with force_instance
+    client3 = AsyncHTTPClient(force_instance=True)
+    client4 = AsyncHTTPClient(force_instance=True)
+    assert client3 is not client4, "Expected different instances with force_instance"
+
+    # Clean up
+    client1.close()
+    client3.close()
+    client4.close()
+    io_loop.close()
+```
+
+# Generated at 2024-06-04 16:39:59.953689
+```python
+    client = AsyncHTTPClient(force_instance=True, defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+    assert not client._closed
+```
+
+# Generated at 2024-06-04 16:40:01.484593
+```python
+    client = AsyncHTTPClient(force_instance=True, defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+    assert not client._closed
+```
+
+# Generated at 2024-06-04 16:40:06.629588
+```python
+    request = HTTPRequest(url="http://example.com", method="GET")
+    defaults = {"proxy_host": "proxy.example.com", "proxy_port": 8080}
+    proxy = _RequestProxy(request, defaults)
+
+    # Test attribute from request
+    assert proxy.url == "http://example.com"
+    assert proxy.method == "GET"
+
+    # Test attribute from defaults
+    assert proxy.proxy_host == "proxy.example.com"
+    assert proxy.proxy_port == 8080
+
+    # Test attribute not in request or defaults
+    assert proxy.proxy_username is None
+```
+
+# Generated at 2024-06-04 16:40:14.380832
+```python
+    import tornado.testing
+    from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+    class AsyncHTTPClientTest(tornado.testing.AsyncTestCase):
+        @tornado.testing.gen_test
+        async def test_fetch_success(self):
+            client = AsyncHTTPClient()
+            response = await client.fetch("http://www.example.com")
+            self.assertEqual(response.code, 200)
+
+        @tornado.testing.gen_test
+        async def test_fetch_not_found(self):
+            client = AsyncHTTPClient()
+            with self.assertRaises(HTTPError) as context:
+                await client.fetch("http://www.example.com/404")
+            self.assertEqual(context.exception.code, 404)
+
+        @tornado.testing.gen_test
+        async def test_fetch_with_kwargs(self):
+            client = AsyncHTTPClient()
+            request = HTTPRequest("http://www.example.com", method="POST", body="data")
+            response = await client.fetch(request)
+            self.assertEqual(response.code
+
+# Generated at 2024-06-04 16:40:15.519525
+```python
+    client = HTTPClient()
+    assert not client._closed
+    assert isinstance(client._async_client, AsyncHTTPClient)
+    client.close()
+    assert client._closed
+```
+
+# Generated at 2024-06-04 16:40:16.625473
+```python
+    client = HTTPClient()
+    assert not client._closed
+    assert isinstance(client._async_client, AsyncHTTPClient)
+    client.close()
+    assert client._closed
+```
+
+# Generated at 2024-06-04 16:40:24.960066
+```python
+    import tornado.testing
+    from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+    class TestAsyncHTTPClient(tornado.testing.AsyncTestCase):
+        @tornado.testing.gen_test
+        async def test_fetch_success(self):
+            client = AsyncHTTPClient(force_instance=True)
+            response = HTTPResponse(HTTPRequest("http://example.com"), 200, buffer=BytesIO(b"Hello, world"))
+            client.fetch_impl = lambda request, callback: callback(response)
+            result = await client.fetch("http://example.com")
+            self.assertEqual(result.body, b"Hello, world")
+
+        @tornado.testing.gen_test
+        async def test_fetch_error(self):
+            client = AsyncHTTPClient(force_instance=True)
+            error = HTTPError(599, "Timeout")
+            client.fetch_impl = lambda request, callback: callback(HTTPResponse(HTTPRequest("http://example.com"), 599, error=error))
+            with self.assertRaises(HTTPError
+
+# Generated at 2024-06-04 16:41:18.511055
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    # Backup the original stdout and command line arguments
+    original_stdout = sys.stdout
+    original_argv = sys.argv
+
+    try:
+        # Redirect stdout to capture print statements
+        sys.stdout = StringIO()
+        # Set command line arguments
+        sys.argv = ['main', '--print_body=False', '--print_headers=True', 'http://example.com']
+        
+        # Mock options
+        options.print_headers = True
+        options.print_body = False
+        options.follow_redirects = True
+        options.validate_cert = True
+        options.proxy_host = None
+        options.proxy_port = None
+
+        # Call the main function
+        main()
+
+        # Get the output
+        output = sys.stdout.getvalue()
+
+        # Check if headers are printed and body is not printed
+        assert 'Content-Type' in output
+        assert 'body' not in output
+
+
+
+# Generated at 2024-06-04 16:41:22.891938
+```python
+    import sys
+    from io import StringIO
+    from unittest import TestCase, main as unittest_main
+    from unittest.mock import patch, MagicMock
+    from tornado.options import options
+
+    class TestMain(TestCase):
+        @patch('tornado.options.parse_command_line')
+        @patch('tornado.httpclient.HTTPClient')
+        def test_main(self, MockHTTPClient, mock_parse_command_line):
+            # Mock the command line arguments
+            mock_parse_command_line.return_value = ['http://example.com']
+            options.print_headers = False
+            options.print_body = True
+            options.follow_redirects = True
+            options.validate_cert = True
+            options.proxy_host = None
+            options.proxy_port = None
+
+            # Mock the HTTPClient and its response
+            mock_client_instance = MockHTTPClient.return_value
+            mock_response = MagicMock()
+            mock_response.body = b'Test body'
+            mock_response.headers = {'Content-Type': '
+
+# Generated at 2024-06-04 16:41:25.590828
+```python
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request: "HTTPRequest", callback: Callable[["HTTPResponse"], None]) -> None:
+            response = HTTPResponse(request, 200, buffer=BytesIO(b"Mock response"))
+            callback(response)
+
+    client = MockAsyncHTTPClient(force_instance=True)
+    request = HTTPRequest(url="http://example.com")
+    future = client.fetch(request)
+    response = IOLoop.current().run_sync(lambda: future)
+    assert response.code == 200
+    assert response.body == b"Mock response"
+```
+
+# Generated at 2024-06-04 16:41:29.893551
+```python
+    class MockHTTPRequest:
+        def __init__(self, url):
+            self.url = url
+            self.headers = {}
+
+    class MockHTTPResponse:
+        def __init__(self, error=None):
+            self.error = error
+            self._error_is_response_code = False
+
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request, callback):
+            if request.url == "http://example.com/success":
+                response = MockHTTPResponse()
+            else:
+                response = MockHTTPResponse(error=Exception("Error"))
+            callback(response)
+
+    client = MockAsyncHTTPClient(force_instance=True)
+    request = MockHTTPRequest("http://example.com/success")
+    future = client.fetch(request)
+    response = IOLoop.current().run_sync(lambda: future)
+    assert response.error is None
+
+    request = MockHTTPRequest("http://example.com/failure")
+    future = client.fetch(request)
+    try:
+        response = IOL
+
+# Generated at 2024-06-04 16:41:33.800260
+```python
+    client = HTTPClient()
+    try:
+        response = client.fetch("http://www.example.com/")
+        assert response.code == 200
+        assert response.body is not None
+    except Exception as e:
+        assert False, f"Exception occurred: {e}"
+    finally:
+        client.close()
+```
+
+# Generated at 2024-06-04 16:41:35.131662
+```python
+    client = AsyncHTTPClient(force_instance=True, defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+    client.close()
+```
+
+# Generated at 2024-06-04 16:41:37.300076
+```python
+    client = AsyncHTTPClient(force_instance=True, defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+    assert not client._closed
+```
+
+# Generated at 2024-06-04 16:41:38.627480
+```python
+    client = AsyncHTTPClient(force_instance=True, defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+    client.close()
+```
+
+# Generated at 2024-06-04 16:42:00.051046
+```python
+    client = AsyncHTTPClient(force_instance=True, defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+    assert not client._closed
+```
+
+# Generated at 2024-06-04 16:42:01.371500
+```python
+    client = AsyncHTTPClient(force_instance=True, defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+    assert not client._closed
+```
+
+# Generated at 2024-06-04 16:42:28.993042
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    # Backup the original stdout and argv
+    original_stdout = sys.stdout
+    original_argv = sys.argv
+
+    try:
+        # Redirect stdout to capture print statements
+        sys.stdout = StringIO()
+        # Mock command line arguments
+        sys.argv = ['main', 'http://example.com']
+        options.print_headers = False
+        options.print_body = True
+        options.follow_redirects = True
+        options.validate_cert = True
+        options.proxy_host = None
+        options.proxy_port = None
+
+        main()
+
+        # Get the output and check if it contains expected content
+        output = sys.stdout.getvalue()
+        assert "Example Domain" in output
+
+    finally:
+        # Restore the original stdout and argv
+        sys.stdout = original_stdout
+        sys.argv = original_argv
+```
+
+# Generated at 2024-06-04 16:42:33.021670
+```python
+    import sys
+    from io import StringIO
+    from unittest.mock import patch
+    from tornado.options import options
+
+    @patch('tornado.options.parse_command_line')
+    @patch('tornado.httpclient.HTTPClient.fetch')
+    def test_main(mock_fetch, mock_parse_command_line):
+        # Mock the command line arguments
+        mock_parse_command_line.return_value = ['http://example.com']
+        
+        # Mock the HTTP response
+        mock_response = HTTPResponse(
+            request=HTTPRequest('http://example.com'),
+            code=200,
+            headers=httputil.HTTPHeaders({"Content-Type": "text/html"}),
+            buffer=BytesIO(b"Hello, world!")
+        )
+        mock_fetch.return_value = mock_response
+
+        # Capture the output
+        saved_stdout = sys.stdout
+        try:
+            out = StringIO()
+            sys.stdout = out
+            main()
+            output = out.getvalue().strip()
+        finally:
+            sys.stdout =
+
+# Generated at 2024-06-04 16:42:35.325208
+```python
+    class TestAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request, callback):
+            response = HTTPResponse(request, 200)
+            callback(response)
+
+    client = TestAsyncHTTPClient(force_instance=True)
+    request = HTTPRequest(url="http://example.com")
+    future = client.fetch(request)
+    response = IOLoop.current().run_sync(lambda: future)
+    assert response.code == 200
+```
+
+# Generated at 2024-06-04 16:42:36.967010
+```python
+    client = AsyncHTTPClient(force_instance=True, defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+    assert not client._closed
+```
+
+# Generated at 2024-06-04 16:42:40.419564
+```python
+    request = HTTPRequest(url="http://example.com")
+    response = HTTPResponse(request=request, code=200)
+    try:
+        response.rethrow()
+    except Exception:
+        assert False, "rethrow() raised an exception unexpectedly for a successful response"
+
+    error_response = HTTPResponse(request=request, code=404)
+    try:
+        error_response.rethrow()
+    except HTTPError as e:
+        assert e.code == 404, "rethrow() did not raise the expected HTTPError"
+    else:
+        assert False, "rethrow() did not raise an HTTPError for an error response"
+```
+
+# Generated at 2024-06-04 16:42:42.389357
+```python
+    client = HTTPClient()
+    try:
+        response = client.fetch("http://www.example.com/")
+        assert response.code == 200
+        assert response.body is not None
+    except Exception as e:
+        assert False, f"Exception raised: {e}"
+    finally:
+        client.close()
+```
+
+# Generated at 2024-06-04 16:42:44.945844
+```python
+    class TestAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request: "HTTPRequest", callback: Callable[["HTTPResponse"], None]) -> None:
+            response = HTTPResponse(request, 200)
+            callback(response)
+
+    client = TestAsyncHTTPClient()
+    request = HTTPRequest(url="http://example.com")
+    future = client.fetch(request)
+
+    def handle_future(fut):
+        assert fut.result().code == 200
+
+    future.add_done_callback(handle_future)
+```
+
+# Generated at 2024-06-04 16:42:46.488893
+```python
+    client = HTTPClient()
+    assert not client._closed
+    assert isinstance(client._io_loop, IOLoop)
+    assert isinstance(client._async_client, AsyncHTTPClient)
+    client.close()
+    assert client._closed
+```
+
+# Generated at 2024-06-04 16:42:48.942390
+```python
+    client = AsyncHTTPClient(force_instance=True, defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+    assert not client._closed
+```
+
+# Generated at 2024-06-04 16:42:56.651004
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    # Backup the original stdout and command line arguments
+    original_stdout = sys.stdout
+    original_argv = sys.argv
+
+    try:
+        # Redirect stdout to capture print statements
+        sys.stdout = StringIO()
+        sys.argv = ['test_main', 'http://example.com']
+
+        # Set options for the test
+        options.print_headers = True
+        options.print_body = True
+        options.follow_redirects = True
+        options.validate_cert = True
+        options.proxy_host = None
+        options.proxy_port = None
+
+        # Call the main function
+        main()
+
+        # Get the output
+        output = sys.stdout.getvalue()
+
+        # Check if the output contains expected headers and body
+        assert 'Content-Type' in output
+        assert '<html>' in output
+
+    finally:
+        # Restore the original stdout and command line arguments
+        sys
+
+# Generated at 2024-06-04 16:43:22.415484
+```python
+    import tornado.testing
+    from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+    class TestAsyncHTTPClient(tornado.testing.AsyncTestCase):
+        @tornado.testing.gen_test
+        async def test_fetch_success(self):
+            client = AsyncHTTPClient(force_instance=True)
+            response = HTTPResponse(HTTPRequest("http://example.com"), 200, buffer=BytesIO(b"Hello, world"))
+            client.fetch_impl = lambda request, callback: callback(response)
+            result = await client.fetch("http://example.com")
+            self.assertEqual(result.code, 200)
+            self.assertEqual(result.body, b"Hello, world")
+
+        @tornado.testing.gen_test
+        async def test_fetch_http_error(self):
+            client = AsyncHTTPClient(force_instance=True)
+            response = HTTPResponse(HTTPRequest("http://example.com"), 404, buffer=BytesIO(b"Not Found"))
+            response.error = HTTPError(404, response=response)
+
+
+# Generated at 2024-06-04 16:43:25.703784
+```python
+    request = HTTPRequest(url="http://example.com")
+    response = HTTPResponse(request, 200)
+    try:
+        response.rethrow()
+    except Exception:
+        assert False, "rethrow() raised an exception unexpectedly for a successful response"
+
+    error_response = HTTPResponse(request, 404)
+    try:
+        error_response.rethrow()
+        assert False, "rethrow() did not raise an exception for an error response"
+    except HTTPError as e:
+        assert e.code == 404, f"Expected HTTPError with code 404, got {e.code}"
+```
+
+# Generated at 2024-06-04 16:43:29.170923
+```python
+    class TestAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request: "HTTPRequest", callback: Callable[["HTTPResponse"], None]) -> None:
+            response = HTTPResponse(request, 200, buffer=BytesIO(b"Test response"))
+            callback(response)
+
+    client = TestAsyncHTTPClient(force_instance=True)
+    request = HTTPRequest(url="http://example.com")
+    future = client.fetch(request)
+    response = IOLoop.current().run_sync(lambda: future)
+    assert response.code == 200
+    assert response.body == b"Test response"
+```
+
+# Generated at 2024-06-04 16:43:32.232355
+```python
+    io_loop = IOLoop()
+    IOLoop.clear_current()
+    IOLoop.set_current(io_loop)
+    
+    # Test without force_instance
+    client1 = AsyncHTTPClient()
+    client2 = AsyncHTTPClient()
+    assert client1 is client2, "Expected the same instance without force_instance"
+
+    # Test with force_instance
+    client3 = AsyncHTTPClient(force_instance=True)
+    client4 = AsyncHTTPClient(force_instance=True)
+    assert client3 is not client4, "Expected different instances with force_instance"
+
+    # Clean up
+    client1.close()
+    client3.close()
+    client4.close()
+    io_loop.close()
+```
+
+# Generated at 2024-06-04 16:43:33.941990
+```python
+    client = AsyncHTTPClient(force_instance=True, defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+    assert not client._closed
+```
+
+# Generated at 2024-06-04 16:43:37.777847
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    # Backup the original stdout and argv
+    original_stdout = sys.stdout
+    original_argv = sys.argv
+
+    try:
+        # Redirect stdout to capture print statements
+        sys.stdout = StringIO()
+        # Mock command line arguments
+        sys.argv = ['main', 'http://example.com']
+        options.print_headers = False
+        options.print_body = True
+        options.follow_redirects = True
+        options.validate_cert = True
+        options.proxy_host = None
+        options.proxy_port = None
+
+        main()
+
+        # Get the output and check if it contains expected content
+        output = sys.stdout.getvalue()
+        assert "Example Domain" in output
+
+    finally:
+        # Restore the original stdout and argv
+        sys.stdout = original_stdout
+        sys.argv = original_argv
+```
+
+# Generated at 2024-06-04 16:43:39.750348
+```python
+    client = AsyncHTTPClient()
+    client.initialize(defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+```
+
+# Generated at 2024-06-04 16:43:42.370105
+```python
+    request = HTTPRequest(url="http://example.com")
+    response = HTTPResponse(request=request, code=200)
+    try:
+        response.rethrow()
+    except Exception:
+        assert False, "rethrow() raised an exception unexpectedly for a successful response"
+
+    error_response = HTTPResponse(request=request, code=404)
+    try:
+        error_response.rethrow()
+        assert False, "rethrow() did not raise an exception for an error response"
+    except HTTPError as e:
+        assert e.code == 404, f"Expected HTTPError with code 404, got {e.code}"
+```
+
+# Generated at 2024-06-04 16:43:46.990386
+```python
+    import tornado.testing
+    from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+    class TestAsyncHTTPClient(tornado.testing.AsyncTestCase):
+        @tornado.testing.gen_test
+        async def test_fetch_success(self):
+            client = AsyncHTTPClient(force_instance=True)
+            response = HTTPResponse(HTTPRequest("http://example.com"), 200, buffer=BytesIO(b"Hello, world"))
+            client.fetch_impl = lambda request, callback: callback(response)
+            result = await client.fetch("http://example.com")
+            self.assertEqual(result.code, 200)
+            self.assertEqual(result.body, b"Hello, world")
+
+        @tornado.testing.gen_test
+        async def test_fetch_error(self):
+            client = AsyncHTTPClient(force_instance=True)
+            response = HTTPResponse(HTTPRequest("http://example.com"), 404, buffer=BytesIO(b"Not Found"), error=HTTPError(404))
+            client.fetch_impl = lambda
+
+# Generated at 2024-06-04 16:43:50.694605
+```python
+    io_loop = IOLoop()
+    IOLoop.clear_current()
+    IOLoop.clear_instance()
+    
+    # Test without force_instance
+    client1 = AsyncHTTPClient()
+    client2 = AsyncHTTPClient()
+    assert client1 is client2, "Expected the same instance without force_instance"
+    
+    # Test with force_instance
+    client3 = AsyncHTTPClient(force_instance=True)
+    client4 = AsyncHTTPClient(force_instance=True)
+    assert client3 is not client4, "Expected different instances with force_instance"
+    
+    # Clean up
+    client1.close()
+    client3.close()
+    client4.close()
+    io_loop.close()
+```
+
+# Generated at 2024-06-04 16:44:15.600766
+```python
+    class MockHTTPRequest:
+        def __init__(self, url):
+            self.url = url
+            self.headers = {}
+
+    class MockHTTPResponse:
+        def __init__(self, error=None):
+            self.error = error
+            self._error_is_response_code = False
+
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request, callback):
+            if request.url == "http://example.com/success":
+                response = MockHTTPResponse()
+            else:
+                response = MockHTTPResponse(error=Exception("Error"))
+            callback(response)
+
+    client = MockAsyncHTTPClient(force_instance=True)
+    request = MockHTTPRequest("http://example.com/success")
+    future = client.fetch(request)
+    response = IOLoop.current().run_sync(lambda: future)
+    assert response.error is None
+
+    request = MockHTTPRequest("http://example.com/fail")
+    future = client.fetch(request)
+    try:
+        response = IOL
+
+# Generated at 2024-06-04 16:44:17.271168
+```python
+    client = AsyncHTTPClient(force_instance=True, defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+    assert not client._closed
+```
+
+# Generated at 2024-06-04 16:44:20.012219
+```python
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request: "HTTPRequest", callback: Callable[["HTTPResponse"], None]) -> None:
+            response = HTTPResponse(request, 200, buffer=BytesIO(b"Mock response"))
+            callback(response)
+
+    client = MockAsyncHTTPClient(force_instance=True)
+    request = HTTPRequest(url="http://example.com")
+    future = client.fetch(request)
+    response = IOLoop.current().run_sync(lambda: future)
+    assert response.code == 200
+    assert response.body == b"Mock response"
+```
+
+# Generated at 2024-06-04 16:44:29.228169
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    # Backup the original stdout and argv
+    original_stdout = sys.stdout
+    original_argv = sys.argv
+
+    try:
+        # Redirect stdout to capture print statements
+        sys.stdout = StringIO()
+        # Mock command line arguments
+        sys.argv = ['main', 'http://example.com']
+        options.print_headers = False
+        options.print_body = True
+        options.follow_redirects = True
+        options.validate_cert = True
+        options.proxy_host = None
+        options.proxy_port = None
+
+        main()
+
+        # Get the output and check if it contains expected content
+        output = sys.stdout.getvalue()
+        assert "Example Domain" in output
+
+    finally:
+        # Restore the original stdout and argv
+        sys.stdout = original_stdout
+        sys.argv = original_argv
+```
+
+# Generated at 2024-06-04 16:44:30.833315
+```python
+    client = HTTPClient()
+    try:
+        response = client.fetch("http://www.example.com/")
+        assert response.code == 200
+        assert isinstance(response.body, bytes)
+    except Exception as e:
+        assert False, f"Unexpected exception: {e}"
+    finally:
+        client.close()
+```
+
+# Generated at 2024-06-04 16:44:34.417755
+```python
+    io_loop = IOLoop()
+    IOLoop.clear_current()
+    IOLoop.set_current(io_loop)
+    
+    # Test without force_instance
+    client1 = AsyncHTTPClient()
+    client2 = AsyncHTTPClient()
+    assert client1 is client2, "Expected the same instance when force_instance is False"
+    
+    # Test with force_instance
+    client3 = AsyncHTTPClient(force_instance=True)
+    client4 = AsyncHTTPClient(force_instance=True)
+    assert client3 is not client4, "Expected different instances when force_instance is True"
+    
+    # Clean up
+    client1.close()
+    client3.close()
+    client4.close()
+    io_loop.close()
+```
+
+# Generated at 2024-06-04 16:44:36.011763
+```python
+    client = AsyncHTTPClient(force_instance=True, defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+    assert not client._closed
+```
+
+# Generated at 2024-06-04 16:44:40.580456
+```python
+    io_loop = IOLoop()
+    IOLoop.clear_current()
+    IOLoop.set_current(io_loop)
+    
+    # Test without force_instance
+    client1 = AsyncHTTPClient()
+    client2 = AsyncHTTPClient()
+    assert client1 is client2, "Expected the same instance without force_instance"
+
+    # Test with force_instance
+    client3 = AsyncHTTPClient(force_instance=True)
+    client4 = AsyncHTTPClient(force_instance=True)
+    assert client3 is not client4, "Expected different instances with force_instance"
+
+    # Clean up
+    client1.close()
+    client3.close()
+    client4.close()
+    io_loop.close()
+```
+
+# Generated at 2024-06-04 16:44:44.531262
+```python
+    request = HTTPRequest(url="http://example.com")
+    response = HTTPResponse(request=request, code=500, error=HTTPError(500, "Internal Server Error"))
+    try:
+        response.rethrow()
+    except HTTPError as e:
+        assert e.code == 500
+        assert e.message == "Internal Server Error"
+    else:
+        assert False, "Expected HTTPError was not raised"
+
+    response = HTTPResponse(request=request, code=200)
+    try:
+        response.rethrow()
+    except HTTPError:
+        assert False, "HTTPError was raised unexpectedly"
+```
+
+# Generated at 2024-06-04 16:44:49.893570
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    # Backup the original stdout and command line arguments
+    original_stdout = sys.stdout
+    original_argv = sys.argv
+
+    try:
+        # Redirect stdout to capture print statements
+        sys.stdout = StringIO()
+        sys.argv = ['main', 'http://example.com']
+
+        # Set options for the test
+        options.print_headers = False
+        options.print_body = True
+        options.follow_redirects = True
+        options.validate_cert = True
+        options.proxy_host = None
+        options.proxy_port = None
+
+        # Call the main function
+        main()
+
+        # Get the output
+        output = sys.stdout.getvalue()
+
+        # Check if the output contains expected content
+        assert "Example Domain" in output
+
+    finally:
+        # Restore the original stdout and command line arguments
+        sys.stdout = original_stdout
+        sys.argv = original_
+
+# Generated at 2024-06-04 16:45:14.093683
+```python
+    class MockHTTPRequest:
+        def __init__(self, url):
+            self.url = url
+            self.headers = {}
+
+    class MockHTTPResponse:
+        def __init__(self, error=None):
+            self.error = error
+            self._error_is_response_code = False
+
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request, callback):
+            if request.url == "http://example.com/success":
+                callback(MockHTTPResponse())
+            else:
+                callback(MockHTTPResponse(error=Exception("Error")))
+
+    client = MockAsyncHTTPClient(force_instance=True)
+    
+    # Test successful fetch
+    request = MockHTTPRequest("http://example.com/success")
+    future = client.fetch(request)
+    response = IOLoop.current().run_sync(lambda: future)
+    assert response.error is None
+
+    # Test failed fetch
+    request = MockHTTPRequest("http://example.com/fail")
+    future = client.fetch(request)
+
+
+# Generated at 2024-06-04 16:45:15.989751
+```python
+    client = HTTPClient()
+    try:
+        response = client.fetch("http://www.example.com/")
+        assert response.code == 200
+        assert isinstance(response.body, bytes)
+    except Exception as e:
+        assert False, f"Exception raised: {e}"
+    finally:
+        client.close()
+```
+
+# Generated at 2024-06-04 16:45:17.575773
+```python
+    client = HTTPClient()
+    try:
+        response = client.fetch("http://www.example.com/")
+        assert response.code == 200
+        assert isinstance(response.body, bytes)
+    except Exception as e:
+        assert False, f"Exception raised: {e}"
+    finally:
+        client.close()
+```
+
+# Generated at 2024-06-04 16:45:21.919903
+```python
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request: "HTTPRequest", callback: Callable[["HTTPResponse"], None]) -> None:
+            response = HTTPResponse(request, 200, buffer=BytesIO(b"Mock response"))
+            callback(response)
+
+    client = MockAsyncHTTPClient()
+    request = HTTPRequest(url="http://example.com")
+    future = client.fetch(request)
+
+    def handle_future(fut):
+        assert fut.result().code == 200
+        assert fut.result().body == b"Mock response"
+
+    future.add_done_callback(handle_future)
+    IOLoop.current().run_sync(lambda: future)
+```
+
+# Generated at 2024-06-04 16:45:28.047948
+```python
+    class MockHTTPRequest:
+        def __init__(self, url):
+            self.url = url
+            self.headers = {}
+
+    class MockHTTPResponse:
+        def __init__(self, error=None):
+            self.error = error
+            self._error_is_response_code = False
+
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request, callback):
+            if request.url == "http://example.com/success":
+                response = MockHTTPResponse()
+            else:
+                response = MockHTTPResponse(error=Exception("Error"))
+            callback(response)
+
+    client = MockAsyncHTTPClient()
+    request = MockHTTPRequest("http://example.com/success")
+    future = client.fetch(request)
+
+    def handle_future(fut):
+        assert fut.result().error is None
+
+    future.add_done_callback(handle_future)
+
+    request = MockHTTPRequest("http://example.com/fail")
+    future = client.fetch(request, raise_error=False)
+
+    def handle_future
+
+# Generated at 2024-06-04 16:45:30.159304
+```python
+    client = AsyncHTTPClient(force_instance=True)
+    client.initialize(defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+    assert not client._closed
+```
+
+# Generated at 2024-06-04 16:45:34.421763
+```python
+    request = HTTPRequest(url="http://example.com")
+    response = HTTPResponse(request=request, code=200)
+    try:
+        response.rethrow()
+    except Exception:
+        assert False, "rethrow() raised an exception unexpectedly for a successful response"
+
+    error_response = HTTPResponse(request=request, code=404)
+    try:
+        error_response.rethrow()
+    except HTTPError as e:
+        assert e.code == 404, "rethrow() did not raise the correct HTTPError"
+    else:
+        assert False, "rethrow() did not raise an HTTPError for an error response"
+```
+
+# Generated at 2024-06-04 16:45:35.999398
+```python
+    client = AsyncHTTPClient(force_instance=True, defaults={"user_agent": "TestAgent"})
+    assert client.defaults["user_agent"] == "TestAgent"
+    assert client.io_loop is IOLoop.current()
+    assert not client._closed
+```
+
+# Generated at 2024-06-04 16:45:39.282807
+```python
+    client = HTTPClient()
+    try:
+        response = client.fetch("http://www.example.com/")
+        assert response.code == 200
+        assert response.body is not None
+    except Exception as e:
+        assert False, f"Exception occurred: {e}"
+    finally:
+        client.close()
+```
+
+# Generated at 2024-06-04 16:45:43.518600
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    # Backup the original stdout and argv
+    original_stdout = sys.stdout
+    original_argv = sys.argv
+
+    try:
+        # Redirect stdout to capture print statements
+        sys.stdout = StringIO()
+        # Mock command line arguments
+        sys.argv = ['main', 'http://example.com']
+        options.print_headers = False
+        options.print_body = True
+        options.follow_redirects = True
+        options.validate_cert = True
+        options.proxy_host = None
+        options.proxy_port = None
+
+        main()
+
+        # Get the output and assert
+        output = sys.stdout.getvalue()
+        assert "Example Domain" in output
+
+    finally:
+        # Restore the original stdout and argv
+        sys.stdout = original_stdout
+        sys.argv = original_argv
+```
+
+# Generated at 2024-06-04 16:46:05.641686
+```python
+    io_loop = IOLoop()
+    client = AsyncHTTPClient(force_instance=True)
+    client.close()
+    assert client._closed is True
+    assert client.io_loop not in client._async_clients()
+```
+
+# Generated at 2024-06-04 16:46:08.044902
+```python
+    request = HTTPRequest(url="http://example.com")
+    defaults = {"method": "GET", "headers": {"User-Agent": "test-agent"}}
+    proxy = _RequestProxy(request, defaults)
+
+    # Test attribute from request
+    assert proxy.url == "http://example.com"
+
+    # Test attribute from defaults
+    assert proxy.method == "GET"
+    assert proxy.headers == {"User-Agent": "test-agent"}
+
+    # Test attribute not in request or defaults
+    assert proxy.proxy_host is None
+```
+
+# Generated at 2024-06-04 16:46:11.711028
+```python
+    import tornado.testing
+    from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+    class AsyncHTTPClientTest(tornado.testing.AsyncTestCase):
+        @tornado.testing.gen_test
+        async def test_fetch_success(self):
+            client = AsyncHTTPClient()
+            response = HTTPResponse(HTTPRequest("http://example.com"), 200)
+            client.fetch_impl = lambda request, callback: callback(response)
+            result = await client.fetch("http://example.com")
+            self.assertEqual(result.code, 200)
+
+        @tornado.testing.gen_test
+        async def test_fetch_error(self):
+            client = AsyncHTTPClient()
+            error = HTTPError(599, "Timeout")
+            client.fetch_impl = lambda request, callback: callback(HTTPResponse(HTTPRequest("http://example.com"), 599, error=error))
+            with self.assertRaises(HTTPError):
+                await client.fetch("http://example.com")
+
+        @tornado.testing.gen_test
+
+
+# Generated at 2024-06-04 16:46:16.265674
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    # Backup the original stdout and command line arguments
+    original_stdout = sys.stdout
+    original_argv = sys.argv
+
+    try:
+        # Redirect stdout to capture print statements
+        sys.stdout = StringIO()
+        # Set command line arguments
+        sys.argv = ['main', '--print_body=False', 'http://example.com']
+        # Set options
+        options.print_headers = True
+        options.print_body = False
+        options.follow_redirects = True
+        options.validate_cert = True
+        options.proxy_host = None
+        options.proxy_port = None
+
+        # Call the main function
+        main()
+
+        # Get the output
+        output = sys.stdout.getvalue()
+
+        # Check if the output contains expected headers
+        assert 'Content-Type' in output
+        assert 'Content-Length' in output
+
+    finally:
+        # Restore the original stdout
+
+# Generated at 2024-06-04 16:46:18.170012
+```python
+    client = HTTPClient()
+    try:
+        response = client.fetch("http://www.example.com/")
+        assert response.code == 200
+        assert response.body is not None
+    except Exception as e:
+        assert False, f"Exception raised: {e}"
+    finally:
+        client.close()
+```
+
+# Generated at 2024-06-04 16:46:19.642199
+```python
+    io_loop = IOLoop()
+    client = AsyncHTTPClient(force_instance=True)
+    client.close()
+    assert client._closed is True
+    assert client.io_loop not in client._async_clients()
+```
+
+# Generated at 2024-06-04 16:46:25.429755
+```python
+    import tornado.testing
+    from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+    class AsyncHTTPClientTest(tornado.testing.AsyncTestCase):
+        @tornado.testing.gen_test
+        async def test_fetch_success(self):
+            client = AsyncHTTPClient()
+            response = HTTPResponse(HTTPRequest("http://example.com"), 200)
+            client.fetch_impl = lambda request, callback: callback(response)
+            result = await client.fetch("http://example.com")
+            self.assertEqual(result.code, 200)
+
+        @tornado.testing.gen_test
+        async def test_fetch_error(self):
+            client = AsyncHTTPClient()
+            error = HTTPError(599, "Timeout")
+            client.fetch_impl = lambda request, callback: callback(HTTPResponse(HTTPRequest("http://example.com"), 599, error=error))
+            with self.assertRaises(HTTPError):
+                await client.fetch("http://example.com")
+
+        @tornado.testing.gen_test
+
+
+# Generated at 2024-06-04 16:46:29.591446
+```python
+    import sys
+    from io import StringIO
+    from tornado.options import options
+
+    # Backup the original stdout and command line arguments
+    original_stdout = sys.stdout
+    original_argv = sys.argv
+
+    try:
+        # Redirect stdout to capture print statements
+        sys.stdout = StringIO()
+        # Set command line arguments
+        sys.argv = ['main', '--print_body=False', '--print_headers=True', 'http://example.com']
+        
+        # Mock options
+        options.print_headers = True
+        options.print_body = False
+        options.follow_redirects = True
+        options.validate_cert = True
+        options.proxy_host = None
+        options.proxy_port = None
+
+        # Call the main function
+        main()
+
+        # Get the output
+        output = sys.stdout.getvalue()
+        assert "Content-Type" in output  # Example check, adjust based on expected output
+    finally:
+        # Restore the original stdout and command line
+
+# Generated at 2024-06-04 16:46:32.354110
+```python
+    request = HTTPRequest(url="http://example.com")
+    response = HTTPResponse(request=request, code=200)
+    try:
+        response.rethrow()
+    except Exception:
+        assert False, "rethrow() raised an exception unexpectedly for a successful response"
+
+    error_response = HTTPResponse(request=request, code=404)
+    try:
+        error_response.rethrow()
+    except HTTPError as e:
+        assert e.code == 404, "rethrow() did not raise the expected HTTPError"
+    else:
+        assert False, "rethrow() did not raise an HTTPError for an error response"
+```
+
+# Generated at 2024-06-04 16:46:37.999851
+```python
+    class MockHTTPRequest:
+        def __init__(self, url):
+            self.url = url
+            self.headers = {}
+
+    class MockHTTPResponse:
+        def __init__(self, error=None):
+            self.error = error
+            self._error_is_response_code = False
+
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def fetch_impl(self, request, callback):
+            if request.url == "http://example.com/success":
+                response = MockHTTPResponse()
+            else:
+                response = MockHTTPResponse(error=Exception("Error"))
+            callback(response)
+
+    async def run_test():
+        client = MockAsyncHTTPClient(force_instance=True)
+        request = MockHTTPRequest("http://example.com/success")
+        future = client.fetch(request)
+        response = await future
+        assert response.error is None
+
+        request = MockHTTPRequest("http://example.com/fail")
+        future = client.fetch(request)
+        try:
+            response = await future
+       

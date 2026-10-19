@@ -1,0 +1,1371 @@
+
+
+# Generated at 2024-06-01 12:14:39.498946
+```python
+    # Test valid fully-qualified collection reference
+    ref = 'namespace.collection.resource'
+    ref_type = 'module'
+    result = AnsibleCollectionRef.try_parse_fqcr(ref, ref_type)
+    assert result is not None
+    assert result.collection == 'namespace.collection'
+    assert result.subdirs == ''
+    assert result.resource == 'resource'
+    assert result.ref_type == 'module'
+
+    # Test valid fully-qualified collection reference with subdirs
+    ref = 'namespace.collection.subdir1.subdir2.resource'
+    ref_type = 'module'
+    result = AnsibleCollectionRef.try_parse_fqcr(ref, ref_type)
+    assert result is not None
+    assert result.collection == 'namespace.collection'
+    assert result.subdirs == 'subdir1.subdir2'
+    assert result.resource == 'resource'
+    assert result.ref_type == 'module'
+
+    # Test invalid fully-qualified collection reference
+    ref = 'invalid.collection'
+    ref_type
+
+# Generated at 2024-06-01 12:14:43.057244
+```python
+    collection_finder = _AnsibleCollectionFinder(paths=['/fake/path'])
+    pathctx = '/fake/path/ansible_collections'
+    path_hook_finder = _AnsiblePathHookFinder(collection_finder, pathctx)
+
+    # Test case 1: fullname is 'ansible_collections'
+    fullname = 'ansible_collections'
+    result = path_hook_finder.find_module(fullname)
+    assert result is not None, "Expected a module loader for 'ansible_collections'"
+
+    # Test case 2: fullname is 'ansible_collections.some_ns'
+    fullname = 'ansible_collections.some_ns'
+    result = path_hook_finder.find_module(fullname)
+    assert result is not None, "Expected a module loader for 'ansible_collections.some_ns'"
+
+    # Test case 3: fullname is 'ansible_collections.some_ns.some_coll'
+    fullname = 'ansible_collections.some_ns.some_coll
+
+# Generated at 2024-06-01 12:14:44.944437
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', path_list=['/fake/path'])
+    modules = list(loader.iter_modules('ansible_collections.test'))
+    expected_modules = [('ansible_collections.test.module1', False), ('ansible_collections.test.module2', False)]
+    assert modules == expected_modules, f"Expected {expected_modules}, but got {modules}"
+```
+
+# Generated at 2024-06-01 12:14:54.006176
+```python
+    loader = _AnsibleCollectionPkgLoader('ansible_collections.test_namespace.test_collection')
+    loader._source_code_path = '/path/to/test_collection/__init__.py'
+    loader._compiled_code = compile('print("Hello, World!")', loader._source_code_path, 'exec')
+    loader._subpackage_search_paths = ['/path/to/test_collection']
+    loader._fullname = 'ansible_collections.test_namespace.test_collection'
+    loader._split_name = ['ansible_collections', 'test_namespace', 'test_collection']
+    loader._package_to_load = 'test_collection'
+    loader._candidate_paths = ['/path/to']
+
+    with patch('builtins.open', mock_open(read_data='print("Hello, World!")')), \
+         patch('os.path.isfile', return_value=True), \
+         patch('os.path.isdir', return_value=True), \
+         patch('sys.modules', {}), \
+         patch('ansible.utils.collection_loader._meta_yml_to_dict
+
+# Generated at 2024-06-01 12:14:58.551468
+```python
+    # Valid cases
+    assert AnsibleCollectionRef.try_parse_fqcr('namespace.collection.resource', 'module') is not None
+    assert AnsibleCollectionRef.try_parse_fqcr('namespace.collection.subdir.resource', 'module') is not None
+    assert AnsibleCollectionRef.try_parse_fqcr('namespace.collection.resource', 'role') is not None
+    assert AnsibleCollectionRef.try_parse_fqcr('namespace.collection.subdir.resource', 'role') is not None
+
+    # Invalid cases
+    assert AnsibleCollectionRef.try_parse_fqcr('namespace.collection', 'module') is None
+    assert AnsibleCollectionRef.try_parse_fqcr('namespace.collection.', 'module') is None
+    assert AnsibleCollectionRef.try_parse_fqcr('namespace..resource', 'module') is None
+    assert AnsibleCollectionRef.try_parse_fqcr('.collection.resource', 'module') is None
+    assert AnsibleCollectionRef
+
+# Generated at 2024-06-01 12:15:02.312093
+```python
+    finder = _AnsibleCollectionFinder(paths=['/fake/path'])
+    finder._install()
+
+    # Test case 1: Top-level package 'ansible'
+    result = finder.find_module('ansible')
+    assert isinstance(result, _AnsibleInternalRedirectLoader)
+
+    # Test case 2: Top-level package 'ansible_collections'
+    result = finder.find_module('ansible_collections')
+    assert isinstance(result, _AnsibleCollectionRootPkgLoader)
+
+    # Test case 3: Namespace package under 'ansible_collections'
+    result = finder.find_module('ansible_collections.somens')
+    assert isinstance(result, _AnsibleCollectionNSPkgLoader)
+
+    # Test case 4: Collection package under 'ansible_collections'
+    result = finder.find_module('ansible_collections.somens.somecoll')
+    assert isinstance(result, _AnsibleCollectionPkgLoader)
+
+    # Test case 5: Subpackage under a collection
+   
+
+# Generated at 2024-06-01 12:15:05.512890
+```python
+    fullname = 'ansible_collections.test_namespace.test_collection'
+    path_list = ['/fake/path']
+
+    loader = _AnsibleCollectionPkgLoaderBase(fullname, path_list)
+    loader._source_code_path = '/fake/path/test_collection/__init__.py'
+    loader._decoded_source = 'print("Hello, World!")'
+    loader._compiled_code = compile(loader._decoded_source, loader._source_code_path, 'exec')
+
+    module = loader.load_module(fullname)
+
+    assert module.__name__ == fullname
+    assert module.__file__ == loader._source_code_path
+    assert module.__package__ == 'ansible_collections.test_namespace'
+    assert module.__loader__ == loader
+    assert 'Hello, World!' in module.__dict__
+```
+
+# Generated at 2024-06-01 12:15:08.804833
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test_collection', ['/fake/path'])
+    
+    # Test when fullname matches and is a package
+    loader._source_code_path = None
+    loader._subpackage_search_paths = ['/fake/path/ansible_collections/test_collection']
+    assert loader.get_filename('ansible_collections.test_collection') == '/fake/path/ansible_collections/test_collection/__synthetic__'
+    
+    # Test when fullname matches and is not a package
+    loader._source_code_path = '/fake/path/ansible_collections/test_collection/module.py'
+    loader._subpackage_search_paths = None
+    assert loader.get_filename('ansible_collections.test_collection') == '/fake/path/ansible_collections/test_collection/module.py'
+    
+    # Test when fullname does not match
+    try:
+        loader.get_filename('ansible_collections.other_collection')
+    except ValueError as e:
+        assert str(e) ==
+
+# Generated at 2024-06-01 12:15:11.872632
+```python
+    # Test valid fully-qualified collection reference
+    ref = 'namespace.collection.resource'
+    ref_type = 'module'
+    result = AnsibleCollectionRef.from_fqcr(ref, ref_type)
+    assert result.collection == 'namespace.collection'
+    assert result.subdirs == ''
+    assert result.resource == 'resource'
+    assert result.ref_type == 'module'
+
+    # Test valid fully-qualified collection reference with subdirs
+    ref = 'namespace.collection.subdir1.subdir2.resource'
+    ref_type = 'module'
+    result = AnsibleCollectionRef.from_fqcr(ref, ref_type)
+    assert result.collection == 'namespace.collection'
+    assert result.subdirs == 'subdir1.subdir2'
+    assert result.resource == 'resource'
+    assert result.ref_type == 'module'
+
+    # Test invalid fully-qualified collection reference
+    ref = 'invalid.collection'
+    ref_type = 'module'
+    try:
+        AnsibleCollectionRef.from_fqcr
+
+# Generated at 2024-06-01 12:15:14.750637
+```python
+    collection_finder = _AnsibleCollectionFinder(paths=['/fake/path'])
+    pathctx = '/fake/path/ansible_collections'
+    path_hook_finder = _AnsiblePathHookFinder(collection_finder, pathctx)
+
+    # Test case 1: Module within ansible_collections
+    fullname = 'ansible_collections.some_namespace.some_collection'
+    result = path_hook_finder.find_module(fullname)
+    assert result is not None, "Expected a module loader for ansible_collections"
+
+    # Test case 2: Module outside ansible_collections
+    fullname = 'random_module'
+    result = path_hook_finder.find_module(fullname)
+    assert result is None, "Expected None for non-ansible_collections module"
+```
+
+# Generated at 2024-06-01 12:16:13.691870
+```python
+    # Test valid inputs
+    ref = AnsibleCollectionRef('namespace.collection', 'subdir1.subdir2', 'mymodule', 'modules')
+    assert ref.collection == 'namespace.collection'
+    assert ref.subdirs == 'subdir1.subdir2'
+    assert ref.resource == 'mymodule'
+    assert ref.ref_type == 'modules'
+    assert ref.n_python_package_name == 'ansible_collections.namespace.collection.plugins.modules.subdir1.subdir2'
+    assert ref.fqcr == 'namespace.collection.subdir1.subdir2.mymodule'
+
+    ref = AnsibleCollectionRef('namespace.collection', None, 'mymodule', 'modules')
+    assert ref.collection == 'namespace.collection'
+    assert ref.subdirs == ''
+    assert ref.resource == 'mymodule'
+    assert ref.ref_type == 'modules'
+    assert ref.n_python_package_name == 'ansible_collections.namespace.collection.plugins.modules'
+    assert ref.f
+
+# Generated at 2024-06-01 12:16:15.001963
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', path_list=['/fake/path'])
+    expected_repr = "_AnsibleCollectionPkgLoaderBase(path=['/fake/path/test'])"
+    assert repr(loader) == expected_repr
+```
+
+# Generated at 2024-06-01 12:16:18.355958
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', ['/fake/path'])
+    
+    # Test case 1: fullname matches and is a package
+    loader._source_code_path = None
+    loader._subpackage_search_paths = ['/fake/path/ansible_collections/test']
+    assert loader.get_filename('ansible_collections.test') == '/fake/path/ansible_collections/test/__synthetic__'
+    
+    # Test case 2: fullname matches and is not a package
+    loader._source_code_path = '/fake/path/ansible_collections/test/module.py'
+    loader._subpackage_search_paths = None
+    assert loader.get_filename('ansible_collections.test') == '/fake/path/ansible_collections/test/module.py'
+    
+    # Test case 3: fullname does not match
+    try:
+        loader.get_filename('ansible_collections.other')
+    except ValueError as e:
+        assert str(e)
+
+# Generated at 2024-06-01 12:16:20.274887
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', path_list=['/fake/path'])
+    modules = list(loader.iter_modules('ansible_collections.test.'))
+    expected_modules = [('ansible_collections.test.module1', False), ('ansible_collections.test.module2', False)]
+    assert modules == expected_modules, f"Expected {expected_modules}, but got {modules}"
+```
+
+# Generated at 2024-06-01 12:16:24.204830
+```python
+    # Test valid inputs
+    ref = AnsibleCollectionRef('namespace.collection', 'subdir1.subdir2', 'mymodule', 'modules')
+    assert ref.collection == 'namespace.collection'
+    assert ref.subdirs == 'subdir1.subdir2'
+    assert ref.resource == 'mymodule'
+    assert ref.ref_type == 'modules'
+    assert ref.fqcr == 'namespace.collection.subdir1.subdir2.mymodule'
+    
+    ref = AnsibleCollectionRef('namespace.collection', None, 'mymodule', 'modules')
+    assert ref.collection == 'namespace.collection'
+    assert ref.subdirs == ''
+    assert ref.resource == 'mymodule'
+    assert ref.ref_type == 'modules'
+    assert ref.fqcr == 'namespace.collection.mymodule'
+    
+    # Test invalid collection name
+    try:
+        AnsibleCollectionRef('invalid_collection_name', 'subdir1.subdir2', 'm
+
+# Generated at 2024-06-01 12:16:27.222124
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', path_list=['/fake/path'])
+    
+    # Mock methods to avoid actual file system access
+    loader.get_filename = lambda fullname: '/fake/path/test.py'
+    loader.get_source = lambda fullname: 'print("Hello, World!")'
+    
+    code = loader.get_code('ansible_collections.test')
+    
+    assert code is not None
+    assert isinstance(code, types.CodeType)
+    assert code.co_filename == '/fake/path/test.py'
+```
+
+# Generated at 2024-06-01 12:16:30.872474
+```python
+    finder = _AnsibleCollectionFinder(paths=['/fake/path'])
+    finder._install()
+
+    # Test for top-level package 'ansible'
+    module = finder.find_module('ansible')
+    assert isinstance(module, _AnsibleInternalRedirectLoader)
+
+    # Test for top-level package 'ansible_collections'
+    module = finder.find_module('ansible_collections')
+    assert isinstance(module, _AnsibleCollectionRootPkgLoader)
+
+    # Test for namespace package under 'ansible_collections'
+    module = finder.find_module('ansible_collections.somens')
+    assert isinstance(module, _AnsibleCollectionNSPkgLoader)
+
+    # Test for collection package under 'ansible_collections'
+    module = finder.find_module('ansible_collections.somens.somecoll')
+    assert isinstance(module, _AnsibleCollectionPkgLoader)
+
+    # Test for subpackage under a collection
+    module = finder.find_module('ansible_collections.somens.somecoll.module
+
+# Generated at 2024-06-01 12:16:34.504236
+```python
+    loader = _AnsibleCollectionPkgLoader('ansible_collections.test_namespace.test_collection')
+    loader._source_code_path = 'test_collection/__init__.py'
+    loader._compiled_code = compile('print("Hello, World!")', 'test_collection/__init__.py', 'exec')
+    loader._subpackage_search_paths = ['test_collection']
+    loader._split_name = ['ansible_collections', 'test_namespace', 'test_collection']
+    loader._fullname = 'ansible_collections.test_namespace.test_collection'
+    loader._package_to_load = 'test_collection'
+    loader._candidate_paths = ['test_collection']
+    
+    with patch('builtins.open', mock_open(read_data='print("Hello, World!")')), \
+         patch('os.path.isfile', return_value=True), \
+         patch('os.path.isdir', return_value=True), \
+         patch('sys.modules', {}):
+        module = loader.load_module('ansible_collections.test_namespace.test_collection')
+
+
+# Generated at 2024-06-01 12:16:38.030520
+```python
+    # Test valid inputs
+    ref = AnsibleCollectionRef('namespace.collection', 'subdir1.subdir2', 'mymodule', 'modules')
+    assert ref.collection == 'namespace.collection'
+    assert ref.subdirs == 'subdir1.subdir2'
+    assert ref.resource == 'mymodule'
+    assert ref.ref_type == 'modules'
+    assert ref.fqcr == 'namespace.collection.subdir1.subdir2.mymodule'
+
+    ref = AnsibleCollectionRef('namespace.collection', None, 'mymodule', 'modules')
+    assert ref.collection == 'namespace.collection'
+    assert ref.subdirs == ''
+    assert ref.resource == 'mymodule'
+    assert ref.ref_type == 'modules'
+    assert ref.fqcr == 'namespace.collection.mymodule'
+
+    # Test invalid collection name
+    try:
+        AnsibleCollectionRef('invalid_collection_name', 'subdir1.subdir2', 'mymodule
+
+# Generated at 2024-06-01 12:16:43.931428
+```python
+    loader = _AnsibleCollectionPkgLoader('ansible_collections.test_namespace.test_collection')
+    loader._source_code_path = 'test_collection/__init__.py'
+    loader._subpackage_search_paths = ['test_collection']
+    loader._compiled_code = compile('print("Hello, World!")', 'test_collection/__init__.py', 'exec')
+
+    with patch('builtins.open', mock_open(read_data='print("Hello, World!")')), \
+         patch('os.path.isfile', return_value=True), \
+         patch('os.path.isdir', return_value=True), \
+         patch('sys.modules', {}):
+        module = loader.load_module('ansible_collections.test_namespace.test_collection')
+        assert module.__name__ == 'ansible_collections.test_namespace.test_collection'
+        assert module.__file__ == 'test_collection/__init__.py'
+        assert module.__package__ == 'ansible_collections.test_namespace.test_collection'
+        assert module.__loader__ == loader
+
+# Generated at 2024-06-01 12:18:01.114645
+```python
+    loader = _AnsibleInternalRedirectLoader('ansible.builtin.some_module', [])
+    sys.modules.pop('ansible.builtin.some_module', None)  # Ensure the module is not already loaded
+
+    # Mock the import_module function to return a dummy module
+    dummy_module = type(sys)('dummy_module')
+    with patch('importlib.import_module', return_value=dummy_module):
+        loaded_module = loader.load_module('ansible.builtin.some_module')
+
+    assert loaded_module is dummy_module
+    assert sys.modules['ansible.builtin.some_module'] is dummy_module
+```
+
+# Generated at 2024-06-01 12:18:04.579974
+```python
+    finder = _AnsibleCollectionFinder(paths=['/fake/path'])
+    finder._install()
+
+    # Test finding a top-level package
+    module = finder.find_module('ansible')
+    assert isinstance(module, _AnsibleInternalRedirectLoader)
+
+    # Test finding a collection root package
+    module = finder.find_module('ansible_collections')
+    assert isinstance(module, _AnsibleCollectionRootPkgLoader)
+
+    # Test finding a namespace package
+    module = finder.find_module('ansible_collections.somens')
+    assert isinstance(module, _AnsibleCollectionNSPkgLoader)
+
+    # Test finding a collection package
+    module = finder.find_module('ansible_collections.somens.somecoll')
+    assert isinstance(module, _AnsibleCollectionPkgLoader)
+
+    # Test finding a module within a collection
+    module = finder.find_module('ansible_collections.somens.somecoll.module')
+    assert isinstance(module, _AnsibleCollectionLoader)
+
+    # Test finding
+
+# Generated at 2024-06-01 12:18:09.240899
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test_collection', ['/fake/path'])
+    
+    # Test case 1: When fullname matches and is a package
+    loader._source_code_path = None
+    loader._subpackage_search_paths = ['/fake/path/test_collection']
+    assert loader.get_filename('ansible_collections.test_collection') == '/fake/path/test_collection/__synthetic__'
+    
+    # Test case 2: When fullname matches and is not a package
+    loader._source_code_path = '/fake/path/test_collection/module.py'
+    loader._subpackage_search_paths = None
+    assert loader.get_filename('ansible_collections.test_collection.module') == '/fake/path/test_collection/module.py'
+    
+    # Test case 3: When fullname does not match
+    try:
+        loader.get_filename('ansible_collections.other_collection')
+    except ValueError as e:
+        assert str(e) == 'this loader cannot find files for
+
+# Generated at 2024-06-01 12:18:12.701341
+```python
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('action_plugins') == 'action'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('become_plugins') == 'become'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('cache_plugins') == 'cache'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('callback_plugins') == 'callback'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('cliconf_plugins') == 'cliconf'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('connection_plugins') == 'connection'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('doc_fragments') == 'doc_fragments'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('filter_plugins') == 'filter'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('httpapi_plugins') == '
+
+# Generated at 2024-06-01 12:18:14.723165
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', path_list=['/fake/path'])
+    loader._source_code_path = '/fake/path/test.py'
+    expected_source = 'print("Hello, World!")'
+    
+    with patch('builtins.open', mock_open(read_data=expected_source)):
+        source = loader.get_source('ansible_collections.test')
+    
+    assert source == expected_source
+```
+
+# Generated at 2024-06-01 12:18:17.836344
+```python
+    loader = _AnsibleCollectionPkgLoader('ansible_collections.test_namespace.test_collection')
+    loader._source_code_path = '/path/to/test_collection/__init__.py'
+    loader._compiled_code = compile('', loader._source_code_path, 'exec')
+    loader._subpackage_search_paths = ['/path/to/test_collection']
+    loader._fullname = 'ansible_collections.test_namespace.test_collection'
+    loader._split_name = ['ansible_collections', 'test_namespace', 'test_collection']
+    loader._package_to_load = 'test_collection'
+    loader._candidate_paths = ['/path/to']
+
+    with patch('builtins.open', mock_open(read_data='')) as mock_file, \
+         patch('os.path.isfile', return_value=True), \
+         patch('os.path.isdir', return_value=True), \
+         patch('importlib.import_module', return_value=ModuleType('ansible')), \
+         patch('ansible.utils.collection_loader._meta_yml_to_dict
+
+# Generated at 2024-06-01 12:18:21.085519
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test_collection', path_list=['/fake/path'])
+    
+    # Test case 1: Source code is already decoded
+    loader._decoded_source = 'print("Hello, World!")'
+    assert loader.get_source('ansible_collections.test_collection') == 'print("Hello, World!")'
+    
+    # Test case 2: Fullname does not match
+    try:
+        loader.get_source('ansible_collections.wrong_collection')
+    except ValueError as e:
+        assert str(e) == 'this loader cannot load source for ansible_collections.wrong_collection, only ansible_collections.test_collection'
+    
+    # Test case 3: No source code path
+    loader._decoded_source = None
+    loader._source_code_path = None
+    assert loader.get_source('ansible_collections.test_collection') is None
+    
+    # Test case 4: Valid source code
+
+# Generated at 2024-06-01 12:18:24.585942
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test_collection', path_list=['/fake/path'])
+    
+    # Test case 1: Source code is already decoded
+    loader._decoded_source = 'print("Hello, World!")'
+    assert loader.get_source('ansible_collections.test_collection') == 'print("Hello, World!")'
+    
+    # Test case 2: Fullname does not match
+    try:
+        loader.get_source('ansible_collections.wrong_collection')
+    except ValueError as e:
+        assert str(e) == 'this loader cannot load source for ansible_collections.wrong_collection, only ansible_collections.test_collection'
+    
+    # Test case 3: No source code path
+    loader._decoded_source = None
+    loader._source_code_path = None
+    assert loader.get_source('ansible_collections.test_collection') is None
+    
+    # Test case 4: Valid source code
+
+# Generated at 2024-06-01 12:18:27.609507
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test_collection', path_list=['/fake/path'])
+    
+    # Test case 1: Source code is already decoded
+    loader._decoded_source = 'print("Hello, World!")'
+    assert loader.get_source('ansible_collections.test_collection') == 'print("Hello, World!")'
+    
+    # Test case 2: Fullname does not match
+    try:
+        loader.get_source('ansible_collections.wrong_collection')
+    except ValueError as e:
+        assert str(e) == 'this loader cannot load source for ansible_collections.wrong_collection, only ansible_collections.test_collection'
+    
+    # Test case 3: No source code path
+    loader._decoded_source = None
+    loader._source_code_path = None
+    assert loader.get_source('ansible_collections.test_collection') is None
+    
+    # Test case 4: Valid source code
+
+# Generated at 2024-06-01 12:18:31.233257
+```python
+    collection_finder = _AnsibleCollectionFinder(paths=['/fake/path'])
+    pathctx = '/fake/path/ansible_collections'
+    path_hook_finder = _AnsiblePathHookFinder(collection_finder, pathctx)
+
+    # Test case 1: Finding a module within ansible_collections
+    fullname = 'ansible_collections.some_namespace.some_collection'
+    result = path_hook_finder.find_module(fullname)
+    assert result is not None, "Expected to find the module within ansible_collections"
+
+    # Test case 2: Finding a module outside ansible_collections
+    fullname = 'some_other_module'
+    result = path_hook_finder.find_module(fullname)
+    assert result is None, "Expected not to find the module outside ansible_collections"
+
+    # Test case 3: Finding a module within ansible_collections with a different path
+    fullname = 'ansible_collections.another_namespace.another_collection
+
+# Generated at 2024-06-01 12:19:07.499106
+```python
+    # Test valid fully-qualified collection reference
+    ref = 'namespace.collection.resource'
+    ref_type = 'module'
+    result = AnsibleCollectionRef.from_fqcr(ref, ref_type)
+    assert result.collection == 'namespace.collection'
+    assert result.subdirs == ''
+    assert result.resource == 'resource'
+    assert result.ref_type == 'module'
+    assert result.fqcr == 'namespace.collection.resource'
+
+    # Test valid fully-qualified collection reference with subdirs
+    ref = 'namespace.collection.subdir1.subdir2.resource'
+    ref_type = 'module'
+    result = AnsibleCollectionRef.from_fqcr(ref, ref_type)
+    assert result.collection == 'namespace.collection'
+    assert result.subdirs == 'subdir1.subdir2'
+    assert result.resource == 'resource'
+    assert result.ref_type == 'module'
+    assert result.fqcr == 'namespace.collection.subdir1.subdir2.resource'
+
+    # Test invalid fully
+
+# Generated at 2024-06-01 12:19:10.575279
+```python
+    finder = _AnsibleCollectionFinder(paths=['/fake/path'])
+    finder._install()
+
+    # Test case 1: Top-level package 'ansible'
+    module = finder.find_module('ansible')
+    assert isinstance(module, _AnsibleInternalRedirectLoader)
+
+    # Test case 2: Top-level package 'ansible_collections'
+    module = finder.find_module('ansible_collections')
+    assert isinstance(module, _AnsibleCollectionRootPkgLoader)
+
+    # Test case 3: Namespace package under 'ansible_collections'
+    module = finder.find_module('ansible_collections.somens')
+    assert isinstance(module, _AnsibleCollectionNSPkgLoader)
+
+    # Test case 4: Collection package under 'ansible_collections'
+    module = finder.find_module('ansible_collections.somens.somecoll')
+    assert isinstance(module, _AnsibleCollectionPkgLoader)
+
+    # Test case 5: Submodule under a collection
+   
+
+# Generated at 2024-06-01 12:19:14.221145
+```python
+    finder = _AnsibleCollectionFinder(paths=['/fake/path'])
+    finder._install()
+
+    # Test finding a top-level package
+    module = finder.find_module('ansible')
+    assert isinstance(module, _AnsibleInternalRedirectLoader)
+
+    # Test finding a collection root package
+    module = finder.find_module('ansible_collections')
+    assert isinstance(module, _AnsibleCollectionRootPkgLoader)
+
+    # Test finding a namespace package
+    module = finder.find_module('ansible_collections.somens')
+    assert isinstance(module, _AnsibleCollectionNSPkgLoader)
+
+    # Test finding a collection package
+    module = finder.find_module('ansible_collections.somens.somecoll')
+    assert isinstance(module, _AnsibleCollectionPkgLoader)
+
+    # Test finding a module within a collection
+    module = finder.find_module('ansible_collections.somens.somecoll.module')
+    assert isinstance(module, _AnsibleCollectionLoader)
+
+    # Test finding
+
+# Generated at 2024-06-01 12:19:17.494556
+```python
+    # Test with valid fully-qualified collection reference
+    ref = 'namespace.collection.resource'
+    ref_type = 'module'
+    result = AnsibleCollectionRef.try_parse_fqcr(ref, ref_type)
+    assert result is not None
+    assert result.collection == 'namespace.collection'
+    assert result.resource == 'resource'
+    assert result.ref_type == 'module'
+    assert result.subdirs == ''
+
+    # Test with valid fully-qualified collection reference with subdirs
+    ref = 'namespace.collection.subdir1.subdir2.resource'
+    ref_type = 'module'
+    result = AnsibleCollectionRef.try_parse_fqcr(ref, ref_type)
+    assert result is not None
+    assert result.collection == 'namespace.collection'
+    assert result.resource == 'resource'
+    assert result.ref_type == 'module'
+    assert result.subdirs == 'subdir1.subdir2'
+
+    # Test with invalid fully-qualified collection reference
+    ref = 'invalid.collection'
+
+
+# Generated at 2024-06-01 12:19:20.282072
+```python
+    loader = _AnsibleCollectionPkgLoader('ansible.builtin', ['/fake/path'])
+    loader._source_code_path = '/fake/path/__init__.py'
+    loader._compiled_code = compile('', '<string>', 'exec')
+    loader._subpackage_search_paths = ['/fake/path']
+    loader._decoded_source = ''
+    loader._fullname = 'ansible.builtin'
+    loader._split_name = ['ansible', 'builtin']
+    loader._package_to_load = 'ansible.builtin'
+    loader._candidate_paths = ['/fake/path']
+
+    with patch('ansible.utils.collection_loader._meta_yml_to_dict', return_value={}), \
+         patch('ansible.utils.collection_loader.import_module', return_value=ModuleType('ansible')), \
+         patch('os.path.isfile', return_value=True), \
+         patch('builtins.open', mock_open(read_data='')), \
+         patch('ansible.utils.collection_loader.AnsibleCollectionConfig.on_collection_load.fire
+
+# Generated at 2024-06-01 12:19:24.321213
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', path_list=['/fake/path'])
+    
+    # Test case 1: Source code is already decoded
+    loader._decoded_source = 'print("Hello World")'
+    assert loader.get_source('ansible_collections.test') == 'print("Hello World")'
+    
+    # Test case 2: Fullname does not match
+    try:
+        loader.get_source('ansible_collections.wrong')
+    except ValueError as e:
+        assert str(e) == 'this loader cannot load source for ansible_collections.wrong, only ansible_collections.test'
+    
+    # Test case 3: No source code path
+    loader._decoded_source = None
+    loader._source_code_path = None
+    assert loader.get_source('ansible_collections.test') is None
+    
+    # Test case 4: Valid source code path
+    loader._source_code_path
+
+# Generated at 2024-06-01 12:19:27.679193
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test_collection', path_list=['/fake/path'])
+    
+    # Test case 1: Source code is already decoded
+    loader._decoded_source = 'print("Hello, World!")'
+    assert loader.get_source('ansible_collections.test_collection') == 'print("Hello, World!")'
+    
+    # Test case 2: Fullname does not match
+    try:
+        loader.get_source('ansible_collections.wrong_collection')
+    except ValueError as e:
+        assert str(e) == 'this loader cannot load source for ansible_collections.wrong_collection, only ansible_collections.test_collection'
+    
+    # Test case 3: No source code path
+    loader._decoded_source = None
+    loader._source_code_path = None
+    assert loader.get_source('ansible_collections.test_collection') is None
+    
+    # Test case 4: Valid source code
+
+# Generated at 2024-06-01 12:19:29.690100
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test_collection')
+    loader._source_code_path = 'test_module.py'
+    loader._decoded_source = 'print("Hello, World!")'
+    expected_code = compile(loader._decoded_source, loader._source_code_path, 'exec')
+
+    assert loader.get_code('ansible_collections.test_collection') == expected_code
+```
+
+# Generated at 2024-06-01 12:19:33.403970
+```python
+    collection_finder = _AnsibleCollectionFinder(paths=['/fake/path'])
+    pathctx = '/fake/path/ansible_collections'
+    path_hook_finder = _AnsiblePathHookFinder(collection_finder, pathctx)
+
+    # Test case 1: Finding a module within ansible_collections
+    fullname = 'ansible_collections.some_namespace.some_collection'
+    result = path_hook_finder.find_module(fullname)
+    assert result is not None, "Expected to find the module within ansible_collections"
+
+    # Test case 2: Finding a module outside ansible_collections
+    fullname = 'some_other_module'
+    result = path_hook_finder.find_module(fullname)
+    assert result is None, "Expected not to find the module outside ansible_collections"
+
+    # Test case 3: Finding a module within ansible_collections with a different path
+    fullname = 'ansible_collections.another_namespace.another_collection
+
+# Generated at 2024-06-01 12:19:36.725034
+```python
+    fullname = 'ansible_collections.test_namespace.test_collection'
+    path_list = ['/fake/path']
+
+    loader = _AnsibleCollectionPkgLoaderBase(fullname, path_list)
+
+    # Mock methods and attributes
+    loader._redirect_module = None
+    loader.get_filename = lambda x: '/fake/path/test_collection/__init__.py'
+    loader.get_code = lambda x: compile('print("Hello, World!")', '<string>', 'exec')
+
+    # Test loading the module
+    module = loader.load_module(fullname)
+
+    assert module.__name__ == fullname
+    assert module.__file__ == '/fake/path/test_collection/__init__.py'
+    assert module.__package__ == 'ansible_collections'
+    assert '__path__' in module.__dict__
+    assert module.__path__ == loader._subpackage_search_paths
+
+    # Test that the module is in sys.modules
+    assert sys.modules[fullname] is module
+
+    # Clean up
+
+# Generated at 2024-06-01 12:20:08.499208
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test_collection')
+    loader._source_code_path = 'test_module.py'
+    loader._decoded_source = 'print("Hello, World!")'
+    expected_code = compile(loader._decoded_source, loader._source_code_path, 'exec')
+
+    assert loader.get_code('ansible_collections.test_collection') == expected_code
+```
+
+# Generated at 2024-06-01 12:20:11.573534
+```python
+    loader = _AnsibleInternalRedirectLoader('ansible.builtin.test_module', [])
+    sys.modules.pop('ansible.builtin.test_module', None)  # Ensure the module is not already loaded
+
+    with patch('ansible.utils.collection_loader.import_module') as mock_import_module:
+        mock_module = MagicMock()
+        mock_import_module.return_value = mock_module
+
+        result = loader.load_module('ansible.builtin.test_module')
+
+        mock_import_module.assert_called_once_with(loader._redirect)
+        assert sys.modules['ansible.builtin.test_module'] == mock_module
+        assert result == mock_module
+```
+
+# Generated at 2024-06-01 12:20:13.946076
+```python
+    fullname = 'ansible_collections.test_namespace.test_collection'
+    path_list = ['/fake/path']
+
+    loader = _AnsibleCollectionPkgLoaderBase(fullname, path_list)
+    loader._source_code_path = '/fake/path/test_collection/__init__.py'
+    loader._decoded_source = 'print("Hello, World!")'
+
+    module = loader.load_module(fullname)
+
+    assert module.__name__ == fullname
+    assert module.__file__ == loader.get_filename(fullname)
+    assert module.__package__ == loader._parent_package_name
+    assert module.__loader__ == loader
+    assert 'Hello, World!' in module.__dict__
+```
+
+# Generated at 2024-06-01 12:20:17.245950
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', ['/fake/path'])
+
+    # Test with an absolute path that exists
+    with patch('builtins.open', mock_open(read_data=b'test data')) as mock_file:
+        with patch('os.path.isfile', return_value=True):
+            data = loader.get_data('/fake/path/testfile.py')
+            assert data == b'test data'
+            mock_file.assert_called_once_with('/fake/path/testfile.py', 'rb')
+
+    # Test with an absolute path that does not exist
+    with patch('os.path.isfile', return_value=False):
+        data = loader.get_data('/fake/path/nonexistent.py')
+        assert data is None
+
+    # Test with a directory path ending with __init__.py
+    with patch('os.path.isfile', return_value=False):
+        with patch('os.path.isdir', return_value=True):
+            data = loader.get_data('/fake/path/__init__.py
+
+# Generated at 2024-06-01 12:20:25.319590
+```python
+    assert AnsibleCollectionRef.is_valid_fqcr('namespace.collection.resource') == True
+    assert AnsibleCollectionRef.is_valid_fqcr('namespace.collection.subdir.resource') == True
+    assert AnsibleCollectionRef.is_valid_fqcr('namespace.collection') == False
+    assert AnsibleCollectionRef.is_valid_fqcr('namespace.collection.subdir1.subdir2.resource') == True
+    assert AnsibleCollectionRef.is_valid_fqcr('namespace.collection.subdir1.subdir2') == False
+    assert AnsibleCollectionRef.is_valid_fqcr('namespace.collection.resource', 'module') == True
+    assert AnsibleCollectionRef.is_valid_fqcr('namespace.collection.subdir.resource', 'module') == True
+    assert AnsibleCollectionRef.is_valid_fqcr('namespace.collection.resource', 'invalid_type') == False
+```
+
+# Generated at 2024-06-01 12:20:31.771143
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', ['/fake/path'])
+    
+    # Test with an absolute path that exists
+    with patch('builtins.open', mock_open(read_data=b'test data')) as mock_file:
+        with patch('os.path.isfile', return_value=True):
+            data = loader.get_data('/fake/path/testfile.py')
+            assert data == b'test data'
+            mock_file.assert_called_once_with('/fake/path/testfile.py', 'rb')
+    
+    # Test with an absolute path that does not exist
+    with patch('os.path.isfile', return_value=False):
+        data = loader.get_data('/fake/path/nonexistent.py')
+        assert data is None
+    
+    # Test with a relative path (should raise ValueError)
+    with pytest.raises(ValueError, match='relative resource paths not supported'):
+        loader.get_data('relative/path/testfile.py')
+    
+    # Test with a directory path ending with
+
+# Generated at 2024-06-01 12:20:33.308380
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', path_list=['/fake/path'])
+    modules = list(loader.iter_modules('ansible_collections.test.'))
+    expected_modules = [('ansible_collections.test.module1', False), ('ansible_collections.test.module2', False)]
+    assert modules == expected_modules, f"Expected {expected_modules}, but got {modules}"
+```
+
+# Generated at 2024-06-01 12:20:37.191147
+```python
+    finder = _AnsibleCollectionFinder(paths=['/fake/path'])
+    finder._install()
+
+    # Test case 1: Top-level package 'ansible'
+    module = finder.find_module('ansible')
+    assert isinstance(module, _AnsibleInternalRedirectLoader)
+
+    # Test case 2: Top-level package 'ansible_collections'
+    module = finder.find_module('ansible_collections')
+    assert isinstance(module, _AnsibleCollectionRootPkgLoader)
+
+    # Test case 3: Namespace package under 'ansible_collections'
+    module = finder.find_module('ansible_collections.somens')
+    assert isinstance(module, _AnsibleCollectionNSPkgLoader)
+
+    # Test case 4: Collection package under 'ansible_collections'
+    module = finder.find_module('ansible_collections.somens.somecoll')
+    assert isinstance(module, _AnsibleCollectionPkgLoader)
+
+    # Test case 5: Submodule under a collection
+   
+
+# Generated at 2024-06-01 12:20:41.498918
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.testmod', path_list=['/fake/path'])
+    module_name = 'ansible_collections.testmod'
+    
+    # Mocking methods and attributes
+    loader._redirect_module = None
+    loader._source_code_path = '/fake/path/testmod/__init__.py'
+    loader.get_filename = lambda fullname: '/fake/path/testmod/__init__.py'
+    loader.get_code = lambda fullname: compile('print("Hello World")', '/fake/path/testmod/__init__.py', 'exec')
+    
+    # Test loading the module
+    module = loader.load_module(module_name)
+    
+    assert module.__name__ == module_name
+    assert module.__file__ == '/fake/path/testmod/__init__.py'
+    assert module.__package__ == 'ansible_collections'
+    assert '__path__' in module.__dict__
+    assert module.__path__ == ['/fake/path
+
+# Generated at 2024-06-01 12:20:43.903511
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test_collection', path_list=['/fake/path'])
+    
+    # Mock methods to avoid actual file system operations
+    loader.get_filename = lambda fullname: '/fake/path/test_collection/__init__.py'
+    loader.get_source = lambda fullname: 'print("Hello, World!")'
+    
+    code = loader.get_code('ansible_collections.test_collection')
+    
+    assert code is not None
+    assert isinstance(code, type(compile('', '', 'exec')))
+    assert 'Hello, World!' in code.co_consts
+```
+
+# Generated at 2024-06-01 12:21:10.827339
+```python
+    loader = _AnsibleInternalRedirectLoader('ansible.builtin.test_module', [])
+    sys.modules.pop('ansible.builtin.test_module', None)  # Ensure the module is not already loaded
+
+    with patch('importlib.import_module') as mock_import_module:
+        mock_import_module.return_value = MagicMock()
+        module = loader.load_module('ansible.builtin.test_module')
+
+        mock_import_module.assert_called_once_with(loader._redirect)
+        assert sys.modules['ansible.builtin.test_module'] == module
+```
+
+# Generated at 2024-06-01 12:21:12.340844
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', path_list=['/fake/path'])
+    modules = list(loader.iter_modules('ansible_collections.test'))
+    assert modules == [], "Expected no modules, got: {}".format(modules)
+```
+
+# Generated at 2024-06-01 12:21:16.450806
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', path_list=['/fake/path'])
+    
+    # Test case 1: Source code is already decoded
+    loader._decoded_source = 'print("Hello World")'
+    assert loader.get_source('ansible_collections.test') == 'print("Hello World")'
+    
+    # Test case 2: Fullname does not match
+    try:
+        loader.get_source('ansible_collections.wrong')
+    except ValueError as e:
+        assert str(e) == 'this loader cannot load source for ansible_collections.wrong, only ansible_collections.test'
+    
+    # Test case 3: No source code path
+    loader._decoded_source = None
+    loader._source_code_path = None
+    assert loader.get_source('ansible_collections.test') is None
+    
+    # Test case 4: Valid source code path
+    loader._source_code_path
+
+# Generated at 2024-06-01 12:21:19.916717
+```python
+    # Test valid fully-qualified collection reference with no subdirs
+    ref = 'namespace.collection.resource'
+    ref_type = 'module'
+    result = AnsibleCollectionRef.from_fqcr(ref, ref_type)
+    assert result.collection == 'namespace.collection'
+    assert result.subdirs == ''
+    assert result.resource == 'resource'
+    assert result.ref_type == 'module'
+    assert result.fqcr == ref
+
+    # Test valid fully-qualified collection reference with subdirs
+    ref = 'namespace.collection.subdir1.subdir2.resource'
+    ref_type = 'module'
+    result = AnsibleCollectionRef.from_fqcr(ref, ref_type)
+    assert result.collection == 'namespace.collection'
+    assert result.subdirs == 'subdir1.subdir2'
+    assert result.resource == 'resource'
+    assert result.ref_type == 'module'
+    assert result.fqcr == ref
+
+    # Test valid fully-qualified collection reference for a role
+   
+
+# Generated at 2024-06-01 12:21:21.907756
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', path_list=['/fake/path'])
+    
+    # Mock methods to avoid actual file system operations
+    loader.get_filename = lambda fullname: '/fake/path/test.py'
+    loader.get_source = lambda fullname: 'print("Hello, World!")'
+    
+    code = loader.get_code('ansible_collections.test')
+    
+    assert code is not None
+    assert isinstance(code, types.CodeType)
+    assert code.co_filename == '/fake/path/test.py'
+```
+
+# Generated at 2024-06-01 12:21:25.065120
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', ['/fake/path'])
+
+    # Test with an absolute path that exists
+    with patch('builtins.open', mock_open(read_data=b'test data')) as mock_file:
+        with patch('os.path.isfile', return_value=True):
+            data = loader.get_data('/fake/path/test_file.py')
+            assert data == b'test data'
+            mock_file.assert_called_once_with('/fake/path/test_file.py', 'rb')
+
+    # Test with an absolute path that does not exist
+    with patch('os.path.isfile', return_value=False):
+        data = loader.get_data('/fake/path/non_existent_file.py')
+        assert data is None
+
+    # Test with a relative path (should raise ValueError)
+    with pytest.raises(ValueError, match='relative resource paths not supported'):
+        loader.get_data('relative/path/test_file.py')
+
+    # Test with __init__.py in an
+
+# Generated at 2024-06-01 12:21:28.881997
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.testpkg', path_list=['/fake/path'])
+    assert loader.is_package('ansible_collections.testpkg') == True
+
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.testpkg.subpkg', path_list=['/fake/path'])
+    assert loader.is_package('ansible_collections.testpkg.subpkg') == True
+
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.testpkg.module', path_list=['/fake/path'])
+    assert loader.is_package('ansible_collections.testpkg.module') == False
+
+    try:
+        loader.is_package('ansible_collections.otherpkg')
+    except ValueError as e:
+        assert str(e) == 'this loader cannot answer is_package for ansible_collections.otherpkg, only ansible_collections.testpkg.module'
+```
+
+# Generated at 2024-06-01 12:21:32.060900
+```python
+    # Test valid fully-qualified collection reference
+    ref = 'namespace.collection.resource'
+    ref_type = 'module'
+    result = AnsibleCollectionRef.from_fqcr(ref, ref_type)
+    assert result.collection == 'namespace.collection'
+    assert result.subdirs == ''
+    assert result.resource == 'resource'
+    assert result.ref_type == 'module'
+
+    # Test valid fully-qualified collection reference with subdirs
+    ref = 'namespace.collection.subdir1.subdir2.resource'
+    ref_type = 'module'
+    result = AnsibleCollectionRef.from_fqcr(ref, ref_type)
+    assert result.collection == 'namespace.collection'
+    assert result.subdirs == 'subdir1.subdir2'
+    assert result.resource == 'resource'
+    assert result.ref_type == 'module'
+
+    # Test invalid fully-qualified collection reference
+    ref = 'invalid.collection'
+    ref_type = 'module'
+    try:
+        AnsibleCollectionRef.from_fqcr
+
+# Generated at 2024-06-01 12:21:34.229590
+```python
+    loader = _AnsibleInternalRedirectLoader('ansible.builtin.test_module', [])
+    sys.modules.pop('ansible.builtin.test_module', None)  # Ensure the module is not already loaded
+
+    with patch('ansible.utils.collection_loader.import_module') as mock_import_module:
+        mock_import_module.return_value = MagicMock()
+        module = loader.load_module('ansible.builtin.test_module')
+
+        mock_import_module.assert_called_once_with(loader._redirect)
+        assert sys.modules['ansible.builtin.test_module'] == module
+```
+
+# Generated at 2024-06-01 12:21:37.558072
+```python
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('action_plugins') == 'action'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('library') == 'modules'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('callback_plugins') == 'callback'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('connection_plugins') == 'connection'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('lookup_plugins') == 'lookup'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('vars_plugins') == 'vars'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('test_plugins') == 'test'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('strategy_plugins') == 'strategy'
+    assert AnsibleCollectionRef.legacy_plugin_dir_to_plugin_type('terminal_plugins') == 'terminal'
+    assert AnsibleCollectionRef.legacy_plugin
+
+# Generated at 2024-06-01 12:22:17.007639
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test_collection', ['/fake/path'])
+    
+    # Test when fullname matches and is a package
+    loader._source_code_path = None
+    loader._subpackage_search_paths = ['/fake/path/test_collection']
+    assert loader.get_filename('ansible_collections.test_collection') == '/fake/path/test_collection/__synthetic__'
+    
+    # Test when fullname matches and is not a package
+    loader._source_code_path = '/fake/path/test_collection/module.py'
+    loader._subpackage_search_paths = None
+    assert loader.get_filename('ansible_collections.test_collection.module') == '/fake/path/test_collection/module.py'
+    
+    # Test when fullname does not match
+    try:
+        loader.get_filename('ansible_collections.other_collection')
+    except ValueError as e:
+        assert str(e) == 'this loader cannot find files for ansible_collections.other_collection, only ansible_collections
+
+# Generated at 2024-06-01 12:22:21.267478
+```python
+    loader = _AnsibleInternalRedirectLoader('ansible.builtin.test_module', [])
+    sys.modules.pop('ansible.builtin.test_module', None)  # Ensure the module is not already loaded
+
+    with patch('ansible.utils.collection_loader._get_collection_metadata') as mock_get_metadata, \
+         patch('ansible.utils.collection_loader.import_module') as mock_import_module:
+        
+        mock_get_metadata.return_value = {
+            'import_redirection': {
+                'ansible.builtin.test_module': {'redirect': 'ansible.builtin.real_module'}
+            }
+        }
+        mock_module = MagicMock()
+        mock_import_module.return_value = mock_module
+
+        result = loader.load_module('ansible.builtin.test_module')
+
+        mock_import_module.assert_called_once_with('ansible.builtin.real_module')
+        assert sys.modules['ansible.builtin.test_module'] == mock_module
+        assert result == mock_module
+```
+
+# Generated at 2024-06-01 12:22:24.742919
+```python
+    fullname = 'ansible_collections.test_namespace.test_collection'
+    path_list = ['/fake/path']
+
+    loader = _AnsibleCollectionPkgLoaderBase(fullname, path_list)
+
+    # Mock methods and attributes
+    loader._redirect_module = None
+    loader.get_filename = lambda x: '/fake/path/test_collection/__init__.py'
+    loader.get_code = lambda x: compile('print("Hello, World!")', '<string>', 'exec')
+
+    # Test loading the module
+    module = loader.load_module(fullname)
+
+    assert module.__name__ == fullname
+    assert module.__file__ == '/fake/path/test_collection/__init__.py'
+    assert module.__package__ == 'ansible_collections'
+    assert '__path__' in module.__dict__
+    assert module.__path__ == loader._subpackage_search_paths
+```
+
+# Generated at 2024-06-01 12:22:29.518146
+```python
+    loader = _AnsibleCollectionPkgLoader('ansible_collections.test_namespace.test_collection')
+    loader._source_code_path = '/path/to/test_collection/__init__.py'
+    loader._compiled_code = compile('print("Hello, World!")', loader._source_code_path, 'exec')
+    loader._subpackage_search_paths = ['/path/to/test_collection']
+    loader._split_name = ['ansible_collections', 'test_namespace', 'test_collection']
+    loader._fullname = 'ansible_collections.test_namespace.test_collection'
+    loader._package_to_load = 'test_collection'
+    loader._candidate_paths = ['/path/to']
+
+    with patch('builtins.open', mock_open(read_data='print("Hello, World!")')), \
+         patch('os.path.isfile', return_value=True), \
+         patch('os.path.isdir', return_value=True), \
+         patch('sys.modules', {}):
+        module = loader.load_module('ansible_collections.test_namespace.test_collection
+
+# Generated at 2024-06-01 12:22:32.472220
+```python
+    fullname = 'ansible.builtin.test_module'
+    path_list = ['/fake/path']
+
+    # Mocking _get_collection_metadata and _nested_dict_get
+    def mock_get_collection_metadata(collection_name):
+        if collection_name == 'ansible.builtin':
+            return {
+                'import_redirection': {
+                    'ansible.builtin.test_module': {
+                        'redirect': 'ansible_collections.test_namespace.test_collection.plugins.modules.test_module'
+                    }
+                }
+            }
+        return {}
+
+    def mock_nested_dict_get(d, keys):
+        for key in keys:
+            d = d.get(key, {})
+        return d
+
+    # Patching the functions
+    original_get_collection_metadata = globals()['_get_collection_metadata']
+    original_nested_dict_get = globals()['_nested_dict_get']
+    globals()['_get_collection_metadata'] = mock_get_collection_metadata
+    globals()['_nested_dict_get'] = mock_nested_dict_get
+
+    try:
+        loader = _An
+
+# Generated at 2024-06-01 12:22:34.557134
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', path_list=['/fake/path'])
+    modules = list(loader.iter_modules('ansible_collections.test.'))
+    expected_modules = [('ansible_collections.test.module1', False), ('ansible_collections.test.module2', False)]
+    assert modules == expected_modules, f"Expected {expected_modules}, but got {modules}"
+```
+
+# Generated at 2024-06-01 12:22:37.352619
+```python
+    fullname = 'ansible_collections.test_namespace.test_collection'
+    path_list = ['/fake/path']
+
+    loader = _AnsibleCollectionPkgLoaderBase(fullname, path_list)
+    loader._source_code_path = '/fake/path/test_collection/__init__.py'
+    loader._decoded_source = 'print("Hello, World!")'
+    loader._compiled_code = compile(loader._decoded_source, loader._source_code_path, 'exec')
+
+    module = loader.load_module(fullname)
+
+    assert module.__name__ == fullname
+    assert module.__file__ == loader._source_code_path
+    assert module.__package__ == 'ansible_collections.test_namespace'
+    assert '__path__' in module.__dict__
+    assert module.__path__ == loader._subpackage_search_paths
+```
+
+# Generated at 2024-06-01 12:22:40.076511
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test_collection', path_list=['/fake/path'])
+    loader._source_code_path = '/fake/path/test_collection/__init__.py'
+    expected_source = 'print("Hello, World!")'
+    
+    with patch('builtins.open', mock_open(read_data=expected_source)):
+        source = loader.get_source('ansible_collections.test_collection')
+        assert source == expected_source
+
+    with pytest.raises(ValueError):
+        loader.get_source('ansible_collections.wrong_collection')
+```
+
+# Generated at 2024-06-01 12:22:41.231275
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', path_list=['/fake/path'])
+    expected_repr = "_AnsibleCollectionPkgLoaderBase(path=['/fake/path/test'])"
+    assert repr(loader) == expected_repr
+```
+
+# Generated at 2024-06-01 12:22:43.023243
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', path_list=['/fake/path'])
+    
+    # Mock methods to avoid actual file system operations
+    loader.get_filename = lambda fullname: '/fake/path/test.py'
+    loader.get_source = lambda fullname: 'print("Hello, World!")'
+    
+    code = loader.get_code('ansible_collections.test')
+    
+    assert code is not None
+    assert isinstance(code, types.CodeType)
+    assert code.co_filename == '/fake/path/test.py'
+```
+
+# Generated at 2024-06-01 12:23:09.617996
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', ['/fake/path'])
+
+    # Test with a valid file path
+    valid_path = '/fake/path/test_module.py'
+    with open(valid_path, 'wb') as f:
+        f.write(b'print("Hello, World!")')
+    assert loader.get_data(valid_path) == b'print("Hello, World!")'
+
+    # Test with a non-existent file path
+    invalid_path = '/fake/path/non_existent_module.py'
+    assert loader.get_data(invalid_path) is None
+
+    # Test with a directory path
+    dir_path = '/fake/path/test_dir'
+    os.makedirs(dir_path, exist_ok=True)
+    assert loader.get_data(dir_path) is None
+
+    # Test with a __init__.py in a directory
+    init_path = os.path.join(dir_path, '__init__.py')
+    with open(init_path, 'wb') as f:
+
+
+# Generated at 2024-06-01 12:23:12.863098
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test', path_list=['/fake/path'])
+    modules = list(loader.iter_modules('ansible_collections.test'))
+    assert modules == [], "Expected no modules, got: {}".format(modules)
+
+    # Create a fake directory structure
+    os.makedirs('/fake/path/test_module', exist_ok=True)
+    with open('/fake/path/test_module/__init__.py', 'w') as f:
+        f.write('')
+
+    modules = list(loader.iter_modules('ansible_collections.test'))
+    assert len(modules) == 1, "Expected one module, got: {}".format(len(modules))
+    assert modules[0][1] == 'test_module', "Expected 'test_module', got: {}".format(modules[0][1])
+```
+
+# Generated at 2024-06-01 12:23:14.807875
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test_collection')
+    module = loader.load_module('ansible_collections.test_collection')
+    assert module.__name__ == 'ansible_collections.test_collection'
+    assert module.__loader__ == loader
+    assert module.__package__ == 'ansible_collections'
+    assert '__path__' in module.__dict__
+```
+
+# Generated at 2024-06-01 12:23:18.202747
+```python
+    loader = _AnsibleCollectionPkgLoaderBase('ansible_collections.test_namespace.test_collection', ['/fake/path'])
+    
+    # Mocking methods and attributes
+    loader._redirect_module = None
+    loader._source_code_path = '/fake/path/test_collection/__init__.py'
+    loader._subpackage_search_paths = ['/fake/path/test_collection']
+    loader.get_filename = lambda fullname: '/fake/path/test_collection/__init__.py'
+    loader.get_code = lambda fullname: compile('print("Hello, World!")', '<string>', 'exec')
+    
+    # Test loading the module
+    module = loader.load_module('ansible_collections.test_namespace.test_collection')
+    
+    assert module.__name__ == 'ansible_collections.test_namespace.test_collection'
+    assert module.__file__ == '/fake/path/test_collection/__init__.py'
+    assert module.__package__ == 'ansible_collections.test_namespace.test_collection'
+    assert module.__path__ == ['/fake
+
+# Generated at 2024-06-01 12:23:21.254811
+```python
+    finder = _AnsibleCollectionFinder(paths=['/fake/path'])
+    finder._install()
+
+    # Test case 1: Top-level package 'ansible'
+    module = finder.find_module('ansible')
+    assert isinstance(module, _AnsibleInternalRedirectLoader)
+
+    # Test case 2: Top-level package 'ansible_collections'
+    module = finder.find_module('ansible_collections')
+    assert isinstance(module, _AnsibleCollectionRootPkgLoader)
+
+    # Test case 3: Namespace package under 'ansible_collections'
+    module = finder.find_module('ansible_collections.somens')
+    assert isinstance(module, _AnsibleCollectionNSPkgLoader)
+
+    # Test case 4: Collection package under 'ansible_collections'
+    module = finder.find_module('ansible_collections.somens.somecoll')
+    assert isinstance(module, _AnsibleCollectionPkgLoader)
+
+    # Test case 5: Subpackage under a collection
+   

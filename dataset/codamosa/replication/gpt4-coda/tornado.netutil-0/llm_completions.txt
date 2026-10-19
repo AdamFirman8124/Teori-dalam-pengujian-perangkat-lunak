@@ -1,0 +1,734 @@
+
+
+# Generated at 2024-03-18 08:23:14.670511
+```python
+import ssl
+import unittest
+
+
+# Generated at 2024-03-18 08:23:22.446391
+```python
+import asyncio
+import socket
+from tornado.netutil import OverrideResolver, Resolver
+from unittest.mock import MagicMock
+
+async def test_OverrideResolver_resolve():
+    # Mock the underlying resolver
+    mock_resolver = MagicMock(spec=Resolver)
+    mock_resolver.resolve = MagicMock(return_value=asyncio.Future())
+    mock_resolver.resolve.return_value.set_result(
+        [(socket.AF_INET, ('93.184.216.34', 80))]
+    )
+
+    # Create a mapping for the override
+    mapping = {
+        "example.com": "127.0.0.1",
+        ("example.com", 80): ("localhost", 8080),
+        ("example.com", 80, socket.AF_INET6): ("::1", 8080),
+    }
+
+    # Initialize the OverrideResolver with the mock resolver and mapping
+    override_resolver = OverrideResolver(resolver=mock_resolver, mapping=mapping)
+
+    # Test resolution with override by hostname
+    result = await override_resolver
+
+# Generated at 2024-03-18 08:23:24.370744
+```python
+import unittest
+import ssl
+import socket
+
+
+# Generated at 2024-03-18 08:23:25.994968
+```python
+import unittest
+from unittest.mock import MagicMock, patch
+
+
+# Generated at 2024-03-18 08:23:32.490735
+    # Setup the IOLoop for testing
+    io_loop = IOLoop()
+    io_loop.make_current()
+
+    # Test with a custom executor and close_executor set to True
+    custom_executor = concurrent.futures.ThreadPoolExecutor(max_workers=2)
+    resolver = ExecutorResolver()
+    resolver.initialize(executor=custom_executor, close_executor=True)
+    assert resolver.executor is custom_executor
+    assert resolver.close_executor is True
+
+    # Test with a custom executor and close_executor set to False
+    resolver = ExecutorResolver()
+    resolver.initialize(executor=custom_executor, close_executor=False)
+    assert resolver.executor is custom_executor
+    assert resolver.close_executor is False
+
+    # Test with no executor provided (should use dummy_executor)
+    resolver = ExecutorResolver()
+    resolver.initialize()
+    assert resolver.executor is dummy_executor
+    assert resolver.close_executor is False
+
+    # Clean up the IOLoop
+    io_loop.clear_current()
+    io_loop.close(all_fds=True)
+
+   
+
+# Generated at 2024-03-18 08:23:34.020434
+```python
+import ssl
+import unittest
+
+
+# Generated at 2024-03-18 08:23:44.943228
+```python
+    from tornado.ioloop import IOLoop
+    from tornado.testing import AsyncTestCase, gen_test
+    from tornado.netutil import DefaultExecutorResolver
+    from unittest.mock import patch
+
+    class TestDefaultExecutorResolver(AsyncTestCase):
+        @gen_test
+        async def test_resolve(self):
+            resolver = DefaultExecutorResolver()
+            host = 'localhost'
+            port = 80
+            family = socket.AF_UNSPEC
+
+            # Patch _resolve_addr to return a controlled result
+            with patch('tornado.netutil._resolve_addr') as mock_resolve_addr:
+                mock_resolve_addr.return_value = [
+                    (socket.AF_INET, ('127.0.0.1', port)),
+                    (socket.AF_INET6, ('::1', port, 0, 0))
+                ]
+
+                # Call the resolve method
+                result = await resolver.resolve(host, port, family)
+
+                # Check that the result matches the expected value
+                expected = [
+
+
+# Generated at 2024-03-18 08:23:46.235668
+```python
+import ssl
+import unittest
+
+
+# Generated at 2024-03-18 08:23:47.850639
+```python
+import asyncio
+import socket
+from tornado.netutil import OverrideResolver, Resolver
+
+# Mock resolver for testing purposes
+
+# Generated at 2024-03-18 08:23:53.850366
+```python
+    # Assume the following imports have been made for the test
+    import unittest
+    from unittest.mock import patch, MagicMock
+
+    class TestBindSockets(unittest.TestCase):
+        @patch('socket.socket')
+        def test_bind_ipv4_socket(self, mock_socket):
+            mock_socket_instance = MagicMock()
+            mock_socket.return_value = mock_socket_instance
+
+            port = 0
+            address = '127.0.0.1'
+            sockets = bind_sockets(port, address=address)
+
+            self.assertEqual(len(sockets), 1)
+            mock_socket_instance.bind.assert_called_once_with(('127.0.0.1', 0))
+            mock_socket_instance.listen.assert_called_once_with(_DEFAULT_BACKLOG)
+            mock_socket_instance.setblocking.assert_called_once_with(False)
+
+        @patch('socket.socket')
+        def test_bind_ipv6_socket(self, mock_socket):
+            mock_socket_instance = MagicMock()
+            mock_socket.return_value = mock_socket_instance
+
+            port =
+
+# Generated at 2024-03-18 08:24:51.018852
+```python
+import asyncio
+import socket
+from tornado.netutil import OverrideResolver, Resolver
+from unittest.mock import MagicMock
+
+async def test_OverrideResolver_resolve():
+    # Mock the underlying resolver
+    mock_resolver = MagicMock(spec=Resolver)
+    mock_resolver.resolve = MagicMock(return_value=asyncio.Future())
+    mock_resolver.resolve.return_value.set_result([
+        (socket.AF_INET, ('93.184.216.34', 80))
+    ])
+
+    # Create a mapping for the override
+    mapping = {
+        "example.com": "127.0.0.1",
+        ("example.com", 80): ("localhost", 8080),
+        ("example.com", 80, socket.AF_INET6): ("::1", 8080),
+    }
+
+    # Create the OverrideResolver with the mock resolver and mapping
+    override_resolver = OverrideResolver(resolver=mock_resolver, mapping=mapping)
+
+    # Test resolution with override by hostname
+    result = await override_resolver
+
+# Generated at 2024-03-18 08:24:52.453547
+```python
+import unittest
+from unittest.mock import MagicMock, patch
+
+
+# Generated at 2024-03-18 08:24:58.721642
+```python
+import socket
+from tornado.netutil import Resolver
+from unittest.mock import patch
+import asyncio
+
+async def test_Resolver_resolve():
+    resolver = Resolver.configurable_default()()
+    host = "localhost"
+    port = 80
+    family = socket.AF_UNSPEC
+
+    # Mock getaddrinfo to return a deterministic result
+    with patch('socket.getaddrinfo') as mock_getaddrinfo:
+        mock_getaddrinfo.return_value = [
+            (socket.AF_INET, socket.SOCK_STREAM, 6, '', ('127.0.0.1', port)),
+            (socket.AF_INET6, socket.SOCK_STREAM, 6, '', ('::1', port, 0, 0))
+        ]
+
+        # Call the resolve method
+        result = await resolver.resolve(host, port, family)
+
+        # Check that the result matches the mocked getaddrinfo return value
+        assert result == [
+            (socket.AF_INET, ('127.0.0.
+
+# Generated at 2024-03-18 08:24:59.719659
+```python
+import tempfile
+import unittest
+
+
+# Generated at 2024-03-18 08:25:02.478615
+```python
+import asyncio
+import socket
+from tornado.netutil import OverrideResolver, Resolver
+from typing import List, Tuple
+
+# Mock resolver for testing purposes
+
+# Generated at 2024-03-18 08:25:11.455059
+    from unittest.mock import Mock, patch
+    from tornado.ioloop import IOLoop
+
+    # Mock the IOLoop instance
+    mock_io_loop = Mock(spec=IOLoop)
+    mock_io_loop.add_handler = Mock()
+    mock_io_loop.remove_handler = Mock()
+
+    # Mock the socket and its behavior
+    mock_socket = Mock(spec=socket.socket)
+    mock_socket.fileno.return_value = 123
+
+    # Mock the callback to be provided to add_accept_handler
+    mock_callback = Mock()
+
+    # Patch IOLoop.current() to return our mock IOLoop
+    with patch.object(IOLoop, 'current', return_value=mock_io_loop):
+        # Call the function under test
+        remove_handler = add_accept_handler(mock_socket, mock_callback)
+
+        # Assert that the handler was added to the IOLoop
+        mock_io_loop.add_handler.assert_called_once_with(
+            123,  # The file descriptor of the mock
+
+# Generated at 2024-03-18 08:25:18.759855
+    from unittest.mock import Mock, patch
+    from tornado.ioloop import IOLoop
+
+    # Mock the IOLoop instance
+    mock_io_loop = Mock(spec=IOLoop)
+    mock_io_loop.add_handler = Mock()
+    mock_io_loop.remove_handler = Mock()
+
+    # Mock the socket
+    mock_socket = Mock(spec=socket.socket)
+    mock_socket.fileno.return_value = 123
+
+    # Mock the callback
+    mock_callback = Mock()
+
+    # Patch IOLoop.current() to return our mock IOLoop
+    with patch.object(IOLoop, 'current', return_value=mock_io_loop):
+        # Call the function under test
+        remove_handler = add_accept_handler(mock_socket, mock_callback)
+
+        # Check that add_handler was called with the correct arguments
+        mock_io_loop.add_handler.assert_called_once_with(
+            mock_socket, unittest.mock.ANY, IOLoop.READ
+        )
+
+        # Retrieve the handler function passed
+
+# Generated at 2024-03-18 08:25:27.035254
+```python
+import socket
+from tornado.netutil import Resolver
+from unittest.mock import patch
+import asyncio
+
+async def test_Resolver_resolve():
+    resolver = Resolver.configurable_default()()
+    host = "localhost"
+    port = 80
+    family = socket.AF_UNSPEC
+
+    # Mock getaddrinfo to return a deterministic result
+    with patch('socket.getaddrinfo') as mock_getaddrinfo:
+        mock_getaddrinfo.return_value = [
+            (socket.AF_INET, socket.SOCK_STREAM, 6, '', ('127.0.0.1', port)),
+            (socket.AF_INET6, socket.SOCK_STREAM, 6, '', ('::1', port, 0, 0))
+        ]
+
+        # Call the resolve method
+        result = await resolver.resolve(host, port, family)
+
+        # Check that the result matches the mocked getaddrinfo return value
+        assert result == [
+            (socket.AF_INET, ('127.0.0.
+
+# Generated at 2024-03-18 08:25:36.068180
+```python
+from tornado.netutil import Resolver
+import socket
+import asyncio
+
+async def test_Resolver_resolve():
+    resolver = Resolver.configurable_default()()
+    # Test resolving a known hostname
+    result = await resolver.resolve("localhost", 80)
+    assert isinstance(result, list)
+    assert len(result) > 0
+    for family, sockaddr in result:
+        assert family in (socket.AF_INET, socket.AF_INET6)
+        assert isinstance(sockaddr, tuple)
+        assert sockaddr[1] == 80  # Port number should match
+
+    # Test resolving an invalid hostname
+    try:
+        await resolver.resolve("invalid.hostname.tld", 80)
+        assert False, "Expected an exception for an invalid hostname"
+    except IOError:
+        pass  # Expected
+
+    # Test resolving an IPv4 address
+    result = await resolver.resolve("127.0.0.1", 80)
+    assert len(result) == 1
+    family,
+
+# Generated at 2024-03-18 08:25:42.083140
+    from tornado.ioloop import IOLoop
+    from tornado.concurrent import Future
+    from unittest.mock import patch, MagicMock
+
+    # Setup the test
+    resolver = DefaultExecutorResolver()
+    io_loop = IOLoop.current()
+    future = Future()
+
+    # Mock the IOLoop's run_in_executor to return a Future
+    with patch.object(io_loop, "run_in_executor", return_value=future) as mock_run_in_executor:
+        # Mock the _resolve_addr function to return the expected result
+        expected_result = [(socket.AF_INET, ('127.0.0.1', 80))]
+        with patch('tornado.netutil._resolve_addr', return_value=expected_result):
+            # Call the resolve method
+            result_future = resolver.resolve("localhost", 80, socket.AF_INET)
+
+            # Check if the run_in_executor was called with the correct arguments
+            mock_run_in_executor.assert_called_once_with(None, _resolve_addr, "
+
+# Generated at 2024-03-18 08:26:00.720776
+```python
+import asyncio
+import socket
+from tornado.netutil import OverrideResolver, Resolver
+
+# Mock resolver for testing purposes
+
+# Generated at 2024-03-18 08:26:01.872259
+```python
+import asyncio
+import socket
+from tornado.netutil import OverrideResolver, Resolver
+
+# Mock resolver for testing purposes
+
+# Generated at 2024-03-18 08:26:07.926127
+```python
+    # Test with a specific port and default address
+    port = 12345
+    sockets = bind_sockets(port)
+    assert len(sockets) > 0, "Should have at least one socket"
+    for sock in sockets:
+        assert sock.getsockname()[1] == port, "Socket is not bound to the correct port"
+        sock.close()
+
+    # Test with IPv4 only
+    sockets = bind_sockets(port, family=socket.AF_INET)
+    assert len(sockets) > 0, "Should have at least one socket for IPv4"
+    for sock in sockets:
+        assert sock.family == socket.AF_INET, "Socket is not IPv4"
+        sock.close()
+
+    # Test with IPv6 only
+    if socket.has_ipv6:
+        sockets = bind_sockets(port, family=socket.AF_INET6)
+        assert len(sockets) > 0, "Should have at least one socket for IPv6"
+       
+
+# Generated at 2024-03-18 08:26:35.516641
+    from unittest.mock import MagicMock, patch
+    from tornado.ioloop import IOLoop
+
+    # Mock the IOLoop instance
+    mock_io_loop = MagicMock(spec=IOLoop)
+    with patch.object(IOLoop, 'current', return_value=mock_io_loop):
+        # Mock the socket and callback
+        mock_socket = MagicMock(spec=socket.socket)
+        mock_callback = MagicMock()
+
+        # Call the function to test
+        remove_handler = add_accept_handler(mock_socket, mock_callback)
+
+        # Simulate an incoming connection
+        mock_connection = MagicMock(spec=socket.socket)
+        mock_address = ('127.0.0.1', 12345)
+        mock_socket.accept.return_value = (mock_connection, mock_address)
+
+        # Trigger the accept handler manually
+        fd = mock_socket.fileno()
+        events = IOLoop.READ
+        mock_io_loop.add_handler.call_args[0][1](fd, events)
+
+        # Check if the callback
+
+# Generated at 2024-03-18 08:26:42.753083
+```python
+import asyncio
+import socket
+from tornado.netutil import OverrideResolver, Resolver
+from unittest.mock import MagicMock
+
+async def test_OverrideResolver_resolve():
+    # Mock the underlying resolver
+    mock_resolver = MagicMock(spec=Resolver)
+    mock_resolver.resolve = MagicMock(return_value=asyncio.Future())
+    mock_resolver.resolve.return_value.set_result(
+        [(socket.AF_INET, ('93.184.216.34', 80))]
+    )
+
+    # Create a mapping for the override
+    mapping = {
+        "example.com": "127.0.0.1",
+        ("example.com", 80): ("localhost", 8080),
+        ("example.com", 80, socket.AF_INET6): ("::1", 8080),
+    }
+
+    # Initialize the OverrideResolver with the mock resolver and mapping
+    override_resolver = OverrideResolver(resolver=mock_resolver, mapping=mapping)
+
+    # Test resolution with override by hostname
+    result = await override_resolver
+
+# Generated at 2024-03-18 08:26:43.971905
+```python
+import unittest
+from unittest.mock import MagicMock, patch
+
+
+# Generated at 2024-03-18 08:26:56.472673
+```python
+    from tornado.netutil import Resolver
+    from unittest.mock import patch, MagicMock
+    import socket
+    import asyncio
+
+    async def test_resolve_ipv4():
+        resolver = Resolver()
+        with patch.object(resolver, 'resolve', return_value=[(socket.AF_INET, ('93.184.216.34', 80))]) as mock_resolve:
+            result = await resolver.resolve('example.com', 80, socket.AF_INET)
+            mock_resolve.assert_called_once_with('example.com', 80, socket.AF_INET)
+            assert result == [(socket.AF_INET, ('93.184.216.34', 80))]
+
+    async def test_resolve_ipv6():
+        resolver = Resolver()
+        with patch.object(resolver, 'resolve', return_value=[(socket.AF_INET6, ('2606:2800:220:1:248:1893:25c8:1946', 80, 0, 0))]) as mock
+
+# Generated at 2024-03-18 08:27:04.060584
+```python
+    # Assume the following imports have been made for the test
+    import unittest
+    from unittest.mock import patch, MagicMock
+
+    class TestBindSockets(unittest.TestCase):
+        @patch('socket.socket')
+        def test_bind_ipv4_socket(self, mock_socket):
+            mock_socket_instance = MagicMock()
+            mock_socket.return_value = mock_socket_instance
+
+            port = 0
+            address = '127.0.0.1'
+            sockets = bind_sockets(port, address=address)
+
+            self.assertEqual(len(sockets), 1)
+            mock_socket.assert_called_with(socket.AF_INET, socket.SOCK_STREAM, 0)
+            mock_socket_instance.setsockopt.assert_called_with(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            mock_socket_instance.bind.assert_called()
+            mock_socket_instance.listen.assert_called_with(_DEFAULT_BACKLOG)
+
+        @patch('socket.socket')
+        def test_bind_ipv6_socket(self, mock_socket):
+            mock_socket_instance = MagicMock()
+
+
+# Generated at 2024-03-18 08:27:18.482109
+```python
+    from tornado.ioloop import IOLoop
+    from tornado.testing import AsyncTestCase, gen_test
+    from tornado.netutil import DefaultExecutorResolver
+
+    class DefaultExecutorResolverTest(AsyncTestCase):
+        @gen_test
+        async def test_resolve(self):
+            resolver = DefaultExecutorResolver()
+            # Assuming 'localhost' resolves to both 127.0.0.1 and ::1
+            result = await resolver.resolve('localhost', 80, socket.AF_UNSPEC)
+            self.assertTrue(any(addr[0] == socket.AF_INET for _, addr in result))
+            self.assertTrue(any(addr[0] == socket.AF_INET6 for _, addr in result))
+
+        @gen_test
+        async def test_resolve_ipv4(self):
+            resolver = DefaultExecutorResolver()
+            result = await resolver.resolve('localhost', 80, socket.AF_INET)
+            self.assertTrue(all(addr[0] == socket.AF_INET for _, addr in result))
+
+        @gen_test
+       
+
+# Generated at 2024-03-18 08:27:27.549104
+    from unittest.mock import Mock, patch
+    from tornado.ioloop import IOLoop
+
+    # Mock the IOLoop instance
+    mock_io_loop = Mock(spec=IOLoop)
+    mock_io_loop.add_handler = Mock()
+    mock_io_loop.remove_handler = Mock()
+
+    # Mock the socket and its behavior
+    mock_socket = Mock(spec=socket.socket)
+    mock_socket.fileno.return_value = 123
+
+    # Mock the callback to be provided to add_accept_handler
+    mock_callback = Mock()
+
+    # Patch IOLoop.current() to return our mock_io_loop
+    with patch.object(IOLoop, 'current', return_value=mock_io_loop):
+        # Call the function under test
+        remove_handler = add_accept_handler(mock_socket, mock_callback)
+
+        # Assert that add_handler was called with the correct arguments
+        mock_io_loop.add_handler.assert_called_once_with(
+            123,  # The file descriptor of the mock socket
+
+
+# Generated at 2024-03-18 08:31:24.284124
+    from unittest.mock import Mock, patch
+    from tornado.ioloop import IOLoop
+
+    # Mock the IOLoop instance
+    mock_io_loop = Mock(spec=IOLoop)
+    mock_io_loop.add_handler = Mock()
+    mock_io_loop.remove_handler = Mock()
+
+    # Mock the socket and its methods
+    mock_socket = Mock(spec=socket.socket)
+    mock_socket.fileno.return_value = 123
+
+    # Mock the callback to be provided to add_accept_handler
+    mock_callback = Mock()
+
+    # Patch IOLoop.current() to return our mock IOLoop
+    with patch.object(IOLoop, 'current', return_value=mock_io_loop):
+        # Call the function under test
+        remove_handler = add_accept_handler(mock_socket, mock_callback)
+
+        # Assert that add_handler was called on the IOLoop with the correct arguments
+        mock_io_loop.add_handler.assert_called_once_with(123, ANY, IOLoop.READ
+
+# Generated at 2024-03-18 08:31:34.620184
+```python
+from tornado.netutil import Resolver
+import socket
+import asyncio
+
+async def test_Resolver_resolve():
+    resolver = Resolver.configurable_default()()
+    # Test resolving a known hostname
+    result = await resolver.resolve("localhost", 80)
+    assert isinstance(result, list)
+    assert all(isinstance(addr, tuple) for addr in result)
+    # Test resolving a literal IPv4 address
+    result = await resolver.resolve("127.0.0.1", 80)
+    assert isinstance(result, list)
+    assert all(isinstance(addr, tuple) for addr in result)
+    # Test resolving a literal IPv6 address
+    result = await resolver.resolve("::1", 80)
+    assert isinstance(result, list)
+    assert all(isinstance(addr, tuple) for addr in result)
+    # Test resolving with an invalid hostname
+    try:
+        await resolver.resolve("invalid.hostname", 80)
+        assert False, "Expected an exception for an invalid hostname"
+   
+
+# Generated at 2024-03-18 08:31:36.800471
+```python
+import socket
+from tornado.concurrent import Future
+from tornado.testing import AsyncTestCase, gen_test
+
+
+# Generated at 2024-03-18 08:31:39.895359
+```python
+import ssl
+from typing import Union, Dict, Any
+
+
+# Generated at 2024-03-18 08:31:41.233539
+```python
+import unittest
+from unittest.mock import MagicMock, patch
+
+
+# Generated at 2024-03-18 08:31:41.994982
+```python
+import ssl
+import unittest
+
+
+# Generated at 2024-03-18 08:31:49.152242
+```python
+import asyncio
+import socket
+from tornado.netutil import OverrideResolver, Resolver
+from unittest.mock import MagicMock
+
+async def test_OverrideResolver_resolve():
+    # Mock the underlying resolver
+    mock_resolver = MagicMock(spec=Resolver)
+    mock_resolver.resolve = MagicMock(return_value=asyncio.Future())
+    mock_resolver.resolve.return_value.set_result([
+        (socket.AF_INET, ('93.184.216.34', 80))
+    ])
+
+    # Create the OverrideResolver with a mapping
+    mapping = {
+        "example.com": "127.0.0.1",
+        ("example.com", 80): ("localhost", 8080),
+        ("example.com", 80, socket.AF_INET6): ("::1", 8080),
+    }
+    override_resolver = OverrideResolver(resolver=mock_resolver, mapping=mapping)
+
+    # Test resolution with override by hostname
+    result = await override_resolver.resolve("example.com", 80)
+    assert result ==
+
+# Generated at 2024-03-18 08:31:58.907124
+```python
+import asyncio
+import socket
+from tornado.netutil import OverrideResolver, Resolver
+from unittest.mock import MagicMock
+
+async def test_OverrideResolver_resolve():
+    # Mock the underlying resolver
+    mock_resolver = MagicMock(spec=Resolver)
+    mock_resolver.resolve = MagicMock(return_value=asyncio.Future())
+    mock_resolver.resolve.return_value.set_result([('mock_family', ('mock_host', 1234))])
+
+    # Create a mapping for the override
+    mapping = {
+        'example.com': '127.0.0.1',
+        ('example.com', 80): ('localhost', 8080),
+        ('example.com', 80, socket.AF_INET6): ('::1', 8080),
+    }
+
+    # Create the OverrideResolver with the mock resolver and mapping
+    override_resolver = OverrideResolver(resolver=mock_resolver, mapping=mapping)
+
+    # Test resolving a hostname that has a direct override
+    result = await override_resolver.resolve('example.com',
+
+# Generated at 2024-03-18 08:32:10.039354
+```python
+    # Test with a specific port and address
+    sockets = bind_sockets(8888, '127.0.0.1')
+    assert len(sockets) > 0
+    for s in sockets:
+        s.close()
+
+    # Test with port 0 (ephemeral port) and no address (bind to all)
+    sockets = bind_sockets(0)
+    assert len(sockets) > 0
+    for s in sockets:
+        assert s.getsockname()[1] != 0  # Port should be assigned
+        s.close()
+
+    # Test with IPv4 only
+    sockets = bind_sockets(0, family=socket.AF_INET)
+    assert len(sockets) > 0
+    for s in sockets:
+        assert s.family == socket.AF_INET
+        s.close()
+
+    # Test with IPv6 only
+    if socket.has_ipv6:
+        sockets = bind_sockets(0, family=socket
+
+# Generated at 2024-03-18 08:32:20.836462
+    from unittest.mock import Mock, patch
+    from tornado.ioloop import IOLoop
+
+    # Mock the IOLoop instance
+    mock_io_loop = Mock(spec=IOLoop)
+    mock_io_loop.add_handler = Mock()
+    mock_io_loop.remove_handler = Mock()
+
+    # Mock the socket and its behavior
+    mock_socket = Mock(spec=socket.socket)
+    mock_socket.fileno.return_value = 123
+
+    # Mock the callback to be provided to add_accept_handler
+    mock_callback = Mock()
+
+    # Patch IOLoop.current() to return our mock_io_loop
+    with patch.object(IOLoop, 'current', return_value=mock_io_loop):
+        # Call the function under test
+        remove_handler = add_accept_handler(mock_socket, mock_callback)
+
+        # Check that add_handler was called on the IOLoop with the correct arguments
+        mock_io_loop.add_handler.assert_called_once_with(123, ANY, IOLoop.READ)
+

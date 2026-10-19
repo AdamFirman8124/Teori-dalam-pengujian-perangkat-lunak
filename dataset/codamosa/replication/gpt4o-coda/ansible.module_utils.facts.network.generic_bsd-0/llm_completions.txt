@@ -1,0 +1,837 @@
+
+
+# Generated at 2024-05-31 03:42:25.901802
+```python
+    network = GenericBsdIfconfigNetwork()
+    assert network.get_options('<UP,BROADCAST,RUNNING,MULTICAST>') == ['UP', 'BROADCAST', 'RUNNING', 'MULTICAST']
+    assert network.get_options('<LOOPBACK>') == ['LOOPBACK']
+    assert network.get_options('<NOOPTIONS>') == ['NOOPTIONS']
+    assert network.get_options('') == []
+    assert network.get_options('<INVALID>') == ['INVALID']
+```
+
+# Generated at 2024-05-31 03:42:31.206560
+```python
+    network = GenericBsdIfconfigNetwork()
+    words = ['em0:', 'flags=8843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST>', 'metric', '0', 'mtu', '1500']
+    expected_output = {
+        'device': 'em0',
+        'ipv4': [],
+        'ipv6': [],
+        'type': 'unknown',
+        'flags': ['UP', 'BROADCAST', 'RUNNING', 'SIMPLEX', 'MULTICAST'],
+        'macaddress': 'unknown',
+        'metric': '0',
+        'mtu': '1500'
+    }
+    assert network.parse_interface_line(words) == expected_output
+
+    words = ['lo0:', 'flags=8049<UP,LOOPBACK,RUNNING,MULTICAST>', 'mtu', '16384']
+    expected_output = {
+        'device': 'lo0',
+        '
+
+# Generated at 2024-05-31 03:42:34.400831
+```python
+    module = Mock()
+    module.get_bin_path.side_effect = lambda x: '/sbin/' + x if x in ['ifconfig', 'route'] else None
+    module.run_command.side_effect = [
+        (0, 'interface: em0\ngateway: 192.168.1.1\nif address: 192.168.1.100\n', ''),
+        (0, 'interface: em0\ngateway: fe80::1\nif address: fe80::1\n', ''),
+        (0, 'em0: flags=8863<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500\n\tinet 192.168.1.100 netmask 0xffffff00 broadcast 192.168.1.255\n\tinet6 fe80::1%em0 prefixlen 64 scopeid 0x1\n\tether 00:1a:2b
+
+# Generated at 2024-05-31 03:42:41.639511
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, """
+        em0: flags=8843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+            options=481209b<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,VLAN_HWCSUM,TSO4,WOL_MAGIC,LINKSTATE>
+            ether 00:1a:2b:3c:4d:5e
+            inet 192.168.1.10 netmask 0xffffff00 broadcast 192.168.1.255
+            inet6 fe80::21a:2bff:fe3c:4d5e%em0 prefixlen 64 scopeid 0x1
+            media: Ethernet autoselect (1000baseT <full-duplex>)
+            status: active
+        lo0: flags=8049
+
+# Generated at 2024-05-31 03:42:45.506163
+```python
+    network = GenericBsdIfconfigNetwork()
+    current_if = {'device': 'em0', 'ipv4': []}
+    ips = {'all_ipv4_addresses': [], 'all_ipv6_addresses': []}
+
+    # Test case 1: Standard inet line
+    words = ['inet', '192.168.1.10', 'netmask', '0xffffff00', 'broadcast', '192.168.1.255']
+    network.parse_inet_line(words, current_if, ips)
+    assert current_if['ipv4'][0]['address'] == '192.168.1.10'
+    assert current_if['ipv4'][0]['netmask'] == '255.255.255.0'
+    assert current_if['ipv4'][0]['broadcast'] == '192.168.1.255'
+    assert '192.168.1.10' in ips['all_ipv4_addresses']
+
+    # Test case 2
+
+# Generated at 2024-05-31 03:42:52.413186
+```python
+    network = GenericBsdIfconfigNetwork()
+    current_if = {}
+    ips = {}
+
+    # Test case 1: Basic media line
+    words = ['media:', 'Ethernet', 'autoselect', '(1000baseT', '<full-duplex>)']
+    network.parse_media_line(words, current_if, ips)
+    assert current_if['media'] == 'Ethernet'
+    assert current_if['media_select'] == 'autoselect'
+    assert current_if['media_type'] == '1000baseT'
+    assert current_if['media_options'] == ['full-duplex']
+
+    # Test case 2: Media line with fewer options
+    words = ['media:', 'Ethernet', 'autoselect']
+    network.parse_media_line(words, current_if, ips)
+    assert current_if['media'] == 'Ethernet'
+    assert current_if['media_select'] == 'autoselect'
+    assert 'media_type' not
+
+# Generated at 2024-05-31 03:42:55.574627
+```python
+    class MockModule:
+        def get_bin_path(self, command):
+            if command == 'ifconfig':
+                return '/sbin/ifconfig'
+            elif command == 'route':
+                return '/sbin/route'
+            return None
+
+        def run_command(self, command):
+            if command == ['/sbin/ifconfig', '-a']:
+                return (0, """
+                    lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
+                        inet 127.0.0.1 netmask 0xff000000
+                        inet6 ::1 prefixlen 128
+                        inet6 fe80::1%lo0 prefixlen 64 scopeid 0x1
+                        nd6 options=1<PERFORMNUD>
+                    en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+
+
+# Generated at 2024-05-31 03:42:59.507483
+```python
+    network = GenericBsdIfconfigNetwork()
+    route_path = '/sbin/route'
+
+    def mock_run_command(command):
+        if command == [route_path, '-n', 'get', 'default']:
+            return (0, '   interface: em0\n   gateway: 192.168.1.1\n   if address: 192.168.1.100\n', '')
+        elif command == [route_path, '-n', 'get', '-inet6', 'default']:
+            return (0, '   interface: em0\n   gateway: fe80::1\n   local addr: fe80::2\n', '')
+        return (1, '', 'Command not found')
+
+    network.module = type('module', (object,), {'run_command': mock_run_command})
+    default_ipv4, default_ipv6 = network.get_default_interfaces(route_path)
+
+    assert default_ipv4 == {'interface': 'em0', 'gateway':
+
+# Generated at 2024-05-31 03:43:02.878802
+```python
+    network = GenericBsdIfconfigNetwork()
+    defaults = {
+        'interface': 'em0',
+        'address': '192.168.1.1'
+    }
+    interfaces = {
+        'em0': {
+            'device': 'em0',
+            'ipv4': [
+                {'address': '192.168.1.1', 'netmask': '255.255.255.0', 'broadcast': '192.168.1.255'}
+            ],
+            'ipv6': [
+                {'address': 'fe80::1', 'prefix': '64'}
+            ],
+            'type': 'ether',
+            'macaddress': '00:1a:2b:3c:4d:5e',
+            'flags': ['UP', 'BROADCAST', 'RUNNING', 'MULTICAST'],
+            'mtu': '1500',
+            'media': 'Ethernet',
+            'status':
+
+# Generated at 2024-05-31 03:43:07.011835
+```python
+    network = GenericBsdIfconfigNetwork()
+    defaults = {
+        'interface': 'em0',
+        'address': '192.168.1.1'
+    }
+    interfaces = {
+        'em0': {
+            'ipv4': [
+                {'address': '192.168.1.1', 'netmask': '255.255.255.0', 'broadcast': '192.168.1.255'}
+            ],
+            'ipv6': [
+                {'address': 'fe80::1', 'prefix': '64'}
+            ],
+            'type': 'ether',
+            'macaddress': '00:11:22:33:44:55',
+            'mtu': '1500',
+            'flags': ['UP', 'BROADCAST', 'RUNNING', 'SIMPLEX', 'MULTICAST']
+        }
+    }
+    network.merge_default_interface(defaults, interfaces, 'ipv4')
+    assert
+
+# Generated at 2024-05-31 03:43:29.243486
+```python
+    network = GenericBsdIfconfigNetwork()
+    current_if = {}
+    ips = {}
+
+    # Test case 1: Basic media line
+    words = ['media:', 'Ethernet', 'autoselect', '(1000baseT', 'full-duplex)']
+    network.parse_media_line(words, current_if, ips)
+    assert current_if['media'] == 'Ethernet'
+    assert current_if['media_select'] == 'autoselect'
+    assert current_if['media_type'] == '1000baseT'
+    assert current_if['media_options'] == ['full-duplex']
+
+    # Test case 2: Media line with fewer options
+    words = ['media:', 'Ethernet']
+    current_if = {}
+    network.parse_media_line(words, current_if, ips)
+    assert current_if['media'] == 'Ethernet'
+    assert 'media_select' not in current_if
+    assert 'media_type' not in current_if
+
+# Generated at 2024-05-31 03:43:33.645916
+```python
+    network = GenericBsdIfconfigNetwork()
+    route_path = '/sbin/route'
+
+    def mock_run_command(command):
+        if command == [route_path, '-n', 'get', 'default']:
+            return (0, '   interface: em0\n   gateway: 192.168.1.1\n   if address: 192.168.1.100\n', '')
+        elif command == [route_path, '-n', 'get', '-inet6', 'default']:
+            return (0, '   interface: em0\n   gateway: fe80::1\n   if address: fe80::1\n', '')
+        return (1, '', 'error')
+
+    network.module = type('module', (object,), {'run_command': mock_run_command})
+    default_ipv4, default_ipv6 = network.get_default_interfaces(route_path)
+
+    assert default_ipv4 == {'interface': 'em0', 'gateway': '192
+
+# Generated at 2024-05-31 03:43:37.332195
+```python
+    network = GenericBsdIfconfigNetwork()
+    defaults = {
+        'interface': 'em0',
+        'address': '192.168.1.1'
+    }
+    interfaces = {
+        'em0': {
+            'ipv4': [
+                {'address': '192.168.1.1', 'netmask': '255.255.255.0', 'broadcast': '192.168.1.255'}
+            ],
+            'ipv6': [
+                {'address': 'fe80::1', 'prefix': '64'}
+            ],
+            'type': 'ether',
+            'macaddress': '00:11:22:33:44:55',
+            'mtu': '1500',
+            'flags': ['UP', 'BROADCAST', 'RUNNING', 'SIMPLEX', 'MULTICAST']
+        }
+    }
+    network.merge_default_interface(defaults, interfaces, 'ipv4')
+    assert
+
+# Generated at 2024-05-31 03:43:41.510090
+```python
+    network = GenericBsdIfconfigNetwork()
+    current_if = {}
+    ips = {}
+
+    # Test case 1: Basic media line
+    words = ['media:', 'Ethernet', 'autoselect', '(1000baseT', 'full-duplex)']
+    network.parse_media_line(words, current_if, ips)
+    assert current_if['media'] == 'Ethernet'
+    assert current_if['media_select'] == 'autoselect'
+    assert current_if['media_type'] == '1000baseT'
+    assert current_if['media_options'] == ['full-duplex']
+
+    # Test case 2: Media line with fewer options
+    current_if = {}
+    words = ['media:', 'Ethernet']
+    network.parse_media_line(words, current_if, ips)
+    assert current_if['media'] == 'Ethernet'
+    assert 'media_select' not in current_if
+    assert 'media_type' not in current_if
+
+# Generated at 2024-05-31 03:43:44.563863
+```python
+    network = GenericBsdIfconfigNetwork()
+    interfaces = {
+        'eth0': {'media': 'Ethernet', 'type': 'unknown'},
+        'wlan0': {'media': 'Wi-Fi', 'type': 'unknown'},
+        'lo0': {'media': 'Local Loopback', 'type': 'unknown'}
+    }
+    expected = {
+        'eth0': {'media': 'Ethernet', 'type': 'ether'},
+        'wlan0': {'media': 'Wi-Fi', 'type': 'unknown'},
+        'lo0': {'media': 'Local Loopback', 'type': 'unknown'}
+    }
+    result = network.detect_type_media(interfaces)
+    assert result == expected, f"Expected {expected}, but got {result}"
+```
+
+# Generated at 2024-05-31 03:43:49.169407
+```python
+    class MockModule:
+        def get_bin_path(self, command):
+            return f"/sbin/{command}"
+
+        def run_command(self, command):
+            if 'ifconfig' in command:
+                return (0, """
+                    lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
+                        inet 127.0.0.1 netmask 0xff000000
+                        inet6 ::1 prefixlen 128
+                        inet6 fe80::1%lo0 prefixlen 64 scopeid 0x1
+                        nd6 options=1<PERFORMNUD>
+                    en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+                        ether 01:23:45:67:89:ab
+                        inet 192.168.1.2 netmask 0xffffff00 broadcast
+
+# Generated at 2024-05-31 03:43:53.701376
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, """
+        em0: flags=8843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+            options=4812098<VLAN_MTU,VLAN_HWTAGGING,JUMBO_MTU,WOL_MAGIC,LINKSTATE>
+            ether 00:1a:4b:16:01:59
+            inet 192.168.1.10 netmask 0xffffff00 broadcast 192.168.1.255
+            inet6 fe80::21a:4bff:fe16:159%em0 prefixlen 64 scopeid 0x1
+            inet6 2001:db8::1 prefixlen 64
+            media: Ethernet autoselect (1000baseT <full-duplex>)
+            status: active
+        lo0: flags=8049<UP,
+
+# Generated at 2024-05-31 03:43:57.738505
+```python
+    network = GenericBsdIfconfigNetwork()
+    interfaces = {
+        'eth0': {'media': 'Ethernet', 'type': 'unknown'},
+        'wlan0': {'media': 'IEEE 802.11', 'type': 'unknown'},
+        'lo0': {'media': 'Local Loopback', 'type': 'unknown'}
+    }
+    expected = {
+        'eth0': {'media': 'Ethernet', 'type': 'ether'},
+        'wlan0': {'media': 'IEEE 802.11', 'type': 'unknown'},
+        'lo0': {'media': 'Local Loopback', 'type': 'unknown'}
+    }
+    result = network.detect_type_media(interfaces)
+    assert result == expected, f"Expected {expected}, but got {result}"
+```
+
+# Generated at 2024-05-31 03:44:00.904331
+```python
+    network = GenericBsdIfconfigNetwork()
+    route_path = '/sbin/route'
+
+    # Mock the module's run_command method
+    network.module = MagicMock()
+    network.module.run_command = MagicMock()
+
+    # Mock the output of the route command for IPv4
+    network.module.run_command.side_effect = [
+        (0, '   interface: em0\n   gateway: 192.168.1.1\n   if address: 192.168.1.100\n', ''),
+        (0, '   interface: em0\n   gateway: fe80::1\n   if address: fe80::1%em0\n', '')
+    ]
+
+    default_ipv4, default_ipv6 = network.get_default_interfaces(route_path)
+
+    assert default_ipv4 == {
+        'interface': 'em0',
+        'gateway': '192.168.1.1',
+        'address': '192.168.1.100
+
+# Generated at 2024-05-31 03:44:03.943301
+```python
+    network = GenericBsdIfconfigNetwork()
+    current_if = {'device': 'em0', 'ipv4': []}
+    ips = {'all_ipv4_addresses': [], 'all_ipv6_addresses': []}
+
+    # Test case 1: Standard inet line
+    words = ['inet', '192.168.1.10', 'netmask', '0xffffff00', 'broadcast', '192.168.1.255']
+    network.parse_inet_line(words, current_if, ips)
+    assert current_if['ipv4'][0]['address'] == '192.168.1.10'
+    assert current_if['ipv4'][0]['netmask'] == '255.255.255.0'
+    assert current_if['ipv4'][0]['broadcast'] == '192.168.1.255'
+    assert '192.168.1.10' in ips['all_ipv4_addresses']
+
+    # Test case 2
+
+# Generated at 2024-05-31 03:44:15.713899
+```python
+    network = GenericBsdIfconfigNetwork()
+    route_path = '/sbin/route'
+
+    # Mock the module's run_command method
+    network.module = MagicMock()
+    network.module.run_command = MagicMock()
+
+    # Mock the output of the route command for IPv4
+    network.module.run_command.side_effect = [
+        (0, '   interface: em0\n   gateway: 192.168.1.1\n   if address: 192.168.1.100\n', ''),
+        (0, '   interface: em0\n   gateway: fe80::1\n   if address: fe80::2\n', '')
+    ]
+
+    default_ipv4, default_ipv6 = network.get_default_interfaces(route_path)
+
+    assert default_ipv4 == {
+        'interface': 'em0',
+        'gateway': '192.168.1.1',
+        'address': '192.168.1.100'
+    }
+
+
+
+# Generated at 2024-05-31 03:44:19.074496
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, """
+        lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
+            inet 127.0.0.1 netmask 0xff000000
+            inet6 ::1 prefixlen 128
+            inet6 fe80::1%lo0 prefixlen 64 scopeid 0x1
+            nd6 options=1<PERFORMNUD>
+        en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+            ether ac:de:48:00:11:22
+            inet 192.168.1.100 netmask 0xffffff00 broadcast 192.168.1.255
+            inet6 fe80::a00:27ff:fe4e:66a1%en
+
+# Generated at 2024-05-31 03:44:22.606884
+```python
+    module = Mock()
+    module.get_bin_path.side_effect = lambda x: '/sbin/' + x if x in ['ifconfig', 'route'] else None
+    module.run_command.side_effect = [
+        (0, 'interface: em0\ngateway: 192.168.1.1\nif address: 192.168.1.100\n', ''),
+        (0, 'interface: em0\ngateway: fe80::1\nif address: fe80::1\n', ''),
+        (0, 'em0: flags=8863<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500\n' +
+            '    inet 192.168.1.100 netmask 0xffffff00 broadcast 192.168.1.255\n' +
+            '    inet6 fe80::1%em0 prefixlen 64 scopeid 0x1\n' +
+
+
+# Generated at 2024-05-31 03:44:24.774336
+```python
+    network = GenericBsdIfconfigNetwork()
+    assert network.get_options('<UP,BROADCAST,RUNNING,MULTICAST>') == ['UP', 'BROADCAST', 'RUNNING', 'MULTICAST']
+    assert network.get_options('<LOOPBACK,RUNNING>') == ['LOOPBACK', 'RUNNING']
+    assert network.get_options('<NOOPTIONS>') == ['NOOPTIONS']
+    assert network.get_options('NOOPTIONS') == []
+    assert network.get_options('<UP,>') == ['UP']
+```
+
+# Generated at 2024-05-31 03:44:28.056055
+```python
+    network = GenericBsdIfconfigNetwork()
+    interfaces = {
+        'em0': {
+            'ipv4': [{'address': '192.168.1.1', 'netmask': '255.255.255.0', 'broadcast': '192.168.1.255'}],
+            'ipv6': [{'address': 'fe80::1', 'prefix': '64'}],
+            'macaddress': '00:1a:2b:3c:4d:5e',
+            'type': 'ether',
+            'mtu': '1500',
+            'flags': ['UP', 'BROADCAST', 'RUNNING', 'SIMPLEX', 'MULTICAST']
+        }
+    }
+    defaults = {'interface': 'em0', 'address': '192.168.1.1'}
+    network.merge_default_interface(defaults, interfaces, 'ipv4')
+    assert defaults['macaddress'] ==
+
+# Generated at 2024-05-31 03:44:31.835244
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, """
+        lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
+            inet 127.0.0.1 netmask 0xff000000
+            inet6 ::1 prefixlen 128
+            inet6 fe80::1%lo0 prefixlen 64 scopeid 0x1
+            nd6 options=1<PERFORMNUD>
+        en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+            ether ac:de:48:00:11:22
+            inet 192.168.1.100 netmask 0xffffff00 broadcast 192.168.1.255
+            inet6 fe80::a00:27ff:fe4e:66a1%en
+
+# Generated at 2024-05-31 03:44:34.922575
+```python
+    network = GenericBsdIfconfigNetwork()
+    defaults = {'interface': 'em0'}
+    interfaces = {
+        'em0': {
+            'ipv4': [{'address': '192.168.1.1', 'netmask': '255.255.255.0', 'broadcast': '192.168.1.255'}],
+            'ipv6': [{'address': 'fe80::1', 'prefix': '64'}],
+            'macaddress': '00:1a:2b:3c:4d:5e',
+            'type': 'ether',
+            'mtu': '1500',
+            'flags': ['UP', 'BROADCAST', 'RUNNING', 'SIMPLEX', 'MULTICAST']
+        }
+    }
+    network.merge_default_interface(defaults, interfaces, 'ipv4')
+    assert defaults['macaddress'] == '00:1a:2b:3c:
+
+# Generated at 2024-05-31 03:44:37.732786
+```python
+    module = Mock()
+    module.get_bin_path.side_effect = lambda x: '/sbin/' + x if x in ['ifconfig', 'route'] else None
+    module.run_command.side_effect = [
+        (0, 'interface: em0\ngateway: 192.168.1.1\nif address: 192.168.1.100\n', ''),
+        (0, 'interface: em0\ngateway: fe80::1\nif address: fe80::1\n', ''),
+        (0, 'em0: flags=8863<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500\n' +
+            '    inet 192.168.1.100 netmask 0xffffff00 broadcast 192.168.1.255\n' +
+            '    inet6 fe80::1%em0 prefixlen 64 scopeid 0x1\n' +
+
+
+# Generated at 2024-05-31 03:44:40.976060
+```python
+    network = GenericBsdIfconfigNetwork()
+    defaults = {'interface': 'em0'}
+    interfaces = {
+        'em0': {
+            'ipv4': [{'address': '192.168.1.1', 'netmask': '255.255.255.0', 'broadcast': '192.168.1.255'}],
+            'ipv6': [{'address': 'fe80::1', 'prefix': '64'}],
+            'macaddress': '00:1a:2b:3c:4d:5e',
+            'type': 'ether',
+            'mtu': '1500',
+            'flags': ['UP', 'BROADCAST', 'RUNNING', 'SIMPLEX', 'MULTICAST']
+        }
+    }
+    network.merge_default_interface(defaults, interfaces, 'ipv4')
+    assert defaults['macaddress'] == '00:1a:2b:3c:
+
+# Generated at 2024-05-31 03:44:44.127880
+```python
+    network = GenericBsdIfconfigNetwork()
+    current_if = {'device': 'em0', 'ipv4': []}
+    ips = {'all_ipv4_addresses': [], 'all_ipv6_addresses': []}
+
+    # Test case 1: Standard inet line
+    words = ['inet', '192.168.1.10', 'netmask', '0xffffff00', 'broadcast', '192.168.1.255']
+    network.parse_inet_line(words, current_if, ips)
+    assert current_if['ipv4'][0]['address'] == '192.168.1.10'
+    assert current_if['ipv4'][0]['netmask'] == '255.255.255.0'
+    assert current_if['ipv4'][0]['broadcast'] == '192.168.1.255'
+    assert '192.168.1.10' in ips['all_ipv4_addresses']
+
+    # Test case 2
+
+# Generated at 2024-05-31 03:45:21.707887
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, """
+        em0: flags=8843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+            options=481209b<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,VLAN_HWCSUM,TSO4,WOL_MAGIC,LINKSTATE>
+            ether 00:1a:2b:3c:4d:5e
+            inet 192.168.1.10 netmask 0xffffff00 broadcast 192.168.1.255
+            inet6 fe80::21a:2bff:fe3c:4d5e%em0 prefixlen 64 scopeid 0x1
+            media: Ethernet autoselect (1000baseT <full-duplex>)
+            status: active
+        lo0: flags=8049
+
+# Generated at 2024-05-31 03:45:23.839160
+```python
+    network = GenericBsdIfconfigNetwork()
+    assert network.get_options('<UP,BROADCAST,RUNNING,MULTICAST>') == ['UP', 'BROADCAST', 'RUNNING', 'MULTICAST']
+    assert network.get_options('<LOOPBACK,UP,LOWER_UP>') == ['LOOPBACK', 'UP', 'LOWER_UP']
+    assert network.get_options('<NO-CARRIER>') == ['NO-CARRIER']
+    assert network.get_options('') == []
+    assert network.get_options('<>') == []
+```
+
+# Generated at 2024-05-31 03:45:27.272642
+```python
+    network = GenericBsdIfconfigNetwork()
+    interfaces = {
+        'eth0': {'media': 'Ethernet', 'type': 'unknown'},
+        'eth1': {'media': 'ether', 'type': 'unknown'},
+        'wlan0': {'media': 'Wi-Fi', 'type': 'unknown'},
+        'lo0': {'media': 'Loopback', 'type': 'unknown'}
+    }
+    expected = {
+        'eth0': {'media': 'Ethernet', 'type': 'ether'},
+        'eth1': {'media': 'ether', 'type': 'ether'},
+        'wlan0': {'media': 'Wi-Fi', 'type': 'unknown'},
+        'lo0': {'media': 'Loopback', 'type': 'unknown'}
+    }
+    result = network.detect_type_media(interfaces)
+    assert result == expected, f"Expected {expected}, but got {result}"
+```
+
+# Generated at 2024-05-31 03:45:30.851725
+```python
+    network = GenericBsdIfconfigNetwork()
+    route_path = '/sbin/route'
+
+    # Mock the module's run_command method
+    network.module = MagicMock()
+    network.module.run_command = MagicMock()
+
+    # Mock the output of the route command for IPv4
+    network.module.run_command.side_effect = [
+        (0, '   interface: em0\n   gateway: 192.168.1.1\n   if address: 192.168.1.100\n', ''),
+        (0, '   interface: em0\n   gateway: fe80::1\n   if address: fe80::1%em0\n', '')
+    ]
+
+    default_ipv4, default_ipv6 = network.get_default_interfaces(route_path)
+
+    assert default_ipv4 == {
+        'interface': 'em0',
+        'gateway': '192.168.1.1',
+        'address': '192.168.1.100
+
+# Generated at 2024-05-31 03:45:34.115657
+```python
+    network = GenericBsdIfconfigNetwork()
+    current_if = {'device': 'em0', 'ipv4': []}
+    ips = {'all_ipv4_addresses': [], 'all_ipv6_addresses': []}
+
+    # Test case 1: Standard inet line
+    words = ['inet', '192.168.1.10', 'netmask', '0xffffff00', 'broadcast', '192.168.1.255']
+    network.parse_inet_line(words, current_if, ips)
+    assert current_if['ipv4'][0]['address'] == '192.168.1.10'
+    assert current_if['ipv4'][0]['netmask'] == '255.255.255.0'
+    assert current_if['ipv4'][0]['broadcast'] == '192.168.1.255'
+    assert '192.168.1.10' in ips['all_ipv4_addresses']
+
+    # Test case 2
+
+# Generated at 2024-05-31 03:45:37.735816
+```python
+    network = GenericBsdIfconfigNetwork()
+    current_if = {'device': 'em0', 'ipv4': []}
+    ips = {'all_ipv4_addresses': [], 'all_ipv6_addresses': []}
+
+    # Test case 1: Standard inet line
+    words = ['inet', '192.168.1.10', 'netmask', '0xffffff00', 'broadcast', '192.168.1.255']
+    network.parse_inet_line(words, current_if, ips)
+    assert current_if['ipv4'][0]['address'] == '192.168.1.10'
+    assert current_if['ipv4'][0]['netmask'] == '255.255.255.0'
+    assert current_if['ipv4'][0]['broadcast'] == '192.168.1.255'
+    assert '192.168.1.10' in ips['all_ipv4_addresses']
+
+    # Test case 2
+
+# Generated at 2024-05-31 03:45:41.065220
+```python
+    network = GenericBsdIfconfigNetwork()
+    current_if = {'device': 'em0', 'ipv4': []}
+    ips = {'all_ipv4_addresses': [], 'all_ipv6_addresses': []}
+
+    # Test case 1: Standard inet line
+    words = ['inet', '192.168.1.10', 'netmask', '0xffffff00', 'broadcast', '192.168.1.255']
+    network.parse_inet_line(words, current_if, ips)
+    assert current_if['ipv4'][0]['address'] == '192.168.1.10'
+    assert current_if['ipv4'][0]['netmask'] == '255.255.255.0'
+    assert current_if['ipv4'][0]['broadcast'] == '192.168.1.255'
+    assert '192.168.1.10' in ips['all_ipv4_addresses']
+
+    # Test case 2
+
+# Generated at 2024-05-31 03:45:43.296964
+```python
+    network = GenericBsdIfconfigNetwork()
+    assert network.get_options('<UP,BROADCAST,RUNNING,MULTICAST>') == ['UP', 'BROADCAST', 'RUNNING', 'MULTICAST']
+    assert network.get_options('<LOOPBACK,UP,LOWER_UP>') == ['LOOPBACK', 'UP', 'LOWER_UP']
+    assert network.get_options('<NO-CARRIER>') == ['NO-CARRIER']
+    assert network.get_options('') == []
+    assert network.get_options('<>') == []
+```
+
+# Generated at 2024-05-31 03:45:46.623978
+```python
+    network = GenericBsdIfconfigNetwork()
+    defaults = {'interface': 'em0', 'address': '192.168.1.1'}
+    interfaces = {
+        'em0': {
+            'ipv4': [{'address': '192.168.1.1', 'netmask': '255.255.255.0', 'broadcast': '192.168.1.255'}],
+            'ipv6': [{'address': 'fe80::1', 'prefix': '64'}],
+            'macaddress': '00:1a:2b:3c:4d:5e',
+            'type': 'ether',
+            'mtu': '1500'
+        }
+    }
+    network.merge_default_interface(defaults, interfaces, 'ipv4')
+    assert defaults['macaddress'] == '00:1a:2b:3c:4d:5e'
+    assert defaults['type'] == '
+
+# Generated at 2024-05-31 03:45:50.000200
+```python
+    network = GenericBsdIfconfigNetwork()
+    defaults = {'interface': 'em0'}
+    interfaces = {
+        'em0': {
+            'ipv4': [{'address': '192.168.1.1', 'netmask': '255.255.255.0', 'broadcast': '192.168.1.255'}],
+            'ipv6': [{'address': 'fe80::1', 'prefix': '64'}],
+            'macaddress': '00:1a:2b:3c:4d:5e',
+            'type': 'ether',
+            'mtu': '1500',
+            'flags': ['UP', 'BROADCAST', 'RUNNING', 'MULTICAST']
+        }
+    }
+    network.merge_default_interface(defaults, interfaces, 'ipv4')
+    assert defaults['macaddress'] == '00:1a:2b:3c:4d:5e
+
+# Generated at 2024-05-31 03:48:09.216990
+```python
+    network = GenericBsdIfconfigNetwork()
+    current_if = {'device': 'em0', 'ipv4': []}
+    ips = {'all_ipv4_addresses': [], 'all_ipv6_addresses': []}
+
+    # Test case 1: Standard inet line
+    words = ['inet', '192.168.1.10', 'netmask', '0xffffff00', 'broadcast', '192.168.1.255']
+    network.parse_inet_line(words, current_if, ips)
+    assert current_if['ipv4'][0]['address'] == '192.168.1.10'
+    assert current_if['ipv4'][0]['netmask'] == '255.255.255.0'
+    assert current_if['ipv4'][0]['broadcast'] == '192.168.1.255'
+    assert '192.168.1.10' in ips['all_ipv4_addresses']
+
+    # Test case 2
+
+# Generated at 2024-05-31 03:48:12.492008
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, """
+        em0: flags=8843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+            options=1b<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING>
+            ether 00:1a:2b:3c:4d:5e
+            inet 192.168.1.10 netmask 0xffffff00 broadcast 192.168.1.255
+            inet6 fe80::21a:2bff:fe3c:4d5e%em0 prefixlen 64 scopeid 0x1
+            media: Ethernet autoselect (1000baseT <full-duplex>)
+            status: active
+        lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 
+
+# Generated at 2024-05-31 03:48:15.777623
+```python
+    module = Mock()
+    network = GenericBsdIfconfigNetwork(module)
+
+    # Mock the module.run_command method
+    module.run_command = Mock()
+
+    # Mock the output of the 'route -n get default' command
+    module.run_command.side_effect = [
+        (0, "   route to: default\ninterface: em0\ngateway: 192.168.1.1\n", ""),
+        (0, "   route to: default\ninterface: em0\ngateway: fe80::1\n", "")
+    ]
+
+    expected_ipv4 = {
+        'interface': 'em0',
+        'gateway': '192.168.1.1'
+    }
+    expected_ipv6 = {
+        'interface': 'em0',
+        'gateway': 'fe80::1'
+    }
+
+    default_ipv4, default_ipv6 = network.get_default_interfaces('/sbin/route')
+
+    assert default_ipv4 == expected_ipv4
+
+# Generated at 2024-05-31 03:48:19.015805
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, """
+        em0: flags=8843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+            options=1b<RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING>
+            ether 00:1c:42:2e:60:4a
+            inet 192.168.1.100 netmask 0xffffff00 broadcast 192.168.1.255
+            inet6 fe80::21c:42ff:fe2e:604a%em0 prefixlen 64 scopeid 0x1
+            inet6 2001:db8::1 prefixlen 64
+            media: Ethernet autoselect (1000baseT <full-duplex>)
+            status: active
+        lo0: flags=8049<UP,LOOP
+
+# Generated at 2024-05-31 03:48:21.275241
+```python
+    network = GenericBsdIfconfigNetwork()
+    assert network.get_options('<UP,BROADCAST,RUNNING,MULTICAST>') == ['UP', 'BROADCAST', 'RUNNING', 'MULTICAST']
+    assert network.get_options('<LOOPBACK>') == ['LOOPBACK']
+    assert network.get_options('<NOOPTIONS>') == ['NOOPTIONS']
+    assert network.get_options('NOOPTIONS') == []
+    assert network.get_options('<UP,LOWER_UP>') == ['UP', 'LOWER_UP']
+```
+
+# Generated at 2024-05-31 03:48:23.618787
+```python
+    network = GenericBsdIfconfigNetwork()
+    assert network.get_options('<UP,BROADCAST,RUNNING,MULTICAST>') == ['UP', 'BROADCAST', 'RUNNING', 'MULTICAST']
+    assert network.get_options('<LOOPBACK,UP>') == ['LOOPBACK', 'UP']
+    assert network.get_options('<NOOPTIONS>') == ['NOOPTIONS']
+    assert network.get_options('NOOPTIONS') == []
+    assert network.get_options('<>') == []
+```
+
+# Generated at 2024-05-31 03:48:28.175724
+```python
+    network = GenericBsdIfconfigNetwork()
+    route_path = '/sbin/route'
+
+    # Mock the module's run_command method
+    network.module = MagicMock()
+    network.module.run_command = MagicMock()
+
+    # Mock the output of the route command for IPv4
+    network.module.run_command.side_effect = [
+        (0, '   interface: em0\n   gateway: 192.168.1.1\n   if address: 192.168.1.100\n', ''),
+        (0, '   interface: em0\n   gateway: fe80::1\n   if address: fe80::1\n', '')
+    ]
+
+    default_ipv4, default_ipv6 = network.get_default_interfaces(route_path)
+
+    assert default_ipv4 == {
+        'interface': 'em0',
+        'gateway': '192.168.1.1',
+        'address': '192.168.1.100'
+    }
+
+
+
+# Generated at 2024-05-31 03:48:30.381189
+```python
+    network = GenericBsdIfconfigNetwork()
+    assert network.get_options('<UP,BROADCAST,RUNNING,MULTICAST>') == ['UP', 'BROADCAST', 'RUNNING', 'MULTICAST']
+    assert network.get_options('<LOOPBACK,UP,LOWER_UP>') == ['LOOPBACK', 'UP', 'LOWER_UP']
+    assert network.get_options('<NO-CARRIER>') == ['NO-CARRIER']
+    assert network.get_options('') == []
+    assert network.get_options('<>') == []
+```
+
+# Generated at 2024-05-31 03:48:33.671718
+```python
+    network = GenericBsdIfconfigNetwork()
+    interfaces = {
+        'eth0': {'media': 'Ethernet', 'type': 'unknown'},
+        'wlan0': {'media': 'Wi-Fi', 'type': 'unknown'},
+        'lo0': {'media': 'Local Loopback', 'type': 'unknown'},
+        'eth1': {'media': 'ether', 'type': 'unknown'}
+    }
+    expected = {
+        'eth0': {'media': 'Ethernet', 'type': 'ether'},
+        'wlan0': {'media': 'Wi-Fi', 'type': 'unknown'},
+        'lo0': {'media': 'Local Loopback', 'type': 'unknown'},
+        'eth1': {'media': 'ether', 'type': 'ether'}
+    }
+    result = network.detect_type_media(interfaces)
+    assert result == expected, f"Expected {expected}, but got {result}"
+```
+
+# Generated at 2024-05-31 03:48:36.924726
+```python
+    network = GenericBsdIfconfigNetwork()
+    current_if = {'ipv6': []}
+    ips = {'all_ipv6_addresses': []}
+
+    # Test case 1: CIDR style address
+    words = ['inet6', '2001:db8::1/64', 'prefixlen', '64', 'scopeid', '0x20']
+    network.parse_inet6_line(words, current_if, ips)
+    assert current_if['ipv6'][0]['address'] == '2001:db8::1'
+    assert current_if['ipv6'][0]['prefix'] == '64'
+    assert current_if['ipv6'][0]['scope'] == '0x20'
+    assert '2001:db8::1' in ips['all_ipv6_addresses']
+
+    # Test case 2: Non-CIDR style address
+    current_if = {'ipv6': []}
+    ips = {'all_ipv6

@@ -1,0 +1,747 @@
+
+
+# Generated at 2024-03-18 05:34:24.048648
+```python
+    from pathlib import Path
+    from unittest.mock import patch, MagicMock
+
+    # Mock the Path.glob method to return a controlled list of paths
+    with patch.object(Path, 'glob', return_value=[Path('/home/test_user/tmp/file_one'), Path('/home/test_user/tmp/dir_one')]) as mock_glob:
+        # Call the function with a pattern
+        result = list(find_paths('~/tmp/*'))
+
+        # Verify that the result is as expected
+        assert result == [Path('/home/test_user/tmp/file_one'), Path('/home/test_user/tmp/dir_one')]
+
+        # Verify that the Path.glob method was called with the correct pattern
+        mock_glob.assert_called_once_with('tmp/*')
+```
+
+# Generated at 2024-03-18 05:34:29.520573
+```python
+    from pathlib import Path
+    from unittest.mock import patch, MagicMock
+
+    # Test find_paths with a mocked glob
+    @patch('flutils.pathutils.Path.glob')
+    def test_find_paths_with_mocked_glob(mock_glob):
+        # Setup the mock to return specific paths
+        mock_glob.return_value = [
+            Path('/home/test_user/tmp/file_one'),
+            Path('/home/test_user/tmp/dir_one')
+        ]
+
+        # Call the function
+        result = list(find_paths('~/tmp/*'))
+
+        # Check that the mock was called with the correct pattern
+        mock_glob.assert_called_once_with('tmp/*')
+
+        # Check that the result is as expected
+        expected = [
+            Path('/home/test_user/tmp/file_one'),
+            Path('/home/test_user/tmp/dir_one')
+        ]
+        assert result == expected
+
+    test_find_paths_with_mocked_glob()
+```
+
+# Generated at 2024-03-18 05:34:30.806393
+```python
+from unittest.mock import patch, MagicMock
+
+@patch('flutils.pathutils.normalize_path')
+@patch('flutils.pathutils.Path')
+
+# Generated at 2024-03-18 05:34:32.992541
+```python
+import os
+import tempfile
+import socket
+import stat
+from pathlib import Path
+from flutils.pathutils import exists_as
+
+
+# Generated at 2024-03-18 05:34:38.478280
+    with tempfile.TemporaryDirectory() as tmpdir:
+        # Create a temporary directory and a file within it
+        test_dir = Path(tmpdir) / 'test_dir'
+        test_dir.mkdir()
+        test_file = test_dir / 'test_file.txt'
+        test_file.touch()
+
+        # Ensure the file exists
+        assert test_file.exists()
+
+        # Call path_absent on the file
+        path_absent(test_file)
+
+        # The file should no longer exist
+        assert not test_file.exists()
+
+        # Ensure the directory exists
+        assert test_dir.exists()
+
+        # Call path_absent on the directory
+        path_absent(test_dir)
+
+        # The directory should no longer exist
+        assert not test_dir.exists()
+
+        # Test path_absent with a path that does not exist
+        non_existent_path = Path(tmpdir) / 'non_existent'
+        path_absent(non_existent_path)  # Should not raise an exception
+
+        # The
+
+# Generated at 2024-03-18 05:34:39.502297
+```python
+import pwd
+import pytest
+
+
+# Generated at 2024-03-18 05:34:42.483419
+```python
+import os
+import tempfile
+import socket
+import stat
+from pathlib import Path
+from flutils.pathutils import exists_as
+
+
+# Generated at 2024-03-18 05:34:47.229316
+```python
+    from pathlib import Path
+    from unittest.mock import patch, MagicMock
+
+    # Test case: Finding paths with a given pattern
+    def test_find_paths_with_pattern():
+        # Setup the mock for Path.glob
+        mock_glob = MagicMock()
+        mock_glob.return_value = [
+            Path('/home/test_user/tmp/file_one'),
+            Path('/home/test_user/tmp/dir_one')
+        ]
+        with patch('pathlib.Path.glob', mock_glob):
+            # Call the function
+            result = list(find_paths('~/tmp/*'))
+            # Assertions
+            assert result == [
+                Path('/home/test_user/tmp/file_one'),
+                Path('/home/test_user/tmp/dir_one')
+            ]
+            mock_glob.assert_called_once_with('tmp/*')
+
+    # Run the test case
+    test_find_paths_with_pattern()
+```
+
+# Generated at 2024-03-18 05:34:48.344161
+```python
+import os
+import pytest
+import tempfile
+from pathlib import Path
+
+
+# Generated at 2024-03-18 05:34:50.832909
+```python
+import os
+import tempfile
+import unittest
+from pathlib import Path
+from flutils.pathutils import exists_as
+
+
+# Generated at 2024-03-18 05:35:19.782640
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        # Create a temporary directory and a file within it
+        test_dir = Path(tmp_dir) / 'test_dir'
+        test_dir.mkdir()
+        test_file = test_dir / 'test_file.txt'
+        test_file.touch()
+
+        # Ensure the file exists
+        assert test_file.exists()
+
+        # Call path_absent on the file
+        path_absent(test_file)
+
+        # The file should be removed
+        assert not test_file.exists()
+
+        # Ensure the directory exists
+        assert test_dir.exists()
+
+        # Call path_absent on the directory
+        path_absent(test_dir)
+
+        # The directory should be removed
+        assert not test_dir.exists()
+
+        # Test path_absent with a path that does not exist
+        non_existent_path = Path(tmp_dir) / 'non_existent'
+        path_absent(non_existent_path)  # Should not raise an exception
+
+        # The non-existent
+
+# Generated at 2024-03-18 05:35:26.190774
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Test find_paths with a mocked glob
+    @patch('flutils.pathutils.Path.glob')
+    def test_find_paths_with_mocked_glob(mock_glob):
+        # Setup the mock to return a list of PosixPath objects
+        mock_glob.return_value = [
+            MagicMock(spec=Path, **{'as_posix.return_value': '/home/test_user/tmp/file_one'}),
+            MagicMock(spec=Path, **{'as_posix.return_value': '/home/test_user/tmp/dir_one'})
+        ]
+
+        # Call the function
+        result = list(find_paths('~/tmp/*'))
+
+        # Check that the result is as expected
+        assert result == [
+            Path('/home/test_user/tmp/file_one'),
+            Path('/home/test_user/tmp/dir_one')
+        ]
+
+        # Check that the mock was called with the correct arguments
+        mock_glob.assert_called_once_with('tmp/*')
+
+    test_find_paths_with_mocked_glob()
+
+
+# Generated at 2024-03-18 05:35:28.514896
+```python
+import os
+import pytest
+import tempfile
+from pathlib import Path
+from unittest.mock import patch
+
+# Assuming the existence of the following functions for the test:
+# - get_os_user
+# - get_os_group
+
+
+# Generated at 2024-03-18 05:35:31.589866
+```python
+import os
+import pytest
+import tempfile
+from unittest.mock import patch, Mock
+
+# Assuming the existence of a function `get_os_user` and `get_os_group` that return
+# a user and group object respectively, similar to `pwd.getpwnam` and `grp.getgrnam`.
+
+
+# Generated at 2024-03-18 05:35:34.025248
+```python
+import os
+import tempfile
+import unittest
+from pathlib import Path
+from flutils.pathutils import exists_as
+
+
+# Generated at 2024-03-18 05:35:35.275881
+```python
+from unittest.mock import patch, MagicMock
+
+@patch('flutils.pathutils.normalize_path')
+@patch('flutils.pathutils.Path')
+
+# Generated at 2024-03-18 05:35:37.458572
+```python
+import os
+import pytest
+import tempfile
+from pathlib import Path
+
+# Assuming normalize_path is a function that normalizes the path
+# and that it is already tested and works as expected.
+
+
+# Generated at 2024-03-18 05:35:40.380401
+```python
+import os
+import pytest
+import tempfile
+from unittest.mock import patch, Mock
+
+# Assuming the existence of a function `get_os_user` and `get_os_group` that return
+# a user and group object respectively, similar to `pwd.getpwnam` and `grp.getgrnam`.
+
+
+# Generated at 2024-03-18 05:35:43.334798
+```python
+import os
+import pytest
+import tempfile
+from pathlib import Path
+from unittest.mock import patch
+
+# Assuming the existence of the following functions for the test:
+# - get_os_user
+# - get_os_group
+
+
+# Generated at 2024-03-18 05:35:44.738731
+```python
+import os
+import tempfile
+import socket
+import stat
+from pathlib import Path
+from flutils.pathutils import exists_as
+
+
+# Generated at 2024-03-18 05:36:09.159591
+```python
+import os
+import pytest
+import shutil
+import tempfile
+
+# Assuming the existence of the functions `get_os_user` and `get_os_group`
+# which are not provided in the context.
+
+
+# Generated at 2024-03-18 05:36:16.276605
+```python
+import os
+import pytest
+import tempfile
+from unittest.mock import patch, Mock
+
+# Assuming the existence of a function `get_os_user` that returns a user object
+# with a `pw_uid` attribute and a function `get_os_group` that returns a group
+# object with a `gr_gid` attribute.
+
+@patch('flutils.pathutils.get_os_user')
+@patch('flutils.pathutils.get_os_group')
+@patch('os.chown')
+
+# Generated at 2024-03-18 05:36:24.444920
+```python
+    from pathlib import Path
+    import tempfile
+    import os
+
+    def test_find_paths():
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create a structure of files and directories
+            os.makedirs(os.path.join(tmpdir, 'a/b/c'))
+            Path(os.path.join(tmpdir, 'a/b/c', 'file1.txt')).touch()
+            Path(os.path.join(tmpdir, 'a/b', 'file2.txt')).touch()
+            Path(os.path.join(tmpdir, 'a', 'file3.txt')).touch()
+
+            # Test the glob pattern
+            pattern = os.path.join(tmpdir, 'a', '**', '*.txt')
+            expected = {
+                os.path.join(tmpdir, 'a/b/c', 'file1.txt'),
+                os.path.join(tmpdir, 'a/b', 'file2.txt'),
+                os.path.join(tmpdir, 'a', 'file3.txt'),
+            }
+            result = {str(p)
+
+# Generated at 2024-03-18 05:36:26.208755
+```python
+import os
+import tempfile
+import unittest
+from pathlib import Path
+from flutils.pathutils import exists_as
+
+
+# Generated at 2024-03-18 05:36:29.215317
+```python
+import os
+import pytest
+import tempfile
+from pathlib import Path
+from unittest.mock import patch
+
+# Assuming the existence of a function `get_current_username` that returns
+# the current user's username for testing purposes.
+
+# Generated at 2024-03-18 05:36:30.907327
+```python
+from unittest import TestCase, mock
+from unittest.mock import patch
+from pathlib import Path
+
+
+# Generated at 2024-03-18 05:36:33.111597
+```python
+import os
+import pytest
+import tempfile
+from pathlib import Path
+
+# Assuming the normalize_path function is already defined elsewhere
+# and chmod function is imported from the module being tested
+
+
+# Generated at 2024-03-18 05:36:34.566859
+```python
+import os
+import tempfile
+import unittest
+from pathlib import Path
+from flutils.pathutils import exists_as
+
+
+# Generated at 2024-03-18 05:36:38.509073
+```python
+import os
+import pytest
+import tempfile
+from unittest.mock import patch, Mock
+
+# Assuming the existence of a function `get_os_user` that returns a user object
+# with a `pw_uid` attribute and a function `get_os_group` that returns a group
+# object with a `gr_gid` attribute.
+
+@patch('flutils.pathutils.get_os_user')
+@patch('flutils.pathutils.get_os_group')
+@patch('os.chown')
+
+# Generated at 2024-03-18 05:36:40.578031
+```python
+import os
+import pytest
+import shutil
+import tempfile
+
+# Assuming the existence of the functions `get_os_user` and `get_os_group`
+# used in the `directory_present` function.
+
+
+# Generated at 2024-03-18 05:37:37.342152
+```python
+import os
+import pytest
+import tempfile
+import shutil
+from unittest.mock import patch, Mock
+
+# Assuming the existence of a function `get_os_user` that returns a user object
+# with a `pw_uid` attribute and a function `get_os_group` that returns a group
+# object with a `gr_gid` attribute.
+
+# Test chown with default user and group on a single file
+
+# Generated at 2024-03-18 05:37:42.829631
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Test directory_present when path does not exist and is created
+    with patch('flutils.pathutils.exists_as', return_value='') as mock_exists_as, \
+         patch('flutils.pathutils.Path.mkdir') as mock_mkdir, \
+         patch('flutils.pathutils.chown') as mock_chown, \
+         patch('flutils.pathutils.chmod') as mock_chmod:
+        path = Path('/non/existent/directory')
+        result = directory_present(path)
+        mock_exists_as.assert_called_once_with(path)
+        mock_mkdir.assert_called_once_with(mode=0o700)
+        mock_chown.assert_called_once_with(path, user=None, group=None)
+        mock_chmod.assert_called_once_with(path, mode_dir=0o700)
+        assert result == path
+
+    # Test directory_present when path exists as a directory
+    with patch('flutils.pathutils.exists_as', return_value='
+
+# Generated at 2024-03-18 05:37:45.622979
+```python
+import os
+import pytest
+import tempfile
+from pathlib import Path
+from unittest.mock import patch
+
+# Assuming the existence of a function `get_current_username` that returns
+# the username of the current user and `get_current_groupname` that returns
+# the group name of the current user for the purpose of this test.
+
+
+# Generated at 2024-03-18 05:37:46.617875
+```python
+import os
+import pytest
+import stat
+
+# Create a temporary directory and file for testing
+@pytest.fixture
+
+# Generated at 2024-03-18 05:37:52.853899
+```python
+    with tempfile.TemporaryDirectory() as tmpdir:
+        # Create a temporary directory and a file within it
+        test_dir = Path(tmpdir) / 'test_dir'
+        test_dir.mkdir()
+        test_file = test_dir / 'test_file.txt'
+        test_file.touch()
+
+        # Ensure the file exists
+        assert test_file.exists()
+
+        # Call path_absent on the file and ensure it is removed
+        path_absent(test_file)
+        assert not test_file.exists()
+
+        # Ensure the directory exists
+        assert test_dir.exists()
+
+        # Call path_absent on the directory and ensure it is removed
+        path_absent(test_dir)
+        assert not test_dir.exists()
+
+        # Test path_absent with a path that does not exist
+        non_existent_path = Path(tmpdir) / 'non_existent'
+        path_absent(non_existent_path)  # Should not raise an exception
+        assert not non_existent_path.exists
+
+# Generated at 2024-03-18 05:37:54.020670
+```python
+import pytest
+import os
+import pwd
+import grp
+import tempfile
+import shutil
+
+
+# Generated at 2024-03-18 05:37:55.391739
+```python
+from unittest.mock import patch, MagicMock
+
+@patch('flutils.pathutils.normalize_path')
+@patch('flutils.pathutils.Path')
+
+# Generated at 2024-03-18 05:37:56.786120
+```python
+import os
+import tempfile
+import unittest
+from pathlib import Path
+from flutils.pathutils import exists_as
+
+
+# Generated at 2024-03-18 05:38:06.658713
+```python
+    from unittest.mock import patch, mock_open
+    import os
+
+    # Test that path_absent removes a file
+    with patch('os.path.exists', return_value=True), \
+         patch('os.path.islink', return_value=False), \
+         patch('os.path.isdir', return_value=False), \
+         patch('os.unlink') as mock_unlink:
+        path_absent('/path/to/file')
+        mock_unlink.assert_called_once_with('/path/to/file')
+
+    # Test that path_absent removes a directory recursively
+    with patch('os.path.exists', return_value=True), \
+         patch('os.path.islink', return_value=False), \
+         patch('os.path.isdir', return_value=True), \
+         patch('os.walk', return_value=[('/path/to/dir', ('subdir',), ('file',))]), \
+         patch('os.path.isfile', return_value=True), \
+         patch('os.unlink') as mock_unlink, \
+         patch
+
+# Generated at 2024-03-18 05:38:08.348914
+```python
+import os
+import pytest
+import tempfile
+from pathlib import Path
+from unittest.mock import patch
+
+# Assuming the existence of the following functions for the test:
+# - get_os_user
+# - get_os_group
+
+
+# Generated at 2024-03-18 05:39:56.532542
+```python
+import os
+import pytest
+import tempfile
+from unittest.mock import patch, Mock
+
+# Assuming the existence of a function `get_os_user` that returns a user object
+# with a `pw_uid` attribute and a function `get_os_group` that returns a group
+# object with a `gr_gid` attribute.
+
+@patch('flutils.pathutils.get_os_user')
+@patch('flutils.pathutils.get_os_group')
+@patch('os.chown')
+
+# Generated at 2024-03-18 05:40:04.820857
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Test find_paths with a mocked glob
+    @patch('flutils.pathutils.Path.glob')
+    def test_find_paths_with_mocked_glob(mock_glob):
+        # Setup the mock to return a list of Path objects
+        mock_glob.return_value = [
+            Path('/home/test_user/tmp/file_one'),
+            Path('/home/test_user/tmp/dir_one')
+        ]
+
+        # Call the function
+        result = list(find_paths('~/tmp/*'))
+
+        # Check that the mock was called with the correct pattern
+        mock_glob.assert_called_once_with('tmp/*')
+
+        # Check that the result is as expected
+        expected = [
+            Path('/home/test_user/tmp/file_one'),
+            Path('/home/test_user/tmp/dir_one')
+        ]
+        assert result == expected
+
+    test_find_paths_with_mocked_glob()
+```
+
+# Generated at 2024-03-18 05:40:14.481134
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Test directory_present when path does not exist and is created
+    with patch('flutils.pathutils.exists_as', return_value='') as mock_exists_as, \
+         patch('flutils.pathutils.Path.mkdir') as mock_mkdir, \
+         patch('flutils.pathutils.chown') as mock_chown, \
+         patch('flutils.pathutils.chmod') as mock_chmod:
+        path = directory_present('/non/existent/path')
+        mock_exists_as.assert_called_once_with('/non/existent/path')
+        mock_mkdir.assert_called_once_with(mode=0o700)
+        mock_chown.assert_called_once_with('/non/existent/path', user=None, group=None)
+        mock_chmod.assert_called_once_with('/non/existent/path', mode_dir=0o700)
+        assert path == Path('/non/existent/path')
+
+    # Test directory_present when path exists as a directory
+    with patch('
+
+# Generated at 2024-03-18 05:40:15.690998
+```python
+from unittest.mock import patch, MagicMock
+
+@patch('flutils.pathutils.normalize_path')
+@patch('flutils.pathutils.Path')
+
+# Generated at 2024-03-18 05:40:19.029071
+```python
+import os
+import pytest
+import tempfile
+from pathlib import Path
+from unittest.mock import patch
+
+# Assuming the existence of the following functions and classes for the test:
+# - get_os_user
+# - get_os_group
+# - exists_as
+
+@patch('flutils.pathutils.get_os_user')
+@patch('flutils.pathutils.get_os_group')
+@patch('flutils.pathutils.exists_as')
+
+# Generated at 2024-03-18 05:40:22.238024
+```python
+import os
+import pytest
+import tempfile
+from unittest.mock import patch, Mock
+
+# Assuming the existence of a function `get_os_user` and `get_os_group` that return
+# a user and group object respectively, similar to `pwd.getpwnam` and `grp.getgrnam`.
+
+
+# Generated at 2024-03-18 05:40:25.979957
+```python
+import os
+import pytest
+import tempfile
+import shutil
+from pathlib import Path
+from unittest.mock import patch
+
+# Assuming the existence of a function `get_current_username` that returns the current user's username
+# and a function `get_current_groupname` that returns the current user's group name for the purpose of this test.
+
+
+# Generated at 2024-03-18 05:40:33.864624
+```python
+    with tempfile.TemporaryDirectory() as tmpdir:
+        # Create a temporary directory and a file within it
+        temp_dir = Path(tmpdir) / "test_dir"
+        temp_dir.mkdir()
+        temp_file = temp_dir / "test_file.txt"
+        temp_file.touch()
+
+        # Ensure the file exists
+        assert temp_file.exists()
+
+        # Call path_absent on the file and ensure it is removed
+        path_absent(temp_file)
+        assert not temp_file.exists()
+
+        # Ensure the directory exists
+        assert temp_dir.exists()
+
+        # Call path_absent on the directory and ensure it is removed
+        path_absent(temp_dir)
+        assert not temp_dir.exists()
+
+        # Test that path_absent does not raise an error if the path does not exist
+        non_existent_path = Path(tmpdir) / "non_existent"
+        path_absent(non_existent_path)  # Should not raise an error
+```
+
+# Generated at 2024-03-18 05:40:40.450170
+    with tempfile.TemporaryDirectory() as tmpdir:
+        # Create a temporary directory and a file within it
+        test_dir = Path(tmpdir) / "test_dir"
+        test_dir.mkdir()
+        test_file = test_dir / "test_file.txt"
+        test_file.touch()
+
+        # Ensure the file exists
+        assert test_file.exists()
+
+        # Call path_absent on the file
+        path_absent(test_file)
+
+        # The file should no longer exist
+        assert not test_file.exists()
+
+        # Ensure the directory exists
+        assert test_dir.exists()
+
+        # Call path_absent on the directory
+        path_absent(test_dir)
+
+        # The directory should no longer exist
+        assert not test_dir.exists()
+
+        # Test path_absent with a path that does not exist
+        non_existent_path = Path(tmpdir) / "non_existent"
+        path_absent(non_existent_path)  # Should not raise an exception
+
+        # The
+
+# Generated at 2024-03-18 05:40:42.539655
+```python
+from unittest.mock import patch, MagicMock
+
+@patch('flutils.pathutils.normalize_path')
+@patch('flutils.pathutils.Path')

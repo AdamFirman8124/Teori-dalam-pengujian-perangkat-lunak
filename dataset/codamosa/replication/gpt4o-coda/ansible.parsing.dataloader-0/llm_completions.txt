@@ -1,0 +1,1372 @@
+
+
+# Generated at 2024-05-31 17:46:07.722810
+```python
+    loader = DataLoader()
+
+    # Test case 1: Directory with vars files
+    path = '/tmp/test_vars'
+    name = 'vars'
+    os.makedirs(os.path.join(path, name), exist_ok=True)
+    with open(os.path.join(path, name, 'main.yml'), 'w') as f:
+        f.write('---\nvar1: value1\n')
+    with open(os.path.join(path, name, 'main.yaml'), 'w') as f:
+        f.write('---\nvar2: value2\n')
+
+    result = loader.find_vars_files(path, name)
+    assert len(result) == 2
+    assert os.path.join(path, name, 'main.yml') in result
+    assert os.path.join(path, name, 'main.yaml') in result
+
+    # Test case 2: Directory without vars files
+    path = '/tmp/test_no_vars'
+    name = 'novars'
+    os.makedirs
+
+# Generated at 2024-05-31 17:46:11.478037
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'key: value'
+
+    # Create a temporary file with test content
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test loading from file
+        result = loader.load_from_file(test_file_path)
+        assert result == test_content, f"Expected '{test_content}', but got '{result}'"
+
+        # Test loading from non-existent file
+        try:
+            loader.load_from_file('non_existent_file.yml')
+            assert False, "Expected AnsibleFileNotFound exception"
+        except AnsibleFileNotFound:
+            pass
+
+        # Test loading from encrypted file
+        encrypted_content = "$ANSIBLE_VAULT;1.1;AES256\n61626364"
+        with open(test_file_path, 'w') as f:
+            f.write(encrypted_content)
+
+        try:
+           
+
+# Generated at 2024-05-31 17:46:15.208820
+```python
+    loader = DataLoader()
+    loader._basedir = "/base/dir"
+
+    # Test with absolute path
+    result = loader.path_dwim_relative("/absolute/path/to/file", "dirname", "source")
+    assert result == "/absolute/path/to/file"
+
+    # Test with relative path in role
+    loader._is_role = lambda x: True
+    result = loader.path_dwim_relative("/role/path", "dirname", "source")
+    assert result == "/role/path/dirname/source"
+
+    # Test with relative path not in role
+    loader._is_role = lambda x: False
+    result = loader.path_dwim_relative("/playbook/path", "dirname", "source")
+    assert result == "/playbook/path/dirname/source"
+
+    # Test with source starting with ~
+    result = loader.path_dwim_relative("/path", "dirname", "~/source")
+    assert result == os.path.expanduser("~/source")
+
+    # Test with source
+
+# Generated at 2024-05-31 17:46:18.306273
+```python
+    loader = DataLoader()
+    tmp_file1 = loader._create_content_tempfile(b"test content 1")
+    tmp_file2 = loader._create_content_tempfile(b"test content 2")
+    
+    assert os.path.exists(tmp_file1)
+    assert os.path.exists(tmp_file2)
+    
+    loader.cleanup_all_tmp_files()
+    
+    assert not os.path.exists(tmp_file1)
+    assert not os.path.exists(tmp_file2)
+    assert len(loader._tempfiles) == 0
+```
+
+# Generated at 2024-05-31 17:46:22.184914
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'key: value'
+
+    # Create a temporary file with test content
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test loading from file
+        result = loader.load_from_file(test_file_path)
+        assert result == test_content, f"Expected '{test_content}', but got '{result}'"
+
+        # Test loading from non-existent file
+        try:
+            loader.load_from_file('non_existent_file.yml')
+            assert False, "Expected AnsibleFileNotFound exception"
+        except AnsibleFileNotFound:
+            pass
+
+        # Test loading from a directory
+        try:
+            loader.load_from_file('.')
+            assert False, "Expected AnsibleParserError exception"
+        except AnsibleParserError:
+            pass
+
+    finally:
+        # Clean up the temporary file
+        os.remove
+
+# Generated at 2024-05-31 17:46:27.390755
+```python
+    loader = DataLoader()
+
+    # Test case 1: Directory with vars files
+    with tempfile.TemporaryDirectory() as tempdir:
+        os.makedirs(os.path.join(tempdir, 'vars'))
+        with open(os.path.join(tempdir, 'vars', 'main.yml'), 'w') as f:
+            f.write('---\nvar1: value1\n')
+        with open(os.path.join(tempdir, 'vars', 'extra.yaml'), 'w') as f:
+            f.write('---\nvar2: value2\n')
+
+        result = loader.find_vars_files(tempdir, 'vars')
+        assert len(result) == 2
+        assert os.path.join(tempdir, 'vars', 'main.yml') in result
+        assert os.path.join(tempdir, 'vars', 'extra.yaml') in result
+
+    # Test case 2: Directory without vars files
+    with tempfile.TemporaryDirectory() as tempdir:
+        os.makedirs
+
+# Generated at 2024-05-31 17:46:31.769962
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'key: value'
+
+    # Create a temporary file with test content
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test loading from file
+        result = loader.load_from_file(test_file_path)
+        assert result == {'key': 'value'}, f"Expected {{'key': 'value'}}, but got {result}"
+
+        # Test loading from non-existent file
+        try:
+            loader.load_from_file('non_existent_file.yml')
+        except AnsibleFileNotFound as e:
+            assert str(e) == "AnsibleFileNotFound: non_existent_file.yml", f"Unexpected exception message: {str(e)}"
+
+        # Test loading from an invalid file
+        invalid_file_path = 'invalid_file.yml'
+        with open(invalid_file_path, 'w') as f
+
+# Generated at 2024-05-31 17:46:33.781054
+```python
+    loader = DataLoader()
+    temp_file = loader._create_content_tempfile(b"test content")
+    loader._tempfiles.add(temp_file)
+
+    assert temp_file in loader._tempfiles
+    loader.cleanup_tmp_file(temp_file)
+    assert temp_file not in loader._tempfiles
+    assert not os.path.exists(temp_file)
+```
+
+# Generated at 2024-05-31 17:46:38.680325
+```python
+    loader = DataLoader()
+    loader.set_basedir('/base/dir')
+
+    # Test with absolute path
+    result = loader.path_dwim_relative('/some/absolute/path', 'templates', 'file.yml')
+    assert result == '/some/absolute/path', f"Expected '/some/absolute/path', got {result}"
+
+    # Test with relative path in role
+    loader._is_role = lambda x: True
+    result = loader.path_dwim_relative('/base/dir/roles/myrole', 'templates', 'file.yml')
+    expected = '/base/dir/roles/myrole/templates/file.yml'
+    assert result == expected, f"Expected '{expected}', got {result}"
+
+    # Test with relative path not in role
+    loader._is_role = lambda x: False
+    result = loader.path_dwim_relative('/base/dir/playbooks', 'templates', 'file.yml')
+    expected = '/base/dir/playbooks/templates/file.yml
+
+# Generated at 2024-05-31 17:46:42.604051
+```python
+    loader = DataLoader()
+
+    # Test with a valid file path
+    valid_file_path = __file__  # This script file itself
+    assert loader.is_file(valid_file_path) == True
+
+    # Test with a directory path
+    directory_path = os.path.dirname(__file__)
+    assert loader.is_file(directory_path) == False
+
+    # Test with a non-existent file path
+    non_existent_file_path = os.path.join(directory_path, 'non_existent_file.txt')
+    assert loader.is_file(non_existent_file_path) == False
+
+    # Test with a valid file path in bytes
+    valid_file_path_bytes = to_bytes(valid_file_path)
+    assert loader.is_file(valid_file_path_bytes) == True
+
+    # Test with a directory path in bytes
+    directory_path_bytes = to_bytes(directory_path)
+    assert loader.is_file(directory_path_bytes) == False
+
+    # Test with a non-existent file path in bytes
+    non
+
+# Generated at 2024-05-31 17:47:22.945741
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'test: value'
+
+    # Create a temporary test file
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test with a valid file path
+        result = loader.get_real_file(test_file_path, decrypt=False)
+        assert result == test_file_path
+
+        # Test with a non-existent file path
+        try:
+            loader.get_real_file('non_existent_file.yml', decrypt=False)
+        except AnsibleFileNotFound:
+            pass
+        else:
+            assert False, "Expected AnsibleFileNotFound exception"
+
+        # Test with an invalid file path type
+        try:
+            loader.get_real_file(None, decrypt=False)
+        except AnsibleParserError:
+            pass
+        else:
+            assert False, "Expected AnsibleParserError exception"
+
+    finally:
+        # Clean up the
+
+# Generated at 2024-05-31 17:47:24.714305
+```python
+    loader = DataLoader()
+    temp_file = loader._create_content_tempfile(b"temporary content")
+    loader._tempfiles.add(temp_file)
+
+    assert temp_file in loader._tempfiles
+    loader.cleanup_tmp_file(temp_file)
+    assert temp_file not in loader._tempfiles
+    assert not os.path.exists(temp_file)
+```
+
+# Generated at 2024-05-31 17:47:32.774014
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    encrypted_file_path = 'encrypted_file.yml'
+
+    # Create a test file
+    with open(test_file_path, 'w') as f:
+        f.write('test content')
+
+    # Create an encrypted test file
+    with open(encrypted_file_path, 'w') as f:
+        f.write('$ANSIBLE_VAULT;1.1;AES256\n')
+
+    # Test with a regular file
+    result = loader.get_real_file(test_file_path, decrypt=False)
+    assert result == test_file_path
+
+    # Test with an encrypted file without decryption
+    result = loader.get_real_file(encrypted_file_path, decrypt=False)
+    assert result == encrypted_file_path
+
+    # Test with an encrypted file with decryption (should raise an error due to missing vault password)
+    try:
+        loader.get_real_file(encrypted_file_path, decrypt=True)
+    except An
+
+# Generated at 2024-05-31 17:47:36.653218
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'test: value'
+
+    # Create a temporary test file
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test with a valid file path
+        result = loader.get_real_file(test_file_path)
+        assert result == test_file_path, f"Expected {test_file_path}, got {result}"
+
+        # Test with a non-existent file path
+        try:
+            loader.get_real_file('non_existent_file.yml')
+        except AnsibleFileNotFound:
+            pass
+        else:
+            assert False, "Expected AnsibleFileNotFound exception"
+
+        # Test with a vault encrypted file
+        encrypted_content = loader._vault.encrypt(test_content)
+        with open(test_file_path, 'wb') as f:
+            f.write(encrypted_content)
+
+        result = loader.get_real_file(test_file_path
+
+# Generated at 2024-05-31 17:47:39.836997
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'key: value'
+
+    # Create a temporary file with test content
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test loading from file
+        result = loader.load_from_file(test_file_path)
+        assert result == test_content, f"Expected '{test_content}', but got '{result}'"
+
+        # Test loading from non-existent file
+        try:
+            loader.load_from_file('non_existent_file.yml')
+            assert False, "Expected AnsibleFileNotFound exception"
+        except AnsibleFileNotFound:
+            pass
+
+        # Test loading from encrypted file
+        encrypted_content = loader._vault.encrypt(test_content)
+        with open(test_file_path, 'wb') as f:
+            f.write(encrypted_content)
+
+        result = loader.load_from_file(test_file_path, decrypt=True)
+       
+
+# Generated at 2024-05-31 17:47:42.446710
+```python
+    loader = DataLoader()
+    temp_file = loader._create_content_tempfile(b"temporary content")
+    loader._tempfiles.add(temp_file)
+
+    assert temp_file in loader._tempfiles
+    loader.cleanup_tmp_file(temp_file)
+    assert temp_file not in loader._tempfiles
+    assert not os.path.exists(temp_file)
+```
+
+# Generated at 2024-05-31 17:47:46.787721
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'key: value'
+
+    # Create a temporary file with test content
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test loading from file
+        result = loader.load_from_file(test_file_path)
+        assert result == {'key': 'value'}, f"Expected {{'key': 'value'}}, but got {result}"
+
+        # Test loading from non-existent file
+        try:
+            loader.load_from_file('non_existent_file.yml')
+        except AnsibleFileNotFound as e:
+            assert str(e) == "AnsibleFileNotFound: non_existent_file.yml", f"Unexpected exception message: {str(e)}"
+
+    finally:
+        # Clean up the temporary file
+        os.remove(test_file_path)
+```
+
+# Generated at 2024-05-31 17:47:50.314743
+```python
+    loader = DataLoader()
+    # Create a temporary file to test
+    fd, temp_file = tempfile.mkstemp()
+    os.close(fd)
+    
+    # Test with an existing file
+    assert loader.is_file(temp_file) == True
+    
+    # Test with a non-existing file
+    assert loader.is_file(temp_file + "_nonexistent") == False
+    
+    # Clean up the temporary file
+    os.remove(temp_file)
+```
+
+# Generated at 2024-05-31 17:47:56.364687
+```python
+    loader = DataLoader()
+    loader.set_basedir('/base/dir')
+
+    # Test with absolute path
+    result = loader.path_dwim_relative('/absolute/path/to/file', 'dirname', 'source')
+    assert result == '/absolute/path/to/file'
+
+    # Test with relative path in role
+    loader._is_role = lambda x: True
+    result = loader.path_dwim_relative('/base/dir/role/tasks', 'dirname', 'source', is_role=True)
+    assert result == '/base/dir/role/dirname/source'
+
+    # Test with relative path not in role
+    loader._is_role = lambda x: False
+    result = loader.path_dwim_relative('/base/dir/playbook', 'dirname', 'source', is_role=False)
+    assert result == '/base/dir/playbook/dirname/source'
+
+    # Test with source starting with ~
+    result = loader.path_dwim_relative('/base/dir', 'dirname
+
+# Generated at 2024-05-31 17:47:59.922089
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    encrypted_file_path = 'encrypted_file.yml'
+
+    # Create a test file
+    with open(test_file_path, 'w') as f:
+        f.write('test content')
+
+    # Create an encrypted test file
+    with open(encrypted_file_path, 'w') as f:
+        f.write('$ANSIBLE_VAULT;1.1;AES256\n')
+
+    # Test with a regular file
+    result = loader.get_real_file(test_file_path, decrypt=False)
+    assert result == test_file_path
+
+    # Test with an encrypted file without decryption
+    result = loader.get_real_file(encrypted_file_path, decrypt=False)
+    assert result == encrypted_file_path
+
+    # Test with an encrypted file with decryption (should raise an error due to missing vault password)
+    try:
+        loader.get_real_file(encrypted_file_path, decrypt=True)
+    except An
+
+# Generated at 2024-05-31 17:50:20.291906
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'test: value'
+
+    # Create a temporary test file
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test with a valid file path
+        result = loader.get_real_file(test_file_path)
+        assert result == test_file_path, f"Expected {test_file_path}, got {result}"
+
+        # Test with a non-existent file path
+        try:
+            loader.get_real_file('non_existent_file.yml')
+        except AnsibleFileNotFound:
+            pass
+        else:
+            assert False, "Expected AnsibleFileNotFound exception"
+
+        # Test with a vault encrypted file
+        encrypted_content = loader._vault.encrypt(test_content)
+        with open(test_file_path, 'wb') as f:
+            f.write(encrypted_content)
+
+        result = loader.get_real_file(test_file_path
+
+# Generated at 2024-05-31 17:50:23.110064
+```python
+    loader = DataLoader()
+    # Create a temporary file to test
+    fd, temp_file = tempfile.mkstemp()
+    os.close(fd)
+    
+    try:
+        # Test with an actual file
+        assert loader.is_file(temp_file) == True
+        
+        # Test with a directory
+        temp_dir = tempfile.mkdtemp()
+        assert loader.is_file(temp_dir) == False
+        
+        # Test with a non-existent path
+        non_existent_path = temp_file + "_non_existent"
+        assert loader.is_file(non_existent_path) == False
+    finally:
+        os.remove(temp_file)
+        os.rmdir(temp_dir)
+```
+
+# Generated at 2024-05-31 17:50:29.438881
+```python
+    loader = DataLoader()
+
+    # Test case 1: Directory with vars files
+    with tempfile.TemporaryDirectory() as tempdir:
+        os.makedirs(os.path.join(tempdir, 'vars'))
+        with open(os.path.join(tempdir, 'vars', 'main.yml'), 'w') as f:
+            f.write('---\nvar1: value1\n')
+        with open(os.path.join(tempdir, 'vars', 'extra.yaml'), 'w') as f:
+            f.write('---\nvar2: value2\n')
+
+        result = loader.find_vars_files(tempdir, 'vars')
+        assert len(result) == 2
+        assert os.path.join(tempdir, 'vars', 'main.yml') in result
+        assert os.path.join(tempdir, 'vars', 'extra.yaml') in result
+
+    # Test case 2: Directory without vars files
+    with tempfile.TemporaryDirectory() as tempdir:
+        os.makedirs
+
+# Generated at 2024-05-31 17:50:34.823260
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'test: value'
+
+    # Create a temporary test file
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test with a valid file path
+        result = loader.get_real_file(test_file_path, decrypt=False)
+        assert result == test_file_path
+
+        # Test with a non-existent file path
+        try:
+            loader.get_real_file('non_existent_file.yml', decrypt=False)
+        except AnsibleFileNotFound:
+            pass
+        else:
+            assert False, "Expected AnsibleFileNotFound exception"
+
+        # Test with an invalid file path type
+        try:
+            loader.get_real_file(None, decrypt=False)
+        except AnsibleParserError:
+            pass
+        else:
+            assert False, "Expected AnsibleParserError exception"
+
+    finally:
+        # Clean up the
+
+# Generated at 2024-05-31 17:50:36.621182
+```python
+    loader = DataLoader()
+    temp_file = loader._create_content_tempfile(b"temporary content")
+    loader._tempfiles.add(temp_file)
+    
+    assert temp_file in loader._tempfiles
+    loader.cleanup_tmp_file(temp_file)
+    assert temp_file not in loader._tempfiles
+    assert not os.path.exists(temp_file)
+```
+
+# Generated at 2024-05-31 17:50:38.727640
+```python
+    loader = DataLoader()
+    temp_file1 = loader._create_content_tempfile(b"temp content 1")
+    temp_file2 = loader._create_content_tempfile(b"temp content 2")
+    
+    assert temp_file1 in loader._tempfiles
+    assert temp_file2 in loader._tempfiles
+    
+    loader.cleanup_all_tmp_files()
+    
+    assert temp_file1 not in loader._tempfiles
+    assert temp_file2 not in loader._tempfiles
+    assert not os.path.exists(temp_file1)
+    assert not os.path.exists(temp_file2)
+```
+
+# Generated at 2024-05-31 17:50:44.719019
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'key: value'
+
+    # Create a temporary file with test content
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test loading from file
+        result = loader.load_from_file(test_file_path)
+        assert result == {'key': 'value'}, f"Expected {{'key': 'value'}}, but got {result}"
+
+        # Test loading from non-existent file
+        try:
+            loader.load_from_file('non_existent_file.yml')
+        except AnsibleFileNotFound as e:
+            assert str(e) == "AnsibleFileNotFound: non_existent_file.yml", f"Unexpected exception message: {str(e)}"
+
+        # Test loading from an invalid file
+        invalid_file_path = 'invalid_file.yml'
+        with open(invalid_file_path, 'w') as f
+
+# Generated at 2024-05-31 17:50:47.381284
+```python
+    loader = DataLoader()
+    temp_file1 = loader._create_content_tempfile(b"temp content 1")
+    temp_file2 = loader._create_content_tempfile(b"temp content 2")
+    
+    assert temp_file1 in loader._tempfiles
+    assert temp_file2 in loader._tempfiles
+    
+    loader.cleanup_all_tmp_files()
+    
+    assert temp_file1 not in loader._tempfiles
+    assert temp_file2 not in loader._tempfiles
+    assert not os.path.exists(temp_file1)
+    assert not os.path.exists(temp_file2)
+```
+
+# Generated at 2024-05-31 17:50:50.711951
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'test: value'
+
+    # Create a temporary test file
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test with a valid file path
+        result = loader.get_real_file(test_file_path, decrypt=False)
+        assert result == test_file_path, f"Expected {test_file_path}, got {result}"
+
+        # Test with a non-existent file path
+        try:
+            loader.get_real_file('non_existent_file.yml', decrypt=False)
+        except AnsibleFileNotFound:
+            pass
+        else:
+            assert False, "Expected AnsibleFileNotFound exception"
+
+        # Test with an invalid file path type
+        try:
+            loader.get_real_file(None, decrypt=False)
+        except AnsibleParserError:
+            pass
+        else:
+            assert False, "Expected Ansible
+
+# Generated at 2024-05-31 17:50:57.066437
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'key: value'
+
+    # Create a temporary file with test content
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test loading from file
+        result = loader.load_from_file(test_file_path)
+        assert result == {'key': 'value'}, f"Expected {{'key': 'value'}}, but got {result}"
+
+        # Test loading from non-existent file
+        try:
+            loader.load_from_file('non_existent_file.yml')
+        except AnsibleFileNotFound as e:
+            assert str(e) == "AnsibleFileNotFound: non_existent_file.yml", f"Unexpected exception message: {str(e)}"
+
+        # Test loading from an invalid file
+        invalid_file_path = 'invalid_file.yml'
+        with open(invalid_file_path, 'w') as f
+
+# Generated at 2024-05-31 17:51:23.246756
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    encrypted_file_path = 'encrypted_file.yml'
+
+    # Create a test file
+    with open(test_file_path, 'w') as f:
+        f.write('test content')
+
+    # Create an encrypted test file
+    with open(encrypted_file_path, 'w') as f:
+        f.write('$ANSIBLE_VAULT;1.1;AES256\n6162636465666768696a6b6c6d6e6f70')
+
+    # Test with a non-encrypted file
+    result = loader.get_real_file(test_file_path, decrypt=False)
+    assert result == test_file_path
+
+    # Test with an encrypted file
+    try:
+        loader.get_real_file(encrypted_file_path, decrypt=True)
+    except AnsibleParserError as e:
+        assert 'A vault password or secret must be specified' in str(e)
+
+    # Cleanup
+
+
+# Generated at 2024-05-31 17:51:26.569431
+```python
+    loader = DataLoader()
+    temp_file1 = loader._create_content_tempfile(b"temp content 1")
+    temp_file2 = loader._create_content_tempfile(b"temp content 2")
+    
+    assert temp_file1 in loader._tempfiles
+    assert temp_file2 in loader._tempfiles
+    
+    loader.cleanup_all_tmp_files()
+    
+    assert temp_file1 not in loader._tempfiles
+    assert temp_file2 not in loader._tempfiles
+    assert not os.path.exists(temp_file1)
+    assert not os.path.exists(temp_file2)
+```
+
+# Generated at 2024-05-31 17:51:30.765777
+```python
+    loader = DataLoader()
+
+    # Test case 1: Directory with vars files
+    path = '/tmp/test_vars'
+    name = 'vars'
+    extensions = ['.yml', '.yaml']
+    os.makedirs(os.path.join(path, name), exist_ok=True)
+    with open(os.path.join(path, name, 'main.yml'), 'w') as f:
+        f.write('test: value')
+    with open(os.path.join(path, name, 'main.yaml'), 'w') as f:
+        f.write('test: value')
+
+    result = loader.find_vars_files(path, name, extensions)
+    assert len(result) == 2
+    assert os.path.join(path, name, 'main.yml') in result
+    assert os.path.join(path, name, 'main.yaml') in result
+
+    # Test case 2: Directory without vars files
+    path = '/tmp/test_no_vars'
+    name = 'vars'
+    os.makedirs
+
+# Generated at 2024-05-31 17:51:34.947728
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'key: value'
+
+    # Create a temporary file with test content
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test loading from file
+        result = loader.load_from_file(test_file_path)
+        assert result == test_content, f"Expected '{test_content}', but got '{result}'"
+
+        # Test loading from non-existent file
+        try:
+            loader.load_from_file('non_existent_file.yml')
+            assert False, "Expected AnsibleFileNotFound exception"
+        except AnsibleFileNotFound:
+            pass
+
+        # Test loading from a directory
+        try:
+            loader.load_from_file('.')
+            assert False, "Expected AnsibleParserError exception"
+        except AnsibleParserError:
+            pass
+
+    finally:
+        # Clean up the temporary file
+        os.remove
+
+# Generated at 2024-05-31 17:51:38.785932
+```python
+    loader = DataLoader()
+
+    # Create a temporary directory structure
+    with tempfile.TemporaryDirectory() as tempdir:
+        os.makedirs(os.path.join(tempdir, 'vars'))
+        os.makedirs(os.path.join(tempdir, 'vars_dir'))
+        with open(os.path.join(tempdir, 'vars', 'main.yml'), 'w') as f:
+            f.write('---\nvar1: value1\n')
+        with open(os.path.join(tempdir, 'vars', 'main.yaml'), 'w') as f:
+            f.write('---\nvar2: value2\n')
+        with open(os.path.join(tempdir, 'vars_dir', 'main.yml'), 'w') as f:
+            f.write('---\nvar3: value3\n')
+
+        # Test finding vars files
+        found_files = loader.find_vars_files(tempdir, 'vars')
+        assert len(found_files) == 2
+        assert os.path.join(tempdir
+
+# Generated at 2024-05-31 17:51:45.031665
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.txt'
+    test_content = 'This is a test file.'
+
+    # Create a test file
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test with a non-encrypted file
+        result = loader.get_real_file(test_file_path, decrypt=False)
+        assert result == test_file_path, f"Expected {test_file_path}, got {result}"
+
+        # Test with an encrypted file (mocking the encryption check and decryption)
+        loader._vault = Mock()
+        loader._vault.secrets = ['dummy_secret']
+        loader._vault.decrypt = Mock(return_value=test_content)
+        with patch('builtins.open', mock_open(read_data=b'$ANSIBLE_VAULT;1.1;AES256\n')):
+            result = loader.get_real_file(test_file_path, decrypt=True)
+            assert os.path.exists(result), "
+
+# Generated at 2024-05-31 17:51:51.459282
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'key: value'
+
+    # Create a temporary file with test content
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test loading from file
+        result = loader.load_from_file(test_file_path)
+        assert result == test_content, f"Expected '{test_content}', but got '{result}'"
+
+        # Test loading from non-existent file
+        try:
+            loader.load_from_file('non_existent_file.yml')
+        except AnsibleFileNotFound as e:
+            assert str(e) == "AnsibleFileNotFound: non_existent_file.yml", f"Unexpected exception message: {str(e)}"
+
+        # Test loading from encrypted file
+        encrypted_content = "$ANSIBLE_VAULT;1.1;AES256\n61626364"
+        with open(test_file_path, '
+
+# Generated at 2024-05-31 17:51:56.678842
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'test: value'
+
+    # Create a temporary test file
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test with a valid file path
+        result = loader.get_real_file(test_file_path, decrypt=False)
+        assert result == test_file_path
+
+        # Test with a non-existent file path
+        try:
+            loader.get_real_file('non_existent_file.yml', decrypt=False)
+        except AnsibleFileNotFound:
+            pass
+        else:
+            assert False, "Expected AnsibleFileNotFound exception"
+
+        # Test with an invalid file path type
+        try:
+            loader.get_real_file(None, decrypt=False)
+        except AnsibleParserError:
+            pass
+        else:
+            assert False, "Expected AnsibleParserError exception"
+
+    finally:
+        # Clean up the
+
+# Generated at 2024-05-31 17:51:59.339889
+```python
+    loader = DataLoader()
+    temp_file = loader._create_content_tempfile(b"temporary content")
+    loader._tempfiles.add(temp_file)
+    
+    assert temp_file in loader._tempfiles
+    loader.cleanup_tmp_file(temp_file)
+    assert temp_file not in loader._tempfiles
+    assert not os.path.exists(temp_file)
+```
+
+# Generated at 2024-05-31 17:52:04.707820
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'key: value'
+
+    # Create a temporary file with test content
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test loading from file
+        result = loader.load_from_file(test_file_path)
+        assert result == test_content, f"Expected '{test_content}', but got '{result}'"
+
+        # Test loading from non-existent file
+        try:
+            loader.load_from_file('non_existent_file.yml')
+            assert False, "Expected AnsibleFileNotFound exception"
+        except AnsibleFileNotFound:
+            pass
+
+        # Test loading from a directory
+        try:
+            loader.load_from_file('.')
+            assert False, "Expected AnsibleFileNotFound exception"
+        except AnsibleFileNotFound:
+            pass
+
+    finally:
+        # Clean up the temporary file
+       
+
+# Generated at 2024-05-31 17:52:46.388752
+```python
+    loader = DataLoader()
+
+    # Test with a valid file path
+    valid_file_path = __file__  # This script file itself
+    assert loader.is_file(valid_file_path) == True
+
+    # Test with a directory path
+    directory_path = os.path.dirname(__file__)
+    assert loader.is_file(directory_path) == False
+
+    # Test with a non-existent file path
+    non_existent_file_path = os.path.join(directory_path, 'non_existent_file.txt')
+    assert loader.is_file(non_existent_file_path) == False
+
+    # Test with a valid file path in bytes
+    valid_file_path_bytes = to_bytes(valid_file_path)
+    assert loader.is_file(valid_file_path_bytes) == True
+
+    # Test with a directory path in bytes
+    directory_path_bytes = to_bytes(directory_path)
+    assert loader.is_file(directory_path_bytes) == False
+
+    # Test with a non-existent file path in bytes
+    non
+
+# Generated at 2024-05-31 17:52:48.130782
+```python
+    loader = DataLoader()
+    temp_file = loader._create_content_tempfile(b"test content")
+    loader._tempfiles.add(temp_file)
+
+    assert temp_file in loader._tempfiles
+    loader.cleanup_tmp_file(temp_file)
+    assert temp_file not in loader._tempfiles
+    assert not os.path.exists(temp_file)
+```
+
+# Generated at 2024-05-31 17:52:52.544079
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    encrypted_file_path = 'encrypted_file.yml'
+
+    # Create a test file
+    with open(test_file_path, 'w') as f:
+        f.write('test content')
+
+    # Create an encrypted test file
+    with open(encrypted_file_path, 'w') as f:
+        f.write('$ANSIBLE_VAULT;1.1;AES256\n')
+
+    # Test with a regular file
+    result = loader.get_real_file(test_file_path, decrypt=False)
+    assert result == test_file_path
+
+    # Test with an encrypted file without decryption
+    result = loader.get_real_file(encrypted_file_path, decrypt=False)
+    assert result == encrypted_file_path
+
+    # Test with an encrypted file with decryption (should raise an error due to missing vault password)
+    try:
+        loader.get_real_file(encrypted_file_path, decrypt=True)
+    except An
+
+# Generated at 2024-05-31 17:52:56.219292
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'key: value'
+
+    # Create a temporary file with test content
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test loading from file
+        result = loader.load_from_file(test_file_path)
+        assert result == {'key': 'value'}, f"Expected {{'key': 'value'}}, but got {result}"
+
+        # Test loading from non-existent file
+        try:
+            loader.load_from_file('non_existent_file.yml')
+        except AnsibleFileNotFound as e:
+            assert str(e) == "AnsibleFileNotFound: non_existent_file.yml", f"Unexpected exception message: {str(e)}"
+
+        # Test loading from an invalid file
+        invalid_file_path = 'invalid_file.yml'
+        with open(invalid_file_path, 'w') as f
+
+# Generated at 2024-05-31 17:52:59.698842
+```python
+    loader = DataLoader()
+
+    # Create a temporary directory structure
+    with tempfile.TemporaryDirectory() as tempdir:
+        os.makedirs(os.path.join(tempdir, 'vars'))
+        os.makedirs(os.path.join(tempdir, 'vars_dir'))
+        with open(os.path.join(tempdir, 'vars', 'main.yml'), 'w') as f:
+            f.write('---\nvar1: value1\n')
+        with open(os.path.join(tempdir, 'vars', 'main.yaml'), 'w') as f:
+            f.write('---\nvar2: value2\n')
+        with open(os.path.join(tempdir, 'vars_dir', 'main.yml'), 'w') as f:
+            f.write('---\nvar3: value3\n')
+
+        # Test finding vars files
+        found_files = loader.find_vars_files(tempdir, 'vars')
+        assert len(found_files) == 2
+        assert os.path.join(tempdir
+
+# Generated at 2024-05-31 17:53:03.165640
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'key: value'
+
+    # Create a temporary file with test content
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test loading from file
+        result = loader.load_from_file(test_file_path)
+        assert result == {'key': 'value'}, f"Expected {{'key': 'value'}}, but got {result}"
+
+        # Test loading from non-existent file
+        try:
+            loader.load_from_file('non_existent_file.yml')
+        except AnsibleFileNotFound as e:
+            assert str(e) == "AnsibleFileNotFound: non_existent_file.yml", f"Unexpected exception message: {str(e)}"
+
+        # Test loading from an invalid file
+        invalid_file_path = 'invalid_file.yml'
+        with open(invalid_file_path, 'w') as f
+
+# Generated at 2024-05-31 17:53:06.895747
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'test: value'
+
+    # Create a temporary test file
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test with a valid file path
+        result = loader.get_real_file(test_file_path)
+        assert result == test_file_path, f"Expected {test_file_path}, got {result}"
+
+        # Test with a non-existent file path
+        try:
+            loader.get_real_file('non_existent_file.yml')
+        except AnsibleFileNotFound:
+            pass
+        else:
+            assert False, "Expected AnsibleFileNotFound exception"
+
+        # Test with a vault encrypted file
+        encrypted_content = "$ANSIBLE_VAULT;1.1;AES256\n61626364"
+        encrypted_file_path = 'encrypted_file.yml'
+        with open(encrypted_file_path, '
+
+# Generated at 2024-05-31 17:53:08.418149
+```python
+    loader = DataLoader()
+    temp_file = loader._create_content_tempfile(b"temporary content")
+    loader._tempfiles.add(temp_file)
+    
+    assert temp_file in loader._tempfiles
+    loader.cleanup_tmp_file(temp_file)
+    assert temp_file not in loader._tempfiles
+    assert not os.path.exists(temp_file)
+```
+
+# Generated at 2024-05-31 17:53:10.471537
+```python
+    loader = DataLoader()
+    tmp_file1 = loader._create_content_tempfile(b"test content 1")
+    tmp_file2 = loader._create_content_tempfile(b"test content 2")
+    
+    assert os.path.exists(tmp_file1)
+    assert os.path.exists(tmp_file2)
+    
+    loader.cleanup_all_tmp_files()
+    
+    assert not os.path.exists(tmp_file1)
+    assert not os.path.exists(tmp_file2)
+    assert len(loader._tempfiles) == 0
+```
+
+# Generated at 2024-05-31 17:53:12.137664
+```python
+    loader = DataLoader()
+    temp_file = loader._create_content_tempfile(b"temporary content")
+    loader._tempfiles.add(temp_file)
+    
+    assert temp_file in loader._tempfiles
+    loader.cleanup_tmp_file(temp_file)
+    assert temp_file not in loader._tempfiles
+    assert not os.path.exists(temp_file)
+```
+
+# Generated at 2024-05-31 17:53:49.737335
+```python
+    loader = DataLoader()
+    temp_file = loader._create_content_tempfile(b"test content")
+    loader._tempfiles.add(temp_file)
+
+    assert temp_file in loader._tempfiles
+    loader.cleanup_tmp_file(temp_file)
+    assert temp_file not in loader._tempfiles
+    assert not os.path.exists(temp_file)
+```
+
+# Generated at 2024-05-31 17:53:54.569970
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'key: value'
+
+    # Create a temporary file with test content
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test loading from file
+        result = loader.load_from_file(test_file_path)
+        assert result == {'key': 'value'}, f"Expected {{'key': 'value'}}, but got {result}"
+
+        # Test loading from non-existent file
+        try:
+            loader.load_from_file('non_existent_file.yml')
+        except AnsibleFileNotFound as e:
+            assert str(e) == "AnsibleFileNotFound: non_existent_file.yml", f"Unexpected exception message: {str(e)}"
+
+        # Test loading from an invalid file
+        invalid_file_path = 'invalid_file.yml'
+        with open(invalid_file_path, 'w') as f
+
+# Generated at 2024-05-31 17:53:58.784333
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'key: value'
+
+    # Create a temporary file with test content
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test loading from file
+        result = loader.load_from_file(test_file_path)
+        assert result == test_content, f"Expected '{test_content}', but got '{result}'"
+
+        # Test loading from non-existent file
+        try:
+            loader.load_from_file('non_existent_file.yml')
+            assert False, "Expected AnsibleFileNotFound exception"
+        except AnsibleFileNotFound:
+            pass
+
+        # Test loading from encrypted file
+        encrypted_content = loader._vault.encrypt(test_content)
+        with open(test_file_path, 'wb') as f:
+            f.write(encrypted_content)
+
+        result = loader.load_from_file(test_file_path, decrypt=True)
+       
+
+# Generated at 2024-05-31 17:54:04.628742
+```python
+    loader = DataLoader()
+    paths = ['/path/to/dir1', '/path/to/dir2']
+    dirname = 'templates'
+    source = 'file.txt'
+    
+    # Mocking os.path.exists to control the test environment
+    with mock.patch('os.path.exists') as mock_exists:
+        mock_exists.side_effect = lambda x: x == '/path/to/dir1/templates/file.txt'
+        
+        result = loader.path_dwim_relative_stack(paths, dirname, source)
+        assert result == '/path/to/dir1/templates/file.txt', f"Expected '/path/to/dir1/templates/file.txt', got {result}"
+        
+        mock_exists.side_effect = lambda x: x == '/path/to/dir2/templates/file.txt'
+        
+        result = loader.path_dwim_relative_stack(paths, dirname, source)
+        assert result == '/path/to/dir2/templates/file.txt', f"Expected '/path/to/dir2/templates/file.txt', got
+
+# Generated at 2024-05-31 17:54:08.528202
+```python
+    loader = DataLoader()
+    paths = ['/path/to/role', '/path/to/playbook']
+    dirname = 'templates'
+    source = 'my_template.j2'
+    
+    # Mocking os.path.exists to control the test environment
+    with mock.patch('os.path.exists') as mock_exists:
+        mock_exists.side_effect = lambda x: x in [
+            '/path/to/role/templates/my_template.j2',
+            '/path/to/playbook/templates/my_template.j2'
+        ]
+        
+        result = loader.path_dwim_relative_stack(paths, dirname, source)
+        assert result == '/path/to/role/templates/my_template.j2'
+        
+        # Test with a non-existent file
+        mock_exists.side_effect = lambda x: False
+        with pytest.raises(AnsibleFileNotFound):
+            loader.path_dwim_relative_stack(paths, dirname, source)
+```
+
+# Generated at 2024-05-31 17:54:10.341934
+```python
+    loader = DataLoader()
+    # Create a temporary file to test
+    fd, temp_file = tempfile.mkstemp()
+    os.close(fd)
+    
+    # Test with an existing file
+    assert loader.is_file(temp_file) == True
+    
+    # Test with a non-existing file
+    assert loader.is_file(temp_file + "_nonexistent") == False
+    
+    # Clean up
+    os.remove(temp_file)
+```
+
+# Generated at 2024-05-31 17:54:12.593062
+```python
+    loader = DataLoader()
+    temp_file1 = loader._create_content_tempfile(b"temp content 1")
+    temp_file2 = loader._create_content_tempfile(b"temp content 2")
+    
+    assert temp_file1 in loader._tempfiles
+    assert temp_file2 in loader._tempfiles
+    
+    loader.cleanup_all_tmp_files()
+    
+    assert temp_file1 not in loader._tempfiles
+    assert temp_file2 not in loader._tempfiles
+    assert not os.path.exists(temp_file1)
+    assert not os.path.exists(temp_file2)
+```
+
+# Generated at 2024-05-31 17:54:15.152579
+```python
+    loader = DataLoader()
+    # Create a temporary file
+    fd, temp_file = tempfile.mkstemp()
+    os.close(fd)
+    
+    # Test with an existing file
+    assert loader.is_file(temp_file) == True
+    
+    # Test with a non-existing file
+    assert loader.is_file(temp_file + "_nonexistent") == False
+    
+    # Clean up
+    os.remove(temp_file)
+```
+
+# Generated at 2024-05-31 17:54:18.889630
+```python
+    loader = DataLoader()
+    test_file_path = 'test_file.yml'
+    test_content = 'test: value'
+
+    # Create a temporary test file
+    with open(test_file_path, 'w') as f:
+        f.write(test_content)
+
+    try:
+        # Test with a valid file path
+        result = loader.get_real_file(test_file_path, decrypt=False)
+        assert result == test_file_path
+
+        # Test with a non-existent file path
+        try:
+            loader.get_real_file('non_existent_file.yml', decrypt=False)
+        except AnsibleFileNotFound:
+            pass
+        else:
+            assert False, "Expected AnsibleFileNotFound exception"
+
+        # Test with an invalid file path type
+        try:
+            loader.get_real_file(None, decrypt=False)
+        except AnsibleParserError:
+            pass
+        else:
+            assert False, "Expected AnsibleParserError exception"
+
+    finally:
+        # Clean up the
+
+# Generated at 2024-05-31 17:54:22.608624
+```python
+    loader = DataLoader()
+
+    # Test case 1: Directory with vars files
+    with tempfile.TemporaryDirectory() as tempdir:
+        os.makedirs(os.path.join(tempdir, 'vars'))
+        with open(os.path.join(tempdir, 'vars', 'main.yml'), 'w') as f:
+            f.write('---\nvar1: value1\n')
+        with open(os.path.join(tempdir, 'vars', 'extra.yaml'), 'w') as f:
+            f.write('---\nvar2: value2\n')
+
+        result = loader.find_vars_files(tempdir, 'vars')
+        assert len(result) == 2
+        assert os.path.join(tempdir, 'vars', 'main.yml') in result
+        assert os.path.join(tempdir, 'vars', 'extra.yaml') in result
+
+    # Test case 2: Directory without vars files
+    with tempfile.TemporaryDirectory() as tempdir:
+        os.makedirs

@@ -1,0 +1,1244 @@
+
+
+# Generated at 2024-06-02 17:40:19.026321
+```python
+    chunks = [b'chunk1', b'chunk2', b'chunk3']
+    callback_called = []
+
+    def callback(chunk):
+        callback_called.append(chunk)
+
+    stream = ChunkedUploadStream(chunks, callback)
+    result = list(stream)
+
+    assert result == chunks
+    assert callback_called == chunks
+```
+
+# Generated at 2024-06-02 17:40:21.854355
+```python
+    def body_read_callback(chunk):
+        pass
+
+    # Test with a simple string body
+    body = "test body"
+    result = prepare_request_body(body, body_read_callback)
+    assert isinstance(result, str)
+    assert result == body
+
+    # Test with a file-like object
+    from io import BytesIO
+    body = BytesIO(b"file-like body")
+    result = prepare_request_body(body, body_read_callback)
+    assert hasattr(result, 'read')
+    assert result.read() == b"file-like body"
+
+    # Test with a RequestDataDict
+    body = RequestDataDict({"key": "value"})
+    result = prepare_request_body(body, body_read_callback)
+    assert isinstance(result, str)
+    assert result == "key=value"
+
+    # Test with chunked upload
+    body = "chunked body"
+    result = prepare_request_body(body, body_read_callback, chunked=True)
+    assert isinstance(result, Chunked
+
+# Generated at 2024-06-02 17:40:25.721216
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:40:28.851556
+```python
+    body = "test body"
+    callback = lambda x: x
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    assert list(result) == [b'test body']
+
+    body = b"test body"
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    assert list(result) == [b'test body']
+
+    body = {"key": "value"}
+    result = prepare_request_body(body, callback, chunked=False)
+    assert result == "key=value"
+
+    body = {"key": "value"}
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    assert list(result) == [b'key=value']
+
+    body = io.BytesIO(b"test body")
+    result = prepare_request_body(body, callback, chunked=False)
+   
+
+# Generated at 2024-06-02 17:40:30.551716
+```python
+    chunks = [b'chunk1', b'chunk2', b'chunk3']
+    callback_called = []
+
+    def callback(chunk):
+        callback_called.append(chunk)
+
+    stream = ChunkedUploadStream(chunks, callback)
+    result = list(stream)
+
+    assert result == chunks
+    assert callback_called == chunks
+```
+
+# Generated at 2024-06-02 17:40:33.669987
+```python
+    body = "test body"
+    callback = lambda x: x
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+
+    body = b"test body"
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+
+    body = {"key": "value"}
+    result = prepare_request_body(body, callback, offline=True)
+    assert result == "key=value"
+
+    body = {"key": "value"}
+    result = prepare_request_body(body, callback)
+    assert result == "key=value"
+
+    body = MultipartEncoder(fields={"key": "value"})
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedMultipartUploadStream)
+
+    body = MultipartEncoder(fields={"key": "value"})
+    result = prepare_request_body(body, callback)
+    assert result == body
+
+    import io
+
+
+# Generated at 2024-06-02 17:40:36.539808
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a' * 1000)
+
+    request = requests.Request('POST', 'http://example.com', data='short').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b
+
+# Generated at 2024-06-02 17:40:38.211369
+```python
+    fields = {'field1': 'value1', 'field2': 'value2'}
+    encoder = MultipartEncoder(fields=fields)
+    stream = ChunkedMultipartUploadStream(encoder=encoder)
+    chunks = list(stream)
+    assert all(isinstance(chunk, (str, bytes)) for chunk in chunks)
+    assert b'field1' in b''.join(chunks)
+    assert b'field2' in b''.join(chunks)
+```
+
+# Generated at 2024-06-02 17:40:39.476412
+```python
+    chunks = [b'chunk1', b'chunk2', b'chunk3']
+    callback_called = []
+
+    def callback(chunk):
+        callback_called.append(chunk)
+
+    stream = ChunkedUploadStream(chunks, callback)
+    result = list(stream)
+
+    assert result == chunks
+    assert callback_called == chunks
+```
+
+# Generated at 2024-06-02 17:40:42.350400
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:40:51.428998
+```python
+    def body_read_callback(chunk):
+        pass
+
+    # Test with a simple string body
+    body = "test body"
+    result = prepare_request_body(body, body_read_callback)
+    assert isinstance(result, str)
+    assert result == body
+
+    # Test with a file-like object
+    from io import BytesIO
+    body = BytesIO(b"file-like body")
+    result = prepare_request_body(body, body_read_callback)
+    assert hasattr(result, 'read')
+    assert result.read() == b"file-like body"
+
+    # Test with a RequestDataDict
+    body = RequestDataDict({"key": "value"})
+    result = prepare_request_body(body, body_read_callback)
+    assert isinstance(result, str)
+    assert result == "key=value"
+
+    # Test with chunked upload
+    body = "chunked body"
+    result = prepare_request_body(body, body_read_callback, chunked=True)
+    assert isinstance(result, Chunked
+
+# Generated at 2024-06-02 17:40:54.487055
+```python
+    body = "test body"
+    callback = lambda x: x
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+
+    body = b"test body"
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+
+    body = {"key": "value"}
+    result = prepare_request_body(body, callback, offline=True)
+    assert result == "key=value"
+
+    body = MultipartEncoder(fields={"field": "value"})
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedMultipartUploadStream)
+
+    body = MultipartEncoder(fields={"field": "value"})
+    result = prepare_request_body(body, callback)
+    assert result == body
+
+    body = open(__file__, 'rb')
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, Chunked
+
+# Generated at 2024-06-02 17:41:00.096204
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+
+    original_length = len('test data')
+    compressed_length = len(request.body)
+    assert compressed_length < original_length
+
+    # Test with always=True
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+
+    # Test with a body that is not economical to compress
+    large_data = 'a' * 1000
+    request = requests.Request('POST', 'http://example.com', data=large_data).prepare
+
+# Generated at 2024-06-02 17:41:05.423490
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+
+    original_length = len('test data')
+    compressed_length = len(request.body)
+    assert compressed_length < original_length
+
+    # Test with always=True
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+
+    # Test with a body that is not economical to compress
+    large_data = 'a' * 1000
+    request = requests.Request('POST', 'http://example.com', data=large_data).prepare
+
+# Generated at 2024-06-02 17:41:08.597630
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:41:10.396863
+```python
+    fields = {'field1': 'value1', 'field2': 'value2'}
+    encoder = MultipartEncoder(fields=fields)
+    stream = ChunkedMultipartUploadStream(encoder=encoder)
+    chunks = list(stream)
+    assert all(isinstance(chunk, bytes) for chunk in chunks)
+    assert b'field1' in b''.join(chunks)
+    assert b'field2' in b''.join(chunks)
+```
+
+# Generated at 2024-06-02 17:41:13.378796
+```python
+    def body_read_callback(chunk):
+        pass
+
+    # Test with a simple string body
+    body = "test body"
+    result = prepare_request_body(body, body_read_callback)
+    assert isinstance(result, str)
+    assert result == body
+
+    # Test with a file-like object
+    from io import BytesIO
+    body = BytesIO(b"file-like body")
+    result = prepare_request_body(body, body_read_callback)
+    assert hasattr(result, 'read')
+    assert result.read() == b"file-like body"
+
+    # Test with chunked upload
+    body = "chunked body"
+    result = prepare_request_body(body, body_read_callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    assert list(result) == [b"chunked body"]
+
+    # Test with MultipartEncoder
+    from requests_toolbelt import MultipartEncoder
+    fields = {'field': 'value'}
+    encoder = MultipartEncoder(fields=
+
+# Generated at 2024-06-02 17:41:16.805775
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+
+    original_length = len('test data')
+    compressed_length = len(request.body)
+    assert compressed_length < original_length
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length'
+
+# Generated at 2024-06-02 17:41:18.512141
+```python
+    data = {'field1': 'value1', 'field2': 'value2'}
+    boundary = 'testboundary'
+    content_type = 'multipart/form-data'
+
+    encoder, result_content_type = get_multipart_data_and_content_type(data, boundary, content_type)
+
+    assert isinstance(encoder, MultipartEncoder)
+    assert encoder.fields == data.items()
+    assert encoder.boundary == boundary
+    assert result_content_type == f'{content_type}; boundary={boundary}'
+```
+
+# Generated at 2024-06-02 17:41:21.875497
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:41:59.178957
+```python
+    fields = {'field1': 'value1', 'field2': 'value2'}
+    encoder = MultipartEncoder(fields=fields)
+    stream = ChunkedMultipartUploadStream(encoder=encoder)
+    chunks = list(stream)
+    assert all(isinstance(chunk, bytes) for chunk in chunks)
+    assert b'field1' in b''.join(chunks)
+    assert b'field2' in b''.join(chunks)
+```
+
+# Generated at 2024-06-02 17:42:02.066053
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:42:04.778044
+```python
+    body = "test body"
+    callback = lambda x: x
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    assert list(result) == [b'test body']
+
+    body = b"test body"
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    assert list(result) == [b'test body']
+
+    body = RequestDataDict({"key": "value"})
+    result = prepare_request_body(body, callback, chunked=False)
+    assert result == "key=value"
+
+    body = RequestDataDict({"key": "value"})
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    assert list(result) == [b'key=value']
+
+    body = MultipartEncoder(fields={"key": "value"})
+    result = prepare_request_body(body,
+
+# Generated at 2024-06-02 17:42:08.405156
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:42:11.548242
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:42:14.500857
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+
+    original_length = len('test data')
+    compressed_length = len(request.body)
+    assert compressed_length < original_length
+
+    # Test with always=True
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+
+    # Test with a body that is not economical to compress
+    large_data = 'a' * 1000
+    request = requests.Request('POST', 'http://example.com', data=large_data).prepare
+
+# Generated at 2024-06-02 17:42:17.999065
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:42:19.553620
+```python
+    fields = {'field1': 'value1', 'field2': 'value2'}
+    encoder = MultipartEncoder(fields=fields)
+    stream = ChunkedMultipartUploadStream(encoder=encoder)
+    chunks = list(stream)
+    assert all(isinstance(chunk, bytes) for chunk in chunks)
+    assert b'field1' in b''.join(chunks)
+    assert b'field2' in b''.join(chunks)
+```
+
+# Generated at 2024-06-02 17:42:22.310644
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    original_length = len(request.body)
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert len(request.body) < original_length
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == z
+
+# Generated at 2024-06-02 17:42:24.809560
+```python
+    body = "test body"
+    callback = lambda x: x
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+
+    body = b"test body"
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+
+    body = {"key": "value"}
+    result = prepare_request_body(body, callback, offline=True)
+    assert result == "key=value"
+
+    body = MultipartEncoder(fields={"field": "value"})
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedMultipartUploadStream)
+
+    body = io.BytesIO(b"test body")
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+
+    body = io.BytesIO(b"test body")
+    result = prepare_request_body(body, callback)
+    assert hasattr
+
+# Generated at 2024-06-02 17:43:03.556455
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:43:07.577344
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a' * 1000)
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress
+
+# Generated at 2024-06-02 17:43:10.328277
+```python
+    def body_read_callback(chunk):
+        pass
+
+    # Test with a simple string body
+    body = "test body"
+    result = prepare_request_body(body, body_read_callback)
+    assert isinstance(result, str)
+    assert result == body
+
+    # Test with a file-like object
+    from io import BytesIO
+    body = BytesIO(b"test body")
+    result = prepare_request_body(body, body_read_callback)
+    assert hasattr(result, 'read')
+    assert result.read() == b"test body"
+
+    # Test with chunked upload
+    body = "test body"
+    result = prepare_request_body(body, body_read_callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    assert list(result) == [b"test body"]
+
+    # Test with MultipartEncoder
+    fields = {'field': 'value'}
+    encoder = MultipartEncoder(fields=fields)
+    result = prepare_request_body(encoder, body_read
+
+# Generated at 2024-06-02 17:43:13.293507
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:43:16.190476
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:43:17.407962
+```python
+    chunks = [b'chunk1', b'chunk2', b'chunk3']
+    callback_called = []
+
+    def callback(chunk):
+        callback_called.append(chunk)
+
+    stream = ChunkedUploadStream(chunks, callback)
+    result = list(stream)
+
+    assert result == chunks
+    assert callback_called == chunks
+```
+
+# Generated at 2024-06-02 17:43:20.944132
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:43:24.649198
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:43:25.913094
+```python
+    chunks = [b'chunk1', b'chunk2', b'chunk3']
+    callback_called = []
+
+    def callback(chunk):
+        callback_called.append(chunk)
+
+    stream = ChunkedUploadStream(chunks, callback)
+    result = list(stream)
+
+    assert result == chunks
+    assert callback_called == chunks
+```
+
+# Generated at 2024-06-02 17:43:29.287993
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:44:37.967284
+```python
+    def body_read_callback(chunk):
+        pass
+
+    # Test with a simple string body
+    body = "test body"
+    result = prepare_request_body(body, body_read_callback)
+    assert isinstance(result, str)
+    assert result == body
+
+    # Test with a bytes body
+    body = b"test body"
+    result = prepare_request_body(body, body_read_callback)
+    assert isinstance(result, bytes)
+    assert result == body
+
+    # Test with a file-like object
+    import io
+    body = io.BytesIO(b"test body")
+    result = prepare_request_body(body, body_read_callback)
+    assert hasattr(result, 'read')
+    assert result.read() == b"test body"
+
+    # Test with a RequestDataDict
+    body = RequestDataDict({"key": "value"})
+    result = prepare_request_body(body, body_read_callback)
+    assert isinstance(result, str)
+    assert result == "key=value"
+
+    #
+
+# Generated at 2024-06-02 17:44:41.053158
+```python
+    def body_read_callback(chunk):
+        pass
+
+    # Test with a simple string body
+    body = "test body"
+    result = prepare_request_body(body, body_read_callback)
+    assert isinstance(result, str)
+    assert result == body
+
+    # Test with a file-like object
+    from io import BytesIO
+    body = BytesIO(b"file-like body")
+    result = prepare_request_body(body, body_read_callback)
+    assert hasattr(result, 'read')
+    assert result.read() == b"file-like body"
+
+    # Test with a RequestDataDict
+    body = RequestDataDict({"key": "value"})
+    result = prepare_request_body(body, body_read_callback)
+    assert isinstance(result, str)
+    assert result == "key=value"
+
+    # Test with chunked upload
+    body = "chunked body"
+    result = prepare_request_body(body, body_read_callback, chunked=True)
+    assert isinstance(result, Chunked
+
+# Generated at 2024-06-02 17:44:46.469400
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+
+    original_length = len('test data')
+    compressed_length = len(request.body)
+    assert compressed_length < original_length
+
+    # Test with always=True
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+
+    # Test with a body that is not economical to compress
+    large_data = 'a' * 1000
+    request = requests.Request('POST', 'http://example.com', data=large_data).prepare
+
+# Generated at 2024-06-02 17:44:48.101150
+```python
+    chunks = [b'chunk1', b'chunk2', b'chunk3']
+    callback_called = []
+
+    def callback(chunk):
+        callback_called.append(chunk)
+
+    stream = ChunkedUploadStream(chunks, callback)
+    result = list(stream)
+
+    assert result == chunks
+    assert callback_called == chunks
+```
+
+# Generated at 2024-06-02 17:44:50.927463
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:44:52.547397
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+    assert isinstance(request.body, bytes)
+```
+
+# Generated at 2024-06-02 17:44:56.209326
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    original_length = len(request.body)
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert len(request.body) < original_length
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == z
+
+# Generated at 2024-06-02 17:44:59.122962
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:45:00.362492
+```python
+    chunks = [b'chunk1', b'chunk2', b'chunk3']
+    callback_called = []
+
+    def callback(chunk):
+        callback_called.append(chunk)
+
+    stream = ChunkedUploadStream(chunks, callback)
+    result = list(stream)
+
+    assert result == chunks
+    assert callback_called == chunks
+```
+
+# Generated at 2024-06-02 17:45:03.284631
+```python
+    def body_read_callback(chunk):
+        pass
+
+    # Test with a simple string body
+    body = "test body"
+    result = prepare_request_body(body, body_read_callback)
+    assert isinstance(result, str)
+    assert result == body
+
+    # Test with a file-like object
+    from io import BytesIO
+    body = BytesIO(b"file-like body")
+    result = prepare_request_body(body, body_read_callback)
+    assert hasattr(result, 'read')
+    assert result.read() == b"file-like body"
+
+    # Test with a RequestDataDict
+    body = RequestDataDict({"key": "value"})
+    result = prepare_request_body(body, body_read_callback)
+    assert isinstance(result, str)
+    assert result == "key=value"
+
+    # Test with chunked upload
+    body = "chunked body"
+    result = prepare_request_body(body, body_read_callback, chunked=True)
+    assert isinstance(result, Chunked
+
+# Generated at 2024-06-02 17:47:16.057220
+```python
+    chunks = [b'chunk1', b'chunk2', b'chunk3']
+    callback_called = []
+
+    def callback(chunk):
+        callback_called.append(chunk)
+
+    stream = ChunkedUploadStream(chunks, callback)
+    result = list(stream)
+
+    assert result == chunks
+    assert callback_called == chunks
+```
+
+# Generated at 2024-06-02 17:47:19.024413
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+
+    original_length = len('test data')
+    compressed_length = len(request.body)
+    assert compressed_length < original_length
+
+    # Test with always=True
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+
+    # Test with a body that is not economical to compress
+    large_data = 'a' * 1000
+    request = requests.Request('POST', 'http://example.com', data=large_data).prepare
+
+# Generated at 2024-06-02 17:47:22.222130
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:47:26.076823
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:47:28.903183
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+
+    original_length = len('test data')
+    compressed_length = len(request.body)
+    assert compressed_length < original_length
+
+    # Test with always=True
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+
+    # Test with a body that is not economical to compress
+    large_data = 'a' * 1000
+    request = requests.Request('POST', 'http://example.com', data=large_data).prepare
+
+# Generated at 2024-06-02 17:47:31.215900
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body is not None
+    assert isinstance(request.body, bytes)
+```
+
+# Generated at 2024-06-02 17:47:34.700414
+```python
+    body = "test body"
+    callback = lambda x: x
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+
+    body = b"test body"
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+
+    body = {"key": "value"}
+    result = prepare_request_body(body, callback, offline=True)
+    assert result == "key=value"
+
+    body = MultipartEncoder(fields={"field": "value"})
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedMultipartUploadStream)
+
+    body = MultipartEncoder(fields={"field": "value"})
+    result = prepare_request_body(body, callback)
+    assert result == body
+
+    body = b"test body"
+    result = prepare_request_body(body, callback)
+    assert result == body
+
+    import io
+    body =
+
+# Generated at 2024-06-02 17:47:37.589278
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='short').prepare()
+    compress_request(request, always=False)
+    assert 'Content-Encoding' not in request.headers
+
+    request = requests.Request('POST', 'http://example.com', data='short').prepare()
+    compress_request(request, always=True)
+
+
+# Generated at 2024-06-02 17:47:41.041909
+```python
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='test data').prepare()
+    compress_request(request, always=True)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'test data')
+
+    request = requests.Request('POST', 'http://example.com', data='a' * 1000).prepare()
+    compress_request(request, always=False)
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert request.body == zlib.compress(b'a'
+
+# Generated at 2024-06-02 17:47:44.373895
+```python
+    def body_read_callback(chunk):
+        pass
+
+    # Test with a simple string body
+    body = "test body"
+    result = prepare_request_body(body, body_read_callback)
+    assert isinstance(result, str)
+    assert result == body
+
+    # Test with a file-like object
+    from io import BytesIO
+    body = BytesIO(b"file-like body")
+    result = prepare_request_body(body, body_read_callback)
+    assert hasattr(result, 'read')
+    assert result.read() == b"file-like body"
+
+    # Test with a RequestDataDict
+    body = RequestDataDict({"key": "value"})
+    result = prepare_request_body(body, body_read_callback)
+    assert isinstance(result, str)
+    assert result == "key=value"
+
+    # Test with chunked upload
+    body = "chunked body"
+    result = prepare_request_body(body, body_read_callback, chunked=True)
+    assert isinstance(result, Chunked

@@ -1,0 +1,1449 @@
+
+
+# Generated at 2024-03-18 08:52:12.302043
+```python
+    # Test empty content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('')
+    assert exc_info.value.text == "No content."
+    assert exc_info.value.code == "no_content"
+    assert exc_info.value.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test invalid YAML content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('invalid: yaml: here')
+    assert "could not find expected ':'" in exc_info.value.text
+    assert exc_info.value.code == "parse_error"
+
+    # Test valid YAML scalar
+    token = tokenize_yaml('hello')
+    assert isinstance(token, ScalarToken)
+    assert token.value == 'hello'
+
+    # Test valid YAML sequence
+    token = tokenize_yaml('- one\n- two\n- three')
+    assert isinstance(token, ListToken)
+    assert token.value == ['one', 'two', 'three']
+
+    # Test
+
+# Generated at 2024-03-18 08:52:21.696835
+```python
+    # Test empty content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('')
+    assert exc_info.value.text == "No content."
+    assert exc_info.value.code == "no_content"
+    assert exc_info.value.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test invalid YAML content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('invalid: yaml: here')
+    assert "could not find expected ':'" in exc_info.value.text
+    assert exc_info.value.code == "parse_error"
+    assert exc_info.value.position.line_no > 0
+    assert exc_info.value.position.column_no > 0
+
+    # Test valid YAML content
+    result = tokenize_yaml('key: value\nlist:\n  - item1\n  - item2')
+    assert isinstance(result, DictToken)
+    assert result.value['key'] == 'value'
+    assert isinstance(result
+
+# Generated at 2024-03-18 08:52:29.503331
+```python
+    # Test empty content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('')
+    assert exc_info.value.text == "No content."
+    assert exc_info.value.code == "no_content"
+    assert exc_info.value.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test invalid YAML content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('invalid: yaml: here')
+    assert "could not find expected ':'" in exc_info.value.text
+    assert exc_info.value.code == "parse_error"
+
+    # Test valid YAML scalar
+    token = tokenize_yaml('hello')
+    assert isinstance(token, ScalarToken)
+    assert token.value == 'hello'
+
+    # Test valid YAML sequence
+    token = tokenize_yaml('- one\n- two\n- three')
+    assert isinstance(token, ListToken)
+    assert token.value == ['one', 'two', 'three']
+
+    # Test
+
+# Generated at 2024-03-18 08:52:38.740819
+```python
+    # Test with valid YAML content
+    yaml_content = "key: value\nlist:\n  - item1\n  - item2"
+    token = tokenize_yaml(yaml_content)
+    assert isinstance(token, DictToken)
+    assert token.value == {"key": "value", "list": ["item1", "item2"]}
+
+    # Test with empty YAML content
+    empty_yaml_content = ""
+    try:
+        tokenize_yaml(empty_yaml_content)
+        assert False, "Expected a ParseError due to empty content"
+    except ParseError as exc:
+        assert exc.text == "No content."
+        assert exc.code == "no_content"
+        assert exc.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test with invalid YAML content
+    invalid_yaml_content = "key: value\n  - item1\n  - item2"
+    try:
+        tokenize_yaml(invalid_yaml_content)
+        assert False,
+
+# Generated at 2024-03-18 08:52:45.298696
+```python
+    # Define a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (age is below minimum)
+    invalid_yaml_age = "name: John Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml_age, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+
+    # Test with invalid
+
+# Generated at 2024-03-18 08:52:51.771022
+```python
+    # Define a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(str, max_length=10)
+        age = Field(int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (exceeds max_length for 'name')
+    invalid_yaml_name = "name: Johnathan Doe\nage: 30"
+    value, error_messages = validate_yaml(invalid_yaml_name, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must have no more than 10 characters.'
+    assert error_messages[0].code == 'max_length'
+
+    #
+
+# Generated at 2024-03-18 08:52:57.709505
+```python
+    # Test with valid YAML content
+    yaml_content = "key: value\nlist:\n  - item1\n  - item2"
+    token = tokenize_yaml(yaml_content)
+    assert isinstance(token, DictToken)
+    assert token.value == {'key': 'value', 'list': ['item1', 'item2']}
+
+    # Test with empty YAML content
+    empty_yaml_content = ""
+    try:
+        tokenize_yaml(empty_yaml_content)
+        assert False, "Expected a ParseError due to empty content"
+    except ParseError as exc:
+        assert exc.text == "No content."
+        assert exc.code == "no_content"
+        assert exc.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test with invalid YAML content
+    invalid_yaml_content = "key: value\n  - item1\n  - item2"
+    try:
+        tokenize_yaml(invalid_yaml_content)
+        assert False,
+
+# Generated at 2024-03-18 08:53:05.020596
+    # Test empty content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('')
+    assert exc_info.value.text == "No content."
+    assert exc_info.value.code == "no_content"
+    assert exc_info.value.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test valid YAML content
+    yaml_content = """
+    key: value
+    list:
+      - item1
+      - item2
+    """
+    token = tokenize_yaml(yaml_content)
+    assert isinstance(token, DictToken)
+    assert token.value == {
+        'key': 'value',
+        'list': ['item1', 'item2']
+    }
+
+    # Test invalid YAML content
+    invalid_yaml_content = """
+    key: value
+    list
+      - item1
+      - item2
+    """
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml(invalid_yaml_content)
+    assert "could not find
+
+# Generated at 2024-03-18 08:53:13.670047
+```python
+    # Assume we have a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is below minimum)
+    invalid_yaml_age = "name: John Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml_age, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+
+    # Invalid YAML content (name
+
+# Generated at 2024-03-18 08:53:19.657818
+    # Test empty content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('')
+    assert exc_info.value.text == "No content."
+    assert exc_info.value.code == "no_content"
+    assert exc_info.value.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test valid YAML content
+    yaml_content = "key: value\nlist:\n  - item1\n  - item2"
+    token = tokenize_yaml(yaml_content)
+    assert isinstance(token, DictToken)
+    assert token.content == yaml_content
+    assert token.start == 0
+    assert token.end == len(yaml_content) - 1
+
+    # Test invalid YAML content
+    invalid_yaml_content = "key: value\nlist:\n  - item1\n    - item2: ["
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml(invalid_yaml_content)
+    assert "could not find expected
+
+# Generated at 2024-03-18 08:53:40.605594
+```python
+    # Define a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(str, max_length=10)
+        age = Field(int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (exceeds max_length for 'name')
+    invalid_yaml_name = "name: Johnathan Doe\nage: 30"
+    value, error_messages = validate_yaml(invalid_yaml_name, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must have no more than 10 characters.'
+    assert error_messages[0].code == 'max_length'
+
+    #
+
+# Generated at 2024-03-18 08:53:53.362644
+```python
+    class ExampleSchema(Schema):
+        field = Field()
+
+    # Test with valid YAML content
+    valid_yaml = "field: valid"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {"field": "valid"}
+    assert error_messages == []
+
+    # Test with invalid YAML content (parse error)
+    invalid_yaml = "field: : invalid"
+    try:
+        value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    except ParseError as exc:
+        assert exc.text.startswith("could not find expected ':'")
+        assert exc.code == "parse_error"
+    else:
+        assert False, "Expected a ParseError"
+
+    # Test with invalid YAML content (validation error)
+    invalid_yaml = "field: 123"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert isinstance(error_messages[
+
+# Generated at 2024-03-18 08:54:01.110767
+```python
+    # Assume we have a simple schema for testing
+    class ExampleSchema(Schema):
+        name = fields.String(max_length=100)
+        age = fields.Integer(allow_null=True)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is a string, should be an integer or null)
+    invalid_yaml = "name: Jane Doe\nage: 'thirty'"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be a number.'
+    assert error_messages[0].code == 'type'
+    assert error_messages[0].index ==
+
+# Generated at 2024-03-18 08:54:07.088274
+```python
+    # Test with valid YAML content
+    content = "key: value\nlist:\n  - item1\n  - item2"
+    token = tokenize_yaml(content)
+    assert isinstance(token, DictToken)
+    assert token.value == {"key": "value", "list": ["item1", "item2"]}
+
+    # Test with empty content
+    empty_content = ""
+    try:
+        tokenize_yaml(empty_content)
+        assert False, "Expected a ParseError due to empty content"
+    except ParseError as exc:
+        assert exc.text == "No content."
+        assert exc.code == "no_content"
+        assert exc.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test with invalid YAML content
+    invalid_content = "key: value\n  - item1\n  - item2"
+    try:
+        tokenize_yaml(invalid_content)
+        assert False, "Expected a ParseError due to invalid
+
+# Generated at 2024-03-18 08:54:15.657683
+    # Test empty content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('')
+    assert exc_info.value.text == "No content."
+    assert exc_info.value.code == "no_content"
+    assert exc_info.value.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test valid YAML content
+    yaml_content = "key: value\nlist:\n  - item1\n  - item2"
+    token = tokenize_yaml(yaml_content)
+    assert isinstance(token, DictToken)
+    assert token.content == yaml_content
+    assert token.start == 0
+    assert token.end == len(yaml_content) - 1
+
+    # Test invalid YAML content
+    invalid_yaml_content = "key: value\nlist:\n  - item1\n    - item2: ["
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml(invalid_yaml_content)
+    assert "could not find expected
+
+# Generated at 2024-03-18 08:54:23.628985
+```python
+    # Define a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(str, max_length=10)
+        age = Field(int, minimum=0)
+
+    # Test valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test invalid YAML content (parse error)
+    invalid_yaml_parse_error = "name: John Doe\nage: !!"
+    try:
+        value, error_messages = validate_yaml(invalid_yaml_parse_error, ExampleSchema)
+    except ParseError as exc:
+        assert exc.text.startswith('could not determine a constructor for the tag')
+        assert exc.position.line_no == 2
+        assert exc.position.column_no == 6
+
+    # Test invalid YAML content (validation error)
+    invalid_yaml
+
+# Generated at 2024-03-18 08:54:32.485042
+    # Test empty content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('')
+    assert exc_info.value.text == "No content."
+    assert exc_info.value.code == "no_content"
+    assert exc_info.value.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test valid YAML content
+    yaml_content = """
+    key: value
+    list:
+      - item1
+      - item2
+    """
+    token = tokenize_yaml(yaml_content)
+    assert isinstance(token, DictToken)
+    assert token.value['key'] == 'value'
+    assert isinstance(token.value['list'], ListToken)
+    assert token.value['list'].value == ['item1', 'item2']
+
+    # Test invalid YAML content
+    invalid_yaml_content = "key: value: oops"
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml(invalid_yaml_content)
+    assert "could not find expected
+
+# Generated at 2024-03-18 08:54:41.214931
+    # Test empty content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('')
+    assert exc_info.value.text == "No content."
+    assert exc_info.value.code == "no_content"
+    assert exc_info.value.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test valid YAML content
+    yaml_content = """
+    key: value
+    list:
+      - item1
+      - item2
+    """
+    token = tokenize_yaml(yaml_content)
+    assert isinstance(token, DictToken)
+    assert token.value['key'] == 'value'
+    assert isinstance(token.value['list'], ListToken)
+    assert token.value['list'].value == ['item1', 'item2']
+
+    # Test invalid YAML content
+    invalid_yaml_content = "key: value: oops"
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml(invalid_yaml_content)
+    assert "could not find expected
+
+# Generated at 2024-03-18 08:54:47.966563
+```python
+    # Setup a simple schema and validator
+    class ExampleSchema(Schema):
+        field = Field()
+
+    validator = ExampleSchema()
+
+    # Test valid YAML content
+    valid_yaml = "field: valid_value"
+    value, error_messages = validate_yaml(valid_yaml, validator)
+    assert value == {"field": "valid_value"}
+    assert error_messages == []
+
+    # Test invalid YAML content (parse error)
+    invalid_yaml = "field @invalid_value"
+    try:
+        value, error_messages = validate_yaml(invalid_yaml, validator)
+    except ParseError as exc:
+        assert exc.text.startswith("while scanning for the next token")
+        assert exc.code == "parse_error"
+    else:
+        assert False, "Expected a ParseError"
+
+    # Test invalid YAML content (validation error)
+    invalid_yaml = "field: 123"
+    value, error_messages = validate_yaml(invalid_yaml, validator)
+    assert value is None
+    assert len(error
+
+# Generated at 2024-03-18 08:54:56.886081
+```python
+    # Test empty content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('')
+    assert exc_info.value.text == "No content."
+    assert exc_info.value.code == "no_content"
+    assert exc_info.value.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test invalid YAML content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('invalid: yaml: here')
+    assert "could not find expected ':'" in exc_info.value.text
+    assert exc_info.value.code == "parse_error"
+    assert exc_info.value.position.line_no > 0
+    assert exc_info.value.position.column_no > 0
+
+    # Test valid YAML scalar
+    token = tokenize_yaml('simple: scalar')
+    assert isinstance(token, DictToken)
+    assert token.value == {'simple': 'scalar'}
+
+    # Test valid YAML sequence
+    token = tokenize_yaml('- item1\n-
+
+# Generated at 2024-03-18 08:55:16.952787
+```python
+    # Assume we have a simple schema and field for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is below minimum)
+    invalid_yaml_age = "name: John Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml_age, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+    assert error_messages[
+
+# Generated at 2024-03-18 08:55:29.800050
+```python
+    # Define a simple schema and field for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (exceeds max_length for 'name')
+    invalid_yaml_name = "name: Johnathan Doe\nage: 30"
+    value, error_messages = validate_yaml(invalid_yaml_name, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == "Must have no more than 10 characters."
+    assert error_messages[0].code == "max
+
+# Generated at 2024-03-18 08:55:37.345154
+```python
+    # Define a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (age is below minimum)
+    invalid_yaml_age = "name: Jane Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml_age, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+    assert error_messages[
+
+# Generated at 2024-03-18 08:55:45.660942
+```python
+    # Assume we have a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is below minimum)
+    invalid_yaml = "name: John Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+
+    # Invalid YAML content (name is too
+
+# Generated at 2024-03-18 08:55:54.086052
+```python
+    # Assume we have a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is below minimum)
+    invalid_yaml = "name: John Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+
+    # Invalid YAML content (name is too
+
+# Generated at 2024-03-18 08:56:02.328846
+```python
+    # Test empty content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('')
+    assert exc_info.value.text == "No content."
+    assert exc_info.value.code == "no_content"
+    assert exc_info.value.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test valid YAML content
+    yaml_content = "key: value\nlist:\n  - item1\n  - item2"
+    token = tokenize_yaml(yaml_content)
+    assert isinstance(token, DictToken)
+    assert token.value == {'key': 'value', 'list': ['item1', 'item2']}
+    assert token.start == 0
+    assert token.end == len(yaml_content) - 1
+
+    # Test invalid YAML content
+    invalid_yaml_content = "key: value\nlist:\n  - item1\n    - item2: ["
+    with pytest.raises(ParseError) as exc
+
+# Generated at 2024-03-18 08:56:10.183394
+```python
+    # Define a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (age is below minimum)
+    invalid_yaml = "name: John Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+    assert error_messages[0].
+
+# Generated at 2024-03-18 08:56:18.099508
+```python
+    # Assume we have a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(str, max_length=10)
+        age = Field(int, minimum=0)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is below minimum)
+    invalid_yaml_age = "name: John Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml_age, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+
+    # Invalid YAML content (name is too
+
+# Generated at 2024-03-18 08:56:25.098609
+```python
+    # Assume we have a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is below minimum)
+    invalid_yaml = "name: John Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+
+    # Invalid YAML content (name is too
+
+# Generated at 2024-03-18 08:56:30.894713
+```python
+    # Define a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (age is below minimum)
+    invalid_yaml_age = "name: John Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml_age, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+
+    # Test with invalid
+
+# Generated at 2024-03-18 08:56:43.525254
+```python
+    class ExampleSchema(Schema):
+        field = Field()
+
+    # Test with valid YAML content
+    valid_yaml = "field: valid"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {"field": "valid"}
+    assert error_messages == []
+
+    # Test with invalid YAML content (parse error)
+    invalid_yaml = "field @invalid"
+    try:
+        value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    except ParseError as exc:
+        assert exc.text.startswith("while scanning for the next token")
+        assert exc.code == "parse_error"
+    else:
+        assert False, "Expected a ParseError"
+
+    # Test with invalid YAML content (validation error)
+    invalid_yaml = "field: 123"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert isinstance(error_messages[
+
+# Generated at 2024-03-18 08:56:51.679254
+```python
+    # Define a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (exceeding max_length for 'name')
+    invalid_yaml_name = "name: Johnathan Doe\nage: 30"
+    value, error_messages = validate_yaml(invalid_yaml_name, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == "Must have no more than 10 characters."
+    assert error_messages[0].code == "max_length"
+
+
+
+# Generated at 2024-03-18 08:57:00.121982
+```python
+    # Assume we have a simple schema for testing
+    class ExampleSchema(Schema):
+        name = fields.String(max_length=10)
+        age = fields.Integer(allow_null=True)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (name too long)
+    invalid_yaml_name = "name: Johnathan Doe\nage: 30"
+    value, error_messages = validate_yaml(invalid_yaml_name, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must have no more than 10 characters.'
+    assert error_messages[0].code == 'max_length'
+
+    # Invalid YAML content (age is not an
+
+# Generated at 2024-03-18 08:57:10.754339
+```python
+    # Assuming the following schema for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is below minimum)
+    invalid_yaml_age = "name: John Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml_age, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+
+    # Invalid YAML content (name is too
+
+# Generated at 2024-03-18 08:57:17.108308
+```python
+    # Define a simple schema and field for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (exceeds max_length for 'name')
+    invalid_yaml_name = "name: Johnathan Doe\nage: 30"
+    value, error_messages = validate_yaml(invalid_yaml_name, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == "Must have no more than 10 characters."
+    assert error_messages[0].code == "max
+
+# Generated at 2024-03-18 08:57:23.580645
+```python
+    # Define a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(str, max_length=10)
+        age = Field(int, minimum=0)
+
+    # Test valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test invalid YAML content (parse error)
+    invalid_yaml_parse = "name: John Doe\nage: !!30"
+    try:
+        value, error_messages = validate_yaml(invalid_yaml_parse, ExampleSchema)
+    except ParseError as exc:
+        assert exc.text.startswith("could not determine a constructor for the tag")
+        assert exc.position.line_no == 2
+        assert exc.position.column_no == 6
+
+    # Test invalid YAML content (validation error)
+    invalid_yaml_validation
+
+# Generated at 2024-03-18 08:57:35.605848
+```python
+    # Define a simple schema and field for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (exceeds max_length for 'name')
+    invalid_yaml_name = "name: Johnathan Doe\nage: 30"
+    value, error_messages = validate_yaml(invalid_yaml_name, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must have no more than 10 characters.'
+    assert error_messages[0].code == 'max
+
+# Generated at 2024-03-18 08:57:41.292445
+```python
+    # Define a simple schema and field for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (exceeds max_length for 'name')
+    invalid_yaml_name = "name: Johnathan Doe\nage: 30"
+    value, error_messages = validate_yaml(invalid_yaml_name, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == "Must have no more than 10 characters."
+    assert error_messages[0].code == "max
+
+# Generated at 2024-03-18 08:57:48.325079
+```python
+    # Assume we have a simple schema for testing
+    class ExampleSchema(Schema):
+        name = fields.String(max_length=100)
+        age = fields.Integer(allow_null=True)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is a string, should be an integer or null)
+    invalid_yaml = "name: Jane Doe\nage: thirty"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == "Must be a number."
+    assert error_messages[0].code == "type"
+
+    # YAML content with a parse error
+    invalid
+
+# Generated at 2024-03-18 08:57:56.654925
+```python
+    # Assume we have a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is below minimum)
+    invalid_yaml = "name: John Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+
+    # Invalid YAML content (name is too
+
+# Generated at 2024-03-18 08:58:09.386750
+```python
+    # Define a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(str, max_length=10)
+        age = Field(int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (exceeds max_length for 'name')
+    invalid_yaml_name = "name: Johnathan Doe\nage: 30"
+    value, error_messages = validate_yaml(invalid_yaml_name, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == "Must have no more than 10 characters."
+    assert error_messages[0].code == "max_length"
+
+    #
+
+# Generated at 2024-03-18 08:58:16.070377
+```python
+    # Test empty content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('')
+    assert exc_info.value.text == "No content."
+    assert exc_info.value.code == "no_content"
+    assert exc_info.value.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test valid YAML content
+    yaml_content = "key: value\nlist:\n  - item1\n  - item2"
+    token = tokenize_yaml(yaml_content)
+    assert isinstance(token, DictToken)
+    assert token.value == {'key': 'value', 'list': ['item1', 'item2']}
+    assert token.start == 0
+    assert token.end == len(yaml_content) - 1
+
+    # Test invalid YAML content
+    invalid_yaml_content = "key: value\nlist:\n  - item1\n    - item2"
+    with pytest.raises(ParseError) as exc_info:
+
+
+# Generated at 2024-03-18 08:58:23.230212
+```python
+    # Define a simple schema and field for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (exceeds max_length for 'name')
+    invalid_yaml_name = "name: Johnathan Doe\nage: 30"
+    value, error_messages = validate_yaml(invalid_yaml_name, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must have no more than 10 characters.'
+    assert error_messages[0].code == 'max
+
+# Generated at 2024-03-18 08:58:30.306944
+```python
+    # Define a simple schema and field for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (exceeds max_length for 'name')
+    invalid_yaml_name = "name: Johnathan Doe\nage: 30"
+    value, error_messages = validate_yaml(invalid_yaml_name, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == "Must have no more than 10 characters."
+    assert error_messages[0].code == "max
+
+# Generated at 2024-03-18 08:58:42.609490
+```python
+    # Assume we have a simple schema for testing
+    class ExampleSchema(Schema):
+        name = fields.String(max_length=100)
+        age = fields.Integer(allow_null=True)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is a string, should be an integer or null)
+    invalid_yaml = "name: Jane Doe\nage: 'thirty'"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be a number.'
+    assert error_messages[0].code == 'type'
+    assert error_messages[0].index ==
+
+# Generated at 2024-03-18 08:58:51.600753
+```python
+    # Define a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(str, max_length=10)
+        age = Field(int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (exceeds max_length for 'name')
+    invalid_yaml_name = "name: Johnathan Doe\nage: 30"
+    value, error_messages = validate_yaml(invalid_yaml_name, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == "Must have no more than 10 characters."
+    assert error_messages[0].code == "max_length"
+
+    #
+
+# Generated at 2024-03-18 08:58:58.267891
+```python
+    # Assume we have a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(str, max_length=10)
+        age = Field(int, minimum=0)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is below minimum)
+    invalid_yaml = "name: John Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+
+    # Invalid YAML content (name is too long)
+
+
+# Generated at 2024-03-18 08:59:07.746096
+```python
+    # Define a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=100)
+        age = Field(type=int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (invalid field type)
+    invalid_yaml_type = "name: John Doe\nage: thirty"
+    value, error_messages = validate_yaml(invalid_yaml_type, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be a number.'
+    assert error_messages[0].code == 'type'
+
+    # Test with invalid YAML content (missing required field)
+
+
+# Generated at 2024-03-18 08:59:20.858300
+```python
+    class ExampleSchema(Schema):
+        field = Field()
+
+    # Test with valid YAML content
+    valid_yaml = "field: valid_value"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {"field": "valid_value"}
+    assert error_messages == []
+
+    # Test with invalid YAML content (parse error)
+    invalid_yaml = "field: :invalid_value"
+    try:
+        value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    except ParseError as exc:
+        assert exc.text.startswith("could not find expected ':'")
+        assert exc.code == "parse_error"
+        assert isinstance(exc.position, Position)
+
+    # Test with invalid YAML content (validation error)
+    invalid_yaml = "field: 123"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert isinstance(error_messages[0],
+
+# Generated at 2024-03-18 08:59:28.972460
+```python
+    # Define a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (age is below minimum)
+    invalid_yaml_age = "name: Jane Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml_age, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+
+    # Test with invalid
+
+# Generated at 2024-03-18 09:00:20.879399
+```python
+    class ExampleSchema(Schema):
+        field = Field()
+
+    # Test with valid YAML content
+    valid_yaml = "field: valid"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {"field": "valid"}
+    assert error_messages == []
+
+    # Test with invalid YAML content (parse error)
+    invalid_yaml = "field: : invalid"
+    try:
+        value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    except ParseError as exc:
+        assert exc.text.startswith("could not find expected ':'")
+        assert exc.position.line_no == 1
+        assert exc.position.column_no == 8
+
+    # Test with invalid YAML content (validation error)
+    invalid_yaml = "field: 123"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text
+
+# Generated at 2024-03-18 09:00:31.843396
+```python
+    # Assume we have a simple schema and field for testing purposes
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is below minimum)
+    invalid_yaml = "name: John Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+    assert error_messages[0
+
+# Generated at 2024-03-18 09:00:39.710497
+```python
+    # Assume we have a simple schema for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is below minimum)
+    invalid_yaml = "name: John Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+
+    # Invalid YAML content (name is too
+
+# Generated at 2024-03-18 09:00:48.245270
+```python
+    # Test empty content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('')
+    assert exc_info.value.text == "No content."
+    assert exc_info.value.code == "no_content"
+    assert exc_info.value.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test invalid YAML content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('invalid: yaml: here')
+    assert "could not find expected ':'" in exc_info.value.text
+    assert exc_info.value.code == "parse_error"
+    assert exc_info.value.position.line_no > 0
+    assert exc_info.value.position.column_no > 0
+
+    # Test valid YAML scalar
+    token = tokenize_yaml('hello: world')
+    assert isinstance(token, DictToken)
+    assert token.value == {'hello': 'world'}
+
+    # Test valid YAML sequence
+    token = tokenize_yaml('- one\n- two
+
+# Generated at 2024-03-18 09:00:56.018632
+```python
+    # Define a simple schema for testing
+    class ExampleSchema(Schema):
+        field = Field()
+
+    # Test with valid YAML content
+    valid_yaml = "field: valid value"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {"field": "valid value"}
+    assert error_messages == []
+
+    # Test with invalid YAML content (parse error)
+    invalid_yaml = "field: [invalid: value"
+    try:
+        value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    except ParseError as exc:
+        assert exc.text.startswith("could not find expected ':'")
+        assert isinstance(exc.position, Position)
+
+    # Test with invalid YAML content (validation error)
+    invalid_yaml = "field: 123"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert isinstance(error_messages[0
+
+# Generated at 2024-03-18 09:01:02.662735
+```python
+    # Define a simple schema and field for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (exceeds max_length for 'name')
+    invalid_yaml_name = "name: Johnathan Doe\nage: 30"
+    value, error_messages = validate_yaml(invalid_yaml_name, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == "Must have no more than 10 characters."
+    assert error_messages[0].code == "max
+
+# Generated at 2024-03-18 09:01:08.897607
+```python
+    # Define a simple schema and field for testing
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Test with valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Test with invalid YAML content (exceeds max_length for 'name')
+    invalid_yaml_name = "name: Johnathan Doe\nage: 30"
+    value, error_messages = validate_yaml(invalid_yaml_name, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == "Must have no more than 10 characters."
+    assert error_messages[0].code == "max
+
+# Generated at 2024-03-18 09:01:15.986859
+```python
+    # Test empty content
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml('')
+    assert exc_info.value.text == "No content."
+    assert exc_info.value.code == "no_content"
+    assert exc_info.value.position == Position(line_no=1, column_no=1, char_index=0)
+
+    # Test valid YAML content
+    yaml_content = "key: value\nlist:\n  - item1\n  - item2"
+    token = tokenize_yaml(yaml_content)
+    assert isinstance(token, DictToken)
+    assert token.value == {'key': 'value', 'list': ['item1', 'item2']}
+    assert token.start == 0
+    assert token.end == len(yaml_content) - 1
+
+    # Test invalid YAML content
+    invalid_yaml_content = "key: value\n  - item1\n  - item2"
+    with pytest.raises(ParseError) as exc_info:
+        tokenize_yaml
+
+# Generated at 2024-03-18 09:01:23.461970
+```python
+    # Assume we have a simple schema for testing
+    class ExampleSchema(Schema):
+        name = fields.String(max_length=100)
+        age = fields.Integer(allow_null=True)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is a string, should be an integer or null)
+    invalid_yaml = "name: Jane Doe\nage: thirty"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == "Must be a number."
+    assert error_messages[0].code == "type"
+
+    # YAML content with a parse error
+    invalid
+
+# Generated at 2024-03-18 09:01:30.686113
+```python
+    class ExampleSchema(Schema):
+        field = Field()
+
+    # Test with valid YAML content
+    valid_yaml = "field: valid"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {"field": "valid"}
+    assert error_messages == []
+
+    # Test with invalid YAML content (parse error)
+    invalid_yaml = "field: : invalid"
+    try:
+        value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    except ParseError as exc:
+        assert exc.text.startswith("could not determine a constructor for the tag")
+        assert exc.position.line_no == 1
+        assert exc.position.column_no == 8
+
+    # Test with invalid YAML content (validation error)
+    invalid_yaml = "field: 123"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[
+
+# Generated at 2024-03-18 09:01:42.604332
+```python
+    # Assume we have a simple schema and field for testing purposes
+    class ExampleSchema(Schema):
+        name = Field(type=str, max_length=10)
+        age = Field(type=int, minimum=0)
+
+    # Valid YAML content
+    valid_yaml = "name: John Doe\nage: 30"
+    value, error_messages = validate_yaml(valid_yaml, ExampleSchema)
+    assert value == {'name': 'John Doe', 'age': 30}
+    assert error_messages == []
+
+    # Invalid YAML content (age is below minimum)
+    invalid_yaml = "name: John Doe\nage: -5"
+    value, error_messages = validate_yaml(invalid_yaml, ExampleSchema)
+    assert value is None
+    assert len(error_messages) == 1
+    assert error_messages[0].text == 'Must be greater than or equal to 0.'
+    assert error_messages[0].code == 'minimum'
+    assert error_messages[0

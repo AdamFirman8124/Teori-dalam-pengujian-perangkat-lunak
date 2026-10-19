@@ -1,0 +1,2152 @@
+
+
+# Generated at 2024-06-03 08:51:19.063326
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                with mock.patch('logs.warn') as mock_warn:
+                    shell_logger(temp_output.name)
+                    mock_warn.assert_called_once_with("Shell logger doesn't support your platform.")
+                    mock_exit.assert_called_once_with(1)
+```
+
+# Generated at 2024-06-03 08:51:21.745700
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with open(temp_output.name, 'rb') as f:
+            content = f.read()
+            assert len(content) == const.LOG_SIZE_IN_BYTES
+            assert content.count(b'\x00') < const.LOG_SIZE_IN_BYTES
+```
+
+# Generated at 2024-06-03 08:51:26.261257
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                with mock.patch('os.open', return_value=temp_output.fileno()):
+                    with mock.patch('mmap.mmap', return_value=mmap.mmap(temp_output.fileno(), const.LOG_SIZE_IN_BYTES, mmap.MAP_SHARED, mmap.PROT_WRITE)):
+                        shell_logger(temp_output.name)
+                        mock_exit.assert_called_once()
+                        assert mock_exit.call_args[0][0] == 0
+```
+
+# Generated at 2024-06-03 08:51:30.108042
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                with mock.patch('logs.warn') as mock_warn:
+                    shell_logger(temp_output.name)
+                    mock_warn.assert_called_once_with("Shell logger doesn't support your platform.")
+                    mock_exit.assert_called_once_with(1)
+```
+
+# Generated at 2024-06-03 08:51:34.355823
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                with mock.patch('logs.warn') as mock_warn:
+                    shell_logger(temp_output.name)
+                    mock_warn.assert_called_once_with("Shell logger doesn't support your platform.")
+                    mock_exit.assert_called_once_with(1)
+```
+
+# Generated at 2024-06-03 08:51:34.838616
+```python
+
+# Generated at 2024-06-03 08:51:37.015185
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with open(temp_output.name, 'rb') as f:
+            content = f.read()
+            assert len(content) == const.LOG_SIZE_IN_BYTES
+```
+
+# Generated at 2024-06-03 08:51:39.881908
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with open(temp_output.name, 'rb') as f:
+            content = f.read()
+            assert len(content) == const.LOG_SIZE_IN_BYTES
+            assert content.count(b'\x00') < const.LOG_SIZE_IN_BYTES  # Ensure some data was written
+```
+
+# Generated at 2024-06-03 08:51:40.492969
+```python
+
+# Generated at 2024-06-03 08:51:45.465670
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], env=os.environ)
+        process.wait()
+
+        # Check if the log file was created and has the expected size
+        assert os.path.exists(output_path)
+        assert os.path.getsize(output_path) == const.LOG_SIZE_IN_BYTES
+
+        # Check the exit code of the subprocess
+        assert process.returncode == 0
+```
+
+# Generated at 2024-06-03 08:51:57.920982
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                return_code = mock_exit.call_args[0][0]
+                assert return_code == 0
+
+        with open(temp_output.name, 'rb') as f:
+            content = f.read()
+            assert len(content) == const.LOG_SIZE_IN_BYTES
+```
+
+# Generated at 2024-06-03 08:51:58.407969
+```python
+
+# Generated at 2024-06-03 08:52:02.151147
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                with mock.patch('logs.warn') as mock_warn:
+                    shell_logger(temp_output.name)
+                    mock_warn.assert_called_once_with("Shell logger doesn't support your platform.")
+                    mock_exit.assert_called_once_with(1)
+```
+
+# Generated at 2024-06-03 08:52:02.626311
+```python
+
+# Generated at 2024-06-03 08:52:03.107275
+```python
+
+# Generated at 2024-06-03 08:52:03.591646
+```python
+
+# Generated at 2024-06-03 08:52:04.071491
+```python
+
+# Generated at 2024-06-03 08:52:11.344366
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the exit code is 0 (success)
+        assert exit_code == 0, f"Shell logger exited with code {exit_code}, stderr: {stderr.decode()}"
+
+        # Check if the log file is created and has the expected size
+        with
+
+# Generated at 2024-06-03 08:52:11.827217
+```python
+
+# Generated at 2024-06-03 08:52:15.380008
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 1
+```
+
+# Generated at 2024-06-03 08:52:26.884072
+```python
+
+# Generated at 2024-06-03 08:52:27.489578
+```python
+
+# Generated at 2024-06-03 08:52:30.377828
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 1
+```
+
+# Generated at 2024-06-03 08:52:35.218514
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid affecting the current process
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+os.environ['SHELL'] = '/bin/sh'
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Send a simple command to the shell
+        process.communicate(input=b'echo "Hello, World!"\nexit\n')
+
+        # Check the contents of the log file
+        with open(output_path, 'rb') as f:
+            log_contents = f.read()
+
+        assert b"
+
+# Generated at 2024-06-03 08:52:35.743799
+```python
+
+# Generated at 2024-06-03 08:52:37.404656
+```python
+
+# Generated at 2024-06-03 08:52:41.385640
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                with mock.patch('logs.warn') as mock_warn:
+                    shell_logger(temp_output.name)
+                    mock_warn.assert_called_once_with("Shell logger doesn't support your platform.")
+                    mock_exit.assert_called_once_with(1)
+```
+
+# Generated at 2024-06-03 08:52:45.029409
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 1
+```
+
+# Generated at 2024-06-03 08:52:50.734391
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid affecting the current process
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Wait for the process to complete
+        stdout, stderr = process.communicate()
+
+        # Check if the log file was created and has the expected size
+        assert os.path.exists(output_path)
+        assert os.path.getsize(output_path) == const.LOG_SIZE_IN_BYTES
+
+        # Check if the process exited with the expected return code
+        assert
+
+# Generated at 2024-06-03 08:52:53.006601
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with open(temp_output.name, 'rb') as f:
+            content = f.read()
+            assert len(content) == const.LOG_SIZE_IN_BYTES
+```
+
+# Generated at 2024-06-03 08:53:11.690782
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                with mock.patch('logs.warn') as mock_warn:
+                    shell_logger(temp_output.name)
+                    mock_warn.assert_called_once_with("Shell logger doesn't support your platform.")
+                    mock_exit.assert_called_once_with(1)
+```
+
+# Generated at 2024-06-03 08:53:14.392199
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with open(temp_output.name, 'rb') as f:
+            content = f.read()
+            assert len(content) == const.LOG_SIZE_IN_BYTES
+            assert content.count(b'\x00') < const.LOG_SIZE_IN_BYTES
+```
+
+# Generated at 2024-06-03 08:53:14.904322
+```python
+
+# Generated at 2024-06-03 08:53:15.445286
+```python
+
+# Generated at 2024-06-03 08:53:18.153277
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                with mock.patch('logs.warn') as mock_warn:
+                    shell_logger(temp_output.name)
+                    mock_warn.assert_called_once_with("Shell logger doesn't support your platform.")
+                    mock_exit.assert_called_once_with(1)
+```
+
+# Generated at 2024-06-03 08:53:18.643624
+```python
+
+# Generated at 2024-06-03 08:53:23.490039
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 1
+```
+
+# Generated at 2024-06-03 08:53:28.625512
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set up the environment variable for the shell
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], env=os.environ)
+        process.wait()
+
+        # Check the exit code
+        assert process.returncode == 0
+
+        # Check the contents of the log file
+        with open(output_path, 'rb') as f:
+            log_contents = f.read()
+            assert log_contents.startswith(b'\x00' * const.LOG_SIZE_IN_BYTES)
+```
+
+# Generated at 2024-06-03 08:53:32.596904
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 1
+```
+
+# Generated at 2024-06-03 08:53:33.148855
+```python
+
+# Generated at 2024-06-03 08:53:48.286506
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a fake shell environment variable for testing
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the log file was created and has the expected size
+        with open(output_path, 'rb') as f:
+            log_content = f.read()
+
+        assert exit_code == 0, f"Expected exit code 0, got {exit_code
+
+# Generated at 2024-06-03 08:53:48.910331
+```python
+
+# Generated at 2024-06-03 08:53:52.505427
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                with mock.patch('logs.warn') as mock_warn:
+                    shell_logger(temp_output.name)
+                    mock_warn.assert_called_once_with("Shell logger doesn't support your platform.")
+                    mock_exit.assert_called_once_with(1)
+```
+
+# Generated at 2024-06-03 08:53:56.338121
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                with mock.patch('logs.warn') as mock_warn:
+                    shell_logger(temp_output.name)
+                    mock_warn.assert_called_once_with("Shell logger doesn't support your platform.")
+                    mock_exit.assert_called_once_with(1)
+```
+
+# Generated at 2024-06-03 08:54:05.641926
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Mock environment variable for SHELL
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid affecting the current process
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+os.environ['SHELL'] = '/bin/sh'
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Send a simple command to the shell
+        process.communicate(input=b'echo "Hello, World!"\nexit\n')
+
+        # Check the contents of the log file
+        with open(output_path, 'rb') as f:
+            log_contents = f.read()
+
+        assert b"
+
+# Generated at 2024-06-03 08:54:06.409519
+```python
+
+# Generated at 2024-06-03 08:54:06.974584
+```python
+
+# Generated at 2024-06-03 08:54:13.012525
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid affecting the current process
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Wait for the subprocess to complete
+        stdout, stderr = process.communicate()
+
+        # Check the return code
+        assert process.returncode == 0, f"Process exited with code {process.returncode}, stderr: {stderr.decode()}"
+
+        # Check the log file content
+        with open(output_path, 'rb') as f:
+
+
+# Generated at 2024-06-03 08:54:15.856930
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                with mock.patch('logs.warn') as mock_warn:
+                    shell_logger(temp_output.name)
+                    mock_warn.assert_called_once_with("Shell logger doesn't support your platform.")
+                    mock_exit.assert_called_once_with(1)
+```
+
+# Generated at 2024-06-03 08:54:19.313119
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 1
+```
+
+# Generated at 2024-06-03 08:54:35.008279
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with open(temp_output.name, 'rb') as f:
+            content = f.read()
+            assert len(content) == const.LOG_SIZE_IN_BYTES
+            assert content.strip(b'\x00') == b''
+```
+
+# Generated at 2024-06-03 08:54:35.491909
+```python
+
+# Generated at 2024-06-03 08:54:36.186339
+```python
+
+# Generated at 2024-06-03 08:54:36.707509
+```python
+
+# Generated at 2024-06-03 08:54:40.310764
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set up the environment variable for the shell
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], env=os.environ)
+        process.wait()
+
+        # Check the exit code
+        assert process.returncode == 0
+
+        # Check the contents of the log file
+        with open(output_path, 'rb') as f:
+            log_contents = f.read()
+            assert log_contents.startswith(b'\x00' * const.LOG_SIZE_IN_BYTES)
+```
+
+# Generated at 2024-06-03 08:54:40.810097
+```python
+
+# Generated at 2024-06-03 08:54:44.578436
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 1
+```
+
+# Generated at 2024-06-03 08:54:45.122531
+```python
+
+# Generated at 2024-06-03 08:54:47.507089
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with open(temp_output.name, 'rb') as f:
+            content = f.read()
+            assert len(content) == const.LOG_SIZE_IN_BYTES
+```
+
+# Generated at 2024-06-03 08:54:48.175866
+```python
+
+# Generated at 2024-06-03 08:54:59.911849
+```python
+
+# Generated at 2024-06-03 08:55:00.493752
+```python
+
+# Generated at 2024-06-03 08:55:01.097677
+```python
+
+# Generated at 2024-06-03 08:55:03.456653
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch('os.environ.get', return_value='/bin/sh'):
+            with mock.patch('os.execlp') as mock_execlp:
+                with mock.patch('sys.exit') as mock_exit:
+                    shell_logger(temp_output.name)
+                    mock_execlp.assert_called_once_with('/bin/sh', '/bin/sh')
+                    mock_exit.assert_called_once()
+```
+
+# Generated at 2024-06-03 08:55:07.691867
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], env=os.environ)
+        process.wait()
+
+        # Check if the log file was created and has the expected size
+        assert os.path.exists(output_path)
+        assert os.path.getsize(output_path) == const.LOG_SIZE_IN_BYTES
+
+        # Check the exit code of the subprocess
+        assert process.returncode == 0
+```
+
+# Generated at 2024-06-03 08:55:10.170184
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with open(temp_output.name, 'rb') as f:
+            content = f.read()
+            assert len(content) == const.LOG_SIZE_IN_BYTES
+```
+
+# Generated at 2024-06-03 08:55:12.710494
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with open(temp_output.name, 'rb') as f:
+            content = f.read()
+            assert len(content) == const.LOG_SIZE_IN_BYTES
+            assert content.count(b'\x00') < const.LOG_SIZE_IN_BYTES
+```
+
+# Generated at 2024-06-03 08:55:18.430606
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the exit code is 0 (success)
+        assert exit_code == 0, f"Expected exit code 0, got {exit_code}. Stderr: {stderr.decode()}"
+
+        # Check if the log file is created and has the expected size
+
+# Generated at 2024-06-03 08:55:23.389973
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], env=os.environ)
+        process.wait()
+
+        # Check if the log file was created and has the expected size
+        assert os.path.exists(output_path)
+        assert os.path.getsize(output_path) == const.LOG_SIZE_IN_BYTES
+
+        # Check the exit code of the subprocess
+        assert process.returncode == 0
+```
+
+# Generated at 2024-06-03 08:55:27.232482
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid affecting the current process
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Send a simple command to the shell
+        process.stdin.write(b'echo "Hello, World!"\n')
+        process.stdin.flush()
+        process.stdin.close()
+
+        # Wait for the process to complete
+        process.wait()
+
+        # Read the log output
+        temp_log.seek(0)
+        log_content = temp_log.read()
+
+        #
+
+# Generated at 2024-06-03 08:55:38.511438
+```python
+
+# Generated at 2024-06-03 08:55:41.424734
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                with mock.patch('logs.warn') as mock_warn:
+                    shell_logger(temp_output.name)
+                    mock_warn.assert_called_once_with("Shell logger doesn't support your platform.")
+                    mock_exit.assert_called_once_with(1)
+```
+
+# Generated at 2024-06-03 08:55:41.914645
+```python
+
+# Generated at 2024-06-03 08:55:46.288634
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                return_code = mock_exit.call_args[0][0]
+                assert return_code == 0
+
+        with open(temp_output.name, 'rb') as f:
+            content = f.read()
+            assert len(content) == const.LOG_SIZE_IN_BYTES
+            assert content.strip(b'\x00') != b''
+```
+
+# Generated at 2024-06-03 08:55:46.769113
+```python
+
+# Generated at 2024-06-03 08:55:51.168158
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the exit code is 0 (success)
+        assert exit_code == 0, f"Expected exit code 0, got {exit_code}. Stderr: {stderr.decode()}"
+
+        # Check if the log file is created and has the expected size
+
+# Generated at 2024-06-03 08:55:55.614567
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid affecting the current process
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Wait for the process to complete
+        stdout, stderr = process.communicate()
+
+        # Check if the log file was created and has the expected size
+        assert os.path.exists(output_path)
+        assert os.path.getsize(output_path) == const.LOG_SIZE_IN_BYTES
+
+        # Check if the process exited with the expected return code
+        assert
+
+# Generated at 2024-06-03 08:55:56.216377
+```python
+
+# Generated at 2024-06-03 08:55:56.671689
+```python
+
+# Generated at 2024-06-03 08:56:00.536868
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid affecting the current process
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Wait for the process to complete
+        stdout, stderr = process.communicate()
+
+        # Check if the log file was created and has the expected size
+        assert os.path.exists(output_path)
+        assert os.path.getsize(output_path) == const.LOG_SIZE_IN_BYTES
+
+        # Check if the process exited with the expected return code
+        assert
+
+# Generated at 2024-06-03 08:56:16.177983
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid exiting the test runner
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Send a simple command to the shell
+        process.stdin.write(b'echo "test"\n')
+        process.stdin.flush()
+
+        # Allow some time for the command to be processed
+        process.communicate(timeout=5)
+
+        # Read the log output
+        with open(output_path, 'rb') as f:
+            log_content = f.read
+
+# Generated at 2024-06-03 08:56:21.133371
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the exit code is 0 (success)
+        assert exit_code == 0, f"Expected exit code 0, got {exit_code}. Stderr: {stderr.decode()}"
+
+        # Check if the log file is created and has the expected size
+
+# Generated at 2024-06-03 08:56:21.647414
+```python
+
+# Generated at 2024-06-03 08:56:25.647978
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid affecting the current process
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+os.environ['SHELL'] = '/bin/sh'
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Wait for the subprocess to complete
+        stdout, stderr = process.communicate()
+
+        # Check the return code
+        assert process.returncode == 0, f"Process exited with code {process.returncode}, stderr: {stderr.decode()}"
+
+        # Check the log file content
+       
+
+# Generated at 2024-06-03 08:56:29.233605
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a fake shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], env=os.environ)
+        process.wait()
+
+        # Check if the log file was created and has the expected size
+        assert os.path.exists(output_path)
+        assert os.path.getsize(output_path) == const.LOG_SIZE_IN_BYTES
+
+        # Check the exit code of the subprocess
+        assert process.returncode == 0
+```
+
+# Generated at 2024-06-03 08:56:29.852782
+```python
+
+# Generated at 2024-06-03 08:56:30.414986
+```python
+
+# Generated at 2024-06-03 08:56:30.970848
+```python
+
+# Generated at 2024-06-03 08:56:35.111735
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid affecting the current process
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Wait for the process to complete
+        stdout, stderr = process.communicate()
+
+        # Check if the log file was created and has the expected size
+        assert os.path.exists(output_path)
+        assert os.path.getsize(output_path) == const.LOG_SIZE_IN_BYTES
+
+        # Check if the process exited with the expected return code
+        assert
+
+# Generated at 2024-06-03 08:56:38.969965
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the exit code is 0 (success)
+        assert exit_code == 0, f"Expected exit code 0, got {exit_code}. Stderr: {stderr.decode()}"
+
+        # Check if the log file is created and has the expected size
+
+# Generated at 2024-06-03 08:56:51.277616
+```python
+
+# Generated at 2024-06-03 08:56:55.057729
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the log file was created and has the expected size
+        with open(output_path, 'rb') as f:
+            log_content = f.read()
+
+        assert exit_code == 0, f"Expected exit code 0, got {exit_code}"
+       
+
+# Generated at 2024-06-03 08:56:59.007893
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the exit code is 0 (success)
+        assert exit_code == 0, f"Expected exit code 0, got {exit_code}. Stderr: {stderr.decode()}"
+
+        # Check if the log file is created and has the expected size
+
+# Generated at 2024-06-03 08:57:02.543159
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 1
+```
+
+# Generated at 2024-06-03 08:57:08.027114
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                return_code = mock_exit.call_args[0][0]
+                assert return_code == 0
+
+        with open(temp_output.name, 'rb') as f:
+            content = f.read()
+            assert len(content) == const.LOG_SIZE_IN_BYTES
+            assert content.strip(b'\x00') != b''
+```
+
+# Generated at 2024-06-03 08:57:08.531452
+```python
+
+# Generated at 2024-06-03 08:57:14.188860
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the exit code is 0 (success)
+        assert exit_code == 0, f"Shell logger exited with code {exit_code}, stderr: {stderr.decode()}"
+
+        # Check if the log file is created and has the expected size
+        with
+
+# Generated at 2024-06-03 08:57:14.663268
+```python
+
+# Generated at 2024-06-03 08:57:19.883178
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid affecting the current process
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+os.environ['SHELL'] = '/bin/sh'
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Wait for the subprocess to complete
+        stdout, stderr = process.communicate()
+
+        # Check the return code
+        assert process.returncode == 0, f"Process exited with code {process.returncode}, stderr: {stderr.decode()}"
+
+        # Check the log file content
+       
+
+# Generated at 2024-06-03 08:57:20.487694
+```python
+
+# Generated at 2024-06-03 08:57:33.291800
+```python
+
+# Generated at 2024-06-03 08:57:33.852966
+```python
+
+# Generated at 2024-06-03 08:57:34.419243
+```python
+
+# Generated at 2024-06-03 08:57:38.185194
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                with mock.patch('logs.warn') as mock_warn:
+                    shell_logger(temp_output.name)
+                    mock_warn.assert_called_once_with("Shell logger doesn't support your platform.")
+                    mock_exit.assert_called_once_with(1)
+```
+
+# Generated at 2024-06-03 08:57:38.678566
+```python
+
+# Generated at 2024-06-03 08:57:39.222767
+```python
+
+# Generated at 2024-06-03 08:57:44.181901
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the exit code is 0 (success)
+        assert exit_code == 0, f"Shell logger exited with code {exit_code}, stderr: {stderr.decode()}"
+
+        # Check if the log file is created and has the expected size
+        assert
+
+# Generated at 2024-06-03 08:57:47.965525
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the exit code is 0 (success)
+        assert exit_code == 0, f"Expected exit code 0, got {exit_code}. Stderr: {stderr.decode()}"
+
+        # Check if the log file is created and has the expected size
+
+# Generated at 2024-06-03 08:57:53.495852
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the exit code is 0 (success)
+        assert exit_code == 0, f"Shell logger exited with code {exit_code}, stderr: {stderr.decode()}"
+
+        # Check if the log file is created and has the expected size
+        with
+
+# Generated at 2024-06-03 08:57:57.973419
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the exit code is 0 (success)
+        assert exit_code == 0, f"Expected exit code 0, got {exit_code}. Stderr: {stderr.decode()}"
+
+        # Check if the log file is created and has the expected size
+
+# Generated at 2024-06-03 08:58:20.287954
+```python
+
+# Generated at 2024-06-03 08:58:24.359068
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid affecting the current process
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Send a simple command to the shell
+        process.stdin.write(b'echo "Hello, World!"\n')
+        process.stdin.flush()
+        process.stdin.close()
+
+        # Wait for the process to complete
+        process.wait()
+
+        # Read the log output
+        temp_log.seek(0)
+        log_content = temp_log.read()
+
+        #
+
+# Generated at 2024-06-03 08:58:28.771794
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the exit code is 0 (success)
+        assert exit_code == 0, f"Expected exit code 0, got {exit_code}. Stderr: {stderr.decode()}"
+
+        # Check if the log file is created and has the expected size
+
+# Generated at 2024-06-03 08:58:29.351855
+```python
+
+# Generated at 2024-06-03 08:58:33.940879
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the exit code is 0 (success)
+        assert exit_code == 0, f"Expected exit code 0, got {exit_code}. Stderr: {stderr.decode()}"
+
+        # Check if the log file was created and has the expected size
+
+# Generated at 2024-06-03 08:58:34.496884
+```python
+
+# Generated at 2024-06-03 08:58:35.218425
+```python
+
+# Generated at 2024-06-03 08:58:36.054694
+```python
+
+# Generated at 2024-06-03 08:58:43.242927
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the exit code is 0 (success)
+        assert exit_code == 0, f"Shell logger exited with code {exit_code}, stderr: {stderr.decode()}"
+
+        # Check if the log file was created and has the expected size
+        with
+
+# Generated at 2024-06-03 08:58:43.824972
+```python
+
+# Generated at 2024-06-03 08:59:05.948035
+```python
+
+# Generated at 2024-06-03 08:59:10.053760
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid affecting the current process
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+os.environ['SHELL'] = '/bin/sh'
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Send a simple command to the shell
+        process.communicate(input=b'echo "Hello, World!"\nexit\n')
+
+        # Check the contents of the log file
+        with open(output_path, 'rb') as f:
+            log_contents = f.read()
+
+        assert b"
+
+# Generated at 2024-06-03 08:59:11.354443
+```python
+
+# Generated at 2024-06-03 08:59:16.695702
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the log file was created and has the expected size
+        with open(output_path, 'rb') as f:
+            log_content = f.read()
+
+        assert exit_code == 0, f"Expected exit code 0, got {exit_code}"
+       
+
+# Generated at 2024-06-03 08:59:23.125253
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid affecting the current process
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Wait for the process to complete
+        stdout, stderr = process.communicate()
+
+        # Check if the log file was created and has the expected size
+        assert os.path.exists(output_path)
+        assert os.path.getsize(output_path) == const.LOG_SIZE_IN_BYTES
+
+        # Check if the process exited with the expected return code
+        assert
+
+# Generated at 2024-06-03 08:59:26.476915
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set up the environment variable for the shell
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], env=os.environ)
+        process.wait()
+
+        # Check the exit code
+        assert process.returncode == 0, f"Process exited with code {process.returncode}"
+
+        # Check the log file content
+        with open(output_path, 'rb') as f:
+            content = f.read()
+            assert len(content) == const.LOG_SIZE_IN_BYTES, "Log file size mismatch"
+
+
+# Generated at 2024-06-03 08:59:26.951932
+```python
+
+# Generated at 2024-06-03 08:59:27.503548
+```python
+
+# Generated at 2024-06-03 08:59:28.082491
+```python
+
+# Generated at 2024-06-03 08:59:33.173518
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        return_code = process.returncode
+
+        # Check if the return code is 0 (success)
+        assert return_code == 0, f"Expected return code 0, got {return_code}. Stderr: {stderr.decode()}"
+
+        # Check if the log file was created and has the expected size
+
+# Generated at 2024-06-03 08:59:57.060767
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with open(temp_output.name, 'rb') as f:
+            content = f.read()
+            assert len(content) == const.LOG_SIZE_IN_BYTES
+            assert content.count(b'\x00') < const.LOG_SIZE_IN_BYTES
+```
+
+# Generated at 2024-06-03 09:00:01.031101
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                with mock.patch('logs.warn') as mock_warn:
+                    shell_logger(temp_output.name)
+                    mock_warn.assert_called_once_with("Shell logger doesn't support your platform.")
+                    mock_exit.assert_called_once_with(1)
+```
+
+# Generated at 2024-06-03 09:00:01.628503
+```python
+
+# Generated at 2024-06-03 09:00:02.141061
+```python
+
+# Generated at 2024-06-03 09:00:02.646665
+```python
+
+# Generated at 2024-06-03 09:00:03.220715
+```python
+
+# Generated at 2024-06-03 09:00:08.163301
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid affecting the current process
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Wait for the process to complete
+        stdout, stderr = process.communicate()
+
+        # Check the return code
+        assert process.returncode == 0, f"Process exited with code {process.returncode}, stderr: {stderr.decode()}"
+
+        # Check the log file content
+        with open(output_path, 'rb') as f:
+
+
+# Generated at 2024-06-03 09:00:14.962575
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to capture its exit code
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = process.communicate()
+        exit_code = process.returncode
+
+        # Check if the exit code is 0 (success)
+        assert exit_code == 0, f"Shell logger exited with code {exit_code}, stderr: {stderr.decode()}"
+
+        # Check if the log file is created and has the expected size
+        with
+
+# Generated at 2024-06-03 09:00:20.443302
+```python
+    import tempfile
+    import subprocess
+    from unittest import mock
+
+    with tempfile.NamedTemporaryFile() as temp_output:
+        with mock.patch.dict(os.environ, {'SHELL': '/bin/sh'}):
+            with mock.patch('sys.exit') as mock_exit:
+                shell_logger(temp_output.name)
+                mock_exit.assert_called_once()
+                assert mock_exit.call_args[0][0] == 0
+
+        with mock.patch.dict(os.environ, {'SHELL': ''}):
+            with mock.patch('sys.exit') as mock_exit:
+                with mock.patch('logs.warn') as mock_warn:
+                    shell_logger(temp_output.name)
+                    mock_warn.assert_called_once_with("Shell logger doesn't support your platform.")
+                    mock_exit.assert_called_once_with(1)
+```
+
+# Generated at 2024-06-03 09:00:25.224439
+```python
+    import tempfile
+    import subprocess
+
+    # Create a temporary file to act as the log output
+    with tempfile.NamedTemporaryFile() as temp_log:
+        output_path = temp_log.name
+
+        # Set a mock shell environment variable
+        os.environ['SHELL'] = '/bin/sh'
+
+        # Run the shell_logger function in a subprocess to avoid affecting the current process
+        process = subprocess.Popen([sys.executable, '-c', f'''
+import os
+import sys
+from {__name__} import shell_logger
+shell_logger("{output_path}")
+'''], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Wait for the process to complete
+        stdout, stderr = process.communicate()
+
+        # Check if the log file was created and has the expected size
+        assert os.path.exists(output_path)
+        assert os.path.getsize(output_path) == const.LOG_SIZE_IN_BYTES
+
+        # Check if the process exited with the expected return code
+        assert

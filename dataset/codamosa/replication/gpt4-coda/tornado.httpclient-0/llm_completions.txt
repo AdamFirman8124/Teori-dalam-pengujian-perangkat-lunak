@@ -1,0 +1,1563 @@
+
+
+# Generated at 2024-03-18 08:19:08.579342
+```python
+import unittest
+from tornado.httpclient import AsyncHTTPClient
+from tornado.ioloop import IOLoop
+
+
+# Generated at 2024-03-18 08:19:10.363297
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient, HTTPResponse, HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:19:11.870965
+```python
+import unittest
+from tornado.httpclient import HTTPError
+
+
+# Generated at 2024-03-18 08:19:19.047323
+```python
+    from tornado.testing import AsyncTestCase, gen_test
+    from tornado.httpclient import AsyncHTTPClient
+
+    class TestAsyncHTTPClientInitialize(AsyncTestCase):
+        @gen_test
+        def test_initialize_with_defaults(self):
+            client = AsyncHTTPClient(force_instance=True)
+            client.initialize(defaults={'user_agent': 'TestAgent'})
+            self.assertEqual(client.defaults['user_agent'], 'TestAgent')
+
+        @gen_test
+        def test_initialize_without_defaults(self):
+            client = AsyncHTTPClient(force_instance=True)
+            client.initialize()
+            self.assertNotIn('user_agent', client.defaults)
+
+    # Run the tests
+    import unittest
+    unittest.main()
+```
+
+# Generated at 2024-03-18 08:19:40.418144
+    # Create a dummy request object
+    request = HTTPRequest(url="http://example.com")
+
+    # Test case 1: No error, should not raise an exception
+    response = HTTPResponse(request, 200)
+    try:
+        response.rethrow()
+    except HTTPError:
+        assert False, "rethrow() raised an exception on a successful response"
+
+    # Test case 2: HTTP error with response code 404
+    response = HTTPResponse(request, 404)
+    try:
+        response.rethrow()
+        assert False, "rethrow() did not raise an exception on a 404 response"
+    except HTTPError as e:
+        assert e.code == 404, "rethrow() raised an exception with the wrong code"
+
+    # Test case 3: HTTP error with response code 500
+    response = HTTPResponse(request, 500)
+    try:
+        response.rethrow()
+        assert False, "rethrow() did not raise an exception
+
+# Generated at 2024-03-18 08:19:41.991574
+```python
+import unittest
+from tornado.httpclient import HTTPResponse, HTTPRequest, HTTPError
+
+
+# Generated at 2024-03-18 08:19:44.252120
+```python
+import unittest
+from tornado.ioloop import IOLoop
+from tornado.httpclient import AsyncHTTPClient
+
+
+# Generated at 2024-03-18 08:19:45.179599
+```python
+
+# Generated at 2024-03-18 08:19:48.911189
+```python
+    # Create an instance of AsyncHTTPClient
+    client = AsyncHTTPClient()
+
+    # Ensure the client is not closed initially
+    assert not client._closed, "Client should not be closed initially"
+
+    # Close the client
+    client.close()
+
+    # Ensure the client is now closed
+    assert client._closed, "Client should be closed after calling close()"
+```
+
+# Generated at 2024-03-18 08:19:57.384891
+```python
+    from tornado.httpclient import HTTPRequest, HTTPResponse
+    from unittest.mock import Mock, patch
+
+    # Create a mock request and response to work with
+    mock_request = HTTPRequest(url="http://www.example.com")
+    mock_response = HTTPResponse(mock_request, 200, buffer=BytesIO(b"Test response"))
+
+    # Create an instance of the AsyncHTTPClient
+    client = AsyncHTTPClient()
+
+    # Patch the fetch_impl method to simply call the callback with our mock response
+    with patch.object(client, 'fetch_impl', autospec=True) as mock_fetch_impl:
+        # Set up the mock to call the callback with the mock_response
+        def side_effect(request, callback):
+            callback(mock_response)
+        mock_fetch_impl.side_effect = side_effect
+
+        # Call the fetch method, which in turn should call our patched fetch_impl
+        future = client.fetch(mock_request)
+
+        # Wait for the future to complete and verify the result
+
+# Generated at 2024-03-18 08:20:13.086894
+```python
+    from tornado.testing import AsyncTestCase, gen_test
+    from tornado.httpclient import AsyncHTTPClient
+
+    class TestAsyncHTTPClientClose(AsyncTestCase):
+        @gen_test
+        def test_close(self):
+            client = AsyncHTTPClient(force_instance=True)
+            self.assertFalse(client._closed)
+            client.close()
+            self.assertTrue(client._closed)
+            # Attempting to fetch after close should raise RuntimeError
+            with self.assertRaises(RuntimeError):
+                yield client.fetch("http://www.google.com")
+
+    # Run the test case
+    import unittest
+    unittest.main()
+```
+
+# Generated at 2024-03-18 08:20:14.617869
+```python
+import unittest
+from tornado.httpclient import AsyncHTTPClient
+from tornado.ioloop import IOLoop
+
+
+# Generated at 2024-03-18 08:20:16.580166
+```python
+import unittest
+from tornado.ioloop import IOLoop
+from tornado.httpclient import AsyncHTTPClient
+
+
+# Generated at 2024-03-18 08:20:19.033453
+```python
+import unittest
+from tornado.httpclient import AsyncHTTPClient
+from tornado.ioloop import IOLoop
+
+
+# Generated at 2024-03-18 08:20:23.524563
+```python
+    # Create an instance of AsyncHTTPClient with default parameters
+    client = AsyncHTTPClient()
+    assert client.defaults == HTTPRequest._DEFAULTS
+    assert client.io_loop == IOLoop.current()
+    assert not client._closed
+
+    # Create an instance of AsyncHTTPClient with custom defaults
+    custom_defaults = {'user_agent': 'CustomUserAgent'}
+    client_with_defaults = AsyncHTTPClient(defaults=custom_defaults)
+    expected_defaults = HTTPRequest._DEFAULTS.copy()
+    expected_defaults.update(custom_defaults)
+    assert client_with_defaults.defaults == expected_defaults
+    assert client_with_defaults.io_loop == IOLoop.current()
+    assert not client_with_defaults._closed
+```
+
+# Generated at 2024-03-18 08:20:25.051766
+```python
+from tornado.httpclient import HTTPClient, HTTPRequest, HTTPResponse, HTTPError
+
+
+# Generated at 2024-03-18 08:20:26.782297
+```python
+import unittest
+from tornado.httpclient import AsyncHTTPClient
+from tornado.ioloop import IOLoop
+
+
+# Generated at 2024-03-18 08:20:28.873900
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.testing import AsyncHTTPTestCase
+from tornado.web import Application, RequestHandler
+
+# Mock request handler for testing
+
+# Generated at 2024-03-18 08:20:35.368663
+```python
+    from tornado.httpclient import HTTPRequest, HTTPResponse
+    from unittest.mock import Mock, patch
+
+    # Create a mock request and a mock callback
+    mock_request = HTTPRequest(url="http://www.example.com")
+    mock_callback = Mock()
+
+    # Create an instance of the AsyncHTTPClient
+    client = AsyncHTTPClient()
+
+    # Patch the fetch_impl method to simply call the callback with a mock response
+    with patch.object(client, 'fetch_impl') as mock_fetch_impl:
+        mock_response = HTTPResponse(mock_request, 200, buffer=BytesIO(b"Test response"))
+        mock_fetch_impl.side_effect = lambda request, callback: callback(mock_response)
+
+        # Call the fetch_impl method
+        client.fetch_impl(mock_request, mock_callback)
+
+        # Assert that the callback was called with the mock response
+        mock_callback.assert_called_once_with(mock_response)
+```
+
+# Generated at 2024-03-18 08:20:42.447756
+    from tornado.httpclient import HTTPClient, AsyncHTTPClient
+
+    # Mock the AsyncHTTPClient to avoid making real HTTP requests
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def initialize(self, *args, **kwargs):
+            pass
+
+        def close(self):
+            pass
+
+        async def fetch(self, request, **kwargs):
+            return "mock_response"
+
+    # Patch the AsyncHTTPClient with our mock
+    AsyncHTTPClient.configure(MockAsyncHTTPClient)
+
+    # Create an instance of HTTPClient
+    http_client = HTTPClient()
+
+    # Test fetch method
+    response = http_client.fetch("http://www.example.com/")
+    assert response == "mock_response", "HTTPClient.fetch did not return the expected mock response"
+
+    # Test close method
+    http_client.close()
+    assert http_client._closed, "HTTPClient.close did not set _closed to True"
+
+    # Clean up by resetting AsyncHTTPClient configuration
+    AsyncHTTPClient.configure(None
+
+# Generated at 2024-03-18 08:20:55.009968
+```python
+import unittest
+
+
+# Generated at 2024-03-18 08:20:56.408877
+```python
+import unittest
+from tornado.ioloop import IOLoop
+from tornado.httpclient import AsyncHTTPClient
+
+
+# Generated at 2024-03-18 08:20:59.629403
+```python
+    # Create a mock instance of AsyncHTTPClient and its relevant attributes
+    client = AsyncHTTPClient()
+    client._closed = False
+    client._instance_cache = {client.io_loop: client}
+
+    # Call the close method
+    client.close()
+
+    # Assert that the client is marked as closed
+    assert client._closed == True
+
+    # Assert that the client is removed from the instance cache
+    assert client.io_loop not in client._instance_cache
+```
+
+# Generated at 2024-03-18 08:21:01.967549
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:21:06.816560
+```python
+    from tornado.httpclient import AsyncHTTPClient
+
+    def test_defaults():
+        client = AsyncHTTPClient()
+        assert client.defaults == HTTPRequest._DEFAULTS
+
+    def test_custom_defaults():
+        custom_defaults = {'user_agent': 'CustomUserAgent'}
+        client = AsyncHTTPClient(defaults=custom_defaults)
+        expected_defaults = dict(HTTPRequest._DEFAULTS)
+        expected_defaults.update(custom_defaults)
+        assert client.defaults == expected_defaults
+
+    test_defaults()
+    test_custom_defaults()
+```
+
+# Generated at 2024-03-18 08:21:08.059953
+```python
+from tornado.testing import AsyncTestCase, gen_test
+from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+
+# Generated at 2024-03-18 08:21:13.125360
+```python
+    # Create an instance of AsyncHTTPClient with default parameters
+    client = AsyncHTTPClient()
+    assert client.defaults == HTTPRequest._DEFAULTS
+    assert client.io_loop == IOLoop.current()
+    assert not client._closed
+
+    # Create an instance of AsyncHTTPClient with custom defaults
+    custom_defaults = {'user_agent': 'CustomUserAgent'}
+    client_with_defaults = AsyncHTTPClient(defaults=custom_defaults)
+    expected_defaults = HTTPRequest._DEFAULTS.copy()
+    expected_defaults.update(custom_defaults)
+    assert client_with_defaults.defaults == expected_defaults
+    assert client_with_defaults.io_loop == IOLoop.current()
+    assert not client_with_defaults._closed
+```
+
+# Generated at 2024-03-18 08:21:14.723419
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:21:18.963640
+```python
+    from tornado.ioloop import IOLoop
+    from unittest.mock import patch, MagicMock
+
+    def test_AsyncHTTPClient_close():
+        io_loop = IOLoop.current()
+        client = AsyncHTTPClient()
+        assert not client._closed
+        with patch.object(client, 'io_loop') as mock_io_loop:
+            with patch.object(client, '_instance_cache', {io_loop: client}):
+                client.close()
+                assert client._closed
+                mock_io_loop.close.assert_called_once()
+                assert io_loop not in client._instance_cache
+
+    test_AsyncHTTPClient_close()
+```
+
+# Generated at 2024-03-18 08:21:20.299465
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:21:36.263315
+```python
+    # Create an instance of AsyncHTTPClient
+    client = AsyncHTTPClient()
+
+    # Ensure the client is not closed initially
+    assert not client._closed
+
+    # Close the client
+    client.close()
+
+    # Ensure the client is now marked as closed
+    assert client._closed
+
+    # Attempting to fetch after closing should raise RuntimeError
+    with pytest.raises(RuntimeError) as exc_info:
+        client.fetch("http://www.google.com")
+    assert "closed" in str(exc_info.value)
+```
+
+# Generated at 2024-03-18 08:21:39.665102
+```python
+import unittest
+from tornado.httpclient import AsyncHTTPClient
+from tornado.ioloop import IOLoop
+
+
+# Generated at 2024-03-18 08:21:40.879807
+```python
+from tornado.testing import AsyncTestCase, gen_test
+from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+
+# Generated at 2024-03-18 08:21:45.083208
+```python
+    # Create an instance of AsyncHTTPClient
+    client = AsyncHTTPClient()
+
+    # Ensure the client is not closed initially
+    assert not client._closed, "Client should not be closed initially"
+
+    # Close the client
+    client.close()
+
+    # Ensure the client is now closed
+    assert client._closed, "Client should be closed after calling close()"
+
+    # Attempt to fetch after closing should raise RuntimeError
+    with pytest.raises(RuntimeError) as excinfo:
+        client.fetch("http://www.google.com")
+    assert "closed" in str(excinfo.value), "Fetching from a closed client should raise RuntimeError"
+```
+
+# Generated at 2024-03-18 08:21:46.685819
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:21:47.983445
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:21:50.945132
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:21:52.636434
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.testing import AsyncHTTPTestCase
+from tornado.web import Application, RequestHandler
+
+# Mock request handler for testing
+
+# Generated at 2024-03-18 08:22:00.672722
+    from tornado.httpclient import HTTPClient, AsyncHTTPClient
+    from unittest.mock import Mock, patch
+
+    # Patch the AsyncHTTPClient to prevent actual I/O operations
+    with patch.object(AsyncHTTPClient, '__init__', return_value=None) as mock_async_init:
+        # Patch the IOLoop to prevent actual I/O operations
+        with patch('tornado.ioloop.IOLoop.run_sync') as mock_ioloop_run_sync:
+            # Create an instance of HTTPClient
+            http_client = HTTPClient()
+
+            # Assert that the AsyncHTTPClient was initialized
+            mock_async_init.assert_called_once()
+
+            # Assert that the IOLoop's run_sync method was called
+            mock_ioloop_run_sync.assert_called_once()
+
+            # Assert that the HTTPClient is not closed initially
+            assert not http_client._closed
+
+            # Clean up the HTTPClient
+            http_client.close()
+
+            # Assert that the HTTPClient is closed after calling close
+
+# Generated at 2024-03-18 08:22:06.903974
+```python
+    from tornado.httpclient import AsyncHTTPClient
+
+    def test_defaults():
+        client = AsyncHTTPClient()
+        assert client.defaults == HTTPRequest._DEFAULTS
+
+    def test_custom_defaults():
+        custom_defaults = {'user_agent': 'CustomUserAgent'}
+        client = AsyncHTTPClient(defaults=custom_defaults)
+        expected_defaults = dict(HTTPRequest._DEFAULTS)
+        expected_defaults.update(custom_defaults)
+        assert client.defaults == expected_defaults
+
+    def test_closed_attribute():
+        client = AsyncHTTPClient()
+        assert not client._closed
+
+    test_defaults()
+    test_custom_defaults()
+    test_closed_attribute()
+```
+
+# Generated at 2024-03-18 08:22:20.580861
+```python
+import unittest
+from unittest.mock import Mock, patch
+from tornado.httpclient import HTTPRequest, HTTPResponse
+
+
+# Generated at 2024-03-18 08:22:26.420130
+```python
+    from tornado.httpclient import HTTPRequest, HTTPResponse
+    from unittest.mock import Mock, patch
+
+    # Create a mock request and a mock callback
+    mock_request = HTTPRequest(url="http://www.example.com")
+    mock_callback = Mock()
+
+    # Create an instance of the AsyncHTTPClient
+    client = AsyncHTTPClient()
+
+    # Patch the fetch_impl method to simulate implementation
+    with patch.object(client, 'fetch_impl') as mock_fetch_impl:
+        # Call the fetch_impl method with the mock request and callback
+        client.fetch_impl(mock_request, mock_callback)
+
+        # Assert that the fetch_impl method was called once with the mock request and callback
+        mock_fetch_impl.assert_called_once_with(mock_request, mock_callback)
+
+        # Simulate a response from the fetch_impl method
+        mock_response = HTTPResponse(mock_request, 200, buffer=BytesIO(b"Test response"))
+        mock_callback(mock_response)
+
+        # Assert that the callback
+
+# Generated at 2024-03-18 08:22:29.394017
+```python
+    # Create a mock instance of AsyncHTTPClient and its relevant attributes
+    client = AsyncHTTPClient()
+    client._closed = False
+    client._instance_cache = {client.io_loop: client}
+
+    # Call the close method
+    client.close()
+
+    # Assert that the client is marked as closed
+    assert client._closed == True
+
+    # Assert that the client is removed from the instance cache
+    assert client.io_loop not in client._instance_cache
+```
+
+# Generated at 2024-03-18 08:22:38.180419
+```python
+    from tornado.httpclient import HTTPRequest, HTTPResponse
+    from unittest.mock import Mock, patch
+
+    # Create a mock request and response to work with
+    mock_request = HTTPRequest(url="http://www.example.com")
+    mock_response = HTTPResponse(mock_request, 200, buffer=BytesIO(b"Test response"))
+
+    # Create an instance of the AsyncHTTPClient
+    client = AsyncHTTPClient()
+
+    # Patch the fetch_impl method to simply call the callback with our mock response
+    with patch.object(client, 'fetch_impl', autospec=True) as mock_fetch_impl:
+        # Set up the mock to call the callback with the mock_response
+        def side_effect(request, callback):
+            callback(mock_response)
+        mock_fetch_impl.side_effect = side_effect
+
+        # Call the fetch method, which in turn should call our patched fetch_impl
+        future = client.fetch(mock_request)
+
+        # Wait for the future to complete and get the result
+
+# Generated at 2024-03-18 08:22:41.713995
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient, HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:22:48.909797
+    from tornado.httpclient import HTTPClient, AsyncHTTPClient
+    from unittest.mock import patch, MagicMock
+
+    # Test initialization with default async_client_class
+    with patch.object(AsyncHTTPClient, "__init__", return_value=None) as mock_async_init:
+        client = HTTPClient()
+        mock_async_init.assert_called_once()
+        assert not client._closed
+
+    # Test initialization with custom async_client_class
+    class CustomAsyncHTTPClient(AsyncHTTPClient):
+        pass
+
+    with patch.object(CustomAsyncHTTPClient, "__init__", return_value=None) as mock_custom_async_init:
+        client = HTTPClient(async_client_class=CustomAsyncHTTPClient)
+        mock_custom_async_init.assert_called_once()
+        assert not client._closed
+
+    # Test close method
+    client._async_client = MagicMock()
+    client._io_loop = MagicMock()
+    client.close()
+    client._async_client.close.assert_called_once()
+    client._io_loop.close.assert_called_once()
+   
+
+# Generated at 2024-03-18 08:22:50.454217
+```python
+import unittest
+from tornado.httpclient import AsyncHTTPClient
+
+
+# Generated at 2024-03-18 08:22:52.431403
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.testing import AsyncHTTPTestCase
+from tornado.web import Application, RequestHandler
+
+# Mock request handler for testing
+
+# Generated at 2024-03-18 08:22:53.598593
+```python
+from tornado.testing import AsyncTestCase, gen_test
+from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+
+# Generated at 2024-03-18 08:22:55.382766
+```python
+from tornado.testing import AsyncTestCase, gen_test
+from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+
+# Generated at 2024-03-18 08:23:10.322041
+```python
+    from tornado.httpclient import HTTPRequest, HTTPResponse
+    from unittest.mock import Mock, patch
+
+    # Create a mock request and a mock callback
+    mock_request = HTTPRequest(url="http://www.example.com")
+    mock_callback = Mock()
+
+    # Create an instance of the AsyncHTTPClient
+    client = AsyncHTTPClient()
+
+    # Patch the fetch_impl method to simply call the callback with a mock response
+    with patch.object(client, 'fetch_impl') as mock_fetch_impl:
+        mock_response = HTTPResponse(mock_request, 200, buffer=BytesIO(b"Test response"))
+        mock_fetch_impl.side_effect = lambda request, callback: callback(mock_response)
+
+        # Call the fetch_impl method
+        client.fetch_impl(mock_request, mock_callback)
+
+        # Assert that the callback was called with the mock response
+        mock_callback.assert_called_once_with(mock_response)
+```
+
+# Generated at 2024-03-18 08:23:17.891154
+    # Arrange
+    http_client = HTTPClient()
+    url = "http://example.com/"
+    expected_response_body = b"Example Domain"
+
+    # Set up a mock response that the fetch method will return
+    mock_response = HTTPResponse(
+        HTTPRequest(url),
+        200,
+        buffer=BytesIO(expected_response_body)
+    )
+
+    # Patch the async client's fetch method to return the mock response
+    async def mock_fetch(*args, **kwargs):
+        future = Future()
+        future_set_result_unless_cancelled(future, mock_response)
+        return future
+
+    http_client._async_client.fetch = mock_fetch
+
+    # Act
+    response = http_client.fetch(url)
+
+    # Assert
+    assert response.body == expected_response_body
+    assert response.code == 200
+
+    # Clean up
+    http_client.close()
+
+# Generated at 2024-03-18 08:23:19.620545
+```python
+from unittest.mock import Mock, patch
+from tornado.httpclient import HTTPRequest, HTTPResponse
+from tornado.testing import AsyncTestCase, gen_test
+
+
+# Generated at 2024-03-18 08:23:26.343091
+    from tornado.httpclient import HTTPClient, AsyncHTTPClient
+
+    # Mock the AsyncHTTPClient to avoid making real HTTP requests
+    class MockAsyncHTTPClient(AsyncHTTPClient):
+        def initialize(self, *args, **kwargs):
+            pass
+
+        def close(self):
+            pass
+
+        async def fetch(self, request, **kwargs):
+            return "mock_response"
+
+    # Configure the HTTPClient to use the mock
+    AsyncHTTPClient.configure(MockAsyncHTTPClient)
+
+    # Create an instance of HTTPClient
+    client = HTTPClient()
+
+    # Test that the client is not closed upon creation
+    assert not client._closed
+
+    # Test that the client can fetch a request and get the mock response
+    response = client.fetch("http://www.example.com/")
+    assert response == "mock_response"
+
+    # Test that the client can be closed
+    client.close()
+    assert client._closed
+
+    # Clean up by resetting the AsyncHTTPClient configuration
+
+
+# Generated at 2024-03-18 08:23:33.844848
+```python
+    # Create an instance of AsyncHTTPClient with default parameters
+    client = AsyncHTTPClient()
+    assert client.defaults == HTTPRequest._DEFAULTS
+    assert client.io_loop == IOLoop.current()
+    assert not client._closed
+
+    # Create an instance of AsyncHTTPClient with custom defaults
+    custom_defaults = {'user_agent': 'CustomUserAgent'}
+    client_with_defaults = AsyncHTTPClient(defaults=custom_defaults)
+    expected_defaults = HTTPRequest._DEFAULTS.copy()
+    expected_defaults.update(custom_defaults)
+    assert client_with_defaults.defaults == expected_defaults
+    assert client_with_defaults.io_loop == IOLoop.current()
+    assert not client_with_defaults._closed
+```
+
+# Generated at 2024-03-18 08:23:44.435792
+```python
+    from tornado.httpclient import HTTPRequest, HTTPResponse
+    from unittest.mock import Mock, patch
+
+    # Create a mock request and response to work with
+    mock_request = HTTPRequest(url="http://example.com")
+    mock_response = HTTPResponse(mock_request, 200, buffer=BytesIO(b"Test response"))
+
+    # Create an instance of the AsyncHTTPClient
+    client = AsyncHTTPClient()
+
+    # Patch the fetch_impl method to simply call the callback with our mock response
+    with patch.object(client, 'fetch_impl', autospec=True) as mock_fetch_impl:
+        # Set up the callback to capture the response from fetch_impl
+        callback = Mock()
+
+        # Call fetch_impl with our mock request and callback
+        client.fetch_impl(mock_request, callback)
+
+        # Ensure fetch_impl was called with the correct arguments
+        mock_fetch_impl.assert_called_with(mock_request, callback)
+
+        # Simulate the response being handled by calling the callback
+
+# Generated at 2024-03-18 08:23:46.089340
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient, HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:23:48.940047
+```python
+from tornado.testing import AsyncHTTPTestCase, gen_test
+from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+
+# Generated at 2024-03-18 08:23:50.676364
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient, HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:23:52.796238
+```python
+from tornado.testing import AsyncTestCase, gen_test
+from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+
+# Generated at 2024-03-18 08:24:12.394983
+```python
+import unittest
+from tornado.ioloop import IOLoop
+from tornado.httpclient import AsyncHTTPClient
+
+
+# Generated at 2024-03-18 08:24:14.113904
+```python
+import unittest
+from tornado.httpclient import AsyncHTTPClient
+
+
+# Generated at 2024-03-18 08:24:15.550315
+```python
+import unittest
+from tornado.httpclient import AsyncHTTPClient
+from tornado.ioloop import IOLoop
+
+
+# Generated at 2024-03-18 08:24:18.074342
+```python
+import unittest
+
+
+# Generated at 2024-03-18 08:24:20.151765
+```python
+from tornado.httpclient import HTTPRequest, HTTPResponse
+from unittest.mock import Mock, patch
+
+
+# Generated at 2024-03-18 08:24:28.164736
+```python
+    from tornado.ioloop import IOLoop
+    from unittest.mock import patch, MagicMock
+
+    def test_close_already_closed_client():
+        client = AsyncHTTPClient()
+        client._closed = True
+
+        with patch.object(client, '_instance_cache', {}) as mock_cache:
+            client.close()
+            mock_cache.pop.assert_not_called()
+
+    def test_close_uncached_client():
+        client = AsyncHTTPClient(force_instance=True)
+        client._closed = False
+
+        with patch.object(client, '_instance_cache', None):
+            client.close()
+            assert client._closed
+
+    def test_close_cached_client():
+        io_loop = IOLoop.current()
+        client = AsyncHTTPClient()
+        client._closed = False
+
+        with patch.object(AsyncHTTPClient, '_async_clients', return_value={io_loop: client}) as mock_clients:
+            client.close()
+            assert client._closed
+            assert io_loop not in mock_clients.return_value
+
+    test_close_already_closed
+
+# Generated at 2024-03-18 08:24:34.101005
+```python
+    from tornado.httpclient import AsyncHTTPClient
+    from unittest.mock import patch
+
+    def test_AsyncHTTPClient_initialize():
+        with patch.object(AsyncHTTPClient, 'initialize') as mock_initialize:
+            defaults = {'user_agent': 'TestAgent'}
+            client = AsyncHTTPClient(defaults=defaults)
+            mock_initialize.assert_called_once_with(defaults=defaults)
+            assert client.defaults['user_agent'] == 'TestAgent'
+            assert not client._closed
+
+    # Run the test
+    test_AsyncHTTPClient_initialize()
+```
+
+# Generated at 2024-03-18 08:24:35.837157
+```python
+import unittest
+
+
+# Generated at 2024-03-18 08:24:42.672437
+```python
+    # Create an instance of AsyncHTTPClient
+    client = AsyncHTTPClient()
+
+    # Ensure the client is not closed initially
+    assert not client._closed
+
+    # Close the client
+    client.close()
+
+    # Ensure the client is marked as closed
+    assert client._closed
+
+    # Ensure that the instance cache is cleared
+    assert client.io_loop not in AsyncHTTPClient._async_clients()
+
+    # Trying to fetch after closing should raise RuntimeError
+    try:
+        client.fetch("http://www.google.com")
+        assert False, "RuntimeError not raised"
+    except RuntimeError as e:
+        assert str(e) == "fetch() called on closed AsyncHTTPClient"
+```
+
+# Generated at 2024-03-18 08:24:44.444792
+```python
+import unittest
+from unittest.mock import Mock, patch
+from tornado.httpclient import HTTPRequest, HTTPResponse
+
+
+# Generated at 2024-03-18 08:24:56.851532
+```python
+from tornado.httpclient import HTTPClient, HTTPRequest, HTTPResponse, HTTPError
+
+
+# Generated at 2024-03-18 08:24:58.961815
+```python
+from tornado.httpclient import HTTPClient, HTTPRequest, HTTPResponse, HTTPError
+
+
+# Generated at 2024-03-18 08:25:00.458019
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:25:02.342130
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient, HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:25:03.597860
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient, HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:25:04.875230
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient, HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:25:06.167560
+```python
+from tornado.testing import AsyncTestCase, gen_test
+from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+
+# Generated at 2024-03-18 08:25:14.780676
+    from tornado.httpclient import HTTPClient, HTTPRequest, HTTPResponse, HTTPError
+
+    # Mocking an HTTPResponse object
+    def mock_fetch(request, **kwargs):
+        if isinstance(request, str):
+            request = HTTPRequest(request, **kwargs)
+        if request.url == "http://example.com/success":
+            return HTTPResponse(request, 200, reason="OK", buffer=BytesIO(b"Success"))
+        elif request.url == "http://example.com/fail":
+            raise HTTPError(404, "Not Found", HTTPResponse(request, 404, reason="Not Found"))
+        else:
+            raise ValueError("Unknown URL")
+
+    # Patching the AsyncHTTPClient fetch method with our mock
+    with unittest.mock.patch.object(HTTPClient, '_async_client', new_callable=unittest.mock.PropertyMock) as mock_client:
+        mock_client.return_value.fetch.side_effect = mock_fetch
+
+        # Test successful fetch
+        http_client = HTTPClient()
+        response =
+
+# Generated at 2024-03-18 08:25:19.118301
+```python
+    from tornado.ioloop import IOLoop
+    from unittest.mock import patch, MagicMock
+
+    def test_AsyncHTTPClient_close():
+        io_loop = IOLoop.current()
+        client = AsyncHTTPClient()
+        with patch.object(client, 'io_loop') as mock_io_loop:
+            with patch.object(client, '_instance_cache', {io_loop: client}):
+                client.close()
+                assert client._closed
+                assert client.io_loop not in client._instance_cache
+
+    test_AsyncHTTPClient_close()
+```
+
+# Generated at 2024-03-18 08:25:20.896224
+```python
+import unittest
+from unittest.mock import Mock, patch
+from tornado.httpclient import AsyncHTTPClient, HTTPRequest, HTTPResponse
+
+
+# Generated at 2024-03-18 08:25:31.935334
+```python
+import unittest
+from tornado.ioloop import IOLoop
+from tornado.httpclient import AsyncHTTPClient
+
+
+# Generated at 2024-03-18 08:25:32.938171
+```python
+
+# Generated at 2024-03-18 08:25:38.840776
+```python
+    from tornado.httpclient import HTTPRequest, HTTPResponse
+    from unittest.mock import Mock, patch
+
+    # Create a mock request and response to work with
+    mock_request = HTTPRequest(url="http://www.example.com")
+    mock_response = HTTPResponse(mock_request, 200, buffer=BytesIO(b"Test response"))
+
+    # Create an instance of the AsyncHTTPClient
+    client = AsyncHTTPClient()
+
+    # Patch the fetch_impl method to simply call the callback with our mock response
+    with patch.object(client, 'fetch_impl', autospec=True) as mock_fetch_impl:
+        # Set up the mock to call the callback with the mock_response
+        def side_effect(request, callback):
+            callback(mock_response)
+        mock_fetch_impl.side_effect = side_effect
+
+        # Call the fetch method, which in turn should call our patched fetch_impl
+        future = client.fetch(mock_request)
+
+        # Check that the fetch_impl method was called with the
+
+# Generated at 2024-03-18 08:25:41.509159
+```python
+import unittest
+from tornado.httpclient import AsyncHTTPClient
+from tornado.ioloop import IOLoop
+
+
+# Generated at 2024-03-18 08:25:43.011201
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:25:45.382278
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient, HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:25:51.263134
+```python
+    from tornado.ioloop import IOLoop
+    from unittest.mock import patch, MagicMock
+
+    def test_close_already_closed_client_does_not_raise_error():
+        client = AsyncHTTPClient()
+        client._closed = True
+
+        with patch.object(client, '_instance_cache', {}):
+            # No error should be raised even though the client is already closed
+            client.close()
+
+    def test_close_closes_ioloop_and_clears_instance_cache():
+        client = AsyncHTTPClient()
+        client._closed = False
+        client.io_loop = MagicMock(spec=IOLoop)
+        client._instance_cache = {client.io_loop: client}
+
+        client.close()
+
+        # Assert the IOLoop was closed
+        client.io_loop.close.assert_called_once()
+        # Assert the client is marked as closed
+        assert client._closed
+        # Assert the instance cache is cleared
+        assert client.io_loop not in client._instance_cache
+
+    def test_close_raises_runtime
+
+# Generated at 2024-03-18 08:25:52.920331
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+
+
+# Generated at 2024-03-18 08:26:01.157380
+    # Create a mock HTTPResponse object
+    mock_response = unittest.mock.Mock(spec=HTTPResponse)
+    mock_response.code = 200
+    mock_response.body = b"Hello World"
+    mock_response.headers = httputil.HTTPHeaders({"content-type": "text/plain"})
+
+    # Create a mock AsyncHTTPClient
+    mock_async_http_client = unittest.mock.Mock(spec=AsyncHTTPClient)
+    mock_async_http_client.fetch = unittest.mock.AsyncMock(return_value=mock_response)
+
+    # Patch the AsyncHTTPClient to return our mock
+    with unittest.mock.patch.object(HTTPClient, '_async_client', new=mock_async_http_client):
+        # Instantiate the HTTPClient
+        http_client = HTTPClient()
+
+        # Perform the fetch
+        response = http_client.fetch("http://www.example.com/")
+
+        # Check the response
+        assert response.code == 200
+        assert response.body == b"Hello World"
+        assert response.headers["content-type"] == "text
+
+# Generated at 2024-03-18 08:26:02.895397
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:26:16.931061
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient, HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:26:24.639891
+```python
+    from tornado.ioloop import IOLoop
+    from unittest.mock import patch, MagicMock
+
+    def test_close_already_closed_client_does_not_raise_error():
+        client = AsyncHTTPClient()
+        client._closed = True
+
+        with patch.object(client, '_instance_cache', {}):
+            # No error should be raised even though the client is already closed
+            client.close()
+
+    def test_close_removes_client_from_instance_cache():
+        client = AsyncHTTPClient()
+        client._closed = False
+        fake_io_loop = MagicMock(spec=IOLoop)
+        client.io_loop = fake_io_loop
+        client._instance_cache = {fake_io_loop: client}
+
+        client.close()
+
+        assert client._closed
+        assert fake_io_loop not in client._instance_cache
+
+    def test_close_sets_closed_attribute_to_true():
+        client = AsyncHTTPClient()
+        client._closed = False
+
+        client.close()
+
+        assert client._closed
+
+    test_close_already_closed
+
+# Generated at 2024-03-18 08:26:26.082730
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient, HTTPResponse, HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:26:27.554391
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:26:30.221951
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:26:34.366100
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+from tornado.testing import AsyncHTTPTestCase
+from tornado.web import Application, RequestHandler
+
+# Mock request handler for testing
+
+# Generated at 2024-03-18 08:26:36.738330
+```python
+from tornado.testing import AsyncTestCase, gen_test
+from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+
+# Generated at 2024-03-18 08:26:38.610601
+```python
+from unittest import mock, TestCase
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPResponse
+from io import BytesIO
+
+
+# Generated at 2024-03-18 08:26:39.857594
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient, HTTPResponse, HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:26:43.534603
+```python
+    from tornado.ioloop import IOLoop
+    from unittest.mock import patch, MagicMock
+
+    def test_AsyncHTTPClient_close():
+        io_loop = IOLoop.current()
+        client = AsyncHTTPClient()
+        assert not client._closed
+        with patch.object(client, 'io_loop') as mock_io_loop:
+            with patch.object(client, '_instance_cache', {io_loop: client}):
+                client.close()
+                assert client._closed
+                mock_io_loop.close.assert_called_once()
+                assert io_loop not in client._instance_cache
+
+    test_AsyncHTTPClient_close()
+```
+
+# Generated at 2024-03-18 08:26:54.340545
+```python
+from unittest.mock import Mock, patch
+import unittest
+
+
+# Generated at 2024-03-18 08:26:56.033364
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.testing import AsyncHTTPTestCase
+from tornado.web import Application, RequestHandler
+
+# Mock request handler for testing
+
+# Generated at 2024-03-18 08:26:57.237380
+```python
+import unittest
+from tornado.httpclient import AsyncHTTPClient
+from tornado.ioloop import IOLoop
+
+
+# Generated at 2024-03-18 08:27:03.601495
+```python
+    from tornado.ioloop import IOLoop
+    from tornado.testing import AsyncTestCase, gen_test
+
+    class TestAsyncHTTPClient(AsyncTestCase):
+        @gen_test
+        def test_singleton_behavior(self):
+            client1 = AsyncHTTPClient()
+            client2 = AsyncHTTPClient()
+            self.assertIs(client1, client2)
+
+        @gen_test
+        def test_force_instance_behavior(self):
+            client1 = AsyncHTTPClient(force_instance=True)
+            client2 = AsyncHTTPClient(force_instance=True)
+            self.assertIsNot(client1, client2)
+
+        @gen_test
+        def test_custom_configuration(self):
+            AsyncHTTPClient.configure(None, defaults=dict(user_agent="TestAgent"))
+            client = AsyncHTTPClient()
+            self.assertEqual(client.defaults["user_agent"], "TestAgent")
+
+        @gen_test
+        def test_instance_cache_cleared_on_close(self):
+            client = AsyncHTTPClient()
+            io_loop = IOLoop.current()
+            client.close()
+           
+
+# Generated at 2024-03-18 08:27:04.820383
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient, HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:27:07.444475
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:27:11.093780
+```python
+    from tornado.ioloop import IOLoop
+    from unittest.mock import patch, MagicMock
+
+    def test_AsyncHTTPClient_close():
+        io_loop = IOLoop.current()
+        with patch.object(AsyncHTTPClient, '_async_clients', return_value={io_loop: MagicMock()}):
+            client = AsyncHTTPClient()
+            client.close()
+            assert client._closed
+            assert io_loop not in client._instance_cache
+
+    test_AsyncHTTPClient_close()
+```
+
+# Generated at 2024-03-18 08:27:12.569970
+```python
+
+# Generated at 2024-03-18 08:27:13.689131
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:27:15.140155
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:27:25.994008
+```python
+import unittest
+from unittest.mock import Mock, patch
+from tornado.httpclient import HTTPRequest, HTTPResponse
+
+
+# Generated at 2024-03-18 08:27:29.779539
+```python
+    # Create an instance of AsyncHTTPClient
+    client = AsyncHTTPClient()
+
+    # Ensure the client is not closed initially
+    assert not client._closed, "Client should not be closed initially"
+
+    # Close the client
+    client.close()
+
+    # Ensure the client is now closed
+    assert client._closed, "Client should be closed after calling close()"
+```
+
+# Generated at 2024-03-18 08:27:31.101516
+```python
+import unittest
+from tornado.httpclient import AsyncHTTPClient
+from tornado.ioloop import IOLoop
+
+
+# Generated at 2024-03-18 08:27:44.765053
+```python
+    from tornado.ioloop import IOLoop
+    from unittest.mock import patch, MagicMock
+
+    def test_close_already_closed_client():
+        client = AsyncHTTPClient()
+        client._closed = True
+
+        with patch.object(client, '_instance_cache', {}) as mock_cache:
+            client.close()
+            mock_cache.pop.assert_not_called()
+
+    def test_close_unclosed_client():
+        client = AsyncHTTPClient()
+        client._closed = False
+        client.io_loop = IOLoop.current()
+
+        with patch.object(client, '_instance_cache', {}) as mock_cache:
+            with patch.object(client.io_loop, 'close') as mock_ioloop_close:
+                client.close()
+                mock_cache.pop.assert_called_once_with(client.io_loop, None)
+                mock_ioloop_close.assert_called_once()
+                assert client._closed
+
+    test_close_already_closed_client()
+    test_close_unclosed_client()
+```
+
+# Generated at 2024-03-18 08:27:46.621673
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.testing import AsyncHTTPTestCase
+from tornado.web import Application, RequestHandler
+
+# Mock request handler for testing
+
+# Generated at 2024-03-18 08:27:47.830480
+```python
+from tornado.ioloop import IOLoop
+from tornado.testing import AsyncTestCase, gen_test
+
+
+# Generated at 2024-03-18 08:27:48.683465
+```python
+
+# Generated at 2024-03-18 08:27:49.558901
+```python
+from unittest.mock import Mock, patch
+import unittest
+
+
+# Generated at 2024-03-18 08:27:51.090076
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient, HTTPResponse, HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:27:52.977246
+```python
+import unittest
+from tornado.httpclient import AsyncHTTPClient
+from tornado.ioloop import IOLoop
+
+
+# Generated at 2024-03-18 08:28:17.933974
+```python
+    from tornado.testing import AsyncTestCase, gen_test
+    from unittest.mock import patch
+
+    class TestAsyncHTTPClientClose(AsyncTestCase):
+        @gen_test
+        def test_close(self):
+            with patch.object(AsyncHTTPClient, 'close', wraps=AsyncHTTPClient.close) as mock_close:
+                client = AsyncHTTPClient()
+                client.close()
+                mock_close.assert_called_once_with()
+                self.assertTrue(client._closed)
+
+    # Run the test case
+    import tornado.testing
+    tornado.testing.main()
+```
+
+# Generated at 2024-03-18 08:28:26.466582
+```python
+    from tornado.httpclient import HTTPRequest, HTTPResponse
+    from unittest.mock import Mock, patch
+
+    # Create a mock request and response to work with
+    mock_request = HTTPRequest(url="http://www.example.com")
+    mock_response = HTTPResponse(mock_request, 200, buffer=BytesIO(b"Test response"))
+
+    # Create an instance of the AsyncHTTPClient
+    client = AsyncHTTPClient()
+
+    # Patch the fetch_impl method to simply call the callback with our mock response
+    with patch.object(client, 'fetch_impl', autospec=True) as mock_fetch_impl:
+        # Set up the mock to call the callback with the mock_response
+        def side_effect(request, callback):
+            callback(mock_response)
+        mock_fetch_impl.side_effect = side_effect
+
+        # Call the fetch method, which in turn should call our patched fetch_impl
+        future = client.fetch(mock_request)
+
+        # Check that the fetch_impl method was called with the
+
+# Generated at 2024-03-18 08:28:27.304991
+```python
+from unittest.mock import Mock, patch
+import unittest
+
+
+# Generated at 2024-03-18 08:28:28.531341
+```python
+from tornado.testing import AsyncTestCase, gen_test
+from tornado.httpclient import HTTPRequest, HTTPResponse, HTTPError
+
+
+# Generated at 2024-03-18 08:28:29.858786
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient, HTTPResponse, HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:28:31.952786
+```python
+import unittest
+from unittest.mock import Mock, patch
+from tornado.httpclient import HTTPRequest, HTTPResponse
+
+
+# Generated at 2024-03-18 08:28:33.780555
+```python
+import unittest
+from tornado.httpclient import AsyncHTTPClient
+from tornado.ioloop import IOLoop
+
+
+# Generated at 2024-03-18 08:28:35.724898
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient
+from tornado.httpclient import HTTPError
+
+
+# Generated at 2024-03-18 08:28:37.926381
+```python
+from unittest import TestCase, mock
+from tornado.httpclient import HTTPClient, HTTPResponse, HTTPError
+from tornado.options import options
+
+
+# Generated at 2024-03-18 08:28:46.158550
+```python
+    from tornado.httpclient import AsyncHTTPClient
+    from unittest.mock import patch
+
+    def test_AsyncHTTPClient_initialize():
+        with patch.object(AsyncHTTPClient, 'initialize') as mock_initialize:
+            defaults = {'user_agent': 'TestAgent'}
+            client = AsyncHTTPClient(defaults=defaults)
+            mock_initialize.assert_called_once_with(defaults=defaults)
+            assert client.defaults['user_agent'] == 'TestAgent'
+            assert not client._closed
+
+    test_AsyncHTTPClient_initialize()
+```

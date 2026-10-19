@@ -1,0 +1,2963 @@
+
+
+# Generated at 2024-05-31 01:22:53.752158
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all conditions are met
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where 'state' is 'present' but 'path' is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "state is present but any of the following are missing: path"
+
+    #
+
+# Generated at 2024-05-31 01:22:57.628320
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    requirements = {
+        'param1': ['param2', 'param4'],
+        'param3': 'param5'
+    }
+
+    # Test case where all required parameters are present
+    try:
+        check_required_by(requirements, parameters)
+    except TypeError:
+        assert False, "check_required_by raised TypeError unexpectedly!"
+
+    # Test case where some required parameters are missing
+    parameters_missing = {
+        'param1': 'value1',
+        'param3': 'value3'
+    }
+
+    try:
+        check_required_by(requirements, parameters_missing)
+        assert False, "check_required_by did not raise TypeError as expected!"
+    except TypeError as e:
+        assert "missing parameter(s) required by 'param1': param2, param4" in str(e)
+
+
+# Generated at 2024-05-31 01:23:01.806139
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {}
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing
+
+# Generated at 2024-05-31 01:23:05.584461
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    requirements = {
+        'param1': ['param2', 'param4'],
+        'param3': 'param5'
+    }
+
+    # Test case where all required parameters are present
+    try:
+        check_required_by({'param1': 'param2'}, parameters)
+    except TypeError:
+        assert False, "Exception should not be raised when required parameters are present"
+
+    # Test case where some required parameters are missing
+    try:
+        check_required_by(requirements, parameters)
+        assert False, "Exception should be raised when required parameters are missing"
+    except TypeError as e:
+        assert str(e) == "missing parameter(s) required by 'param1': param4, missing parameter(s) required by 'param3': param5"
+
+    # Test case where no requirements are provided
+
+# Generated at 2024-05-31 01:23:09.845720
+```python
+    # Test with a valid dictionary
+    assert check_type_dict({"key": "value"}) == {"key": "value"}
+
+    # Test with a valid JSON string
+    assert check_type_dict('{"key": "value"}') == {"key": "value"}
+
+    # Test with a valid key=value string
+    assert check_type_dict("key=value") == {"key": "value"}
+
+    # Test with a valid key=value string with multiple pairs
+    assert check_type_dict("key1=value1, key2=value2") == {"key1": "value1", "key2": "value2"}
+
+    # Test with a valid key=value string with spaces and quotes
+    assert check_type_dict('key1="value1", key2=\'value2\'') == {"key1": "value1", "key2": "value2"}
+
+    # Test with an invalid string that cannot be converted
+    try:
+        check_type_dict("
+
+# Generated at 2024-05-31 01:23:13.703707
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {}
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing
+
+# Generated at 2024-05-31 01:23:17.066479
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    # Test case 1: No mutually exclusive terms
+    terms = [['param4', 'param5']]
+    assert check_mutually_exclusive(terms, parameters) == []
+
+    # Test case 2: One mutually exclusive group
+    terms = [['param1', 'param2']]
+    try:
+        check_mutually_exclusive(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: param1|param2"
+
+    # Test case 3: Multiple mutually exclusive groups
+    terms = [['param1', 'param2'], ['param2', 'param3']]
+    try:
+        check_mutually_exclusive(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: param
+
+# Generated at 2024-05-31 01:23:20.159475
+```python
+    assert check_type_bytes("1KB") == 1024
+    assert check_type_bytes("1MB") == 1048576
+    assert check_type_bytes("1GB") == 1073741824
+    assert check_type_bytes("1TB") == 1099511627776
+    assert check_type_bytes("1PB") == 1125899906842624
+    assert check_type_bytes("1EB") == 1152921504606846976
+    assert check_type_bytes("1024") == 1024
+    assert check_type_bytes(1024) == 1024
+    try:
+        check_type_bytes("invalid")
+    except TypeError as e:
+        assert str(e) == "<class 'str'> cannot be converted to a Byte value"
+    try:
+        check_type_bytes({})
+    except TypeError as e:
+        assert str(e) == "<class 'dict'> cannot be converted to a Byte value"
+
+
+# Generated at 2024-05-31 01:23:23.293985
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    # Test case 1: No mutually exclusive terms
+    terms = [['param4', 'param5']]
+    assert check_mutually_exclusive(terms, parameters) == []
+
+    # Test case 2: One mutually exclusive term
+    terms = [['param1', 'param2']]
+    try:
+        check_mutually_exclusive(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: param1|param2"
+
+    # Test case 3: Multiple mutually exclusive terms
+    terms = [['param1', 'param2'], ['param2', 'param3']]
+    try:
+        check_mutually_exclusive(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: param
+
+# Generated at 2024-05-31 01:23:26.131390
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    requirements = {
+        'param1': ['param2', 'param4'],
+        'param3': 'param5'
+    }
+
+    # Test case where all required parameters are present
+    try:
+        check_required_by({'param1': 'param2'}, parameters)
+    except TypeError:
+        assert False, "Exception raised unexpectedly"
+
+    # Test case where a required parameter is missing
+    try:
+        check_required_by(requirements, parameters)
+        assert False, "Expected TypeError not raised"
+    except TypeError as e:
+        assert str(e) == "missing parameter(s) required by 'param1': param4"
+
+    # Test case where multiple required parameters are missing
+    try:
+        check_required_by({'param1': ['param2', 'param4'], 'param3
+
+# Generated at 2024-05-31 01:23:48.281699
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    # Test case 1: No mutually exclusive terms
+    terms = [['param4', 'param5']]
+    assert check_mutually_exclusive(terms, parameters) == []
+
+    # Test case 2: One mutually exclusive term
+    terms = [['param1', 'param2']]
+    try:
+        check_mutually_exclusive(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: param1|param2"
+
+    # Test case 3: Multiple mutually exclusive terms
+    terms = [['param1', 'param2'], ['param2', 'param3']]
+    try:
+        check_mutually_exclusive(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: param
+
+# Generated at 2024-05-31 01:23:55.487191
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    requirements = {
+        'param1': ['param2', 'param4'],
+        'param3': 'param5'
+    }
+
+    # Test case where all required parameters are present
+    try:
+        check_required_by({'param1': 'param2'}, parameters)
+    except TypeError:
+        assert False, "check_required_by raised TypeError unexpectedly!"
+
+    # Test case where a required parameter is missing
+    try:
+        check_required_by(requirements, parameters)
+        assert False, "check_required_by did not raise TypeError as expected!"
+    except TypeError as e:
+        assert str(e) == "missing parameter(s) required by 'param1': param4", f"Unexpected error message: {e}"
+
+    # Test case where multiple required parameters are missing
+    try:
+       
+
+# Generated at 2024-05-31 01:23:58.723847
+```python
+    assert safe_eval("1 + 1") == 2
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+    assert safe_eval("1 + 1", include_exceptions=True) == (2, None)
+    assert safe_eval("{'key': 'value'}", include_exceptions=True) == ({'key': 'value'}, None)
+    assert safe_eval("[1, 2, 3]", include_exceptions=True) == ([1, 2, 3], None)
+    assert safe_eval("os.system('ls')") == "os.system('ls')"
+    assert safe_eval("import os") == "import os"
+    assert safe_eval("os.system('ls')", include_exceptions=True) == ("os.system('ls')", None)
+    assert safe_eval
+
+# Generated at 2024-05-31 01:24:02.600733
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "someint is 99 but all of the following are missing: string_param"
+
+    # Test case where the condition is not met
+   
+
+# Generated at 2024-05-31 01:24:05.844576
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': False},
+        'param2': {'required': False},
+    }
+    parameters = {}
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+
+
+# Generated at 2024-05-31 01:24:09.214652
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': False},
+        'param2': {'required': False},
+    }
+    parameters = {}
+    assert check_required_arguments(argument_spec, parameters) == []
+```
+
+# Generated at 2024-05-31 01:24:12.746913
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "someint is 99 but all of the following are missing: string_param"
+
+    # Test case where the condition is not met, so
+
+# Generated at 2024-05-31 01:24:16.105018
+```python
+    assert safe_eval("1 + 1") == 2
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+    assert safe_eval("1 + 'a'") == "1 + 'a'"
+    assert safe_eval("os.system('ls')") == "os.system('ls')"
+    assert safe_eval("import os") == "import os"
+    assert safe_eval("1 + 1", include_exceptions=True) == (2, None)
+    assert safe_eval("1 + 'a'", include_exceptions=True)[1] is not None
+    assert safe_eval("os.system('ls')", include_exceptions=True) == ("os.system('ls')", None)
+    assert safe_eval("import os", include_exceptions=True) == ("import os", None)
+```
+
+# Generated at 2024-05-31 01:24:19.828089
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "someint is 99 but all of the following are missing: string_param"
+
+    # Test case where the condition is not met
+   
+
+# Generated at 2024-05-31 01:24:23.610762
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    # Test case where at least one term is present
+    terms = [['param1', 'param4'], ['param2', 'param5']]
+    assert check_required_one_of(terms, parameters) == []
+
+    # Test case where none of the terms are present
+    terms = [['param4', 'param5'], ['param6', 'param7']]
+    try:
+        check_required_one_of(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "one of the following is required: param4, param5"
+
+    # Test case with options_context
+    terms = [['param4', 'param5']]
+    options_context = ['context1', 'context2']
+    try:
+        check_required_one_of(terms, parameters, options_context)
+    except
+
+# Generated at 2024-05-31 01:24:34.676335
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all conditions are met
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where 'state' is 'present' but 'path' is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "state is present but any of the following are missing: path"
+
+    #
+
+# Generated at 2024-05-31 01:24:38.310727
+```python
+    assert check_type_bits('1Kb') == 1024
+    assert check_type_bits('1Mb') == 1048576
+    assert check_type_bits('1Gb') == 1073741824
+    assert check_type_bits('1Tb') == 1099511627776
+    assert check_type_bits('1Pb') == 1125899906842624
+    assert check_type_bits('1Eb') == 1152921504606846976
+    assert check_type_bits('1Zb') == 1180591620717411303424
+    assert check_type_bits('1Yb') == 1208925819614629174706176
+
+    try:
+        check_type_bits('invalid')
+    except TypeError as e:
+        assert str(e) == "<class 'str'> cannot be converted to a Bit value"
+
+    try:
+        check_type_bits(123)
+    except TypeError as e:
+        assert
+
+# Generated at 2024-05-31 01:24:42.747181
+```python
+    assert safe_eval("1 + 1") == 2
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+    assert safe_eval("True") == True
+    assert safe_eval("None") == None
+    assert safe_eval("1 + 1", include_exceptions=True) == ("1 + 1", None)
+    assert safe_eval("{'key': 'value'}", include_exceptions=True) == ({'key': 'value'}, None)
+    assert safe_eval("[1, 2, 3]", include_exceptions=True) == ([1, 2, 3], None)
+    assert safe_eval("True", include_exceptions=True) == (True, None)
+    assert safe_eval("None", include_exceptions=True) == (None, None)
+    assert safe
+
+# Generated at 2024-05-31 01:24:46.224310
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': False},
+        'param2': {'required': False},
+    }
+    parameters = {}
+    assert check_required_arguments(argument_spec, parameters) == []
+```
+
+# Generated at 2024-05-31 01:24:50.212361
+```python
+    assert check_type_bytes('1KB') == 1024
+    assert check_type_bytes('1MB') == 1024 * 1024
+    assert check_type_bytes('1GB') == 1024 * 1024 * 1024
+    assert check_type_bytes('1TB') == 1024 * 1024 * 1024 * 1024
+    assert check_type_bytes('1PB') == 1024 * 1024 * 1024 * 1024 * 1024
+    assert check_type_bytes('1B') == 1
+    assert check_type_bytes('1024') == 1024
+    try:
+        check_type_bytes('invalid')
+    except TypeError as e:
+        assert str(e) == "<class 'str'> cannot be converted to a Byte value"
+    try:
+        check_type_bytes(None)
+    except TypeError as e:
+        assert str(e) == "<class
+
+# Generated at 2024-05-31 01:24:53.708481
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "someint is 99 but all of the following are missing: string_param"
+
+    # Test case where the condition is not met, so
+
+# Generated at 2024-05-31 01:24:57.788711
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    # Test case 1: No mutually exclusive terms
+    terms = [['param4', 'param5']]
+    assert check_mutually_exclusive(terms, parameters) == []
+
+    # Test case 2: One mutually exclusive term
+    terms = [['param1', 'param2']]
+    try:
+        check_mutually_exclusive(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: param1|param2"
+
+    # Test case 3: Multiple mutually exclusive terms
+    terms = [['param1', 'param2'], ['param2', 'param3']]
+    try:
+        check_mutually_exclusive(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: param
+
+# Generated at 2024-05-31 01:25:00.655783
+```python
+    assert check_type_bits('1Kb') == 1024
+    assert check_type_bits('1Mb') == 1048576
+    assert check_type_bits('1Gb') == 1073741824
+    assert check_type_bits('1Tb') == 1099511627776
+    assert check_type_bits('1Pb') == 1125899906842624
+
+    try:
+        check_type_bits('invalid')
+    except TypeError as e:
+        assert str(e) == "<class 'str'> cannot be converted to a Bit value"
+
+    try:
+        check_type_bits(123)
+    except TypeError as e:
+        assert str(e) == "<class 'int'> cannot be converted to a Bit value"
+```
+
+# Generated at 2024-05-31 01:25:05.951654
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+
+    requirements = {
+        'param1': ['param2', 'param4'],
+        'param3': 'param5',
+    }
+
+    # Test case where all required parameters are present
+    try:
+        check_required_by(requirements, parameters)
+    except TypeError:
+        assert False, "check_required_by raised TypeError unexpectedly!"
+
+    # Test case where required parameters are missing
+    parameters_missing = {
+        'param1': 'value1',
+        'param3': 'value3',
+    }
+
+    try:
+        check_required_by(requirements, parameters_missing)
+        assert False, "check_required_by did not raise TypeError as expected!"
+    except TypeError as e:
+        assert "missing parameter(s) required by 'param1': param2, param4" in str(e)
+       
+
+# Generated at 2024-05-31 01:25:14.116214
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    # Test case where no mutually exclusive terms are present
+    terms = [['param4', 'param5'], ['param6', 'param7']]
+    assert check_mutually_exclusive(terms, parameters) == []
+
+    # Test case where mutually exclusive terms are present
+    terms = [['param1', 'param2'], ['param3', 'param4']]
+    try:
+        check_mutually_exclusive(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: param1|param2"
+
+    # Test case with options_context
+    terms = [['param1', 'param2'], ['param3', 'param4']]
+    try:
+        check_mutually_exclusive(terms, parameters, options_context=['context1', 'context2'])
+   
+
+# Generated at 2024-05-31 01:25:27.623977
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "someint is 99 but all of the following are missing: string_param"
+
+    # Test case where the condition is not met, so
+
+# Generated at 2024-05-31 01:25:33.427282
+```python
+    assert safe_eval("1 + 1") == 2
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+    assert safe_eval("True") == True
+    assert safe_eval("None") == None
+    assert safe_eval("1 + 1", include_exceptions=True) == ("1 + 1", None)
+    assert safe_eval("{'key': 'value'}", include_exceptions=True) == ({'key': 'value'}, None)
+    assert safe_eval("[1, 2, 3]", include_exceptions=True) == ([1, 2, 3], None)
+    assert safe_eval("True", include_exceptions=True) == (True, None)
+    assert safe_eval("None", include_exceptions=True) == (None, None)
+    assert safe
+
+# Generated at 2024-05-31 01:25:36.723780
+```python
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    try:
+        assert check_required_if(requirements, parameters) == []
+    except TypeError:
+        assert False, "check_required_if raised TypeError unexpectedly!"
+
+    # Test case where a required parameter is missing
+    parameters_missing = {
+        'state': 'present',
+        'someint': 99
+    }
+
+    try:
+        check_required_if(requirements, parameters_missing)
+        assert False, "check_required_if did not raise TypeError as expected!"
+    except TypeError as e:
+        assert "someint is 99 but all of the following are missing: bool_param, string_param
+
+# Generated at 2024-05-31 01:25:40.763663
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    requirements = {
+        'param1': ['param2', 'param4'],
+        'param3': 'param5'
+    }
+
+    # Test case where all required parameters are present
+    try:
+        check_required_by({'param1': 'param2'}, parameters)
+    except TypeError:
+        assert False, "Exception raised unexpectedly"
+
+    # Test case where a required parameter is missing
+    try:
+        check_required_by(requirements, parameters)
+        assert False, "Expected TypeError not raised"
+    except TypeError as e:
+        assert str(e) == "missing parameter(s) required by 'param1': param4"
+
+    # Test case where multiple required parameters are missing
+    try:
+        check_required_by({'param1': ['param2', 'param4'], 'param3
+
+# Generated at 2024-05-31 01:25:44.840918
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert "someint is 99 but all of the following are missing: string_param" in str(e)
+
+    # Test case where the condition is not met, so
+
+# Generated at 2024-05-31 01:25:47.719041
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError
+
+# Generated at 2024-05-31 01:25:50.585260
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all conditions are met
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where 'state' is 'present' but 'path' is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "state is present but any of the following are missing: path"
+
+    #
+
+# Generated at 2024-05-31 01:25:54.872038
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    requirements = {
+        'param1': ['param2', 'param4'],
+        'param3': 'param5'
+    }
+
+    # Test case where all required parameters are present
+    try:
+        check_required_by(requirements, parameters)
+    except TypeError:
+        assert False, "check_required_by raised TypeError unexpectedly!"
+
+    # Test case where some required parameters are missing
+    parameters_missing = {
+        'param1': 'value1',
+        'param3': 'value3'
+    }
+
+    try:
+        check_required_by(requirements, parameters_missing)
+        assert False, "check_required_by did not raise TypeError as expected!"
+    except TypeError as e:
+        assert str(e) == "missing parameter(s) required by 'param1': param2, param4",
+
+# Generated at 2024-05-31 01:25:59.161665
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    # Test case where at least one term is present
+    terms = [['param1', 'param4'], ['param2', 'param5']]
+    assert check_required_one_of(terms, parameters) == []
+
+    # Test case where none of the terms are present
+    terms = [['param4', 'param5'], ['param6', 'param7']]
+    try:
+        check_required_one_of(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "one of the following is required: param4, param5"
+
+    # Test case with options_context
+    terms = [['param4', 'param5']]
+    options_context = ['context1', 'context2']
+    try:
+        check_required_one_of(terms, parameters, options_context)
+    except
+
+# Generated at 2024-05-31 01:26:01.964780
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one required parameter is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "someint is 99 but all of the following are missing: string_param"
+
+    # Test case where conditionally required parameter is missing
+    parameters
+
+# Generated at 2024-05-31 01:26:34.164117
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+
+    # Test case where all required parameters are present
+    terms = [['param1', 'param2']]
+    assert check_required_together(terms, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    terms = [['param1', 'param4']]
+    try:
+        check_required_together(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are required together: param1, param4"
+
+    # Test case where none of the required parameters are present
+    terms = [['param4', 'param5']]
+    assert check_required_together(terms, parameters) == []
+
+    # Test case with multiple groups of required parameters
+    terms = [['param1', 'param2'], ['param3', 'param4']]
+
+
+# Generated at 2024-05-31 01:26:36.552962
+```python
+    assert check_type_float(3.14) == 3.14
+    assert check_type_float(10) == 10.0
+    assert check_type_float("2.718") == 2.718
+    assert check_type_float(b"1.618") == 1.618
+
+    try:
+        check_type_float("not_a_float")
+    except TypeError as e:
+        assert str(e) == "<class 'str'> cannot be converted to a float"
+
+    try:
+        check_type_float([1, 2, 3])
+    except TypeError as e:
+        assert str(e) == "<class 'list'> cannot be converted to a float"
+```
+
+# Generated at 2024-05-31 01:26:40.086869
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError
+
+# Generated at 2024-05-31 01:26:44.278362
+```python
+    assert check_type_bits('1Kb') == 1024
+    assert check_type_bits('1Mb') == 1048576
+    assert check_type_bits('1Gb') == 1073741824
+    assert check_type_bits('1Tb') == 1099511627776
+    assert check_type_bits('1Pb') == 1125899906842624
+
+    try:
+        check_type_bits('invalid')
+    except TypeError as e:
+        assert str(e) == "<class 'str'> cannot be converted to a Bit value"
+
+    try:
+        check_type_bits(123)
+    except TypeError as e:
+        assert str(e) == "<class 'int'> cannot be converted to a Bit value"
+```
+
+# Generated at 2024-05-31 01:26:47.638439
+```python
+    assert check_type_float(3.14) == 3.14
+    assert check_type_float(10) == 10.0
+    assert check_type_float("2.71") == 2.71
+    assert check_type_float(b"1.23") == 1.23
+
+    try:
+        check_type_float("not_a_float")
+    except TypeError as e:
+        assert str(e) == "<class 'str'> cannot be converted to a float"
+
+    try:
+        check_type_float([1, 2, 3])
+    except TypeError as e:
+        assert str(e) == "<class 'list'> cannot be converted to a float"
+```
+
+# Generated at 2024-05-31 01:26:50.672884
+```python
+    assert check_type_bytes("1KB") == 1024
+    assert check_type_bytes("1MB") == 1048576
+    assert check_type_bytes("1GB") == 1073741824
+    assert check_type_bytes("1TB") == 1099511627776
+    assert check_type_bytes("1PB") == 1125899906842624
+    assert check_type_bytes("1EB") == 1152921504606846976
+    assert check_type_bytes("1ZB") == 1180591620717411303424
+    assert check_type_bytes("1YB") == 1208925819614629174706176
+    assert check_type_bytes("1024") == 1024
+    assert check_type_bytes("1.5KB") == 1536
+    assert check_type_bytes("0.5MB") == 524288
+    try:
+        check_type_bytes("invalid
+
+# Generated at 2024-05-31 01:26:52.937919
+```python
+    assert check_type_float(3.14) == 3.14
+    assert check_type_float(10) == 10.0
+    assert check_type_float("2.718") == 2.718
+    assert check_type_float(b"1.618") == 1.618
+
+    try:
+        check_type_float("not_a_float")
+    except TypeError as e:
+        assert str(e) == "<class 'str'> cannot be converted to a float"
+
+    try:
+        check_type_float([1, 2, 3])
+    except TypeError as e:
+        assert str(e) == "<class 'list'> cannot be converted to a float"
+```
+
+# Generated at 2024-05-31 01:26:55.719450
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {}
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing
+
+# Generated at 2024-05-31 01:26:58.897857
+```python
+    assert check_type_bytes("1KB") == 1024
+    assert check_type_bytes("1MB") == 1048576
+    assert check_type_bytes("1GB") == 1073741824
+    assert check_type_bytes("1TB") == 1099511627776
+    assert check_type_bytes("1PB") == 1125899906842624
+    assert check_type_bytes("1EB") == 1152921504606846976
+    assert check_type_bytes("1ZB") == 1180591620717411303424
+    assert check_type_bytes("1YB") == 1208925819614629174706176
+    assert check_type_bytes("1024") == 1024
+    assert check_type_bytes("1.5KB") == 1536
+    try:
+        check_type_bytes("invalid")
+    except TypeError as e:
+        assert str(e) == "<class
+
+# Generated at 2024-05-31 01:27:02.375040
+```python
+    assert check_type_bits('1Kb') == 1024
+    assert check_type_bits('1Mb') == 1048576
+    assert check_type_bits('1Gb') == 1073741824
+    assert check_type_bits('1Tb') == 1099511627776
+    assert check_type_bits('1Pb') == 1125899906842624
+    assert check_type_bits('1Eb') == 1152921504606846976
+    assert check_type_bits('1Zb') == 1180591620717411303424
+    assert check_type_bits('1Yb') == 1208925819614629174706176
+
+    try:
+        check_type_bits('invalid')
+    except TypeError as e:
+        assert str(e) == "<class 'str'> cannot be converted to a Bit value"
+
+    try:
+        check_type_bits(123)
+    except TypeError as e:
+        assert
+
+# Generated at 2024-05-31 01:27:16.731698
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert 'someint is 99 but all of the following are missing: string_param' in str(e)
+
+    # Test case where the condition is not met, so
+
+# Generated at 2024-05-31 01:27:19.879030
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {}
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing
+
+# Generated at 2024-05-31 01:27:22.942036
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all conditions are met
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where 'state' is 'present' but 'path' is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "state is present but all of the following are missing: path"
+
+    #
+
+# Generated at 2024-05-31 01:27:26.310826
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': False},
+        'param2': {'required': False},
+    }
+    parameters = {
+        'param1': 'value1',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec =
+
+# Generated at 2024-05-31 01:27:29.747885
+```python
+    assert check_type_bytes("1KB") == 1024
+    assert check_type_bytes("1MB") == 1048576
+    assert check_type_bytes("1GB") == 1073741824
+    assert check_type_bytes("1TB") == 1099511627776
+    assert check_type_bytes("1PB") == 1125899906842624
+    assert check_type_bytes("1EB") == 1152921504606846976
+    assert check_type_bytes("1ZB") == 1180591620717411303424
+    assert check_type_bytes("1YB") == 1208925819614629174706176
+    assert check_type_bytes("1024") == 1024
+    assert check_type_bytes("1.5KB") == 1536
+    try:
+        check_type_bytes("invalid")
+    except TypeError as e:
+        assert str(e) == "<class
+
+# Generated at 2024-05-31 01:27:34.950145
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': False},
+        'param2': {'required': False},
+    }
+    parameters = {}
+    assert check_required_arguments(argument_spec, parameters) == []
+```
+
+# Generated at 2024-05-31 01:27:38.629302
+```python
+    assert safe_eval("1 + 1") == 2
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+    assert safe_eval("True") == True
+    assert safe_eval("None") == None
+    assert safe_eval("1 + 1", include_exceptions=True) == ("1 + 1", None)
+    assert safe_eval("{'key': 'value'}", include_exceptions=True) == ({'key': 'value'}, None)
+    assert safe_eval("[1, 2, 3]", include_exceptions=True) == ([1, 2, 3], None)
+    assert safe_eval("True", include_exceptions=True) == (True, None)
+    assert safe_eval("None", include_exceptions=True) == (None, None)
+    assert safe
+
+# Generated at 2024-05-31 01:27:43.201651
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {}
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing
+
+# Generated at 2024-05-31 01:27:46.957919
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "someint is 99 but all of the following are missing: string_param"
+
+    # Test case where the condition is not met, so
+
+# Generated at 2024-05-31 01:27:51.371003
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError
+
+# Generated at 2024-05-31 01:28:06.078604
+```python
+    assert check_type_bytes("1KB") == 1024
+    assert check_type_bytes("1MB") == 1048576
+    assert check_type_bytes("1GB") == 1073741824
+    assert check_type_bytes("1TB") == 1099511627776
+    assert check_type_bytes("1PB") == 1125899906842624
+    assert check_type_bytes("1EB") == 1152921504606846976
+    assert check_type_bytes("1ZB") == 1180591620717411303424
+    assert check_type_bytes("1YB") == 1208925819614629174706176
+    assert check_type_bytes("1024") == 1024
+    assert check_type_bytes(1024) == 1024
+    try:
+        check_type_bytes("invalid")
+    except TypeError as e:
+        assert str(e) == "<class 'str
+
+# Generated at 2024-05-31 01:28:09.157677
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    # Test case 1: No mutually exclusive terms
+    terms = [['param4', 'param5']]
+    assert check_mutually_exclusive(terms, parameters) == []
+
+    # Test case 2: One mutually exclusive term
+    terms = [['param1', 'param2']]
+    try:
+        check_mutually_exclusive(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: param1|param2"
+
+    # Test case 3: Multiple mutually exclusive terms
+    terms = [['param1', 'param2'], ['param2', 'param3']]
+    try:
+        check_mutually_exclusive(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: param
+
+# Generated at 2024-05-31 01:28:12.147028
+
+    assert safe_eval("1 + 1") == 2
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+    assert safe_eval("True") == True
+    assert safe_eval("None") == None
+    assert safe_eval("1 + 1", include_exceptions=True) == ("1 + 1", None)
+    assert safe_eval("{'key': 'value'}", include_exceptions=True) == ({'key': 'value'}, None)
+    assert safe_eval("[1, 2, 3]", include_exceptions=True) == ([1, 2, 3], None)
+    assert safe_eval("True", include_exceptions=True) == (True, None)
+    assert safe_eval("None", include_exceptions=True) == (None, None)
+    assert safe_eval("
+
+# Generated at 2024-05-31 01:28:15.265743
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError
+
+# Generated at 2024-05-31 01:28:18.721250
+```python
+    assert safe_eval("1 + 1") == 2
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+    assert safe_eval("1 + 'a'") == "1 + 'a'"
+    assert safe_eval("os.system('ls')") == "os.system('ls')"
+    assert safe_eval("import os") == "import os"
+    assert safe_eval("1 + 1", include_exceptions=True) == (2, None)
+    assert safe_eval("1 + 'a'", include_exceptions=True)[1] is not None
+    assert safe_eval("os.system('ls')", include_exceptions=True) == ("os.system('ls')", None)
+    assert safe_eval("import os", include_exceptions=True) == ("import os", None)
+```
+
+# Generated at 2024-05-31 01:28:21.887218
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError
+
+# Generated at 2024-05-31 01:28:25.822846
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    requirements = {
+        'param1': ['param2', 'param4'],
+        'param3': 'param5'
+    }
+
+    # Test case where all required parameters are present
+    try:
+        check_required_by({'param1': 'param2'}, parameters)
+    except TypeError:
+        assert False, "Exception raised unexpectedly"
+
+    # Test case where a required parameter is missing
+    try:
+        check_required_by(requirements, parameters)
+        assert False, "Expected TypeError not raised"
+    except TypeError as e:
+        assert str(e) == "missing parameter(s) required by 'param1': param4", f"Unexpected error message: {e}"
+
+    # Test case where multiple required parameters are missing
+    try:
+        check_required_by({'param1': ['param
+
+# Generated at 2024-05-31 01:28:28.937890
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "someint is 99 but all of the following are missing: string_param"
+
+    # Test case where the condition is not met
+   
+
+# Generated at 2024-05-31 01:28:32.635172
+```python
+    assert safe_eval("1 + 1") == 2
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+    assert safe_eval("True") == True
+    assert safe_eval("None") == None
+    assert safe_eval("1 + 1", include_exceptions=True) == ("1 + 1", None)
+    assert safe_eval("{'key': 'value'}", include_exceptions=True) == ({'key': 'value'}, None)
+    assert safe_eval("[1, 2, 3]", include_exceptions=True) == ([1, 2, 3], None)
+    assert safe_eval("True", include_exceptions=True) == (True, None)
+    assert safe_eval("None", include_exceptions=True) == (None, None)
+    assert safe
+
+# Generated at 2024-05-31 01:28:36.171869
+```python
+    assert safe_eval("1 + 1") == 2
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+    assert safe_eval("True") == True
+    assert safe_eval("None") == None
+    assert safe_eval("1 + 1", include_exceptions=True) == ("1 + 1", None)
+    assert safe_eval("{'key': 'value'}", include_exceptions=True) == ({'key': 'value'}, None)
+    assert safe_eval("[1, 2, 3]", include_exceptions=True) == ([1, 2, 3], None)
+    assert safe_eval("True", include_exceptions=True) == (True, None)
+    assert safe_eval("None", include_exceptions=True) == (None, None)
+    assert safe
+
+# Generated at 2024-05-31 01:28:51.278029
+```python
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError:
+        assert False, "check_required_if raised TypeError unexpectedly!"
+
+    # Test case where a required parameter is missing
+    parameters_missing = {
+        'state': 'present',
+        'someint': 99
+    }
+
+    try:
+        check_required_if(requirements, parameters_missing)
+    except TypeError as e:
+        assert "someint is 99 but all of the following are missing: bool_param, string_param" in str(e)
+
+    # Test case where one of the required parameters is present
+   
+
+# Generated at 2024-05-31 01:28:55.288712
+```python
+    assert check_type_float(3.14) == 3.14
+    assert check_type_float(10) == 10.0
+    assert check_type_float("2.718") == 2.718
+    assert check_type_float(b"1.618") == 1.618
+
+    try:
+        check_type_float("not_a_float")
+    except TypeError as e:
+        assert str(e) == "<class 'str'> cannot be converted to a float"
+
+    try:
+        check_type_float([1, 2, 3])
+    except TypeError as e:
+        assert str(e) == "<class 'list'> cannot be converted to a float"
+```
+
+# Generated at 2024-05-31 01:28:58.697988
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError
+
+# Generated at 2024-05-31 01:29:02.310865
+```python
+    assert safe_eval("1 + 1") == 2
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+    assert safe_eval("True") == True
+    assert safe_eval("None") == None
+    assert safe_eval("1 + 1", include_exceptions=True) == ("1 + 1", None)
+    assert safe_eval("{'key': 'value'}", include_exceptions=True) == ({'key': 'value'}, None)
+    assert safe_eval("[1, 2, 3]", include_exceptions=True) == ([1, 2, 3], None)
+    assert safe_eval("True", include_exceptions=True) == (True, None)
+    assert safe_eval("None", include_exceptions=True) == (None, None)
+    assert safe
+
+# Generated at 2024-05-31 01:29:06.674230
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where 'state' is 'present' but 'path' is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "state is present but any of the following are missing: path"
+
+   
+
+# Generated at 2024-05-31 01:29:10.871778
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': False},
+        'param2': {'required': False},
+    }
+    parameters = {}
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+
+
+# Generated at 2024-05-31 01:29:14.258390
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    # Test case where at least one term is present
+    terms = [['param1', 'param4'], ['param2', 'param5']]
+    assert check_required_one_of(terms, parameters) == []
+
+    # Test case where none of the terms are present
+    terms = [['param4', 'param5'], ['param6', 'param7']]
+    try:
+        check_required_one_of(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "one of the following is required: param4, param5"
+
+    # Test case with options_context
+    terms = [['param4', 'param5']]
+    options_context = ['context1', 'context2']
+    try:
+        check_required_one_of(terms, parameters, options_context)
+    except
+
+# Generated at 2024-05-31 01:29:17.277673
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {}
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param1, param2"
+
+
+# Generated at 2024-05-31 01:29:19.296091
+```python
+    assert check_type_bits('1Kb') == 1024
+    assert check_type_bits('1Mb') == 1048576
+    assert check_type_bits('1Gb') == 1073741824
+    assert check_type_bits('1Tb') == 1099511627776
+    assert check_type_bits('1Pb') == 1125899906842624
+
+    try:
+        check_type_bits('invalid')
+    except TypeError as e:
+        assert str(e) == "<class 'str'> cannot be converted to a Bit value"
+
+    try:
+        check_type_bits(123)
+    except TypeError as e:
+        assert str(e) == "<class 'int'> cannot be converted to a Bit value"
+```
+
+# Generated at 2024-05-31 01:29:22.951538
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': False},
+        'param2': {'required': False},
+    }
+    parameters = {
+        'param1': 'value1',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec =
+
+# Generated at 2024-05-31 01:29:36.560460
+```python
+    assert safe_eval("1 + 1") == 2
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+    assert safe_eval("True") == True
+    assert safe_eval("None") == None
+    assert safe_eval("1 + 1", include_exceptions=True) == ("1 + 1", None)
+    assert safe_eval("{'key': 'value'}", include_exceptions=True) == ({'key': 'value'}, None)
+    assert safe_eval("[1, 2, 3]", include_exceptions=True) == ([1, 2, 3], None)
+    assert safe_eval("True", include_exceptions=True) == (True, None)
+    assert safe_eval("None", include_exceptions=True) == (None, None)
+    assert safe
+
+# Generated at 2024-05-31 01:29:39.436288
+
+    assert safe_eval("1 + 1") == 2
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+    assert safe_eval("1 + 1", include_exceptions=True) == (2, None)
+    assert safe_eval("{'key': 'value'}", include_exceptions=True) == ({'key': 'value'}, None)
+    assert safe_eval("[1, 2, 3]", include_exceptions=True) == ([1, 2, 3], None)
+    assert safe_eval("import os") == "import os"
+    assert safe_eval("import os", include_exceptions=True) == ("import os", None)
+    assert safe_eval("os.system('ls')") == "os.system('ls')"
+    assert safe_eval("os.system('ls')", include
+
+# Generated at 2024-05-31 01:29:42.918546
+```python
+    assert safe_eval("1 + 1") == 2
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+    assert safe_eval("True") == True
+    assert safe_eval("None") == None
+    assert safe_eval("1 + 1", include_exceptions=True) == ("1 + 1", None)
+    assert safe_eval("{'key': 'value'}", include_exceptions=True) == ({'key': 'value'}, None)
+    assert safe_eval("[1, 2, 3]", include_exceptions=True) == ([1, 2, 3], None)
+    assert safe_eval("True", include_exceptions=True) == (True, None)
+    assert safe_eval("None", include_exceptions=True) == (None, None)
+    assert safe
+
+# Generated at 2024-05-31 01:29:45.569539
+```python
+    assert check_type_bits('1Kb') == 1024
+    assert check_type_bits('1Mb') == 1048576
+    assert check_type_bits('1Gb') == 1073741824
+    assert check_type_bits('1Tb') == 1099511627776
+    assert check_type_bits('1Pb') == 1125899906842624
+
+    try:
+        check_type_bits('invalid')
+    except TypeError as e:
+        assert str(e) == "<class 'str'> cannot be converted to a Bit value"
+
+    try:
+        check_type_bits(123)
+    except TypeError as e:
+        assert str(e) == "<class 'int'> cannot be converted to a Bit value"
+```
+
+# Generated at 2024-05-31 01:29:49.083233
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {}
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing
+
+# Generated at 2024-05-31 01:29:52.590607
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    requirements = {
+        'param1': ['param2', 'param4'],
+        'param3': 'param5'
+    }
+
+    # Test case where all required parameters are present
+    try:
+        check_required_by({'param1': 'param2'}, parameters)
+    except TypeError:
+        assert False, "Exception should not be raised when required parameters are present"
+
+    # Test case where some required parameters are missing
+    try:
+        check_required_by(requirements, parameters)
+        assert False, "Exception should be raised when required parameters are missing"
+    except TypeError as e:
+        assert str(e) == "missing parameter(s) required by 'param1': param4", f"Unexpected error message: {e}"
+
+    # Test case where no requirements are provided
+    assert check
+
+# Generated at 2024-05-31 01:29:55.648739
+```python
+    assert check_type_bits('1Kb') == 1024
+    assert check_type_bits('1Mb') == 1048576
+    assert check_type_bits('1Gb') == 1073741824
+    assert check_type_bits('1Tb') == 1099511627776
+    assert check_type_bits('1Pb') == 1125899906842624
+
+    try:
+        check_type_bits('invalid')
+    except TypeError as e:
+        assert str(e) == "<class 'str'> cannot be converted to a Bit value"
+
+    try:
+        check_type_bits(123)
+    except TypeError as e:
+        assert str(e) == "<class 'int'> cannot be converted to a Bit value"
+```
+
+# Generated at 2024-05-31 01:29:59.735900
+```python
+    assert safe_eval("1 + 1") == 2
+    assert safe_eval("{'key': 'value'}") == {'key': 'value'}
+    assert safe_eval("[1, 2, 3]") == [1, 2, 3]
+    assert safe_eval("True") == True
+    assert safe_eval("None") == None
+    assert safe_eval("1 + 1", include_exceptions=True) == ("1 + 1", None)
+    assert safe_eval("{'key': 'value'}", include_exceptions=True) == ({'key': 'value'}, None)
+    assert safe_eval("[1, 2, 3]", include_exceptions=True) == ([1, 2, 3], None)
+    assert safe_eval("True", include_exceptions=True) == (True, None)
+    assert safe_eval("None", include_exceptions=True) == (None, None)
+    assert safe
+
+# Generated at 2024-05-31 01:30:07.440458
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError
+
+# Generated at 2024-05-31 01:30:11.090277
+```python
+    # Test with a valid dictionary
+    assert check_type_dict({"key": "value"}) == {"key": "value"}
+
+    # Test with a valid JSON string
+    assert check_type_dict('{"key": "value"}') == {"key": "value"}
+
+    # Test with a valid key=value string
+    assert check_type_dict("key=value") == {"key": "value"}
+
+    # Test with a valid key=value string with multiple pairs
+    assert check_type_dict("key1=value1, key2=value2") == {"key1": "value1", "key2": "value2"}
+
+    # Test with a valid key=value string with spaces
+    assert check_type_dict("key1 = value1, key2 = value2") == {"key1": "value1", "key2": "value2"}
+
+    # Test with an invalid string
+    try:
+        check_type_dict("invalid_string")
+    except TypeError
+
+# Generated at 2024-05-31 01:30:23.820464
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    # Test case where no terms are mutually exclusive
+    terms = [['param1', 'param4'], ['param2', 'param5']]
+    assert check_mutually_exclusive(terms, parameters) == []
+
+    # Test case where terms are mutually exclusive
+    terms = [['param1', 'param2'], ['param3', 'param4']]
+    try:
+        check_mutually_exclusive(terms, parameters)
+    except TypeError as e:
+        assert str(e) == "parameters are mutually exclusive: param1|param2"
+
+    # Test case with options_context
+    terms = [['param1', 'param2'], ['param3', 'param4']]
+    try:
+        check_mutually_exclusive(terms, parameters, options_context=['context1', 'context2'])
+   
+
+# Generated at 2024-05-31 01:30:26.685881
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError
+
+# Generated at 2024-05-31 01:30:30.782947
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all conditions are met
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where 'state' is 'present' but 'path' is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "state is present but any of the following are missing: path"
+
+    #
+
+# Generated at 2024-05-31 01:30:34.030427
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "someint is 99 but all of the following are missing: string_param"
+
+    # Test case where the condition is not met, so
+
+# Generated at 2024-05-31 01:30:38.169431
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "someint is 99 but all of the following are missing: string_param"
+
+    # Test case where the condition is not met, so
+
+# Generated at 2024-05-31 01:30:41.422405
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    requirements = {
+        'param1': ['param2', 'param4'],
+        'param3': 'param5'
+    }
+
+    # Test case where all required parameters are present
+    try:
+        check_required_by({'param1': 'param2'}, parameters)
+    except TypeError:
+        assert False, "Exception raised unexpectedly"
+
+    # Test case where a required parameter is missing
+    try:
+        check_required_by(requirements, parameters)
+        assert False, "Expected TypeError not raised"
+    except TypeError as e:
+        assert str(e) == "missing parameter(s) required by 'param1': param4"
+
+    # Test case where multiple required parameters are missing
+    try:
+        check_required_by({'param1': ['param2', 'param4'], 'param3
+
+# Generated at 2024-05-31 01:30:45.677148
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {}
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing
+
+# Generated at 2024-05-31 01:30:49.128529
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "someint is 99 but all of the following are missing: string_param"
+
+    # Test case where the condition is not met, so
+
+# Generated at 2024-05-31 01:30:52.843230
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "someint is 99 but all of the following are missing: string_param"
+
+    # Test case where the condition is not met, so
+
+# Generated at 2024-05-31 01:30:56.303159
+```python
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3'
+    }
+
+    requirements = {
+        'param1': ['param2', 'param4'],
+        'param3': 'param5'
+    }
+
+    # Test case where all required parameters are present
+    try:
+        check_required_by({'param1': 'param2'}, parameters)
+    except TypeError:
+        assert False, "Exception should not be raised when all required parameters are present"
+
+    # Test case where a required parameter is missing
+    try:
+        check_required_by(requirements, parameters)
+        assert False, "Exception should be raised when a required parameter is missing"
+    except TypeError as e:
+        assert str(e) == "missing parameter(s) required by 'param1': param4", f"Unexpected error message: {e}"
+
+    # Test case where no requirements are provided
+   
+
+# Generated at 2024-05-31 01:31:09.626142
+```python
+    parameters = {'param1': 'value1', 'param2': 'value2'}
+    required_parameters = ['param1', 'param3']
+
+    try:
+        check_missing_parameters(parameters, required_parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {'param1': 'value1', 'param2': 'value2', 'param3': 'value3'}
+    required_parameters = ['param1', 'param3']
+
+    assert check_missing_parameters(parameters, required_parameters) == []
+
+    parameters = {}
+    required_parameters = ['param1']
+
+    try:
+        check_missing_parameters(parameters, required_parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param1"
+
+    parameters = {'param1': 'value1'}
+    required_parameters = []
+
+    assert check_missing_parameters(parameters, required_parameters) == []
+```
+
+# Generated at 2024-05-31 01:31:13.303698
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "someint is 99 but all of the following are missing: string_param"
+
+    # Test case where the condition is not met, so
+
+# Generated at 2024-05-31 01:31:17.112128
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    options_context = ['context1', 'context2']
+
+    # Test case where required parameters are missing
+    try:
+        check_required_arguments(argument_spec, parameters, options_context)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3 found in context1 -> context2"
+
+    # Test case where all required parameters are present
+    parameters['param3'] = 'value3'
+    result = check_required_arguments(argument_spec, parameters, options_context)
+    assert result == []
+
+    # Test case where no required parameters are specified in argument_spec
+    argument_spec = {
+        'param1': {'required': False},
+       
+
+# Generated at 2024-05-31 01:31:20.677822
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': False},
+        'param2': {'required': False},
+    }
+    parameters = {
+        'param1': 'value1',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec =
+
+# Generated at 2024-05-31 01:31:25.237953
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True,
+    }
+    assert check_required_if(requirements, parameters) == [{'parameter': 'someint', 'value': 99, 'requirements': ('bool_param', 'string_param'), 'missing': ['string_param'], 'requires': 'all'}]
+
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'string_param': 'value',
+    }
+    assert check_required_if(requirements, parameters) == [{'parameter': 'someint', 'value': 99, 'requirements': ('bool_param', 'string_param'), 'missing': ['bool_param'], 'requires': 'all'}]
+
+    parameters = {
+        'state
+
+# Generated at 2024-05-31 01:31:28.403595
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError
+
+# Generated at 2024-05-31 01:31:31.545274
+```python
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': False},
+        'param3': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError as e:
+        assert str(e) == "missing required arguments: param3"
+
+    parameters = {
+        'param1': 'value1',
+        'param2': 'value2',
+        'param3': 'value3',
+    }
+    assert check_required_arguments(argument_spec, parameters) == []
+
+    argument_spec = {
+        'param1': {'required': True},
+        'param2': {'required': True},
+    }
+    parameters = {
+        'param1': 'value1',
+    }
+    try:
+        check_required_arguments(argument_spec, parameters)
+    except TypeError
+
+# Generated at 2024-05-31 01:31:35.097876
+```python
+    assert check_type_bytes("1KB") == 1024
+    assert check_type_bytes("1MB") == 1048576
+    assert check_type_bytes("1GB") == 1073741824
+    assert check_type_bytes("1TB") == 1099511627776
+    assert check_type_bytes("1PB") == 1125899906842624
+    assert check_type_bytes("1EB") == 1152921504606846976
+    assert check_type_bytes("1ZB") == 1180591620717411303424
+    assert check_type_bytes("1YB") == 1208925819614629174706176
+    assert check_type_bytes("1024") == 1024
+    assert check_type_bytes("1.5KB") == 1536
+    try:
+        check_type_bytes("invalid")
+    except TypeError as e:
+        assert str(e) == "<class
+
+# Generated at 2024-05-31 01:31:40.005696
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where 'state' is 'present' but 'path' is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "state is present but any of the following are missing: path"
+
+   
+
+# Generated at 2024-05-31 01:31:43.964119
+```python
+    assert check_type_bytes('1KB') == 1024
+    assert check_type_bytes('1MB') == 1048576
+    assert check_type_bytes('1GB') == 1073741824
+    assert check_type_bytes('1TB') == 1099511627776
+    assert check_type_bytes('1PB') == 1125899906842624
+    assert check_type_bytes('1EB') == 1152921504606846976
+    assert check_type_bytes('1ZB') == 1180591620717411303424
+    assert check_type_bytes('1YB') == 1208925819614629174706176
+    assert check_type_bytes('1024') == 1024
+    assert check_type_bytes('1.5KB') == 1536
+    assert check_type_bytes('1.5MB') == 1572864
+    assert check_type_bytes('1.
+
+# Generated at 2024-05-31 01:32:06.684328
+```python
+    assert check_type_float(1.23) == 1.23
+    assert check_type_float("1.23") == 1.23
+    assert check_type_float(1) == 1.0
+    assert check_type_float(b"1.23") == 1.23
+    assert check_type_float("1") == 1.0
+
+    try:
+        check_type_float("abc")
+    except TypeError as e:
+        assert str(e) == "<class 'str'> cannot be converted to a float"
+
+    try:
+        check_type_float({})
+    except TypeError as e:
+        assert str(e) == "<class 'dict'> cannot be converted to a float"
+```
+
+# Generated at 2024-05-31 01:32:10.306231
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all required parameters are present
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where one of the required parameters is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "someint is 99 but all of the following are missing: string_param"
+
+    # Test case where the condition is not met, so
+
+# Generated at 2024-05-31 01:32:14.302168
+```python
+    requirements = [
+        ['state', 'present', ('path',), True],
+        ['someint', 99, ('bool_param', 'string_param')],
+    ]
+
+    # Test case where all conditions are met
+    parameters = {
+        'state': 'present',
+        'path': '/some/path',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    assert check_required_if(requirements, parameters) == []
+
+    # Test case where 'state' is 'present' but 'path' is missing
+    parameters = {
+        'state': 'present',
+        'someint': 99,
+        'bool_param': True,
+        'string_param': 'value'
+    }
+    try:
+        check_required_if(requirements, parameters)
+    except TypeError as e:
+        assert str(e) == "state is present but any of the following are missing: path"
+
+    #

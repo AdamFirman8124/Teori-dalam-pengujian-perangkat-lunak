@@ -1,0 +1,1263 @@
+
+
+# Generated at 2024-05-31 02:05:18.108412
+```python
+    all_fact_subsets = {
+        'network': [BaseFactCollector],
+        'hardware': [BaseFactCollector],
+        'os': [BaseFactCollector],
+    }
+    collector_names = ['network', 'hardware']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 2
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['os']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 1
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['nonexistent']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 0
+```
+
+# Generated at 2024-05-31 02:05:22.284160
+```python
+    class MockCollectorA(BaseFactCollector):
+        name = 'collector_a'
+        _fact_ids = {'fact_a1', 'fact_a2'}
+
+    class MockCollectorB(BaseFactCollector):
+        name = 'collector_b'
+        _fact_ids = {'fact_b1', 'fact_b2'}
+
+    collectors_for_platform = [MockCollectorA, MockCollectorB]
+    fact_id_to_collector_map, aliases_map = build_fact_id_to_collector_map(collectors_for_platform)
+
+    assert 'collector_a' in fact_id_to_collector_map
+    assert 'collector_b' in fact_id_to_collector_map
+    assert 'fact_a1' in fact_id_to_collector_map
+    assert 'fact_a2' in fact_id_to_collector_map
+    assert 'fact_b1' in fact_id_to_collector_map
+    assert 'fact_b2' in fact_id_to_collector_map
+
+    assert fact_id_to_collector_map['
+
+# Generated at 2024-05-31 02:05:26.791748
+```python
+    valid_subsets = frozenset(['all', 'network', 'hardware', 'software'])
+    minimal_gather_subset = frozenset(['min'])
+    aliases_map = defaultdict(set, {
+        'hardware': {'devices', 'dmi'},
+        'software': {'packages', 'services'}
+    })
+    platform_info = {'system': 'Linux'}
+
+    # Test case 1: Default gather_subset
+    assert get_collector_names(valid_subsets, minimal_gather_subset) == {'all', 'min'}
+
+    # Test case 2: Specific gather_subset
+    assert get_collector_names(valid_subsets, minimal_gather_subset, ['network']) == {'network', 'min'}
+
+    # Test case 3: Exclude subset
+    assert get_collector_names(valid_subsets, minimal_gather_subset, ['!network']) == {'all', 'min', 'hardware', 'software'}
+
+    # Test case 4: Include and exclude subsets
+
+
+# Generated at 2024-05-31 02:05:28.672530
+```python
+    all_fact_subsets = {
+        'network': [BaseFactCollector],
+        'hardware': [BaseFactCollector],
+        'os': [BaseFactCollector]
+    }
+    collector_names = {'network', 'os'}
+
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+
+    assert len(selected_classes) == 2
+    assert BaseFactCollector in selected_classes
+```
+
+# Generated at 2024-05-31 02:05:31.765906
+```python
+    all_fact_subsets = {
+        'network': [BaseFactCollector],
+        'hardware': [BaseFactCollector],
+        'os': [BaseFactCollector],
+    }
+    collector_names = ['network', 'hardware']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 2
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['os']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 1
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['nonexistent']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 0
+```
+
+# Generated at 2024-05-31 02:05:35.671074
+```python
+    class MockCollectorA(BaseFactCollector):
+        _platform = 'Linux'
+        name = 'collector_a'
+
+    class MockCollectorB(BaseFactCollector):
+        _platform = 'Windows'
+        name = 'collector_b'
+
+    class MockCollectorC(BaseFactCollector):
+        _platform = 'Generic'
+        name = 'collector_c'
+
+    all_collector_classes = [MockCollectorA, MockCollectorB, MockCollectorC]
+    compat_platforms = [{'system': 'Linux'}, {'system': 'Generic'}]
+
+    result = find_collectors_for_platform(all_collector_classes, compat_platforms)
+    result_names = {collector.name for collector in result}
+
+    assert 'collector_a' in result_names
+    assert 'collector_c' in result_names
+    assert 'collector_b' not in result_names
+
+    compat_platforms = [{'system': 'Windows'}, {'system': 'Generic'}]
+
+    result = find_collectors_for_platform(all_collector_classes,
+
+# Generated at 2024-05-31 02:05:40.192034
+```python
+    class MockCollector(BaseFactCollector):
+        name = 'mock'
+        _fact_ids = {'mock_fact'}
+        required_facts = set()
+
+    class AnotherMockCollector(BaseFactCollector):
+        name = 'another_mock'
+        _fact_ids = {'another_mock_fact'}
+        required_facts = {'mock_fact'}
+
+    all_collector_classes = [MockCollector, AnotherMockCollector]
+    valid_subsets = frozenset(['mock', 'another_mock'])
+    minimal_gather_subset = frozenset(['mock'])
+    gather_subset = ['another_mock']
+    platform_info = {'system': 'Generic'}
+
+    result = collector_classes_from_gather_subset(
+        all_collector_classes=all_collector_classes,
+        valid_subsets=valid_subsets,
+        minimal_gather_subset=minimal_gather_subset,
+        gather_subset=gather_subset,
+        platform_info=platform_info
+    )
+
+    assert result == [MockCollector, AnotherMockCollector], f"Unexpected result
+
+# Generated at 2024-05-31 02:05:43.893574
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': {'fact1', 'fact2'}})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'fact3'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': set()})]
+    }
+    collector_names = ['collector_a', 'collector_b', 'collector_c']
+    
+    expected_output = {
+        'collector_a': {'fact1', 'fact2'},
+        'collector_b': {'fact3'},
+        'collector_c': set()
+    }
+    
+    assert build_dep_data(collector_names, all_fact_subsets) == expected_output
+```
+
+# Generated at 2024-05-31 02:05:47.481222
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where there are multiple unresolved required facts
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector_names, all
+
+# Generated at 2024-05-31 02:05:51.130575
+```python
+    class MockCollectorA(BaseFactCollector):
+        name = 'collector_a'
+        _fact_ids = {'fact_a1', 'fact_a2'}
+
+    class MockCollectorB(BaseFactCollector):
+        name = 'collector_b'
+        _fact_ids = {'fact_b1', 'fact_b2'}
+
+    collectors_for_platform = [MockCollectorA, MockCollectorB]
+    fact_id_to_collector_map, aliases_map = build_fact_id_to_collector_map(collectors_for_platform)
+
+    assert 'collector_a' in fact_id_to_collector_map
+    assert 'collector_b' in fact_id_to_collector_map
+    assert 'fact_a1' in fact_id_to_collector_map
+    assert 'fact_a2' in fact_id_to_collector_map
+    assert 'fact_b1' in fact_id_to_collector_map
+    assert 'fact_b2' in fact_id_to_collector_map
+
+    assert fact_id_to_collector_map['
+
+# Generated at 2024-05-31 02:06:05.279870
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where there are multiple unresolved required facts
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector_names, all
+
+# Generated at 2024-05-31 02:06:09.227795
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where there are multiple unresolved required facts
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector_names, all
+
+# Generated at 2024-05-31 02:06:12.539725
+```python
+    class MockCollectorA(BaseFactCollector):
+        name = 'collector_a'
+        _fact_ids = {'fact_a1', 'fact_a2'}
+
+    class MockCollectorB(BaseFactCollector):
+        name = 'collector_b'
+        _fact_ids = {'fact_b1', 'fact_b2'}
+
+    collectors_for_platform = [MockCollectorA, MockCollectorB]
+    fact_id_to_collector_map, aliases_map = build_fact_id_to_collector_map(collectors_for_platform)
+
+    assert 'collector_a' in fact_id_to_collector_map
+    assert 'collector_b' in fact_id_to_collector_map
+    assert 'fact_a1' in fact_id_to_collector_map
+    assert 'fact_a2' in fact_id_to_collector_map
+    assert 'fact_b1' in fact_id_to_collector_map
+    assert 'fact_b2' in fact_id_to_collector_map
+
+    assert fact_id_to_collector_map['
+
+# Generated at 2024-05-31 02:06:15.383521
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': {'fact1', 'fact2'}})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'fact3'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': set()})]
+    }
+    collector_names = {'collector_a', 'collector_b', 'collector_c'}
+    
+    expected_output = {
+        'collector_a': {'fact1', 'fact2'},
+        'collector_b': {'fact3'},
+        'collector_c': set()
+    }
+    
+    assert build_dep_data(collector_names, all_fact_subsets) == expected_output
+```
+
+# Generated at 2024-05-31 02:06:19.478945
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': {'fact_x'}})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'fact_y'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': set()})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b', 'collector_c', 'fact_x', 'fact_y'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where some required facts are unresolved
+    collector_names = {'collector_a', 'collector_c', 'fact_x'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'fact_y'}
+
+    # Test case where no required facts are resolved
+
+
+# Generated at 2024-05-31 02:06:22.158694
+```python
+    all_fact_subsets = {
+        'network': [BaseFactCollector],
+        'hardware': [BaseFactCollector],
+        'os': [BaseFactCollector],
+    }
+    collector_names = ['network', 'os']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 2
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['network', 'hardware', 'os']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 3
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['network', 'unknown']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 1
+    assert BaseFactCollector in selected_classes
+```
+
+# Generated at 2024-05-31 02:06:25.936197
+```python
+    class MockCollector(BaseFactCollector):
+        name = 'mock'
+        _fact_ids = {'mock_fact'}
+        required_facts = set()
+
+    class AnotherMockCollector(BaseFactCollector):
+        name = 'another_mock'
+        _fact_ids = {'another_mock_fact'}
+        required_facts = {'mock_fact'}
+
+    all_collector_classes = [MockCollector, AnotherMockCollector]
+    valid_subsets = frozenset(['mock', 'another_mock'])
+    minimal_gather_subset = frozenset(['mock'])
+    gather_subset = ['another_mock']
+    platform_info = {'system': 'Generic'}
+
+    result = collector_classes_from_gather_subset(
+        all_collector_classes=all_collector_classes,
+        valid_subsets=valid_subsets,
+        minimal_gather_subset=minimal_gather_subset,
+        gather_subset=gather_subset,
+        platform_info=platform_info
+    )
+
+    assert result == [MockCollector, AnotherMockCollector], f"Unexpected result
+
+# Generated at 2024-05-31 02:06:30.498821
+```python
+    class MockCollectorA(BaseFactCollector):
+        name = 'collector_a'
+        _platform = 'Linux'
+
+    class MockCollectorB(BaseFactCollector):
+        name = 'collector_b'
+        _platform = 'Windows'
+
+    class MockCollectorC(BaseFactCollector):
+        name = 'collector_c'
+        _platform = 'Generic'
+
+    all_collector_classes = [MockCollectorA, MockCollectorB, MockCollectorC]
+    compat_platforms = [{'system': 'Linux'}, {'system': 'Generic'}]
+
+    result = find_collectors_for_platform(all_collector_classes, compat_platforms)
+    result_names = {collector.name for collector in result}
+
+    assert 'collector_a' in result_names
+    assert 'collector_c' in result_names
+    assert 'collector_b' not in result_names
+```
+
+# Generated at 2024-05-31 02:06:34.019747
+```python
+    class MockCollector(BaseFactCollector):
+        name = 'mock'
+        _fact_ids = {'mock_fact'}
+        required_facts = set()
+
+    class AnotherMockCollector(BaseFactCollector):
+        name = 'another_mock'
+        _fact_ids = {'another_mock_fact'}
+        required_facts = {'mock_fact'}
+
+    all_collector_classes = [MockCollector, AnotherMockCollector]
+    valid_subsets = frozenset(['mock', 'another_mock'])
+    minimal_gather_subset = frozenset(['mock'])
+    gather_subset = ['another_mock']
+    platform_info = {'system': 'Generic'}
+
+    result = collector_classes_from_gather_subset(all_collector_classes=all_collector_classes,
+                                                  valid_subsets=valid_subsets,
+                                                  minimal_gather_subset=minimal_gather_subset,
+                                                  gather_subset=gather_subset,
+                                                  platform_info=platform_info)
+
+    assert result == [MockCollector, AnotherMockCollector], f"Unexpected result: {result}"
+
+
+# Generated at 2024-05-31 02:06:37.776737
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where multiple unresolved required facts
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector_names, all_fact_sub
+
+# Generated at 2024-05-31 02:07:10.160718
+```python
+    valid_subsets = frozenset(['all', 'network', 'hardware', 'software'])
+    minimal_gather_subset = frozenset(['min'])
+    aliases_map = defaultdict(set, {
+        'hardware': {'devices', 'dmi'},
+        'software': {'packages', 'services'}
+    })
+    platform_info = {'system': 'Linux'}
+
+    # Test case 1: Default gather_subset
+    result = get_collector_names(valid_subsets=valid_subsets, minimal_gather_subset=minimal_gather_subset)
+    assert result == valid_subsets, f"Expected {valid_subsets}, got {result}"
+
+    # Test case 2: Specific gather_subset
+    gather_subset = ['network', 'hardware']
+    result = get_collector_names(valid_subsets=valid_subsets, minimal_gather_subset=minimal_gather_subset, gather_subset=gather_subset)
+    expected = {'network', 'hardware', 'devices', 'dmi'}
+
+
+# Generated at 2024-05-31 02:07:13.093791
+```python
+    class MockCollectorA(BaseFactCollector):
+        name = 'collector_a'
+        _fact_ids = {'fact_a1', 'fact_a2'}
+
+    class MockCollectorB(BaseFactCollector):
+        name = 'collector_b'
+        _fact_ids = {'fact_b1', 'fact_b2'}
+
+    collectors_for_platform = [MockCollectorA, MockCollectorB]
+    fact_id_to_collector_map, aliases_map = build_fact_id_to_collector_map(collectors_for_platform)
+
+    assert 'collector_a' in fact_id_to_collector_map
+    assert 'collector_b' in fact_id_to_collector_map
+    assert 'fact_a1' in fact_id_to_collector_map
+    assert 'fact_a2' in fact_id_to_collector_map
+    assert 'fact_b1' in fact_id_to_collector_map
+    assert 'fact_b2' in fact_id_to_collector_map
+
+    assert MockCollectorA in fact_id_to
+
+# Generated at 2024-05-31 02:07:16.814308
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where multiple unresolved required facts
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector_names, all_fact_sub
+
+# Generated at 2024-05-31 02:07:23.029752
+```python
+    class MockCollectorA(BaseFactCollector):
+        name = 'collector_a'
+        _fact_ids = {'fact_a1', 'fact_a2'}
+
+    class MockCollectorB(BaseFactCollector):
+        name = 'collector_b'
+        _fact_ids = {'fact_b1', 'fact_b2'}
+
+    collectors_for_platform = [MockCollectorA, MockCollectorB]
+    fact_id_to_collector_map, aliases_map = build_fact_id_to_collector_map(collectors_for_platform)
+
+    assert 'collector_a' in fact_id_to_collector_map
+    assert 'collector_b' in fact_id_to_collector_map
+    assert 'fact_a1' in fact_id_to_collector_map
+    assert 'fact_a2' in fact_id_to_collector_map
+    assert 'fact_b1' in fact_id_to_collector_map
+    assert 'fact_b2' in fact_id_to_collector_map
+
+    assert fact_id_to_collector_map['
+
+# Generated at 2024-05-31 02:07:25.000792
+```python
+    all_fact_subsets = {
+        'network': [BaseFactCollector],
+        'hardware': [BaseFactCollector],
+        'os': [BaseFactCollector],
+    }
+    collector_names = {'network', 'os'}
+
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+
+    assert len(selected_classes) == 2
+    assert BaseFactCollector in selected_classes
+```
+
+# Generated at 2024-05-31 02:07:29.451965
+```python
+    valid_subsets = frozenset(['all', 'network', 'hardware', 'software'])
+    minimal_gather_subset = frozenset(['min'])
+    aliases_map = defaultdict(set, {
+        'hardware': {'devices', 'dmi'},
+        'software': {'packages', 'services'}
+    })
+    platform_info = {'system': 'Linux'}
+
+    # Test case 1: Default gather_subset
+    result = get_collector_names(valid_subsets=valid_subsets, minimal_gather_subset=minimal_gather_subset)
+    assert result == valid_subsets, f"Expected {valid_subsets}, but got {result}"
+
+    # Test case 2: Specific gather_subset
+    gather_subset = ['network', 'hardware']
+    result = get_collector_names(valid_subsets=valid_subsets, minimal_gather_subset=minimal_gather_subset, gather_subset=gather_subset)
+    expected = {'network', 'hardware', 'devices', 'dmi
+
+# Generated at 2024-05-31 02:07:35.025472
+```python
+    all_fact_subsets = {
+        'network': [BaseFactCollector],
+        'hardware': [BaseFactCollector],
+        'os': [BaseFactCollector]
+    }
+    collector_names = ['network', 'hardware']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 2
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['os']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 1
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['network', 'os']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 2
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['unknown']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert
+
+# Generated at 2024-05-31 02:07:44.788937
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': {'fact1', 'fact2'}})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'fact3'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': set()})]
+    }
+    collector_names = ['collector_a', 'collector_b', 'collector_c']
+    
+    expected_output = {
+        'collector_a': {'fact1', 'fact2'},
+        'collector_b': {'fact3'},
+        'collector_c': set()
+    }
+    
+    assert build_dep_data(collector_names, all_fact_subsets) == expected_output
+```
+
+# Generated at 2024-05-31 02:07:49.114474
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where there are multiple unresolved required facts
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector_names, all
+
+# Generated at 2024-05-31 02:07:52.032546
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where multiple unresolved required facts
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector_names, all_fact_sub
+
+# Generated at 2024-05-31 02:08:37.345599
+```python
+    valid_subsets = frozenset(['all', 'network', 'hardware', 'software'])
+    minimal_gather_subset = frozenset(['min'])
+    aliases_map = defaultdict(set, {'hardware': {'devices', 'dmi'}})
+    platform_info = {'system': 'Linux'}
+
+    # Test case 1: Default gather_subset
+    result = get_collector_names(valid_subsets=valid_subsets, minimal_gather_subset=minimal_gather_subset)
+    assert result == valid_subsets, f"Expected {valid_subsets}, but got {result}"
+
+    # Test case 2: Specific gather_subset
+    gather_subset = ['network']
+    result = get_collector_names(valid_subsets=valid_subsets, minimal_gather_subset=minimal_gather_subset, gather_subset=gather_subset)
+    expected = frozenset(['network'])
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+    # Test case 
+
+# Generated at 2024-05-31 02:08:41.355691
+
+    class MockCollectorA(BaseFactCollector):
+        name = 'collector_a'
+        _fact_ids = {'fact_a1', 'fact_a2'}
+
+    class MockCollectorB(BaseFactCollector):
+        name = 'collector_b'
+        _fact_ids = {'fact_b1', 'fact_b2'}
+
+    collectors_for_platform = [MockCollectorA, MockCollectorB]
+    fact_id_to_collector_map, aliases_map = build_fact_id_to_collector_map(collectors_for_platform)
+
+    assert 'collector_a' in fact_id_to_collector_map
+    assert 'collector_b' in fact_id_to_collector_map
+    assert 'fact_a1' in fact_id_to_collector_map
+    assert 'fact_a2' in fact_id_to_collector_map
+    assert 'fact_b1' in fact_id_to_collector_map
+    assert 'fact_b2' in fact_id_to_collector_map
+
+    assert fact_id_to_collector_map['collector_a
+
+# Generated at 2024-05-31 02:08:45.201600
+```python
+    all_fact_subsets = {
+        'network': [BaseFactCollector],
+        'hardware': [BaseFactCollector],
+        'os': [BaseFactCollector]
+    }
+    collector_names = ['network', 'hardware']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 2
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['os']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 1
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['network', 'os']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 2
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['nonexistent']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+   
+
+# Generated at 2024-05-31 02:08:49.533419
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': {'fact_b'}})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'fact_c'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': set()})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b', 'collector_c'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'fact_c'}
+
+    # Test case where no collectors are provided
+    collector_names = set()
+    assert find_unresolved_requires(
+
+# Generated at 2024-05-31 02:08:58.032594
+```python
+    all_fact_subsets = {
+        'network': [BaseFactCollector],
+        'hardware': [BaseFactCollector],
+        'os': [BaseFactCollector],
+    }
+    collector_names = ['network', 'os']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 2
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['network', 'hardware', 'os']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 3
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['network', 'unknown']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 1
+    assert BaseFactCollector in selected_classes
+
+    collector_names = []
+    selected_classes = select_collector_classes(collector_names, all_fact_sub
+
+# Generated at 2024-05-31 02:09:07.317620
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where there are multiple unresolved required facts
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector_names, all
+
+# Generated at 2024-05-31 02:09:16.508629
+```python
+    valid_subsets = frozenset(['all', 'network', 'hardware', 'software'])
+    minimal_gather_subset = frozenset(['min'])
+    aliases_map = defaultdict(set, {
+        'hardware': {'devices', 'dmi'},
+        'software': {'packages', 'services'}
+    })
+    platform_info = {'system': 'Linux'}
+
+    # Test case 1: Default gather_subset
+    result = get_collector_names(valid_subsets=valid_subsets, minimal_gather_subset=minimal_gather_subset)
+    assert result == valid_subsets, f"Expected {valid_subsets}, but got {result}"
+
+    # Test case 2: gather_subset with 'min'
+    result = get_collector_names(valid_subsets=valid_subsets, minimal_gather_subset=minimal_gather_subset, gather_subset=['min'])
+    assert result == minimal_gather_subset, f"Expected {minimal_gather_subset}, but got {result}"
+
+   
+
+# Generated at 2024-05-31 02:09:19.444183
+```python
+    all_fact_subsets = {
+        'network': [BaseFactCollector],
+        'hardware': [BaseFactCollector],
+        'os': [BaseFactCollector],
+    }
+    collector_names = {'network', 'os'}
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 2
+    assert BaseFactCollector in selected_classes
+
+    collector_names = {'hardware'}
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 1
+    assert BaseFactCollector in selected_classes
+
+    collector_names = {'nonexistent'}
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 0
+```
+
+# Generated at 2024-05-31 02:09:28.245720
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': {'fact1', 'fact2'}})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'fact3'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': set()})]
+    }
+    collector_names = ['collector_a', 'collector_b', 'collector_c']
+    
+    expected_output = {
+        'collector_a': {'fact1', 'fact2'},
+        'collector_b': {'fact3'},
+        'collector_c': set()
+    }
+    
+    assert build_dep_data(collector_names, all_fact_subsets) == expected_output
+```
+
+# Generated at 2024-05-31 02:09:29.981851
+```python
+    all_fact_subsets = {
+        'network': [BaseFactCollector],
+        'hardware': [BaseFactCollector],
+        'os': [BaseFactCollector],
+    }
+    collector_names = {'network', 'os'}
+
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+
+    assert len(selected_classes) == 2
+    assert BaseFactCollector in selected_classes
+```
+
+# Generated at 2024-05-31 02:11:01.488110
+```python
+    all_fact_subsets = {
+        'network': [BaseFactCollector],
+        'hardware': [BaseFactCollector],
+        'os': [BaseFactCollector]
+    }
+    collector_names = ['network', 'hardware']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 2
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['os']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 1
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['network', 'os']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert len(selected_classes) == 2
+    assert BaseFactCollector in selected_classes
+
+    collector_names = ['invalid']
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+    assert
+
+# Generated at 2024-05-31 02:11:05.390761
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_b', 'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where some required facts are unresolved
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where multiple required facts are unresolved
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector
+
+# Generated at 2024-05-31 02:11:09.081204
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where multiple unresolved required facts
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector_names, all_fact_sub
+
+# Generated at 2024-05-31 02:11:13.710656
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where multiple unresolved required facts
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector_names, all_fact_sub
+
+# Generated at 2024-05-31 02:11:18.239508
+```python
+    class MockCollectorA(BaseFactCollector):
+        name = 'collector_a'
+        _fact_ids = {'fact_a1', 'fact_a2'}
+
+    class MockCollectorB(BaseFactCollector):
+        name = 'collector_b'
+        _fact_ids = {'fact_b1', 'fact_b2'}
+
+    collectors_for_platform = [MockCollectorA, MockCollectorB]
+    fact_id_to_collector_map, aliases_map = build_fact_id_to_collector_map(collectors_for_platform)
+
+    assert 'collector_a' in fact_id_to_collector_map
+    assert 'collector_b' in fact_id_to_collector_map
+    assert 'fact_a1' in fact_id_to_collector_map
+    assert 'fact_a2' in fact_id_to_collector_map
+    assert 'fact_b1' in fact_id_to_collector_map
+    assert 'fact_b2' in fact_id_to_collector_map
+
+    assert fact_id_to_collector_map['
+
+# Generated at 2024-05-31 02:11:22.239854
+```python
+    class MockCollectorA(BaseFactCollector):
+        name = 'collector_a'
+        _fact_ids = {'fact_a1', 'fact_a2'}
+
+    class MockCollectorB(BaseFactCollector):
+        name = 'collector_b'
+        _fact_ids = {'fact_b1', 'fact_b2'}
+
+    collectors_for_platform = [MockCollectorA, MockCollectorB]
+    fact_id_to_collector_map, aliases_map = build_fact_id_to_collector_map(collectors_for_platform)
+
+    assert 'collector_a' in fact_id_to_collector_map
+    assert 'collector_b' in fact_id_to_collector_map
+    assert 'fact_a1' in fact_id_to_collector_map
+    assert 'fact_a2' in fact_id_to_collector_map
+    assert 'fact_b1' in fact_id_to_collector_map
+    assert 'fact_b2' in fact_id_to_collector_map
+
+    assert fact_id_to_collector_map['
+
+# Generated at 2024-05-31 02:11:25.173932
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where multiple unresolved required facts
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector_names, all_fact_sub
+
+# Generated at 2024-05-31 02:11:30.032650
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where there are multiple unresolved required facts
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector_names, all
+
+# Generated at 2024-05-31 02:11:33.166427
+```python
+    class MockCollectorA(BaseFactCollector):
+        name = 'collector_a'
+        _fact_ids = {'fact_a1', 'fact_a2'}
+
+    class MockCollectorB(BaseFactCollector):
+        name = 'collector_b'
+        _fact_ids = {'fact_b1', 'fact_b2'}
+
+    collectors_for_platform = [MockCollectorA, MockCollectorB]
+    fact_id_to_collector_map, aliases_map = build_fact_id_to_collector_map(collectors_for_platform)
+
+    assert 'collector_a' in fact_id_to_collector_map
+    assert 'collector_b' in fact_id_to_collector_map
+    assert 'fact_a1' in fact_id_to_collector_map
+    assert 'fact_a2' in fact_id_to_collector_map
+    assert 'fact_b1' in fact_id_to_collector_map
+    assert 'fact_b2' in fact_id_to_collector_map
+
+    assert fact_id_to_collector_map['
+
+# Generated at 2024-05-31 02:11:36.857309
+```python
+    class MockCollectorA(BaseFactCollector):
+        name = 'collector_a'
+        _fact_ids = {'fact_a1', 'fact_a2'}
+
+    class MockCollectorB(BaseFactCollector):
+        name = 'collector_b'
+        _fact_ids = {'fact_b1', 'fact_b2'}
+
+    collectors_for_platform = [MockCollectorA, MockCollectorB]
+    fact_id_to_collector_map, aliases_map = build_fact_id_to_collector_map(collectors_for_platform)
+
+    assert 'collector_a' in fact_id_to_collector_map
+    assert 'collector_b' in fact_id_to_collector_map
+    assert 'fact_a1' in fact_id_to_collector_map
+    assert 'fact_a2' in fact_id_to_collector_map
+    assert 'fact_b1' in fact_id_to_collector_map
+    assert 'fact_b2' in fact_id_to_collector_map
+
+    assert fact_id_to_collector_map['
+
+# Generated at 2024-05-31 02:13:48.794241
+
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': {'fact_b', 'fact_c'}})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'fact_d'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_d': [type('CollectorD', (BaseFactCollector,), {'required_facts': {'fact_e'}})],
+    }
+    collector_names = {'collector_a', 'collector_b', 'collector_c', 'collector_d'}
+    expected_output = {
+        'collector_a': {'fact_b', 'fact_c'},
+        'collector_b': {'fact_d'},
+        'collector_c': set(),
+        'collector_d': {'fact_e'},
+    }
+    assert build_dep_data(collector_names, all_fact_subsets) == expected_output
+
+# Generated at 2024-05-31 02:13:54.293890
+
+    class MockCollectorA(BaseFactCollector):
+        name = 'collector_a'
+        _fact_ids = {'fact_a1', 'fact_a2'}
+
+    class MockCollectorB(BaseFactCollector):
+        name = 'collector_b'
+        _fact_ids = {'fact_b1', 'fact_b2'}
+
+    collectors_for_platform = [MockCollectorA, MockCollectorB]
+    fact_id_to_collector_map, aliases_map = build_fact_id_to_collector_map(collectors_for_platform)
+
+    assert 'collector_a' in fact_id_to_collector_map
+    assert 'collector_b' in fact_id_to_collector_map
+    assert 'fact_a1' in fact_id_to_collector_map
+    assert 'fact_a2' in fact_id_to_collector_map
+    assert 'fact_b1' in fact_id_to_collector_map
+    assert 'fact_b2' in fact_id_to_collector_map
+
+    assert fact_id_to_collector_map['collector_a
+
+# Generated at 2024-05-31 02:13:58.900602
+
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': {'fact_b', 'fact_c'}})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'fact_d'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_d': [type('CollectorD', (BaseFactCollector,), {'required_facts': {'fact_e'}})],
+    }
+    collector_names = {'collector_a', 'collector_b', 'collector_c'}
+
+    expected_output = {
+        'collector_a': {'fact_b', 'fact_c'},
+        'collector_b': {'fact_d'},
+        'collector_c': set(),
+    }
+
+    assert build_dep_data(collector_names, all_fact_subsets) == expected_output
+
+test_build_dep_data()
+
+# Generated at 2024-05-31 02:14:02.112879
+```python
+    class MockCollectorA(BaseFactCollector):
+        name = 'collector_a'
+        _fact_ids = {'fact_a1', 'fact_a2'}
+
+    class MockCollectorB(BaseFactCollector):
+        name = 'collector_b'
+        _fact_ids = {'fact_b1', 'fact_b2'}
+
+    collectors_for_platform = [MockCollectorA, MockCollectorB]
+    fact_id_to_collector_map, aliases_map = build_fact_id_to_collector_map(collectors_for_platform)
+
+    assert 'collector_a' in fact_id_to_collector_map
+    assert 'collector_b' in fact_id_to_collector_map
+    assert 'fact_a1' in fact_id_to_collector_map
+    assert 'fact_a2' in fact_id_to_collector_map
+    assert 'fact_b1' in fact_id_to_collector_map
+    assert 'fact_b2' in fact_id_to_collector_map
+
+    assert fact_id_to_collector_map['
+
+# Generated at 2024-05-31 02:14:05.785093
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where there are multiple unresolved required facts
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector_names, all
+
+# Generated at 2024-05-31 02:14:09.146530
+```python
+    class MockCollectorA(BaseFactCollector):
+        name = 'collector_a'
+        _fact_ids = {'fact_a1', 'fact_a2'}
+
+    class MockCollectorB(BaseFactCollector):
+        name = 'collector_b'
+        _fact_ids = {'fact_b1', 'fact_b2'}
+
+    collectors_for_platform = [MockCollectorA, MockCollectorB]
+    fact_id_to_collector_map, aliases_map = build_fact_id_to_collector_map(collectors_for_platform)
+
+    assert 'collector_a' in fact_id_to_collector_map
+    assert 'collector_b' in fact_id_to_collector_map
+    assert 'fact_a1' in fact_id_to_collector_map
+    assert 'fact_a2' in fact_id_to_collector_map
+    assert 'fact_b1' in fact_id_to_collector_map
+    assert 'fact_b2' in fact_id_to_collector_map
+
+    assert fact_id_to_collector_map['
+
+# Generated at 2024-05-31 02:14:12.913814
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where there are multiple unresolved required facts
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector_names, all
+
+# Generated at 2024-05-31 02:14:14.525276
+```python
+    all_fact_subsets = {
+        'network': [BaseFactCollector],
+        'hardware': [BaseFactCollector],
+        'os': [BaseFactCollector],
+    }
+    collector_names = {'network', 'os'}
+
+    selected_classes = select_collector_classes(collector_names, all_fact_subsets)
+
+    assert len(selected_classes) == 2
+    assert BaseFactCollector in selected_classes
+```
+
+# Generated at 2024-05-31 02:14:17.476930
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_b', 'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where multiple required facts are unresolved
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector
+
+# Generated at 2024-05-31 02:14:20.700904
+```python
+    all_fact_subsets = {
+        'collector_a': [type('CollectorA', (BaseFactCollector,), {'required_facts': set()})],
+        'collector_b': [type('CollectorB', (BaseFactCollector,), {'required_facts': {'collector_a'}})],
+        'collector_c': [type('CollectorC', (BaseFactCollector,), {'required_facts': {'collector_d'}})],
+    }
+
+    # Test case where all required facts are resolved
+    collector_names = {'collector_a', 'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == set()
+
+    # Test case where there are unresolved required facts
+    collector_names = {'collector_b'}
+    assert find_unresolved_requires(collector_names, all_fact_subsets) == {'collector_a'}
+
+    # Test case where multiple unresolved required facts
+    collector_names = {'collector_c'}
+    assert find_unresolved_requires(collector_names, all_fact_sub

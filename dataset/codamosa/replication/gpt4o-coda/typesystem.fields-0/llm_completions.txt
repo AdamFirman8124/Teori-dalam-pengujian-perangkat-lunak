@@ -1,0 +1,2086 @@
+
+
+# Generated at 2024-06-04 19:38:23.659841
+```python
+    field1 = String()
+    field2 = Integer()
+    union_field = Union(any_of=[field1, field2])
+
+    # Test with a valid string
+    assert union_field.validate("test") == "test"
+
+    # Test with a valid integer
+    assert union_field.validate(123) == 123
+
+    # Test with an invalid type
+    try:
+        union_field.validate(12.34)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Did not match any valid type.", code="union")]
+
+    # Test with None when allow_null is False
+    try:
+        union_field.validate(None)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="May not be null.", code="null")]
+
+    # Test with None when allow_null is True
+    union_field_with_null = Union(any_of=[field1, field2, Null()])
+    assert union_field_with_null
+
+# Generated at 2024-06-04 19:38:27.860461
+```python
+    array_field = Array(items=Field(), min_items=1, max_items=3, unique_items=True)
+
+    # Test case: valid array
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case: array with fewer items than min_items
+    try:
+        array_field.validate([])
+    except ValidationError as e:
+        assert str(e) == "Must not be empty."
+
+    # Test case: array with more items than max_items
+    try:
+        array_field.validate([1, 2, 3, 4])
+    except ValidationError as e:
+        assert str(e) == "Must have no more than 3 items."
+
+    # Test case: array with non-unique items
+    try:
+        array_field.validate([1, 2, 2])
+    except ValidationError as e:
+        assert str(e) == "Items must be unique."
+
+
+
+# Generated at 2024-06-04 19:38:32.672034
+```python
+    choice_field = Choice(choices=["red", "green", "blue"])
+
+    # Test valid choices
+    assert choice_field.validate("red") == "red"
+    assert choice_field.validate("green") == "green"
+    assert choice_field.validate("blue") == "blue"
+
+    # Test invalid choice
+    try:
+        choice_field.validate("yellow")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+
+    # Test null value when allow_null is True
+    choice_field.allow_null = True
+    assert choice_field.validate(None) is None
+
+    # Test null value when allow_null is False
+    choice_field.allow_null = False
+    try:
+        choice_field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+
+    # Test empty string when allow_null is True and strict is False
+    choice_field.allow_null = True
+    assert choice_field.validate
+
+# Generated at 2024-06-04 19:38:36.940030
+```python
+    array_field = Array(items=Field(), min_items=1, max_items=3, unique_items=True)
+
+    # Test case 1: Valid array
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 2: Null value when allow_null is True
+    array_field.allow_null = True
+    assert array_field.validate(None) is None
+
+    # Test case 3: Null value when allow_null is False
+    array_field.allow_null = False
+    try:
+        array_field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+
+    # Test case 4: Invalid type
+    try:
+        array_field.validate("not an array")
+    except ValidationError as e:
+        assert str(e) == "Must be an array."
+
+    # Test case 5: Less than min_items
+    try:
+
+
+# Generated at 2024-06-04 19:38:42.217083
+```python
+    field1 = String()
+    field2 = Integer()
+    union_field = Union(any_of=[field1, field2])
+
+    # Test with a valid string
+    assert union_field.validate("test") == "test"
+
+    # Test with a valid integer
+    assert union_field.validate(123) == 123
+
+    # Test with an invalid type
+    try:
+        union_field.validate(12.34)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Did not match any valid type.", code="union")]
+
+    # Test with None when allow_null is False
+    try:
+        union_field.validate(None)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="May not be null.", code="null")]
+
+    # Test with None when allow_null is True
+    union_field_with_null = Union(any_of=[field1, field2, Null()])
+    assert union_field_with_null
+
+# Generated at 2024-06-04 19:38:49.880379
+```python
+    field1 = String()
+    field2 = Integer()
+    union_field = Union(any_of=[field1, field2])
+
+    # Test with a valid string
+    assert union_field.validate("test") == "test"
+
+    # Test with a valid integer
+    assert union_field.validate(123) == 123
+
+    # Test with an invalid type
+    try:
+        union_field.validate(12.34)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Did not match any valid type.", code="union")]
+
+    # Test with None when allow_null is False
+    try:
+        union_field.validate(None)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="May not be null.", code="null")]
+
+    # Test with None when allow_null is True
+    union_field_with_null = Union(any_of=[field1, field2, Null()])
+    assert union_field_with_null
+
+# Generated at 2024-06-04 19:38:53.526271
+```python
+    field = Field(title="Test Field", description="A test field")
+
+    class TestField(Field):
+        def validate(self, value: typing.Any, *, strict: bool = False) -> typing.Any:
+            if not isinstance(value, str):
+                raise ValidationError("Invalid type")
+            return value
+
+    test_field = TestField(title="Test Field", description="A test field")
+
+    # Test with valid value
+    result = test_field.validate_or_error("valid")
+    assert result.value == "valid"
+    assert result.error is None
+
+    # Test with invalid value
+    result = test_field.validate_or_error(123)
+    assert result.value is None
+    assert isinstance(result.error, ValidationError)
+    assert result.error.text == "Invalid type"
+```
+
+# Generated at 2024-06-04 19:38:56.490247
+```python
+    field1 = Field(title="Field1", description="First field")
+    field2 = Field(title="Field2", description="Second field")
+    union_field = field1 | field2
+
+    assert isinstance(union_field, Union)
+    assert union_field.any_of == [field1, field2]
+
+    field3 = Field(title="Field3", description="Third field")
+    union_field2 = union_field | field3
+
+    assert isinstance(union_field2, Union)
+    assert union_field2.any_of == [field1, field2, field3]
+```
+
+# Generated at 2024-06-04 19:39:01.001708
+```python
+    choice_field = Choice(choices=["option1", "option2", "option3"])
+
+    # Test valid choices
+    assert choice_field.validate("option1") == "option1"
+    assert choice_field.validate("option2") == "option2"
+    assert choice_field.validate("option3") == "option3"
+
+    # Test invalid choice
+    try:
+        choice_field.validate("invalid_option")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+
+    # Test null value when allow_null is True
+    choice_field.allow_null = True
+    assert choice_field.validate(None) is None
+
+    # Test null value when allow_null is False
+    choice_field.allow_null = False
+    try:
+        choice_field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+
+    # Test empty string when allow_null is True and strict is False
+    choice_field
+
+# Generated at 2024-06-04 19:39:05.404200
+```python
+    # Test with no parameters
+    array_field = Array()
+    assert array_field.items is None
+    assert array_field.additional_items is False
+    assert array_field.min_items is None
+    assert array_field.max_items is None
+    assert array_field.unique_items is False
+
+    # Test with items as a single Field
+    item_field = Field()
+    array_field = Array(items=item_field)
+    assert array_field.items == item_field
+    assert array_field.additional_items is False
+    assert array_field.min_items is None
+    assert array_field.max_items is None
+    assert array_field.unique_items is False
+
+    # Test with items as a list of Fields
+    item_fields = [Field(), Field()]
+    array_field = Array(items=item_fields)
+    assert array_field.items == item_fields
+    assert array_field.additional_items is False
+    assert array_field.min_items == len(item_fields)
+    assert array_field.max_items == len(item_fields)
+   
+
+# Generated at 2024-06-04 19:39:33.610667
+```python
+    field = String()
+
+    # Test valid string
+    assert field.validate("hello") == "hello"
+
+    # Test None with allow_null
+    field = String(allow_null=True)
+    assert field.validate(None) is None
+
+    # Test None without allow_null
+    field = String()
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert e.code == "null"
+
+    # Test empty string with allow_blank
+    field = String(allow_blank=True)
+    assert field.validate("") == ""
+
+    # Test empty string without allow_blank
+    field = String()
+    try:
+        field.validate("")
+    except ValidationError as e:
+        assert e.code == "blank"
+
+    # Test max_length
+    field = String(max_length=5)
+    assert field.validate("hello") == "hello"
+    try:
+        field.validate("hello world")
+    except ValidationError as e:
+        assert e.code == "max_length"
+
+
+
+# Generated at 2024-06-04 19:39:41.649773
+```python
+    # Test case: value is None and allow_null is True
+    field = Choice(choices=["a", "b", "c"], allow_null=True)
+    assert field.validate(None) is None
+
+    # Test case: value is None and allow_null is False
+    field = Choice(choices=["a", "b", "c"], allow_null=False)
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+
+    # Test case: value is in choices
+    field = Choice(choices=["a", "b", "c"])
+    assert field.validate("a") == "a"
+
+    # Test case: value is not in choices
+    field = Choice(choices=["a", "b", "c"])
+    try:
+        field.validate("d")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+
+    # Test case:
+
+# Generated at 2024-06-04 19:39:47.086792
+```python
+    field = Choice(choices=["red", "green", "blue"])
+
+    # Test valid choices
+    assert field.validate("red") == "red"
+    assert field.validate("green") == "green"
+    assert field.validate("blue") == "blue"
+
+    # Test invalid choice
+    try:
+        field.validate("yellow")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+
+    # Test null value when allow_null is True
+    field.allow_null = True
+    assert field.validate(None) is None
+
+    # Test null value when allow_null is False
+    field.allow_null = False
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+
+    # Test empty string when allow_null is True and strict is False
+    field.allow_null = True
+    assert field.validate("", strict=False) is None
+
+    # Test empty
+
+# Generated at 2024-06-04 19:39:50.372318
+```python
+    # Test case 1: Valid array with no constraints
+    array_field = Array()
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 2: Valid array with min_items constraint
+    array_field = Array(min_items=2)
+    assert array_field.validate([1, 2]) == [1, 2]
+
+    # Test case 3: Invalid array with min_items constraint
+    array_field = Array(min_items=2)
+    try:
+        array_field.validate([1])
+    except ValidationError as e:
+        assert str(e) == "Must have at least 2 items."
+
+    # Test case 4: Valid array with max_items constraint
+    array_field = Array(max_items=3)
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 5: Invalid
+
+# Generated at 2024-06-04 19:39:54.055463
+```python
+    choices = [("a", "Option A"), ("b", "Option B")]
+    field = Choice(choices=choices)
+    assert field.choices == choices
+    assert field.allow_null is False
+
+    # Test with allow_null
+    field = Choice(choices=choices, allow_null=True)
+    assert field.allow_null is True
+
+    # Test with invalid choices
+    try:
+        field = Choice(choices=["a", ("b", "Option B")])
+    except AssertionError:
+        pass
+    else:
+        assert False, "Expected an assertion error for invalid choices"
+
+    # Test with empty choices
+    field = Choice()
+    assert field.choices == []
+```
+
+# Generated at 2024-06-04 19:39:57.764708
+```python
+    field1 = Text()
+    field2 = Date()
+    union_field = Union(any_of=[field1, field2])
+
+    # Test with valid Text input
+    assert union_field.validate("some text") == "some text"
+
+    # Test with valid Date input
+    assert union_field.validate("2023-10-01") == "2023-10-01"
+
+    # Test with invalid input
+    try:
+        union_field.validate(123)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Did not match any valid type.", code="union")]
+
+    # Test with None input when allow_null is False
+    try:
+        union_field.validate(None)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="May not be null.", code="null")]
+
+    # Test with None input when allow_null is True
+    union_field_with_null = Union(any_of=[field1,
+
+# Generated at 2024-06-04 19:40:01.603097
+```python
+    field = String()
+
+    # Test valid string
+    assert field.validate("hello") == "hello"
+
+    # Test None with allow_null
+    field = String(allow_null=True)
+    assert field.validate(None) is None
+
+    # Test None without allow_null
+    field = String()
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert e.code == "null"
+
+    # Test empty string with allow_blank
+    field = String(allow_blank=True)
+    assert field.validate("") == ""
+
+    # Test empty string without allow_blank
+    field = String()
+    try:
+        field.validate("")
+    except ValidationError as e:
+        assert e.code == "blank"
+
+    # Test max_length
+    field = String(max_length=5)
+    assert field.validate("hello") == "hello"
+    try:
+        field.validate("hello world")
+    except ValidationError as e:
+        assert e.code == "max_length"
+
+
+
+# Generated at 2024-06-04 19:40:06.194664
+```python
+    field = Field(title="Test Field", description="A test field", default="default_value")
+
+    # Test with valid value
+    class TestField(Field):
+        def validate(self, value: typing.Any, *, strict: bool = False) -> typing.Any:
+            if not isinstance(value, str):
+                raise ValidationError("Invalid type")
+            return value
+
+    test_field = TestField(title="Test Field", description="A test field")
+    result = test_field.validate_or_error("valid_value")
+    assert result.value == "valid_value"
+    assert result.error is None
+
+    # Test with invalid value
+    result = test_field.validate_or_error(123)
+    assert result.value is None
+    assert isinstance(result.error, ValidationError)
+    assert result.error.text == "Invalid type"
+
+    # Test with default value
+    result = field.validate_or_error(None)
+    assert result.value == "default_value"
+    assert result.error is None
+
+    #
+
+# Generated at 2024-06-04 19:40:14.626994
+```python
+    # Test case 1: Valid object with required properties
+    schema = Object(properties={"name": String(), "age": Integer()}, required=["name"])
+    value = {"name": "John", "age": 30}
+    assert schema.validate(value) == value
+
+    # Test case 2: Missing required property
+    schema = Object(properties={"name": String(), "age": Integer()}, required=["name"])
+    value = {"age": 30}
+    try:
+        schema.validate(value)
+    except ValidationError as e:
+        assert str(e) == "This field is required."
+
+    # Test case 3: Invalid property type
+    schema = Object(properties={"name": String(), "age": Integer()})
+    value = {"name": "John", "age": "thirty"}
+    try:
+        schema.validate(value)
+    except ValidationError as e:
+        assert str(e) == "Must be an integer."
+
+    # Test case 
+
+# Generated at 2024-06-04 19:40:19.293033
+```python
+    array_field = Array(items=Field(), min_items=1, max_items=3, unique_items=True)
+
+    # Test case: valid array
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case: array with fewer items than min_items
+    try:
+        array_field.validate([])
+    except ValidationError as e:
+        assert str(e) == "Must not be empty."
+
+    # Test case: array with more items than max_items
+    try:
+        array_field.validate([1, 2, 3, 4])
+    except ValidationError as e:
+        assert str(e) == "Must have no more than 3 items."
+
+    # Test case: array with non-unique items
+    try:
+        array_field.validate([1, 2, 2])
+    except ValidationError as e:
+        assert str(e) == "Items must be unique."
+
+
+
+# Generated at 2024-06-04 19:40:35.104491
+```python
+    field = String()
+    assert field.serialize("test") == "test"
+    
+    field = String(format="date")
+    assert field.serialize("2023-10-01") == "2023-10-01"
+    
+    field = String(format="time")
+    assert field.serialize("12:34:56") == "12:34:56"
+    
+    field = String(format="datetime")
+    assert field.serialize("2023-10-01T12:34:56") == "2023-10-01T12:34:56"
+    
+    field = String(format="uuid")
+    assert field.serialize("123e4567-e89b-12d3-a456-426614174000") == "123e4567-e89b-12d3-a456-426614174000"
+```
+
+# Generated at 2024-06-04 19:40:39.690531
+```python
+    field1 = Text()
+    field2 = Date()
+    union_field = Union(any_of=[field1, field2])
+
+    # Test with valid Text input
+    assert union_field.validate("some text") == "some text"
+
+    # Test with valid Date input
+    assert union_field.validate("2023-10-01") == "2023-10-01"
+
+    # Test with invalid input
+    try:
+        union_field.validate(12345)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Did not match any valid type.", code="union")]
+
+    # Test with None input when allow_null is False
+    try:
+        union_field.validate(None)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="May not be null.", code="null")]
+
+    # Test with None input when allow_null is True
+    union_field_with_null = Union(any_of=[field1
+
+# Generated at 2024-06-04 19:40:43.699080
+```python
+    field = String()
+    assert field.serialize("test") == "test"
+    
+    field = String(format="date")
+    assert field.serialize("2023-10-01") == "2023-10-01"
+    
+    field = String(format="time")
+    assert field.serialize("12:34:56") == "12:34:56"
+    
+    field = String(format="datetime")
+    assert field.serialize("2023-10-01T12:34:56") == "2023-10-01T12:34:56"
+    
+    field = String(format="uuid")
+    assert field.serialize("123e4567-e89b-12d3-a456-426614174000") == "123e4567-e89b-12d3-a456-426614174000"
+```
+
+# Generated at 2024-06-04 19:40:47.117646
+```python
+    field_with_default = Field(default=42)
+    assert field_with_default.get_default_value() == 42
+
+    field_with_callable_default = Field(default=lambda: 99)
+    assert field_with_callable_default.get_default_value() == 99
+
+    field_without_default = Field()
+    assert field_without_default.get_default_value() is None
+```
+
+# Generated at 2024-06-04 19:40:55.648500
+```python
+    field = Choice(choices=["red", "green", "blue"])
+
+    # Test valid choices
+    assert field.validate("red") == "red"
+    assert field.validate("green") == "green"
+    assert field.validate("blue") == "blue"
+
+    # Test invalid choice
+    try:
+        field.validate("yellow")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+
+    # Test null value when allow_null is True
+    field.allow_null = True
+    assert field.validate(None) is None
+
+    # Test null value when allow_null is False
+    field.allow_null = False
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+
+    # Test empty string when allow_null is True and strict is False
+    field.allow_null = True
+    assert field.validate("", strict=False) is None
+
+    # Test empty
+
+# Generated at 2024-06-04 19:41:01.805173
+```python
+    # Test with valid choice
+    field = Choice(choices=["red", "green", "blue"])
+    assert field.validate("red") == "red"
+    
+    # Test with invalid choice
+    try:
+        field.validate("yellow")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+    
+    # Test with None when allow_null is True
+    field = Choice(choices=["red", "green", "blue"], allow_null=True)
+    assert field.validate(None) is None
+    
+    # Test with None when allow_null is False
+    field = Choice(choices=["red", "green", "blue"], allow_null=False)
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+    
+    # Test with empty string when allow_null is True and strict is False
+    field = Choice(choices=["red", "green", "blue
+
+# Generated at 2024-06-04 19:41:06.987669
+```python
+    # Test case 1: Valid array with no constraints
+    array_field = Array()
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 2: Valid array with min_items constraint
+    array_field = Array(min_items=2)
+    assert array_field.validate([1, 2]) == [1, 2]
+
+    # Test case 3: Invalid array with min_items constraint
+    array_field = Array(min_items=2)
+    try:
+        array_field.validate([1])
+    except ValidationError as e:
+        assert str(e) == "Must have at least 2 items."
+
+    # Test case 4: Valid array with max_items constraint
+    array_field = Array(max_items=3)
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 5: Invalid
+
+# Generated at 2024-06-04 19:41:10.582810
+```python
+    # Test case 1: Valid object with required properties
+    schema = Object(properties={"name": String(), "age": Integer()}, required=["name"])
+    value = {"name": "John", "age": 30}
+    assert schema.validate(value) == value
+
+    # Test case 2: Missing required property
+    schema = Object(properties={"name": String(), "age": Integer()}, required=["name"])
+    value = {"age": 30}
+    try:
+        schema.validate(value)
+    except ValidationError as e:
+        assert str(e) == "This field is required."
+
+    # Test case 3: Invalid property type
+    schema = Object(properties={"name": String(), "age": Integer()})
+    value = {"name": "John", "age": "thirty"}
+    try:
+        schema.validate(value)
+    except ValidationError as e:
+        assert str(e) == "Must be an integer."
+
+    # Test case 
+
+# Generated at 2024-06-04 19:41:16.965992
+```python
+    field1 = String()
+    field2 = Integer()
+    union_field = Union(any_of=[field1, field2])
+
+    # Test with a valid string
+    assert union_field.validate("test") == "test"
+
+    # Test with a valid integer
+    assert union_field.validate(123) == 123
+
+    # Test with an invalid type
+    try:
+        union_field.validate(12.34)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Did not match any valid type.", code="union")]
+
+    # Test with None when allow_null is False
+    try:
+        union_field.validate(None)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="May not be null.", code="null")]
+
+    # Test with None when allow_null is True
+    union_field_with_null = Union(any_of=[field1, field2, Null()])
+    assert union_field_with_null
+
+# Generated at 2024-06-04 19:41:20.557308
+```python
+    field = String(
+        title="Test Title",
+        description="Test Description",
+        default="default",
+        allow_null=True,
+        allow_blank=True,
+        trim_whitespace=False,
+        max_length=10,
+        min_length=2,
+        pattern=r"^\w+$",
+        format="uuid"
+    )
+
+    assert field.title == "Test Title"
+    assert field.description == "Test Description"
+    assert field.default == "default"
+    assert field.allow_null is True
+    assert field.allow_blank is True
+    assert field.trim_whitespace is False
+    assert field.max_length == 10
+    assert field.min_length == 2
+    assert field.pattern == r"^\w+$"
+    assert field.format == "uuid"
+    assert field.pattern_regex.pattern == r"^\w+$"
+```
+
+# Generated at 2024-06-04 19:41:51.038872
+```python
+    field1 = Text()
+    field2 = Date()
+    union_field = Union(any_of=[field1, field2])
+
+    # Test with valid text
+    assert union_field.validate("some text") == "some text"
+
+    # Test with valid date
+    assert union_field.validate("2023-10-01") == "2023-10-01"
+
+    # Test with invalid type
+    try:
+        union_field.validate(123)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Did not match any valid type.", code="union")]
+
+    # Test with None when allow_null is False
+    try:
+        union_field.validate(None)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="May not be null.", code="null")]
+
+    # Test with None when allow_null is True
+    union_field_with_null = Union(any_of=[field1, field2, Field
+
+# Generated at 2024-06-04 19:41:54.629021
+```python
+    field = Boolean()
+
+    # Test valid boolean values
+    assert field.validate(True) is True
+    assert field.validate(False) is False
+
+    # Test valid string values
+    assert field.validate("true") is True
+    assert field.validate("false") is False
+    assert field.validate("on") is True
+    assert field.validate("off") is False
+    assert field.validate("1") is True
+    assert field.validate("0") is False
+
+    # Test valid integer values
+    assert field.validate(1) is True
+    assert field.validate(0) is False
+
+    # Test invalid values
+    try:
+        field.validate("invalid")
+    except ValidationError as e:
+        assert e.code == "type"
+
+    try:
+        field.validate(2)
+    except ValidationError as e:
+        assert e.code == "type"
+
+    # Test null values
+    field = Boolean(allow_null=True)
+    assert field.validate
+
+# Generated at 2024-06-04 19:41:58.139197
+```python
+    field1 = String()
+    field2 = Integer()
+    union_field = Union(any_of=[field1, field2])
+
+    # Test with a valid string
+    assert union_field.validate("test") == "test"
+
+    # Test with a valid integer
+    assert union_field.validate(123) == 123
+
+    # Test with an invalid type
+    try:
+        union_field.validate(12.34)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Did not match any valid type.", code="union")]
+
+    # Test with None when allow_null is False
+    try:
+        union_field.validate(None)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="May not be null.", code="null")]
+
+    # Test with None when allow_null is True
+    union_field_with_null = Union(any_of=[field1, field2, Null()])
+    assert union_field_with_null
+
+# Generated at 2024-06-04 19:42:01.119483
+```python
+    field1 = Field(title="Field1")
+    field2 = Field(title="Field2")
+    union_field = field1 | field2
+
+    assert isinstance(union_field, Union)
+    assert len(union_field.any_of) == 2
+    assert union_field.any_of[0] is field1
+    assert union_field.any_of[1] is field2
+
+    field3 = Field(title="Field3")
+    union_field2 = union_field | field3
+
+    assert isinstance(union_field2, Union)
+    assert len(union_field2.any_of) == 3
+    assert union_field2.any_of[0] is field1
+    assert union_field2.any_of[1] is field2
+    assert union_field2.any_of[2] is field3
+```
+
+# Generated at 2024-06-04 19:42:04.487190
+```python
+    field = Field()
+    array_field = Array(items=field)
+
+    # Test case 1: Serialize None
+    assert array_field.serialize(None) == None
+
+    # Test case 2: Serialize empty list
+    assert array_field.serialize([]) == []
+
+    # Test case 3: Serialize list with items
+    class MockField(Field):
+        def serialize(self, obj):
+            return f"serialized_{obj}"
+
+    mock_field = MockField()
+    array_field_with_mock = Array(items=mock_field)
+    assert array_field_with_mock.serialize([1, 2, 3]) == ["serialized_1", "serialized_2", "serialized_3"]
+
+    # Test case 4: Serialize list with multiple fields
+    field1 = MockField()
+    field2 = MockField()
+    array_field_with_multiple = Array(items=[field1, field2])
+    assert array_field_with_multiple.serialize([1, 2]) == ["serialized_
+
+# Generated at 2024-06-04 19:42:04.987403
+```python
+
+# Generated at 2024-06-04 19:42:09.671510
+```python
+    # Test case: value is None and allow_null is True
+    field = Choice(choices=["a", "b", "c"], allow_null=True)
+    assert field.validate(None) is None
+
+    # Test case: value is None and allow_null is False
+    field = Choice(choices=["a", "b", "c"], allow_null=False)
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+
+    # Test case: value is a valid choice
+    field = Choice(choices=["a", "b", "c"])
+    assert field.validate("a") == "a"
+
+    # Test case: value is not a valid choice
+    field = Choice(choices=["a", "b", "c"])
+    try:
+        field.validate("d")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+
+    # Test
+
+# Generated at 2024-06-04 19:42:14.081296
+```python
+    field1 = String()
+    field2 = Integer()
+    union_field = Union(any_of=[field1, field2])
+
+    # Test with a valid string
+    assert union_field.validate("test") == "test"
+
+    # Test with a valid integer
+    assert union_field.validate(123) == 123
+
+    # Test with an invalid type
+    try:
+        union_field.validate(12.34)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Did not match any valid type.", code="union")]
+
+    # Test with None when allow_null is not set
+    try:
+        union_field.validate(None)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="May not be null.", code="null")]
+
+    # Test with None when allow_null is set
+    union_field_with_null = Union(any_of=[field1, field2, Null()])
+    assert union_field_with
+
+# Generated at 2024-06-04 19:42:16.579786
+```python
+    choices = [("a", "Option A"), ("b", "Option B")]
+    field = Choice(choices=choices)
+    assert field.choices == choices
+    assert field.allow_null is False
+
+    # Test with allow_null
+    field = Choice(choices=choices, allow_null=True)
+    assert field.allow_null is True
+
+    # Test with invalid choices
+    try:
+        field = Choice(choices=[("a", "Option A"), "b"])
+    except AssertionError:
+        pass
+    else:
+        assert False, "Expected AssertionError for invalid choices"
+```
+
+# Generated at 2024-06-04 19:42:21.870206
+```python
+    # Test case: value is None and allow_null is True
+    field = Choice(choices=["a", "b", "c"], allow_null=True)
+    assert field.validate(None) is None
+
+    # Test case: value is None and allow_null is False
+    field = Choice(choices=["a", "b", "c"], allow_null=False)
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+
+    # Test case: value is in choices
+    field = Choice(choices=["a", "b", "c"])
+    assert field.validate("a") == "a"
+
+    # Test case: value is not in choices
+    field = Choice(choices=["a", "b", "c"])
+    try:
+        field.validate("d")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+
+    # Test case:
+
+# Generated at 2024-06-04 19:42:51.972575
+```python
+    # Test case 1: Valid array with no constraints
+    array_field = Array()
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 2: Valid array with min_items constraint
+    array_field = Array(min_items=2)
+    assert array_field.validate([1, 2]) == [1, 2]
+
+    # Test case 3: Invalid array with min_items constraint
+    array_field = Array(min_items=3)
+    try:
+        array_field.validate([1, 2])
+    except ValidationError as e:
+        assert str(e) == "Must have at least 3 items."
+
+    # Test case 4: Valid array with max_items constraint
+    array_field = Array(max_items=3)
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 
+
+# Generated at 2024-06-04 19:42:56.025071
+```python
+    field = Boolean()
+
+    # Test valid boolean values
+    assert field.validate(True) is True
+    assert field.validate(False) is False
+
+    # Test valid string values
+    assert field.validate("true") is True
+    assert field.validate("false") is False
+    assert field.validate("on") is True
+    assert field.validate("off") is False
+    assert field.validate("1") is True
+    assert field.validate("0") is False
+
+    # Test valid integer values
+    assert field.validate(1) is True
+    assert field.validate(0) is False
+
+    # Test invalid values
+    try:
+        field.validate("invalid")
+    except ValidationError as e:
+        assert e.code == "type"
+
+    try:
+        field.validate(2)
+    except ValidationError as e:
+        assert e.code == "type"
+
+    # Test null values
+    field = Boolean(allow_null=True)
+    assert field.validate
+
+# Generated at 2024-06-04 19:42:59.884795
+```python
+    field = String(
+        title="Test Title",
+        description="Test Description",
+        default="default",
+        allow_null=True,
+        allow_blank=True,
+        trim_whitespace=False,
+        max_length=10,
+        min_length=2,
+        pattern=r"^[a-zA-Z]+$",
+        format="date"
+    )
+
+    assert field.title == "Test Title"
+    assert field.description == "Test Description"
+    assert field.default == "default"
+    assert field.allow_null is True
+    assert field.allow_blank is True
+    assert field.trim_whitespace is False
+    assert field.max_length == 10
+    assert field.min_length == 2
+    assert field.pattern == r"^[a-zA-Z]+$"
+    assert field.pattern_regex.pattern == r"^[a-zA-Z]+$"
+    assert field.format == "date"
+```
+
+# Generated at 2024-06-04 19:43:02.915326
+```python
+    field1 = Field(title="Field1")
+    field2 = Field(title="Field2")
+    union_field = field1 | field2
+
+    assert isinstance(union_field, Union)
+    assert len(union_field.any_of) == 2
+    assert union_field.any_of[0] is field1
+    assert union_field.any_of[1] is field2
+
+    field3 = Field(title="Field3")
+    union_field2 = union_field | field3
+
+    assert isinstance(union_field2, Union)
+    assert len(union_field2.any_of) == 3
+    assert union_field2.any_of[0] is field1
+    assert union_field2.any_of[1] is field2
+    assert union_field2.any_of[2] is field3
+```
+
+# Generated at 2024-06-04 19:43:07.044911
+```python
+    field = Object(
+        properties={
+            "name": String(),
+            "age": Integer(),
+        },
+        required=["name"],
+    )
+
+    # Test valid input
+    value = {"name": "John", "age": 30}
+    assert field.validate(value) == value
+
+    # Test missing required property
+    value = {"age": 30}
+    try:
+        field.validate(value)
+    except ValidationError as e:
+        assert e.messages == [{"text": "This field is required.", "code": "required", "index": ["name"]}]
+
+    # Test invalid property type
+    value = {"name": "John", "age": "thirty"}
+    try:
+        field.validate(value)
+    except ValidationError as e:
+        assert e.messages == [{"text": "Must be an integer.", "code": "type", "index": ["age"]}]
+
+    # Test additional properties
+    field = Object(
+        properties
+
+# Generated at 2024-06-04 19:43:10.306081
+```python
+    field = Array(items=Field(), allow_null=True)
+    assert field.serialize(None) == None
+
+    field = Array(items=Field())
+    assert field.serialize([]) == []
+    assert field.serialize([1, 2, 3]) == [1, 2, 3]
+
+    field = Array(items=Field())
+    assert field.serialize([None, "test", 123]) == [None, "test", 123]
+
+    field = Array(items=[Field(), Field()])
+    assert field.serialize([1, 2]) == [1, 2]
+
+    field = Array(items=[Field(), Field()])
+    assert field.serialize([None, "test"]) == [None, "test"]
+
+    field = Array(items=Field())
+    assert field.serialize([{"key": "value"}, [1, 2, 3]]) == [{"key": "value"}, [1, 2, 3]]
+```
+
+# Generated at 2024-06-04 19:43:17.816963
+```python
+    choice_field = Choice(choices=["red", "green", "blue"])
+
+    # Test valid choices
+    assert choice_field.validate("red") == "red"
+    assert choice_field.validate("green") == "green"
+    assert choice_field.validate("blue") == "blue"
+
+    # Test invalid choice
+    try:
+        choice_field.validate("yellow")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+
+    # Test null value when allow_null is True
+    choice_field.allow_null = True
+    assert choice_field.validate(None) is None
+
+    # Test null value when allow_null is False
+    choice_field.allow_null = False
+    try:
+        choice_field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+
+    # Test empty string when allow_null is True and not strict
+    choice_field.allow_null = True
+    assert choice_field.validate("",
+
+# Generated at 2024-06-04 19:43:23.406833
+```python
+    field1 = String()
+    field2 = Integer()
+    union_field = Union(any_of=[field1, field2])
+
+    # Test with a valid string
+    assert union_field.validate("test") == "test"
+
+    # Test with a valid integer
+    assert union_field.validate(123) == 123
+
+    # Test with an invalid type
+    try:
+        union_field.validate(12.34)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Did not match any valid type.", code="union")]
+
+    # Test with None when allow_null is False
+    try:
+        union_field.validate(None)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="May not be null.", code="null")]
+
+    # Test with None when allow_null is True
+    union_field_with_null = Union(any_of=[field1, field2], allow_null=True)
+    assert union_field
+
+# Generated at 2024-06-04 19:43:26.053096
+```python
+    const_value = 42
+    field = Const(const=const_value)
+    assert field.const == const_value
+    assert field.allow_null is False
+
+    # Test validation
+    assert field.validate(42) == 42
+    try:
+        field.validate(43)
+    except ValidationError as e:
+        assert str(e) == "Must be the value '42'."
+    else:
+        assert False, "ValidationError not raised"
+```
+
+# Generated at 2024-06-04 19:43:29.797221
+```python
+    field = Choice(choices=["red", "green", "blue"])
+
+    # Test valid choices
+    assert field.validate("red") == "red"
+    assert field.validate("green") == "green"
+    assert field.validate("blue") == "blue"
+
+    # Test invalid choice
+    try:
+        field.validate("yellow")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+
+    # Test null value when allow_null is True
+    field.allow_null = True
+    assert field.validate(None) is None
+
+    # Test null value when allow_null is False
+    field.allow_null = False
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+
+    # Test empty string when allow_null is True and not strict
+    field.allow_null = True
+    assert field.validate("", strict=False) is None
+
+    # Test empty string
+
+# Generated at 2024-06-04 19:43:45.073916
+```python
+    # Test case 1: Valid array with no constraints
+    array_field = Array()
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 2: Valid array with min_items constraint
+    array_field = Array(min_items=2)
+    assert array_field.validate([1, 2]) == [1, 2]
+
+    # Test case 3: Invalid array with min_items constraint
+    array_field = Array(min_items=3)
+    try:
+        array_field.validate([1, 2])
+    except ValidationError as e:
+        assert str(e) == "Must have at least 3 items."
+
+    # Test case 4: Valid array with max_items constraint
+    array_field = Array(max_items=3)
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 
+
+# Generated at 2024-06-04 19:43:49.592655
+```python
+    field1 = Text()
+    field2 = Date()
+    union_field = Union(any_of=[field1, field2])
+
+    # Test with valid Text input
+    assert union_field.validate("some text") == "some text"
+
+    # Test with valid Date input
+    assert union_field.validate("2023-10-01") == "2023-10-01"
+
+    # Test with invalid input
+    try:
+        union_field.validate(123)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Did not match any valid type.", code="union")]
+
+    # Test with None input when allow_null is False
+    try:
+        union_field.validate(None)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="May not be null.", code="null")]
+
+    # Test with None input when allow_null is True
+    nullable_union_field = Union(any_of=[field1, field
+
+# Generated at 2024-06-04 19:43:55.546089
+```python
+    # Test case 1: Valid array with no constraints
+    array_field = Array()
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 2: Valid array with min_items constraint
+    array_field = Array(min_items=2)
+    assert array_field.validate([1, 2]) == [1, 2]
+
+    # Test case 3: Invalid array with min_items constraint
+    array_field = Array(min_items=2)
+    try:
+        array_field.validate([1])
+    except ValidationError as e:
+        assert str(e) == "Must have at least 2 items."
+
+    # Test case 4: Valid array with max_items constraint
+    array_field = Array(max_items=3)
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 5: Invalid
+
+# Generated at 2024-06-04 19:43:59.076897
+```python
+    field1 = String()
+    field2 = Integer()
+    union_field = Union(any_of=[field1, field2])
+
+    # Test with a valid string
+    assert union_field.validate("test") == "test"
+
+    # Test with a valid integer
+    assert union_field.validate(123) == 123
+
+    # Test with an invalid type
+    try:
+        union_field.validate(12.34)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Did not match any valid type.", code="union")]
+
+    # Test with None when allow_null is False
+    try:
+        union_field.validate(None)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="May not be null.", code="null")]
+
+    # Test with None when allow_null is True
+    union_field_with_null = Union(any_of=[field1, field2, Null()])
+    assert union_field_with_null
+
+# Generated at 2024-06-04 19:44:04.327249
+```python
+    const_value = 42
+    field = Const(const=const_value)
+    assert field.const == const_value
+    assert field.allow_null is False
+
+    # Test validation
+    assert field.validate(42) == 42
+    try:
+        field.validate(43)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Must be the value '42'.", code="const")]
+
+    # Test with None
+    field_null = Const(const=None)
+    assert field_null.const is None
+    try:
+        field_null.validate(42)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Must be null.", code="only_null")]
+```
+
+# Generated at 2024-06-04 19:44:10.160572
+```python
+    # Test case 1: Valid array with no constraints
+    array_field = Array()
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 2: Valid array with min_items constraint
+    array_field = Array(min_items=2)
+    assert array_field.validate([1, 2]) == [1, 2]
+
+    # Test case 3: Invalid array with min_items constraint
+    array_field = Array(min_items=3)
+    try:
+        array_field.validate([1, 2])
+    except ValidationError as e:
+        assert str(e) == "Must have at least 3 items."
+
+    # Test case 4: Valid array with max_items constraint
+    array_field = Array(max_items=3)
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 
+
+# Generated at 2024-06-04 19:44:12.406033
+```python
+    field_with_default = Field(default=42)
+    assert field_with_default.get_default_value() == 42
+
+    field_with_callable_default = Field(default=lambda: 99)
+    assert field_with_callable_default.get_default_value() == 99
+
+    field_without_default = Field()
+    assert field_without_default.get_default_value() is None
+```
+
+# Generated at 2024-06-04 19:44:16.721985
+```python
+    choice_field = Choice(choices=["red", "green", "blue"])
+
+    # Test valid choices
+    assert choice_field.validate("red") == "red"
+    assert choice_field.validate("green") == "green"
+    assert choice_field.validate("blue") == "blue"
+
+    # Test invalid choice
+    try:
+        choice_field.validate("yellow")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+
+    # Test null value when allow_null is True
+    choice_field.allow_null = True
+    assert choice_field.validate(None) is None
+
+    # Test null value when allow_null is False
+    choice_field.allow_null = False
+    try:
+        choice_field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+
+    # Test empty string when allow_null is True and strict is False
+    choice_field.allow_null = True
+    assert choice_field.validate
+
+# Generated at 2024-06-04 19:44:22.666726
+```python
+    # Test case 1: Valid array with no constraints
+    array_field = Array()
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 2: Valid array with min_items constraint
+    array_field = Array(min_items=2)
+    assert array_field.validate([1, 2]) == [1, 2]
+
+    # Test case 3: Invalid array with min_items constraint
+    array_field = Array(min_items=3)
+    try:
+        array_field.validate([1, 2])
+    except ValidationError as e:
+        assert str(e) == "Must have at least 3 items."
+
+    # Test case 4: Valid array with max_items constraint
+    array_field = Array(max_items=3)
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 
+
+# Generated at 2024-06-04 19:44:26.723831
+```python
+    # Test cases for the validate method of the Number class
+
+    # Test with valid integer
+    field = Number()
+    assert field.validate(10) == 10
+
+    # Test with valid float
+    assert field.validate(10.5) == 10.5
+
+    # Test with valid string representation of a number
+    assert field.validate("10.5") == 10.5
+
+    # Test with None when allow_null is True
+    field = Number(allow_null=True)
+    assert field.validate(None) is None
+
+    # Test with None when allow_null is False
+    field = Number(allow_null=False)
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert e.code == "null"
+
+    # Test with non-numeric string
+    try:
+        field.validate("abc")
+    except ValidationError as e:
+        assert e.code == "type"
+
+    # Test with boolean value
+   
+
+# Generated at 2024-06-04 19:44:37.257403
+```python
+    # Test with valid choice
+    field = Choice(choices=["red", "green", "blue"])
+    assert field.validate("red") == "red"
+    
+    # Test with invalid choice
+    field = Choice(choices=["red", "green", "blue"])
+    try:
+        field.validate("yellow")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+    
+    # Test with None when allow_null is True
+    field = Choice(choices=["red", "green", "blue"], allow_null=True)
+    assert field.validate(None) is None
+    
+    # Test with None when allow_null is False
+    field = Choice(choices=["red", "green", "blue"], allow_null=False)
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+    
+    # Test with empty string when allow_null is True and strict is False
+
+# Generated at 2024-06-04 19:44:38.788363
+```python
+    field_with_default = Field(default=42)
+    assert field_with_default.get_default_value() == 42
+
+    field_with_callable_default = Field(default=lambda: 99)
+    assert field_with_callable_default.get_default_value() == 99
+
+    field_without_default = Field()
+    assert field_without_default.get_default_value() is None
+```
+
+# Generated at 2024-06-04 19:44:42.963150
+```python
+    const_value = 42
+    field = Const(const=const_value)
+    assert field.const == const_value
+    assert field.allow_null is False
+
+    # Test validation
+    assert field.validate(42) == 42
+    try:
+        field.validate(43)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Must be the value '42'.", code="const")]
+
+    # Test with None
+    field_null = Const(const=None)
+    assert field_null.const is None
+    assert field_null.allow_null is False
+    assert field_null.validate(None) is None
+    try:
+        field_null.validate(42)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Must be null.", code="only_null")]
+```
+
+# Generated at 2024-06-04 19:44:46.477697
+```python
+    # Test with no parameters
+    array_field = Array()
+    assert array_field.items is None
+    assert array_field.additional_items is False
+    assert array_field.min_items is None
+    assert array_field.max_items is None
+    assert array_field.unique_items is False
+
+    # Test with items as a single Field
+    item_field = Field()
+    array_field = Array(items=item_field)
+    assert array_field.items == item_field
+    assert array_field.additional_items is False
+
+    # Test with items as a list of Fields
+    item_fields = [Field(), Field()]
+    array_field = Array(items=item_fields)
+    assert array_field.items == item_fields
+    assert array_field.min_items == len(item_fields)
+    assert array_field.max_items == len(item_fields)
+
+    # Test with additional_items as True
+    array_field = Array(items=item_fields, additional_items=True)
+    assert array_field.additional_items is True
+
+    # Test with min_items
+
+# Generated at 2024-06-04 19:44:49.639049
+```python
+    field1 = Field(title="Field1")
+    field2 = Field(title="Field2")
+    union_field = field1 | field2
+
+    assert isinstance(union_field, Union)
+    assert len(union_field.any_of) == 2
+    assert union_field.any_of[0] is field1
+    assert union_field.any_of[1] is field2
+
+    field3 = Field(title="Field3")
+    union_field2 = union_field | field3
+
+    assert isinstance(union_field2, Union)
+    assert len(union_field2.any_of) == 3
+    assert union_field2.any_of[0] is field1
+    assert union_field2.any_of[1] is field2
+    assert union_field2.any_of[2] is field3
+```
+
+# Generated at 2024-06-04 19:44:53.983204
+```python
+    field = Number()
+
+    # Test valid integer
+    assert field.validate(5) == 5
+
+    # Test valid float
+    assert field.validate(5.5) == 5.5
+
+    # Test valid string representation of a number
+    assert field.validate("5.5") == 5.5
+
+    # Test None with allow_null
+    field.allow_null = True
+    assert field.validate(None) is None
+
+    # Test invalid None without allow_null
+    field.allow_null = False
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert e.code == "null"
+
+    # Test invalid type (string)
+    try:
+        field.validate("invalid")
+    except ValidationError as e:
+        assert e.code == "type"
+
+    # Test invalid boolean type
+    try:
+        field.validate(True)
+    except ValidationError as e:
+        assert e.code == "type"
+
+    # Test integer
+
+# Generated at 2024-06-04 19:44:57.102633
+```python
+    field_with_default = Field(default=42)
+    assert field_with_default.get_default_value() == 42
+
+    field_with_callable_default = Field(default=lambda: 99)
+    assert field_with_callable_default.get_default_value() == 99
+
+    field_without_default = Field()
+    assert field_without_default.get_default_value() is None
+```
+
+# Generated at 2024-06-04 19:45:01.712299
+```python
+    field = String(
+        title="Test Title",
+        description="Test Description",
+        default="default",
+        allow_null=True,
+        allow_blank=True,
+        trim_whitespace=False,
+        max_length=10,
+        min_length=2,
+        pattern=r"^[a-zA-Z]+$",
+        format="date"
+    )
+
+    assert field.title == "Test Title"
+    assert field.description == "Test Description"
+    assert field.default == "default"
+    assert field.allow_null is True
+    assert field.allow_blank is True
+    assert field.trim_whitespace is False
+    assert field.max_length == 10
+    assert field.min_length == 2
+    assert field.pattern == r"^[a-zA-Z]+$"
+    assert field.format == "date"
+    assert field.pattern_regex.pattern == r"^[a-zA-Z]+$"
+```
+
+# Generated at 2024-06-04 19:45:06.073447
+```python
+    choice_field = Choice(choices=["option1", "option2", "option3"])
+
+    # Test valid choices
+    assert choice_field.validate("option1") == "option1"
+    assert choice_field.validate("option2") == "option2"
+    assert choice_field.validate("option3") == "option3"
+
+    # Test invalid choice
+    try:
+        choice_field.validate("invalid_option")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+
+    # Test null value when allow_null is True
+    choice_field.allow_null = True
+    assert choice_field.validate(None) is None
+
+    # Test null value when allow_null is False
+    choice_field.allow_null = False
+    try:
+        choice_field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+
+    # Test empty string when allow_null is True and strict is False
+    choice_field
+
+# Generated at 2024-06-04 19:45:09.434334
+```python
+    field1 = String()
+    field2 = Integer()
+    union_field = Union(any_of=[field1, field2])
+
+    # Test with a valid string
+    assert union_field.validate("test") == "test"
+
+    # Test with a valid integer
+    assert union_field.validate(123) == 123
+
+    # Test with an invalid type
+    try:
+        union_field.validate(12.34)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Did not match any valid type.", code="union")]
+
+    # Test with None when allow_null is False
+    try:
+        union_field.validate(None)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="May not be null.", code="null")]
+
+    # Test with None when allow_null is True
+    union_field_with_null = Union(any_of=[field1, field2], allow_null=True)
+    assert union_field
+
+# Generated at 2024-06-04 19:45:20.437126
+```python
+    field = Choice(choices=["red", "green", "blue"])
+
+    # Test valid choices
+    assert field.validate("red") == "red"
+    assert field.validate("green") == "green"
+    assert field.validate("blue") == "blue"
+
+    # Test invalid choice
+    try:
+        field.validate("yellow")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+
+    # Test null value when allow_null is True
+    field.allow_null = True
+    assert field.validate(None) is None
+
+    # Test null value when allow_null is False
+    field.allow_null = False
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+
+    # Test empty string when allow_null is True and not strict
+    field.allow_null = True
+    assert field.validate("", strict=False) is None
+
+    # Test empty string
+
+# Generated at 2024-06-04 19:45:25.460874
+```python
+    # Test with valid choice
+    field = Choice(choices=["red", "green", "blue"])
+    assert field.validate("red") == "red"
+    
+    # Test with invalid choice
+    try:
+        field.validate("yellow")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+    
+    # Test with None when allow_null is True
+    field = Choice(choices=["red", "green", "blue"], allow_null=True)
+    assert field.validate(None) is None
+    
+    # Test with None when allow_null is False
+    field = Choice(choices=["red", "green", "blue"], allow_null=False)
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+    
+    # Test with empty string when allow_null is True and strict is False
+    field = Choice(choices=["red", "green", "blue
+
+# Generated at 2024-06-04 19:45:29.261260
+```python
+    # Test case 1: Valid array with no constraints
+    array_field = Array()
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 2: Valid array with min_items constraint
+    array_field = Array(min_items=2)
+    assert array_field.validate([1, 2]) == [1, 2]
+
+    # Test case 3: Invalid array with min_items constraint
+    array_field = Array(min_items=2)
+    try:
+        array_field.validate([1])
+    except ValidationError as e:
+        assert str(e) == "Must have at least 2 items."
+
+    # Test case 4: Valid array with max_items constraint
+    array_field = Array(max_items=3)
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 5: Invalid
+
+# Generated at 2024-06-04 19:45:31.249992
+```python
+    field_with_default = Field(default=42)
+    assert field_with_default.get_default_value() == 42
+
+    field_with_callable_default = Field(default=lambda: 99)
+    assert field_with_callable_default.get_default_value() == 99
+
+    field_without_default = Field()
+    assert field_without_default.get_default_value() is None
+```
+
+# Generated at 2024-06-04 19:45:37.130378
+```python
+    # Test with valid choice
+    field = Choice(choices=["red", "green", "blue"])
+    assert field.validate("red") == "red"
+    
+    # Test with invalid choice
+    try:
+        field.validate("yellow")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+    
+    # Test with None when allow_null is True
+    field = Choice(choices=["red", "green", "blue"], allow_null=True)
+    assert field.validate(None) is None
+    
+    # Test with None when allow_null is False
+    field = Choice(choices=["red", "green", "blue"], allow_null=False)
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+    
+    # Test with empty string when allow_null is True and strict is False
+    field = Choice(choices=["red", "green", "blue
+
+# Generated at 2024-06-04 19:45:40.631500
+```python
+    const_value = 42
+    field = Const(const=const_value)
+    assert field.const == const_value
+    assert field.allow_null is False
+
+    # Test validation
+    assert field.validate(42) == 42
+    try:
+        field.validate(43)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Must be the value '42'.", code="const")]
+
+    # Test with None
+    field_none = Const(const=None)
+    assert field_none.const is None
+    assert field_none.allow_null is False
+    assert field_none.validate(None) is None
+    try:
+        field_none.validate(1)
+    except ValidationError as e:
+        assert e.messages() == [Message(text="Must be null.", code="only_null")]
+```
+
+# Generated at 2024-06-04 19:45:44.291920
+```python
+    field = Number()
+
+    # Test valid integer
+    assert field.validate(10) == 10
+
+    # Test valid float
+    assert field.validate(10.5) == 10.5
+
+    # Test valid string representation of a number
+    assert field.validate("10.5") == 10.5
+
+    # Test None with allow_null
+    field = Number(allow_null=True)
+    assert field.validate(None) is None
+
+    # Test invalid None without allow_null
+    field = Number(allow_null=False)
+    try:
+        field.validate(None)
+    except ValidationError as e:
+        assert e.code == "null"
+
+    # Test invalid type (boolean)
+    try:
+        field.validate(True)
+    except ValidationError as e:
+        assert e.code == "type"
+
+    # Test invalid type (string)
+    try:
+        field.validate("invalid")
+    except ValidationError as e:
+        assert e.code == "type
+
+# Generated at 2024-06-04 19:45:48.429430
+```python
+    choice_field = Choice(choices=["red", "green", "blue"])
+
+    # Test valid choices
+    assert choice_field.validate("red") == "red"
+    assert choice_field.validate("green") == "green"
+    assert choice_field.validate("blue") == "blue"
+
+    # Test invalid choice
+    try:
+        choice_field.validate("yellow")
+    except ValidationError as e:
+        assert str(e) == "Not a valid choice."
+
+    # Test null value when allow_null is True
+    choice_field.allow_null = True
+    assert choice_field.validate(None) is None
+
+    # Test null value when allow_null is False
+    choice_field.allow_null = False
+    try:
+        choice_field.validate(None)
+    except ValidationError as e:
+        assert str(e) == "May not be null."
+
+    # Test empty string when allow_null is True and strict is False
+    choice_field.allow_null = True
+    assert choice_field.validate
+
+# Generated at 2024-06-04 19:45:52.000926
+```python
+    field1 = Field(title="Field1")
+    field2 = Field(title="Field2")
+    union_field = field1 | field2
+
+    assert isinstance(union_field, Union)
+    assert len(union_field.any_of) == 2
+    assert union_field.any_of[0] is field1
+    assert union_field.any_of[1] is field2
+
+    field3 = Field(title="Field3")
+    union_field2 = union_field | field3
+
+    assert isinstance(union_field2, Union)
+    assert len(union_field2.any_of) == 3
+    assert union_field2.any_of[0] is field1
+    assert union_field2.any_of[1] is field2
+    assert union_field2.any_of[2] is field3
+```
+
+# Generated at 2024-06-04 19:45:55.821860
+```python
+    # Test case 1: Valid array with no constraints
+    array_field = Array()
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 2: Valid array with min_items constraint
+    array_field = Array(min_items=2)
+    assert array_field.validate([1, 2]) == [1, 2]
+
+    # Test case 3: Invalid array with min_items constraint
+    array_field = Array(min_items=2)
+    try:
+        array_field.validate([1])
+    except ValidationError as e:
+        assert str(e) == "Must have at least 2 items."
+
+    # Test case 4: Valid array with max_items constraint
+    array_field = Array(max_items=3)
+    assert array_field.validate([1, 2, 3]) == [1, 2, 3]
+
+    # Test case 5: Invalid
+
+# Generated at 2024-06-04 19:46:28.455992
+```python
+    field = Boolean()
+
+    # Test valid boolean values
+    assert field.validate(True) is True
+    assert field.validate(False) is False
+
+    # Test valid string values
+    assert field.validate("true") is True
+    assert field.validate("false") is False
+    assert field.validate("on") is True
+    assert field.validate("off") is False
+    assert field.validate("1") is True
+    assert field.validate("0") is False
+
+    # Test valid integer values
+    assert field.validate(1) is True
+    assert field.validate(0) is False
+
+    # Test invalid values
+    try:
+        field.validate("invalid")
+    except ValidationError as e:
+        assert e.code == "type"
+
+    try:
+        field.validate(2)
+    except ValidationError as e:
+        assert e.code == "type"
+
+    # Test null values
+    field = Boolean(allow_null=True)
+    assert field.validate

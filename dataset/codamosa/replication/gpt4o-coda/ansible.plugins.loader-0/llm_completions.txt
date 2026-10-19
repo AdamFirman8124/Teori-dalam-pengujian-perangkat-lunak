@@ -1,0 +1,789 @@
+
+
+# Generated at 2024-06-01 07:37:43.742684
+```python
+    loader = PluginLoader(package='ansible.plugins', class_name='TestPlugin', base_class='BasePlugin')
+    plugin_name = 'test_plugin'
+    plugin_path = '/path/to/test_plugin.py'
+
+    # Mocking methods and attributes
+    loader.find_plugin_with_context = lambda name, collection_list=None: PluginLoadContext(
+        resolved=True, plugin_resolved_name=plugin_name, plugin_resolved_path=plugin_path, redirect_list=[]
+    )
+    loader._load_module_source = lambda name, path: type('TestPlugin', (object,), {})
+    loader._load_config_defs = lambda name, module, path: None
+    loader._display_plugin_load = lambda *args, **kwargs: None
+
+    result = loader.get_with_context(plugin_name)
+    assert result.object is not None
+    assert result.plugin_load_context.resolved
+    assert result.plugin_load_context.plugin_resolved_name == plugin_name
+    assert result.plugin_load_context.plugin_resolved_path
+
+# Generated at 2024-06-01 07:37:47.488193
+```python
+    loader = PluginLoader()
+    plugin_name = "test_plugin"
+    collection_list = ["test_collection"]
+
+    # Test case: Plugin exists
+    loader.find_plugin = lambda name, collection_list: "plugin_path" if name == plugin_name else None
+    assert loader.find_plugin(plugin_name, collection_list) == "plugin_path"
+
+    # Test case: Plugin does not exist
+    loader.find_plugin = lambda name, collection_list: None
+    assert loader.find_plugin("non_existent_plugin", collection_list) is None
+
+    # Test case: Exception handling
+    loader.find_plugin = lambda name, collection_list: 1 / 0  # This will raise a ZeroDivisionError
+    try:
+        loader.find_plugin(plugin_name, collection_list)
+    except ZeroDivisionError:
+        pass  # Expected exception
+    except Exception as e:
+        assert False, f"Unexpected exception raised: {e}"
+```
+
+# Generated at 2024-06-01 07:37:50.341656
+```python
+    import pickle
+    from ansible.plugins.loader import PluginLoader
+
+    # Create a PluginLoader instance and set some state
+    loader = PluginLoader('test_plugins')
+    loader._module_cache = {'test_path': 'test_module'}
+    loader._searched_paths = ['test_path']
+
+    # Serialize the object to a string
+    serialized_loader = pickle.dumps(loader)
+
+    # Deserialize the string back to an object
+    deserialized_loader = pickle.loads(serialized_loader)
+
+    # Check if the state is correctly restored
+    assert deserialized_loader._module_cache == {'test_path': 'test_module'}
+    assert deserialized_loader._searched_paths == ['test_path']
+```
+
+# Generated at 2024-06-01 07:37:53.542615
+```python
+    loader = PluginLoader(package='ansible.plugins', class_name='BasePlugin', base_class='BasePlugin', subdir='test_plugins')
+    
+    # Mocking the _get_paths method to return a controlled list of paths
+    loader._get_paths = lambda: ['/mock/path']
+    
+    # Mocking the _load_module_source method to return a mock module
+    mock_module = type('MockModule', (object,), {'BasePlugin': type('MockPlugin', (object,), {})})
+    loader._load_module_source = lambda name, path: mock_module
+    
+    # Mocking the _load_config_defs method to do nothing
+    loader._load_config_defs = lambda name, module, path: None
+    
+    # Mocking the _display_plugin_load method to do nothing
+    loader._display_plugin_load = lambda class_name, name, searched_paths, path, found_in_cache=None, class_only=None: None
+    
+    # Mocking the _update
+
+# Generated at 2024-06-01 07:37:57.129746
+```python
+    loader = PluginLoader(package='ansible.plugins', class_name='TestPlugin', base_class='BasePlugin')
+    plugin_name = 'test_plugin'
+    plugin_path = '/path/to/test_plugin.py'
+
+    # Mocking methods and attributes
+    loader.find_plugin_with_context = lambda name, collection_list=None: PluginLoadContext(
+        resolved=True, plugin_resolved_name=plugin_name, plugin_resolved_path=plugin_path, redirect_list=[]
+    )
+    loader._load_module_source = lambda name, path: type('TestPlugin', (object,), {})
+    loader._load_config_defs = lambda name, module, path: None
+    loader._display_plugin_load = lambda class_name, name, searched_paths, path, found_in_cache=None, class_only=None: None
+
+    result = loader.get_with_context(plugin_name)
+    assert result.object is not None
+    assert result.plugin_load_context.resolved
+    assert result.plugin_load_context.plugin_resolved_name ==
+
+# Generated at 2024-06-01 07:38:00.765117
+```python
+    loader = PluginLoader(package='ansible.plugins', class_name='BasePlugin', base_class='BasePluginClass', subdir='test_plugins')
+    
+    # Mocking the _get_paths method to return a controlled list of paths
+    loader._get_paths = lambda: ['/mock/path1', '/mock/path2']
+    
+    # Mocking the _load_module_source method to return a mock module
+    mock_module = type('MockModule', (object,), {'BasePlugin': type('MockPlugin', (object,), {})})
+    loader._load_module_source = lambda full_name, path: mock_module
+    
+    # Mocking the _load_config_defs method to do nothing
+    loader._load_config_defs = lambda name, module, path: None
+    
+    # Mocking the _display_plugin_load method to do nothing
+    loader._display_plugin_load = lambda class_name, name, searched_paths, path, found_in_cache=None, class_only=None: None
+
+# Generated at 2024-06-01 07:38:02.993685
+```python
+    loader = PluginLoader()
+    state = {
+        'package': 'ansible.plugins',
+        'class_name': 'TestPlugin',
+        'base_class': 'BasePlugin',
+        'subdir': 'test_plugins',
+        'aliases': {},
+        '_module_cache': {},
+        '_searched_paths': [],
+    }
+    loader.__setstate__(state)
+    assert loader.package == 'ansible.plugins'
+    assert loader.class_name == 'TestPlugin'
+    assert loader.base_class == 'BasePlugin'
+    assert loader.subdir == 'test_plugins'
+    assert loader.aliases == {}
+    assert loader._module_cache == {}
+    assert loader._searched_paths == []
+```
+
+# Generated at 2024-06-01 07:38:05.026813
+```python
+    class MockLoader:
+        def __init__(self):
+            self.directories = []
+
+        def add_directory(self, path, with_subdir):
+            self.directories.append((path, with_subdir))
+
+    mock_loader = MockLoader()
+    setattr(sys.modules[__name__], 'test_loader', mock_loader)
+
+    test_paths = ['/path/one', '/path/two']
+    add_dirs_to_loader('test', test_paths)
+
+    assert mock_loader.directories == [(path, True) for path in test_paths]
+```
+
+# Generated at 2024-06-01 07:38:06.665400
+```python
+    loader = PluginLoader()
+    plugin_name = "test_plugin"
+
+    # Mock the find_plugin method to return a non-None value
+    loader.find_plugin = lambda name, collection_list=None: True if name == plugin_name else None
+
+    assert plugin_name in loader
+
+    # Mock the find_plugin method to return None
+    loader.find_plugin = lambda name, collection_list=None: None
+
+    assert plugin_name not in loader
+```
+
+# Generated at 2024-06-01 07:38:11.450518
+```python
+    # Setup
+    test_path = "/tmp/test_plugins"
+    os.makedirs(test_path, exist_ok=True)
+    plugin_loader_mock = namedtuple('PluginLoader', ['subdir', 'add_directory'])
+    plugin_loader_instance = plugin_loader_mock(subdir='test_subdir', add_directory=lambda x: None)
+    
+    # Mocking get_all_plugin_loaders to return our mock plugin loader
+    original_get_all_plugin_loaders = globals()['get_all_plugin_loaders']
+    globals()['get_all_plugin_loaders'] = lambda: [('test_loader', plugin_loader_instance)]
+    
+    try:
+        # Test when path is a valid directory
+        add_all_plugin_dirs(test_path)
+        
+        # Test when path is not a valid directory
+        invalid_path = "/invalid/path"
+        add_all_plugin_dirs(invalid_path)
+        
+    finally:
+        # Cleanup
+        os.rmdir(test_path)
+        globals()['get_all_plugin_loaders'] = original_get_all_plugin
+
+# Generated at 2024-06-01 07:39:27.151490
+```python
+    loader = PluginLoader(package='ansible.plugins', class_name='BasePlugin', base_class='BasePlugin', subdir='test_plugins')
+    
+    # Mocking the _get_paths method to return a controlled list of paths
+    loader._get_paths = lambda: ['/mock/path']
+    
+    # Mocking the _load_module_source method to return a mock module
+    mock_module = type('MockModule', (object,), {'BasePlugin': type('MockPlugin', (object,), {})})
+    loader._load_module_source = lambda name, path: mock_module
+    
+    # Mocking the _load_config_defs method to do nothing
+    loader._load_config_defs = lambda name, module, path: None
+    
+    # Mocking the _display_plugin_load method to do nothing
+    loader._display_plugin_load = lambda class_name, name, searched_paths, path, found_in_cache=None, class_only=None: None
+    
+    # Mocking the display.warning
+
+# Generated at 2024-06-01 07:39:28.741957
+```python
+    loader = PluginLoader(package='ansible.plugins', subdir='lookup')
+    context = loader.find_plugin_with_context('non_existent_plugin')
+    assert context.resolved is False
+    assert context.plugin_resolved_path is None
+
+    context = loader.find_plugin_with_context('known_plugin')
+    assert context.resolved is True
+    assert context.plugin_resolved_path is not None
+```
+
+# Generated at 2024-06-01 07:39:31.617088
+```python
+    loader = Jinja2Loader(package='ansible.plugins.filter', class_name='FilterModule', base_class='BaseJinja2Filter')
+    
+    # Test with a valid plugin name
+    plugin_name = 'valid_plugin'
+    try:
+        plugin = loader.get(plugin_name)
+        assert plugin is not None, "Expected a valid plugin instance"
+    except AnsibleError:
+        assert False, "AnsibleError was not expected for a valid plugin"
+
+    # Test with an invalid plugin name
+    invalid_plugin_name = 'invalid_plugin'
+    try:
+        plugin = loader.get(invalid_plugin_name)
+        assert False, "Expected an AnsibleError for an invalid plugin"
+    except AnsibleError:
+        pass  # Expected behavior
+
+    # Test with a plugin name containing a dot (.)
+    dotted_plugin_name = 'collection.plugin'
+    try:
+        plugin = loader.get(dotted_plugin_name)
+        assert False, "Expected an AnsibleError
+
+# Generated at 2024-06-01 07:39:35.177657
+```python
+    context = PluginLoadContext()
+    name = "test_plugin"
+    deprecation = {
+        'warning_text': 'This plugin will be removed soon.',
+        'removal_date': '2023-12-31',
+        'removal_version': None
+    }
+    collection_name = "test_collection"
+
+    context.record_deprecation(name, deprecation, collection_name)
+
+    assert context.deprecated is True
+    assert context.removal_date == '2023-12-31'
+    assert context.removal_version is None
+    assert len(context.deprecation_warnings) == 1
+    assert "test_plugin has been deprecated. This plugin will be removed soon." in context.deprecation_warnings
+```
+
+# Generated at 2024-06-01 07:39:37.667970
+```python
+    loader = PluginLoader()
+    plugin_name = "test_plugin"
+    collection_list = ["test_collection"]
+
+    # Test case: Plugin exists
+    loader.find_plugin = lambda name, collection_list: "plugin_path" if name == plugin_name else None
+    assert loader.find_plugin(plugin_name, collection_list) == "plugin_path"
+
+    # Test case: Plugin does not exist
+    assert loader.find_plugin("non_existent_plugin", collection_list) is None
+
+    # Test case: Exception handling
+    loader.find_plugin = lambda name, collection_list: 1 / 0  # Simulate an exception
+    try:
+        loader.find_plugin(plugin_name, collection_list)
+    except ZeroDivisionError:
+        pass  # Expected exception
+```
+
+# Generated at 2024-06-01 07:39:40.003685
+```python
+    class MockLoader:
+        def __init__(self):
+            self.directories = []
+
+        def add_directory(self, path, with_subdir):
+            self.directories.append((path, with_subdir))
+
+    mock_loader = MockLoader()
+    sys.modules[__name__].test_loader = mock_loader
+
+    test_paths = ['/path/one', '/path/two']
+    add_dirs_to_loader('test', test_paths)
+
+    assert mock_loader.directories == [(path, True) for path in test_paths]
+```
+
+# Generated at 2024-06-01 07:39:42.825198
+```python
+    class MockLoader:
+        def __init__(self):
+            self.directories = []
+
+        def add_directory(self, path, with_subdir):
+            self.directories.append((path, with_subdir))
+
+    mock_loader = MockLoader()
+    setattr(sys.modules[__name__], 'test_loader', mock_loader)
+
+    test_paths = ['/path/one', '/path/two']
+    add_dirs_to_loader('test', test_paths)
+
+    assert mock_loader.directories == [(path, True) for path in test_paths]
+```
+
+# Generated at 2024-06-01 07:39:45.821220
+```python
+    test_path = "/tmp/test_plugins"
+    os.makedirs(test_path, exist_ok=True)
+    plugin_subdir = "test_subdir"
+    plugin_path = os.path.join(test_path, plugin_subdir)
+    os.makedirs(plugin_path, exist_ok=True)
+
+    class MockPluginLoader:
+        def __init__(self, subdir):
+            self.subdir = subdir
+            self.directories = []
+
+        def add_directory(self, directory):
+            self.directories.append(directory)
+
+    mock_loader = MockPluginLoader(plugin_subdir)
+    globals()['PluginLoader'] = MockPluginLoader
+    globals()['mock_loader'] = mock_loader
+
+    add_all_plugin_dirs(test_path)
+
+    assert to_text(plugin_path) in mock_loader.directories
+
+    os.rmdir(plugin_path)
+    os.rmdir(test_path)
+```
+
+# Generated at 2024-06-01 07:39:50.340611
+```python
+    loader = PluginLoader()
+    plugin_name = "test_plugin"
+    collection_list = ["test_collection"]
+
+    # Test case: Plugin exists
+    loader.find_plugin = lambda name, collection_list: "plugin_path" if name == plugin_name else None
+    assert loader.find_plugin(plugin_name, collection_list) == "plugin_path"
+
+    # Test case: Plugin does not exist
+    loader.find_plugin = lambda name, collection_list: None
+    assert loader.find_plugin("non_existent_plugin", collection_list) is None
+
+    # Test case: Exception handling
+    loader.find_plugin = lambda name, collection_list: 1 / 0  # This will raise a ZeroDivisionError
+    try:
+        loader.find_plugin(plugin_name, collection_list)
+    except ZeroDivisionError:
+        pass  # Expected exception
+    else:
+        assert False, "Expected ZeroDivisionError"
+```
+
+# Generated at 2024-06-01 07:39:51.975962
+```python
+    class MockLoader:
+        def __init__(self):
+            self.directories = []
+
+        def add_directory(self, path, with_subdir):
+            self.directories.append((path, with_subdir))
+
+    mock_loader = MockLoader()
+    setattr(sys.modules[__name__], 'test_loader', mock_loader)
+
+    test_paths = ['/path/one', '/path/two']
+    add_dirs_to_loader('test', test_paths)
+
+    assert mock_loader.directories == [(path, True) for path in test_paths]
+```
+
+# Generated at 2024-06-01 07:40:44.463253
+```python
+    loader = PluginLoader(package='ansible.plugins', class_name='TestPlugin', base_class='BasePlugin')
+    plugin_name = 'test_plugin'
+    collection_list = ['test_collection']
+
+    # Mocking the methods and attributes used within find_plugin_with_context
+    loader.aliases = {}
+    loader.find_plugin = lambda name, collection_list: None
+    loader._find_fq_plugin = lambda fq_name, extension, plugin_load_context: None
+    loader._searched_paths = []
+
+    # Test case where plugin is not found
+    result = loader.find_plugin_with_context(plugin_name, collection_list)
+    assert result.resolved is False
+    assert result.plugin_resolved_path is None
+
+    # Test case where plugin is found
+    loader.find_plugin = lambda name, collection_list: 'path/to/plugin'
+    result = loader.find_plugin_with_context(plugin_name, collection_list)
+    assert result.resolved is True
+    assert result.plugin_resolved_path ==
+
+# Generated at 2024-06-01 07:40:47.819411
+```python
+    loader = Jinja2Loader(package='ansible.plugins.filter', class_name='FilterModule', base_class='BaseJinja2Filter')
+    
+    # Test with a valid plugin name
+    plugin_name = 'valid_plugin'
+    try:
+        plugin = loader.get(plugin_name)
+        assert plugin is not None, "Expected a valid plugin instance"
+    except AnsibleError:
+        assert False, "AnsibleError was not expected for a valid plugin"
+
+    # Test with an invalid plugin name
+    invalid_plugin_name = 'invalid_plugin'
+    try:
+        plugin = loader.get(invalid_plugin_name)
+        assert False, "Expected an AnsibleError for an invalid plugin"
+    except AnsibleError:
+        pass  # Expected behavior
+
+    # Test with a plugin name containing a dot (.)
+    dotted_plugin_name = 'collection.plugin'
+    try:
+        plugin = loader.get(dotted_plugin_name)
+        assert False, "Expected an AnsibleError
+
+# Generated at 2024-06-01 07:40:51.301001
+```python
+    loader = PluginLoader()
+    plugin_name = "test_plugin"
+    collection_list = ["test_collection"]
+
+    # Test when plugin is found
+    loader.find_plugin = lambda name, collection_list: "plugin_found" if name == plugin_name else None
+    assert loader.find_plugin(plugin_name, collection_list) == "plugin_found"
+
+    # Test when plugin is not found
+    loader.find_plugin = lambda name, collection_list: None
+    assert loader.find_plugin("non_existent_plugin", collection_list) is None
+
+    # Test exception handling
+    loader.find_plugin = lambda name, collection_list: 1 / 0  # This will raise a ZeroDivisionError
+    try:
+        loader.find_plugin(plugin_name, collection_list)
+    except ZeroDivisionError:
+        pass  # Expected exception
+```
+
+# Generated at 2024-06-01 07:40:57.618035
+```python
+    loader = PluginLoader(package='ansible.plugins', class_name='TestPlugin', base_class='BasePlugin')
+    plugin_name = 'test_plugin'
+    plugin_path = '/path/to/test_plugin.py'
+
+    # Mocking methods and attributes
+    loader.find_plugin_with_context = lambda name, collection_list=None: PluginLoadContext(resolved=True, plugin_resolved_name=plugin_name, plugin_resolved_path=plugin_path)
+    loader._load_module_source = lambda name, path: type('TestPlugin', (object,), {})  # Mocking a simple class
+    loader._load_config_defs = lambda name, module, path: None
+    loader._display_plugin_load = lambda class_name, name, searched_paths, path, found_in_cache=None, class_only=None: None
+
+    result = loader.get_with_context(plugin_name)
+    assert result.object is not None
+    assert result.object.__class__.__name__ == 'TestPlugin'
+```
+
+# Generated at 2024-06-01 07:41:01.205351
+```python
+    context = PluginLoadContext()
+    name = "test_plugin"
+    deprecation = {
+        'warning_text': 'This plugin will be removed soon.',
+        'removal_date': '2023-12-31',
+        'removal_version': None
+    }
+    collection_name = "test_collection"
+
+    context.record_deprecation(name, deprecation, collection_name)
+
+    assert context.deprecated is True
+    assert context.removal_date == '2023-12-31'
+    assert context.removal_version is None
+    assert len(context.deprecation_warnings) == 1
+    assert context.deprecation_warnings[0] == 'test_plugin has been deprecated. This plugin will be removed soon.'
+```
+
+# Generated at 2024-06-01 07:41:04.796064
+```python
+    loader = Jinja2Loader(package='ansible.plugins.filter', class_name='FilterModule', base_class='BaseJinja2Filter')
+    
+    # Test with a valid plugin name
+    try:
+        plugin = loader.get('valid_plugin_name')
+        assert plugin is not None, "Expected a valid plugin instance"
+    except AnsibleError:
+        assert False, "Did not expect an AnsibleError for a valid plugin name"
+    
+    # Test with an invalid plugin name
+    try:
+        loader.get('invalid_plugin_name')
+        assert False, "Expected an AnsibleError for an invalid plugin name"
+    except AnsibleError:
+        pass
+    
+    # Test with a plugin name containing a dot (.)
+    try:
+        plugin = loader.get('collection.plugin_name')
+        assert plugin is not None, "Expected a valid plugin instance for collection plugin"
+    except AnsibleError:
+        assert False, "Did not expect an AnsibleError for
+
+# Generated at 2024-06-01 07:41:06.561728
+```python
+    loader = PluginLoader()
+    plugin_name = "test_plugin"
+
+    # Mock the find_plugin method to return a non-None value
+    loader.find_plugin = lambda name, collection_list=None: True if name == plugin_name else None
+
+    assert plugin_name in loader
+
+    # Mock the find_plugin method to return None
+    loader.find_plugin = lambda name, collection_list=None: None
+
+    assert plugin_name not in loader
+```
+
+# Generated at 2024-06-01 07:41:09.477830
+```python
+    loader = PluginLoader()
+    plugin_name = "test_plugin"
+    collection_list = ["test_collection"]
+
+    # Test case: Plugin exists
+    loader.find_plugin = lambda name, collection_list: "plugin_path" if name == plugin_name else None
+    assert loader.find_plugin(plugin_name, collection_list) == "plugin_path"
+
+    # Test case: Plugin does not exist
+    assert loader.find_plugin("non_existent_plugin", collection_list) is None
+
+    # Test case: Exception handling
+    loader.find_plugin = lambda name, collection_list: 1 / 0  # Simulate an exception
+    try:
+        loader.find_plugin(plugin_name, collection_list)
+    except Exception as ex:
+        assert isinstance(ex, ZeroDivisionError)
+```
+
+# Generated at 2024-06-01 07:41:11.690042
+```python
+    class MockLoader:
+        def __init__(self):
+            self.directories = []
+
+        def add_directory(self, path, with_subdir):
+            self.directories.append((path, with_subdir))
+
+    mock_loader = MockLoader()
+    sys.modules[__name__].test_loader = mock_loader
+
+    test_paths = ['/path/one', '/path/two']
+    add_dirs_to_loader('test', test_paths)
+
+    assert mock_loader.directories == [(path, True) for path in test_paths]
+```
+
+# Generated at 2024-06-01 07:41:14.327217
+```python
+    loader = PluginLoader()
+    plugin_name = "test_plugin"
+    collection_list = ["test_collection"]
+
+    # Test case: Plugin exists
+    loader.find_plugin = lambda name, collection_list: "plugin_found" if name == plugin_name else None
+    assert loader.find_plugin(plugin_name, collection_list) == "plugin_found"
+
+    # Test case: Plugin does not exist
+    assert loader.find_plugin("non_existent_plugin", collection_list) is None
+
+    # Test case: Exception handling
+    loader.find_plugin = lambda name, collection_list: 1 / 0  # Simulate an exception
+    try:
+        loader.find_plugin(plugin_name, collection_list)
+    except Exception as ex:
+        assert isinstance(ex, ZeroDivisionError)
+```
+
+# Generated at 2024-06-01 07:45:24.562990
+```python
+    class MockLoader:
+        def __init__(self):
+            self.directories = []
+
+        def add_directory(self, path, with_subdir):
+            self.directories.append((path, with_subdir))
+
+    mock_loader = MockLoader()
+    setattr(sys.modules[__name__], 'test_loader', mock_loader)
+
+    test_paths = ['/path/one', '/path/two']
+    add_dirs_to_loader('test', test_paths)
+
+    assert mock_loader.directories == [(path, True) for path in test_paths]
+```
+
+# Generated at 2024-06-01 07:45:29.258587
+```python
+    loader = PluginLoader()
+    plugin_name = "test_plugin"
+    collection_list = ["test_collection"]
+
+    # Test case: Plugin exists
+    loader.find_plugin = lambda name, collection_list: "plugin_path" if name == plugin_name else None
+    assert loader.find_plugin(plugin_name, collection_list) == "plugin_path"
+
+    # Test case: Plugin does not exist
+    loader.find_plugin = lambda name, collection_list: None
+    assert loader.find_plugin("non_existent_plugin", collection_list) is None
+
+    # Test case: Exception handling
+    loader.find_plugin = lambda name, collection_list: 1 / 0  # This will raise a ZeroDivisionError
+    try:
+        loader.find_plugin(plugin_name, collection_list)
+    except ZeroDivisionError:
+        pass  # Expected exception
+    else:
+        assert False, "Expected ZeroDivisionError"
+```
+
+# Generated at 2024-06-01 07:45:32.361795
+```python
+    loader = PluginLoader()
+    plugin_name = "test_plugin"
+    collection_list = ["test_collection"]
+
+    # Test case: Plugin exists
+    loader.find_plugin = lambda name, collection_list: "plugin_path" if name == plugin_name else None
+    assert loader.find_plugin(plugin_name, collection_list) == "plugin_path"
+
+    # Test case: Plugin does not exist
+    assert loader.find_plugin("non_existent_plugin", collection_list) is None
+
+    # Test case: Exception handling
+    loader.find_plugin = lambda name, collection_list: 1 / 0  # Simulate an exception
+    try:
+        loader.find_plugin(plugin_name, collection_list)
+    except Exception as ex:
+        assert isinstance(ex, ZeroDivisionError)
+```
+
+# Generated at 2024-06-01 07:45:35.032003
+```python
+    context = PluginLoadContext()
+    name = "test_plugin"
+    deprecation = {
+        'warning_text': 'This plugin will be removed soon.',
+        'removal_date': '2023-12-31',
+        'removal_version': '2.0.0'
+    }
+    collection_name = "test_collection"
+
+    context.record_deprecation(name, deprecation, collection_name)
+
+    assert context.deprecated is True
+    assert context.removal_date == '2023-12-31'
+    assert context.removal_version is None  # removal_date takes precedence
+    assert len(context.deprecation_warnings) == 1
+    assert "test_plugin has been deprecated. This plugin will be removed soon." in context.deprecation_warnings
+```
+
+# Generated at 2024-06-01 07:45:36.524876
+```python
+    loader = PluginLoader()
+    context = loader.find_plugin_with_context('test_plugin')
+    assert context is not None
+    assert context.resolved is True
+    assert context.plugin_resolved_path.endswith('test_plugin.py')
+```
+
+# Generated at 2024-06-01 07:45:37.719295
+```python
+    loader = PluginLoader()
+    context = loader.find_plugin_with_context('test_plugin')
+    assert context is not None
+    assert context.resolved is True
+    assert context.plugin_resolved_path.endswith('test_plugin.py')
+```
+
+# Generated at 2024-06-01 07:45:39.746451
+```python
+    loader = PluginLoader()
+    plugin_name = "test_plugin"
+
+    # Mock the find_plugin method to return a non-None value
+    loader.find_plugin = lambda name, collection_list=None: True if name == plugin_name else None
+
+    # Test when the plugin exists
+    assert plugin_name in loader
+
+    # Mock the find_plugin method to return None
+    loader.find_plugin = lambda name, collection_list=None: None
+
+    # Test when the plugin does not exist
+    assert plugin_name not in loader
+```
+
+# Generated at 2024-06-01 07:45:42.846824
+```python
+    # Setup
+    test_path = "/tmp/test_plugins"
+    os.makedirs(test_path, exist_ok=True)
+    plugin_loader_mock = namedtuple('PluginLoader', ['subdir', 'add_directory'])
+    plugin_loader_instance = plugin_loader_mock(subdir='test_subdir', add_directory=lambda x: x)
+    
+    # Mocking get_all_plugin_loaders to return our mock plugin loader
+    original_get_all_plugin_loaders = globals()['get_all_plugin_loaders']
+    globals()['get_all_plugin_loaders'] = lambda: [('test_loader', plugin_loader_instance)]
+    
+    # Test when path is a valid directory
+    add_all_plugin_dirs(test_path)
+    
+    # Cleanup
+    globals()['get_all_plugin_loaders'] = original_get_all_plugin_loaders
+    os.rmdir(test_path)
+    
+    # Test when path is not a valid directory
+    invalid_path = "/tmp/invalid_test_plugins"
+    add_all_plugin_dirs(invalid_path)
+
+
+# Generated at 2024-06-01 07:45:45.686957
+```python
+    test_path = "/tmp/test_plugins"
+    os.makedirs(test_path, exist_ok=True)
+    plugin_loader_mock = namedtuple('PluginLoaderMock', ['subdir', 'add_directory'])
+    plugin_loader_instance = plugin_loader_mock(subdir='test_subdir', add_directory=lambda x: x)
+    
+    def mock_get_all_plugin_loaders():
+        return [('mock_loader', plugin_loader_instance)]
+    
+    original_get_all_plugin_loaders = globals()['get_all_plugin_loaders']
+    globals()['get_all_plugin_loaders'] = mock_get_all_plugin_loaders
+    
+    try:
+        add_all_plugin_dirs(test_path)
+        assert os.path.isdir(os.path.join(test_path, 'test_subdir'))
+    finally:
+        globals()['get_all_plugin_loaders'] = original_get_all_plugin_loaders
+        os.rmdir(os.path.join(test_path, 'test_subdir'))
+        os.rmdir(test_path)
+```
+
+# Generated at 2024-06-01 07:45:47.563111
+```python
+    loader = PluginLoader()
+    context = loader.find_plugin_with_context('test_plugin')
+    assert context is not None
+    assert context.resolved is True
+    assert context.plugin_resolved_path.endswith('test_plugin.py')
+```

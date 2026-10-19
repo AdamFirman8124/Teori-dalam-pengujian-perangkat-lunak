@@ -1,0 +1,1377 @@
+
+
+# Generated at 2024-06-03 08:30:15.831187
+```python
+    from unittest.mock import MagicMock, patch
+    from .types import Command, CorrectedCommand
+
+    command = Command(script='ls', output='command not found')
+    corrected_command1 = CorrectedCommand(script='ls -la', priority=1)
+    corrected_command2 = CorrectedCommand(script='ls --help', priority=2)
+
+    rule_mock = MagicMock()
+    rule_mock.is_match.return_value = True
+    rule_mock.get_corrected_commands.return_value = [corrected_command1, corrected_command2]
+
+    with patch('module_name.get_rules', return_value=[rule_mock]):
+        corrected_commands = list(get_corrected_commands(command))
+
+    assert corrected_commands == [corrected_command1, corrected_command2]
+```
+
+# Generated at 2024-06-03 08:30:22.469446
+```python
+    from unittest.mock import MagicMock
+    from .types import Rule
+    from .system import Path
+
+    # Mock paths
+    path1 = MagicMock(spec=Path)
+    path1.name = 'rule1.py'
+    path2 = MagicMock(spec=Path)
+    path2.name = 'rule2.py'
+    path3 = MagicMock(spec=Path)
+    path3.name = '__init__.py'
+
+    # Mock rules
+    rule1 = MagicMock(spec=Rule)
+    rule1.is_enabled = True
+    rule2 = MagicMock(spec=Rule)
+    rule2.is_enabled = False
+
+    # Mock Rule.from_path
+    Rule.from_path = MagicMock(side_effect=lambda p: rule1 if p == path1 else rule2 if p == path2 else None)
+
+    # Test with paths
+    rules_paths = [path1, path2, path3]
+    loaded_rules = list(get_loaded_rules(rules_paths))
+
+
+
+# Generated at 2024-06-03 08:30:25.067889
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+    
+    result_paths = list(get_rules_import_paths())
+    
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:30:28.004222
+```python
+    import sys
+    from unittest.mock import patch, MagicMock
+    from .system import Path
+
+    with patch('sys.path', ['path1', 'path2']), \
+         patch('thefuck.conf.settings.user_dir', Path('user_dir')), \
+         patch('thefuck.system.Path.glob', return_value=[Path('thefuck_contrib_test')]), \
+         patch('thefuck.system.Path.is_dir', return_value=True):
+
+        paths = list(get_rules_import_paths())
+
+    assert Path(__file__).parent.joinpath('rules') in paths
+    assert Path('user_dir').joinpath('rules') in paths
+    assert Path('thefuck_contrib_test').joinpath('rules') in paths
+```
+
+# Generated at 2024-06-03 08:30:30.298278
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+    
+    result_paths = list(get_rules_import_paths())
+    
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:30:33.521290
+```python
+    from unittest.mock import MagicMock
+    from .types import Rule
+    from .system import Path
+
+    # Mock paths
+    path1 = MagicMock(spec=Path)
+    path1.name = 'rule1.py'
+    path2 = MagicMock(spec=Path)
+    path2.name = 'rule2.py'
+    path3 = MagicMock(spec=Path)
+    path3.name = '__init__.py'
+
+    # Mock rules
+    rule1 = MagicMock(spec=Rule)
+    rule1.is_enabled = True
+    rule2 = MagicMock(spec=Rule)
+    rule2.is_enabled = False
+
+    # Mock Rule.from_path
+    Rule.from_path = MagicMock(side_effect=lambda p: rule1 if p == path1 else rule2 if p == path2 else None)
+
+    # Test with paths
+    rules_paths = [path1, path2, path3]
+    loaded_rules = list(get_loaded_rules(rules_paths))
+
+
+
+# Generated at 2024-06-03 08:30:35.540379
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+
+    result_paths = list(get_rules_import_paths())
+
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:30:40.131597
+```python
+    import sys
+    from unittest.mock import patch, MagicMock
+    from .system import Path
+
+    with patch('sys.path', ['/mock/path1', '/mock/path2']), \
+         patch('thefuck.conf.settings.user_dir', Path('/mock/user_dir')), \
+         patch('thefuck.system.Path.glob', return_value=[Path('/mock/path1/thefuck_contrib_test')]), \
+         patch('thefuck.system.Path.is_dir', return_value=True):
+
+        paths = list(get_rules_import_paths())
+
+        assert Path('/mock/path1/thefuck_contrib_test/rules') in paths
+        assert Path('/mock/user_dir/rules') in paths
+        assert Path(__file__).parent.joinpath('rules') in paths
+```
+
+# Generated at 2024-06-03 08:30:44.785018
+```python
+    from collections import namedtuple
+    from .types import CorrectedCommand
+
+    # Mock CorrectedCommand for testing
+    MockCommand = namedtuple('MockCommand', ['priority', 'command'])
+
+    # Create a list of corrected commands with duplicates and different priorities
+    commands = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=1, command='cmd1'),  # Duplicate
+        MockCommand(priority=3, command='cmd3'),
+        MockCommand(priority=2, command='cmd2'),  # Duplicate
+    ]
+
+    # Expected result after organizing commands
+    expected = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=3, command='cmd3'),
+    ]
+
+    # Call the function with the test data
+    result = list(organize_commands
+
+# Generated at 2024-06-03 08:30:48.639000
+```python
+    from unittest.mock import MagicMock
+    from .types import Rule
+    from .system import Path
+
+    # Mock paths
+    path1 = MagicMock(spec=Path)
+    path1.name = 'rule1.py'
+    path2 = MagicMock(spec=Path)
+    path2.name = 'rule2.py'
+    path3 = MagicMock(spec=Path)
+    path3.name = '__init__.py'
+
+    # Mock rules
+    rule1 = MagicMock(spec=Rule)
+    rule1.is_enabled = True
+    rule2 = MagicMock(spec=Rule)
+    rule2.is_enabled = False
+
+    # Mock Rule.from_path
+    Rule.from_path = MagicMock(side_effect=lambda p: rule1 if p == path1 else rule2 if p == path2 else None)
+
+    # Test with paths
+    rules = list(get_loaded_rules([path1, path2, path3]))
+    assert rules == [rule1]
+```
+
+# Generated at 2024-06-03 08:30:59.508710
+```python
+    from unittest.mock import MagicMock
+    from .types import Rule
+    from .system import Path
+
+    # Mock paths
+    path1 = MagicMock(spec=Path)
+    path1.name = 'rule1.py'
+    path2 = MagicMock(spec=Path)
+    path2.name = 'rule2.py'
+    path3 = MagicMock(spec=Path)
+    path3.name = '__init__.py'
+
+    # Mock rules
+    rule1 = MagicMock(spec=Rule)
+    rule1.is_enabled = True
+    rule2 = MagicMock(spec=Rule)
+    rule2.is_enabled = False
+
+    # Mock Rule.from_path
+    Rule.from_path = MagicMock(side_effect=lambda p: rule1 if p == path1 else rule2 if p == path2 else None)
+
+    rules_paths = [path1, path2, path3]
+    loaded_rules = list(get_loaded_rules(rules_paths))
+
+    assert len(loaded_rules
+
+# Generated at 2024-06-03 08:31:04.975180
+```python
+    from unittest.mock import patch, MagicMock
+
+    with patch('sys.path', ['test_path']), \
+         patch('thefuck.conf.settings.user_dir', Path('user_dir')), \
+         patch('thefuck.system.Path.glob', return_value=[Path('rule1.py'), Path('rule2.py')]), \
+         patch('thefuck.types.Rule.from_path') as mock_from_path:
+
+        mock_rule1 = MagicMock()
+        mock_rule1.is_enabled = True
+        mock_rule1.priority = 1
+
+        mock_rule2 = MagicMock()
+        mock_rule2.is_enabled = True
+        mock_rule2.priority = 2
+
+        mock_from_path.side_effect = [mock_rule1, mock_rule2]
+
+        rules = get_rules()
+
+        assert rules == [mock_rule1, mock_rule2]
+```
+
+# Generated at 2024-06-03 08:31:07.387249
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+    
+    result_paths = list(get_rules_import_paths())
+    
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:31:13.437073
+```python
+    from collections import namedtuple
+    from .types import CorrectedCommand
+
+    # Mock CorrectedCommand for testing
+    MockCommand = namedtuple('MockCommand', ['priority', 'command'])
+
+    # Create a list of corrected commands with different priorities
+    commands = [
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=3, command='cmd3'),
+        MockCommand(priority=1, command='cmd1'),  # Duplicate command
+    ]
+
+    # Convert list to generator
+    commands_gen = (cmd for cmd in commands)
+
+    # Call the function
+    result = list(organize_commands(commands_gen))
+
+    # Expected result after sorting and removing duplicates
+    expected = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=3, command='cmd3'),
+
+
+# Generated at 2024-06-03 08:31:16.467000
+```python
+    from unittest.mock import patch, MagicMock
+
+    with patch('sys.path', ['test_path']), \
+         patch('thefuck.conf.settings.user_dir', Path('user_dir')), \
+         patch('thefuck.system.Path.glob', return_value=[Path('rule1.py'), Path('rule2.py')]), \
+         patch('thefuck.types.Rule.from_path') as mock_from_path:
+
+        mock_rule1 = MagicMock()
+        mock_rule1.is_enabled = True
+        mock_rule1.priority = 1
+
+        mock_rule2 = MagicMock()
+        mock_rule2.is_enabled = True
+        mock_rule2.priority = 2
+
+        mock_from_path.side_effect = [mock_rule1, mock_rule2]
+
+        rules = get_rules()
+
+        assert rules == [mock_rule1, mock_rule2]
+```
+
+# Generated at 2024-06-03 08:31:20.482794
+```python
+    from collections import namedtuple
+    from .types import CorrectedCommand
+
+    # Mock CorrectedCommand for testing
+    MockCommand = namedtuple('MockCommand', ['priority', 'command'])
+
+    # Create a list of corrected commands with duplicates and different priorities
+    commands = [
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=3, command='cmd3'),
+        MockCommand(priority=1, command='cmd1'),  # Duplicate
+        MockCommand(priority=2, command='cmd2'),  # Duplicate
+    ]
+
+    # Convert to CorrectedCommand type
+    corrected_commands = (CorrectedCommand(priority=cmd.priority, command=cmd.command) for cmd in commands)
+
+    # Call the function
+    result = list(organize_commands(corrected_commands))
+
+    # Expected result after organizing and removing duplicates
+    expected = [
+        CorrectedCommand
+
+# Generated at 2024-06-03 08:31:27.266650
+```python
+    from collections import namedtuple
+    from .types import CorrectedCommand
+
+    # Mock CorrectedCommand for testing
+    MockCommand = namedtuple('MockCommand', ['priority', 'command'])
+
+    # Create a list of corrected commands with duplicates and different priorities
+    commands = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=1, command='cmd1'),  # Duplicate
+        MockCommand(priority=3, command='cmd3')
+    ]
+
+    # Call the function with the test data
+    result = list(organize_commands(commands))
+
+    # Expected result after removing duplicates and sorting by priority
+    expected = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=3, command='cmd3')
+    ]
+
+    # Assert the result matches the expected output
+
+
+# Generated at 2024-06-03 08:31:31.074874
+```python
+    from unittest.mock import patch, MagicMock
+    from .types import Rule
+
+    mock_rule1 = MagicMock(spec=Rule)
+    mock_rule1.is_enabled = True
+    mock_rule1.priority = 1
+
+    mock_rule2 = MagicMock(spec=Rule)
+    mock_rule2.is_enabled = True
+    mock_rule2.priority = 2
+
+    mock_rule3 = MagicMock(spec=Rule)
+    mock_rule3.is_enabled = False
+    mock_rule3.priority = 3
+
+    mock_path1 = MagicMock()
+    mock_path1.glob.return_value = ['rule1.py', 'rule2.py']
+
+    mock_path2 = MagicMock()
+    mock_path2.glob.return_value = ['rule3.py']
+
+    with patch('{}.get_rules_import_paths'.format(__name__), return_value=[mock_path1, mock_path2]), \
+         patch('{}.Rule.from_path'.format(__name__), side_effect=[mock_rule1, mock
+
+# Generated at 2024-06-03 08:31:34.901128
+```python
+    from unittest.mock import MagicMock
+    from .types import Rule
+    from .system import Path
+
+    # Mock paths
+    path1 = MagicMock(spec=Path)
+    path1.name = 'rule1.py'
+    path2 = MagicMock(spec=Path)
+    path2.name = 'rule2.py'
+    path3 = MagicMock(spec=Path)
+    path3.name = '__init__.py'
+
+    # Mock rules
+    rule1 = MagicMock(spec=Rule)
+    rule1.is_enabled = True
+    rule2 = MagicMock(spec=Rule)
+    rule2.is_enabled = False
+
+    # Mock Rule.from_path
+    Rule.from_path = MagicMock(side_effect=lambda p: rule1 if p == path1 else rule2 if p == path2 else None)
+
+    rules_paths = [path1, path2, path3]
+    loaded_rules = list(get_loaded_rules(rules_paths))
+
+    assert len(loaded_rules
+
+# Generated at 2024-06-03 08:31:38.710480
+```python
+    from unittest.mock import patch, MagicMock
+
+    with patch('sys.path', ['test_path']), \
+         patch('thefuck.conf.settings.user_dir', Path('user_dir')), \
+         patch('thefuck.system.Path.glob', return_value=[Path('rule1.py'), Path('rule2.py')]), \
+         patch('thefuck.types.Rule.from_path') as mock_from_path:
+
+        mock_rule1 = MagicMock()
+        mock_rule1.is_enabled = True
+        mock_rule1.priority = 1
+
+        mock_rule2 = MagicMock()
+        mock_rule2.is_enabled = True
+        mock_rule2.priority = 2
+
+        mock_from_path.side_effect = [mock_rule1, mock_rule2]
+
+        rules = get_rules()
+
+        assert rules == [mock_rule1, mock_rule2]
+```
+
+# Generated at 2024-06-03 08:31:56.006106
+```python
+    from unittest.mock import patch, MagicMock
+
+    with patch('sys.path', ['test_path']), \
+         patch('thefuck.conf.settings.user_dir', Path('user_dir')), \
+         patch('thefuck.system.Path.glob', return_value=[Path('rule1.py'), Path('rule2.py')]), \
+         patch('thefuck.types.Rule.from_path') as mock_from_path:
+
+        mock_rule1 = MagicMock()
+        mock_rule1.is_enabled = True
+        mock_rule1.priority = 1
+
+        mock_rule2 = MagicMock()
+        mock_rule2.is_enabled = True
+        mock_rule2.priority = 2
+
+        mock_from_path.side_effect = [mock_rule1, mock_rule2]
+
+        rules = get_rules()
+
+        assert rules == [mock_rule1, mock_rule2]
+```
+
+# Generated at 2024-06-03 08:31:58.528565
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+
+    result_paths = list(get_rules_import_paths())
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:32:01.231440
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+    
+    result_paths = list(get_rules_import_paths())
+    
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:32:04.469711
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+    
+    result_paths = list(get_rules_import_paths())
+    
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:32:10.368936
+```python
+    from unittest.mock import MagicMock
+    from .types import Rule
+    from .system import Path
+
+    # Mock paths
+    path1 = MagicMock(spec=Path)
+    path1.name = 'rule1.py'
+    path2 = MagicMock(spec=Path)
+    path2.name = 'rule2.py'
+    path3 = MagicMock(spec=Path)
+    path3.name = '__init__.py'
+
+    # Mock rules
+    rule1 = MagicMock(spec=Rule)
+    rule1.is_enabled = True
+    rule2 = MagicMock(spec=Rule)
+    rule2.is_enabled = False
+
+    # Mock Rule.from_path
+    Rule.from_path = MagicMock(side_effect=lambda p: rule1 if p == path1 else rule2 if p == path2 else None)
+
+    # Test with paths
+    rules_paths = [path1, path2, path3]
+    loaded_rules = list(get_loaded_rules(rules_paths))
+
+
+
+# Generated at 2024-06-03 08:32:13.430758
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+    
+    result_paths = list(get_rules_import_paths())
+    
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:32:17.012613
+```python
+    from unittest.mock import MagicMock
+    from .types import Rule
+    from .system import Path
+
+    # Mock paths
+    path1 = MagicMock(spec=Path)
+    path1.name = 'rule1.py'
+    path2 = MagicMock(spec=Path)
+    path2.name = 'rule2.py'
+    path3 = MagicMock(spec=Path)
+    path3.name = '__init__.py'
+
+    # Mock rules
+    rule1 = MagicMock(spec=Rule)
+    rule1.is_enabled = True
+    rule2 = MagicMock(spec=Rule)
+    rule2.is_enabled = False
+
+    # Mock Rule.from_path
+    Rule.from_path = MagicMock(side_effect=lambda p: rule1 if p == path1 else rule2 if p == path2 else None)
+
+    # Test with paths
+    rules_paths = [path1, path2, path3]
+    loaded_rules = list(get_loaded_rules(rules_paths))
+
+
+
+# Generated at 2024-06-03 08:32:20.182755
+```python
+    from unittest.mock import MagicMock, patch
+    from .types import Command, CorrectedCommand
+
+    command = Command(script='ls', output='command not found')
+    corrected_command1 = CorrectedCommand(script='ls -la', priority=1)
+    corrected_command2 = CorrectedCommand(script='dir', priority=2)
+
+    rule_mock = MagicMock()
+    rule_mock.is_match.return_value = True
+    rule_mock.get_corrected_commands.return_value = [corrected_command1, corrected_command2]
+
+    with patch('your_module.get_rules', return_value=[rule_mock]):
+        corrected_commands = list(get_corrected_commands(command))
+
+    assert corrected_commands == [corrected_command1, corrected_command2]
+```
+
+# Generated at 2024-06-03 08:32:22.581551
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+    
+    result_paths = list(get_rules_import_paths())
+    
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:32:30.067978
+```python
+    from collections import namedtuple
+    from .types import CorrectedCommand
+
+    # Mock CorrectedCommand for testing
+    MockCommand = namedtuple('MockCommand', ['priority', 'command'])
+
+    # Create a list of corrected commands with duplicates and different priorities
+    commands = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=1, command='cmd1'),  # Duplicate
+        MockCommand(priority=3, command='cmd3')
+    ]
+
+    # Expected result after organizing
+    expected = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=3, command='cmd3')
+    ]
+
+    # Call the function
+    result = list(organize_commands(commands))
+
+    # Assert the result matches the expected output
+    assert result == expected, f"Expected
+
+# Generated at 2024-06-03 08:33:03.535705
+```python
+    from unittest.mock import MagicMock
+    from .types import Rule
+    from .system import Path
+
+    # Mock paths
+    path1 = MagicMock(spec=Path)
+    path1.name = 'rule1.py'
+    path2 = MagicMock(spec=Path)
+    path2.name = 'rule2.py'
+    path3 = MagicMock(spec=Path)
+    path3.name = '__init__.py'
+
+    # Mock rules
+    rule1 = MagicMock(spec=Rule)
+    rule1.is_enabled = True
+    rule2 = MagicMock(spec=Rule)
+    rule2.is_enabled = False
+
+    # Mock Rule.from_path
+    Rule.from_path = MagicMock(side_effect=lambda p: rule1 if p == path1 else rule2 if p == path2 else None)
+
+    # Test with paths
+    rules_paths = [path1, path2, path3]
+    loaded_rules = list(get_loaded_rules(rules_paths))
+
+
+
+# Generated at 2024-06-03 08:33:08.899671
+```python
+    from collections import namedtuple
+    from .types import CorrectedCommand
+
+    # Create a mock CorrectedCommand for testing
+    MockCommand = namedtuple('MockCommand', ['priority', 'command'])
+
+    # Create a list of corrected commands with different priorities
+    commands = [
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=3, command='cmd3'),
+        MockCommand(priority=1, command='cmd1'),  # Duplicate command
+    ]
+
+    # Convert the list to an iterator
+    commands_iter = iter(commands)
+
+    # Call the function to test
+    result = list(organize_commands(commands_iter))
+
+    # Expected result after sorting and removing duplicates
+    expected = [
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=3, command='cmd3'),
+    ]
+
+    # Assert the first command is yielded
+
+# Generated at 2024-06-03 08:33:12.922049
+```python
+    import sys
+    from unittest.mock import patch, MagicMock
+    from .system import Path
+
+    with patch('sys.path', ['path1', 'path2']), \
+         patch('thefuck.conf.settings.user_dir', Path('user_dir')), \
+         patch('thefuck.system.Path.glob', return_value=[Path('thefuck_contrib_test')]), \
+         patch('thefuck.system.Path.is_dir', return_value=True):
+
+        paths = list(get_rules_import_paths())
+
+        assert Path(__file__).parent.joinpath('rules') in paths
+        assert Path('user_dir').joinpath('rules') in paths
+        assert Path('path1').joinpath('thefuck_contrib_test/rules') in paths
+        assert Path('path2').joinpath('thefuck_contrib_test/rules') in paths
+```
+
+# Generated at 2024-06-03 08:33:21.398055
+```python
+    from unittest.mock import MagicMock
+    from .types import Rule
+    from .system import Path
+
+    # Mock paths
+    path1 = MagicMock(spec=Path)
+    path1.name = 'rule1.py'
+    path2 = MagicMock(spec=Path)
+    path2.name = 'rule2.py'
+    path3 = MagicMock(spec=Path)
+    path3.name = '__init__.py'
+
+    # Mock rules
+    rule1 = MagicMock(spec=Rule)
+    rule1.is_enabled = True
+    rule2 = MagicMock(spec=Rule)
+    rule2.is_enabled = False
+
+    # Mock Rule.from_path
+    Rule.from_path = MagicMock(side_effect=lambda p: rule1 if p == path1 else rule2 if p == path2 else None)
+
+    # Test with paths
+    rules_paths = [path1, path2, path3]
+    loaded_rules = list(get_loaded_rules(rules_paths))
+
+
+
+# Generated at 2024-06-03 08:33:25.400414
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+
+    result_paths = list(get_rules_import_paths())
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:33:30.931096
+```python
+    from collections import namedtuple
+    from .types import CorrectedCommand
+
+    # Mock CorrectedCommand for testing
+    MockCommand = namedtuple('MockCommand', ['priority', 'command'])
+
+    # Create a list of corrected commands with duplicates and different priorities
+    commands = [
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=3, command='cmd3'),
+        MockCommand(priority=1, command='cmd1'),  # Duplicate
+        MockCommand(priority=2, command='cmd2'),  # Duplicate
+    ]
+
+    # Call the function with the test data
+    result = list(organize_commands(commands))
+
+    # Expected result after removing duplicates and sorting by priority
+    expected = [
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=3, command
+
+# Generated at 2024-06-03 08:33:34.940343
+```python
+    from unittest.mock import MagicMock
+    from .types import Rule
+    from .system import Path
+
+    # Mock paths
+    path1 = MagicMock(spec=Path)
+    path1.name = 'rule1.py'
+    path2 = MagicMock(spec=Path)
+    path2.name = 'rule2.py'
+    path3 = MagicMock(spec=Path)
+    path3.name = '__init__.py'
+
+    # Mock rules
+    rule1 = MagicMock(spec=Rule)
+    rule1.is_enabled = True
+    rule2 = MagicMock(spec=Rule)
+    rule2.is_enabled = False
+
+    # Mock Rule.from_path
+    Rule.from_path = MagicMock(side_effect=lambda p: rule1 if p == path1 else rule2 if p == path2 else None)
+
+    rules_paths = [path1, path2, path3]
+    loaded_rules = list(get_loaded_rules(rules_paths))
+
+    assert len(loaded_rules
+
+# Generated at 2024-06-03 08:33:38.868091
+```python
+    from collections import namedtuple
+    from .types import CorrectedCommand
+
+    # Mock CorrectedCommand for testing
+    MockCommand = namedtuple('MockCommand', ['priority', 'command'])
+
+    # Create a list of corrected commands with different priorities
+    commands = [
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=3, command='cmd3'),
+        MockCommand(priority=1, command='cmd1'),  # Duplicate command
+    ]
+
+    # Convert list to generator
+    commands_gen = (cmd for cmd in commands)
+
+    # Call the function
+    result = list(organize_commands(commands_gen))
+
+    # Expected result after sorting and removing duplicates
+    expected = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=3, command='cmd3'),
+
+
+# Generated at 2024-06-03 08:33:41.140097
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+
+    result_paths = list(get_rules_import_paths())
+
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:33:43.915739
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+
+    result_paths = list(get_rules_import_paths())
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:34:44.012851
+```python
+    import sys
+    from unittest.mock import patch, MagicMock
+    from .system import Path
+
+    with patch('sys.path', ['path1', 'path2']), \
+         patch('thefuck.conf.settings.user_dir', Path('/user/dir')), \
+         patch('thefuck.system.Path.glob', return_value=[Path('thefuck_contrib_test')]), \
+         patch('thefuck.system.Path.is_dir', return_value=True):
+
+        paths = list(get_rules_import_paths())
+
+        assert Path(__file__).parent.joinpath('rules') in paths
+        assert Path('/user/dir/rules') in paths
+        assert Path('thefuck_contrib_test/rules') in paths
+```
+
+# Generated at 2024-06-03 08:34:47.490565
+```python
+    from collections import namedtuple
+    from .types import CorrectedCommand
+
+    # Mock CorrectedCommand for testing
+    MockCommand = namedtuple('MockCommand', ['priority', 'command'])
+
+    # Create a list of corrected commands with duplicates and different priorities
+    commands = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=1, command='cmd1'),  # Duplicate
+        MockCommand(priority=3, command='cmd3'),
+        MockCommand(priority=2, command='cmd2'),  # Duplicate
+    ]
+
+    # Expected result after organizing commands
+    expected = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=3, command='cmd3'),
+    ]
+
+    # Call the function with the test data
+    result = list(organize_commands
+
+# Generated at 2024-06-03 08:34:50.730503
+```python
+    from unittest.mock import MagicMock, patch
+    from .types import Command, CorrectedCommand
+
+    command = Command(script='ls', output='ls: command not found')
+    corrected_command1 = CorrectedCommand(script='ls -la', priority=1)
+    corrected_command2 = CorrectedCommand(script='ls --help', priority=2)
+
+    rule_mock = MagicMock()
+    rule_mock.is_match.return_value = True
+    rule_mock.get_corrected_commands.return_value = [corrected_command1, corrected_command2]
+    rule_mock.priority = 1
+
+    with patch('module_name.get_rules', return_value=[rule_mock]):
+        corrected_commands = list(get_corrected_commands(command))
+
+    assert corrected_commands == [corrected_command1, corrected_command2]
+```
+
+# Generated at 2024-06-03 08:34:54.053000
+```python
+    from unittest.mock import MagicMock, patch
+    from .types import Command, CorrectedCommand
+
+    command = Command(script='ls', output='command not found')
+    corrected_command1 = CorrectedCommand(script='ls -la', priority=1)
+    corrected_command2 = CorrectedCommand(script='ls --help', priority=2)
+
+    rule_mock = MagicMock()
+    rule_mock.is_match.return_value = True
+    rule_mock.get_corrected_commands.return_value = [corrected_command1, corrected_command2]
+
+    with patch('module_name.get_rules', return_value=[rule_mock]):
+        corrected_commands = list(get_corrected_commands(command))
+
+    assert corrected_commands == [corrected_command1, corrected_command2]
+```
+
+# Generated at 2024-06-03 08:34:57.360944
+```python
+    import sys
+    from unittest.mock import patch, MagicMock
+    from .system import Path
+
+    with patch('sys.path', ['/mock/path1', '/mock/path2']), \
+         patch('thefuck.conf.settings.user_dir', Path('/mock/user_dir')), \
+         patch('thefuck.system.Path.glob', return_value=[Path('/mock/path1/thefuck_contrib_test')]), \
+         patch('thefuck.system.Path.is_dir', return_value=True):
+
+        paths = list(get_rules_import_paths())
+
+        assert Path(__file__).parent.joinpath('rules') in paths
+        assert Path('/mock/user_dir/rules') in paths
+        assert Path('/mock/path1/thefuck_contrib_test/rules') in paths
+```
+
+# Generated at 2024-06-03 08:35:00.898058
+```python
+    from collections import namedtuple
+    from .types import CorrectedCommand
+
+    # Mock CorrectedCommand for testing
+    MockCommand = namedtuple('MockCommand', ['priority', 'command'])
+
+    # Create a list of corrected commands with duplicates and different priorities
+    commands = [
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=3, command='cmd3'),
+        MockCommand(priority=1, command='cmd1'),  # Duplicate
+        MockCommand(priority=2, command='cmd2'),  # Duplicate
+    ]
+
+    # Expected result after organizing: sorted by priority and without duplicates
+    expected = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=3, command='cmd3'),
+    ]
+
+    # Call the function
+    result = list(organ
+
+# Generated at 2024-06-03 08:35:03.444754
+```python
+    from thefuck.types import CorrectedCommand
+
+    cmd1 = CorrectedCommand(script='ls', priority=1000)
+    cmd2 = CorrectedCommand(script='ls -la', priority=500)
+    cmd3 = CorrectedCommand(script='ls', priority=1000)  # Duplicate of cmd1
+    cmd4 = CorrectedCommand(script='cd ..', priority=200)
+
+    corrected_commands = iter([cmd1, cmd2, cmd3, cmd4])
+    organized_commands = list(organize_commands(corrected_commands))
+
+    assert organized_commands == [cmd1, cmd4, cmd2]
+```
+
+# Generated at 2024-06-03 08:35:06.430177
+```python
+    from unittest.mock import MagicMock, patch
+    from .types import Command, CorrectedCommand
+
+    command = Command(script='ls', output='ls: command not found')
+    corrected_command1 = CorrectedCommand(script='ls -la', priority=1)
+    corrected_command2 = CorrectedCommand(script='ls --help', priority=2)
+
+    rule_mock = MagicMock()
+    rule_mock.is_match.return_value = True
+    rule_mock.get_corrected_commands.return_value = [corrected_command1, corrected_command2]
+
+    with patch('your_module.get_rules', return_value=[rule_mock]):
+        corrected_commands = list(get_corrected_commands(command))
+
+    assert corrected_commands == [corrected_command1, corrected_command2]
+```
+
+# Generated at 2024-06-03 08:35:09.974747
+```python
+    from collections import namedtuple
+    from .types import CorrectedCommand
+
+    # Mock CorrectedCommand for testing
+    MockCommand = namedtuple('MockCommand', ['priority', 'command'])
+
+    # Create a list of corrected commands with duplicates and different priorities
+    commands = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=1, command='cmd1'),  # Duplicate
+        MockCommand(priority=3, command='cmd3'),
+        MockCommand(priority=2, command='cmd2'),  # Duplicate
+    ]
+
+    # Call the function with the test data
+    result = list(organize_commands(commands))
+
+    # Expected result after removing duplicates and sorting by priority
+    expected = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=3, command
+
+# Generated at 2024-06-03 08:35:12.404217
+```python
+    from thefuck.types import CorrectedCommand
+
+    cmd1 = CorrectedCommand(script='ls', priority=1000)
+    cmd2 = CorrectedCommand(script='ls -la', priority=500)
+    cmd3 = CorrectedCommand(script='ls', priority=1000)  # Duplicate of cmd1
+    cmd4 = CorrectedCommand(script='cd ..', priority=200)
+
+    corrected_commands = iter([cmd1, cmd2, cmd3, cmd4])
+    organized = list(organize_commands(corrected_commands))
+
+    assert organized == [cmd1, cmd4, cmd2]
+```
+
+# Generated at 2024-06-03 08:37:06.467199
+```python
+    from unittest.mock import MagicMock, patch
+    from .types import Command, CorrectedCommand
+
+    command = Command(script='ls', output='command not found')
+    corrected_command1 = CorrectedCommand(script='ls -la', priority=1)
+    corrected_command2 = CorrectedCommand(script='ls --help', priority=2)
+
+    rule_mock = MagicMock()
+    rule_mock.is_match.return_value = True
+    rule_mock.get_corrected_commands.return_value = [corrected_command1, corrected_command2]
+
+    with patch('your_module.get_rules', return_value=[rule_mock]):
+        corrected_commands = list(get_corrected_commands(command))
+
+    assert corrected_commands == [corrected_command1, corrected_command2]
+```
+
+# Generated at 2024-06-03 08:37:09.115408
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+
+    result_paths = list(get_rules_import_paths())
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:37:12.405926
+```python
+    from unittest.mock import MagicMock, patch
+    from .types import Command, CorrectedCommand
+
+    command = Command(script='ls', output='command not found')
+    corrected_command1 = CorrectedCommand(script='ls -la', priority=1)
+    corrected_command2 = CorrectedCommand(script='ls --help', priority=2)
+
+    rule_mock = MagicMock()
+    rule_mock.is_match.return_value = True
+    rule_mock.get_corrected_commands.return_value = [corrected_command1, corrected_command2]
+
+    with patch('your_module.get_rules', return_value=[rule_mock]):
+        corrected_commands = list(get_corrected_commands(command))
+
+    assert corrected_commands == [corrected_command1, corrected_command2]
+```
+
+# Generated at 2024-06-03 08:37:15.298112
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+    
+    result_paths = list(get_rules_import_paths())
+    
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:37:18.731759
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+
+    result_paths = list(get_rules_import_paths())
+
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:37:23.982067
+```python
+    from collections import namedtuple
+    from .types import CorrectedCommand
+
+    # Mock CorrectedCommand for testing
+    MockCommand = namedtuple('MockCommand', ['priority', 'command'])
+
+    # Create a list of corrected commands with duplicates and different priorities
+    commands = [
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=3, command='cmd3'),
+        MockCommand(priority=1, command='cmd1'),  # Duplicate
+        MockCommand(priority=2, command='cmd2'),  # Duplicate
+    ]
+
+    # Convert list to generator
+    commands_gen = (cmd for cmd in commands)
+
+    # Call the function
+    organized_commands = list(organize_commands(commands_gen))
+
+    # Expected result after removing duplicates and sorting by priority
+    expected_commands = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand
+
+# Generated at 2024-06-03 08:37:28.392038
+```python
+    from unittest.mock import MagicMock, patch
+    from .types import Command, CorrectedCommand
+
+    command = Command(script='ls', output='ls: command not found')
+    corrected_command1 = CorrectedCommand(script='ls -la', priority=1000)
+    corrected_command2 = CorrectedCommand(script='ls --help', priority=500)
+    corrected_command3 = CorrectedCommand(script='ls -l', priority=1000)
+
+    rule1 = MagicMock()
+    rule1.is_match.return_value = True
+    rule1.get_corrected_commands.return_value = [corrected_command1, corrected_command2]
+
+    rule2 = MagicMock()
+    rule2.is_match.return_value = True
+    rule2.get_corrected_commands.return_value = [corrected_command3]
+
+    with patch('your_module.get_rules', return_value=[rule1, rule2]):
+        corrected_commands = list(get_corrected_commands(command))
+
+    assert corrected_commands ==
+
+# Generated at 2024-06-03 08:37:30.820443
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+
+    result_paths = list(get_rules_import_paths())
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```
+
+# Generated at 2024-06-03 08:37:35.164044
+```python
+    from collections import namedtuple
+    from .types import CorrectedCommand
+
+    # Mock CorrectedCommand for testing
+    MockCommand = namedtuple('MockCommand', ['priority', 'command'])
+
+    # Create a list of corrected commands with duplicates and different priorities
+    commands = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=1, command='cmd1'),  # Duplicate
+        MockCommand(priority=3, command='cmd3')
+    ]
+
+    # Call the function with the test data
+    result = list(organize_commands(commands))
+
+    # Expected result after removing duplicates and sorting by priority
+    expected = [
+        MockCommand(priority=1, command='cmd1'),
+        MockCommand(priority=2, command='cmd2'),
+        MockCommand(priority=3, command='cmd3')
+    ]
+
+    # Assert the result matches the expected output
+
+
+# Generated at 2024-06-03 08:37:37.657544
+```python
+    expected_paths = [
+        Path(__file__).parent.joinpath('rules'),
+        settings.user_dir.joinpath('rules')
+    ]
+    
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                expected_paths.append(contrib_rules)
+    
+    result_paths = list(get_rules_import_paths())
+    
+    assert len(result_paths) == len(expected_paths)
+    for expected_path in expected_paths:
+        assert expected_path in result_paths
+```

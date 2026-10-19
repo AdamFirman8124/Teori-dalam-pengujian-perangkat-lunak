@@ -1,0 +1,836 @@
+
+
+# Generated at 2024-03-18 08:26:08.399431
+```python
+    # Assuming the following setup for the test
+    from tornado.httpclient import HTTPRequest
+    from tornado.ioloop import IOLoop
+    from unittest.mock import Mock, patch
+    import asyncio
+
+    # Mocking the necessary components for the test
+    io_loop = IOLoop.current()
+    stream = Mock()
+    stream.error = None
+    connection = _HTTPConnection(HTTPRequest("http://example.com"), io_loop)
+    connection.stream = stream
+    connection.final_callback = Mock()
+
+    # Patch sys.exc_info to return a specific exception info
+    with patch('sys.exc_info') as mock_exc_info:
+        mock_exc_info.return_value = (HTTPStreamClosedError, HTTPStreamClosedError("Stream closed"), None)
+        connection.on_connection_close()
+
+    # Assertions to verify the correct behavior
+    connection.final_callback.assert_called_once()
+    assert isinstance(connection.final_callback.call_args[0][0], HTTPResponse)
+    assert connection.final_callback
+
+# Generated at 2024-03-18 08:26:11.574626
+    # Test with a custom message
+    custom_message = "Custom stream closed message"
+    stream_closed_error_with_message = HTTPStreamClosedError(custom_message)
+    assert str(stream_closed_error_with_message) == custom_message
+
+    # Test with no message (should return default)
+    stream_closed_error_no_message = HTTPStreamClosedError(message=None)
+    assert str(stream_closed_error_no_message) == "Stream closed"
+
+# Generated at 2024-03-18 08:26:19.822745
+```python
+    async def test__HTTPConnection_headers_received(self):
+        # Setup connection and request objects
+        connection = _HTTPConnection(self.mock_stream, self.mock_address, self.mock_client, self.mock_request)
+        connection.request = HTTPRequest(url='http://example.com', method='GET', expect_100_continue=False)
+        connection.code = 200
+        connection.reason = 'OK'
+        connection.headers = httputil.HTTPHeaders()
+
+        # Mock header callback
+        header_callback_mock = mock.Mock()
+        connection.request.header_callback = header_callback_mock
+
+        # Create a response start line and headers
+        start_line = httputil.ResponseStartLine('HTTP/1.1', 200, 'OK')
+        headers = httputil.HTTPHeaders({'Content-Type': 'text/plain'})
+
+        # Call headers_received
+        await connection.headers_received(start_line, headers)
+
+        # Check if the header callback was called with the correct headers
+        expected_header_lines = [
+
+
+# Generated at 2024-03-18 08:26:30.031852
+```python
+    # Assume the following setup has been done for the test environment:
+    # self is an instance of _HTTPConnection with necessary attributes
+    # mock_stream is a mock of IOStream with an error attribute
+    # mock_handle_exception is a mock of _HTTPConnection._handle_exception
+
+    # Test when stream has an error
+    mock_stream.error = Exception("Test error")
+    self.stream = mock_stream
+    self.final_callback = mock.Mock()
+    with pytest.raises(Exception) as exc_info:
+        self.on_connection_close()
+    assert str(exc_info.value) == "Test error"
+    mock_handle_exception.assert_called_once()
+
+    # Test when stream has no error
+    mock_stream.error = None
+    self.stream = mock_stream
+    self.final_callback = mock.Mock()
+    with pytest.raises(HTTPStreamClosedError) as exc_info:
+        self.on_connection_close()
+    assert str(exc_info.value) == "Connection closed"
+    mock_handle_exception.assert_called
+
+# Generated at 2024-03-18 08:26:36.387821
+```python
+    from tornado.httpclient import HTTPResponse
+    from tornado.httputil import HTTPHeaders
+    from tornado.ioloop import IOLoop
+    from unittest.mock import Mock, patch
+    from io import BytesIO
+    import time
+
+    @patch('tornado.simple_httpclient._HTTPConnection._on_end_request')
+    def test_finish(mock_on_end_request):
+        connection = _HTTPConnection(Mock(), Mock(), Mock())
+        connection.request = Mock()
+        connection.request.method = "GET"
+        connection.request.url = "http://example.com"
+        connection.request.streaming_callback = None
+        connection.request.header_callback = None
+        connection.request.follow_redirects = False
+        connection.request.max_redirects = 0
+        connection.request.original_request = connection.request
+        connection.code = 200
+        connection.start_time = time.time()
+        connection.start_wall_time = time.time()
+        connection.headers = HTTPHeaders({"Content-Type": "text/plain"})
+       
+
+# Generated at 2024-03-18 08:26:42.831260
+```python
+    from tornado.httpclient import HTTPResponse
+    from unittest.mock import Mock, patch
+    from io import BytesIO
+
+    @patch('tornado.httpclient.HTTPResponse')
+    def test__HTTPConnection_finish(mock_httpresponse):
+        connection = _HTTPConnection(Mock(), Mock(), Mock())
+        connection.request = Mock()
+        connection.request.method = 'GET'
+        connection.request.url = 'http://example.com'
+        connection.request.streaming_callback = None
+        connection.request.header_callback = None
+        connection.request.follow_redirects = False
+        connection.request.max_redirects = 0
+        connection.request.original_request = connection.request
+        connection.final_callback = Mock()
+        connection.start_time = 0
+        connection.start_wall_time = 0
+        connection.io_loop = Mock()
+        connection.io_loop.time.return_value = 10
+        connection.code = 200
+        connection.headers = {'Content-Type': 'text/plain'}
+        connection.chunks = [b'
+
+# Generated at 2024-03-18 08:26:52.593094
+```python
+    from tornado.httpclient import HTTPResponse
+    from unittest.mock import Mock, patch
+    from io import BytesIO
+
+    def test__HTTPConnection_finish():
+        connection = _HTTPConnection(Mock(), Mock())
+        connection.code = 200
+        connection.headers = httputil.HTTPHeaders({"Content-Type": "text/plain"})
+        connection.chunks = [b"Hello", b" ", b"World!"]
+        connection.request = Mock()
+        connection.request.method = "GET"
+        connection.request.url = "http://example.com"
+        connection.request.streaming_callback = None
+        connection.request.header_callback = None
+        connection.request.follow_redirects = False
+        connection.request.max_redirects = 0
+        connection.request.original_request = connection.request
+        connection.io_loop = Mock()
+        connection.io_loop.time.return_value = 10
+        connection.start_time = 5
+        connection.start_wall_time = 1
+        connection.final_callback = Mock()
+
+       
+
+# Generated at 2024-03-18 08:27:01.105188
+```python
+    # Arrange
+    io_loop = IOLoop.current()
+    max_clients = 5
+    hostname_mapping = {'localhost': '127.0.0.1'}
+    max_buffer_size = 1024 * 1024 * 50  # 50MB
+    resolver = Resolver()
+    defaults = {'user_agent': 'TestClient'}
+
+    # Act
+    client = SimpleAsyncHTTPClient(io_loop=io_loop)
+    client.initialize(
+        max_clients=max_clients,
+        hostname_mapping=hostname_mapping,
+        max_buffer_size=max_buffer_size,
+        resolver=resolver,
+        defaults=defaults
+    )
+
+    # Assert
+    assert client.max_clients == max_clients
+    assert isinstance(client.resolver, OverrideResolver)
+    assert client.resolver.mapping == hostname_mapping
+    assert client.max_buffer_size == max_buffer_size
+    assert client.defaults == defaults
+```
+
+# Generated at 2024-03-18 08:27:08.516243
+```python
+    # Arrange
+    io_loop = IOLoop.current()
+    client = SimpleAsyncHTTPClient(io_loop=io_loop)
+    request = HTTPRequest(url='http://example.com', connect_timeout=0.1, request_timeout=0.1)
+    response = None
+
+    def handle_response(resp):
+        nonlocal response
+        response = resp
+
+    # Act
+    client.fetch_impl(request, handle_response)
+    io_loop.start()
+
+    # Assert
+    assert response is not None
+    assert response.code == 599
+    assert isinstance(response.error, HTTPTimeoutError)
+```
+
+# Generated at 2024-03-18 08:27:14.552506
+```python
+    from tornado.httpclient import HTTPResponse
+    from unittest.mock import Mock, patch
+    from io import BytesIO
+
+    @patch('tornado.httpclient.HTTPResponse')
+    def test__HTTPConnection_finish(mock_httpresponse):
+        connection = _HTTPConnection(Mock(), Mock())
+        connection.request = Mock()
+        connection.request.method = "GET"
+        connection.request.url = "http://example.com"
+        connection.request.streaming_callback = None
+        connection.request.header_callback = None
+        connection.request.follow_redirects = False
+        connection.request.max_redirects = 0
+        connection.request.original_request = connection.request
+        connection.code = 200
+        connection.headers = Mock()
+        connection.headers.get_all.return_value = []
+        connection.start_time = 0
+        connection.start_wall_time = 0
+        connection.io_loop = Mock()
+        connection.io_loop.time.return_value = 10
+        connection.final_callback = Mock()
+        connection.chunks = [b
+
+# Generated at 2024-03-18 08:28:22.874939
+```python
+    async def test__HTTPConnection_headers_received():
+        # Setup connection object with necessary attributes
+        connection = _HTTPConnection()
+        connection.request = MagicMock()
+        connection.request.expect_100_continue = False
+        connection.request.header_callback = MagicMock()
+        connection.request.follow_redirects = True
+        connection.request.max_redirects = 2
+        connection.headers = httputil.HTTPHeaders()
+        connection.code = 200
+        connection.reason = "OK"
+        connection.chunks = []
+
+        # Mock the _should_follow_redirect method to return False
+        connection._should_follow_redirect = MagicMock(return_value=False)
+
+        # Create a fake start line and headers
+        start_line = httputil.ResponseStartLine('HTTP/1.1', 200, 'OK')
+        headers = httputil.HTTPHeaders({"Content-Type": "text/plain"})
+
+        # Call headers_received method
+        await connection.headers_received(start_line, headers)
+
+        # Assert that header_callback
+
+# Generated at 2024-03-18 08:28:31.169243
+```python
+    @gen_test
+    async def test__HTTPConnection_run(self):
+        with mock.patch.object(self.connection, "_create_connection") as mock_create_connection, \
+             mock.patch.object(self.connection, "_write_body") as mock_write_body, \
+             mock.patch.object(self.connection, "_handle_exception") as mock_handle_exception, \
+             mock.patch("tornado.simple_httpclient.sys") as mock_sys:
+            # Set up the mock objects
+            mock_stream = mock.Mock(spec=IOStream)
+            mock_create_connection.return_value = mock.Mock(spec=HTTP1Connection)
+            mock_handle_exception.return_value = False
+            mock_sys.exc_info.return_value = (None, None, None)
+
+            # Run the method under test
+            await self.connection.run(mock_stream)
+
+            # Check that the connection was created
+            mock_create_connection.assert_called_once_with(mock_stream)
+
+            # Check that the body was written
+            mock_write_body.assert_called_once_with(True)
+
+            #
+
+# Generated at 2024-03-18 08:28:39.629282
+```python
+    @gen_test
+    async def test__HTTPConnection_run(self):
+        with mock.patch.object(self, '_create_connection') as mock_create_connection, \
+             mock.patch.object(self, '_write_body') as mock_write_body, \
+             mock.patch.object(self, '_handle_exception') as mock_handle_exception:
+            # Mock the connection object and its write_headers method
+            mock_connection = mock.Mock()
+            mock_create_connection.return_value = mock_connection
+            mock_connection.write_headers = mock.Mock()
+
+            # Set up the request object with necessary attributes
+            self.request = mock.Mock()
+            self.request.method = "GET"
+            self.request.headers = {}
+            self.request.body = None
+            self.request.body_producer = None
+            self.request.expect_100_continue = False
+            self.request.decompress_response = False
+            self.request.allow_nonstandard_methods = False
+            self.request.user_agent = None
+            self.request.auth_username = None
+            self.request
+
+# Generated at 2024-03-18 08:28:49.317710
+```python
+    async def test__HTTPConnection_on_connection_close(self):
+        # Setup the connection with a final callback
+        self.connection.final_callback = MagicMock()
+        self.connection.stream = MagicMock()
+        self.connection.stream.error = None
+
+        # Call the method
+        self.connection.on_connection_close()
+
+        # Assert the final callback was called with an HTTPStreamClosedError
+        self.connection.final_callback.assert_called_once()
+        args, kwargs = self.connection.final_callback.call_args
+        response = args[0]
+        self.assertIsInstance(response.error, HTTPStreamClosedError)
+        self.assertEqual(response.error.code, 599)
+        self.assertEqual(response.error.message, "Connection closed")
+
+        # Now simulate a stream error and ensure it is raised
+        stream_error = IOError("Stream error")
+        self.connection.stream.error = stream_error
+
+        with self.assertRaises(IOError) as cm:
+            self.connection.on_connection_close()
+        self.assertEqual(cm.exception, stream_error)
+```
+
+# Generated at 2024-03-18 08:28:55.709182
+```python
+    @gen_test
+    async def test__HTTPConnection_run(self):
+        with mock.patch.object(self, '_create_connection') as mock_create_connection, \
+             mock.patch.object(self, '_write_body') as mock_write_body, \
+             mock.patch.object(self, '_handle_exception') as mock_handle_exception:
+            # Mock the connection object and its write_headers method
+            mock_connection = mock.Mock()
+            mock_create_connection.return_value = mock_connection
+            mock_connection.write_headers = mock.AsyncMock()
+
+            # Set up the request object with necessary attributes
+            self.request = mock.Mock()
+            self.request.method = "GET"
+            self.request.headers = {}
+            self.request.auth_username = None
+            self.request.auth_password = None
+            self.request.user_agent = None
+            self.request.allow_nonstandard_methods = False
+            self.request.expect_100_continue = False
+            self.request.body = None
+            self.request.body_producer = None
+            self.request
+
+# Generated at 2024-03-18 08:29:03.085877
+```python
+    async def test__HTTPConnection_run(self):
+        # Setup
+        self.request = HTTPRequest(
+            url="http://example.com",
+            method="GET",
+            auth_username="user",
+            auth_password="pass",
+            user_agent="TestAgent",
+            allow_nonstandard_methods=False,
+            expect_100_continue=False,
+            decompress_response=True,
+            follow_redirects=True,
+            max_redirects=5,
+            streaming_callback=None,
+            header_callback=None,
+            body_producer=None,
+            ssl_options=None,
+            validate_cert=True,
+            ca_certs=None,
+            client_cert=None,
+            client_key=None,
+            headers={}
+        )
+        self.parsed = urllib.parse.urlparse(self.request.url)
+        self.io_loop = IOLoop.current()
+        self.start_time = self.io_loop.time()
+        self.start_wall_time = time.time()
+        self.final_callback = MagicMock()
+        self.release_callback = MagicMock()
+        self.max_header_size = None
+
+
+# Generated at 2024-03-18 08:29:11.207398
+```python
+    from tornado.httpclient import HTTPResponse
+    from unittest.mock import Mock, patch
+    from io import BytesIO
+
+    # Mock the necessary components
+    io_loop_mock = Mock()
+    io_loop_mock.time.return_value = 10
+    io_loop_mock.add_callback = Mock()
+
+    connection = _HTTPConnection(Mock(), io_loop_mock, Mock(), Mock(), Mock())
+    connection.request = Mock()
+    connection.request.method = "GET"
+    connection.request.url = "http://example.com"
+    connection.request.streaming_callback = None
+    connection.request.header_callback = None
+    connection.request.follow_redirects = False
+    connection.request.max_redirects = 0
+    connection.request.original_request = connection.request
+    connection.final_callback = Mock()
+    connection.start_time = 5
+    connection.start_wall_time = 1
+    connection.code = 200
+    connection.headers = Mock()
+    connection.headers.get_all.return_value = []
+    connection.chunks =
+
+# Generated at 2024-03-18 08:29:20.354624
+```python
+    @pytest.mark.asyncio
+    async def test__HTTPConnection_run():
+        # Setup request object with necessary attributes
+        request = mock.MagicMock()
+        request.method = "GET"
+        request.url = "http://example.com"
+        request.headers = {}
+        request.body = None
+        request.auth_username = None
+        request.auth_password = None
+        request.auth_mode = None
+        request.user_agent = "TestAgent"
+        request.allow_nonstandard_methods = False
+        request.expect_100_continue = False
+        request.decompress_response = False
+        request.follow_redirects = True
+        request.max_redirects = 5
+        request.ssl_options = None
+        request.validate_cert = True
+        request.ca_certs = None
+        request.client_cert = None
+        request.client_key = None
+        request.streaming_callback = None
+        request.header_callback = None
+
+        # Setup connection object with necessary methods
+        connection = mock.Magic
+
+# Generated at 2024-03-18 08:29:27.490112
+```python
+    # Assume the following setup for the test
+    from tornado.httpclient import HTTPResponse, HTTPRequest
+    from tornado.httputil import HTTPHeaders, ResponseStartLine
+    from tornado.ioloop import IOLoop
+    from unittest.mock import Mock
+    import unittest
+
+    class TestHTTPConnection(unittest.TestCase):
+        def setUp(self):
+            self.connection = _HTTPConnection(
+                request=HTTPRequest(url="http://example.com"),
+                io_loop=IOLoop.current(),
+                release_callback=Mock(),
+                final_callback=Mock(),
+                max_header_size=None,
+                max_body_size=None,
+                start_time=IOLoop.current().time(),
+                start_wall_time=IOLoop.current().time(),
+                stream=Mock(),
+                client=Mock(),
+                sockaddr=None,
+            )
+            self.connection.chunks = []
+            self.connection.code = None
+            self.connection.headers = None
+
+        def test__HTTPConnection_headers_received(self):
+            # Mock
+
+# Generated at 2024-03-18 08:29:31.405858
+    # Test with a custom message
+    custom_message = "Custom stream closed message"
+    stream_closed_error_with_message = HTTPStreamClosedError(custom_message)
+    assert str(stream_closed_error_with_message) == custom_message
+
+    # Test with no message (should return default message)
+    stream_closed_error_no_message = HTTPStreamClosedError(None)
+    assert str(stream_closed_error_no_message) == "Stream closed"
+
+# Generated at 2024-03-18 08:31:30.475024
+```python
+    # Arrange
+    client = SimpleAsyncHTTPClient()
+    resolver_close_spy = unittest.mock.spy(client.resolver, 'close')
+    tcp_client_close_spy = unittest.mock.spy(client.tcp_client, 'close')
+
+    # Act
+    client.close()
+
+    # Assert
+    resolver_close_spy.assert_called_once()
+    tcp_client_close_spy.assert_called_once()
+```
+
+# Generated at 2024-03-18 08:31:38.814912
+```python
+    from tornado.httpclient import HTTPResponse
+    from unittest.mock import Mock, patch
+    from io import BytesIO
+
+    @patch('tornado.httpclient.HTTPClient')
+    def test__HTTPConnection_finish(mock_httpclient):
+        # Create a mock request object
+        request = Mock()
+        request.method = 'GET'
+        request.url = 'http://example.com'
+        request.follow_redirects = False
+        request.max_redirects = 0
+        request.streaming_callback = None
+        request.header_callback = None
+        request.original_request = request
+
+        # Create a mock HTTPResponse object
+        response = HTTPResponse(request, 200, buffer=BytesIO(b"response body"))
+
+        # Create a mock _HTTPConnection object
+        connection = Mock()
+        connection.request = request
+        connection.code = 200
+        connection.headers = {'Content-Type': 'text/plain'}
+        connection.chunks = [b"response body"]
+        connection.io
+
+# Generated at 2024-03-18 08:31:49.345804
+```python
+    # Assume the following setup has been done for the test environment
+    from tornado.httpclient import HTTPRequest
+    from tornado.ioloop import IOLoop
+    from tornado.iostream import IOStream
+    from unittest.mock import Mock, patch
+    import asyncio
+
+    # Mocking IOStream for the test
+    mock_stream = Mock(spec=IOStream)
+
+    # Mocking IOLoop instance
+    mock_ioloop = Mock(spec=IOLoop)
+    mock_ioloop.time.return_value = 123.456
+
+    # Creating a dummy request
+    request = HTTPRequest(url='http://example.com')
+
+    # Creating an instance of _HTTPConnection with the mocked stream and IOLoop
+    connection = _HTTPConnection(mock_stream, mock_ioloop, request, None, None, None)
+
+    # Mocking the streaming_callback and final_callback
+    connection.request.streaming_callback = Mock()
+    connection.final_callback = Mock()
+
+
+
+# Generated at 2024-03-18 08:31:58.891102
+```python
+    @gen_test
+    async def test__HTTPConnection_run(self):
+        with mock.patch.object(self, '_create_connection') as mock_create_connection, \
+             mock.patch.object(self, '_write_body') as mock_write_body, \
+             mock.patch.object(self, '_handle_exception') as mock_handle_exception:
+            # Mock the connection object and its write_headers method
+            mock_connection = mock.Mock()
+            mock_create_connection.return_value = mock_connection
+            mock_connection.write_headers = mock.AsyncMock()
+
+            # Set up the request object with necessary attributes
+            self.request = mock.Mock()
+            self.request.method = "GET"
+            self.request.headers = {}
+            self.request.auth_username = "user"
+            self.request.auth_password = "pass"
+            self.request.auth_mode = "basic"
+            self.request.user_agent = "TestAgent"
+            self.request.allow_nonstandard_methods = False
+            self.request.expect_100_continue = False
+            self.request.decompress_response
+
+# Generated at 2024-03-18 08:32:07.233904
+```python
+    from tornado.httpclient import HTTPResponse
+    from tornado.httputil import HTTPHeaders
+    from tornado.ioloop import IOLoop
+    from unittest.mock import Mock, patch
+    import time
+
+    @patch('tornado.httpclient.HTTPResponse')
+    def test__HTTPConnection_finish(mock_httpresponse):
+        # Create a mock HTTPConnection object
+        connection = Mock()
+        connection.code = 200
+        connection.chunks = [b'chunk1', b'chunk2']
+        connection.request = Mock()
+        connection.request.method = 'GET'
+        connection.request.url = 'http://example.com'
+        connection.request.streaming_callback = None
+        connection.request.header_callback = None
+        connection.request.follow_redirects = False
+        connection.request.max_redirects = None
+        connection.headers = HTTPHeaders({'Content-Type': 'text/plain'})
+        connection.io_loop = IOLoop.current()
+        connection.start_time = time.time()
+        connection.start
+
+# Generated at 2024-03-18 08:32:15.042006
+    # Arrange
+    max_clients = 5
+    hostname_mapping = {'localhost': '127.0.0.1'}
+    max_buffer_size = 1024 * 1024 * 50  # 50MB
+    resolver = Resolver()
+    defaults = {'user-agent': 'TestClient'}
+    max_header_size = 1024 * 10  # 10KB
+    max_body_size = 1024 * 1024 * 10  # 10MB
+
+    # Act
+    client = SimpleAsyncHTTPClient()
+    client.initialize(
+        max_clients=max_clients,
+        hostname_mapping=hostname_mapping,
+        max_buffer_size=max_buffer_size,
+        resolver=resolver,
+        defaults=defaults,
+        max_header_size=max_header_size,
+        max_body_size=max_body_size
+    )
+
+    # Assert
+    assert client.max_clients == max_clients
+    assert client.resolver.mapping == hostname_mapping
+    assert client.max_buffer_size == max_buffer_size
+
+# Generated at 2024-03-18 08:32:25.392947
+    # Arrange
+    max_clients = 5
+    hostname_mapping = {'localhost': '127.0.0.1'}
+    max_buffer_size = 1024 * 1024 * 50  # 50MB
+    resolver = Resolver()
+    defaults = {'user_agent': 'TestClient'}
+    max_header_size = 1024 * 10  # 10KB
+    max_body_size = 1024 * 1024 * 10  # 10MB
+
+    # Act
+    client = SimpleAsyncHTTPClient()
+    client.initialize(
+        max_clients=max_clients,
+        hostname_mapping=hostname_mapping,
+        max_buffer_size=max_buffer_size,
+        resolver=resolver,
+        defaults=defaults,
+        max_header_size=max_header_size,
+        max_body_size=max_body_size
+    )
+
+    # Assert
+    assert client.max_clients == max_clients
+    assert isinstance(client.resolver, OverrideResolver)
+    assert client.max_buffer_size == max_buffer_size
+
+# Generated at 2024-03-18 08:32:32.208451
+```python
+    # Setup the IOLoop instance for testing
+    io_loop = IOLoop.current()
+
+    # Create a SimpleAsyncHTTPClient instance
+    client = SimpleAsyncHTTPClient(io_loop=io_loop)
+
+    # Mock HTTPRequest and callback
+    request = HTTPRequest(url="http://example.com")
+    callback = lambda response: None
+
+    # Patch the _handle_request method to prevent actual network calls
+    def mock_handle_request(request, release_callback, final_callback):
+        # Simulate a response
+        response = HTTPResponse(request, 200, buffer=BytesIO(b"OK"))
+        # Call the final_callback with the simulated response
+        final_callback(response)
+
+    client._handle_request = mock_handle_request
+
+    # Call fetch_impl with the mock request and callback
+    client.fetch_impl(request, callback)
+
+    # Check if the request is added to the active queue
+    assert len(client.active) == 1
+
+    # Check if the
+
+# Generated at 2024-03-18 08:32:38.209895
+```python
+    # Arrange
+    io_loop = IOLoop.current()
+    client = SimpleAsyncHTTPClient(io_loop=io_loop)
+    request = HTTPRequest(url='http://example.com', connect_timeout=0.1, request_timeout=0.1)
+    response = None
+
+    def handle_response(resp):
+        nonlocal response
+        response = resp
+
+    # Act
+    client.fetch_impl(request, handle_response)
+    io_loop.start()
+
+    # Assert
+    assert response is not None
+    assert response.code == 599
+    assert isinstance(response.error, HTTPTimeoutError)
+```
+
+# Generated at 2024-03-18 08:32:46.653441
+```python
+    # Assume the following setup has been done for the unit test
+    from tornado.httpclient import HTTPRequest
+    from tornado.iostream import IOStream
+    from tornado.testing import AsyncTestCase, gen_test
+    from unittest.mock import Mock
+
+    class TestHTTPConnectionDataReceived(AsyncTestCase):
+        @gen_test
+        async def test_data_received(self):
+            # Mock the IOStream
+            stream = Mock(spec=IOStream)
+            # Mock the HTTPRequest
+            request = HTTPRequest(url='http://example.com', streaming_callback=Mock())
+            # Create an instance of _HTTPConnection
+            connection = _HTTPConnection(stream, request, self.io_loop, Mock(), Mock())
+            # Mock the chunks attribute
+            connection.chunks = []
+            # Mock the _should_follow_redirect method to always return False
+            connection._should_follow_redirect = Mock(return_value=False)
+            # Mock the request.streaming_callback to just append data to a list
+           
+
+# Generated at 2024-03-18 08:34:50.017958
+```python
+    from tornado.httpclient import HTTPResponse
+    from unittest.mock import Mock, patch
+    from io import BytesIO
+
+    @patch('tornado.httpclient.HTTPResponse')
+    def test__HTTPConnection_finish(mock_http_response):
+        connection = _HTTPConnection(Mock(), Mock())
+        connection.request = Mock()
+        connection.request.method = "GET"
+        connection.request.url = "http://example.com"
+        connection.request.streaming_callback = None
+        connection.request.follow_redirects = False
+        connection.request.max_redirects = 0
+        connection.request.header_callback = None
+        connection.request.original_request = connection.request
+        connection.final_callback = Mock()
+        connection.start_time = 0
+        connection.start_wall_time = 0
+        connection.io_loop = Mock()
+        connection.io_loop.time.return_value = 10
+        connection.headers = Mock()
+        connection.code = 200
+        connection.chunks = [b"chunk1", b"chunk2"]
+
+
+# Generated at 2024-03-18 08:35:00.289705
+```python
+    @gen_test
+    async def test__HTTPConnection_run(self):
+        with mock.patch.object(self, '_create_connection') as mock_create_connection, \
+             mock.patch.object(self, '_write_body') as mock_write_body, \
+             mock.patch.object(self, '_handle_exception') as mock_handle_exception:
+            # Mock the connection object and its write_headers method
+            mock_connection = mock.Mock()
+            mock_create_connection.return_value = mock_connection
+            mock_connection.write_headers = mock.AsyncMock()
+
+            # Set up the request object with necessary attributes
+            self.request = mock.Mock()
+            self.request.method = "GET"
+            self.request.headers = {}
+            self.request.auth_username = None
+            self.request.auth_password = None
+            self.request.user_agent = None
+            self.request.allow_nonstandard_methods = False
+            self.request.expect_100_continue = False
+            self.request.body = None
+            self.request.body_producer = None
+            self.request
+
+# Generated at 2024-03-18 08:35:09.254520
+    # Arrange
+    max_clients = 5
+    hostname_mapping = {'localhost': '127.0.0.1'}
+    max_buffer_size = 1024 * 1024 * 50  # 50MB
+    resolver = Resolver()
+    defaults = {'user-agent': 'TestClient'}
+    max_header_size = 1024 * 10  # 10KB
+    max_body_size = 1024 * 1024 * 10  # 10MB
+
+    # Act
+    client = SimpleAsyncHTTPClient()
+    client.initialize(
+        max_clients=max_clients,
+        hostname_mapping=hostname_mapping,
+        max_buffer_size=max_buffer_size,
+        resolver=resolver,
+        defaults=defaults,
+        max_header_size=max_header_size,
+        max_body_size=max_body_size
+    )
+
+    # Assert
+    assert client.max_clients == max_clients
+    assert isinstance(client.resolver, OverrideResolver)
+    assert client.max_buffer_size == max_buffer_size

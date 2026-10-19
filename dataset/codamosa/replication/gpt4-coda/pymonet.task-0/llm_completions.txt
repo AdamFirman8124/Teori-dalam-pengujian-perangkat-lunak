@@ -1,0 +1,1173 @@
+
+
+# Generated at 2024-03-18 06:56:44.957496
+    # Test binding a function that returns a resolved Task
+    task = Task.of(1)
+    bound_task = task.bind(lambda x: Task.of(x + 1))
+    result = None
+    bound_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 2, "Should have bound and resolved to 2"
+
+    # Test binding a function that returns a rejected Task
+    task = Task.of(1)
+    bound_task = task.bind(lambda x: Task.reject(x + 1))
+    error = None
+    bound_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == 2, "Should have bound and rejected with 2"
+
+    # Test binding a function that raises an exception
+    def raise_exception(x):
+        raise ValueError("Error during binding")
+
+    task = Task.of(1)
+    bound_task = task.bind(raise_exception)
+   
+
+# Generated at 2024-03-18 06:56:50.833911
+    # Test binding a function that returns a resolved Task
+    def increment(x):
+        return Task.of(x + 1)
+
+    task = Task.of(1)
+    bound_task = task.bind(increment)
+
+    result = None
+    def resolve(x):
+        nonlocal result
+        result = x
+
+    def reject(_):
+        pass
+
+    bound_task.fork(reject, resolve)
+    assert result == 2, "Should have resolved to 2"
+
+    # Test binding a function that returns a rejected Task
+    def fail(x):
+        return Task.reject('failure')
+
+    task = Task.of(1)
+    bound_task = task.bind(fail)
+
+    error = None
+    def resolve(_):
+        pass
+
+    def reject(e):
+        nonlocal error
+        error = e
+
+    bound_task.fork(reject, resolve)
+    assert error == 'failure', "Should have been rejected with 'failure'"
+
+    # Test binding a function that returns
+
+# Generated at 2024-03-18 06:56:55.771880
+    # Test mapping a Task that resolves
+    resolved_value = 10
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    mapped_task.fork(lambda _: assert False, lambda result: assert result == 20)
+
+    # Test mapping a Task that rejects
+    rejected_value = "error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    mapped_rejected_task.fork(lambda error: assert error == rejected_value, lambda _: assert False)
+
+# Generated at 2024-03-18 06:57:03.358939
+    # Test mapping a value correctly transforms the value
+    task = Task.of(10)
+    mapped_task = task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 20, "Should double the value"
+
+    # Test mapping handles errors without calling the mapping function
+    error_task = Task.reject("Error")
+    mapped_error_task = error_task.map(lambda x: x * 2)
+    error_result = None
+    mapped_error_task.fork(lambda e: nonlocal error_result; error_result = e, lambda _: None)
+    assert error_result == "Error", "Should not transform the error"
+
+    # Test mapping over a Task that resolves to None
+    none_task = Task.of(None)
+    mapped_none_task = none_task.map(lambda x: "transformed")
+    none_result = None
+    mapped_none_task.fork(lambda
+
+# Generated at 2024-03-18 06:57:10.070986
+    # Test mapping a Task that resolves
+    resolved_value = 5
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 10, "Should double the resolved value"
+
+    # Test mapping a Task that rejects
+    rejected_value = "Error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    error = None
+    mapped_rejected_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == "Error", "Should not apply the mapping function to a rejected Task"
+
+# Generated at 2024-03-18 06:57:15.698925
+    # Test mapping a Task that resolves
+    resolved_value = 5
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 10, "Should double the resolved value"
+
+    # Test mapping a Task that rejects
+    rejected_value = "error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    error = None
+    mapped_rejected_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == "error", "Should not apply the mapping function to a rejected task"
+
+# Generated at 2024-03-18 06:57:22.336162
+    # Test mapping a resolved Task
+    resolved_value = 10
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    mapped_task.fork(
+        lambda error: None,
+        lambda result: assert result == 20,
+    )
+
+    # Test mapping a rejected Task
+    rejected_value = "Error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    mapped_rejected_task.fork(
+        lambda error: assert error == rejected_value,
+        lambda result: None,
+    )
+
+# Generated at 2024-03-18 06:57:27.731430
+    # Test binding a Task that resolves
+    resolved_value = 10
+    bound_function = lambda x: Task.of(x * 2)
+    task = Task.of(resolved_value)
+    bound_task = task.bind(bound_function)
+
+    bound_task.fork(
+        lambda error: print(f"Unexpected error: {error}"),
+        lambda result: assert result == 20,
+    )
+
+    # Test binding a Task that rejects
+    rejected_value = "Error"
+    bound_function = lambda x: Task.reject(f"Failed: {x}")
+    task = Task.reject(rejected_value)
+    bound_task = task.bind(bound_function)
+
+    bound_task.fork(
+        lambda error: assert error == "Failed: Error",
+        lambda result: print(f"Unexpected result: {result}"),
+    )
+
+# Generated at 2024-03-18 06:57:35.486762
+    # Test mapping a value correctly transforms the value
+    task = Task.of(10)
+    mapped_task = task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 20, "Should double the value"
+
+    # Test mapping a rejected task should not call the mapping function
+    rejected_task = Task.reject("Error")
+    was_called = False
+    def map_fn(x):
+        nonlocal was_called
+        was_called = True
+        return x * 2
+    mapped_rejected_task = rejected_task.map(map_fn)
+    error_result = None
+    mapped_rejected_task.fork(lambda x: nonlocal error_result; error_result = x, lambda _: None)
+    assert not was_called, "Mapping function should not be called"
+    assert error_result == "Error", "Should pass through the error"
+
+# Generated at 2024-03-18 06:57:42.042962
+    # Test case 1: bind should flatten the Task
+    def task_fn(value):
+        return Task.of(value + 1)
+
+    initial_value = 1
+    task = Task.of(initial_value)
+    bound_task = task.bind(task_fn)
+
+    result = None
+    def resolve(value):
+        nonlocal result
+        result = value
+
+    def reject(_):
+        pass
+
+    bound_task.fork(reject, resolve)
+    assert result == initial_value + 1, "bind did not flatten the Task correctly"
+
+    # Test case 2: bind should propagate rejection
+    error_message = "Error"
+    rejected_task = Task.reject(error_message)
+    bound_rejected_task = rejected_task.bind(task_fn)
+
+    error_result = None
+    def reject(error):
+        nonlocal error_result
+        error_result = error
+
+    bound_rejected_task.fork(reject, resolve)
+    assert error_result == error_message, "bind did not propagate rejection correctly"
+
+
+
+# Generated at 2024-03-18 06:57:54.158908
+    # Test mapping a Task that resolves
+    resolved_value = 5
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 10, "Should double the resolved value"
+
+    # Test mapping a Task that rejects
+    rejected_value = "error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    error = None
+    mapped_rejected_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == "error", "Should not apply the map function to a rejected task"
+
+# Generated at 2024-03-18 06:57:59.636871
+    # Test mapping a Task that resolves
+    resolved_value = 5
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 10, "Should map the resolved value correctly"
+
+    # Test mapping a Task that rejects
+    rejected_value = "error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    error = None
+    mapped_rejected_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == "error", "Should not map the rejected value"
+
+# Generated at 2024-03-18 06:58:05.832380
+    # Test mapping a Task that resolves
+    resolved_value = 10
+    mapped_value = resolved_value * 2
+    task = Task.of(resolved_value)
+    mapped_task = task.map(lambda x: x * 2)
+
+    def resolve_callback(value):
+        assert value == mapped_value, "Should double the resolved value"
+
+    def reject_callback(_):
+        assert False, "Should not be called for a resolved task"
+
+    mapped_task.fork(reject_callback, resolve_callback)
+
+    # Test mapping a Task that rejects
+    rejected_value = "Error"
+    task = Task.reject(rejected_value)
+    mapped_task = task.map(lambda x: x * 2)
+
+    def resolve_callback(_):
+        assert False, "Should not be called for a rejected task"
+
+    def reject_callback(value):
+        assert value == rejected_value, "Should pass the rejected value through"
+
+    mapped_task.fork(reject_callback, resolve_callback)
+
+# Generated at 2024-03-18 06:58:12.058134
+    # Test case 1: bind should flatten the Task correctly when the function returns a Task
+    resolved_value = 10
+    bound_function = lambda x: Task.of(x * 2)
+    task = Task.of(resolved_value)
+    bound_task = task.bind(bound_function)
+
+    result = None
+    bound_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 20, "bind did not flatten the Task correctly"
+
+    # Test case 2: bind should propagate rejection
+    rejected_value = "error"
+    task = Task.reject(rejected_value)
+    bound_task = task.bind(bound_function)
+
+    error = None
+    bound_task.fork(lambda e: nonlocal error; error = e, lambda _: None)
+    assert error == rejected_value, "bind did not propagate the rejection"
+
+    # Test case 3: bind should not call the bound function if the task is rejected
+   
+
+# Generated at 2024-03-18 06:58:16.228548
+    # Test binding a Task that resolves
+    resolved_value = "Hello"
+    bound_function = lambda x: Task.of(x + " World")
+    task = Task.of(resolved_value).bind(bound_function)
+    task.fork(lambda x: None, lambda result: assert result == "Hello World")
+
+    # Test binding a Task that rejects
+    rejected_value = "Error"
+    bound_function = lambda x: Task.reject(x + " occurred")
+    task = Task.reject(rejected_value).bind(bound_function)
+    task.fork(lambda error: assert error == "Error occurred", lambda x: None)
+
+# Generated at 2024-03-18 06:58:22.916751
+    # Test binding a function that returns a resolved Task
+    task = Task.of(1)
+    bound_task = task.bind(lambda x: Task.of(x + 1))
+    result = None
+    bound_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 2, "Expected the result to be 2 after binding"
+
+    # Test binding a function that returns a rejected Task
+    task = Task.of(1)
+    bound_task = task.bind(lambda x: Task.reject(x + 1))
+    error = None
+    bound_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == 2, "Expected the error to be 2 after binding"
+
+    # Test binding a function that raises an exception
+    task = Task.of(1)
+    bound_task = task.bind(lambda x: 1 / 0)
+    exception_caught = False
+   
+
+# Generated at 2024-03-18 06:58:29.042416
+    # Test mapping over resolved value
+    resolved_value = Task.of(10)
+    mapped = resolved_value.map(lambda x: x * 2)
+    result = None
+    mapped.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 20, "Should double the resolved value"
+
+    # Test mapping does not affect rejected value
+    rejected_value = Task.reject("Error")
+    mapped_rejected = rejected_value.map(lambda x: x * 2)
+    error = None
+    mapped_rejected.fork(lambda e: nonlocal error; error = e, lambda _: None)
+    assert error == "Error", "Should not apply map function to rejected value"
+
+# Generated at 2024-03-18 06:58:35.695824
+    # Test case 1: bind should flatten the Task
+    def task_fn(value):
+        return Task.of(value + 1)
+
+    initial_value = 1
+    task = Task.of(initial_value)
+    bound_task = task.bind(task_fn)
+
+    result = None
+    def resolve(value):
+        nonlocal result
+        result = value
+
+    def reject(_):
+        pass
+
+    bound_task.fork(reject, resolve)
+    assert result == initial_value + 1, "bind did not flatten the Task correctly"
+
+    # Test case 2: bind should propagate rejection
+    error_message = "Error"
+    rejected_task = Task.reject(error_message)
+    bound_rejected_task = rejected_task.bind(task_fn)
+
+    error_result = None
+    def resolve(_):
+        pass
+
+    def reject(error):
+        nonlocal error_result
+        error_result = error
+
+    bound_rejected_task.fork(reject, resolve)
+    assert error_result == error_message,
+
+# Generated at 2024-03-18 06:58:41.235234
+    # Test case 1: bind should flatten the Task structure
+    task = Task.of(1)
+    bound_task = task.bind(lambda x: Task.of(x + 1))
+    result = None
+    bound_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 2, "bind did not flatten the Task structure correctly"
+
+    # Test case 2: bind should propagate rejection
+    rejected_task = Task.reject("error")
+    bound_rejected_task = rejected_task.bind(lambda x: Task.of(x + 1))
+    error = None
+    bound_rejected_task.fork(lambda e: nonlocal error; error = e, lambda _: None)
+    assert error == "error", "bind did not propagate rejection correctly"
+
+    # Test case 3: bind should not call the function on a rejected task
+    function_called = False
+    def fn(x):
+        nonlocal function_called
+        function_called
+
+# Generated at 2024-03-18 06:58:47.544936
+    # Test mapping over resolved value
+    resolved_value = Task.of(10)
+    mapped = resolved_value.map(lambda x: x * 2)
+    result = None
+    mapped.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 20, "Should double the resolved value"
+
+    # Test mapping does not affect rejected value
+    rejected_value = Task.reject("Error")
+    mapped = rejected_value.map(lambda x: x * 2)
+    error = None
+    mapped.fork(lambda e: nonlocal error; error = e, lambda _: None)
+    assert error == "Error", "Should not modify the rejected value"
+
+    # Test mapping over function that raises an exception
+    resolved_value = Task.of(10)
+    def raise_exception(x):
+        raise ValueError("Exception occurred")
+    mapped = resolved_value.map(raise_exception)
+    error = None
+    mapped.fork(lambda e: nonlocal error;
+
+# Generated at 2024-03-18 06:59:11.461623
+    # Test mapping a Task that resolves
+    resolved_value = 5
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 10, "Should double the resolved value"
+
+    # Test mapping a Task that rejects
+    rejected_value = "error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    error = None
+    mapped_rejected_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == "error", "Should not call map function on rejected Task"
+
+# Generated at 2024-03-18 06:59:15.725769
+    # Test binding a Task that resolves
+    resolved_value = "Hello"
+    bound_function = lambda x: Task.of(x + " World")
+    task = Task.of(resolved_value).bind(bound_function)
+    task.fork(lambda _: assert False, lambda result: assert result == "Hello World")
+
+    # Test binding a Task that rejects
+    rejected_value = "Error"
+    bound_function = lambda x: Task.reject(x + " occurred")
+    task = Task.reject(rejected_value).bind(bound_function)
+    task.fork(lambda error: assert error == "Error occurred", lambda _: assert False)
+
+# Generated at 2024-03-18 06:59:21.117658
+    # Test mapping a Task that resolves
+    resolved_value = 5
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 10, "Should double the resolved value"
+
+    # Test mapping a Task that rejects
+    rejected_value = "error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    error = None
+    mapped_rejected_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == "error", "Should not apply the map function to a rejected task"
+
+# Generated at 2024-03-18 06:59:27.597624
+    # Test mapping a resolved Task
+    resolved_task = Task.of(10)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 20, "Should double the resolved value"
+
+    # Test mapping a rejected Task
+    rejected_task = Task.reject("Error")
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    error = None
+    mapped_rejected_task.fork(lambda e: nonlocal error; error = e, lambda _: None)
+    assert error == "Error", "Should not apply the function to a rejected Task"
+
+    # Test mapping with a function that raises an exception
+    resolved_task_with_exception = Task.of(10)
+    def raise_exception(x):
+        raise ValueError("Exception occurred")
+    mapped_task_with_exception = resolved_task_with_exception.map(raise_exception
+
+# Generated at 2024-03-18 06:59:33.124957
+    # Test binding a successful Task
+    task = Task.of(5)
+    bound_task = task.bind(lambda x: Task.of(x * 2))
+    result = None
+    bound_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 10, "Should double the value"
+
+    # Test binding a Task that fails
+    task = Task.reject("Error")
+    bound_task = task.bind(lambda x: Task.of(x * 2))
+    error = None
+    bound_task.fork(lambda e: nonlocal error; error = e, lambda _: None)
+    assert error == "Error", "Should not transform the error"
+
+    # Test binding a Task with a function that returns a rejected Task
+    task = Task.of(5)
+    bound_task = task.bind(lambda x: Task.reject(f"Error {x}"))
+    error = None
+    bound_task.fork(lambda e: nonlocal error;
+
+# Generated at 2024-03-18 06:59:40.006782
+    # Test mapping over resolved value
+    resolved_value = Task.of(10)
+    mapped = resolved_value.map(lambda x: x * 2)
+    result = None
+    mapped.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 20, "Should double the resolved value"
+
+    # Test mapping does not affect rejected value
+    rejected_value = Task.reject("Error")
+    mapped = rejected_value.map(lambda x: x * 2)
+    error = None
+    mapped.fork(lambda e: nonlocal error; error = e, lambda _: None)
+    assert error == "Error", "Should not modify the rejected value"
+
+    # Test mapping over function that raises an exception
+    resolved_value = Task.of(10)
+    def raise_exception(x):
+        raise ValueError("Exception occurred")
+    mapped = resolved_value.map(raise_exception)
+    error = None
+    mapped.fork(lambda e: nonlocal error;
+
+# Generated at 2024-03-18 06:59:46.319652
+    # Test mapping a resolved Task
+    resolved_task = Task.of(5)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 10, "Should double the value"
+
+    # Test mapping a rejected Task
+    rejected_task = Task.reject("Error")
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    error = None
+    mapped_rejected_task.fork(lambda e: nonlocal error; error = e, lambda _: None)
+    assert error == "Error", "Should not map the rejected task"
+
+    # Test mapping with a function that raises an exception
+    def raise_exception(x):
+        raise ValueError("Exception occurred")
+
+    resolved_task_with_exception = Task.of(5)
+    mapped_task_with_exception = resolved_task_with_exception.map(raise_exception)
+    exception_ca
+
+# Generated at 2024-03-18 06:59:52.478579
+    # Test mapping a Task that resolves
+    resolved_value = 5
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 10, "Should double the resolved value"
+
+    # Test mapping a Task that rejects
+    rejected_value = "error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    error = None
+    mapped_rejected_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == "error", "Should not apply the mapping function to a rejected task"
+
+# Generated at 2024-03-18 06:59:59.493970
+    # Test binding a function that returns a resolved Task
+    def increment(x):
+        return Task.of(x + 1)
+
+    task = Task.of(1)
+    bound_task = task.bind(increment)
+
+    result = None
+    def resolve(x):
+        nonlocal result
+        result = x
+
+    def reject(_):
+        pass
+
+    bound_task.fork(reject, resolve)
+    assert result == 2, "Should have resolved to 2"
+
+    # Test binding a function that returns a rejected Task
+    def fail(x):
+        return Task.reject('failure')
+
+    task = Task.of(1)
+    bound_task = task.bind(fail)
+
+    error = None
+    def resolve(_):
+        pass
+
+    def reject(e):
+        nonlocal error
+        error = e
+
+    bound_task.fork(reject, resolve)
+    assert error == 'failure', "Should have been rejected with 'failure'"
+
+# Generated at 2024-03-18 07:00:05.148857
+    # Test case 1: bind should flatten the Task
+    def task_fn(value):
+        return Task.of(value + 1)
+
+    initial_value = 1
+    task = Task.of(initial_value)
+    bound_task = task.bind(task_fn)
+
+    result = None
+    def resolve(value):
+        nonlocal result
+        result = value
+
+    def reject(_):
+        pass
+
+    bound_task.fork(reject, resolve)
+    assert result == initial_value + 1, "bind did not flatten the Task correctly"
+
+    # Test case 2: bind should propagate rejection
+    error_message = "Error"
+    rejected_task = Task.reject(error_message)
+    bound_rejected_task = rejected_task.bind(task_fn)
+
+    error_result = None
+    def reject(error):
+        nonlocal error_result
+        error_result = error
+
+    bound_rejected_task.fork(reject, resolve)
+    assert error_result == error_message, "bind did not propagate rejection correctly"
+
+
+
+# Generated at 2024-03-18 07:00:42.229954
+    # Test mapping a resolved Task
+    resolved_value = 10
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 20, "Should double the resolved value"
+
+    # Test mapping a rejected Task
+    rejected_value = "error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    error = None
+    mapped_rejected_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == "error", "Should not apply the map function to a rejected Task"
+
+# Generated at 2024-03-18 07:00:53.181030
+    # Test mapping a value correctly transforms the value
+    task = Task.of(10)
+    mapped_task = task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 20, "Should double the value"
+
+    # Test mapping a rejected task should not call the mapping function
+    rejected_task = Task.reject("Error")
+    was_called = False
+    def map_fn(x):
+        nonlocal was_called
+        was_called = True
+        return x * 2
+    mapped_rejected_task = rejected_task.map(map_fn)
+    error_result = None
+    mapped_rejected_task.fork(lambda x: nonlocal error_result; error_result = x, lambda _: None)
+    assert not was_called, "Mapping function should not be called"
+    assert error_result == "Error", "Should pass through the error"
+
+# Generated at 2024-03-18 07:01:02.452681
+    # Test mapping a Task that resolves
+    resolved_value = 5
+    mapped_value = resolved_value + 1
+    task = Task.of(resolved_value)
+    mapped_task = task.map(lambda x: x + 1)
+
+    def resolve_callback(value):
+        assert value == mapped_value, "Should map the resolved value"
+
+    def reject_callback(_):
+        assert False, "Should not be called for a resolved task"
+
+    mapped_task.fork(reject_callback, resolve_callback)
+
+    # Test mapping a Task that rejects
+    rejected_value = "error"
+    task = Task.reject(rejected_value)
+    mapped_task = task.map(lambda x: x + 1)
+
+    def resolve_callback(_):
+        assert False, "Should not be called for a rejected task"
+
+    def reject_callback(value):
+        assert value == rejected_value, "Should pass the rejected value through without mapping"
+
+    mapped_task.fork(reject_callback, resolve_callback)
+
+# Generated at 2024-03-18 07:01:08.831328
+    # Test mapping a Task that resolves
+    resolved_value = 10
+    mapped_value = 20
+    task = Task.of(resolved_value)
+    mapped_task = task.map(lambda x: x * 2)
+    mapped_task.fork(
+        lambda error: None,
+        lambda result: assert result == mapped_value,
+    )
+
+    # Test mapping a Task that rejects
+    rejected_value = "Error"
+    task = Task.reject(rejected_value)
+    mapped_task = task.map(lambda x: x * 2)
+    mapped_task.fork(
+        lambda error: assert error == rejected_value,
+        lambda result: None,
+    )
+
+# Generated at 2024-03-18 07:01:17.574292
+    # Test mapping a Task that resolves
+    resolved_value = 5
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 10, "Should map the resolved value correctly"
+
+    # Test mapping a Task that rejects
+    rejected_value = "error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    error = None
+    mapped_rejected_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == "error", "Should not map the rejected value"
+
+# Generated at 2024-03-18 07:01:23.389558
+    # Test case 1: bind should flatten the Task correctly when the function returns a Task
+    resolved_value = 10
+    bound_function = lambda x: Task.of(x * 2)
+    task = Task.of(resolved_value)
+    bound_task = task.bind(bound_function)
+
+    def resolve_fn(value):
+        assert value == resolved_value * 2, "The resolved value should be doubled"
+
+    def reject_fn(_):
+        assert False, "The reject function should not be called"
+
+    bound_task.fork(reject_fn, resolve_fn)
+
+    # Test case 2: bind should propagate rejection
+    rejected_value = "error"
+    task = Task.reject(rejected_value)
+    bound_task = task.bind(bound_function)
+
+    def resolve_fn(_):
+        assert False, "The resolve function should not be called"
+
+    def reject_fn(value):
+        assert value == rejected_value, "The rejected value should be propagated"
+
+    bound_task.fork(reject
+
+# Generated at 2024-03-18 07:01:29.641796
+    # Test mapping a Task that resolves
+    resolved_value = 5
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 10, "Should double the resolved value"
+
+    # Test mapping a Task that rejects
+    rejected_value = "error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    error = None
+    mapped_rejected_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == "error", "Should not apply the mapping function to a rejected task"
+
+# Generated at 2024-03-18 07:01:38.923588
+    # Test binding a function that returns a resolved Task
+    task = Task.of(1)
+    bound_task = task.bind(lambda x: Task.of(x + 1))
+    result = None
+    bound_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 2, "Should have bound and resolved to 2"
+
+    # Test binding a function that returns a rejected Task
+    task = Task.of(1)
+    bound_task = task.bind(lambda x: Task.reject(x + 1))
+    error = None
+    bound_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == 2, "Should have bound and rejected with 2"
+
+    # Test binding a function that raises an exception
+    task = Task.of(1)
+    def raise_error(x):
+        raise Exception("Error")
+    bound_task = task.bind(raise_error)
+    error =
+
+# Generated at 2024-03-18 07:01:46.515911
+    # Test binding a function that returns a resolved Task
+    def increment(x):
+        return Task.of(x + 1)
+
+    task = Task.of(1)
+    bound_task = task.bind(increment)
+
+    result = None
+    def resolve(x):
+        nonlocal result
+        result = x
+
+    def reject(_):
+        pass
+
+    bound_task.fork(reject, resolve)
+    assert result == 2, "Should have resolved to 2"
+
+    # Test binding a function that returns a rejected Task
+    def fail(x):
+        return Task.reject('failure')
+
+    task = Task.of(1)
+    bound_task = task.bind(fail)
+
+    error = None
+    def resolve(_):
+        pass
+
+    def reject(e):
+        nonlocal error
+        error = e
+
+    bound_task.fork(reject, resolve)
+    assert error == 'failure', "Should have been rejected with 'failure'"
+
+# Generated at 2024-03-18 07:01:51.214513
+    # Test binding a function that returns a resolved Task
+    task = Task.of(1)
+    bound_task = task.bind(lambda x: Task.of(x + 1))
+    result = None
+    bound_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 2, "Expected the result to be 2 after binding"
+
+    # Test binding a function that returns a rejected Task
+    task = Task.of(1)
+    bound_task = task.bind(lambda x: Task.reject(x + 1))
+    error = None
+    bound_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == 2, "Expected the error to be 2 after binding"
+
+    # Test binding a function that raises an exception
+    def problematic_function(x):
+        raise ValueError("Problem occurred")
+
+    task = Task.of(1)
+    bound_task = task.bind(problematic_function)
+
+
+# Generated at 2024-03-18 07:03:06.112940
+    # Test mapping a Task that resolves
+    resolved_value = 5
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    mapped_task.fork(lambda _: assert False, lambda result: assert result == 10)
+
+    # Test mapping a Task that rejects
+    rejected_value = "error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    mapped_rejected_task.fork(lambda error: assert error == rejected_value, lambda _: assert False)
+
+# Generated at 2024-03-18 07:03:11.953887
+    # Test mapping over resolved value
+    resolved_value = Task.of(10)
+    mapped = resolved_value.map(lambda x: x * 2)
+    result = None
+    mapped.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 20, "Should double the resolved value"
+
+    # Test mapping does not affect rejected value
+    rejected_value = Task.reject("Error")
+    mapped = rejected_value.map(lambda x: x * 2)
+    error = None
+    mapped.fork(lambda e: nonlocal error; error = e, lambda _: None)
+    assert error == "Error", "Should not modify the rejected value"
+
+    # Test mapping over function that raises an exception
+    resolved_value = Task.of(10)
+    def raise_exception(x):
+        raise ValueError("Exception occurred")
+    mapped = resolved_value.map(raise_exception)
+    error = None
+    mapped.fork(lambda e: nonlocal error;
+
+# Generated at 2024-03-18 07:03:17.709587
+    # Test mapping over resolved value
+    resolved_value = Task.of(10)
+    mapped_task = resolved_value.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 20, "Should double the resolved value"
+
+    # Test mapping over rejected value
+    rejected_value = Task.reject("Error")
+    mapped_task = rejected_value.map(lambda x: x * 2)
+    error = None
+    mapped_task.fork(lambda e: nonlocal error; error = e, lambda _: None)
+    assert error == "Error", "Should not apply the map function to rejected value"
+
+# Generated at 2024-03-18 07:03:21.862868
+    # Test mapping a Task that resolves
+    resolved_value = 10
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    mapped_task.fork(lambda _: assert False, lambda result: assert result == 20)
+
+    # Test mapping a Task that rejects
+    rejected_value = "Error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    mapped_rejected_task.fork(lambda error: assert error == rejected_value, lambda _: assert False)
+
+# Generated at 2024-03-18 07:03:28.231836
+    # Test case 1: bind should flatten the Task correctly when the function returns a resolved Task
+    resolved_value = 10
+    bound_function = lambda x: Task.of(x * 2)
+    task = Task.of(resolved_value)
+    task.bind(bound_function).fork(
+        lambda error: None,
+        lambda result: assert result == 20
+    )
+
+    # Test case 2: bind should propagate rejection
+    rejected_value = "Error"
+    bound_function = lambda x: Task.reject(x)
+    task = Task.of(rejected_value)
+    task.bind(bound_function).fork(
+        lambda error: assert error == rejected_value,
+        lambda result: None
+    )
+
+    # Test case 3: bind should not call the bound function if the Task is already rejected
+    rejected_value = "Initial Error"
+    was_called = False
+    def bound_function(x):
+        nonlocal was_called
+        was_called = True
+        return Task
+
+# Generated at 2024-03-18 07:03:35.561588
+    # Test case 1: bind should flatten the Task correctly when the function returns a Task
+    def task_function(value):
+        return Task.of(value + 1)
+
+    initial_value = 1
+    initial_task = Task.of(initial_value)
+    bound_task = initial_task.bind(task_function)
+
+    result = None
+    def resolve(value):
+        nonlocal result
+        result = value
+
+    def reject(_):
+        pass
+
+    bound_task.fork(reject, resolve)
+    assert result == initial_value + 1, "bind did not flatten the Task correctly"
+
+    # Test case 2: bind should propagate rejection
+    error_message = "Error"
+    rejected_task = Task.reject(error_message)
+    bound_rejected_task = rejected_task.bind(task_function)
+
+    error_result = None
+    def error_resolve(_):
+        pass
+
+    def error_reject(value):
+        nonlocal error_result
+        error_result = value
+
+    bound_rejected_task.fork(error
+
+# Generated at 2024-03-18 07:03:43.278227
+    # Test mapping a resolved Task
+    resolved_task = Task.of(5)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 10, "Should map the resolved value correctly"
+
+    # Test mapping a rejected Task
+    rejected_task = Task.reject("Error")
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    error = None
+    mapped_rejected_task.fork(lambda e: nonlocal error; error = e, lambda _: None)
+    assert error == "Error", "Should not map the rejected value"
+
+    # Test mapping with a function that raises an exception
+    task_with_exception = Task.of(3)
+    def raise_exception(x):
+        raise ValueError("Exception occurred")
+    mapped_exception_task = task_with_exception.map(raise_exception)
+    exception_caught
+
+# Generated at 2024-03-18 07:03:49.109214
+    # Test binding a function that returns a resolved Task
+    task = Task.of(10)
+    bound_task = task.bind(lambda x: Task.of(x * 2))
+    result = None
+    bound_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 20, "Should double the value"
+
+    # Test binding a function that returns a rejected Task
+    task = Task.of(10)
+    bound_task = task.bind(lambda x: Task.reject(x * 2))
+    error = None
+    bound_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == 20, "Should double the value and reject"
+
+    # Test binding a function that raises an exception
+    task = Task.of(10)
+    def raise_error(x):
+        raise ValueError("Error occurred")
+    bound_task = task.bind(raise_error)
+    error = None
+    bound_task
+
+# Generated at 2024-03-18 07:03:55.447669
+    # Test mapping a Task that resolves
+    resolved_value = 10
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    mapped_task.fork(
+        lambda error: None,
+        lambda result: assert result == 20,
+    )
+
+    # Test mapping a Task that rejects
+    rejected_value = "Error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    mapped_rejected_task.fork(
+        lambda error: assert error == "Error",
+        lambda result: None,
+    )
+
+# Generated at 2024-03-18 07:04:06.011999
+    # Test mapping a Task that resolves
+    resolved_value = 10
+    resolved_task = Task.of(resolved_value)
+    mapped_task = resolved_task.map(lambda x: x * 2)
+    result = None
+    mapped_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 20, "Should double the resolved value"
+
+    # Test mapping a Task that rejects
+    rejected_value = "error"
+    rejected_task = Task.reject(rejected_value)
+    mapped_rejected_task = rejected_task.map(lambda x: x * 2)
+    error = None
+    mapped_rejected_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == "error", "Should not apply the mapping function to a rejected task"
+
+# Generated at 2024-03-18 07:06:19.334234
+    # Test mapping over resolved value
+    resolved_value = Task.of(10)
+    mapped = resolved_value.map(lambda x: x * 2)
+    result = None
+    mapped.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 20, "Should double the resolved value"
+
+    # Test mapping does not affect rejected value
+    rejected_value = Task.reject("Error")
+    mapped_rejected = rejected_value.map(lambda x: x * 2)
+    error = None
+    mapped_rejected.fork(lambda e: nonlocal error; error = e, lambda _: None)
+    assert error == "Error", "Should not apply map function to rejected value"
+
+# Call the test function
+test_Task_map()
+
+# Generated at 2024-03-18 07:06:26.274072
+    # Test case 1: bind should flatten the Task correctly when the function returns a Task
+    resolved_value = 10
+    bound_function = lambda x: Task.of(x * 2)
+    task = Task.of(resolved_value)
+    bound_task = task.bind(bound_function)
+
+    def resolve_fn(value):
+        assert value == resolved_value * 2, "The resolved value should be doubled"
+
+    def reject_fn(_):
+        assert False, "The reject function should not be called"
+
+    bound_task.fork(reject_fn, resolve_fn)
+
+    # Test case 2: bind should propagate rejection
+    rejected_value = "error"
+    task = Task.reject(rejected_value)
+    bound_task = task.bind(bound_function)
+
+    def resolve_fn(_):
+        assert False, "The resolve function should not be called"
+
+    def reject_fn(value):
+        assert value == rejected_value, "The rejected value should be propagated"
+
+    bound_task.fork(reject
+
+# Generated at 2024-03-18 07:06:37.836744
+    # Test binding a function that returns a resolved Task
+    task = Task.of(1)
+    bound_task = task.bind(lambda x: Task.of(x + 1))
+    result = None
+    bound_task.fork(lambda _: None, lambda x: nonlocal result; result = x)
+    assert result == 2, "Should have bound and resolved to 2"
+
+    # Test binding a function that returns a rejected Task
+    task = Task.of(1)
+    bound_task = task.bind(lambda x: Task.reject(x + 1))
+    error = None
+    bound_task.fork(lambda x: nonlocal error; error = x, lambda _: None)
+    assert error == 2, "Should have bound and rejected with 2"
+
+    # Test binding a function that raises an exception
+    def raise_error(x):
+        raise Exception("Error")
+
+    task = Task.of(1)
+    bound_task = task.bind(raise_error)
+    error =

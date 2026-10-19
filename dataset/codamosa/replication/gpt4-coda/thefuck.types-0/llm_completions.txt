@@ -1,0 +1,1220 @@
+
+
+# Generated at 2024-03-18 08:10:00.735307
+```python
+    def mock_match(command):
+        return command.script == 'mocked command'
+
+    def mock_get_new_command(command):
+        return ['corrected command']
+
+    rule = Rule(name='mock_rule',
+                match=mock_match,
+                get_new_command=mock_get_new_command,
+                enabled_by_default=True,
+                side_effect=None,
+                priority=100,
+                requires_output=True)
+
+    command = Command(script='mocked command', output='mocked output')
+    corrected_commands = list(rule.get_corrected_commands(command))
+
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0].script == 'corrected command'
+    assert corrected_commands[0].priority == 100
+```
+
+# Generated at 2024-03-18 08:10:17.419182
+```python
+    def match(command):
+        return True
+
+    def get_new_command(command):
+        return 'new_command'
+
+    def side_effect(command, script):
+        pass
+
+    rule1 = Rule(name='test_rule',
+                 match=match,
+                 get_new_command=get_new_command,
+                 enabled_by_default=True,
+                 side_effect=side_effect,
+                 priority=10,
+                 requires_output=True)
+
+    rule2 = Rule(name='test_rule',
+                 match=match,
+                 get_new_command=get_new_command,
+                 enabled_by_default=True,
+                 side_effect=side_effect,
+                 priority=10,
+                 requires_output=True)
+
+    rule3 = Rule(name='different_rule',
+                 match=match,
+                 get_new_command=get_new_command,
+                 enabled_by_default=True,
+                 side_effect=side_effect,
+                 priority=10,
+                 requires_output=True)
+
+    assert rule1 == rule2, "Rule __eq__ should return True for the same rule attributes"
+    assert not (
+
+# Generated at 2024-03-18 08:10:23.650405
+```python
+    def mock_match(command):
+        return 'mock' in command.script
+
+    command_with_mock = Command(script='echo mock', output='mock output')
+    command_without_mock = Command(script='echo test', output='test output')
+
+    rule = Rule(name='mock_rule', match=mock_match, get_new_command=None,
+                enabled_by_default=True, side_effect=None,
+                priority=DEFAULT_PRIORITY, requires_output=False)
+
+    assert rule.is_match(command_with_mock) is True
+    assert rule.is_match(command_without_mock) is False
+```
+
+# Generated at 2024-03-18 08:10:30.507696
+```python
+    def side_effect(cmd, script):
+        pass
+
+    cc1 = CorrectedCommand("ls -l", side_effect, 10)
+    cc2 = CorrectedCommand("ls -l", side_effect, 20)
+    cc3 = CorrectedCommand("ls -a", side_effect, 10)
+    cc4 = CorrectedCommand("ls -l", None, 10)
+
+    assert cc1 == cc2, "CorrectedCommand __eq__ should ignore priority"
+    assert not (cc1 == cc3), "CorrectedCommand __eq__ should consider script"
+    assert not (cc1 == cc4), "CorrectedCommand __eq__ should consider side_effect"
+```
+
+# Generated at 2024-03-18 08:10:39.399416
+```python
+    def side_effect(cmd, script):
+        pass
+
+    cc1 = CorrectedCommand("ls -l", side_effect, 10)
+    cc2 = CorrectedCommand("ls -l", side_effect, 20)
+    cc3 = CorrectedCommand("ls -a", side_effect, 10)
+    cc4 = CorrectedCommand("ls -l", None, 10)
+
+    assert cc1 == cc2, "CorrectedCommand __eq__ should ignore priority"
+    assert cc1 != cc3, "CorrectedCommand __eq__ should consider script"
+    assert cc1 != cc4, "CorrectedCommand __eq__ should consider side_effect"
+```
+
+# Generated at 2024-03-18 08:10:47.442885
+```python
+    # Mocking a command and a rule
+    command = Command(script="ls -l", output="total 0")
+    rule = Rule(name="mock_rule",
+                match=lambda x: "ls" in x.script,
+                get_new_command=lambda x: "ls -la",
+                enabled_by_default=True,
+                side_effect=None,
+                priority=100,
+                requires_output=True)
+
+    # Testing get_corrected_commands
+    corrected_commands = list(rule.get_corrected_commands(command))
+    assert len(corrected_commands) == 1
+    corrected_command = corrected_commands[0]
+    assert corrected_command.script == "ls -la"
+    assert corrected_command.side_effect is None
+    assert corrected_command.priority == 100
+
+    # Testing with multiple new commands
+    rule.get_new_command = lambda x: ["ls -la", "ls -lah"]
+    corrected_commands = list(rule.get_corrected_commands(command))
+    assert len(corrected_commands) == 
+
+# Generated at 2024-03-18 08:10:53.729038
+```python
+    def side_effect(cmd, script):
+        pass
+
+    cc1 = CorrectedCommand("ls -l", side_effect, 10)
+    cc2 = CorrectedCommand("ls -l", side_effect, 20)
+    cc3 = CorrectedCommand("ls -a", side_effect, 10)
+    cc4 = CorrectedCommand("ls -l", None, 10)
+
+    assert cc1 == cc2, "CorrectedCommand __eq__ should ignore priority"
+    assert cc1 != cc3, "CorrectedCommand __eq__ should consider script"
+    assert cc1 != cc4, "CorrectedCommand __eq__ should consider side_effect"
+```
+
+# Generated at 2024-03-18 08:10:59.491354
+```python
+    # Create two Command instances with the same script and output
+    cmd1 = Command('ls -l', 'total 0')
+    cmd2 = Command('ls -l', 'total 0')
+
+    # Create a third Command instance with a different script
+    cmd3 = Command('ls -a', 'total 0')
+
+    # Create a fourth Command instance with a different output
+    cmd4 = Command('ls -l', 'total 1')
+
+    # Test equality of the first two commands
+    assert cmd1 == cmd2, "Commands with the same script and output should be equal"
+
+    # Test inequality with a different script
+    assert not (cmd1 == cmd3), "Commands with different scripts should not be equal"
+
+    # Test inequality with a different output
+    assert not (cmd1 == cmd4), "Commands with different outputs should not be equal"
+
+    # Test inequality with a non-Command instance
+   
+
+# Generated at 2024-03-18 08:11:05.793112
+```python
+    from unittest.mock import patch, Mock
+
+    @patch('thefuck.corrector.shell')
+    def test_corrected_command_run(mock_shell):
+        old_cmd = Command('test', 'test_output')
+        corrected_cmd = CorrectedCommand('corrected_test', None, 100)
+
+        with patch('thefuck.corrector.settings') as mock_settings:
+            mock_settings.alter_history = True
+            mock_settings.repeat = False
+            mock_settings.debug = False
+
+            corrected_cmd.run(old_cmd)
+
+            mock_shell.put_to_history.assert_called_once_with('corrected_test')
+            mock_shell.or_.assert_not_called()
+
+            # Test with repeat enabled
+            mock_settings.repeat = True
+            mock_settings.debug = True
+            mock_shell.reset_mock()
+            corrected_cmd.run(old_cmd)
+
+            expected_repeat_fuck = '{} --repeat {}--force-command {}'.format(
+                get_alias(),
+                '--debug ' if mock_settings.debug else '',
+                shell.quote(corrected
+
+# Generated at 2024-03-18 08:11:16.881432
+```python
+    # Mocking a Command object
+    command = Command(script="ls -l", output="ls: cannot access '-l': No such file or directory")
+
+    # Mocking a Rule object
+    def match(command):
+        return "No such file or directory" in command.output
+
+    def get_new_command(command):
+        return command.script.replace("-l", "")
+
+    rule = Rule(name="remove_invalid_option",
+                match=match,
+                get_new_command=get_new_command,
+                enabled_by_default=True,
+                side_effect=None,
+                priority=1,
+                requires_output=True)
+
+    # Mocking CorrectedCommand
+    corrected_command = CorrectedCommand(script="ls ", side_effect=None, priority=1)
+
+    # Running the test
+    corrected_commands = list(rule.get_corrected_commands(command))
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0] == corrected_command
+```
+
+# Generated at 2024-03-18 08:11:38.397385
+```python
+    command = Command(script="ls -l", output="total 0")
+    rule = Rule(name="test_rule",
+                match=lambda x: "ls" in x.script,
+                get_new_command=lambda x: "ls -la",
+                enabled_by_default=True,
+                side_effect=None,
+                priority=100,
+                requires_output=True)
+
+    corrected_commands = list(rule.get_corrected_commands(command))
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0].script == "ls -la"
+    assert corrected_commands[0].priority == 100
+```
+
+# Generated at 2024-03-18 08:11:46.876773
+```python
+    # Create two Rule instances with the same properties
+    rule1 = Rule(name='test_rule',
+                 match=lambda x: True,
+                 get_new_command=lambda x: 'new_command',
+                 enabled_by_default=True,
+                 side_effect=None,
+                 priority=100,
+                 requires_output=True)
+
+    rule2 = Rule(name='test_rule',
+                 match=lambda x: True,
+                 get_new_command=lambda x: 'new_command',
+                 enabled_by_default=True,
+                 side_effect=None,
+                 priority=100,
+                 requires_output=True)
+
+    # Create a third Rule instance with different properties
+    rule3 = Rule(name='different_rule',
+                 match=lambda x: False,
+                 get_new_command=lambda x: 'other_command',
+                 enabled_by_default=False,
+                 side_effect=None,
+                 priority=50,
+                 requires_output=False)
+
+    # Assert that rule1 and rule2 are equal
+    assert rule1 == rule2, "Rule instances with the same properties should
+
+# Generated at 2024-03-18 08:11:53.524375
+```python
+    # Mocking a command and a rule
+    command = Command(script="ls -l", output="ls: cannot access '-l': No such file or directory")
+    rule = Rule(name="mock_rule",
+                match=lambda x: "No such file or directory" in x.output,
+                get_new_command=lambda x: "ls -la",
+                enabled_by_default=True,
+                side_effect=None,
+                priority=100,
+                requires_output=True)
+
+    # Mocking CorrectedCommand
+    corrected_command = CorrectedCommand(script="ls -la", side_effect=None, priority=100)
+
+    # Getting corrected commands
+    corrected_commands = list(rule.get_corrected_commands(command))
+
+    # Asserting the result
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0] == corrected_command
+    assert corrected_commands[0].priority == corrected_command.priority
+```
+
+# Generated at 2024-03-18 08:11:59.113768
+```python
+    def mock_match(command):
+        return 'mock' in command.script
+
+    rule = Rule(name='mock_rule',
+                match=mock_match,
+                get_new_command=lambda x: 'fixed',
+                enabled_by_default=True,
+                side_effect=None,
+                priority=DEFAULT_PRIORITY,
+                requires_output=True)
+
+    command_with_mock = Command(script='echo mock', output='mock output')
+    command_without_mock = Command(script='echo test', output='test output')
+
+    assert rule.is_match(command_with_mock) is True
+    assert rule.is_match(command_without_mock) is False
+```
+
+# Generated at 2024-03-18 08:12:08.575010
+```python
+    def mock_match(command):
+        return 'error' in command.output
+
+    def mock_get_new_command(command):
+        return 'fixed_command'
+
+    def mock_side_effect(command, script):
+        pass
+
+    command_with_error = Command('original_command', 'error: something went wrong')
+    command_without_error = Command('original_command', 'all good')
+
+    rule = Rule(name='mock_rule',
+                match=mock_match,
+                get_new_command=mock_get_new_command,
+                enabled_by_default=True,
+                side_effect=mock_side_effect,
+                priority=DEFAULT_PRIORITY,
+                requires_output=True)
+
+    # Test when command output contains an error
+    corrected_commands = list(rule.get_corrected_commands(command_with_error))
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0].script == 'fixed_command'
+    assert corrected_commands[0].side_effect is mock_side_effect
+    assert corrected_commands[0].priority == DEFAULT_PRIORITY
+
+   
+
+# Generated at 2024-03-18 08:12:14.334632
+```python
+    def side_effect(cmd, script):
+        pass
+
+    cc1 = CorrectedCommand('ls -l', side_effect, 10)
+    cc2 = CorrectedCommand('ls -l', side_effect, 20)
+    cc3 = CorrectedCommand('ls -a', side_effect, 10)
+    cc4 = CorrectedCommand('ls -l', None, 10)
+
+    assert cc1 == cc2, "CorrectedCommand __eq__ should ignore priority"
+    assert not (cc1 == cc3), "CorrectedCommand __eq__ should compare script"
+    assert not (cc1 == cc4), "CorrectedCommand __eq__ should compare side_effect"
+```
+
+# Generated at 2024-03-18 08:12:29.089162
+```python
+    # Mocking a Command object
+    command = Command(script="ls -l", output="ls: cannot access '-l': No such file or directory")
+
+    # Mocking a Rule object
+    def match(command):
+        return "No such file or directory" in command.output
+
+    def get_new_command(command):
+        return command.script.replace("-l", "-la")
+
+    rule = Rule(name="mock_rule",
+                match=match,
+                get_new_command=get_new_command,
+                enabled_by_default=True,
+                side_effect=None,
+                priority=100,
+                requires_output=True)
+
+    # Testing get_corrected_commands
+    corrected_commands = list(rule.get_corrected_commands(command))
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0].script == "ls -la"
+    assert corrected_commands[0].priority == 100
+```
+
+# Generated at 2024-03-18 08:12:35.064684
+```python
+    def match(command):
+        return True
+
+    def get_new_command(command):
+        return 'new_command'
+
+    def side_effect(command, script):
+        pass
+
+    rule1 = Rule(name='test_rule',
+                 match=match,
+                 get_new_command=get_new_command,
+                 enabled_by_default=True,
+                 side_effect=side_effect,
+                 priority=10,
+                 requires_output=True)
+
+    rule2 = Rule(name='test_rule',
+                 match=match,
+                 get_new_command=get_new_command,
+                 enabled_by_default=True,
+                 side_effect=side_effect,
+                 priority=10,
+                 requires_output=True)
+
+    rule3 = Rule(name='different_rule',
+                 match=match,
+                 get_new_command=get_new_command,
+                 enabled_by_default=True,
+                 side_effect=side_effect,
+                 priority=10,
+                 requires_output=True)
+
+    assert rule1 == rule2, "Rule __eq__ should return True for identical rules"
+    assert not (rule1
+
+# Generated at 2024-03-18 08:12:43.640761
+```python
+    from unittest.mock import patch, Mock
+
+    @patch('thefuck.shells.shell.put_to_history')
+    @patch('thefuck.shells.shell.quote')
+    @patch('thefuck.shells.shell.or_')
+    @patch('thefuck.logs.debug')
+    def test_corrected_command_run(mock_debug, mock_or, mock_quote, mock_put_to_history):
+        old_cmd = Command('ls', 'ls: cannot access')
+        corrected_cmd = CorrectedCommand('ls -l', None, 100)
+        settings.alter_history = True
+        settings.repeat = False
+
+        corrected_cmd.run(old_cmd)
+
+        mock_put_to_history.assert_called_once_with('ls -l')
+        mock_or.assert_not_called()
+        mock_quote.assert_not_called()
+        mock_debug.assert_called()
+
+        # Test with side_effect
+        side_effect = Mock()
+        corrected_cmd_with_side_effect = CorrectedCommand('ls -a', side_effect, 
+
+# Generated at 2024-03-18 08:12:52.684911
+```python
+    def match(command):
+        return True
+
+    def get_new_command(command):
+        return 'new_command'
+
+    def side_effect(command, script):
+        pass
+
+    rule1 = Rule(name='test_rule',
+                 match=match,
+                 get_new_command=get_new_command,
+                 enabled_by_default=True,
+                 side_effect=side_effect,
+                 priority=10,
+                 requires_output=True)
+
+    rule2 = Rule(name='test_rule',
+                 match=match,
+                 get_new_command=get_new_command,
+                 enabled_by_default=True,
+                 side_effect=side_effect,
+                 priority=10,
+                 requires_output=True)
+
+    rule3 = Rule(name='different_rule',
+                 match=match,
+                 get_new_command=get_new_command,
+                 enabled_by_default=True,
+                 side_effect=side_effect,
+                 priority=10,
+                 requires_output=True)
+
+    assert rule1 == rule2, "Rule __eq__ should return True for identical rules"
+    assert not (rule1
+
+# Generated at 2024-03-18 08:13:28.474626
+```python
+    # Mock a command and a rule
+    command = Command(script="ls -l", output="total 0")
+    rule = Rule(name="mock_rule",
+                match=lambda cmd: "ls" in cmd.script,
+                get_new_command=lambda cmd: "ls -la",
+                enabled_by_default=True,
+                side_effect=None,
+                priority=1,
+                requires_output=True)
+
+    # Get corrected commands
+    corrected_commands = list(rule.get_corrected_commands(command))
+
+    # Check if the corrected command is as expected
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0].script == "ls -la"
+    assert corrected_commands[0].side_effect is None
+    assert corrected_commands[0].priority == 1
+```
+
+# Generated at 2024-03-18 08:13:38.332684
+```python
+    from unittest.mock import patch, Mock
+
+    @patch('{}.shell.put_to_history'.format(__name__), create=True)
+    @patch('{}.logs.debug'.format(__name__), create=True)
+    def test_corrected_command_run(mock_debug, mock_put_to_history):
+        old_cmd = Command('ls', 'ls: cannot access')
+        corrected_cmd = CorrectedCommand('ls -l', None, 10)
+        settings.alter_history = True
+        settings.repeat = False
+
+        with patch('sys.stdout', new=Mock()) as mock_stdout:
+            corrected_cmd.run(old_cmd)
+
+            mock_put_to_history.assert_called_once_with('ls -l')
+            mock_stdout.write.assert_called_once_with('ls -l')
+
+        settings.alter_history = False
+        corrected_cmd.run(old_cmd)
+
+        mock_put_to_history.assert_not_called()
+        mock_stdout.write.assert_called_with('ls -l')
+
+        settings.repeat = True
+        get_alias.return_value
+
+# Generated at 2024-03-18 08:13:46.449511
+```python
+    # Mock Command object
+    mock_command = Command(script="ls -l", output="total 0")
+
+    # Mock Rule object with a simple match function that always returns True
+    always_true_rule = Rule(name="always_true",
+                            match=lambda x: True,
+                            get_new_command=lambda x: "echo 'matched'",
+                            enabled_by_default=True,
+                            side_effect=None,
+                            priority=DEFAULT_PRIORITY,
+                            requires_output=False)
+
+    # Test that is_match returns True for the always_true_rule
+    assert always_true_rule.is_match(mock_command), "The rule should match the command"
+
+    # Mock Rule object with a match function that always returns False
+    always_false_rule = Rule(name="always_false",
+                             match=lambda x: False,
+                             get_new_command=lambda x: "echo 'not matched'",
+                             enabled_by_default=True,
+                             side_effect=None,
+                             priority=DEFAULT_PRIORITY,
+                             requires_output=False)
+
+    # Test that is_match returns False
+
+# Generated at 2024-03-18 08:13:50.522449
+```python
+    def mock_match(command):
+        return 'mock' in command.script
+
+    command_with_mock = Command(script='echo mock', output='mock output')
+    command_without_mock = Command(script='echo test', output='test output')
+
+    rule = Rule(name='mock_rule', match=mock_match, get_new_command=None,
+                enabled_by_default=True, side_effect=None,
+                priority=DEFAULT_PRIORITY, requires_output=False)
+
+    assert rule.is_match(command_with_mock) is True
+    assert rule.is_match(command_without_mock) is False
+```
+
+# Generated at 2024-03-18 08:13:55.693488
+```python
+    def mock_match(command):
+        return 'mock' in command.script
+
+    command_with_mock = Command(script='echo mock', output='mock output')
+    command_without_mock = Command(script='echo test', output='test output')
+
+    rule = Rule(name='mock_rule', match=mock_match, get_new_command=None,
+                enabled_by_default=True, side_effect=None,
+                priority=DEFAULT_PRIORITY, requires_output=False)
+
+    assert rule.is_match(command_with_mock) is True
+    assert rule.is_match(command_without_mock) is False
+```
+
+# Generated at 2024-03-18 08:14:03.562473
+```python
+    # Mocking a Command object
+    command = Command(script="ls -l", output="total 0")
+
+    # Mocking a Rule object
+    def match(command):
+        return "No such file or directory" in command.output
+
+    def get_new_command(command):
+        return "ls -la"
+
+    rule = Rule(name="mock_rule",
+                match=match,
+                get_new_command=get_new_command,
+                enabled_by_default=True,
+                side_effect=None,
+                priority=1,
+                requires_output=True)
+
+    # Mocking CorrectedCommand object
+    corrected_command = CorrectedCommand(script="ls -la",
+                                        side_effect=None,
+                                        priority=1)
+
+    # Running the test
+    corrected_commands = list(rule.get_corrected_commands(command))
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0] == corrected_command
+```
+
+# Generated at 2024-03-18 08:14:10.075882
+```python
+    def mock_match(command):
+        return command.script == 'mocked command'
+
+    def mock_get_new_command(command):
+        return ['corrected command 1', 'corrected command 2']
+
+    rule = Rule(name='mock_rule',
+                match=mock_match,
+                get_new_command=mock_get_new_command,
+                enabled_by_default=True,
+                side_effect=None,
+                priority=100,
+                requires_output=True)
+
+    command = Command(script='mocked command', output='mocked output')
+
+    corrected_commands = list(rule.get_corrected_commands(command))
+
+    assert len(corrected_commands) == 2
+    assert corrected_commands[0].script == 'corrected command 1'
+    assert corrected_commands[0].priority == 100
+    assert corrected_commands[1].script == 'corrected command 2'
+    assert corrected_commands[1].priority == 200
+```
+
+# Generated at 2024-03-18 08:14:14.735856
+```python
+    def mock_match(command):
+        return 'mock' in command.script
+
+    command_with_mock = Command(script='echo mock', output='mock output')
+    command_without_mock = Command(script='echo test', output='test output')
+
+    rule = Rule(name='mock_rule', match=mock_match, get_new_command=None,
+                enabled_by_default=True, side_effect=None,
+                priority=DEFAULT_PRIORITY, requires_output=False)
+
+    assert rule.is_match(command_with_mock) is True
+    assert rule.is_match(command_without_mock) is False
+```
+
+# Generated at 2024-03-18 08:14:19.791036
+```python
+    def mock_match(command):
+        return 'mock' in command.script
+
+    command_with_mock = Command(script='echo mock', output='mock')
+    command_without_mock = Command(script='echo test', output='test')
+
+    rule = Rule(name='mock_rule', match=mock_match, get_new_command=None,
+                enabled_by_default=True, side_effect=None,
+                priority=DEFAULT_PRIORITY, requires_output=False)
+
+    assert rule.is_match(command_with_mock) is True
+    assert rule.is_match(command_without_mock) is False
+```
+
+# Generated at 2024-03-18 08:14:24.866609
+```python
+    def mock_match(command):
+        return 'error' in command.output
+
+    def mock_get_new_command(command):
+        return command.script.replace('error', 'correction')
+
+    rule = Rule(name='mock_rule',
+                match=mock_match,
+                get_new_command=mock_get_new_command,
+                enabled_by_default=True,
+                side_effect=None,
+                priority=100,
+                requires_output=True)
+
+    command = Command(script='echo error', output='error: command not found')
+    corrected_commands = list(rule.get_corrected_commands(command))
+
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0].script == 'echo correction'
+    assert corrected_commands[0].priority == 100
+```
+
+# Generated at 2024-03-18 08:14:57.708144
+```python
+    def mock_match(command):
+        return 'mock' in command.script
+
+    rule = Rule(name='mock_rule',
+                match=mock_match,
+                get_new_command=lambda x: x.script,
+                enabled_by_default=True,
+                side_effect=None,
+                priority=DEFAULT_PRIORITY,
+                requires_output=False)
+
+    command_with_mock = Command(script='echo mock', output='mock output')
+    command_without_mock = Command(script='echo test', output='test output')
+
+    assert rule.is_match(command_with_mock) is True, "Should match command containing 'mock'"
+    assert rule.is_match(command_without_mock) is False, "Should not match command without 'mock'"
+```
+
+# Generated at 2024-03-18 08:15:03.630082
+```python
+    # Mocking a command and a rule
+    command = Command(script="ls -l", output="total 0")
+    rule = Rule(name="test_rule",
+                match=lambda x: "ls" in x.script,
+                get_new_command=lambda x: "ls -la",
+                enabled_by_default=True,
+                side_effect=None,
+                priority=1,
+                requires_output=True)
+
+    # Getting corrected commands
+    corrected_commands = list(rule.get_corrected_commands(command))
+
+    # Assertions
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0].script == "ls -la"
+    assert corrected_commands[0].priority == 1
+    assert corrected_commands[0].side_effect is None
+```
+
+# Generated at 2024-03-18 08:15:09.919805
+```python
+    command = Command(script="ls -l | grepp 'No such file'", output="grep: No such file: No such file or directory")
+    rule = Rule(name="replace_grepp_with_grep",
+                match=lambda cmd: "grepp" in cmd.script,
+                get_new_command=lambda cmd: cmd.script.replace("grepp", "grep"),
+                enabled_by_default=True,
+                side_effect=None,
+                priority=100,
+                requires_output=True)
+
+    corrected_commands = list(rule.get_corrected_commands(command))
+    expected_script = "ls -l | grep 'No such file'"
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0].script == expected_script
+    assert corrected_commands[0].priority == 100
+```
+
+# Generated at 2024-03-18 08:15:17.717116
+```python
+    # Mocking a Command object
+    command = Command(script="ls -l", output="total 0")
+
+    # Mocking a Rule object
+    def match(command):
+        return "No such file or directory" in command.output
+
+    def get_new_command(command):
+        return "ls -la"
+
+    rule = Rule(name="mock_rule",
+                match=match,
+                get_new_command=get_new_command,
+                enabled_by_default=True,
+                side_effect=None,
+                priority=1,
+                requires_output=True)
+
+    # Mocking CorrectedCommand
+    corrected_command = CorrectedCommand(script="ls -la",
+                                         side_effect=None,
+                                         priority=1)
+
+    # Running the test
+    corrected_commands = list(rule.get_corrected_commands(command))
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0] == corrected_command
+```
+
+# Generated at 2024-03-18 08:15:22.440047
+```python
+    def mock_match(command):
+        return 'mock' in command.script
+
+    command_with_mock = Command(script='echo mock', output='mock output')
+    command_without_mock = Command(script='echo test', output='test output')
+
+    rule = Rule(name='mock_rule', match=mock_match, get_new_command=None,
+                enabled_by_default=True, side_effect=None,
+                priority=DEFAULT_PRIORITY, requires_output=False)
+
+    assert rule.is_match(command_with_mock) is True
+    assert rule.is_match(command_without_mock) is False
+```
+
+# Generated at 2024-03-18 08:15:28.827744
+```python
+    def mock_match(command):
+        return 'error' in command.output
+
+    def mock_get_new_command(command):
+        return 'fixed_command'
+
+    def mock_side_effect(command, script):
+        pass
+
+    rule = Rule(name='mock_rule',
+                match=mock_match,
+                get_new_command=mock_get_new_command,
+                enabled_by_default=True,
+                side_effect=mock_side_effect,
+                priority=100,
+                requires_output=True)
+
+    command_with_error = Command(script='original_command', output='error occurred')
+    command_without_error = Command(script='original_command', output='no error')
+
+    corrected_commands = list(rule.get_corrected_commands(command_with_error))
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0].script == 'fixed_command'
+    assert corrected_commands[0].side_effect == mock_side_effect
+    assert corrected_commands[0].priority == 100
+
+    corrected_commands = list(rule.get_corrected_commands(command
+
+# Generated at 2024-03-18 08:15:35.195877
+```python
+    def mock_match(command):
+        return 'error' in command.script
+
+    def mock_get_new_command(command):
+        return command.script.replace('error', 'correction')
+
+    rule = Rule(name='mock_rule',
+                match=mock_match,
+                get_new_command=mock_get_new_command,
+                enabled_by_default=True,
+                side_effect=None,
+                priority=100,
+                requires_output=True)
+
+    command = Command(script='this is an error', output='error output')
+    corrected_commands = list(rule.get_corrected_commands(command))
+
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0].script == 'this is an correction'
+    assert corrected_commands[0].priority == 100
+```
+
+# Generated at 2024-03-18 08:15:40.924564
+```python
+    def mock_match(command):
+        return 'error' in command.output
+
+    def mock_get_new_command(command):
+        return command.script.replace('error', 'correction')
+
+    rule = Rule(name='mock_rule',
+                match=mock_match,
+                get_new_command=mock_get_new_command,
+                enabled_by_default=True,
+                side_effect=None,
+                priority=100,
+                requires_output=True)
+
+    command = Command(script='echo error', output='error: command not found')
+    corrected_commands = list(rule.get_corrected_commands(command))
+
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0].script == 'echo correction'
+    assert corrected_commands[0].priority == 100
+```
+
+# Generated at 2024-03-18 08:15:47.366730
+```python
+    # Mocking a Command object
+    command = Command(script="ls -l", output="total 0")
+
+    # Mocking a Rule object
+    def match(command):
+        return "No such file or directory" in command.output
+
+    def get_new_command(command):
+        return "ls -la"
+
+    rule = Rule(name="mock_rule",
+                match=match,
+                get_new_command=get_new_command,
+                enabled_by_default=True,
+                side_effect=None,
+                priority=1,
+                requires_output=True)
+
+    # Mocking CorrectedCommand object
+    corrected_command = CorrectedCommand(script="ls -la",
+                                         side_effect=None,
+                                         priority=1)
+
+    # Running the test
+    corrected_commands = list(rule.get_corrected_commands(command))
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0] == corrected_command
+```
+
+# Generated at 2024-03-18 08:15:52.999060
+```python
+    def mock_match(command):
+        return 'mock' in command.script
+
+    command_with_mock = Command(script='echo mock', output='mock output')
+    command_without_mock = Command(script='echo test', output='test output')
+
+    rule = Rule(name='mock_rule', match=mock_match, get_new_command=None,
+                enabled_by_default=True, side_effect=None,
+                priority=DEFAULT_PRIORITY, requires_output=False)
+
+    assert rule.is_match(command_with_mock) == True
+    assert rule.is_match(command_without_mock) == False
+```
+
+# Generated at 2024-03-18 08:17:26.913108
+```python
+    from unittest.mock import patch, Mock
+
+    @patch('thefuck.shells.shell.put_to_history')
+    @patch('thefuck.shells.shell.quote')
+    @patch('thefuck.utils.get_alias')
+    def test_corrected_command_run(mock_get_alias, mock_quote, mock_put_to_history):
+        mock_get_alias.return_value = 'fuck'
+        mock_quote.return_value = 'quoted_script'
+        old_cmd = Command('ls', 'no such file or directory')
+        corrected_cmd = CorrectedCommand('ls -la', None, 100)
+
+        with patch('sys.stdout') as mock_stdout:
+            corrected_cmd.run(old_cmd)
+            mock_stdout.write.assert_called_once_with('ls -la')
+
+        settings.alter_history = True
+        corrected_cmd.run(old_cmd)
+        mock_put_to_history.assert_called_once_with('ls -la')
+
+        settings.repeat = True
+        with patch('sys.stdout') as mock_stdout:
+            corrected_cmd
+
+# Generated at 2024-03-18 08:17:32.220269
+```python
+    # Mocking a command and a rule
+    command = Command(script="ls -l", output="ls: cannot access '-l': No such file or directory")
+    rule = Rule(name="mock_rule",
+                match=lambda x: "No such file or directory" in x.output,
+                get_new_command=lambda x: "ls -la",
+                enabled_by_default=True,
+                side_effect=None,
+                priority=100,
+                requires_output=True)
+
+    # Testing get_corrected_commands
+    corrected_commands = list(rule.get_corrected_commands(command))
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0].script == "ls -la"
+    assert corrected_commands[0].priority == 100
+    assert corrected_commands[0].side_effect is None
+```
+
+# Generated at 2024-03-18 08:17:39.004025
+```python
+    from unittest.mock import Mock
+
+    # Mock a command object
+    command = Mock(spec=Command)
+    command.script = "ls -l"
+    command.output = "ls: cannot access '-l': No such file or directory"
+
+    # Mock a rule that matches the command and provides a new command
+    rule = Rule(name="mock_rule",
+                match=lambda x: True,
+                get_new_command=lambda x: "ls -la",
+                enabled_by_default=True,
+                side_effect=None,
+                priority=100,
+                requires_output=True)
+
+    # Get the corrected commands
+    corrected_commands = list(rule.get_corrected_commands(command))
+
+    # Assert that there is one corrected command
+    assert len(corrected_commands) == 1
+
+    # Assert that the corrected command has the expected script and priority
+    corrected_command = corrected_commands[0]
+    assert corrected_command.script == "ls -la"
+    assert corrected_command.priority == 100
+
+   
+
+# Generated at 2024-03-18 08:17:49.431947
+```python
+    # Mock a command and a rule
+    command = Command(script="ls -l", output="total 0")
+    rule = Rule(name="mock_rule",
+                match=lambda cmd: "ls" in cmd.script,
+                get_new_command=lambda cmd: "ls -la",
+                enabled_by_default=True,
+                side_effect=None,
+                priority=1,
+                requires_output=True)
+
+    # Call the method to test
+    corrected_commands = list(rule.get_corrected_commands(command))
+
+    # Assert that we get the expected corrected command
+    expected_script = "ls -la"
+    assert len(corrected_commands) == 1, "Should only have one corrected command"
+    assert corrected_commands[0].script == expected_script, \
+        "The corrected command script should be '{}'".format(expected_script)
+    assert corrected_commands[0].priority == 1, \
+        "The corrected command priority should be 1"
+    assert corrected_commands[0].side
+
+# Generated at 2024-03-18 08:17:57.717420
+```python
+    # Mocking a command and a rule
+    command = Command(script="ls -l", output="total 0")
+    rule = Rule(name="mock_rule",
+                match=lambda x: "No such file" in x.output,
+                get_new_command=lambda x: "ls -a",
+                enabled_by_default=True,
+                side_effect=None,
+                priority=100,
+                requires_output=True)
+
+    # Mocking the CorrectedCommand class
+    corrected_command = CorrectedCommand(script="ls -a",
+                                         side_effect=None,
+                                         priority=100)
+
+    # Getting corrected commands from the rule
+    corrected_commands = list(rule.get_corrected_commands(command))
+
+    # Asserting that the corrected command is as expected
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0] == corrected_command
+    assert corrected_commands[0].priority == corrected_command.priority
+```
+
+# Generated at 2024-03-18 08:18:03.697728
+```python
+    def mock_match(command):
+        return 'error' in command.output
+
+    def mock_get_new_command(command):
+        return 'fixed_command'
+
+    def mock_side_effect(command, script):
+        pass
+
+    rule = Rule(name='mock_rule',
+                match=mock_match,
+                get_new_command=mock_get_new_command,
+                enabled_by_default=True,
+                side_effect=mock_side_effect,
+                priority=100,
+                requires_output=True)
+
+    command_with_error = Command(script='original_command', output='error occurred')
+    command_without_error = Command(script='original_command', output='no error')
+
+    corrected_commands = list(rule.get_corrected_commands(command_with_error))
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0].script == 'fixed_command'
+    assert corrected_commands[0].side_effect == mock_side_effect
+    assert corrected_commands[0].priority == 100
+
+    corrected_commands = list(rule.get_corrected_commands(command
+
+# Generated at 2024-03-18 08:18:10.979798
+```python
+    # Mocking a Command object
+    command = Command(script="ls -l", output="total 0")
+
+    # Mocking a Rule object
+    def match(command):
+        return "No such file or directory" in command.output
+
+    def get_new_command(command):
+        return "ls -la"
+
+    rule = Rule(name="mock_rule",
+                match=match,
+                get_new_command=get_new_command,
+                enabled_by_default=True,
+                side_effect=None,
+                priority=1,
+                requires_output=True)
+
+    # Mocking CorrectedCommand
+    corrected_command = CorrectedCommand(script="ls -la",
+                                         side_effect=None,
+                                         priority=1)
+
+    # Call the method and get the generator
+    corrected_commands_generator = rule.get_corrected_commands(command)
+
+    # Convert generator to list for easier assertion
+    corrected_commands = list(corrected_commands_generator)
+
+    # Assert that the corrected command is as expected
+    assert corrected_commands == [
+
+# Generated at 2024-03-18 08:18:17.507251
+```python
+    # Mocking a command and a rule
+    command = Command(script="ls -l", output="ls: cannot access '-l': No such file or directory")
+    rule = Rule(name="mock_rule",
+                match=lambda x: "No such file or directory" in x.output,
+                get_new_command=lambda x: "ls -la",
+                enabled_by_default=True,
+                side_effect=None,
+                priority=100,
+                requires_output=True)
+
+    # Mocking CorrectedCommand
+    corrected_command = CorrectedCommand(script="ls -la", side_effect=None, priority=100)
+
+    # Getting corrected commands
+    corrected_commands = list(rule.get_corrected_commands(command))
+
+    # Assertions
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0] == corrected_command
+    assert corrected_commands[0].priority == corrected_command.priority
+```
+
+# Generated at 2024-03-18 08:18:23.564914
+```python
+    def mock_match(command):
+        return 'error' in command.output
+
+    def mock_get_new_command(command):
+        return command.script.replace('error', 'correction')
+
+    rule = Rule(name='mock_rule',
+                match=mock_match,
+                get_new_command=mock_get_new_command,
+                enabled_by_default=True,
+                side_effect=None,
+                priority=100,
+                requires_output=True)
+
+    command = Command(script='echo error', output='error: command not found')
+    corrected_commands = list(rule.get_corrected_commands(command))
+
+    assert len(corrected_commands) == 1
+    assert corrected_commands[0].script == 'echo correction'
+    assert corrected_commands[0].priority == 100
+```
+
+# Generated at 2024-03-18 08:18:29.162215
+```python
+    def mock_match(command):
+        return 'error' in command.output
+
+    def mock_get_new_command(command):
+        return 'fixed_command'
+
+    def mock_side_effect(command, script):
+        pass
+
+    rule = Rule(name='mock_rule',
+                match=mock_match,
+                get_new_command=mock_get_new_command,
+                enabled_by_default=True,
+                side_effect=mock_side_effect,
+                priority=100,
+                requires_output=True)
+
+    command = Command(script='original_command', output='error occurred')
+    corrected_commands = list(rule.get_corrected_commands(command))
+
+    assert len(corrected_commands) == 1
+    corrected_command = corrected_commands[0]
+    assert corrected_command.script == 'fixed_command'
+    assert corrected_command.side_effect == mock_side_effect
+    assert corrected_command.priority == 100
+```

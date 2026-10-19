@@ -1,0 +1,2421 @@
+
+
+# Generated at 2024-05-31 00:10:57.121705
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C.utf8'
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C'
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result =
+
+# Generated at 2024-05-31 00:11:00.257626
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    import pytest
+
+    class MockModule(AnsibleModule):
+        def __init__(self, available_locales):
+            self.available_locales = available_locales
+
+        def get_bin_path(self, arg):
+            return "/usr/bin/locale"
+
+        def run_command(self, command):
+            if command == ["/usr/bin/locale", "-a"]:
+                return (0, "\n".join(self.available_locales), "")
+            return (1, "", "Error")
+
+    def test_locale_found():
+        module = MockModule(['C.utf8', 'en_US.utf8', 'C', 'POSIX'])
+        assert get_best_parsable_locale(module) == 'C.utf8'
+
+    def test_locale_not_found():
+        module = MockModule(['fr_FR.utf8', 'de_DE.utf8'])
+        assert get_best_parsable_locale(module) == 'C'
+
+
+
+# Generated at 2024-05-31 00:11:03.590119
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no output from locale command
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, '', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 3: Locale tool found, locale command fails
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path',
+
+# Generated at 2024-05-31 00:11:07.518160
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:11:10.875274
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:11:14.369772
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C.utf8'
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C'
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result =
+
+# Generated at 2024-05-31 00:11:18.024000
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8', 'C.utf8']) == 'en_US.utf8'
+
+    # Test case 2: No preferred locale is available, default to 'C'
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command',
+
+# Generated at 2024-05-31 00:11:22.222202
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C.utf8'
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C'
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result =
+
+# Generated at 2024-05-31 00:11:25.195677
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C.utf8'
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C'
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result =
+
+# Generated at 2024-05-31 00:11:28.143708
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no output from locale command
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, '', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 3: Locale tool found, locale command returns available locales
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin
+
+# Generated at 2024-05-31 00:11:38.833383
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is found and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('
+
+# Generated at 2024-05-31 00:11:42.252352
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8', 'C.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return
+
+# Generated at 2024-05-31 00:11:46.334809
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no output from locale command
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, '', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 3: Locale tool found, locale command returns available locales
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin
+
+# Generated at 2024-05-31 00:11:49.596609
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is found and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('
+
+# Generated at 2024-05-31 00:11:53.001480
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module, preferences=['en_US.utf8'])
+    assert result == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default
+    module.run_command.return_value = (0, "C\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module, preferences=['en_US.utf8'])
+    assert result == 'C'
+
+    # Test case 3: No preferences provided, should return first available default
+
+# Generated at 2024-05-31 00:11:56.244624
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:11:59.836642
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:12:03.264463
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale command returns a preferred locale
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 2: Locale command does not return any preferred locale
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'fr_FR.utf8\nde_DE.
+
+# Generated at 2024-05-31 00:12:07.232492
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C.utf8'
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C'
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result =
+
+# Generated at 2024-05-31 00:12:11.409727
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:12:22.854521
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:12:25.915001
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:12:28.910797
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is found and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('
+
+# Generated at 2024-05-31 00:12:32.069380
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:12:35.315988
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:12:38.707642
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == "C.utf8"
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == "C"
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result =
+
+# Generated at 2024-05-31 00:12:42.044530
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module, preferences=['en_US.utf8'])
+    assert result == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default
+    module.run_command.return_value = (0, "C\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module, preferences=['en_US.utf8'])
+    assert result == 'C'
+
+    # Test case 3: No preferences provided, should return first available from
+
+# Generated at 2024-05-31 00:12:46.511341
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: No preferred locale is available, default to 'C'
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, '
+
+# Generated at 2024-05-31 00:12:50.715282
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C
+
+# Generated at 2024-05-31 00:12:54.757049
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == "C.utf8"
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == "C"
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result =
+
+# Generated at 2024-05-31 00:13:05.782801
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C.utf8', f"Expected 'C.utf8', got {result}"
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C', f"Expected 'C', got {result}"
+
+    #
+
+# Generated at 2024-05-31 00:13:08.974727
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:13:11.993773
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:13:15.951885
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is found and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('
+
+# Generated at 2024-05-31 00:13:22.127908
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:13:25.942514
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == "C.utf8"
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == "C"
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result =
+
+# Generated at 2024-05-31 00:13:30.658266
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: No preferred locale is available, default to 'C'
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, '
+
+# Generated at 2024-05-31 00:13:34.463724
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8', 'C.utf8']) == 'en_US.utf8'
+
+    # Test case 2: No preferred locale is available, default to 'C'
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command',
+
+# Generated at 2024-05-31 00:13:38.006825
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:13:41.170598
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default 'C'
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0,
+
+# Generated at 2024-05-31 00:13:52.217278
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C
+
+# Generated at 2024-05-31 00:13:55.486620
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is available and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('
+
+# Generated at 2024-05-31 00:13:59.069678
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:14:02.309434
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:14:05.391153
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C.utf8'
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C'
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result =
+
+# Generated at 2024-05-31 00:14:10.439135
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no output from locale command
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, '', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 3: Locale tool found, locale command returns available locales
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin
+
+# Generated at 2024-05-31 00:14:14.020304
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default 'C'
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0,
+
+# Generated at 2024-05-31 00:14:17.630236
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:14:21.030687
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is found and returns a preferred locale
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is found but does not return a preferred locale
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'fr_FR.utf8\nde
+
+# Generated at 2024-05-31 00:14:24.323844
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:14:37.670089
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:14:41.143455
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default 'C'
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0,
+
+# Generated at 2024-05-31 00:14:44.309260
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:14:48.538172
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: No preferred locale is available, default to 'C'
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, '
+
+# Generated at 2024-05-31 00:14:51.883440
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is available and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('
+
+# Generated at 2024-05-31 00:14:55.532112
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C.utf8'
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C'
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result =
+
+# Generated at 2024-05-31 00:14:58.871094
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:15:02.203983
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default 'C'
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0,
+
+# Generated at 2024-05-31 00:15:05.593871
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no output from locale command
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, '', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 3: Locale tool found, locale command returns available locales
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin
+
+# Generated at 2024-05-31 00:15:10.871963
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is available and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('
+
+# Generated at 2024-05-31 00:15:22.203292
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:15:25.939664
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C
+
+# Generated at 2024-05-31 00:15:29.419230
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module, preferences=['en_US.utf8'])
+    assert result == 'en_US.utf8'
+
+    # Test case 2: No preferred locale is available, should return default 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module, preferences=['en_US.utf8'])
+    assert result == 'C'
+
+    # Test case 3:
+
+# Generated at 2024-05-31 00:15:33.986625
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:15:37.823294
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:15:40.957493
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no output from locale command
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, '', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 3: Locale tool found, locale command returns available locales
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin
+
+# Generated at 2024-05-31 00:15:45.013942
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module, preferences=['en_US.utf8'])
+    assert result == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default
+    module.run_command.return_value = (0, "C\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module, preferences=['en_US.utf8'])
+    assert result == 'C'
+
+    # Test case 3: No preferences provided, should return first available from
+
+# Generated at 2024-05-31 00:15:49.284252
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:15:53.343219
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8', 'C.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return
+
+# Generated at 2024-05-31 00:15:57.056102
+```python
+    from unittest.mock import Mock
+
+    # Test case 1: Locale command returns a preferred locale
+    module = Mock()
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+    assert get_best_parsable_locale(module) == "C.utf8"
+
+    # Test case 2: Locale command does not return any preferred locale
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+    assert get_best_parsable_locale(module) == "C"
+
+    # Test case 3: Locale command fails to run
+    module.run_command.return_value = (1, "", "error")
+    assert get_best_parsable_locale(module) == "C"
+
+    # Test case 4: Locale command not found
+    module.get
+
+# Generated at 2024-05-31 00:16:08.819802
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is available and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('
+
+# Generated at 2024-05-31 00:16:11.888660
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8', 'C.utf8']) == 'en_US.utf8'
+
+    # Test case 2: No preferred locale is available, default to 'C'
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command',
+
+# Generated at 2024-05-31 00:16:15.056260
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:16:18.470682
+```python
+    from unittest.mock import Mock
+
+    # Test case 1: Locale tool not found
+    module = Mock()
+    module.get_bin_path.return_value = None
+    assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    module = Mock()
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+    assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool found, custom preferences provided
+    module = Mock()
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+   
+
+# Generated at 2024-05-31 00:16:21.578734
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:16:25.809975
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: No preferred locale is available, should return default 'C'
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0,
+
+# Generated at 2024-05-31 00:16:29.163271
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:16:32.783276
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C
+
+# Generated at 2024-05-31 00:16:36.547007
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is found and returns a preferred locale
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is found but does not return a preferred locale
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'fr_FR.utf8\nes
+
+# Generated at 2024-05-31 00:16:39.786266
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:16:52.720462
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: No preferred locale is available, default to 'C'
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, '
+
+# Generated at 2024-05-31 00:16:57.328931
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module, preferences=['en_US.utf8'])
+    assert result == 'en_US.utf8'
+
+    # Test case 2: No preferred locale is available, should return default 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module, preferences=['en_US.utf8'])
+    assert result == 'C'
+
+    # Test case 3:
+
+# Generated at 2024-05-31 00:17:00.805145
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == "C.utf8"
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == "C"
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result =
+
+# Generated at 2024-05-31 00:17:04.189100
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default 'C'
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0,
+
+# Generated at 2024-05-31 00:17:08.097802
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is found and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            result = get_best_parsable_locale(module)
+            assert result == 'C.utf8'
+
+    # Test case when locale command is not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        result = get_best_parsable_locale(module)
+        assert result == 'C'
+
+    # Test case when locale command
+
+# Generated at 2024-05-31 00:17:13.325417
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    import pytest
+
+    class MockModule(AnsibleModule):
+        def __init__(self, available_locales, bin_path=True):
+            self.available_locales = available_locales
+            self.bin_path = bin_path
+
+        def get_bin_path(self, arg):
+            return "/usr/bin/locale" if self.bin_path else None
+
+        def run_command(self, command):
+            if command == ["/usr/bin/locale", "-a"]:
+                return (0, "\n".join(self.available_locales), "")
+            return (1, "", "error")
+
+    def test_locale_found():
+        module = MockModule(['C.utf8', 'en_US.utf8', 'C', 'POSIX'])
+        assert get_best_parsable_locale(module) == 'C.utf8'
+
+    def test_locale_not_found():
+        module = MockModule(['fr_FR.utf8', 'de
+
+# Generated at 2024-05-31 00:17:18.616278
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is available and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('
+
+# Generated at 2024-05-31 00:17:22.086756
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:17:25.776814
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C
+
+# Generated at 2024-05-31 00:17:30.115370
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == "C.utf8"
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == "C"
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result =
+
+# Generated at 2024-05-31 00:17:41.169938
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is available and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('
+
+# Generated at 2024-05-31 00:17:46.591765
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:17:50.511216
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:17:53.633343
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:17:57.042480
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C
+
+# Generated at 2024-05-31 00:18:03.452713
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is found
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module, preferences=['en_US.utf8'])
+    assert result == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not found, default to 'C'
+    module.run_command.return_value = (0, "C\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module, preferences=['en_US.utf8'])
+    assert result == 'C'
+
+    # Test case 3: No preferences provided, should return first available
+
+# Generated at 2024-05-31 00:18:06.410730
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C.utf8'
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C'
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result = get_best
+
+# Generated at 2024-05-31 00:18:09.857633
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is found and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('
+
+# Generated at 2024-05-31 00:18:13.306250
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is found and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('
+
+# Generated at 2024-05-31 00:18:18.395814
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is found and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('
+
+# Generated at 2024-05-31 00:18:30.719911
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:18:34.162411
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:18:37.738412
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:18:41.033069
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['C.utf8', 'en_US.utf8']) == 'C.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default 'C'
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command',
+
+# Generated at 2024-05-31 00:18:44.172364
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:18:47.301441
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:18:51.323540
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:18:54.594621
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:18:58.764682
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:19:03.963500
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:19:17.249790
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:19:20.564728
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C
+
+# Generated at 2024-05-31 00:19:23.957450
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:19:29.015585
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is found and returns a preferred locale
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is found but does not return a preferred locale
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'fr_FR.utf8\nes
+
+# Generated at 2024-05-31 00:19:32.956797
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is found and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('
+
+# Generated at 2024-05-31 00:19:36.859373
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:19:40.035247
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C.utf8'
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C'
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result =
+
+# Generated at 2024-05-31 00:19:43.923390
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:19:47.338241
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:19:52.728170
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:20:04.326850
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C
+
+# Generated at 2024-05-31 00:20:10.604695
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is found and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('
+
+# Generated at 2024-05-31 00:20:13.798506
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default 'C'
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0,
+
+# Generated at 2024-05-31 00:20:17.687695
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C.utf8'
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8\n", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C'
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result =
+
+# Generated at 2024-05-31 00:20:21.380169
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Preferred locale is available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module, preferences=['en_US.utf8']) == 'en_US.utf8'
+
+    # Test case 2: Preferred locale is not available, fallback to default
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C
+
+# Generated at 2024-05-31 00:20:24.844023
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    import pytest
+
+    class MockModule(AnsibleModule):
+        def __init__(self, available_locales, bin_path=True):
+            self.available_locales = available_locales
+            self.bin_path = bin_path
+
+        def get_bin_path(self, arg):
+            return "/usr/bin/locale" if self.bin_path else None
+
+        def run_command(self, command):
+            if command == ["/usr/bin/locale", "-a"]:
+                return (0, "\n".join(self.available_locales), "")
+            return (1, "", "error")
+
+    def test_locale_found():
+        module = MockModule(['C.utf8', 'en_US.utf8', 'C', 'POSIX'])
+        assert get_best_parsable_locale(module) == 'C.utf8'
+
+    def test_locale_not_found():
+        module = MockModule(['fr_FR.utf8', 'de
+
+# Generated at 2024-05-31 00:20:29.000135
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale tool
+
+# Generated at 2024-05-31 00:20:31.928135
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale found in preferences
+    module = MagicMock(spec=AnsibleModule)
+    module.get_bin_path.return_value = "/usr/bin/locale"
+    module.run_command.return_value = (0, "C.utf8\nen_US.utf8\nC\nPOSIX", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C.utf8'
+
+    # Test case 2: Locale not found in preferences, default to 'C'
+    module.run_command.return_value = (0, "fr_FR.utf8\nde_DE.utf8", "")
+
+    result = get_best_parsable_locale(module)
+    assert result == 'C'
+
+    # Test case 3: No locale tool found
+    module.get_bin_path.return_value = None
+
+    result = get_best
+
+# Generated at 2024-05-31 00:20:41.206336
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case 1: Locale tool not found
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case 2: Locale tool found, no preferences provided, default locale list used
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case 3: Locale
+
+# Generated at 2024-05-31 00:20:45.127407
+```python
+    from ansible.module_utils.basic import AnsibleModule
+    from unittest.mock import patch, MagicMock
+
+    # Test case when locale command is available and returns expected output
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value='/usr/bin/locale'):
+        with patch('ansible.module_utils.basic.AnsibleModule.run_command', return_value=(0, 'C.utf8\nen_US.utf8\nC\nPOSIX\n', '')):
+            module = AnsibleModule(argument_spec={})
+            assert get_best_parsable_locale(module) == 'C.utf8'
+
+    # Test case when locale command is not available
+    with patch('ansible.module_utils.basic.AnsibleModule.get_bin_path', return_value=None):
+        module = AnsibleModule(argument_spec={})
+        assert get_best_parsable_locale(module) == 'C'
+
+    # Test case when locale command returns no output
+    with patch('

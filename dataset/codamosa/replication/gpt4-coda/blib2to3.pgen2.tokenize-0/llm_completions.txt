@@ -1,0 +1,761 @@
+
+
+# Generated at 2024-03-18 05:04:07.851791
+    from io import StringIO
+    import sys
+
+    # Redirect stdout to capture the print output for comparison
+    old_stdout = sys.stdout
+    sys.stdout = StringIO()
+
+    # Test data
+    test_cases = [
+        (NAME, 'foo', (1, 0), (1, 3), 'foo'),
+        (NUMBER, '123', (1, 0), (1, 3), '123'),
+        (OP, '+', (1, 0), (1, 1), '+'),
+        (STRING, '"bar"', (1, 0), (1, 5), '"bar"'),
+    ]
+
+    # Expected output
+    expected_output = [
+        "1,0-1,3:\tNAME\t'foo'\n",
+        "1,0-1,3:\tNUMBER\t'123'\n",
+        "1,0-1,1:\tOP\t'+'\n",
+        "1
+
+# Generated at 2024-03-18 05:04:09.248929
+```python
+
+# Generated at 2024-03-18 05:04:14.946135
+    import io
+
+    def test_readline_factory(lines):
+        def readline():
+            if lines:
+                return lines.pop(0)
+            else:
+                raise StopIteration
+        return readline
+
+    # Test with utf-8 BOM
+    bom_line = BOM_UTF8 + b"print('hello world')\n"
+    readline = test_readline_factory([bom_line])
+    encoding, lines = detect_encoding(readline)
+    assert encoding == "utf-8-sig"
+    assert lines == [bom_line[3:]]
+
+    # Test with utf-8 encoding cookie
+    cookie_line = b"# coding: utf-8\nprint('hello world')\n"
+    readline = test_readline_factory([cookie_line])
+    encoding, lines = detect_encoding(readline)
+    assert encoding == "utf-8"
+    assert lines == [cookie_line]
+
+    # Test with latin-1 encoding cookie
+    cookie_line = b"# coding: latin
+
+# Generated at 2024-03-18 05:04:17.680900
+```python
+import io
+from tokenize import generate_tokens, TokenInfo, ENDMARKER
+
+
+# Generated at 2024-03-18 05:04:23.585138
+```python
+    ut = Untokenizer()
+    tokens = [
+        (INDENT, '    '),
+        (NAME, 'def'),
+        (NAME, 'test_function'),
+        (OP, '('),
+        (OP, ')'),
+        (OP, ':'),
+        (NEWLINE, '\n'),
+        (INDENT, '    '),
+        (NAME, 'pass'),
+        (NEWLINE, '\n'),
+        (DEDENT, ''),
+        (DEDENT, ''),
+        (ENDMARKER, ''),
+    ]
+    result = ut.untokenize(iter(tokens))
+    expected = "    def test_function():\n        pass\n"
+    assert result == expected, f"Expected {expected!r}, but got {result!r}"
+```
+
+# Generated at 2024-03-18 05:04:30.222965
+    # Setup the Untokenizer
+    untokenizer = Untokenizer()
+
+    # Define a sequence of token tuples
+    tokens = [
+        (NAME, 'def', (1, 0), (1, 3), 'def test():\n'),
+        (NAME, 'test', (1, 4), (1, 8), 'def test():\n'),
+        (OP, '(', (1, 8), (1, 9), 'def test():\n'),
+        (OP, ')', (1, 9), (1, 10), 'def test():\n'),
+        (OP, ':', (1, 10), (1, 11), 'def test():\n'),
+        (NEWLINE, '\n', (1, 11), (2, 0), 'def test():\n'),
+        (INDENT, '    ', (2, 0), (2,
+
+# Generated at 2024-03-18 05:04:37.612431
+    import io
+
+    def test_readline_factory(lines):
+        def readline():
+            try:
+                return next(lines)
+            except StopIteration:
+                return b''
+        return readline
+
+    # Test with utf-8 BOM
+    bom_line = BOM_UTF8 + b"# coding: utf-8\n"
+    lines = iter([bom_line])
+    encoding, _ = detect_encoding(test_readline_factory(lines))
+    assert encoding == "utf-8-sig", "Failed to detect BOM"
+
+    # Test with utf-8 coding cookie
+    cookie_line = b"# coding: utf-8\n"
+    lines = iter([cookie_line])
+    encoding, _ = detect_encoding(test_readline_factory(lines))
+    assert encoding == "utf-8", "Failed to detect utf-8 coding cookie"
+
+    # Test with latin-1 coding cookie
+    cookie_line = b"# coding: latin-1\n"
+    lines = iter([cookie_line])
+   
+
+# Generated at 2024-03-18 05:04:43.181596
+```python
+    import io
+
+    def mock_readline_generator(input_string):
+        for line in io.StringIO(input_string):
+            yield line
+
+    def mock_readline(input_string):
+        gen = mock_readline_generator(input_string)
+        return lambda: next(gen, '')
+
+    def token_collector():
+        collected_tokens = []
+
+        def collect(type, token, start, end, line):
+            collected_tokens.append((type, token, start, end, line))
+
+        collect.collected_tokens = collected_tokens
+        return collect
+
+    collector = token_collector()
+    input_string = "def foo(bar):\n    return bar\n"
+    tokenize(mock_readline(input_string), collector)
+
+    expected_tokens = [
+        (NAME, 'def', (1, 0), (1, 3), 'def foo(bar):\n'),
+        (NAME, 'foo', (1, 4), (1, 7), 'def foo(bar):\n'),
+        (OP
+
+# Generated at 2024-03-18 05:04:49.386050
+    def get_readline(data):
+        lines = iter(data)
+        return lambda: next(lines)
+
+    # Test with UTF-8 BOM
+    bom_data = [BOM_UTF8 + b'# coding: utf-8\n', b'print("Hello, world!")\n']
+    encoding, lines = detect_encoding(get_readline(bom_data))
+    assert encoding == 'utf-8-sig'
+    assert lines == bom_data[1:]
+
+    # Test with explicit encoding cookie
+    cookie_data = [b'# coding: latin-1\n', b'print("Hello, world!")\n']
+    encoding, lines = detect_encoding(get_readline(cookie_data))
+    assert encoding == 'iso-8859-1'
+    assert lines == cookie_data
+
+    # Test with both BOM and encoding cookie (BOM takes precedence)
+    bom_cookie_data = [BOM_UTF8 + b'# coding: latin-1\n', b'print("Hello
+
+# Generated at 2024-03-18 05:04:56.078313
+    # Setup the Untokenizer
+    untokenizer = Untokenizer()
+
+    # Define a sequence of token tuples
+    tokens = [
+        (NAME, 'def', (1, 0), (1, 3), 'def test():\n'),
+        (NAME, 'test', (1, 4), (1, 8), 'def test():\n'),
+        (OP, '(', (1, 8), (1, 9), 'def test():\n'),
+        (OP, ')', (1, 9), (1, 10), 'def test():\n'),
+        (OP, ':', (1, 10), (1, 11), 'def test():\n'),
+        (NEWLINE, '\n', (1, 11), (1, 12), 'def test():\n'),
+        (INDENT, '    ', (2, 0), (2,
+
+# Generated at 2024-03-18 05:05:40.182323
+    ut = Untokenizer()
+    iterable = iter([
+        (INDENT, '    '),
+        (NAME, 'def'),
+        (NAME, 'test'),
+        (OP, '('),
+        (OP, ')'),
+        (OP, ':'),
+        (NEWLINE, '\n'),
+        (INDENT, '    '),
+        (NAME, 'pass'),
+        (NEWLINE, '\n'),
+        (DEDENT, ''),
+        (DEDENT, ''),
+        (ENDMARKER, ''),
+    ])
+    ut.compat(next(iterable), iterable)
+    result = "".join(ut.tokens)
+    expected = "    def test():\n        pass\n"
+    assert result == expected, f"Expected {expected}, but got {result}"
+
+# Generated at 2024-03-18 05:05:46.224150
+    from io import StringIO
+
+    def mock_readline():
+        lines = [
+            "import os\n",
+            "def hello():\n",
+            "    print('Hello, world!')\n",
+            "# End of script\n"
+        ]
+        for line in lines:
+            yield line
+        yield ''
+
+    mock_readline_generator = mock_readline()
+
+    def mock_tokeneater(type, token, start, end, line):
+        print(f"Token: {token}, Type: {tok_name[type]}, Start: {start}, End: {end}, Line: {line}")
+
+    readline = lambda: next(mock_readline_generator)
+    expected_output = [
+        "Token: import, Type: NAME, Start: (1, 0), End: (1, 6), Line: import os\n",
+        "Token: os, Type: NAME, Start: (1, 7), End: (1, 9), Line: import os
+
+# Generated at 2024-03-18 05:05:51.687924
+```python
+    # Unit test for function generate_tokens
+    def test_generate_tokens():
+        from io import StringIO
+        from tokenize import generate_tokens, NAME, NUMBER, OP, ENDMARKER
+
+        source_code = "a = 1\nb = 2\n"
+        readline = StringIO(source_code).readline
+        tokens = list(generate_tokens(readline))
+
+        expected_tokens = [
+            (NAME, 'a', (1, 0), (1, 1), 'a = 1\n'),
+            (OP, '=', (1, 2), (1, 3), 'a = 1\n'),
+            (NUMBER, '1', (1, 4), (1, 5), 'a = 1\n'),
+            (NAME, 'b', (2, 0), (2, 1), 'b = 2\n'),
+            (OP, '=', (2, 2), (2, 
+
+# Generated at 2024-03-18 05:05:58.061976
+    from io import StringIO
+    import sys
+
+    # Capture the output of printtoken
+    captured_output = StringIO()
+    sys.stdout = captured_output
+
+    # Test data
+    test_type = STRING
+    test_token = '"Hello, world!"'
+    test_start = (1, 0)
+    test_end = (1, 15)
+    test_line = 'print("Hello, world!")\n'
+
+    # Call the function with test data
+    printtoken(test_type, test_token, test_start, test_end, test_line)
+
+    # Restore stdout
+    sys.stdout = sys.__stdout__
+
+    # Check the result
+    expected_output = "1,0-1,15:\tSTRING\t'\"Hello, world!\"'\n"
+    assert captured_output.getvalue() == expected_output
+
+# Run the test
+test_printtoken()
+
+# Generated at 2024-03-18 05:06:04.070492
+```python
+    ut = Untokenizer()
+    ut.prev_row, ut.prev_col = 1, 0
+
+    # Test adding no whitespace if the start is the same as the previous position
+    ut.add_whitespace((1, 0))
+    assert "".join(ut.tokens) == ""
+
+    # Test adding whitespace for same line with column offset
+    ut.add_whitespace((1, 5))
+    assert "".join(ut.tokens) == "     "
+
+    # Test adding whitespace with no column offset
+    ut.prev_row, ut.prev_col = 1, 5
+    ut.add_whitespace((1, 5))
+    assert "".join(ut.tokens) == "     "
+
+    # Test adding whitespace for new line with column offset
+    ut.prev_row, ut.prev_col = 2, 0
+    ut.add_whitespace((2, 3))
+    assert "".join(ut.tokens) == "     " + "   "
+
+    # Test adding
+
+# Generated at 2024-03-18 05:06:05.511532
+```python
+import io
+
+
+# Generated at 2024-03-18 05:06:13.075145
+    # Setup the Untokenizer
+    untokenizer = Untokenizer()
+
+    # Define a sequence of token tuples
+    tokens = [
+        (NAME, 'def', (1, 0), (1, 3), 'def test():\n'),
+        (NAME, 'test', (1, 4), (1, 8), 'def test():\n'),
+        (OP, '(', (1, 8), (1, 9), 'def test():\n'),
+        (OP, ')', (1, 9), (1, 10), 'def test():\n'),
+        (OP, ':', (1, 10), (1, 11), 'def test():\n'),
+        (NEWLINE, '\n', (1, 11), (2, 0), 'def test():\n'),
+        (INDENT, '    ', (2, 0), (2,
+
+# Generated at 2024-03-18 05:06:20.171296
+    def get_readline(data):
+        lines = iter(data)
+        return lambda: next(lines)
+
+    # Test with UTF-8 BOM
+    bom_line = BOM_UTF8 + b'print("Hello, world!")\n'
+    readline = get_readline([bom_line])
+    encoding, lines = detect_encoding(readline)
+    assert encoding == "utf-8-sig"
+    assert lines == [bom_line[3:]]
+
+    # Test with explicit encoding cookie
+    cookie_line = b'# -*- coding: latin-1 -*-\n'
+    readline = get_readline([cookie_line])
+    encoding, lines = detect_encoding(readline)
+    assert encoding == "iso-8859-1"
+    assert lines == [cookie_line]
+
+    # Test with both BOM and encoding cookie (BOM takes precedence)
+    readline = get_readline([BOM_UTF8 + cookie_line])
+    encoding, lines = detect_encoding(readline)
+   
+
+# Generated at 2024-03-18 05:06:26.632746
+```python
+    import io
+
+    def mock_readline_generator(input_text):
+        for line in io.StringIO(input_text):
+            yield line
+
+    def mock_tokeneater(type, token, start, end, line):
+        tokens.append((type, token, start, end, line))
+
+    input_text = "def foo(bar):\n    return bar\n"
+    expected_tokens = [
+        (NAME, 'def', (1, 0), (1, 3), 'def foo(bar):\n'),
+        (NAME, 'foo', (1, 4), (1, 7), 'def foo(bar):\n'),
+        (OP, '(', (1, 7), (1, 8), 'def foo(bar):\n'),
+        (NAME, 'bar', (1, 8), (1, 11), 'def foo(bar):\n'),
+        (OP, ')', (1, 11), (1, 12
+
+# Generated at 2024-03-18 05:06:33.565363
+```python
+    # Unit test for function generate_tokens
+    def test_generate_tokens():
+        from io import StringIO
+        from tokenize import generate_tokens, NAME, NUMBER, OP, ENDMARKER
+
+        source_code = "a = 1 + 2\n"
+        readline = StringIO(source_code).readline
+        tokens = list(generate_tokens(readline))
+
+        expected_tokens = [
+            (NAME, 'a', (1, 0), (1, 1), 'a = 1 + 2\n'),
+            (OP, '=', (1, 2), (1, 3), 'a = 1 + 2\n'),
+            (NUMBER, '1', (1, 4), (1, 5), 'a = 1 + 2\n'),
+            (OP, '+', (1, 6), (1, 7), 'a = 1 + 2\n'),
+            (NUMBER, '2
+
+# Generated at 2024-03-18 05:07:56.898644
+```python
+    import io
+
+    def mock_readline_generator(input_string):
+        for line in io.StringIO(input_string):
+            yield line
+
+    mock_input = (
+        "def foo(bar):\n"
+        "    return bar + 1\n"
+    )
+
+    mock_output = []
+    def mock_tokeneater(type, token, start, end, line):
+        mock_output.append((type, token, start, end, line))
+
+    expected_output = [
+        (NAME, 'def', (1, 0), (1, 3), 'def foo(bar):\n'),
+        (NAME, 'foo', (1, 4), (1, 7), 'def foo(bar):\n'),
+        (OP, '(', (1, 7), (1, 8), 'def foo(bar):\n'),
+        (NAME, 'bar', (1, 8), (1, 11), 'def foo(bar):\n'),
+       
+
+# Generated at 2024-03-18 05:08:04.005352
+    from io import StringIO
+
+    def mock_readline():
+        lines = iter(["a = 42\n", "b = a * 2\n", ""])
+        return lambda: next(lines)
+
+    tokens = []
+
+    def record_token(type, token, start, end, line):
+        tokens.append((type, token, start, end, line))
+
+    tokenize_loop(mock_readline(), record_token)
+
+    expected_tokens = [
+        (NAME, 'a', (1, 0), (1, 1), 'a = 42\n'),
+        (OP, '=', (1, 2), (1, 3), 'a = 42\n'),
+        (NUMBER, '42', (1, 4), (1, 6), 'a = 42\n'),
+        (NEWLINE, '\n', (1, 6), (1, 7), 'a = 42\n'),
+        (NAME, 'b', (2
+
+# Generated at 2024-03-18 05:08:09.869058
+```python
+    # Unit test for function generate_tokens
+    def test_generate_tokens():
+        from io import StringIO
+        from tokenize import generate_tokens, NUMBER, STRING, NAME, OP, ENDMARKER
+
+        code_example = '''# Example code
+        x = 42
+        y = "Hello"
+        if x > 10:
+            print(y)
+        '''
+
+        readline = StringIO(code_example).readline
+        tokens = list(generate_tokens(readline))
+
+        expected_tokens = [
+            (NAME, 'x', (2, 8), (2, 9), '        x = 42\n'),
+            (OP, '=', (2, 10), (2, 11), '        x = 42\n'),
+            (NUMBER, '42', (2, 12), (2, 14), '        x = 42\n'),
+            (NAME, 'y', (3, 8), (3, 9
+
+# Generated at 2024-03-18 05:08:15.705097
+```python
+    # Unit test for function generate_tokens
+    def test_generate_tokens():
+        from io import StringIO
+        from tokenize import generate_tokens, NAME, NUMBER, OP, ENDMARKER
+
+        # Test input
+        test_input = StringIO("a = 1 + 2\n")
+        tokens = list(generate_tokens(test_input.readline))
+
+        # Expected tokens
+        expected_tokens = [
+            (NAME, 'a', (1, 0), (1, 1), 'a = 1 + 2\n'),
+            (OP, '=', (1, 2), (1, 3), 'a = 1 + 2\n'),
+            (NUMBER, '1', (1, 4), (1, 5), 'a = 1 + 2\n'),
+            (OP, '+', (1, 6), (1, 7), 'a = 1 + 2\n'),
+            (NUMBER,
+
+# Generated at 2024-03-18 05:08:21.666255
+```python
+    # Unit test for function generate_tokens
+    def test_generate_tokens():
+        from io import StringIO
+        from tokenize import generate_tokens, NUMBER, STRING, NAME, OP, ENDMARKER
+
+        code_example = '''# Example code snippet
+        if 3 > 1:
+            print("Hello, world!")
+            x = 42
+        '''
+
+        readline = StringIO(code_example).readline
+        tokens = list(generate_tokens(readline))
+
+        expected_tokens = [
+            (NAME, 'if', (2, 8), (2, 10), '        if 3 > 1:\n'),
+            (NUMBER, '3', (2, 11), (2, 12), '        if 3 > 1:\n'),
+            (OP, '>', (2, 13), (2, 14), '        if 3 > 1:\n'),
+            (NUMBER, '1', (2
+
+# Generated at 2024-03-18 05:08:27.558018
+```python
+    # Unit test for function generate_tokens
+    def test_generate_tokens():
+        # Test input data
+        test_input = [
+            "def foo():\n",
+            "    x = 1\n",
+            "    if x > 0:\n",
+            "        print('x is positive')\n",
+            "    # Comment line\n",
+            "    y = 'string with spaces'\n",
+            "    z = 'multiline string\\n'\n",
+            "    a = 42  # Inline comment\n",
+            "async def bar():\n",
+            "    await something()\n",
+        ]
+
+        # Expected output data
+        expected_output = [
+            (NAME, 'def', (1, 0), (1, 3), 'def foo():\n'),
+            (NAME, 'foo', (1, 4), (1, 7), 'def foo():\n'),
+            (OP
+
+# Generated at 2024-03-18 05:08:33.174528
+```python
+    # Unit test for function generate_tokens
+    def test_generate_tokens():
+        from io import StringIO
+        from tokenize import generate_tokens, NAME, NUMBER, OP, ENDMARKER
+
+        source_code = "a = 1 + 2\n"
+        readline = StringIO(source_code).readline
+        tokens = list(generate_tokens(readline))
+
+        expected_tokens = [
+            (NAME, 'a', (1, 0), (1, 1), 'a = 1 + 2\n'),
+            (OP, '=', (1, 2), (1, 3), 'a = 1 + 2\n'),
+            (NUMBER, '1', (1, 4), (1, 5), 'a = 1 + 2\n'),
+            (OP, '+', (1, 6), (1, 7), 'a = 1 + 2\n'),
+            (NUMBER, '2
+
+# Generated at 2024-03-18 05:08:40.662535
+    import io
+
+    def test_readline_factory(lines):
+        def readline():
+            try:
+                return next(lines)
+            except StopIteration:
+                return b''
+        return readline
+
+    # Test with utf-8 BOM
+    bom_line = BOM_UTF8 + b"# coding: utf-8\n"
+    lines = iter([bom_line])
+    readline = test_readline_factory(lines)
+    encoding, read_lines = detect_encoding(readline)
+    assert encoding == "utf-8-sig"
+    assert read_lines == [bom_line[3:]]
+
+    # Test with utf-8 BOM and a second line
+    second_line = b"print('Hello, world!')\n"
+    lines = iter([bom_line, second_line])
+    readline = test_readline_factory(lines)
+    encoding, read_lines = detect_encoding(readline)
+    assert encoding == "utf-8-sig"
+    assert read_lines == [bom_line
+
+# Generated at 2024-03-18 05:08:46.699290
+```python
+    # Unit test for function generate_tokens
+    def test_generate_tokens():
+        from io import StringIO
+        from tokenize import generate_tokens, NAME, NUMBER, OP, ENDMARKER
+
+        source_code = "a = 1 + 2\n"
+        readline = StringIO(source_code).readline
+        tokens = list(generate_tokens(readline))
+
+        expected_tokens = [
+            (NAME, 'a', (1, 0), (1, 1), 'a = 1 + 2\n'),
+            (OP, '=', (1, 2), (1, 3), 'a = 1 + 2\n'),
+            (NUMBER, '1', (1, 4), (1, 5), 'a = 1 + 2\n'),
+            (OP, '+', (1, 6), (1, 7), 'a = 1 + 2\n'),
+            (NUMBER, '2
+
+# Generated at 2024-03-18 05:08:47.681072
+```python
+
+# Generated at 2024-03-18 05:09:41.862224
+    def get_readline(data):
+        lines = iter(data)
+        return lambda: next(lines)
+
+    # Test cases with expected outcomes
+    test_cases = [
+        (get_readline([b'\xef\xbb\xbf# coding=utf-8\n', b'print("hello")']), ('utf-8-sig', [b'# coding=utf-8\n', b'print("hello")'])),
+        (get_readline([b'# coding=latin-1\n', b'print("hello")']), ('iso-8859-1', [b'# coding=latin-1\n', b'print("hello")'])),
+        (get_readline([b'print("hello")']), ('utf-8', [b'print("hello")'])),
+        (get_readline([b'# coding=unknown\n', b'print("hello")']), SyntaxError),
+        (get_readline([b'\xef\xbb\xbf# coding=latin-
+
+# Generated at 2024-03-18 05:09:48.970456
+```python
+    # Unit test for function generate_tokens
+    def test_generate_tokens():
+        # Test with a simple code snippet
+        code = "def hello():\n    print('Hello, world!')\n"
+        readline = iter(code.splitlines(True)).__next__
+        tokens = list(generate_tokens(readline))
+        expected_tokens = [
+            (NAME, 'def', (1, 0), (1, 3), 'def hello():\n'),
+            (NAME, 'hello', (1, 4), (1, 9), 'def hello():\n'),
+            (OP, '(', (1, 9), (1, 10), 'def hello():\n'),
+            (OP, ')', (1, 10), (1, 11), 'def hello():\n'),
+            (OP, ':', (1, 11), (1, 12), 'def hello():\n
+
+# Generated at 2024-03-18 05:09:56.786006
+```python
+    # Unit test for function generate_tokens
+    def test_generate_tokens():
+        from io import StringIO
+        from tokenize import generate_tokens, NAME, NUMBER, OP, ENDMARKER
+
+        source_code = "a = 1 + 2\n"
+        readline = StringIO(source_code).readline
+        tokens = list(generate_tokens(readline))
+
+        expected_tokens = [
+            (NAME, 'a', (1, 0), (1, 1), 'a = 1 + 2\n'),
+            (OP, '=', (1, 2), (1, 3), 'a = 1 + 2\n'),
+            (NUMBER, '1', (1, 4), (1, 5), 'a = 1 + 2\n'),
+            (OP, '+', (1, 6), (1, 7), 'a = 1 + 2\n'),
+            (NUMBER, '2
+
+# Generated at 2024-03-18 05:10:01.231551
+```python
+    ut = Untokenizer()
+    tokens = [
+        (NAME, 'def'),
+        (NAME, 'test'),
+        (OP, '('),
+        (OP, ')'),
+        (OP, ':'),
+        (NEWLINE, '\n'),
+        (INDENT, '    '),
+        (NAME, 'pass'),
+        (NEWLINE, '\n'),
+        (DEDENT, ''),
+        (ENDMARKER, ''),
+    ]
+    result = ut.untokenize(iter(tokens))
+    expected = "def test():\n    pass\n"
+    assert result == expected, f"Expected {expected}, but got {result}"
+```
+
+# Generated at 2024-03-18 05:10:07.169121
+```python
+    # Unit test for function generate_tokens
+    def test_generate_tokens():
+        # Test input with various token types
+        source_code = (
+            "def test_function(arg1, arg2):\n"
+            "    # This is a comment\n"
+            "    if arg1 == arg2:\n"
+            "        print('Equal')\n"
+            "    return arg1\n"
+            "\n"
+            "test_function(1, 2)\n"
+        )
+        readline = iter(source_code.splitlines(keepends=True)).__next__
+        tokens = list(generate_tokens(readline))
+        expected_tokens = [
+            (NAME, 'def', (1, 0), (1, 3), 'def test_function(arg1, arg2):\n'),
+            (NAME, 'test_function', (1, 4), (1, 18), 'def test_function(arg1, arg2):\n'),
+            (OP
+
+# Generated at 2024-03-18 05:10:16.060660
+```python
+    # Unit test for function generate_tokens
+    def test_generate_tokens():
+        from io import StringIO
+        from tokenize import generate_tokens, NAME, NUMBER, OP, ENDMARKER
+
+        # Test input
+        code = "x = 1\ny = 2\nz = x + y\n"
+        expected_tokens = [
+            (NAME, 'x', 1, 1),
+            (OP, '=', 1, 3),
+            (NUMBER, '1', 1, 5),
+            (NAME, 'y', 2, 1),
+            (OP, '=', 2, 3),
+            (NUMBER, '2', 2, 5),
+            (NAME, 'z', 3, 1),
+            (OP, '=', 3, 3),
+            (NAME, 'x', 3, 5),
+            (OP, '+', 3, 7),
+            (NAME,
+
+# Generated at 2024-03-18 05:10:24.185551
+    ut = Untokenizer()
+    tokens = [
+        (NAME, 'def', (1, 0), (1, 3), 'def test():\n'),
+        (NAME, 'test', (1, 4), (1, 8), 'def test():\n'),
+        (OP, '(', (1, 8), (1, 9), 'def test():\n'),
+        (OP, ')', (1, 9), (1, 10), 'def test():\n'),
+        (OP, ':', (1, 10), (1, 11), 'def test():\n'),
+        (NEWLINE, '\n', (1, 11), (2, 0), 'def test():\n'),
+        (INDENT, '    ', (2, 0), (2, 4), '    pass\n'),
+        (NAME, 'pass', (2,
+
+# Generated at 2024-03-18 05:10:27.554914
+```python
+    # Unit test for function generate_tokens
+    def test_generate_tokens():
+        from io import StringIO
+        from tokenize import generate_tokens
+
+        source_code = '''# Example Python code
+
+# Generated at 2024-03-18 05:10:32.923075
+    def get_readline(data):
+        lines = iter(data)
+        return lambda: next(lines)
+
+    # Test cases with BOM
+    bom_utf8 = BOM_UTF8.decode('utf-8')
+    test1 = get_readline([BOM_UTF8 + b"# coding: utf-8\n", b"print('hello')\n"])
+    assert detect_encoding(test1) == ("utf-8-sig", [bom_utf8 + "# coding: utf-8\n", "print('hello')\n"])
+
+    # Test cases with encoding cookie
+    test2 = get_readline([b"# coding: latin-1\n", b"print('hello')\n"])
+    assert detect_encoding(test2) == ("iso-8859-1", ["# coding: latin-1\n", "print('hello')\n"])
+
+    # Test cases with BOM and encoding cookie mismatch
+    test3 = get_readline([BOM
+
+# Generated at 2024-03-18 05:10:40.874188
+```python
+    # Unit test for function generate_tokens
+    def test_generate_tokens():
+        # Test with a simple code snippet
+        code = "def hello():\n    print('Hello, world!')\n"
+        readline = iter(code.splitlines(keepends=True)).__next__
+        tokens = list(generate_tokens(readline))
+        expected_tokens = [
+            (NAME, 'def', (1, 0), (1, 3), 'def hello():\n'),
+            (NAME, 'hello', (1, 4), (1, 9), 'def hello():\n'),
+            (OP, '(', (1, 9), (1, 10), 'def hello():\n'),
+            (OP, ')', (1, 10), (1, 11), 'def hello():\n'),
+            (OP, ':', (1, 11), (1, 12), 'def hello
+
+# Generated at 2024-03-18 05:13:16.402672
+    ut = Untokenizer()
+    tokens = [
+        (NAME, 'def', (1, 0), (1, 3), 'def test():\n'),
+        (NAME, 'test', (1, 4), (1, 8), 'def test():\n'),
+        (OP, '(', (1, 8), (1, 9), 'def test():\n'),
+        (OP, ')', (1, 9), (1, 10), 'def test():\n'),
+        (OP, ':', (1, 10), (1, 11), 'def test():\n'),
+        (NEWLINE, '\n', (1, 11), (2, 0), 'def test():\n'),
+        (INDENT, '    ', (2, 0), (2, 4), '    pass\n'),
+        (NAME, 'pass', (2,

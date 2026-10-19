@@ -1,0 +1,1311 @@
+
+
+# Generated at 2024-03-18 00:30:53.001177
+    # Test cases for get_repr_function
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+        (lambda x: x == 42, lambda x: "The Answer"),
+    ]
+
+    assert get_repr_function(10, custom_repr)('10') == "Integer: 10"
+    assert get_repr_function("hello", custom_repr)('hello') == "String: hello"
+    assert get_repr_function(42, custom_repr)('42') == "The Answer"
+    assert get_repr_function(3.14, custom_repr)('3.14') == repr(3.14)
+    assert get_repr_function([1, 2, 3], custom_repr)('[1, 2, 3]') == repr([1, 2, 3])
+
+# Generated at 2024-03-18 00:30:56.507714
+```python
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    mock_stream = MockWritableStream()
+    test_string = "Hello, World!"
+    written_length = mock_stream.write(test_string)
+
+    assert mock_stream.contents == test_string, "The content written to the stream should match the input string."
+    assert written_length == len(test_string), "The length returned by write should be equal to the length of the input string."
+```
+
+# Generated at 2024-03-18 00:31:05.895386
+    # Test with simple string
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+
+    # Test with object's default repr
+    class DummyObject:
+        pass
+    dummy = DummyObject()
+    assert 'DummyObject' in get_shortish_repr(dummy)
+    assert '0x' not in get_shortish_repr(dummy, normalize=True)
+
+    # Test with custom repr function
+    custom_repr = [(DummyObject, lambda x: "CustomRepr")]
+    assert get_shortish_repr(dummy, custom_repr) == "CustomRepr"
+
+    # Test with max_length
+    long_string = "This is a very long string that should be truncated"
+    assert get_shortish_repr(long_string, max_length=10) == "Thi...ted"
+
+    # Test with max_length and normalization
+    assert get_shortish_repr(dummy, max_length=10, normalize=True) == "Dum...ct>"
+
+    # Test with exception
+
+# Generated at 2024-03-18 00:31:11.133274
+    # Test cases for get_repr_function
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+        (lambda x: x == 42, lambda x: "The Answer"),
+        (lambda x: isinstance(x, list) and len(x) == 0, lambda x: "Empty list")
+    ]
+
+    assert get_repr_function(10, custom_repr)('10') == "Integer: 10"
+    assert get_repr_function("hello", custom_repr)('hello') == "String: hello"
+    assert get_repr_function(42, custom_repr)('42') == "The Answer"
+    assert get_repr_function([], custom_repr)('[]') == "Empty list"
+    assert get_repr_function({}, custom_repr)({}) == "{}"  # Default repr for dict
+    assert get_repr_function(None, custom_repr)(None) == "
+
+# Generated at 2024-03-18 00:31:16.829757
+    # Test with no custom_repr
+    assert get_repr_function(42, ()) == repr
+    assert get_repr_function("hello", ()) == repr
+    assert get_repr_function([1, 2, 3], ()) == repr
+
+    # Test with custom_repr that matches by type
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+    ]
+    assert get_repr_function(42, custom_repr)('42') == "Integer: 42"
+    assert get_repr_function("hello", custom_repr)('hello') == "String: hello"
+
+    # Test with custom_repr that matches by function
+    custom_repr = [
+        (lambda x: isinstance(x, int) and x % 2 == 0, lambda x: f"Even: {x}"),
+        (lambda x: isinstance(x, int) and x % 2
+
+# Generated at 2024-03-18 00:31:22.868822
+    # Test normal string without truncation
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+
+    # Test normal string with truncation
+    assert get_shortish_repr("Hello, World!", max_length=5) == "He...d!"
+
+    # Test string with newlines and carriage returns
+    assert get_shortish_repr("Hello,\nWorld!\r") == "Hello,World!"
+
+    # Test string with memory address normalization
+    assert get_shortish_repr("<object at 0x10abcdef>") == "<object>"
+
+    # Test string with memory address normalization and truncation
+    assert get_shortish_repr("<object at 0x10abcdef>", max_length=10) == "<ob...ct>"
+
+    # Test custom repr function
+    custom_repr = [(int, lambda x: f"Integer({x})")]
+    assert get_shortish_repr(42, custom_repr=custom_repr) == "Integer(42
+
+# Generated at 2024-03-18 00:31:30.002726
+    # Test cases for get_repr_function
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+        (list, lambda x: f"List with {len(x)} items"),
+    ]
+
+    assert get_repr_function(42, custom_repr)('42') == "Integer: 42"
+    assert get_repr_function("hello", custom_repr)("hello") == "String: hello"
+    assert get_repr_function([1, 2, 3], custom_repr)([1, 2, 3]) == "List with 3 items"
+    assert get_repr_function(3.14, custom_repr)(3.14) == repr(3.14)  # Default repr for non-matching types
+    assert get_repr_function({"key": "value"}, custom_repr)({"key": "value"}) == repr({"key": "value"}) 
+
+# Generated at 2024-03-18 00:31:32.327092
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+        
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    stream = MockWritableStream()
+    stream.write("Hello, ")
+    stream.write("world!")
+    
+    assert stream.contents == "Hello, world!"
+
+# Generated at 2024-03-18 00:31:35.481447
+    assert shitcode("Hello World!") == "Hello World!"
+    assert shitcode("こんにちは") == "??????"
+    assert shitcode("Hello🌟World!") == "Hello?World!"
+    assert shitcode("abc\x00def") == "abc?def"
+    assert shitcode("123\xFFabc") == "123?abc"
+    assert shitcode("") == ""
+
+# Generated at 2024-03-18 00:31:38.966622
+```python
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    mock_stream = MockWritableStream()
+    test_string = "Hello, World!"
+    written_length = mock_stream.write(test_string)
+
+    assert mock_stream.contents == test_string, "The write method did not correctly write to the stream."
+    assert written_length == len(test_string), "The write method did not return the correct length of the written string."
+```
+
+# Generated at 2024-03-18 00:31:46.134458
+```python
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    mock_stream = MockWritableStream()
+    mock_stream.write("Hello, ")
+    mock_stream.write("world!")
+    assert mock_stream.contents == "Hello, world!"
+```
+
+# Generated at 2024-03-18 00:31:48.693200
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    stream = MockWritableStream()
+    stream.write("Hello")
+    stream.write(", ")
+    stream.write("world!")
+    assert stream.contents == "Hello, world!"
+
+# Generated at 2024-03-18 00:31:54.381865
+    # Test normal string without truncation
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+
+    # Test normal string with truncation
+    assert get_shortish_repr("Hello, World!", max_length=5) == "He...d!"
+
+    # Test with custom repr function
+    custom_repr = [(int, lambda x: f"Integer({x})")]
+    assert get_shortish_repr(42, custom_repr=custom_repr) == "Integer(42)"
+
+    # Test with custom repr function and truncation
+    assert get_shortish_repr(123456789, custom_repr=custom_repr, max_length=10) == "Inte...789"
+
+    # Test with normalization
+    class MyClass:
+        def __repr__(self):
+            return "MyClass at 0x102334455"
+    assert get_shortish_repr(MyClass(), normalize=True) == "MyClass"
+
+    # Test with normalization and truncation
+   
+
+# Generated at 2024-03-18 00:31:57.648067
+    assert shitcode("Hello World!") == "Hello World!"
+    assert shitcode("こんにちは") == "??????"
+    assert shitcode("Hello🌟World!") == "Hello?World!"
+    assert shitcode("123") == "123"
+    assert shitcode("💻🖥️🖨️") == "???"
+    assert shitcode("Text with newline\n") == "Text with newline?"
+    assert shitcode("Text with tab\t") == "Text with tab?"
+    assert shitcode("") == ""
+    assert shitcode("ÆØÅ") == "???"
+
+# Generated at 2024-03-18 00:32:01.063559
+    assert shitcode("Hello") == "Hello"
+    assert shitcode("Hëllö") == "H?ll?"
+    assert shitcode("こんにちは") == "?????"
+    assert shitcode("123") == "123"
+    assert shitcode("💻🖱️") == "??"
+    assert shitcode("") == ""
+    assert shitcode("This is a test! 😊") == "This is a test! ??"
+    assert shitcode("\u0000\u0001\u007f") == "\u0000\u0001?"
+
+# Generated at 2024-03-18 00:32:03.852638
+```python
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+        
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    mock_stream = MockWritableStream()
+    test_string = "Hello, World!"
+    written_length = mock_stream.write(test_string)
+
+    assert mock_stream.contents == test_string, "The content written to the stream should match the input string."
+    assert written_length == len(test_string), "The length returned by write() should be the length of the input string."
+```
+
+# Generated at 2024-03-18 00:32:11.010599
+    # Test cases for get_repr_function
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+        (list, lambda x: f"List with {len(x)} items"),
+    ]
+
+    assert get_repr_function(42, custom_repr)('42') == "Integer: 42"
+    assert get_repr_function("hello", custom_repr)("hello") == "String: hello"
+    assert get_repr_function([1, 2, 3], custom_repr)([1, 2, 3]) == "List with 3 items"
+    assert get_repr_function(3.14, custom_repr)(3.14) == repr(3.14)  # Default repr for non-matching types
+    assert get_repr_function(None, custom_repr)(None) == repr(None)  # Default repr for non-matching types
+
+    print("
+
+# Generated at 2024-03-18 00:32:18.772222
+    # Test with no custom_repr
+    assert get_repr_function(42, ()) == repr
+    assert get_repr_function("hello", ()) == repr
+    assert get_repr_function([1, 2, 3], ()) == repr
+
+    # Test with custom_repr that matches
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+    ]
+    assert get_repr_function(42, custom_repr)('42') == "Integer: 42"
+    assert get_repr_function("hello", custom_repr)('hello') == "String: hello"
+
+    # Test with custom_repr that doesn't match
+    custom_repr = [
+        (list, lambda x: f"List with {len(x)} items"),
+    ]
+    assert get_repr_function(42, custom_repr) == repr
+    assert get_repr_function("hello", custom_repr) == repr
+
+
+
+# Generated at 2024-03-18 00:32:25.672579
+    # Test with simple string
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+    
+    # Test with object's default repr
+    class TestObject:
+        def __repr__(self):
+            return "TestObject()"
+    assert get_shortish_repr(TestObject()) == "TestObject()"
+    
+    # Test with custom repr function
+    custom_repr = [(TestObject, lambda x: "CustomRepr")]
+    assert get_shortish_repr(TestObject(), custom_repr=custom_repr) == "CustomRepr"
+    
+    # Test with max_length
+    long_string = "This is a very long string that should be truncated"
+    assert get_shortish_repr(long_string, max_length=10) == "Thi...ted"
+    
+    # Test with normalization
+    class MemoryAddressObject:
+        def __repr__(self):
+            return "MemoryAddressObject at 0x12345678"
+    assert get_shortish_repr(MemoryAddress
+
+# Generated at 2024-03-18 00:32:36.777431
+    # Test with simple string
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+    
+    # Test with object's default repr
+    class DummyObject:
+        def __repr__(self):
+            return "DummyObject()"
+    assert get_shortish_repr(DummyObject()) == "DummyObject()"
+    
+    # Test with custom repr function
+    custom_repr = [(DummyObject, lambda x: "CustomDummy()")]
+    assert get_shortish_repr(DummyObject(), custom_repr) == "CustomDummy()"
+    
+    # Test with max_length
+    long_string = "This is a very long string that should be truncated"
+    assert get_shortish_repr(long_string, max_length=10) == "Thi...ted"
+    
+    # Test with normalization
+    class MemoryAddressObject:
+        def __repr__(self):
+            return "MemoryAddressObject at 0x12345678"
+    assert get_shortish_repr(MemoryAddressObject(),
+
+# Generated at 2024-03-18 00:32:48.984274
+    # Test cases for get_repr_function
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+        (lambda x: x == 42, lambda x: "The Answer"),
+    ]
+
+    assert get_repr_function(10, custom_repr)('10') == "Integer: 10"
+    assert get_repr_function("hello", custom_repr)('hello') == "String: hello"
+    assert get_repr_function(42, custom_repr)('42') == "The Answer"
+    assert get_repr_function(3.14, custom_repr)('3.14') == repr(3.14)
+    assert get_repr_function([1, 2, 3], custom_repr)('[1, 2, 3]') == repr([1, 2, 3])
+
+# Generated at 2024-03-18 00:32:53.421323
+    assert shitcode("Hello World!") == "Hello World!"
+    assert shitcode("こんにちは") == "??????"
+    assert shitcode("Hello🌟World!") == "Hello?World!"
+    assert shitcode("123") == "123"
+    assert shitcode("💻🖱️🖥️") == "???"
+    assert shitcode("Text with newline\n") == "Text with newline?"
+    assert shitcode("Text with tab\t") == "Text with tab?"
+    assert shitcode("Text with carriage return\r") == "Text with carriage return?"
+    assert shitcode("Text with backspace\b") == "Text with backspace?"
+    assert shitcode("Text with formfeed\f") == "Text with formfeed?"
+    assert shitcode("Text with vertical tab\v") == "Text with vertical tab?"
+    assert shitcode("Text with bell\a") == "Text with bell?"
+    assert shitcode("Text with
+
+# Generated at 2024-03-18 00:32:58.743447
+    # Test with simple string
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+    
+    # Test with object's default repr
+    class MyClass:
+        def __repr__(self):
+            return "MyClass instance"
+    my_instance = MyClass()
+    assert get_shortish_repr(my_instance) == "MyClass instance"
+    
+    # Test with custom repr function
+    custom_repr = [(MyClass, lambda x: "CustomRepr")]
+    assert get_shortish_repr(my_instance, custom_repr) == "CustomRepr"
+    
+    # Test with normalization
+    class MyOtherClass:
+        def __repr__(self):
+            return "MyOtherClass instance at 0x10"
+    my_other_instance = MyOtherClass()
+    assert get_shortish_repr(my_other_instance, normalize=True) == "MyOtherClass instance"
+    
+    # Test with truncation
+    long_string = "This is a very long string that should be
+
+# Generated at 2024-03-18 00:33:02.923999
+    assert shitcode("Hello") == "Hello"
+    assert shitcode("Hëllö") == "H?ll?"
+    assert shitcode("こんにちは") == "??????"
+    assert shitcode("123") == "123"
+    assert shitcode("💻🖱️") == "??"
+    assert shitcode("Café") == "Caf?"
+    assert shitcode("") == ""
+    assert shitcode("ASCII: \x01\x7F") == "ASCII: \x01\x7F"
+    assert shitcode("Non-ASCII: \u20AC") == "Non-ASCII: ?"
+    assert shitcode("Mixed: A\u2665B") == "Mixed: A?B"
+
+# Generated at 2024-03-18 00:33:08.508728
+    assert shitcode("Hello") == "Hello"
+    assert shitcode("Hëllö") == "H?ll?"
+    assert shitcode("こんにちは") == "??????"
+    assert shitcode("123") == "123"
+    assert shitcode("💻🖱️") == "??"
+    assert shitcode("abc\x00def") == "abc?def"
+    assert shitcode("line\nnew line") == "line?new line"
+    assert shitcode("carriage\rreturn") == "carriage?return"
+    assert shitcode("tab\tseparated") == "tab?separated"
+    assert shitcode("") == ""
+
+# Generated at 2024-03-18 00:33:11.759895
+    assert shitcode("Hello World!") == "Hello World!"
+    assert shitcode("こんにちは") == "??????"
+    assert shitcode("Hello🌟World!") == "Hello?World!"
+    assert shitcode("abc\x00def") == "abc?def"
+    assert shitcode("123\xFFabc") == "123?abc"
+    assert shitcode("") == ""
+
+# Generated at 2024-03-18 00:33:16.799632
+    assert shitcode("Hello World!") == "Hello World!"
+    assert shitcode("こんにちは") == "??????"
+    assert shitcode("Hello🌟World!") == "Hello?World!"
+    assert shitcode("123") == "123"
+    assert shitcode("💻🖥️🖨️") == "???"
+    assert shitcode("abc\x00def") == "abc?def"
+    assert shitcode("line1\nline2") == "line1line2"
+    assert shitcode("line1\rline2") == "line1line2"
+    assert shitcode("line1\r\nline2") == "line1line2"
+    assert shitcode("") == ""
+    assert shitcode("normal text with space") == "normal text with space"
+    assert shitcode("text with\ttab") == "text with\ttab"
+    assert shitcode("text with\bbackspace") == "text with
+
+# Generated at 2024-03-18 00:33:22.336726
+    # Test with no custom_repr
+    assert get_repr_function(123, ()) == repr
+    assert get_repr_function("test", ()) == repr
+    assert get_repr_function([1, 2, 3], ()) == repr
+
+    # Test with custom_repr
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+        (list, lambda x: f"List with {len(x)} items")
+    ]
+    assert get_repr_function(123, custom_repr)('123') == "Integer: 123"
+    assert get_repr_function("test", custom_repr)('test') == "String: test"
+    assert get_repr_function([1, 2, 3], custom_repr)('123') == "List with 3 items"
+
+    # Test with custom_repr and condition as callable
+    custom_repr_with_callable = [
+        (
+
+# Generated at 2024-03-18 00:33:27.598452
+    # Test normal string without truncation
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+
+    # Test truncation
+    assert get_shortish_repr("Hello, World!", max_length=5) == "He...d!"
+
+    # Test with custom repr function
+    custom_repr = [(int, lambda x: f"Integer({x})")]
+    assert get_shortish_repr(42, custom_repr=custom_repr) == "Integer(42)"
+
+    # Test with normalization
+    class MyClass:
+        def __repr__(self):
+            return "MyClass at 0x102334455"
+    assert get_shortish_repr(MyClass(), normalize=True) == "MyClass"
+
+    # Test with object that fails to repr
+    class BadRepr:
+        def __repr__(self):
+            raise ValueError("bad repr")
+    assert get_shortish_repr(BadRepr()) == "REPR FAILED"
+
+    # Test with non-string
+
+# Generated at 2024-03-18 00:33:37.129587
+    # Test cases for get_repr_function
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+        (list, lambda x: f"List with {len(x)} items"),
+    ]
+
+    assert get_repr_function(42, custom_repr)('42') == "Integer: 42"
+    assert get_repr_function("hello", custom_repr)("hello") == "String: hello"
+    assert get_repr_function([1, 2, 3], custom_repr)([1, 2, 3]) == "List with 3 items"
+    assert get_repr_function(3.14, custom_repr)(3.14) == repr(3.14)  # Default repr for non-matching types
+    assert get_repr_function(None, custom_repr)(None) == repr(None)  # Default repr for non-matching types
+
+    print("
+
+# Generated at 2024-03-18 00:33:56.533474
+```python
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    mock_stream = MockWritableStream()
+    test_string = "Hello, World!"
+    written_length = mock_stream.write(test_string)
+
+    assert mock_stream.contents == test_string, "The content written to the stream should match the input string."
+    assert written_length == len(test_string), "The length returned by write should be equal to the length of the input string."
+
+    # Test writing an empty string
+    empty_string = ""
+    written_length_empty = mock_stream.write(empty_string)
+    assert written_length_empty == 0, "Writing an empty string should return a length of 0."
+
+    # Test writing a string with special characters
+    special_string = "Special chars: \n\t\b"
+    mock_stream.write(special_string)
+    assert special_string in mock
+
+# Generated at 2024-03-18 00:34:02.221072
+    # Test with simple string
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+    
+    # Test with object's default repr
+    class DummyObject:
+        def __repr__(self):
+            return "DummyObject()"
+    assert get_shortish_repr(DummyObject()) == "DummyObject()"
+    
+    # Test with custom repr function
+    custom_repr = [(DummyObject, lambda x: "CustomDummyRepr")]
+    assert get_shortish_repr(DummyObject(), custom_repr) == "CustomDummyRepr"
+    
+    # Test with max_length
+    long_string = "This is a very long string that should be truncated"
+    assert get_shortish_repr(long_string, max_length=10) == "Thi...ted"
+    
+    # Test with normalization
+    class MemoryAddressObject:
+        def __repr__(self):
+            return "MemoryAddressObject at 0x12345678"
+    assert get_shortish_repr(Memory
+
+# Generated at 2024-03-18 00:34:06.920142
+    # Test with no custom_repr
+    assert get_repr_function(42, ()) == repr
+    assert get_repr_function("hello", ()) == repr
+    assert get_repr_function([1, 2, 3], ()) == repr
+
+    # Test with custom_repr
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+        (list, lambda x: f"List with {len(x)} items")
+    ]
+    assert get_repr_function(42, custom_repr)('42') == "Integer: 42"
+    assert get_repr_function("hello", custom_repr)('hello') == "String: hello"
+    assert get_repr_function([1, 2, 3], custom_repr)('1, 2, 3') == "List with 3 items"
+
+    # Test with custom_repr and lambda condition
+    custom_repr_with
+
+# Generated at 2024-03-18 00:34:12.470692
+    # Test cases for get_repr_function
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+        (lambda x: x == 42, lambda x: "The Answer"),
+    ]
+
+    assert get_repr_function(10, custom_repr)('10') == "Integer: 10"
+    assert get_repr_function("hello", custom_repr)('hello') == "String: hello"
+    assert get_repr_function(42, custom_repr)('42') == "The Answer"
+    assert get_repr_function(3.14, custom_repr)('3.14') == repr(3.14)
+    assert get_repr_function([1, 2, 3], custom_repr)('[1, 2, 3]') == repr([1, 2, 3])
+
+# Generated at 2024-03-18 00:34:15.719500
+```python
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+        
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    mock_stream = MockWritableStream()
+    test_string = "Hello, World!"
+    written_length = mock_stream.write(test_string)
+
+    assert mock_stream.contents == test_string, "The content written to the stream should match the input string."
+    assert written_length == len(test_string), "The length returned by write should be equal to the length of the input string."
+```
+
+# Generated at 2024-03-18 00:34:17.997573
+```python
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    mock_stream = MockWritableStream()
+    mock_stream.write("Hello, ")
+    mock_stream.write("world!")
+    assert mock_stream.contents == "Hello, world!"
+```
+
+# Generated at 2024-03-18 00:34:21.163511
+```python
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+        
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    mock_stream = MockWritableStream()
+    test_string = "Hello, World!"
+    written_length = mock_stream.write(test_string)
+
+    assert mock_stream.contents == test_string, "The content written to the stream should match the input string."
+    assert written_length == len(test_string), "The length returned by write() should be equal to the length of the input string."
+```
+
+# Generated at 2024-03-18 00:34:23.165273
+```python
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    mock_stream = MockWritableStream()
+    mock_stream.write("Hello, ")
+    mock_stream.write("world!")
+    assert mock_stream.contents == "Hello, world!"
+```
+
+# Generated at 2024-03-18 00:34:29.110194
+    # Test normal string without truncation
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+
+    # Test normal string with truncation
+    assert get_shortish_repr("Hello, World!", max_length=5) == "He...d!"
+
+    # Test with custom repr function
+    custom_repr = [(int, lambda x: f"Integer({x})")]
+    assert get_shortish_repr(42, custom_repr=custom_repr) == "Integer(42)"
+
+    # Test with custom repr function and truncation
+    assert get_shortish_repr(123456789, custom_repr=custom_repr, max_length=10) == "Intege...89"
+
+    # Test with normalization
+    class MyClass:
+        def __repr__(self):
+            return "MyClass at 0x102334455"
+    assert get_shortish_repr(MyClass(), normalize=True) == "MyClass"
+
+    # Test with normalization and truncation
+
+
+# Generated at 2024-03-18 00:34:34.829429
+    # Test with no custom_repr
+    assert get_repr_function(42, ()) == repr
+    assert get_repr_function("hello", ()) == repr
+    assert get_repr_function([1, 2, 3], ()) == repr
+
+    # Test with custom_repr that matches
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+    ]
+    assert get_repr_function(42, custom_repr)('42') == "Integer: 42"
+    assert get_repr_function("hello", custom_repr)('hello') == "String: hello"
+
+    # Test with custom_repr that doesn't match
+    custom_repr = [
+        (list, lambda x: f"List with {len(x)} items"),
+    ]
+    assert get_repr_function(42, custom_repr) == repr
+    assert get_repr_function("hello", custom_repr) == repr
+
+
+
+# Generated at 2024-03-18 00:34:55.724163
+    # Test with no custom_repr
+    assert get_repr_function(123, ()) == repr
+    assert get_repr_function("test", ()) == repr
+    assert get_repr_function([1, 2, 3], ()) == repr
+
+    # Test with custom_repr
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+        (list, lambda x: f"List with {len(x)} items")
+    ]
+    assert get_repr_function(123, custom_repr)('123') == "Integer: 123"
+    assert get_repr_function("test", custom_repr)('test') == "String: test"
+    assert get_repr_function([1, 2, 3], custom_repr)('[1, 2, 3]') == "List with 3 items"
+
+    # Test with custom_repr and type as condition
+    custom
+
+# Generated at 2024-03-18 00:35:00.563365
+    # Test with simple string
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+    
+    # Test with object's default repr
+    class DummyObject:
+        def __repr__(self):
+            return "DummyObject()"
+    assert get_shortish_repr(DummyObject()) == "DummyObject()"
+    
+    # Test with custom repr function
+    custom_repr = [(DummyObject, lambda x: "CustomDummyRepr")]
+    assert get_shortish_repr(DummyObject(), custom_repr=custom_repr) == "CustomDummyRepr"
+    
+    # Test with max_length
+    long_string = "This is a very long string that should be truncated."
+    assert get_shortish_repr(long_string, max_length=10) == "Thi...ted."
+    
+    # Test with normalization
+    class MemoryAddressObject:
+        def __repr__(self):
+            return "MemoryAddressObject at 0x12345678"
+    assert get_shortish
+
+# Generated at 2024-03-18 00:35:06.523169
+    # Test with no custom_repr
+    assert get_repr_function(123, ()) == repr
+    assert get_repr_function("test", ()) == repr
+    assert get_repr_function([1, 2, 3], ()) == repr
+
+    # Test with custom_repr that matches
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+        (list, lambda x: f"List with {len(x)} items")
+    ]
+    assert get_repr_function(456, custom_repr)() == "Integer: 456"
+    assert get_repr_function("hello", custom_repr)() == "String: hello"
+    assert get_repr_function([1, 2, 3, 4], custom_repr)() == "List with 4 items"
+
+    # Test with custom_repr that doesn't match
+    custom_repr = [
+        (dict, lambda
+
+# Generated at 2024-03-18 00:35:13.454873
+    # Test cases for get_repr_function
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+        (lambda x: x == 42, lambda x: "The Answer"),
+        (lambda x: isinstance(x, list) and len(x) == 0, lambda x: "Empty list")
+    ]
+
+    assert get_repr_function(10, custom_repr)('10') == "Integer: 10"
+    assert get_repr_function("hello", custom_repr)('hello') == "String: hello"
+    assert get_repr_function(42, custom_repr)('42') == "The Answer"
+    assert get_repr_function([], custom_repr)('[]') == "Empty list"
+    assert get_repr_function(3.14, custom_repr)('3.14') == repr(3.14)
+    assert get_repr_function(None, custom_repr)
+
+# Generated at 2024-03-18 00:35:18.661315
+    # Test normal string without truncation
+    assert get_shortish_repr("Hello, world!") == "Hello, world!"
+
+    # Test truncation
+    assert get_shortish_repr("Hello, world!", max_length=5) == "He...d!"
+
+    # Test with custom repr function
+    class CustomObject:
+        def __repr__(self):
+            return "CustomObjectRepresentation"
+
+    assert get_shortish_repr(CustomObject(), max_length=10) == "Cus...ion"
+
+    # Test with normalization
+    class NormalizedObject:
+        def __repr__(self):
+            return "NormalizedObject at 0x12345678"
+
+    assert get_shortish_repr(NormalizedObject(), normalize=True) == "NormalizedObject"
+
+    # Test with exception in repr function
+    class ExceptionObject:
+        def __repr__(self):
+            raise Exception("Failed to create repr")
+
+    assert get_shortish_repr(ExceptionObject()) == "REPR FAILED"
+
+   
+
+# Generated at 2024-03-18 00:35:21.377273
+```python
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+        
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    stream = MockWritableStream()
+    stream.write("Hello, ")
+    stream.write("world!")
+    assert stream.contents == "Hello, world!"
+```
+
+# Generated at 2024-03-18 00:35:28.184969
+    # Test with custom repr for specific types
+    custom_repr = [
+        (int, lambda x: f"Integer({x})"),
+        (str, lambda x: f"String({x})"),
+    ]
+    
+    assert get_repr_function(42, custom_repr)('42') == "Integer(42)"
+    assert get_repr_function("hello", custom_repr)('hello') == "String(hello)"
+    
+    # Test with custom repr using a callable condition
+    custom_repr = [
+        (lambda x: isinstance(x, float), lambda x: f"Float({x})"),
+    ]
+    
+    assert get_repr_function(3.14, custom_repr)('3.14') == "Float(3.14)"
+    
+    # Test with no custom repr
+    assert get_repr_function(42, [])('42') == '42'
+    assert get_repr_function("hello", [])('hello') == "'hello'"
+    
+    # Test with custom repr
+
+# Generated at 2024-03-18 00:35:30.444232
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+        
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    mock_stream = MockWritableStream()
+    mock_stream.write("Hello, ")
+    mock_stream.write("world!")
+    
+    assert mock_stream.contents == "Hello, world!"
+
+# Generated at 2024-03-18 00:35:33.725904
+```python
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+        
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    mock_stream = MockWritableStream()
+    mock_stream.write("Hello, ")
+    mock_stream.write("world!")
+    assert mock_stream.contents == "Hello, world!"
+```
+
+# Generated at 2024-03-18 00:35:41.870833
+    # Test normal string without truncation
+    assert get_shortish_repr("Hello, world!") == "Hello, world!"
+
+    # Test truncation
+    assert get_shortish_repr("Hello, world!", max_length=5) == "He...d!"
+
+    # Test with custom repr function
+    class CustomObject:
+        def __repr__(self):
+            return "CustomObjectRepresentation"
+
+    assert get_shortish_repr(CustomObject()) == "CustomObjectRepresentation"
+    assert get_shortish_repr(CustomObject(), max_length=10) == "Cu...on"
+
+    # Test with normalization
+    class MemoryAddressObject:
+        def __repr__(self):
+            return "MemoryAddressObject at 0x12345678"
+
+    assert get_shortish_repr(MemoryAddressObject()) == "MemoryAddressObject at 0x12345678"
+    assert get_shortish_repr(MemoryAddressObject(), normalize=True) == "MemoryAddressObject"
+
+    # Test with custom
+
+# Generated at 2024-03-18 00:36:17.113435
+```python
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+        
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    mock_stream = MockWritableStream()
+    test_string = "Test writing to stream"
+    written_length = mock_stream.write(test_string)
+
+    assert mock_stream.contents == test_string, "The content written to the stream does not match the expected content."
+    assert written_length == len(test_string), "The length returned by write() does not match the length of the string written."
+```
+
+# Generated at 2024-03-18 00:36:24.131285
+    # Test normal string without truncation
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+
+    # Test truncation
+    assert get_shortish_repr("Hello, World!", max_length=5) == "He...d!"
+
+    # Test with custom repr function
+    class CustomObject:
+        def __repr__(self):
+            return "CustomObjectRepresentation"
+
+    assert get_shortish_repr(CustomObject(), custom_repr=[(CustomObject, lambda x: "CustomRepr")]) == "CustomRepr"
+
+    # Test with normalization
+    class NormalizedObject:
+        def __repr__(self):
+            return "NormalizedObject at 0x123ABC"
+
+    assert get_shortish_repr(NormalizedObject(), normalize=True) == "NormalizedObject"
+
+    # Test with non-string object
+    assert get_shortish_repr(12345) == "12345"
+
+    # Test with object that raises an exception in repr
+    class
+
+# Generated at 2024-03-18 00:36:30.264231
+    # Test cases for get_repr_function
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+        (lambda x: x == 42, lambda x: "The Answer"),
+        (lambda x: isinstance(x, list) and len(x) == 0, lambda x: "Empty list")
+    ]
+
+    assert get_repr_function(10, custom_repr)('10') == "Integer: 10"
+    assert get_repr_function("hello", custom_repr)('hello') == "String: hello"
+    assert get_repr_function(42, custom_repr)('42') == "The Answer"
+    assert get_repr_function([], custom_repr)('[]') == "Empty list"
+    assert get_repr_function(3.14, custom_repr)('3.14') == repr(3.14)
+    assert get_repr_function(None, custom_repr)
+
+# Generated at 2024-03-18 00:36:32.747912
+```python
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    mock_stream = MockWritableStream()
+    mock_stream.write("Hello, ")
+    mock_stream.write("world!")
+    assert mock_stream.contents == "Hello, world!"
+```
+
+# Generated at 2024-03-18 00:36:39.431092
+```python
+    # Test with a simple string
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+
+    # Test with a string that needs truncation
+    assert get_shortish_repr("Hello, World!", max_length=5) == "He...d!"
+
+    # Test with a custom repr function
+    custom_repr = [(int, lambda x: f"Integer({x})")]
+    assert get_shortish_repr(123, custom_repr=custom_repr) == "Integer(123)"
+
+    # Test with an object that has a default repr with memory address
+    class DummyObject:
+        pass
+    dummy = DummyObject()
+    assert ' at 0x' in repr(dummy)  # Ensure the default repr includes an address
+    assert ' at 0x' not in get_shortish_repr(dummy, normalize=True)  # Normalized repr should not include address
+
+    # Test with a tuple
+    assert get_shortish
+
+# Generated at 2024-03-18 00:36:41.298879
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    stream = MockWritableStream()
+    stream.write("Hello, ")
+    stream.write("world!")
+    assert stream.contents == "Hello, world!"
+
+# Generated at 2024-03-18 00:36:49.405817
+    # Test with simple string
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+    
+    # Test with object's default repr
+    class MyClass:
+        def __repr__(self):
+            return "MyClass instance"
+    my_instance = MyClass()
+    assert get_shortish_repr(my_instance) == "MyClass instance"
+    
+    # Test with custom repr function
+    custom_repr = [(MyClass, lambda x: "CustomRepr")]
+    assert get_shortish_repr(my_instance, custom_repr) == "CustomRepr"
+    
+    # Test with normalization
+    class MyOtherClass:
+        def __repr__(self):
+            return "MyOtherClass instance at 0x10"
+    my_other_instance = MyOtherClass()
+    assert get_shortish_repr(my_other_instance, normalize=True) == "MyOtherClass instance"
+    
+    # Test with truncation
+    long_string = "This is a very long string that should be
+
+# Generated at 2024-03-18 00:36:52.911677
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+        
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    stream = MockWritableStream()
+    stream.write("Hello, ")
+    stream.write("world!")
+    assert stream.contents == "Hello, world!"
+
+# Generated at 2024-03-18 00:37:00.855768
+    # Test normal string without truncation
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+
+    # Test normal string with truncation
+    assert get_shortish_repr("Hello, World!", max_length=5) == "He...d!"
+
+    # Test with custom repr function
+    class CustomObject:
+        def __repr__(self):
+            return "CustomObjectRepresentation"
+
+    assert get_shortish_repr(CustomObject()) == "CustomObjectRepresentation"
+    assert get_shortish_repr(CustomObject(), max_length=10) == "Cus...ion"
+
+    # Test with normalization
+    class MemoryAddressObject:
+        def __repr__(self):
+            return "MemoryAddressObject at 0x12345678"
+
+    assert get_shortish_repr(MemoryAddressObject(), normalize=True) == "MemoryAddressObject"
+
+    # Test with exception in repr function
+    class ExceptionObject:
+        def __repr__(self):
+            raise Exception("
+
+# Generated at 2024-03-18 00:37:07.346471
+    # Test with simple string
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+    
+    # Test with object's default repr
+    class MyClass:
+        def __repr__(self):
+            return "MyClass instance"
+    my_instance = MyClass()
+    assert get_shortish_repr(my_instance) == "MyClass instance"
+    
+    # Test with custom repr function
+    custom_repr = [(MyClass, lambda x: "CustomRepr")]
+    assert get_shortish_repr(my_instance, custom_repr) == "CustomRepr"
+    
+    # Test with normalization
+    class MyOtherClass:
+        def __repr__(self):
+            return "MyOtherClass instance at 0x10"
+    my_other_instance = MyOtherClass()
+    assert get_shortish_repr(my_other_instance, normalize=True) == "MyOtherClass instance"
+    
+    # Test with truncation
+    long_string = "This is a very long string that should be
+
+# Generated at 2024-03-18 00:38:13.113433
+    # Test with no custom_repr
+    assert get_repr_function(42, ()) == repr
+    assert get_repr_function("test", ()) == repr
+    assert get_repr_function([1, 2, 3], ()) == repr
+
+    # Test with custom_repr that matches
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+    ]
+    assert get_repr_function(42, custom_repr)('42') == "Integer: 42"
+    assert get_repr_function("test", custom_repr)('test') == "String: test"
+
+    # Test with custom_repr that doesn't match
+    custom_repr = [
+        (list, lambda x: f"List with {len(x)} items"),
+    ]
+    assert get_repr_function(42, custom_repr) == repr
+    assert get_repr_function("test", custom_repr) == repr
+
+
+
+# Generated at 2024-03-18 00:38:16.418284
+```python
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    mock_stream = MockWritableStream()
+    test_string = "Hello, World!"
+    written_length = mock_stream.write(test_string)
+
+    assert mock_stream.contents == test_string, "The write method did not correctly write to the stream."
+    assert written_length == len(test_string), "The write method did not return the correct length of the written string."
+```
+
+# Generated at 2024-03-18 00:38:21.986141
+    # Test with simple string
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+
+    # Test with object's default repr
+    class DummyObject:
+        def __repr__(self):
+            return "DummyObject()"
+    assert get_shortish_repr(DummyObject()) == "DummyObject()"
+
+    # Test with custom repr
+    custom_repr = [(DummyObject, lambda x: "CustomDummyRepr")]
+    assert get_shortish_repr(DummyObject(), custom_repr=custom_repr) == "CustomDummyRepr"
+
+    # Test with max_length
+    long_string = "This is a very long string that should be truncated"
+    assert get_shortish_repr(long_string, max_length=10) == "Thi...ted"
+
+    # Test with normalization
+    class MemoryAddressObject:
+        def __repr__(self):
+            return "MemoryAddressObject at 0x10"
+    assert get_shortish_repr(MemoryAddressObject(),
+
+# Generated at 2024-03-18 00:38:24.906976
+```python
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+        
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    mock_stream = MockWritableStream()
+    mock_stream.write("Hello, ")
+    mock_stream.write("world!")
+    assert mock_stream.contents == "Hello, world!"
+```
+
+# Generated at 2024-03-18 00:38:31.548697
+```python
+    # Test with a simple string
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+
+    # Test with a string that needs truncation
+    assert get_shortish_repr("Hello, World!", max_length=5) == "He...d!"
+
+    # Test with a custom repr function
+    custom_repr = [(int, lambda x: f"Integer({x})")]
+    assert get_shortish_repr(123, custom_repr=custom_repr) == "Integer(123)"
+
+    # Test with normalization
+    class Dummy:
+        def __repr__(self):
+            return "Dummy at 0x10"
+    assert get_shortish_repr(Dummy(), normalize=True) == "Dummy"
+
+    # Test with an object that raises an exception in its repr
+    class BadRepr:
+        def __repr__(self):
+            raise ValueError("bad repr")
+    assert get_shortish_repr(BadRepr()) == "REPR
+
+# Generated at 2024-03-18 00:38:36.588528
+    # Test with no custom_repr
+    assert get_repr_function(123, ()) == repr
+    assert get_repr_function("test", ()) == repr
+    assert get_repr_function([1, 2, 3], ()) == repr
+
+    # Test with custom_repr
+    custom_repr = [
+        (int, lambda x: f"Integer: {x}"),
+        (str, lambda x: f"String: {x}"),
+        (list, lambda x: f"List with {len(x)} items")
+    ]
+    assert get_repr_function(123, custom_repr) == custom_repr[0][1]
+    assert get_repr_function("test", custom_repr) == custom_repr[1][1]
+    assert get_repr_function([1, 2, 3], custom_repr) == custom_repr[2][1]
+
+    # Test with custom_repr using a callable condition
+    custom_repr_with_callable = [
+        (lambda x: isinstance(x,
+
+# Generated at 2024-03-18 00:38:43.711557
+    # Test with no custom_repr
+    assert get_repr_function(42, ()) == repr
+    assert get_repr_function("hello", ()) == repr
+    assert get_repr_function([1, 2, 3], ()) == repr
+
+    # Test with custom_repr that matches by type
+    custom_repr = [
+        (int, lambda x: f"int:{x}"),
+        (str, lambda x: f"str:{x}"),
+    ]
+    assert get_repr_function(42, custom_repr)('42') == "int:42"
+    assert get_repr_function("hello", custom_repr)('hello') == "str:hello"
+
+    # Test with custom_repr that matches by function
+    custom_repr = [
+        (lambda x: isinstance(x, int) and x % 2 == 0, lambda x: f"even:{x}"),
+        (lambda x: isinstance(x, int) and x % 2 != 0,
+
+# Generated at 2024-03-18 00:38:49.627517
+    assert shitcode("Hello World!") == "Hello World!"
+    assert shitcode("こんにちは") == "??????"
+    assert shitcode("HelloこんにちはWorld") == "Hello??????World"
+    assert shitcode("🙂🙃🙁") == "???"
+    assert shitcode("") == ""
+    assert shitcode("123") == "123"
+    assert shitcode("©®™✓") == "????"
+    assert shitcode("test\nnew line") == "testnew line"
+    assert shitcode("test\rnew line") == "testnew line"
+    assert shitcode("test\ttab") == "test\ttab"
+    assert shitcode("test\0null") == "test\0null"
+
+# Generated at 2024-03-18 00:38:54.825044
+    # Test with simple string
+    assert get_shortish_repr("Hello, World!") == "Hello, World!"
+    
+    # Test with object's default repr
+    class TestObject:
+        def __repr__(self):
+            return "TestObject()"
+    assert get_shortish_repr(TestObject()) == "TestObject()"
+    
+    # Test with custom repr function
+    custom_repr = [(TestObject, lambda x: "CustomRepr")]
+    assert get_shortish_repr(TestObject(), custom_repr=custom_repr) == "CustomRepr"
+    
+    # Test with normalization
+    obj = TestObject()
+    obj_repr = repr(obj)
+    assert get_shortish_repr(obj, normalize=True) == normalize_repr(obj_repr)
+    
+    # Test with max_length
+    long_string = "This is a very long string that should be truncated"
+    assert get_shortish_repr(long_string, max_length=10) == "Thi...ted"
+    
+    # Test with max
+
+# Generated at 2024-03-18 00:38:56.983757
+    class MockWritableStream(WritableStream):
+        def __init__(self):
+            self.contents = ""
+        
+        def write(self, s):
+            self.contents += s
+            return len(s)
+
+    stream = MockWritableStream()
+    stream.write("Hello, ")
+    stream.write("world!")
+    assert stream.contents == "Hello, world!"

@@ -1,0 +1,879 @@
+
+
+# Generated at 2024-03-18 07:54:14.192444
+    from thefuck.types import Command
+
+    # Command with 'add' in script_parts and the specific message in output
+    assert match(Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.'))
+    
+    # Command with 'add' but without the specific message in output
+    assert not match(Command('git add file.txt', 'file.txt already exists in the index'))
+
+    # Command without 'add' in script_parts but with the specific message in output
+    assert not match(Command('git commit -m "message"', 'Use -f if you really want to add them.'))
+
+    # Command without 'add' and without the specific message in output
+    assert not match(Command('git commit -m "message"', 'Nothing to commit, working tree clean'))
+
+# Generated at 2024-03-18 07:54:19.099586
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already added to staging area.')
+    assert not match(command)
+
+    # Test case where the command is not a git add command
+    command = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:54:24.703321
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already added to index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:54:27.434712
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:54:32.644095
+    from thefuck.types import Command
+
+    # Command with 'add' in script_parts and correct output
+    assert match(Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.'))
+    
+    # Command with 'add' but without the correct output
+    assert not match(Command('git add file.txt', ''))
+    
+    # Command without 'add' in script_parts but with correct output
+    assert not match(Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.'))
+    
+    # Command without 'add' and without the correct output
+    assert not match(Command('git commit -m "Initial commit"', ''))
+
+# Generated at 2024-03-18 07:54:37.494449
+    from thefuck.types import Command
+
+    # Command with 'add' in script and correct output
+    assert match(Command('git add file.txt', 'Use -f if you really want to add them.'))
+    
+    # Command with 'add' in script but incorrect output
+    assert not match(Command('git add file.txt', ''))
+    
+    # Command without 'add' in script but with correct output
+    assert not match(Command('git commit -m "message"', 'Use -f if you really want to add them.'))
+    
+    # Command without 'add' in script and incorrect output
+    assert not match(Command('git commit -m "message"', ''))
+
+# Generated at 2024-03-18 07:54:43.758074
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command_with_add_and_warning = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command_with_add_and_warning)
+
+    # Test case where the command should not match because it doesn't contain 'add'
+    command_without_add = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command_without_add)
+
+    # Test case where the command should not match because it doesn't contain the warning message
+    command_with_add_no_warning = Command('git add file.txt', 'file.txt added to the staging area')
+    assert not match(command_with_add_no_warning)
+
+# Generated at 2024-03-18 07:54:49.475959
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already exists in the index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Add file"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:54:52.104353
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:55:00.052650
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command_with_add_and_warning = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command_with_add_and_warning)
+
+    # Test case where the command contains 'add' but no warning message
+    command_with_add_no_warning = Command('git add file.txt', '')
+    assert not match(command_with_add_no_warning)
+
+    # Test case where the warning message is present but the command doesn't contain 'add'
+    command_without_add_with_warning = Command('git status', 'Use -f if you really want to add them.')
+    assert not match(command_without_add_with_warning)
+
+    # Test case where neither 'add' nor the warning message is present
+    command_neither_add_nor_warning = Command('git status', '')
+    assert not match
+
+# Generated at 2024-03-18 07:55:10.152440
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already added to index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:55:14.477970
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already added to index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Add file"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:55:26.550964
+    from thefuck.types import Command
+
+    # Command with 'add' in script_parts and correct output
+    assert match(Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.'))
+    
+    # Command with 'add' but without the correct output
+    assert not match(Command('git add file.txt', ''))
+    
+    # Command without 'add' in script_parts but with correct output
+    assert not match(Command('git commit -m "message"', 'Use -f if you really want to add them.'))
+    
+    # Command without 'add' and without the correct output
+    assert not match(Command('git commit -m "message"', ''))
+
+# Generated at 2024-03-18 07:55:32.325527
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command_with_add_and_warning = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command_with_add_and_warning)
+
+    # Test case where the command should not match because it doesn't contain 'add'
+    command_without_add = Command('git commit -m "Initial commit"', 'On branch master\nnothing to commit, working tree clean')
+    assert not match(command_without_add)
+
+    # Test case where the command should not match because it doesn't contain the warning message
+    command_with_add_no_warning = Command('git add file.txt', '')
+    assert not match(command_with_add_no_warning)
+
+# Generated at 2024-03-18 07:55:37.901025
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already added to index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Add file"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:55:43.589506
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command_with_add_and_warning = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command_with_add_and_warning)
+
+    # Test case where the command should not match because it doesn't contain 'add'
+    command_without_add = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command_without_add)
+
+    # Test case where the command should not match because it doesn't contain the warning message
+    command_with_add_no_warning = Command('git add file.txt', '')
+    assert not match(command_with_add_no_warning)
+
+# Generated at 2024-03-18 07:55:45.948384
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:55:50.747871
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match because 'add' is not in the script
+    command = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+    # Test case where the command should not match because the specific message is not in the output
+    command = Command('git add file.txt', 'Everything up-to-date')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:55:53.658227
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:55:59.953360
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command_with_add_and_warning = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command_with_add_and_warning)
+
+    # Test case where the command should not match because it doesn't contain 'add'
+    command_without_add = Command('git commit -m "Initial commit"', 'On branch master\nnothing to commit, working tree clean')
+    assert not match(command_without_add)
+
+    # Test case where the command should not match because it doesn't contain the warning message
+    command_with_add_no_warning = Command('git add file.txt', '')
+    assert not match(command_with_add_no_warning)
+
+# Generated at 2024-03-18 07:56:05.238778
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:56:11.684784
+    from thefuck.types import Command
+
+    # Command with 'add' in script_parts and correct output
+    assert match(Command('git add file.txt', 'Use -f if you really want to add them.'))
+    
+    # Command with 'add' but incorrect output
+    assert not match(Command('git add file.txt', ''))
+    
+    # Command without 'add' in script_parts but with correct output
+    assert not match(Command('git commit -m "message"', 'Use -f if you really want to add them.'))
+    
+    # Command without 'add' and without correct output
+    assert not match(Command('git commit -m "message"', ''))
+
+# Generated at 2024-03-18 07:56:26.250726
+
+
+# Generated at 2024-03-18 07:56:28.693276
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:56:31.062839
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:56:33.206987
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:56:35.199896
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:56:38.042374
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'],
+                   output='The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:56:45.384990
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match because 'add' is not in the script
+    command = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+    # Test case where the command should not match because the output does not contain the specific message
+    command = Command('git add file.txt', 'file.txt is already added to the index')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:56:48.088141
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:57:00.522121
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already added to index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Add file"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+    # Test case where the output does not contain the specific message
+    command = Command('git add file.txt', 'Changes to be committed:')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:57:03.463453
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:57:08.161181
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:57:10.613297
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:57:15.521236
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command_with_add_and_warning = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command_with_add_and_warning)
+
+    # Test case where the command should not match because it doesn't contain 'add'
+    command_without_add = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command_without_add)
+
+    # Test case where the command should not match because it doesn't contain the warning message
+    command_with_add_no_warning = Command('git add file.txt', '')
+    assert not match(command_with_add_no_warning)
+
+# Generated at 2024-03-18 07:57:21.219598
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already added to index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:57:24.087154
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:57:31.651442
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already added to index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Add file"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+    # Test case with 'add' in the script parts but without the specific error message
+    command = Command('git add file.txt', 'file.txt is not a git file')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:57:36.947536
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already added to index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Add file"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+    # Test case where the output does not contain the specific message
+    command = Command('git add file.txt', 'Changes to be committed:')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:57:44.326389
+    from thefuck.types import Command
+
+    # Command with 'add' in script_parts and correct output
+    assert match(Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.'))
+    
+    # Command with 'add' in script_parts but incorrect output
+    assert not match(Command('git add file.txt', 'file.txt already added to index'))
+    
+    # Command without 'add' in script_parts but with correct output
+    assert not match(Command('git commit -m "message"', 'Use -f if you really want to add them.'))
+
+    # Command without 'add' in script_parts and incorrect output
+    assert not match(Command('git commit -m "message"', 'Nothing to commit, working tree clean'))
+
+# Generated at 2024-03-18 07:58:02.282923
+```python
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already exists in the index')
+    assert not match(command)
+
+    # Test case where the command is not a git add command
+    command = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command)
+```
+
+# Generated at 2024-03-18 07:58:04.930465
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:58:14.331535
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already added to index')
+    assert not match(command)
+
+    # Test case where the command is not a git add command
+    command = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:58:20.535120
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match because 'add' is not in the script
+    command = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+    # Test case where the command should not match because the output does not contain the specific message
+    command = Command('git add file.txt', 'Everything up-to-date')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:58:26.677679
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already exists in the index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Add file"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:58:33.271354
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command_with_add_and_warning = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command_with_add_and_warning)
+
+    # Test case where the command contains 'add' but no warning message
+    command_with_add_no_warning = Command('git add file.txt', '')
+    assert not match(command_with_add_no_warning)
+
+    # Test case where the command does not contain 'add' but has a warning message
+    command_without_add_with_warning = Command('git commit file.txt', 'Use -f if you really want to add them.')
+    assert not match(command_without_add_with_warning)
+
+    # Test case where neither 'add' nor warning message is present
+    command_neither_add_nor_warning = Command('git commit file.txt', '')
+   
+
+# Generated at 2024-03-18 07:58:38.723138
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:58:44.187271
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already exists in the index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Add file"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:58:50.778128
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already exists in the index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Add file"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:58:55.159799
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already added to index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:59:26.624294
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:59:28.895702
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:59:35.348872
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already exists in the index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Add file"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:59:39.098836
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:59:41.943909
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 07:59:48.600571
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match because 'add' is not in the script
+    command = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+    # Test case where the command should not match because the output does not contain the specific message
+    command = Command('git add file.txt', 'Everything up-to-date')
+    assert not match(command)
+
+# Generated at 2024-03-18 07:59:53.243627
+```python
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already exists in the index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Add file"', 'Use -f if you really want to add them.')
+    assert not match(command)
+```
+
+# Generated at 2024-03-18 07:59:55.252993
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 08:00:02.005596
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command_with_add_and_warning = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command_with_add_and_warning)
+
+    # Test case where the command should not match because it doesn't contain 'add'
+    command_without_add = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command_without_add)
+
+    # Test case where the command should not match because it doesn't contain the warning message
+    command_with_add_no_warning = Command('git add file.txt', '')
+    assert not match(command_with_add_no_warning)
+
+# Generated at 2024-03-18 08:00:07.748141
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command_with_add_and_warning = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command_with_add_and_warning)
+
+    # Test case where the command should not match because it doesn't contain 'add'
+    command_without_add = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command_without_add)
+
+    # Test case where the command should not match because it doesn't contain the warning message
+    command_with_add_no_warning = Command('git add file.txt', '')
+    assert not match(command_with_add_no_warning)
+
+# Generated at 2024-03-18 08:01:04.803085
+```python
+    from thefuck.types import Command
+
+    # Mock command with 'add' in script and specific output
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+```
+
+# Generated at 2024-03-18 08:01:09.677709
+    from thefuck.types import Command
+
+    # Test case where 'add' is in the script and the specific message is in the output
+    assert match(Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.'))
+
+    # Test case where 'add' is not in the script
+    assert not match(Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.'))
+
+    # Test case where the specific message is not in the output
+    assert not match(Command('git add file.txt', 'file.txt did not match any files'))
+
+# Generated at 2024-03-18 08:01:17.245830
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already exists in the index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Add file"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 08:01:24.276758
+    from thefuck.types import Command
+
+    # Command with 'add' in script_parts and the specific message in output
+    assert match(Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.'))
+    
+    # Command with 'add' but without the specific message in output
+    assert not match(Command('git add file.txt', 'file.txt already exists in the index'))
+
+    # Command without 'add' in script_parts but with the specific message in output
+    assert not match(Command('git commit -m "message"', 'Use -f if you really want to add them.'))
+
+    # Command without 'add' and without the specific message in output
+    assert not match(Command('git commit -m "message"', 'Everything up-to-date'))
+
+# Generated at 2024-03-18 08:01:32.325847
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command_with_add_and_warning = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command_with_add_and_warning)
+
+    # Test case where the command should not match because it doesn't contain 'add'
+    command_without_add = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command_without_add)
+
+    # Test case where the command should not match because it doesn't contain the warning message
+    command_with_add_no_warning = Command('git add file.txt', '')
+    assert not match(command_with_add_no_warning)
+
+# Generated at 2024-03-18 08:01:38.099650
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already added to index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Add file"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+    # Test case where the output does not contain the specific message
+    command = Command('git add file.txt', 'Everything up-to-date')
+    assert not match(command)
+
+# Generated at 2024-03-18 08:01:43.001112
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt is already in the index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Add file"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 08:01:48.312266
+```python
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command_with_add_and_warning = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command_with_add_and_warning)
+
+    # Test case where the command contains 'add' but no warning message
+    command_with_add_no_warning = Command('git add file.txt', '')
+    assert not match(command_with_add_no_warning)
+
+    # Test case where the command does not contain 'add' but has a warning message
+    command_without_add_with_warning = Command('git commit file.txt', 'Use -f if you really want to add them.')
+    assert not match(command_without_add_with_warning)
+
+    # Test case where neither 'add' nor warning message is present
+    command_neither_add_nor_warning = Command('git commit file.txt
+
+# Generated at 2024-03-18 08:01:54.693211
+    from thefuck.types import Command
+
+    # Command with 'add' in script_parts and correct output
+    assert match(Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.'))
+    
+    # Command with 'add' but without the correct output
+    assert not match(Command('git add file.txt', ''))
+    
+    # Command without 'add' in script_parts but with correct output
+    assert not match(Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.'))
+    
+    # Command without 'add' and without the correct output
+    assert not match(Command('git commit -m "Initial commit"', ''))
+
+# Generated at 2024-03-18 08:02:04.346331
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match
+    command = Command('git add file.txt', 'file.txt already added to index')
+    assert not match(command)
+
+    # Test case where 'add' is not in the script parts
+    command = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+# Generated at 2024-03-18 08:04:02.060006
+    from thefuck.types import Command
+
+    # Test case where the command should match
+    command = Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.')
+    assert match(command)
+
+    # Test case where the command should not match because it doesn't contain 'add'
+    command = Command('git commit -m "Initial commit"', 'Use -f if you really want to add them.')
+    assert not match(command)
+
+    # Test case where the command should not match because the output doesn't contain the specific message
+    command = Command('git add file.txt', 'Everything up-to-date')
+    assert not match(command)
+
+# Generated at 2024-03-18 08:04:04.927213
+    command = Mock(script='git add file.txt', script_parts=['git', 'add', 'file.txt'], output='Use -f if you really want to add them.')
+    new_command = get_new_command(command)
+    assert new_command == 'git add --force file.txt'
+
+# Generated at 2024-03-18 08:04:13.193105
+    from thefuck.types import Command
+
+    # Command with 'add' in script_parts and the specific message in output
+    assert match(Command('git add file.txt', 'The following paths are ignored by one of your .gitignore files:\nfile.txt\nUse -f if you really want to add them.'))
+    
+    # Command with 'add' but without the specific message in output
+    assert not match(Command('git add file.txt', 'file.txt already exists in the index'))
+
+    # Command without 'add' in script_parts but with the specific message in output
+    assert not match(Command('git commit -m "message"', 'Use -f if you really want to add them.'))
+
+    # Command without 'add' and without the specific message in output
+    assert not match(Command('git commit -m "message"', 'Nothing to commit, working tree clean'))

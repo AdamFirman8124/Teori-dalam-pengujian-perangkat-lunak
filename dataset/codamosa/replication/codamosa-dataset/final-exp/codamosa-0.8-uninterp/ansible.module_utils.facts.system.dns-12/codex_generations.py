@@ -1,0 +1,639 @@
+
+
+# Generated at 2022-06-13 02:51:31.820883
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+
+    dns_dict = {
+        'nameservers': [
+            '192.168.1.1'
+        ],
+        'domain': 'example.com',
+        'search': [
+            'example.com',
+            'redhat.com'
+        ],
+        'sortlist': [
+            '192.168.1.0/255.255.255.0'
+        ],
+        'options': {
+            'timeout': '2',
+            'attempts': '3',
+            'rotate': True
+        }
+    }
+
+    dns_facts = DnsFactCollector().collect()
+    assert dns_facts == {'dns': dns_dict}
+
+# Generated at 2022-06-13 02:51:33.025594
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    dns = DnsFactCollector()
+    assert dns.name == 'dns'
+
+# Generated at 2022-06-13 02:51:39.142435
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    from ansible_collections.misc.not_a_real_collection.tests.unit.compat import unittest
+    from ansible_collections.misc.not_a_real_collection.tests.unit.compat.mock import patch, PropertyMock, Mock
+    from ansible.module_utils.facts import collector
+
+    nameserver1 = '192.168.57.118'
+    nameserver2 = '192.168.57.119'
+    domain = 'example.com'
+    search1 = 'search1.example.com'
+    search2 = 'search2.example.com'
+    sortlist = '192.168.1.1/24'
+    option_no_tld_query = 'no_tld_query'
+    option_minimal_responses = 'minimal-responses'
+    option_max
+
+# Generated at 2022-06-13 02:51:44.596562
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    a = DnsFactCollector()
+    assert a.name == 'dns'
+    assert a.collect() == {'dns': {'nameservers': ['8.8.8.8','8.8.4.4'],\
+                                   'options': {'rotate':True, 'timeout':'2'}}}
+
+
+# Generated at 2022-06-13 02:51:49.082013
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    from ansible_collections.notstdlib.moveitallout.tests.unit.compat.mock import patch
+
+    m = patch('ansible_collections.notstdlib.moveitallout.plugins.module_utils.facts.dns.DnsFactCollector.collect')
+    m.start()
+    dns_collector = DnsFactCollector()
+    dns_collector.collect()
+    m.assert_called_with()
+    m.stop()
+
+# Generated at 2022-06-13 02:51:53.970894
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    dns_facts = DnsFactCollector().collect()
+    assert isinstance(dns_facts, dict)
+    assert 'dns' in dns_facts
+    assert isinstance(dns_facts['dns'], dict)
+    assert 'nameservers' in dns_facts['dns']
+    assert isinstance(dns_facts['dns']['nameservers'], list)
+    assert 'domain' in dns_facts['dns']
+    assert 'search' in dns_facts['dns']
+    assert 'sortlist' in dns_facts['dns']
+    assert 'options' in dns_facts['dns']
+
+# Generated at 2022-06-13 02:52:03.926487
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    test_content = '''
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+search example.come
+nameserver 172.16.193.1
+nameserver 172.16.193.2
+nameserver 172.16.193.3
+domain example.com
+sortlist 10.1.1.1 10.1.1.2
+options debug ndots:2
+'''
+
+    test_collector = DnsFactCollector({}, None)
+    test_collector._read_file_content = lambda x: test_content
+    collected_facts = test_collector.collect()
+
+# Generated at 2022-06-13 02:52:14.111165
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    mock_module = MockModule()
+    mock_module.params = {'gather_subset': 'all'}
+    mock_module.run_command = Mock(return_value=[0, '', ''])
+    mock_module.run_command.side_effect = lambda x: [0, Mock(read=lambda: ''), '']
+    mock_module.get_bin_path = Mock(return_value='/usr/bin/dig')
+    mock_module.dig = Mock(return_value={'ansible.com': '{"ipv4":["93.184.216.119"],"ipv6": ["2606:2800:220:1:248:1893:25c8:1946"]}'})
+
+    dns_fact_collector = DnsFactCollector()
+
+# Generated at 2022-06-13 02:52:15.471277
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    DnsFactCollector_collect = DnsFactCollector()
+    DnsFactCollector_collect.collect()
+
+# Generated at 2022-06-13 02:52:16.203329
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    assert DnsFactCollector().name == 'dns'
+
+# Generated at 2022-06-13 02:52:35.049700
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+  
+    dns_facts = DnsFactCollector()
+    dns_facts.collect()
+    assert dns_facts.name == "dns"
+  #  assert dns_facts._fact_ids == set()
+
+# Generated at 2022-06-13 02:52:43.172494
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+
+    import os
+    import storops
+
+    # Input
+    test_resolv_conf = """
+# Example of resolv.conf on local LAN
+; generated by netconfig
+search domain-name.example.com
+nameserver 192.0.2.1
+nameserver 192.0.2.2
+options timeout:1 attempts:1 rotate
+    """
+    test_resolv_conf_filename = "/etc/resolv.conf"
+
+    # Expected output
+
+# Generated at 2022-06-13 02:52:46.918735
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    dns_collector = DnsFactCollector()
+    result = dns_collector.collect()
+    assert result['dns']
+    assert result['dns']['nameservers'][0] == '8.8.4.4'
+    assert result['dns']['nameservers'][1] == '8.8.8.8'
+    assert result['dns']['domain'] == 'localdomain'
+    assert result['dns']['options']['timeout'] == '2'
+    assert result['dns']['options']['rotate'] == True
+    assert result['dns']['options']['attempts'] == '1'
+
+# Generated at 2022-06-13 02:52:48.119705
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    dns = DnsFactCollector()
+    assert dns.name == 'dns'
+
+# Generated at 2022-06-13 02:52:48.642500
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    pass
+
+# Generated at 2022-06-13 02:52:51.543382
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    '''
+    Unit test to check the constructor of class
+    :param object: DnsFactCollector
+    :return:
+    '''
+    dns_obj = DnsFactCollector()
+    assert dns_obj.name == 'dns'
+    assert dns_obj._fact_ids == set()
+
+
+
+# Generated at 2022-06-13 02:52:52.876607
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    fact_collector = DnsFactCollector()
+    assert fact_collector.name == 'dns'
+
+# Generated at 2022-06-13 02:52:54.112793
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    dns = DnsFactCollector()
+    assert dns.name == 'dns'
+
+
+# Generated at 2022-06-13 02:53:02.127768
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    dns_facts = DnsFactCollector.collect()
+    assert 'dns' in dns_facts
+    assert dns_facts['dns']['nameservers'] == ['10.0.0.1', '10.0.0.2']
+    assert dns_facts['dns']['domain'] == 'example.com'
+    assert dns_facts['dns']['search'] == ['customer.example.com', 'example.com']
+    assert dns_facts['dns']['sortlist'] == ['10']
+    assert dns_facts['dns']['options']['ndots'] == '3'
+
+# Generated at 2022-06-13 02:53:05.164756
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    collector = DnsFactCollector()
+    assert collector.collect() == {'dns': {'options': {}, 'sortlist': [], 'nameservers': []}}
+
+# Generated at 2022-06-13 02:53:29.630439
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    from ansible.module_utils.facts.collector import collector_registry
+
+    _collector_registry = collector_registry
+
+    collector_registry = { 'dns': DnsFactCollector }
+
+    resolv_test_file_content = """
+; generated by NetworkManager
+nameserver 192.168.1.1
+nameserver 192.168.1.2
+domain mydomain.net
+search mydomain.net
+nameserver 8.8.8.8
+"""
+    import os.path
+    resolv_test_file_name = '/tmp/resolv.conf'
+    with open(resolv_test_file_name, mode='w') as f:
+        f.write(resolv_test_file_content)
+
+
+# Generated at 2022-06-13 02:53:31.396983
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    DnsFactCollector_test = DnsFactCollector()
+    DnsFactCollector_test.collect()
+
+# Generated at 2022-06-13 02:53:34.473403
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    obj = DnsFactCollector()
+    assert obj.name == 'dns'
+    assert obj._fact_ids == set()
+
+
+# Generated at 2022-06-13 02:53:45.493642
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    import os
+    import tempfile
+
+    # 1. create file with some dns resolver configuration
+    fd, path = tempfile.mkstemp()
+    os.write(fd, '# comment\n\nnameserver 10.10.10.10\nnameserver 20.20.20.20\ndomain bcd.com\nsearch one.bcd.com two.bcd.com\nsortlist 60 10 20 30\noptions debug timeout:5 attempts:2 rotate ndots:3\n')
+    os.close(fd)
+
+    # 2. create DnsFactCollector
+    dns = DnsFactCollector()
+
+    # 3. call method collect
+    dns_facts = dns.collect()
+
+    # 4. verify returned dns facts
+    assert 'dns' in dns_facts
+
+# Generated at 2022-06-13 02:53:49.227609
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    dns_facts = DnsFactCollector().collect()
+    assert isinstance(dns_facts, dict)
+    assert dns_facts['dns']['options']['attempts'] == '5'
+
+# Generated at 2022-06-13 02:53:51.212762
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    # Test if dns is mapped correctly
+    dns_facts = DnsFactCollector().collect()
+    assert dns_facts['dns'] == {}
+
+# Generated at 2022-06-13 02:53:56.247296
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    DNC = DnsFactCollector()
+    # Test for generic config file
+    res = DNC.collect()
+    assert res['dns'] != None
+    # Test for special config file
+    res = DNC.collect(collected_facts={'system': {'distribution': 'gentoo'}})
+    assert res['dns'] != None
+
+
+# Generated at 2022-06-13 02:54:00.634682
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    result = DnsFactCollector().collect()
+    assert 'dns' in result
+    dns = result['dns']
+    assert 'nameservers' in dns
+    assert 'domain' in dns
+    assert 'search' in dns
+    assert 'sortlist' in dns
+    assert 'options' in dns
+
+# Generated at 2022-06-13 02:54:05.523831
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    assert isinstance(DnsFactCollector.name, str)
+    assert isinstance(DnsFactCollector._fact_ids, set)
+    assert not DnsFactCollector._fact_ids
+    assert isinstance(DnsFactCollector.collect(), dict)
+    assert isinstance(DnsFactCollector.collect(collected_facts={}), dict)
+
+# Generated at 2022-06-13 02:54:06.757029
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    assert(DnsFactCollector.name == 'dns')
+
+# Generated at 2022-06-13 02:54:36.542772
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    dnsfact_collector_obj = DnsFactCollector()
+
+
+# Generated at 2022-06-13 02:54:40.241147
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    dns_text = "\n" + "# Generated by NetworkManager\n" + "nameserver 127.0.0.1\n" + "domain local.lan\n"
+    dns_facts = {'dns': {'nameservers': ['127.0.0.1'], 'domain': 'local.lan'}}
+
+    c = DnsFactCollector()
+    d = c.collect(None, None)
+
+    assert d == dns_facts
+
+# Generated at 2022-06-13 02:54:42.985771
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    # get a class instance
+    dns_fact_collector_obj = DnsFactCollector()
+    dns_fact_collector_obj.collect()
+
+# Generated at 2022-06-13 02:54:46.422004
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    dns_collector = DnsFactCollector()
+    assert dns_collector.name == 'dns'
+    assert dns_collector._fact_ids == set()
+
+
+
+# Generated at 2022-06-13 02:54:56.025489
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    dns_file = '''
+#
+# Mac OS X Notice
+#
+# This file is not used by the host name and address resolution
+# or the DNS query routing mechanisms used by most processes on
+# this Mac OS X system.
+#
+# This file is automatically generated.
+#
+search local
+nameserver 192.168.1.1
+'''
+    dns_facts_expected = { 'dns' : {
+                            'nameservers' : ['192.168.1.1'],
+                            'search' : ['local']
+                            }
+                          }
+    dns_fact = DnsFactCollector()
+    dns_facts_actual = dns_fact.collect(None, None, dns_file)
+    assert dns_facts_expected == dns_facts_actual
+  
+# Unit test to cover the invocation of
+
+# Generated at 2022-06-13 02:54:57.457602
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    collector = DnsFactCollector()
+    results = collector.collect()
+    assert isinstance(results, dict)
+
+# Generated at 2022-06-13 02:55:04.396553
+# Unit test for method collect of class DnsFactCollector
+
+# Generated at 2022-06-13 02:55:06.513295
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    dns_collector = DnsFactCollector()
+    assert dns_collector.name == 'dns'
+    assert dns_collector._fact_ids == set()
+
+
+# Generated at 2022-06-13 02:55:10.122677
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    assert DnsFactCollector().name == 'dns'
+    assert type(DnsFactCollector()._fact_ids) == set
+    assert len(DnsFactCollector()._fact_ids) == 0
+
+
+# Generated at 2022-06-13 02:55:11.142317
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    dfc = DnsFactCollector(None)
+    dfc.collect()
+
+# Generated at 2022-06-13 02:56:23.442509
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    # Initialize a DnsFactCollector object
+    obj = DnsFactCollector()
+    # Assert function collect call
+    res = obj.collect(module=None, collected_facts=None)
+    assert isinstance(res, dict)
+
+
+# Generated at 2022-06-13 02:56:25.922886
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    dns_fact_cls = DnsFactCollector()
+    assert dns_fact_cls.name == 'dns'
+    assert dns_fact_cls._fact_ids == set()
+
+# Generated at 2022-06-13 02:56:27.538942
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    assert(True)
+    # dns_fact_collector = DnsFactCollector()
+    # assert(dns_fact_collector.collect())
+
+# Generated at 2022-06-13 02:56:29.856390
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    test_obj = DnsFactCollector()
+    assert test_obj
+    assert test_obj.name == 'dns'
+    assert 'dns' in test_obj.collect()
+
+# Generated at 2022-06-13 02:56:30.945387
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    dns = DnsFactCollector()
+    assert dns.name == 'dns'
+
+# Generated at 2022-06-13 02:56:33.216929
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    dnsFactCollector = DnsFactCollector()
+    assert dnsFactCollector
+    assert dnsFactCollector.name == 'dns'
+    assert dnsFactCollector._fact_ids == set()
+    
+
+
+# Generated at 2022-06-13 02:56:35.108307
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    dns = DnsFactCollector()
+    fact_ids = dns.collect()
+    assert fact_ids["dns"]
+
+# Generated at 2022-06-13 02:56:40.441616
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    testDnsFact = DnsFactCollector()
+    assert testDnsFact.name == 'dns'
+    assert testDnsFact._fact_ids == set()
+    assert testDnsFact.collect()["dns"] == {'nameservers': ['192.168.10.1']}
+
+# Generated at 2022-06-13 02:56:41.937696
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    dns_facts = DnsFactCollector()
+    assert dns_facts.name == 'dns'
+
+# Generated at 2022-06-13 02:56:47.153499
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    module = AnsibleModule(argument_spec={})
+    fact_collector = DnsFactCollector(module)
+    facts = fact_collector.collect()
+    assert 'dns' in facts
+    assert 'nameservers' in facts['dns']
+    assert 'domain' in facts['dns']
+    assert 'search' in facts['dns']
+    assert 'sortlist' in facts['dns']
+    assert 'options' in facts['dns']
+
+# Generated at 2022-06-13 02:59:46.604992
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    dns_test_class = DnsFactCollector()
+    assert dns_test_class.name == 'dns'
+    assert dns_test_class._fact_ids == set()
+
+
+# Generated at 2022-06-13 02:59:47.995013
+# Unit test for constructor of class DnsFactCollector
+def test_DnsFactCollector():
+    x = DnsFactCollector()
+    assert x
+    assert x.name == 'dns'
+    assert x._fact_ids == set()
+
+
+# Generated at 2022-06-13 02:59:50.410259
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    facts_collector = DnsFactCollector()
+    facts = facts_collector.collect()
+    assert 'dns' in facts
+    assert 'domain' in facts['dns']
+    assert 'nameservers' in facts['dns']
+
+
+# Generated at 2022-06-13 02:59:54.359344
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    # Test without optional args
+    result = DnsFactCollector().collect()
+    assert result['dns']['domain'] == 'test.domain.com'
+    assert result['dns']['search'] == ['test.domain.com']
+    assert result['dns']['nameservers'] == ['192.168.1.1', '172.16.0.254']
+    assert result['dns']['options'] == {'timeout': '2', 'attempts': '1'}
+
+# Test module execution
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.facts import Facts
+
+
+# Generated at 2022-06-13 02:59:55.655005
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    dfc = DnsFactCollector()
+    # TODO: tests
+    assert True
+
+
+# Generated at 2022-06-13 02:59:57.369912
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    dns_fact_collector = DnsFactCollector()
+    assert dns_fact_collector
+    assert dns_fact_collector.collect()
+
+# Generated at 2022-06-13 02:59:58.188523
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    DnsFactCollector._test_collect()
+
+# Generated at 2022-06-13 03:00:04.944599
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    # Test for collect method
+    module = ansible_module_mock()
+    target_dns_facts = {
+        'dns': {
+            'nameservers': [
+                '1.2.3.4',
+                '5.6.7.8'
+            ],
+            'domain': 'example.com',
+            'search': [
+                'subdomain.example.com',
+                'domain.example.com'
+            ],
+            'sortlist': [
+                '10.1.2.3/24',
+                '10.1.2.0'
+            ],
+            'options': {
+                'edns0': True,
+                'timeout': '2'
+            }
+        }
+    }
+
+    module.get_bin_path = mock_get_bin_path
+
+# Generated at 2022-06-13 03:00:10.088088
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    fake_module = object()
+    fake_collected_facts = object()
+    expected_facts = { 'dns': object() }
+    dc = DnsFactCollector()
+    # In python3 mock.patch cannot be used as a decorator
+    # with mock.patch('ansible.module_utils.facts.utils.get_file_content') as get_file_content_mock:
+    get_file_content_mock = mock.patch('ansible.module_utils.facts.utils.get_file_content')
+    if sys.version_info.major < 3:
+        get_file_content_mock.start()
+    else:
+        get_file_content_mock.start()
+        dc.collect = get_file_content_mock.__enter__()
+
+# Generated at 2022-06-13 03:00:18.656011
+# Unit test for method collect of class DnsFactCollector
+def test_DnsFactCollector_collect():
+    from ansible.module_utils.facts import collector
+    from ansible.module_utils.facts.collector import Collectors
+    from ansible.module_utils.facts.utils import get_file_content
+
+    # Create mock module and ansible_facts
+    mock_module = type('MockModule', (object, ), dict(params=dict()))()
+    ansible_facts = dict()
+
+    # Create DnsFactCollector instance
+    dns_fc = DnsFactCollector()
+
+    # Set file content
+    file_content = '''# Ansible managed
+search test.net
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+sortlist 10.0.0.0/8
+options debug ndots:2 timeout:5 attempts:2 rotate
+domain test.net
+'''
+    get_file_

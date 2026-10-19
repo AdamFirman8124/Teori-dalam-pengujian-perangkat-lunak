@@ -86,6 +86,66 @@ def test_mutant_set_metadata_is_stable_and_content_sensitive(tmp_path: Path) -> 
     assert original["mutant_set_id"] != changed["mutant_set_id"]
 
 
+def test_paper_benchmark_manifests_are_exact() -> None:
+    mt_ids = em.task_ids("MT")
+    cm_ids = em.task_ids("CM")
+
+    assert mt_ids == [f"f{i:03d}" for i in range(1, 164)]
+    assert len(cm_ids) == len(set(cm_ids)) == 425
+    assert len({Path(pkg).parts[1] for pkg, _module, _path in em.cm_modules()}) == 24
+
+
+def test_cm_layout_resolves_dotted_module() -> None:
+    layout = em.cm_layout("flutils.objutils")
+
+    assert layout["put"].is_file()
+    assert Path(layout["package_root"]).is_dir()
+    assert layout["module_name"] == "flutils.objutils"
+    assert layout["mutation_supported"] is False
+
+
+def test_mt_layout_is_coverup_163_suite_not_legacy_humaneval() -> None:
+    layout = em.mt_layout("f001")
+
+    assert Path(layout["put"]).is_file()
+    assert "dataset" in Path(layout["put"]).parts
+    assert layout["module_name"] == "f001"
+    assert layout["mutation_supported"] is True
+
+
+
+def test_generate_mutants_writes_reusable_sources(tmp_path: Path) -> None:
+    put = tmp_path / "sample.py"
+    put.write_text("def increment(value):\n    return value + 1\n", encoding="utf-8")
+
+    mutants = em.generate_mutants(put, tmp_path / "mutants", tmp_path)
+
+    assert mutants
+    assert all(path.is_file() and path.read_text(encoding="utf-8").strip()
+               for path in mutants)
+    assert mutants[0].name == "mutant_0001.py"
+
+
+
+def test_run_coverup_dry_run_accepts_mt_and_cm_package_layouts(tmp_path: Path) -> None:
+    for dataset, task in (("MT", "f001"), ("CM", "flutils.objutils")):
+        layout = em.LAYOUTS[dataset](task)
+        work = tmp_path / dataset
+        result = em.run_coverup(
+            Path(layout["put"]), work / "tests", work,
+            model="dummy", timeout=120, extra=("--dry-run",),
+            module_name=layout["module_name"],
+            package_root=Path(layout["package_root"]),
+        )
+
+        # Dry-run deliberately emits no test; parser/import/coverage must still
+        # complete without CLI usage or collection errors.
+        assert "usage: CoverUp" not in result.error
+        assert "Error measuring coverage" not in result.error
+        assert (work / "project").is_dir()
+
+
+
 def test_storage_uses_unique_backup_when_run_id_already_exists(tmp_path: Path) -> None:
     store = storage.ResultStore(tmp_path)
     store.begin("collision_test")

@@ -1,0 +1,235 @@
+
+
+# Generated at 2024-03-18 07:20:50.188835
+    class BaseTest:
+        @lazyperclassproperty
+        def computed_value(cls):
+            return "Base Value"
+
+    class DerivedTest(BaseTest):
+        @lazyperclassproperty
+        def computed_value(cls):
+            return "Derived Value"
+
+    assert BaseTest.computed_value == "Base Value", "BaseTest.computed_value should return 'Base Value'"
+    assert DerivedTest.computed_value == "Derived Value", "DerivedTest.computed_value should return 'Derived Value'"
+    assert BaseTest.computed_value == "Base Value", "BaseTest.computed_value should still return 'Base Value' after DerivedTest access"
+    assert not hasattr(BaseTest, '_BaseTest_lazy_computed_value'), "The cached value should not be stored with the prefixed attribute name"
+    assert hasattr(BaseTest, '_BaseTest_computed_value'), "The cached value should be stored with the correct attribute name"
+    assert hasattr(DerivedTest, '_DerivedTest_computed_value'), "The
+
+# Generated at 2024-03-18 07:20:57.280033
+    class BaseTest:
+        @lazyperclassproperty
+        def value(cls):
+            return 'base value'
+
+    class DerivedTest(BaseTest):
+        pass
+
+    class AnotherDerivedTest(BaseTest):
+        @lazyperclassproperty
+        def value(cls):
+            return 'another derived value'
+
+    # Test that the base class gets the correct value
+    assert BaseTest.value == 'base value', "BaseTest should have 'base value'"
+
+    # Test that the derived class gets the same value as the base class
+    assert DerivedTest.value == 'base value', "DerivedTest should inherit 'base value' from BaseTest"
+
+    # Test that another derived class can override the value
+    assert AnotherDerivedTest.value == 'another derived value', "AnotherDerivedTest should have 'another derived value'"
+
+    # Test that the value is indeed lazy and cached
+    # by checking that the property is not recalculated
+    before_id = id(BaseTest.value)
+
+
+# Generated at 2024-03-18 07:21:06.422720
+    class BaseTest:
+        @lazyperclassproperty
+        def value(cls):
+            return 'base value'
+
+    class DerivedTest(BaseTest):
+        @lazyperclassproperty
+        def value(cls):
+            return 'derived value'
+
+    assert BaseTest.value == 'base value', "BaseTest.value should return 'base value'"
+    assert DerivedTest.value == 'derived value', "DerivedTest.value should return 'derived value'"
+    assert BaseTest.value == 'base value', "BaseTest.value should still return 'base value' after DerivedTest.value is accessed"
+    assert not hasattr(BaseTest, '_BaseTest_lazy_value'), "BaseTest should not have the cached attribute before access"
+    assert hasattr(BaseTest, '_BaseTest_lazy_value'), "BaseTest should have the cached attribute after access"
+    assert not hasattr(DerivedTest, '_DerivedTest_lazy_value'), "DerivedTest should not have the cached attribute before access"
+    assert hasattr(DerivedTest, '_
+
+# Generated at 2024-03-18 07:21:12.408690
+    class TestClass:
+        @lazyclassproperty
+        def value(cls):
+            return 'test_value'
+
+    assert TestClass.value == 'test_value', "The lazyclassproperty did not return the expected value."
+    TestClass.value = 'new_value'
+    assert TestClass.value == 'test_value', "The lazyclassproperty should be read-only and not allow modification."
+
+    class DerivedTestClass(TestClass):
+        pass
+
+    assert DerivedTestClass.value == 'test_value', "The lazyclassproperty should return the same value for derived classes."
+
+    # Test that the value is cached and the property is not called again
+    call_count = 0
+
+    class AnotherTestClass:
+        @lazyclassproperty
+        def computed_value(cls):
+            nonlocal call_count
+            call_count += 1
+            return 'computed'
+
+    assert AnotherTestClass.computed_value == 'computed', "The lazyclassproperty did not compute the expected value."
+    assert call_count == 1,
+
+# Generated at 2024-03-18 07:21:19.149926
+    class TestClass:
+        @lazyclassproperty
+        def expensive_computation(cls):
+            return sum(range(100))
+
+    # Access the property multiple times and ensure it's only computed once
+    first_access = TestClass.expensive_computation
+    second_access = TestClass.expensive_computation
+
+    assert first_access == second_access, "lazyclassproperty should return the same value across multiple accesses"
+    assert first_access == 4950, "The computed value is incorrect"
+
+    # Ensure that the value is actually stored on the class
+    assert hasattr(TestClass, '_lazy_expensive_computation'), "The cached value should be stored on the class"
+
+    # Ensure that accessing the property does not recompute the value
+    before_third_access = getattr(TestClass, '_lazy_expensive_computation')
+    third_access = TestClass.expensive_computation
+    after_third_access = getattr(TestClass, '_lazy_expensive_computation')
+
+    assert before_third_access == after
+
+# Generated at 2024-03-18 07:21:26.605803
+    class BaseTest:
+        @lazyperclassproperty
+        def computed_value(cls):
+            return "Base Value"
+
+    class DerivedTest(BaseTest):
+        pass
+
+    base_instance = BaseTest()
+    derived_instance = DerivedTest()
+
+    # Test if the property is computed separately for each class
+    assert BaseTest.computed_value == "Base Value"
+    assert DerivedTest.computed_value == "Base Value"
+
+    # Change the value in the derived class and check if it doesn't affect the base class
+    DerivedTest._DerivedTest_computed_value = "Derived Value"
+    assert BaseTest.computed_value == "Base Value"
+    assert DerivedTest.computed_value == "Derived Value"
+
+    # Clean up the added class attributes
+    delattr(BaseTest, '_BaseTest_computed_value')
+    delattr(DerivedTest, '_DerivedTest_computed_value')
+
+    print("test_lazyperclassproperty passed.")
+
+# Generated at 2024-03-18 07:21:32.606078
+    class TestClass:
+        @lazyclassproperty
+        def value(cls):
+            return 'test_value'
+
+    assert TestClass.value == 'test_value', "The lazyclassproperty did not return the expected value."
+    TestClass.value = 'new_value'
+    assert TestClass.value == 'test_value', "The lazyclassproperty should be read-only and not allow modification."
+
+    class DerivedTestClass(TestClass):
+        pass
+
+    assert DerivedTestClass.value == 'test_value', "The lazyclassproperty should return the same value for derived classes."
+
+    # Test that the value is cached and the property is not called again
+    original_value = TestClass.value
+    TestClass._lazy_value = 'cached_value'
+    assert TestClass.value == 'cached_value', "The lazyclassproperty should return the cached value after being set."
+
+    # Cleanup
+    del TestClass._lazy_value
+    del DerivedTestClass._lazy_value
+
+# Run the unit test
+test_lazyclassproperty
+
+# Generated at 2024-03-18 07:21:39.744353
+    class BaseTest:
+        @lazyperclassproperty
+        def computed_value(cls):
+            return "Base Value"
+
+    class DerivedTest(BaseTest):
+        @lazyperclassproperty
+        def computed_value(cls):
+            return "Derived Value"
+
+    assert BaseTest.computed_value == "Base Value", "BaseTest.computed_value should return 'Base Value'"
+    assert DerivedTest.computed_value == "Derived Value", "DerivedTest.computed_value should return 'Derived Value'"
+    assert BaseTest.computed_value == "Base Value", "BaseTest.computed_value should still return 'Base Value' after DerivedTest is accessed"
+    assert not hasattr(BaseTest, '_BaseTest_lazy_computed_value'), "The attribute should not be directly accessible"
+    assert not hasattr(DerivedTest, '_DerivedTest_lazy_computed_value'), "The attribute should not be directly accessible"
+
+    # Test that the value is cached and not recomputed
+    original_base_id = id(BaseTest
+
+# Generated at 2024-03-18 07:21:45.333706
+    class TestClass:
+        @lazyclassproperty
+        def expensive_computation(cls):
+            return sum(range(100))
+
+    # Access the property for the first time, triggering the computation
+    first_access = TestClass.expensive_computation
+    assert first_access == 4950, "First access should compute the correct value"
+
+    # Access the property again, should not trigger the computation
+    second_access = TestClass.expensive_computation
+    assert second_access == first_access, "Subsequent access should return the cached value without recomputation"
+
+    # Ensure that the value is stored as a class attribute
+    assert hasattr(TestClass, '_lazy_expensive_computation'), "The cached value should be stored as a class attribute"
+
+    # Test that the value is the same after multiple accesses
+    third_access = TestClass.expensive_computation
+    assert third_access == first_access, "Multiple accesses should return the same cached value"
+
+    print("All tests passed for
+
+# Generated at 2024-03-18 07:21:51.762683
+    class TestClass:
+        @lazyclassproperty
+        def expensive_computation(cls):
+            return sum(range(100))
+
+    # Access the property multiple times and ensure it's only computed once
+    first_access = TestClass.expensive_computation
+    second_access = TestClass.expensive_computation
+
+    assert first_access == 4950, "The computed value is incorrect."
+    assert 'expensive_computation' not in TestClass.__dict__, "The property should not be in the class dict before access."
+    assert '_lazy_expensive_computation' in TestClass.__dict__, "The cached value should be stored in the class dict after access."
+    assert first_access is second_access, "The property should return the same value on multiple accesses, indicating it's cached."
+
+    # Test that the property is not settable
+    try:
+        TestClass.expensive_computation = 100
+        assert False, "The property should not be settable."
+    except

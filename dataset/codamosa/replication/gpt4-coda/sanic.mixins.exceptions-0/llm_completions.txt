@@ -1,0 +1,1447 @@
+
+
+# Generated at 2024-03-18 07:29:18.446017
+    # Arrange
+    mixin = ExceptionMixin()
+    test_exception = ValueError
+    handler_called = False
+
+    def test_handler(request, exception):
+        nonlocal handler_called
+        handler_called = True
+
+    # Act
+    decorator = mixin.exception(test_exception)
+    decorated_handler = decorator(test_handler)
+
+    # Assert
+    assert decorated_handler == test_handler
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == test_handler
+    assert test_exception in future_exception.exceptions
+    assert not handler_called  # Handler should not be called during decoration
+
+    # Simulate an exception to test if the handler is called
+    try:
+        raise test_exception()
+    except test_exception as e:
+        decorated_handler(None, e)
+
+    assert handler_called  # Now the handler should have been called
+
+# Generated at 2024-03-18 07:29:25.067385
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(ValueError)
+    def handle_value_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_value_error
+    assert ValueError in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(KeyError, apply=False)
+    def handle_key_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 2
+    for fe in mixin._future_exceptions:
+        if fe.handler == handle_key_error:
+            assert KeyError in fe.exceptions
+            break
+    else:
+        assert False, "FutureException for handle_key_error not found"
+```
+
+# Generated at 2024-03-18 07:29:31.991459
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:29:48.359858
+
+
+# Generated at 2024-03-18 07:29:55.090815
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {exception}"
+
+    assert len(mixin._future_exceptions) == 2
+    for fe in mixin._future_exceptions:
+        if fe.handler == handle_value_error:
+            assert ValueError in fe.exceptions
+            break
+    else:
+        assert False, "FutureException for handle_value_error not found"
+```
+
+# Generated at 2024-03-18 07:30:00.552694
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:30:08.154624
+    mixin = ExceptionMixin()
+
+    @mixin.exception(ValueError)
+    def handle_value_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_value_error
+    assert ValueError in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(KeyError, apply=False)
+    def handle_key_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 2
+
+    # Check that the handler for KeyError is not applied immediately
+    applied_exceptions = [ex for ex in mixin._future_exceptions if ex.handler.__name__ == "handle_key_error"]
+    assert len(applied_exceptions) == 1
+    assert applied_exceptions[0].handler == handle_key_error
+    assert KeyError in applied_exceptions[0].
+
+# Generated at 2024-03-18 07:30:15.735396
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(isinstance(exc.exceptions[0], ValueError) for exc in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:30:25.569202
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(ValueError)
+    def handle_value_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_value_error
+    assert ValueError in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(KeyError, apply=False)
+    def handle_key_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(isinstance(exc, FutureException) and KeyError in exc.exceptions for exc in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:30:31.576228
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {exception}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:30:45.394155
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    future_exceptions = list(mixin._future_exceptions)
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in future_exceptions)
+```
+
+# Generated at 2024-03-18 07:30:55.110170
+    mixin = ExceptionMixin()
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    # Test with multiple exceptions
+    mixin = ExceptionMixin()
+
+    @mixin.exception(KeyError, ValueError)
+    def handle_multiple_exceptions(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_multiple_exceptions
+    assert KeyError in future_exception.exceptions
+    assert ValueError in future_exception.exceptions
+
+    # Test with apply=False
+    mixin = ExceptionMixin()
+
+    @mixin.exception(RuntimeError, apply=False)
+    def handle_no_apply_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin
+
+# Generated at 2024-03-18 07:31:05.534892
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:31:13.579736
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:31:20.660887
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:31:27.037295
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {exception}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:31:29.706607
+```python
+    mixin = ExceptionMixin()
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+```
+
+# Generated at 2024-03-18 07:31:36.365104
+    mixin = ExceptionMixin()
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    # Test with multiple exceptions
+    mixin = ExceptionMixin()
+
+    @mixin.exception(KeyError, ValueError)
+    def handle_multiple_exceptions(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_multiple_exceptions
+    assert KeyError in future_exception.exceptions
+    assert ValueError in future_exception.exceptions
+
+    # Test with apply=False
+    mixin = ExceptionMixin()
+
+    @mixin.exception(RuntimeError, apply=False)
+    def handle_no_apply_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin
+
+# Generated at 2024-03-18 07:31:45.927480
+    mixin = ExceptionMixin()
+
+    @mixin.exception(ValueError)
+    def handle_value_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_value_error
+    assert ValueError in future_exception.exceptions
+
+    # Test with multiple exceptions
+    @mixin.exception(ValueError, KeyError)
+    def handle_multiple_errors(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 2
+
+    # Test with apply=False
+    @mixin.exception(TypeError, apply=False)
+    def handle_type_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 3
+    assert not mixin._apply_exception_handler.called
+
+    # Test with a list of exceptions
+    @mixin.exception([ValueError, KeyError])
+    def handle_list_of_errors(request, exception):
+        return str
+
+# Generated at 2024-03-18 07:31:53.033825
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(ValueError)
+    def handle_value_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_value_error
+    assert ValueError in future_exception.exceptions
+
+    @mixin.exception(KeyError, IndexError)
+    def handle_key_and_index_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 2
+    for fe in mixin._future_exceptions:
+        if fe.handler == handle_key_and_index_error:
+            assert KeyError in fe.exceptions and IndexError in fe.exceptions
+            break
+    else:
+        assert False, "Handler for KeyError and IndexError not found"
+```
+
+# Generated at 2024-03-18 07:32:11.891212
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(isinstance(exc.exceptions[0], ValueError) for exc in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:32:16.209793
+    mixin = ExceptionMixin()
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_value_error
+    assert ValueError in future_exception.exceptions
+    assert not hasattr(mixin, '_apply_exception_handler') or mixin._apply_exception_handler.__code__ is ExceptionMixin._apply_exception_handler.__code__
+
+# Generated at 2024-03-18 07:32:25.063319
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:32:30.757530
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:32:43.767274
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:32:49.996889
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    future_exceptions = list(mixin._future_exceptions)
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in future_exceptions)
+```
+
+# Generated at 2024-03-18 07:32:55.819441
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {exception}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:33:02.598542
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:33:10.049304
+    mixin = ExceptionMixin()
+
+    @mixin.exception(ValueError)
+    def handle_value_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_value_error
+    assert ValueError in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(KeyError, apply=False)
+    def handle_key_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 2
+
+    # Check that the KeyError handler is added but not applied
+    assert any(fe.handler == handle_key_error and KeyError in fe.exceptions for fe in mixin._future_exceptions)
+
+# Generated at 2024-03-18 07:33:15.664479
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    future_exceptions = list(mixin._future_exceptions)
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in future_exceptions)
+```
+
+# Generated at 2024-03-18 07:33:45.622912
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {exception}"
+
+    assert len(mixin._future_exceptions) == 2
+    for fe in mixin._future_exceptions:
+        if fe.handler == handle_value_error:
+            assert ValueError in fe.exceptions
+            break
+    else:
+        assert False, "ValueError handler not registered"
+```
+
+# Generated at 2024-03-18 07:33:52.671573
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(isinstance(exc.exceptions[0], ValueError) for exc in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:33:53.367278
+```python
+import pytest
+
+
+# Generated at 2024-03-18 07:33:59.350959
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:34:03.215034
+    mixin = ExceptionMixin()
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_value_error
+    assert ValueError in future_exception.exceptions
+    assert not hasattr(mixin, '_apply_exception_handler') or mixin._apply_exception_handler.__code__ is ExceptionMixin._apply_exception_handler.__code__
+
+# Generated at 2024-03-18 07:34:10.929909
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    future_exceptions = list(mixin._future_exceptions)
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in future_exceptions)
+```
+
+# Generated at 2024-03-18 07:34:16.787983
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:34:29.469215
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:34:36.104219
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {exception}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:34:41.220675
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    future_exceptions_list = list(mixin._future_exceptions)
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in future_exceptions_list)
+```
+
+# Generated at 2024-03-18 07:35:10.620053
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error for fe in mixin._future_exceptions)
+    assert any(ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:35:17.569997
+    mixin = ExceptionMixin()
+
+    @mixin.exception(ValueError)
+    def handle_value_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_value_error
+    assert ValueError in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(KeyError, apply=False)
+    def handle_key_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 2
+
+    # Check that the handler for KeyError is not applied
+    applied_exceptions = [ex for ex in mixin._future_exceptions if ex.handler.__name__ == 'handle_key_error']
+    assert len(applied_exceptions) == 1
+    assert applied_exceptions[0].handler == handle_key_error
+    assert KeyError in applied_exceptions[0].exceptions
+
+# Generated at 2024-03-18 07:35:22.807387
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:35:28.746547
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:35:34.655716
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    future_exceptions_list = list(mixin._future_exceptions)
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in future_exceptions_list)
+```
+
+# Generated at 2024-03-18 07:35:41.421405
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:35:46.474278
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {exception}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:35:52.788593
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:35:57.519214
+    mixin = ExceptionMixin()
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_value_error
+    assert ValueError in future_exception.exceptions
+    assert not hasattr(mixin, '_apply_exception_handler') or mixin._apply_exception_handler.__code__ is ExceptionMixin._apply_exception_handler.__code__
+
+# Generated at 2024-03-18 07:36:06.116040
+```python
+    mixin = ExceptionMixin()
+
+    @mixin.exception(ValueError)
+    def handle_value_error(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_value_error
+    assert ValueError in future_exception.exceptions
+
+    # Test with multiple exceptions
+    @mixin.exception(ValueError, KeyError)
+    def handle_multiple_errors(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 2
+
+    # Find the FutureException for handle_multiple_errors
+    future_exceptions = list(filter(lambda fe: fe.handler == handle_multiple_errors, mixin._future_exceptions))
+    assert len(future_exceptions) == 1
+    future_exception = future_exceptions[0]
+    assert ValueError in future_exception.exceptions
+    assert KeyError in future_exception.exceptions
+
+    # Test with apply=False
+    @mixin.exception(RuntimeError, apply
+
+# Generated at 2024-03-18 07:36:56.830251
+```python
+    mixin = ExceptionMixin()
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+```
+
+# Generated at 2024-03-18 07:37:03.978876
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    # Test with multiple exceptions
+    @mixin.exception(ValueError, KeyError)
+    def handle_multiple_exceptions(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 2
+    for fe in mixin._future_exceptions:
+        if fe.handler == handle_multiple_exceptions:
+            assert ValueError in fe.exceptions
+            assert KeyError in fe.exceptions
+            break
+    else:
+        assert False, "Handler for multiple exceptions not found"
+```
+
+# Generated at 2024-03-18 07:37:11.940399
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    future_exceptions_list = list(mixin._future_exceptions)
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in future_exceptions_list)
+```
+
+# Generated at 2024-03-18 07:37:17.789291
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    future_exceptions_list = list(mixin._future_exceptions)
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in future_exceptions_list)
+```
+
+# Generated at 2024-03-18 07:37:26.164651
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:37:34.467456
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    # Test with multiple exceptions
+    @mixin.exception(IOError, KeyError)
+    def handle_multiple_exceptions(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 2
+    for future_exception in mixin._future_exceptions:
+        if future_exception.handler == handle_multiple_exceptions:
+            assert IOError in future_exception.exceptions
+            assert KeyError in future_exception.exceptions
+            break
+    else:
+        assert False, "Handler for multiple exceptions not found"
+
+    # Test with apply=False
+    mixin._apply_exception_handler = lambda x: None
+
+# Generated at 2024-03-18 07:37:42.710006
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:37:49.985675
+```python
+    mixin = ExceptionMixin()
+    handler_called = False
+
+    class CustomException(Exception):
+        pass
+
+    @mixin.exception(CustomException)
+    def handle_custom_exception(request, exception):
+        nonlocal handler_called
+        handler_called = True
+        return str(exception)
+
+    # Simulate the internal method that applies the exception handler
+    def mock_apply_exception_handler(future_exception):
+        assert future_exception.handler == handle_custom_exception
+        assert CustomException in future_exception.exceptions
+
+    mixin._apply_exception_handler = mock_apply_exception_handler
+
+    # Simulate an exception being raised and caught by the handler
+    try:
+        raise CustomException("An error occurred")
+    except CustomException as e:
+        handle_custom_exception(None, e)
+
+    assert handler_called, "The exception handler was not called"
+```
+
+# Generated at 2024-03-18 07:37:56.479976
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```
+
+# Generated at 2024-03-18 07:38:03.521627
+```python
+    mixin = ExceptionMixin()
+    assert len(mixin._future_exceptions) == 0
+
+    @mixin.exception(Exception)
+    def handle_exception(request, exception):
+        return str(exception)
+
+    assert len(mixin._future_exceptions) == 1
+    future_exception = next(iter(mixin._future_exceptions))
+    assert future_exception.handler == handle_exception
+    assert Exception in future_exception.exceptions
+
+    mixin._apply_exception_handler = lambda x: None  # Mocking the method to prevent NotImplementedError
+
+    @mixin.exception(ValueError, apply=False)
+    def handle_value_error(request, exception):
+        return f"ValueError: {str(exception)}"
+
+    assert len(mixin._future_exceptions) == 2
+    assert any(fe.handler == handle_value_error and ValueError in fe.exceptions for fe in mixin._future_exceptions)
+```

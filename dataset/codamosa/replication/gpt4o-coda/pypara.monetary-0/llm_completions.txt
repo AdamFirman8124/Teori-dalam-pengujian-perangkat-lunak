@@ -1,0 +1,950 @@
+
+
+# Generated at 2024-06-03 03:38:24.455083
+```python
+    ccy = Currency("USD", 2)
+    qty = Decimal("123.456")
+    dov = Date(2023, 10, 1)
+    money = SomeMoney(ccy, qty, dov)
+
+    # Test rounding to default (0) digits
+    rounded_money = money.round()
+    assert rounded_money.qty == Decimal("123")
+
+    # Test rounding to 1 digit
+    rounded_money = money.round(1)
+    assert rounded_money.qty == Decimal("123.5")
+
+    # Test rounding to 2 digits
+    rounded_money = money.round(2)
+    assert rounded_money.qty == Decimal("123.46")
+
+    # Test rounding to 3 digits
+    rounded_money = money.round(3)
+    assert rounded_money.qty == Decimal("123.456")
+
+    # Test rounding to more than currency decimals
+    rounded_money = money.round(4)
+    assert rounded_money.qty == Decimal("123.46")
+```
+
+# Generated at 2024-06-03 03:38:28.093109
+```python
+    from decimal import Decimal
+    from datetime import date
+
+    # Define mock classes for Currency and IncompatibleCurrencyError
+    class Currency:
+        def __init__(self, code, decimals):
+            self.code = code
+            self.decimals = decimals
+            self.quantizer = Decimal('1.' + '0' * decimals)
+
+        def quantize(self, value):
+            return value.quantize(self.quantizer)
+
+        def __eq__(self, other):
+            return self.code == other.code
+
+    class IncompatibleCurrencyError(Exception):
+        def __init__(self, ccy1, ccy2, operation):
+            self.ccy1 = ccy1
+            self.ccy2 = ccy2
+            self.operation = operation
+
+    # Define mock NoMoney
+    class NoMoney:
+        undefined = True
+
+    # Test cases
+    ccy1 = Currency("USD", 2)
+    ccy2 = Currency("EUR",
+
+# Generated at 2024-06-03 03:38:30.978282
+```python
+    class MockMoney(Money):
+        def __init__(self, ccy, qty, dov):
+            self.ccy = ccy
+            self.qty = qty
+            self.dov = dov
+            self.defined = True
+            self.undefined = False
+
+        def is_equal(self, other):
+            return self.ccy == other.ccy and self.qty == other.qty and self.dov == other.dov
+
+        def as_boolean(self):
+            return bool(self.qty)
+
+        def as_float(self):
+            return float(self.qty)
+
+        def as_integer(self):
+            return int(self.qty)
+
+        def abs(self):
+            return MockMoney(self.ccy, abs(self.qty), self.dov)
+
+        def negative(self):
+            return MockMoney(self.ccy, -self.qty, self.dov)
+
+        def positive(self):
+            return self
+
+        def round(self, ndigits=0):
+            return MockMoney(self.ccy, round(self.qty, nd
+
+# Generated at 2024-06-03 03:38:36.193757
+```python
+    ccy = Currency("USD", 2)
+    qty = Decimal("123.456")
+    dov = Date(2023, 10, 1)
+    money = SomeMoney(ccy, qty, dov)
+
+    # Test rounding to default (0) digits
+    rounded_money = money.round()
+    assert rounded_money.qty == Decimal("123")
+
+    # Test rounding to 1 digit
+    rounded_money = money.round(1)
+    assert rounded_money.qty == Decimal("123.5")
+
+    # Test rounding to 2 digits
+    rounded_money = money.round(2)
+    assert rounded_money.qty == Decimal("123.46")
+
+    # Test rounding to 3 digits
+    rounded_money = money.round(3)
+    assert rounded_money.qty == Decimal("123.456")
+
+    # Test rounding to more than currency decimals
+    rounded_money = money.round(4)
+    assert rounded_money.qty == Decimal("123.46")
+```
+
+# Generated at 2024-06-03 03:38:37.583040
+```python
+    price_defined = SomePrice(Currency("USD"), Decimal("100.00"), Date(2023, 1, 1))
+    price_undefined = NoPrice
+
+    assert bool(price_defined) is True
+    assert bool(price_undefined) is False
+```
+
+# Generated at 2024-06-03 03:38:41.577300
+```python
+    class MockMoney(Money):
+        def __init__(self, qty: Decimal):
+            self.qty = qty
+            self.defined = True
+
+        def divide(self, other: Numeric) -> "Money":
+            if other == 0:
+                return NoMoney
+            return MockMoney(self.qty / Decimal(other))
+
+        def __truediv__(self, other: Numeric) -> "Money":
+            return self.divide(other)
+
+        # Implementing abstract methods with pass for testing purposes
+        def is_equal(self, other: Any) -> bool: pass
+        def as_boolean(self) -> bool: pass
+        def as_float(self) -> float: pass
+        def as_integer(self) -> int: pass
+        def abs(self) -> "Money": pass
+        def negative(self) -> "Money": pass
+        def positive(self) -> "Money": pass
+        def round(self, ndigits: int = 0) -> "
+
+# Generated at 2024-06-03 03:38:44.018594
+```python
+    price = SomePrice(Currency("USD"), Decimal("100.00"), Date(2023, 10, 1))
+    result = price.scalar_add(Decimal("50.00"))
+    assert result.qty == Decimal("150.00")
+    assert result.ccy == Currency("USD")
+    assert result.dov == Date(2023, 10, 1)
+
+    undefined_price = NoPrice
+    result = undefined_price.scalar_add(Decimal("50.00"))
+    assert result is NoPrice
+```
+
+# Generated at 2024-06-03 03:38:47.285033
+```python
+    from decimal import Decimal
+    from datetime import date
+
+    # Define some currencies
+    usd = Currency("USD")
+    eur = Currency("EUR")
+
+    # Define some dates
+    date1 = date(2023, 1, 1)
+    date2 = date(2023, 1, 2)
+
+    # Define some prices
+    price1 = SomePrice(usd, Decimal("100.00"), date1)
+    price2 = SomePrice(usd, Decimal("200.00"), date1)
+    price3 = SomePrice(eur, Decimal("100.00"), date1)
+    price4 = SomePrice(usd, Decimal("100.00"), date2)
+    no_price = NoPrice
+
+    # Test cases
+    assert price2 > price1  # 200 USD > 100 USD
+    assert not (price1 > price2)  # 100 USD is not > 200 USD
+
+
+# Generated at 2024-06-03 03:38:51.012941
+```python
+    class MockMoney(Money):
+        def __init__(self, qty: Decimal, ccy: Currency, dov: Date):
+            self.qty = qty
+            self.ccy = ccy
+            self.dov = dov
+            self.defined = True
+            self.undefined = False
+
+        def is_equal(self, other: Any) -> bool:
+            return isinstance(other, MockMoney) and self.qty == other.qty and self.ccy == other.ccy and self.dov == other.dov
+
+        def as_boolean(self) -> bool:
+            return self.defined and self.qty != 0
+
+        def as_float(self) -> float:
+            if not self.defined:
+                raise MonetaryOperationException("Undefined money cannot be converted to float")
+            return float(self.qty)
+
+        def as_integer(self) -> int:
+            if not self.defined:
+                raise MonetaryOperationException("Undefined money cannot be converted to int")
+            return int(self.qty
+
+# Generated at 2024-06-03 03:38:55.157643
+```python
+    class MockCurrency(Currency):
+        def __init__(self, code):
+            self.code = code
+
+    class MockMoney(Money):
+        def __init__(self, ccy, qty, defined=True):
+            self.ccy = ccy
+            self.qty = qty
+            self.defined = defined
+
+        def is_equal(self, other):
+            return self.ccy == other.ccy and self.qty == other.qty and self.defined == other.defined
+
+        def as_boolean(self):
+            return self.defined and self.qty != 0
+
+        def as_float(self):
+            if not self.defined:
+                raise MonetaryOperationException()
+            return float(self.qty)
+
+        def as_integer(self):
+            if not self.defined:
+                raise MonetaryOperationException()
+            return int(self.qty)
+
+        def abs(self):
+            if not self.defined:
+                return self
+            return MockMoney(self.ccy, abs(self.qty), self.defined)
+
+
+
+# Generated at 2024-06-03 03:39:43.013153
+```python
+    from decimal import Decimal
+    from datetime import date
+
+    # Define mock classes for Currency and IncompatibleCurrencyError
+    class Currency:
+        def __init__(self, code):
+            self.code = code
+
+        def __eq__(self, other):
+            return self.code == other.code
+
+    class IncompatibleCurrencyError(Exception):
+        def __init__(self, ccy1, ccy2, operation):
+            self.ccy1 = ccy1
+            self.ccy2 = ccy2
+            self.operation = operation
+
+    # Define mock class for NoPrice
+    class NoPrice:
+        undefined = True
+
+    # Test cases
+    ccy1 = Currency("USD")
+    ccy2 = Currency("EUR")
+    qty1 = Decimal("100.00")
+    qty2 = Decimal("50.00")
+    dov1 = date(2023, 1, 1)
+    dov2 = date(2023
+
+# Generated at 2024-06-03 03:39:46.281224
+```python
+    class MockMoney(Money):
+        def __init__(self, ccy: Currency, qty: Decimal, dov: Date):
+            self.ccy = ccy
+            self.qty = qty
+            self.dov = dov
+            self.defined = True
+            self.undefined = False
+
+        def is_equal(self, other: Any) -> bool:
+            return isinstance(other, MockMoney) and self.ccy == other.ccy and self.qty == other.qty and self.dov == other.dov
+
+        def as_boolean(self) -> bool:
+            return bool(self.qty)
+
+        def as_float(self) -> float:
+            return float(self.qty)
+
+        def as_integer(self) -> int:
+            return int(self.qty)
+
+        def abs(self) -> "Money":
+            return MockMoney(self.ccy, abs(self.qty), self.dov)
+
+        def negative(self) -> "Money":
+            return MockMoney(self.ccy, -self.qty, self
+
+# Generated at 2024-06-03 03:39:48.633527
+```python
+    price1 = SomePrice(Currency("USD"), Decimal("100.00"), Date(2023, 1, 1))
+    price2 = price1.divide(Decimal("2"))
+    assert price2.qty == Decimal("50.00")
+    assert price2.ccy == price1.ccy
+    assert price2.dov == price1.dov
+
+    price3 = price1.divide(Decimal("0"))
+    assert price3 == NoPrice
+
+    price4 = NoPrice.divide(Decimal("2"))
+    assert price4 == NoPrice
+```
+
+# Generated at 2024-06-03 03:39:50.353873
+```python
+    price = SomePrice(Currency("USD"), Decimal("100.00"), Date(2023, 10, 1))
+    new_ccy = Currency("EUR")
+    new_price = price.with_ccy(new_ccy)
+    assert new_price.ccy == new_ccy
+    assert new_price.qty == price.qty
+    assert new_price.dov == price.dov
+```
+
+# Generated at 2024-06-03 03:39:53.713273
+```python
+    class MockMoney(Money):
+        def __init__(self, ccy: Currency, qty: Decimal, dov: Date):
+            self.ccy = ccy
+            self.qty = qty
+            self.dov = dov
+            self.defined = True
+            self.undefined = False
+
+        def is_equal(self, other: Any) -> bool:
+            return isinstance(other, MockMoney) and self.ccy == other.ccy and self.qty == other.qty and self.dov == other.dov
+
+        def as_boolean(self) -> bool:
+            return self.defined and self.qty != 0
+
+        def as_float(self) -> float:
+            if not self.defined:
+                raise MonetaryOperationException("Undefined money cannot be converted to float.")
+            return float(self.qty)
+
+        def as_integer(self) -> int:
+            if not self.defined:
+                raise MonetaryOperationException("Undefined money cannot be converted to int.")
+            return int(self.qty
+
+# Generated at 2024-06-03 03:39:56.834994
+```python
+    class TestMoney(Money):
+        def __init__(self, defined: bool):
+            self.defined = defined
+
+        def is_equal(self, other: Any) -> bool:
+            return False
+
+        def as_boolean(self) -> bool:
+            return self.defined
+
+        def as_float(self) -> float:
+            return 0.0
+
+        def as_integer(self) -> int:
+            return 0
+
+        def abs(self) -> "Money":
+            return self
+
+        def negative(self) -> "Money":
+            return self
+
+        def positive(self) -> "Money":
+            return self
+
+        def round(self, ndigits: int = 0) -> "Money":
+            return self
+
+        def add(self, other: "Money") -> "Money":
+            return self
+
+        def scalar_add(self, other: Numeric) -> "Money":
+            return self
+
+        def subtract(self, other: "Money") -> "Money":
+
+
+# Generated at 2024-06-03 03:40:00.295196
+```python
+    class MockCurrency(Currency):
+        def __init__(self, code: str):
+            self.code = code
+
+    class MockMoney(Money):
+        def __init__(self, ccy: Currency, qty: Decimal):
+            self.ccy = ccy
+            self.qty = qty
+            self.defined = True
+            self.undefined = False
+
+        def is_equal(self, other: Any) -> bool:
+            return isinstance(other, MockMoney) and self.ccy == other.ccy and self.qty == other.qty
+
+        def as_boolean(self) -> bool:
+            return self.defined and self.qty != 0
+
+        def as_float(self) -> float:
+            if not self.defined:
+                raise MonetaryOperationException("Undefined money cannot be converted to float.")
+            return float(self.qty)
+
+        def as_integer(self) -> int:
+            if not self.defined:
+                raise MonetaryOperationException("Undefined money cannot be converted to int.")
+
+
+# Generated at 2024-06-03 03:40:03.527292
+```python
+    class MockCurrency(Currency):
+        def __init__(self, code: str):
+            self.code = code
+
+    class MockMoney(Money):
+        def __init__(self, ccy: Currency, qty: Decimal, dov: Date):
+            self.ccy = ccy
+            self.qty = qty
+            self.dov = dov
+            self.defined = True
+            self.undefined = False
+
+        def is_equal(self, other: Any) -> bool:
+            return isinstance(other, MockMoney) and self.ccy == other.ccy and self.qty == other.qty and self.dov == other.dov
+
+        def as_boolean(self) -> bool:
+            return self.defined and self.qty != 0
+
+        def as_float(self) -> float:
+            if not self.defined:
+                raise MonetaryOperationException("Undefined money cannot be converted to float.")
+            return float(self.qty)
+
+        def as_integer(self) -> int:
+            if
+
+# Generated at 2024-06-03 03:40:05.476109
+```python
+    price1 = SomePrice(Currency("USD"), Decimal("100.00"), Date(2023, 1, 1))
+    price2 = price1.divide(Decimal("2"))
+    assert price2.qty == Decimal("50.00")
+    assert price2.ccy == price1.ccy
+    assert price2.dov == price1.dov
+
+    price3 = price1.divide(Decimal("0"))
+    assert price3 == NoPrice
+
+    price4 = NoPrice.divide(Decimal("2"))
+    assert price4 == NoPrice
+```
+
+# Generated at 2024-06-03 03:40:09.184641
+```python
+    class MockCurrency(Currency):
+        def __init__(self, code: str):
+            self.code = code
+
+    class MockMoney(Money):
+        def __init__(self, ccy: Currency, qty: Decimal, dov: Date):
+            self.ccy = ccy
+            self.qty = qty
+            self.dov = dov
+            self.defined = True
+            self.undefined = False
+
+        def is_equal(self, other: Any) -> bool:
+            return isinstance(other, MockMoney) and self.ccy == other.ccy and self.qty == other.qty and self.dov == other.dov
+
+        def as_boolean(self) -> bool:
+            return self.defined and self.qty != 0
+
+        def as_float(self) -> float:
+            if not self.defined:
+                raise MonetaryOperationException("Undefined money cannot be converted to float.")
+            return float(self.qty)
+
+        def as_integer(self) -> int:
+            if
+
+# Generated at 2024-06-03 03:40:40.027718
+```python
+    price1 = SomePrice(Currency("USD"), Decimal("100.00"), Date(2023, 1, 1))
+    price2 = price1.divide(Decimal("2"))
+    assert price2.qty == Decimal("50.00")
+    assert price2.ccy == price1.ccy
+    assert price2.dov == price1.dov
+
+    price3 = price1.divide(Decimal("0"))
+    assert price3 == NoPrice
+
+    price4 = NoPrice.divide(Decimal("2"))
+    assert price4 == NoPrice
+```
+
+# Generated at 2024-06-03 03:40:43.247549
+```python
+    price1 = SomePrice(Currency("USD"), Decimal("10.00"), Date(2023, 1, 1))
+    price2 = SomePrice(Currency("USD"), Decimal("20.00"), Date(2023, 1, 1))
+    price3 = SomePrice(Currency("USD"), Decimal("10.00"), Date(2023, 1, 1))
+    price_undefined = NoPrice
+
+    assert price1.lte(price2) == True, "Expected price1 to be less than or equal to price2"
+    assert price2.lte(price1) == False, "Expected price2 to be greater than price1"
+    assert price1.lte(price3) == True, "Expected price1 to be equal to price3"
+    assert price_undefined.lte(price1) == True, "Expected undefined price to be less than or equal to any defined price"
+    assert price1.l
+
+# Generated at 2024-06-03 03:40:45.105927
+```python
+    price = SomePrice(Currency("USD"), Decimal("100.00"), Date(2023, 1, 1))
+    new_dov = Date(2023, 12, 31)
+    new_price = price.with_dov(new_dov)
+    assert new_price.dov == new_dov
+    assert new_price.ccy == price.ccy
+    assert new_price.qty == price.qty
+```
+
+# Generated at 2024-06-03 03:40:48.298353
+```python
+    class MockMoney(Money):
+        def __init__(self, qty: Decimal, ccy: Currency = Currency("USD"), dov: Date = Date.today()):
+            self.qty = qty
+            self.ccy = ccy
+            self.dov = dov
+            self.defined = True
+            self.undefined = False
+
+        def is_equal(self, other: Any) -> bool:
+            return isinstance(other, MockMoney) and self.qty == other.qty and self.ccy == other.ccy and self.dov == other.dov
+
+        def as_boolean(self) -> bool:
+            return self.defined and self.qty != 0
+
+        def as_float(self) -> float:
+            if not self.defined:
+                raise MonetaryOperationException("Undefined money cannot be converted to float.")
+            return float(self.qty)
+
+        def as_integer(self) -> int:
+            if not self.defined:
+                raise MonetaryOperationException("Undefined money cannot be converted to
+
+# Generated at 2024-06-03 03:40:51.887676
+```python
+    from datetime import date
+    from .currencies import Currency
+    from .commons.zeitgeist import Date
+
+    class SomeMoney(Money):
+        def __init__(self, ccy: Currency, qty: Decimal, dov: Date):
+            self.ccy = ccy
+            self.qty = qty
+            self.dov = dov
+            self.defined = True
+            self.undefined = False
+
+        def is_equal(self, other: Any) -> bool:
+            return isinstance(other, SomeMoney) and self.ccy == other.ccy and self.qty == other.qty and self.dov == other.dov
+
+        def as_boolean(self) -> bool:
+            return self.qty != 0
+
+        def as_float(self) -> float:
+            return float(self.qty)
+
+        def as_integer(self) -> int:
+            return int(self.qty)
+
+        def abs(self) -> "Money":
+            return SomeMoney(self.ccy, abs(self.qty),
+
+# Generated at 2024-06-03 03:40:53.682843
+```python
+    price1 = SomePrice(Currency("USD"), Decimal("100.00"), Date(2023, 1, 1))
+    price2 = SomePrice(Currency("USD"), Decimal("50.00"), Date(2023, 1, 1))
+    result = price1 - price2
+    assert result.qty == Decimal("50.00")
+    assert result.ccy == Currency("USD")
+    assert result.dov == Date(2023, 1, 1)
+```
+
+# Generated at 2024-06-03 03:40:56.861606
+```python
+    class TestMoney(Money):
+        def __init__(self, ccy, qty, dov):
+            self.ccy = ccy
+            self.qty = qty
+            self.dov = dov
+            self.defined = True
+            self.undefined = False
+
+        def is_equal(self, other):
+            return self.ccy == other.ccy and self.qty == other.qty and self.dov == other.dov
+
+        def as_boolean(self):
+            return bool(self.qty)
+
+        def as_float(self):
+            return float(self.qty)
+
+        def as_integer(self):
+            return int(self.qty)
+
+        def abs(self):
+            return TestMoney(self.ccy, abs(self.qty), self.dov)
+
+        def negative(self):
+            return TestMoney(self.ccy, -self.qty, self.dov)
+
+        def positive(self):
+            return self
+
+        def round(self, ndigits=0):
+            return TestMoney(self.ccy, round(self.qty, nd
+
+# Generated at 2024-06-03 03:41:04.011119
+```python
+    class TestMoney(Money):
+        def __init__(self, ccy, qty, dov):
+            self.ccy = ccy
+            self.qty = qty
+            self.dov = dov
+            self.defined = True
+            self.undefined = False
+
+        def is_equal(self, other):
+            return self.ccy == other.ccy and self.qty == other.qty and self.dov == other.dov
+
+        def as_boolean(self):
+            return bool(self.qty)
+
+        def as_float(self):
+            if self.defined:
+                return float(self.qty)
+            raise MonetaryOperationException("Undefined money object cannot be converted to float")
+
+        def as_integer(self):
+            if self.defined:
+                return int(self.qty)
+            raise MonetaryOperationException("Undefined money object cannot be converted to int")
+
+        def abs(self):
+            return TestMoney(self.ccy, abs(self.qty), self.dov)
+
+        def negative(self):
+            return TestMoney(self.cc
+
+# Generated at 2024-06-03 03:41:05.532262
+```python
+    price = SomePrice(Currency("USD"), Decimal("100.00"), Date(2023, 10, 1))
+    new_ccy = Currency("EUR")
+    new_price = price.with_ccy(new_ccy)
+    assert new_price.ccy == new_ccy
+    assert new_price.qty == price.qty
+    assert new_price.dov == price.dov
+```
+
+# Generated at 2024-06-03 03:41:07.712319
+```python
+    price = SomePrice(Currency("USD"), Decimal("123.45"), Date(2023, 10, 1))
+    assert float(price) == 123.45
+
+    undefined_price = NoPrice
+    try:
+        float(undefined_price)
+        assert False, "Expected MonetaryOperationException"
+    except MonetaryOperationException:
+        pass
+```
+
+# Generated at 2024-06-03 03:42:01.986176
+```python
+    price = SomePrice(Currency("USD"), Decimal("100.00"), Date(2023, 10, 1))
+    result = price.scalar_add(Decimal("50.00"))
+    assert result.qty == Decimal("150.00")
+    assert result.ccy == Currency("USD")
+    assert result.dov == Date(2023, 10, 1)
+```
+
+# Generated at 2024-06-03 03:42:05.623121
+```python
+    class TestMoney(Money):
+        def __init__(self, ccy, qty, dov):
+            self.ccy = ccy
+            self.qty = qty
+            self.dov = dov
+            self.defined = True
+            self.undefined = False
+
+        def is_equal(self, other):
+            return self.ccy == other.ccy and self.qty == other.qty and self.dov == other.dov
+
+        def as_boolean(self):
+            return bool(self.qty)
+
+        def as_float(self):
+            if self.undefined:
+                raise MonetaryOperationException("Undefined money cannot be converted to float")
+            return float(self.qty)
+
+        def as_integer(self):
+            if self.undefined:
+                raise MonetaryOperationException("Undefined money cannot be converted to integer")
+            return int(self.qty)
+
+        def abs(self):
+            return TestMoney(self.ccy, abs(self.qty), self.dov)
+
+        def negative(self):
+            return TestMoney(self.ccy, -self
+
+# Generated at 2024-06-03 03:42:08.830135
+```python
+    from decimal import Decimal
+    from datetime import date
+
+    # Define some currencies
+    usd = Currency("USD")
+    eur = Currency("EUR")
+
+    # Define some dates
+    date1 = date(2023, 1, 1)
+    date2 = date(2023, 1, 2)
+
+    # Define some prices
+    price1 = SomePrice(usd, Decimal("100.00"), date1)
+    price2 = SomePrice(usd, Decimal("50.00"), date2)
+    price3 = SomePrice(eur, Decimal("50.00"), date2)
+
+    # Test subtraction of two prices with the same currency
+    result = price1 - price2
+    assert result == SomePrice(usd, Decimal("50.00"), date2), f"Expected SomePrice(usd, Decimal('50.00'), date2), got {result}"
+
+    # Test subtraction of two prices with different
+
+# Generated at 2024-06-03 03:42:11.857408
+```python
+    class TestMoney(Money):
+        def __init__(self, ccy, qty, dov):
+            self.ccy = ccy
+            self.qty = qty
+            self.dov = dov
+            self.defined = True
+            self.undefined = False
+
+        def is_equal(self, other):
+            return self.ccy == other.ccy and self.qty == other.qty and self.dov == other.dov
+
+        def as_boolean(self):
+            return bool(self.qty)
+
+        def as_float(self):
+            if not self.defined:
+                raise MonetaryOperationException("Undefined money object")
+            return float(self.qty)
+
+        def as_integer(self):
+            if not self.defined:
+                raise MonetaryOperationException("Undefined money object")
+            return int(self.qty)
+
+        def abs(self):
+            return TestMoney(self.ccy, abs(self.qty), self.dov)
+
+        def negative(self):
+            return TestMoney(self.ccy, -self.qty, self.d
+
+# Generated at 2024-06-03 03:42:14.715295
+```python
+    from unittest.mock import patch
+    from datetime import date
+
+    # Mock Currency and Date classes
+    class MockCurrency:
+        def __init__(self, code):
+            self.code = code
+
+    class MockDate:
+        def __init__(self, year, month, day):
+            self.date = date(year, month, day)
+
+    # Mock FXRateService
+    class MockFXRateService:
+        @staticmethod
+        def get_rate(from_ccy, to_ccy, asof):
+            if from_ccy.code == "USD" and to_ccy.code == "EUR":
+                return Decimal("0.85")
+            raise FXRateLookupError("Rate not found")
+
+    # Mock Money class
+    class MockMoney(Money):
+        def __init__(self, ccy, qty, dov):
+            self.ccy = ccy
+            self.qty = qty
+            self.dov = dov
+            self.defined = True
+           
+
+# Generated at 2024-06-03 03:42:18.725470
+```python
+    from decimal import Decimal
+    from datetime import date
+
+    # Define mock Currency and Date classes for testing
+    class Currency:
+        def __init__(self, code, decimals):
+            self.code = code
+            self.decimals = decimals
+            self.quantizer = Decimal('1.' + '0' * decimals)
+
+        def quantize(self, value):
+            return value.quantize(self.quantizer)
+
+        def __eq__(self, other):
+            return self.code == other.code
+
+    class Date:
+        def __init__(self, year, month, day):
+            self.date = date(year, month, day)
+
+        def __eq__(self, other):
+            return self.date == other.date
+
+        def __gt__(self, other):
+            return self.date > other.date
+
+    # Mock IncompatibleCurrencyError
+    class IncompatibleCurrencyError(Exception):
+        def __init__(self, ccy1, ccy2, operation):
+           
+
+# Generated at 2024-06-03 03:42:22.548115
+```python
+    from datetime import date
+    from .currencies import Currency
+    from .commons.zeitgeist import Date
+
+    class SomeMoney(Money):
+        def __init__(self, ccy: Currency, qty: Decimal, dov: Date):
+            self.ccy = ccy
+            self.qty = qty
+            self.dov = dov
+            self.defined = True
+            self.undefined = False
+
+        def is_equal(self, other: Any) -> bool:
+            return isinstance(other, SomeMoney) and self.ccy == other.ccy and self.qty == other.qty and self.dov == other.dov
+
+        def as_boolean(self) -> bool:
+            return self.defined and self.qty != 0
+
+        def as_float(self) -> float:
+            if not self.defined:
+                raise MonetaryOperationException("Undefined money cannot be converted to float")
+            return float(self.qty)
+
+        def as_integer(self) -> int:
+            if
+
+# Generated at 2024-06-03 03:42:24.091026
+```python
+    price = SomePrice(Currency("USD"), Decimal("100.50"), Date(2023, 10, 1))
+    assert float(price) == 100.50
+
+    price_undefined = NoPrice
+    try:
+        float(price_undefined)
+        assert False, "Expected MonetaryOperationException"
+    except MonetaryOperationException:
+        pass
+```
+
+# Generated at 2024-06-03 03:42:28.111235
+```python
+    class MockCurrency:
+        def __init__(self, code):
+            self.code = code
+
+        def quantize(self, qty):
+            return qty
+
+    class MockDate:
+        pass
+
+    class MockMoney(Money):
+        def __init__(self, ccy, qty, dov):
+            self.ccy = ccy
+            self.qty = qty
+            self.dov = dov
+            self.defined = True
+            self.undefined = False
+
+        def is_equal(self, other):
+            return self.ccy == other.ccy and self.qty == other.qty and self.dov == other.dov
+
+        def as_boolean(self):
+            return bool(self.qty)
+
+        def as_float(self):
+            return float(self.qty)
+
+        def as_integer(self):
+            return int(self.qty)
+
+        def abs(self):
+            return MockMoney(self.ccy, abs(self.qty), self.dov)
+
+        def negative(self):
+            return MockMoney(self.ccy,
+
+# Generated at 2024-06-03 03:42:30.490716
+```python
+    price1 = SomePrice(Currency("USD"), Decimal("10.00"), Date(2023, 1, 1))
+    price2 = SomePrice(Currency("USD"), Decimal("20.00"), Date(2023, 1, 1))
+    price3 = SomePrice(Currency("USD"), Decimal("10.00"), Date(2023, 1, 1))
+    price_undefined = NoPrice
+
+    assert price1 <= price2
+    assert price1 <= price3
+    assert not (price2 <= price1)
+    assert price_undefined <= price1
+    assert price_undefined <= price_undefined
+```

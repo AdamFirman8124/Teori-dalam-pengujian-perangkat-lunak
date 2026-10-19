@@ -1,0 +1,1340 @@
+
+
+# Generated at 2024-03-18 05:13:39.710227
+```python
+
+# Generated at 2024-03-18 05:13:47.875112
+```python
+    # Assuming the existence of a dataclass and mixin for testing
+    @dataclass
+    class Person:
+        name: str
+        age: int
+        birthday: typing.Optional[datetime] = None
+
+    class Mixin:
+        pass
+
+    # Test case for build_schema
+    def test_build_schema():
+        # Create the schema for the Person dataclass
+        PersonSchema = build_schema(Person, Mixin, infer_missing=True, partial=False)
+        
+        # Create an instance of the Person dataclass
+        person_instance = Person(name="John Doe", age=30)
+        
+        # Serialize the instance
+        serialized = PersonSchema().dump(person_instance)
+        assert serialized == {"name": "John Doe", "age": 30, "birthday": None}, "Serialization failed"
+        
+        # Deserialize the data back into a Person instance
+        deserialized = PersonSchema().load(serialized)
+        assert deserialized == person_instance, "Des
+
+# Generated at 2024-03-18 05:13:52.632399
+
+
+# Generated at 2024-03-18 05:13:58.337097
+```python
+    # Assuming the function `build_schema` is defined above, as provided in the prompt.
+
+    # Create a simple dataclass for testing
+    @dataclass
+    class Person:
+        name: str
+        age: int
+        birthday: typing.Optional[datetime] = None
+
+    # Build the schema for the dataclass
+    PersonSchema = build_schema(Person, mixin=None, infer_missing=False, partial=False)
+
+    # Create an instance of the dataclass
+    person_instance = Person(name="John Doe", age=30)
+
+    # Test serialization
+    person_schema = PersonSchema()
+    serialized_person = person_schema.dump(person_instance)
+    assert serialized_person == {"name": "John Doe", "age": 30, "birthday": None}
+
+    # Test deserialization
+    loaded_person = person_schema.load({"name": "Jane Doe", "age": 25, "birthday": "1995-05-16"})
+    assert loaded_person
+
+# Generated at 2024-03-18 05:14:01.458343
+```python
+# Assuming the function `build_schema` is already defined above, as per the provided code.
+
+# Import necessary libraries for testing
+import unittest
+from dataclasses import dataclass, field
+from marshmallow import ValidationError
+from typing import Optional
+
+# Define a simple dataclass for testing
+@dataclass
+
+# Generated at 2024-03-18 05:14:06.634315
+```python
+    # Test serialization of datetime object to ISO format string
+    iso_field = _IsoField()
+    dt = datetime(2021, 1, 1, 12, 0, 0)
+    serialized = iso_field._serialize(dt, None, None)
+    assert serialized == "2021-01-01T12:00:00"
+
+    # Test deserialization of ISO format string to datetime object
+    deserialized = iso_field._deserialize(serialized, None, None)
+    assert deserialized == dt
+
+    # Test serialization with None when field is not required
+    iso_field.required = False
+    serialized_none = iso_field._serialize(None, None, None)
+    assert serialized_none is None
+
+    # Test deserialization with None when field is not required
+    deserialized_none = iso_field._deserialize(None, None, None)
+    assert deserialized_none is None
+
+    # Test serialization raises ValidationError when field is required and value
+
+# Generated at 2024-03-18 05:14:11.543935
+```python
+    # Assuming the existence of a dataclass `Person` and a mixin `JsonMixin`
+    @dataclass
+    class Person:
+        name: str
+        age: int
+        birthday: typing.Optional[datetime] = None
+
+    class JsonMixin:
+        pass
+
+    # Test case for build_schema
+    def test_build_schema():
+        # Create the schema for the Person dataclass
+        PersonSchema = build_schema(Person, JsonMixin, infer_missing=True, partial=False)
+        
+        # Create an instance of the schema
+        schema_instance = PersonSchema()
+
+        # Test serialization
+        person_instance = Person(name="John Doe", age=30, birthday=datetime(1990, 1, 1))
+        serialized = schema_instance.dump(person_instance)
+        assert serialized == {
+            'name': 'John Doe',
+            'age': 30,
+            'birthday': '1990-01-01T00:00:00'
+        }
+
+
+
+# Generated at 2024-03-18 05:14:18.495484
+```python
+    class MyDataclass:
+        def __init__(self, id: int, name: str):
+            self.id = id
+            self.name = name
+
+    class MySchema(SchemaF[MyDataclass]):
+        id = fields.Int()
+        name = fields.Str()
+
+        @post_load
+        def make_my_dataclass(self, data, **kwargs):
+            return MyDataclass(**data)
+
+    my_dataclass_instance = MyDataclass(1, "Test Name")
+    my_schema = MySchema()
+
+    # Test dumping single object
+    dumped_data = my_schema.dump(my_dataclass_instance)
+    assert dumped_data == {"id": 1, "name": "Test Name"}
+
+    # Test dumping list of objects
+    my_dataclass_instances = [MyDataclass(1, "Test Name"), MyDataclass(2, "Another Test")]
+    dumped_data_list = my_schema.dump(my_dataclass_instances, many=True)
+    assert dumped
+
+# Generated at 2024-03-18 05:14:26.524178
+```python
+    # Setup a simple dataclass and schema for testing
+    @dataclass
+    class SimpleDataClass:
+        id: int
+        name: str
+
+    class SimpleDataClassSchema(SchemaF[SimpleDataClass]):
+        id = fields.Int()
+        name = fields.Str()
+
+        @post_load
+        def make_dataclass(self, data, **kwargs):
+            return SimpleDataClass(**data)
+
+    # Create an instance of the dataclass
+    simple_data = SimpleDataClass(id=1, name="Test")
+
+    # Create an instance of the schema
+    simple_schema = SimpleDataClassSchema()
+
+    # Test dumping a single object
+    dumped_json = simple_schema.dumps(simple_data)
+    assert dumped_json == '{"id": 1, "name": "Test"}'
+
+    # Test dumping multiple objects
+    simple_data_list = [SimpleDataClass(id=2, name="Test2"), SimpleDataClass(id=3, name
+
+# Generated at 2024-03-18 05:14:31.778748
+```python
+    # Test simple types
+    assert isinstance(build_type(int, {}, None, None, None), fields.Int)
+    assert isinstance(build_type(str, {}, None, None, None), fields.Str)
+    assert isinstance(build_type(float, {}, None, None, None), fields.Float)
+    assert isinstance(build_type(bool, {}, None, None, None), fields.Bool)
+    assert isinstance(build_type(UUID, {}, None, None, None), fields.UUID)
+    assert isinstance(build_type(Decimal, {}, None, None, None), fields.Decimal)
+    assert isinstance(build_type(datetime, {}, None, None, None), _TimestampField)
+
+    # Test collection types
+    assert isinstance(build_type(typing.List[int], {}, None, None, None), fields.List)
+    assert isinstance(build_type(typing.Dict[str, int], {}, None, None, None), fields.Dict)
+
+    # Test optional types
+    assert isinstance(build_type(typing.Optional[int], {}, None, None, None
+
+# Generated at 2024-03-18 05:14:51.422212
+```python
+    from dataclasses import dataclass
+    from marshmallow import ValidationError
+    from dataclasses_json import dataclass_json
+
+    @dataclass_json
+    @dataclass
+    class SimpleDataClass:
+        id: int
+        name: str
+        is_active: bool = False
+
+    simple_schema = schema(SimpleDataClass, dataclass_json, infer_missing=False)
+    assert 'id' in simple_schema
+    assert isinstance(simple_schema['id'], fields.Int)
+    assert 'name' in simple_schema
+    assert isinstance(simple_schema['name'], fields.Str)
+    assert 'is_active' in simple_schema
+    assert isinstance(simple_schema['is_active'], fields.Bool)
+
+    # Test serialization
+    simple_instance = SimpleDataClass(id=1, name='Test')
+    serialized = simple_schema.dump(simple_instance)
+    assert serialized == {'id': 1, 'name': 'Test', 'is_active': False}
+
+    #
+
+# Generated at 2024-03-18 05:15:06.161979
+```python
+    # Test serialization of datetime object to ISO format string
+    iso_field = _IsoField()
+    dt = datetime(2021, 1, 1, 12, 0, 0)
+    serialized = iso_field._serialize(dt, None, None)
+    assert serialized == "2021-01-01T12:00:00"
+
+    # Test deserialization of ISO format string to datetime object
+    deserialized = iso_field._deserialize(serialized, None, None)
+    assert deserialized == dt
+
+    # Test serialization with None when field is not required
+    iso_field.required = False
+    serialized_none = iso_field._serialize(None, None, None)
+    assert serialized_none is None
+
+    # Test deserialization with None when field is not required
+    deserialized_none = iso_field._deserialize(None, None, None)
+    assert deserialized_none is None
+
+    # Test serialization with None when field is required
+   
+
+# Generated at 2024-03-18 05:15:06.859722
+```python
+
+# Generated at 2024-03-18 05:15:08.142118
+```python
+
+# Generated at 2024-03-18 05:15:13.916071
+```python
+    # Assume we have a dataclass and mixin defined for testing
+    @dataclass_json
+    @dataclass
+    class MyDataClass:
+        id: int
+        name: str
+        timestamp: datetime
+
+    class MyMixin:
+        pass
+
+    # Test schema generation with infer_missing as False
+    generated_schema_false = schema(MyDataClass, MyMixin, False)
+    assert isinstance(generated_schema_false['id'], fields.Int)
+    assert isinstance(generated_schema_false['name'], fields.Str)
+    assert isinstance(generated_schema_false['timestamp'], _TimestampField)
+    assert 'missing' not in generated_schema_false['id'].metadata
+    assert 'missing' not in generated_schema_false['name'].metadata
+    assert 'missing' not in generated_schema_false['timestamp'].metadata
+
+    # Test schema generation with infer_missing as True
+    generated_schema_true = schema(MyDataClass, MyMixin, True)
+    assert isinstance(generated_schema
+
+# Generated at 2024-03-18 05:15:18.926533
+```python
+    # Assume we have a dataclass and mixin defined for testing
+    @dataclass_json
+    @dataclass
+    class MyDataClass:
+        id: int
+        name: str
+        timestamp: datetime
+
+    class MyMixin:
+        pass
+
+    # Test schema generation with infer_missing=False
+    generated_schema_false = schema(MyDataClass, MyMixin, infer_missing=False)
+    assert isinstance(generated_schema_false, dict)
+    assert 'id' in generated_schema_false
+    assert isinstance(generated_schema_false['id'], fields.Int)
+    assert 'name' in generated_schema_false
+    assert isinstance(generated_schema_false['name'], fields.Str)
+    assert 'timestamp' in generated_schema_false
+    assert isinstance(generated_schema_false['timestamp'], _TimestampField)
+
+    # Test schema generation with infer_missing=True
+    generated_schema_true = schema(MyDataClass, MyMixin, infer_missing=True)
+    assert isinstance(generated_schema_true, dict
+
+# Generated at 2024-03-18 05:15:25.322340
+```python
+    # Assuming the existence of a dataclass and mixin for testing
+    @dataclass
+    class Person:
+        name: str
+        age: int
+        birthday: typing.Optional[datetime] = None
+
+    class Mixin:
+        pass
+
+    # Test build_schema with a simple dataclass
+    PersonSchema = build_schema(Person, Mixin, infer_missing=False, partial=False)
+
+    # Create an instance of the schema
+    schema_instance = PersonSchema()
+
+    # Test serialization
+    person_instance = Person(name="John Doe", age=30)
+    serialized = schema_instance.dump(person_instance)
+    assert serialized == {"name": "John Doe", "age": 30, "birthday": None}
+
+    # Test deserialization
+    deserialized = schema_instance.load({"name": "Jane Doe", "age": 25})
+    assert deserialized == Person(name="Jane Doe", age=25, birthday=None)
+
+    # Test serialization with missing
+
+# Generated at 2024-03-18 05:15:32.648366
+```python
+    # Setup a simple dataclass and schema for testing
+    @dataclass_json
+    @dataclass
+    class SimpleDataClass:
+        id: int
+        name: str
+
+    class SimpleDataClassSchema(SchemaF[SimpleDataClass]):
+        id = fields.Int()
+        name = fields.Str()
+
+    # Create an instance of the dataclass
+    simple_data = SimpleDataClass(id=1, name="Test")
+
+    # Create an instance of the schema
+    simple_schema = SimpleDataClassSchema()
+
+    # Test dumping a single object
+    dumped_json = simple_schema.dumps(simple_data)
+    assert dumped_json == '{"id": 1, "name": "Test"}'
+
+    # Test dumping multiple objects
+    simple_data_list = [SimpleDataClass(id=2, name="Example"), SimpleDataClass(id=3, name="Sample")]
+    dumped_json_list = simple_schema.dumps(simple_data_list, many=True)
+   
+
+# Generated at 2024-03-18 05:15:33.642965
+```python
+import pytest
+
+
+# Generated at 2024-03-18 05:15:38.896907
+```python
+    # Test simple types
+    assert isinstance(build_type(int, {}, None, None, None), fields.Int)
+    assert isinstance(build_type(str, {}, None, None, None), fields.Str)
+    assert isinstance(build_type(float, {}, None, None, None), fields.Float)
+    assert isinstance(build_type(bool, {}, None, None, None), fields.Bool)
+    assert isinstance(build_type(UUID, {}, None, None, None), fields.UUID)
+    assert isinstance(build_type(Decimal, {}, None, None, None), fields.Decimal)
+    assert isinstance(build_type(datetime, {}, None, None, None), _TimestampField)
+
+    # Test collection types
+    assert isinstance(build_type(typing.List[int], {}, None, None, None), fields.List)
+    assert isinstance(build_type(typing.Dict[str, int], {}, None, None, None), fields.Dict)
+
+    # Test optional types
+    assert isinstance(build_type(typing.Optional[int], {}, None, None, None
+
+# Generated at 2024-03-18 05:16:00.048581
+```python
+    # Test simple types
+    assert isinstance(build_type(int, {}, None, None, None), fields.Int)
+    assert isinstance(build_type(str, {}, None, None, None), fields.Str)
+    assert isinstance(build_type(float, {}, None, None, None), fields.Float)
+    assert isinstance(build_type(bool, {}, None, None, None), fields.Bool)
+    assert isinstance(build_type(UUID, {}, None, None, None), fields.UUID)
+    assert isinstance(build_type(Decimal, {}, None, None, None), fields.Decimal)
+    assert isinstance(build_type(datetime, {}, None, None, None), _TimestampField)
+
+    # Test collection types
+    assert isinstance(build_type(typing.List[int], {}, None, None, None), fields.List)
+    assert isinstance(build_type(typing.Dict[str, int], {}, None, None, None), fields.Dict)
+
+    # Test optional types
+    assert isinstance(build_type(typing.Optional[int], {}, None, None, None
+
+# Generated at 2024-03-18 05:16:07.836452
+```python
+    # Setup a simple dataclass and schema for testing
+    @dataclass
+    class Person:
+        name: str
+        age: int
+
+    class PersonSchema(SchemaF[Person]):
+        name = fields.Str()
+        age = fields.Int()
+
+        @post_load
+        def make_person(self, data, **kwargs):
+            return Person(**data)
+
+    # Create an instance of the schema
+    schema = PersonSchema()
+
+    # Test loading a single object
+    single_data = {'name': 'John Doe', 'age': 30}
+    person = schema.load(single_data)
+    assert isinstance(person, Person)
+    assert person.name == 'John Doe'
+    assert person.age == 30
+
+    # Test loading multiple objects
+    multiple_data = [
+        {'name': 'John Doe', 'age': 30},
+        {'name': 'Jane Smith', 'age': 25}
+    ]
+    people = schema.load(multiple_data
+
+# Generated at 2024-03-18 05:16:12.427320
+```python
+    # Assuming the existence of a dataclass and mixin for testing
+    @dataclass
+    class Person:
+        name: str
+        age: int
+        birthday: typing.Optional[datetime] = None
+
+    class Mixin:
+        pass
+
+    # Test build_schema with a simple dataclass
+    PersonSchema = build_schema(Person, Mixin, infer_missing=False, partial=False)
+
+    # Create an instance of the schema
+    schema_instance = PersonSchema()
+
+    # Test serialization
+    person_instance = Person(name="John Doe", age=30)
+    serialized = schema_instance.dump(person_instance)
+    assert serialized == {"name": "John Doe", "age": 30, "birthday": None}
+
+    # Test deserialization
+    loaded = schema_instance.load({"name": "Jane Doe", "age": 25})
+    assert isinstance(loaded, Person)
+    assert loaded.name == "Jane Doe"
+    assert loaded.age == 25
+
+
+# Generated at 2024-03-18 05:16:17.323495
+```python
+    # Test cases for build_type function
+
+    # Setup a mock dataclass and mixin for testing
+    @dataclass_json
+    @dataclass
+    class MockMixin:
+        id: int
+        name: str
+
+    class MockSchema(Schema):
+        id = fields.Int()
+        name = fields.Str()
+
+    MockMixin.schema = MockSchema
+
+    # Test simple types
+    assert isinstance(build_type(int, {}, None, None, None), fields.Int)
+    assert isinstance(build_type(str, {}, None, None, None), fields.Str)
+    assert isinstance(build_type(float, {}, None, None, None), fields.Float)
+    assert isinstance(build_type(bool, {}, None, None, None), fields.Bool)
+    assert isinstance(build_type(UUID, {}, None, None, None), fields.UUID)
+    assert isinstance(build_type(Decimal, {}, None, None, None), fields.Decimal)
+    assert isinstance(build_type(datetime, {}, None, None, None),
+
+# Generated at 2024-03-18 05:16:23.135225
+```python
+    # Setup a simple dataclass and schema for testing
+    @dataclass_json
+    @dataclass
+    class SimpleDataClass:
+        id: int
+        name: str
+
+    class SimpleDataClassSchema(SchemaF[SimpleDataClass]):
+        id = fields.Int()
+        name = fields.Str()
+
+    # Create an instance of the schema
+    schema = SimpleDataClassSchema()
+
+    # Test loading a single object
+    json_data_single = '{"id": 1, "name": "Test"}'
+    result_single = schema.loads(json_data_single)
+    assert isinstance(result_single, SimpleDataClass)
+    assert result_single.id == 1
+    assert result_single.name == "Test"
+
+    # Test loading multiple objects
+    json_data_multiple = '[{"id": 1, "name": "Test1"}, {"id": 2, "name": "Test2"}]'
+    result_multiple = schema.loads(json_data_multiple, many
+
+# Generated at 2024-03-18 05:16:29.782621
+```python
+    # Setup a simple dataclass and schema for testing
+    @dataclass
+    class SimpleDataClass:
+        id: int
+        name: str
+
+    class SimpleDataClassSchema(SchemaF[SimpleDataClass]):
+        id = fields.Int()
+        name = fields.Str()
+
+        @post_load
+        def make_dataclass(self, data, **kwargs):
+            return SimpleDataClass(**data)
+
+    # Create an instance of the schema
+    schema = SimpleDataClassSchema()
+
+    # Test loading a single JSON object
+    json_data_single = '{"id": 1, "name": "Test"}'
+    result_single = schema.loads(json_data_single, many=False)
+    assert isinstance(result_single, SimpleDataClass)
+    assert result_single.id == 1
+    assert result_single.name == "Test"
+
+    # Test loading multiple JSON objects
+    json_data_multiple = '[{"id": 2, "name": "Test2"}, {"
+
+# Generated at 2024-03-18 05:16:36.282046
+```python
+    # Setup a simple dataclass and schema for testing
+    @dataclass
+    class Person:
+        name: str
+        age: int
+
+    class PersonSchema(SchemaF[Person]):
+        name = fields.Str()
+        age = fields.Int()
+
+        @post_load
+        def make_person(self, data, **kwargs):
+            return Person(**data)
+
+    # Create an instance of the schema
+    schema = PersonSchema()
+
+    # Test loading a single object
+    single_person_data = {'name': 'John Doe', 'age': 30}
+    person = schema.load(single_person_data)
+    assert isinstance(person, Person)
+    assert person.name == 'John Doe'
+    assert person.age == 30
+
+    # Test loading multiple objects
+    people_data = [
+        {'name': 'John Doe', 'age': 30},
+        {'name': 'Jane Smith', 'age': 25}
+    ]
+    people = schema.load(
+
+# Generated at 2024-03-18 05:16:42.568209
+```python
+    # Assuming the existence of a dataclass and mixin for testing
+    @dataclass
+    class Person:
+        name: str
+        age: int
+        birthday: typing.Optional[datetime] = None
+
+    class Mixin:
+        pass
+
+    # Test case for build_schema
+    def test_build_schema():
+        # Create the schema for the Person dataclass
+        PersonSchema = build_schema(Person, Mixin, infer_missing=True, partial=False)
+        
+        # Create an instance of the schema
+        schema_instance = PersonSchema()
+        
+        # Test serialization
+        person_instance = Person(name="John Doe", age=30)
+        serialized = schema_instance.dump(person_instance)
+        assert serialized == {"name": "John Doe", "age": 30, "birthday": None}
+        
+        # Test deserialization
+        data = {"name": "Jane Doe", "age": 25, "birthday": "1995-05-15T
+
+# Generated at 2024-03-18 05:16:47.994354
+```python
+    # Test serialization of datetime object to ISO format string
+    iso_field = _IsoField()
+    dt = datetime(2021, 1, 1, 12, 0, 0)
+    serialized_dt = iso_field._serialize(dt, None, None)
+    assert serialized_dt == "2021-01-01T12:00:00"
+
+    # Test deserialization of ISO format string to datetime object
+    deserialized_dt = iso_field._deserialize(serialized_dt, None, None)
+    assert deserialized_dt == dt
+
+    # Test serialization with None when field is not required
+    iso_field.required = False
+    serialized_none = iso_field._serialize(None, None, None)
+    assert serialized_none is None
+
+    # Test deserialization with None when field is not required
+    deserialized_none = iso_field._deserialize(None, None, None)
+    assert deserialized_none is None
+
+    # Test serialization raises ValidationError when
+
+# Generated at 2024-03-18 05:16:54.438522
+```python
+    class MyDataClass:
+        def __init__(self, id: int, name: str):
+            self.id = id
+            self.name = name
+
+    class MyDataClassSchema(Schema):
+        id = fields.Int()
+        name = fields.Str()
+
+        @post_load
+        def make_my_data_class(self, data, **kwargs):
+            return MyDataClass(**data)
+
+    schema = MyDataClassSchema()
+    my_data = MyDataClass(1, 'Test Name')
+    json_result = schema.dumps(my_data)
+    assert json_result == '{"id": 1, "name": "Test Name"}'
+
+    my_data_list = [MyDataClass(1, 'Test Name'), MyDataClass(2, 'Another Test')]
+    json_result_list = schema.dumps(my_data_list, many=True)
+    assert json_result_list == '[{"id": 1, "name": "Test Name"}, {"id": 2, "
+
+# Generated at 2024-03-18 05:17:26.335945
+```python
+    from dataclasses import dataclass
+    from marshmallow import ValidationError
+
+    @dataclass
+    class SimpleDataClass:
+        id: int
+        name: str
+        is_active: bool = True
+
+    @dataclass
+    class ComplexDataClass:
+        simple: SimpleDataClass
+        amount: Decimal
+        created_at: datetime
+
+    simple_schema = schema(SimpleDataClass, mixin=None, infer_missing=False)
+    assert isinstance(simple_schema['id'], fields.Int)
+    assert isinstance(simple_schema['name'], fields.Str)
+    assert isinstance(simple_schema['is_active'], fields.Bool)
+
+    complex_schema = schema(ComplexDataClass, mixin=None, infer_missing=False)
+    assert isinstance(complex_schema['simple'], fields.Nested)
+    assert isinstance(complex_schema['amount'], fields.Decimal)
+    assert isinstance(complex_schema['created_at'], _TimestampField)
+
+    # Test serialization
+    simple_instance = SimpleDataClass(id=
+
+# Generated at 2024-03-18 05:17:31.521616
+```python
+    # Assuming the existence of a dataclass and mixin for testing
+    @dataclass
+    class Person:
+        name: str
+        age: int
+        birthday: typing.Optional[datetime] = None
+
+    class Mixin:
+        pass
+
+    # Test case for build_schema
+    def test_build_schema():
+        # Create the schema for the Person dataclass
+        PersonSchema = build_schema(Person, Mixin, infer_missing=True, partial=False)
+        
+        # Instantiate the schema
+        schema_instance = PersonSchema()
+        
+        # Test serialization
+        person_instance = Person(name="John Doe", age=30)
+        serialized = schema_instance.dump(person_instance)
+        assert serialized == {"name": "John Doe", "age": 30, "birthday": None}
+        
+        # Test deserialization
+        data = {"name": "Jane Doe", "age": 25, "birthday": "1995-05-15T00:00
+
+# Generated at 2024-03-18 05:17:37.026404
+```python
+    # Define a simple dataclass and mixin for testing
+    @dataclass_json
+    @dataclass
+    class SimpleDataClass:
+        id: int
+        name: str
+        timestamp: datetime
+
+    # Create an instance of the dataclass
+    instance = SimpleDataClass(id=1, name="Test", timestamp=datetime.now())
+
+    # Generate schema
+    generated_schema = schema(SimpleDataClass, DataClassJsonMixin, infer_missing=True)
+
+    # Check if the schema is correctly generated
+    assert 'id' in generated_schema
+    assert isinstance(generated_schema['id'], fields.Int)
+    assert 'name' in generated_schema
+    assert isinstance(generated_schema['name'], fields.Str)
+    assert 'timestamp' in generated_schema
+    assert isinstance(generated_schema['timestamp'], _TimestampField)
+
+    # Serialize the instance
+    serialized = generated_schema.dump(instance)
+
+    # Check if serialization is correct
+    assert serialized['id
+
+# Generated at 2024-03-18 05:17:42.609772
+```python
+    # Create a mock dataclass
+    @dataclass
+    class MockDataClass:
+        id: int
+        name: str
+        timestamp: datetime
+
+    # Create a schema for the mock dataclass
+    class MockDataClassSchema(SchemaF[MockDataClass]):
+        id = fields.Int()
+        name = fields.Str()
+        timestamp = _TimestampField()
+
+        @post_load
+        def make_dataclass(self, data, **kwargs):
+            return MockDataClass(**data)
+
+    # Instantiate the schema
+    schema = MockDataClassSchema()
+
+    # Create an instance of the mock dataclass
+    mock_instance = MockDataClass(id=1, name="Test", timestamp=datetime(2023, 1, 1, 12, 0))
+
+    # Test dumping a single object
+    dumped_single = schema.dump(mock_instance)
+    assert dumped_single == {'id': 1, 'name': 'Test', 'timestamp
+
+# Generated at 2024-03-18 05:17:48.380735
+```python
+    # Test serialization of datetime to timestamp
+    field = _TimestampField()
+    dt = datetime(2021, 1, 1, 12, 0, 0)
+    timestamp = dt.timestamp()
+    assert field._serialize(dt, None, None) == timestamp
+
+    # Test serialization of None when field is not required
+    field = _TimestampField(required=False)
+    assert field._serialize(None, None, None) is None
+
+    # Test serialization of None when field is required raises ValidationError
+    field = _TimestampField(required=True)
+    try:
+        field._serialize(None, None, None)
+        assert False, "Expected ValidationError"
+    except ValidationError:
+        pass
+
+    # Test deserialization of timestamp to datetime
+    field = _TimestampField()
+    assert field._deserialize(timestamp, None, None) == dt.replace(tzinfo=None)
+
+    # Test deserialization of None when field is not required
+    field = _
+
+# Generated at 2024-03-18 05:17:53.362962
+```python
+    # Create a mock dataclass and schema for testing
+    @dataclass
+    class MockDataClass:
+        id: int
+        name: str
+
+    class MockSchema(SchemaF[MockDataClass]):
+        id = fields.Int()
+        name = fields.Str()
+
+        @post_load
+        def make_dataclass(self, data, **kwargs):
+            return MockDataClass(**data)
+
+    # Instantiate the schema
+    schema = MockSchema()
+
+    # Create an instance of the dataclass
+    data_instance = MockDataClass(id=1, name="Test")
+
+    # Test dumping a single object
+    dumped_single = schema.dump(data_instance, many=False)
+    assert dumped_single == {"id": 1, "name": "Test"}
+
+    # Test dumping multiple objects
+    data_instances = [MockDataClass(id=2, name="Example"), MockDataClass(id=3, name="Sample")]
+    dumped_multiple = schema.dump(data
+
+# Generated at 2024-03-18 05:17:54.605585
+```python
+from unittest import TestCase, mock
+
+
+# Generated at 2024-03-18 05:17:59.933217
+```python
+    # Test serialization of datetime to timestamp
+    dt = datetime(2021, 1, 1, 12, 0, 0)
+    timestamp_field = _TimestampField()
+    serialized_value = timestamp_field._serialize(dt, None, None)
+    assert serialized_value == dt.timestamp()
+
+    # Test deserialization of timestamp to datetime
+    timestamp = 1609502400.0  # Corresponds to datetime(2021, 1, 1, 12, 0, 0)
+    deserialized_value = timestamp_field._deserialize(timestamp, None, None)
+    assert deserialized_value == datetime.fromtimestamp(timestamp)
+
+    # Test serialization with None when field is not required
+    timestamp_field.required = False
+    serialized_value = timestamp_field._serialize(None, None, None)
+    assert serialized_value is None
+
+    # Test deserialization with None when field is not required
+    deserialized_value = timestamp_field._deserialize(None,
+
+# Generated at 2024-03-18 05:18:05.115437
+```python
+    # Test serialization of datetime object
+    iso_field = _IsoField()
+    dt = datetime(2021, 1, 1, 12, 0, 0)
+    serialized_dt = iso_field._serialize(dt, None, None)
+    assert serialized_dt == "2021-01-01T12:00:00"
+
+    # Test deserialization of ISO formatted string
+    deserialized_dt = iso_field._deserialize(serialized_dt, None, None)
+    assert deserialized_dt == dt
+
+    # Test serialization with None when field is not required
+    iso_field.required = False
+    serialized_none = iso_field._serialize(None, None, None)
+    assert serialized_none is None
+
+    # Test deserialization with None when field is not required
+    deserialized_none = iso_field._deserialize(None, None, None)
+    assert deserialized_none is None
+
+    # Test serialization with None when field is required
+    iso_field
+
+# Generated at 2024-03-18 05:18:10.840883
+```python
+    from dataclasses import dataclass
+    from marshmallow import ValidationError
+
+    @dataclass
+    class SimpleDataClass:
+        id: int
+        name: str
+        is_active: bool = True
+
+    # Test simple dataclass without optional or complex types
+    simple_schema = schema(SimpleDataClass, mixin=None, infer_missing=False)
+    assert isinstance(simple_schema['id'], fields.Int)
+    assert isinstance(simple_schema['name'], fields.Str)
+    assert isinstance(simple_schema['is_active'], fields.Bool)
+
+    # Test missing field handling
+    simple_schema_with_missing = schema(SimpleDataClass, mixin=None, infer_missing=True)
+    assert simple_schema_with_missing['is_active'].missing is True
+
+    # Test dataclass with optional field
+    @dataclass
+    class DataClassWithOptional:
+        id: int
+        description: typing.Optional[str] = None
+
+    optional_schema = schema(DataClassWithOptional, mixin
+
+# Generated at 2024-03-18 05:19:08.737927
+```python
+    # Setup a simple dataclass and schema for testing
+    @dataclass
+    class SimpleDataClass:
+        id: int
+        name: str
+
+    class SimpleDataClassSchema(SchemaF[SimpleDataClass]):
+        id = fields.Int()
+        name = fields.Str()
+
+        @post_load
+        def make_dataclass(self, data, **kwargs):
+            return SimpleDataClass(**data)
+
+    # Create an instance of the schema
+    schema = SimpleDataClassSchema()
+
+    # Test loading a single JSON object
+    json_data_single = '{"id": 1, "name": "Test"}'
+    result_single = schema.loads(json_data_single, many=False)
+    assert isinstance(result_single, SimpleDataClass)
+    assert result_single.id == 1
+    assert result_single.name == "Test"
+
+    # Test loading a list of JSON objects
+    json_data_list = '[{"id": 2, "name": "Test2
+
+# Generated at 2024-03-18 05:19:15.472261
+```python
+    # Create a mock dataclass and schema for testing
+    @dataclass
+    class MockDataClass:
+        id: int
+        name: str
+
+    class MockDataClassSchema(SchemaF[MockDataClass]):
+        id = fields.Int()
+        name = fields.Str()
+
+        @post_load
+        def make_dataclass(self, data, **kwargs):
+            return MockDataClass(**data)
+
+    # Instantiate the schema
+    schema = MockDataClassSchema()
+
+    # Create an instance of the dataclass
+    data_instance = MockDataClass(id=1, name="Test")
+
+    # Test dumping a single object
+    dumped_single = schema.dump(data_instance, many=False)
+    assert dumped_single == {"id": 1, "name": "Test"}, "Single dump did not match expected output"
+
+    # Test dumping multiple objects
+    data_instances = [MockDataClass(id=2, name="Test2"), MockDataClass(id
+
+# Generated at 2024-03-18 05:19:21.471827
+```python
+    # Setup a simple dataclass and schema for testing
+    @dataclass_json
+    @dataclass
+    class SimpleDataClass:
+        id: int
+        name: str
+
+    class SimpleDataClassSchema(SchemaF[SimpleDataClass]):
+        id = fields.Int()
+        name = fields.Str()
+
+    # Create an instance of the schema
+    schema = SimpleDataClassSchema()
+
+    # Test loading a single JSON object
+    json_data_single = '{"id": 1, "name": "Test"}'
+    result_single = schema.loads(json_data_single)
+    assert isinstance(result_single, SimpleDataClass)
+    assert result_single.id == 1
+    assert result_single.name == "Test"
+
+    # Test loading multiple JSON objects
+    json_data_multiple = '[{"id": 1, "name": "Test"}, {"id": 2, "name": "Test2"}]'
+    result_multiple = schema.loads(json_data_multiple,
+
+# Generated at 2024-03-18 05:19:29.390480
+```python
+    # Test serialization of a datetime object
+    iso_field = _IsoField()
+    datetime_obj = datetime(2021, 1, 1, 12, 0)
+    serialized_value = iso_field._serialize(datetime_obj, None, None)
+    assert serialized_value == "2021-01-01T12:00:00"
+
+    # Test deserialization of a datetime string
+    deserialized_value = iso_field._deserialize("2021-01-01T12:00:00", None, None)
+    assert deserialized_value == datetime_obj
+
+    # Test serialization with None when field is not required
+    iso_field.required = False
+    serialized_value = iso_field._serialize(None, None, None)
+    assert serialized_value is None
+
+    # Test deserialization with None when field is not required
+    deserialized_value = iso_field._deserialize(None, None, None)
+    assert deserialized_value is None
+
+    # Test
+
+# Generated at 2024-03-18 05:19:37.670384
+```python
+    # Test simple types
+    assert isinstance(build_type(int, {}, None, None, None), fields.Int)
+    assert isinstance(build_type(str, {}, None, None, None), fields.Str)
+    assert isinstance(build_type(float, {}, None, None, None), fields.Float)
+    assert isinstance(build_type(bool, {}, None, None, None), fields.Bool)
+    assert isinstance(build_type(UUID, {}, None, None, None), fields.UUID)
+    assert isinstance(build_type(Decimal, {}, None, None, None), fields.Decimal)
+    assert isinstance(build_type(datetime, {}, None, None, None), _TimestampField)
+
+    # Test collection types
+    assert isinstance(build_type(typing.List[int], {}, None, None, None), fields.List)
+    assert isinstance(build_type(typing.Dict[str, int], {}, None, None, None), fields.Dict)
+
+    # Test optional types
+    assert isinstance(build_type(typing.Optional[int], {}, None, None, None
+
+# Generated at 2024-03-18 05:19:38.377342
+```python
+
+# Generated at 2024-03-18 05:19:44.540667
+```python
+    # Setup a simple dataclass and schema for testing
+    @dataclass_json
+    @dataclass
+    class SimpleDataClass:
+        id: int
+        name: str
+
+    class SimpleDataClassSchema(SchemaF[SimpleDataClass]):
+        id = fields.Int()
+        name = fields.Str()
+
+    # Create an instance of the dataclass
+    simple_data = SimpleDataClass(id=1, name="Test")
+
+    # Create an instance of the schema
+    simple_schema = SimpleDataClassSchema()
+
+    # Test dumps with a single object
+    json_str = simple_schema.dumps(simple_data)
+    assert json_str == '{"id": 1, "name": "Test"}'
+
+    # Test dumps with a list of objects
+    simple_data_list = [simple_data, SimpleDataClass(id=2, name="Test2")]
+    json_str_list = simple_schema.dumps(simple_data_list, many=True)
+    assert json_str
+
+# Generated at 2024-03-18 05:19:50.595929
+```python
+    # Create a mock dataclass and schema for testing
+    @dataclass
+    class MockDataClass:
+        id: int
+        name: str
+
+    class MockDataClassSchema(SchemaF[MockDataClass]):
+        id = fields.Int()
+        name = fields.Str()
+
+        @post_load
+        def make_dataclass(self, data, **kwargs):
+            return MockDataClass(**data)
+
+    # Instantiate the schema
+    schema = MockDataClassSchema()
+
+    # Create an instance of the dataclass
+    data_instance = MockDataClass(id=1, name="Test")
+
+    # Test dumping a single object
+    dumped_data = schema.dump(data_instance)
+    assert dumped_data == {"id": 1, "name": "Test"}, "Single object dump failed"
+
+    # Test dumping multiple objects
+    data_instances = [MockDataClass(id=2, name="Test2"), MockDataClass(id=3, name="Test
+
+# Generated at 2024-03-18 05:19:56.340600
+```python
+    # Setup a simple dataclass and schema for testing
+    @dataclass
+    class Person:
+        name: str
+        age: int
+
+    class PersonSchema(SchemaF[Person]):
+        name = fields.Str()
+        age = fields.Int()
+
+        @post_load
+        def make_person(self, data, **kwargs):
+            return Person(**data)
+
+    # Create an instance of the schema
+    schema = PersonSchema()
+
+    # Test loading a single object
+    input_data = {'name': 'John Doe', 'age': 30}
+    person = schema.load(input_data)
+    assert isinstance(person, Person)
+    assert person.name == 'John Doe'
+    assert person.age == 30
+
+    # Test loading multiple objects
+    input_data_list = [
+        {'name': 'John Doe', 'age': 30},
+        {'name': 'Jane Smith', 'age': 25}
+    ]
+    people = schema.load(input_data
+
+# Generated at 2024-03-18 05:20:05.139432
+```python
+    # Test serialization of datetime to timestamp
+    dt = datetime(2021, 1, 1, 12, 0, 0)
+    timestamp_field = _TimestampField()
+    serialized_value = timestamp_field._serialize(dt, None, None)
+    assert serialized_value == dt.timestamp(), "Serialization should convert datetime to timestamp"
+
+    # Test deserialization of timestamp to datetime
+    timestamp = 1609502400.0  # Corresponds to datetime(2021, 1, 1, 12, 0, 0)
+    deserialized_value = timestamp_field._deserialize(timestamp, None, None)
+    assert deserialized_value == datetime.fromtimestamp(timestamp, datetime.now().astimezone().tzinfo), "Deserialization should convert timestamp to datetime"
+
+    # Test serialization with None when field is not required
+    timestamp_field.required = False
+    serialized_value = timestamp_field._serialize(None, None, None)
+    assert serialized_value
+
+# Generated at 2024-03-18 05:21:56.585448
+```python
+    # Unit test for function build_schema
+    def test_build_schema():
+        @dataclass
+        class SimpleDataClass:
+            id: int
+            name: str
+            is_active: bool = False
+
+        DataClassJsonMixin = type('DataClassJsonMixin', (), {})
+        SimpleDataClassSchema = build_schema(SimpleDataClass, DataClassJsonMixin, infer_missing=False, partial=False)
+
+        # Create an instance of the dataclass
+        simple_instance = SimpleDataClass(id=1, name="Test")
+
+        # Test dump
+        schema_instance = SimpleDataClassSchema()
+        result = schema_instance.dump(simple_instance)
+        expected = {'id': 1, 'name': "Test", 'is_active': False}
+        assert result == expected, f"Dumping failed: {result} != {expected}"
+
+        # Test load
+        load_result = schema_instance.load(result)
+        assert load_result == simple_instance, f"
+
+# Generated at 2024-03-18 05:22:04.591280
+```python
+    # Setup a simple dataclass and schema for testing
+    @dataclass_json
+    @dataclass
+    class SimpleDataClass:
+        id: int
+        name: str
+
+    class SimpleDataClassSchema(SchemaF[SimpleDataClass]):
+        id = fields.Int()
+        name = fields.Str()
+
+    # Create an instance of the schema
+    schema = SimpleDataClassSchema()
+
+    # Test loading a single object
+    json_data_single = '{"id": 1, "name": "Test"}'
+    result_single = schema.loads(json_data_single, many=False)
+    assert isinstance(result_single, SimpleDataClass)
+    assert result_single.id == 1
+    assert result_single.name == "Test"
+
+    # Test loading multiple objects
+    json_data_multiple = '[{"id": 1, "name": "Test"}, {"id": 2, "name": "Test2"}]'
+    result_multiple = schema.loads(json_data_multiple
+
+# Generated at 2024-03-18 05:22:07.792145
+```python
+# Assuming the function `build_schema` is already defined above, as per the provided code.
+
+# Import necessary libraries for testing
+import unittest
+from dataclasses import dataclass, field
+from marshmallow import ValidationError
+from typing import Optional
+
+# Define a simple dataclass for testing
+@dataclass
+
+# Generated at 2024-03-18 05:22:08.722890
+```python
+
+# Generated at 2024-03-18 05:22:15.045720
+```python
+    # Test serialization of datetime to timestamp
+    field = _TimestampField()
+    dt = datetime(2021, 1, 1, 12, 0, 0)
+    timestamp = dt.timestamp()
+    assert field._serialize(dt, None, None) == timestamp
+
+    # Test serialization of None when field is not required
+    field = _TimestampField(required=False)
+    assert field._serialize(None, None, None) is None
+
+    # Test serialization of None when field is required raises ValidationError
+    field = _TimestampField(required=True)
+    try:
+        field._serialize(None, None, None)
+        assert False, "Expected ValidationError"
+    except ValidationError:
+        pass
+
+    # Test deserialization of timestamp to datetime
+    field = _TimestampField()
+    assert field._deserialize(timestamp, None, None) == dt
+
+    # Test deserialization of None when field is not required
+    field = _TimestampField(required=False)
+
+
+# Generated at 2024-03-18 05:22:16.371004
+```python
+import json
+from marshmallow import ValidationError
+
+
+# Generated at 2024-03-18 05:22:27.141928
+```python
+    # Test serialization of datetime to timestamp
+    field = _TimestampField()
+    dt = datetime(2021, 1, 1, 12, 0, 0)
+    timestamp = dt.timestamp()
+    assert field._serialize(dt, None, None) == timestamp
+
+    # Test serialization of None when field is not required
+    field = _TimestampField(required=False)
+    assert field._serialize(None, None, None) is None
+
+    # Test serialization of None when field is required raises ValidationError
+    field = _TimestampField(required=True)
+    try:
+        field._serialize(None, None, None)
+        assert False, "Expected ValidationError"
+    except ValidationError:
+        pass
+
+    # Test deserialization of timestamp to datetime
+    field = _TimestampField()
+    assert field._deserialize(timestamp, None, None) == dt.replace(tzinfo=None)
+
+    # Test deserialization of None when field is not required
+    field = _
+
+# Generated at 2024-03-18 05:22:27.831125
+```python
+
+# Generated at 2024-03-18 05:22:33.655405
+```python
+    # Test serialization of datetime to timestamp
+    field = _TimestampField()
+    dt = datetime(2021, 1, 1, 12, 0, 0)
+    timestamp = dt.timestamp()
+    assert field._serialize(dt, None, None) == timestamp
+
+    # Test serialization of None when field is not required
+    field = _TimestampField(required=False)
+    assert field._serialize(None, None, None) is None
+
+    # Test serialization of None when field is required raises ValidationError
+    field = _TimestampField(required=True)
+    try:
+        field._serialize(None, None, None)
+        assert False, "Expected ValidationError"
+    except ValidationError:
+        pass
+
+    # Test deserialization of timestamp to datetime
+    field = _TimestampField()
+    assert field._deserialize(timestamp, None, None) == dt.replace(tzinfo=None)
+
+    # Test deserialization of None when field is not required
+    field = _
+
+# Generated at 2024-03-18 05:22:42.728937
+```python
+    class MyDataclass:
+        def __init__(self, id: int, name: str):
+            self.id = id
+            self.name = name
+
+    class MyDataclassSchema(SchemaF[MyDataclass]):
+        id = fields.Int()
+        name = fields.Str()
+
+        @post_load
+        def make_my_dataclass(self, data, **kwargs):
+            return MyDataclass(**data)
+
+    my_dataclass_instance = MyDataclass(1, 'Test Name')
+    my_dataclass_schema = MyDataclassSchema()
+
+    # Test dumping single object
+    dumped_data = my_dataclass_schema.dump(my_dataclass_instance)
+    assert dumped_data == {'id': 1, 'name': 'Test Name'}
+
+    # Test dumping list of objects
+    my_dataclass_instances = [MyDataclass(1, 'Test Name'), MyDataclass(2, 'Another Name')]
+    dumped_data_list = my_dataclass_schema.dump(my

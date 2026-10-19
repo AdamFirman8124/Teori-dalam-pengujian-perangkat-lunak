@@ -1,0 +1,2711 @@
+
+
+# Generated at 2024-06-04 19:26:42.986121
+```python
+    if_clause = Field()
+    then_clause = Field()
+    else_clause = Field()
+
+    if_then_else = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+
+    # Mock the validate_or_error method for if_clause, then_clause, and else_clause
+    if_clause.validate_or_error = lambda value, strict: (value, None) if value == "if" else (None, "error")
+    then_clause.validate = lambda value, strict: "then"
+    else_clause.validate = lambda value, strict: "else"
+
+    # Test when if_clause matches
+    assert if_then_else.validate("if") == "then"
+
+    # Test when if_clause does not match
+    assert if_then_else.validate("else") == "else"
+
+    # Test with strict mode
+    assert if_then_else.validate("if", strict=True) == "then"
+    assert if_then_else.validate("else", strict=True
+
+# Generated at 2024-06-04 19:26:44.649867
+```python
+    field = NeverMatch()
+    assert isinstance(field, NeverMatch)
+    assert field.errors == {"never": "This never validates."}
+```
+
+# Generated at 2024-06-04 19:26:53.633742
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test cases
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    if_clause = MockField(should_validate=False)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+
+
+# Generated at 2024-06-04 19:26:56.398659
+```python
+    field = Not(negated=NeverMatch())
+    assert field.validate("any_value") == "any_value"
+
+    field = Not(negated=OneOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=AllOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=IfThenElse(if_clause=Any(), then_clause=NeverMatch()))
+    assert field.validate("any_value") == "any_value"
+```
+
+# Generated at 2024-06-04 19:26:58.465183
+```python
+    field = Any()
+    not_field = Not(negated=field)
+
+    # Test case where validation should fail
+    try:
+        not_field.validate("test")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    # Test case where validation should pass
+    negated_field = NeverMatch()
+    not_field = Not(negated=negated_field)
+    assert not_field.validate("test") == "test"
+```
+
+# Generated at 2024-06-04 19:27:03.584713
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause validates and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test_value") == "test_value"
+
+    # Test case where if_clause does not validate and else_clause is used
+    if_clause = MockField
+
+# Generated at 2024-06-04 19:27:05.973608
+```python
+    field = Not(negated=NeverMatch())
+
+    # Test case where the value should pass validation
+    value = "any_value"
+    assert field.validate(value) == value
+
+    # Test case where the value should fail validation
+    negated_field = Not(negated=Field())
+    try:
+        negated_field.validate(value)
+    except Exception as e:
+        assert str(e) == "Must not match."
+```
+
+# Generated at 2024-06-04 19:27:08.798465
+```python
+    field = Not(negated=NeverMatch())
+    assert field.validate("any_value") == "any_value"
+
+    field = Not(negated=OneOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=AllOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=IfThenElse(if_clause=Any(), then_clause=NeverMatch()))
+    assert field.validate("any_value") == "any_value"
+```
+
+# Generated at 2024-06-04 19:27:11.903922
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:27:12.854939
+```python
+    field = NeverMatch()
+    assert isinstance(field, NeverMatch)
+    assert field.errors == {"never": "This never validates."}
+```
+
+# Generated at 2024-06-04 19:27:19.616575
+```python
+    field = NeverMatch()
+    assert isinstance(field, NeverMatch)
+    assert field.errors == {"never": "This never validates."}
+```
+
+# Generated at 2024-06-04 19:27:24.869578
+```python
+    if_clause = Field()
+    then_clause = Field()
+    else_clause = Field()
+
+    # Mocking the validate_or_error method for if_clause
+    if_clause.validate_or_error = lambda value, strict: (value, None) if value == "if_pass" else (None, "error")
+    then_clause.validate = lambda value, strict: "then_pass" if value == "if_pass" else "then_fail"
+    else_clause.validate = lambda value, strict: "else_pass" if value != "if_pass" else "else_fail"
+
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+
+    # Test case where if_clause passes
+    assert field.validate("if_pass") == "then_pass"
+
+    # Test case where if_clause fails
+    assert field.validate("if_fail") == "else_pass"
+```
+
+# Generated at 2024-06-04 19:27:28.051728
+```python
+    field = Not(negated=NeverMatch())
+    assert field.validate("any_value") == "any_value"
+
+    field = Not(negated=OneOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=AllOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=IfThenElse(if_clause=Any(), then_clause=NeverMatch()))
+    assert field.validate("any_value") == "any_value"
+```
+
+# Generated at 2024-06-04 19:27:29.630801
+```python
+    field = Any()
+    not_field = Not(negated=field)
+    assert isinstance(not_field, Not)
+    assert not_field.negated == field
+```
+
+# Generated at 2024-06-04 19:27:30.700543
+```python
+    field = NeverMatch()
+    assert isinstance(field, NeverMatch)
+    assert field.errors == {"never": "This never validates."}
+```
+
+# Generated at 2024-06-04 19:27:32.026728
+```python
+    field = Any()
+    not_field = Not(negated=field)
+    assert isinstance(not_field, Not)
+    assert not_field.negated == field
+```
+
+# Generated at 2024-06-04 19:27:36.922897
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:27:40.989843
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:27:42.189212
+```python
+    field = Any()
+    not_field = Not(negated=field)
+    assert not_field.negated == field
+    assert not_field.errors == {"negated": "Must not match."}
+```
+
+# Generated at 2024-06-04 19:27:43.212951
+```python
+    field = NeverMatch()
+    assert isinstance(field, NeverMatch)
+    assert field.errors == {"never": "This never validates."}
+```
+
+# Generated at 2024-06-04 19:27:51.741918
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:27:54.497411
+```python
+    field = Any()
+    not_field = Not(negated=field)
+
+    # Test case where validation should fail
+    try:
+        not_field.validate("test")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    # Test case where validation should pass
+    negated_field = NeverMatch()
+    not_field = Not(negated=negated_field)
+    assert not_field.validate("test") == "test"
+```
+
+# Generated at 2024-06-04 19:27:56.322765
+```python
+    field = Not(negated=NeverMatch())
+
+    # Test case where the value should pass validation
+    value = "any_value"
+    assert field.validate(value) == value
+
+    # Test case where the value should fail validation
+    negated_field = Not(negated=Any())
+    try:
+        negated_field.validate(value)
+    except Exception as e:
+        assert str(e) == "Must not match."
+```
+
+# Generated at 2024-06-04 19:28:00.895117
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause is True and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is False and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:28:05.481491
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause validates and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause does not validate and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:28:08.617026
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:28:12.328791
+```python
+    true_field = Field()
+    false_field = NeverMatch()
+    then_field = Field()
+    else_field = Field()
+
+    # Test case where if_clause is true, should validate against then_clause
+    field = IfThenElse(if_clause=true_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is false, should validate against else_clause
+    field = IfThenElse(if_clause=false_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is true and no then_clause provided, should validate against Any()
+    field = IfThenElse(if_clause=true_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is false and no else_clause provided, should validate against Any()
+    field = IfThenElse(if_clause=false_field
+
+# Generated at 2024-06-04 19:28:13.820248
+```python
+    field = Any()
+    not_field = Not(negated=field)
+    assert isinstance(not_field, Not)
+    assert not_field.negated == field
+    assert not_field.errors == {"negated": "Must not match."}
+```
+
+# Generated at 2024-06-04 19:28:17.504202
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause is True and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is False and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:28:23.029773
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test cases
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    if_clause = MockField(should_validate=False)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+
+
+# Generated at 2024-06-04 19:28:31.423688
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:28:36.081377
+```python
+    true_field = Field()
+    false_field = NeverMatch()
+    then_field = Field()
+    else_field = Field()
+
+    # Test case where if_clause is true
+    field = IfThenElse(if_clause=true_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is false
+    field = IfThenElse(if_clause=false_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is true and then_clause is None
+    field = IfThenElse(if_clause=true_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is false and else_clause is None
+    field = IfThenElse(if_clause=false_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is true and
+
+# Generated at 2024-06-04 19:28:40.463132
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test cases
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+
+    # Case 1: if_clause validates, should return then_clause validation
+    assert field.validate("test_value") == "test_value"
+
+    # Case 2: if_clause does not validate, should return else
+
+# Generated at 2024-06-04 19:28:44.022233
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:28:45.151229
+```python
+    field = NeverMatch()
+    assert isinstance(field, NeverMatch)
+    assert field.errors == {"never": "This never validates."}
+```
+
+# Generated at 2024-06-04 19:28:50.224813
+```python
+    true_field = Field()
+    false_field = NeverMatch()
+    then_field = Field()
+    else_field = Field()
+
+    # Test case where if_clause is true, should validate against then_clause
+    field = IfThenElse(if_clause=true_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is false, should validate against else_clause
+    field = IfThenElse(if_clause=false_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is true and no then_clause provided, should validate against Any()
+    field = IfThenElse(if_clause=true_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is false and no else_clause provided, should validate against Any()
+    field = IfThenElse(if_clause=false_field
+
+# Generated at 2024-06-04 19:28:52.079517
+```python
+    field = Not(negated=NeverMatch())
+    assert field.validate("any_value") == "any_value"
+
+    field = Not(negated=OneOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+```
+
+# Generated at 2024-06-04 19:28:56.093269
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test cases
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    if_clause = MockField(should_validate=False)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+
+
+# Generated at 2024-06-04 19:29:00.314305
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    # Test case where if_clause validates
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause does not validate, but else_clause does
+    if_clause = MockField(should_validate=False)
+    field
+
+# Generated at 2024-06-04 19:29:05.985993
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause validates and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test_value") == "test_value"
+
+    # Test case where if_clause does not validate and else_clause is used
+    if_clause = MockField
+
+# Generated at 2024-06-04 19:29:12.083981
+```python
+    field = NeverMatch()
+    assert isinstance(field, NeverMatch)
+    assert field.errors == {"never": "This never validates."}
+```
+
+# Generated at 2024-06-04 19:29:17.549827
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:29:22.421480
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause validates and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test_value") == "test_value"
+
+    # Test case where if_clause does not validate and else_clause is used
+    if_clause = MockField
+
+# Generated at 2024-06-04 19:29:25.918305
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:29:29.813738
+```python
+    field = Not(negated=NeverMatch())
+    assert field.validate("any_value") == "any_value"
+
+    field = Not(negated=OneOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=AllOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=IfThenElse(if_clause=Any(), then_clause=NeverMatch()))
+    assert field.validate("any_value") == "any_value"
+```
+
+# Generated at 2024-06-04 19:29:33.830436
+```python
+    field = Not(negated=NeverMatch())
+    assert field.validate("any_value") == "any_value"
+
+    field = Not(negated=OneOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=AllOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=IfThenElse(if_clause=Any(), then_clause=NeverMatch()))
+    assert field.validate("any_value") == "any_value"
+```
+
+# Generated at 2024-06-04 19:29:38.015752
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:29:41.386027
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:29:44.710296
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:29:50.263559
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test cases
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+
+    # Case 1: if_clause validates, should return then_clause validation
+    assert field.validate("test") == "test"
+
+    # Case 2: if_clause does not validate, should return else_clause validation
+
+# Generated at 2024-06-04 19:29:57.772777
+```python
+    field = NeverMatch()
+    assert isinstance(field, NeverMatch)
+    assert field.errors == {"never": "This never validates."}
+```
+
+# Generated at 2024-06-04 19:30:00.850483
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:30:03.500728
+```python
+    field = Not(negated=NeverMatch())
+    
+    # Test case where the value should pass validation
+    value = "any_value"
+    assert field.validate(value) == value
+    
+    # Test case where the value should fail validation
+    negated_field = Not(negated=Any())
+    try:
+        negated_field.validate(value)
+    except Exception as e:
+        assert str(e) == "Must not match."
+```
+
+# Generated at 2024-06-04 19:30:08.926881
+```python
+    true_field = Field()
+    false_field = NeverMatch()
+    then_field = Field()
+    else_field = Field()
+
+    # Test case where if_clause matches
+    field = IfThenElse(if_clause=true_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause does not match
+    field = IfThenElse(if_clause=false_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause matches and then_clause is None
+    field = IfThenElse(if_clause=true_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause does not match and else_clause is None
+    field = IfThenElse(if_clause=false_field)
+    assert field.validate("test") == "test"
+```
+
+# Generated at 2024-06-04 19:30:14.228107
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test cases
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+
+    # Case 1: if_clause validates, should return then_clause validation
+    assert field.validate("test") == "test"
+
+    # Case 2: if_clause does not validate, should return else_clause validation
+
+# Generated at 2024-06-04 19:30:17.804925
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:30:21.412833
+```python
+    field = Any()
+    not_field = Not(negated=field)
+
+    # Test case where validation should fail
+    try:
+        not_field.validate("test")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    # Test case where validation should pass
+    negated_field = NeverMatch()
+    not_field = Not(negated=negated_field)
+    assert not_field.validate("test") == "test"
+```
+
+# Generated at 2024-06-04 19:30:25.889035
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:30:31.789382
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause is True and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is False and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:30:36.162105
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause validates and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test_value") == "test_value"
+
+    # Test case where if_clause does not validate and else_clause is used
+    if_clause = MockField
+
+# Generated at 2024-06-04 19:30:47.058874
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause is True and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is False and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:30:50.834322
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    # Test case where if_clause validates
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause does not validate, but else_clause does
+    if_clause = MockField(should_validate=False)
+    field
+
+# Generated at 2024-06-04 19:30:52.048832
+```python
+    field = Any()
+    not_field = Not(negated=field)
+    assert isinstance(not_field, Not)
+    assert not_field.negated == field
+```
+
+# Generated at 2024-06-04 19:30:55.488996
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:30:59.955978
+```python
+    field = Field()
+    not_field = Not(negated=field)
+
+    # Test case where the negated field does not validate
+    field.validate_or_error = lambda value, strict: (value, "error")
+    assert not_field.validate("test") == "test"
+
+    # Test case where the negated field validates
+    field.validate_or_error = lambda value, strict: (value, None)
+    try:
+        not_field.validate("test")
+    except Exception as e:
+        assert str(e) == "Must not match."
+```
+
+# Generated at 2024-06-04 19:31:06.516098
+```python
+    true_field = Field()
+    false_field = NeverMatch()
+    then_field = Field()
+    else_field = Field()
+
+    # Test case where if_clause matches
+    field = IfThenElse(if_clause=true_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause does not match
+    field = IfThenElse(if_clause=false_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause matches and then_clause is None
+    field = IfThenElse(if_clause=true_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause does not match and else_clause is None
+    field = IfThenElse(if_clause=false_field)
+    assert field.validate("test") == "test"
+```
+
+# Generated at 2024-06-04 19:31:12.045058
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:31:15.734477
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:31:21.583059
+```python
+    true_field = Field()
+    false_field = NeverMatch()
+    then_field = Field()
+    else_field = Field()
+
+    # Test case where if_clause is true, should validate against then_clause
+    field = IfThenElse(if_clause=true_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is false, should validate against else_clause
+    field = IfThenElse(if_clause=false_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is true and then_clause is not provided, should validate against Any()
+    field = IfThenElse(if_clause=true_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is false and else_clause is not provided, should validate against Any()
+    field = IfThenElse(if_clause
+
+# Generated at 2024-06-04 19:31:25.542845
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:31:35.938097
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+
+    # Test case where if_clause validates
+    assert field.validate("test_value") == "test_value"
+
+    # Test case where if_clause does not validate, but else_clause does
+    if_clause.should_validate = False
+    assert field
+
+# Generated at 2024-06-04 19:31:37.065630
+```python
+    field = NeverMatch()
+    assert isinstance(field, NeverMatch)
+    assert field.errors == {"never": "This never validates."}
+```
+
+# Generated at 2024-06-04 19:31:40.683036
+```python
+    field = Not(negated=NeverMatch())
+    assert field.validate("any_value") == "any_value"
+
+    field = Not(negated=OneOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=AllOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=IfThenElse(if_clause=Any(), then_clause=NeverMatch()))
+    assert field.validate("any_value") == "any_value"
+```
+
+# Generated at 2024-06-04 19:31:42.339807
+```python
+    field = Any()
+    not_field = Not(negated=field)
+    assert not_field.negated == field
+    assert not_field.errors == {"negated": "Must not match."}
+```
+
+# Generated at 2024-06-04 19:31:46.378703
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:31:47.579773
+```python
+    field = NeverMatch()
+    assert isinstance(field, NeverMatch)
+    assert field.errors == {"never": "This never validates."}
+```
+
+# Generated at 2024-06-04 19:31:51.193374
+```python
+    field = Not(negated=NeverMatch())
+    assert field.validate("any_value") == "any_value"
+
+    field = Not(negated=OneOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=AllOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=IfThenElse(if_clause=Any(), then_clause=NeverMatch()))
+    assert field.validate("any_value") == "any_value"
+```
+
+# Generated at 2024-06-04 19:31:56.179050
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause is True and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is False and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:31:57.337845
+```python
+    field = Any()
+    not_field = Not(negated=field)
+    assert isinstance(not_field, Not)
+    assert not_field.negated == field
+```
+
+# Generated at 2024-06-04 19:32:01.121282
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    # Test case where if_clause validates
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test_value") == "test_value"
+
+    # Test case where if_clause does not validate, but else_clause does
+    if_clause = MockField(should_validate=False)
+
+
+# Generated at 2024-06-04 19:32:10.387976
+```python
+    true_field = Field()
+    false_field = NeverMatch()
+    then_field = Field()
+    else_field = Field()
+
+    # Test case where if_clause is true, should validate against then_clause
+    field = IfThenElse(if_clause=true_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is false, should validate against else_clause
+    field = IfThenElse(if_clause=false_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is true and no then_clause provided, should validate against Any()
+    field = IfThenElse(if_clause=true_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is false and no else_clause provided, should validate against Any()
+    field = IfThenElse(if_clause=false_field
+
+# Generated at 2024-06-04 19:32:13.935106
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:32:15.917956
+```python
+    field = Not(negated=NeverMatch())
+    
+    # Test case where the value should pass validation
+    value = "any_value"
+    assert field.validate(value) == value
+    
+    # Test case where the value should fail validation
+    negated_field = Not(negated=Any())
+    try:
+        negated_field.validate(value)
+    except Exception as e:
+        assert str(e) == "Must not match."
+```
+
+# Generated at 2024-06-04 19:32:18.953603
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:32:22.002376
+```python
+    field = Not(negated=NeverMatch())
+    assert field.validate("any_value") == "any_value"
+
+    field = Not(negated=OneOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=AllOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=IfThenElse(if_clause=Any(), then_clause=NeverMatch()))
+    assert field.validate("any_value") == "any_value"
+```
+
+# Generated at 2024-06-04 19:32:42.819848
+```python
+    field = Any()
+    not_field = Not(negated=field)
+    assert isinstance(not_field, Not)
+    assert not_field.negated == field
+```
+
+# Generated at 2024-06-04 19:32:47.048887
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause is True and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is False and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:32:51.038926
+```python
+    true_field = Field()
+    false_field = NeverMatch()
+    then_field = Field()
+    else_field = Field()
+
+    # Test case where if_clause is true
+    if_then_else = IfThenElse(if_clause=true_field, then_clause=then_field, else_clause=else_field)
+    assert if_then_else.validate("test") == "test"
+
+    # Test case where if_clause is false
+    if_then_else = IfThenElse(if_clause=false_field, then_clause=then_field, else_clause=else_field)
+    assert if_then_else.validate("test") == "test"
+
+    # Test case where if_clause is true and then_clause is None
+    if_then_else = IfThenElse(if_clause=true_field)
+    assert if_then_else.validate("test") == "test"
+
+    # Test case where if_clause is false and else_clause is None
+    if_then_else = IfThenElse(if_clause=false_field)
+    assert if_then_else.validate("
+
+# Generated at 2024-06-04 19:32:54.445164
+```python
+    field = Any()
+    not_field = Not(negated=field)
+
+    # Test case where validation should fail (value matches the negated field)
+    try:
+        not_field.validate("test")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    # Test case where validation should pass (value does not match the negated field)
+    class NeverMatchField(Field):
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            raise self.validation_error("never")
+
+    never_match_field = NeverMatchField()
+    not_field = Not(negated=never_match_field)
+    assert not_field.validate("test") == "test"
+```
+
+# Generated at 2024-06-04 19:32:58.347599
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause is True and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is False and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:33:07.671123
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause is True and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is False and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:33:10.793863
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:33:14.596259
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+
+    # Test case where if_clause validates
+    assert field.validate("test_value") == "test_value"
+
+    # Test case where if_clause does not validate, but else_clause does
+    if_clause.should_validate = False
+    assert field
+
+# Generated at 2024-06-04 19:33:17.769605
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:33:21.321823
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:33:23.252988
+```python
+    field = Not(negated=NeverMatch())
+    assert field.validate("any_value") == "any_value"
+
+    field = Not(negated=OneOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+```
+
+# Generated at 2024-06-04 19:33:27.075243
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:33:29.858987
+```python
+    field = Field()
+    not_field = Not(negated=field)
+
+    # Test case where the negated field does not validate
+    field.validate_or_error = lambda value, strict: (value, "error")
+    assert not_field.validate("test") == "test"
+
+    # Test case where the negated field validates
+    field.validate_or_error = lambda value, strict: (value, None)
+    try:
+        not_field.validate("test")
+    except Exception as e:
+        assert str(e) == "Must not match."
+```
+
+# Generated at 2024-06-04 19:33:32.926994
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:33:35.795249
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:33:44.847726
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    # Test case where if_clause validates
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test_value") == "test_value"
+
+    # Test case where if_clause does not validate, but else_clause does
+    if_clause = MockField(should_validate=False)
+
+
+# Generated at 2024-06-04 19:33:50.287495
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+
+    # Test case where if_clause validates
+    assert field.validate("test_value") == "test_value"
+
+    # Test case where if_clause does not validate, but else_clause does
+    if_clause.should_validate = False
+    assert field
+
+# Generated at 2024-06-04 19:33:53.275987
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:33:57.685020
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause validates and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause does not validate and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:33:58.757486
+```python
+    field = NeverMatch()
+    assert isinstance(field, NeverMatch)
+    assert field.errors == {"never": "This never validates."}
+```
+
+# Generated at 2024-06-04 19:34:11.368396
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause is True and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is False and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:34:14.849633
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:34:19.169608
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    # Test case where if_clause validates
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause does not validate, but else_clause does
+    if_clause = MockField(should_validate=False)
+    field
+
+# Generated at 2024-06-04 19:34:23.272500
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause is True and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is False and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:34:24.423853
+```python
+    field = NeverMatch()
+    assert isinstance(field, NeverMatch)
+    assert field.errors == {"never": "This never validates."}
+```
+
+# Generated at 2024-06-04 19:34:32.028232
+```python
+    field = Not(negated=NeverMatch())
+    
+    # Test case where the value should pass validation
+    value = "any_value"
+    assert field.validate(value) == value
+    
+    # Test case where the value should fail validation
+    negated_field = Not(negated=Any())
+    try:
+        negated_field.validate(value)
+    except Exception as e:
+        assert str(e) == "Must not match."
+```
+
+# Generated at 2024-06-04 19:34:35.072226
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:34:38.166448
+```python
+    if_clause = Field()
+    then_clause = Field()
+    else_clause = Field()
+
+    if_then_else = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+
+    # Mock the validate_or_error method for if_clause, then_clause, and else_clause
+    if_clause.validate_or_error = lambda value, strict: (value, None) if value == "if" else (None, "error")
+    then_clause.validate = lambda value, strict: "then"
+    else_clause.validate = lambda value, strict: "else"
+
+    # Test when if_clause matches
+    assert if_then_else.validate("if") == "then"
+
+    # Test when if_clause does not match
+    assert if_then_else.validate("else") == "else"
+```
+
+# Generated at 2024-06-04 19:34:41.606695
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:34:44.484092
+```python
+    field = Not(negated=NeverMatch())
+    assert field.validate("any_value") == "any_value"
+
+    field = Not(negated=OneOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=AllOf([Any()]))
+    try:
+        field.validate("any_value")
+    except Exception as e:
+        assert str(e) == "Must not match."
+
+    field = Not(negated=IfThenElse(if_clause=Any(), then_clause=NeverMatch()))
+    assert field.validate("any_value") == "any_value"
+```
+
+# Generated at 2024-06-04 19:34:49.079900
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(None)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:34:53.659238
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test cases
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    if_clause = MockField(should_validate=False)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+
+
+# Generated at 2024-06-04 19:34:59.357886
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test cases
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    if_clause = MockField(should_validate=False)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+
+
+# Generated at 2024-06-04 19:35:03.826735
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    # Test case where if_clause validates
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause does not validate, but else_clause does
+    if_clause = MockField(should_validate=False)
+    field
+
+# Generated at 2024-06-04 19:35:08.897295
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(123)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:35:15.224763
+```python
+    field = NeverMatch()
+    assert isinstance(field, NeverMatch)
+    assert field.errors == {"never": "This never validates."}
+```
+
+# Generated at 2024-06-04 19:35:19.327881
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause validates and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause does not validate and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:35:20.558765
+```python
+    field = NeverMatch()
+    assert isinstance(field, NeverMatch)
+    assert field.errors == {"never": "This never validates."}
+```
+
+# Generated at 2024-06-04 19:35:23.475258
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(123)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:35:32.579371
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+
+    # Test case where if_clause is True, should return then_clause validation
+    assert field.validate("test_value") == "test_value"
+
+    # Test case where if_clause is False, should return else_clause validation
+    if_clause =
+
+# Generated at 2024-06-04 19:35:43.153687
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test cases
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    if_clause = MockField(should_validate=False)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+
+
+# Generated at 2024-06-04 19:35:46.774087
+```python
+    true_field = Field()
+    false_field = NeverMatch()
+    then_field = Field()
+    else_field = Field()
+
+    # Test case where if_clause is true
+    field = IfThenElse(if_clause=true_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is false
+    field = IfThenElse(if_clause=false_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is true and then_clause is None
+    field = IfThenElse(if_clause=true_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is false and else_clause is None
+    field = IfThenElse(if_clause=false_field)
+    assert field.validate("test") == "test"
+```
+
+# Generated at 2024-06-04 19:35:51.282187
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test cases
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    if_clause = MockField(should_validate=False)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=True)
+
+
+
+# Generated at 2024-06-04 19:35:55.834938
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause is True and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is False and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:35:56.889698
+```python
+    field = NeverMatch()
+    assert isinstance(field, NeverMatch)
+    assert field.errors == {"never": "This never validates."}
+```
+
+# Generated at 2024-06-04 19:36:07.955885
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause is True and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is False and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:36:12.740599
+```python
+    # Define some mock fields for testing
+    class MockField(Field):
+        def __init__(self, should_validate: bool, **kwargs: typing.Any) -> None:
+            super().__init__(**kwargs)
+            self.should_validate = should_validate
+
+        def validate(self, value: typing.Any, strict: bool = False) -> typing.Any:
+            if self.should_validate:
+                return value
+            raise self.validation_error("mock_error")
+
+    # Test case where if_clause is True and then_clause is used
+    if_clause = MockField(should_validate=True)
+    then_clause = MockField(should_validate=True)
+    else_clause = MockField(should_validate=False)
+    field = IfThenElse(if_clause=if_clause, then_clause=then_clause, else_clause=else_clause)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause is False and else_clause is used
+    if_clause = MockField(should
+
+# Generated at 2024-06-04 19:36:13.882998
+```python
+    field = Any()
+    not_field = Not(negated=field)
+    assert isinstance(not_field, Not)
+    assert not_field.negated == field
+```
+
+# Generated at 2024-06-04 19:36:17.296124
+```python
+    field1 = Any()
+    field2 = NeverMatch()
+    one_of_field = OneOf(one_of=[field1, field2])
+
+    # Test case where value matches one field
+    assert one_of_field.validate("test") == "test"
+
+    # Test case where value matches no fields
+    try:
+        one_of_field.validate(123)
+    except Exception as e:
+        assert str(e) == "Did not match any valid type."
+
+    # Test case where value matches multiple fields
+    field3 = Any()
+    one_of_field_multiple = OneOf(one_of=[field1, field3])
+    try:
+        one_of_field_multiple.validate("test")
+    except Exception as e:
+        assert str(e) == "Matched more than one type."
+```
+
+# Generated at 2024-06-04 19:36:22.209828
+```python
+    true_field = Field()
+    false_field = NeverMatch()
+    then_field = Field()
+    else_field = Field()
+
+    # Test case where if_clause matches
+    field = IfThenElse(if_clause=true_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause does not match
+    field = IfThenElse(if_clause=false_field, then_clause=then_field, else_clause=else_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause matches and then_clause is not provided
+    field = IfThenElse(if_clause=true_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause does not match and else_clause is not provided
+    field = IfThenElse(if_clause=false_field)
+    assert field.validate("test") == "test"
+
+    # Test case where if_clause matches

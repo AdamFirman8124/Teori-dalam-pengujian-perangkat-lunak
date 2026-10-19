@@ -1,0 +1,242 @@
+
+
+# Generated at 2024-06-01 20:12:20.133928
+```python
+    test_dir = Path('/tmp/test_path_absent')
+    test_file = test_dir / 'test_file.txt'
+    test_dir.mkdir(parents=True, exist_ok=True)
+    test_file.touch()
+
+    # Ensure the directory and file exist before calling path_absent
+    assert test_dir.exists()
+    assert test_file.exists()
+
+    # Call the function to test
+    path_absent(test_dir)
+
+    # Ensure the directory and file do not exist after calling path_absent
+    assert not test_dir.exists()
+    assert not test_file.exists()
+```
+
+# Generated at 2024-06-01 20:12:21.724147
+```python
+    test_dir = Path('/tmp/test_path_absent')
+    test_file = test_dir / 'test_file.txt'
+    test_dir.mkdir(parents=True, exist_ok=True)
+    test_file.touch()
+
+    # Ensure the directory and file exist
+    assert test_dir.exists()
+    assert test_file.exists()
+
+    # Call the function to test
+    path_absent(test_dir)
+
+    # Ensure the directory and file are removed
+    assert not test_file.exists()
+    assert not test_dir.exists()
+```
+
+# Generated at 2024-06-01 20:12:24.354263
+```python
+    test_path = Path("/tmp/testfile")
+    test_path.touch()
+    test_user = getpass.getuser()
+    test_group = grp.getgrgid(os.getgid()).gr_name
+
+    # Test changing ownership to current user and group
+    chown(test_path, user=test_user, group=test_group)
+    assert test_path.owner() == test_user
+    assert test_path.group() == test_group
+
+    # Test changing ownership with glob pattern
+    test_dir = Path("/tmp/testdir")
+    test_dir.mkdir()
+    (test_dir / "testfile1").touch()
+    (test_dir / "testfile2").touch()
+    chown(test_dir / "*", user=test_user, group=test_group)
+    for sub_path in test_dir.glob("*"):
+        assert sub_path.owner() == test_user
+        assert sub_path.group() == test_group
+
+    # Cleanup
+    test_path.unlink()
+    for sub_path in test_dir.glob("*"):
+
+
+# Generated at 2024-06-01 20:12:27.484450
+```python
+    from pathlib import Path
+    import os
+
+    # Create temporary files and directories for testing
+    temp_dir = Path('temp_test_dir')
+    temp_file = temp_dir / 'temp_test_file.txt'
+    temp_dir.mkdir(exist_ok=True)
+    temp_file.touch()
+
+    try:
+        # Test for directory
+        assert exists_as(temp_dir) == 'directory'
+        
+        # Test for file
+        assert exists_as(temp_file) == 'file'
+        
+        # Test for non-existent path
+        assert exists_as(temp_dir / 'non_existent') == ''
+        
+        # Test for block device (platform dependent, may need to adjust path)
+        if os.path.exists('/dev/sda'):
+            assert exists_as('/dev/sda') == 'block device'
+        
+        # Test for char device (platform dependent, may need to adjust path)
+        if os.path.exists('/dev/null'):
+            assert exists_as('/dev/null') == 'char device
+
+# Generated at 2024-06-01 20:12:29.266124
+```python
+    test_dir = Path('/tmp/test_path_absent')
+    test_file = test_dir / 'test_file.txt'
+    test_dir.mkdir(parents=True, exist_ok=True)
+    test_file.touch()
+
+    # Ensure the directory and file exist
+    assert test_dir.exists()
+    assert test_file.exists()
+
+    # Call the function to test
+    path_absent(test_dir)
+
+    # Ensure the directory and file are removed
+    assert not test_file.exists()
+    assert not test_dir.exists()
+```
+
+# Generated at 2024-06-01 20:12:33.151963
+```python
+    test_path = Path('/tmp/test_path_absent')
+
+    # Ensure the path does not exist before the test
+    if test_path.exists():
+        path_absent(test_path)
+
+    # Create a directory and some files for testing
+    test_path.mkdir(parents=True)
+    (test_path / 'file1.txt').touch()
+    (test_path / 'file2.txt').touch()
+    (test_path / 'subdir').mkdir()
+    (test_path / 'subdir' / 'file3.txt').touch()
+
+    # Ensure the path and its contents exist
+    assert test_path.exists()
+    assert (test_path / 'file1.txt').exists()
+    assert (test_path / 'file2.txt').exists()
+    assert (test_path / 'subdir').exists()
+    assert (test_path / 'subdir' / 'file3.txt').exists()
+
+    # Call the function to test
+    path_absent(test_path)
+
+    #
+
+# Generated at 2024-06-01 20:12:35.990800
+```python
+    test_file = Path("test_file.txt")
+    test_dir = Path("test_dir")
+    test_file.touch()
+    test_dir.mkdir()
+
+    try:
+        # Test changing file mode
+        chmod(test_file, mode_file=0o644)
+        assert oct(test_file.stat().st_mode)[-3:] == '644'
+
+        # Test changing directory mode
+        chmod(test_dir, mode_dir=0o755)
+        assert oct(test_dir.stat().st_mode)[-3:] == '755'
+
+        # Test with default modes
+        chmod(test_file)
+        assert oct(test_file.stat().st_mode)[-3:] == '600'
+        chmod(test_dir)
+        assert oct(test_dir.stat().st_mode)[-3:] == '700'
+
+        # Test with glob pattern
+        nested_file = test_dir / "nested_file.txt"
+        nested_file.touch()
+        chmod(test_dir / "*", mode_file=0o666, mode_dir=0
+
+# Generated at 2024-06-01 20:12:38.991942
+```python
+    # Test case 1: Directory does not exist
+    path = Path('/tmp/test_directory')
+    if path.exists():
+        path.rmdir()
+    result = directory_present(path)
+    assert result == path
+    assert path.exists() and path.is_dir()
+
+    # Test case 2: Directory already exists
+    result = directory_present(path)
+    assert result == path
+    assert path.exists() and path.is_dir()
+
+    # Test case 3: Path is not absolute
+    try:
+        directory_present('relative/path')
+    except ValueError as e:
+        assert str(e) == "The path: 'relative/path' must be an absolute path.  A path is considered absolute if it has both a root and (if the flavour allows) a drive."
+
+    # Test case 4: Path contains a glob pattern
+    try:
+        directory_present('/tmp/test_directory/*')
+    except ValueError as e:
+        assert str(e) ==
+
+# Generated at 2024-06-01 20:12:44.326372
+```python
+    import pwd
+    import getpass
+
+    # Test with current user
+    current_user = getpass.getuser()
+    assert get_os_user() == pwd.getpwnam(current_user)
+
+    # Test with specific user name
+    user_name = 'root'
+    assert get_os_user(user_name) == pwd.getpwnam(user_name)
+
+    # Test with specific user id
+    user_id = 0
+    assert get_os_user(user_id) == pwd.getpwuid(user_id)
+
+    # Test with invalid user name
+    try:
+        get_os_user('invalid_user')
+    except OSError as e:
+        assert str(e) == "The given name: 'invalid_user', is not a valid \"login name\" for this operating system."
+
+    # Test with invalid user id
+    try:
+        get_os_user(-1)
+    except OSError as e:
+        assert str(e) == "The given uid: -1, is
+
+# Generated at 2024-06-01 20:12:46.846110
+```python
+    from pathlib import Path
+    from unittest.mock import patch, MagicMock
+
+    # Mock normalize_path to return the path as is
+    with patch('flutils.pathutils.normalize_path', side_effect=lambda x: Path(x)):
+        # Mock the Path.glob method to return a list of paths
+        with patch('pathlib.Path.glob', return_value=[Path('/home/test_user/tmp/file_one'), Path('/home/test_user/tmp/dir_one')]):
+            result = list(find_paths('~/tmp/*'))
+            assert result == [Path('/home/test_user/tmp/file_one'), Path('/home/test_user/tmp/dir_one')]
+
+        # Test with an empty result
+        with patch('pathlib.Path.glob', return_value=[]):
+            result = list(find_paths('~/tmp/empty/*'))
+            assert result == []
+```

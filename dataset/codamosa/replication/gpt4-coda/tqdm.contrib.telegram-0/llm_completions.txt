@@ -1,0 +1,452 @@
+
+
+# Generated at 2024-03-18 08:37:35.197533
+    # Setup
+    token = "fake_token"
+    chat_id = "fake_chat_id"
+    with tqdm_telegram(total=100, token=token, chat_id=chat_id) as t:
+        for i in range(10):
+            t.update(10)
+            if i == 5:
+                t.clear()
+                assert t.tgio.text == "", "The Telegram message should be cleared."
+                break
+    # Teardown
+    t.close()
+
+# Generated at 2024-03-18 08:37:42.334446
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the TelegramIO object
+    with patch('tqdm.contrib.telegram.TelegramIO') as MockTelegramIO:
+        mock_tgio = MockTelegramIO.return_value
+        mock_tgio.write = MagicMock()
+
+        # Create a tqdm_telegram object with mocked TelegramIO
+        with tqdm(token='dummy_token', chat_id='dummy_chat_id', total=100) as t:
+            t.update(10)
+            t.clear(nolock=True)
+
+            # Check if the TelegramIO write method was called with an empty string
+            mock_tgio.write.assert_called_with("")
+```
+
+# Generated at 2024-03-18 08:37:51.700605
+```python
+    # Mocking the necessary parts to test the write method
+    from unittest.mock import patch, MagicMock
+
+    token = "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
+    chat_id = "123456789"
+    message_text = "Test message"
+
+    # Create an instance of the TelegramIO class
+    tgio = TelegramIO(token, chat_id)
+
+    # Mock the message_id property to return a fixed value
+    tgio._message_id = 111
+
+    # Mock the requests.Session.post method
+    with patch.object(Session, 'post', return_value=MagicMock(json=lambda: {"ok": True, "result": {"message_id": 111}})) as mock_post:
+        # Call the write method
+        future = tgio.write(message_text)
+
+        # Assert the post method was called with the correct parameters
+        mock_post.assert_called_once_with(
+            Telegram
+
+# Generated at 2024-03-18 08:37:58.772076
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the TelegramIO class
+    with patch('tqdm.contrib.telegram.TelegramIO') as MockTelegramIO:
+        mock_tgio = MockTelegramIO.return_value
+        mock_tgio.delete = MagicMock()
+
+        # Create an instance of tqdm_telegram with mocked TelegramIO
+        with tqdm(token='dummy_token', chat_id='dummy_chat_id', total=100) as t:
+            # Simulate progress
+            for i in range(10):
+                t.update(10)
+
+            # Before closing, the bar should not be deleted
+            mock_tgio.delete.assert_not_called()
+
+        # After closing, the bar should be deleted if `leave` is False
+        mock_tgio.delete.assert_called_once()
+
+    # Test with `leave` set to True
+    with patch('tqdm.contrib.telegram.TelegramIO') as MockTelegramIO:
+        mock_tgio = MockTelegramIO.return_value
+
+
+# Generated at 2024-03-18 08:38:05.364047
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the TelegramIO class
+    with patch('tqdm.contrib.telegram.TelegramIO') as MockTelegramIO:
+        mock_tgio = MockTelegramIO.return_value
+
+        # Create an instance of tqdm_telegram
+        tqdm_instance = tqdm_telegram(iterable=range(10), token='fake_token', chat_id='fake_chat_id')
+
+        # Set the disable flag to False to ensure the close method's logic is executed
+        tqdm_instance.disable = False
+
+        # Set the leave flag to False and pos to 0 to trigger the delete method
+        tqdm_instance.leave = False
+        tqdm_instance.pos = 0
+
+        # Call the close method
+        tqdm_instance.close()
+
+        # Assert that the delete method was called
+        mock_tgio.delete.assert_called_once()
+```
+
+# Generated at 2024-03-18 08:38:11.237377
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the TelegramIO object
+    with patch('tqdm.contrib.telegram.TelegramIO') as MockTelegramIO:
+        mock_tgio = MockTelegramIO.return_value
+        mock_tgio.write = MagicMock()
+
+        # Create a tqdm_telegram object with mocked TelegramIO
+        with tqdm(token='dummy_token', chat_id='dummy_chat_id', total=100) as t:
+            t.update(10)
+            t.clear(nolock=True)
+
+            # Check if the TelegramIO write method was called with an empty string
+            mock_tgio.write.assert_called_with("")
+```
+
+# Generated at 2024-03-18 08:38:19.356630
+```python
+    token = "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
+    chat_id = "123456789"
+
+    # Test with default parameters
+    with tqdm(token=token, chat_id=chat_id) as t:
+        assert t.tgio.token == token
+        assert t.tgio.chat_id == chat_id
+
+    # Test with environment variables
+    with mock.patch.dict('os.environ', {'TQDM_TELEGRAM_TOKEN': token, 'TQDM_TELEGRAM_CHAT_ID': chat_id}):
+        with tqdm() as t:
+            assert t.tgio.token == token
+            assert t.tgio.chat_id == chat_id
+
+    # Test with disable=True
+    with tqdm(disable=True) as t:
+        assert not hasattr(t, 'tgio')
+```
+
+# Generated at 2024-03-18 08:38:26.412781
+```python
+    # Mocking the necessary parts to test the write method
+    from unittest.mock import patch, MagicMock
+
+    token = "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
+    chat_id = "123456789"
+    message_text = "Test message"
+
+    # Create an instance of the TelegramIO class
+    tgio = TelegramIO(token, chat_id)
+
+    # Mock the message_id property to return a fake message_id
+    tgio._message_id = 1111
+
+    # Mock the requests.Session.post method
+    with patch.object(Session, 'post', return_value=MagicMock()) as mock_post:
+        # Mock the response of the post method
+        mock_response = MagicMock()
+        mock_response.json.return_value = {
+            'ok': True,
+            'result': {
+                'message_id': tgio._message_id,
+                'text': message_text
+            }
+
+
+# Generated at 2024-03-18 08:38:27.651888
+```python
+import pytest
+from unittest.mock import patch, MagicMock
+
+@patch('requests.Session')
+
+# Generated at 2024-03-18 08:38:28.730853
+```python
+import pytest
+from unittest.mock import patch, MagicMock
+
+@patch('requests.Session')
+
+# Generated at 2024-03-18 08:41:25.385264
+```python
+    # Mocking the necessary parts to test the write method
+    from unittest.mock import patch, MagicMock
+
+    token = "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
+    chat_id = "123456789"
+    message_text = "Test message"
+
+    # Create an instance of the TelegramIO class
+    tgio = TelegramIO(token, chat_id)
+
+    # Mock the message_id property to return a fixed value
+    tgio._message_id = 1111
+
+    # Mock the requests.Session.post method
+    with patch.object(Session, 'post', return_value=MagicMock()) as mock_post:
+        # Mock the response of the post method
+        mock_response = MagicMock()
+        mock_response.json.return_value = {'ok': True, 'result': {'message_id': 1111}}
+        mock_post.return_value = mock_response
+
+        # Call the write method
+       
+
+# Generated at 2024-03-18 08:41:31.492564
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the TelegramIO instance
+    with patch('tqdm.contrib.telegram.TelegramIO') as MockTelegramIO:
+        mock_tgio = MockTelegramIO.return_value
+        mock_tgio.write = MagicMock()
+
+        # Create a tqdm_telegram instance with mocked TelegramIO
+        with tqdm(token='dummy_token', chat_id='dummy_chat_id', total=100) as t:
+            t.update(10)  # Arbitrary update to trigger output
+            t.clear(nolock=True)
+
+            # Check if TelegramIO.write was called with an empty string
+            mock_tgio.write.assert_called_with("")
+```
+
+# Generated at 2024-03-18 08:41:38.189955
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the TelegramIO object
+    with patch('tqdm.contrib.telegram.TelegramIO') as MockTelegramIO:
+        mock_tgio = MockTelegramIO.return_value
+        mock_tgio.write = MagicMock()
+
+        # Create a tqdm_telegram object with mocked TelegramIO
+        tqdm_tg = tqdm_telegram(iterable=range(10), token='fake_token', chat_id='fake_chat_id')
+
+        # Call the clear method
+        tqdm_tg.clear()
+
+        # Assert that the write method was called with an empty string
+        mock_tgio.write.assert_called_with("")
+```
+
+# Generated at 2024-03-18 08:41:45.417828
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the TelegramIO.write method to test if it's called correctly
+    with patch.object(TelegramIO, 'write') as mock_write:
+        # Create a tqdm_telegram instance with mock token and chat_id
+        with tqdm_telegram(total=100, token='mock_token', chat_id='mock_chat_id') as t:
+            # Set n to a value to simulate progress
+            t.n = 50
+            # Call the display method which should trigger TelegramIO.write
+            t.display()
+
+        # Check if TelegramIO.write was called once
+        mock_write.assert_called_once()
+        # Check if the call to write was with the expected formatted string
+        formatted_meter = t.format_meter(n=50, total=100, elapsed=0)
+        mock_write.assert_called_with(formatted_meter)
+```
+
+# Generated at 2024-03-18 08:41:51.604627
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the TelegramIO object
+    with patch('tqdm.contrib.telegram.TelegramIO') as MockTelegramIO:
+        mock_tgio = MockTelegramIO.return_value
+        mock_tgio.write = MagicMock()
+
+        # Create a tqdm_telegram object with mocked TelegramIO
+        tqdm_tg = tqdm_telegram(iterable=range(10), token='fake_token', chat_id='fake_chat_id')
+
+        # Call the clear method
+        tqdm_tg.clear()
+
+        # Assert that the write method was called with an empty string
+        mock_tgio.write.assert_called_with("")
+```
+
+# Generated at 2024-03-18 08:41:58.078473
+    # Mocking the necessary parts to test close method
+    class MockTelegramIO:
+        def __init__(self):
+            self.delete_called = False
+
+        def delete(self):
+            self.delete_called = True
+
+    # Mocking tqdm_telegram to use MockTelegramIO
+    class MockTqdmTelegram(tqdm_telegram):
+        def __init__(self, *args, **kwargs):
+            super(MockTqdmTelegram, self).__init__(*args, **kwargs)
+            self.tgio = MockTelegramIO()
+
+    # Test when disable is False and leave is False
+    tqdm_instance = MockTqdmTelegram(disable=False, leave=False)
+    tqdm_instance.close()
+    assert tqdm_instance.tgio.delete_called, "Failed to call delete when disable is False and leave is False"
+
+    # Test when disable is True
+    tqdm_instance = MockTqdmTelegram(disable=True)
+    tqdm_instance.close()
+    assert not tqdm_instance.tgio.delete_called
+
+# Generated at 2024-03-18 08:42:06.790839
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the TelegramIO.write method to test if it's called correctly
+    with patch.object(TelegramIO, 'write') as mock_write:
+        # Create a tqdm_telegram instance with mock token and chat_id
+        with tqdm_telegram(total=100, token='mock_token', chat_id='mock_chat_id') as t:
+            # Set the n (current iteration) and refresh to trigger display
+            t.n = 50
+            t.refresh()
+
+            # Check if the write method was called with the correct formatted string
+            mock_write.assert_called_once()
+            args, _ = mock_write.call_args
+            assert '50/100' in args[0], "The progress bar is not displaying the correct progress"
+```
+
+# Generated at 2024-03-18 08:42:16.496468
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the TelegramIO.write method to track calls and arguments
+    with patch.object(TelegramIO, 'write') as mock_write:
+        # Create a tqdm_telegram instance with test token and chat_id
+        with tqdm_telegram(total=100, token='test_token', chat_id='test_chat_id') as t:
+            # Update the progress bar to trigger the display method
+            t.update(10)
+
+            # Check if TelegramIO.write was called once
+            mock_write.assert_called_once()
+
+            # Check if the correct formatted string was passed to write
+            formatted_meter = t.format_meter()
+            mock_write.assert_called_with(formatted_meter)
+
+            # Update the progress bar again to trigger the display method
+            t.update(10)
+
+            # Check if TelegramIO.write was called again with the new formatted string
+            formatted_meter = t.format_meter()
+            mock_write.assert_called_with(formatted_meter
+
+# Generated at 2024-03-18 08:42:20.313697
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the TelegramIO object
+    with patch('tqdm.contrib.telegram.TelegramIO') as MockTelegramIO:
+        mock_tgio = MockTelegramIO.return_value
+        mock_tgio.write = MagicMock()
+
+        # Create a tqdm_telegram object with mocked TelegramIO
+        with tqdm(token='dummy_token', chat_id='dummy_chat_id', total=100) as t:
+            t.update(10)
+            t.clear(nolock=True)
+
+            # Check if the write method was called with an empty string
+            mock_tgio.write.assert_called_with("")
+```
+
+# Generated at 2024-03-18 08:42:25.438005
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the TelegramIO object
+    with patch('tqdm.contrib.telegram.TelegramIO') as MockTelegramIO:
+        mock_tgio = MockTelegramIO.return_value
+        mock_tgio.write = MagicMock()
+
+        # Create a tqdm_telegram object with mocked TelegramIO
+        tqdm_tg = tqdm_telegram(iterable=range(10), token='fake_token', chat_id='fake_chat_id')
+
+        # Call the clear method
+        tqdm_tg.clear()
+
+        # Assert that the write method was called with an empty string
+        mock_tgio.write.assert_called_with("")
+```
+
+# Generated at 2024-03-18 08:44:33.086268
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the TelegramIO class
+    with patch('tqdm.contrib.telegram.TelegramIO') as MockTelegramIO:
+        mock_tgio = MockTelegramIO.return_value
+        mock_tgio.write = MagicMock()
+
+        # Create an instance of tqdm_telegram
+        tqdm_instance = tqdm_telegram(iterable=range(10), token='dummy_token', chat_id='dummy_chat_id')
+
+        # Call the clear method
+        tqdm_instance.clear()
+
+        # Assert that the write method was called with an empty string
+        mock_tgio.write.assert_called_with("")
+```
+
+# Generated at 2024-03-18 08:44:41.105160
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the TelegramIO.write method to test if it's called correctly
+    with patch.object(TelegramIO, 'write') as mock_write:
+        # Create a tqdm_telegram instance with mock token and chat_id
+        with tqdm_telegram(total=100, token='mock_token', chat_id='mock_chat_id') as t:
+            # Set n to a value to simulate progress
+            t.n = 50
+            # Call the display method which should trigger TelegramIO.write
+            t.display()
+
+        # Check if TelegramIO.write was called once
+        mock_write.assert_called_once()
+        # Check if the call to write was with the correct formatted string
+        formatted_meter = t.format_meter(n=50, total=100, elapsed=0)
+        mock_write.assert_called_with(formatted_meter)
+```
+
+# Generated at 2024-03-18 08:44:46.900777
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the TelegramIO object
+    with patch('tqdm.contrib.telegram.TelegramIO') as MockTelegramIO:
+        mock_tgio = MockTelegramIO.return_value
+        mock_tgio.write = MagicMock()
+
+        # Create a tqdm_telegram object
+        tqdm_tg = tqdm_telegram(iterable=range(10), token='dummy_token', chat_id='dummy_chat_id')
+
+        # Call the clear method
+        tqdm_tg.clear()
+
+        # Check if the write method was called with an empty string
+        mock_tgio.write.assert_called_with("")
+```

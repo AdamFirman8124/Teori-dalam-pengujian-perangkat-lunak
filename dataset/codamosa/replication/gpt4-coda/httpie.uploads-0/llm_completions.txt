@@ -1,0 +1,1702 @@
+
+
+# Generated at 2024-03-18 05:58:29.710655
+```python
+    # Mock a PreparedRequest object
+    class MockPreparedRequest:
+        def __init__(self, body):
+            self.body = body
+            self.headers = {}
+
+    # Test with a string body
+    request = MockPreparedRequest("This is a test string.")
+    compress_request(request, always=False)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with a bytes body
+    request = MockPreparedRequest(b"This is a test bytes.")
+    compress_request(request, always=False)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with always compress regardless of
+
+# Generated at 2024-03-18 05:58:34.571389
+```python
+    boundary = 'test_boundary'
+    fields = {
+        'field1': 'value1',
+        'field2': 'value2',
+        'field3': ('filename.txt', 'file content', 'text/plain'),
+    }
+    content_type_prefix = 'multipart/form-data'
+
+    encoder, content_type = get_multipart_data_and_content_type(fields, boundary)
+
+    assert isinstance(encoder, MultipartEncoder)
+    assert content_type.startswith(content_type_prefix)
+    assert f'boundary={boundary}' in content_type
+
+    for field, value in fields.items():
+        assert (field, value) in encoder.fields.items()
+```
+
+# Generated at 2024-03-18 05:58:46.485622
+```python
+    # Mock callback function
+    def mock_callback(chunk):
+        pass
+
+    # Test with string body
+    body = "test_data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with bytes body
+    body = b"test_data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with file-like body
+    class MockFile:
+        def read(self):
+            return b"file_data"
+
+    body = MockFile()
+    result = prepare_request_body(body, mock_callback)
+    assert hasattr(result, 'read')
+
+    # Test with RequestDataDict
+    body = RequestDataDict({'key': 'value'})
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, str)
+
+    # Test with MultipartEncoder
+    body = MultipartEncoder(fields={'key': 'value'})
+    result
+
+# Generated at 2024-03-18 05:58:53.330908
+```python
+    # Mock callback function
+    def mock_callback(chunk):
+        pass
+
+    # Test with a string body
+    body = "test data"
+    result = prepare_request_body(body, mock_callback, chunked=False)
+    assert result == body
+
+    # Test with a string body and chunked transfer
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    assert b''.join(result) == body.encode()
+
+    # Test with a file-like object
+    class MockFile:
+        def __init__(self, content):
+            self.content = content.encode()
+            self.read_calls = 0
+
+        def read(self, size=-1):
+            self.read_calls += 1
+            if self.read_calls == 1:
+                return self.content
+            return b''
+
+    file_like_body = MockFile("file content")
+    result = prepare_request_body(file_like_body, mock_callback,
+
+# Generated at 2024-03-18 05:58:58.725373
+```python
+    callback = MagicMock()
+    data = ['chunk1', 'chunk2', 'chunk3']
+    stream = ChunkedUploadStream(stream=(chunk.encode() for chunk in data), callback=callback)
+
+    chunks = list(iter(stream))
+
+    assert chunks == [b'chunk1', b'chunk2', b'chunk3']
+    assert callback.call_count == 3
+    callback.assert_has_calls([call(b'chunk1'), call(b'chunk2'), call(b'chunk3')])
+```
+
+# Generated at 2024-03-18 05:59:08.180994
+```python
+    def mock_callback(chunk):
+        pass
+
+    # Test with a string body
+    body = "test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a bytes body
+    body = b"test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a file-like object
+    class FileLike:
+        def read(self, *args):
+            return b"file data"
+
+    body = FileLike()
+    result = prepare_request_body(body, mock_callback)
+    assert hasattr(result, 'read')
+
+    # Test with a MultipartEncoder body
+    body = MultipartEncoder(fields={'field': 'value'})
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(result, ChunkedMultipartUploadStream)
+
+    # Test with offline mode
+    body = "
+
+# Generated at 2024-03-18 05:59:19.116735
+```python
+    # Mock callback function
+    def mock_callback(chunk):
+        pass
+
+    # Test with string body
+    body = "test_data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with bytes body
+    body = b"test_data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with file-like body
+    class MockFile:
+        def read(self):
+            return b"file_data"
+
+    body = MockFile()
+    result = prepare_request_body(body, mock_callback)
+    assert hasattr(result, 'read')
+
+    # Test with RequestDataDict
+    body = RequestDataDict({'key': 'value'})
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, str)
+
+    # Test with MultipartEncoder
+    body = MultipartEncoder(fields={'key': 'value'})
+    result
+
+# Generated at 2024-03-18 05:59:19.919316
+```python
+import io
+
+
+# Generated at 2024-03-18 05:59:20.899799
+```python
+import io
+
+
+# Generated at 2024-03-18 05:59:31.805043
+```python
+    # Mock callback function
+    def mock_callback(chunk):
+        pass
+
+    # Test with a string body
+    body = "test_data"
+    result = prepare_request_body(body, mock_callback, chunked=False, offline=False)
+    assert result.stream == (chunk.encode() for chunk in [body])
+
+    # Test with a bytes body
+    body = b"test_data"
+    result = prepare_request_body(body, mock_callback, chunked=False, offline=False)
+    assert result.stream == (chunk for chunk in [body])
+
+    # Test with a file-like object
+    class MockFile:
+        def __init__(self, content):
+            self.content = content
+            self.read_called = False
+
+        def read(self, *args):
+            self.read_called = True
+            return self.content
+
+    body = MockFile(b"test_data")
+    result = prepare_request_body(body, mock_callback, chunked=False, offline=False)
+    assert body
+
+# Generated at 2024-03-18 05:59:45.752219
+```python
+    # Mock a PreparedRequest object
+    class MockPreparedRequest:
+        def __init__(self, body):
+            self.body = body
+            self.headers = {}
+
+    # Test with a string body
+    request = MockPreparedRequest("This is a test string")
+    compress_request(request, always=True)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body.encode())
+
+    # Test with a bytes body
+    request = MockPreparedRequest(b"This is a test bytes")
+    compress_request(request, always=True)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with a file-like
+
+# Generated at 2024-03-18 05:59:53.074976
+```python
+    from io import BytesIO
+
+    # Mock callback function to collect chunks
+    chunks_collected = []
+    def mock_callback(chunk):
+        chunks_collected.append(chunk)
+
+    # Test with a string body
+    body = 'test_string_body'
+    prepared_body = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(prepared_body, ChunkedUploadStream)
+    assert b''.join(prepared_body) == body.encode()
+    assert chunks_collected == [body.encode()]
+
+    # Test with a bytes body
+    chunks_collected.clear()
+    body_bytes = b'test_bytes_body'
+    prepared_body = prepare_request_body(body_bytes, mock_callback, chunked=True)
+    assert isinstance(prepared_body, ChunkedUploadStream)
+    assert b''.join(prepared_body) == body_bytes
+    assert chunks_collected == [body_bytes]
+
+    # Test with a file-like body
+    chunks_collected.clear()
+    body_file_like
+
+# Generated at 2024-03-18 06:00:01.389896
+```python
+    from io import BytesIO
+
+    # Mock callback function to track the chunks read
+    chunks_read = []
+    def mock_callback(chunk):
+        chunks_read.append(chunk)
+
+    # Test with a simple string body
+    body = 'test_body'
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    assert b''.join(result) == b'test_body'
+    assert chunks_read == [b'test_body']
+
+    # Test with a file-like object
+    file_like_body = BytesIO(b'test_file_body')
+    result = prepare_request_body(file_like_body, mock_callback)
+    assert hasattr(result, 'read')
+    assert result.read() == b'test_file_body'
+    assert chunks_read == [b'test_file_body']
+
+    # Test with a file-like object and chunked transfer
+    file_like_body.seek(0)  # Reset the BytesIO object to the
+
+# Generated at 2024-03-18 06:00:05.582868
+```python
+    callback = MagicMock()
+    data = [b'chunk1', b'chunk2', b'chunk3']
+    stream = ChunkedUploadStream(stream=data, callback=callback)
+
+    chunks = list(iter(stream))
+
+    assert chunks == data
+    assert callback.call_count == len(data)
+    for chunk in data:
+        callback.assert_any_call(chunk)
+```
+
+# Generated at 2024-03-18 06:00:17.301657
+```python
+    # Mock a PreparedRequest object
+    class MockPreparedRequest:
+        def __init__(self, body):
+            self.body = body
+            self.headers = {}
+
+    # Test with a string body
+    request = MockPreparedRequest("This is a test string.")
+    compress_request(request, always=False)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with a bytes body
+    request = MockPreparedRequest(b"This is a test bytes.")
+    compress_request(request, always=True)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) == len(request.body)
+
+    # Test with a file-like body
+
+# Generated at 2024-03-18 06:00:27.483861
+```python
+    # Mock a PreparedRequest object
+    class MockPreparedRequest:
+        def __init__(self, body):
+            self.body = body
+            self.headers = {}
+
+    # Test with a string body
+    request = MockPreparedRequest("This is a test string.")
+    compress_request(request, always=True)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with a bytes body
+    request = MockPreparedRequest(b"This is a test bytes.")
+    compress_request(request, always=True)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with a file-like body
+
+# Generated at 2024-03-18 06:00:37.101796
+```python
+    from unittest.mock import Mock
+
+    # Mock a PreparedRequest with a body that can be compressed
+    mock_request = Mock()
+    mock_request.body = 'This is a test string that will be compressed'
+    mock_request.headers = {}
+
+    # Call the function with always=False, should compress only if economical
+    compress_request(mock_request, always=False)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert int(mock_request.headers['Content-Length']) < len(mock_request.body.encode())
+
+    # Reset the mock request for the next test
+    mock_request.headers = {}
+
+    # Call the function with always=True, should compress regardless of size
+    compress_request(mock_request, always=True)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in mock_request.headers
+    assert int(mock_request
+
+# Generated at 2024-03-18 06:00:44.036287
+```python
+    from unittest.mock import MagicMock
+
+    # Mock a PreparedRequest with a body that can be compressed
+    mock_request = MagicMock()
+    mock_request.body = 'This is a test string that will be compressed'
+    mock_request.headers = {}
+
+    # Call the function with always=False, should compress only if economical
+    compress_request(mock_request, always=False)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in mock_request.headers
+    assert int(mock_request.headers['Content-Length']) < len(mock_request.body.encode())
+
+    # Reset the mock_request for the next test
+    mock_request.headers.clear()
+
+    # Call the function with always=True, should compress regardless of size
+    compress_request(mock_request, always=True)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length
+
+# Generated at 2024-03-18 06:00:52.246783
+```python
+    from io import BytesIO
+
+    # Mock callback function to track the chunks read
+    chunks_read = []
+    def mock_callback(chunk):
+        chunks_read.append(chunk)
+
+    # Test with a simple string body
+    body = 'field1=value1&field2=value2'
+    prepared_body = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(prepared_body, ChunkedUploadStream)
+    assert b''.join(prepared_body) == body.encode()
+    assert chunks_read == [body.encode()]
+
+    # Reset chunks read
+    chunks_read.clear()
+
+    # Test with a file-like object
+    file_like_body = BytesIO(b'file like body content')
+    prepared_body = prepare_request_body(file_like_body, mock_callback, chunked=False)
+    assert hasattr(prepared_body, 'read')
+    assert prepared_body.read() == b'file like body content'
+    assert chunks_read == [b'file like body content']
+
+
+
+# Generated at 2024-03-18 06:01:00.256378
+```python
+    # Mock a PreparedRequest object
+    class MockPreparedRequest:
+        def __init__(self, body):
+            self.body = body
+            self.headers = {}
+
+    # Test with a string body
+    request = MockPreparedRequest("This is a test string.")
+    compress_request(request, always=True)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) == len(request.body)
+    assert isinstance(request.body, bytes)
+
+    # Test with a bytes body
+    request = MockPreparedRequest(b"This is a test bytes.")
+    original_length = len(request.body)
+    compress_request(request, always=False)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['
+
+# Generated at 2024-03-18 06:01:11.610626
+```python
+    callback = MagicMock()
+    data = ['chunk1', 'chunk2', 'chunk3']
+    stream = ChunkedUploadStream(stream=(chunk.encode() for chunk in data), callback=callback)
+
+    chunks = list(iter(stream))
+
+    assert chunks == [b'chunk1', b'chunk2', b'chunk3']
+    assert callback.call_count == 3
+    callback.assert_has_calls([call(b'chunk1'), call(b'chunk2'), call(b'chunk3')])
+```
+
+# Generated at 2024-03-18 06:01:18.360140
+```python
+    # Mock callback function
+    def mock_callback(chunk):
+        pass
+
+    # Test with a string body
+    body = "test_data"
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a bytes body
+    body = b"test_data"
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a file-like object
+    class MockFile:
+        def read(self, *args):
+            return b"file_data"
+
+    body = MockFile()
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a MultipartEncoder object
+    body = MultipartEncoder(fields={'field': 'value'})
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance
+
+# Generated at 2024-03-18 06:01:19.391859
+```python
+from unittest.mock import Mock
+
+
+# Generated at 2024-03-18 06:01:20.041466
+```python
+import io
+
+
+# Generated at 2024-03-18 06:01:27.738736
+```python
+    # Mock callback function to track the chunks read
+    chunks_read = []
+
+    def mock_callback(chunk):
+        chunks_read.append(chunk)
+
+    # Test with a simple string body
+    body = "test data"
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    assert b"".join(result).decode() == body
+    assert chunks_read == [body.encode()]
+
+    # Test with a file-like object
+    class MockFileIO:
+        def __init__(self, content):
+            self.content = content.encode()
+            self.read_called = False
+
+        def read(self, size=-1):
+            if not self.read_called:
+                self.read_called = True
+                return self.content
+            return b''
+
+    file_content = "file content"
+    file_like = MockFileIO(file_content)
+    result = prepare_request_body(file_like, mock_callback, chunked=False)
+    assert
+
+# Generated at 2024-03-18 06:01:28.391762
+```python
+
+# Generated at 2024-03-18 06:01:36.069691
+```python
+    def mock_callback(chunk):
+        pass
+
+    # Test with a string body
+    body = "test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a bytes body
+    body = b"test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a file-like object
+    class MockFile:
+        def read(self, *args):
+            return b"file data"
+
+    body = MockFile()
+    result = prepare_request_body(body, mock_callback)
+    assert hasattr(result, 'read')
+
+    # Test with a MultipartEncoder body
+    body = MultipartEncoder(fields={'field': 'value'})
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedMultipartUploadStream)
+
+    # Test with offline mode
+    body = "offline data"
+   
+
+# Generated at 2024-03-18 06:01:43.701898
+```python
+    # Prepare a mock request object
+    mock_request = requests.PreparedRequest()
+    mock_request.headers = {}
+
+    # Test with a string body
+    mock_request.body = "This is a test string"
+    compress_request(mock_request, always=False)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert int(mock_request.headers['Content-Length']) < len(mock_request.body.encode())
+
+    # Test with a bytes body
+    mock_request.body = b"This is another test string"
+    compress_request(mock_request, always=True)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert int(mock_request.headers['Content-Length']) == len(zlib.compress(mock_request.body))
+
+    # Test with a file-like body
+    mock_request.body = io.BytesIO(b"File-like test string")
+    compress_request(mock_request,
+
+# Generated at 2024-03-18 06:01:45.045772
+```python
+from unittest.mock import Mock
+
+
+# Generated at 2024-03-18 06:01:52.908500
+```python
+    # Prepare a mock request object
+    mock_request = requests.PreparedRequest()
+    mock_request.headers = {}
+
+    # Test with a string body
+    mock_request.body = "This is a test string"
+    compress_request(mock_request, always=False)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert int(mock_request.headers['Content-Length']) < len(mock_request.body.encode())
+
+    # Test with a bytes body
+    mock_request.body = b"This is another test string"
+    compress_request(mock_request, always=True)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert int(mock_request.headers['Content-Length']) == len(zlib.compress(mock_request.body))
+
+    # Test with a file-like body
+    mock_request.body = io.BytesIO(b"File-like test string")
+    compress_request(mock_request,
+
+# Generated at 2024-03-18 06:02:04.288723
+```python
+    callback = MagicMock()
+    data = ['chunk1', 'chunk2', 'chunk3']
+    stream = ChunkedUploadStream(stream=(chunk.encode() for chunk in data), callback=callback)
+
+    chunks = list(iter(stream))
+
+    assert chunks == [b'chunk1', b'chunk2', b'chunk3']
+    assert callback.call_count == 3
+    callback.assert_has_calls([call(b'chunk1'), call(b'chunk2'), call(b'chunk3')])
+```
+
+# Generated at 2024-03-18 06:02:05.153496
+```python
+from unittest.mock import Mock
+
+
+# Generated at 2024-03-18 06:02:09.402912
+```python
+    callback = MagicMock()
+    data = [b'chunk1', b'chunk2', b'chunk3']
+    stream = ChunkedUploadStream(stream=data, callback=callback)
+
+    chunks = list(stream)
+
+    assert chunks == data
+    assert callback.call_count == len(data)
+    callback.assert_has_calls([call(chunk) for chunk in data], any_order=False)
+```
+
+# Generated at 2024-03-18 06:02:24.821371
+```python
+    # Mock callback function
+    def mock_callback(chunk):
+        pass
+
+    # Test with a string body
+    body = "test_data"
+    result = prepare_request_body(body, mock_callback, chunked=False, offline=False)
+    assert result == body
+
+    # Test with a string body and chunked transfer
+    body = "test_data"
+    result = prepare_request_body(body, mock_callback, chunked=True, offline=False)
+    assert isinstance(result, ChunkedUploadStream)
+    assert b''.join(result) == body.encode()
+
+    # Test with a file-like object
+    class MockFile:
+        def __init__(self, content):
+            self.content = content.encode()
+            self.read_called = False
+
+        def read(self, *args):
+            self.read_called = True
+            return self.content
+
+    file_like_body = MockFile("file_content")
+    result = prepare_request_body(file_like_body, mock_callback, chunked=False,
+
+# Generated at 2024-03-18 06:02:34.971694
+```python
+    def mock_callback(chunk):
+        pass
+
+    # Test with string body
+    body = "test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with bytes body
+    body = b"test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with file-like body
+    class FileLike:
+        def read(self, *args):
+            return b"file data"
+
+    body = FileLike()
+    result = prepare_request_body(body, mock_callback)
+    assert hasattr(result, 'read')
+
+    # Test with RequestDataDict
+    body = RequestDataDict({'key': 'value'})
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, str)
+
+    # Test with MultipartEncoder
+    body = MultipartEncoder(fields={'key': 'value'})
+    result = prepare_request
+
+# Generated at 2024-03-18 06:02:41.555984
+```python
+    # Mock callback function
+    def mock_callback(chunk):
+        pass
+
+    # Test with a string body
+    body = "test data"
+    result = prepare_request_body(body, mock_callback, chunked=False)
+    assert result == body
+
+    # Test with a string body and chunked transfer
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    assert b''.join(result) == body.encode()
+
+    # Test with a file-like object
+    class MockFile:
+        def __init__(self, content):
+            self.content = content.encode()
+            self.read_calls = 0
+
+        def read(self, size=-1):
+            self.read_calls += 1
+            if self.read_calls == 1:
+                return self.content
+            return b''
+
+    file_like_body = MockFile("file content")
+    result = prepare_request_body(file_like_body, mock_callback,
+
+# Generated at 2024-03-18 06:02:45.703236
+```python
+    callback = MagicMock()
+    data = [b'chunk1', b'chunk2', b'chunk3']
+    stream = ChunkedUploadStream(stream=data, callback=callback)
+
+    chunks = list(iter(stream))
+
+    assert chunks == data
+    assert callback.call_count == len(data)
+    callback.assert_has_calls([call(chunk) for chunk in data], any_order=False)
+```
+
+# Generated at 2024-03-18 06:02:46.395843
+```python
+import io
+
+
+# Generated at 2024-03-18 06:02:52.754755
+```python
+    def mock_callback(chunk):
+        pass
+
+    # Test with a string body
+    body = "test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a bytes body
+    body = b"test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a file-like object
+    class MockFile:
+        def read(self, *args):
+            return b"file data"
+
+    body = MockFile()
+    result = prepare_request_body(body, mock_callback)
+    assert hasattr(result, 'read')
+
+    # Test with a MultipartEncoder body
+    body = MultipartEncoder(fields={'field': 'value'})
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(result, ChunkedMultipartUploadStream)
+
+    # Test with offline mode
+    body = "
+
+# Generated at 2024-03-18 06:02:53.583095
+```python
+from unittest.mock import Mock
+
+
+# Generated at 2024-03-18 06:03:14.987012
+```python
+    def callback(chunk):
+        pass
+
+    # Test with a string body
+    body = "test data"
+    result = prepare_request_body(body, callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a bytes body
+    body = b"test data"
+    result = prepare_request_body(body, callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a file-like object
+    class FileLike:
+        def read(self, *args):
+            return b"file-like data"
+
+    body = FileLike()
+    result = prepare_request_body(body, callback)
+    assert hasattr(result, 'read')
+
+    # Test with a MultipartEncoder body
+    body = MultipartEncoder(fields={'field': 'value'})
+    result = prepare_request_body(body, callback, chunked=True)
+    assert isinstance(result, ChunkedMultipartUploadStream)
+
+    # Test with offline mode
+    body = "offline data"
+   
+
+# Generated at 2024-03-18 06:03:24.440154
+```python
+    from io import BytesIO
+
+    # Mock callback function to track the chunks read
+    chunks_read = []
+    def mock_callback(chunk):
+        chunks_read.append(chunk)
+
+    # Test with a simple string body
+    body = 'test_body'
+    prepared_body = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(prepared_body, ChunkedUploadStream)
+    assert b''.join(prepared_body) == b'test_body'
+    assert chunks_read == [b'test_body']
+
+    # Reset chunks read
+    chunks_read.clear()
+
+    # Test with a file-like object
+    file_like_body = BytesIO(b'file_like_body_content')
+    prepared_body = prepare_request_body(file_like_body, mock_callback)
+    assert hasattr(prepared_body, 'read')
+    assert prepared_body.read() == b'file_like_body_content'
+    assert chunks_read == [b'file_like_body_content']
+
+    # Reset chunks read
+   
+
+# Generated at 2024-03-18 06:03:25.254431
+```python
+from unittest.mock import Mock
+
+
+# Generated at 2024-03-18 06:03:35.050340
+```python
+    # Mock a PreparedRequest object
+    class MockPreparedRequest:
+        def __init__(self, body):
+            self.body = body
+            self.headers = {}
+
+    # Test with a string body
+    request = MockPreparedRequest("This is a test string.")
+    compress_request(request, always=True)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with a bytes body
+    request = MockPreparedRequest(b"This is a test bytes.")
+    compress_request(request, always=True)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with a file-like body
+
+# Generated at 2024-03-18 06:03:45.411985
+```python
+    # Mock a PreparedRequest object
+    class MockPreparedRequest:
+        def __init__(self, body):
+            self.body = body
+            self.headers = {}
+
+    # Test with a string body
+    request = MockPreparedRequest("This is a test string.")
+    compress_request(request, always=False)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with a bytes body
+    request = MockPreparedRequest(b"This is a test bytes.")
+    compress_request(request, always=True)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) == len(request.body)
+
+    # Test with a file-like body
+
+# Generated at 2024-03-18 06:03:49.881925
+```python
+    callback = MagicMock()
+    data = ['chunk1', 'chunk2', 'chunk3']
+    stream = ChunkedUploadStream(stream=(chunk.encode() for chunk in data), callback=callback)
+
+    chunks = list(iter(stream))
+
+    assert chunks == [b'chunk1', b'chunk2', b'chunk3']
+    assert callback.call_count == 3
+    callback.assert_has_calls([call(b'chunk1'), call(b'chunk2'), call(b'chunk3')])
+```
+
+# Generated at 2024-03-18 06:03:55.927061
+```python
+    # Prepare a mock request object
+    mock_request = requests.PreparedRequest()
+    mock_request.headers = {}
+
+    # Test with a string body
+    mock_request.body = "This is a test string."
+    compress_request(mock_request, always=False)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert int(mock_request.headers['Content-Length']) < len(mock_request.body.encode())
+
+    # Test with a bytes body
+    mock_request.body = b"This is another test string."
+    compress_request(mock_request, always=True)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert int(mock_request.headers['Content-Length']) < len(mock_request.body)
+
+    # Test with a file-like body
+    mock_request.body = io.BytesIO(b"File-like object test string.")
+    compress_request(mock_request, always=False
+
+# Generated at 2024-03-18 06:03:57.155239
+```python
+from unittest.mock import Mock
+
+
+# Generated at 2024-03-18 06:04:06.338566
+```python
+    # Mock callback function
+    def mock_callback(chunk):
+        pass
+
+    # Test with a string body
+    body = "test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a bytes body
+    body = b"test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a file-like object
+    class MockFile:
+        def read(self, *args):
+            return b"file data"
+
+    body = MockFile()
+    result = prepare_request_body(body, mock_callback)
+    assert hasattr(result, 'read')
+
+    # Test with a MultipartEncoder body
+    body = MultipartEncoder(fields={'field': 'value'})
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(result, ChunkedMultipartUploadStream)
+
+    # Test with offline
+
+# Generated at 2024-03-18 06:04:12.437559
+```python
+    # Mock callback function
+    def mock_callback(chunk):
+        pass
+
+    # Test with a string body
+    body = "test_data"
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    assert b"".join(result) == b"test_data"
+
+    # Test with a bytes body
+    body = b"test_data_bytes"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, bytes)
+    assert result == b"test_data_bytes"
+
+    # Test with a file-like object
+    class MockFile:
+        def __init__(self, content):
+            self.content = content
+            self.read_called = False
+
+        def read(self, *args):
+            self.read_called = True
+            return self.content
+
+    file_like = MockFile(b"file_like_data")
+    result = prepare_request_body(file_like, mock_callback, chunked=False)
+
+
+# Generated at 2024-03-18 06:04:25.394097
+```python
+import io
+
+
+# Generated at 2024-03-18 06:04:33.853012
+```python
+    # Mock a PreparedRequest object
+    class MockPreparedRequest:
+        def __init__(self, body):
+            self.body = body
+            self.headers = {}
+
+    # Test with a string body
+    request = MockPreparedRequest("This is a test string.")
+    compress_request(request, always=True)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) == len(request.body)
+    assert isinstance(request.body, bytes)
+
+    # Test with a bytes body
+    request = MockPreparedRequest(b"This is a test bytes.")
+    original_length = len(request.body)
+    compress_request(request, always=False)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['
+
+# Generated at 2024-03-18 06:04:42.156238
+```python
+    # Mock a PreparedRequest object
+    class MockPreparedRequest:
+        def __init__(self, body):
+            self.body = body
+            self.headers = {}
+
+    # Test with a string body
+    request = MockPreparedRequest("This is a test string.")
+    compress_request(request, always=True)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) == len(request.body)
+    assert isinstance(request.body, bytes)
+
+    # Test with a bytes body
+    request = MockPreparedRequest(b"This is a test bytes.")
+    original_length = len(request.body)
+    compress_request(request, always=False)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['
+
+# Generated at 2024-03-18 06:04:50.359066
+```python
+    # Mock a PreparedRequest object
+    class MockPreparedRequest:
+        def __init__(self, body):
+            self.body = body
+            self.headers = {}
+
+    # Test with a string body
+    request = MockPreparedRequest("This is a test string.")
+    compress_request(request, always=True)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body.encode())
+
+    # Test with a bytes body
+    request = MockPreparedRequest(b"This is a test bytes.")
+    compress_request(request, always=True)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with a file-like
+
+# Generated at 2024-03-18 06:05:04.306381
+```python
+    # Mock a PreparedRequest object
+    class MockPreparedRequest:
+        def __init__(self, body):
+            self.body = body
+            self.headers = {}
+
+    # Test with a string body
+    request = MockPreparedRequest("This is a test string.")
+    compress_request(request, always=False)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with a bytes body
+    request = MockPreparedRequest(b"This is a test bytes.")
+    compress_request(request, always=True)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) == len(request.body)
+
+    # Test with a file-like body
+
+# Generated at 2024-03-18 06:05:08.617764
+```python
+    chunks = ['chunk1', 'chunk2', 'chunk3']
+    callback_results = []
+
+    def callback(chunk):
+        callback_results.append(chunk)
+
+    stream = ChunkedUploadStream(stream=(chunk.encode() for chunk in chunks), callback=callback)
+    result = list(stream)
+
+    assert result == [b'chunk1', b'chunk2', b'chunk3']
+    assert callback_results == [b'chunk1', b'chunk2', b'chunk3']
+```
+
+# Generated at 2024-03-18 06:05:13.254785
+```python
+    callback = MagicMock()
+    data = ['chunk1', 'chunk2', 'chunk3']
+    stream = ChunkedUploadStream((chunk.encode() for chunk in data), callback)
+
+    chunks = list(iter(stream))
+
+    assert chunks == [b'chunk1', b'chunk2', b'chunk3']
+    assert callback.call_count == 3
+    callback.assert_has_calls([call(b'chunk1'), call(b'chunk2'), call(b'chunk3')])
+```
+
+# Generated at 2024-03-18 06:05:21.397987
+```python
+    from io import BytesIO
+
+    # Mock callback function to track the chunks read
+    chunks_read = []
+    def mock_callback(chunk):
+        chunks_read.append(chunk)
+
+    # Test with a simple string body
+    body = 'test_body'
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    assert b''.join(result) == b'test_body'
+    assert chunks_read == [b'test_body']
+
+    # Reset chunks read
+    chunks_read.clear()
+
+    # Test with a file-like object
+    file_like_body = BytesIO(b'test_file_body')
+    result = prepare_request_body(file_like_body, mock_callback, chunked=False)
+    assert isinstance(result, BytesIO)
+    result.seek(0)
+    assert result.read() == b'test_file_body'
+    assert chunks_read == [b'test_file_body']
+
+    # Reset chunks read
+    chunks_read
+
+# Generated at 2024-03-18 06:05:27.732293
+```python
+    from unittest.mock import MagicMock
+
+    # Mock a PreparedRequest with a body that can be compressed
+    mock_request = MagicMock()
+    mock_request.body = 'This is a test string that will be compressed'
+    mock_request.headers = {}
+
+    # Call the function with always=False, should compress only if economical
+    compress_request(mock_request, always=False)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in mock_request.headers
+    assert int(mock_request.headers['Content-Length']) < len(mock_request.body.encode())
+
+    # Reset the mock_request for the next test
+    mock_request.headers.clear()
+
+    # Call the function with always=True, should compress regardless
+    compress_request(mock_request, always=True)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in
+
+# Generated at 2024-03-18 06:05:28.347210
+```python
+import io
+
+
+# Generated at 2024-03-18 06:05:46.211070
+```python
+    def mock_callback(chunk):
+        pass
+
+    # Test with a string body
+    body = "test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a bytes body
+    body = b"test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a file-like body
+    class FileLike:
+        def read(self, *args):
+            return b"file-like data"
+
+    body = FileLike()
+    result = prepare_request_body(body, mock_callback)
+    assert hasattr(result, 'read')
+
+    # Test with a MultipartEncoder body
+    body = MultipartEncoder(fields={'field': 'value'})
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(result, ChunkedMultipartUploadStream)
+
+    # Test with offline mode
+    body =
+
+# Generated at 2024-03-18 06:05:47.184225
+```python
+from unittest.mock import Mock
+
+
+# Generated at 2024-03-18 06:05:54.296850
+```python
+    # Mock a PreparedRequest object
+    class MockPreparedRequest:
+        def __init__(self, body):
+            self.body = body
+            self.headers = {}
+
+    # Test with a string body
+    request = MockPreparedRequest("This is a test string")
+    compress_request(request, always=False)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body.encode())
+
+    # Test with a bytes body
+    request = MockPreparedRequest(b"This is a test bytes")
+    compress_request(request, always=False)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with always compress regardless
+
+# Generated at 2024-03-18 06:06:00.744636
+```python
+    # Prepare a mock request object
+    mock_request = requests.PreparedRequest()
+    mock_request.headers = {}
+
+    # Test with a string body
+    mock_request.body = "This is a test string."
+    compress_request(mock_request, always=False)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert int(mock_request.headers['Content-Length']) < len(mock_request.body.encode())
+
+    # Test with a bytes body
+    mock_request.body = b"This is another test string."
+    compress_request(mock_request, always=True)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert int(mock_request.headers['Content-Length']) == len(zlib.compress(mock_request.body))
+
+    # Test with a file-like body
+    mock_request.body = io.BytesIO(b"File-like test string.")
+    compress_request(mock_request,
+
+# Generated at 2024-03-18 06:06:05.729853
+```python
+    callback = MagicMock()
+    data = ['chunk1', 'chunk2', 'chunk3']
+    stream = ChunkedUploadStream(stream=(chunk.encode() for chunk in data), callback=callback)
+
+    chunks = list(stream)
+
+    assert chunks == [b'chunk1', b'chunk2', b'chunk3']
+    assert callback.call_count == 3
+    callback.assert_has_calls([call(b'chunk1'), call(b'chunk2'), call(b'chunk3')])
+```
+
+# Generated at 2024-03-18 06:06:11.354651
+```python
+    # Mock a PreparedRequest object
+    class MockPreparedRequest:
+        def __init__(self, body):
+            self.body = body
+            self.headers = {}
+
+    # Test with a string body
+    request = MockPreparedRequest("This is a test string.")
+    compress_request(request, always=False)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with a bytes body
+    request = MockPreparedRequest(b"This is a test bytes.")
+    compress_request(request, always=False)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with always compress regardless of
+
+# Generated at 2024-03-18 06:06:20.376491
+```python
+    # Mock a PreparedRequest object
+    class MockPreparedRequest:
+        def __init__(self, body):
+            self.body = body
+            self.headers = {}
+
+    # Test with a string body
+    request = MockPreparedRequest("This is a test string.")
+    compress_request(request, always=True)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) == len(request.body)
+    assert isinstance(request.body, bytes)
+
+    # Test with a bytes body
+    request = MockPreparedRequest(b"This is a test bytes.")
+    compress_request(request, always=False)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) == len(request.body)
+
+
+# Generated at 2024-03-18 06:06:21.208127
+```python
+import io
+
+
+# Generated at 2024-03-18 06:06:25.113485
+```python
+    callback = MagicMock()
+    data = ['chunk1', 'chunk2', 'chunk3']
+    stream = ChunkedUploadStream(stream=(d.encode() for d in data), callback=callback)
+
+    chunks = list(iter(stream))
+
+    assert chunks == [b'chunk1', b'chunk2', b'chunk3']
+    assert callback.call_count == 3
+    callback.assert_has_calls([call(b'chunk1'), call(b'chunk2'), call(b'chunk3')])
+```
+
+# Generated at 2024-03-18 06:06:33.757699
+```python
+    from io import BytesIO
+
+    # Mock callback function to track the chunks read
+    chunks_read = []
+    def mock_callback(chunk):
+        chunks_read.append(chunk)
+
+    # Test with a simple string body
+    body = 'test-data'
+    prepared_body = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(prepared_body, ChunkedUploadStream)
+    assert b''.join(prepared_body) == b'test-data'
+    assert chunks_read == [b'test-data']
+
+    # Test with a file-like object
+    file_like_body = BytesIO(b'test-data')
+    prepared_body = prepare_request_body(file_like_body, mock_callback)
+    assert hasattr(prepared_body, 'read')
+    assert prepared_body.read() == b'test-data'
+    assert chunks_read[-1] == b'test-data'
+
+    # Test with a file-like object and chunked transfer
+    file_like_body.seek(0) 
+
+# Generated at 2024-03-18 06:06:49.731136
+```python
+    # Given
+    data = MultipartRequestDataDict({'field1': 'value1', 'field2': 'value2'})
+    boundary = 'testboundary'
+    content_type = 'multipart/form-data'
+
+    # When
+    encoder, content_type_header = get_multipart_data_and_content_type(data, boundary, content_type)
+
+    # Then
+    assert isinstance(encoder, MultipartEncoder)
+    assert 'boundary=testboundary' in content_type_header
+    assert encoder.fields == {'field1': 'value1', 'field2': 'value2'}.items()
+```
+
+# Generated at 2024-03-18 06:06:58.338221
+```python
+    def mock_callback(chunk):
+        pass
+
+    # Test with a string body
+    body = "test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a bytes body
+    body = b"test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with a file-like object
+    class FileLike:
+        def read(self, *args):
+            return b"file-like data"
+
+    body = FileLike()
+    result = prepare_request_body(body, mock_callback)
+    assert hasattr(result, 'read')
+
+    # Test with a MultipartEncoder body
+    body = MultipartEncoder(fields={'field': 'value'})
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(result, ChunkedMultipartUploadStream)
+
+    # Test with offline mode
+    body =
+
+# Generated at 2024-03-18 06:07:06.499800
+```python
+    # Mock a PreparedRequest object
+    class MockPreparedRequest:
+        def __init__(self, body):
+            self.body = body
+            self.headers = {}
+
+    # Test with a string body
+    request = MockPreparedRequest("This is a test string.")
+    compress_request(request, always=False)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with a bytes body
+    request = MockPreparedRequest(b"This is a test bytes.")
+    compress_request(request, always=False)
+    assert 'Content-Encoding' in request.headers
+    assert request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in request.headers
+    assert int(request.headers['Content-Length']) < len(request.body)
+
+    # Test with always compress regardless of
+
+# Generated at 2024-03-18 06:07:13.453616
+```python
+    from unittest.mock import MagicMock
+
+    # Mock a PreparedRequest with a body that can be compressed
+    mock_request = MagicMock()
+    mock_request.body = 'This is a test string that will be compressed'
+    mock_request.headers = {}
+
+    # Call the function with always=False, should compress only if economical
+    compress_request(mock_request, always=False)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length' in mock_request.headers
+    assert int(mock_request.headers['Content-Length']) < len(mock_request.body.encode())
+
+    # Reset mock_request for the next test
+    mock_request.headers = {}
+
+    # Call the function with always=True, should compress regardless of size
+    compress_request(mock_request, always=True)
+    assert 'Content-Encoding' in mock_request.headers
+    assert mock_request.headers['Content-Encoding'] == 'deflate'
+    assert 'Content-Length'
+
+# Generated at 2024-03-18 06:07:17.333829
+```python
+    callback = MagicMock()
+    data = ['chunk1', 'chunk2', 'chunk3']
+    stream = ChunkedUploadStream(stream=(chunk.encode() for chunk in data), callback=callback)
+
+    chunks = list(iter(stream))
+
+    assert chunks == [b'chunk1', b'chunk2', b'chunk3']
+    assert callback.call_count == 3
+    callback.assert_has_calls([call(b'chunk1'), call(b'chunk2'), call(b'chunk3')])
+```
+
+# Generated at 2024-03-18 06:07:19.370054
+```python
+from unittest.mock import Mock
+
+
+# Generated at 2024-03-18 06:07:27.378971
+```python
+    # Mock callback function
+    def mock_callback(chunk):
+        pass
+
+    # Test with string body
+    body = "test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with bytes body
+    body = b"test data"
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, ChunkedUploadStream)
+
+    # Test with file-like body
+    class MockFile:
+        def read(self, *args):
+            return b"file data"
+
+    body = MockFile()
+    result = prepare_request_body(body, mock_callback)
+    assert hasattr(result, 'read')
+
+    # Test with RequestDataDict body
+    body = RequestDataDict({'key': 'value'})
+    result = prepare_request_body(body, mock_callback)
+    assert isinstance(result, str)
+
+    # Test with MultipartEncoder body
+    body = MultipartEncoder(fields={'key':
+
+# Generated at 2024-03-18 06:07:31.774690
+```python
+    callback = MagicMock()
+    data = ['chunk1', 'chunk2', 'chunk3']
+    stream = ChunkedUploadStream(stream=(chunk.encode() for chunk in data), callback=callback)
+
+    chunks = list(iter(stream))
+
+    assert chunks == [b'chunk1', b'chunk2', b'chunk3']
+    assert callback.call_count == 3
+    callback.assert_has_calls([call(b'chunk1'), call(b'chunk2'), call(b'chunk3')])
+```
+
+# Generated at 2024-03-18 06:07:39.138190
+```python
+    # Mock callback function to collect chunks that have been iterated over
+    collected_chunks = []
+
+    def mock_callback(chunk):
+        collected_chunks.append(chunk)
+
+    # Create a list of chunks to be used as the stream
+    chunks = [b'chunk1', b'chunk2', b'chunk3']
+
+    # Instantiate ChunkedUploadStream with the chunks and mock callback
+    stream = ChunkedUploadStream(stream=chunks, callback=mock_callback)
+
+    # Collect chunks from the stream iterator
+    iterated_chunks = list(stream)
+
+    # Assert that the iterated chunks are the same as the original chunks
+    assert iterated_chunks == chunks
+
+    # Assert that the mock callback was called with each chunk
+    assert collected_chunks == chunks
+```
+
+# Generated at 2024-03-18 06:07:50.493600
+```python
+    # Mock callback function to track the chunks read
+    chunks_read = []
+
+    def mock_callback(chunk):
+        chunks_read.append(chunk)
+
+    # Test with a simple string body
+    body = "test_body"
+    result = prepare_request_body(body, mock_callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    assert b''.join(result) == b"test_body"
+    assert chunks_read == [b"test_body"]
+
+    # Reset chunks read
+    chunks_read.clear()
+
+    # Test with a file-like object
+    class MockFileIO:
+        def __init__(self, content):
+            self.content = content.encode()
+            self.read_called = False
+
+        def read(self, size=-1):
+            if not self.read_called:
+                self.read_called = True
+                return self.content
+            return b''
+
+    file_like_body = MockFileIO("file_like_body")
+    result = prepare_request_body(file_like_body
+
+# Generated at 2024-03-18 06:08:06.786306
+```python
+    from unittest.mock import Mock
+
+    # Test with a simple string body
+    body = 'test-body'
+    callback = Mock()
+    result = prepare_request_body(body, body_read_callback=callback)
+    assert result == body
+    callback.assert_not_called()
+
+    # Test with a string body and chunked transfer
+    body = 'test-body-chunked'
+    callback = Mock()
+    result = prepare_request_body(body, body_read_callback=callback, chunked=True)
+    assert isinstance(result, ChunkedUploadStream)
+    for chunk in result:
+        assert chunk == body.encode()
+    callback.assert_called_once_with(body.encode())
+
+    # Test with a file-like object
+    body = Mock()
+    body.read = Mock(return_value='file-content')
+    callback = Mock()
+    result = prepare_request_body(body, body_read_callback=callback)
+    assert result == body
+    body.read.assert_called()
+    callback.assert_called_once_with('file-content'.

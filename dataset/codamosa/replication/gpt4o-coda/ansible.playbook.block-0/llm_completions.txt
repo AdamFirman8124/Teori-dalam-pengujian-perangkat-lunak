@@ -1,0 +1,1581 @@
+
+
+# Generated at 2024-05-31 19:39:04.317912
+```python
+    block_with_tasks = Block()
+    block_with_tasks.block = ['task1', 'task2']
+    assert block_with_tasks.has_tasks() == True
+
+    block_with_rescue = Block()
+    block_with_rescue.rescue = ['rescue_task1']
+    assert block_with_rescue.has_tasks() == True
+
+    block_with_always = Block()
+    block_with_always.always = ['always_task1']
+    assert block_with_always.has_tasks() == True
+
+    empty_block = Block()
+    assert empty_block.has_tasks() == False
+```
+
+# Generated at 2024-05-31 19:39:07.293332
+```python
+    block = Block()
+    assert block.get_first_parent_include() is None
+
+    parent_include = TaskInclude()
+    block._parent = parent_include
+    assert block.get_first_parent_include() == parent_include
+
+    grandparent_include = TaskInclude()
+    parent_include._parent = grandparent_include
+    assert block.get_first_parent_include() == parent_include
+
+    block._parent = Block()
+    block._parent._parent = parent_include
+    assert block.get_first_parent_include() == parent_include
+
+    block._parent._parent = Block()
+    block._parent._parent._parent = grandparent_include
+    assert block.get_first_parent_include() == grandparent_include
+```
+
+# Generated at 2024-05-31 19:39:11.191481
+```python
+    data = {
+        'attr1': 'value1',
+        'attr2': 'value2',
+        'dep_chain': ['dep1', 'dep2'],
+        'role': {'role_attr': 'role_value'},
+        'parent': {'parent_attr': 'parent_value'},
+        'parent_type': 'Block'
+    }
+
+    block = Block()
+    block.deserialize(data)
+
+    assert block.attr1 == 'value1'
+    assert block.attr2 == 'value2'
+    assert block._dep_chain == ['dep1', 'dep2']
+    assert block._role.role_attr == 'role_value'
+    assert block._parent.parent_attr == 'parent_value'
+    assert isinstance(block._parent, Block)
+```
+
+# Generated at 2024-05-31 19:39:14.707579
+```python
+    original_block = Block()
+    original_block._play = "play"
+    original_block._use_handlers = True
+    original_block._dep_chain = ["dep1", "dep2"]
+    original_block._parent = Block()
+    original_block._role = "role"
+    original_block.block = ["task1", "task2"]
+    original_block.rescue = ["rescue_task1"]
+    original_block.always = ["always_task1"]
+
+    copied_block = original_block.copy()
+
+    assert copied_block is not original_block
+    assert copied_block._play == original_block._play
+    assert copied_block._use_handlers == original_block._use_handlers
+    assert copied_block._dep_chain == original_block._dep_chain
+    assert copied_block._parent is not original_block._parent
+    assert copied_block._role == original_block._role
+    assert copied_block.block == original_block.block
+    assert copied_block.rescue == original_block.rescue
+   
+
+# Generated at 2024-05-31 19:39:18.023828
+```python
+    block = Block()
+    block._play = MagicMock()
+    block._play.only_tags = set(['tag1'])
+    block._play.skip_tags = set(['tag2'])
+
+    task1 = MagicMock()
+    task1.action = 'action1'
+    task1.evaluate_tags.return_value = True
+
+    task2 = MagicMock()
+    task2.action = 'action2'
+    task2.evaluate_tags.return_value = False
+
+    block.block = [task1, task2]
+    block.rescue = []
+    block.always = []
+
+    filtered_block = block.filter_tagged_tasks({})
+
+    assert len(filtered_block.block) == 1
+    assert filtered_block.block[0] == task1
+    assert len(filtered_block.rescue) == 0
+    assert len(filtered_block.always) == 0
+```
+
+# Generated at 2024-05-31 19:39:25.772213
+```python
+    # Create a mock Block object with no parent
+    block = Block()
+    assert block.all_parents_static() == True
+
+    # Create a mock TaskInclude object with statically_loaded set to False
+    from ansible.playbook.task_include import TaskInclude
+    task_include = TaskInclude()
+    task_include.statically_loaded = False
+
+    # Create a Block object with TaskInclude as parent
+    block_with_task_include = Block()
+    block_with_task_include._parent = task_include
+    assert block_with_task_include.all_parents_static() == False
+
+    # Create a mock Block object with statically_loaded set to True
+    parent_block = Block()
+    parent_block.statically_loaded = True
+
+    # Create a Block object with another Block as parent
+    block_with_parent_block = Block()
+    block_with_parent_block._parent = parent_block
+    assert block_with_parent_block.all_parents_static() == True
+
+    # Create a nested Block
+
+# Generated at 2024-05-31 19:39:32.913833
+```python
+    # Mocking necessary objects and methods
+    class MockTask:
+        def __init__(self, action, implicit=False):
+            self.action = action
+            self.implicit = implicit
+
+        def evaluate_tags(self, only_tags, skip_tags, all_vars=None):
+            return True
+
+    class MockPlay:
+        def __init__(self, only_tags=None, skip_tags=None):
+            self.only_tags = only_tags or []
+            self.skip_tags = skip_tags or []
+
+    # Creating a Block instance with mock tasks
+    block = Block()
+    block._play = MockPlay()
+    block.block = [MockTask(action='action_1'), MockTask(action='action_2')]
+    block.rescue = [MockTask(action='action_3')]
+    block.always = [MockTask(action='action_4')]
+
+    # Filtering tagged tasks
+    filtered_block = block.filter_tagged_tasks(all_vars={})
+
+    # Assertions to check if the tasks
+
+# Generated at 2024-05-31 19:39:38.138046
+```python
+    block = Block()
+    block._valid_attrs = ['attr1', 'attr2', 'block', 'rescue', 'always']
+    block.attr1 = 'value1'
+    block.attr2 = 'value2'
+    block._dep_chain = ['dep1', 'dep2']
+    block._role = None
+    block._parent = None
+
+    expected_output = {
+        'attr1': 'value1',
+        'attr2': 'value2',
+        'dep_chain': ['dep1', 'dep2']
+    }
+
+    assert block.serialize() == expected_output
+
+    # Test with role and parent
+    class MockRole:
+        def serialize(self):
+            return {'role_attr': 'role_value'}
+
+    class MockParent:
+        def copy(self, exclude_tasks=True):
+            return self
+
+        def serialize(self):
+            return {'parent_attr': 'parent_value'}
+
+    block._role = MockRole()
+    block._parent = Mock
+
+# Generated at 2024-05-31 19:39:42.778119
+```python
+    block_data = {
+        'attr1': 'value1',
+        'attr2': 'value2',
+        'dep_chain': ['dep1', 'dep2'],
+        'role': {'name': 'test_role'},
+        'parent': {'attr1': 'parent_value1'},
+        'parent_type': 'Block'
+    }
+
+    block = Block()
+    block.deserialize(block_data)
+
+    assert block.attr1 == 'value1'
+    assert block.attr2 == 'value2'
+    assert block._dep_chain == ['dep1', 'dep2']
+    assert block._role.name == 'test_role'
+    assert block._parent.attr1 == 'parent_value1'
+    assert isinstance(block._parent, Block)
+```
+
+# Generated at 2024-05-31 19:39:45.135023
+```python
+    loader = Mock()
+    parent_block = Mock()
+    role = Mock()
+    dep_chain = [Mock(), Mock()]
+
+    block = Block()
+    block._parent = parent_block
+    block._role = role
+    block._dep_chain = dep_chain
+
+    block.set_loader(loader)
+
+    parent_block.set_loader.assert_called_once_with(loader)
+    role.set_loader.assert_called_once_with(loader)
+    for dep in dep_chain:
+        dep.set_loader.assert_called_once_with(loader)
+```
+
+# Generated at 2024-05-31 19:40:04.842017
+```python
+    block = Block()
+    assert block.get_dep_chain() is None
+
+    parent_block = Block()
+    parent_block._dep_chain = ['dep1', 'dep2']
+    block._parent = parent_block
+    assert block.get_dep_chain() == ['dep1', 'dep2']
+
+    block._dep_chain = ['dep3']
+    assert block.get_dep_chain() == ['dep3']
+```
+
+# Generated at 2024-05-31 19:40:10.232291
+```python
+    original_block = Block()
+    original_block._play = "play"
+    original_block._use_handlers = True
+    original_block._dep_chain = ["dep1", "dep2"]
+    original_block._parent = Block()
+    original_block._role = "role"
+    original_block.block = ["task1", "task2"]
+    original_block.rescue = ["rescue1"]
+    original_block.always = ["always1"]
+
+    copied_block = original_block.copy()
+
+    assert copied_block is not original_block
+    assert copied_block._play == original_block._play
+    assert copied_block._use_handlers == original_block._use_handlers
+    assert copied_block._dep_chain == original_block._dep_chain
+    assert copied_block._parent is not original_block._parent
+    assert copied_block._role == original_block._role
+    assert copied_block.block == original_block.block
+    assert copied_block.rescue == original_block.rescue
+    assert copied
+
+# Generated at 2024-05-31 19:40:12.547670
+```python
+    block = Block()
+    assert block.get_dep_chain() is None
+
+    parent_block = Block()
+    parent_block._dep_chain = ['dep1', 'dep2']
+    block._parent = parent_block
+    assert block.get_dep_chain() == ['dep1', 'dep2']
+
+    block._dep_chain = ['dep3']
+    assert block.get_dep_chain() == ['dep3']
+```
+
+# Generated at 2024-05-31 19:40:16.734888
+```python
+    # Create a mock TaskInclude object
+    mock_task_include = TaskInclude()
+    
+    # Create a Block object with the mock TaskInclude as its parent
+    block_with_task_include_parent = Block()
+    block_with_task_include_parent._parent = mock_task_include
+    
+    # Test if get_first_parent_include returns the TaskInclude parent
+    assert block_with_task_include_parent.get_first_parent_include() == mock_task_include
+    
+    # Create a Block object with another Block as its parent
+    parent_block = Block()
+    block_with_block_parent = Block()
+    block_with_block_parent._parent = parent_block
+    
+    # Test if get_first_parent_include returns None when there is no TaskInclude in the chain
+    assert block_with_block_parent.get_first_parent_include() is None
+    
+    # Create a nested Block structure with a TaskInclude at the top
+    nested_block = Block()
+    nested_block._parent = block_with_task_include_parent
+    
+    # Test if get_first
+
+# Generated at 2024-05-31 19:40:20.363446
+```python
+    # Create a mock TaskInclude object
+    mock_task_include = TaskInclude()
+    mock_task_include.statically_loaded = True
+
+    # Create a Block object with the mock TaskInclude as its parent
+    block = Block()
+    block._parent = mock_task_include
+
+    # Test if get_first_parent_include returns the correct TaskInclude object
+    assert block.get_first_parent_include() == mock_task_include
+
+    # Create a nested Block object with the previous Block as its parent
+    nested_block = Block()
+    nested_block._parent = block
+
+    # Test if get_first_parent_include returns the correct TaskInclude object for nested blocks
+    assert nested_block.get_first_parent_include() == mock_task_include
+
+    # Test if get_first_parent_include returns None when there is no parent
+    block_no_parent = Block()
+    assert block_no_parent.get_first_parent_include() is None
+
+    # Test if get_first_parent_include returns None when the parent is not a
+
+# Generated at 2024-05-31 19:40:22.647252
+```python
+    assert Block.is_block({'block': []}) == True
+    assert Block.is_block({'rescue': []}) == True
+    assert Block.is_block({'always': []}) == True
+    assert Block.is_block({'task': []}) == False
+    assert Block.is_block([]) == False
+    assert Block.is_block('string') == False
+    assert Block.is_block(None) == False
+```
+
+# Generated at 2024-05-31 19:40:27.515692
+```python
+    block = Block()
+    block._valid_attrs = ['attr1', 'attr2', 'block', 'rescue', 'always']
+    block.attr1 = 'value1'
+    block.attr2 = 'value2'
+    block._dep_chain = ['dep1', 'dep2']
+    block._role = None
+    block._parent = None
+
+    serialized_data = block.serialize()
+
+    assert 'attr1' in serialized_data
+    assert serialized_data['attr1'] == 'value1'
+    assert 'attr2' in serialized_data
+    assert serialized_data['attr2'] == 'value2'
+    assert 'dep_chain' in serialized_data
+    assert serialized_data['dep_chain'] == ['dep1', 'dep2']
+    assert 'role' not in serialized_data
+    assert 'parent' not in serialized_data
+```
+
+# Generated at 2024-05-31 19:40:32.644821
+```python
+    # Create a mock Block object with no parent
+    block = Block()
+    assert block.all_parents_static() == True
+
+    # Create a mock TaskInclude object with statically_loaded set to False
+    from ansible.playbook.task_include import TaskInclude
+    task_include = TaskInclude()
+    task_include.statically_loaded = False
+
+    # Create a Block object with TaskInclude as parent
+    block_with_task_include = Block()
+    block_with_task_include._parent = task_include
+    assert block_with_task_include.all_parents_static() == False
+
+    # Create a mock Block object with statically_loaded set to True
+    parent_block = Block()
+    parent_block.statically_loaded = True
+
+    # Create a Block object with another Block as parent
+    block_with_parent_block = Block()
+    block_with_parent_block._parent = parent_block
+    assert block_with_parent_block.all_parents_static() == True
+
+    # Create a chain of
+
+# Generated at 2024-05-31 19:40:36.366126
+```python
+    block_data = {
+        'dep_chain': ['dep1', 'dep2'],
+        'role': {'name': 'test_role'},
+        'parent': {'name': 'parent_block'},
+        'parent_type': 'Block'
+    }
+
+    block = Block()
+    block.deserialize(block_data)
+
+    assert block._dep_chain == ['dep1', 'dep2']
+    assert block._role.name == 'test_role'
+    assert block._parent.name == 'parent_block'
+    assert isinstance(block._parent, Block)
+```
+
+# Generated at 2024-05-31 19:40:40.032839
+```python
+    # Create a mock TaskInclude class
+    class MockTaskInclude:
+        def __init__(self, statically_loaded=True):
+            self.statically_loaded = statically_loaded
+            self._parent = None
+
+        def all_parents_static(self):
+            return self.statically_loaded
+
+    # Create a mock Block class
+    class MockBlock(Block):
+        def __init__(self, parent=None, statically_loaded=True):
+            self._parent = parent
+            self.statically_loaded = statically_loaded
+
+    # Test case 1: No parent
+    block = MockBlock()
+    assert block.all_parents_static() == True
+
+    # Test case 2: Parent is a statically loaded TaskInclude
+    parent_task_include = MockTaskInclude(statically_loaded=True)
+    block = MockBlock(parent=parent_task_include)
+    assert block.all_parents_static() == True
+
+    # Test case 3: Parent is a non-statically loaded
+
+# Generated at 2024-05-31 19:41:18.921275
+```python
+    assert Block.is_block({'block': []}) == True
+    assert Block.is_block({'rescue': []}) == True
+    assert Block.is_block({'always': []}) == True
+    assert Block.is_block({'tasks': []}) == False
+    assert Block.is_block([]) == False
+    assert Block.is_block('block') == False
+    assert Block.is_block({'block': [], 'rescue': []}) == True
+```
+
+# Generated at 2024-05-31 19:41:21.860304
+```python
+    block_with_tasks = Block()
+    block_with_tasks.block = ['task1', 'task2']
+    assert block_with_tasks.has_tasks() == True
+
+    block_with_rescue = Block()
+    block_with_rescue.rescue = ['rescue_task1']
+    assert block_with_rescue.has_tasks() == True
+
+    block_with_always = Block()
+    block_with_always.always = ['always_task1']
+    assert block_with_always.has_tasks() == True
+
+    empty_block = Block()
+    assert empty_block.has_tasks() == False
+```
+
+# Generated at 2024-05-31 19:41:26.920394
+```python
+    original_block = Block()
+    original_block._play = "play"
+    original_block._use_handlers = True
+    original_block._dep_chain = ["dep1", "dep2"]
+    original_block._parent = Block()
+    original_block._role = "role"
+    original_block.block = ["task1", "task2"]
+    original_block.rescue = ["rescue1"]
+    original_block.always = ["always1"]
+
+    copied_block = original_block.copy()
+
+    assert copied_block is not original_block
+    assert copied_block._play == original_block._play
+    assert copied_block._use_handlers == original_block._use_handlers
+    assert copied_block._dep_chain == original_block._dep_chain
+    assert copied_block._parent is not original_block._parent
+    assert copied_block._role == original_block._role
+    assert copied_block.block == original_block.block
+    assert copied_block.rescue == original_block.rescue
+    assert copied
+
+# Generated at 2024-05-31 19:41:31.243332
+```python
+    original_block = Block()
+    original_block._play = "play"
+    original_block._use_handlers = True
+    original_block._dep_chain = ["dep1", "dep2"]
+    original_block._parent = Block()
+    original_block._role = "role"
+    original_block.block = ["task1", "task2"]
+    original_block.rescue = ["rescue_task"]
+    original_block.always = ["always_task"]
+
+    copied_block = original_block.copy()
+
+    assert copied_block is not original_block
+    assert copied_block._play == original_block._play
+    assert copied_block._use_handlers == original_block._use_handlers
+    assert copied_block._dep_chain == original_block._dep_chain
+    assert copied_block._parent is not original_block._parent
+    assert copied_block._role == original_block._role
+    assert copied_block.block == original_block.block
+    assert copied_block.rescue == original_block.rescue
+    assert copied
+
+# Generated at 2024-05-31 19:41:35.181830
+```python
+    # Create a mock play object with only_tags and skip_tags attributes
+    class MockPlay:
+        def __init__(self, only_tags, skip_tags):
+            self.only_tags = only_tags
+            self.skip_tags = skip_tags
+
+    # Create a mock task object with evaluate_tags method
+    class MockTask:
+        def __init__(self, action, tags):
+            self.action = action
+            self.tags = tags
+            self.implicit = False
+
+        def evaluate_tags(self, only_tags, skip_tags, all_vars=None):
+            if only_tags and not any(tag in self.tags for tag in only_tags):
+                return False
+            if skip_tags and any(tag in self.tags for tag in skip_tags):
+                return False
+            return True
+
+    # Create a mock block object
+    class MockBlock(Block):
+        def __init__(self, block, rescue, always, play):
+            self.block = block
+            self.rescue =
+
+# Generated at 2024-05-31 19:41:38.351994
+```python
+    block_with_tasks = Block()
+    block_with_tasks.block = ['task1', 'task2']
+    assert block_with_tasks.has_tasks() == True, "Block with tasks should return True"
+
+    block_with_rescue = Block()
+    block_with_rescue.rescue = ['rescue_task1']
+    assert block_with_rescue.has_tasks() == True, "Block with rescue tasks should return True"
+
+    block_with_always = Block()
+    block_with_always.always = ['always_task1']
+    assert block_with_always.has_tasks() == True, "Block with always tasks should return True"
+
+    empty_block = Block()
+    assert empty_block.has_tasks() == False, "Empty block should return False"
+```
+
+# Generated at 2024-05-31 19:41:42.912792
+```python
+    original_block = Block()
+    original_block._play = "play"
+    original_block._use_handlers = True
+    original_block._dep_chain = ["dep1", "dep2"]
+    original_block._parent = Block()
+    original_block._role = "role"
+    original_block.block = ["task1", "task2"]
+    original_block.rescue = ["rescue_task1"]
+    original_block.always = ["always_task1"]
+
+    copied_block = original_block.copy()
+
+    assert copied_block is not original_block
+    assert copied_block._play == original_block._play
+    assert copied_block._use_handlers == original_block._use_handlers
+    assert copied_block._dep_chain == original_block._dep_chain
+    assert copied_block._parent is not original_block._parent
+    assert copied_block._role == original_block._role
+    assert copied_block.block == original_block.block
+    assert copied_block.rescue == original_block.rescue
+   
+
+# Generated at 2024-05-31 19:41:46.761414
+```python
+    original_block = Block()
+    original_block._play = "play"
+    original_block._use_handlers = True
+    original_block._dep_chain = ["dep1", "dep2"]
+    original_block._parent = Block()
+    original_block._role = "role"
+    original_block.block = ["task1", "task2"]
+    original_block.rescue = ["rescue_task1"]
+    original_block.always = ["always_task1"]
+
+    copied_block = original_block.copy()
+
+    assert copied_block is not original_block
+    assert copied_block._play == original_block._play
+    assert copied_block._use_handlers == original_block._use_handlers
+    assert copied_block._dep_chain == original_block._dep_chain
+    assert copied_block._parent is not original_block._parent
+    assert copied_block._role == original_block._role
+    assert copied_block.block == original_block.block
+    assert copied_block.rescue == original_block.rescue
+   
+
+# Generated at 2024-05-31 19:41:49.381601
+```python
+    data = {
+        'attr1': 'value1',
+        'attr2': 'value2',
+        'dep_chain': ['dep1', 'dep2'],
+        'role': {'role_attr': 'role_value'},
+        'parent': {'parent_attr': 'parent_value'},
+        'parent_type': 'Block'
+    }
+
+    block = Block()
+    block.deserialize(data)
+
+    assert block.attr1 == 'value1'
+    assert block.attr2 == 'value2'
+    assert block._dep_chain == ['dep1', 'dep2']
+    assert block._role.role_attr == 'role_value'
+    assert block._parent.parent_attr == 'parent_value'
+    assert isinstance(block._parent, Block)
+```
+
+# Generated at 2024-05-31 19:41:53.721394
+```python
+    # Create a mock TaskInclude object
+    mock_task_include = TaskInclude()
+    
+    # Create a Block object with the mock TaskInclude as its parent
+    block_with_task_include_parent = Block()
+    block_with_task_include_parent._parent = mock_task_include
+    
+    # Create a Block object with another Block as its parent
+    parent_block = Block()
+    block_with_block_parent = Block()
+    block_with_block_parent._parent = parent_block
+    
+    # Set the parent of the parent_block to be the mock TaskInclude
+    parent_block._parent = mock_task_include
+    
+    # Test when the immediate parent is a TaskInclude
+    assert block_with_task_include_parent.get_first_parent_include() == mock_task_include
+    
+    # Test when the parent is a Block and its parent is a TaskInclude
+    assert block_with_block_parent.get_first_parent_include() == mock_task_include
+    
+    # Test when there is no parent
+    block_with_no_parent = Block
+
+# Generated at 2024-05-31 19:42:21.943766
+```python
+    # Create a mock TaskInclude object
+    mock_task_include = TaskInclude()
+    mock_task_include.statically_loaded = True
+
+    # Create a Block object with no parent
+    block_no_parent = Block()
+    assert block_no_parent.get_first_parent_include() is None
+
+    # Create a Block object with a TaskInclude parent
+    block_with_task_include_parent = Block()
+    block_with_task_include_parent._parent = mock_task_include
+    assert block_with_task_include_parent.get_first_parent_include() == mock_task_include
+
+    # Create a nested Block structure
+    parent_block = Block()
+    parent_block._parent = mock_task_include
+    child_block = Block()
+    child_block._parent = parent_block
+    assert child_block.get_first_parent_include() == mock_task_include
+
+    # Create a nested Block structure with no TaskInclude
+    parent_block_no_include = Block()
+    child_block_no_include = Block()
+    child_block_no_include._parent =
+
+# Generated at 2024-05-31 19:42:26.265372
+```python
+    # Create a mock TaskInclude object
+    mock_task_include = TaskInclude()
+    mock_task_include.statically_loaded = True
+
+    # Create a Block object with the mock TaskInclude as its parent
+    block = Block()
+    block._parent = mock_task_include
+
+    # Test if get_first_parent_include returns the correct TaskInclude object
+    assert block.get_first_parent_include() == mock_task_include
+
+    # Create a nested Block object with the previous Block as its parent
+    nested_block = Block()
+    nested_block._parent = block
+
+    # Test if get_first_parent_include returns the correct TaskInclude object for nested blocks
+    assert nested_block.get_first_parent_include() == mock_task_include
+
+    # Test if get_first_parent_include returns None when there is no parent
+    block_no_parent = Block()
+    assert block_no_parent.get_first_parent_include() is None
+
+    # Test if get_first_parent_include returns None when the parent is not a
+
+# Generated at 2024-05-31 19:42:29.659884
+```python
+    # Create a mock TaskInclude class
+    class MockTaskInclude:
+        def __init__(self, statically_loaded=True):
+            self.statically_loaded = statically_loaded
+            self._parent = None
+
+        def all_parents_static(self):
+            return self.statically_loaded
+
+    # Create a mock Block class
+    class MockBlock(Block):
+        def __init__(self, parent=None, statically_loaded=True):
+            self._parent = parent
+            self.statically_loaded = statically_loaded
+
+    # Test case 1: No parent
+    block = MockBlock()
+    assert block.all_parents_static() == True
+
+    # Test case 2: Parent is a statically loaded TaskInclude
+    parent_task_include = MockTaskInclude(statically_loaded=True)
+    block = MockBlock(parent=parent_task_include)
+    assert block.all_parents_static() == True
+
+    # Test case 3: Parent is a non-statically loaded
+
+# Generated at 2024-05-31 19:42:33.343987
+```python
+    # Create a mock play object with only_tags and skip_tags attributes
+    class MockPlay:
+        def __init__(self, only_tags=None, skip_tags=None):
+            self.only_tags = only_tags or []
+            self.skip_tags = skip_tags or []
+
+    # Create a mock task object with evaluate_tags method
+    class MockTask:
+        def __init__(self, action, tags, implicit=False):
+            self.action = action
+            self.tags = tags
+            self.implicit = implicit
+
+        def evaluate_tags(self, only_tags, skip_tags, all_vars=None):
+            if self.implicit:
+                return True
+            if only_tags and not any(tag in self.tags for tag in only_tags):
+                return False
+            if skip_tags and any(tag in self.tags for tag in skip_tags):
+                return False
+            return True
+
+    # Create a mock block object
+    class MockBlock(Block):
+        def __init__(self, block=None
+
+# Generated at 2024-05-31 19:42:37.023264
+```python
+    block_data = {
+        'attr1': 'value1',
+        'attr2': 'value2',
+        'dep_chain': ['dep1', 'dep2'],
+        'role': {'name': 'test_role'},
+        'parent': {'attr1': 'parent_value1'},
+        'parent_type': 'Block'
+    }
+
+    block = Block()
+    block.deserialize(block_data)
+
+    assert block.attr1 == 'value1'
+    assert block.attr2 == 'value2'
+    assert block._dep_chain == ['dep1', 'dep2']
+    assert block._role.name == 'test_role'
+    assert block._parent.attr1 == 'parent_value1'
+    assert isinstance(block._parent, Block)
+```
+
+# Generated at 2024-05-31 19:42:39.216000
+```python
+    assert Block.is_block({'block': []}) == True
+    assert Block.is_block({'rescue': []}) == True
+    assert Block.is_block({'always': []}) == True
+    assert Block.is_block({'tasks': []}) == False
+    assert Block.is_block([]) == False
+    assert Block.is_block('block') == False
+    assert Block.is_block({'block': [], 'rescue': []}) == True
+```
+
+# Generated at 2024-05-31 19:42:41.526860
+```python
+    block_with_tasks = Block()
+    block_with_tasks.block = ['task1', 'task2']
+    assert block_with_tasks.has_tasks() == True
+
+    block_with_rescue = Block()
+    block_with_rescue.rescue = ['rescue_task1']
+    assert block_with_rescue.has_tasks() == True
+
+    block_with_always = Block()
+    block_with_always.always = ['always_task1']
+    assert block_with_always.has_tasks() == True
+
+    empty_block = Block()
+    assert empty_block.has_tasks() == False
+```
+
+# Generated at 2024-05-31 19:42:46.572290
+```python
+    # Create a mock TaskInclude object
+    mock_task_include = TaskInclude()
+    mock_task_include.statically_loaded = True
+
+    # Create a Block object with a parent TaskInclude
+    block_with_parent = Block()
+    block_with_parent._parent = mock_task_include
+
+    # Test when the parent is a TaskInclude
+    assert block_with_parent.get_first_parent_include() == mock_task_include
+
+    # Create a nested Block object with a parent TaskInclude
+    nested_block = Block()
+    nested_block._parent = block_with_parent
+
+    # Test when the parent is a Block with a TaskInclude parent
+    assert nested_block.get_first_parent_include() == mock_task_include
+
+    # Test when there is no parent
+    block_without_parent = Block()
+    assert block_without_parent.get_first_parent_include() is None
+```
+
+# Generated at 2024-05-31 19:42:48.735882
+```python
+    data = {
+        'dep_chain': ['dep1', 'dep2'],
+        'role': {'name': 'test_role'},
+        'parent': {'name': 'parent_block'},
+        'parent_type': 'Block'
+    }
+
+    block = Block()
+    block.deserialize(data)
+
+    assert block._dep_chain == ['dep1', 'dep2']
+    assert block._role.name == 'test_role'
+    assert isinstance(block._parent, Block)
+    assert block._parent.name == 'parent_block'
+```
+
+# Generated at 2024-05-31 19:42:52.855808
+```python
+    original_block = Block()
+    original_block._play = "play"
+    original_block._use_handlers = True
+    original_block._dep_chain = ["dep1", "dep2"]
+    original_block._parent = Block()
+    original_block._role = "role"
+    original_block.block = ["task1", "task2"]
+    original_block.rescue = ["rescue_task1"]
+    original_block.always = ["always_task1"]
+
+    copied_block = original_block.copy()
+
+    assert copied_block is not original_block
+    assert copied_block._play == original_block._play
+    assert copied_block._use_handlers == original_block._use_handlers
+    assert copied_block._dep_chain == original_block._dep_chain
+    assert copied_block._parent is not original_block._parent
+    assert copied_block._role == original_block._role
+    assert copied_block.block == original_block.block
+    assert copied_block.rescue == original_block.rescue
+   
+
+# Generated at 2024-05-31 19:43:47.548027
+```python
+    # Create a mock play object with only_tags and skip_tags attributes
+    class MockPlay:
+        def __init__(self, only_tags, skip_tags):
+            self.only_tags = only_tags
+            self.skip_tags = skip_tags
+
+    # Create a mock task object with evaluate_tags method
+    class MockTask:
+        def __init__(self, action, tags, implicit=False):
+            self.action = action
+            self.tags = tags
+            self.implicit = implicit
+
+        def evaluate_tags(self, only_tags, skip_tags, all_vars=None):
+            if self.implicit:
+                return True
+            if only_tags and not any(tag in self.tags for tag in only_tags):
+                return False
+            if skip_tags and any(tag in self.tags for tag in skip_tags):
+                return False
+            return True
+
+    # Create a mock block object
+    class MockBlock(Block):
+        def __init__(self, block, rescue, always,
+
+# Generated at 2024-05-31 19:43:51.381207
+```python
+    original_block = Block()
+    original_block._play = "play"
+    original_block._use_handlers = True
+    original_block._dep_chain = ["dep1", "dep2"]
+    original_block._parent = Block()
+    original_block._role = "role"
+    original_block.block = ["task1", "task2"]
+    original_block.rescue = ["rescue_task1"]
+    original_block.always = ["always_task1"]
+
+    copied_block = original_block.copy()
+
+    assert copied_block is not original_block
+    assert copied_block._play == original_block._play
+    assert copied_block._use_handlers == original_block._use_handlers
+    assert copied_block._dep_chain == original_block._dep_chain
+    assert copied_block._parent is not original_block._parent
+    assert copied_block._role == original_block._role
+    assert copied_block.block == original_block.block
+    assert copied_block.rescue == original_block.rescue
+   
+
+# Generated at 2024-05-31 19:43:55.067818
+```python
+    from ansible.playbook.block import Block
+    from ansible.playbook.task import Task
+    from ansible.constants import C
+
+    # Mock objects and data
+    class MockPlay:
+        def __init__(self, only_tags=None, skip_tags=None):
+            self.only_tags = only_tags or []
+            self.skip_tags = skip_tags or []
+
+    class MockTask(Task):
+        def __init__(self, action, tags, implicit=False):
+            self.action = action
+            self.tags = tags
+            self.implicit = implicit
+
+        def evaluate_tags(self, only_tags, skip_tags, all_vars=None):
+            if self.implicit:
+                return True
+            if only_tags and not any(tag in self.tags for tag in only_tags):
+                return False
+            if skip_tags and any(tag in self.tags for tag in skip_tags):
+                return False
+            return True
+
+    # Test data
+    play = MockPlay(only_tags=['
+
+# Generated at 2024-05-31 19:43:57.124649
+```python
+    loader = Mock()
+    parent_block = Mock()
+    role = Mock()
+    dep_chain = [Mock(), Mock()]
+
+    block = Block()
+    block._parent = parent_block
+    block._role = role
+    block._dep_chain = dep_chain
+
+    block.set_loader(loader)
+
+    parent_block.set_loader.assert_called_once_with(loader)
+    role.set_loader.assert_called_once_with(loader)
+    for dep in dep_chain:
+        dep.set_loader.assert_called_once_with(loader)
+```
+
+# Generated at 2024-05-31 19:44:00.964891
+```python
+    original_block = Block()
+    original_block._play = "play"
+    original_block._use_handlers = True
+    original_block._dep_chain = ["dep1", "dep2"]
+    original_block._parent = Block()
+    original_block._role = "role"
+    original_block.block = ["task1", "task2"]
+    original_block.rescue = ["rescue_task1"]
+    original_block.always = ["always_task1"]
+
+    copied_block = original_block.copy()
+
+    assert copied_block is not original_block
+    assert copied_block._play == original_block._play
+    assert copied_block._use_handlers == original_block._use_handlers
+    assert copied_block._dep_chain == original_block._dep_chain
+    assert copied_block._parent is not original_block._parent
+    assert copied_block._role == original_block._role
+    assert copied_block.block == original_block.block
+    assert copied_block.rescue == original_block.rescue
+   
+
+# Generated at 2024-05-31 19:44:03.250723
+```python
+    block_with_tasks = Block()
+    block_with_tasks.block = ['task1', 'task2']
+    assert block_with_tasks.has_tasks() == True
+
+    block_with_rescue = Block()
+    block_with_rescue.rescue = ['rescue_task1']
+    assert block_with_rescue.has_tasks() == True
+
+    block_with_always = Block()
+    block_with_always.always = ['always_task1']
+    assert block_with_always.has_tasks() == True
+
+    empty_block = Block()
+    assert empty_block.has_tasks() == False
+```
+
+# Generated at 2024-05-31 19:44:06.812519
+```python
+    block_data = {
+        'attr1': 'value1',
+        'attr2': 'value2',
+        'dep_chain': ['dep1', 'dep2'],
+        'role': {'name': 'test_role'},
+        'parent': {'attr1': 'parent_value1'},
+        'parent_type': 'Block'
+    }
+
+    block = Block()
+    block.deserialize(block_data)
+
+    assert block.attr1 == 'value1'
+    assert block.attr2 == 'value2'
+    assert block._dep_chain == ['dep1', 'dep2']
+    assert block._role.name == 'test_role'
+    assert block._parent.attr1 == 'parent_value1'
+    assert isinstance(block._parent, Block)
+```
+
+# Generated at 2024-05-31 19:44:09.200975
+```python
+    block = Block()
+    block._dep_chain = ['dep1', 'dep2']
+    assert block.get_dep_chain() == ['dep1', 'dep2']
+
+    parent_block = Block()
+    parent_block._dep_chain = ['parent_dep1', 'parent_dep2']
+    block._parent = parent_block
+    block._dep_chain = None
+    assert block.get_dep_chain() == ['parent_dep1', 'parent_dep2']
+
+    block._parent = None
+    block._dep_chain = None
+    assert block.get_dep_chain() is None
+```
+
+# Generated at 2024-05-31 19:44:12.993558
+```python
+    # Create a mock play object with only_tags and skip_tags attributes
+    class MockPlay:
+        def __init__(self, only_tags=None, skip_tags=None):
+            self.only_tags = only_tags or []
+            self.skip_tags = skip_tags or []
+
+    # Create a mock task object with evaluate_tags method
+    class MockTask:
+        def __init__(self, action, tags, implicit=False):
+            self.action = action
+            self.tags = tags
+            self.implicit = implicit
+
+        def evaluate_tags(self, only_tags, skip_tags, all_vars=None):
+            if self.implicit:
+                return True
+            if only_tags and not any(tag in self.tags for tag in only_tags):
+                return False
+            if skip_tags and any(tag in self.tags for tag in skip_tags):
+                return False
+            return True
+
+    # Create a mock block object
+    class MockBlock(Block):
+        def __init__(self, block=None
+
+# Generated at 2024-05-31 19:44:16.857804
+```python
+    from ansible.playbook.block import Block
+    from ansible.playbook.task_include import TaskInclude
+
+    # Test case 1: No parent
+    block = Block()
+    assert block.all_parents_static() == True
+
+    # Test case 2: Parent is a static Block
+    parent_block = Block()
+    block._parent = parent_block
+    assert block.all_parents_static() == True
+
+    # Test case 3: Parent is a non-static TaskInclude
+    parent_task_include = TaskInclude()
+    parent_task_include.statically_loaded = False
+    block._parent = parent_task_include
+    assert block.all_parents_static() == False
+
+    # Test case 4: Parent is a static TaskInclude
+    parent_task_include.statically_loaded = True
+    assert block.all_parents_static() == True
+
+    # Test case 5: Nested parents with a non-static TaskInclude
+    grandparent_task_include = Task
+
+# Generated at 2024-05-31 19:45:15.462343
+```python
+    # Create a mock TaskInclude class
+    class MockTaskInclude:
+        def __init__(self, statically_loaded=True):
+            self.statically_loaded = statically_loaded
+            self._parent = None
+
+        def all_parents_static(self):
+            return self.statically_loaded
+
+    # Create a mock Block class
+    class MockBlock(Block):
+        def __init__(self, parent=None, statically_loaded=True):
+            self._parent = parent
+            self.statically_loaded = statically_loaded
+
+    # Test case 1: No parent
+    block = MockBlock()
+    assert block.all_parents_static() == True
+
+    # Test case 2: Parent is a statically loaded TaskInclude
+    parent_task_include = MockTaskInclude(statically_loaded=True)
+    block = MockBlock(parent=parent_task_include)
+    assert block.all_parents_static() == True
+
+    # Test case 3: Parent is a non-statically loaded
+
+# Generated at 2024-05-31 19:45:17.850390
+```python
+    assert Block.is_block({'block': []}) == True
+    assert Block.is_block({'rescue': []}) == True
+    assert Block.is_block({'always': []}) == True
+    assert Block.is_block({'tasks': []}) == False
+    assert Block.is_block([]) == False
+    assert Block.is_block('block') == False
+    assert Block.is_block({'block': [], 'rescue': []}) == True
+```
+
+# Generated at 2024-05-31 19:45:22.011641
+```python
+    original_block = Block()
+    original_block._play = "play"
+    original_block._use_handlers = True
+    original_block._dep_chain = ["dep1", "dep2"]
+    original_block._parent = Block()
+    original_block._role = "role"
+    original_block.block = ["task1", "task2"]
+    original_block.rescue = ["rescue_task1"]
+    original_block.always = ["always_task1"]
+
+    copied_block = original_block.copy()
+
+    assert copied_block is not original_block
+    assert copied_block._play == original_block._play
+    assert copied_block._use_handlers == original_block._use_handlers
+    assert copied_block._dep_chain == original_block._dep_chain
+    assert copied_block._parent is not original_block._parent
+    assert copied_block._role == original_block._role
+    assert copied_block.block == original_block.block
+    assert copied_block.rescue == original_block.rescue
+   
+
+# Generated at 2024-05-31 19:45:26.094354
+```python
+    # Create a mock play object with only_tags and skip_tags attributes
+    class MockPlay:
+        def __init__(self, only_tags=None, skip_tags=None):
+            self.only_tags = only_tags or []
+            self.skip_tags = skip_tags or []
+
+    # Create a mock task object with evaluate_tags method
+    class MockTask:
+        def __init__(self, action, tags, implicit=False):
+            self.action = action
+            self.tags = tags
+            self.implicit = implicit
+
+        def evaluate_tags(self, only_tags, skip_tags, all_vars=None):
+            if self.implicit:
+                return True
+            if only_tags and not any(tag in self.tags for tag in only_tags):
+                return False
+            if skip_tags and any(tag in self.tags for tag in skip_tags):
+                return False
+            return True
+
+    # Create a mock block object
+    class MockBlock(Block):
+        def __init__(self, block=None
+
+# Generated at 2024-05-31 19:45:30.379660
+```python
+    # Mocking necessary objects and methods
+    class MockTask:
+        def __init__(self, action, implicit=False):
+            self.action = action
+            self.implicit = implicit
+
+        def evaluate_tags(self, only_tags, skip_tags, all_vars=None):
+            return True
+
+    class MockPlay:
+        def __init__(self, only_tags=None, skip_tags=None):
+            self.only_tags = only_tags or []
+            self.skip_tags = skip_tags or []
+
+    # Creating a Block instance with mock tasks
+    play = MockPlay(only_tags=['tag1'], skip_tags=['tag2'])
+    block = Block(play=play)
+    block.block = [MockTask(action='action1'), MockTask(action='action2')]
+    block.rescue = [MockTask(action='action3')]
+    block.always = [MockTask(action='action4')]
+
+    # Filtering tasks based on tags
+    filtered_block = block.filter_tagged_tasks(all
+
+# Generated at 2024-05-31 19:45:32.633743
+```python
+    block_with_tasks = Block()
+    block_with_tasks.block = ['task1', 'task2']
+    assert block_with_tasks.has_tasks() == True
+
+    block_with_rescue = Block()
+    block_with_rescue.rescue = ['rescue_task1']
+    assert block_with_rescue.has_tasks() == True
+
+    block_with_always = Block()
+    block_with_always.always = ['always_task1']
+    assert block_with_always.has_tasks() == True
+
+    empty_block = Block()
+    assert empty_block.has_tasks() == False
+```
+
+# Generated at 2024-05-31 19:45:37.098893
+```python
+    # Create a Block instance with no parent and no dependency chain
+    block = Block()
+    assert block.get_dep_chain() is None
+
+    # Create a parent Block with a dependency chain
+    parent_block = Block()
+    parent_block._dep_chain = ['dep1', 'dep2']
+    
+    # Create a child Block with the parent Block
+    child_block = Block()
+    child_block._parent = parent_block
+    
+    # Test if the child Block returns the parent's dependency chain
+    assert child_block.get_dep_chain() == ['dep1', 'dep2']
+
+    # Create a Block with its own dependency chain
+    block_with_dep = Block()
+    block_with_dep._dep_chain = ['dep3', 'dep4']
+    
+    # Test if the Block returns its own dependency chain
+    assert block_with_dep.get_dep_chain() == ['dep3', 'dep4']
+```
+
+# Generated at 2024-05-31 19:45:40.038163
+```python
+    block_with_tasks = Block()
+    block_with_tasks.block = ['task1', 'task2']
+    assert block_with_tasks.has_tasks() == True, "Block with tasks should return True"
+
+    block_with_rescue = Block()
+    block_with_rescue.rescue = ['rescue_task1']
+    assert block_with_rescue.has_tasks() == True, "Block with rescue tasks should return True"
+
+    block_with_always = Block()
+    block_with_always.always = ['always_task1']
+    assert block_with_always.has_tasks() == True, "Block with always tasks should return True"
+
+    empty_block = Block()
+    assert empty_block.has_tasks() == False, "Empty block should return False"
+```
+
+# Generated at 2024-05-31 19:45:43.560453
+```python
+    # Create a mock TaskInclude object
+    mock_task_include = TaskInclude()
+    mock_task_include.statically_loaded = True
+
+    # Create a Block object with the mock TaskInclude as its parent
+    block = Block()
+    block._parent = mock_task_include
+
+    # Test if get_first_parent_include returns the correct TaskInclude object
+    assert block.get_first_parent_include() == mock_task_include
+
+    # Create a nested Block object with the previous Block as its parent
+    nested_block = Block()
+    nested_block._parent = block
+
+    # Test if get_first_parent_include returns the correct TaskInclude object for nested blocks
+    assert nested_block.get_first_parent_include() == mock_task_include
+
+    # Test with no parent
+    block_no_parent = Block()
+    assert block_no_parent.get_first_parent_include() is None
+
+    # Test with a parent that is not a TaskInclude
+    block_with_non_task_include_parent = Block()
+    block
+
+# Generated at 2024-05-31 19:45:45.091030
+```python
+    block = Block()
+    assert block.get_dep_chain() is None
+
+    parent_block = Block()
+    parent_block._dep_chain = ['parent_dep']
+    block._parent = parent_block
+    assert block.get_dep_chain() == ['parent_dep']
+
+    block._dep_chain = ['child_dep']
+    assert block.get_dep_chain() == ['child_dep']
+```
+
+# Generated at 2024-05-31 19:46:48.152891
+```python
+    block_with_tasks = Block()
+    block_with_tasks.block = ['task1', 'task2']
+    assert block_with_tasks.has_tasks() == True
+
+    block_with_rescue = Block()
+    block_with_rescue.rescue = ['rescue_task1']
+    assert block_with_rescue.has_tasks() == True
+
+    block_with_always = Block()
+    block_with_always.always = ['always_task1']
+    assert block_with_always.has_tasks() == True
+
+    empty_block = Block()
+    assert empty_block.has_tasks() == False
+```
+
+# Generated at 2024-05-31 19:46:51.977100
+```python
+    # Mocking necessary components
+    class MockTask:
+        def __init__(self, action, implicit=False):
+            self.action = action
+            self.implicit = implicit
+
+        def evaluate_tags(self, only_tags, skip_tags, all_vars=None):
+            return True
+
+    class MockPlay:
+        def __init__(self, only_tags=None, skip_tags=None):
+            self.only_tags = only_tags or []
+            self.skip_tags = skip_tags or []
+
+    # Creating a Block instance with mock tasks
+    play = MockPlay(only_tags=['tag1'], skip_tags=['tag2'])
+    block = Block(play=play)
+    block.block = [MockTask(action='action1'), MockTask(action='action2')]
+    block.rescue = [MockTask(action='action3')]
+    block.always = [MockTask(action='action4')]
+
+    # Filtering tasks based on tags
+    filtered_block = block.filter_tagged_tasks(all_vars={
+
+# Generated at 2024-05-31 19:46:56.781397
+```python
+    # Create a mock play object with only_tags and skip_tags attributes
+    class MockPlay:
+        def __init__(self, only_tags=None, skip_tags=None):
+            self.only_tags = only_tags or []
+            self.skip_tags = skip_tags or []
+
+    # Create a mock task object with evaluate_tags method
+    class MockTask:
+        def __init__(self, action, implicit=False, tags=None):
+            self.action = action
+            self.implicit = implicit
+            self.tags = tags or []
+
+        def evaluate_tags(self, only_tags, skip_tags, all_vars=None):
+            if self.implicit:
+                return True
+            if any(tag in skip_tags for tag in self.tags):
+                return False
+            if only_tags and not any(tag in only_tags for tag in self.tags):
+                return False
+            return True
+
+    # Create a mock block object
+    class MockBlock(Block):
+        def __init__(self, block=None,
+
+# Generated at 2024-05-31 19:46:59.143462
+```python
+    assert Block.is_block({'block': []}) == True
+    assert Block.is_block({'rescue': []}) == True
+    assert Block.is_block({'always': []}) == True
+    assert Block.is_block({'task': []}) == False
+    assert Block.is_block([]) == False
+    assert Block.is_block('block') == False
+    assert Block.is_block({'block': [], 'rescue': []}) == True
+```
+
+# Generated at 2024-05-31 19:47:01.938806
+```python
+    block_data = {
+        'attr1': 'value1',
+        'attr2': 'value2',
+        'dep_chain': ['dep1', 'dep2'],
+        'role': {'role_attr': 'role_value'},
+        'parent': {'parent_attr': 'parent_value'},
+        'parent_type': 'Block'
+    }
+
+    block = Block()
+    block.deserialize(block_data)
+
+    assert block.attr1 == 'value1'
+    assert block.attr2 == 'value2'
+    assert block._dep_chain == ['dep1', 'dep2']
+    assert block._role.role_attr == 'role_value'
+    assert block._parent.parent_attr == 'parent_value'
+    assert isinstance(block._parent, Block)
+```
+
+# Generated at 2024-05-31 19:47:05.396729
+```python
+    # Create a mock TaskInclude object
+    mock_task_include = TaskInclude()
+    mock_task_include.statically_loaded = True
+
+    # Create a Block object with the mock TaskInclude as its parent
+    block_with_include = Block()
+    block_with_include._parent = mock_task_include
+
+    # Create a Block object with another Block as its parent
+    parent_block = Block()
+    parent_block._parent = block_with_include
+    block = Block()
+    block._parent = parent_block
+
+    # Test if get_first_parent_include returns the correct TaskInclude object
+    assert block.get_first_parent_include() == mock_task_include
+
+    # Test if get_first_parent_include returns None when there is no TaskInclude in the chain
+    block_without_include = Block()
+    assert block_without_include.get_first_parent_include() is None
+```
+
+# Generated at 2024-05-31 19:47:09.887027
+```python
+    original_block = Block()
+    original_block._play = "play"
+    original_block._use_handlers = True
+    original_block._dep_chain = ["dep1", "dep2"]
+    original_block._parent = Block()
+    original_block._role = "role"
+    original_block.block = ["task1", "task2"]
+    original_block.rescue = ["rescue_task1"]
+    original_block.always = ["always_task1"]
+
+    copied_block = original_block.copy()
+
+    assert copied_block is not original_block
+    assert copied_block._play == original_block._play
+    assert copied_block._use_handlers == original_block._use_handlers
+    assert copied_block._dep_chain == original_block._dep_chain
+    assert copied_block._parent is not original_block._parent
+    assert copied_block._role == original_block._role
+    assert copied_block.block == original_block.block
+    assert copied_block.rescue == original_block.rescue
+   
+
+# Generated at 2024-05-31 19:47:13.513005
+```python
+    # Create a mock play object with only_tags and skip_tags attributes
+    class MockPlay:
+        def __init__(self, only_tags, skip_tags):
+            self.only_tags = only_tags
+            self.skip_tags = skip_tags
+
+    # Create a mock task object with evaluate_tags method
+    class MockTask:
+        def __init__(self, action, tags, implicit=False):
+            self.action = action
+            self.tags = tags
+            self.implicit = implicit
+
+        def evaluate_tags(self, only_tags, skip_tags, all_vars=None):
+            if self.implicit:
+                return True
+            if only_tags and not any(tag in self.tags for tag in only_tags):
+                return False
+            if skip_tags and any(tag in self.tags for tag in skip_tags):
+                return False
+            return True
+
+    # Create a mock block object
+    class MockBlock(Block):
+        def __init__(self, block=None, rescue=None,
+
+# Generated at 2024-05-31 19:47:15.673941
+```python
+    loader = Mock()
+    parent_block = Mock()
+    role = Mock()
+    dep_chain = [Mock(), Mock()]
+
+    block = Block()
+    block._parent = parent_block
+    block._role = role
+    block._dep_chain = dep_chain
+
+    block.set_loader(loader)
+
+    parent_block.set_loader.assert_called_once_with(loader)
+    role.set_loader.assert_called_once_with(loader)
+    for dep in dep_chain:
+        dep.set_loader.assert_called_once_with(loader)
+```
+
+# Generated at 2024-05-31 19:47:19.700636
+```python
+    data = {
+        'attr1': 'value1',
+        'attr2': 'value2',
+        'dep_chain': ['dep1', 'dep2'],
+        'role': {'name': 'test_role'},
+        'parent': {'attr1': 'parent_value1'},
+        'parent_type': 'Block'
+    }
+
+    block = Block()
+    block.deserialize(data)
+
+    assert block.attr1 == 'value1'
+    assert block.attr2 == 'value2'
+    assert block._dep_chain == ['dep1', 'dep2']
+    assert block._role.name == 'test_role'
+    assert block._parent.attr1 == 'parent_value1'
+    assert isinstance(block._parent, Block)
+```

@@ -308,18 +308,121 @@ def refactory_layout(task: str) -> dict:
     }
 
 
+MT_ROOT_DIR = ROOT / "dataset" / "coverup-eval" / "MuTAP-benchmarks"
+
+
+def mt_task_ids(limit: int | None = None) -> T.List[str]:
+    """The exact 163-task CoverUp MT suite, f001..f163."""
+    ids = sorted(p.name for p in MT_ROOT_DIR.glob("f[0-9][0-9][0-9]") if p.is_dir())
+    expected = ["f{:03d}".format(i) for i in range(1, 164)]
+    if ids != expected:
+        return []
+    return ids[:limit] if limit else ids
+
+
+def mt_layout(task: str) -> dict:
+    """Layout for one CoverUp MT task (not the 164-task MuTAP checkout)."""
+    task = str(task)
+    d = MT_ROOT_DIR / task
+    put = d / task / "__init__.py"
+    if task not in mt_task_ids() or not put.is_file():
+        raise KeyError("MT task not found in exact f001..f163 suite: " + task)
+    return {
+        "dataset": "MT", "task": task, "put": put,
+        "module_name": task, "package_root": str(d.resolve()),
+        "package_txt": str((d / "package.txt").resolve()),
+        "mutants": [], "suites": {}, "mutation_supported": True,
+    }
+
+
+CM_ROOT_DIR = ROOT / "dataset" / "codamosa" / "replication"
+
+
+def _module_to_path(base_dir: Path, dotted: str) -> Path | None:
+    """dotted.name -> base_dir/dotted/name.py (CM uses dotted module paths)."""
+    cand = base_dir / (dotted.replace(".", os.sep) + ".py")
+    return cand if cand.is_file() else None
+
+
+def cm_modules(limit: int | None = None) -> T.List[T.Tuple[str, str, Path]]:
+    """Load CM suite definition from the CodaMOSA replication manifest.
+
+    Returns [(pkg_rel, dotted_module, file_path)] in stable manifest order.
+    Silently skips malformed lines / missing files; callers check the count.
+    """
+    manifest = CM_ROOT_DIR / "test-apps" / "cm_modules.csv"
+    if not manifest.is_file():
+        return []
+    out: T.List[T.Tuple[str, str, Path]] = []
+    seen: T.Set[T.Tuple[str, str]] = set()
+    for raw in manifest.read_text(encoding="utf-8", errors="replace").splitlines():
+        line = raw.strip()
+        if not line or "," not in line:
+            continue
+        # Column 1 is 'test-apps/<pkg>[/<src>]' relative to the replication root.
+        pkg_col, dotted = (piece.strip() for piece in line.split(",", 1))
+        if not pkg_col or not dotted:
+            continue
+        key = (pkg_col, dotted)
+        if key in seen:
+            continue
+        seen.add(key)
+        path = _module_to_path(CM_ROOT_DIR / pkg_col, dotted)
+        if path is None:
+            continue
+        out.append((pkg_col, dotted, path))
+        if limit is not None and len(out) >= limit:
+            break
+    return out
+
+
+def cm_task_ids(limit: int | None = None) -> T.List[str]:
+    """Stable list of dotted module names forming the CM suite."""
+    return [dotted for _pkg, dotted, _path in cm_modules(limit)]
+
+
+def cm_layout(task: str) -> dict:
+    """Layout entry for one CM module.
+
+    CM is package-based: `package_root` is the directory on sys.path that
+    makes the dotted module importable (needed both for running generated
+    tests and for measuring whole-package coverage).  `mutants` stays empty -
+    mutation score is only defined for the MT suite in the paper protocol.
+    """
+    for pkg_col, dotted, path in cm_modules():
+        if dotted != task:
+            continue
+        return {
+            "dataset": "CM",
+            "task": dotted,
+            "put": path,
+            "module_name": dotted,
+            "package_root": str((CM_ROOT_DIR / pkg_col).resolve()),
+            "package_txt": str((CM_ROOT_DIR / pkg_col / "package.txt").resolve()),
+            "mutants": [],
+            "suites": {},
+            "mutation_supported": False,
+        }
+    raise KeyError("CM module not found in cm_modules.csv: " + task)
+
+
+# --------------------------------------------------------------------------- #
 LAYOUTS: T.Dict[str, T.Callable[[str], dict]] = {
     "HumanEval": humaneval_layout,
     "Refactory": refactory_layout,
+    "MT": mt_layout,
+    "CM": cm_layout,
 }
-
-
 def task_ids(name: str, limit: int | None = None) -> T.List[str]:
     """All task ids of a dataset, in a stable order."""
     if name == "HumanEval":
         base = ROOT / "MuTAP" / "HumanEval" / "Testing_HumanEval"
         ids = sorted((p.name for p in base.iterdir()
                       if p.is_dir() and p.name.isdigit()), key=int)
+    elif name == "MT":
+        ids = mt_task_ids()
+    elif name == "CM":
+        ids = cm_task_ids()
     else:
         base = ROOT / "MuTAP" / "Refactory" / "Reference_Scripts" / "Scripts"
         ids = [p.stem for p in sorted(base.glob("q*.py"), key=lambda p: int(p.stem[1:]))]
@@ -464,10 +567,23 @@ def prepare_suite(layout: dict, tests: T.Sequence[Path], workdir: Path) -> dict:
     put_src = Path(layout["put"])
     put = workdir / put_src.name
     shutil.copy(put_src, put)
+    # CM modules are package members: tests import the dotted path
+    # (e.g. ``from ansible.cli.adhoc import ...``), so the real package root
+    # must stay on sys.path for every child process.  MT PUTs are standalone
+    # scripts and leave this empty.
+    package_root = layout.get("package_root") or ""
+    dotted = layout.get("module_name") or ""
+    try:
+        put_rel = (Path(put_src).resolve().relative_to(
+            Path(package_root).resolve()).as_posix() if package_root else "")
+    except ValueError:
+        put_rel = ""
     tests = [Path(t) for t in tests if Path(t).exists()]
     if not tests:
         return {"style": "empty", "pytest_files": [], "units": [],
-                "inline_parts": [], "put": put, "n_assertions": 0}
+                "inline_parts": [], "put": put, "n_assertions": 0,
+                "package_root": package_root, "dotted": dotted,
+                "put_rel": put_rel}
 
     validity = {t: suite_validity(t) for t in tests}
     invalid = ["{} ({})".format(t.name, result[1])
@@ -479,9 +595,13 @@ def prepare_suite(layout: dict, tests: T.Sequence[Path], workdir: Path) -> dict:
     sources = {}
     for t in tests:
         sources[t] = t.read_text(errors="ignore")
+    import_names = {put.stem}
+    if dotted:
+        import_names.add(dotted)
     inline = [t for t in tests
-              if ("import " + put.stem) not in sources[t]
-              and ("from " + put.stem + " import") not in sources[t]
+              if not any(("import " + name) in sources[t]
+                         or ("from " + name + " import") in sources[t]
+                         for name in import_names)
               and TEST_DEF.search(sources[t])]
     style = "inline" if inline else "import"
 
@@ -514,7 +634,9 @@ def prepare_suite(layout: dict, tests: T.Sequence[Path], workdir: Path) -> dict:
                 units.append((tf, ""))
     return {"style": style, "pytest_files": pytest_files, "units": units,
             "inline_parts": inline_parts, "put": put,
-            "n_assertions": assertion_count}
+            "n_assertions": assertion_count,
+            "package_root": package_root, "dotted": dotted,
+            "put_rel": put_rel}
 
 
 def _alias_owner(prepared: dict) -> T.Dict[str, Path]:
@@ -536,11 +658,21 @@ def coverage_of(prepared: dict, workdir: Path) -> dict:
     out = workdir / "slipcover.json"
     if out.exists():
         out.unlink()
-    env = dict(os.environ, PYTHONPATH=str(workdir), NO_COLOR="1",
+    # CM packages: prepend package_root so the dotted module resolves correctly
+    pkg_root = prepared.get("package_root") or ""
+    pypath = str(workdir)
+    if pkg_root:
+        pypath = os.pathsep.join([pkg_root, pypath])
+    env = dict(os.environ, PYTHONPATH=pypath, NO_COLOR="1",
                PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
-    cmd = [PY, "-m", "slipcover", "--branch", "--json", "--out", str(out),
-           "-m", "pytest", "-q", "-p", "no:cacheprovider", "--no-header",
-           "-o", "addopts="] + [p.name for p in prepared["pytest_files"]]
+    cmd = [PY, "-m", "slipcover", "--branch", "--json", "--out", str(out)]
+    if pkg_root:
+        # SlipCover traces only the working directory by default; a CM module
+        # lives outside it, so name the target package explicitly (this is what
+        # the upstream run_coda_tests.sh does with ``--source $PKG``).
+        cmd += ["--source", pkg_root]
+    cmd += ["-m", "pytest", "-q", "-p", "no:cacheprovider", "--no-header",
+            "-o", "addopts="] + [p.name for p in prepared["pytest_files"]]
     try:
         _run(cmd, workdir, env, 300)
     except (subprocess.TimeoutExpired, FileNotFoundError):
@@ -548,10 +680,17 @@ def coverage_of(prepared: dict, workdir: Path) -> dict:
     if not out.exists():
         return {"line_pct": None, "lines_total": 0, "lines_covered": 0}
     put_name = prepared["put"].name
+    # Match SlipCover's key against the PUT's relative path inside its package
+    # root (MT puts are __init__.py files; CM basenames can repeat across a
+    # package), falling back to the bare filename for standalone scripts.
+    put_rel = prepared.get("put_rel") or ""
     covered = missing = 0
     branch_covered = branch_missing = 0
     for key, info in json.loads(out.read_text()).get("files", {}).items():
-        if Path(key).name != put_name:
+        if put_rel:
+            if not Path(key).as_posix().endswith("/" + put_rel):
+                continue
+        elif Path(key).name != put_name:
             continue
         s = info.get("summary", {})
         covered += s.get("covered_lines", 0)
@@ -578,7 +717,11 @@ def pass_rate_of(prepared: dict, workdir: Path) -> dict:
     methods/models, mixing foreign units into ``n_tests`` (the source of the
     historical ``pass_rate=100, n_tests=2`` anomaly).
     """
-    env = dict(os.environ, PYTHONPATH=str(workdir), NO_COLOR="1",
+    pkg_root = prepared.get("package_root") or ""
+    pypath = str(workdir)
+    if pkg_root:
+        pypath = os.pathsep.join([pkg_root, pypath])
+    env = dict(os.environ, PYTHONPATH=pypath, NO_COLOR="1",
                PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
     owner = _alias_owner(prepared)
     total = ok = 0
@@ -610,17 +753,29 @@ def pass_rate_of(prepared: dict, workdir: Path) -> dict:
 # RQ1 metric 3: mutation score
 # --------------------------------------------------------------------------- #
 def generate_mutants(put: Path, outdir: Path, workdir: Path) -> T.List[Path]:
-    """Create mutants with MutPy for PUTs that ship without any."""
+    """Create first-order MutPy mutants as source files.
+
+    MutPy 0.6.1's CLI executes mutants directly and has no ``--output-dir``.
+    The evaluator needs one stable common set reusable by every tool, therefore
+    it drives MutPy's public mutator and code generator in-process.
+    """
     outdir.mkdir(parents=True, exist_ok=True)
     for stale in outdir.glob("mutant_*.py"):
         stale.unlink()
-    env = dict(os.environ, PYTHONPATH=str(put.parent))
     try:
-        _run([BIN("mut.py"), "--target", str(put), "--output-dir", str(outdir),
-              "--force"], workdir, env, 300)
-    except (subprocess.TimeoutExpired, FileNotFoundError):
-        pass
-    return sorted(outdir.glob("mutant_*.py"))
+        from mutpy import controller, operators, utils
+        tree = utils.create_ast(Path(put).read_text(encoding="utf-8"))
+        mutator = controller.FirstOrderMutator(operators.standard_operators)
+        generated: T.List[Path] = []
+        for number, (_mutations, mutant) in enumerate(mutator.mutate(tree), 1):
+            path = outdir / "mutant_{:04d}.py".format(number)
+            # astmonkey (used by MutPy's CLI) is not compatible with Python
+            # 3.14's removed ast.Str alias; stdlib ast.unparse is equivalent.
+            path.write_text(ast.unparse(mutant) + "\n", encoding="utf-8")
+            generated.append(path)
+        return generated
+    except (AttributeError, ImportError, OSError, SyntaxError, TypeError):
+        return []
 
 
 def mutation_score_of(prepared: dict, mutants: T.Sequence[Path], workdir: Path,
@@ -679,7 +834,10 @@ def mutation_score_of(prepared: dict, mutants: T.Sequence[Path], workdir: Path,
                 # copies of the tests, so pytest's rootdir insertion is clean.
                 shadow = jobdir / "mut_shadow"
                 shadow.mkdir()
-                (shadow / prepared["put"].name).write_text(mut_src)
+                put_rel = prepared.get("put_rel") or prepared["put"].name
+                mutant_target = shadow / put_rel
+                mutant_target.parent.mkdir(parents=True, exist_ok=True)
+                mutant_target.write_text(mut_src, encoding="utf-8")
                 names = []
                 for p in prepared["pytest_files"]:
                     shutil.copy(p, jobdir / p.name)
@@ -687,7 +845,10 @@ def mutation_score_of(prepared: dict, mutants: T.Sequence[Path], workdir: Path,
                 cmd = [PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
                        "--no-header", "-o", "addopts="] + names
                 cwd = jobdir
-                env["PYTHONPATH"] = os.pathsep.join((str(shadow), str(workdir)))
+                roots = [str(shadow), str(workdir)]
+                if prepared.get("package_root"):
+                    roots.append(str(prepared["package_root"]))
+                env["PYTHONPATH"] = os.pathsep.join(roots)
             try:
                 cp = _run(cmd, cwd, env, timeout)
                 text = (cp.stdout or "") + (cp.stderr or "")
@@ -746,7 +907,9 @@ class CoverupRun:
 
 def run_coverup(put: Path, tests_dir: Path, workdir: Path, model: str = "gpt-4o",
                 timeout: int = 900, extra: T.Sequence[str] = (),
-                llm_calls_log: T.Optional[Path] = None) -> CoverupRun:
+                llm_calls_log: T.Optional[Path] = None,
+                module_name: str | None = None,
+                package_root: Path | None = None) -> CoverupRun:
     """Run CoverUp from scratch over `put`, returning wall time and native cost.
 
     When `llm_calls_log` is given, the per-call LLM logger inside CoverUp
@@ -759,11 +922,25 @@ def run_coverup(put: Path, tests_dir: Path, workdir: Path, model: str = "gpt-4o"
     workdir = Path(workdir).resolve()
     tests_dir = Path(tests_dir).resolve()
     workdir.mkdir(parents=True, exist_ok=True)
-    # SlipCover only traces files under the working directory, so the PUT is
-    # copied in and CoverUp is pointed at that copy.
-    local_put = workdir / Path(put).name
-    if Path(put).resolve() != local_put.resolve():
-        shutil.copy(put, local_put)
+    # SlipCover traces files under CoverUp's work tree. Package benchmarks need
+    # their complete source tree (relative imports/data included), not a lone
+    # copied PUT with a different import name.
+    if package_root:
+        source_root = Path(package_root).resolve()
+        project = workdir / "project"
+        if project.exists():
+            shutil.rmtree(project)
+        shutil.copytree(source_root, project,
+                        ignore=shutil.ignore_patterns(".git", "__pycache__", "*.pyc"))
+        try:
+            local_put = project / Path(put).resolve().relative_to(source_root)
+        except ValueError as exc:
+            raise ValueError("PUT is outside package_root: {}".format(put)) from exc
+    else:
+        project = workdir
+        local_put = workdir / Path(put).name
+        if Path(put).resolve() != local_put.resolve():
+            shutil.copy(put, local_put)
     tests_dir.mkdir(parents=True, exist_ok=True)
     # A rerun must start from the original test baseline, not retain generated
     # CoverUp tests or a completed checkpoint from an earlier invocation.
@@ -774,16 +951,17 @@ def run_coverup(put: Path, tests_dir: Path, workdir: Path, model: str = "gpt-4o"
         ckpt.unlink()
     # "from scratch" means no pre-existing tests, but the module must still be
     # imported so that SlipCover reports its lines as *uncovered* instead of
-    # silently reporting 100% over an empty suite.
-    (tests_dir / "conftest.py").write_text("import {0}  # noqa: F401\n".format(local_put.stem))
-    cmd = [*coverup_cmd(), "--tests-dir", str(tests_dir), str(put),
+    # silently reporting 100% over an empty suite.  CM uses dotted imports.
+    import_name = module_name or local_put.stem
+    (tests_dir / "conftest.py").write_text("import {0}  # noqa: F401\n".format(import_name))
+    cmd = [*coverup_cmd(), "--tests-dir", str(tests_dir), str(local_put),
            "--model", model, "--checkpoint", str(ckpt),
+           *(["--package-dir", str(local_put.parent)] if package_root else []),
            "--log-file", str(workdir / "coverup.log"),
            "--no-isolate-tests", "--no-repeat-tests", "--no-disable-polluting",
            "--no-disable-failing", "--max-attempts", "3",
            *coverup_rate_limit(), *extra]
-    cmd[cmd.index(str(put))] = str(local_put)
-    pythonpath = [str(workdir), *coverup_pythonpath()]
+    pythonpath = [str(project), str(workdir), *coverup_pythonpath()]
     existing_pythonpath = os.environ.get("PYTHONPATH")
     if existing_pythonpath:
         pythonpath.append(existing_pythonpath)
@@ -855,7 +1033,7 @@ def run_coverup(put: Path, tests_dir: Path, workdir: Path, model: str = "gpt-4o"
 def evaluate(dataset: str, task: str, tests: T.Sequence[Path], method: str,
              *, wall_time_s: float | None = None, cost_usd: float | None = None,
              workroot: Path | None = None) -> dict:
-    """Measure the RQ1/RQ2 metrics of `tests` against the task's PUT."""
+    """Measure the suite metrics supported by the selected benchmark."""
     layout = LAYOUTS[dataset](task)
     workdir = Path(tempfile.mkdtemp(prefix="{0}_{1}_".format(dataset, task),
                                    dir=str(workroot) if workroot else None))
@@ -868,9 +1046,17 @@ def evaluate(dataset: str, task: str, tests: T.Sequence[Path], method: str,
         prepared = prepare_suite(layout, tests, workdir)
         row.update(coverage_of(prepared, workdir))
         row.update(pass_rate_of(prepared, workdir))
-        mutants = list(layout["mutants"]) or generate_mutants(
-            prepared["put"], workdir / "mutants", workdir)
-        row.update(mutation_score_of(prepared, mutants, workdir))
+        if layout.get("mutation_supported", True):
+            mutants = list(layout["mutants"]) or generate_mutants(
+                prepared["put"], workdir / "mutants", workdir)
+            row.update(mutation_score_of(prepared, mutants, workdir))
+        else:
+            # CM's paper protocol compares branch coverage; do not fabricate a
+            # mutation score when this benchmark ships no common mutant set.
+            row.update({"mutation_score": None, "killed": 0, "survived": 0,
+                        "broken": 0, "timeout": 0, "problematic": 0,
+                        "n_mutants": 0, "mutant_set_id": None,
+                        "mutant_set_total": 0})
         row["n_tests_files"] = len(prepared["pytest_files"])
         if wall_time_s is not None:
             row["wall_time_s"] = round(wall_time_s, 2)

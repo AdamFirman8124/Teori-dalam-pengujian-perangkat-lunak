@@ -1,0 +1,164 @@
+
+
+# Generated at 2024-05-31 04:32:58.547358
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '{"fact1": "value1"}', ''))
+
+    facter_collector = FacterFactCollector()
+    facter_path = '/usr/bin/facter'
+
+    rc, out, err = facter_collector.run_facter(module, facter_path)
+
+    assert rc == 0
+    assert out == '{"fact1": "value1"}'
+    assert err == ''
+```
+
+# Generated at 2024-05-31 04:33:00.077583
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '{"facter_key": "facter_value"}', ''))
+    facter_collector = FacterFactCollector()
+    
+    collected_facts = facter_collector.collect(module=module)
+    
+    assert collected_facts == {"facter_key": "facter_value"}
+```
+
+# Generated at 2024-05-31 04:33:03.084682
+```python
+    module = Mock()
+    collector = FacterFactCollector()
+
+    # Test when facter is not found
+    module.get_bin_path.return_value = None
+    assert collector.get_facter_output(module) is None
+
+    # Test when facter is found but run_facter fails
+    module.get_bin_path.return_value = '/usr/bin/facter'
+    collector.run_facter = Mock(return_value=(1, '', 'error'))
+    assert collector.get_facter_output(module) is None
+
+    # Test when facter is found and run_facter succeeds
+    module.get_bin_path.return_value = '/usr/bin/facter'
+    collector.run_facter = Mock(return_value=(0, '{"key": "value"}', ''))
+    assert collector.get_facter_output(module) == '{"key": "value"}'
+```
+
+# Generated at 2024-05-31 04:33:05.528696
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '{"facter_key": "facter_value"}', ''))
+
+    collector = FacterFactCollector()
+    collected_facts = collector.collect(module=module)
+
+    assert collected_facts == {"facter_key": "facter_value"}
+
+    module.run_command = Mock(return_value=(1, '', 'error'))
+    collected_facts = collector.collect(module=module)
+
+    assert collected_facts == {}
+
+    module.run_command = Mock(return_value=(0, 'invalid json', ''))
+    collected_facts = collector.collect(module=module)
+
+    assert collected_facts == {}
+```
+
+# Generated at 2024-05-31 04:33:08.993273
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '{"facter_key": "facter_value"}', ''))
+    collector = FacterFactCollector()
+    
+    result = collector.collect(module=module)
+    
+    assert result == {"facter_key": "facter_value"}
+```
+
+# Generated at 2024-05-31 04:33:10.745220
+```python
+    class MockModule:
+        def get_bin_path(self, arg, opt_dirs=None):
+            if arg == 'facter':
+                return '/usr/bin/facter'
+            elif arg == 'cfacter':
+                return '/opt/puppetlabs/bin/cfacter'
+            return None
+
+    module = MockModule()
+    collector = FacterFactCollector()
+    facter_path = collector.find_facter(module)
+    assert facter_path == '/opt/puppetlabs/bin/cfacter'
+```
+
+# Generated at 2024-05-31 04:33:13.513751
+```python
+    module = Mock()
+    collector = FacterFactCollector()
+
+    # Test when facter is not found
+    module.get_bin_path.return_value = None
+    assert collector.get_facter_output(module) is None
+
+    # Test when facter is found but run_facter fails
+    module.get_bin_path.return_value = '/usr/bin/facter'
+    collector.run_facter = Mock(return_value=(1, '', 'error'))
+    assert collector.get_facter_output(module) is None
+
+    # Test when facter is found and run_facter succeeds
+    module.get_bin_path.return_value = '/usr/bin/facter'
+    collector.run_facter = Mock(return_value=(0, '{"key": "value"}', ''))
+    assert collector.get_facter_output(module) == '{"key": "value"}'
+```
+
+# Generated at 2024-05-31 04:33:14.753584
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '{"facter_key": "facter_value"}', ''))
+    collector = FacterFactCollector()
+    
+    result = collector.collect(module=module)
+    
+    assert result == {"facter_key": "facter_value"}
+```
+
+# Generated at 2024-05-31 04:33:18.106481
+```python
+    module = Mock()
+    module.get_bin_path = Mock(side_effect=lambda x, opt_dirs: '/opt/puppetlabs/bin/' + x if x in ['facter', 'cfacter'] else None)
+
+    collector = FacterFactCollector()
+
+    facter_path = collector.find_facter(module)
+    assert facter_path == '/opt/puppetlabs/bin/cfacter'
+
+    module.get_bin_path = Mock(side_effect=lambda x, opt_dirs: '/opt/puppetlabs/bin/' + x if x == 'facter' else None)
+    facter_path = collector.find_facter(module)
+    assert facter_path == '/opt/puppetlabs/bin/facter'
+
+    module.get_bin_path = Mock(return_value=None)
+    facter_path = collector.find_facter(module)
+    assert facter_path is None
+```
+
+# Generated at 2024-05-31 04:33:20.776427
+```python
+    module = Mock()
+    module.get_bin_path = Mock(side_effect=lambda x, opt_dirs: '/opt/puppetlabs/bin/' + x if x in ['facter', 'cfacter'] else None)
+
+    collector = FacterFactCollector()
+
+    facter_path = collector.find_facter(module)
+    assert facter_path == '/opt/puppetlabs/bin/cfacter'
+
+    module.get_bin_path = Mock(side_effect=lambda x, opt_dirs: '/opt/puppetlabs/bin/' + x if x == 'facter' else None)
+    facter_path = collector.find_facter(module)
+    assert facter_path == '/opt/puppetlabs/bin/facter'
+
+    module.get_bin_path = Mock(return_value=None)
+    facter_path = collector.find_facter(module)
+    assert facter_path is None
+```

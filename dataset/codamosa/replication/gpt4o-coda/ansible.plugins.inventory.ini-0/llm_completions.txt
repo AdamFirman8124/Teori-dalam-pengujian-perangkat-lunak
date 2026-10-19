@@ -1,0 +1,1393 @@
+
+
+# Generated at 2024-06-01 07:05:30.823519
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module._compile_patterns = Mock()
+    inventory_module._parse_host_definition = Mock(return_value=(['host1'], None, {}))
+    inventory_module._parse_variable_definition = Mock(return_value=('key', 'value'))
+    inventory_module._parse_group_name = Mock(return_value='child_group')
+    inventory_module._add_pending_children = Mock()
+    inventory_module._raise_error = Mock()
+    inventory_module._expand_hostpattern = Mock(return_value=(['host1'], None))
+
+    path = 'fake_path'
+    lines = [
+        '[group1]',
+        'host1',
+        '[group1:vars]',
+        'key=value',
+        '[group1:
+
+# Generated at 2024-06-01 07:05:34.640318
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.patterns = {}
+    inventory_module._compile_patterns()
+
+    # Test case 1: Valid inventory with hosts, vars, and children
+    lines = [
+        "[group1]",
+        "host1",
+        "host2",
+        "[group1:vars]",
+        "var1=value1",
+        "[group1:children]",
+        "child1",
+        "[child1]",
+        "host3"
+    ]
+    inventory_module._parse("path/to/inventory", lines)
+    assert "group1" in inventory_module.inventory.groups
+    assert "child1" in inventory_module.inventory.groups
+    assert inventory_module.inventory.set_variable.called_with("group1", "var1", "value1")
+    assert inventory_module.inventory.add_child.called_with("group1", "child1")
+
+
+
+# Generated at 2024-06-01 07:05:37.439017
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    
+    path = 'test_inventory'
+    lines = [
+        '[group1]',
+        'host1',
+        'host2 var1=value1',
+        '[group2:children]',
+        'group1',
+        '[group2:vars]',
+        'var2=value2'
+    ]
+    
+    inventory_module._parse(path, lines)
+    
+    assert 'group1' in inventory_module.inventory.groups
+    assert 'group2' in inventory_module.inventory.groups
+    inventory_module.inventory.add_group.assert_any_call('group1')
+    inventory_module.inventory.add_group.assert_any_call('group2')
+    inventory_module.inventory.add_child.assert_called_with('group2', 'group1
+
+# Generated at 2024-06-01 07:05:40.209509
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module._compile_patterns = Mock()
+    inventory_module._compile_patterns()
+    inventory_module.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(?::(\w+))?\]\s*(?:\#.*)?$', re.X),
+        'groupname': re.compile(r'^([^:\]\s]+)\s*(?:\#.*)?$', re.X)
+    }
+    
+    path = 'test_inventory'
+    lines = [
+        '[group1]',
+        'host1',
+        'host2 var1=value1',
+        '[group2:children]',
+        'group1',
+        '[group2:vars]',
+
+
+# Generated at 2024-06-01 07:05:43.478778
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking the methods used within _parse
+    inventory_module._compile_patterns = lambda: None
+    inventory_module.patterns = {
+        'section': re.compile(r'^\[([^\:\]\s]+)(?::(\w+))?\]\s*(?:\#.*)?$', re.X),
+        'groupname': re.compile(r'^([^\:\]\s]+)\s*(?:\#.*)?$', re.X)
+    }
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name =
+
+# Generated at 2024-06-01 07:05:46.628585
+```python
+    inventory_module = InventoryModule()
+    inventory_module._filename = "test_inventory"
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Inventory()
+    
+    # Mock methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (["host1"], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ("key", "value")
+    inventory_module._parse_group_name = lambda line: "group1"
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (["host1"], None)
+    
+    # Test data
+    lines = [
+        "[group1]",
+
+
+# Generated at 2024-06-01 07:05:50.519271
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:05:54.300531
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mock methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group1
+
+# Generated at 2024-06-01 07:05:57.798439
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    inventory_module._compile_patterns = Mock()
+    inventory_module._compile_patterns()
+    
+    path = 'test_inventory'
+    lines = [
+        '[group1]',
+        'host1',
+        'host2 var1=value1',
+        '[group2:children]',
+        'group1',
+        '[group2:vars]',
+        'var2=value2'
+    ]
+    
+    inventory_module._parse(path, lines)
+    
+    assert 'group1' in inventory_module.inventory.groups
+    assert 'group2' in inventory_module.inventory.groups
+    inventory_module.inventory.add_group.assert_any_call('group1')
+    inventory_module.inventory.add_group.assert_any_call('group2')
+
+
+# Generated at 2024-06-01 07:06:01.043684
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    inventory_module._compile_patterns = Mock()
+    inventory_module._compile_patterns()
+    
+    path = "test_inventory"
+    lines = [
+        "[group1]",
+        "host1",
+        "host2 var1=value1",
+        "[group2:children]",
+        "group1",
+        "[group2:vars]",
+        "var2=value2"
+    ]
+    
+    inventory_module._parse(path, lines)
+    
+    assert "group1" in inventory_module.inventory.groups
+    assert "group2" in inventory_module.inventory.groups
+    inventory_module.inventory.add_group.assert_any_call("group1")
+    inventory_module.inventory.add_group.assert_any_call("group2")
+
+
+# Generated at 2024-06-01 07:06:27.026159
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:06:29.765480
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Mocking patterns
+    inventory_module.patterns =
+
+# Generated at 2024-06-01 07:06:33.698517
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:06:36.906783
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module._filename = "test_inventory"
+    
+    # Mocking methods
+    inventory_module._compile_patterns = Mock()
+    inventory_module._parse_host_definition = Mock(return_value=(["host1"], None, {}))
+    inventory_module._parse_variable_definition = Mock(return_value=("var1", "value1"))
+    inventory_module._parse_group_name = Mock(return_value="child_group")
+    inventory_module._add_pending_children = Mock()
+    
+    # Test data
+    lines = [
+        "[group1]",
+        "host1",
+        "[group1:vars]",
+        "var1=value1",
+        "[group1:children]",
+        "child_group"
+
+
+# Generated at 2024-06-01 07:06:40.619268
+```python
+    inventory = InventoryModule()
+    inventory._compile_patterns = lambda: None  # Mocking _compile_patterns method
+    inventory.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(?::(\w+))?\]\s*(?:\#.*)?$', re.X),
+        'groupname': re.compile(r'^([^:\]\s]+)\s*(?:\#.*)?$', re.X)
+    }
+    inventory.inventory = Mock()
+    inventory.inventory.groups = {}
+    inventory.inventory.add_group = Mock()
+    inventory.inventory.add_child = Mock()
+    inventory.inventory.set_variable = Mock()
+    inventory._raise_error = Mock()
+    inventory._parse_host_definition = Mock(return_value=(['host1'], None, {}))
+    inventory._parse_variable_definition = Mock(return_value=('key', 'value'))
+    inventory._parse_group_name = Mock(return_value='childgroup')
+    inventory._add_pending_children = Mock()
+
+    #
+
+# Generated at 2024-06-01 07:06:44.475265
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:06:48.694544
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mock methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group1
+
+# Generated at 2024-06-01 07:06:53.249013
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.patterns = {}
+    inventory_module._compile_patterns()
+
+    # Test case 1: Valid inventory with hosts, vars, and children
+    lines = [
+        "[group1]",
+        "host1",
+        "host2",
+        "[group1:vars]",
+        "var1=value1",
+        "var2=value2",
+        "[group1:children]",
+        "child1",
+        "child2",
+        "[child1]",
+        "host3",
+        "[child2]",
+        "host4"
+    ]
+    inventory_module._parse("test_path", lines)
+    assert "group1" in inventory_module.inventory.groups
+    assert "child1" in inventory_module.inventory.groups
+    assert "child2" in inventory_module.inventory.groups
+    assert inventory_module.inventory.set
+
+# Generated at 2024-06-01 07:06:56.221402
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:06:59.218528
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    inventory_module._filename = "test_inventory"
+    
+    path = "test_path"
+    lines = [
+        "[group1]",
+        "host1",
+        "host2 var1=value1",
+        "[group2:children]",
+        "group1",
+        "[group2:vars]",
+        "var2=value2"
+    ]
+    
+    inventory_module._parse(path, lines)
+    
+    assert "group1" in inventory_module.inventory.groups
+    assert "group2" in inventory_module.inventory.groups
+    inventory_module.inventory.add_group.assert_any_call("group1")
+    inventory_module.inventory.add_group.assert_any_call("group2")
+    inventory_module.inventory.add_child
+
+# Generated at 2024-06-01 07:07:27.310040
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Inventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mock methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(?::(\w+))?\]\s*(?:
+
+# Generated at 2024-06-01 07:07:30.639131
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    
+    path = 'test_inventory'
+    lines = [
+        '[group1]',
+        'host1',
+        'host2 var1=value1',
+        '[group2:children]',
+        'group1',
+        '[group2:vars]',
+        'var2=value2'
+    ]
+    
+    inventory_module._parse(path, lines)
+    
+    assert 'group1' in inventory_module.inventory.groups
+    assert 'group2' in inventory_module.inventory.groups
+    inventory_module.inventory.add_group.assert_any_call('group1')
+    inventory_module.inventory.add_group.assert_any_call('group2')
+    inventory_module.inventory.add_child.assert_called_with('group2', 'group1
+
+# Generated at 2024-06-01 07:07:33.545934
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:07:36.940463
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    
+    path = 'test_inventory'
+    lines = [
+        '[group1]',
+        'host1',
+        'host2 var1=value1',
+        '[group2:children]',
+        'group1',
+        '[group2:vars]',
+        'var2=value2'
+    ]
+    
+    inventory_module._parse(path, lines)
+    
+    assert 'group1' in inventory_module.inventory.groups
+    assert 'group2' in inventory_module.inventory.groups
+    inventory_module.inventory.add_group.assert_any_call('group1')
+    inventory_module.inventory.add_group.assert_any_call('group2')
+    inventory_module.inventory.add_child.assert_called_with('group2', 'group1
+
+# Generated at 2024-06-01 07:07:39.785091
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    inventory_module.inventory.add_child = Mock()
+    
+    path = 'test_inventory'
+    lines = [
+        "[group1]",
+        "host1",
+        "host2 var1=value1",
+        "[group2:children]",
+        "group1",
+        "[group2:vars]",
+        "var2=value2"
+    ]
+    
+    inventory_module._parse(path, lines)
+    
+    assert 'group1' in inventory_module.inventory.groups
+    assert 'group2' in inventory_module.inventory.groups
+    inventory_module.inventory.add_group.assert_any_call('group1')
+    inventory_module.inventory.add_group.assert_any_call('group2')
+    inventory_module.inventory.set_variable.assert_called_with('group2', 'var2
+
+# Generated at 2024-06-01 07:07:42.644697
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:07:45.563103
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    inventory_module._compile_patterns = Mock()
+    inventory_module._parse_host_definition = Mock(return_value=(['host1'], None, {}))
+    inventory_module._parse_variable_definition = Mock(return_value=('key', 'value'))
+    inventory_module._parse_group_name = Mock(return_value='childgroup')
+    inventory_module._add_pending_children = Mock()
+
+    # Test case 1: Valid input
+    lines = [
+        "[group1]",
+        "host1",
+        "[group1:vars]",
+        "key=value",
+        "[group1:children]",
+        "childgroup"
+    ]
+    inventory_module._parse('path', lines)
+    assert 'group1
+
+# Generated at 2024-06-01 07:07:49.998787
+```python
+    inventory = InventoryModule()
+    inventory._compile_patterns = lambda: None  # Mocking _compile_patterns method
+    inventory.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(?::(\w+))?\]\s*(?:\#.*)?$', re.X),
+        'groupname': re.compile(r'^([^:\]\s]+)\s*(?:\#.*)?$', re.X)
+    }
+    inventory.inventory = type('Inventory', (object,), {'groups': {}, 'add_group': lambda self, name: self.groups.update({name: {}}), 'set_variable': lambda self, group, k, v: self.groups[group].update({k: v}), 'add_child': lambda self, parent, child: self.groups[parent].update({'children': self.groups[parent].get('children', []) + [child]})})()
+    inventory._filename = 'test_inventory'
+    inventory.lineno
+
+# Generated at 2024-06-01 07:07:52.729468
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:07:55.648351
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mock methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group1
+
+# Generated at 2024-06-01 07:09:04.423716
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:09:07.171088
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Inventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mock methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: None
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(?::(\w+))?\]\s*(?:\#.*)?$', re.X),
+        'group
+
+# Generated at 2024-06-01 07:09:10.121077
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.patterns = {}
+    inventory_module._compile_patterns()
+
+    # Test case 1: Valid inventory with hosts, vars, and children
+    lines = [
+        "[group1]",
+        "host1",
+        "host2",
+        "[group1:vars]",
+        "var1=value1",
+        "[group1:children]",
+        "child1",
+        "[child1]",
+        "host3"
+    ]
+    inventory_module._parse("test_path", lines)
+    assert "group1" in inventory_module.inventory.groups
+    assert "child1" in inventory_module.inventory.groups
+    assert inventory_module.inventory.set_variable.called_with("group1", "var1", "value1")
+    assert inventory_module.inventory.add_child.called_with("group1", "child1")
+
+    #
+
+# Generated at 2024-06-01 07:09:13.430034
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Inventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mock methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group1]",
+
+
+# Generated at 2024-06-01 07:09:16.341210
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    inventory_module._compile_patterns = Mock()
+    inventory_module._compile_patterns()
+    
+    path = "test_inventory"
+    lines = [
+        "[group1]",
+        "host1",
+        "host2 var1=value1",
+        "[group2:children]",
+        "group1",
+        "[group2:vars]",
+        "var2=value2"
+    ]
+    
+    inventory_module._parse(path, lines)
+    
+    assert "group1" in inventory_module.inventory.groups
+    assert "group2" in inventory_module.inventory.groups
+    inventory_module.inventory.add_group.assert_any_call("group1")
+    inventory_module.inventory.add_group.assert_any_call("group2")
+
+
+# Generated at 2024-06-01 07:09:20.497380
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Inventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mock methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(?::(\w+))?\]\s*(?:
+
+# Generated at 2024-06-01 07:09:23.284680
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    inventory_module._filename = "test_inventory"
+    
+    # Mocking methods
+    inventory_module._compile_patterns = Mock()
+    inventory_module._parse_host_definition = Mock(return_value=(["host1"], None, {}))
+    inventory_module._parse_variable_definition = Mock(return_value=("var1", "value1"))
+    inventory_module._parse_group_name = Mock(return_value="child_group")
+    inventory_module._raise_error = Mock()
+    
+    # Test data
+    lines = [
+        "[group1]",
+        "host1",
+        "[group1:vars]",
+        "var1=value1",
+        "[group1:children]",
+        "child_group"
+   
+
+# Generated at 2024-06-01 07:09:26.452058
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Inventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mock methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: None
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(?::(\w+))?\]\s*(?:\#.*)?$', re.X),
+        'group
+
+# Generated at 2024-06-01 07:09:32.914681
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mock methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: None
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Mock patterns
+    inventory_module.patterns = {
+        'section': re.compile(r'^\[([^\
+
+# Generated at 2024-06-01 07:09:35.962356
+```python
+    inventory = InventoryModule()
+    inventory._compile_patterns = lambda: None  # Mocking _compile_patterns method
+    inventory.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(?::(\w+))?\]\s*(?:\#.*)?$', re.X),
+        'groupname': re.compile(r'^([^:\]\s]+)\s*(?:\#.*)?$', re.X)
+    }
+    inventory.inventory = type('Inventory', (object,), {'groups': {}, 'add_group': lambda self, name: self.groups.update({name: {}}), 'set_variable': lambda self, group, k, v: self.groups[group].update({k: v}), 'add_child': lambda self, parent, child: self.groups[parent].update({'children': self.groups[parent].get('children', []) + [child]})})()
+    inventory._raise_error = lambda message: (_ for _ in
+
+# Generated at 2024-06-01 07:10:52.193978
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:10:55.740122
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module._compile_patterns = Mock()
+    inventory_module._compile_patterns()
+    inventory_module.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(?::(\w+))?\]\s*(?:\#.*)?$', re.X),
+        'groupname': re.compile(r'^([^:\]\s]+)\s*(?:\#.*)?$', re.X)
+    }
+    
+    path = 'test_inventory'
+    lines = [
+        '[group1]',
+        'host1',
+        'host2 var1=value1',
+        '[group2:children]',
+        'group1',
+        '[group2:vars]',
+
+
+# Generated at 2024-06-01 07:10:58.805886
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:11:02.122053
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Inventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mock methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: None
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(?::(\w+))?\]\s*(?:\#.*)?$', re.X),
+        'group
+
+# Generated at 2024-06-01 07:11:05.390792
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:11:09.667955
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:11:12.785768
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: None
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    inventory_module.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(
+
+# Generated at 2024-06-01 07:11:17.245369
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:11:20.576753
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:11:23.851482
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:13:45.684235
+```python
+    inventory_module = InventoryModule()
+    inventory_module._compile_patterns = lambda: None  # Mocking _compile_patterns method
+    inventory_module.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(?::(\w+))?\]\s*(?:\#.*)?$', re.X),
+        'groupname': re.compile(r'^([^:\]\s]+)\s*(?:\#.*)?$', re.X)
+    }
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    inventory_module.inventory.add_child = Mock()
+
+    # Test case 1: Valid inventory data
+    data = [
+        "[group1]",
+        "host1",
+        "host2",
+        "[group2:children]",
+        "group1",
+        "[group2:vars]",
+        "var1=value1"
+    ]
+    inventory
+
+# Generated at 2024-06-01 07:13:53.205444
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    
+    path = 'test_inventory'
+    lines = [
+        '[group1]',
+        'host1',
+        'host2 var1=value1',
+        '[group2:children]',
+        'group1',
+        '[group2:vars]',
+        'var2=value2'
+    ]
+    
+    inventory_module._parse(path, lines)
+    
+    assert 'group1' in inventory_module.inventory.groups
+    assert 'group2' in inventory_module.inventory.groups
+    inventory_module.inventory.add_group.assert_any_call('group1')
+    inventory_module.inventory.add_group.assert_any_call('group2')
+    inventory_module.inventory.add_child.assert_called_with('group2', 'group1
+
+# Generated at 2024-06-01 07:13:55.926632
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group
+
+# Generated at 2024-06-01 07:13:58.954108
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.patterns = {}
+    inventory_module._compile_patterns()
+
+    # Test case 1: Valid inventory with hosts, vars, and children
+    lines = [
+        "[group1]",
+        "host1",
+        "host2",
+        "[group1:vars]",
+        "var1=value1",
+        "var2=value2",
+        "[group1:children]",
+        "child1",
+        "child2",
+        "[child1]",
+        "host3",
+        "[child2]",
+        "host4"
+    ]
+    inventory_module._parse("test_path", lines)
+    assert "group1" in inventory_module.inventory.groups
+    assert "child1" in inventory_module.inventory.groups
+    assert "child2" in inventory_module.inventory.groups
+    assert inventory_module.inventory.groups
+
+# Generated at 2024-06-01 07:14:04.795000
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    
+    path = 'test_inventory'
+    lines = [
+        '[group1]',
+        'host1',
+        'host2 var1=value1',
+        '[group2:children]',
+        'group1',
+        '[group2:vars]',
+        'var2=value2'
+    ]
+    
+    inventory_module._parse(path, lines)
+    
+    assert 'group1' in inventory_module.inventory.groups
+    assert 'group2' in inventory_module.inventory.groups
+    inventory_module.inventory.add_group.assert_any_call('group1')
+    inventory_module.inventory.add_group.assert_any_call('group2')
+    inventory_module.inventory.add_child.assert_called_with('group2', 'group1
+
+# Generated at 2024-06-01 07:14:10.786111
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Mock()
+    inventory_module.inventory.groups = {}
+    inventory_module.inventory.add_group = Mock()
+    inventory_module.inventory.set_variable = Mock()
+    inventory_module.inventory.add_child = Mock()
+    inventory_module._compile_patterns = Mock()
+    inventory_module._compile_patterns()
+    inventory_module.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(?::(\w+))?\]\s*(?:\#.*)?$', re.X),
+        'groupname': re.compile(r'^([^:\]\s]+)\s*(?:\#.*)?$', re.X)
+    }
+
+    # Test case 1: Valid inventory with hosts, vars, and children
+    lines = [
+        "[group1]",
+        "host1",
+        "host2",
+        "[group1:vars]",
+        "var1=value1",
+
+
+# Generated at 2024-06-01 07:14:13.693011
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = Inventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mock methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: None
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(?::(\w+))?\]\s*(?:\#.*)?$', re.X),
+        'group
+
+# Generated at 2024-06-01 07:14:16.828771
+```python
+    inventory = InventoryModule()
+    inventory._compile_patterns = lambda: None  # Mocking _compile_patterns method
+    inventory.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(?::(\w+))?\]\s*(?:\#.*)?$', re.X),
+        'groupname': re.compile(r'^([^:\]\s]+)\s*(?:\#.*)?$', re.X)
+    }
+    inventory.inventory = Mock()
+    inventory.inventory.groups = {}
+    inventory.inventory.add_group = Mock()
+    inventory.inventory.set_variable = Mock()
+    inventory.inventory.add_child = Mock()
+
+    # Test case 1: Valid inventory with hosts, vars, and children
+    lines = [
+        "[group1]",
+        "host1",
+        "host2",
+        "[group1:vars]",
+        "var1=value1",
+        "[group1:children]",
+        "child1",
+        "[child1]",
+       
+
+# Generated at 2024-06-01 07:14:19.899340
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mock methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module.patterns = {
+        'section': re.compile(r'^\[([^:\]\s]+)(?::(\w+))?\]\s*(
+
+# Generated at 2024-06-01 07:14:22.859205
+```python
+    inventory_module = InventoryModule()
+    inventory_module._COMMENT_MARKERS = ['#', ';']
+    inventory_module.inventory = MockInventory()
+    inventory_module._filename = 'test_inventory'
+    
+    # Mocking methods
+    inventory_module._compile_patterns = lambda: None
+    inventory_module._raise_error = lambda message: (_ for _ in ()).throw(AnsibleError(message))
+    inventory_module._parse_host_definition = lambda line: (['host1'], None, {})
+    inventory_module._populate_host_vars = lambda hosts, variables, groupname, port: None
+    inventory_module._parse_variable_definition = lambda line: ('key', 'value')
+    inventory_module._parse_group_name = lambda line: 'group1'
+    inventory_module._add_pending_children = lambda group, pending: None
+    inventory_module._expand_hostpattern = lambda hostpattern: (['host1'], None)
+    
+    # Test data
+    lines = [
+        "[group

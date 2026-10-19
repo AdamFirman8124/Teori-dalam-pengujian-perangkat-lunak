@@ -1,0 +1,1648 @@
+
+
+# Generated at 2024-03-18 04:42:09.733789
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+    error_response = server.error(code=-32000, message='Test error', data='Error details')
+
+    assert 'jsonrpc' in error_response
+    assert error_response['jsonrpc'] == '2.0'
+    assert 'id' in error_response
+    assert error_response['id'] == 'test_id'
+    assert 'error' in error_response
+    assert error_response['error']['code'] == -32000
+    assert error_response['error']['message'] == 'Test error'
+    assert 'data' in error_response['error']
+    assert error_response['error']['data'] == 'Error details'
+```
+
+# Generated at 2024-03-18 04:42:16.903499
+```python
+    server = JsonRpcServer()
+    server._identifier = 1  # Mocking the identifier for the test
+
+    # Test with only mandatory parameters
+    error_response = server.error(code=-32000, message="Test error")
+    assert error_response == {
+        'jsonrpc': '2.0',
+        'id': 1,
+        'error': {
+            'code': -32000,
+            'message': "Test error"
+        }
+    }
+
+    # Test with all parameters
+    error_response_with_data = server.error(code=-32000, message="Test error with data", data="Error details")
+    assert error_response_with_data == {
+        'jsonrpc': '2.0',
+        'id': 1,
+        'error': {
+            'code': -32000,
+            'message': "Test error with data",
+            'data': "Error details"
+        }
+    }
+
+    # Clean up after test
+    del
+
+# Generated at 2024-03-18 04:42:22.701676
+```python
+    # Create an instance of JsonRpcServer
+    server = JsonRpcServer()
+
+    # Mock object with a method to register with JsonRpcServer
+    class MockObject:
+        def mock_method(self, *args, **kwargs):
+            return {"status": "success", "args": args, "kwargs": kwargs}
+
+    # Register mock object with JsonRpcServer
+    mock_obj = MockObject()
+    server.register(mock_obj)
+
+    # Create a valid JSON-RPC request for the mock method
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "mock_method",
+        "params": ([1, 2, 3], {"param1": "value1"}),
+        "id": 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert response_data.get("result") == {"status": "success",
+
+# Generated at 2024-03-18 04:42:28.754566
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    expected_none_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+    assert server.response() == expected_none_response
+
+    # Test with text result
+    text_result = 'success'
+    expected_text_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': text_result}
+    assert server.response(text_result) == expected_text_response
+
+    # Test with binary result
+    binary_result = b'success'
+    expected_binary_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+    assert server.response(binary_result) == expected_binary_response
+
+    # Test with non-text, non-binary result (pickle)
+    complex_result = {'key': 'value'}
+    pickled_result = to_text(c
+
+# Generated at 2024-03-18 04:42:35.182493
+```python
+    # Create an instance of JsonRpcServer
+    server = JsonRpcServer()
+
+    # Mock object with a method to register with JsonRpcServer
+    class MockObject:
+        def mock_method(self, *args, **kwargs):
+            return {"args": args, "kwargs": kwargs}
+
+    # Register the mock object
+    mock_obj = MockObject()
+    server.register(mock_obj)
+
+    # Create a valid JSON-RPC request for the mock method
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "mock_method",
+        "params": ([1, 2, 3], {"a": "b"}),
+        "id": 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert response_data.get("result") == {"args": (1, 2, 3), "kwargs": {"a
+
+# Generated at 2024-03-18 04:42:42.355719
+```python
+    # Create an instance of JsonRpcServer
+    server = JsonRpcServer()
+
+    # Mock object with a method to register with JsonRpcServer
+    class MockObject:
+        def mock_method(self, *args, **kwargs):
+            return {"args": args, "kwargs": kwargs}
+
+    # Register mock object with JsonRpcServer
+    mock_obj = MockObject()
+    server.register(mock_obj)
+
+    # Create a valid JSON-RPC request for the mock method
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "mock_method",
+        "params": ([1, 2, 3], {"a": "b"}),
+        "id": 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert response_data.get('result') == {"args": (1, 2, 3), "kwargs
+
+# Generated at 2024-03-18 04:42:48.859139
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'binary data'}
+
+    # Test with non-text, non-binary result (pickle)
+    complex_data = {'key': 'value'}
+    response_complex = server.response(complex_data)
+    pickled_data = to_text(cPickle.dumps(com
+
+# Generated at 2024-03-18 04:42:53.958317
+```python
+    # Create an instance of JsonRpcServer
+    server = JsonRpcServer()
+
+    # Mock object with a method to register with JsonRpcServer
+    class MockObject:
+        def mock_method(self, *args, **kwargs):
+            return {'args': args, 'kwargs': kwargs}
+
+    # Register the mock object
+    mock_obj = MockObject()
+    server.register(mock_obj)
+
+    # Create a valid JSON-RPC request for the mock method
+    valid_request = json.dumps({
+        'jsonrpc': '2.0',
+        'method': 'mock_method',
+        'params': ([1, 2, 3], {'a': 'b'}),
+        'id': 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert 'result' in response_data, "The response should contain a 'result' field"
+    assert response_data['result
+
+# Generated at 2024-03-18 04:43:01.098222
+```python
+    server = JsonRpcServer()
+
+    # Mock object with a test method
+    class MockObject:
+        def test_method(self, *args, **kwargs):
+            return {"args": args, "kwargs": kwargs}
+
+    # Register the mock object
+    server.register(MockObject())
+
+    # Create a valid JSON-RPC request
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "test_method",
+        "params": ([1, 2, 3], {"param1": "value1"}),
+        "id": 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert response_data.get('result') == {"args": (1, 2, 3), "kwargs": {"param1": "value1"}}
+    assert response_data.get('id') == 1
+
+    # Test an invalid method
+
+# Generated at 2024-03-18 04:43:06.526062
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary_data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'binary_data'}
+
+    # Test with non-text, non-binary result (pickle)
+    complex_data = {'key': 'value'}
+    response_complex = server.response(complex_data)
+    pickled_data = to_text(cPickle.dumps(com
+
+# Generated at 2024-03-18 04:43:21.701319
+```python
+    # Create an instance of JsonRpcServer
+    server = JsonRpcServer()
+
+    # Mock object with a method to register with JsonRpcServer
+    class MockObject:
+        def mock_method(self, *args, **kwargs):
+            return {"args": args, "kwargs": kwargs}
+
+    # Register the mock object
+    mock_obj = MockObject()
+    server.register(mock_obj)
+
+    # Create a valid JSON-RPC request for the mock method
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "mock_method",
+        "params": ([1, 2, 3], {"a": "b"}),
+        "id": 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert response_data.get("result") == {"args": (1, 2, 3), "kwargs": {"a
+
+# Generated at 2024-03-18 04:43:29.322460
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with a text_type result
+    text_result = 'success'
+    expected_response_text = {
+        'jsonrpc': '2.0',
+        'id': 'test_id',
+        'result': text_result
+    }
+    assert server.response(text_result) == expected_response_text
+
+    # Test with a binary_type result
+    binary_result = b'success'
+    expected_response_binary = {
+        'jsonrpc': '2.0',
+        'id': 'test_id',
+        'result': to_text(binary_result)
+    }
+    assert server.response(binary_result) == expected_response_binary
+
+    # Test with a non-text, non-binary result (pickle)
+    complex_result = {'key': 'value'}
+    pickled_result = to_text(cPickle.dumps(complex_result, protocol=0))
+    expected_response_complex = {
+        'jsonrpc': '2
+
+# Generated at 2024-03-18 04:43:37.369777
+```python
+    server = JsonRpcServer()
+
+    # Test method not found
+    request = json.dumps({'jsonrpc': '2.0', 'method': 'nonexistent_method', 'params': ([], {}), 'id': 1})
+    response = server.handle_request(request)
+    assert json.loads(response) == server.method_not_found()
+
+    # Test invalid request
+    request = json.dumps({'jsonrpc': '2.0', 'method': 'rpc.disallowed_method', 'params': ([], {}), 'id': 2})
+    response = server.handle_request(request)
+    assert json.loads(response) == server.invalid_request()
+
+    # Test successful request handling
+    class TestObject:
+        def test_method(self, *args, **kwargs):
+            return {'args': args, 'kwargs': kwargs}
+
+    server.register(TestObject())
+
+    request = json.dumps({'jsonrpc': '2.0', 'method': 'test_method', 'params': (
+
+# Generated at 2024-03-18 04:43:43.721651
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': to_text(binary_data), 'result_type': 'pickle'}
+
+    # Test with non-text, non-binary result (e.g., integer)
+    response_int = server.response(42)
+    pickled_int = to_text(cPickle.dumps(
+
+# Generated at 2024-03-18 04:43:49.838617
+```python
+    server = JsonRpcServer()
+
+    # Mock object with a test method
+    class MockObject:
+        def test_method(self, *args, **kwargs):
+            return {"status": "success", "args": args, "kwargs": kwargs}
+
+    # Register mock object
+    server.register(MockObject())
+
+    # Create a valid JSON-RPC request
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "test_method",
+        "params": ([1, 2, 3], {"param1": "value1"}),
+        "id": 1
+    })
+
+    # Test valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert response_data.get("result") == {"status": "success", "args": (1, 2, 3), "kwargs": {"param1": "value1"}}
+    assert response_data.get("id")
+
+# Generated at 2024-03-18 04:43:54.917324
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+    error_response = server.error(code=-32000, message='Test error', data='Error details')
+
+    assert 'jsonrpc' in error_response
+    assert error_response['jsonrpc'] == '2.0'
+    assert 'id' in error_response
+    assert error_response['id'] == 'test_id'
+    assert 'error' in error_response
+    assert error_response['error']['code'] == -32000
+    assert error_response['error']['message'] == 'Test error'
+    assert 'data' in error_response['error']
+    assert error_response['error']['data'] == 'Error details'
+```
+
+# Generated at 2024-03-18 04:44:01.803704
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    expected_none_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+    assert server.response() == expected_none_response
+
+    # Test with text result
+    text_result = 'success'
+    expected_text_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': text_result}
+    assert server.response(text_result) == expected_text_response
+
+    # Test with binary result
+    binary_result = b'success'
+    expected_binary_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+    assert server.response(binary_result) == expected_binary_response
+
+    # Test with non-text, non-binary result (pickle)
+    complex_result = {'key': 'value'}
+    pickled_result = to_text(c
+
+# Generated at 2024-03-18 04:44:09.285523
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    expected_none_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+    assert server.response() == expected_none_response
+
+    # Test with text result
+    text_result = "Test text"
+    expected_text_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': text_result}
+    assert server.response(text_result) == expected_text_response
+
+    # Test with binary result
+    binary_result = b'Test binary'
+    expected_binary_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'Test binary'}
+    assert server.response(binary_result) == expected_binary_response
+
+    # Test with non-text, non-binary result (pickle)
+    complex_result = {'key': 'value'}
+    pickled_result =
+
+# Generated at 2024-03-18 04:44:15.987170
+```python
+    server = JsonRpcServer()
+
+    # Mock object with a test method
+    class MockObject:
+        def test_method(self, *args, **kwargs):
+            return {"status": "success", "args": args, "kwargs": kwargs}
+
+    # Register mock object
+    server.register(MockObject())
+
+    # Create a valid JSON-RPC request
+    valid_request = {
+        "jsonrpc": "2.0",
+        "method": "test_method",
+        "params": ([1, 2, 3], {"param1": "value1"}),
+        "id": 1
+    }
+
+    # Test a valid request
+    response = server.handle_request(json.dumps(valid_request))
+    response_data = json.loads(response)
+    assert response_data.get("result") == {"status": "success", "args": (1, 2, 3), "kwargs": {"param1": "value1"}}
+    assert response_data.get("id
+
+# Generated at 2024-03-18 04:44:20.666354
+```python
+    server = JsonRpcServer()
+
+    # Register a test object with a method to call
+    class TestObject:
+        def test_method(self, *args, **kwargs):
+            return {"args": args, "kwargs": kwargs}
+
+    test_obj = TestObject()
+    server.register(test_obj)
+
+    # Create a valid JSON-RPC request
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "test_method",
+        "params": ([1, 2, 3], {"a": "b"}),
+        "id": 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert response_data.get('result') == {"args": (1, 2, 3), "kwargs": {"a": "b"}}
+    assert response_data.get('id') == 1
+
+    # Test an invalid method request
+
+# Generated at 2024-03-18 04:44:37.752701
+```python
+    # Create an instance of JsonRpcServer
+    server = JsonRpcServer()
+
+    # Mock object with a method to register with JsonRpcServer
+    class MockObject:
+        def mock_method(self, *args, **kwargs):
+            return {"args": args, "kwargs": kwargs}
+
+    # Register the mock object
+    mock_obj = MockObject()
+    server.register(mock_obj)
+
+    # Create a valid JSON-RPC request for the mock method
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "mock_method",
+        "params": ([1, 2, 3], {"a": "b"}),
+        "id": 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert 'result' in response_data, "The response should contain a 'result' field."
+    assert response_data['result
+
+# Generated at 2024-03-18 04:44:42.657436
+```python
+    server = JsonRpcServer()
+
+    # Mock object with a method to be called by the RPC server
+    class MockObject:
+        def mock_method(self, *args, **kwargs):
+            return {"args": args, "kwargs": kwargs}
+
+    # Register the mock object with the RPC server
+    server.register(MockObject())
+
+    # Create a valid JSON-RPC request
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "mock_method",
+        "params": ([1, 2, 3], {"a": "b"}),
+        "id": 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert response_data.get("result") == {"args": (1, 2, 3), "kwargs": {"a": "b"}}
+    assert response_data.get("id") == 1
+
+
+
+# Generated at 2024-03-18 04:44:49.314773
+```python
+    server = JsonRpcServer()
+
+    # Register a test object with a method to call
+    class TestObject:
+        def test_method(self, *args, **kwargs):
+            return {'args': args, 'kwargs': kwargs}
+
+    test_obj = TestObject()
+    server.register(test_obj)
+
+    # Create a valid JSON-RPC request
+    valid_request = json.dumps({
+        'jsonrpc': '2.0',
+        'method': 'test_method',
+        'params': ([1, 2, 3], {'a': 'b'}),
+        'id': 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert 'result' in response_data, "The response should contain a 'result' field"
+    assert response_data['result']['args'] == (1, 2, 3), "The 'args' in the result should match
+
+# Generated at 2024-03-18 04:44:53.382421
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+    error_response = server.error(code=-32000, message='Test error', data='Error details')
+
+    assert 'jsonrpc' in error_response
+    assert error_response['jsonrpc'] == '2.0'
+    assert 'id' in error_response
+    assert error_response['id'] == 'test_id'
+    assert 'error' in error_response
+    assert error_response['error']['code'] == -32000
+    assert error_response['error']['message'] == 'Test error'
+    assert 'data' in error_response['error']
+    assert error_response['error']['data'] == 'Error details'
+```
+
+# Generated at 2024-03-18 04:44:58.399075
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with a text_type result
+    text_result = 'success'
+    expected_response_text = {
+        'jsonrpc': '2.0',
+        'id': 'test_id',
+        'result': text_result
+    }
+    assert server.response(text_result) == expected_response_text
+
+    # Test with a binary_type result
+    binary_result = b'success'
+    expected_response_binary = {
+        'jsonrpc': '2.0',
+        'id': 'test_id',
+        'result': to_text(binary_result)
+    }
+    assert server.response(binary_result) == expected_response_binary
+
+    # Test with a non-text, non-binary result (pickle)
+    complex_result = {'key': 'value'}
+    expected_response_complex = {
+        'jsonrpc': '2.0',
+        'id': 'test_id',
+        'result_type': 'pickle',
+
+
+# Generated at 2024-03-18 04:45:05.603704
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    expected_none_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+    assert server.response() == expected_none_response
+
+    # Test with text result
+    text_result = 'success'
+    expected_text_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': text_result}
+    assert server.response(text_result) == expected_text_response
+
+    # Test with binary result
+    binary_result = b'success'
+    expected_binary_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+    assert server.response(binary_result) == expected_binary_response
+
+    # Test with non-text, non-binary result (pickle)
+    complex_result = {'key': 'value'}
+    pickled_result = to_text(c
+
+# Generated at 2024-03-18 04:45:12.821878
+```python
+    server = JsonRpcServer()
+
+    # Test handling invalid JSON
+    invalid_json_request = '{"jsonrpc": "2.0", "method": "subtract", "params": ["foo", "bar"], "id": 1'
+    response = server.handle_request(invalid_json_request)
+    assert json.loads(response)['error']['code'] == -32700
+
+    # Test handling method not found
+    not_found_request = json.dumps({"jsonrpc": "2.0", "method": "nonexistentMethod", "params": [], "id": 2})
+    response = server.handle_request(not_found_request)
+    assert json.loads(response)['error']['code'] == -32601
+
+    # Test handling invalid request
+    invalid_request = json.dumps({"jsonrpc": "2.0", "method": "rpc.test", "params": [], "id": 3})
+    response = server.handle_request(invalid_request)
+    assert json.loads(response)['
+
+# Generated at 2024-03-18 04:45:19.603875
+```python
+    server = JsonRpcServer()
+
+    # Mock object with a test method
+    class MockObject:
+        def test_method(self, *args, **kwargs):
+            return {"args": args, "kwargs": kwargs}
+
+    # Register the mock object
+    server.register(MockObject())
+
+    # Create a valid JSON-RPC request
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "test_method",
+        "params": ([1, 2, 3], {"a": "b"}),
+        "id": 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert response_data.get('result') == {"args": (1, 2, 3), "kwargs": {"a": "b"}}
+    assert response_data.get('id') == 1
+
+    # Test an invalid request (method not found
+
+# Generated at 2024-03-18 04:45:27.007977
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'binary data'}
+
+    # Test with non-text, non-binary result (pickle)
+    complex_data = {'key': 'value'}
+    response_complex = server.response(complex_data)
+    pickled_data = to_text(cPickle.dumps(com
+
+# Generated at 2024-03-18 04:45:33.957596
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': to_text(binary_data), 'result_type': 'pickle'}
+
+    # Test with non-text, non-binary result (e.g., integer)
+    response_int = server.response(42)
+    pickled_int = to_text(cPickle.dumps(
+
+# Generated at 2024-03-18 04:45:59.674537
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'binary data'}
+
+    # Test with non-text, non-binary result (pickle)
+    complex_data = {'key': 'value'}
+    response_complex = server.response(complex_data)
+    pickled_data = to_text(cPickle.dumps(com
+
+# Generated at 2024-03-18 04:46:04.195764
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+    error_response = server.error(code=-32000, message='Test error', data='Error details')
+
+    assert 'jsonrpc' in error_response
+    assert error_response['jsonrpc'] == '2.0'
+    assert 'id' in error_response
+    assert error_response['id'] == 'test_id'
+    assert 'error' in error_response
+    assert error_response['error']['code'] == -32000
+    assert error_response['error']['message'] == 'Test error'
+    assert 'data' in error_response['error']
+    assert error_response['error']['data'] == 'Error details'
+```
+
+# Generated at 2024-03-18 04:46:12.155077
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'binary data'}
+
+    # Test with non-text, non-binary result (pickle)
+    complex_data = {'key': 'value'}
+    response_complex = server.response(complex_data)
+    pickled_data = to_text(cPickle.dumps(com
+
+# Generated at 2024-03-18 04:46:20.780907
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': to_text(binary_data), 'result_type': 'pickle'}
+
+    # Test with non-text, non-binary result (e.g., integer)
+    response_int = server.response(42)
+    pickled_int = to_text(cPickle.dumps(
+
+# Generated at 2024-03-18 04:46:26.955958
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary_data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'binary_data'}
+
+    # Test with non-text, non-binary result (pickle)
+    complex_data = {'key': 'value'}
+    response_complex = server.response(complex_data)
+    pickled_data = to_text(cPickle.dumps(com
+
+# Generated at 2024-03-18 04:46:37.000205
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('text_result')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'text_result'}
+
+    # Test with binary result
+    binary_data = b'binary_result'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'binary_result'}
+
+    # Test with non-text, non-binary result (pickle)
+    complex_data = {'key': 'value'}
+    response_complex = server.response(complex_data)
+    pickled_data = to_text(cPickle
+
+# Generated at 2024-03-18 04:46:43.772227
+```python
+    server = JsonRpcServer()
+
+    # Mock object with a test method
+    class MockObject:
+        def test_method(self, *args, **kwargs):
+            return {"args": args, "kwargs": kwargs}
+
+    # Register the mock object
+    server.register(MockObject())
+
+    # Create a valid JSON-RPC request
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "test_method",
+        "params": ([1, 2, 3], {"param1": "value1"}),
+        "id": 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert response_data.get('result') == {"args": (1, 2, 3), "kwargs": {"param1": "value1"}}
+    assert response_data.get('id') == 1
+
+    # Test an invalid method
+
+# Generated at 2024-03-18 04:46:50.380076
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary_data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'binary_data'}
+
+    # Test with non-text, non-binary result (pickle)
+    complex_data = {'key': 'value'}
+    response_complex = server.response(complex_data)
+    pickled_data = to_text(cPickle.dumps(com
+
+# Generated at 2024-03-18 04:46:57.463680
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with only mandatory parameters
+    error_response = server.error(code=-32000, message='Test error')
+    assert error_response == {
+        'jsonrpc': '2.0',
+        'id': 'test_id',
+        'error': {
+            'code': -32000,
+            'message': 'Test error'
+        }
+    }
+
+    # Test with all parameters
+    error_response_with_data = server.error(code=-32000, message='Test error with data', data='Error details')
+    assert error_response_with_data == {
+        'jsonrpc': '2.0',
+        'id': 'test_id',
+        'error': {
+            'code': -32000,
+            'message': 'Test error with data',
+            'data': 'Error details'
+        }
+    }
+
+    # Clean up after test
+    delattr(server, '_identifier')
+
+
+# Generated at 2024-03-18 04:47:02.566203
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'binary data'}
+
+    # Test with non-text, non-binary result (pickle)
+    complex_data = {'key': 'value'}
+    response_complex = server.response(complex_data)
+    pickled_data = to_text(cPickle.dumps(com
+
+# Generated at 2024-03-18 04:47:46.620097
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    expected_none_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+    assert server.response() == expected_none_response
+
+    # Test with text result
+    text_result = 'success'
+    expected_text_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': text_result}
+    assert server.response(text_result) == expected_text_response
+
+    # Test with binary result
+    binary_result = b'success'
+    expected_binary_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': to_text(binary_result)}
+    assert server.response(binary_result) == expected_binary_response
+
+    # Test with non-text, non-binary result (pickle)
+    complex_result = {'key': 'value'}
+    pickled_result = to
+
+# Generated at 2024-03-18 04:47:50.381205
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+    error_response = server.error(code=-32000, message='Test error', data='Error details')
+
+    assert 'jsonrpc' in error_response
+    assert error_response['jsonrpc'] == '2.0'
+    assert 'id' in error_response
+    assert error_response['id'] == 'test_id'
+    assert 'error' in error_response
+    assert error_response['error']['code'] == -32000
+    assert error_response['error']['message'] == 'Test error'
+    assert 'data' in error_response['error']
+    assert error_response['error']['data'] == 'Error details'
+```
+
+# Generated at 2024-03-18 04:47:55.698836
+```python
+    # Create an instance of JsonRpcServer
+    server = JsonRpcServer()
+
+    # Mock object with a method to register with JsonRpcServer
+    class MockObject:
+        def mock_method(self, *args, **kwargs):
+            return {"status": "success", "args": args, "kwargs": kwargs}
+
+    # Register mock object with JsonRpcServer
+    mock_obj = MockObject()
+    server.register(mock_obj)
+
+    # Create a valid JSON-RPC request for the mock method
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "mock_method",
+        "params": ([1, 2, 3], {"param1": "value1"}),
+        "id": 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert response_data.get("result") == {"status": "success",
+
+# Generated at 2024-03-18 04:48:00.658194
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+    error_response = server.error(code=-32000, message='Test error', data='Error details')
+
+    assert 'jsonrpc' in error_response
+    assert error_response['jsonrpc'] == '2.0'
+    assert 'id' in error_response
+    assert error_response['id'] == 'test_id'
+    assert 'error' in error_response
+    assert error_response['error']['code'] == -32000
+    assert error_response['error']['message'] == 'Test error'
+    assert 'data' in error_response['error']
+    assert error_response['error']['data'] == 'Error details'
+```
+
+# Generated at 2024-03-18 04:48:06.622667
+```python
+    server = JsonRpcServer()
+
+    # Test handling invalid JSON
+    invalid_json_request = '{"jsonrpc": "2.0", "method": "subtract", "params": ["foo", "bar"], "id": 1'
+    response = server.handle_request(invalid_json_request)
+    assert json.loads(response)['error']['code'] == -32700
+
+    # Test handling method not found
+    not_found_request = json.dumps({"jsonrpc": "2.0", "method": "nonexistentMethod", "params": [], "id": 2})
+    response = server.handle_request(not_found_request)
+    assert json.loads(response)['error']['code'] == -32601
+
+    # Test handling invalid request
+    invalid_request = json.dumps({"jsonrpc": "2.0", "method": "_privateMethod", "params": [], "id": 3})
+    response = server.handle_request(invalid_request)
+    assert json.loads(response)['
+
+# Generated at 2024-03-18 04:48:12.284929
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': to_text(binary_data), 'result_type': 'pickle'}
+
+    # Test with non-text, non-binary result (e.g., integer)
+    response_int = server.response(42)
+    pickled_int = to_text(cPickle.dumps(
+
+# Generated at 2024-03-18 04:48:17.378334
+```python
+    # Create an instance of JsonRpcServer
+    server = JsonRpcServer()
+
+    # Mock object with a method to register with JsonRpcServer
+    class MockObject:
+        def mock_method(self, *args, **kwargs):
+            return "mock result"
+
+    # Register the mock object
+    mock_obj = MockObject()
+    server.register(mock_obj)
+
+    # Create a valid JSON-RPC request for the mock method
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "mock_method",
+        "params": ([], {}),
+        "id": 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert response_data.get('result') == "mock result"
+    assert response_data.get('id') == 1
+
+    # Test an invalid method request
+    invalid_method_request = json.dumps({
+        "json
+
+# Generated at 2024-03-18 04:48:22.218934
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with a simple result
+    simple_result = 'simple_result'
+    expected_response = {
+        'jsonrpc': '2.0',
+        'id': 'test_id',
+        'result': simple_result
+    }
+    assert server.response(simple_result) == expected_response
+
+    # Test with a binary result
+    binary_result = b'binary_result'
+    expected_response_binary = {
+        'jsonrpc': '2.0',
+        'id': 'test_id',
+        'result': 'binary_result'
+    }
+    assert server.response(binary_result) == expected_response_binary
+
+    # Test with a non-text, non-binary result (e.g., a number)
+    non_text_result = 12345
+    expected_response_non_text = {
+        'jsonrpc': '2.0',
+        'id': 'test_id',
+        'result': 'I
+
+# Generated at 2024-03-18 04:48:28.515266
+```python
+    server = JsonRpcServer()
+
+    # Test method not found
+    request = json.dumps({'jsonrpc': '2.0', 'method': 'nonexistent_method', 'params': ([], {}), 'id': 1})
+    response = server.handle_request(request)
+    assert json.loads(response) == server.method_not_found()
+
+    # Test invalid request
+    request = json.dumps({'jsonrpc': '2.0', 'method': 'rpc.disallowed_method', 'params': ([], {}), 'id': 2})
+    response = server.handle_request(request)
+    assert json.loads(response) == server.invalid_request()
+
+    # Test successful request handling
+    class TestObject:
+        def test_method(self, *args, **kwargs):
+            return {'success': True, 'args': args, 'kwargs': kwargs}
+
+    test_obj = TestObject()
+    server.register(test_obj)
+
+    request = json.dumps({'jsonrpc': '2.0
+
+# Generated at 2024-03-18 04:48:34.778586
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary_data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'binary_data'}
+
+    # Test with non-text, non-binary result (pickle)
+    complex_data = {'key': 'value'}
+    response_complex = server.response(complex_data)
+    pickled_data = to_text(cPickle.dumps(com
+
+# Generated at 2024-03-18 04:49:12.172213
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'binary data'}
+
+    # Test with non-text, non-binary result (pickle)
+    complex_data = {'key': 'value'}
+    response_complex = server.response(complex_data)
+    pickled_data = to_text(cPickle.dumps(com
+
+# Generated at 2024-03-18 04:49:20.518504
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': to_text(binary_data), 'result_type': 'pickle'}
+
+    # Test with non-text, non-binary result (e.g., integer)
+    response_int = server.response(42)
+    pickled_int = to_text(cPickle.dumps(
+
+# Generated at 2024-03-18 04:49:26.224331
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'binary data'}
+
+    # Test with non-text, non-binary result (pickle)
+    complex_data = {'key': 'value'}
+    response_complex = server.response(complex_data)
+    pickled_data = to_text(cPickle.dumps(com
+
+# Generated at 2024-03-18 04:49:39.339760
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with a simple text result
+    result_text = "Test Result"
+    expected_response_text = {
+        'jsonrpc': '2.0',
+        'id': 'test_id',
+        'result': result_text
+    }
+    assert server.response(result_text) == expected_response_text
+
+    # Test with a binary result
+    result_binary = b'Test Binary Result'
+    expected_response_binary = {
+        'jsonrpc': '2.0',
+        'id': 'test_id',
+        'result': 'Test Binary Result'
+    }
+    assert server.response(result_binary) == expected_response_binary
+
+    # Test with a non-text, non-binary result (e.g., a Python dict)
+    result_dict = {'key': 'value'}
+    expected_response_dict = {
+        'jsonrpc': '2.0',
+        'id': 'test_id',
+       
+
+# Generated at 2024-03-18 04:49:44.647077
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'binary data'}
+
+    # Test with non-text, non-binary result (pickle)
+    complex_data = {'key': 'value'}
+    response_complex = server.response(complex_data)
+    pickled_data = to_text(cPickle.dumps(com
+
+# Generated at 2024-03-18 04:49:52.533257
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response = server.response()
+    expected_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+    assert response == expected_response, "Expected response with None result did not match"
+
+    # Test with text result
+    text_result = "Test result"
+    response = server.response(text_result)
+    expected_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': text_result}
+    assert response == expected_response, "Expected response with text result did not match"
+
+    # Test with binary result
+    binary_result = b'Test binary result'
+    response = server.response(binary_result)
+    expected_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': to_text(binary_result)}
+    assert response == expected_response,
+
+# Generated at 2024-03-18 04:49:58.037485
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response_none = server.response()
+    assert response_none == {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+
+    # Test with text result
+    response_text = server.response('success')
+    assert response_text == {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+
+    # Test with binary result
+    binary_data = b'binary data'
+    response_binary = server.response(binary_data)
+    assert response_binary == {'jsonrpc': '2.0', 'id': 'test_id', 'result': to_text(binary_data), 'result_type': 'pickle'}
+
+    # Test with non-text, non-binary result (e.g., integer)
+    response_int = server.response(42)
+    pickled_int = to_text(cPickle.dumps(
+
+# Generated at 2024-03-18 04:50:04.065368
+```python
+    server = JsonRpcServer()
+
+    # Register a test object with a method to call
+    class TestObject:
+        def test_method(self, arg1, arg2):
+            return arg1 + arg2
+
+    test_obj = TestObject()
+    server.register(test_obj)
+
+    # Create a valid JSON-RPC request
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "test_method",
+        "params": ([10, 5], {}),
+        "id": 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert response_data.get('result') == 15
+    assert response_data.get('id') == 1
+
+    # Test an invalid method request
+    invalid_method_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "non_existent_method",
+       
+
+# Generated at 2024-03-18 04:50:10.583639
+```python
+    # Create an instance of JsonRpcServer
+    server = JsonRpcServer()
+
+    # Mock object with a method to register with JsonRpcServer
+    class MockObject:
+        def mock_method(self, *args, **kwargs):
+            return {"args": args, "kwargs": kwargs}
+
+    # Register mock object with JsonRpcServer
+    mock_obj = MockObject()
+    server.register(mock_obj)
+
+    # Create a valid JSON-RPC request for the mock method
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "mock_method",
+        "params": ([1, 2, 3], {"param1": "value1"}),
+        "id": 1
+    })
+
+    # Test a valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert response_data.get('result') == {"args": (1, 2, 3),
+
+# Generated at 2024-03-18 04:50:16.283867
+```python
+    server = JsonRpcServer()
+    server._identifier = 1  # Mocking the identifier for the test
+
+    # Test with only mandatory parameters
+    error_response = server.error(code=-32000, message="Test error")
+    assert error_response == {
+        'jsonrpc': '2.0',
+        'id': 1,
+        'error': {
+            'code': -32000,
+            'message': "Test error"
+        }
+    }
+
+    # Test with all parameters
+    error_response_with_data = server.error(code=-32000, message="Test error with data", data="Error details")
+    assert error_response_with_data == {
+        'jsonrpc': '2.0',
+        'id': 1,
+        'error': {
+            'code': -32000,
+            'message': "Test error with data",
+            'data': "Error details"
+        }
+    }
+```
+
+# Generated at 2024-03-18 04:51:23.217620
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    expected_none_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+    assert server.response() == expected_none_response
+
+    # Test with text result
+    text_result = 'success'
+    expected_text_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': text_result}
+    assert server.response(text_result) == expected_text_response
+
+    # Test with binary result
+    binary_result = b'success'
+    expected_binary_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+    assert server.response(binary_result) == expected_binary_response
+
+    # Test with non-text, non-binary result (pickle)
+    complex_result = {'key': 'value'}
+    pickled_result = to_text(c
+
+# Generated at 2024-03-18 04:51:28.300404
+```python
+    server = JsonRpcServer()
+
+    # Test a valid request
+    valid_request = json.dumps({
+        'jsonrpc': '2.0',
+        'method': 'test_method',
+        'params': ([], {}),
+        'id': 1
+    })
+    server.register(type('TestObject', (object,), {'test_method': lambda self: 'test_response'}))
+    assert json.loads(server.handle_request(valid_request)) == {
+        'jsonrpc': '2.0',
+        'result': 'test_response',
+        'id': 1
+    }
+
+    # Test a request with an invalid method
+    invalid_method_request = json.dumps({
+        'jsonrpc': '2.0',
+        'method': 'invalid_method',
+        'params': ([], {}),
+        'id': 2
+    })
+    assert 'error' in json.loads(server.handle_request(invalid_method_request))
+
+    # Test a request with a method not found
+   
+
+# Generated at 2024-03-18 04:51:36.324470
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    expected_none_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+    assert server.response() == expected_none_response
+
+    # Test with text result
+    text_result = 'success'
+    expected_text_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': text_result}
+    assert server.response(text_result) == expected_text_response
+
+    # Test with binary result
+    binary_result = b'success'
+    expected_binary_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'success'}
+    assert server.response(binary_result) == expected_binary_response
+
+    # Test with non-text, non-binary result (pickle)
+    complex_result = {'key': 'value'}
+    pickled_result = to_text(c
+
+# Generated at 2024-03-18 04:51:42.828246
+```python
+    server = JsonRpcServer()
+    server._identifier = 1
+
+    # Test with only code and message
+    error_response = server.error(code=-32000, message="Test error")
+    assert error_response == {
+        'jsonrpc': '2.0',
+        'id': 1,
+        'error': {
+            'code': -32000,
+            'message': "Test error"
+        }
+    }
+
+    # Test with code, message, and data
+    error_response_with_data = server.error(code=-32000, message="Test error with data", data="Error details")
+    assert error_response_with_data == {
+        'jsonrpc': '2.0',
+        'id': 1,
+        'error': {
+            'code': -32000,
+            'message': "Test error with data",
+            'data': "Error details"
+        }
+    }
+
+    # Clean up after test
+    delattr(server, '_
+
+# Generated at 2024-03-18 04:51:48.720051
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+    error_code = -32000
+    error_message = 'Test error'
+    error_data = 'Error details'
+
+    error_response = server.error(error_code, error_message, error_data)
+
+    assert 'jsonrpc' in error_response
+    assert error_response['jsonrpc'] == '2.0'
+    assert 'id' in error_response
+    assert error_response['id'] == 'test_id'
+    assert 'error' in error_response
+    assert error_response['error']['code'] == error_code
+    assert error_response['error']['message'] == error_message
+    assert 'data' in error_response['error']
+    assert error_response['error']['data'] == error_data
+
+    # Test without data
+    error_response_no_data = server.error(error_code, error_message)
+    assert 'data' not in error_response_no_data['error']
+
+# Generated at 2024-03-18 04:51:54.051427
+```python
+    server = JsonRpcServer()
+    server._identifier = 'test_id'
+
+    # Test with None result
+    response = server.response()
+    expected_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': None}
+    assert response == expected_response, "Expected response with None result did not match"
+
+    # Test with text result
+    text_result = "Test text"
+    response = server.response(text_result)
+    expected_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': text_result}
+    assert response == expected_response, "Expected response with text result did not match"
+
+    # Test with binary result
+    binary_result = b'Test binary'
+    response = server.response(binary_result)
+    expected_response = {'jsonrpc': '2.0', 'id': 'test_id', 'result': 'Test binary'}
+    assert response == expected_response, "Expected
+
+# Generated at 2024-03-18 04:52:02.143378
+```python
+    server = JsonRpcServer()
+
+    # Mock object with a test method
+    class MockObject:
+        def test_method(self, *args, **kwargs):
+            return {"args": args, "kwargs": kwargs}
+
+    # Register mock object
+    server.register(MockObject())
+
+    # Create a valid JSON-RPC request
+    valid_request = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "test_method",
+        "params": ([1, 2, 3], {"a": "b"}),
+        "id": 1
+    })
+
+    # Test valid request
+    response = server.handle_request(valid_request)
+    response_data = json.loads(response)
+    assert response_data.get("result") == {"args": (1, 2, 3), "kwargs": {"a": "b"}}
+    assert response_data.get("id") == 1
+
+    # Create an invalid JSON-RPC request (invalid method

@@ -1,0 +1,1315 @@
+
+
+# Generated at 2024-05-31 08:37:21.127405
+```python
+    module = Mock()
+    module.params = {'codename': 'focal'}
+    ubuntu_sources_list = UbuntuSourcesList(module)
+
+    # Mock the _parse method to return a valid source
+    ubuntu_sources_list._parse = Mock(return_value=(True, True, 'deb http://ppa.launchpad.net/test/ppa/ubuntu focal main', ''))
+
+    # Add a source to be removed
+    ubuntu_sources_list.add_source('deb http://ppa.launchpad.net/test/ppa/ubuntu focal main')
+
+    # Ensure the source is added
+    assert 'deb http://ppa.launchpad.net/test/ppa/ubuntu focal main' in ubuntu_sources_list.repos_urls
+
+    # Remove the source
+    ubuntu_sources_list.remove_source('deb http://ppa.launchpad.net/test/ppa/ubuntu focal main')
+
+    # Ensure the source is removed
+    assert 'deb http://ppa.launchpad.net/test/ppa/ubuntu focal main' not in ubuntu_sources_list
+
+# Generated at 2024-05-31 08:37:24.734317
+```python
+    sources_before = {
+        'file1': 'content1',
+        'file2': 'content2'
+    }
+    sources_after = {
+        'file1': 'content1',
+        'file2': 'content2',
+        'file3': 'content3'
+    }
+    sourceslist_before = mock.Mock()
+    
+    with mock.patch('os.path.exists', return_value=True) as mock_exists, \
+         mock.patch('os.remove') as mock_remove:
+        revert_sources_list(sources_before, sources_after, sourceslist_before)
+        
+        mock_exists.assert_called_once_with('file3')
+        mock_remove.assert_called_once_with('file3')
+        sourceslist_before.save.assert_called_once()
+```
+
+# Generated at 2024-05-31 08:37:29.881143
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Mock data
+    sources_list.files = {
+        '/etc/apt/sources.list': [
+            (0, True, True, 'deb http://archive.canonical.com/ubuntu hardy partner', ''),
+            (1, True, False, 'deb-src http://archive.canonical.com/ubuntu hardy partner', 'disabled source')
+        ]
+    }
+    
+    # Mock methods
+    sources_list.module.atomic_move = lambda src, dest: None
+    sources_list.module.set_mode_if_different = lambda path, mode, diff: None
+    
+    # Create a temporary directory to save the sources list
+    with tempfile.TemporaryDirectory() as tempdir:
+        sources_list.default_file = os.path.join(tempdir, 'sources.list')
+        sources_list._apt_cfg_dir = lambda x: tempdir
+        
+        # Save the sources list
+        sources_list.save()
+        
+
+
+# Generated at 2024-05-31 08:37:37.606450
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Mock data
+    sources_list.files = {
+        'file1.list': [
+            (0, True, True, 'deb http://archive.ubuntu.com/ubuntu focal main', ''),
+            (1, True, False, 'deb http://archive.ubuntu.com/ubuntu focal universe', ''),
+            (2, False, False, '', '# Commented out line')
+        ],
+        'file2.list': [
+            (0, True, True, 'deb http://archive.ubuntu.com/ubuntu focal multiverse', ''),
+            (1, True, True, 'deb http://archive.ubuntu.com/ubuntu focal restricted', '')
+        ]
+    }
+    
+    expected = [
+        ('file1.list', 0, True, 'deb http://archive.ubuntu.com/ubuntu focal main', ''),
+        ('file2.list', 0, True, 'deb
+
+# Generated at 2024-05-31 08:37:42.292355
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Mock data
+    sources_list.files = {
+        '/etc/apt/sources.list': [
+            (0, True, True, 'deb http://archive.ubuntu.com/ubuntu focal main', ''),
+            (1, True, False, 'deb http://archive.ubuntu.com/ubuntu focal universe', 'disabled'),
+        ],
+        '/etc/apt/sources.list.d/custom.list': [
+            (0, True, True, 'deb http://custom.repo/ubuntu focal main', ''),
+        ]
+    }
+    
+    expected_output = {
+        '/etc/apt/sources.list': 'deb http://archive.ubuntu.com/ubuntu focal main\n# deb http://archive.ubuntu.com/ubuntu focal universe # disabled\n',
+        '/etc/apt/sources.list.d/custom.list': 'deb http://custom.repo/ubuntu focal main\n'
+    }
+    
+   
+
+# Generated at 2024-05-31 08:37:46.649029
+```python
+    class MockModule:
+        def __init__(self, check_mode):
+            self.check_mode = check_mode
+            self.commands_run = []
+
+        def run_command(self, command, check_rc):
+            self.commands_run.append((command, check_rc))
+
+    # Test when check_mode is True
+    module = MockModule(check_mode=True)
+    callback = get_add_ppa_signing_key_callback(module)
+    assert callback is None
+
+    # Test when check_mode is False
+    module = MockModule(check_mode=False)
+    callback = get_add_ppa_signing_key_callback(module)
+    assert callback is not None
+
+    # Test the callback function
+    command = ['apt-key', 'adv', '--recv-keys', '--no-tty', '--keyserver', 'hkp://keyserver.ubuntu.com:80', 'ABC123']
+    callback(command)
+    assert module.commands_run == [(command, True)]
+```
+
+# Generated at 2024-05-31 08:37:50.256630
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    sources_list.files = {
+        '/tmp/test_sources.list': [
+            (0, True, True, 'deb http://archive.canonical.com/ubuntu hardy partner', ''),
+            (1, True, False, 'deb http://dl.google.com/linux/chrome/deb/ stable main', 'disabled source')
+        ]
+    }
+    sources_list.save()
+
+    with open('/tmp/test_sources.list', 'r') as f:
+        content = f.read()
+
+    expected_content = (
+        'deb http://archive.canonical.com/ubuntu hardy partner\n'
+        '# deb http://dl.google.com/linux/chrome/deb/ stable main # disabled source\n'
+    )
+
+    assert content == expected_content, f"Expected:\n{expected_content}\nGot:\n{content}"
+```
+
+# Generated at 2024-05-31 08:37:55.096825
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Mock data
+    sources_list.files = {
+        '/tmp/sources.list': [
+            (0, True, True, 'deb http://archive.canonical.com/ubuntu hardy partner', ''),
+            (1, True, False, 'deb http://dl.google.com/linux/chrome/deb/ stable main', 'disabled source')
+        ]
+    }
+    
+    # Mock methods
+    sources_list.module.atomic_move = lambda src, dest: None
+    sources_list.module.set_mode_if_different = lambda filename, mode, diff: None
+    
+    # Save the sources list
+    sources_list.save()
+    
+    # Check if the file was created and contains the correct data
+    with open('/tmp/sources.list', 'r') as f:
+        content = f.read()
+    
+    expected_content = (
+        'deb http://archive.canonical.com/ubuntu hardy
+
+# Generated at 2024-05-31 08:37:58.595510
+```python
+    module = MagicMock()
+    module.params = {
+        'repo': 'ppa:some/ppa',
+        'state': 'present',
+        'update_cache': True,
+        'update_cache_retries': 5,
+        'update_cache_retry_max_delay': 12,
+        'filename': None,
+        'install_python_apt': True,
+        'validate_certs': True,
+        'codename': 'focal',
+    }
+    module.check_mode = False
+    module._diff = False
+
+    with patch('ansible.module_utils.basic.AnsibleModule', return_value=module):
+        with patch('apt.Cache') as mock_cache:
+            mock_cache.return_value.update.return_value = None
+            with patch('time.sleep', return_value=None):
+                main()
+                module.exit_json.assert_called_once_with(changed=True, repo='ppa:some/ppa', state='present', diff={})
+```
+
+# Generated at 2024-05-31 08:38:04.445407
+```python
+    module = MockModule()
+    sources_list = UbuntuSourcesList(module)
+
+    # Add a source to be removed
+    sources_list.add_source('deb http://ppa.launchpad.net/test/ppa/ubuntu focal main')
+    assert len(sources_list.repos_urls) == 1
+
+    # Remove the source
+    sources_list.remove_source('deb http://ppa.launchpad.net/test/ppa/ubuntu focal main')
+    assert len(sources_list.repos_urls) == 0
+
+    # Add a PPA source to be removed
+    sources_list.add_source('ppa:test/ppa')
+    assert len(sources_list.repos_urls) == 1
+
+    # Remove the PPA source
+    sources_list.remove_source('ppa:test/ppa')
+    assert len(sources_list.repos_urls) == 0
+```
+
+# Generated at 2024-05-31 08:38:34.856006
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    sources_list.add_source('deb http://archive.canonical.com/ubuntu hardy partner', 'Test comment')
+    
+    found = False
+    for file, sources in sources_list.files.items():
+        for n, valid, enabled, source, comment in sources:
+            if source == 'deb http://archive.canonical.com/ubuntu hardy partner' and comment == 'Test comment':
+                found = True
+                break
+        if found:
+            break
+    
+    assert found, "Source not added correctly"
+```
+
+# Generated at 2024-05-31 08:38:41.860144
+```python
+    module = Mock()
+    module.params = {'codename': 'focal'}
+    ubuntu_sources_list = UbuntuSourcesList(module)
+
+    # Mock the _parse method to return a valid source
+    ubuntu_sources_list._parse = Mock(return_value=(True, True, 'deb http://ppa.launchpad.net/test/ppa/ubuntu focal main', ''))
+
+    # Add a source to be removed
+    ubuntu_sources_list.add_source('ppa:test/ppa')
+
+    # Ensure the source was added
+    assert 'deb http://ppa.launchpad.net/test/ppa/ubuntu focal main' in ubuntu_sources_list.repos_urls
+
+    # Remove the source
+    ubuntu_sources_list.remove_source('ppa:test/ppa')
+
+    # Ensure the source was removed
+    assert 'deb http://ppa.launchpad.net/test/ppa/ubuntu focal main' not in ubuntu_sources_list.repos_urls
+```
+
+# Generated at 2024-05-31 08:38:46.271360
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Mock data
+    sources_list.files = {
+        '/etc/apt/sources.list': [
+            (0, True, True, 'deb http://archive.canonical.com/ubuntu hardy partner', ''),
+            (1, True, False, 'deb http://dl.google.com/linux/chrome/deb/ stable main', 'disabled')
+        ]
+    }
+    
+    # Mock methods
+    sources_list.module.atomic_move = lambda src, dest: None
+    sources_list.module.set_mode_if_different = lambda filename, mode, diff: None
+    
+    # Create a temporary directory to save the sources list
+    with tempfile.TemporaryDirectory() as tempdir:
+        sources_list._apt_cfg_dir = lambda x: tempdir
+        sources_list.default_file = os.path.join(tempdir, 'sources.list')
+        
+        # Save the sources list
+        sources_list.save
+
+# Generated at 2024-05-31 08:38:49.958097
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    sources_list.add_source('deb http://archive.canonical.com/ubuntu hardy partner', 'Test comment')
+    
+    found = False
+    for file, n, enabled, source, comment in sources_list:
+        if source == 'deb http://archive.canonical.com/ubuntu hardy partner' and comment == 'Test comment':
+            found = True
+            break
+    
+    assert found, "Source not added correctly"
+```
+
+# Generated at 2024-05-31 08:38:54.063101
+```python
+    module_mock = MagicMock()
+    module_mock.params = {'codename': 'focal'}
+    add_ppa_signing_keys_callback_mock = MagicMock()
+
+    original = UbuntuSourcesList(module_mock, add_ppa_signing_keys_callback=add_ppa_signing_keys_callback_mock)
+    copy = original.__deepcopy__()
+
+    assert original.module == copy.module
+    assert original.add_ppa_signing_keys_callback == copy.add_ppa_signing_keys_callback
+    assert original.codename == copy.codename
+    assert original.files == copy.files
+    assert original.new_repos == copy.new_repos
+    assert original.default_file == copy.default_file
+```
+
+# Generated at 2024-05-31 08:38:58.040258
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    sources_list.files = {
+        'test.list': [
+            (0, True, True, 'deb http://example.com/ubuntu bionic main', 'example comment'),
+            (1, True, False, 'deb http://example.com/ubuntu bionic universe', 'another comment')
+        ]
+    }
+
+    # Test modifying an existing source
+    sources_list.modify('test.list', 0, enabled=False, source='deb http://example.com/ubuntu bionic main', comment='modified comment')
+    assert sources_list.files['test.list'][0] == (0, True, False, 'deb http://example.com/ubuntu bionic main', 'modified comment')
+
+    # Test modifying an existing source with partial parameters
+    sources_list.modify('test.list', 1, enabled=True)
+    assert sources_list.files['test.list'][1] == (1,
+
+# Generated at 2024-05-31 08:39:03.093139
+```python
+    sources_before = {
+        'file1': 'content1',
+        'file2': 'content2'
+    }
+    sources_after = {
+        'file1': 'content1',
+        'file2': 'content2',
+        'file3': 'content3'
+    }
+    sourceslist_before = UbuntuSourcesList(None)
+    sourceslist_before.files = {
+        'file1': [(0, True, True, 'deb http://example.com/ubuntu focal main', '')],
+        'file2': [(0, True, True, 'deb http://example.com/ubuntu focal universe', '')]
+    }
+
+    with patch('os.path.exists', return_value=True), patch('os.remove') as mock_remove, patch.object(UbuntuSourcesList, 'save') as mock_save:
+        revert_sources_list(sources_before, sources_after, sourceslist_before)
+        mock_remove.assert_called_once_with('file3')
+        mock_save.assert_called_once()
+
+
+# Generated at 2024-05-31 08:39:08.648806
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    sources_list.files = {
+        'file1.list': [
+            (0, True, True, 'deb http://example.com/ubuntu focal main', ''),
+            (1, True, False, 'deb http://example.com/ubuntu focal universe', ''),
+            (2, False, False, 'invalid line', ''),
+        ],
+        'file2.list': [
+            (0, True, True, 'deb http://example.com/ubuntu bionic main', ''),
+            (1, True, True, 'deb http://example.com/ubuntu bionic universe', ''),
+        ],
+    }
+
+    expected = [
+        ('file1.list', 0, True, 'deb http://example.com/ubuntu focal main', ''),
+        ('file2.list', 0, True, 'deb http://example.com/ubuntu bionic main', ''),
+        ('file2.list', 
+
+# Generated at 2024-05-31 08:39:13.509806
+```python
+    module = AnsibleModule(
+        argument_spec=dict(
+            check_mode=dict(type='bool', default=False)
+        ),
+        check_invalid_arguments=False,
+        supports_check_mode=True
+    )
+
+    apt_pkg_name = 'python-apt'
+
+    # Mocking module methods
+    module.check_mode = False
+    module.get_bin_path = lambda x: '/usr/bin/apt-get'
+    module.run_command = lambda x: (0, '', '')
+
+    try:
+        install_python_apt(module, apt_pkg_name)
+        print("Test passed: install_python_apt executed without errors.")
+    except Exception as e:
+        print(f"Test failed: {e}")
+
+    # Test with check_mode=True
+    module.check_mode = True
+    try:
+        install_python_apt(module, apt_pkg_name)
+        print("Test failed: install_python_apt should have raised an exception in check mode.")
+    except Exception as e:
+        print("Test passed:
+
+# Generated at 2024-05-31 08:39:17.298974
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    sources_list.files = {
+        'test.list': [
+            (0, True, True, 'deb http://example.com/ubuntu focal main', 'example comment'),
+            (1, True, False, 'deb http://example.com/ubuntu focal universe', 'another comment')
+        ]
+    }
+
+    # Test modifying an existing source
+    sources_list.modify('test.list', 0, enabled=False, source='deb http://example.com/ubuntu focal restricted', comment='modified comment')
+    assert sources_list.files['test.list'][0] == (0, True, False, 'deb http://example.com/ubuntu focal restricted', 'modified comment')
+
+    # Test modifying an existing source with partial parameters
+    sources_list.modify('test.list', 1, enabled=True)
+    assert sources_list.files['test.list'][1] == (1, True, True,
+
+# Generated at 2024-05-31 08:39:45.816039
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    test_file = tempfile.NamedTemporaryFile(delete=False)
+    test_file.write(b"deb http://archive.canonical.com/ubuntu hardy partner\n")
+    test_file.write(b"# deb-src http://archive.canonical.com/ubuntu hardy partner\n")
+    test_file.close()
+
+    sources_list.load(test_file.name)
+    os.remove(test_file.name)
+
+    assert len(sources_list.files) == 1
+    assert test_file.name in sources_list.files
+    assert len(sources_list.files[test_file.name]) == 2
+    assert sources_list.files[test_file.name][0] == (0, True, True, "deb http://archive.canonical.com/ubuntu hardy partner", "")
+    assert sources_list.files[test_file.name][1] == (1, True, False, "deb-src http://archive.canonical.com/ubuntu hardy partner", "")
+```
+
+# Generated at 2024-05-31 08:39:49.910588
+```python
+    module = Mock()
+    module.params = {'codename': 'focal'}
+    ubuntu_sources_list = UbuntuSourcesList(module)
+
+    # Mock the _parse method to return a valid source
+    ubuntu_sources_list._parse = Mock(return_value=(True, True, 'deb http://ppa.launchpad.net/test/ppa/ubuntu focal main', ''))
+
+    # Add a source to be removed
+    ubuntu_sources_list.add_source('deb http://ppa.launchpad.net/test/ppa/ubuntu focal main')
+
+    # Ensure the source is added
+    assert 'deb http://ppa.launchpad.net/test/ppa/ubuntu focal main' in ubuntu_sources_list.repos_urls
+
+    # Remove the source
+    ubuntu_sources_list.remove_source('deb http://ppa.launchpad.net/test/ppa/ubuntu focal main')
+
+    # Ensure the source is removed
+    assert 'deb http://ppa.launchpad.net/test/ppa/ubuntu focal main' not in ubuntu_sources_list
+
+# Generated at 2024-05-31 08:39:53.065144
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Add a source to be removed
+    sources_list.add_source('deb http://archive.canonical.com/ubuntu hardy partner')
+    
+    # Ensure the source is added
+    assert any(source == 'deb http://archive.canonical.com/ubuntu hardy partner' for _, _, _, source, _ in sources_list)
+    
+    # Remove the source
+    sources_list.remove_source('deb http://archive.canonical.com/ubuntu hardy partner')
+    
+    # Ensure the source is removed
+    assert not any(source == 'deb http://archive.canonical.com/ubuntu hardy partner' for _, _, _, source, _ in sources_list)
+```
+
+# Generated at 2024-05-31 08:39:57.335237
+```python
+    from unittest.mock import patch, MagicMock
+
+    with patch('ansible.module_utils.basic.AnsibleModule') as mock_module:
+        mock_module.return_value.params = {
+            'repo': 'ppa:example/ppa',
+            'state': 'present',
+            'update_cache': True,
+            'update_cache_retries': 5,
+            'update_cache_retry_max_delay': 12,
+            'filename': None,
+            'install_python_apt': True,
+            'validate_certs': True,
+            'codename': 'focal'
+        }
+        mock_module.return_value.check_mode = False
+        mock_module.return_value._diff = False
+
+        with patch('distro.codename', 'focal'):
+            with patch('apt.Cache') as mock_cache:
+                mock_cache.return_value.update = MagicMock()
+                with patch('apt.cache.FetchFailedException', Exception):
+                    with patch('os.path.exists', return_value=True):
+                        with patch('
+
+# Generated at 2024-05-31 08:40:01.391207
+```python
+    class MockModule:
+        def __init__(self, check_mode):
+            self.check_mode = check_mode
+            self.commands_run = []
+
+        def run_command(self, command, check_rc):
+            self.commands_run.append((command, check_rc))
+
+    # Test when check_mode is True
+    module = MockModule(check_mode=True)
+    callback = get_add_ppa_signing_key_callback(module)
+    assert callback is None
+
+    # Test when check_mode is False
+    module = MockModule(check_mode=False)
+    callback = get_add_ppa_signing_key_callback(module)
+    assert callback is not None
+
+    # Test the callback function
+    command = ['apt-key', 'adv', '--recv-keys', '--no-tty', '--keyserver', 'hkp://keyserver.ubuntu.com:80', 'ABC123']
+    callback(command)
+    assert module.commands_run == [(command, True)]
+```
+
+# Generated at 2024-05-31 08:40:05.083365
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    sources_list.files = {
+        '/tmp/test.list': [
+            (0, True, True, 'deb http://archive.canonical.com/ubuntu hardy partner', ''),
+            (1, True, False, 'deb http://dl.google.com/linux/chrome/deb/ stable main', 'disabled')
+        ]
+    }
+    sources_list.new_repos.add('/tmp/test.list')
+    sources_list.save()
+
+    with open('/tmp/test.list', 'r') as f:
+        content = f.read()
+    
+    expected_content = 'deb http://archive.canonical.com/ubuntu hardy partner\n# deb http://dl.google.com/linux/chrome/deb/ stable main # disabled\n'
+    assert content == expected_content, f"Expected: {expected_content}, but got: {content}"
+```
+
+# Generated at 2024-05-31 08:40:08.999184
+```python
+    module = AnsibleModule(
+        argument_spec=dict(
+            check_mode=dict(type='bool', default=False)
+        ),
+        check_invalid_arguments=False,
+        supports_check_mode=True
+    )
+
+    apt_pkg_name = 'python-apt'
+
+    # Mocking module methods
+    module.check_mode = False
+    module.get_bin_path = lambda x: '/usr/bin/apt-get'
+    module.run_command = lambda x: (0, '', '')
+
+    try:
+        install_python_apt(module, apt_pkg_name)
+        print("Test passed: install_python_apt executed without errors.")
+    except Exception as e:
+        print(f"Test failed: {e}")
+
+    # Test with check_mode=True
+    module.check_mode = True
+    try:
+        install_python_apt(module, apt_pkg_name)
+        print("Test failed: install_python_apt should have raised an exception in check mode.")
+    except Exception as e:
+        print("Test passed:
+
+# Generated at 2024-05-31 08:40:12.942510
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Mock data
+    sources_list.files = {
+        '/tmp/test.list': [
+            (0, True, True, 'deb http://archive.canonical.com/ubuntu hardy partner', ''),
+            (1, True, False, 'deb http://dl.google.com/linux/chrome/deb/ stable main', 'disabled source')
+        ]
+    }
+    
+    # Mock methods
+    sources_list.module.atomic_move = lambda src, dest: None
+    sources_list.module.set_mode_if_different = lambda filename, mode, recursive: None
+    
+    # Create a temporary directory
+    with tempfile.TemporaryDirectory() as tempdir:
+        sources_list.default_file = os.path.join(tempdir, 'sources.list')
+        sources_list._apt_cfg_dir = lambda x: tempdir
+        
+        # Call save method
+        sources_list.save()
+        
+        # Check if the file is
+
+# Generated at 2024-05-31 08:40:17.029133
+```python
+    module = Mock()
+    module.params = {'codename': 'focal'}
+    usl = UbuntuSourcesList(module)
+
+    # Test adding a regular source
+    usl.add_source('deb http://archive.ubuntu.com/ubuntu focal main')
+    assert 'deb http://archive.ubuntu.com/ubuntu focal main' in usl.repos_urls
+
+    # Test adding a PPA source
+    usl.add_ppa_signing_keys_callback = Mock()
+    usl._get_ppa_info = Mock(return_value={'signing_key_fingerprint': 'ABC123'})
+    usl._key_already_exists = Mock(return_value=False)
+    usl.add_source('ppa:some/ppa')
+    assert 'deb http://ppa.launchpad.net/some/ppa/ubuntu focal main' in usl.repos_urls
+    usl.add_ppa_signing_keys_callback.assert_called_once()
+
+    # Test adding a PPA source that already exists
+
+
+# Generated at 2024-05-31 08:40:23.162922
+```python
+    from unittest.mock import patch, MagicMock
+
+    with patch('ansible.module_utils.basic.AnsibleModule') as mock_module:
+        mock_module.return_value.params = {
+            'repo': 'ppa:example/ppa',
+            'state': 'present',
+            'update_cache': True,
+            'update_cache_retries': 5,
+            'update_cache_retry_max_delay': 12,
+            'filename': None,
+            'install_python_apt': True,
+            'validate_certs': True,
+            'codename': 'focal',
+        }
+        mock_module.return_value.check_mode = False
+        mock_module.return_value._diff = False
+
+        with patch('apt.Cache') as mock_cache, \
+             patch('apt.Cache.update') as mock_update, \
+             patch('time.sleep'), \
+             patch('os.path.exists', return_value=True), \
+             patch('os.remove'), \
+             patch('copy.deepcopy'), \
+             patch('ansible
+
+# Generated at 2024-05-31 08:40:59.086908
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Mock data
+    sources_list.files = {
+        '/etc/apt/sources.list': [
+            (0, True, True, 'deb http://archive.ubuntu.com/ubuntu focal main', ''),
+            (1, True, False, 'deb http://archive.ubuntu.com/ubuntu focal universe', 'disabled')
+        ]
+    }
+    
+    # Mock methods
+    sources_list.module.atomic_move = lambda src, dest: None
+    sources_list.module.set_mode_if_different = lambda filename, mode, diff: None
+    
+    # Create a temporary directory to save the file
+    with tempfile.TemporaryDirectory() as tempdir:
+        sources_list.default_file = os.path.join(tempdir, 'sources.list')
+        sources_list.save()
+        
+        # Check if the file is created
+        assert os.path.exists(sources_list.default_file)
+        
+        # Check
+
+# Generated at 2024-05-31 08:41:02.599937
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Add a source to be removed
+    sources_list.add_source('deb http://archive.canonical.com/ubuntu hardy partner')
+    
+    # Ensure the source is added
+    assert any(source == 'deb http://archive.canonical.com/ubuntu hardy partner' for _, _, _, source, _ in sources_list)
+    
+    # Remove the source
+    sources_list.remove_source('deb http://archive.canonical.com/ubuntu hardy partner')
+    
+    # Ensure the source is removed
+    assert not any(source == 'deb http://archive.canonical.com/ubuntu hardy partner' for _, _, _, source, _ in sources_list)
+```
+
+# Generated at 2024-05-31 08:41:07.610690
+```python
+    module = AnsibleModule(
+        argument_spec=dict(
+            check_mode=dict(type='bool', default=False)
+        ),
+        check_invalid_arguments=False,
+        supports_check_mode=True
+    )
+
+    apt_pkg_name = 'python-apt'
+
+    # Mocking module methods
+    module.check_mode = False
+    module.get_bin_path = lambda x: '/usr/bin/apt-get'
+    module.run_command = lambda x: (0, '', '')
+
+    # Test when not in check mode and apt-get is available
+    install_python_apt(module, apt_pkg_name)
+
+    # Test when in check mode
+    module.check_mode = True
+    try:
+        install_python_apt(module, apt_pkg_name)
+    except Exception as e:
+        assert str(e) == "python-apt must be installed to use check mode"
+
+    # Test when apt-get is not available
+    module.check_mode = False
+    module.get_bin_path = lambda x:
+
+# Generated at 2024-05-31 08:41:10.354987
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    sources_list.add_source('deb http://archive.canonical.com/ubuntu hardy partner', 'Test comment')
+    
+    found = False
+    for file, sources in sources_list.files.items():
+        for n, valid, enabled, source, comment in sources:
+            if source == 'deb http://archive.canonical.com/ubuntu hardy partner' and comment == 'Test comment':
+                found = True
+                break
+        if found:
+            break
+    
+    assert found, "Source not added correctly"
+```
+
+# Generated at 2024-05-31 08:41:14.735006
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Create a temporary file with some sources
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        temp_file.write(b"deb http://archive.canonical.com/ubuntu hardy partner\n")
+        temp_file.write(b"# deb-src http://archive.canonical.com/ubuntu hardy partner\n")
+        temp_file.write(b"deb http://dl.google.com/linux/chrome/deb/ stable main\n")
+        temp_file_path = temp_file.name
+    
+    # Load the sources from the temporary file
+    sources_list.load(temp_file_path)
+    
+    # Check if the sources were loaded correctly
+    assert len(sources_list.files[temp_file_path]) == 3
+    assert sources_list.files[temp_file_path][0][2] == True  # First source is enabled
+    assert sources_list.files[temp_file_path][1][2] == False  # Second source
+
+# Generated at 2024-05-31 08:41:18.364052
+```python
+    module = MagicMock()
+    module.params = {
+        'repo': 'ppa:some/ppa',
+        'state': 'present',
+        'update_cache': True,
+        'update_cache_retries': 5,
+        'update_cache_retry_max_delay': 12,
+        'filename': None,
+        'install_python_apt': True,
+        'validate_certs': True,
+        'codename': 'focal'
+    }
+    module.check_mode = False
+    module._diff = False
+
+    with patch('apt.Cache') as mock_cache, \
+         patch('time.sleep'), \
+         patch('copy.deepcopy'), \
+         patch('os.path.exists', return_value=True), \
+         patch('os.remove'), \
+         patch('ansible.module_utils.basic.AnsibleModule', return_value=module), \
+         patch('ansible.module_utils.urls.fetch_url', return_value=(MagicMock(), {'status': 200, 'msg': 'OK'}
+
+# Generated at 2024-05-31 08:41:19.863892
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    assert isinstance(sources_list, SourcesList)
+    assert isinstance(sources_list.files, dict)
+    assert isinstance(sources_list.new_repos, set)
+    assert sources_list.default_file == sources_list._apt_cfg_file('Dir::Etc::sourcelist')
+```
+
+# Generated at 2024-05-31 08:41:24.590125
+```python
+    class MockModule:
+        def __init__(self, check_mode):
+            self.check_mode = check_mode
+            self.commands = []
+
+        def run_command(self, command, check_rc):
+            self.commands.append(command)
+            if check_rc:
+                return 0, "", ""
+            return 1, "", "error"
+
+    # Test when check_mode is True
+    module = MockModule(check_mode=True)
+    callback = get_add_ppa_signing_key_callback(module)
+    assert callback is None
+
+    # Test when check_mode is False
+    module = MockModule(check_mode=False)
+    callback = get_add_ppa_signing_key_callback(module)
+    assert callback is not None
+
+    # Test the callback function
+    command = ['apt-key', 'adv', '--recv-keys', '--no-tty', '--keyserver', 'hkp://keyserver.ubuntu.com:80', 'key_fingerprint']
+    callback(command)
+    assert module.commands
+
+# Generated at 2024-05-31 08:41:28.329344
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Test adding a valid source
+    sources_list.add_source('deb http://archive.canonical.com/ubuntu hardy partner')
+    assert any('deb http://archive.canonical.com/ubuntu hardy partner' in source for file, n, enabled, source, comment in sources_list)
+    
+    # Test adding a source with a comment
+    sources_list.add_source('deb http://dl.google.com/linux/chrome/deb/ stable main', comment='Google Chrome')
+    assert any('deb http://dl.google.com/linux/chrome/deb/ stable main' in source and 'Google Chrome' in comment for file, n, enabled, source, comment in sources_list)
+    
+    # Test adding a source with a specified filename
+    sources_list.add_source('deb-src http://archive.canonical.com/ubuntu hardy partner', file='custom.list')
+    assert any('deb
+
+# Generated at 2024-05-31 08:41:33.017852
+```python
+    module = Mock()
+    module.params = {'codename': 'focal'}
+    usl = UbuntuSourcesList(module)
+
+    # Test adding a regular source
+    usl.add_source('deb http://archive.ubuntu.com/ubuntu focal main')
+    assert 'deb http://archive.ubuntu.com/ubuntu focal main' in usl.repos_urls
+
+    # Test adding a PPA source
+    usl.add_ppa_signing_keys_callback = Mock()
+    usl._get_ppa_info = Mock(return_value={'signing_key_fingerprint': 'ABC123'})
+    usl._key_already_exists = Mock(return_value=False)
+    usl.add_source('ppa:some/ppa')
+    assert 'deb http://ppa.launchpad.net/some/ppa/ubuntu focal main' in usl.repos_urls
+    usl.add_ppa_signing_keys_callback.assert_called_once()
+
+    # Test adding a PPA source that already exists
+
+
+# Generated at 2024-05-31 08:42:38.630099
+```python
+    module = Mock()
+    module.params = {'codename': 'focal'}
+    usl = UbuntuSourcesList(module)
+
+    # Test adding a regular source
+    usl.add_source('deb http://archive.ubuntu.com/ubuntu focal main')
+    assert 'deb http://archive.ubuntu.com/ubuntu focal main' in usl.repos_urls
+
+    # Test adding a PPA source
+    with patch.object(UbuntuSourcesList, '_get_ppa_info', return_value={'signing_key_fingerprint': 'ABC123'}):
+        with patch.object(UbuntuSourcesList, '_key_already_exists', return_value=False):
+            usl.add_source('ppa:some/ppa')
+            assert 'deb http://ppa.launchpad.net/some/ppa/ubuntu focal main' in usl.repos_urls
+
+    # Test adding a PPA source that already exists
+    with patch.object(UbuntuSourcesList, '_get_ppa
+
+# Generated at 2024-05-31 08:42:42.131923
+```python
+    class MockModule:
+        def __init__(self, check_mode):
+            self.check_mode = check_mode
+            self.commands_run = []
+
+        def run_command(self, command, check_rc):
+            self.commands_run.append((command, check_rc))
+
+    # Test when check_mode is True
+    module = MockModule(check_mode=True)
+    callback = get_add_ppa_signing_key_callback(module)
+    assert callback is None
+
+    # Test when check_mode is False
+    module = MockModule(check_mode=False)
+    callback = get_add_ppa_signing_key_callback(module)
+    assert callback is not None
+
+    # Test the callback function
+    command = ['apt-key', 'adv', '--recv-keys', '--no-tty', '--keyserver', 'hkp://keyserver.ubuntu.com:80', 'ABC123']
+    callback(command)
+    assert module.commands_run == [(command, True)]
+```
+
+# Generated at 2024-05-31 08:42:48.538257
+```python
+    module = Mock()
+    module.params = {'codename': 'focal'}
+    usl = UbuntuSourcesList(module)
+
+    # Test adding a regular source
+    usl.add_source('deb http://archive.ubuntu.com/ubuntu focal main')
+    assert 'deb http://archive.ubuntu.com/ubuntu focal main' in usl.repos_urls
+
+    # Test adding a PPA source
+    usl.add_ppa_signing_keys_callback = Mock()
+    usl._get_ppa_info = Mock(return_value={'signing_key_fingerprint': 'ABC123'})
+    usl._key_already_exists = Mock(return_value=False)
+    usl.add_source('ppa:some/ppa')
+    assert 'deb http://ppa.launchpad.net/some/ppa/ubuntu focal main' in usl.repos_urls
+    usl.add_ppa_signing_keys_callback.assert_called_once()
+
+    # Test adding a PPA source that already exists
+
+
+# Generated at 2024-05-31 08:42:52.658481
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Mock data
+    sources_list.files = {
+        '/etc/apt/sources.list': [
+            (0, True, True, 'deb http://archive.ubuntu.com/ubuntu focal main', ''),
+            (1, True, False, 'deb http://archive.ubuntu.com/ubuntu focal universe', 'disabled')
+        ]
+    }
+    
+    # Mock methods
+    sources_list.module.atomic_move = lambda src, dest: None
+    sources_list.module.set_mode_if_different = lambda filename, mode, diff: None
+    
+    # Create a temporary directory to save the file
+    with tempfile.TemporaryDirectory() as tempdir:
+        sources_list.default_file = os.path.join(tempdir, 'sources.list')
+        sources_list.save()
+        
+        # Check if the file is created
+        assert os.path.exists(sources_list.default_file)
+        
+        # Check
+
+# Generated at 2024-05-31 08:42:57.632632
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Mock data
+    sources_list.files = {
+        '/etc/apt/sources.list': [
+            (0, True, True, 'deb http://archive.ubuntu.com/ubuntu focal main', ''),
+            (1, True, False, 'deb http://archive.ubuntu.com/ubuntu focal universe', 'disabled'),
+        ],
+        '/etc/apt/sources.list.d/custom.list': [
+            (0, True, True, 'deb http://custom.repo/ubuntu focal main', ''),
+        ]
+    }
+    
+    expected_output = {
+        '/etc/apt/sources.list': 'deb http://archive.ubuntu.com/ubuntu focal main\n# deb http://archive.ubuntu.com/ubuntu focal universe # disabled\n',
+        '/etc/apt/sources.list.d/custom.list': 'deb http://custom.repo/ubuntu focal main\n'
+    }
+    
+   
+
+# Generated at 2024-05-31 08:43:02.571005
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Mock data
+    sources_list.files = {
+        '/etc/apt/sources.list': [
+            (0, True, True, 'deb http://archive.ubuntu.com/ubuntu focal main', ''),
+            (1, True, False, 'deb http://archive.ubuntu.com/ubuntu focal universe', 'disabled'),
+        ],
+        '/etc/apt/sources.list.d/custom.list': [
+            (0, True, True, 'deb http://custom.repo/ubuntu focal main', 'custom repo'),
+        ]
+    }
+    
+    expected_output = {
+        '/etc/apt/sources.list': 'deb http://archive.ubuntu.com/ubuntu focal main\n# deb http://archive.ubuntu.com/ubuntu focal universe # disabled\n',
+        '/etc/apt/sources.list.d/custom.list': 'deb http://custom.repo/ubuntu focal main # custom repo
+
+# Generated at 2024-05-31 08:43:04.469767
+```python
+    module = MockModule(params={'codename': 'focal'})
+    ubuntu_sources_list = UbuntuSourcesList(module)
+    
+    assert ubuntu_sources_list.module == module
+    assert ubuntu_sources_list.codename == 'focal'
+    assert isinstance(ubuntu_sources_list.files, dict)
+    assert ubuntu_sources_list.add_ppa_signing_keys_callback is None
+```
+
+# Generated at 2024-05-31 08:43:08.172465
+```python
+    module = MagicMock()
+    module.params = {
+        'repo': 'ppa:some/ppa',
+        'state': 'present',
+        'update_cache': True,
+        'update_cache_retries': 5,
+        'update_cache_retry_max_delay': 12,
+        'filename': None,
+        'install_python_apt': True,
+        'validate_certs': True,
+        'codename': 'focal'
+    }
+    module.check_mode = False
+    module._diff = False
+
+    with patch('apt.Cache') as mock_cache, \
+         patch('time.sleep'), \
+         patch('copy.deepcopy'), \
+         patch('os.remove'), \
+         patch('os.path.exists', return_value=True), \
+         patch('ansible.module_utils.basic.AnsibleModule', return_value=module), \
+         patch('ansible.module_utils.urls.fetch_url', return_value=(MagicMock(), {'status': 200, 'msg': 'OK'}
+
+# Generated at 2024-05-31 08:43:10.953216
+```python
+    module = Mock()
+    module.params = {'codename': 'focal'}
+    add_ppa_signing_keys_callback = Mock()
+    
+    original = UbuntuSourcesList(module, add_ppa_signing_keys_callback)
+    copy = original.__deepcopy__()
+    
+    assert isinstance(copy, UbuntuSourcesList)
+    assert copy.module == original.module
+    assert copy.add_ppa_signing_keys_callback == original.add_ppa_signing_keys_callback
+    assert copy.codename == original.codename
+```
+
+# Generated at 2024-05-31 08:43:14.445397
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Add a source to be removed
+    sources_list.add_source('deb http://archive.canonical.com/ubuntu hardy partner')
+    
+    # Ensure the source is added
+    assert any(source == 'deb http://archive.canonical.com/ubuntu hardy partner' for _, _, _, source, _ in sources_list)
+    
+    # Remove the source
+    sources_list.remove_source('deb http://archive.canonical.com/ubuntu hardy partner')
+    
+    # Ensure the source is removed
+    assert not any(source == 'deb http://archive.canonical.com/ubuntu hardy partner' for _, _, _, source, _ in sources_list)
+```
+
+# Generated at 2024-05-31 08:45:53.142931
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Create a temporary sources list file
+    temp_file = tempfile.NamedTemporaryFile(delete=False)
+    temp_file.write(b"deb http://archive.canonical.com/ubuntu hardy partner\n")
+    temp_file.write(b"# deb-src http://archive.canonical.com/ubuntu hardy partner\n")
+    temp_file.close()
+    
+    # Load the temporary file
+    sources_list.load(temp_file.name)
+    
+    # Check if the sources are loaded correctly
+    assert len(sources_list.files) == 1
+    assert temp_file.name in sources_list.files
+    assert len(sources_list.files[temp_file.name]) == 2
+    assert sources_list.files[temp_file.name][0] == (0, True, True, "deb http://archive.canonical.com/ubuntu hardy partner", "")
+    assert sources_list.files[temp_file.name][1] == (1, True,
+
+# Generated at 2024-05-31 08:45:57.176900
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    sources_list.files = {
+        'file1.list': [
+            (0, True, True, 'deb http://example.com/ubuntu focal main', ''),
+            (1, False, False, 'deb http://example.com/ubuntu focal universe', ''),
+            (2, True, True, 'deb-src http://example.com/ubuntu focal main', '')
+        ],
+        'file2.list': [
+            (0, True, True, 'deb http://example.com/ubuntu bionic main', ''),
+            (1, True, False, 'deb http://example.com/ubuntu bionic universe', ''),
+        ]
+    }
+
+    expected = [
+        ('file1.list', 0, True, 'deb http://example.com/ubuntu focal main', ''),
+        ('file1.list', 2, True, 'deb-src http://example.com/ubuntu focal main',
+
+# Generated at 2024-05-31 08:45:59.663678
+```python
+    module = Mock()
+    module.params = {'codename': 'focal'}
+    add_ppa_signing_keys_callback = Mock()
+    
+    original = UbuntuSourcesList(module, add_ppa_signing_keys_callback)
+    copy = original.__deepcopy__()
+    
+    assert isinstance(copy, UbuntuSourcesList)
+    assert copy.module == original.module
+    assert copy.add_ppa_signing_keys_callback == original.add_ppa_signing_keys_callback
+    assert copy.codename == original.codename
+```
+
+# Generated at 2024-05-31 08:46:01.619299
+```python
+    module = MockModule()
+    add_ppa_signing_keys_callback = MockCallback()
+    original = UbuntuSourcesList(module, add_ppa_signing_keys_callback)
+    copy = original.__deepcopy__()
+
+    assert isinstance(copy, UbuntuSourcesList)
+    assert copy.module == original.module
+    assert copy.add_ppa_signing_keys_callback == original.add_ppa_signing_keys_callback
+    assert copy.codename == original.codename
+```
+
+# Generated at 2024-05-31 08:46:10.741372
+```python
+    from unittest.mock import patch, MagicMock
+
+    with patch('ansible.module_utils.basic.AnsibleModule') as mock_module:
+        mock_module.return_value.params = {
+            'repo': 'ppa:example/ppa',
+            'state': 'present',
+            'update_cache': True,
+            'update_cache_retries': 5,
+            'update_cache_retry_max_delay': 12,
+            'filename': None,
+            'install_python_apt': True,
+            'validate_certs': True,
+            'codename': 'focal'
+        }
+        mock_module.return_value.check_mode = False
+        mock_module.return_value._diff = False
+
+        with patch('apt.Cache') as mock_cache, \
+             patch('time.sleep'), \
+             patch('os.remove'), \
+             patch('copy.deepcopy'), \
+             patch('os.path.exists', return_value=True), \
+             patch('ansible.module_utils.urls.fetch_url', return_value=(MagicMock(),
+
+# Generated at 2024-05-31 08:46:14.420877
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Mock data
+    sources_list.files = {
+        '/etc/apt/sources.list': [
+            (0, True, True, 'deb http://archive.ubuntu.com/ubuntu focal main', ''),
+            (1, True, False, 'deb http://archive.ubuntu.com/ubuntu focal universe', 'disabled')
+        ]
+    }
+    
+    # Mock methods
+    sources_list.module.atomic_move = lambda src, dest: None
+    sources_list.module.set_mode_if_different = lambda filename, mode, diff: None
+    
+    # Create a temporary directory to save the sources list
+    with tempfile.TemporaryDirectory() as tempdir:
+        sources_list.default_file = os.path.join(tempdir, 'sources.list')
+        sources_list.save()
+        
+        # Check if the file is created
+        assert os.path.exists(sources_list.default_file)
+        
+        #
+
+# Generated at 2024-05-31 08:46:18.320830
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Mock data
+    sources_list.files = {
+        '/etc/apt/sources.list': [
+            (0, True, True, 'deb http://archive.ubuntu.com/ubuntu focal main', ''),
+            (1, True, False, 'deb http://archive.ubuntu.com/ubuntu focal universe', 'disabled')
+        ]
+    }
+    
+    # Mock methods
+    sources_list.module.atomic_move = lambda src, dest: None
+    sources_list.module.set_mode_if_different = lambda filename, mode, diff: None
+    
+    # Create a temporary directory to save the file
+    with tempfile.TemporaryDirectory() as tempdir:
+        sources_list.default_file = os.path.join(tempdir, 'sources.list')
+        sources_list.save()
+        
+        # Check if the file is created
+        assert os.path.exists(sources_list.default_file)
+        
+        # Check
+
+# Generated at 2024-05-31 08:46:23.321731
+```python
+    module = Mock()
+    module.params = {'codename': 'focal'}
+    ubuntu_sources_list = UbuntuSourcesList(module)
+
+    # Mock the _parse method to return a valid source
+    ubuntu_sources_list._parse = Mock(return_value=(True, True, 'deb http://ppa.launchpad.net/test/ppa/ubuntu focal main', ''))
+
+    # Add a source to be removed later
+    ubuntu_sources_list.add_source('deb http://ppa.launchpad.net/test/ppa/ubuntu focal main')
+
+    # Ensure the source was added
+    assert 'deb http://ppa.launchpad.net/test/ppa/ubuntu focal main' in ubuntu_sources_list.repos_urls
+
+    # Remove the source
+    ubuntu_sources_list.remove_source('deb http://ppa.launchpad.net/test/ppa/ubuntu focal main')
+
+    # Ensure the source was removed
+    assert 'deb http://ppa.launchpad.net/test/ppa/ubuntu focal main' not in ubuntu_sources
+
+# Generated at 2024-05-31 08:46:26.650263
+```python
+    module = AnsibleModule(argument_spec={})
+    sources_list = SourcesList(module)
+    
+    # Mock data
+    sources_list.files = {
+        '/etc/apt/sources.list': [
+            (0, True, True, 'deb http://archive.ubuntu.com/ubuntu focal main', ''),
+            (1, True, False, 'deb http://archive.ubuntu.com/ubuntu focal universe', 'disabled'),
+        ],
+        '/etc/apt/sources.list.d/custom.list': [
+            (0, True, True, 'deb http://custom.repo/ubuntu focal main', 'custom repo'),
+        ]
+    }
+    
+    expected_output = {
+        '/etc/apt/sources.list': 'deb http://archive.ubuntu.com/ubuntu focal main\n# deb http://archive.ubuntu.com/ubuntu focal universe # disabled\n',
+        '/etc/apt/sources.list.d/custom.list': 'deb http://custom.repo/ubuntu focal main # custom repo
+
+# Generated at 2024-05-31 08:46:33.586763
+```python
+    sources_before = {
+        'file1.list': 'deb http://example.com/ubuntu focal main\n',
+        'file2.list': 'deb http://example.com/ubuntu focal universe\n'
+    }
+    sources_after = {
+        'file1.list': 'deb http://example.com/ubuntu focal main\n',
+        'file2.list': 'deb http://example.com/ubuntu focal universe\n',
+        'file3.list': 'deb http://example.com/ubuntu focal multiverse\n'
+    }
+    sourceslist_before = UbuntuSourcesList(None)
+    sourceslist_before.files = {
+        'file1.list': [(0, True, True, 'deb http://example.com/ubuntu focal main', '')],
+        'file2.list': [(0, True, True, 'deb http://example.com/ubuntu focal universe', '')]
+    }
+
+    # Create the files to simulate the state after changes
+    for filename, content in sources_after.items

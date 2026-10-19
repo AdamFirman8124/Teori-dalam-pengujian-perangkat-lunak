@@ -1,0 +1,895 @@
+
+
+# Generated at 2024-05-31 03:00:22.624718
+```python
+    module = type('obj', (object,), {'run_command': lambda x: (0, '', ''), 'get_bin_path': lambda x: '/sbin/sysctl'})
+    sysctl_data = {
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'
+    }
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = sysctl_data
+
+    expected_facts = {
+        'processor': ['Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'] * 4,
+        'processor_count': '4',
+        'processor_cores': '4'
+    }
+
+    assert openbsd_hardware.get_processor_facts() == expected_facts
+```
+
+# Generated at 2024-05-31 03:00:26.377309
+```python
+    module = type('obj', (object,), {'run_command': lambda x: (0, '', '')})
+    sysctl = {
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'
+    }
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = sysctl
+
+    expected_facts = {
+        'processor': [
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'
+        ],
+        'processor_count': '4',
+
+
+# Generated at 2024-05-31 03:00:28.905667
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1633024800', ''))
+    hardware = OpenBSDHardware(module)
+    result = hardware.get_uptime_facts()
+    assert 'uptime_seconds' in result
+    assert isinstance(result['uptime_seconds'], int)
+    assert result['uptime_seconds'] > 0
+```
+
+# Generated at 2024-05-31 03:00:33.297517
+```python
+    module = Mock()
+    module.run_command = Mock(side_effect=[
+        (0, " procs    memory       page                    disks    traps          cpu\n r b w    avm     fre  flt  re  pi  po  fr  sr wd0 fd0  int   sys   cs us sy id\n 0 0 0  47512   28160   51   0   0   0   0   0   1   0  116    89   17  0  1 99", ""),
+        (0, "total: 69268 1K-blocks allocated, 0 used, 69268 available", "")
+    ])
+    sysctl = {
+        'hw.usermem': '104857600',
+    }
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = sysctl
+
+    expected_facts = {
+        'mem
+
+# Generated at 2024-05-31 03:00:34.596068
+```python
+    collector = OpenBSDHardwareCollector()
+    assert isinstance(collector, OpenBSDHardwareCollector)
+    assert collector._fact_class == OpenBSDHardware
+    assert collector._platform == 'OpenBSD'
+```
+
+# Generated at 2024-05-31 03:00:37.003485
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1633024800', ''))
+
+    hardware = OpenBSDHardware(module)
+    result = hardware.get_uptime_facts()
+
+    assert 'uptime_seconds' in result
+    assert isinstance(result['uptime_seconds'], int)
+    assert result['uptime_seconds'] > 0
+```
+
+# Generated at 2024-05-31 03:00:38.538457
+```python
+    collector = OpenBSDHardwareCollector()
+    assert isinstance(collector, OpenBSDHardwareCollector)
+    assert collector._platform == 'OpenBSD'
+    assert collector._fact_class == OpenBSDHardware
+```
+
+# Generated at 2024-05-31 03:00:40.862572
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1609459200', ''))
+    hardware = OpenBSDHardware(module)
+    result = hardware.get_uptime_facts()
+    expected_uptime = int(time.time() - 1609459200)
+    assert result['uptime_seconds'] == expected_uptime
+```
+
+# Generated at 2024-05-31 03:00:42.901810
+```python
+    module = None  # Mock or create a suitable Ansible module object
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = {
+        'hw.disknames': 'sd0,sd1,cd0'
+    }
+    expected_facts = {
+        'devices': ['sd0', 'sd1', 'cd0']
+    }
+    assert openbsd_hardware.get_device_facts() == expected_facts
+```
+
+# Generated at 2024-05-31 03:00:46.558994
+```python
+    module = None  # Mock or create a module object as needed
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = {
+        'hw.disknames': 'sd0,cd0'
+    }
+    expected_result = {
+        'devices': ['sd0', 'cd0']
+    }
+    assert openbsd_hardware.get_device_facts() == expected_result
+```
+
+# Generated at 2024-05-31 03:00:55.282912
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1633024800', ''))
+
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {'kern.boottime': '1633024800'}
+
+    expected_uptime = int(time.time() - 1633024800)
+    result = hardware.get_uptime_facts()
+
+    assert 'uptime_seconds' in result
+    assert abs(result['uptime_seconds'] - expected_uptime) < 2
+```
+
+# Generated at 2024-05-31 03:00:59.126738
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, "47512 28160", ""))
+    module.get_bin_path = Mock(return_value="/sbin/sysctl")
+
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {
+        'hw.usermem': '104857600',
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz',
+        'hw.disknames': 'sd0,sd1'
+    }
+
+    facts = hardware.populate()
+
+    assert facts['memfree_mb'] == 27
+    assert facts['memtotal_mb'] == 100
+    assert facts['processor'] == ['Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz'] * 4
+    assert facts['processor_count'] == '4'
+    assert facts['processor_cores
+
+# Generated at 2024-05-31 03:01:01.027227
+```python
+    module = None  # Mock or create a module object as needed
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = {
+        'hw.disknames': 'sd0,cd0,wd0'
+    }
+    expected_result = {
+        'devices': ['sd0', 'cd0', 'wd0']
+    }
+    assert openbsd_hardware.get_device_facts() == expected_result
+```
+
+# Generated at 2024-05-31 03:01:02.673602
+```python
+    collector = OpenBSDHardwareCollector()
+    assert isinstance(collector, OpenBSDHardwareCollector)
+    assert collector._fact_class == OpenBSDHardware
+    assert collector._platform == 'OpenBSD'
+```
+
+# Generated at 2024-05-31 03:01:08.540678
+```python
+    module = None  # Mock or create a suitable Ansible module object
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = {
+        'hw.product': 'TestProduct',
+        'hw.version': '1.0',
+        'hw.uuid': '1234-5678-90AB-CDEF',
+        'hw.serialno': 'SN1234567890',
+        'hw.vendor': 'TestVendor'
+    }
+
+    expected_dmi_facts = {
+        'product_name': 'TestProduct',
+        'product_version': '1.0',
+        'product_uuid': '1234-5678-90AB-CDEF',
+        'product_serial': 'SN1234567890',
+        'system_vendor': 'TestVendor'
+    }
+
+    assert openbsd_hardware.get_dmi_facts() == expected_dmi_facts
+```
+
+# Generated at 2024-05-31 03:01:11.198819
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1609459200', ''))
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {'kern.boottime': '1609459200'}
+    
+    expected_uptime = int(time.time() - 1609459200)
+    result = hardware.get_uptime_facts()
+    
+    assert 'uptime_seconds' in result
+    assert abs(result['uptime_seconds'] - expected_uptime) < 2  # Allowing a small margin for time difference
+```
+
+# Generated at 2024-05-31 03:01:17.758731
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, "0 0 0  47512   28160   51   0   0   0   0   0   1   0  116    89   17  0  1 99", ""))
+    module.get_bin_path = Mock(return_value="/sbin/sysctl")
+    
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {
+        'hw.usermem': '1048576000',
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+        'hw.disknames': 'sd0,cd0',
+        'hw.product': 'TestProduct',
+        'hw.version': '1.0',
+        'hw.uuid': '1234-5678-
+
+# Generated at 2024-05-31 03:01:19.830097
+```python
+    module = None  # Mock or create a module object as needed
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = {
+        'hw.disknames': 'sd0,cd0'
+    }
+    expected_result = {
+        'devices': ['sd0', 'cd0']
+    }
+    assert openbsd_hardware.get_device_facts() == expected_result
+```
+
+# Generated at 2024-05-31 03:01:23.922313
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1633024800', ''))
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {'kern.boottime': '1633024800'}
+    
+    expected_uptime = int(time.time() - 1633024800)
+    result = hardware.get_uptime_facts()
+    
+    assert 'uptime_seconds' in result
+    assert abs(result['uptime_seconds'] - expected_uptime) < 2  # Allowing a small margin for time difference
+```
+
+# Generated at 2024-05-31 03:01:25.650751
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1609459200', ''))
+    hardware = OpenBSDHardware(module)
+    result = hardware.get_uptime_facts()
+    assert 'uptime_seconds' in result
+    assert isinstance(result['uptime_seconds'], int)
+    assert result['uptime_seconds'] > 0
+```
+
+# Generated at 2024-05-31 03:01:44.691201
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '', ''))
+    sysctl_data = {
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'
+    }
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = sysctl_data
+
+    expected_facts = {
+        'processor': [
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'
+        ],
+        'processor_count': '4',
+        '
+
+# Generated at 2024-05-31 03:01:50.516148
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '', ''))
+    sysctl_data = {
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'
+    }
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = sysctl_data
+
+    expected_facts = {
+        'processor': [
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'
+        ],
+        'processor_count': '4',
+        '
+
+# Generated at 2024-05-31 03:01:54.616024
+```python
+    module = Mock()
+    module.run_command = Mock(side_effect=[
+        (0, " procs    memory       page                    disks    traps          cpu\n r b w    avm     fre  flt  re  pi  po  fr  sr wd0 fd0  int   sys   cs us sy id\n 0 0 0  47512   28160   51   0   0   0   0   0   1   0  116    89   17  0  1 99", ""),
+        (0, "total: 69268 1K-blocks allocated, 0 used, 69268 available", "")
+    ])
+    sysctl = {
+        'hw.usermem': '104857600',
+    }
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = sysctl
+
+    expected_facts = {
+        'mem
+
+# Generated at 2024-05-31 03:01:57.688277
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1633024800', ''))
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {'kern.boottime': '1633024800'}
+    
+    expected_uptime = int(time.time() - 1633024800)
+    result = hardware.get_uptime_facts()
+    
+    assert 'uptime_seconds' in result
+    assert result['uptime_seconds'] == expected_uptime
+```
+
+# Generated at 2024-05-31 03:02:06.900673
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '', ''))
+    sysctl_data = {
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'
+    }
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = sysctl_data
+
+    expected_facts = {
+        'processor': [
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'
+        ],
+        'processor_count': '4',
+        '
+
+# Generated at 2024-05-31 03:02:11.815832
+```python
+    module = Mock()
+    module.run_command = Mock(side_effect=[
+        (0, " procs    memory       page                    disks    traps          cpu\n r b w    avm     fre  flt  re  pi  po  fr  sr wd0 fd0  int   sys   cs us sy id\n 0 0 0  47512   28160   51   0   0   0   0   0   1   0  116    89   17  0  1 99", ""),
+        (0, "total: 69268 1K-blocks allocated, 0 used, 69268 available", "")
+    ])
+    sysctl = {
+        'hw.usermem': '104857600',
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8565
+
+# Generated at 2024-05-31 03:02:13.671164
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1633024800', ''))
+    hardware = OpenBSDHardware(module)
+    result = hardware.get_uptime_facts()
+    assert 'uptime_seconds' in result
+    assert isinstance(result['uptime_seconds'], int)
+    assert result['uptime_seconds'] > 0
+```
+
+# Generated at 2024-05-31 03:02:16.233546
+```python
+    module = None  # Mock or create a module object as needed
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = {
+        'hw.disknames': 'sd0,cd0,wd0'
+    }
+    expected_result = {
+        'devices': ['sd0', 'cd0', 'wd0']
+    }
+    assert openbsd_hardware.get_device_facts() == expected_result
+```
+
+# Generated at 2024-05-31 03:02:22.527081
+```python
+    module = None  # Mock or create a suitable Ansible module object
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = {
+        'hw.product': 'TestProduct',
+        'hw.version': '1.0',
+        'hw.uuid': '1234-5678-90AB-CDEF',
+        'hw.serialno': 'SN1234567890',
+        'hw.vendor': 'TestVendor'
+    }
+
+    expected_dmi_facts = {
+        'product_name': 'TestProduct',
+        'product_version': '1.0',
+        'product_uuid': '1234-5678-90AB-CDEF',
+        'product_serial': 'SN1234567890',
+        'system_vendor': 'TestVendor'
+    }
+
+    assert openbsd_hardware.get_dmi_facts() == expected_dmi_facts
+```
+
+# Generated at 2024-05-31 03:02:23.794729
+```python
+    collector = OpenBSDHardwareCollector()
+    assert isinstance(collector, OpenBSDHardwareCollector)
+    assert collector._platform == 'OpenBSD'
+    assert collector._fact_class == OpenBSDHardware
+```
+
+# Generated at 2024-05-31 03:03:03.532389
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1633024800', ''))
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {'kern.boottime': '1633024800'}
+    
+    expected_uptime = int(time.time() - 1633024800)
+    result = hardware.get_uptime_facts()
+    
+    assert 'uptime_seconds' in result
+    assert abs(result['uptime_seconds'] - expected_uptime) < 2  # Allowing a small margin for time difference
+```
+
+# Generated at 2024-05-31 03:03:08.122035
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, "0 0 0  47512   28160   51   0   0   0   0   0   1   0  116    89   17  0  1 99", ""))
+    module.get_bin_path = Mock(return_value="/sbin/sysctl")
+    
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {
+        'hw.usermem': '1048576000',
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz',
+        'hw.disknames': 'sd0,cd0',
+        'hw.product': 'TestProduct',
+        'hw.version': '1.0',
+        'hw.uuid': '1234-5678-
+
+# Generated at 2024-05-31 03:03:12.890163
+```python
+    module = None  # Mock module object
+    sysctl_data = {
+        'hw.product': 'TestProduct',
+        'hw.version': '1.0',
+        'hw.uuid': '1234-5678-90AB-CDEF',
+        'hw.serialno': 'SN1234567890',
+        'hw.vendor': 'TestVendor'
+    }
+
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = sysctl_data
+
+    expected_dmi_facts = {
+        'product_name': 'TestProduct',
+        'product_version': '1.0',
+        'product_uuid': '1234-5678-90AB-CDEF',
+        'product_serial': 'SN1234567890',
+        'system_vendor': 'TestVendor'
+    }
+
+    assert openbsd_hardware.get_dmi_facts() == expected_dmi_facts
+```
+
+# Generated at 2024-05-31 03:03:16.659778
+```python
+    module = Mock()
+    module.run_command = Mock(side_effect=[
+        (0, " procs    memory       page                    disks    traps          cpu\n r b w    avm     fre  flt  re  pi  po  fr  sr wd0 fd0  int   sys   cs us sy id\n 0 0 0  47512   28160   51   0   0   0   0   0   1   0  116    89   17  0  1 99", ""),
+        (0, "total: 69268 1K-blocks allocated, 0 used, 69268 available", "")
+    ])
+    sysctl = {
+        'hw.usermem': '104857600',  # 100 MB
+    }
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = sysctl
+
+    expected_f
+
+# Generated at 2024-05-31 03:03:18.291941
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1609459200', ''))
+    hardware = OpenBSDHardware(module)
+    result = hardware.get_uptime_facts()
+    assert 'uptime_seconds' in result
+    assert isinstance(result['uptime_seconds'], int)
+    assert result['uptime_seconds'] > 0
+```
+
+# Generated at 2024-05-31 03:03:21.911047
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, "0 0 0  47512   28160   51   0   0   0   0   0   1   0  116    89   17  0  1 99", ""))
+    module.get_bin_path = Mock(return_value="/sbin/sysctl")
+    
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {
+        'hw.usermem': '1048576000',
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz',
+        'hw.disknames': 'sd0,sd1'
+    }
+    
+    facts = hardware.populate()
+    
+    assert facts['memfree_mb'] == 27
+    assert facts['memtotal_mb'] ==
+
+# Generated at 2024-05-31 03:03:25.621279
+```python
+    module = None  # Mock or create a suitable Ansible module object
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = {
+        'hw.disknames': 'sd0,cd0'
+    }
+    expected_facts = {
+        'devices': ['sd0', 'cd0']
+    }
+    assert openbsd_hardware.get_device_facts() == expected_facts
+```
+
+# Generated at 2024-05-31 03:03:27.520412
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1609459200', ''))
+    hardware = OpenBSDHardware(module)
+    result = hardware.get_uptime_facts()
+    assert 'uptime_seconds' in result
+    assert isinstance(result['uptime_seconds'], int)
+    assert result['uptime_seconds'] > 0
+```
+
+# Generated at 2024-05-31 03:03:28.742759
+```python
+    collector = OpenBSDHardwareCollector()
+    assert isinstance(collector, OpenBSDHardwareCollector)
+    assert collector._fact_class == OpenBSDHardware
+    assert collector._platform == 'OpenBSD'
+```
+
+# Generated at 2024-05-31 03:03:31.072511
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1633024800', ''))
+    module.get_bin_path = Mock(return_value='/sbin/sysctl')
+
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {'kern.boottime': '1633024800'}
+
+    expected_uptime = int(time.time() - 1633024800)
+    result = hardware.get_uptime_facts()
+
+    assert 'uptime_seconds' in result
+    assert result['uptime_seconds'] == expected_uptime
+```
+
+# Generated at 2024-05-31 03:04:50.994464
+```python
+    collector = OpenBSDHardwareCollector()
+    assert isinstance(collector, OpenBSDHardwareCollector)
+    assert collector._platform == 'OpenBSD'
+    assert collector._fact_class == OpenBSDHardware
+```
+
+# Generated at 2024-05-31 03:04:54.560977
+```python
+    module = None  # Mock or create a suitable Ansible module object
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = {
+        'hw.product': 'TestProduct',
+        'hw.version': '1.0',
+        'hw.uuid': '1234-5678-90AB-CDEF',
+        'hw.serialno': 'SN1234567890',
+        'hw.vendor': 'TestVendor'
+    }
+
+    expected_dmi_facts = {
+        'product_name': 'TestProduct',
+        'product_version': '1.0',
+        'product_uuid': '1234-5678-90AB-CDEF',
+        'product_serial': 'SN1234567890',
+        'system_vendor': 'TestVendor'
+    }
+
+    assert openbsd_hardware.get_dmi_facts() == expected_dmi_facts
+```
+
+# Generated at 2024-05-31 03:04:58.333169
+```python
+    module = Mock()
+    module.run_command = Mock(side_effect=[
+        (0, " procs    memory       page                    disks    traps          cpu\n r b w    avm     fre  flt  re  pi  po  fr  sr wd0 fd0  int   sys   cs us sy id\n 0 0 0  47512   28160   51   0   0   0   0   0   1   0  116    89   17  0  1 99", ""),
+        (0, "total: 69268 1K-blocks allocated, 0 used, 69268 available", "")
+    ])
+    sysctl = {
+        'hw.usermem': '104857600',
+    }
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = sysctl
+
+    expected_facts = {
+        'mem
+
+# Generated at 2024-05-31 03:05:04.225767
+```python
+    module = Mock()
+    module.run_command = Mock(side_effect=[
+        (0, " procs    memory       page                    disks    traps          cpu\n 0 0 0  47512   28160   51   0   0   0   0   0   1   0  116    89   17  0  1 99", ""),
+        (0, "total: 69268 1K-blocks allocated, 0 used, 69268 available", ""),
+        (0, "1633024800", "")
+    ])
+    module.get_bin_path = Mock(return_value="/sbin/sysctl")
+    
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {
+        'hw.usermem': '1048576000',
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-
+
+# Generated at 2024-05-31 03:05:07.907854
+```python
+    module = Mock()
+    module.run_command = Mock(side_effect=[
+        (0, " procs    memory       page                    disks    traps          cpu\n 0 0 0  47512   28160   51   0   0   0   0   0   1   0  116    89   17  0  1 99", ""),
+        (0, "total: 69268 1K-blocks allocated, 0 used, 69268 available", "")
+    ])
+    sysctl = {
+        'hw.usermem': '104857600',
+    }
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = sysctl
+
+    expected_facts = {
+        'memfree_mb': 27,
+        'memtotal_mb': 100,
+        'swapfree_mb': 67,
+        'swaptotal_mb': 67,
+   
+
+# Generated at 2024-05-31 03:05:11.612006
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '', ''))
+    sysctl_data = {
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'
+    }
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = sysctl_data
+
+    expected_facts = {
+        'processor': [
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'
+        ],
+        'processor_count': '4',
+        '
+
+# Generated at 2024-05-31 03:05:16.456026
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, "0 0 0  47512   28160   51   0   0   0   0   0   1   0  116    89   17  0  1 99", ""))
+    module.get_bin_path = Mock(return_value="/sbin/sysctl")
+    
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {
+        'hw.usermem': '1048576000',
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+        'hw.disknames': 'sd0,cd0',
+        'hw.product': 'TestProduct',
+        'hw.version': '1.0',
+        'hw.uuid': '1234-5678-
+
+# Generated at 2024-05-31 03:05:22.341057
+```python
+    module = Mock()
+    module.run_command = Mock(side_effect=[
+        (0, " procs    memory       page                    disks    traps          cpu\n r b w    avm     fre  flt  re  pi  po  fr  sr wd0 fd0  int   sys   cs us sy id\n 0 0 0  47512   28160   51   0   0   0   0   0   1   0  116    89   17  0  1 99", ""),
+        (0, "total: 69268 1K-blocks allocated, 0 used, 69268 available", "")
+    ])
+    sysctl = {
+        'hw.usermem': '104857600',
+    }
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = sysctl
+
+    expected_memory_facts = {
+        '
+
+# Generated at 2024-05-31 03:05:28.524778
+```python
+    module = Mock()
+    module.run_command = Mock(side_effect=[
+        (0, " procs    memory       page                    disks    traps          cpu\n r b w    avm     fre  flt  re  pi  po  fr  sr wd0 fd0  int   sys   cs us sy id\n 0 0 0  47512   28160   51   0   0   0   0   0   1   0  116    89   17  0  1 99", ""),
+        (0, "total: 69268 1K-blocks allocated, 0 used, 69268 available", "")
+    ])
+    sysctl = {
+        'hw.usermem': '104857600',  # 100 MB
+    }
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = sysctl
+
+    expected_f
+
+# Generated at 2024-05-31 03:05:30.269451
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1633024800', ''))
+    hardware = OpenBSDHardware(module)
+    result = hardware.get_uptime_facts()
+    assert 'uptime_seconds' in result
+    assert isinstance(result['uptime_seconds'], int)
+    assert result['uptime_seconds'] > 0
+```
+
+# Generated at 2024-05-31 03:08:11.826061
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1609459200', ''))
+    module.get_bin_path = Mock(return_value='/sbin/sysctl')
+
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {'kern.boottime': '1609459200'}
+
+    expected_uptime = int(time.time() - 1609459200)
+    result = hardware.get_uptime_facts()
+
+    assert 'uptime_seconds' in result
+    assert abs(result['uptime_seconds'] - expected_uptime) < 2  # Allowing a small margin for execution time
+```
+
+# Generated at 2024-05-31 03:08:15.451501
+```python
+    module = type('obj', (object,), {'run_command': lambda x: (0, '', '')})
+    sysctl = {
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'
+    }
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = sysctl
+
+    expected_facts = {
+        'processor': [
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'
+        ],
+        'processor_count': '4',
+
+
+# Generated at 2024-05-31 03:08:18.902840
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '', ''))
+    sysctl_data = {
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'
+    }
+    openbsd_hardware = OpenBSDHardware(module)
+    openbsd_hardware.sysctl = sysctl_data
+
+    expected_facts = {
+        'processor': [
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+            'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz'
+        ],
+        'processor_count': '4',
+        '
+
+# Generated at 2024-05-31 03:08:23.101572
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1633024800', ''))
+
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {'kern.boottime': '1633024800'}
+
+    expected_uptime = int(time.time() - 1633024800)
+    actual_facts = hardware.get_uptime_facts()
+
+    assert 'uptime_seconds' in actual_facts
+    assert abs(actual_facts['uptime_seconds'] - expected_uptime) < 2
+```
+
+# Generated at 2024-05-31 03:08:26.322405
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, "0 0 0  47512   28160   51   0   0   0   0   0   1   0  116    89   17  0  1 99", ""))
+    module.get_bin_path = Mock(return_value="/sbin/sysctl")
+    
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {
+        'hw.usermem': '1048576000',
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz',
+        'hw.disknames': 'sd0,cd0',
+        'hw.product': 'TestProduct',
+        'hw.version': '1.0',
+        'hw.uuid': '1234-5678-
+
+# Generated at 2024-05-31 03:08:27.425154
+```python
+    collector = OpenBSDHardwareCollector()
+    assert isinstance(collector, OpenBSDHardwareCollector)
+    assert collector._fact_class == OpenBSDHardware
+    assert collector._platform == 'OpenBSD'
+```
+
+# Generated at 2024-05-31 03:08:28.600762
+```python
+    collector = OpenBSDHardwareCollector()
+    assert isinstance(collector, OpenBSDHardwareCollector)
+    assert collector._fact_class == OpenBSDHardware
+    assert collector._platform == 'OpenBSD'
+```
+
+# Generated at 2024-05-31 03:08:29.892805
+```python
+    collector = OpenBSDHardwareCollector()
+    assert isinstance(collector, OpenBSDHardwareCollector)
+    assert collector._platform == 'OpenBSD'
+    assert collector._fact_class == OpenBSDHardware
+```
+
+# Generated at 2024-05-31 03:08:33.366857
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, "47512 28160", ""))
+    module.get_bin_path = Mock(return_value="/sbin/sysctl")
+    
+    hardware = OpenBSDHardware(module)
+    hardware.sysctl = {
+        'hw.usermem': '1048576000',
+        'hw.ncpuonline': '4',
+        'hw.model': 'Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz',
+        'hw.disknames': 'sd0,cd0'
+    }
+    
+    facts = hardware.populate()
+    
+    assert facts['memfree_mb'] == 27
+    assert facts['memtotal_mb'] == 1000
+    assert facts['swapfree_mb'] == 67
+    assert facts['swaptotal_mb'] == 67
+    assert facts['processor'] == ['Intel(R) Core(TM) i7-8550U
+
+# Generated at 2024-05-31 03:08:35.573306
+```python
+    module = Mock()
+    module.run_command = Mock(return_value=(0, '1633024800', ''))
+    hardware = OpenBSDHardware(module)
+    result = hardware.get_uptime_facts()
+    expected_uptime = int(time.time() - 1633024800)
+    assert result['uptime_seconds'] == expected_uptime
+```

@@ -1,0 +1,1496 @@
+
+
+# Generated at 2024-03-18 08:33:33.383142
+```python
+    from unittest.mock import patch, MagicMock
+    import logging
+
+    # Setup the test
+    mock_tqdm = MagicMock()
+    mock_logger = MagicMock()
+    mock_loggers = [mock_logger]
+
+    with patch('tqdm.contrib.logging.std_tqdm', mock_tqdm):
+        with patch('tqdm.contrib.logging.logging_redirect_tqdm') as mock_logging_redirect:
+            # Execute the context manager
+            with tqdm_logging_redirect(loggers=mock_loggers) as pbar:
+                # Inside the context manager, pbar should be the mock_tqdm instance
+                assert pbar is mock_tqdm
+
+            # Check if logging_redirect_tqdm was called with the correct parameters
+            mock_logging_redirect.assert_called_once_with(loggers=mock_loggers, tqdm_class=mock_tqdm)
+
+            # Check if the logger's handlers were temporarily replaced
+            mock_logger.handlers.__iadd__.assert_called()
+            mock_logger
+
+# Generated at 2024-03-18 08:33:38.311713
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info('Test without redirection')
+    assert 'Test without redirection' in stream.getvalue()
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info('Test with redirection')
+        assert 'Test with redirection' not in stream.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+    logger.setLevel(logging.NOTSET)
+```
+
+# Generated at 2024-03-18 08:33:46.331797
+```python
+    # Capture the output during the test
+    from io import StringIO
+    stream = StringIO()
+    handler = _TqdmLoggingHandler(tqdm_class=std_tqdm)
+    handler.stream = stream
+
+    # Create a log record
+    record = logging.LogRecord(
+        name="test",
+        level=logging.INFO,
+        pathname=__file__,
+        lineno=100,
+        msg="Test message",
+        args=(),
+        exc_info=None,
+    )
+
+    # Format the record
+    formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+
+    # Emit the record using the handler
+    handler.emit(record)
+
+    # Check the output
+    stream_value = stream.getvalue()
+    expected_output = "test - INFO - Test message\n"
+    assert stream_value == expected_output, f"Expected '{expected_output}', got '{stream_value}'"
+```
+
+# Generated at 2024-03-18 08:33:53.132485
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info("Test message without redirection")
+    assert "Test message without redirection" in stream.getvalue()
+
+    # Clear the stream
+    stream.seek(0)
+    stream.truncate(0)
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info("Test message with redirection")
+        assert "Test message with redirection" not in stream.getvalue()
+
+    # Check if the message was redirected to tqdm.write
+    assert "Test message with redirection" in std_tqdm.write.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+    std_tqdm.write.getvalue().seek(0)
+    std_tqdm.write.getvalue().truncate(0)
+```
+
+# Generated at 2024-03-18 08:33:59.390425
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info("Test message without redirection")
+    assert "Test message without redirection" in stream.getvalue()
+
+    # Clear the stream
+    stream.seek(0)
+    stream.truncate(0)
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info("Test message with redirection")
+        assert "Test message with redirection" not in stream.getvalue()
+
+    # Check if the message was redirected to tqdm.write
+    assert "Test message with redirection" in std_tqdm.write.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+```
+
+# Generated at 2024-03-18 08:34:06.351862
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    with patch('tqdm.tqdm', new=MagicMock()) as mock_tqdm:
+        # Mock the logging_redirect_tqdm context manager
+        with patch('tqdm.contrib.logging.logging_redirect_tqdm') as mock_logging_redirect:
+            # Create a list to simulate loggers
+            mock_loggers = [MagicMock(), MagicMock()]
+
+            # Use the tqdm_logging_redirect in a with statement
+            with tqdm_logging_redirect(loggers=mock_loggers, total=100, desc='Test') as pbar:
+                # Check if the tqdm class was called with the correct parameters
+                mock_tqdm.assert_called_once_with(total=100, desc='Test')
+
+                # Check if the logging_redirect_tqdm context manager was called with the correct parameters
+                mock_logging_redirect.assert_called_once_with
+
+# Generated at 2024-03-18 08:34:16.299777
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info('Test without redirection')
+    assert 'Test without redirection' in stream.getvalue()
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info('Test with redirection')
+        assert 'Test with redirection' not in stream.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+    handler.close()
+```
+
+# Generated at 2024-03-18 08:34:20.325113
+```python
+    # Capture the output of the logging
+    from io import StringIO
+    stream = StringIO()
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Use the context manager to redirect logging
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info("Test message")
+
+    # Check that the output was redirected to tqdm.write
+    assert "Test message" in stream.getvalue()
+
+    # Clean up by removing the handler
+    logger.removeHandler(handler)
+```
+
+# Generated at 2024-03-18 08:34:25.270413
+```python
+    # Capture the output during the test
+    from io import StringIO
+    stream = StringIO()
+    handler = _TqdmLoggingHandler(tqdm_class=std_tqdm)
+    handler.stream = stream
+
+    # Create a log record
+    record = logging.LogRecord(
+        name="test",
+        level=logging.INFO,
+        pathname=__file__,
+        lineno=1,
+        msg="Test message",
+        args=(),
+        exc_info=None,
+    )
+
+    # Format the record
+    formatter = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
+    handler.setFormatter(formatter)
+
+    # Emit the record
+    handler.emit(record)
+
+    # Check the output
+    stream_value = stream.getvalue()
+    assert stream_value.strip() == "test - INFO - Test message"
+```
+
+# Generated at 2024-03-18 08:34:31.701734
+```python
+    # Capture the output during the test
+    from io import StringIO
+    stream = StringIO()
+    handler = _TqdmLoggingHandler(tqdm_class=std_tqdm)
+    handler.stream = stream
+
+    # Create a log record
+    record = logging.LogRecord(
+        name="test",
+        level=logging.INFO,
+        pathname=__file__,
+        lineno=1,
+        msg="Test message",
+        args=(),
+        exc_info=None,
+    )
+
+    # Format the record
+    formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+
+    # Emit the record using the handler
+    handler.emit(record)
+
+    # Check the output
+    stream_value = stream.getvalue()
+    assert stream_value.strip() == "test - INFO - Test message"
+```
+
+# Generated at 2024-03-18 08:34:49.424546
+```python
+    # Capture the output during the test
+    from io import StringIO
+    stream = StringIO()
+    handler = _TqdmLoggingHandler(tqdm_class=std_tqdm)
+    handler.stream = stream
+
+    # Create a log record
+    record = logging.LogRecord(
+        name="test",
+        level=logging.INFO,
+        pathname=__file__,
+        lineno=100,
+        msg="Test message",
+        args=(),
+        exc_info=None,
+    )
+
+    # Format the record
+    formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+
+    # Emit the record using the handler
+    handler.emit(record)
+
+    # Check the output
+    stream_value = stream.getvalue()
+    expected_output = "test - INFO - Test message\n"
+    assert stream_value == expected_output, f"Expected '{expected_output}', got '{stream_value}'"
+```
+
+# Generated at 2024-03-18 08:34:55.535074
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the tqdm class to avoid actual output during testing
+    mock_tqdm_class = MagicMock()
+
+    # Mock the logging.Logger class to avoid actual logging during testing
+    mock_logger = MagicMock()
+
+    # Mock the logging.getLogger function to return our mock logger
+    with patch('logging.getLogger', return_value=mock_logger):
+        # Use the context manager to test the logging redirection
+        with tqdm_logging_redirect(loggers=[mock_logger], tqdm_class=mock_tqdm_class) as pbar:
+            # Check if the mock tqdm class was called
+            mock_tqdm_class.assert_called_once()
+
+            # Check if the logging_redirect_tqdm context manager was called
+            # This is indicated by the logger's handlers being temporarily replaced
+            # with a _TqdmLoggingHandler instance
+            assert any(isinstance(handler, _TqdmLoggingHandler) for handler in mock_logger.handlers)
+
+            #
+
+# Generated at 2024-03-18 08:35:01.802407
+```python
+    from unittest.mock import patch, MagicMock
+
+    # Mock the tqdm class to avoid actual output during testing
+    mock_tqdm_class = MagicMock()
+
+    # Mock the logging.Logger class to avoid actual logging during testing
+    mock_logger = MagicMock(spec=logging.Logger)
+    mock_logger.handlers = []
+
+    # Use the patch context manager to replace the actual classes with mocks
+    with patch('tqdm.std.tqdm', mock_tqdm_class), \
+         patch('logging.Logger', return_value=mock_logger):
+
+        # Call the tqdm_logging_redirect context manager
+        with tqdm_logging_redirect(loggers=[mock_logger]) as pbar:
+            # Check if the tqdm class was called correctly
+            mock_tqdm_class.assert_called_once()
+
+            # Check if the logging_redirect_tqdm context manager was entered
+            assert len(mock_logger.handlers) == 1
+            assert isinstance(mock_logger.handlers[0], _TqdmLoggingHandler)
+
+        # Check
+
+# Generated at 2024-03-18 08:35:09.857533
+```python
+    # Capture the output of the tqdm.write method
+    with unittest.mock.patch('tqdm.std.tqdm.write') as mock_write:
+        # Create a log record
+        record = logging.LogRecord(
+            name="test",
+            level=logging.INFO,
+            pathname=__file__,
+            lineno=100,
+            msg="Test message",
+            args=None,
+            exc_info=None,
+        )
+
+        # Create a _TqdmLoggingHandler instance
+        handler = _TqdmLoggingHandler()
+
+        # Set a simple formatter for the handler
+        formatter = logging.Formatter('%(message)s')
+        handler.setFormatter(formatter)
+
+        # Emit the record using the handler
+        handler.emit(record)
+
+        # Check that tqdm.write was called with the formatted message
+        mock_write.assert_called_once_with("Test message", file=None)
+```
+
+# Generated at 2024-03-18 08:35:18.350506
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    mock_tqdm = MagicMock(spec=tqdm)
+
+    # Mock the logging.Logger class to avoid actual logging during testing
+    mock_logger = MagicMock(spec=logging.Logger)
+
+    # Mock the logging.getLogger function to return our mock logger
+    with patch('logging.getLogger', return_value=mock_logger):
+        # Use the mock tqdm class for the context manager
+        with tqdm_logging_redirect(tqdm_class=mock_tqdm) as pbar:
+            # Check that the mock tqdm class was called to create a progress bar
+            mock_tqdm.assert_called_once()
+
+            # Check that the progress bar is the one returned by the context manager
+            assert pbar is mock_tqdm.return_value.__enter__.return_value
+
+            # Check that the logging_redirect_tqdm context manager was called
+            # with the
+
+# Generated at 2024-03-18 08:35:25.077015
+```python
+    from unittest.mock import patch, MagicMock
+    import logging
+
+    # Setup the test environment
+    mock_tqdm = MagicMock()
+    mock_logger = MagicMock()
+    mock_loggers = [mock_logger]
+
+    # Patch the tqdm class and the logging_redirect_tqdm context manager
+    with patch('tqdm.contrib.logging.std_tqdm', mock_tqdm), \
+         patch('tqdm.contrib.logging.logging_redirect_tqdm') as mock_logging_redirect:
+
+        # Call the function under test
+        with tqdm_logging_redirect(loggers=mock_loggers):
+            mock_tqdm.assert_called_once()
+            mock_logging_redirect.assert_called_once_with(loggers=mock_loggers, tqdm_class=mock_tqdm)
+
+        # Check if the logging handlers were restored after exiting the context
+        mock_logger.handlers.__setitem__.assert_called()
+```
+
+# Generated at 2024-03-18 08:35:33.102662
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    with patch('tqdm.tqdm', new=MagicMock()) as mock_tqdm:
+        # Mock the logging_redirect_tqdm context manager
+        with patch('tqdm.contrib.logging.logging_redirect_tqdm') as mock_logging_redirect:
+            # Create a list to simulate loggers
+            mock_loggers = [MagicMock(), MagicMock()]
+
+            # Use the tqdm_logging_redirect context manager
+            with tqdm_logging_redirect(loggers=mock_loggers) as mock_pbar:
+                # Check if the tqdm class was called correctly
+                mock_tqdm.assert_called_once_with()
+
+                # Check if the logging_redirect_tqdm context manager was called correctly
+                mock_logging_redirect.assert_called_once_with(loggers=mock_loggers, tqdm_class=mock_tqdm)
+
+                # Check if the context manager
+
+# Generated at 2024-03-18 08:35:37.801438
+```python
+    # Capture the output of the logging
+    from io import StringIO
+    stream = StringIO()
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Use the context manager to redirect logging
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info("Test message")
+
+    # Check that the output was redirected to tqdm.write
+    assert "Test message" in stream.getvalue()
+
+    # Clean up by removing the handler
+    logger.removeHandler(handler)
+```
+
+# Generated at 2024-03-18 08:35:45.270234
+```python
+    from io import StringIO
+    import logging
+
+    # Setup the logger
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info('Test without redirect')
+    assert 'Test without redirect' in stream.getvalue()
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info('Test with redirect')
+        assert 'Test with redirect' not in stream.getvalue()
+
+    # Ensure the original handler is restored
+    logger.info('Test after redirect')
+    assert 'Test after redirect' in stream.getvalue()
+```
+
+# Generated at 2024-03-18 08:35:50.054039
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info('Test without redirect')
+    assert 'Test without redirect' in stream.getvalue()
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info('Test with redirect')
+        assert 'Test with redirect' not in stream.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+```
+
+# Generated at 2024-03-18 08:36:11.986649
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    with patch('tqdm.tqdm', MagicMock()) as mock_tqdm:
+        # Mock the logging.Logger class to avoid actual logging during testing
+        with patch('logging.Logger', MagicMock()) as mock_logger:
+            # Create a list of mock loggers
+            mock_loggers = [mock_logger for _ in range(2)]
+
+            # Use the context manager to test the redirection
+            with tqdm_logging_redirect(loggers=mock_loggers) as pbar:
+                # Check if the tqdm class was called correctly
+                mock_tqdm.assert_called_once()
+
+                # Check if the logging_redirect_tqdm context manager was entered
+                assert pbar is not None, "tqdm_logging_redirect did not yield a progress bar"
+
+                # Check if the loggers' handlers were replaced
+                for logger
+
+# Generated at 2024-03-18 08:36:20.463684
+```python
+    # Capture the output of the tqdm.write method
+    with unittest.mock.patch('tqdm.std.tqdm.write') as mock_write:
+        # Create a log record
+        record = logging.LogRecord(
+            name="test",
+            level=logging.INFO,
+            pathname=__file__,
+            lineno=100,
+            msg="Test message",
+            args=None,
+            exc_info=None
+        )
+
+        # Create a _TqdmLoggingHandler instance
+        tqdm_handler = _TqdmLoggingHandler()
+
+        # Set a simple formatter for the handler
+        formatter = logging.Formatter('%(message)s')
+        tqdm_handler.setFormatter(formatter)
+
+        # Emit the log record using the handler
+        tqdm_handler.emit(record)
+
+        # Check that tqdm.write was called with the formatted message
+        mock_write.assert_called_once_with("Test message", file=None)
+```
+
+# Generated at 2024-03-18 08:36:25.664833
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info('Test without redirect')
+    assert 'Test without redirect' in stream.getvalue()
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info('Test with redirect')
+        assert 'Test with redirect' not in stream.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+    logger.setLevel(logging.NOTSET)
+```
+
+# Generated at 2024-03-18 08:36:33.223582
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    with patch('tqdm.tqdm', MagicMock()) as mock_tqdm:
+        # Mock the logging.Logger class to control the logger's behavior
+        with patch('logging.Logger', MagicMock()) as mock_logger:
+            # Create a list of mock loggers
+            mock_loggers = [mock_logger for _ in range(2)]
+
+            # Use the context manager to test the redirection
+            with tqdm_logging_redirect(loggers=mock_loggers) as pbar:
+                # Check if the tqdm class was called correctly
+                mock_tqdm.assert_called_once()
+
+                # Check if the logging_redirect_tqdm context manager was entered
+                assert pbar is not None, "tqdm_logging_redirect did not yield a progress bar"
+
+                # Check if the loggers' handlers were replaced
+                for logger
+
+# Generated at 2024-03-18 08:36:40.334111
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    with patch('tqdm.tqdm', MagicMock()) as mock_tqdm:
+        # Mock the logging_redirect_tqdm context manager
+        with patch('tqdm.contrib.logging.logging_redirect_tqdm', MagicMock()) as mock_logging_redirect:
+            # Create a list to simulate loggers
+            mock_loggers = [MagicMock(), MagicMock()]
+
+            # Call the tqdm_logging_redirect with mock loggers
+            with tqdm_logging_redirect(loggers=mock_loggers) as mock_pbar:
+                # Check if the tqdm class was called correctly
+                mock_tqdm.assert_called_once()
+
+                # Check if the logging_redirect_tqdm context manager was called with the correct arguments
+                mock_logging_redirect.assert_called_once_with(loggers=mock_loggers, tqdm_class=mock_tqdm)
+
+                # Check if
+
+# Generated at 2024-03-18 08:36:46.625598
+```python
+    # Capture the output during the test
+    from io import StringIO
+    stream = StringIO()
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Create a tqdm progress bar and a log message
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info("Test message inside tqdm context")
+        progress_bar = std_tqdm(range(1))
+        for _ in progress_bar:
+            pass
+
+    # Check that the log message was redirected to the tqdm write method
+    output = stream.getvalue()
+    assert "Test message inside tqdm context" in output
+
+    # Clean up by removing the handler
+    logger.removeHandler(handler)
+```
+
+# Generated at 2024-03-18 08:36:53.391013
+```python
+    import logging
+    from io import StringIO
+    from unittest.mock import patch
+
+    # Setup the logger to capture the output
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Mock the tqdm.write method to capture the output for assertion
+    with patch('tqdm.std.tqdm.write') as mock_tqdm_write:
+        # Use the context manager to redirect logging
+        with tqdm_logging_redirect(loggers=[logger]):
+            logger.info("Test message")
+
+        # Check that the message was redirected to tqdm.write
+        mock_tqdm_write.assert_called_once_with("Test message", file=sys.stderr)
+
+        # Check that the logger's original handler is restored
+        assert logger.handlers == [handler]
+
+        # Check that the stream captured the message (meaning it was not redirected)
+        assert "Test message" not in stream.getvalue
+
+# Generated at 2024-03-18 08:37:00.056674
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info('Test without redirection')
+    assert 'Test without redirection' in stream.getvalue()
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info('Test with redirection')
+        assert 'Test with redirection' not in stream.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+    handler.close()
+```
+
+# Generated at 2024-03-18 08:37:04.269175
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info('Test without redirection')
+    assert 'Test without redirection' in stream.getvalue()
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info('Test with redirection')
+        assert 'Test with redirection' not in stream.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+    handler.close()
+```
+
+# Generated at 2024-03-18 08:37:12.663896
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    with patch('tqdm.tqdm', MagicMock()) as mock_tqdm:
+        # Mock the logging_redirect_tqdm context manager
+        with patch('tqdm.contrib.logging.logging_redirect_tqdm', MagicMock()) as mock_logging_redirect:
+            # Create a list to simulate loggers
+            mock_loggers = [MagicMock(), MagicMock()]
+
+            # Use the tqdm_logging_redirect in a with statement
+            with tqdm_logging_redirect(loggers=mock_loggers, total=100, desc='Test') as mock_pbar:
+                # Check if the tqdm class was called with the correct arguments
+                mock_tqdm.assert_called_once_with(total=100, desc='Test')
+
+                # Check if the logging_redirect_tqdm context manager was called with the correct arguments
+                mock_logging_redirect.assert_called_once_with
+
+# Generated at 2024-03-18 08:37:42.226594
+```python
+    from unittest.mock import patch, MagicMock
+    import logging
+
+    # Setup the test
+    mock_tqdm_class = MagicMock()
+    mock_logger = MagicMock()
+    mock_loggers = [mock_logger]
+
+    # Execute the context manager
+    with tqdm_logging_redirect(loggers=mock_loggers, tqdm_class=mock_tqdm_class) as pbar:
+        # Inside the context manager, check if the logging handler was replaced
+        mock_logger.handlers.append.assert_called_once()
+        # Check if the original handler was removed
+        assert len(mock_logger.handlers) == 1
+        # Check if the new handler is an instance of _TqdmLoggingHandler
+        assert isinstance(mock_logger.handlers[0], _TqdmLoggingHandler)
+        # Check if the tqdm_class passed to the context manager is used
+        mock_tqdm_class.assert_called_once()
+
+    # After the context manager, check if the original handlers are restored
+    mock_logger
+
+# Generated at 2024-03-18 08:37:49.276338
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    with patch('tqdm.tqdm', MagicMock()) as mock_tqdm:
+        # Mock the logging_redirect_tqdm context manager
+        with patch('tqdm.contrib.logging.logging_redirect_tqdm', MagicMock()) as mock_logging_redirect:
+            # Create a list to simulate loggers
+            mock_loggers = [MagicMock(), MagicMock()]
+
+            # Use the tqdm_logging_redirect in a with statement
+            with tqdm_logging_redirect(loggers=mock_loggers, total=100, desc='Test') as mock_pbar:
+                # Check if the tqdm class was called with the correct arguments
+                mock_tqdm.assert_called_once_with(total=100, desc='Test')
+
+                # Check if the logging_redirect_tqdm context manager was called with the correct arguments
+                mock_logging_redirect.assert_called_once_with
+
+# Generated at 2024-03-18 08:37:55.261957
+```python
+    # Setup
+    logger = logging.getLogger('test')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info("Test message without redirection")
+    assert "Test message without redirection" in stream.getvalue()
+
+    # Clear stream
+    stream.seek(0)
+    stream.truncate(0)
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info("Test message with redirection")
+        assert "Test message with redirection" not in stream.getvalue()
+
+    # Check if the message was redirected to tqdm
+    with std_tqdm.external_write_mode(file=io.StringIO()) as fake_output:
+        std_tqdm.write("Test message with redirection", file=fake_output)
+        assert "Test message with redirection" in fake_output.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+```
+
+# Generated at 2024-03-18 08:38:03.259401
+```python
+    # Capture the output of the tqdm.write method
+    with unittest.mock.patch('tqdm.std.tqdm.write') as mock_write:
+        handler = _TqdmLoggingHandler()
+        record = logging.LogRecord(
+            name="test",
+            level=logging.INFO,
+            pathname=__file__,
+            lineno=100,
+            msg="Test message",
+            args=(),
+            exc_info=None,
+        )
+        formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+
+        # Emit a log record
+        handler.emit(record)
+
+        # Check that tqdm.write was called with the formatted message
+        mock_write.assert_called_once_with('test - INFO - Test message', file=sys.stderr)
+```
+
+# Generated at 2024-03-18 08:38:09.696022
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    with patch('tqdm.tqdm', new=MagicMock()) as mock_tqdm:
+        # Mock the logging_redirect_tqdm context manager
+        with patch('tqdm.contrib.logging.logging_redirect_tqdm') as mock_logging_redirect:
+            # Create a list to simulate loggers
+            mock_loggers = [MagicMock(), MagicMock()]
+
+            # Use the tqdm_logging_redirect in a with statement
+            with tqdm_logging_redirect(loggers=mock_loggers, total=100, desc='Test') as pbar:
+                # Check if the tqdm class was called with the correct parameters
+                mock_tqdm.assert_called_once_with(total=100, desc='Test')
+
+                # Check if the logging_redirect_tqdm context manager was called with the correct parameters
+                mock_logging_redirect.assert_called_once_with
+
+# Generated at 2024-03-18 08:38:13.804404
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info('Test without redirection')
+    assert 'Test without redirection' in stream.getvalue()
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info('Test with redirection')
+        assert 'Test with redirection' not in stream.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+    stream.close()
+```
+
+# Generated at 2024-03-18 08:38:20.660767
+```python
+    from io import StringIO
+    import logging
+
+    # Setup the logger
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info('Test without redirect')
+    assert 'Test without redirect' in stream.getvalue()
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info('Test with redirect')
+        assert 'Test with redirect' not in stream.getvalue()
+
+    # Check if the log message was redirected properly
+    with std_tqdm.external_write_mode(file=sys.stdout):
+        std_tqdm.write('Test with redirect')
+    assert 'Test with redirect' in stream.getvalue()
+
+    # Clean up
+    logger.removeHandler(handler)
+```
+
+# Generated at 2024-03-18 08:38:27.853820
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    with patch('tqdm.tqdm', new=MagicMock()) as mock_tqdm:
+        # Mock the logging_redirect_tqdm context manager
+        with patch('tqdm.contrib.logging.logging_redirect_tqdm') as mock_logging_redirect:
+            # Create a list to simulate loggers
+            mock_loggers = [MagicMock(), MagicMock()]
+
+            # Use the tqdm_logging_redirect in a with statement
+            with tqdm_logging_redirect(loggers=mock_loggers, total=100, desc='Test') as pbar:
+                # Check if the tqdm class was called with the correct parameters
+                mock_tqdm.assert_called_once_with(total=100, desc='Test')
+
+                # Check if the logging_redirect_tqdm context manager was called with the correct parameters
+                mock_logging_redirect.assert_called_once_with
+
+# Generated at 2024-03-18 08:38:33.410319
+```python
+    import logging
+    from io import StringIO
+    from tqdm import tqdm
+
+    # Setup the logger
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Capture output
+    with tqdm_logging_redirect(loggers=[logger]) as pbar:
+        logger.info("Test message")
+        pbar.update()
+
+    # Check if the message is in the stream
+    stream_value = stream.getvalue()
+    assert "Test message" in stream_value, "The log message was not found in the output stream"
+
+    # Clean up
+    logger.removeHandler(handler)
+    handler.close()
+```
+
+# Generated at 2024-03-18 08:38:39.849539
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    with patch('tqdm.tqdm', MagicMock()) as mock_tqdm:
+        # Mock the logging_redirect_tqdm context manager
+        with patch('tqdm.contrib.logging.logging_redirect_tqdm', MagicMock()) as mock_logging_redirect:
+            # Create a list to simulate loggers
+            mock_loggers = [MagicMock(), MagicMock()]
+
+            # Use the tqdm_logging_redirect in a with statement
+            with tqdm_logging_redirect(loggers=mock_loggers, total=100, desc='Test') as pbar:
+                # Check if the tqdm class was called with the correct parameters
+                mock_tqdm.assert_called_once_with(total=100, desc='Test')
+
+                # Check if the logging_redirect_tqdm context manager was called with the correct parameters
+                mock_logging_redirect.assert_called_once_with(log
+
+# Generated at 2024-03-18 08:39:34.689230
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    with patch('tqdm.tqdm', new=MagicMock()) as mock_tqdm:
+        # Mock the logging_redirect_tqdm context manager
+        with patch('tqdm.contrib.logging.logging_redirect_tqdm') as mock_logging_redirect:
+            # Create a list to simulate loggers
+            mock_loggers = [MagicMock(), MagicMock()]
+
+            # Use the tqdm_logging_redirect context manager
+            with tqdm_logging_redirect(loggers=mock_loggers) as mock_pbar:
+                # Check if the tqdm class was called correctly
+                mock_tqdm.assert_called_once_with()
+
+                # Check if the logging_redirect_tqdm context manager was called correctly
+                mock_logging_redirect.assert_called_once_with(loggers=mock_loggers, tqdm_class=mock_tqdm)
+
+                # Check if the context manager
+
+# Generated at 2024-03-18 08:39:40.800775
+```python
+    # Capture the output of the tqdm.write method
+    with unittest.mock.patch('tqdm.std.tqdm.write') as mock_write:
+        # Create a log record
+        record = logging.LogRecord(
+            name="test",
+            level=logging.INFO,
+            pathname=__file__,
+            lineno=100,
+            msg="Test message",
+            args=None,
+            exc_info=None
+        )
+
+        # Create a _TqdmLoggingHandler instance
+        handler = _TqdmLoggingHandler()
+
+        # Set a simple formatter for the handler
+        formatter = logging.Formatter('%(message)s')
+        handler.setFormatter(formatter)
+
+        # Emit the record using the handler
+        handler.emit(record)
+
+        # Check that tqdm.write was called with the formatted message
+        mock_write.assert_called_once_with("Test message", file=None)
+```
+
+# Generated at 2024-03-18 08:39:45.476306
+```python
+    from io import StringIO
+    import logging
+
+    # Setup the logger to capture output for test
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Use the context manager to redirect logging
+    with tqdm_logging_redirect(loggers=[logger]) as pbar:
+        logger.info("Test message")
+
+    # Check if the message was redirected to the tqdm.write method
+    output = stream.getvalue()
+    assert "Test message" in output
+
+    # Clean up handlers
+    logger.removeHandler(handler)
+```
+
+# Generated at 2024-03-18 08:39:54.875569
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info('Test message without redirection')
+    assert 'Test message without redirection' in stream.getvalue()
+
+    # Clear stream
+    stream.seek(0)
+    stream.truncate(0)
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info('Test message with redirection')
+        assert 'Test message with redirection' not in stream.getvalue()
+
+    # Check if the message was redirected to tqdm
+    with std_tqdm.external_write_mode(file=io.StringIO()) as fake_output:
+        logger.info('Test message with redirection')
+        assert 'Test message with redirection' in fake_output.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+```
+
+# Generated at 2024-03-18 08:40:01.836706
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info("Test message without redirection")
+    assert "Test message without redirection" in stream.getvalue()
+
+    # Clear the stream
+    stream.seek(0)
+    stream.truncate(0)
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info("Test message with redirection")
+        assert "Test message with redirection" not in stream.getvalue()
+
+    # Check if the message was redirected to tqdm's write method
+    with std_tqdm.external_write_mode(file=io.StringIO()) as fake_output:
+        logger.info("Test message with redirection")
+        assert "Test message with redirection" in fake_output.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+```
+
+# Generated at 2024-03-18 08:40:05.482862
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info('Test without redirect')
+    assert 'Test without redirect' in stream.getvalue()
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info('Test with redirect')
+        assert 'Test with redirect' not in stream.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+    handler.close()
+```
+
+# Generated at 2024-03-18 08:40:09.198298
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info('Test message without redirection')
+    assert 'Test message without redirection' in stream.getvalue()
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info('Test message with redirection')
+        assert 'Test message with redirection' not in stream.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+```
+
+# Generated at 2024-03-18 08:40:16.896864
+```python
+    # Capture the output during the test
+    from io import StringIO
+    stream = StringIO()
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Create a mock tqdm class to capture write calls
+    class MockTqdm:
+        writes = []
+
+        @classmethod
+        def write(cls, msg, file=None):
+            cls.writes.append(msg)
+
+    # Use the context manager to redirect logging
+    with logging_redirect_tqdm(loggers=[logger], tqdm_class=MockTqdm):
+        logger.info("Test message")
+
+    # Check that the message was redirected to tqdm, not the original stream
+    assert "Test message" in MockTqdm.writes, "The message was not redirected to tqdm.write()"
+    assert stream.getvalue() == "", "The message was not supposed to be in the original stream"
+
+    # Clean up by removing the handler
+
+# Generated at 2024-03-18 08:40:21.791439
+```python
+    # Capture the output during the test
+    from io import StringIO
+    stream = StringIO()
+    handler = _TqdmLoggingHandler(tqdm_class=std_tqdm)
+    handler.stream = stream
+
+    # Create a log record
+    record = logging.LogRecord(
+        name="test",
+        level=logging.INFO,
+        pathname=__file__,
+        lineno=100,
+        msg="Test message",
+        args=None,
+        exc_info=None,
+    )
+
+    # Format the record
+    formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+
+    # Emit the record using the handler
+    handler.emit(record)
+
+    # Check the output
+    stream_value = stream.getvalue()
+    assert stream_value.strip() == "test - INFO - Test message"
+```
+
+# Generated at 2024-03-18 08:40:27.524373
+```python
+    # Capture the output during the test
+    from io import StringIO
+    stream = StringIO()
+    handler = _TqdmLoggingHandler(tqdm_class=std_tqdm)
+    handler.stream = stream
+
+    # Create a log record
+    record = logging.LogRecord(
+        name="test",
+        level=logging.INFO,
+        pathname=__file__,
+        lineno=1,
+        msg="Test message",
+        args=(),
+        exc_info=None,
+    )
+
+    # Format the record
+    formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+
+    # Emit the record using the handler
+    handler.emit(record)
+
+    # Check the output
+    stream_value = stream.getvalue()
+    assert stream_value.strip() == "test - INFO - Test message"
+```
+
+# Generated at 2024-03-18 08:42:08.806695
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    with patch('tqdm.tqdm', new=MagicMock()) as mock_tqdm:
+        # Mock the logging_redirect_tqdm context manager
+        with patch('tqdm.contrib.logging.logging_redirect_tqdm') as mock_logging_redirect:
+            # Create a list to simulate loggers
+            mock_loggers = [MagicMock(), MagicMock()]
+
+            # Use the tqdm_logging_redirect in a with statement
+            with tqdm_logging_redirect(loggers=mock_loggers, total=100, desc='Test') as pbar:
+                # Check if the tqdm class was called with the correct arguments
+                mock_tqdm.assert_called_once_with(total=100, desc='Test')
+
+                # Check if the logging_redirect_tqdm context manager was called with the correct arguments
+                mock_logging_redirect.assert_called_once_with
+
+# Generated at 2024-03-18 08:42:14.837058
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    with patch('tqdm.tqdm', MagicMock()) as mock_tqdm:
+        # Mock the logging_redirect_tqdm context manager
+        with patch('tqdm.contrib.logging.logging_redirect_tqdm', MagicMock()) as mock_logging_redirect:
+            # Create a list to simulate loggers
+            mock_loggers = [MagicMock(), MagicMock()]
+
+            # Call the tqdm_logging_redirect with mock loggers
+            with tqdm_logging_redirect(loggers=mock_loggers) as mock_pbar:
+                # Check if the tqdm class was called correctly
+                mock_tqdm.assert_called_once()
+
+                # Check if the logging_redirect_tqdm was called with the correct arguments
+                mock_logging_redirect.assert_called_once_with(loggers=mock_loggers, tqdm_class=mock_tqdm)
+
+                # Check if the context
+
+# Generated at 2024-03-18 08:42:19.006598
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info('Test without redirect')
+    assert 'Test without redirect' in stream.getvalue()
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info('Test with redirect')
+        assert 'Test with redirect' not in stream.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+    handler.close()
+```
+
+# Generated at 2024-03-18 08:42:25.840211
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info("Test message without redirection")
+    assert "Test message without redirection" in stream.getvalue()
+
+    # Clear the stream
+    stream.truncate(0)
+    stream.seek(0)
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info("Test message with redirection")
+        assert "Test message with redirection" not in stream.getvalue()
+
+    # Check if the message was written to tqdm's output
+    with std_tqdm(total=1, file=io.StringIO()) as pbar:
+        pbar.write("Test message with redirection")
+        assert "Test message with redirection" in pbar.fp.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+```
+
+# Generated at 2024-03-18 08:42:30.595124
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info('Test without redirection')
+    assert 'Test without redirection' in stream.getvalue()
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info('Test with redirection')
+        assert 'Test with redirection' not in stream.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+```
+
+# Generated at 2024-03-18 08:42:35.981390
+```python
+    # Capture the output during the test
+    from io import StringIO
+    stream = StringIO()
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Create a message to log
+    test_message = "Test message for logging_redirect_tqdm"
+
+    # Use the context manager to redirect logging
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info(test_message)
+
+    # Check that the message was redirected to tqdm.write
+    assert test_message in stream.getvalue()
+
+    # Clean up by removing the handler
+    logger.removeHandler(handler)
+```
+
+# Generated at 2024-03-18 08:42:44.700300
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    with patch('tqdm.tqdm', new=MagicMock()) as mock_tqdm:
+        # Mock the logging_redirect_tqdm context manager
+        with patch('tqdm.contrib.logging.logging_redirect_tqdm') as mock_logging_redirect:
+            # Create a list to simulate loggers
+            mock_loggers = [MagicMock(), MagicMock()]
+
+            # Use the tqdm_logging_redirect context manager
+            with tqdm_logging_redirect(loggers=mock_loggers) as pbar:
+                # Check if the tqdm class was called correctly
+                mock_tqdm.assert_called_once_with()
+
+                # Check if the logging_redirect_tqdm context manager was called correctly
+                mock_logging_redirect.assert_called_once_with(loggers=mock_loggers, tqdm_class=mock_tqdm)
+
+                # Check if the pbar is
+
+# Generated at 2024-03-18 08:42:53.121438
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    mock_tqdm = MagicMock(spec=tqdm)
+
+    # Mock the logging.Logger class to avoid actual logging during testing
+    mock_logger = MagicMock(spec=logging.Logger)
+
+    # Mock the logging.getLogger function to return our mock logger
+    with patch('logging.getLogger', return_value=mock_logger):
+        # Use the context manager to test the logging redirection
+        with tqdm_logging_redirect(loggers=[mock_logger], tqdm_class=mock_tqdm) as pbar:
+            # Check that the mock tqdm class was called
+            mock_tqdm.assert_called_once()
+
+            # Check that the logging_redirect_tqdm context manager was entered
+            assert pbar is not None
+
+            # Log a message and check that it was redirected to tqdm.write
+            mock_logger.info("Test message")
+            mock_tqdm.write.assert
+
+# Generated at 2024-03-18 08:43:00.229774
+```python
+    # Setup
+    logger = logging.getLogger('test_logger')
+    logger.setLevel(logging.INFO)
+    stream = io.StringIO()
+    handler = logging.StreamHandler(stream)
+    logger.addHandler(handler)
+
+    # Test logging without redirection
+    logger.info('Test without redirect')
+    assert 'Test without redirect' in stream.getvalue()
+
+    # Test logging with redirection
+    with logging_redirect_tqdm(loggers=[logger]):
+        logger.info('Test with redirect')
+        assert 'Test with redirect' not in stream.getvalue()
+
+    # Cleanup
+    logger.removeHandler(handler)
+```
+
+# Generated at 2024-03-18 08:43:07.914393
+```python
+    from unittest.mock import patch, MagicMock
+    from tqdm import tqdm
+
+    # Mock the tqdm class to avoid actual output during testing
+    with patch('tqdm.tqdm', MagicMock()) as mock_tqdm:
+        # Mock the logging_redirect_tqdm context manager
+        with patch('tqdm.contrib.logging.logging_redirect_tqdm', MagicMock()) as mock_logging_redirect:
+            # Create a list to simulate loggers
+            mock_loggers = [MagicMock(), MagicMock()]
+
+            # Use the tqdm_logging_redirect in a with statement
+            with tqdm_logging_redirect(loggers=mock_loggers, total=100, desc='Test') as pbar:
+                # Check if the tqdm class was called with the correct arguments
+                mock_tqdm.assert_called_once_with(total=100, desc='Test')
+
+                # Check if the logging_redirect_tqdm context manager was called with the correct arguments
+                mock_logging_redirect.assert_called_once_with(log

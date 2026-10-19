@@ -1,0 +1,1373 @@
+
+
+# Generated at 2024-03-18 03:40:46.261044
+```python
+import os
+import tempfile
+import pytest
+from ansible.plugins.callback.tree import CallbackModule
+
+
+# Generated at 2024-03-18 03:40:53.819310
+    from io import BytesIO
+    from unittest.mock import MagicMock, patch
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+
+    # Set the tree attribute to a test directory path
+    callback_module.tree = "/tmp/test_tree_dir"
+
+    # Mock the makedirs_safe function to avoid actual file system operations
+    with patch('ansible.utils.path.makedirs_safe') as mock_makedirs_safe:
+        # Mock the open function to avoid actual file system operations
+        with patch('builtins.open', new_callable=lambda: BytesIO) as mock_open:
+            # Call the write_tree_file method with test data
+            callback_module.write_tree_file('test_host', '{"test_key": "test_value"}')
+
+            # Assert that makedirs_safe was called with the correct directory
+            mock_makedirs_safe.assert_called_once_with("/tmp/test_tree_dir")
+
+            # Assert that the file was opened with the correct path and mode
+            mock_open.assert_called_once
+
+# Generated at 2024-03-18 03:41:02.245687
+```python
+    import mock
+    import pytest
+
+    @mock.patch('os.path.join', return_value='/fake/dir/hostname')
+    @mock.patch('ansible.plugins.callback.tree.makedirs_safe')
+    @mock.patch('ansible.plugins.callback.tree.open', mock.mock_open(), create=True)
+    def test_write_tree_file_success(makedirs_safe_mock, os_path_join_mock):
+        callback_module = CallbackModule()
+        callback_module.tree = '/fake/dir'
+        hostname = 'hostname'
+        buf = '{"test": "data"}'
+
+        callback_module.write_tree_file(hostname, buf)
+
+        makedirs_safe_mock.assert_called_once_with('/fake/dir')
+        os_path_join_mock.assert_called_once_with('/fake/dir', 'hostname')
+        ansible.plugins.callback.tree.open.assert_called_once_with('/fake/dir/hostname', 'wb+')
+        ansible.plugins.callback.tree.open().write.assert_called_once_with(b'{"test": "data"}')
+
+    @mock.patch('os.path.join', return_value='/fake
+
+# Generated at 2024-03-18 03:41:05.428700
+```python
+    # Arrange
+    fake_task_keys = {'fake_key': 'fake_value'}
+    fake_var_options = {'fake_var_option': 'fake_var_value'}
+    fake_direct = {'fake_direct_option': 'fake_direct_value'}
+    callback_module = CallbackModule()
+
+    # Act
+    callback_module.set_options(task_keys=fake_task_keys, var_options=fake_var_options, direct=fake_direct)
+
+    # Assert
+    assert callback_module.tree is not None
+```
+
+# Generated at 2024-03-18 03:41:06.293276
+```python
+import os
+import tempfile
+import pytest
+from ansible.plugins.callback.tree import CallbackModule
+
+
+# Generated at 2024-03-18 03:41:08.212396
+```python
+    # Arrange
+    fake_loader, fake_inventory, fake_variable_manager = None, None, None
+    fake_callback_module = CallbackModule()
+
+    # Act
+    fake_callback_module.set_options()
+
+    # Assert
+    assert hasattr(fake_callback_module, 'tree')
+```
+
+# Generated at 2024-03-18 03:41:10.540607
+```python
+    callback = CallbackModule()
+    assert callback.CALLBACK_VERSION == 2.0
+    assert callback.CALLBACK_TYPE == 'aggregate'
+    assert callback.CALLBACK_NAME == 'tree'
+    assert callback.CALLBACK_NEEDS_ENABLED == True
+    assert callback.tree == "~/.ansible/tree" or callback.tree == unfrackpath(TREE_DIR)
+```
+
+# Generated at 2024-03-18 03:41:12.897595
+```python
+import os
+import tempfile
+import pytest
+from ansible.plugins.callback import CallbackBase
+
+# Assuming CallbackModule is already defined above and we're just completing the test
+
+
+# Generated at 2024-03-18 03:41:18.506171
+    # Setup the test environment and objects
+    callback_module = CallbackModule()
+
+    # Mock the get_option method to return a specific directory
+    callback_module.get_option = lambda x: '/tmp/ansible-tree'
+
+    # Call set_options without any arguments
+    callback_module.set_options()
+
+    # Assert the tree attribute is set correctly
+    assert callback_module.tree == '/tmp/ansible-tree'
+
+    # Now simulate the TREE_DIR being set by the CLI option --tree
+    os.environ['TREE_DIR'] = '/cli/specified/tree'
+
+    # Call set_options again
+    callback_module.set_options()
+
+    # Assert the tree attribute is set to the CLI specified directory
+    assert callback_module.tree == '/cli/specified/tree'
+
+    # Clean up the environment variable
+    del os.environ['TREE_DIR']
+
+# Generated at 2024-03-18 03:41:26.200079
+```python
+    import mock
+    import pytest
+
+    @mock.patch('os.path.join', return_value='/fake/dir/hostname')
+    @mock.patch('ansible.plugins.callback.tree.makedirs_safe')
+    @mock.patch('ansible.plugins.callback.tree.open', mock.mock_open(), create=True)
+    def test_write_tree_file_success(makedirs_safe_mock, os_path_join_mock):
+        callback_module = CallbackModule()
+        callback_module.tree = '/fake/dir'
+        hostname = 'hostname'
+        buf = '{"test": "data"}'
+
+        callback_module.write_tree_file(hostname, buf)
+
+        makedirs_safe_mock.assert_called_once_with('/fake/dir')
+        os_path_join_mock.assert_called_once_with('/fake/dir', 'hostname')
+        ansible.plugins.callback.tree.open.assert_called_once_with('/fake/dir/hostname', 'wb+')
+        ansible.plugins.callback.tree.open().write.assert_called_once_with(b'{"test": "data"}')
+
+    @mock.patch('os.path.join', return_value='/fake
+
+# Generated at 2024-03-18 03:41:36.481698
+    from unittest.mock import patch, MagicMock
+
+    # Create a mock for the CallbackModule
+    callback_module = CallbackModule()
+
+    # Mock the super().set_options call
+    with patch.object(CallbackBase, 'set_options') as mock_super_set_options:
+        # Mock the environment variable and the TREE_DIR
+        with patch.dict('os.environ', {'ANSIBLE_CALLBACK_TREE_DIR': '/tmp/ansible_tree'}), patch('ansible.constants.TREE_DIR', '/cli/specified/tree/dir'):
+            # Call the method
+            callback_module.set_options()
+
+            # Assert the super method was called
+            mock_super_set_options.assert_called_once()
+
+            # Assert the tree attribute is set to the CLI specified directory
+            assert callback_module.tree == '/cli/specified/tree/dir'
+
+    # Now test without the TREE_DIR being set
+    with patch.object(CallbackBase, 'set_options') as mock_super_set_options:
+        # Mock the environment variable and unset TREE_DIR
+       
+
+# Generated at 2024-03-18 03:41:37.931210
+```python
+import os
+import tempfile
+import pytest
+from ansible.plugins.callback.tree import CallbackModule
+
+
+# Generated at 2024-03-18 03:41:41.718706
+```python
+    # Arrange
+    fake_task_keys = {'fake_key': 'fake_value'}
+    fake_var_options = {'fake_option': 'fake_value'}
+    fake_direct = {'fake_direct': 'fake_value'}
+    callback_module = CallbackModule()
+
+    # Act
+    callback_module.set_options(task_keys=fake_task_keys, var_options=fake_var_options, direct=fake_direct)
+
+    # Assert
+    assert hasattr(callback_module, 'tree')
+    if TREE_DIR:
+        assert callback_module.tree == unfrackpath(TREE_DIR)
+    else:
+        assert callback_module.tree == callback_module.get_option('directory')
+```
+
+# Generated at 2024-03-18 03:41:46.106737
+```python
+    # Arrange
+    fake_task_keys = {'fake_key': 'fake_value'}
+    fake_var_options = {'fake_var_option': 'fake_var_value'}
+    fake_direct = {'fake_direct_option': 'fake_direct_value'}
+    callback_module = CallbackModule()
+
+    # Act
+    callback_module.set_options(task_keys=fake_task_keys, var_options=fake_var_options, direct=fake_direct)
+
+    # Assert
+    assert hasattr(callback_module, 'tree')
+    if TREE_DIR:
+        assert callback_module.tree == unfrackpath(TREE_DIR)
+    else:
+        assert callback_module.tree == callback_module.get_option('directory')
+```
+
+# Generated at 2024-03-18 03:41:52.009807
+```python
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+
+    # Check if the instance is created and has the correct type
+    assert isinstance(callback_module, CallbackModule)
+
+    # Check if the default tree directory is set correctly
+    assert callback_module.tree == "~/.ansible/tree"
+
+    # Check if the CALLBACK_VERSION is set correctly
+    assert callback_module.CALLBACK_VERSION == 2.0
+
+    # Check if the CALLBACK_TYPE is set correctly
+    assert callback_module.CALLBACK_TYPE == 'aggregate'
+
+    # Check if the CALLBACK_NAME is set correctly
+    assert callback_module.CALLBACK_NAME == 'tree'
+
+    # Check if the CALLBACK_NEEDS_ENABLED is set correctly
+    assert callback_module.CALLBACK_NEEDS_ENABLED == True
+
+    # Check if the set_options method can be called without errors
+    callback_module.set_options()
+
+    # Check if the write_tree_file method can be called without errors
+    callback
+
+# Generated at 2024-03-18 03:41:53.002058
+```python
+import os
+import tempfile
+import pytest
+
+from ansible.plugins.callback.tree import CallbackModule
+
+
+# Generated at 2024-03-18 03:41:55.500556
+```python
+    # Arrange
+    fake_loader, fake_inventory, fake_templar = None, None, None
+    fake_options = {'directory': '/fake/dir'}
+
+    # Act
+    callback_module = CallbackModule()
+    callback_module.set_options(var_options=fake_options)
+
+    # Assert
+    assert callback_module.tree == '/fake/dir'
+```
+
+# Generated at 2024-03-18 03:41:58.125465
+```python
+    callback = CallbackModule()
+    assert callback.CALLBACK_VERSION == 2.0
+    assert callback.CALLBACK_TYPE == 'aggregate'
+    assert callback.CALLBACK_NAME == 'tree'
+    assert callback.CALLBACK_NEEDS_ENABLED == True
+    assert callback.tree == "~/.ansible/tree" or callback.tree == unfrackpath(TREE_DIR)
+```
+
+# Generated at 2024-03-18 03:42:03.237650
+    from unittest.mock import patch, MagicMock
+
+    # Create a mock CallbackModule instance
+    callback_module = CallbackModule()
+
+    # Mock the super().set_options call
+    with patch.object(CallbackBase, 'set_options') as mock_super_set_options:
+        # Mock the environment variable and CLI option
+        with patch.dict('os.environ', {'ANSIBLE_CALLBACK_TREE_DIR': '/tmp/ansible_tree'}), \
+             patch('ansible.constants.TREE_DIR', '/cli/ansible_tree'):
+            # Call set_options
+            callback_module.set_options()
+
+            # Assert that the super method was called
+            mock_super_set_options.assert_called_once()
+
+            # Assert that the tree attribute is set to the CLI option
+            assert callback_module.tree == '/cli/ansible_tree'
+
+    # Now test without the CLI option, should use environment variable
+    with patch.object(CallbackBase, 'set_options') as mock_super_set_options:
+        # Mock the get_option method to return the
+
+# Generated at 2024-03-18 03:42:10.830481
+```python
+    import tempfile
+    import os
+    import json
+
+    # Create a temporary directory to simulate the tree directory
+    with tempfile.TemporaryDirectory() as temp_dir:
+        callback = CallbackModule()
+        callback.tree = temp_dir  # Set the tree to the temporary directory
+
+        # Define a hostname and some data to write
+        hostname = 'testhost'
+        data = {'key': 'value'}
+
+        # Convert data to JSON and write to the tree file
+        callback.write_tree_file(hostname, json.dumps(data))
+
+        # Read the file back to check if the data was written correctly
+        tree_file_path = os.path.join(temp_dir, hostname)
+        with open(tree_file_path, 'r') as file:
+            file_content = file.read()
+
+        # Convert file content back to a dictionary
+        file_data = json.loads(file_content)
+
+        # Assert that the written data matches the original data
+        assert file_data == data, "Data written
+
+# Generated at 2024-03-18 03:42:17.841641
+```python
+    # Arrange
+    fake_task_keys = {'fake_key': 'fake_value'}
+    fake_var_options = {'fake_var_option_key': 'fake_var_option_value'}
+    fake_direct = {'fake_direct_key': 'fake_direct_value'}
+    callback_module = CallbackModule()
+
+    # Act
+    callback_module.set_options(task_keys=fake_task_keys, var_options=fake_var_options, direct=fake_direct)
+
+    # Assert
+    assert hasattr(callback_module, 'tree')
+    if TREE_DIR:
+        assert callback_module.tree == unfrackpath(TREE_DIR)
+    else:
+        assert callback_module.tree == callback_module.get_option('directory')
+```
+
+# Generated at 2024-03-18 03:42:20.199950
+```python
+    callback = CallbackModule()
+    assert callback.CALLBACK_VERSION == 2.0
+    assert callback.CALLBACK_TYPE == 'aggregate'
+    assert callback.CALLBACK_NAME == 'tree'
+    assert callback.CALLBACK_NEEDS_ENABLED == True
+    assert callback.tree == "~/.ansible/tree" or callback.tree == unfrackpath(TREE_DIR)
+```
+
+# Generated at 2024-03-18 03:42:27.516656
+    from unittest.mock import patch, MagicMock
+
+    # Create a mock for the CallbackModule instance
+    callback_module = CallbackModule()
+
+    # Mock the super().set_options call
+    with patch.object(CallbackBase, 'set_options') as mock_super_set_options:
+        # Mock the environment variable and CLI option
+        with patch.dict('os.environ', {'ANSIBLE_CALLBACK_TREE_DIR': '/tmp/ansible_tree'}), \
+             patch('ansible.constants.TREE_DIR', '/cli/ansible_tree'):
+            # Call the method
+            callback_module.set_options()
+
+            # Assert the super method was called
+            mock_super_set_options.assert_called_once()
+
+            # Assert the tree attribute is set to the CLI option
+            assert callback_module.tree == '/cli/ansible_tree'
+
+    # Now test without the CLI option
+    with patch.object(CallbackBase, 'set_options') as mock_super_set_options:
+        # Mock the get_option method to return a default directory
+        callback
+
+# Generated at 2024-03-18 03:42:30.388768
+```python
+    # Arrange
+    fake_loader, fake_inventory, fake_templar = None, None, None
+    fake_options = {'directory': '/fake/dir'}
+
+    # Act
+    callback_module = CallbackModule()
+    callback_module.set_options(var_options=fake_options)
+
+    # Assert
+    assert callback_module.tree == '/fake/dir'
+```
+
+# Generated at 2024-03-18 03:42:36.144538
+```python
+    import mock
+    import pytest
+
+    @mock.patch('os.path.join', return_value='/fake/dir/hostname')
+    @mock.patch('ansible.plugins.callback.tree.makedirs_safe')
+    @mock.patch('ansible.plugins.callback.tree.open', mock.mock_open(), create=True)
+    def test_write_tree_file_success(makedirs_mock, join_mock):
+        callback_module = CallbackModule()
+        callback_module.tree = '/fake/dir'
+        hostname = 'hostname'
+        buf = '{"test": "data"}'
+
+        callback_module.write_tree_file(hostname, buf)
+
+        makedirs_mock.assert_called_once_with('/fake/dir')
+        join_mock.assert_called_once_with('/fake/dir', 'hostname')
+        ansible.plugins.callback.tree.open.assert_called_once_with('/fake/dir/hostname', 'wb+')
+        ansible.plugins.callback.tree.open().write.assert_called_once_with(b'{"test": "data"}')
+
+    @mock.patch('ansible.plugins.callback.tree.makedirs_safe', side_effect=OSError('Test
+
+# Generated at 2024-03-18 03:42:37.172185
+```python
+import os
+import tempfile
+import pytest
+from ansible.plugins.callback.tree import CallbackModule
+
+
+# Generated at 2024-03-18 03:42:38.048986
+```python
+import os
+import tempfile
+import pytest
+from ansible.plugins.callback.tree import CallbackModule
+
+
+# Generated at 2024-03-18 03:42:38.878224
+```python
+import os
+import tempfile
+import pytest
+from ansible.plugins.callback.tree import CallbackModule
+
+
+# Generated at 2024-03-18 03:42:39.824888
+```python
+import os
+import tempfile
+import pytest
+from ansible.plugins.callback.tree import CallbackModule
+
+
+# Generated at 2024-03-18 03:42:44.174776
+```python
+    callback = CallbackModule()
+    assert callback.CALLBACK_VERSION == 2.0
+    assert callback.CALLBACK_TYPE == 'aggregate'
+    assert callback.CALLBACK_NAME == 'tree'
+    assert callback.CALLBACK_NEEDS_ENABLED == True
+    assert callback.tree == "~/.ansible/tree"  # Assuming TREE_DIR is not set and default is used
+```
+
+# Generated at 2024-03-18 03:42:56.278474
+```python
+    import tempfile
+    import os
+    import json
+
+    # Create a temporary directory to simulate the tree directory
+    with tempfile.TemporaryDirectory() as temp_dir:
+        callback = CallbackModule()
+        callback.tree = temp_dir  # Set the tree to the temporary directory
+
+        # Define a hostname and data to write
+        hostname = 'testhost'
+        data = {'key': 'value'}
+
+        # Convert data to JSON and write to the tree file
+        callback.write_tree_file(hostname, json.dumps(data))
+
+        # Read the file and assert the contents are correct
+        tree_file_path = os.path.join(temp_dir, hostname)
+        with open(tree_file_path, 'r') as file:
+            file_contents = file.read()
+            assert json.loads(file_contents) == data, "The data written to the tree file does not match the expected data."
+```
+
+# Generated at 2024-03-18 03:43:02.232016
+```python
+    import mock
+    import pytest
+
+    @mock.patch('os.path.join', return_value='/fake/dir/hostname')
+    @mock.patch('ansible.plugins.callback.tree.makedirs_safe')
+    @mock.patch('ansible.plugins.callback.tree.open', mock.mock_open(), create=True)
+    def test_write_tree_file_success(makedirs_mock, path_join_mock):
+        callback_module = CallbackModule()
+        callback_module.tree = '/fake/dir'
+        hostname = 'hostname'
+        buf = '{"test": "data"}'
+
+        callback_module.write_tree_file(hostname, buf)
+
+        makedirs_mock.assert_called_once_with('/fake/dir')
+        path_join_mock.assert_called_once_with('/fake/dir', 'hostname')
+        ansible.plugins.callback.tree.open.assert_called_once_with('/fake/dir/hostname', 'wb+')
+        ansible.plugins.callback.tree.open().write.assert_called_once_with(b'{"test": "data"}')
+
+    @mock.patch('ansible.plugins.callback.tree.makedirs_safe', side_effect=OSError
+
+# Generated at 2024-03-18 03:43:06.285862
+```python
+    # Arrange
+    fake_loader, fake_inventory, fake_templar = None, None, None
+    fake_options = {'directory': '/fake/dir'}
+    fake_keywords = {
+        'loader': fake_loader,
+        'inventory': fake_inventory,
+        'templar': fake_templar,
+        'options': fake_options
+    }
+
+    # Act
+    callback_module = CallbackModule()
+    callback_module.set_options(direct=fake_keywords)
+
+    # Assert
+    assert callback_module.tree == '/fake/dir'
+```
+
+# Generated at 2024-03-18 03:43:11.552506
+```python
+    import tempfile
+    import json
+    import os
+
+    # Create a temporary directory to simulate the tree directory
+    with tempfile.TemporaryDirectory() as temp_dir:
+        callback = CallbackModule()
+        callback.tree = temp_dir  # Set the tree to the temporary directory
+
+        # Define a hostname and data to write
+        hostname = 'test_host'
+        data = {'key': 'value'}
+        buf = json.dumps(data)
+
+        # Call the method to test
+        callback.write_tree_file(hostname, buf)
+
+        # Check if the file was created with the correct content
+        file_path = os.path.join(temp_dir, hostname)
+        assert os.path.isfile(file_path), "File was not created"
+
+        with open(file_path, 'r') as file:
+            content = json.load(file)
+            assert content == data, "File content is not as expected"
+```
+
+# Generated at 2024-03-18 03:43:13.037239
+```python
+import os
+import tempfile
+import pytest
+from ansible.plugins.callback.tree import CallbackModule
+
+
+# Generated at 2024-03-18 03:43:17.521048
+```python
+    # Create an instance of the CallbackModule
+    callback_instance = CallbackModule()
+
+    # Check if the instance is created and has the correct type
+    assert isinstance(callback_instance, CallbackModule)
+
+    # Check if the default tree directory is set correctly
+    assert callback_instance.tree == "~/.ansible/tree"
+
+    # Check if the CALLBACK_VERSION is set correctly
+    assert callback_instance.CALLBACK_VERSION == 2.0
+
+    # Check if the CALLBACK_TYPE is set correctly
+    assert callback_instance.CALLBACK_TYPE == 'aggregate'
+
+    # Check if the CALLBACK_NAME is set correctly
+    assert callback_instance.CALLBACK_NAME == 'tree'
+
+    # Check if the CALLBACK_NEEDS_ENABLED is set correctly
+    assert callback_instance.CALLBACK_NEEDS_ENABLED == True
+```
+
+# Generated at 2024-03-18 03:43:20.225251
+```python
+    def test_constructor():
+        callback = CallbackModule()
+        assert callback.CALLBACK_VERSION == 2.0
+        assert callback.CALLBACK_TYPE == 'aggregate'
+        assert callback.CALLBACK_NAME == 'tree'
+        assert callback.CALLBACK_NEEDS_ENABLED == True
+        assert callback.tree == "~/.ansible/tree" or callback.tree == unfrackpath(TREE_DIR)
+```
+
+# Generated at 2024-03-18 03:43:22.626607
+```python
+    # Arrange
+    fake_loader, fake_inventory, fake_templar = None, None, None
+    fake_options = {'directory': '/fake/dir'}
+
+    # Act
+    callback_module = CallbackModule()
+    callback_module.set_options(var_options=fake_options)
+
+    # Assert
+    assert callback_module.tree == '/fake/dir'
+```
+
+# Generated at 2024-03-18 03:43:25.787620
+```python
+    # Arrange
+    fake_task_keys = {'fake_key': 'fake_value'}
+    fake_var_options = {'fake_var_option': 'fake_var_value'}
+    fake_direct = {'fake_direct_key': 'fake_direct_value'}
+    callback_module = CallbackModule()
+
+    # Act
+    callback_module.set_options(task_keys=fake_task_keys, var_options=fake_var_options, direct=fake_direct)
+
+    # Assert
+    assert callback_module.tree is not None
+```
+
+# Generated at 2024-03-18 03:43:27.304188
+```python
+import os
+import tempfile
+import pytest
+from ansible.plugins.callback.tree import CallbackModule
+
+
+# Generated at 2024-03-18 03:43:48.148226
+```python
+    # Arrange
+    fake_task_keys = {'fake_key': 'fake_value'}
+    fake_var_options = {'fake_var_option_key': 'fake_var_option_value'}
+    fake_direct = {'fake_direct_key': 'fake_direct_value'}
+    callback_module = CallbackModule()
+
+    # Act
+    callback_module.set_options(task_keys=fake_task_keys, var_options=fake_var_options, direct=fake_direct)
+
+    # Assert
+    assert hasattr(callback_module, 'tree')
+    if TREE_DIR:
+        assert callback_module.tree == unfrackpath(TREE_DIR)
+    else:
+        assert callback_module.tree == callback_module.get_option('directory')
+```
+
+# Generated at 2024-03-18 03:43:52.004259
+```python
+    # Arrange
+    fake_loader, fake_inventory, fake_templar = None, None, None
+    fake_options = {'directory': '/fake/dir'}
+    fake_keywords = {
+        'task_keys': None,
+        'var_options': None,
+        'direct': fake_options
+    }
+
+    # Act
+    callback_module = CallbackModule()
+    callback_module.set_options(**fake_keywords)
+
+    # Assert
+    assert callback_module.tree == '/fake/dir'
+```
+
+# Generated at 2024-03-18 03:43:56.781681
+    from unittest.mock import patch, MagicMock
+
+    # Create a mock for the CallbackModule instance
+    callback_module = CallbackModule()
+
+    # Mock the super().set_options call
+    with patch.object(CallbackModule, 'set_options', return_value=None) as mock_super_set_options:
+        # Mock the environment variable and the TREE_DIR
+        with patch.dict('os.environ', {'ANSIBLE_CALLBACK_TREE_DIR': '/tmp/ansible_tree'}), patch('ansible.constants.TREE_DIR', '/cli/specified/tree/dir'):
+            # Call the method
+            callback_module.set_options()
+
+    # Assert that the super method was called
+    mock_super_set_options.assert_called_once()
+
+    # Assert that the tree attribute is set to the CLI specified directory
+    assert callback_module.tree == '/cli/specified/tree/dir'
+
+    # Now test without the TREE_DIR being set (relying on the environment variable)
+    with patch.object(CallbackModule, 'set_options', return_value=None)
+
+# Generated at 2024-03-18 03:44:03.135404
+    # Setup the test environment and objects
+    callback_module = CallbackModule()
+
+    # Mock the get_option method to return a specific directory
+    callback_module.get_option = lambda option: '/tmp/ansible_tree' if option == 'directory' else None
+
+    # Mock the TREE_DIR constant to simulate the CLI option --tree being set
+    ansible.constants.TREE_DIR = '/cli/specified/tree'
+
+    # Call the method to test
+    callback_module.set_options()
+
+    # Assert the tree attribute is set to the CLI specified directory
+    assert callback_module.tree == '/cli/specified/tree'
+
+    # Now, unset the TREE_DIR to test the fallback to the default option
+    ansible.constants.TREE_DIR = None
+
+    # Call the method again
+    callback_module.set_options()
+
+    # Assert the tree attribute is set to the default directory from get_option
+    assert callback_module.tree == '/tmp/ansible_tree'
+
+# Generated at 2024-03-18 03:44:04.286522
+```python
+import mock
+import pytest
+
+# Assuming the test is being written using pytest and mock
+
+@pytest.fixture
+
+# Generated at 2024-03-18 03:44:10.620894
+    from unittest.mock import patch, MagicMock
+
+    # Create a mock for the CallbackModule instance
+    callback_module = CallbackModule()
+
+    # Mock the super().set_options call
+    with patch.object(CallbackBase, 'set_options') as mock_super_set_options:
+        # Mock the get_option call to return a specific directory
+        with patch.object(CallbackModule, 'get_option', return_value='/tmp/ansible-tree') as mock_get_option:
+            # Set the TREE_DIR to None to simulate the absence of CLI option --tree
+            with patch('ansible.constants.TREE_DIR', None):
+                # Call set_options
+                callback_module.set_options()
+
+                # Assert that super().set_options was called
+                mock_super_set_options.assert_called_once()
+
+                # Assert that get_option was called with 'directory'
+                mock_get_option.assert_called_once_with('directory')
+
+                # Assert that the tree attribute is set to the mocked get_option return value
+                assert callback_module.tree
+
+# Generated at 2024-03-18 03:44:11.508463
+```python
+import os
+import tempfile
+import pytest
+from ansible.plugins.callback.tree import CallbackModule
+
+
+# Generated at 2024-03-18 03:44:12.433127
+```python
+import os
+import tempfile
+import pytest
+from ansible.plugins.callback.tree import CallbackModule
+
+
+# Generated at 2024-03-18 03:44:18.603947
+    from unittest.mock import Mock, patch
+
+    # Create a mock for the CallbackModule
+    callback_module = CallbackModule()
+
+    # Mock the super().set_options call
+    with patch.object(CallbackBase, 'set_options') as mock_super_set_options:
+        # Mock the environment variable and the CLI option
+        with patch.dict('os.environ', {'ANSIBLE_CALLBACK_TREE_DIR': '/tmp/ansible_tree'}), \
+             patch('ansible.constants.TREE_DIR', '/cli/ansible_tree'):
+            # Call set_options
+            callback_module.set_options()
+
+            # Assert that the super method was called
+            mock_super_set_options.assert_called_once()
+
+            # Assert that the tree attribute is set to the CLI option
+            assert callback_module.tree == '/cli/ansible_tree'
+
+    # Now test without the CLI option
+    with patch.object(CallbackBase, 'set_options') as mock_super_set_options:
+        # Mock the environment variable only
+        with patch.dict('
+
+# Generated at 2024-03-18 03:44:20.951370
+```python
+    callback = CallbackModule()
+    assert callback.CALLBACK_VERSION == 2.0
+    assert callback.CALLBACK_TYPE == 'aggregate'
+    assert callback.CALLBACK_NAME == 'tree'
+    assert callback.CALLBACK_NEEDS_ENABLED == True
+    assert callback.tree == "~/.ansible/tree" or callback.tree == unfrackpath(TREE_DIR)
+```
+
+# Generated at 2024-03-18 03:44:52.543226
+```python
+import mock
+import pytest
+from io import BytesIO
+
+# Assuming the CallbackModule is in a file named callback_plugin.py
+from callback_plugin import CallbackModule
+
+
+# Generated at 2024-03-18 03:44:57.819562
+    from unittest.mock import patch, MagicMock
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+
+    # Mock the super().set_options call
+    with patch.object(CallbackModule, 'set_options', return_value=None) as mock_super_set_options:
+        # Mock the get_option call to return a specific directory
+        with patch.object(CallbackModule, 'get_option', return_value='/tmp/ansible-tree') as mock_get_option:
+            # Call set_options with no arguments
+            callback_module.set_options()
+
+            # Assert that super().set_options was called once
+            mock_super_set_options.assert_called_once()
+
+            # Assert that get_option was called with 'directory'
+            mock_get_option.assert_called_once_with('directory')
+
+            # Assert that the tree attribute is set correctly
+            assert callback_module.tree == '/tmp/ansible-tree'
+
+    # Now test with TREE_DIR set
+    with patch('ansible.plugins.callback.tree.TREE_DIR', '/
+
+# Generated at 2024-03-18 03:45:01.781727
+    # Setup the test environment and objects
+    callback_module = CallbackModule()
+
+    # Mock the get_option method to return a specific directory
+    callback_module.get_option = lambda x: '/tmp/ansible-tree'
+
+    # Call set_options without any arguments
+    callback_module.set_options()
+
+    # Assert the tree attribute is set correctly
+    assert callback_module.tree == '/tmp/ansible-tree'
+
+# Generated at 2024-03-18 03:45:06.491593
+```python
+    # Arrange
+    fake_loader, fake_inventory, fake_templar = None, None, None
+    fake_options = {'directory': '/fake/dir'}
+
+    # Act
+    callback_module = CallbackModule()
+    callback_module.set_options(var_options=fake_options)
+
+    # Assert
+    assert callback_module.tree == '/fake/dir'
+```
+
+# Generated at 2024-03-18 03:45:12.262929
+    from unittest.mock import Mock, patch
+
+    # Create a mock for the CallbackModule and its dependencies
+    callback_module = CallbackModule()
+    callback_module.set_options = Mock()
+    callback_module.get_option = Mock(return_value='/tmp/ansible-tree')
+    callback_module._display = Mock()
+
+    # Mock the unfrackpath function
+    with patch('ansible.plugins.callback.unfrackpath', return_value='/tmp/ansible-tree') as mock_unfrackpath:
+        # Call the method with some test data
+        callback_module.set_options(task_keys='test_task_keys', var_options='test_var_options', direct='test_direct')
+
+        # Assert that the set_options was called with the correct parameters
+        callback_module.set_options.assert_called_once_with(task_keys='test_task_keys', var_options='test_var_options', direct='test_direct')
+
+        # Assert that the get_option was called with 'directory'
+        callback_module.get_option.assert_called_once_with('directory')
+
+        #
+
+# Generated at 2024-03-18 03:45:14.935067
+```python
+    # Arrange
+    fake_loader, fake_inventory, fake_templar = None, None, None
+    fake_options = {'directory': '/fake/dir'}
+
+    # Act
+    callback_module = CallbackModule()
+    callback_module.set_options(var_options=fake_options)
+
+    # Assert
+    assert callback_module.tree == '/fake/dir'
+```
+
+# Generated at 2024-03-18 03:45:18.253302
+```python
+    # Arrange
+    fake_loader, fake_inventory, fake_variable_manager = None, None, None
+    fake_callback_module = CallbackModule()
+
+    # Act
+    fake_callback_module.set_options()
+
+    # Assert
+    assert hasattr(fake_callback_module, 'tree')
+```
+
+# Generated at 2024-03-18 03:45:20.591769
+```python
+    callback = CallbackModule()
+    assert callback.CALLBACK_VERSION == 2.0
+    assert callback.CALLBACK_TYPE == 'aggregate'
+    assert callback.CALLBACK_NAME == 'tree'
+    assert callback.CALLBACK_NEEDS_ENABLED == True
+    assert callback.tree == "~/.ansible/tree" or callback.tree == unfrackpath(TREE_DIR)
+```
+
+# Generated at 2024-03-18 03:45:29.275566
+    from unittest.mock import patch, MagicMock
+
+    # Create a mock CallbackModule instance
+    callback_module = CallbackModule()
+
+    # Mock the super().set_options call
+    with patch.object(CallbackBase, 'set_options') as mock_super_set_options:
+        # Mock the environment variable and CLI option
+        with patch.dict('os.environ', {'ANSIBLE_CALLBACK_TREE_DIR': '/tmp/ansible_tree'}), \
+             patch('ansible.constants.TREE_DIR', '/cli/ansible_tree'):
+            # Call set_options
+            callback_module.set_options()
+
+            # Assert that the super method was called
+            mock_super_set_options.assert_called_once()
+
+            # Assert that the tree attribute is set to the CLI option
+            assert callback_module.tree == '/cli/ansible_tree'
+
+    # Now test without the CLI option, should use environment variable
+    with patch.object(CallbackBase, 'set_options') as mock_super_set_options:
+        # Mock the environment variable and reset CLI option
+
+# Generated at 2024-03-18 03:45:36.030819
+    from unittest.mock import patch, MagicMock
+
+    # Create a mock for the CallbackModule instance
+    callback_module = CallbackModule()
+
+    # Mock the super().set_options call
+    with patch.object(CallbackBase, 'set_options') as mock_super_set_options:
+        # Mock the get_option call to return a specific directory
+        with patch.object(CallbackModule, 'get_option', return_value='/tmp/ansible-tree') as mock_get_option:
+            # Set the TREE_DIR to None to simulate the absence of CLI option
+            with patch('ansible.constants.TREE_DIR', None):
+                # Call the set_options method
+                callback_module.set_options()
+
+                # Assert that the super method was called
+                mock_super_set_options.assert_called_once()
+
+                # Assert that the get_option was called with 'directory'
+                mock_get_option.assert_called_once_with('directory')
+
+                # Assert that the tree attribute is set to the mocked directory
+                assert callback_module.tree == '/tmp
+
+# Generated at 2024-03-18 03:46:35.714108
+```python
+    # Arrange
+    fake_loader, fake_inventory, fake_templar = None, None, None
+    fake_options = {'directory': '/fake/dir'}
+    fake_keywords = {
+        'task_keys': None,
+        'var_options': None,
+        'direct': fake_options
+    }
+
+    # Act
+    callback_module = CallbackModule()
+    callback_module.set_options(**fake_keywords)
+
+    # Assert
+    assert callback_module.tree == '/fake/dir'
+```
+
+# Generated at 2024-03-18 03:46:41.854710
+    from unittest.mock import patch, MagicMock
+
+    # Create a mock for the super method to prevent actual file system operations
+    with patch.object(CallbackModule, 'set_options') as mock_super_set_options:
+        # Create a mock for the TREE_DIR constant
+        with patch('ansible.constants.TREE_DIR', new_callable=MagicMock()) as mock_tree_dir:
+            # Set the mock TREE_DIR to a fake path
+            mock_tree_dir.return_value = '/fake/path'
+
+            # Create an instance of the CallbackModule
+            callback_module = CallbackModule()
+
+            # Mock the get_option method to return a specific directory
+            callback_module.get_option = MagicMock(return_value='/another/fake/path')
+
+            # Call the set_options method
+            callback_module.set_options()
+
+            # Assert that the super method was called
+            mock_super_set_options.assert_called_once()
+
+            # Assert that the tree attribute is set to the mocked TREE_DIR
+            assert callback_module.tree == '/fake/path
+
+# Generated at 2024-03-18 03:46:45.694279
+```python
+    callback = CallbackModule()
+    assert callback.CALLBACK_VERSION == 2.0
+    assert callback.CALLBACK_TYPE == 'aggregate'
+    assert callback.CALLBACK_NAME == 'tree'
+    assert callback.CALLBACK_NEEDS_ENABLED == True
+    assert callback.tree == "~/.ansible/tree" or callback.tree == unfrackpath(TREE_DIR)
+```
+
+# Generated at 2024-03-18 03:46:50.206569
+```python
+    # Arrange
+    fake_task_keys = {'fake_key': 'fake_value'}
+    fake_var_options = {'fake_var_option': 'fake_var_value'}
+    fake_direct = {'fake_direct_key': 'fake_direct_value'}
+    callback_module = CallbackModule()
+
+    # Act
+    callback_module.set_options(task_keys=fake_task_keys, var_options=fake_var_options, direct=fake_direct)
+
+    # Assert
+    assert hasattr(callback_module, 'tree')
+    assert callback_module.tree == callback_module.get_option('directory') or unfrackpath(TREE_DIR)
+```
+
+# Generated at 2024-03-18 03:46:51.139599
+```python
+import os
+import tempfile
+import pytest
+from ansible.plugins.callback.tree import CallbackModule
+
+
+# Generated at 2024-03-18 03:46:53.782559
+```python
+    # Arrange
+    options = {
+        'directory': '/tmp/ansible_tree'
+    }
+
+    # Act
+    callback_module = CallbackModule()
+    callback_module.set_options(var_options=options)
+
+    # Assert
+    assert callback_module.tree == '/tmp/ansible_tree'
+```
+
+# Generated at 2024-03-18 03:47:04.349568
+    from io import BytesIO
+    from unittest.mock import MagicMock, patch
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+
+    # Set the tree attribute to a test directory path
+    callback_module.tree = "/tmp/test_tree_dir"
+
+    # Mock the makedirs_safe function to avoid actual file system operations
+    with patch('ansible.utils.path.makedirs_safe') as mock_makedirs_safe:
+        # Mock the open function to use a BytesIO object as the file
+        with patch('builtins.open', new_callable=lambda: BytesIO()) as mock_open:
+            # Call the write_tree_file method with test data
+            callback_module.write_tree_file('test_host', '{"test_key": "test_value"}')
+
+            # Assert that makedirs_safe was called with the correct directory
+            mock_makedirs_safe.assert_called_once_with("/tmp/test_tree_dir")
+
+            # Assert that the file was opened with the correct path and mode
+            mock_open
+
+# Generated at 2024-03-18 03:47:10.888723
+    # Mocking objects and values for the test
+    fake_task_keys = {'fake_key': 'fake_value'}
+    fake_var_options = {'fake_var_option_key': 'fake_var_option_value'}
+    fake_direct = {'fake_direct_key': 'fake_direct_value'}
+    fake_tree_dir = '/fake/tree/dir'
+
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+
+    # Set the TREE_DIR to a fake directory path
+    global TREE_DIR
+    TREE_DIR = fake_tree_dir
+
+    # Call set_options with the mocked objects
+    callback_module.set_options(task_keys=fake_task_keys, var_options=fake_var_options, direct=fake_direct)
+
+    # Assert that the tree attribute is set to the fake tree directory
+    assert callback_module.tree == fake_tree_dir
+
+    # Reset TREE_DIR to None for further tests
+    TREE_DIR = None
+
+    # Call set_options again with TREE_DIR set to None
+    callback_module.set
+
+# Generated at 2024-03-18 03:47:16.329824
+    from unittest.mock import patch, MagicMock
+
+    # Create a mock for the super method call to set_options
+    with patch.object(CallbackModule, 'set_options') as mock_super_set_options:
+        # Create an instance of the CallbackModule
+        callback_module = CallbackModule()
+
+        # Set up the return value for the TREE_DIR constant
+        with patch('ansible.constants.TREE_DIR', new='/cli/specified/tree/dir'):
+            # Call the method we are testing
+            callback_module.set_options()
+
+            # Assert that the tree attribute is set to the TREE_DIR constant
+            assert callback_module.tree == '/cli/specified/tree/dir'
+
+        # Now test with TREE_DIR not set (None)
+        with patch('ansible.constants.TREE_DIR', new=None):
+            # Mock the get_option method to return a specific directory
+            callback_module.get_option = MagicMock(return_value='/default/tree/dir')
+
+            # Call the method we are testing
+            callback_module.set_options()
+
+           
+
+# Generated at 2024-03-18 03:47:22.133609
+```python
+    import mock
+    import pytest
+
+    @mock.patch('os.path.join', return_value='/fake/dir/hostname')
+    @mock.patch('ansible.plugins.callback.tree.makedirs_safe')
+    @mock.patch('ansible.plugins.callback.tree.open', mock.mock_open(), create=True)
+    def test_write_tree_file_success(makedirs_mock, path_join_mock):
+        callback_module = CallbackModule()
+        callback_module.tree = '/fake/dir'
+        hostname = 'hostname'
+        buf = '{"test": "data"}'
+
+        callback_module.write_tree_file(hostname, buf)
+
+        makedirs_mock.assert_called_once_with('/fake/dir')
+        path_join_mock.assert_called_once_with('/fake/dir', 'hostname')
+        ansible.plugins.callback.tree.open.assert_called_once_with('/fake/dir/hostname', 'wb+')
+        ansible.plugins.callback.tree.open().write.assert_called_once_with(buf.encode('utf-8'))
+
+    @mock.patch('ansible.plugins.callback.tree.makedirs_safe', side_effect=OSError('Test
+
+# Generated at 2024-03-18 03:49:29.440940
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+
+    # Set options with a fake task_keys, var_options, and direct
+    fake_task_keys = {'fake_key': 'fake_value'}
+    fake_var_options = {'fake_var_option': 'fake_value'}
+    fake_direct = {'fake_direct_option': 'fake_value'}
+
+    # Call set_options with the fake data
+    callback_module.set_options(task_keys=fake_task_keys, var_options=fake_var_options, direct=fake_direct)
+
+    # Assert the tree attribute is set correctly
+    if TREE_DIR:
+        expected_tree = unfrackpath(TREE_DIR)
+    else:
+        expected_tree = callback_module.get_option('directory')
+
+    assert callback_module.tree == expected_tree, "The tree attribute was not set correctly."
+
+# Generated at 2024-03-18 03:49:34.791042
+```python
+    callback = CallbackModule()
+    assert callback.CALLBACK_VERSION == 2.0
+    assert callback.CALLBACK_TYPE == 'aggregate'
+    assert callback.CALLBACK_NAME == 'tree'
+    assert callback.CALLBACK_NEEDS_ENABLED == True
+    assert callback.tree == "~/.ansible/tree" or callback.tree == unfrackpath(TREE_DIR)
+```
+
+# Generated at 2024-03-18 03:49:41.585976
+```python
+    import mock
+    import pytest
+
+    @mock.patch('os.path.join', return_value='/fake/dir/hostname')
+    @mock.patch('ansible.plugins.callback.tree.makedirs_safe')
+    @mock.patch('ansible.plugins.callback.tree.open', mock.mock_open(), create=True)
+    def test_write_tree_file_success(makedirs_mock, join_mock):
+        callback_module = CallbackModule()
+        callback_module.tree = '/fake/dir'
+        hostname = 'hostname'
+        buf = '{"test": "data"}'
+
+        callback_module.write_tree_file(hostname, buf)
+
+        makedirs_mock.assert_called_once_with('/fake/dir')
+        join_mock.assert_called_once_with('/fake/dir', 'hostname')
+        ansible.plugins.callback.tree.open.assert_called_once_with('/fake/dir/hostname', 'wb+')
+        ansible.plugins.callback.tree.open().write.assert_called_once_with(to_bytes(buf))
+
+    @mock.patch('ansible.plugins.callback.tree.makedirs_safe', side_effect=OSError('Test Error'))
+    def test
+
+# Generated at 2024-03-18 03:49:43.787285
+```python
+    # Arrange
+    fake_loader, fake_inventory, fake_templar = None, None, None
+    fake_options = {'directory': '/fake/dir'}
+
+    # Act
+    callback_module = CallbackModule()
+    callback_module.set_options(var_options=fake_options)
+
+    # Assert
+    assert callback_module.tree == '/fake/dir'
+```
+
+# Generated at 2024-03-18 03:49:49.523421
+```python
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+
+    # Check if the instance is created and is an instance of CallbackBase
+    assert isinstance(callback_module, CallbackBase)
+
+    # Check if the CALLBACK_VERSION is set correctly
+    assert callback_module.CALLBACK_VERSION == 2.0
+
+    # Check if the CALLBACK_TYPE is set correctly
+    assert callback_module.CALLBACK_TYPE == 'aggregate'
+
+    # Check if the CALLBACK_NAME is set correctly
+    assert callback_module.CALLBACK_NAME == 'tree'
+
+    # Check if the CALLBACK_NEEDS_ENABLED is set correctly
+    assert callback_module.CALLBACK_NEEDS_ENABLED
+
+    # Check if the tree attribute is set to None before options are set
+    assert callback_module.tree is None
+
+    # Set options to check if the tree attribute is set correctly
+    callback_module.set_options()
+
+    # Check if the tree attribute is set correctly after options are set
+   
+
+# Generated at 2024-03-18 03:49:50.381774
+```python
+import os
+import tempfile
+import pytest
+from ansible.plugins.callback.tree import CallbackModule
+
+
+# Generated at 2024-03-18 03:49:56.648614
+```python
+    import mock
+    import pytest
+
+    @mock.patch('os.path.join', return_value='/fake/dir/hostname')
+    @mock.patch('ansible.plugins.callback.tree.makedirs_safe')
+    @mock.patch('ansible.plugins.callback.tree.open', mock.mock_open(), create=True)
+    def test_write_tree_file_success(makedirs_mock, join_mock):
+        callback_module = CallbackModule()
+        callback_module.tree = '/fake/dir'
+        hostname = 'hostname'
+        buf = '{"test": "data"}'
+
+        callback_module.write_tree_file(hostname, buf)
+
+        makedirs_mock.assert_called_once_with('/fake/dir')
+        join_mock.assert_called_once_with('/fake/dir', 'hostname')
+        ansible.plugins.callback.tree.open.assert_called_once_with('/fake/dir/hostname', 'wb+')
+        ansible.plugins.callback.tree.open().write.assert_called_once_with(b'{"test": "data"}')
+
+    @mock.patch('os.path.join', return_value='/fake/dir/hostname')
+    @
+
+# Generated at 2024-03-18 03:50:03.792250
+```python
+    # Create an instance of the CallbackModule
+    callback_module = CallbackModule()
+
+    # Assert that the instance is created and is of type CallbackModule
+    assert isinstance(callback_module, CallbackModule)
+
+    # Assert that the default values are correctly set
+    assert callback_module.CALLBACK_VERSION == 2.0
+    assert callback_module.CALLBACK_TYPE == 'aggregate'
+    assert callback_module.CALLBACK_NAME == 'tree'
+    assert callback_module.CALLBACK_NEEDS_ENABLED is True
+    assert callback_module.tree == "~/.ansible/tree"  # Assuming the TREE_DIR is not set
+
+    # Now, test the set_options method by simulating the TREE_DIR being set
+    os.environ['ANSIBLE_CALLBACK_TREE_DIR'] = '/tmp/ansible_tree'
+    callback_module.set_options()
+    assert callback_module.tree == '/tmp/ansible_tree'
+
+    # Clean up the environment variable for other tests
+    del os.environ['ANSIBLE_CALLBACK_TREE
+
+# Generated at 2024-03-18 03:50:06.749661
+```python
+    # Arrange
+    fake_loader, fake_inventory, fake_templar = None, None, None
+    fake_options = {'directory': '/fake/dir'}
+    fake_keywords = {
+        'task_keys': None,
+        'var_options': None,
+        'direct': fake_options
+    }
+
+    # Act
+    callback_module = CallbackModule()
+    callback_module.set_options(**fake_keywords)
+
+    # Assert
+    assert callback_module.tree == '/fake/dir'
+```
+
+# Generated at 2024-03-18 03:50:10.503897
+```python
+    # Arrange
+    fake_loader, fake_inventory, fake_templar = None, None, None
+    fake_options = {'directory': '/fake/dir'}
+    fake_keywords = {
+        'loader': fake_loader,
+        'inventory': fake_inventory,
+        'templar': fake_templar,
+        'options': fake_options
+    }
+
+    # Act
+    callback_module = CallbackModule()
+    callback_module.set_options(var_options=fake_keywords)
+
+    # Assert
+    assert callback_module.tree == '/fake/dir'
+```
