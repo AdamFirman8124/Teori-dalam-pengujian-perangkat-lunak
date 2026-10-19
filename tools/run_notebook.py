@@ -20,7 +20,7 @@ nb = nbformat.read(nb_path, as_version=4)
 client = NotebookClient(
     nb,
     timeout=None,
-    kernel_name="teori-pengujian",
+    kernel_name="python3",
     resources={"metadata": {"path": str(nb_path.parent)}},
 )
 client.execute()

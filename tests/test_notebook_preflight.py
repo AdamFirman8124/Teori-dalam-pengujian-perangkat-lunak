@@ -323,6 +323,12 @@ def test_codamosa_container_named_and_force_removed_on_timeout():
     assert 'teori.dataset=" + dataset' in runner
 
 
+def test_codamosa_image_build_has_no_wall_clock_timeout():
+    image_cell = _notebook_cells()["60a2d676"]
+    assert "timeout=1800" not in image_cell
+    assert "command, capture_output=True" in image_cell
+
+
 def test_valid_comparison_ok_keys_include_method_model_dataset_task():
     chart = _notebook_cells()["valid-comparison-chart"]
     assert 'x.get("method")' in chart

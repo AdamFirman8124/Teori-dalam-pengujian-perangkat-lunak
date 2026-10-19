@@ -149,15 +149,25 @@ def _openai_chat_request(self, function_header, context):
     CodaMOSA historically expected text completions. Custom routers such as
     Moyra expose chat completions instead, so keep the old internal prompt but
     send it as one user message.
+
+    The `stop` list and the small `max_tokens` cap are both provider-specific
+    hazards: SRByte rejects `stop` outright (HTTP 400) and reasoning models
+    spend the whole completion budget on hidden reasoning before emitting any
+    test code.  Keep the request minimal and give the model room to answer.
     """
     url = f"{self._model_base_url}{self._model_relative_url}"
+    try:
+        max_tokens = max(200, int(os.environ.get("CODAMOSA_MAX_TOKENS", "2048")))
+    except ValueError:
+        max_tokens = 2048
     payload = {
         "model": self._complete_model,
         "messages": [{"role": "user", "content": context + "\n" + function_header}],
-        "max_tokens": 200,
+        "max_tokens": max_tokens,
         "temperature": self._temperature,
-        "stop": ["\n# Unit test for", "\ndef ", "\nclass "],
     }
+    if os.environ.get("CODAMOSA_SEND_STOP", "0").strip().lower() in {"1", "true", "yes"}:
+        payload["stop"] = ["\n# Unit test for", "\ndef ", "\nclass "]
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {self._authorization_key}",
@@ -440,10 +450,23 @@ class _OpenAILanguageModel:
             )
         except ValueError:
             _max_transport_attempts = 1
+        try:
+            _request_timeout = max(
+                30, int(os.environ.get("CODAMOSA_REQUEST_TIMEOUT", "600"))
+            )
+        except ValueError:
+            _request_timeout = 600
         for attempt in range(_max_transport_attempts):
             try:
+                if (gate := os.environ.get("RPM_GATE_STATE")):
+                    try:
+                        import rate_gate
+                        rate_gate.acquire(gate, os.environ.get("RPM_LIMIT", "0"))
+                    except Exception:
+                        pass
                 res = requests.post(
-                    url, data=json.dumps(payload), headers=headers, timeout=90
+                    url, data=json.dumps(payload), headers=headers,
+                    timeout=_request_timeout,
                 )
                 last_connection_error = None
             except (requests.ConnectionError, requests.Timeout) as exc:
@@ -495,6 +518,8 @@ class _OpenAILanguageModel:
                 "ts": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
                 "latency_s": round(time.time() - time_start, 3),
                 "model": self.complete_model,
+                "requested_model": self.complete_model,
+                "returned_model": None,
                 "prompt": self._prompt_text(payload),
                 "prompt_tokens": self._last_prompt_tokens,
                 "output": "",
@@ -514,6 +539,8 @@ class _OpenAILanguageModel:
             "ts": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
             "latency_s": round(time.time() - time_start, 3),
             "model": self.complete_model,
+            "requested_model": self.complete_model,
+            "returned_model": body.get("model"),
             "prompt": self._prompt_text(payload),
             "prompt_tokens": self._last_prompt_tokens,
             "output": _extract_output_text(body),

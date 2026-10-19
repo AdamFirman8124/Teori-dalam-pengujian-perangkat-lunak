@@ -97,6 +97,8 @@ def main() -> int:
                         "ts": entry.get("ts"),
                         "method": method,
                         "model": entry.get("model") or model,
+                        "requested_model": entry.get("requested_model") or entry.get("model") or model,
+                        "returned_model": entry.get("returned_model"),
                         "dataset": dataset,
                         "task": task,
                         "outcome": outcome,

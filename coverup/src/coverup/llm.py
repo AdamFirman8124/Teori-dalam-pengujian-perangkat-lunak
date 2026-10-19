@@ -60,6 +60,11 @@ def _model_supports_function_calling(model_name: str) -> bool:
     up the *provider-prefixed* registry entry, whose capability flags may be
     absent. The actual provider call uses the bare model id after the prefix,
     which we already validated supports function calling.
+
+    A custom endpoint may also expose router aliases (e.g. ``auto``) that are
+    not in LiteLLM's registry at all.  For those, the registry check is
+    meaningless: the provider is the only authority, and CoverUp already sends
+    the tool schema on every request, so the call itself is the real test.
     """
     if litellm.supports_function_calling(model_name):
         return True
@@ -69,7 +74,11 @@ def _model_supports_function_calling(model_name: str) -> bool:
             if litellm.supports_function_calling(bare):
                 return True
         except Exception:
-            return False
+            pass
+        # Unknown alias on a custom OpenAI-compatible gateway: defer to the
+        # provider instead of blocking the whole run up front.
+        if model_name not in litellm.model_cost and bare not in litellm.model_cost:
+            return True
     return False
 
 
@@ -150,6 +159,11 @@ class Chatter:
         self._model = model
         self._model_temperature: float | None = None
         self._max_backoff = 64 # seconds
+        self._rpm_gate_state = os.environ.get("RPM_GATE_STATE", "")
+        try:
+            self._rpm_limit = max(0, int(os.environ.get("RPM_LIMIT", "0")))
+        except ValueError:
+            self._rpm_limit = 0
         # Provider calls are billed even when they end in an error or a cache
         # hit.  Retrying the same request therefore costs tokens repeatedly for
         # the same (often identical) answer.  Default is 0 retries: record what
@@ -280,6 +294,23 @@ class Chatter:
             try:
                 # TODO also add request limit; could use 'await asyncio.gather(t.acquire(tokens), r.acquire())'
                 # to acquire both
+                # Cross-process request budget (shared with CodaMOSA).  The
+                # provider enforces 50 RPM; without this gate every CoverUp
+                # worker fires immediately and burns a whole task on HTTP 429.
+                _gate_state = os.environ.get("RPM_GATE_STATE", "")
+                try:
+                    _gate_limit = max(0, int(os.environ.get("RPM_LIMIT", "0")))
+                except ValueError:
+                    _gate_limit = 0
+                if _gate_state and _gate_limit:
+                    try:
+                        import rate_gate as _rate_gate
+                        _waited = _rate_gate.acquire(_gate_state, _gate_limit)
+                        if _waited > 1.0:
+                            self._log_msg(ctx, f"RPM gate: waited {_waited:.1f}s")
+                    except Exception:
+                        pass
+
                 if self.token_rate_limit:
                     try:
                         await self.token_rate_limit.acquire(count_tokens(self._model, request))
@@ -451,6 +482,8 @@ args:{args}
                     "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                     "latency_s": round(time.time() - _req_t0, 3),
                     "model": self._model,
+                    "requested_model": self._model,
+                    "returned_model": getattr(response, "model", None),
                     "prompt": "\n".join(
                         (m.get("content") or "") if isinstance(m, dict) else str(m)
                         for m in messages

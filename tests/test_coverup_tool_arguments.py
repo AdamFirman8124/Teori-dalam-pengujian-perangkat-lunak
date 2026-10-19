@@ -1,4 +1,4 @@
-"""Malformed tool-call arguments must not abort the whole CoverUp task.
+﻿"""Malformed tool-call arguments must not abort the whole CoverUp task.
 
 Observed failure:
 
@@ -72,3 +72,22 @@ def test_valid_arguments_still_work():
     c._functions["echo"] = {"function": lambda ctx, value: value}
     result = c._call_function(object(), _Call("echo", '{"value": "hi"}'))
     assert result == "hi"
+
+
+def test_router_alias_on_custom_endpoint_is_allowed(monkeypatch):
+    """A gateway alias like `auto` is unknown to LiteLLM but must not block."""
+    from coverup import llm
+
+    monkeypatch.setenv("OPENAI_BASE_URL", "https://stream.srbyte.id/v1")
+    monkeypatch.setattr(llm.litellm, "supports_function_calling", lambda _m: False)
+    monkeypatch.setattr(llm.litellm, "model_cost", {})
+    assert llm._model_supports_function_calling("openai/auto") is True
+
+
+def test_known_non_tool_model_is_still_rejected(monkeypatch):
+    from coverup import llm
+
+    monkeypatch.setenv("OPENAI_BASE_URL", "https://stream.srbyte.id/v1")
+    monkeypatch.setattr(llm.litellm, "supports_function_calling", lambda _m: False)
+    monkeypatch.setattr(llm.litellm, "model_cost", {"openai/auto": {}})
+    assert llm._model_supports_function_calling("openai/auto") is False

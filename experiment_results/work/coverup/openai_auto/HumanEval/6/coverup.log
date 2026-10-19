@@ -1,0 +1,88 @@
+---- 2026-10-19T03:21:08 startup ----
+Command: C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Project\coverup\src\coverup\__main__.py --tests-dir C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Project\experiment_results\work\coverup\openai_auto\HumanEval\6\tests C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Project\experiment_results\work\coverup\openai_auto\HumanEval\6\script_6.py --model openai/auto --checkpoint C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Project\experiment_results\work\coverup\openai_auto\HumanEval\6\coverup.checkpoint --log-file C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Project\experiment_results\work\coverup\openai_auto\HumanEval\6\coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3 --rate-limit 1000000000 --max-attempts 10 --model-temperature 1.0
+---- 2026-10-19T03:21:10 script_6.py:4-24 ----
+{
+  "model": "openai/auto",
+  "temperature": 1.0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from script_6.py, does not achieve full coverage:\nwhen tested, lines 12-24 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            from typing import List\n            def parse_nested_parens(paren_string: str) -> List[int]:\n                \"\"\" Input to this function is a string represented multiple groups for nested parentheses separated by spaces.\n                For each of the group, output the deepest level of nesting of parentheses.\n                E.g. (()()) has maximum two levels of nesting while ((())) has three.\n            \n                >>> parse_nested_parens('(()()) ((())) () ((())()())')\n                [2, 3, 1, 3]\n                \"\"\"\n        12:     def parse_paren_group(s):\n        13:         depth = 0\n        14:         max_depth = 0\n        15:         for c in s:\n        16:             if c == '(':\n        17:                 depth += 1\n        18:                 max_depth = max(depth, max_depth)\n                        else:\n        20:                 depth -= 1\n            \n        22:         return max_depth\n            \n        24:     return [parse_paren_group(x) for x in paren_string.split(' ') if x]\n\n```\n"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-19T03:21:18 script_6.py:4-24 ----
+{
+  "id": "chatcmpl_req_6214617667b7b9bfadedd932",
+  "created": 1792354877,
+  "model": "auto",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```python\nimport pytest\n\nfrom script_6 import parse_nested_parens\n\n\ndef test_parse_nested_parens_multiple_groups():\n    result = parse_nested_parens('(()()) ((())) () ((())()())')\n    assert result == [2, 3, 1, 3]\n\n\ndef test_parse_nested_parens_single_group():\n    assert parse_nested_parens('((()))') == [3]\n\n\ndef test_parse_nested_parens_ends_with_close_paren_branch():\n    # exercises the else-branch (depth -= 1) on line 20\n    assert parse_nested_parens('()') == [1]\n\n\ndef test_parse_nested_parens_empty_string_filters_empty_splits():\n    # exercises the `if x` filter on line 24 with empty tokens\n    assert parse_nested_parens('  ()  ') == [1]\n    assert parse_nested_parens('') == []\n\n\ndef test_parse_nested_parens_returns_new_list_no_state_pollution():\n    # verify purity: calling twice yields same result (no shared state)\n    first = parse_nested_parens('(()) ()')\n    second = parse_nested_parens('(()) ()')\n    assert first == second == [2, 1]\n```",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "reasoning_content": "Simple test. Provide pytest test with assertions covering lines 12-24.",
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {
+        "matched_stop": null
+      }
+    }
+  ],
+  "usage": {
+    "completion_tokens": 274,
+    "prompt_tokens": 1107,
+    "total_tokens": 1381,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 15,
+      "rejected_prediction_tokens": null,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "metadata": null,
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-19T03:21:20 script_6.py:4-24 ----
+.....                                                                    [100%]
+
+---- 2026-10-19T03:21:20 script_6.py:4-24 ----
+Saved as C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Project\experiment_results\work\coverup\openai_auto\HumanEval\6\tests\test_coverup_1.py
+

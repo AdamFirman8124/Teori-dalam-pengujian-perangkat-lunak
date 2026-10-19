@@ -797,6 +797,11 @@ def run_coverup(put: Path, tests_dir: Path, workdir: Path, model: str = "gpt-4o"
         # Explicit child env (not os.environ) so ThreadPoolExecutor workers
         # running tasks in parallel never clobber each other's log path.
         env["COVERUP_LLM_CALLS_LOG"] = str(llm_calls_log.resolve())
+    # Cross-process gate shared with CodaMOSA; each child records before its
+    # first provider round-trip.  The limit is a request budget, not a token cap.
+    if (rpm_state := os.environ.get("RPM_GATE_STATE")):
+        env["RPM_GATE_STATE"] = str(Path(rpm_state).resolve())
+    env["RPM_LIMIT"] = os.environ.get("RPM_LIMIT", "0")
     r = CoverupRun()
     log_path = workdir / "coverup.log"
     log_start = log_path.stat().st_size if log_path.exists() else 0
