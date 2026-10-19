@@ -323,6 +323,17 @@ def test_codamosa_container_named_and_force_removed_on_timeout():
     assert 'teori.dataset=" + dataset' in runner
 
 
+def test_codamosa_exit_137_has_oom_diagnosis_and_conservative_ram_budget():
+    setup = _notebook_cells()["c5d09b00"]
+    readiness = _notebook_cells()["b4501a3d"]
+    runner = _notebook_cells()["4ce9652a"]
+    assert "CODAMOSA_RAM_GB_PER_WORKER" in setup
+    assert "_GB_PER_CODAMOSA = CODAMOSA_RAM_GB_PER_WORKER" in readiness
+    assert "// CODAMOSA_RAM_GB_PER_WORKER" in runner
+    assert "result.returncode in (137, -9)" in runner
+    assert "CODAMOSA_OOM" in runner
+
+
 def test_codamosa_image_build_has_no_wall_clock_timeout():
     image_cell = _notebook_cells()["60a2d676"]
     assert "timeout=1800" not in image_cell
