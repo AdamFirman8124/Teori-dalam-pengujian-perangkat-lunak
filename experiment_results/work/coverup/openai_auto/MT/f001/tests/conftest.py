@@ -1,1 +1,1 @@
-import __init__  # noqa: F401
+import f001  # noqa: F401
