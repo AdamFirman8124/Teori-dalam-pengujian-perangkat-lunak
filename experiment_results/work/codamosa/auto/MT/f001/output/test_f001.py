@@ -2,30 +2,15 @@
 import f001 as module_0
 
 def test_case_0():
-    str_0 = '%%qxQ'
+    str_0 = '() (()) ((()))'
     list_0 = module_0.separate_paren_groups(str_0)
-    str_1 = "8JEF(M`AJ7En01W'."
+    assert list_0 == ['()', '(())', '((()))']
+    str_1 = '(()()) ((())) ()'
     list_1 = module_0.separate_paren_groups(str_1)
-
-def test_case_1():
-    str_0 = "@qwHV\\X8n96'"
-    list_0 = module_0.separate_paren_groups(str_0)
-
-def test_case_2():
-    str_0 = '+~oA2qk%(\x0b04)"]xW.4'
-    list_0 = module_0.separate_paren_groups(str_0)
-    str_1 = 'HA-,=({@'
-    list_1 = module_0.separate_paren_groups(str_1)
-    str_2 = 'yR\'"}*W'
+    assert list_1 == ['(()())', '((()))', '()']
+    str_2 = '()()'
     list_2 = module_0.separate_paren_groups(str_2)
-    list_3 = module_0.separate_paren_groups(str_2)
-
-def test_case_3():
-    str_0 = ":'dfwK]|wDd*GlL'"
-    list_0 = module_0.separate_paren_groups(str_0)
-    str_1 = '+_2\reybS{U}\r9\x0cb'
-    list_1 = module_0.separate_paren_groups(str_1)
-    list_2 = module_0.separate_paren_groups(str_1)
-    str_2 = '\x0c#U.`,YP_Qv\n)VEJ'
-    list_3 = module_0.separate_paren_groups(str_2)
-    list_4 = module_0.separate_paren_groups(str_2)
+    assert list_2 == ['()', '()']
+    str_3 = ''
+    list_3 = module_0.separate_paren_groups(str_3)
+    assert list_3 == []

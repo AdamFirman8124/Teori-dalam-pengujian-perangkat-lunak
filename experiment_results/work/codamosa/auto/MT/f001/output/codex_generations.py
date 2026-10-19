@@ -1,451 +1,930 @@
 
 
-# Generated at 2026-10-19 15:11:20.647315
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:11:21.578723
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:11:22.498460
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:11:33.868569
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:11:34.376218
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:11:38.270150
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:11:43.707794
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:11:44.617040
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:11:45.440996
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:11:51.590376
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:11:51.825616
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:11:54.236155
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:11:59.299104
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:00.389989
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:00.620721
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:05.672474
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:06.437915
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:07.186354
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:15.221056
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:15.854525
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:16.569404
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:23.735899
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:25.277344
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:26.297809
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:33.508740
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:33.735588
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:33.948295
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:45.046309
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:45.762204
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:47.481360
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:55.086035
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:55.787814
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:12:56.402531
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:03.164550
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:03.832213
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:04.077883
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:09.003601
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:10.825947
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:12.479572
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:18.696090
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:20.937670
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:21.746128
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:27.952233
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:28.866680
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:29.791894
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:38.083662
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:39.458055
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:39.911197
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:47.427069
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:48.114811
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:48.531583
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:55.078575
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:55.900487
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:13:57.247661
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:02.941246
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:04.600312
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:05.830004
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:11.698370
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:12.236276
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:12.535581
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:18.214672
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:19.145564
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:19.860349
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:26.382384
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:27.295466
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:28.160161
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:35.011988
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:35.265793
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:35.495686
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:46.382612
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:46.644845
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:47.622439
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:54.167498
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:55.517763
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:14:56.331358
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:03.222439
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:04.096448
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:04.913805
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:09.438646
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:10.343547
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:11.164867
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:19.569340
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:19.898498
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:20.152782
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:29.371905
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:29.907596
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:30.332723
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:36.152519
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:38.309244
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:40.611180
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:46.220742
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:46.623079
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:47.047314
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:52.842373
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:53.986482
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:15:54.895833
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:02.421484
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:02.782043
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:03.090728
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:08.058575
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:08.316172
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:08.540502
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:15.526981
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:16.397618
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:17.318888
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:25.613494
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:26.914586
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:27.555702
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:36.466898
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:36.875144
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:37.114867
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:42.824065
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:43.531666
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:44.964478
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:51.929048
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:52.232908
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:52.748602
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:57.252912
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:59.003798
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:16:59.817504
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:05.963297
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:06.384738
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:07.493395
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:13.170230
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:13.737553
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:14.173554
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:20.041680
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:20.473381
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:21.375824
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:27.496869
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:27.963205
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:28.716158
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:35.914588
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:36.322638
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:36.586841
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:42.974222
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:43.315503
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:43.566512
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:50.400472
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:50.917280
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:51.222026
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:17:59.873963
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:18:00.143474
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:18:01.357530
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:18:07.099817
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:18:07.883862
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:18:08.197026
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:18:13.881339
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:18:14.669598
-# Unit test for function separate_paren_groups
-
-# Generated at 2026-10-19 15:18:14.982046
-# Unit test for function separate_paren_groups
+# Generated at 2026-10-19 17:19:18.664853
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()())()") == ["(()())", "()"]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:19:27.855309
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("() (()) ((()))") == [
+        "()",
+        "(())",
+        "((()))",
+    ]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("(()()) ((())())") == [
+        "(()())",
+        "((())())",
+    ]
+    assert module_0.separate_paren_groups("") == []
+
+# Generated at 2026-10-19 17:19:35.823193
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()())()(())") == ["(()())", "()", "(())"]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("") == []
+
+# Generated at 2026-10-19 17:19:44.734245
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()())") == ["(()())"]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("(()()) ((())) () ((())()())") == [
+        "(()())",
+        "((()))",
+        "()",
+        "((())()())",
+    ]
+
+# Generated at 2026-10-19 17:19:51.012772
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()())((()))()") == [
+        "(()())",
+        "((()))",
+        "()",
+    ]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("") == []
+
+# Generated at 2026-10-19 17:19:59.961645
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("(()()) ((())) () ((())()())") == [
+        "(()())",
+        "((()))",
+        "()",
+        "((())()())",
+    ]
+
+    assert module_0.separate_paren_groups("() (()) ((())) (((())))") == [
+        "()",
+        "(())",
+        "((()))",
+        "(((())))",
+    ]
+
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+
+# Generated at 2026-10-19 17:20:07.083019
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()())()") == ["(()())", "()"]
+    assert module_0.separate_paren_groups("() (()) ((()))") == [
+        "()",
+        "(())",
+        "((()))",
+    ]
+    assert module_0.separate_paren_groups("((()())()) (()())") == [
+        "((()())())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:20:13.963649
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()())") == ["(()())"]
+    assert module_0.separate_paren_groups("() (()) ((())) (()())") == [
+        "()",
+        "(())",
+        "((()))",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:20:21.556941
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("() (()) ((()))") == [
+        "()",
+        "(())",
+        "((()))",
+    ]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("(()(())((())))") == [
+        "(()(())((())))",
+    ]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+
+# Generated at 2026-10-19 17:20:28.562947
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("() (()) (()())") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("((())) () ((())())") == [
+        "((()))",
+        "()",
+        "((())())",
+    ]
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("   ") == []
+
+# Generated at 2026-10-19 17:20:37.059461
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("() (()) ((()))") == [
+        "()",
+        "(())",
+        "((()))",
+    ]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("(()())((()))()") == [
+        "(()())",
+        "((()))",
+        "()",
+    ]
+
+# Generated at 2026-10-19 17:20:45.445847
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("() (()) ((()))") == [
+        "()",
+        "(())",
+        "((()))",
+    ]
+
+    assert module_0.separate_paren_groups("(()()) ((())) ()") == [
+        "(()())",
+        "((()))",
+        "()",
+    ]
+
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("") == []
+
+# Generated at 2026-10-19 17:20:54.764553
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(()())((()))") == ["(()())", "((()))"]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:21:01.380917
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(()())((()))()") == [
+        "(()())",
+        "((()))",
+        "()",
+    ]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("") == []
+
+# Generated at 2026-10-19 17:21:11.331315
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+    assert module_0.separate_paren_groups("() (()) ((())) (((())))") == [
+        "()",
+        "(())",
+        "((()))",
+        "(((())))",
+    ]
+
+    assert module_0.separate_paren_groups("(()(())((())))") == [
+        "(()(())((())))",
+    ]
+
+    assert module_0.separate_paren_groups("") == []
+
+# Generated at 2026-10-19 17:21:18.353318
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())()") == ["(())", "()"]
+    assert module_0.separate_paren_groups("(()()) ((())) () ((())()())") == [
+        "(()())",
+        "((()))",
+        "()",
+        "((())()())",
+    ]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:21:26.297316
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()()) ((())) ()") == [
+        "(()())",
+        "((()))",
+        "()",
+    ]
+    assert module_0.separate_paren_groups("(()(())()) (())") == [
+        "(()(())())",
+        "(())",
+    ]
+
+# Generated at 2026-10-19 17:21:32.982379
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(()()) ((())) ()") == [
+        "(()())",
+        "((()))",
+        "()",
+    ]
+    assert module_0.separate_paren_groups("(()(())()) (()())") == [
+        "(()(())())",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("   ") == []
+
+# Generated at 2026-10-19 17:21:39.599271
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("(()()) ((())) () ((())()())") == [
+        "(()())",
+        "((()))",
+        "()",
+        "((())()())",
+    ]
+    assert module_0.separate_paren_groups("() (()) ((())) (((())))") == [
+        "()",
+        "(())",
+        "((()))",
+        "(((())))",
+    ]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("(()(())((())))") == [
+        "(()(())((())))",
+    ]
+    assert module_0.separate_paren_groups("") == []
+
+# Generated at 2026-10-19 17:21:47.277615
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()())((()))") == ["(()())", "((()))"]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:21:55.385562
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())()") == ["(())", "()"]
+    assert module_0.separate_paren_groups("(()())((()))") == ["(()())", "((()))"]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:22:07.740605
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("() (()) ((()))") == [
+        "()",
+        "(())",
+        "((()))",
+    ]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("(()(())((())))") == [
+        "(()(())((())))",
+    ]
+
+# Generated at 2026-10-19 17:22:14.962232
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()()) ((())) ()") == [
+        "(()())",
+        "((()))",
+        "()",
+    ]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:22:25.420804
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("(()()) ((())) () ((())()())") == [
+        "(()())",
+        "((()))",
+        "()",
+        "((())()())",
+    ]
+    assert module_0.separate_paren_groups("() (()) ((()))") == [
+        "()",
+        "(())",
+        "((()))",
+    ]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("   (())   ()   ") == ["(())", "()"]
+    assert module_0.separate_paren_groups("") == []
+
+# Generated at 2026-10-19 17:22:37.070062
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("() (())") == ["()", "(())"]
+    assert module_0.separate_paren_groups("(()()) ((())) () ((())()())") == [
+        "(()())",
+        "((()))",
+        "()",
+        "((())()())",
+    ]
+    assert module_0.separate_paren_groups("(()(())((())))") == [
+        "(()(())((())))"
+    ]
+    assert module_0.separate_paren_groups("   ()   ((()))   ") == [
+        "()",
+        "((()))",
+    ]
+
+# Generated at 2026-10-19 17:22:43.594624
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("() (()) ((()))") == [
+        "()",
+        "(())",
+        "((()))",
+    ]
+
+    assert module_0.separate_paren_groups("(()()) ((())) () ((())()())") == [
+        "(()())",
+        "((()))",
+        "()",
+        "((())()())",
+    ]
+
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("   ") == []
+
+# Generated at 2026-10-19 17:22:50.189041
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("() (()) ((()))") == [
+        "()",
+        "(())",
+        "((()))",
+    ]
+
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+    assert module_0.separate_paren_groups("(()()) ((())) ()") == [
+        "(()())",
+        "((()))",
+        "()",
+    ]
+
+    assert module_0.separate_paren_groups("") == []
+
+# Generated at 2026-10-19 17:22:59.259442
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())()") == ["(())", "()"]
+    assert module_0.separate_paren_groups("(()())((()))()") == [
+        "(()())",
+        "((()))",
+        "()",
+    ]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:23:05.582859
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()())((()))") == ["(()())", "((()))"]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:23:14.743707
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("() (()) ((()))") == [
+        "()",
+        "(())",
+        "((()))",
+    ]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("(()())((()))") == [
+        "(()())",
+        "((()))",
+    ]
+    assert module_0.separate_paren_groups("") == []
+
+# Generated at 2026-10-19 17:23:32.775604
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()())()") == ["(()())", "()"]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:23:40.439015
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()())((()))") == ["(()())", "((()))"]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:23:47.130182
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("() ()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(()) ((()))") == ["(())", "((()))"]
+    assert module_0.separate_paren_groups("(()()) ((())())") == ["(()())", "((())())"]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:23:54.144616
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()())((()))()") == [
+        "(()())",
+        "((()))",
+        "()",
+    ]
+    assert module_0.separate_paren_groups("() (()) ((()))") == [
+        "()",
+        "(())",
+        "((()))",
+    ]
+    assert module_0.separate_paren_groups("((()())) (()())") == [
+        "((()()))",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:24:01.580648
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()())") == ["(()())"]
+    assert module_0.separate_paren_groups("() (()) ((())) (()())") == [
+        "()",
+        "(())",
+        "((()))",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:24:07.344334
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("() (()) ((()))") == [
+        "()",
+        "(())",
+        "((()))",
+    ]
+
+    assert module_0.separate_paren_groups("(()()) ((())) ()") == [
+        "(()())",
+        "((()))",
+        "()",
+    ]
+
+    assert module_0.separate_paren_groups("()()") == [
+        "()",
+        "()",
+    ]
+
+    assert module_0.separate_paren_groups("((()())())") == [
+        "((()())())",
+    ]
+
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("   ") == []
+
+# Generated at 2026-10-19 17:24:16.269162
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("() (()) ((()))") == [
+        "()",
+        "(())",
+        "((()))",
+    ]
+
+    assert module_0.separate_paren_groups("(()()) ((())) () ((())()())") == [
+        "(()())",
+        "((()))",
+        "()",
+        "((())()())",
+    ]
+
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("((()())(()))") == ["((()())(()))"]
+    assert module_0.separate_paren_groups("") == []
+
+# Generated at 2026-10-19 17:24:22.807867
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("(()()) ((())) () ((())()())") == [
+        "(()())",
+        "((()))",
+        "()",
+        "((())()())",
+    ]
+
+    assert module_0.separate_paren_groups("() (()) ((())) (((())))") == [
+        "()",
+        "(())",
+        "((()))",
+        "(((())))",
+    ]
+
+    assert module_0.separate_paren_groups("(()(())((())))") == [
+        "(()(())((())))",
+    ]
+
+    assert module_0.separate_paren_groups("()()") == [
+        "()",
+        "()",
+    ]
+
+    assert module_0.separate_paren_groups("") == []
+
+# Generated at 2026-10-19 17:24:29.798154
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("() (()) (()())") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("(()())((()))()((())()())") == [
+        "(()())",
+        "((()))",
+        "()",
+        "((())()())",
+    ]
+    assert module_0.separate_paren_groups("   (())   ()   ") == ["(())", "()"]
+    assert module_0.separate_paren_groups("") == []
+
+# Generated at 2026-10-19 17:24:37.839801
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()()) ((())) () ((())()())") == [
+        "(()())",
+        "((()))",
+        "()",
+        "((())()())",
+    ]
+    assert module_0.separate_paren_groups("  ()   (())  ") == ["()", "(())"]
+
+# Generated at 2026-10-19 17:24:47.810596
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    test_cases = [
+        ("", []),
+        ("()", ["()"]),
+        ("(())", ["(())"]),
+        ("()()()", ["()", "()", "()"]),
+        ("(()()) ((())) ()", ["(()())", "((()))", "()"]),
+        ("( ) (( )) (( )( ))", ["()", "(())", "(()())"]),
+    ]
+
+    for paren_string, expected in test_cases:
+        assert module_0.separate_paren_groups(paren_string) == expected
+
+# Generated at 2026-10-19 17:24:56.781344
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())()") == ["(())", "()"]
+    assert module_0.separate_paren_groups("(()())((()))") == ["(()())", "((()))"]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:25:03.350430
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()())((()))()") == [
+        "(()())",
+        "((()))",
+        "()",
+    ]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:25:10.025508
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()()) ((())) ()") == [
+        "(()())",
+        "((()))",
+        "()",
+    ]
+    assert module_0.separate_paren_groups("(()(())()) (())") == [
+        "(()(())())",
+        "(())",
+    ]
+
+# Generated at 2026-10-19 17:25:16.842828
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("() ()") == ["()", "()"]
+    assert module_0.separate_paren_groups("()(())") == ["()", "(())"]
+    assert module_0.separate_paren_groups("(()()) ((())) ()") == [
+        "(()())",
+        "((()))",
+        "()",
+    ]
+    assert module_0.separate_paren_groups("((()())()) (()(()))") == [
+        "((()())())",
+        "(()(()))",
+    ]
+
+# Generated at 2026-10-19 17:25:24.679944
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups(
+        "(()()) ((())) () ((())()())"
+    ) == [
+        "(()())",
+        "((()))",
+        "()",
+        "((())()())",
+    ]
+
+    assert module_0.separate_paren_groups(
+        "() (()) ((())) (((())))"
+    ) == [
+        "()",
+        "(())",
+        "((()))",
+        "(((())))",
+    ]
+
+    assert module_0.separate_paren_groups(
+        "( ) (( )) (( )( ))"
+    ) == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+    assert module_0.separate_paren_groups("") == []
+
+# Generated at 2026-10-19 17:25:33.012798
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("() (()) ((()))") == [
+        "()",
+        "(())",
+        "((()))",
+    ]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+    assert module_0.separate_paren_groups("(()()) ((())())") == [
+        "(()())",
+        "((())())",
+    ]
+
+# Generated at 2026-10-19 17:25:41.133825
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()())((()))") == ["(()())", "((()))"]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]
+
+# Generated at 2026-10-19 17:25:47.638153
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())") == ["(())"]
+    assert module_0.separate_paren_groups("(()())()") == ["(()())", "()"]
+    assert module_0.separate_paren_groups("(()()) ((())) ()") == [
+        "(()())",
+        "((()))",
+        "()",
+    ]
+
+# Generated at 2026-10-19 17:25:56.534423
+# Unit test for function separate_paren_groups
+def test_separate_paren_groups():
+    assert module_0.separate_paren_groups("") == []
+    assert module_0.separate_paren_groups("()") == ["()"]
+    assert module_0.separate_paren_groups("()()") == ["()", "()"]
+    assert module_0.separate_paren_groups("(())()") == ["(())", "()"]
+    assert module_0.separate_paren_groups("(()())((()))") == ["(()())", "((()))"]
+    assert module_0.separate_paren_groups("( ) (( )) (( )( ))") == [
+        "()",
+        "(())",
+        "(()())",
+    ]

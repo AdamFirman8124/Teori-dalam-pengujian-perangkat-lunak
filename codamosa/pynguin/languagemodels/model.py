@@ -10,6 +10,7 @@ import itertools
 import json
 import logging
 import os
+import re
 import string
 import time
 from collections import defaultdict
@@ -175,6 +176,13 @@ def _openai_chat_request(self, function_header, context):
     return url, payload, headers
 
 
+def _codamosa_call_spacing() -> float:
+    try:
+        return max(0.0, float(os.environ.get("CODAMOSA_CALL_SPACING", "1.2")))
+    except ValueError:
+        return 1.2
+
+
 def _completion_text(response_body):
     """Read either legacy text or chat content from an OpenAI response."""
     choices = response_body.get("choices") or []
@@ -182,9 +190,35 @@ def _completion_text(response_body):
         return ""
     choice = choices[0]
     message = choice.get("message") or {}
-    if message.get("content") is not None:
-        return message["content"]
-    return choice.get("text", "")
+    content = message.get("content")
+    if content is not None:
+        return content
+    return choice.get("text", "") or ""
+
+
+def _normalise_test_completion(completion: str, function_header: str) -> str:
+    text = completion.strip()
+    fenced = re.search(r"```(?:python)?\s*(.*?)```", text, re.DOTALL | re.IGNORECASE)
+    if fenced:
+        text = fenced.group(1).strip()
+    text = re.sub(r"<think>.*?</think>\s*", "", text, flags=re.DOTALL | re.IGNORECASE)
+    header = function_header.splitlines()[-1].strip()
+    header_pos = text.find(header)
+    if header_pos >= 0:
+        text = text[header_pos + len(header):]
+    return text.rstrip()
+
+
+def _normalise_target_name(test_source: str, function_header: str) -> str:
+    target_match = re.search(r"(?:function|method)\s+([A-Za-z_]\w*)", function_header)
+    if not target_match:
+        return test_source
+    target = target_match.group(1)
+    return re.sub(
+        rf"(?<![.\w]){re.escape(target)}\s*\(",
+        f"module_0.{target}(",
+        test_source,
+    )
 
 
 class _OpenAILanguageModel:
@@ -411,6 +445,40 @@ class _OpenAILanguageModel:
     def _call_completion(
         self, function_header: str, context_start: int, context_end: int
     ) -> str:
+        text = self._call_completion_once(function_header, context_start, context_end)
+        if text.strip():
+            return text
+        try:
+            retries = max(0, int(os.environ.get("CODAMOSA_EMPTY_CONTENT_RETRIES", "1")))
+        except ValueError:
+            retries = 1
+        for attempt in range(retries):
+            logger.warning(
+                "Model returned empty content (attempt %s/%s); retrying with an "
+                "explicit code-only instruction.",
+                attempt + 1,
+                retries,
+            )
+            text = self._call_completion_once(
+                function_header,
+                context_start,
+                context_end,
+                extra_instruction=(
+                    "\n# Reply with the complete executable function body only "
+                    "(no prose, no tool calls, no placeholders)."
+                ),
+            )
+            if text.strip():
+                return text
+        return text
+
+    def _call_completion_once(
+        self,
+        function_header: str,
+        context_start: int,
+        context_end: int,
+        extra_instruction: str = "",
+    ) -> str:
         """Asks the model to provide a completion of the given function header,
         with the additional context of the target function definition.
 
@@ -418,22 +486,26 @@ class _OpenAILanguageModel:
             function_header: a string containing a def statement to be completed
             context_start: the start line of context that must be included
             context_end: the end line of context that must be included
+            extra_instruction: appended to the header on a recovery attempt
 
         Returns:
             the result of calling the model to complete the function header.
         """
         context = self._get_maximal_source_context(context_start, context_end)
+        request_header = function_header + extra_instruction
 
         if self.model_base_url == "https://api.openai.com":
             url, payload, headers = _openai_api_legacy_request(
-                self, function_header, context
+                self, request_header, context
             )
         elif "chat/completions" in self.model_relative_url:
             url, payload, headers = _openai_chat_request(
-                self, function_header, context
+                self, request_header, context
             )
         else:
-            url, payload, headers = _openai_api_request(self, function_header, context)
+            url, payload, headers = _openai_api_request(
+                self, request_header, context
+            )
 
         # We want to stop the generation before it spits out a bunch of other tests,
         # because that slows things down
@@ -464,10 +536,17 @@ class _OpenAILanguageModel:
                         rate_gate.acquire(gate, os.environ.get("RPM_LIMIT", "0"))
                     except Exception:
                         pass
+                _pause = _codamosa_call_spacing()
+                if _pause > 0:
+                    _last = getattr(self, "_last_completion_at", 0.0)
+                    _wait = _pause - (time.time() - _last)
+                    if _wait > 0:
+                        time.sleep(_wait)
                 res = requests.post(
                     url, data=json.dumps(payload), headers=headers,
                     timeout=_request_timeout,
                 )
+                self._last_completion_at = time.time()
                 last_connection_error = None
             except (requests.ConnectionError, requests.Timeout) as exc:
                 # Docker's embedded DNS and upstream gateways can fail briefly.
@@ -726,8 +805,10 @@ class _OpenAILanguageModel:
         completion = self._call_completion(
             context + function_header, start_line, end_line
         )
+        completion = _normalise_test_completion(completion, function_header)
         # Remove any trailing statements that don't parse
         generated_test = fixup_result(function_header + completion)
+        generated_test = _normalise_target_name(generated_test, function_header)
         report_dir = config.configuration.statistics_output.report_dir
         if report_dir != "pynguin-report":
             with open(

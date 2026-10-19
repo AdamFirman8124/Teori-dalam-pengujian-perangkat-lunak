@@ -127,6 +127,13 @@ def count_tokens(model_name: str, completion: dict):
 class ChatterError(Exception):
     pass
 
+
+_TOOL_NUDGE = (
+    "Stop calling tools. Using the information you already have, respond now "
+    "with the complete pytest test file enclosed in a ```python code block and "
+    "nothing else."
+)
+
 # --------------------------------------------------------------------------- #
 # Per-call LLM accounting
 # --------------------------------------------------------------------------- #
@@ -184,6 +191,12 @@ class Chatter:
         self._signal_retry = lambda: None
         self._functions: dict[str, dict[str, T.Any]] = dict()
         self._max_func_calls_per_chat = 50
+        try:
+            self._max_empty_nudges = max(
+                0, int(os.environ.get("COVERUP_EMPTY_CONTENT_RETRIES", "2"))
+            )
+        except ValueError:
+            self._max_empty_nudges = 2
         self._extra_request_pars: dict[str, T.Any] | None = None
         # Token accounting.  Custom OpenAI-compatible providers may omit
         # `usage`; we accumulate whatever is reported so a run can be costed
@@ -446,6 +459,8 @@ args:{args}
         """Chats with the LLM, sending the given messages, handling common failures and returning the response.
            Automatically calls any tool functions requested."""
         func_calls = 0
+        nudges = 0
+        tool_rounds = 0
         while func_calls <= self._max_func_calls_per_chat:
             request = self._request(messages)
             self._log_json(ctx, request)
@@ -518,6 +533,16 @@ args:{args}
                 self._add_usage(pt, ct, tt)
 
             if response.choices[0].finish_reason != "tool_calls":
+                content = getattr(response.choices[0].message, "content", None) or ""
+                if not content.strip() and nudges < self._max_empty_nudges:
+                    nudges += 1
+                    self._log_msg(
+                        ctx,
+                        f"Empty model response; asking again "
+                        f"(nudge {nudges}/{self._max_empty_nudges})",
+                    )
+                    messages.append({"role": "user", "content": _TOOL_NUDGE})
+                    continue
                 return response.json()
 
             tool_message = response.choices[0].message.json()
@@ -532,6 +557,16 @@ args:{args}
                     'name': call.function.name,
                     'content': self._call_function(ctx, call)
                 })
+
+            tool_rounds += 1
+            if tool_rounds >= 2 and nudges < self._max_empty_nudges:
+                nudges += 1
+                self._log_msg(
+                    ctx,
+                    f"{tool_rounds} tool rounds without code; requesting the "
+                    f"test file (nudge {nudges}/{self._max_empty_nudges})",
+                )
+                messages.append({"role": "user", "content": _TOOL_NUDGE})
 
         self._log_msg(ctx, f"Too many function call requests, giving up")
         return None

@@ -182,10 +182,11 @@ class MutationAnalysisAssertionGenerator(AssertionGenerator):
         num_mutations = len(self._mutated_modules)
 
         # Only assertions that are not found every time are interesting.
-        return OrderedSet(
+        filtered = OrderedSet(
             [
                 assertion
                 for assertion in base_assertions
                 if assertion_counter[assertion] < num_mutations
             ]
         )
+        return filtered or base_assertions

@@ -561,12 +561,20 @@ async def improve_coverage(
 
         response_message = response["choices"][0]["message"]
         messages.append(response_message)
+        response_text = response_message.get("content") or ""
 
-        if '```python' in response_message['content']:
-            last_test = extract_python(response_message['content'])
+        if '```python' in response_text:
+            last_test = extract_python(response_text)
         else:
-            log_write(args, seg, "No Python code in GPT response, giving up")
-            break
+            log_write(args, seg, "No Python code in response; asking again")
+            messages.append({
+                'role': 'user',
+                'content': (
+                    "Respond ONLY with the complete pytest test file enclosed in "
+                    "a ```python code block, no explanation."
+                ),
+            })
+            continue
 
         if missing := missing_imports(find_imports(last_test)):
             log_write(args, seg, f"Missing modules {' '.join(missing)}")
@@ -645,7 +653,9 @@ async def improve_coverage(
 
 def add_to_pythonpath(dir: Path):
     import os
-    os.environ['PYTHONPATH'] = str(dir) + (f":{os.environ['PYTHONPATH']}" if 'PYTHONPATH' in os.environ else "")
+    os.environ['PYTHONPATH'] = str(dir) + (
+        os.pathsep + os.environ['PYTHONPATH'] if 'PYTHONPATH' in os.environ else ""
+    )
     sys.path.insert(0, str(dir))
 
 
