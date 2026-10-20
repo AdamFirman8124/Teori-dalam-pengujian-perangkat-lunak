@@ -272,3 +272,183 @@ def test_intersperse():
     assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
     assert module_0.intersperse([1, 2, 3], -1) == [1, -1, 2, -1, 3]
     assert module_0.intersperse([-2, 0, 5], 99) == [-2, 99, 0, 99, 5]
+
+# Generated at 2026-10-19 22:07:32.295852
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([10, 20, 30], -1) == [10, -1, 20, -1, 30]
+
+# Generated at 2026-10-19 22:07:42.689619
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([-1, 5], 99) == [-1, 99, 5]
+
+# Generated at 2026-10-19 22:07:51.168192
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([1, 2, 3], -1) == [1, -1, 2, -1, 3]
+
+# Generated at 2026-10-19 22:08:00.185230
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([1, 2, 3], 9) == [1, 9, 2, 9, 3]
+    assert module_0.intersperse([-1, 0, 2], -5) == [-1, -5, 0, -5, 2]
+
+# Generated at 2026-10-19 22:08:09.613938
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([1, 2, 3], -1) == [1, -1, 2, -1, 3]
+    assert module_0.intersperse([5, 5, 5], 5) == [5, 5, 5, 5, 5]
+
+
+if __name__ == "__main__":
+    test_intersperse()
+    print("All tests passed.")
+
+# Generated at 2026-10-19 22:08:19.555116
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([5, 10, 15], -1) == [5, -1, 10, -1, 15]
+
+# Generated at 2026-10-19 22:08:28.540999
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([1, 2, 3], -1) == [1, -1, 2, -1, 3]
+    assert module_0.intersperse([-3, 0, 5], 99) == [-3, 99, 0, 99, 5]
+
+# Generated at 2026-10-19 22:08:37.117591
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([5], 0) == [5]
+    assert module_0.intersperse([-1, 2], 99) == [-1, 99, 2]
+
+# Generated at 2026-10-19 22:08:46.355343
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([1, 2, 3], -1) == [1, -1, 2, -1, 3]
+    assert module_0.intersperse([5, 5], 5) == [5, 5]
+
+# Generated at 2026-10-19 22:08:56.121914
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([1, 2, 3], -1) == [1, -1, 2, -1, 3]
+    assert module_0.intersperse([-2, 0, 5], 99) == [-2, 99, 0, 99, 5]
+
+# Generated at 2026-10-19 22:09:05.533540
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([-1, 0, 2], 9) == [-1, 9, 0, 9, 2]
+    assert module_0.intersperse([5, 5, 5], 5) == [5, 5, 5, 5, 5]
+
+
+if __name__ == "__main__":
+    test_intersperse()
+    print("All tests passed.")
+
+# Generated at 2026-10-19 22:09:18.141019
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([-1, 0, 2], 99) == [-1, 99, 0, 99, 2]
+
+# Generated at 2026-10-19 22:09:26.524402
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([-1, 2], 99) == [-1, 99, 2]
+
+# Generated at 2026-10-19 22:09:36.296062
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([1, 2, 3], -1) == [1, -1, 2, -1, 3]
+    assert module_0.intersperse([-2, 0, 5], 99) == [-2, 99, 0, 99, 5]
+
+# Generated at 2026-10-19 22:09:46.087731
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([-1, 4], 99) == [-1, 99, 4]
+
+# Generated at 2026-10-19 22:09:54.520670
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([1, 2, 3], -1) == [1, -1, 2, -1, 3]
+
+# Generated at 2026-10-19 22:10:04.063810
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([1, 2, 3], -1) == [1, -1, 2, -1, 3]
+    assert module_0.intersperse([5, 5, 5], 9) == [5, 9, 5, 9, 5]
+
+# Generated at 2026-10-19 22:10:12.452881
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([5], 9) == [5]
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([-1, 2], 99) == [-1, 99, 2]
+
+# Generated at 2026-10-19 22:10:22.707020
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([10, 20, 30], -1) == [10, -1, 20, -1, 30]
+    assert module_0.intersperse([-1, -2], 99) == [-1, 99, -2]
+
+# Generated at 2026-10-19 22:10:31.743444
+# Unit test for function intersperse
+def test_intersperse():
+    assert module_0.intersperse([], 0) == []
+    assert module_0.intersperse([1], 0) == [1]
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+    assert module_0.intersperse([1, 2, 3], -1) == [1, -1, 2, -1, 3]
+    assert module_0.intersperse([5, 5], 5) == [5, 5, 5]
