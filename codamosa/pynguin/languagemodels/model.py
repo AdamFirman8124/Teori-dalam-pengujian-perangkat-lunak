@@ -176,6 +176,42 @@ def _openai_chat_request(self, function_header, context):
     return url, payload, headers
 
 
+def _estimate_cost_usd(model_name: str, prompt_tokens: int,
+                       completion_tokens: int) -> float | None:
+    """USD cost from a local price table, or None when the model is unknown.
+
+    The router does not return price fields, so CodaMOSA previously logged
+    ``cost_usd: null`` for every call.  Prices come from ``CODAMOSA_PRICE_JSON``
+    (``{"model": [input_per_1k, output_per_1k]}``) and fall back to LiteLLM's
+    bundled map when it is importable inside the container.
+    """
+    raw = os.environ.get("CODAMOSA_PRICE_JSON", "").strip()
+    table = {}
+    if raw:
+        try:
+            table = json.loads(raw)
+        except ValueError:
+            table = {}
+    bare = model_name.split("/")[-1]
+    for key in (model_name, bare):
+        entry = table.get(key)
+        if entry:
+            try:
+                return (prompt_tokens / 1000.0) * float(entry[0]) + \
+                       (completion_tokens / 1000.0) * float(entry[1])
+            except (TypeError, ValueError, IndexError):
+                return None
+    try:
+        import litellm
+        price = litellm.model_cost.get(bare) or litellm.model_cost.get(model_name)
+        if price and price.get("input_cost_per_token") is not None:
+            return (prompt_tokens * float(price["input_cost_per_token"])
+                    + completion_tokens * float(price["output_cost_per_token"]))
+    except Exception:
+        pass
+    return None
+
+
 def _codamosa_call_spacing() -> float:
     try:
         return max(0.0, float(os.environ.get("CODAMOSA_CALL_SPACING", "1.2")))
@@ -688,13 +724,17 @@ class _OpenAILanguageModel:
         self.cache_read_tokens += cache_read
         self.cache_write_tokens += cache_write
         self.usage_reported += 1
-        # Cost: from the router's own price fields if present, otherwise zero
-        # (the notebook fills in a computed value from the pricing table).
+        # Cost: prefer the router's own price fields, then fall back to the
+        # local LiteLLM price map.  Routers usually omit price fields, which
+        # previously left ``cost_usd`` empty for every CodaMOSA call.
         price = usage.get("total_cost") or usage.get("cost")
         try:
             self._last_cost_usd = float(price) if price is not None else None
         except (TypeError, ValueError):
             self._last_cost_usd = None
+        if self._last_cost_usd is None:
+            self._last_cost_usd = _estimate_cost_usd(
+                self._complete_model, prompt, self._last_completion_tokens)
 
     def _get_num_tokens_at_line(self, line_num: int) -> int:
         """Get the approximate number of tokens for the source file at line_num.

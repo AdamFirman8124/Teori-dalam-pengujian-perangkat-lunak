@@ -24,11 +24,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-NOTEBOOK = ROOT / "experiments_codamosa_coverup.ipynb"
+NOTEBOOKS = (
+    ROOT / "experiments_coverup_windows.ipynb",
+    ROOT / "experiments_codamosa_linux.ipynb",
+)
 
 
 def _notebook_cells() -> dict:
-    nb = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
+    """Code cells of the shared experiment core (present in every notebook)."""
+    nb = json.loads(NOTEBOOKS[0].read_text(encoding="utf-8"))
     return {
         c["id"]: "".join(c.get("source", []))
         for c in nb["cells"]
@@ -36,11 +40,21 @@ def _notebook_cells() -> dict:
     }
 
 
+def _all_cells():
+    """(notebook, {cell_id: source}) for each method/OS notebook."""
+    out = []
+    for path in NOTEBOOKS:
+        nb = json.loads(path.read_text(encoding="utf-8"))
+        out.append((path, {c["id"]: "".join(c.get("source", []))
+                           for c in nb["cells"] if c.get("cell_type") == "code"}))
+    return out
+
+
 def test_notebook_is_valid_and_all_cells_compile():
-    cells = _notebook_cells()
-    assert cells, "notebook has no code cells"
-    for cell_id, source in cells.items():
-        compile(source, cell_id, "exec")
+    for path, cells in _all_cells():
+        assert cells, "%s has no code cells" % path.name
+        for cell_id, source in cells.items():
+            compile(source, "%s:%s" % (path.name, cell_id), "exec")
 
 
 def test_preflight_checks_configuration_without_model_calls():
@@ -265,7 +279,7 @@ def test_runner_has_no_profile_dimension():
 
 
 def test_wilcoxon_markdown_contains_no_python_code():
-    nb = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
+    nb = json.loads(NOTEBOOKS[0].read_text(encoding="utf-8"))
     cell = next(c for c in nb["cells"] if c.get("id") == "wilcoxon-table-md")
     assert cell["cell_type"] == "markdown"
     source = "".join(cell["source"])
@@ -335,7 +349,8 @@ def test_codamosa_exit_137_has_oom_diagnosis_and_conservative_ram_budget():
 
 
 def test_codamosa_image_build_has_no_wall_clock_timeout():
-    image_cell = _notebook_cells()["60a2d676"]
+    linux_cells = dict(_all_cells())[NOTEBOOKS[1]]
+    image_cell = linux_cells["60a2d676"]
     assert "timeout=1800" not in image_cell
     assert "command, capture_output=True" in image_cell
 

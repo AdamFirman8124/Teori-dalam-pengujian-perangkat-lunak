@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Post-run verification + RQ table + re-score, without any LLM call.
 
-Designed to run at the end of `experiments_codamosa_coverup.ipynb` (a thin
-notebook cell calls :func:`post_run`) and as a standalone CLI:
+Designed to run after either split experiment notebook and as a standalone CLI:
 
     .venv/bin/python tools/post_run.py --source experiment_results
 

@@ -82,9 +82,9 @@ print(d.hexdigest())
 PY
 ) -t pynguin-runner:latest -f codamosa/docker/Dockerfile codamosa
 
-# 2) full run (butuh kuota)
-#    set TASK_LIMIT=None di config/.env lalu jalankan
-#    experiments_codamosa_coverup.ipynb dari atas ke bawah
+# 2) full run (butuh kuota); Windows lalu Ubuntu native
+#    experiments_coverup_windows.ipynb dari atas ke bawah
+#    experiments_codamosa_linux.ipynb dari atas ke bawah
 
 # 3) re-score (gratis) setelah run
 .venv/bin/python tools/rescore_existing.py \
@@ -242,9 +242,11 @@ TASK_LIMIT=None  # Run all 164 HumanEval + 5 Refactory
   ✓ CODAMOSA_MODELS=srbyte/...
   ✓ API key rotated
 
-experiments_codamosa_coverup.ipynb
-  ✓ Cell 3: Strict preflight (all models must pass)
-  ✓ Cell 6: Per-model work dirs + explicit loops
+experiments_coverup_windows.ipynb
+experiments_codamosa_linux.ipynb
+  ✓ Notebook dipisah berdasarkan metode dan OS
+  ✓ Model `gpt-5.6-sol` tanpa label backbone buatan
+  ✓ Hardware profile i5-11400F / RAM 16 GB
 
 run_experiment.py
   ✓ Added: import os

@@ -633,10 +633,10 @@ async def improve_coverage(
         gained = {'lines': sorted(gained_lines), 'branches': sorted(gained_branches)}
 
         new_test = new_test_file(args)
-        new_test.write_text(f"# file: {seg.identify()}\n" +\
-                            f"# asked: {json.dumps(asked)}\n" +\
-                            f"# gained: {json.dumps(gained)}\n\n" +\
-                            last_test)
+        new_test.write_text(f"# file: {seg.identify()}\n" +
+                            f"# asked: {json.dumps(asked)}\n" +
+                            f"# gained: {json.dumps(gained)}\n\n" +
+                            last_test, encoding="utf-8")
 
         log_write(args, seg, f"Saved as {new_test}\n")
         state.inc_counter('G')

@@ -33,7 +33,8 @@ Urutan run: pilot MT (`TASK_FILTER=MT:f001`), MT penuh, pilot CM
 
 ```text
 config/                         konfigurasi tunggal: .env / .env.example
-experiments_codamosa_coverup.ipynb  satu-satunya notebook eksperimen
+experiments_coverup_windows.ipynb   CoverUp, Windows native
+experiments_codamosa_linux.ipynb    CodaMOSA, Ubuntu native (bukan WSL)
 src/                            evaluator, storage, discovery, loop helpers
 tools/                          post-run, rescore, tabel RQ, provider log
 scripts/                        runner alternatif
@@ -51,20 +52,20 @@ experiment_results/             output lokal (tidak di-commit)
 2. Pastikan konfigurasi fresh:
 
    ```env
-   COVERUP_MODELS=openai/gpt-5.6-luna
-   CODAMOSA_MODELS=gpt-5.6-luna
+   COVERUP_MODELS=openai/gpt-5.6-sol
+   CODAMOSA_MODELS=gpt-5.6-sol
    TASK_FILTER=
    TASK_LIMIT=None
    RESUME=0
    FRESH=1
-   RUN_LABEL=luna-fresh
+   RUN_LABEL=sol-fresh
    TASK_WORKERS=2
    AUTO_SCALE=0
    ```
 
 3. Restart kernel VS Code, pilih kernel `.venv`.
-4. Buka `experiments_codamosa_coverup.ipynb` dan tekan **Run All**.
-5. Amati `experiment_results/provider_responses_summary.md` selama run.
+4. Di Windows buka `experiments_coverup_windows.ipynb`; setelah Ubuntu native siap, buka `experiments_codamosa_linux.ipynb`. Jalankan **Run All** hanya pada notebook untuk OS tersebut.
+5. Amati folder hasil terpisah `experiment_results_coverup_windows/` atau `experiment_results_codamosa_linux/`.
 
 Semua hasil lama yang dibutuhkan untuk audit disimpan di luar output aktif atau
 arsip manual; `experiment_results/` selalu dianggap disposable dan diabaikan Git.
@@ -94,7 +95,8 @@ experiment_results/
 
 ## Catatan validitas
 
-- Sol tidak dijalankan lagi; hanya luna yang menjadi model aktif.
+- Backbone aktif `gpt-5.6-sol`, dikirim apa adanya dan dikembalikan provider dengan
+  id yang sama; tidak ada alias atau label buatan di `rows.csv`.
 - Error provider dicatat sebagai `BLOCKED`, bukan skor nol.
 - `cache_hit` tetap dihitung sebagai token yang digunakan jika provider
   melaporkan token cache.
@@ -151,7 +153,8 @@ jadi, kita koreksi:
      --display-name 'Python (.venv Teori Pengujian)'
    ```
 
-3. **Buka** `experiments_codamosa_coverup.ipynb` di VS Code, pilih kernel
+3. **Buka** notebook sesuai OS: `experiments_coverup_windows.ipynb` di Windows,
+   `experiments_codamosa_linux.ipynb` di Ubuntu native. Pilih kernel
    **Python (.venv Teori Pengujian)** di pojok kanan atas.
 
 4. **Jalankan cell dari atas ke bawah** (tombol ▶ atau `Shift+Enter`):
@@ -159,24 +162,28 @@ jadi, kita koreksi:
    | Cell | Apa yang dilakukan | Butuh internet? |
    |---|---|---|
    | 1 | Setup: dependency, konfigurasi, path hasil | Tidak |
-   | 2 | **Kesiapan device**: CPU/RAM/disk, WSL, jam, Docker | Ya (cek jam, 1 request kecil) |
-   | 3 | Tanya provider: model apa yang tersedia (hanya `gpt-5.6-luna`) | Ya, 1 request kecil |
-   | 4 | Cek tiap model bisa merespons | Ya, beberapa request kecil |
-   | 5 | Cek/bangun image Docker CodaMOSA | Tidak (lokal) |
-   | 6 | **Inti**: buat test + evaluasi semua task | Ya, banyak request |
+   | 2 | **Kesiapan device**: CPU/RAM/disk, OS, jam, Docker bila CodaMOSA | Ya (cek jam) |
+   | 3 | Tanya provider: model `gpt-5.6-sol` yang tersedia | Ya |
+   | 4 | Preflight dependency/model | Ya, tanpa completion probe |
+   | 5 | Cek/bangun image Docker CodaMOSA (Ubuntu notebook saja) | Tidak (lokal) |
+   | 6 | **Inti**: buat test + evaluasi task untuk metode notebook ini | Ya, banyak request |
    | 7 | Simpan hasil (finalize + manifest) | Tidak |
    | 8 | Grafik `comparison.png` + ringkasan | Tidak |
    | 9 | Verifikasi pasca-run + tabel RQ (`tools/post_run.py`) | Tidak |
 
-5. **Lihat hasilnya** di folder `experiment_results/`:
+5. **Lihat hasilnya** di folder hasil notebook tersebut
+   (`experiment_results_coverup_windows/` atau `experiment_results_codamosa_linux/`):
 
    | File | Isi |
    |---|---|
    | `rows.csv` | Satu baris per (metode × task): semua angka metrik |
    | `status.json` | Status tiap kombinasi: `OK`, `BLOCKED`, `INVALID_GENERATED_TEST` + alasannya |
-   | `comparison.png` | Grafik batang perbandingan kedua metode |
+   | `comparison.png` | Grafik batang perbandingan metode di run itu |
    | `runs/<waktu>/rq1.md`, `rq2.md` | Tabel ringkasan RQ1 & RQ2 |
    | `work/` | Berkas mentah (test yang dihasilkan, log) — boleh dihapus |
+
+   Gabungkan kedua folder sebelum tabel RQ:
+   `.venv\Scripts\python.exe tools\merge_collaborator_results.py experiment_results_coverup_windows --target experiment_results`
 
 ### Pertanyaan yang sering muncul
 
@@ -240,12 +247,13 @@ python3 -m venv .venv
 cp config/.env.example config/.env
 nano config/.env        # isi OCTA_API_KEY dan OPENAI_BASE_URL saja
 
-# 5) Siapkan Docker (untuk CodaMOSA)
+# 5) Siapkan Docker (hanya notebook Ubuntu)
 docker info             # harus menampilkan Server Version
 
-# 6) Jalankan di tmux supaya selamat dari putus koneksi
+# 6) Jalankan notebook sesuai OS di tmux supaya selamat dari putus koneksi
 tmux new -s exp
-.venv/bin/python tools/run_notebook.py experiments_codamosa_coverup.ipynb out.ipynb
+.venv/bin/python tools/run_notebook.py experiments_codamosa_linux.ipynb \
+    experiment_results_codamosa_linux/executed.ipynb
 # tekan Ctrl+B lalu D untuk detach — proses tetap jalan
 ```
 

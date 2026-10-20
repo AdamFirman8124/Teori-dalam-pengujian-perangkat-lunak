@@ -565,14 +565,21 @@ def prepare_suite(layout: dict, tests: T.Sequence[Path], workdir: Path) -> dict:
       put           the PUT file, copied into workdir
     """
     put_src = Path(layout["put"])
-    put = workdir / put_src.name
-    shutil.copy(put_src, put)
     # CM modules are package members: tests import the dotted path
     # (e.g. ``from ansible.cli.adhoc import ...``), so the real package root
     # must stay on sys.path for every child process.  MT PUTs are standalone
     # scripts and leave this empty.
     package_root = layout.get("package_root") or ""
     dotted = layout.get("module_name") or ""
+    if package_root:
+        # Never copy a CM module next to the tests.  A module named
+        # ``collections.py``/``json.py``/``token.py`` in the workdir would sit
+        # on sys.path ahead of the standard library and break pytest itself
+        # (``cannot import name 'namedtuple' from 'collections'``).
+        put = put_src
+    else:
+        put = workdir / put_src.name
+        shutil.copy(put_src, put)
     try:
         put_rel = (Path(put_src).resolve().relative_to(
             Path(package_root).resolve()).as_posix() if package_root else "")
@@ -622,7 +629,7 @@ def prepare_suite(layout: dict, tests: T.Sequence[Path], workdir: Path) -> dict:
                 body += "def {0}():\n    {1}()\n\n".format(alias, fn)
                 units.append((tf, alias))
             out = workdir / ("test_inline_{0}.py".format(i))
-            out.write_text(body)
+            out.write_text(body, encoding="utf-8")
             pytest_files.append(out)
         else:
             dst = workdir / ("test_imported_{0}.py".format(i))

@@ -15,7 +15,7 @@ async def measure_test_coverage(*, test: str, tests_dir: Path, pytest_args='',
     fd, test_path = tempfile.mkstemp(prefix="tmp_test_", suffix='.py', dir=str(tests_dir), text=True)
     os.close(fd)
     try:
-        Path(test_path).write_text(test)
+        Path(test_path).write_text(test, encoding='utf-8')
         with tempfile.NamedTemporaryFile(suffix='.json', delete=False) as j:
             try:
                 # -qq to cut down on tokens

@@ -5,7 +5,10 @@ param(
 
     [Parameter(Mandatory = $true)]
     [ValidateRange(1, 100)]
-    [int]$Count
+    [int]$Count,
+
+    [ValidateSet('coverup-windows', 'codamosa-linux')]
+    [string]$Method = 'coverup-windows'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -19,6 +22,13 @@ if ($Index -ge $Count) {
 $Python = Join-Path $Root '.venv\Scripts\python.exe'
 if (-not (Test-Path $Python)) {
     throw 'Jalankan tools\setup_windows.ps1 terlebih dahulu.'
+}
+
+# One notebook per method/OS; pick by name so a shard cannot run the wrong method.
+$MethodNotebook = if ($Method -eq 'codamosa-linux') {
+    'experiments_codamosa_linux.ipynb'
+} else {
+    'experiments_coverup_windows.ipynb'
 }
 
 # Notebook loads config/.env with override=True, so write a temporary per-shard
@@ -55,7 +65,7 @@ Set-Content $EnvPath $EnvText -Encoding utf8
 Remove-Item $Log, $Err -Force -ErrorAction SilentlyContinue
 $Args = @(
     'tools\run_notebook.py',
-    'experiments_codamosa_coverup.ipynb',
+    $MethodNotebook,
     "$ResultRel\executed.ipynb"
 )
 $Process = Start-Process -FilePath $Python -ArgumentList $Args `

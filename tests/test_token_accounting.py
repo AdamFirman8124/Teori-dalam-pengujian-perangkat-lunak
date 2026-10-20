@@ -87,14 +87,18 @@ def test_codamosa_usage_records_input_and_output_tokens():
         encoding="utf-8"
     )
     tree = ast.parse(source)
+    helper_node = next(node for node in tree.body if isinstance(node, ast.FunctionDef)
+                       and node.name == "_estimate_cost_usd")
     class_node = next(node for node in tree.body if isinstance(node, ast.ClassDef)
                       and node.name == "_OpenAILanguageModel")
     method_node = next(node for node in class_node.body if isinstance(node, ast.FunctionDef)
                        and node.name == "_record_usage")
-    namespace = {}
-    exec(compile(ast.Module(body=[method_node], type_ignores=[]), "_record_usage", "exec"), namespace)
+    namespace = {"os": __import__("os"), "json": json}
+    exec(compile(ast.Module(body=[helper_node, method_node], type_ignores=[]),
+                 "_record_usage", "exec"), namespace)
 
     class Model:
+        _complete_model = "gpt-5.6-sol"
         prompt_tokens = 0
         completion_tokens = 0
         total_tokens = 0

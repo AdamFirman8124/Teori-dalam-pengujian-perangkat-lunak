@@ -114,6 +114,37 @@ def compute_cost(usage: dict, model_name: str) -> float | None:
 
     return None
 
+
+def _price_for(model_name: str) -> dict | None:
+    """Look up the per-token price for a model, tolerating router aliases.
+
+    ``litellm.completion_cost`` needs a full response object with a recognised
+    ``model`` field; routers frequently return a bare alias or a wrapper model
+    name, which made every call cost ``None``.  Reading the local price map
+    directly is deterministic and works for ``openai/<name>`` prefixes.
+    """
+    bare = model_name[len('openai/'):] if model_name.startswith('openai/') else model_name
+    for candidate in (model_name, bare, 'openai/' + bare):
+        entry = litellm.model_cost.get(candidate)
+        if entry and entry.get('input_cost_per_token') is not None:
+            return entry
+    return None
+
+
+def cost_from_usage(usage: dict, model_name: str) -> float | None:
+    """USD cost for one call, or None when the model has no known price."""
+    price = _price_for(model_name)
+    if not price:
+        return None
+    try:
+        prompt = int(usage.get('prompt_tokens') or 0)
+        completion = int(usage.get('completion_tokens') or 0)
+    except (TypeError, ValueError):
+        return None
+    return (prompt * float(price.get('input_cost_per_token') or 0.0)
+            + completion * float(price.get('output_cost_per_token') or 0.0))
+
+
 _token_encoding_cache: dict[str, T.Any] = dict()
 
 def count_tokens(model_name: str, completion: dict):
@@ -473,8 +504,18 @@ args:{args}
             try:
                 self._add_cost(litellm.completion_cost(response))
             except Exception:
-                # Custom models may not be in LiteLLM cost map; skip cost tracking
-                pass
+                # Routers return bare aliases that LiteLLM cannot price; use the
+                # local price map so per-task cost is still recorded.
+                try:
+                    usage = getattr(response, "usage", None)
+                    computed = cost_from_usage(
+                        {"prompt_tokens": getattr(usage, "prompt_tokens", 0),
+                         "completion_tokens": getattr(usage, "completion_tokens", 0)},
+                        self._model)
+                    if computed:
+                        self._add_cost(computed)
+                except Exception:
+                    pass
 
             # Per-call LLM accounting (time, prompt, tokens, output, cost).
             try:
@@ -483,7 +524,8 @@ args:{args}
                 ct = int(getattr(usage, "completion_tokens", 0) or 0)
                 tt = int(getattr(usage, "total_tokens", 0) or pt + ct)
                 try:
-                    call_cost = float(litellm.completion_cost(response))
+                    call_cost = cost_from_usage(
+                        {"prompt_tokens": pt, "completion_tokens": ct}, self._model)
                 except Exception:
                     call_cost = None
                 choice = response.choices[0] if getattr(response, "choices", None) else None

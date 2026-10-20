@@ -10,13 +10,14 @@ Semua jalur di dokumen ini relatif terhadap root repositori.
 
 ## 0. Ringkasan satu paragraf
 
-`config/.env` menentukan model dan budget. Notebook
-`experiments_codamosa_coverup.ipynb` menjalankan 11 cell: setup, kesiapan device,
-discovery model, preflight, build image Docker, **generator + evaluator**,
-finalize, lalu empat cell analisis. Generator memanggil LLM untuk **menghasilkan
-test** (CoverUp lewat subprocess Python, CodaMOSA lewat container Docker).
-Evaluator **tidak** memanggil LLM sama sekali — ia hanya menjalankan pytest,
-SlipCover, dan mutant secara lokal.
+`config/.env` menentukan model dan budget. Dua notebook dipisah per metode/OS:
+`experiments_coverup_windows.ipynb` menjalankan CoverUp secara Windows-native dan
+`experiments_codamosa_linux.ipynb` menjalankan CodaMOSA di Ubuntu native (bukan WSL).
+Keduanya menjalankan setup, kesiapan device, discovery model, preflight,
+**generator + evaluator**, finalize, lalu analisis; notebook CodaMOSA juga membangun
+image Docker. Generator memanggil LLM untuk **menghasilkan test** (CoverUp lewat
+subprocess Python, CodaMOSA lewat container Docker). Evaluator **tidak** memanggil
+LLM sama sekali — ia hanya menjalankan pytest, SlipCover, dan mutant secara lokal.
 
 ---
 
@@ -254,12 +255,12 @@ Jalankan tanpa API request:
 
 | Aktor | Kerja | Token | Lokasi |
 |---|---|---:|---|
-| `gpt-5.6-luna` | menghasilkan test (CoverUp) atau assertion (CodaMOSA) | ya | provider |
+| `gpt-5.6-sol` | menghasilkan test (CoverUp) atau assertion (CodaMOSA) | ya | provider |
 | CoverUp | iterasi coverage: prompt → test → validasi | per prompt | `coverup/src/coverup/` |
 | CodaMOSA | evolusi test + prompt assertion | per prompt | `codamosa/pynguin/languagemodels/` |
 | Evaluator | coverage, pass rate, mutation score | tidak | `src/eval_metrics.py` |
 | Storage | checkpoint, finalize, backup | tidak | `src/experiment_storage.py` |
-| Notebook | orkestrasi dan analisis | tidak | `experiments_codamosa_coverup.ipynb` |
+| Notebook | orkestrasi dan analisis | tidak | `experiments_coverup_windows.ipynb`, `experiments_codamosa_linux.ipynb` |
 
 ## 9. Verifikasi tanpa LLM
 
@@ -269,8 +270,8 @@ Jalankan tanpa API request:
 .venv\Scripts\python.exe -m pytest tests -q
 ```
 
-*State dokumentasi: satu model aktif (`gpt-5.6-luna`), satu `.env`,
-`TASK_WORKERS=2`, dan retry minimal.*
+*State dokumentasi: backbone aktif `gpt-5.6-sol` (dikirim apa adanya, tanpa label
+buatan), satu `.env`, `TASK_WORKERS=2`, dan retry minimal.*
 
 Data nyata run sebelumnya: median 1 panggilan per task (rata-rata 1,6, maks 6),
 prompt median 832 token, waktu median ±23 detik per task.
