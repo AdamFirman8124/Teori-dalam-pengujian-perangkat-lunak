@@ -1,7 +1,7 @@
 import json
 import pathlib
 
-ROOT = pathlib.Path(r"C:\Users\adamf\Documents\Kuliah\ITS\Semester 1\Topik Dalam Pengujian Perangkat Lunak\Project")
+ROOT = pathlib.Path(__file__).resolve().parents[1]
 NOTEBOOKS = {
     "coverup": ROOT / "experiments_coverup_windows.ipynb",
     "codamosa": ROOT / "experiments_codamosa_linux.ipynb",
@@ -63,6 +63,15 @@ def test_windows_preflight_does_not_require_docker():
     preflight = coverup["f68dcf13"]
     assert "if CODAMOSA_MODELS" in preflight
     assert "Dilewati: notebook ini tidak memakai Docker." in preflight
+
+
+def test_windows_readiness_uses_native_label_and_skips_codamosa_ram_tuning():
+    readiness = coverup["b4501a3d"]
+    runner = coverup["4ce9652a"]
+    assert "Windows native" in readiness
+    assert "if not CODAMOSA_MODELS:" in readiness
+    assert "RAM auto-tune CodaMOSA dilewati" in readiness
+    assert "by_ram = max_load if not _CODAMOSA_ENABLED" in runner
 
 
 def test_linux_header_rejects_wsl_as_run_target():

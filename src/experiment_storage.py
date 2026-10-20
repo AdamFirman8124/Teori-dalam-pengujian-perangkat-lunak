@@ -53,7 +53,14 @@ class ResultStore:
                 handle.write(content)
                 handle.flush()
                 os.fsync(handle.fileno())
-            os.replace(temp, path)
+            for attempt in range(6):
+                try:
+                    os.replace(temp, path)
+                    break
+                except PermissionError:
+                    if attempt == 5:
+                        raise
+                    time.sleep(0.1 * (attempt + 1))
         finally:
             temp.unlink(missing_ok=True)
 

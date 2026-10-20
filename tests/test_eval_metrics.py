@@ -127,6 +127,35 @@ def test_generate_mutants_writes_reusable_sources(tmp_path: Path) -> None:
 
 
 
+def test_run_coverup_uses_top_level_package_dir_for_dotted_cm_module(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source_root = tmp_path / "source"
+    target = source_root / "ansible" / "cli" / "adhoc.py"
+    target.parent.mkdir(parents=True)
+    target.write_text("VALUE = 1\n", encoding="utf-8")
+    (source_root / "ansible" / "__init__.py").write_text("", encoding="utf-8")
+    (source_root / "ansible" / "cli" / "__init__.py").write_text("", encoding="utf-8")
+    captured = {}
+
+    def fake_run(command, **kwargs):
+        captured["command"] = command
+        captured["env"] = kwargs["env"]
+        return type("Result", (), {"returncode": 1, "stdout": "", "stderr": "stop"})()
+
+    monkeypatch.setattr(em.subprocess, "run", fake_run)
+    work = tmp_path / "work"
+    em.run_coverup(
+        target, work / "tests", work, model="dummy",
+        module_name="ansible.cli.adhoc", package_root=source_root,
+    )
+
+    command = captured["command"]
+    package_dir = Path(command[command.index("--package-dir") + 1])
+    assert package_dir == work / "project" / "ansible"
+    assert captured["env"]["PYTHONPATH"].split(em.os.pathsep)[0] == str(work / "project")
+
+
 def test_run_coverup_dry_run_accepts_mt_and_cm_package_layouts(tmp_path: Path) -> None:
     for dataset, task in (("MT", "f001"), ("CM", "flutils.objutils")):
         layout = em.LAYOUTS[dataset](task)
@@ -144,6 +173,28 @@ def test_run_coverup_dry_run_accepts_mt_and_cm_package_layouts(tmp_path: Path) -
         assert "Error measuring coverage" not in result.error
         assert (work / "project").is_dir()
 
+
+
+def test_storage_atomic_write_retries_transient_permission_error(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    destination = tmp_path / "rows.csv"
+    destination.write_text("old", encoding="utf-8")
+    original_replace = storage.os.replace
+    calls = {"count": 0}
+
+    def flaky_replace(source, target):
+        calls["count"] += 1
+        if calls["count"] == 1:
+            raise PermissionError(5, "Access is denied", str(target))
+        return original_replace(source, target)
+
+    monkeypatch.setattr(storage.os, "replace", flaky_replace)
+
+    storage.ResultStore._atomic_write(destination, "new")
+
+    assert destination.read_text(encoding="utf-8") == "new"
+    assert calls["count"] == 2
 
 
 def test_storage_uses_unique_backup_when_run_id_already_exists(tmp_path: Path) -> None:

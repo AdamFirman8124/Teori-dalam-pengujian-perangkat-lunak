@@ -961,9 +961,10 @@ def run_coverup(put: Path, tests_dir: Path, workdir: Path, model: str = "gpt-4o"
     # silently reporting 100% over an empty suite.  CM uses dotted imports.
     import_name = module_name or local_put.stem
     (tests_dir / "conftest.py").write_text("import {0}  # noqa: F401\n".format(import_name))
+    package_dir = (project / import_name.split(".")[0]) if package_root else None
     cmd = [*coverup_cmd(), "--tests-dir", str(tests_dir), str(local_put),
            "--model", model, "--checkpoint", str(ckpt),
-           *(["--package-dir", str(local_put.parent)] if package_root else []),
+           *(["--package-dir", str(package_dir)] if package_dir else []),
            "--log-file", str(workdir / "coverup.log"),
            "--no-isolate-tests", "--no-repeat-tests", "--no-disable-polluting",
            "--no-disable-failing", "--max-attempts", "3",

@@ -57,6 +57,29 @@ def test_notebook_is_valid_and_all_cells_compile():
             compile(source, "%s:%s" % (path.name, cell_id), "exec")
 
 
+def test_windows_cm_scope_detects_transitive_posix_imports(tmp_path):
+    source = _notebook_cells()["windows-cm-scope"]
+    namespace = {"Path": Path, "em": __import__("eval_metrics"), "TASKS": {}, "OUT": tmp_path}
+    exec(source, namespace)
+
+    assert namespace["_needs_posix"]("ansible.cli.adhoc") is True
+    assert namespace["_needs_posix"]("flutils.objutils") is False
+
+
+def test_error_explanation_does_not_treat_source_line_as_http_401():
+    source = _notebook_cells()["f68dcf13"]
+    start = source.index("def redact(value):")
+    end = source.index("def _rpm_limit():")
+    namespace = {"os": os}
+    exec(source[start:end], namespace)
+
+    explanation = namespace["explain_error"](
+        RuntimeError("line 401: ModuleNotFoundError: No module named 'fcntl'")
+    )
+    assert "Linux/POSIX" in explanation
+    assert "Credential ditolak" not in explanation
+
+
 def test_preflight_checks_configuration_without_model_calls():
     pre = _notebook_cells()["f68dcf13"]
     assert "def coverup_preflight(models):" in pre
