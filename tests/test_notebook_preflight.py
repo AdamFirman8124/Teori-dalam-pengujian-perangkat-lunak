@@ -273,7 +273,8 @@ def test_llm_logging_and_budget_knobs_are_wired():
     assert "load_dotenv(ROOT / 'config' / '.env', override=True)" in setup
 
     assert "llm_calls_log=llm_calls_log" in runner
-    assert "CODAMOSA_LLM_CALLS_LOG=/output/llm_calls.jsonl" in runner
+    assert '"CODAMOSA_LLM_CALLS_LOG=" + _container_llm_log' in runner
+    assert '_container_llm_log = "/output/llm_calls.jsonl"' in runner
     assert "COVERUP_MAX_ATTEMPTS" in runner
     assert "CODAMOSA_TEMPERATURE" in runner
 
