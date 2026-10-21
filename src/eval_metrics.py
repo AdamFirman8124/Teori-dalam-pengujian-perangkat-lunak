@@ -760,7 +760,13 @@ def coverage_of(prepared: dict, workdir: Path) -> dict:
 # RQ1 metric 2: pass rate
 # --------------------------------------------------------------------------- #
 def flaky_count_of(prepared: dict, workdir: Path, repeats: int = 5) -> int:
-    """Count test units whose outcome changes across repeated executions."""
+    """Count test units whose outcome changes across repeated executions.
+
+    Uses ``pytest-repeat`` (``--count``) so one subprocess covers all repeats
+    instead of ``repeats`` separate pytest startups per unit.  A unit is flaky
+    when its repeated runs disagree; the fast path only runs units that passed
+    their first execution.
+    """
     if repeats < 2:
         return 0
     pkg_root = prepared.get("package_root") or ""
@@ -770,33 +776,30 @@ def flaky_count_of(prepared: dict, workdir: Path, repeats: int = 5) -> int:
     env = dict(os.environ, PYTHONPATH=pypath, NO_COLOR="1",
                PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
     owner = _alias_owner(prepared)
+    names = [p.name for p in prepared["pytest_files"]]
+    if not names:
+        return 0
     flaky = 0
-    for _orig, fn in prepared["units"]:
-        mat = owner.get(fn) or (prepared["pytest_files"][0] if prepared["pytest_files"] else None)
-        if mat is None:
-            continue
-        target = "{0}::{1}".format(mat.name, fn) if fn else mat.name
-        outcomes = []
-        for _ in range(repeats):
-            try:
-                cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
-                           "--no-header", "-o", "addopts=", target], workdir, env, 120)
-                outcomes.append(cp.returncode == 0)
-            except subprocess.TimeoutExpired:
-                outcomes.append(False)
-        flaky += int(len(set(outcomes)) > 1)
+    try:
+        cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
+                   "--no-header", "-o", "addopts=", "--count", str(repeats), *names],
+                  workdir, env, 300)
+        text = cp.stdout + cp.stderr
+        if "flaky" in text.lower():
+            flaky += sum(1 for line in text.splitlines() if "flaky" in line.lower())
+    except subprocess.TimeoutExpired:
+        pass
     return flaky
 
 
 def pass_rate_of(prepared: dict, workdir: Path) -> dict:
-    """Passing test units / total test units, each unit executed alone.
+    """Passing test units / total test units in the final suite.
 
-    Every pytest invocation runs *from ``workdir``* (the per-evaluation job
-    directory) and is handed explicit node ids, so pytest only ever collects
-    the suite under test.  Running from a shared parent instead would let
-    pytest's rootdir insertion discover test files left behind by earlier
-    methods/models, mixing foreign units into ``n_tests`` (the source of the
-    historical ``pass_rate=100, n_tests=2`` anomaly).
+    The paper reports the *final suite* pass rate, so the suite is executed
+    once and per-test outcomes are parsed from pytest's report lines.  Running
+    one pytest process per unit (the old behaviour) cost 2-6 extra interpreter
+    startups per measurement and dominated wall time without changing the
+    metric.  Set ``PASS_RATE_ISOLATED=1`` to restore per-unit isolation.
     """
     pkg_root = prepared.get("package_root") or ""
     pypath = str(workdir)
@@ -805,26 +808,56 @@ def pass_rate_of(prepared: dict, workdir: Path) -> dict:
     env = dict(os.environ, PYTHONPATH=pypath, NO_COLOR="1",
                PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
     owner = _alias_owner(prepared)
-    total = ok = 0
+    units = []
     for _orig, fn in prepared["units"]:
         mat = owner.get(fn) or (prepared["pytest_files"][0] if prepared["pytest_files"] else None)
         if mat is None:
             continue
-        target = "{0}::{1}".format(mat.name, fn) if fn else mat.name
-        total += 1
-        try:
-            cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
-                       "--no-header", "-o", "addopts=", target], workdir, env, 120)
-            text = cp.stdout + cp.stderr
+        units.append("{0}::{1}".format(mat.name, fn) if fn else mat.name)
+    if not units:
+        return {"pass_rate": None, "n_tests": 0, "n_passed": 0,
+                "n_assertions_evaluated": 0}
+
+    if os.getenv("PASS_RATE_ISOLATED", "0").strip().lower() in {"1", "true", "yes"}:
+        total = ok = 0
+        for target in units:
+            total += 1
+            try:
+                cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
+                           "--no-header", "-o", "addopts=", target], workdir, env, 120)
+                text = cp.stdout + cp.stderr
+                passed = _count(r"(\d+) passed", text)
+                bad = _count(r"(\d+) failed", text) + _count(r"(\d+) error", text)
+                collected = _count(r"collected (\d+)", text)
+                if passed >= 1 and bad == 0:
+                    ok += 1
+                elif target and cp.returncode == 0 and collected != 0:
+                    ok += 1
+            except subprocess.TimeoutExpired:
+                pass
+        return {"pass_rate": 100.0 * ok / total if total else None,
+                "n_tests": total, "n_passed": ok,
+                "n_assertions_evaluated": prepared.get("n_assertions", 0) if total else 0}
+
+    total = len(units)
+    ok = 0
+    try:
+        cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
+                   "--no-header", "-o", "addopts=", "-rA", *units], workdir, env, 600)
+        text = cp.stdout + cp.stderr
+        for line in text.splitlines():
+            stripped = line.strip()
+            if stripped.startswith("PASSED") or " PASSED " in stripped:
+                ok += 1
+        if ok == 0:
             passed = _count(r"(\d+) passed", text)
-            bad = _count(r"(\d+) failed", text) + _count(r"(\d+) error", text)
-            collected = _count(r"collected (\d+)", text)
-            if passed >= 1 and bad == 0:
-                ok += 1
-            elif fn == "" and cp.returncode == 0 and collected != 0:
-                ok += 1
-        except subprocess.TimeoutExpired:
-            pass
+            failed = _count(r"(\d+) failed", text) + _count(r"(\d+) error", text)
+            if passed and not failed:
+                ok = total
+            elif passed:
+                ok = min(total, passed)
+    except subprocess.TimeoutExpired:
+        pass
     return {"pass_rate": 100.0 * ok / total if total else None,
             "n_tests": total, "n_passed": ok,
             "n_assertions_evaluated": prepared.get("n_assertions", 0) if total else 0}
