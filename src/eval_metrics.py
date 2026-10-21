@@ -747,9 +747,9 @@ def coverage_of(prepared: dict, workdir: Path) -> dict:
     run += ["-m", "pytest", "-q", "-p", "no:cacheprovider", "--no-header",
             "-o", "addopts=", *names]
     try:
-        _run(run, workdir, env, 90)
+        _run(run, workdir, env, 600)
         _run([PY, "-m", "coverage", "json", "-o", str(report)],
-             workdir, env, 90)
+             workdir, env, 600)
     except (subprocess.TimeoutExpired, FileNotFoundError):
         return {"line_pct": None, "branch_pct": None,
                 "lines_total": 0, "lines_covered": 0}
@@ -803,8 +803,9 @@ def flaky_count_of(prepared: dict, workdir: Path, repeats: int = 5) -> int:
     flaky = 0
     try:
         cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
-                   "--no-header", "-o", "addopts=", "--count", str(repeats), *names],
-                  workdir, env, 90)
+                   "--no-header", "-o", "addopts=", "-p", "timeout", "--timeout", "60",
+                   "--count", str(repeats), *names],
+                  workdir, env, 600)
         text = cp.stdout + cp.stderr
         if "flaky" in text.lower():
             flaky += sum(1 for line in text.splitlines() if "flaky" in line.lower())
@@ -845,7 +846,7 @@ def pass_rate_of(prepared: dict, workdir: Path) -> dict:
             total += 1
             try:
                 cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
-                           "--no-header", "-o", "addopts=", target], workdir, env, 60)
+                           "--no-header", "-o", "addopts=", "-p", "timeout", "--timeout", "60", target], workdir, env, 600)
                 text = cp.stdout + cp.stderr
                 passed = _count(r"(\d+) passed", text)
                 bad = _count(r"(\d+) failed", text) + _count(r"(\d+) error", text)
@@ -864,7 +865,7 @@ def pass_rate_of(prepared: dict, workdir: Path) -> dict:
     ok = 0
     try:
         cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
-                   "--no-header", "-o", "addopts=", "-rA", *units], workdir, env, 60)
+                   "--no-header", "-o", "addopts=", "-p", "timeout", "--timeout", "60", "-rA", *units], workdir, env, 600)
         text = cp.stdout + cp.stderr
         for line in text.splitlines():
             stripped = line.strip()
