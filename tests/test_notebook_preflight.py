@@ -24,15 +24,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-NOTEBOOKS = (
-    ROOT / "experiments_coverup_windows.ipynb",
-    ROOT / "experiments_codamosa_linux.ipynb",
-)
+NOTEBOOK = ROOT / "experiments_linux.ipynb"
 
 
 def _notebook_cells() -> dict:
-    """Code cells of the shared experiment core (present in every notebook)."""
-    nb = json.loads(NOTEBOOKS[0].read_text(encoding="utf-8"))
+    """Code cells of the shared experiment core in the single Linux notebook."""
+    nb = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
     return {
         c["id"]: "".join(c.get("source", []))
         for c in nb["cells"]
@@ -41,13 +38,10 @@ def _notebook_cells() -> dict:
 
 
 def _all_cells():
-    """(notebook, {cell_id: source}) for each method/OS notebook."""
-    out = []
-    for path in NOTEBOOKS:
-        nb = json.loads(path.read_text(encoding="utf-8"))
-        out.append((path, {c["id"]: "".join(c.get("source", []))
-                           for c in nb["cells"] if c.get("cell_type") == "code"}))
-    return out
+    """(notebook, {cell_id: source}) for the single Linux notebook."""
+    nb = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
+    return [(NOTEBOOK, {c["id"]: "".join(c.get("source", []))
+                       for c in nb["cells"] if c.get("cell_type") == "code"})]
 
 
 def test_notebook_is_valid_and_all_cells_compile():
@@ -57,13 +51,12 @@ def test_notebook_is_valid_and_all_cells_compile():
             compile(source, "%s:%s" % (path.name, cell_id), "exec")
 
 
-def test_windows_cm_scope_detects_transitive_posix_imports(tmp_path):
-    source = _notebook_cells()["windows-cm-scope"]
-    namespace = {"Path": Path, "em": __import__("eval_metrics"), "TASKS": {}, "OUT": tmp_path}
-    exec(source, namespace)
-
-    assert namespace["_needs_posix"]("ansible.cli.adhoc") is True
-    assert namespace["_needs_posix"]("flutils.objutils") is False
+def test_linux_cm_posix_modules_detected_in_setup():
+    # CM memakai impor POSIX (fcntl/grp/pwd/termios); di Linux semuanya bisa
+    # jalan, jadi setup tidak lagi memblokir modul POSIK seperti notebook Windows.
+    source = _notebook_cells()["c5d09b00"]
+    assert "_POSIX_ONLY" not in source
+    assert "TASKS" in source
 
 
 def test_error_explanation_does_not_treat_source_line_as_http_401():
@@ -293,8 +286,8 @@ def test_runner_has_no_profile_dimension():
     assert "_profiled_slug" not in runner
     assert 'row["profile"]' not in runner
     assert '"profile":' not in runner
-    # Plain method+model resume key.
-    assert "return (method, model, dataset, str(task)) in RESUME_KEYS" in runner
+    # Plain method+model resume key (canonical label, not transport alias).
+    assert "return (method, record_model_name(model), dataset, str(task)) in RESUME_KEYS" in runner
     # Fresh full run: expected count comes straight from TASKS x models.
     assert "expected_statuses = sum(len(task_ids) for task_ids in TASKS.values())" in finalizer
     assert "profile" not in finalizer
@@ -302,7 +295,7 @@ def test_runner_has_no_profile_dimension():
 
 
 def test_wilcoxon_markdown_contains_no_python_code():
-    nb = json.loads(NOTEBOOKS[0].read_text(encoding="utf-8"))
+    nb = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
     cell = next(c for c in nb["cells"] if c.get("id") == "wilcoxon-table-md")
     assert cell["cell_type"] == "markdown"
     source = "".join(cell["source"])
@@ -372,7 +365,7 @@ def test_codamosa_exit_137_has_oom_diagnosis_and_conservative_ram_budget():
 
 
 def test_codamosa_image_build_has_no_wall_clock_timeout():
-    linux_cells = dict(_all_cells())[NOTEBOOKS[1]]
+    linux_cells = dict(_all_cells())[NOTEBOOK]
     image_cell = linux_cells["60a2d676"]
     assert "timeout=1800" not in image_cell
     assert "command, capture_output=True" in image_cell

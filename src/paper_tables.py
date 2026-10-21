@@ -27,11 +27,16 @@ from __future__ import annotations
 
 import json
 import math
+import os
+import sys
 from pathlib import Path
 from typing import Any, Iterable, Sequence
 
 import numpy as np
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from eval_metrics import canonical_model_name
 
 MISSING = "-"
 SCORE_FIELDS = ("line_pct", "branch_pct", "mutation_score", "pass_rate")
@@ -62,7 +67,8 @@ def load_rows(out_dir: Path) -> pd.DataFrame:
         frame[column] = pd.to_numeric(frame.get(column), errors="coerce") \
             if column in frame.columns else np.nan
     frame["model"] = (frame.get("model", pd.Series(dtype=str))
-                      .fillna(MISSING).astype(str).str.replace("openai/", "", regex=False))
+                      .fillna(MISSING).astype(str).map(
+                          lambda m: canonical_model_name(m).replace("openai/", "")))
     frame["backbone"] = frame["model"].replace({"": MISSING, "nan": MISSING})
     frame["task"] = frame["task"].astype(str)
     frame["dataset"] = frame["dataset"].astype(str)
@@ -94,7 +100,8 @@ def load_llm_calls(out_dir: Path) -> pd.DataFrame:
                 continue
             records.append({
                 "method": method,
-                "model": str(entry.get("model") or model).replace("openai/", ""),
+                "model": canonical_model_name(
+                    str(entry.get("model") or model)).replace("openai/", ""),
                 "dataset": dataset,
                 "task": task,
                 "prompt_tokens": _num(entry.get("prompt_tokens")) or 0.0,

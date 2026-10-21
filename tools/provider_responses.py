@@ -11,10 +11,14 @@ confusing:
 from __future__ import annotations
 
 import json
+import os
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "src"))
+from eval_metrics import canonical_model_name
 OUT = ROOT / "experiment_results"
 LLM = OUT / "llm_calls"
 
@@ -96,8 +100,11 @@ def main() -> int:
                     records.append({
                         "ts": entry.get("ts"),
                         "method": method,
-                        "model": entry.get("model") or model,
-                        "requested_model": entry.get("requested_model") or entry.get("model") or model,
+                        "model": canonical_model_name(entry.get("model") or model),
+                        "requested_model": canonical_model_name(
+                            entry.get("requested_model") or entry.get("model") or model),
+                        "provider_model": entry.get("provider_model")
+                        or entry.get("requested_model") or entry.get("model") or model,
                         "returned_model": entry.get("returned_model"),
                         "dataset": dataset,
                         "task": task,

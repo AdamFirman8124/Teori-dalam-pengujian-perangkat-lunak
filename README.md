@@ -33,8 +33,7 @@ Urutan run: pilot MT (`TASK_FILTER=MT:f001`), MT penuh, pilot CM
 
 ```text
 config/                         konfigurasi tunggal: .env / .env.example
-experiments_coverup_windows.ipynb   CoverUp, Windows native
-experiments_codamosa_linux.ipynb    CodaMOSA, Ubuntu native (bukan WSL)
+experiments_linux.ipynb   CoverUp + CodaMOSA, Ubuntu native (bukan WSL)
 src/                            evaluator, storage, discovery, loop helpers
 tools/                          post-run, rescore, tabel RQ, provider log
 scripts/                        runner alternatif
@@ -64,8 +63,8 @@ experiment_results/             output lokal (tidak di-commit)
    ```
 
 3. Restart kernel VS Code, pilih kernel `.venv`.
-4. Di Windows buka `experiments_coverup_windows.ipynb`; setelah Ubuntu native siap, buka `experiments_codamosa_linux.ipynb`. Jalankan **Run All** hanya pada notebook untuk OS tersebut.
-5. Amati folder hasil terpisah `experiment_results_coverup_windows/` atau `experiment_results_codamosa_linux/`.
+4. Di Ubuntu native buka `experiments_linux.ipynb` dan jalankan **Run All** — CoverUp + CodaMOSA jalan dari satu notebook bila `COVERUP_MODELS` dan `CODAMOSA_MODELS` terisi di `.env`.
+5. Amati folder hasil `experiment_results_linux/` (kedua metode).
 
 Semua hasil lama yang dibutuhkan untuk audit disimpan di luar output aktif atau
 arsip manual; `experiment_results/` selalu dianggap disposable dan diabaikan Git.
@@ -153,8 +152,7 @@ jadi, kita koreksi:
      --display-name 'Python (.venv Teori Pengujian)'
    ```
 
-3. **Buka** notebook sesuai OS: `experiments_coverup_windows.ipynb` di Windows,
-   `experiments_codamosa_linux.ipynb` di Ubuntu native. Pilih kernel
+3. **Buka** `experiments_linux.ipynb` di Ubuntu native. Pilih kernel
    **Python (.venv Teori Pengujian)** di pojok kanan atas.
 
 4. **Jalankan cell dari atas ke bawah** (tombol ▶ atau `Shift+Enter`):
@@ -172,7 +170,7 @@ jadi, kita koreksi:
    | 9 | Verifikasi pasca-run + tabel RQ (`tools/post_run.py`) | Tidak |
 
 5. **Lihat hasilnya** di folder hasil notebook tersebut
-   (`experiment_results_coverup_windows/` atau `experiment_results_codamosa_linux/`):
+   (`experiment_results_linux/`):
 
    | File | Isi |
    |---|---|
@@ -183,7 +181,7 @@ jadi, kita koreksi:
    | `work/` | Berkas mentah (test yang dihasilkan, log) — boleh dihapus |
 
    Gabungkan kedua folder sebelum tabel RQ:
-   `.venv\Scripts\python.exe tools\merge_collaborator_results.py experiment_results_coverup_windows --target experiment_results`
+   `.venv/bin/python tools/merge_collaborator_results.py experiment_results_linux --target experiment_results`
 
 ### Pertanyaan yang sering muncul
 
@@ -252,8 +250,8 @@ docker info             # harus menampilkan Server Version
 
 # 6) Jalankan notebook sesuai OS di tmux supaya selamat dari putus koneksi
 tmux new -s exp
-.venv/bin/python tools/run_notebook.py experiments_codamosa_linux.ipynb \
-    experiment_results_codamosa_linux/executed.ipynb
+.venv/bin/python tools/run_notebook.py experiments_linux.ipynb \
+    experiment_results_linux/executed.ipynb
 # tekan Ctrl+B lalu D untuk detach — proses tetap jalan
 ```
 

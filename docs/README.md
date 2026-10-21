@@ -11,8 +11,8 @@ perbandingan generator pengujian otomatis **CoverUp** dan **CodaMOSA** pada data
 |---|---|
 | `run_experiment.py` | Orkestrasi eksperimen (baseline + CoverUp) |
 | `eval_metrics.py` | Perhitungan metrik: coverage, pass rate, mutation score |
-| `experiments_coverup_windows.ipynb` | Notebook eksperimen CoverUp (Windows native) |
-| `experiments_codamosa_linux.ipynb` | Notebook eksperimen CodaMOSA (Ubuntu native, bukan WSL) |
+| `experiments_linux.ipynb` | Notebook eksperimen CoverUp (Windows native) |
+| `experiments_linux.ipynb` | Notebook eksperimen CodaMOSA (Ubuntu native, bukan WSL) |
 | `EXPERIMENT_FLOW.md` | Alur eksperimen dari awal sampai akhir, termasuk titik pemanggilan model dan token |
 | `EXPERIMENT_PROTOCOL.md` | Definisi metrik & perintah menjalankan eksperimen |
 | `docs/EXPERIMENT_REPORT.md` | Status eksperimen terkini: perbaikan harness, hasil re-score, dan langkah berikutnya |

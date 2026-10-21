@@ -106,6 +106,44 @@ PYTEST = "-m"
 PYTEST_MODULE = "pytest"
 
 
+def model_aliases() -> dict:
+    """Provider alias -> canonical backbone label for stored results.
+
+    Some gateways expose only a router alias (e.g. ``auto``) in ``/models``
+    and in the response ``model`` field, while the backbone actually served
+    is known (e.g. ``gpt-5.6-sol``).  Requests keep using the transport id;
+    only stored labels (rows.csv, status.json, tables) are rewritten.
+    Format: ``MODEL_ALIASES="auto=gpt-5.6-sol,foo=bar"``.
+    """
+    raw = (os.environ.get("MODEL_ALIASES") or "").strip()
+    mapping: dict = {}
+    for piece in raw.split(","):
+        piece = piece.strip()
+        if not piece or "=" not in piece:
+            continue
+        alias, _, label = piece.partition("=")
+        alias, label = alias.strip(), label.strip()
+        if alias and label:
+            mapping[alias] = label
+    return mapping
+
+
+def canonical_model_name(model: str | None) -> str | None:
+    """Rewrite a transport/alias model id to the stored backbone label.
+
+    The ``openai/`` LiteLLM transport prefix is preserved so CoverUp rows
+    keep their historical ``openai/<name>`` shape; only the bare id is
+    looked up in :func:`model_aliases`.
+    """
+    if model is None:
+        return None
+    text = str(model)
+    prefix = ""
+    if text.startswith("openai/"):
+        prefix, text = "openai/", text[len("openai/"):]
+    return prefix + model_aliases().get(text, text)
+
+
 def _count(pattern: str, text: str) -> int:
     m = re.search(pattern, text)
     return int(m.group(1)) if m else 0

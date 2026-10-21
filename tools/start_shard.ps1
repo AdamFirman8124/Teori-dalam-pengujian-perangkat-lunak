@@ -7,8 +7,8 @@ param(
     [ValidateRange(1, 100)]
     [int]$Count,
 
-    [ValidateSet('coverup-windows', 'codamosa-linux')]
-    [string]$Method = 'coverup-windows'
+    [ValidateSet('linux')]
+    [string]$Method = 'linux'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -25,11 +25,7 @@ if (-not (Test-Path $Python)) {
 }
 
 # One notebook per method/OS; pick by name so a shard cannot run the wrong method.
-$MethodNotebook = if ($Method -eq 'codamosa-linux') {
-    'experiments_codamosa_linux.ipynb'
-} else {
-    'experiments_coverup_windows.ipynb'
-}
+$MethodNotebook = 'experiments_linux.ipynb'
 
 # Notebook loads config/.env with override=True, so write a temporary per-shard
 # config, run from a private project copy, and keep the real API key local.
