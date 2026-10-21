@@ -640,7 +640,13 @@ def prepare_suite(layout: dict, tests: T.Sequence[Path], workdir: Path) -> dict:
     sources = {}
     for t in tests:
         sources[t] = t.read_text(errors="ignore")
-    import_names = {put.stem}
+    # MT puts are ``<task>/__init__.py``; their importable name is the parent
+    # package (``f007``), never the literal stem ``__init__``.  Using the stem
+    # produced ``from __init__ import *``, which fails collection for every
+    # inline CoverUp suite.
+    put_module = (put.stem if put.stem != "__init__"
+                  else put.parent.name)
+    import_names = {put.stem, put_module}
     if dotted:
         import_names.add(dotted)
     inline = [t for t in tests
@@ -661,7 +667,7 @@ def prepare_suite(layout: dict, tests: T.Sequence[Path], workdir: Path) -> dict:
             if not fns:
                 continue
             inline_parts.append(part)
-            body = "from {0} import *  # noqa: F401,F403\n\n{1}\n\n".format(put.stem, part)
+            body = "from {0} import *  # noqa: F401,F403\n\n{1}\n\n".format(put_module, part)
             for j, fn in enumerate(fns):
                 alias = "test_wrapped_{0}".format(j)
                 body += "def {0}():\n    {1}()\n\n".format(alias, fn)
