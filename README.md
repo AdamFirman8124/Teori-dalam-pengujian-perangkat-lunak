@@ -307,7 +307,8 @@ EVAL_MUTANT_WORKERS=2    # subprocess mutasi per task
 
 Rumus budget: `cpu_count - CPU_RESERVED_THREADS`, lalu dibagi
 `(1 + EVAL_MUTANT_WORKERS)` per pipeline. Dengan `AUTO_SCALE=1`, cell kesiapan
-menghitung ulang sendiri. **Selalu sisakan ≥2 thread** bila Anda mengakses PC
+menghitung ulang sendiri. Turunan lengkap (empat batas, tabel sensitivitas, dan
+contoh hitung) ada di [`docs/ADAPTIVE_WORKERS.md`](docs/ADAPTIVE_WORKERS.md). **Selalu sisakan ≥2 thread** bila Anda mengakses PC
 lewat SSH/VS Code Remote — kalau tidak, koneksi bisa terputus.
 
 ### Menjalankan bertahap (aman untuk 24 jam)
