@@ -225,9 +225,30 @@ def _resolve_cmd(cmd) -> T.List[str]:
 
 
 def _run(cmd, cwd: Path, env: dict, timeout: float):
-    return subprocess.run(_resolve_cmd(cmd), cwd=str(cwd), env=env,
-                          capture_output=True, text=True, encoding="utf-8",
-                          errors="replace", timeout=timeout)
+    """Run a measurement subprocess with a hard kill on timeout.
+
+    Some benchmark functions contain genuine infinite loops (e.g. MT ``f032``
+    ``find_zero`` on a rootless polynomial).  ``subprocess.run(timeout=...)``
+    only kills the direct child; pytest spawns workers that can survive and
+    keep a CPU core spinning.  ``start_new_session`` plus ``killpg`` guarantees
+    the whole process group dies, so one pathological unit cannot pin a worker.
+    """
+    import signal
+
+    proc = subprocess.Popen(
+        _resolve_cmd(cmd), cwd=str(cwd), env=env,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+        encoding="utf-8", errors="replace", start_new_session=True)
+    try:
+        out, err = proc.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+        except (ProcessLookupError, PermissionError):
+            proc.kill()
+        out, err = proc.communicate()
+        raise subprocess.TimeoutExpired(cmd, timeout, output=out, stderr=err)
+    return subprocess.CompletedProcess(cmd, proc.returncode, out, err)
 
 
 def coverup_cmd() -> T.List[str]:
@@ -726,9 +747,9 @@ def coverage_of(prepared: dict, workdir: Path) -> dict:
     run += ["-m", "pytest", "-q", "-p", "no:cacheprovider", "--no-header",
             "-o", "addopts=", *names]
     try:
-        _run(run, workdir, env, 300)
+        _run(run, workdir, env, 90)
         _run([PY, "-m", "coverage", "json", "-o", str(report)],
-             workdir, env, 120)
+             workdir, env, 90)
     except (subprocess.TimeoutExpired, FileNotFoundError):
         return {"line_pct": None, "branch_pct": None,
                 "lines_total": 0, "lines_covered": 0}
@@ -783,7 +804,7 @@ def flaky_count_of(prepared: dict, workdir: Path, repeats: int = 5) -> int:
     try:
         cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
                    "--no-header", "-o", "addopts=", "--count", str(repeats), *names],
-                  workdir, env, 300)
+                  workdir, env, 90)
         text = cp.stdout + cp.stderr
         if "flaky" in text.lower():
             flaky += sum(1 for line in text.splitlines() if "flaky" in line.lower())
@@ -824,7 +845,7 @@ def pass_rate_of(prepared: dict, workdir: Path) -> dict:
             total += 1
             try:
                 cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
-                           "--no-header", "-o", "addopts=", target], workdir, env, 120)
+                           "--no-header", "-o", "addopts=", target], workdir, env, 60)
                 text = cp.stdout + cp.stderr
                 passed = _count(r"(\d+) passed", text)
                 bad = _count(r"(\d+) failed", text) + _count(r"(\d+) error", text)
@@ -843,7 +864,7 @@ def pass_rate_of(prepared: dict, workdir: Path) -> dict:
     ok = 0
     try:
         cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
-                   "--no-header", "-o", "addopts=", "-rA", *units], workdir, env, 600)
+                   "--no-header", "-o", "addopts=", "-rA", *units], workdir, env, 60)
         text = cp.stdout + cp.stderr
         for line in text.splitlines():
             stripped = line.strip()
