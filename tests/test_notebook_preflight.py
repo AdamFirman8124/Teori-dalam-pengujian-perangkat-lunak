@@ -287,10 +287,10 @@ def test_runner_has_no_profile_dimension():
     assert "_profiled_slug" not in runner
     assert 'row["profile"]' not in runner
     assert '"profile":' not in runner
-    # Plain method+model resume key (canonical label, not transport alias).
-    assert "return (method, record_model_name(model), dataset, str(task)) in RESUME_KEYS" in runner
-    # Fresh full run: expected count comes straight from TASKS x models.
-    assert "expected_statuses = sum(len(task_ids) for task_ids in TASKS.values())" in finalizer
+    # Resume identity includes canonical model and the R=10 repetition index.
+    assert "return (method, record_model_name(model), dataset, str(task), int(run_index)) in RESUME_KEYS" in runner
+    # Final run count covers every task, repeat and configured model.
+    assert "expected_statuses = sum(len(task_ids) for task_ids in TASKS.values()) * N_REPEATS" in finalizer
     assert "profile" not in finalizer
 
 

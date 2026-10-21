@@ -78,7 +78,9 @@ def _unlock(handle) -> None:
 def acquire(path: str | Path, limit_per_minute: int | None = None) -> float:
     """Block until one provider call fits in the RPM budget; return wait time.
 
-    Returns ``0.0`` when the gate is disabled or cannot be enforced.
+    Returns ``0.0`` when the gate is disabled or cannot be enforced.  The
+    cumulative wait is persisted next to the timestamp state so paper cost
+    tables can subtract provider-quota waiting from generation wall time.
     """
     limit = _limit_from_env() if limit_per_minute is None else max(0, int(limit_per_minute))
     if limit <= 0:
@@ -119,3 +121,24 @@ def acquire(path: str | Path, limit_per_minute: int | None = None) -> float:
                 _unlock(lock)
         time.sleep(max(0.05, min(sleep_for, 2.0)))
         waited += max(0.05, min(sleep_for, 2.0))
+        _add_wait(state, max(0.05, min(sleep_for, 2.0)))
+
+
+def _add_wait(state: Path, seconds: float) -> None:
+    """Accumulate total quota-wait seconds in ``<state>.wait`` (best effort)."""
+    try:
+        path = state.with_suffix(state.suffix + ".wait")
+        previous = 0.0
+        if path.exists():
+            previous = float(path.read_text(encoding="utf-8").strip() or 0.0)
+        path.write_text(f"{previous + seconds:.3f}\n", encoding="utf-8")
+    except (OSError, ValueError):
+        pass
+
+
+def total_wait(path: str | Path) -> float:
+    """Seconds spent waiting for the RPM gate, or 0.0 when unavailable."""
+    try:
+        return float(Path(str(path) + ".wait").read_text(encoding="utf-8").strip() or 0.0)
+    except (OSError, ValueError):
+        return 0.0

@@ -218,10 +218,15 @@ def table_iv(frame: pd.DataFrame, calls: pd.DataFrame) -> pd.DataFrame:
             "MS (%)": _pct(valid["mutation_score"].median()),
             "n": int(group["task"].nunique()),
         }
-        match = rv[(rv["dataset"] == dataset) & (rv["method"] == method)
-                   & (rv["model"] == backbone)]
-        if not match.empty:
-            record["RV (%)"] = _pct(match["RV"].iloc[0])
+        if "raw_validity" in group and group["raw_validity"].notna().any():
+            record["RV (%)"] = _pct(group["raw_validity"].median())
+        else:
+            match = rv[(rv["dataset"] == dataset) & (rv["method"] == method)
+                       & (rv["model"] == backbone)]
+            if not match.empty:
+                record["RV (%)"] = _pct(match["RV"].iloc[0])
+        if "flaky_count" in group and group["flaky_count"].notna().any():
+            record["Flaky"] = int(group["flaky_count"].sum())
         if str(method).lower() == "pynguin":
             record["RV (%)"] = "n/a"
             record["Flaky"] = "n/a"
@@ -233,7 +238,7 @@ def table_iv(frame: pd.DataFrame, calls: pd.DataFrame) -> pd.DataFrame:
 # TABEL V
 # --------------------------------------------------------------------------- #
 def table_v(frame: pd.DataFrame, metric: str, dataset: str,
-            backbone: str | None = None) -> pd.DataFrame:
+            backbone: str | None = None, adjust: bool = True) -> pd.DataFrame:
     """TABEL V: pairwise Wilcoxon + Holm + A12 for one metric and suite."""
     if frame.empty:
         return pd.DataFrame()
@@ -281,19 +286,27 @@ def table_v(frame: pd.DataFrame, metric: str, dataset: str,
             raw_p.append(p)
     if not rows:
         return pd.DataFrame()
-    for row, adjusted in zip(rows, holm(raw_p)):
-        row["p (Holm)"] = _fmt_p(adjusted)
-        row["Signifikan"] = "ya" if adjusted < 0.05 else "tidak"
+    if adjust:
+        adjusted = holm(raw_p)
+    else:
+        adjusted = raw_p
+    for row, p_adj in zip(rows, adjusted):
+        row["p (Holm)"] = _fmt_p(p_adj)
+        row["Signifikan"] = "ya" if p_adj < 0.05 else "tidak"
     return pd.DataFrame(rows)
 
 
 # --------------------------------------------------------------------------- #
 # TABEL VI + VII + Gambar 4
 # --------------------------------------------------------------------------- #
-def table_vi(frame: pd.DataFrame, metric_by_suite: dict[str, str]) -> pd.DataFrame:
+def table_vi(frame: pd.DataFrame, metric_by_suite: dict[str, str],
+             b1: str | None = None, b2: str | None = None) -> pd.DataFrame:
     """TABEL VI: backbone effect per generator (mean over units)."""
     if frame.empty:
         return pd.DataFrame()
+    models = [m for m in frame["backbone"].dropna().unique() if m != MISSING]
+    b1 = b1 or os.getenv("PAPER_B1_LABEL") or (models[0] if models else "B1")
+    b2 = b2 or os.getenv("PAPER_B2_LABEL") or (models[1] if len(models) > 1 else "B2")
     records = []
     for dataset, metric in metric_by_suite.items():
         sub = frame[frame["dataset"] == dataset]
@@ -303,13 +316,13 @@ def table_vi(frame: pd.DataFrame, metric_by_suite: dict[str, str]) -> pd.DataFra
             per_backbone = group.groupby("backbone")[metric].mean()
             if per_backbone.empty:
                 continue
-            b1 = per_backbone.get("GPT-5.6 Sol", np.nan)
-            b2 = per_backbone.get("GPT-5.6 Luna", np.nan)
-            delta = (b1 - b2) if pd.notna(b1) and pd.notna(b2) else np.nan
+            b1_value = per_backbone.get(b1, np.nan)
+            b2_value = per_backbone.get(b2, np.nan)
+            delta = (b1_value - b2_value) if pd.notna(b1_value) and pd.notna(b2_value) else np.nan
             records.append({
                 "Suite": dataset, "Metrik": metric, "Tool": method,
                 "Adaptasi": "tidak ada" if method.lower() == "coverup" else "interface-only",
-                "B1": _pct(b1), "B2": _pct(b2), "Δ (B1−B2)": _pct(delta),
+                "B1": _pct(b1_value), "B2": _pct(b2_value), "Δ (B1−B2)": _pct(delta),
             })
     return pd.DataFrame(records)
 
@@ -327,6 +340,11 @@ def table_vii(frame: pd.DataFrame, dataset: str, metric: str) -> pd.DataFrame:
         sub = sub.rename(columns={metric: "value", "task": "unit",
                                   "method": "tool", "backbone": "bb"})
         model = smf.mixedlm("value ~ C(tool) * C(bb)", sub, groups=sub["unit"]).fit()
+        group_var = float(model.cov_re.iloc[0, 0])
+        residual_var = float(model.scale)
+        total_var = group_var + residual_var
+        random_share = 100.0 * group_var / total_var if total_var else float("nan")
+        fixed_share = 100.0 - random_share if total_var else float("nan")
     except Exception:
         return pd.DataFrame()
     records = []
@@ -345,8 +363,27 @@ def table_vii(frame: pd.DataFrame, dataset: str, metric: str) -> pd.DataFrame:
             "Estimasi": round(float(estimate), 2),
             "SK 95%": f"[{ci_low:.2f}, {ci_high:.2f}]" if pd.notna(ci_low) else MISSING,
             "p": _fmt_p(float(p_value)) if pd.notna(p_value) else MISSING,
-            "Var. (%)": MISSING,
+            "Var. (%)": _pct(fixed_share if name != "Intercept" else random_share),
         })
+    try:
+        ranked = sub.copy()
+        ranked["value"] = ranked["value"].rank(method="average")
+        rank_model = smf.mixedlm(
+            "value ~ C(tool) * C(bb)", ranked, groups=ranked["unit"]).fit()
+        for name, estimate in rank_model.params.items():
+            if name == "Group Var":
+                continue
+            records.append({
+                "Suite": dataset, "Metrik": metric,
+                "Faktor": "(rank) " + name,
+                "Estimasi": round(float(estimate), 2),
+                "SK 95%": MISSING,
+                "p": _fmt_p(float(rank_model.pvalues.get(name, np.nan)))
+                     if pd.notna(rank_model.pvalues.get(name, np.nan)) else MISSING,
+                "Var. (%)": MISSING,
+            })
+    except Exception:
+        pass
     return pd.DataFrame(records)
 
 
@@ -369,7 +406,9 @@ def table_viii(frame: pd.DataFrame, characteristics: pd.DataFrame,
         return pd.DataFrame()
     sub = frame[frame["dataset"] == "CM"]
     if backbone is not None:
-        sub = sub[sub["backbone"] == backbone]
+        # Pynguin has no backbone; dropping it would erase every comparison.
+        sub = sub[(sub["backbone"] == backbone)
+                  | (sub["method"].str.lower() == "pynguin")]
     if sub.empty:
         return pd.DataFrame()
     medians = unit_medians(sub, "branch_pct")
@@ -384,7 +423,7 @@ def table_viii(frame: pd.DataFrame, characteristics: pd.DataFrame,
             continue
         advantage = (pivot[a_tool] - pivot[b_tool]).dropna()
         joined = characteristics.reindex(advantage.index).dropna(subset=["loc"])
-        if len(joined) < 10:
+        if len(joined) < 40:
             continue
         adv = advantage.reindex(joined.index)
         for feature in ("cyclomatic_complexity", "external_dependencies",
@@ -510,10 +549,12 @@ def figure_4(frame: pd.DataFrame, metric_by_suite: dict[str, str], out_path: Pat
         metric = metric_by_suite[dataset]
         sub = frame[frame["dataset"] == dataset].dropna(subset=[metric])
         for method, group in sub.groupby("method"):
-            means = group.groupby("backbone")[metric].mean()
-            if means.empty:
+            summary = group.groupby("backbone")[metric].agg(["mean", "count", "std"])
+            if summary.empty:
                 continue
-            ax.plot(means.index, means.values, marker="o", label=method)
+            error = 1.96 * summary["std"].fillna(0) / np.sqrt(summary["count"].clip(lower=1))
+            ax.errorbar(summary.index, summary["mean"], yerr=error,
+                        marker="o", capsize=3, label=method)
         ax.set_title(f"{dataset} — {metric}")
         ax.set_ylabel(metric)
         ax.set_ylim(0, 105)
@@ -547,7 +588,7 @@ def figure_5(frame: pd.DataFrame, characteristics: pd.DataFrame, out_path: Path)
         advantage = (pivot[a_tool] - pivot[b_tool]).dropna()
         joined = characteristics.set_index("task").reindex(advantage.index).dropna(
             subset=["loc"])
-        if len(joined) < 10:
+        if len(joined) < 40:
             continue
         for feature in ("cyclomatic_complexity", "external_dependencies",
                         "type_annotation_density"):
@@ -587,11 +628,25 @@ def render_all(out_dir: Path, backbone_b1: str = "GPT-5.6 Sol",
 
     results: dict[str, pd.DataFrame] = {}
     results["TABEL IV"] = table_iv(frame, calls)
-    results["TABEL V"] = pd.concat(
-        [table_v(frame, "mutation_score", "MT", backbone_b1),
-         table_v(frame, "branch_pct", "CM", backbone_b1),
-         table_v(frame, "mutation_score", "CM", backbone_b1)],
-        ignore_index=True) if not frame.empty else pd.DataFrame()
+    if not frame.empty:
+        table_v_all = pd.concat(
+            [table_v(frame, "mutation_score", "MT", backbone_b1, adjust=False),
+             table_v(frame, "branch_pct", "CM", backbone_b1, adjust=False),
+             table_v(frame, "mutation_score", "CM", backbone_b1, adjust=False)],
+            ignore_index=True)
+        if not table_v_all.empty:
+            raw = []
+            for value in table_v_all["p (Holm)"]:
+                try:
+                    raw.append(float(value))
+                except (TypeError, ValueError):
+                    raw.append(1.0)
+            for index, adjusted in enumerate(holm(raw)):
+                table_v_all.at[index, "p (Holm)"] = _fmt_p(adjusted)
+                table_v_all.at[index, "Signifikan"] = "ya" if adjusted < .05 else "tidak"
+        results["TABEL V"] = table_v_all
+    else:
+        results["TABEL V"] = pd.DataFrame()
     results["TABEL VI"] = table_vi(frame, {"MT": "mutation_score", "CM": "branch_pct"})
     results["TABEL VII"] = pd.concat(
         [table_vii(frame, "MT", "mutation_score"),

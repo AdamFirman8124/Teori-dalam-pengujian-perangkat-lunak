@@ -697,51 +697,52 @@ def _alias_owner(prepared: dict) -> T.Dict[str, Path]:
 # RQ1 metric 1: coverage
 # --------------------------------------------------------------------------- #
 def coverage_of(prepared: dict, workdir: Path) -> dict:
-    """Line coverage of the PUT while the suite runs under SlipCover."""
+    """Line/branch coverage of the PUT measured by coverage.py."""
     if prepared["style"] == "empty":
-        return {"line_pct": 0.0, "lines_total": 0, "lines_covered": 0}
-    out = workdir / "slipcover.json"
-    if out.exists():
-        out.unlink()
-    # CM packages: prepend package_root so the dotted module resolves correctly
+        return {"line_pct": 0.0, "branch_pct": None,
+                "lines_total": 0, "lines_covered": 0}
+    data = workdir / ".coverage"
+    report = workdir / "coverage.json"
+    for stale in (data, report):
+        if stale.exists():
+            stale.unlink()
     pkg_root = prepared.get("package_root") or ""
     pypath = str(workdir)
     if pkg_root:
         pypath = os.pathsep.join([pkg_root, pypath])
     env = dict(os.environ, PYTHONPATH=pypath, NO_COLOR="1",
-               PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
-    cmd = [PY, "-m", "slipcover", "--branch", "--json", "--out", str(out)]
+               PYTEST_DISABLE_PLUGIN_AUTOLOAD="1",
+               COVERAGE_FILE=str(data))
+    names = [p.name for p in prepared["pytest_files"]]
+    run = [PY, "-m", "coverage", "run", "--branch"]
     if pkg_root:
-        # SlipCover traces only the working directory by default; a CM module
-        # lives outside it, so name the target package explicitly (this is what
-        # the upstream run_coda_tests.sh does with ``--source $PKG``).
-        cmd += ["--source", pkg_root]
-    cmd += ["-m", "pytest", "-q", "-p", "no:cacheprovider", "--no-header",
-            "-o", "addopts="] + [p.name for p in prepared["pytest_files"]]
+        run += ["--source", pkg_root]
+    run += ["-m", "pytest", "-q", "-p", "no:cacheprovider", "--no-header",
+            "-o", "addopts=", *names]
     try:
-        _run(cmd, workdir, env, 300)
+        _run(run, workdir, env, 300)
+        _run([PY, "-m", "coverage", "json", "-o", str(report)],
+             workdir, env, 120)
     except (subprocess.TimeoutExpired, FileNotFoundError):
-        return {"line_pct": None, "lines_total": 0, "lines_covered": 0}
-    if not out.exists():
-        return {"line_pct": None, "lines_total": 0, "lines_covered": 0}
+        return {"line_pct": None, "branch_pct": None,
+                "lines_total": 0, "lines_covered": 0}
+    if not report.exists():
+        return {"line_pct": None, "branch_pct": None,
+                "lines_total": 0, "lines_covered": 0}
     put_name = prepared["put"].name
-    # Match SlipCover's key against the PUT's relative path inside its package
-    # root (MT puts are __init__.py files; CM basenames can repeat across a
-    # package), falling back to the bare filename for standalone scripts.
     put_rel = prepared.get("put_rel") or ""
-    covered = missing = 0
-    branch_covered = branch_missing = 0
-    for key, info in json.loads(out.read_text()).get("files", {}).items():
+    covered = missing = branch_covered = branch_missing = 0
+    for key, info in json.loads(report.read_text()).get("files", {}).items():
         if put_rel:
-            if not Path(key).as_posix().endswith("/" + put_rel):
+            if not Path(key).as_posix().endswith(put_rel):
                 continue
         elif Path(key).name != put_name:
             continue
         s = info.get("summary", {})
-        covered += s.get("covered_lines", 0)
-        missing += s.get("missing_lines", 0)
-        branch_covered += s.get("covered_branches", 0)
-        branch_missing += s.get("missing_branches", 0)
+        covered += int(s.get("covered_lines", 0))
+        missing += int(s.get("missing_lines", 0))
+        branch_covered += int(s.get("covered_branches", 0))
+        branch_missing += int(s.get("missing_branches", 0))
     total = covered + missing
     branches = branch_covered + branch_missing
     return {"line_pct": 100.0 * covered / total if total else 0.0,
@@ -752,6 +753,35 @@ def coverage_of(prepared: dict, workdir: Path) -> dict:
 # --------------------------------------------------------------------------- #
 # RQ1 metric 2: pass rate
 # --------------------------------------------------------------------------- #
+def flaky_count_of(prepared: dict, workdir: Path, repeats: int = 5) -> int:
+    """Count test units whose outcome changes across repeated executions."""
+    if repeats < 2:
+        return 0
+    pkg_root = prepared.get("package_root") or ""
+    pypath = str(workdir)
+    if pkg_root:
+        pypath = os.pathsep.join([pkg_root, pypath])
+    env = dict(os.environ, PYTHONPATH=pypath, NO_COLOR="1",
+               PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
+    owner = _alias_owner(prepared)
+    flaky = 0
+    for _orig, fn in prepared["units"]:
+        mat = owner.get(fn) or (prepared["pytest_files"][0] if prepared["pytest_files"] else None)
+        if mat is None:
+            continue
+        target = "{0}::{1}".format(mat.name, fn) if fn else mat.name
+        outcomes = []
+        for _ in range(repeats):
+            try:
+                cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
+                           "--no-header", "-o", "addopts=", target], workdir, env, 120)
+                outcomes.append(cp.returncode == 0)
+            except subprocess.TimeoutExpired:
+                outcomes.append(False)
+        flaky += int(len(set(outcomes)) > 1)
+    return flaky
+
+
 def pass_rate_of(prepared: dict, workdir: Path) -> dict:
     """Passing test units / total test units, each unit executed alone.
 
@@ -1092,17 +1122,23 @@ def evaluate(dataset: str, task: str, tests: T.Sequence[Path], method: str,
         prepared = prepare_suite(layout, tests, workdir)
         row.update(coverage_of(prepared, workdir))
         row.update(pass_rate_of(prepared, workdir))
-        if layout.get("mutation_supported", True):
-            mutants = list(layout["mutants"]) or generate_mutants(
-                prepared["put"], workdir / "mutants", workdir)
-            row.update(mutation_score_of(prepared, mutants, workdir))
-        else:
+        row["flaky_count"] = flaky_count_of(
+            prepared, workdir, int(os.getenv("FLAKY_REPEATS", "5")))
+        if layout.get("mutation_supported", True) and layout["mutants"]:
+            row.update(mutation_score_of(prepared, list(layout["mutants"]), workdir))
+        elif dataset == "CM" and layout["mutants"]:
             # CM's paper protocol compares branch coverage; do not fabricate a
             # mutation score when this benchmark ships no common mutant set.
             row.update({"mutation_score": None, "killed": 0, "survived": 0,
                         "broken": 0, "timeout": 0, "problematic": 0,
                         "n_mutants": 0, "mutant_set_id": None,
                         "mutant_set_total": 0})
+        else:
+            # MT ships no mutants: generate a deterministic first-order set from
+            # the PUT.  The source is identical for every method/repeat, so the
+            # shared mutant_set_id guarantees an equal-set comparison.
+            mutants = generate_mutants(prepared["put"], workdir / "mutants", workdir)
+            row.update(mutation_score_of(prepared, mutants, workdir))
         row["n_tests_files"] = len(prepared["pytest_files"])
         if wall_time_s is not None:
             row["wall_time_s"] = round(wall_time_s, 2)
