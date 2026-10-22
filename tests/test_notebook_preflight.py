@@ -270,7 +270,7 @@ def test_llm_logging_and_budget_knobs_are_wired():
     assert "TUNED_" not in setup
     assert "COVERUP_MAX_ATTEMPTS" in setup
     assert "CODAMOSA_TEMPERATURE" in setup
-    assert "load_dotenv(ROOT / 'config' / '.env', override=True)" in setup
+    assert "load_dotenv(Path(os.getenv('EXPERIMENT_ENV_FILE', ROOT / 'config' / '.env')), override=True)" in setup
 
     assert "llm_calls_log=llm_calls_log" in runner
     assert '"CODAMOSA_LLM_CALLS_LOG=" + _container_llm_log' in runner
