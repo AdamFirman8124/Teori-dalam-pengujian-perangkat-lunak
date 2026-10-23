@@ -5,6 +5,7 @@ import argparse
 import subprocess
 import re
 import sys
+import tempfile
 import typing as T
 
 from pathlib import Path
@@ -522,8 +523,12 @@ class State:
             # FIXME save missing modules
         }
 
-        with ckpt_file.open("w") as f:
+        ckpt_file.parent.mkdir(parents=True, exist_ok=True)
+        with tempfile.NamedTemporaryFile("w", dir=ckpt_file.parent, delete=False) as f:
             json.dump(ckpt, f)
+            f.flush()
+            temp_path = Path(f.name)
+        temp_path.replace(ckpt_file)
 
 
 def extract_python(response: str) -> str:
@@ -591,9 +596,7 @@ async def improve_coverage(
 
         except subprocess.TimeoutExpired:
             log_write(args, seg, "measure_coverage timed out")
-            # FIXME is the built-in timeout reasonable? Do we prompt for a faster test?
-            # We don't want slow tests, but there may not be any way around it.
-            return True
+            break
 
         except subprocess.CalledProcessError as e:
             state.inc_counter('F')

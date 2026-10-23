@@ -1,33 +1,10 @@
-# Daftar Harga (Keputusan 0.9)
+# Pricing evidence
 
-Tanggal daftar harga: **21 Oktober 2026**.
-Biaya dihitung dari tarif **berbayar**, bukan dari tagihan *free tier*
-(pedoman 14.12).
+Accessed 2026-10-22. Currency: USD. Costs are computed from API-reported uncached input and output tokens. No free-tier, cache, batch, or regional discount is used.
 
-## Model B1 — `gpt-5.6-sol`
+| Backbone | Reference | Input / 1M | Output / 1M | Source | Note |
+| --- | --- | ---: | ---: | --- | --- |
+| B1 | OpenAI GPT-5.6 Sol | $4.00 | $20.00 | https://developers.openai.com/api/docs/models/gpt-5.6-sol.md | Paid-equivalent estimate. Promotional pricing is stated as available at least through 2026-11-21. The actual endpoint returns `auto`; seller identity is unverified. |
+| B2 | `auto` (temporarily same seller route as B1) | $4.00 | $20.00 | https://developers.openai.com/api/docs/models/gpt-5.6-sol.md | Deviation from File B: B2 shares B1's endpoint/key/config. Cost basis is the same paid-equivalent estimate. Replace when a distinct second backbone is verified. |
 
-| Komponen | Harga per 1 juta token |
-|---|---|
-| Input | USD 1,25 |
-| Output | USD 10,00 |
-
-Sumber: halaman harga resmi penyedia, diakses 21 Oktober 2026.
-
-> **Catatan verifikasi:** nilai di atas harus dicocokkan ulang dengan halaman
-> harga resmi sebelum `protocol-frozen`. Bila penyedia mengubah tarif,
-> perbarui file ini dan catat tanggalnya; jangan mencampur tarif dari dua
-> tanggal berbeda dalam satu analisis (pedoman 14.12).
-
-## Model B2
-
-Belum ditetapkan (lihat `docs/protocol.md` poin 0.2). Harga B2 wajib
-ditambahkan sebelum blok B2 dijalankan.
-
-## Rumus
-
-```
-cost_usd = tokens_in/1e6 * harga_in + tokens_out/1e6 * harga_out
-```
-
-Diterapkan pada tahap analisis, bukan saat run, agar perubahan harga tidak
-memaksa pengulangan eksekusi.
+The fetched B1 page lists Chat Completions and function calling as supported for the official model. This does not verify that the seller-operated `auto` route is that model or implements every feature. Both routes therefore require empirical probes.

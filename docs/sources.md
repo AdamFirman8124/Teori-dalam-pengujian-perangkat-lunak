@@ -1,50 +1,14 @@
-# Sumber dan Versi (Fase 1)
+# Source provenance
 
-Dicatat 21 Oktober 2026. Semua run memakai versi di bawah ini; mengubah versi
-di tengah eksekusi dilarang (pedoman 14.7).
+The retained source directories were copied into the parent repository without nested `.git` metadata. Their original commit hashes cannot be independently recovered from those directories. This must be treated as a reproducibility gap until upstream snapshots are checked against the retained content.
 
-## Tool
+| Component | Required version | Retained path | Provenance status |
+| --- | --- | --- | --- |
+| CodaMOSA | plasma-umass/codamosa `17a4c2a2ecb40b60e32a7e4a437db03573612f11` | `codamosa/`, `dataset/codamosa/` | Commit claimed by File B/coverup-eval; active copy includes local chat-completions, accounting, timeout, and retry patches |
+| CoverUp | 0.6.3, upstream tag commit `c4ad2f13c74c1154761038cf924ae5ece27dffdc` | `coverup/`, `dataset/coverup/` | Version verified in `version.py`; active copy contains local endpoint/logging/timeout patches |
+| MT benchmark | coverup-eval `f3173196b90181974b0b684600ffde42ac36672c` | `dataset/coverup-eval/MuTAP-benchmarks/` | 163 task directories present; nested commit metadata absent |
+| CM benchmark | coverup-eval CodaMOSA replication suite | `dataset/codamosa/replication/test-apps/` | 425 manifest rows from 24 projects present; commit metadata absent |
+| Evaluation | coverage.py 7.16.2 | image to be built | Pending |
+| Mutation | Cosmic Ray 8.7.0 | image to be built | Pending |
 
-| Tool | Versi / Commit | Catatan |
-|---|---|---|
-| CoverUp | `0.6.3` (source di `coverup/`) | memakai LiteLLM; butuh *function calling* |
-| CodaMOSA | fork `plasma-umass/codamosa`, basis Pynguin `0.19.0` | dijalankan di container |
-| Pynguin | `0.19.0` (di dalam image `pynguin-runner`) | baseline DYNAMOSA |
-| MuTAP | tidak dijalankan di mesin ini | data dari kolaborator |
-
-## Image Docker
-
-| Image | ID | Catatan |
-|---|---|---|
-| `pynguin-runner:latest` | `sha256:5036213d48ac5bacd56556572017332e732cfd7c695e04e479ec00af5374dc32` | dibangun dari `codamosa/docker/Dockerfile` |
-
-Image dibangun ulang setiap kali source `codamosa/` berubah; ID di atas harus
-dicocokkan dengan `docker images --digests` sebelum protokol dibekukan.
-
-## Evaluasi
-
-| Paket | Versi |
-|---|---|
-| `coverage` | 7.16.2 |
-| `MutPy` | 0.6.1 |
-| `pytest` | 9.1.1 |
-| `pytest-timeout` | 2.4.0 |
-| `pytest-repeat` | terpasang |
-| `radon` | 6.0.1 |
-| `slipcover` | 1.1.0 (tidak dipakai untuk metrik; hanya internal CoverUp) |
-
-## Benchmark
-
-| Suite | Sumber | Jumlah |
-|---|---|---|
-| MT | `dataset/coverup-eval/MuTAP-benchmarks/` | 163 fungsi |
-| CM | `dataset/codamosa/replication/test-apps/cm_modules.csv` | 425 modul, 24 proyek |
-
-## Runtime
-
-| Komponen | Versi |
-|---|---|
-| Python (host) | 3.14 |
-| Python (container) | 3.10 |
-| Docker Engine | 29.8.2 |
-| OS | Ubuntu, kernel Linux (bukan WSL) |
+Parent repository HEAD at protocol preparation: `c9c42f5b59f42c8a7d72db52428711fa6de59d18`.

@@ -1,100 +1,80 @@
-# Protokol Eksperimen (Fase 0 & 7)
+# Frozen-candidate experiment protocol
 
-Status: **DRAF — belum `protocol-frozen`**.
-Acuan: `pedoman_eksperimen_ai_friendly.md` v1.2 dan
-`naskah_rancangan_bab_results_ai_friendly.md` (revisi 16 Oktober 2026).
+Status: **not frozen**. Main execution is prohibited until every gate in `pedoman_eksperimen_ai_friendly.md` passes and the user approves the pilot.
 
-## 0.1 Backbone B1 (proprietary)
+## Interpretation
 
-- Transport: alias `auto` pada endpoint SrByte (`https://stream.srbyte.id/v1`).
-- Backbone sebenarnya: `gpt-5.6-sol`, dikonfirmasi oleh penyedia.
-- Penyedia **tidak** mengekspos ID model asli pada `/models` maupun pada field
-  `model` respons. Karena itu:
-  - request mengirim `auto`;
-  - label hasil memakai `gpt-5.6-sol` (`MODEL_ALIASES=auto=gpt-5.6-sol`);
-  - `provider_model=auto` disimpan di setiap baris untuk audit.
-- Konsekuensi: `model_returned` tidak dapat diverifikasi otomatis. Ini dicatat
-  sebagai ancaman validitas konstruk.
+File B is authoritative. The complete study combines this repository's CodaMOSA and CoverUp measurements with Pynguin and MuTAP measurements produced by the collaborator. This pipeline runs only CodaMOSA and CoverUp, but preserves File B's two-suite, two-backbone, R=10 design and schema so collaborator rows can be merged without changing the analysis.
 
-## 0.2 Backbone B2 (open-weight)
+The measured factorial subset is:
 
-**BELUM DITETAPKAN.** Endpoint hanya mengekspos alias `auto`. B2 harus
-model open-weight yang mendukung *function calling* (Cek C pada Fase 2).
-Sampai B2 tersedia:
+- Tool: CodaMOSA, CoverUp
+- Suite: MT, CM
+- Backbone: B1, B2
+- Repetitions: 10 per tool × suite × backbone × unit
 
-- RQ1, RQ3, dan Tabel IV baris B1 dapat dikerjakan;
-- Tabel VI, Tabel VII, Gambar 4 tidak dapat diisi;
-- pedoman 14.10 melarang memotong backbone secara permanen, jadi B2 harus
-  dijalankan sebelum protokol dibekukan.
+Tool comparisons are paired within each suite, backbone, unit, and repetition. Dataset comparisons within one tool are descriptive only because MT functions and CM modules are not paired experimental units.
 
-## 0.3 Mutation tool
+## Inputs and unit definition
 
-MutPy 0.6.1 (in-process `FirstOrderMutator`, satu himpunan mutan per unit yang
-dipakai ulang oleh semua tool). Alasan: himpunan mutan identik lintas tool
-(pedoman 14.4) dan tidak memerlukan container tambahan.
+- MT: 163 directories `dataset/coverup-eval/MuTAP-benchmarks/f001` … `f163`. One task is one benchmark function packaged as a Python module.
+- CM: 425 rows in `dataset/codamosa/replication/test-apps/cm_modules.csv` from 24 projects. One task is the Python module named by one manifest row. The main run uses a deterministic stratified sample of at least 40 modules; the three pilot modules are excluded from it.
+- Total available units: 588, confirming the colleague's approximate total of 580.
 
-## 0.4 k (pengulangan flaky)
+## Fixed decisions
 
-`k = 5` (`FLAKY_REPEATS=5`), dijalankan dengan `pytest-repeat --count 5`.
+- Budget: 600 seconds wall-clock per run; evaluation is outside the generation budget.
+- Rate-limit wait counts toward the 600-second deadline but is subtracted from `gen_time_s`; waits above 60 seconds set `wait_flag=1` and receive one same-seed retry at the end of the block.
+- Parallelism P=5, fixed within a block and no greater than six physical cores.
+- Each run uses an isolated container with 2 CPUs, 2200 MB RAM, SIGINT at 600 seconds, and SIGKILL 30 seconds later.
+- Seeds derive deterministically from protocol seed 20261022, configuration, unit, and repetition.
+- Flaky check k=5.
+- Shared mutation evaluator: Cosmic Ray 8.7.0. The same precomputed mutant manifest must be reused across tools and repetitions for a unit. Mutation timeout counts as killed and is reported separately.
+- Temperature: CodaMOSA 0.8. CoverUp sampling parameters must be explicit after its installed interface is verified.
+- CM project cap: at most 25% of the 40-module sample from one project.
+- Documented Gate 4 deviation approved 2026-10-22: the empirical LOC × branch tertiles contain no `L0B2` modules, so the CM sample covers all eight observed non-empty strata rather than inventing a ninth populated stratum.
+- API cost cap: USD 900 paid-equivalent across both backbones, both tools, suites, pilot, and reruns.
+- Elapsed cap: 14 days from pilot start.
+- Stop launching new runs at 80% of either cap; hard stop at 100%.
 
-## 0.5 Temperatur CodaMOSA
+## Models and pricing
 
-`0.8` (`CODAMOSA_TEMPERATURE=0.8`), sesuai konfigurasi `0.8-uninterp`.
+### B1
 
-## 0.6 Perlakuan mutan timeout
+- Requested model: `auto`
+- Report label: `gpt-5.6-sol (seller-claimed; endpoint reports "auto")`
+- Base URL: environment variable `LLM_BASE_URL`; approved endpoint is `https://stream.srbyte.id/v1`
+- Credential: environment variable `LLM_API_KEY`
+- Paid-equivalent reference: OpenAI GPT-5.6 Sol, USD 4.00 / 1M input and USD 20.00 / 1M output tokens
+- Source: <https://developers.openai.com/api/docs/models/gpt-5.6-sol.md>, accessed 2026-10-22
+- Promotional price stated available at least through 2026-11-21
+- Identity limitation: the endpoint returns `auto`; the seller's claim that it is GPT-5.6 Sol is unverified
 
-Mutan yang melewati batas 10 detik dicatat sebagai `n_mutant_timeout` dan
-**tidak** dihitung terbunuh. MS = `n_killed / (n_killed + n_survived)`.
+### B2
 
-## 0.7 Batas modul per proyek (CM)
+- Requested model: `auto`
+- Report label: `auto (B2 route; shared endpoint configuration; File B deviation)`
+- Base URL: environment variable `LLM_BASE_URL_B2`
+- Credential: environment variable `LLM_API_KEY_B2`
+- Paid-equivalent reference: same seller-endpoint estimate as B1; to be re-priced when a distinct B2 route is configured.
+- Required Gate 0 deviation approved 2026-10-22: B2 is temporarily using the same seller endpoint/configuration as B1 because the configured B2 route only exposes `auto`. This duplicates B1 and does not satisfy File B's two-backbone design. Configure `LLM_BASE_URL_B2` and `LLM_API_KEY_B2` to a genuine second endpoint before interpreting results as two-backbone.
 
-Maksimum **25%** dari ukuran sampel per proyek (`--max-project-share 0.25`).
-Dengan sampel 40 modul, batasnya 10 modul per proyek.
+Every raw response must retain its returned `model` field. Any change in `model_returned` stops the block.
 
-## 0.8 Anggaran biaya dan waktu
 
-- Waktu: target ≤ 3 hari wall-clock pada satu mesin.
-- Biaya: tarif berbayar pada `docs/prices.md` (bukan free tier).
+## Metrics and analysis
 
-## 0.9 Daftar harga
+Primary per run: raw validity, flaky count, line coverage, branch coverage, and mutation score. Secondary: wall-clock generation time, rate-limit wait, API calls, input/output tokens, paid-equivalent cost, failure category, and budget hit.
 
-Lihat `docs/prices.md`. Tanggal daftar harga: **21 Oktober 2026**.
+Aggregation follows File A/B: median over repetitions per unit, then median over units for effectiveness tables. Mean, median, and standard deviation over repetitions are also reported as explicitly requested. Paired CodaMOSA-vs-CoverUp comparisons use Wilcoxon signed-rank on per-unit repetition medians, Vargha–Delaney A12, and Holm correction. Bootstrap 95% confidence intervals are reported for mean differences. MT emphasizes mutation score; CM reports branch coverage and mutation score.
 
-## 0.10 Aturan waktu per run
+## Required gates before API use
 
-| Aturan | Implementasi |
-|---|---|
-| W1 anggaran 600 s | `PAPER_BUDGET_SECONDS=600`; `COVERUP_TIMEOUT=600`; `CODAMOSA_SEARCH_SECONDS=600` |
-| W2 jam mulai | `_started_ts` dicatat tepat sebelum proses generator berjalan; setup container tidak dihitung |
-| W3 jam berhenti | Tool selesai sendiri (`hit_budget=0`) atau mencapai 600 s (`hit_budget=1`); suite yang tersimpan tetap dievaluasi |
-| W4 Pynguin/CodaMOSA | `--maximum_search_time 600` |
-| W5 waktu tunggu rate limit | `rate_limit_wait_s` dicatat; `wait_flag` diisi bila > 60 s |
-| W6 evaluasi | Evaluasi memakai timeout tersendiri (600 s per suite, 60 s per tes) dan tidak mengurangi 600 s |
-| W7 waktu RQ3 | `gen_time_s = wall_time_s - rate_limit_wait_s` |
-| W8 paralelisme | `P=4` tetap; setiap container `--cpus 2 --memory 700m` |
+1. Pin source provenance and build reproducible images.
+2. Verify CodaMOSA assertions, CoverUp interruption/checkpointing, B1/B2 function calling, custom endpoints, and the independent evaluation pipeline.
+3. Verify proxy request/response/token logging without credentials.
+4. Build module characteristics and a valid CM pilot/sample split.
+5. Generate all expected tables and plots from simulated data.
+6. Ensure all four credential/base-URL environment variables are present.
 
-## Cakupan unit
-
-| Suite | Unit | Sumber |
-|---|---|---|
-| MT | 163 fungsi (penuh) | `dataset/coverup-eval/MuTAP-benchmarks/f001..f163` |
-| CM | 40 modul (sampel bertingkat) | `experiment_results_linux/cm_sample.csv` |
-
-Sampling CM mengikuti Fase 4: tertil LOC × tertil `n_branches`, seed
-`20261021`, minimal 40 modul, maksimum 25% per proyek, 3 modul pilot
-dikeluarkan dari sampel. Strata `L0B2` kosong secara alami (tidak ada modul
-< 94 LOC dengan > 24 cabang) dan dicatat di `docs/sanity_report.md`.
-
-## Tool yang dijalankan
-
-| Tool | Versi | Peran |
-|---|---|---|
-| CoverUp | 0.6.3 | generator LLM |
-| CodaMOSA | 0.19.0 (fork) | generator LLM |
-| Pynguin (DYNAMOSA) | 0.19.0 | baseline non-LLM |
-| MuTAP | — | tidak dijalankan di mesin ini (data dari kolaborator) |
-
-## Evaluasi
-
-`coverage.py 7.16.2` untuk LC/BC, MutPy 0.6.1 untuk MS, `pytest 9.1.1` untuk
-suite akhir dan flaky, `radon 6.0.1` untuk LOC/SLOC.
+No API request has been made under this protocol yet.

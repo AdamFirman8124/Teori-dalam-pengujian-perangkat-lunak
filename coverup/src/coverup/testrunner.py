@@ -60,7 +60,9 @@ def measure_suite_coverage(*, tests_dir: Path, source_dir: T.Optional[Path], pyt
                              '--disable-warnings', '-x', tests_dir]
 
             if trace: trace(command)
-            env = dict(os.environ, PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
+            env = os.environ.copy()
+            if os.name == "nt":
+                env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
             p = subprocess.run(command, check=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=env)
             if p.returncode not in (pytest.ExitCode.OK, pytest.ExitCode.NO_TESTS_COLLECTED):
                 if trace: trace(f"tests rc={p.returncode}\n" + str(p.stdout, 'utf-8'))

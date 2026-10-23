@@ -150,6 +150,8 @@ def _count(pattern: str, text: str) -> int:
 
 
 
+
+
 def pytest_outcome(text: str) -> str:
     """Classify one pytest/pytest-style run as passed/failed/error/timeout.
 
@@ -670,6 +672,10 @@ def prepare_suite(layout: dict, tests: T.Sequence[Path], workdir: Path) -> dict:
     import_names = {put.stem, put_module}
     if dotted:
         import_names.add(dotted)
+    # MT PUTs are directories-as-packages (e.g. task f003 is package ``f003``).
+    # Inline tests only reference the bare function, so inline units must also
+    # run with the package root on sys.path like every other evaluation stage.
+    extra_pypath = put_src.parent.parent if not package_root else ""
     inline = [t for t in tests
               if not any(("import " + name) in sources[t]
                          or ("from " + name + " import") in sources[t]
@@ -708,7 +714,7 @@ def prepare_suite(layout: dict, tests: T.Sequence[Path], workdir: Path) -> dict:
             "inline_parts": inline_parts, "put": put,
             "n_assertions": assertion_count,
             "package_root": package_root, "dotted": dotted,
-            "put_rel": put_rel}
+            "extra_pypath": str(extra_pypath), "put_rel": put_rel}
 
 
 def _alias_owner(prepared: dict) -> T.Dict[str, Path]:
@@ -734,9 +740,12 @@ def coverage_of(prepared: dict, workdir: Path) -> dict:
         if stale.exists():
             stale.unlink()
     pkg_root = prepared.get("package_root") or ""
+    extra = prepared.get("extra_pypath") or ""
     pypath = str(workdir)
     if pkg_root:
         pypath = os.pathsep.join([pkg_root, pypath])
+    elif extra:
+        pypath = os.pathsep.join([extra, pypath])
     env = dict(os.environ, PYTHONPATH=pypath, NO_COLOR="1",
                PYTEST_DISABLE_PLUGIN_AUTOLOAD="1",
                COVERAGE_FILE=str(data))
@@ -791,27 +800,11 @@ def flaky_count_of(prepared: dict, workdir: Path, repeats: int = 5) -> int:
     if repeats < 2:
         return 0
     pkg_root = prepared.get("package_root") or ""
+    extra = prepared.get("extra_pypath") or ""
     pypath = str(workdir)
     if pkg_root:
         pypath = os.pathsep.join([pkg_root, pypath])
-    env = dict(os.environ, PYTHONPATH=pypath, NO_COLOR="1",
-               PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
-    owner = _alias_owner(prepared)
-    names = [p.name for p in prepared["pytest_files"]]
-    if not names:
-        return 0
-    flaky = 0
-    try:
-        cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
-                   "--no-header", "-o", "addopts=", "-p", "timeout", "--timeout", "60",
-                   "--count", str(repeats), *names],
-                  workdir, env, 600)
-        text = cp.stdout + cp.stderr
-        if "flaky" in text.lower():
-            flaky += sum(1 for line in text.splitlines() if "flaky" in line.lower())
-    except subprocess.TimeoutExpired:
-        pass
-    return flaky
+
 
 
 def pass_rate_of(prepared: dict, workdir: Path) -> dict:
@@ -824,9 +817,12 @@ def pass_rate_of(prepared: dict, workdir: Path) -> dict:
     metric.  Set ``PASS_RATE_ISOLATED=1`` to restore per-unit isolation.
     """
     pkg_root = prepared.get("package_root") or ""
+    extra = prepared.get("extra_pypath") or ""
     pypath = str(workdir)
     if pkg_root:
         pypath = os.pathsep.join([pkg_root, pypath])
+    elif extra:
+        pypath = os.pathsep.join([extra, pypath])
     env = dict(os.environ, PYTHONPATH=pypath, NO_COLOR="1",
                PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
     owner = _alias_owner(prepared)
@@ -846,7 +842,7 @@ def pass_rate_of(prepared: dict, workdir: Path) -> dict:
             total += 1
             try:
                 cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
-                           "--no-header", "-o", "addopts=", "-p", "timeout", "--timeout", "60", target], workdir, env, 600)
+                           "--no-header", "-o", "addopts=", target], workdir, env, 600)
                 text = cp.stdout + cp.stderr
                 passed = _count(r"(\d+) passed", text)
                 bad = _count(r"(\d+) failed", text) + _count(r"(\d+) error", text)
@@ -863,18 +859,17 @@ def pass_rate_of(prepared: dict, workdir: Path) -> dict:
 
     total = len(units)
     ok = 0
+    text = ""
     try:
         cp = _run([PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
-                   "--no-header", "-o", "addopts=", "-p", "timeout", "--timeout", "60", "-rA", *units], workdir, env, 600)
-        text = cp.stdout + cp.stderr
-        for line in text.splitlines():
-            stripped = line.strip()
-            if stripped.startswith("PASSED") or " PASSED " in stripped:
-                ok += 1
-        if ok == 0:
+                   "--no-header", "-o", "addopts=", "-rA", *units], workdir, env, 600)
+        text = (cp.stdout or "") + (cp.stderr or "")
+        if cp.returncode == 0 and "no tests" not in text.lower():
+            ok = total
+        if ok != total:
             passed = _count(r"(\d+) passed", text)
             failed = _count(r"(\d+) failed", text) + _count(r"(\d+) error", text)
-            if passed and not failed:
+            if failed == 0 and passed >= total:
                 ok = total
             elif passed:
                 ok = min(total, passed)
@@ -885,10 +880,11 @@ def pass_rate_of(prepared: dict, workdir: Path) -> dict:
             "n_assertions_evaluated": prepared.get("n_assertions", 0) if total else 0}
 
 
+
 # --------------------------------------------------------------------------- #
 # RQ1 metric 3: mutation score
 # --------------------------------------------------------------------------- #
-def generate_mutants(put: Path, outdir: Path, workdir: Path) -> T.List[Path]:
+def generate_mutants(put: Path, outdir: Path, workdir: Path, timeout: float = 300.0) -> T.List[Path]:
     """Create first-order MutPy mutants as source files.
 
     MutPy 0.6.1's CLI executes mutants directly and has no ``--output-dir``.
@@ -1169,7 +1165,7 @@ def run_coverup(put: Path, tests_dir: Path, workdir: Path, model: str = "gpt-4o"
 # --------------------------------------------------------------------------- #
 def evaluate(dataset: str, task: str, tests: T.Sequence[Path], method: str,
              *, wall_time_s: float | None = None, cost_usd: float | None = None,
-             workroot: Path | None = None) -> dict:
+             workroot: Path | None = None, timeout: int = 900) -> dict:
     """Measure the suite metrics supported by the selected benchmark."""
     layout = LAYOUTS[dataset](task)
     workdir = Path(tempfile.mkdtemp(prefix="{0}_{1}_".format(dataset, task),
@@ -1180,9 +1176,15 @@ def evaluate(dataset: str, task: str, tests: T.Sequence[Path], method: str,
         if not Path(layout["put"]).exists():
             row["error"] = "PUT missing"
             return row
+        if timeout is None or timeout <= 0:
+            raise TimeoutError("Evaluation stage refused: timeout must be positive")
+        deadline = time.perf_counter() + min(timeout, 3600)
         prepared = prepare_suite(layout, tests, workdir)
         row.update(coverage_of(prepared, workdir))
         row.update(pass_rate_of(prepared, workdir))
+        if not time.process_time or time.perf_counter() > deadline:
+            row["error"] = "evaluation stage timeout"
+            return row
         row["flaky_count"] = flaky_count_of(
             prepared, workdir, int(os.getenv("FLAKY_REPEATS", "5")))
         if layout.get("mutation_supported", True) and layout["mutants"]:
@@ -1198,8 +1200,13 @@ def evaluate(dataset: str, task: str, tests: T.Sequence[Path], method: str,
             # MT ships no mutants: generate a deterministic first-order set from
             # the PUT.  The source is identical for every method/repeat, so the
             # shared mutant_set_id guarantees an equal-set comparison.
-            mutants = generate_mutants(prepared["put"], workdir / "mutants", workdir)
-            row.update(mutation_score_of(prepared, mutants, workdir))
+            mutation_budget = deadline - time.perf_counter()
+            if mutation_budget <= 0:
+                row["error"] = "evaluation stage timeout before mutation scoring"
+                return row
+            mutants = generate_mutants(
+                prepared["put"], workdir / "mutants", workdir, timeout=min(mutation_budget, 300.0))
+            row.update(mutation_score_of(prepared, mutants, workdir, timeout=min(mutation_budget, 10.0)))
         row["n_tests_files"] = len(prepared["pytest_files"])
         if wall_time_s is not None:
             row["wall_time_s"] = round(wall_time_s, 2)

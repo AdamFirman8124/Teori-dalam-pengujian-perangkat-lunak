@@ -54,9 +54,9 @@ async def subprocess_run(args: T.Sequence[str], check: bool = False, timeout: T.
     import asyncio
     import os
 
-    # POSIX-only pytest entry points (notably pytest-isolate/fcntl) crash on
-    # Windows even for plain collection/coverage calls.
-    env = dict(os.environ, PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
+    env = os.environ.copy()
+    if os.name == "nt":
+        env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
     process = await asyncio.create_subprocess_exec(*args, stdout=asyncio.subprocess.PIPE,
                                                    stderr=asyncio.subprocess.STDOUT, env=env)
 
