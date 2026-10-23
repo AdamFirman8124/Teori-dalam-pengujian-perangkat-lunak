@@ -13,8 +13,8 @@ Status: **draft** — belum difreeze (belum ada tag `protocol-frozen`). File A t
 
 | No | Keputusan | Nilai | Keterangan |
 |----|-----------|-------|------------|
-| 0.1 | Backbone B1 (proprietary) | `auto` pada endpoint `https://stream.srbyte.id/v1` | Endpoint melaporkan `model_returned = auto`; identitas seller (gpt-5.6-sol/luna) tidak terverifikasi |
-| 0.2 | Backbone B2 (open-weight) | `auto` pada endpoint yang sama (`LLM_BASE_URL_B2` / `LLM_API_KEY_B2`) | **Deviasi tercatat**: File B mengharapkan B2 terpisah dari B1; saat ini kedua route sama. Harus diganti sebelum simpulan dua backbone diambil |
+| 0.1 | Backbone B1 (proprietary) | `entah/auto` pada endpoint `http://localhost:20128/v1` | Endpoint melaporkan `model_returned = auto`; identitas seller (gpt-5.6-sol) tidak terverifikasi |
+| 0.2 | Backbone B2 (open-weight) | `entah/auto` pada endpoint yang sama (`LLM_BASE_URL_B2` / `LLM_API_KEY_B2`) | **Deviasi tercatat**: File B mengharapkan B2 terpisah dari B1; saat ini kedua route sama. Harus diganti sebelum simpulan dua backbone diambil |
 | 0.3 | Mutation tool | Cosmic Ray 8.7.0 | Himpunan mutan bersama untuk semua tool/run |
 | 0.4 | k (pengulangan deteksi flaky) | 5 | `--repeat-tests` pada CoverUp |
 | 0.5 | Temperatur CodaMOSA | 0.8 | Konfigurasi asli `0.8-uninterp` |
@@ -46,10 +46,9 @@ Status: **draft** — belum difreeze (belum ada tag `protocol-frozen`). File A t
 7. Versi model/tool/image berubah tengah jalan: dilarang.
 8. Modul pilot masuk sampel CM atau data pilot digunakan di paper: dilarang.
 9. Metode analisis berubah setelah melihat data: dilarang.
-10. Jumback backbone dipotong menjadi 1 demi menghemat biaya: dilarang.
+10. Jumlah backbone dipotong menjadi 1 demi menghemat biaya: dilarang.
 11. API key disimpan di repositori/log/screenshot: dilarang.
 12. Biaya dihitung dari tagihan *free tier* ($0 USD) atau dari tanggal daftar harga yang salah: dilarang.
-an tanggal daftar harga: dilarang.
 13. Bandingkan total token antar-backbone dengan tokenizer berbeda: dilarang.
 14. Waktu setup container/evaluasi masuk jatah 600 s: dilarang.
 15. Ubah nilai $P$ tengah eksekusi blok: dilarang.
