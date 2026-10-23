@@ -80,7 +80,14 @@ B1 dilaporkan sebagai `gpt-5.6-sol (seller-claimed; endpoint reports "auto")`. I
 
 | Suite | Tool | Backbone | Run tercatat | OK | Gagal | Biaya USD |
 |---|---|---|---|---|---|---|
-| MT | CoverUp | B1 | 1 | 0 | 1 | 0.036064 |
+| CM | CodaMOSA | B1 | 6 | 0 | 6 | 0.000000 |
+| CM | CodaMOSA | B2 | 6 | 0 | 6 | 0.000000 |
+| CM | CoverUp | B1 | 6 | 0 | 6 | 1.130484 |
+| CM | CoverUp | B2 | 6 | 0 | 6 | 0.848164 |
+| MT | CodaMOSA | B1 | 10 | 0 | 10 | 0.000000 |
+| MT | CodaMOSA | B2 | 10 | 0 | 10 | 0.000000 |
+| MT | CoverUp | B1 | 10 | 0 | 10 | 0.783260 |
+| MT | CoverUp | B2 | 10 | 0 | 10 | 0.608100 |
 
 ## 7. Hasil Utama
 
