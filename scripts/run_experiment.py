@@ -5,11 +5,12 @@ import argparse
 import csv
 import json
 import os
+import signal
 import subprocess
 import sys
 import threading
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed, Future
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -24,6 +25,7 @@ from results_schema import FIELDS
 from tool_adapters import run_task
 
 WRITE_LOCK = threading.Lock()
+PAUSE_FILE = ROOT / "results" / "pause.requested"
 
 
 def read_results(path: Path) -> list[dict[str, str]]:
@@ -61,6 +63,46 @@ def cleanup_containers() -> None:
         subprocess.run(["docker", "rm", "-f", *found], capture_output=True, text=True)
 
 
+def pause_requested() -> bool:
+    return PAUSE_FILE.exists()
+
+
+def request_pause() -> None:
+    PAUSE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    PAUSE_FILE.write_text(datetime.now(timezone.utc).isoformat(), encoding="utf-8")
+
+
+def clear_pause() -> None:
+    PAUSE_FILE.unlink(missing_ok=True)
+
+
+class GracefulInterrupt:
+    """Set a flag on SIGINT/SIGTERM so the current in-flight run can finish,
+    then the loop exits cleanly. Results are already checkpointed after each
+    run, so re-running with --retry-failed resumes from where it left off."""
+
+    def __init__(self) -> None:
+        self.interrupted = False
+        self._old_sigint = None
+        self._old_sigterm = None
+
+    def __enter__(self) -> "GracefulInterrupt":
+        self._old_sigint = signal.getsignal(signal.SIGINT)
+        self._old_sigterm = signal.getsignal(signal.SIGTERM)
+
+        def handler(signum, frame):
+            self.interrupted = True
+            print(f"\nReceived signal {signum}; finishing current run(s), then pausing.")
+
+        signal.signal(signal.SIGINT, handler)
+        signal.signal(signal.SIGTERM, handler)
+        return self
+
+    def __exit__(self, *args) -> None:
+        signal.signal(signal.SIGINT, self._old_sigint)
+        signal.signal(signal.SIGTERM, self._old_sigterm)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--pilot", action="store_true")
@@ -68,6 +110,8 @@ def main() -> int:
     parser.add_argument("--max-runs", type=int)
     parser.add_argument("--workers", type=int)
     parser.add_argument("--retry-failed", action="store_true")
+    parser.add_argument("--pause", action="store_true", help="Create pause.requested and exit without launching runs")
+    parser.add_argument("--resume", action="store_true", help="Remove pause.requested before launching")
     args = parser.parse_args()
     load_local_env()
     config = load_config()
@@ -94,6 +138,13 @@ def main() -> int:
     if args.dry_run:
         print(json.dumps(state, indent=2))
         return 0
+
+    if args.pause:
+        request_pause()
+        print(f"Pause requested: {PAUSE_FILE}. No runs launched.")
+        return 0
+
+    clear_pause()
 
     experiment = config["experiment"]
     rpm = int(experiment.get("rate_limit_rpm", 0) or 0)
@@ -139,11 +190,14 @@ def main() -> int:
         f"(configured={experiment['parallel_workers']}, physical_cpus={physical_cpus()}, "
         f"mem_available_mb={read_mem_available_mb()})"
     )
+    print("Pause at any time: touch results/pause.requested  (or run: python scripts/run_experiment.py --pause)")
+    print("Resume after pause: python scripts/run_experiment.py --resume [--retry-failed]")
     cleanup_containers()
     started = time.monotonic()
+    interrupt = GracefulInterrupt()
     try:
         with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="experiment") as pool:
-            future_rows = {pool.submit(run_task, row, ROOT / "results"): row for row in pending}
+            future_rows: dict[Future, dict] = {pool.submit(run_task, row, ROOT / "results"): row for row in pending}
             for index, future in enumerate(as_completed(future_rows), 1):
                 matrix_row = future_rows[future]
                 try:
@@ -165,6 +219,9 @@ def main() -> int:
                 )
                 if total_cost(results) >= launch_cap:
                     print("STOP: reached 80% cost threshold; no further runs should launch")
+                    break
+                if interrupt.interrupted or pause_requested():
+                    print("Interrupt/pause detected; not launching additional runs.")
                     break
     finally:
         cleanup_containers()
