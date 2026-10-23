@@ -71,8 +71,8 @@ Deviasi yang disetujui: stratum L0B2 kosong pada populasi aktual, sehingga sampe
 
 | Backbone | Requested | Returned | Function calling | Status/Error |
 |---|---|---|---|---|
-| B1 | auto | None | False | Permintaan tidak dapat diproses. Mohon periksa kembali parameter permintaan, lalu coba lagi. (srbyte.id) |
-| B2 | auto | None | False | Permintaan tidak dapat diproses. Mohon periksa kembali parameter permintaan, lalu coba lagi. (srbyte.id) |
+| B1 | entah/auto | auto | True | PASS |
+| B2 | entah/auto | auto | True | PASS |
 
 B1 dilaporkan sebagai `gpt-5.6-sol (seller-claimed; endpoint reports "auto")`. Identitas model adalah klaim penjual dan tidak dapat diverifikasi. Field model mentah dari setiap respons harus tetap disimpan untuk audit routing.
 

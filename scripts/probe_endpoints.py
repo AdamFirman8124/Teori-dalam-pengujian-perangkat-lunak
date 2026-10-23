@@ -23,7 +23,7 @@ def request(backbone: str) -> dict:
     key = os.environ[config["api_key_env"]]
     payload = {
         "model": config["model_requested"],
-        "messages": [{"role": "user", "content": "Call the echo tool with value exactly probe."}],
+        "messages": [{"role": "user", "content": "Call the echo tool with value exactly probe. You MUST use the echo function."}],
         "temperature": 0,
         "max_tokens": 128,
         "tools": [{
@@ -38,14 +38,20 @@ def request(backbone: str) -> dict:
                 },
             },
         }],
-        "tool_choice": {"type": "function", "function": {"name": "echo"}},
+        "tool_choice": "required",
     }
     with httpx.Client(timeout=90) as client:
         response = client.post(base + "/chat/completions", headers={"Authorization": "Bearer " + key}, json=payload)
+    # Some middleware emits SSE trailing data ("data: [DONE]") after the JSON
+    # object, breaking response.json().  Parse only the first JSON object.
     try:
         body = response.json()
     except ValueError:
-        body = {"error": {"message": response.text[:1000]}}
+        first_line = response.text.split("\n", 1)[0]
+        try:
+            body = json.loads(first_line)
+        except ValueError:
+            body = {"error": {"message": response.text[:1000]}}
     if response.status_code != 200:
         message = str((body.get("error") or {}).get("message") or body)[:1000]
         supported = []
