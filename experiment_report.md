@@ -92,7 +92,7 @@ Analisis akhir menggunakan mean, median, dan standard deviation; Wilcoxon signed
 
 Daftar rinci tersedia di `results/analysis/excluded_tasks.csv` atau `results/pilot_analysis/excluded_tasks.csv`. Tidak ada task yang boleh dikeluarkan untuk menyesuaikan hasil dengan File A.
 
-## 9. Deviasi dari File A/B
+## 9. Deviasi dari File B
 
 1. File A memuat angka ilustratif bertanda dummy; angka tersebut tidak dipakai sebagai ekspektasi.
 2. File B merevisi RQ3 menjadi cost-effectiveness; revisi ini mengalahkan rancangan korelasi karakteristik kode pada File A.

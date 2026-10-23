@@ -19,6 +19,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from notebook_control import load_local_env
 from protocol import load_config, require_environment
+from resource_guard import physical_cpus, plan_workers, read_mem_available_mb
 from results_schema import FIELDS
 from tool_adapters import run_task
 
@@ -95,6 +96,9 @@ def main() -> int:
         return 0
 
     experiment = config["experiment"]
+    rpm = int(experiment.get("rate_limit_rpm", 0) or 0)
+    if rpm > 0:
+        os.environ["RPM_LIMIT"] = str(rpm)
     probe_path = ROOT / "results" / "endpoint_probe.json"
     probes = json.loads(probe_path.read_text(encoding="utf-8")) if probe_path.exists() else []
     probed_models = {
@@ -128,9 +132,13 @@ def main() -> int:
         if elapsed_days >= float(experiment["elapsed_cap_days"]) * float(experiment["stop_launch_fraction"]):
             raise RuntimeError("Elapsed time reached the 80% launch-stop threshold")
 
-    workers = args.workers or int(experiment["parallel_workers"])
+    workers = args.workers or plan_workers(int(experiment["parallel_workers"]), experiment["worker_memory"])
     print(json.dumps(state, indent=2))
-    print(f"Starting {len(pending)} runs with {workers} workers")
+    print(
+        f"Starting {len(pending)} runs with {workers} workers "
+        f"(configured={experiment['parallel_workers']}, physical_cpus={physical_cpus()}, "
+        f"mem_available_mb={read_mem_available_mb()})"
+    )
     cleanup_containers()
     started = time.monotonic()
     try:

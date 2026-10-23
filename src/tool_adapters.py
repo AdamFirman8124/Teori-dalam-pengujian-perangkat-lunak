@@ -15,6 +15,17 @@ from typing import Any
 import eval_metrics as em
 from protocol import ROOT, load_config
 from results_schema import FIELDS
+from rate_gate import acquire
+
+RATE_STATE = ROOT / "results" / "rate_gate.jsonl"
+
+
+def _rate_limited() -> float:
+    config = load_config()["experiment"]
+    rpm = int(config.get("rate_limit_rpm", 0) or 0)
+    if rpm <= 0:
+        return 0.0
+    return acquire(RATE_STATE, rpm)
 
 
 def _secret_env(backbone: str) -> tuple[str, str, dict[str, Any]]:
@@ -151,6 +162,7 @@ def run_coverup(row: dict[str, str], output_root: Path) -> dict[str, Any]:
             "LLM_PROXY_RUN_ID": row["run_id"],
             "FLAKY_REPEATS": str(load_config()["experiment"]["flaky_repetitions"]),
         })
+        wait_s = _rate_limited()
         run = em.run_coverup(
             Path(layout["put"]), tests_dir, work,
             model=transport_model,
@@ -164,8 +176,8 @@ def run_coverup(row: dict[str, str], output_root: Path) -> dict[str, Any]:
         elapsed = (dt.datetime.now(dt.timezone.utc) - started).total_seconds()
         result.update(info)
         result["cost_usd"] = _cost(row["backbone"], info["tokens_in"], info["tokens_out"])
-        result["ratelimit_wait_s"] = info["ratelimit_wait_s"]
-        result["gen_time_s"] = max(0.0, elapsed - info["ratelimit_wait_s"])
+        result["ratelimit_wait_s"] = float(info.get("ratelimit_wait_s") or 0) + wait_s
+        result["gen_time_s"] = max(0.0, elapsed - result["ratelimit_wait_s"])
         result["hit_budget"] = int(not run.ok and "timeout" in run.error.lower())
         result["wait_flag"] = int(info["ratelimit_wait_s"] > 60)
         if not run.ok or not run.generated_tests:
@@ -261,6 +273,7 @@ def run_codamosa(row: dict[str, str], output_root: Path) -> dict[str, Any]:
         "--population", "5",
     ]
     t0 = time.monotonic()
+    wait_s = _rate_limited()
     try:
         completed = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=budget + grace)
         (work / "docker.stdout.log").write_text(completed.stdout or "", encoding="utf-8")
@@ -282,10 +295,10 @@ def run_codamosa(row: dict[str, str], output_root: Path) -> dict[str, Any]:
         info = _read_calls(output / "llm_calls.jsonl")
         result.update(info)
         result["cost_usd"] = _cost(row["backbone"], info["tokens_in"], info["tokens_out"])
-        result["ratelimit_wait_s"] = info["ratelimit_wait_s"]
-        result["gen_time_s"] = max(0.0, time.monotonic() - t0 - info["ratelimit_wait_s"])
+        result["ratelimit_wait_s"] = float(info.get("ratelimit_wait_s") or 0) + wait_s
+        result["gen_time_s"] = max(0.0, time.monotonic() - t0 - result["ratelimit_wait_s"])
         result["hit_budget"] = int(result["gen_time_s"] >= budget - 5)
-        result["wait_flag"] = int(info["ratelimit_wait_s"] > 60)
+        result["wait_flag"] = int(result["ratelimit_wait_s"] > 60)
         result["status"] = "ok"
     except subprocess.TimeoutExpired:
         subprocess.run(["docker", "rm", "-f", container], capture_output=True, text=True)
