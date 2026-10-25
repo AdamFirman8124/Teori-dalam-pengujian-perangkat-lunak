@@ -1,0 +1,1029 @@
+---- 2026-10-24T15:37:38 startup ----
+Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/__main__.py --tests-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B1-youtube_dl_extractor_linuxacademy-r04/tests /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B1-youtube_dl_extractor_linuxacademy-r04/project/youtube_dl/extractor/linuxacademy.py --model openai/entah/auto --checkpoint /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B1-youtube_dl_extractor_linuxacademy-r04/coverup.checkpoint --package-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B1-youtube_dl_extractor_linuxacademy-r04/project/youtube_dl --log-file /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B1-youtube_dl_extractor_linuxacademy-r04/coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3 --max-concurrency 1 --model-temperature 0
+---- 2026-10-24T15:38:05 project/youtube_dl/extractor/linuxacademy.py:154-243 ----
+{
+  "model": "openai/entah/auto",
+  "temperature": 0.0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from youtube_dl/extractor/linuxacademy.py, does not achieve full coverage:\nwhen tested, lines 155-243 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            import re\n            from youtube_dl.compat import compat_str\n            from youtube_dl.utils import clean_html, parse_duration, try_get, unified_timestamp, urljoin\n            class LinuxAcademyIE(InfoExtractor):\n                def _real_extract(self, url):\n       155:         mobj = re.match(self._VALID_URL, url)\n       156:         chapter_id, lecture_id, course_id = mobj.group('chapter_id', 'lesson_id', 'course_id')\n       157:         item_id = course_id if course_id else '%s-%s' % (chapter_id, lecture_id)\n            \n       159:         webpage = self._download_webpage(url, item_id)\n            \n                    # course path\n       162:         if course_id:\n       163:             module = self._parse_json(\n       164:                 self._search_regex(\n       165:                     r'window\\.module\\s*=\\s*({.+?})\\s*;', webpage, 'module'),\n       166:                 item_id)\n       167:             entries = []\n       168:             chapter_number = None\n       169:             chapter = None\n       170:             chapter_id = None\n       171:             for item in module['items']:\n       172:                 if not isinstance(item, dict):\n       173:                     continue\n            \n       175:                 def type_field(key):\n       176:                     return (try_get(item, lambda x: x['type'][key], compat_str) or '').lower()\n       177:                 type_fields = (type_field('name'), type_field('slug'))\n                            # Move to next module section\n       179:                 if 'section' in type_fields:\n       180:                     chapter = item.get('course_name')\n       181:                     chapter_id = item.get('course_module')\n       182:                     chapter_number = 1 if not chapter_number else chapter_number + 1\n       183:                     continue\n                            # Skip non-lessons\n       185:                 if 'lesson' not in type_fields:\n       186:                     continue\n       187:                 lesson_url = urljoin(url, item.get('url'))\n       188:                 if not lesson_url:\n       189:                     continue\n       190:                 title = item.get('title') or item.get('lesson_name')\n       191:                 description = item.get('md_desc') or clean_html(item.get('description')) or clean_html(item.get('text'))\n       192:                 entries.append({\n       193:                     '_type': 'url_transparent',\n       194:                     'url': lesson_url,\n       195:                     'ie_key': LinuxAcademyIE.ie_key(),\n       196:                     'title': title,\n       197:                     'description': description,\n       198:                     'timestamp': unified_timestamp(item.get('date')) or unified_timestamp(item.get('created_on')),\n       199:                     'duration': parse_duration(item.get('duration')),\n       200:                     'chapter': chapter,\n       201:                     'chapter_id': chapter_id,\n       202:                     'chapter_number': chapter_number,\n                            })\n       204:             return {\n       205:                 '_type': 'playlist',\n       206:                 'entries': entries,\n       207:                 'id': course_id,\n       208:                 'title': module.get('title'),\n       209:                 'description': module.get('md_desc') or clean_html(module.get('desc')),\n       210:                 'duration': parse_duration(module.get('duration')),\n                        }\n            \n                    # single video path\n       214:         m3u8_url = self._parse_json(\n       215:             self._search_regex(\n       216:                 r'player\\.playlist\\s*=\\s*(\\[.+?\\])\\s*;', webpage, 'playlist'),\n       217:             item_id)[0]['file']\n       218:         formats = self._extract_m3u8_formats(\n       219:             m3u8_url, item_id, 'mp4', entry_protocol='m3u8_native',\n       220:             m3u8_id='hls')\n       221:         self._sort_formats(formats)\n       222:         info = {\n       223:             'id': item_id,\n       224:             'formats': formats,\n                    }\n       226:         lesson = self._parse_json(\n       227:             self._search_regex(\n       228:                 (r'window\\.lesson\\s*=\\s*({.+?})\\s*;',\n                             r'player\\.lesson\\s*=\\s*({.+?})\\s*;'),\n       230:                 webpage, 'lesson', default='{}'), item_id, fatal=False)\n       231:         if lesson:\n       232:             info.update({\n       233:                 'title': lesson.get('lesson_name'),\n       234:                 'description': lesson.get('md_desc') or clean_html(lesson.get('desc')),\n       235:                 'timestamp': unified_timestamp(lesson.get('date')) or unified_timestamp(lesson.get('created_on')),\n       236:                 'duration': parse_duration(lesson.get('duration')),\n                        })\n       238:         if not info.get('title'):\n       239:             info['title'] = self._search_regex(\n       240:                 (r'>Lecture\\s*:\\s*(?P<value>[^<]+)',\n       241:                  r'lessonName\\s*=\\s*([\"\\'])(?P<value>(?:(?!\\1).)+)\\1'), webpage,\n       242:                 'title', group='value')\n       243:         return info\n\n```\n"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-24T15:38:22 project/youtube_dl/extractor/linuxacademy.py:154-243 ----
+{
+  "id": "chatcmpl_req_dd132eef4410e31b1e1dad3d",
+  "created": 1792831102,
+  "model": "auto",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "message": {
+        "content": null,
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"name\":\"LinuxAcademyIE\"}",
+              "name": "get_info"
+            },
+            "id": "call_QCkfoUYqapLgwNThjSqN37Wd",
+            "type": "function"
+          }
+        ],
+        "function_call": null,
+        "reasoning_content": "**Planning code exploration using get_info**",
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {
+        "native_finish_reason": "tool_calls"
+      }
+    }
+  ],
+  "usage": {
+    "completion_tokens": 76,
+    "prompt_tokens": 4126,
+    "total_tokens": 4202,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 53,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "cache_creation_tokens": 0,
+      "cached_creation_tokens": 0
+    }
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-24T15:38:22 project/youtube_dl/extractor/linuxacademy.py:154-243 ----
+{
+  "model": "openai/entah/auto",
+  "temperature": 0.0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from youtube_dl/extractor/linuxacademy.py, does not achieve full coverage:\nwhen tested, lines 155-243 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            import re\n            from youtube_dl.compat import compat_str\n            from youtube_dl.utils import clean_html, parse_duration, try_get, unified_timestamp, urljoin\n            class LinuxAcademyIE(InfoExtractor):\n                def _real_extract(self, url):\n       155:         mobj = re.match(self._VALID_URL, url)\n       156:         chapter_id, lecture_id, course_id = mobj.group('chapter_id', 'lesson_id', 'course_id')\n       157:         item_id = course_id if course_id else '%s-%s' % (chapter_id, lecture_id)\n            \n       159:         webpage = self._download_webpage(url, item_id)\n            \n                    # course path\n       162:         if course_id:\n       163:             module = self._parse_json(\n       164:                 self._search_regex(\n       165:                     r'window\\.module\\s*=\\s*({.+?})\\s*;', webpage, 'module'),\n       166:                 item_id)\n       167:             entries = []\n       168:             chapter_number = None\n       169:             chapter = None\n       170:             chapter_id = None\n       171:             for item in module['items']:\n       172:                 if not isinstance(item, dict):\n       173:                     continue\n            \n       175:                 def type_field(key):\n       176:                     return (try_get(item, lambda x: x['type'][key], compat_str) or '').lower()\n       177:                 type_fields = (type_field('name'), type_field('slug'))\n                            # Move to next module section\n       179:                 if 'section' in type_fields:\n       180:                     chapter = item.get('course_name')\n       181:                     chapter_id = item.get('course_module')\n       182:                     chapter_number = 1 if not chapter_number else chapter_number + 1\n       183:                     continue\n                            # Skip non-lessons\n       185:                 if 'lesson' not in type_fields:\n       186:                     continue\n       187:                 lesson_url = urljoin(url, item.get('url'))\n       188:                 if not lesson_url:\n       189:                     continue\n       190:                 title = item.get('title') or item.get('lesson_name')\n       191:                 description = item.get('md_desc') or clean_html(item.get('description')) or clean_html(item.get('text'))\n       192:                 entries.append({\n       193:                     '_type': 'url_transparent',\n       194:                     'url': lesson_url,\n       195:                     'ie_key': LinuxAcademyIE.ie_key(),\n       196:                     'title': title,\n       197:                     'description': description,\n       198:                     'timestamp': unified_timestamp(item.get('date')) or unified_timestamp(item.get('created_on')),\n       199:                     'duration': parse_duration(item.get('duration')),\n       200:                     'chapter': chapter,\n       201:                     'chapter_id': chapter_id,\n       202:                     'chapter_number': chapter_number,\n                            })\n       204:             return {\n       205:                 '_type': 'playlist',\n       206:                 'entries': entries,\n       207:                 'id': course_id,\n       208:                 'title': module.get('title'),\n       209:                 'description': module.get('md_desc') or clean_html(module.get('desc')),\n       210:                 'duration': parse_duration(module.get('duration')),\n                        }\n            \n                    # single video path\n       214:         m3u8_url = self._parse_json(\n       215:             self._search_regex(\n       216:                 r'player\\.playlist\\s*=\\s*(\\[.+?\\])\\s*;', webpage, 'playlist'),\n       217:             item_id)[0]['file']\n       218:         formats = self._extract_m3u8_formats(\n       219:             m3u8_url, item_id, 'mp4', entry_protocol='m3u8_native',\n       220:             m3u8_id='hls')\n       221:         self._sort_formats(formats)\n       222:         info = {\n       223:             'id': item_id,\n       224:             'formats': formats,\n                    }\n       226:         lesson = self._parse_json(\n       227:             self._search_regex(\n       228:                 (r'window\\.lesson\\s*=\\s*({.+?})\\s*;',\n                             r'player\\.lesson\\s*=\\s*({.+?})\\s*;'),\n       230:                 webpage, 'lesson', default='{}'), item_id, fatal=False)\n       231:         if lesson:\n       232:             info.update({\n       233:                 'title': lesson.get('lesson_name'),\n       234:                 'description': lesson.get('md_desc') or clean_html(lesson.get('desc')),\n       235:                 'timestamp': unified_timestamp(lesson.get('date')) or unified_timestamp(lesson.get('created_on')),\n       236:                 'duration': parse_duration(lesson.get('duration')),\n                        })\n       238:         if not info.get('title'):\n       239:             info['title'] = self._search_regex(\n       240:                 (r'>Lecture\\s*:\\s*(?P<value>[^<]+)',\n       241:                  r'lessonName\\s*=\\s*([\"\\'])(?P<value>(?:(?!\\1).)+)\\1'), webpage,\n       242:                 'title', group='value')\n       243:         return info\n\n```\n"
+    },
+    {
+      "content": "",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"name\":\"LinuxAcademyIE\"}",
+            "name": "get_info"
+          },
+          "id": "call_QCkfoUYqapLgwNThjSqN37Wd",
+          "type": "function"
+        }
+      ],
+      "function_call": null,
+      "reasoning_content": "**Planning code exploration using get_info**",
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "tool_call_id": "call_QCkfoUYqapLgwNThjSqN37Wd",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\n```python\nfrom youtube_dl.extractor.common import InfoExtractor\n\nclass LinuxAcademyIE(InfoExtractor):\n    _VALID_URL = '(?x)\\n                    https?://\\n                        (?:www\\\\.)?linuxacademy\\\\.com/cp/\\n                        (?:\\n                            courses/lesson/course/(?P<chapter_id>\\\\d+)/lesson/(?P<lesson_id>\\\\d+)|\\n                            modules/view/id/(?P<course_id>\\\\d+)\\n                        )\\n                    '\n    _TESTS = [{'url': 'https://linuxacademy.com/cp/courses/lesson/course/7971/lesson/2/module/675', 'info_dict': {'id': '7971-2', 'ext': 'mp4', 'title': 'What Is Data Science', 'description': 'md5:c574a3c20607144fb36cb65bdde76c99', 'timestamp': 1607387907, 'upload_date': '20201208', 'duration': 304}, 'params': {'skip_download': True}, 'skip': 'Requires Linux Academy account credentials'}, {'url': 'https://linuxacademy.com/cp/courses/lesson/course/1498/lesson/2', 'only_matching': True}, {'url': 'https://linuxacademy.com/cp/modules/view/id/154', 'info_dict': {'id': '154', 'title': 'AWS Certified Cloud Practitioner', 'description': 'md5:a68a299ca9bb98d41cca5abc4d4ce22c', 'duration': 28835}, 'playlist_count': 41, 'skip': 'Requires Linux Academy account credentials'}]\n    _AUTHORIZE_URL = 'https://login.linuxacademy.com/authorize'\n    _ORIGIN_URL = 'https://linuxacademy.com'\n    _CLIENT_ID = 'KaWxNn1C2Gc7n83W9OFeXltd8Utb5vvx'\n    _NETRC_MACHINE = 'linuxacademy'\n\n    def _real_initialize(self):\n        ...\n\n    def _login(self):\n        ...\n\n    def _real_extract(self, url):\n        ...\n```"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-24T15:38:54 project/youtube_dl/extractor/linuxacademy.py:154-243 ----
+{
+  "id": "chatcmpl_req_b4deaf3cd10bba51ca58c4fb",
+  "created": 1792831134,
+  "model": "auto",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "message": {
+        "content": "",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "index": 0,
+            "function": {
+              "arguments": "{\"name\":\"LinuxAcademyIE._VALID_URL\"}",
+              "name": "get_info"
+            },
+            "id": "call_0_5e4e4485a04e8f47",
+            "type": "function"
+          },
+          {
+            "index": 1,
+            "function": {
+              "arguments": "{\"name\":\"urljoin\"}",
+              "name": "get_info"
+            },
+            "id": "call_1_cbaea0c0886a7b59",
+            "type": "function"
+          }
+        ],
+        "function_call": null,
+        "reasoning_content": "Let me look at the actual source file to know the class definition, _VALID_URL, and how to instantiate. Let me get info on the module or the class attributes. get_info only gives class info. Let me check the real youtube_dl source for linuxacademy.py.\n\nI recall the file:\n\n```python\nclass LinuxAcademyIE(InfoExtractor):\n    _VALID_URL = r'''(?x)\n                    https?://\n                        (?:www\\.)?linuxacademy\\.com/cp/\n                        (?:\n                            courses/lesson/course/(?P<chapter_id>\\d+)/lesson/(?P<lesson_id>\\d+)|\n                            modules/view/id/(?P<course_id>\\d+)\n                        )\n                    '''\n    _TESTS = [...]\n```\n\nI need to write tests that mock _download_webpage, _extract_m3u8_formats, _sort_formats, etc. Best approach: use `LinuxAcademyIE` with a fake downloader? Simpler: instantiate the IE with a mock downloader and monkeypatch methods.\n\nCommon approach in these tasks: create the IE via `LinuxAcademyIE()` \u2014 but InfoExtractor requires a downloader param? `InfoExtractor(downloader=None)` works; `_download_webpage` would fail. We monkeypatch instance methods.\n\nLet me write tests:\n\n```python\nimport pytest\nfrom youtube_dl.extractor.linuxacademy import LinuxAcademyIE\n\n@pytest.fixture\ndef ie():\n    return LinuxAcademyIE()\n```\n\nBut `_real_extract` calls `self._download_webpage`, `self._parse_json`, `self._search_regex`, `self._extract_m3u8_formats`, `self._sort_formats`. `_parse_json` and `_search_regex` are real methods that work fine. `_extract_m3u8_formats` needs network \u2014 monkeypatch. `_sort_formats` \u2014 in newer versions it's a no-op-ish but may warn; monkeypatch to avoid issues.\n\nAlso `_download_webpage` monkeypatched.\n\nTest 1: course path (course_id) with module JSON containing section, non-dict item, non-lesson item, lesson without url, lesson with all fields, lesson with fallback fields.\n\nTest 2: single video path with lesson present.\n\nTest 3: single video path with lesson absent (default '{}' \u2192 falsy) and title fallback via '>Lecture : ...'.\n\nTest 4: title fallback via lessonName = \"...\" regex.\n\nAlso need to cover `if not lesson_url: continue` \u2014 urljoin(url, None) raises? urljoin with None... `urljoin('http://a/b', None)` \u2192 TypeError? Actually urljoin requires str; None would raise AttributeError. Hmm. In youtube_dl's urljoin (from utils), it's `compat_urlparse.urljoin`? Let's check: `from youtube_dl.utils import urljoin`. In youtube_dl/utils.py, `urljoin = compat_urlparse.urljoin`? Actually there's:\n\n```python\ndef urljoin(base, path):\n    if not isinstance(path, compat_str) or not path:\n        return None\n    ...\n```\n\nHmm, I think youtube_dl has:\n\n```python\ndef urljoin(base, path):\n    if not isinstance(path, compat_str) or not path:\n        return None\n    if re.match(r'^(?:[a-zA-Z][a-zA-Z0-9+-.]*:)?//', path):\n        return path\n    if isinstance(base, bytes):\n        base = base.decode('utf-8')\n    return compat_urlparse.urljoin(base, path)\n```\n\nYes! I'm fairly confident youtube_dl.utils has that urljoin returning None for empty path. So `item.get('url')` missing \u2192 urljoin returns None \u2192 `if not lesson_url: continue` covered. Good.\n\nLet me verify by checking the installed youtube_dl. I can't run code, but I can use get_info on 'urljoin'? get_info returns info about a symbol \u2014 maybe it works for functions in the module. Let's try get_info('urljoin') and get_info('LinuxAcademyIE._real_extract').\n\nActually the tool says \"Returns information about a symbol\" \u2014 class, function or method name. Let's query.\n\nAlso need `_VALID_URL` groups. Let me query get_info for the class again? It gave _TESTS only. Maybe query 'LinuxAcademyIE._VALID_URL'.\n\nLet me do parallel calls.",
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {
+        "matched_stop": null
+      }
+    }
+  ],
+  "usage": {
+    "completion_tokens": 1038,
+    "prompt_tokens": 4958,
+    "total_tokens": 5996,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 964,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": 768
+    }
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-24T15:38:56 project/youtube_dl/extractor/linuxacademy.py:154-243 ----
+2 tool rounds without code; requesting the test file (nudge 1/2)
+---- 2026-10-24T15:38:56 project/youtube_dl/extractor/linuxacademy.py:154-243 ----
+{
+  "model": "openai/entah/auto",
+  "temperature": 0.0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from youtube_dl/extractor/linuxacademy.py, does not achieve full coverage:\nwhen tested, lines 155-243 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            import re\n            from youtube_dl.compat import compat_str\n            from youtube_dl.utils import clean_html, parse_duration, try_get, unified_timestamp, urljoin\n            class LinuxAcademyIE(InfoExtractor):\n                def _real_extract(self, url):\n       155:         mobj = re.match(self._VALID_URL, url)\n       156:         chapter_id, lecture_id, course_id = mobj.group('chapter_id', 'lesson_id', 'course_id')\n       157:         item_id = course_id if course_id else '%s-%s' % (chapter_id, lecture_id)\n            \n       159:         webpage = self._download_webpage(url, item_id)\n            \n                    # course path\n       162:         if course_id:\n       163:             module = self._parse_json(\n       164:                 self._search_regex(\n       165:                     r'window\\.module\\s*=\\s*({.+?})\\s*;', webpage, 'module'),\n       166:                 item_id)\n       167:             entries = []\n       168:             chapter_number = None\n       169:             chapter = None\n       170:             chapter_id = None\n       171:             for item in module['items']:\n       172:                 if not isinstance(item, dict):\n       173:                     continue\n            \n       175:                 def type_field(key):\n       176:                     return (try_get(item, lambda x: x['type'][key], compat_str) or '').lower()\n       177:                 type_fields = (type_field('name'), type_field('slug'))\n                            # Move to next module section\n       179:                 if 'section' in type_fields:\n       180:                     chapter = item.get('course_name')\n       181:                     chapter_id = item.get('course_module')\n       182:                     chapter_number = 1 if not chapter_number else chapter_number + 1\n       183:                     continue\n                            # Skip non-lessons\n       185:                 if 'lesson' not in type_fields:\n       186:                     continue\n       187:                 lesson_url = urljoin(url, item.get('url'))\n       188:                 if not lesson_url:\n       189:                     continue\n       190:                 title = item.get('title') or item.get('lesson_name')\n       191:                 description = item.get('md_desc') or clean_html(item.get('description')) or clean_html(item.get('text'))\n       192:                 entries.append({\n       193:                     '_type': 'url_transparent',\n       194:                     'url': lesson_url,\n       195:                     'ie_key': LinuxAcademyIE.ie_key(),\n       196:                     'title': title,\n       197:                     'description': description,\n       198:                     'timestamp': unified_timestamp(item.get('date')) or unified_timestamp(item.get('created_on')),\n       199:                     'duration': parse_duration(item.get('duration')),\n       200:                     'chapter': chapter,\n       201:                     'chapter_id': chapter_id,\n       202:                     'chapter_number': chapter_number,\n                            })\n       204:             return {\n       205:                 '_type': 'playlist',\n       206:                 'entries': entries,\n       207:                 'id': course_id,\n       208:                 'title': module.get('title'),\n       209:                 'description': module.get('md_desc') or clean_html(module.get('desc')),\n       210:                 'duration': parse_duration(module.get('duration')),\n                        }\n            \n                    # single video path\n       214:         m3u8_url = self._parse_json(\n       215:             self._search_regex(\n       216:                 r'player\\.playlist\\s*=\\s*(\\[.+?\\])\\s*;', webpage, 'playlist'),\n       217:             item_id)[0]['file']\n       218:         formats = self._extract_m3u8_formats(\n       219:             m3u8_url, item_id, 'mp4', entry_protocol='m3u8_native',\n       220:             m3u8_id='hls')\n       221:         self._sort_formats(formats)\n       222:         info = {\n       223:             'id': item_id,\n       224:             'formats': formats,\n                    }\n       226:         lesson = self._parse_json(\n       227:             self._search_regex(\n       228:                 (r'window\\.lesson\\s*=\\s*({.+?})\\s*;',\n                             r'player\\.lesson\\s*=\\s*({.+?})\\s*;'),\n       230:                 webpage, 'lesson', default='{}'), item_id, fatal=False)\n       231:         if lesson:\n       232:             info.update({\n       233:                 'title': lesson.get('lesson_name'),\n       234:                 'description': lesson.get('md_desc') or clean_html(lesson.get('desc')),\n       235:                 'timestamp': unified_timestamp(lesson.get('date')) or unified_timestamp(lesson.get('created_on')),\n       236:                 'duration': parse_duration(lesson.get('duration')),\n                        })\n       238:         if not info.get('title'):\n       239:             info['title'] = self._search_regex(\n       240:                 (r'>Lecture\\s*:\\s*(?P<value>[^<]+)',\n       241:                  r'lessonName\\s*=\\s*([\"\\'])(?P<value>(?:(?!\\1).)+)\\1'), webpage,\n       242:                 'title', group='value')\n       243:         return info\n\n```\n"
+    },
+    {
+      "content": "",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"name\":\"LinuxAcademyIE\"}",
+            "name": "get_info"
+          },
+          "id": "call_QCkfoUYqapLgwNThjSqN37Wd",
+          "type": "function"
+        }
+      ],
+      "function_call": null,
+      "reasoning_content": "**Planning code exploration using get_info**",
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "tool_call_id": "call_QCkfoUYqapLgwNThjSqN37Wd",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\n```python\nfrom youtube_dl.extractor.common import InfoExtractor\n\nclass LinuxAcademyIE(InfoExtractor):\n    _VALID_URL = '(?x)\\n                    https?://\\n                        (?:www\\\\.)?linuxacademy\\\\.com/cp/\\n                        (?:\\n                            courses/lesson/course/(?P<chapter_id>\\\\d+)/lesson/(?P<lesson_id>\\\\d+)|\\n                            modules/view/id/(?P<course_id>\\\\d+)\\n                        )\\n                    '\n    _TESTS = [{'url': 'https://linuxacademy.com/cp/courses/lesson/course/7971/lesson/2/module/675', 'info_dict': {'id': '7971-2', 'ext': 'mp4', 'title': 'What Is Data Science', 'description': 'md5:c574a3c20607144fb36cb65bdde76c99', 'timestamp': 1607387907, 'upload_date': '20201208', 'duration': 304}, 'params': {'skip_download': True}, 'skip': 'Requires Linux Academy account credentials'}, {'url': 'https://linuxacademy.com/cp/courses/lesson/course/1498/lesson/2', 'only_matching': True}, {'url': 'https://linuxacademy.com/cp/modules/view/id/154', 'info_dict': {'id': '154', 'title': 'AWS Certified Cloud Practitioner', 'description': 'md5:a68a299ca9bb98d41cca5abc4d4ce22c', 'duration': 28835}, 'playlist_count': 41, 'skip': 'Requires Linux Academy account credentials'}]\n    _AUTHORIZE_URL = 'https://login.linuxacademy.com/authorize'\n    _ORIGIN_URL = 'https://linuxacademy.com'\n    _CLIENT_ID = 'KaWxNn1C2Gc7n83W9OFeXltd8Utb5vvx'\n    _NETRC_MACHINE = 'linuxacademy'\n\n    def _real_initialize(self):\n        ...\n\n    def _login(self):\n        ...\n\n    def _real_extract(self, url):\n        ...\n```"
+    },
+    {
+      "content": "",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "index": 0,
+          "function": {
+            "arguments": "{\"name\":\"LinuxAcademyIE._VALID_URL\"}",
+            "name": "get_info"
+          },
+          "id": "call_0_5e4e4485a04e8f47",
+          "type": "function"
+        },
+        {
+          "index": 1,
+          "function": {
+            "arguments": "{\"name\":\"urljoin\"}",
+            "name": "get_info"
+          },
+          "id": "call_1_cbaea0c0886a7b59",
+          "type": "function"
+        }
+      ],
+      "function_call": null,
+      "reasoning_content": "Let me look at the actual source file to know the class definition, _VALID_URL, and how to instantiate. Let me get info on the module or the class attributes. get_info only gives class info. Let me check the real youtube_dl source for linuxacademy.py.\n\nI recall the file:\n\n```python\nclass LinuxAcademyIE(InfoExtractor):\n    _VALID_URL = r'''(?x)\n                    https?://\n                        (?:www\\.)?linuxacademy\\.com/cp/\n                        (?:\n                            courses/lesson/course/(?P<chapter_id>\\d+)/lesson/(?P<lesson_id>\\d+)|\n                            modules/view/id/(?P<course_id>\\d+)\n                        )\n                    '''\n    _TESTS = [...]\n```\n\nI need to write tests that mock _download_webpage, _extract_m3u8_formats, _sort_formats, etc. Best approach: use `LinuxAcademyIE` with a fake downloader? Simpler: instantiate the IE with a mock downloader and monkeypatch methods.\n\nCommon approach in these tasks: create the IE via `LinuxAcademyIE()` \u2014 but InfoExtractor requires a downloader param? `InfoExtractor(downloader=None)` works; `_download_webpage` would fail. We monkeypatch instance methods.\n\nLet me write tests:\n\n```python\nimport pytest\nfrom youtube_dl.extractor.linuxacademy import LinuxAcademyIE\n\n@pytest.fixture\ndef ie():\n    return LinuxAcademyIE()\n```\n\nBut `_real_extract` calls `self._download_webpage`, `self._parse_json`, `self._search_regex`, `self._extract_m3u8_formats`, `self._sort_formats`. `_parse_json` and `_search_regex` are real methods that work fine. `_extract_m3u8_formats` needs network \u2014 monkeypatch. `_sort_formats` \u2014 in newer versions it's a no-op-ish but may warn; monkeypatch to avoid issues.\n\nAlso `_download_webpage` monkeypatched.\n\nTest 1: course path (course_id) with module JSON containing section, non-dict item, non-lesson item, lesson without url, lesson with all fields, lesson with fallback fields.\n\nTest 2: single video path with lesson present.\n\nTest 3: single video path with lesson absent (default '{}' \u2192 falsy) and title fallback via '>Lecture : ...'.\n\nTest 4: title fallback via lessonName = \"...\" regex.\n\nAlso need to cover `if not lesson_url: continue` \u2014 urljoin(url, None) raises? urljoin with None... `urljoin('http://a/b', None)` \u2192 TypeError? Actually urljoin requires str; None would raise AttributeError. Hmm. In youtube_dl's urljoin (from utils), it's `compat_urlparse.urljoin`? Let's check: `from youtube_dl.utils import urljoin`. In youtube_dl/utils.py, `urljoin = compat_urlparse.urljoin`? Actually there's:\n\n```python\ndef urljoin(base, path):\n    if not isinstance(path, compat_str) or not path:\n        return None\n    ...\n```\n\nHmm, I think youtube_dl has:\n\n```python\ndef urljoin(base, path):\n    if not isinstance(path, compat_str) or not path:\n        return None\n    if re.match(r'^(?:[a-zA-Z][a-zA-Z0-9+-.]*:)?//', path):\n        return path\n    if isinstance(base, bytes):\n        base = base.decode('utf-8')\n    return compat_urlparse.urljoin(base, path)\n```\n\nYes! I'm fairly confident youtube_dl.utils has that urljoin returning None for empty path. So `item.get('url')` missing \u2192 urljoin returns None \u2192 `if not lesson_url: continue` covered. Good.\n\nLet me verify by checking the installed youtube_dl. I can't run code, but I can use get_info on 'urljoin'? get_info returns info about a symbol \u2014 maybe it works for functions in the module. Let's try get_info('urljoin') and get_info('LinuxAcademyIE._real_extract').\n\nActually the tool says \"Returns information about a symbol\" \u2014 class, function or method name. Let's query.\n\nAlso need `_VALID_URL` groups. Let me query get_info for the class again? It gave _TESTS only. Maybe query 'LinuxAcademyIE._VALID_URL'.\n\nLet me do parallel calls.",
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "tool_call_id": "call_0_5e4e4485a04e8f47",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\n```python\nfrom youtube_dl.extractor.common import InfoExtractor\n\nclass LinuxAcademyIE(InfoExtractor):\n    ...\n    _VALID_URL = '(?x)\\n                    https?://\\n                        (?:www\\\\.)?linuxacademy\\\\.com/cp/\\n                        (?:\\n                            courses/lesson/course/(?P<chapter_id>\\\\d+)/lesson/(?P<lesson_id>\\\\d+)|\\n                            modules/view/id/(?P<course_id>\\\\d+)\\n                        )\\n                    '\n```"
+    },
+    {
+      "tool_call_id": "call_1_cbaea0c0886a7b59",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\nin youtube_dl/utils.py:\n```python\nimport re\nfrom youtube_dl.compat import compat_str, compat_urlparse\n\ndef urljoin(base, path):\n    if isinstance(path, bytes):\n        path = path.decode('utf-8')\n    if not isinstance(path, compat_str) or not path:\n        return None\n    if re.match('^(?:[a-zA-Z][a-zA-Z0-9+-.]*:)?//', path):\n        return path\n    if isinstance(base, bytes):\n        base = base.decode('utf-8')\n    if not isinstance(base, compat_str) or not re.match('^(?:https?:)?//', base):\n        return None\n    return compat_urlparse.urljoin(base, path)\n```"
+    },
+    {
+      "role": "user",
+      "content": "Stop calling tools. Using the information you already have, respond now with the complete pytest test file enclosed in a ```python code block and nothing else."
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-24T15:43:39 project/youtube_dl/extractor/linuxacademy.py:154-243 ----
+{
+  "id": "chatcmpl_req_f032569f7ce0968a1fd546bc",
+  "created": 1792831419,
+  "model": "auto",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```python\nimport json\n\nimport pytest\n\nfrom youtube_dl.extractor.linuxacademy import LinuxAcademyIE\n\n\nCOURSE_URL = 'https://linuxacademy.com/cp/modules/view/id/154'\nSINGLE_URL = 'https://linuxacademy.com/cp/courses/lesson/course/7971/lesson/2'\n\n\ndef _make_ie(monkeypatch):\n    ie = LinuxAcademyIE()\n    # Avoid any need for a real downloader in _sort_formats\n    monkeypatch.setattr(\n        ie, '_sort_formats', lambda formats: None)\n    return ie\n\n\ndef _patch_webpage(monkeypatch, ie, webpage):\n    monkeypatch.setattr(\n        ie, '_download_webpage',\n        lambda url, video_id, *a, **k: webpage)\n\n\ndef _patch_m3u8(monkeypatch, ie, seen, formats):\n    def _fake_extract(m3u8_url, *a, **k):\n        seen['url'] = m3u8_url\n        return list(formats)\n    monkeypatch.setattr(ie, '_extract_m3u8_formats', _fake_extract)\n\n\ndef test_course_playlist_branches(monkeypatch):\n    ie = _make_ie(monkeypatch)\n    module = {\n        'title': 'Course Title',\n        'md_desc': 'MD Course Desc',\n        'duration': '8:00:35',\n        'items': [\n            'not-a-dict',\n            12345,\n            {'type': {'name': 'Module', 'slug': 'section'},\n             'course_name': 'Chapter One', 'course_module': 'mod-1'},\n            {'type': {'name': 'Quiz', 'slug': 'quiz'},\n             'url': '/quiz/1', 'title': 'Quiz 1'},\n            {'type': {'name': 'Lesson', 'slug': 'lesson'},\n             'title': 'No URL Lesson'},\n            {'type': {'name': 'Lesson', 'slug': 'lesson'},\n             'url': '/cp/courses/lesson/course/7971/lesson/2',\n             'title': 'Lesson One',\n             'md_desc': 'Lesson MD',\n             'date': '2020-12-08',\n             'created_on': '2020-01-01',\n             'duration': '5:04'},\n            {'type': {'name': 'Section', 'slug': 'something-else'},\n             'course_name': 'Chapter Two', 'course_module': 'mod-2'},\n            {'type': {'name': 'Video', 'slug': 'Lesson'},\n             'url': 'https://linuxacademy.com/cp/courses/lesson/course/1/lesson/3',\n             'lesson_name': 'Fallback Title',\n             'description': '<p>HTML Desc</p>',\n             'created_on': '2020-12-09',\n             'duration': '10:00'},\n            {'type': {'name': 'Lesson'},\n             'url': '/cp/lesson/4',\n             'title': 'T4',\n             'text': '<b>Text Desc</b>'},\n            {'url': '/x', 'title': 'NoType'},\n            {'type': None, 'url': '/y', 'title': 'NoneType'},\n            {'type': {'name': 'LESSON', 'slug': 'LESSON'},\n             'url': '/cp/lesson/5',\n             'title': 'T5'},\n        ],\n    }\n    webpage = 'window.module = %s;' % json.dumps(module)\n    _patch_webpage(monkeypatch, ie, webpage)\n\n    result = ie._real_extract(COURSE_URL)\n\n    assert result['_type'] == 'playlist'\n    assert result['id'] == '154'\n    assert result['title'] == 'Course Title'\n    assert result['description'] == 'MD Course Desc'\n    assert result['duration'] == 28835\n    entries = result['entries']\n    assert len(entries) == 4\n    # non-dict, quiz, missing-url and missing-type items are skipped\n    first, second, third, fourth = entries\n    assert first['title'] == 'Lesson One'\n    assert first['description'] == 'Lesson MD'\n    assert first['duration'] == 304\n    assert isinstance(first['timestamp'], int)\n    assert first['chapter'] == 'Chapter One'\n    assert first['chapter_id'] == 'mod-1'\n    assert first['chapter_number'] == 1\n    assert first['url'].endswith('/cp/courses/lesson/course/7971/lesson/2')\n    assert first['_type'] == 'url_transparent'\n    assert first['ie_key'] == LinuxAcademyIE.ie_key()\n    assert second['title'] == 'Fallback Title'\n    assert second['description'] == 'HTML Desc'\n    assert second['duration'] == 600\n    assert isinstance(second['timestamp'], int)\n    assert second['chapter'] == 'Chapter Two'\n    assert second['chapter_id'] == 'mod-2'\n    assert second['chapter_number'] == 2\n    assert third['title'] == 'T4'\n    assert third['description'] == 'Text Desc'\n    assert third['timestamp'] is None\n    assert third['duration'] is None\n    assert third['chapter_number'] == 2\n    assert fourth['title'] == 'T5'\n    assert fourth['description'] is None\n    assert fourth['timestamp'] is None\n    assert fourth['duration'] is None\n\n\ndef test_course_playlist_desc_fallback(monkeypatch):\n    ie = _make_ie(monkeypatch)\n    module = {\n        'title': 'Fallback Course',\n        'desc': '<p>Course <b>Desc</b></p>',\n        'items': [\n            {'type': {'name': 'section', 'slug': 'section'},\n             'course_name': 'Only Chapter', 'course_module': 'mod-9'},\n            {'type': {'name': 'lesson', 'slug': 'lesson'},\n             'url': '/cp/courses/lesson/course/9/lesson/9',\n             'title': 'Only Lesson'},\n        ],\n    }\n    webpage = 'window.module = %s;' % json.dumps(module)\n    _patch_webpage(monkeypatch, ie, webpage)\n\n    result = ie._real_extract(COURSE_URL)\n\n    assert result['_type'] == 'playlist'\n    assert result['id'] == '154'\n    assert result['title'] == 'Fallback Course'\n    assert result['description'] == 'Course Desc'\n    assert result['duration'] is None\n    assert len(result['entries']) == 1\n    entry = result['entries'][0]\n    assert entry['chapter'] == 'Only Chapter'\n    assert entry['chapter_id'] == 'mod-9'\n    assert entry['chapter_number'] == 1\n    assert entry['description'] is None\n    assert entry['timestamp'] is None\n    assert entry['duration'] is None\n\n\ndef test_single_video_with_window_lesson(monkeypatch):\n    ie = _make_ie(monkeypatch)\n    lesson = {\n        'lesson_name': 'What Is Data Science',\n        'md_desc': 'Lesson MD Desc',\n        'date': '2020-12-08',\n        'created_on': '2020-01-01',\n        'duration': '5:04',\n    }\n    webpage = (\n        'player.playlist = [{\"file\": \"https://example.com/v.m3u8\"}];'\n        'window.lesson = %s;' % json.dumps(lesson)\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n    seen = {}\n    fake_formats = [{'format_id': 'hls', 'url': 'https://example.com/v.m3u8', 'ext': 'mp4'}]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert seen['url'] == 'https://example.com/v.m3u8'\n    assert result['title'] == 'What Is Data Science'\n    assert result['description'] == 'Lesson MD Desc'\n    assert result['duration'] == 304\n    assert isinstance(result['timestamp'], int)\n\n\ndef test_single_video_player_lesson_lecture_title(monkeypatch):\n    ie = _make_ie(monkeypatch)\n    lesson = {\n        'desc': '<p>Lesson Desc</p>',\n        'created_on': '2020-12-09',\n        'duration': '10:00',\n    }\n    webpage = (\n        'player.playlist = [{\"file\": \"https://example.com/other.m3u8\"}];'\n        'player.lesson = %s;'\n        '<span>Lecture : My Lecture Title</span>' % json.dumps(lesson)\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n    seen = {}\n    fake_formats = [{'format_id': 'hls', 'url': 'https://example.com/other.m3u8', 'ext': 'mp4'}]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert seen['url'] == 'https://example.com/other.m3u8'\n    assert result['title'] == 'My Lecture Title'\n    assert result['description'] == 'Lesson Desc'\n    assert result['duration'] == 600\n    assert isinstance(result['timestamp'], int)\n\n\ndef test_single_video_no_lesson_lessonname_title(monkeypatch):\n    ie = _make_ie(monkeypatch)\n    webpage = (\n        'player.playlist = [{\"file\": \"https://example.com/third.m3u8\"}];'\n        '<script>lessonName = \"Quoted Title\";</script>'\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n    seen = {}\n    fake_formats = [{'format_id': 'hls', 'url': 'https://example.com/third.m3u8', 'ext': 'mp4'}]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert seen['url'] == 'https://example.com/third.m3u8'\n    assert result['title'] == 'Quoted Title'\n```",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {}
+    }
+  ],
+  "usage": {
+    "completion_tokens": 8029,
+    "prompt_tokens": 6209,
+    "total_tokens": 14238,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 5788,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": 0
+    }
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-24T15:43:45 project/youtube_dl/extractor/linuxacademy.py:154-243 ----
+{
+  "model": "openai/entah/auto",
+  "temperature": 0.0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from youtube_dl/extractor/linuxacademy.py, does not achieve full coverage:\nwhen tested, lines 155-243 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            import re\n            from youtube_dl.compat import compat_str\n            from youtube_dl.utils import clean_html, parse_duration, try_get, unified_timestamp, urljoin\n            class LinuxAcademyIE(InfoExtractor):\n                def _real_extract(self, url):\n       155:         mobj = re.match(self._VALID_URL, url)\n       156:         chapter_id, lecture_id, course_id = mobj.group('chapter_id', 'lesson_id', 'course_id')\n       157:         item_id = course_id if course_id else '%s-%s' % (chapter_id, lecture_id)\n            \n       159:         webpage = self._download_webpage(url, item_id)\n            \n                    # course path\n       162:         if course_id:\n       163:             module = self._parse_json(\n       164:                 self._search_regex(\n       165:                     r'window\\.module\\s*=\\s*({.+?})\\s*;', webpage, 'module'),\n       166:                 item_id)\n       167:             entries = []\n       168:             chapter_number = None\n       169:             chapter = None\n       170:             chapter_id = None\n       171:             for item in module['items']:\n       172:                 if not isinstance(item, dict):\n       173:                     continue\n            \n       175:                 def type_field(key):\n       176:                     return (try_get(item, lambda x: x['type'][key], compat_str) or '').lower()\n       177:                 type_fields = (type_field('name'), type_field('slug'))\n                            # Move to next module section\n       179:                 if 'section' in type_fields:\n       180:                     chapter = item.get('course_name')\n       181:                     chapter_id = item.get('course_module')\n       182:                     chapter_number = 1 if not chapter_number else chapter_number + 1\n       183:                     continue\n                            # Skip non-lessons\n       185:                 if 'lesson' not in type_fields:\n       186:                     continue\n       187:                 lesson_url = urljoin(url, item.get('url'))\n       188:                 if not lesson_url:\n       189:                     continue\n       190:                 title = item.get('title') or item.get('lesson_name')\n       191:                 description = item.get('md_desc') or clean_html(item.get('description')) or clean_html(item.get('text'))\n       192:                 entries.append({\n       193:                     '_type': 'url_transparent',\n       194:                     'url': lesson_url,\n       195:                     'ie_key': LinuxAcademyIE.ie_key(),\n       196:                     'title': title,\n       197:                     'description': description,\n       198:                     'timestamp': unified_timestamp(item.get('date')) or unified_timestamp(item.get('created_on')),\n       199:                     'duration': parse_duration(item.get('duration')),\n       200:                     'chapter': chapter,\n       201:                     'chapter_id': chapter_id,\n       202:                     'chapter_number': chapter_number,\n                            })\n       204:             return {\n       205:                 '_type': 'playlist',\n       206:                 'entries': entries,\n       207:                 'id': course_id,\n       208:                 'title': module.get('title'),\n       209:                 'description': module.get('md_desc') or clean_html(module.get('desc')),\n       210:                 'duration': parse_duration(module.get('duration')),\n                        }\n            \n                    # single video path\n       214:         m3u8_url = self._parse_json(\n       215:             self._search_regex(\n       216:                 r'player\\.playlist\\s*=\\s*(\\[.+?\\])\\s*;', webpage, 'playlist'),\n       217:             item_id)[0]['file']\n       218:         formats = self._extract_m3u8_formats(\n       219:             m3u8_url, item_id, 'mp4', entry_protocol='m3u8_native',\n       220:             m3u8_id='hls')\n       221:         self._sort_formats(formats)\n       222:         info = {\n       223:             'id': item_id,\n       224:             'formats': formats,\n                    }\n       226:         lesson = self._parse_json(\n       227:             self._search_regex(\n       228:                 (r'window\\.lesson\\s*=\\s*({.+?})\\s*;',\n                             r'player\\.lesson\\s*=\\s*({.+?})\\s*;'),\n       230:                 webpage, 'lesson', default='{}'), item_id, fatal=False)\n       231:         if lesson:\n       232:             info.update({\n       233:                 'title': lesson.get('lesson_name'),\n       234:                 'description': lesson.get('md_desc') or clean_html(lesson.get('desc')),\n       235:                 'timestamp': unified_timestamp(lesson.get('date')) or unified_timestamp(lesson.get('created_on')),\n       236:                 'duration': parse_duration(lesson.get('duration')),\n                        })\n       238:         if not info.get('title'):\n       239:             info['title'] = self._search_regex(\n       240:                 (r'>Lecture\\s*:\\s*(?P<value>[^<]+)',\n       241:                  r'lessonName\\s*=\\s*([\"\\'])(?P<value>(?:(?!\\1).)+)\\1'), webpage,\n       242:                 'title', group='value')\n       243:         return info\n\n```\n"
+    },
+    {
+      "content": "",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"name\":\"LinuxAcademyIE\"}",
+            "name": "get_info"
+          },
+          "id": "call_QCkfoUYqapLgwNThjSqN37Wd",
+          "type": "function"
+        }
+      ],
+      "function_call": null,
+      "reasoning_content": "**Planning code exploration using get_info**",
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "tool_call_id": "call_QCkfoUYqapLgwNThjSqN37Wd",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\n```python\nfrom youtube_dl.extractor.common import InfoExtractor\n\nclass LinuxAcademyIE(InfoExtractor):\n    _VALID_URL = '(?x)\\n                    https?://\\n                        (?:www\\\\.)?linuxacademy\\\\.com/cp/\\n                        (?:\\n                            courses/lesson/course/(?P<chapter_id>\\\\d+)/lesson/(?P<lesson_id>\\\\d+)|\\n                            modules/view/id/(?P<course_id>\\\\d+)\\n                        )\\n                    '\n    _TESTS = [{'url': 'https://linuxacademy.com/cp/courses/lesson/course/7971/lesson/2/module/675', 'info_dict': {'id': '7971-2', 'ext': 'mp4', 'title': 'What Is Data Science', 'description': 'md5:c574a3c20607144fb36cb65bdde76c99', 'timestamp': 1607387907, 'upload_date': '20201208', 'duration': 304}, 'params': {'skip_download': True}, 'skip': 'Requires Linux Academy account credentials'}, {'url': 'https://linuxacademy.com/cp/courses/lesson/course/1498/lesson/2', 'only_matching': True}, {'url': 'https://linuxacademy.com/cp/modules/view/id/154', 'info_dict': {'id': '154', 'title': 'AWS Certified Cloud Practitioner', 'description': 'md5:a68a299ca9bb98d41cca5abc4d4ce22c', 'duration': 28835}, 'playlist_count': 41, 'skip': 'Requires Linux Academy account credentials'}]\n    _AUTHORIZE_URL = 'https://login.linuxacademy.com/authorize'\n    _ORIGIN_URL = 'https://linuxacademy.com'\n    _CLIENT_ID = 'KaWxNn1C2Gc7n83W9OFeXltd8Utb5vvx'\n    _NETRC_MACHINE = 'linuxacademy'\n\n    def _real_initialize(self):\n        ...\n\n    def _login(self):\n        ...\n\n    def _real_extract(self, url):\n        ...\n```"
+    },
+    {
+      "content": "",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "index": 0,
+          "function": {
+            "arguments": "{\"name\":\"LinuxAcademyIE._VALID_URL\"}",
+            "name": "get_info"
+          },
+          "id": "call_0_5e4e4485a04e8f47",
+          "type": "function"
+        },
+        {
+          "index": 1,
+          "function": {
+            "arguments": "{\"name\":\"urljoin\"}",
+            "name": "get_info"
+          },
+          "id": "call_1_cbaea0c0886a7b59",
+          "type": "function"
+        }
+      ],
+      "function_call": null,
+      "reasoning_content": "Let me look at the actual source file to know the class definition, _VALID_URL, and how to instantiate. Let me get info on the module or the class attributes. get_info only gives class info. Let me check the real youtube_dl source for linuxacademy.py.\n\nI recall the file:\n\n```python\nclass LinuxAcademyIE(InfoExtractor):\n    _VALID_URL = r'''(?x)\n                    https?://\n                        (?:www\\.)?linuxacademy\\.com/cp/\n                        (?:\n                            courses/lesson/course/(?P<chapter_id>\\d+)/lesson/(?P<lesson_id>\\d+)|\n                            modules/view/id/(?P<course_id>\\d+)\n                        )\n                    '''\n    _TESTS = [...]\n```\n\nI need to write tests that mock _download_webpage, _extract_m3u8_formats, _sort_formats, etc. Best approach: use `LinuxAcademyIE` with a fake downloader? Simpler: instantiate the IE with a mock downloader and monkeypatch methods.\n\nCommon approach in these tasks: create the IE via `LinuxAcademyIE()` \u2014 but InfoExtractor requires a downloader param? `InfoExtractor(downloader=None)` works; `_download_webpage` would fail. We monkeypatch instance methods.\n\nLet me write tests:\n\n```python\nimport pytest\nfrom youtube_dl.extractor.linuxacademy import LinuxAcademyIE\n\n@pytest.fixture\ndef ie():\n    return LinuxAcademyIE()\n```\n\nBut `_real_extract` calls `self._download_webpage`, `self._parse_json`, `self._search_regex`, `self._extract_m3u8_formats`, `self._sort_formats`. `_parse_json` and `_search_regex` are real methods that work fine. `_extract_m3u8_formats` needs network \u2014 monkeypatch. `_sort_formats` \u2014 in newer versions it's a no-op-ish but may warn; monkeypatch to avoid issues.\n\nAlso `_download_webpage` monkeypatched.\n\nTest 1: course path (course_id) with module JSON containing section, non-dict item, non-lesson item, lesson without url, lesson with all fields, lesson with fallback fields.\n\nTest 2: single video path with lesson present.\n\nTest 3: single video path with lesson absent (default '{}' \u2192 falsy) and title fallback via '>Lecture : ...'.\n\nTest 4: title fallback via lessonName = \"...\" regex.\n\nAlso need to cover `if not lesson_url: continue` \u2014 urljoin(url, None) raises? urljoin with None... `urljoin('http://a/b', None)` \u2192 TypeError? Actually urljoin requires str; None would raise AttributeError. Hmm. In youtube_dl's urljoin (from utils), it's `compat_urlparse.urljoin`? Let's check: `from youtube_dl.utils import urljoin`. In youtube_dl/utils.py, `urljoin = compat_urlparse.urljoin`? Actually there's:\n\n```python\ndef urljoin(base, path):\n    if not isinstance(path, compat_str) or not path:\n        return None\n    ...\n```\n\nHmm, I think youtube_dl has:\n\n```python\ndef urljoin(base, path):\n    if not isinstance(path, compat_str) or not path:\n        return None\n    if re.match(r'^(?:[a-zA-Z][a-zA-Z0-9+-.]*:)?//', path):\n        return path\n    if isinstance(base, bytes):\n        base = base.decode('utf-8')\n    return compat_urlparse.urljoin(base, path)\n```\n\nYes! I'm fairly confident youtube_dl.utils has that urljoin returning None for empty path. So `item.get('url')` missing \u2192 urljoin returns None \u2192 `if not lesson_url: continue` covered. Good.\n\nLet me verify by checking the installed youtube_dl. I can't run code, but I can use get_info on 'urljoin'? get_info returns info about a symbol \u2014 maybe it works for functions in the module. Let's try get_info('urljoin') and get_info('LinuxAcademyIE._real_extract').\n\nActually the tool says \"Returns information about a symbol\" \u2014 class, function or method name. Let's query.\n\nAlso need `_VALID_URL` groups. Let me query get_info for the class again? It gave _TESTS only. Maybe query 'LinuxAcademyIE._VALID_URL'.\n\nLet me do parallel calls.",
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "tool_call_id": "call_0_5e4e4485a04e8f47",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\n```python\nfrom youtube_dl.extractor.common import InfoExtractor\n\nclass LinuxAcademyIE(InfoExtractor):\n    ...\n    _VALID_URL = '(?x)\\n                    https?://\\n                        (?:www\\\\.)?linuxacademy\\\\.com/cp/\\n                        (?:\\n                            courses/lesson/course/(?P<chapter_id>\\\\d+)/lesson/(?P<lesson_id>\\\\d+)|\\n                            modules/view/id/(?P<course_id>\\\\d+)\\n                        )\\n                    '\n```"
+    },
+    {
+      "tool_call_id": "call_1_cbaea0c0886a7b59",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\nin youtube_dl/utils.py:\n```python\nimport re\nfrom youtube_dl.compat import compat_str, compat_urlparse\n\ndef urljoin(base, path):\n    if isinstance(path, bytes):\n        path = path.decode('utf-8')\n    if not isinstance(path, compat_str) or not path:\n        return None\n    if re.match('^(?:[a-zA-Z][a-zA-Z0-9+-.]*:)?//', path):\n        return path\n    if isinstance(base, bytes):\n        base = base.decode('utf-8')\n    if not isinstance(base, compat_str) or not re.match('^(?:https?:)?//', base):\n        return None\n    return compat_urlparse.urljoin(base, path)\n```"
+    },
+    {
+      "role": "user",
+      "content": "Stop calling tools. Using the information you already have, respond now with the complete pytest test file enclosed in a ```python code block and nothing else."
+    },
+    {
+      "content": "```python\nimport json\n\nimport pytest\n\nfrom youtube_dl.extractor.linuxacademy import LinuxAcademyIE\n\n\nCOURSE_URL = 'https://linuxacademy.com/cp/modules/view/id/154'\nSINGLE_URL = 'https://linuxacademy.com/cp/courses/lesson/course/7971/lesson/2'\n\n\ndef _make_ie(monkeypatch):\n    ie = LinuxAcademyIE()\n    # Avoid any need for a real downloader in _sort_formats\n    monkeypatch.setattr(\n        ie, '_sort_formats', lambda formats: None)\n    return ie\n\n\ndef _patch_webpage(monkeypatch, ie, webpage):\n    monkeypatch.setattr(\n        ie, '_download_webpage',\n        lambda url, video_id, *a, **k: webpage)\n\n\ndef _patch_m3u8(monkeypatch, ie, seen, formats):\n    def _fake_extract(m3u8_url, *a, **k):\n        seen['url'] = m3u8_url\n        return list(formats)\n    monkeypatch.setattr(ie, '_extract_m3u8_formats', _fake_extract)\n\n\ndef test_course_playlist_branches(monkeypatch):\n    ie = _make_ie(monkeypatch)\n    module = {\n        'title': 'Course Title',\n        'md_desc': 'MD Course Desc',\n        'duration': '8:00:35',\n        'items': [\n            'not-a-dict',\n            12345,\n            {'type': {'name': 'Module', 'slug': 'section'},\n             'course_name': 'Chapter One', 'course_module': 'mod-1'},\n            {'type': {'name': 'Quiz', 'slug': 'quiz'},\n             'url': '/quiz/1', 'title': 'Quiz 1'},\n            {'type': {'name': 'Lesson', 'slug': 'lesson'},\n             'title': 'No URL Lesson'},\n            {'type': {'name': 'Lesson', 'slug': 'lesson'},\n             'url': '/cp/courses/lesson/course/7971/lesson/2',\n             'title': 'Lesson One',\n             'md_desc': 'Lesson MD',\n             'date': '2020-12-08',\n             'created_on': '2020-01-01',\n             'duration': '5:04'},\n            {'type': {'name': 'Section', 'slug': 'something-else'},\n             'course_name': 'Chapter Two', 'course_module': 'mod-2'},\n            {'type': {'name': 'Video', 'slug': 'Lesson'},\n             'url': 'https://linuxacademy.com/cp/courses/lesson/course/1/lesson/3',\n             'lesson_name': 'Fallback Title',\n             'description': '<p>HTML Desc</p>',\n             'created_on': '2020-12-09',\n             'duration': '10:00'},\n            {'type': {'name': 'Lesson'},\n             'url': '/cp/lesson/4',\n             'title': 'T4',\n             'text': '<b>Text Desc</b>'},\n            {'url': '/x', 'title': 'NoType'},\n            {'type': None, 'url': '/y', 'title': 'NoneType'},\n            {'type': {'name': 'LESSON', 'slug': 'LESSON'},\n             'url': '/cp/lesson/5',\n             'title': 'T5'},\n        ],\n    }\n    webpage = 'window.module = %s;' % json.dumps(module)\n    _patch_webpage(monkeypatch, ie, webpage)\n\n    result = ie._real_extract(COURSE_URL)\n\n    assert result['_type'] == 'playlist'\n    assert result['id'] == '154'\n    assert result['title'] == 'Course Title'\n    assert result['description'] == 'MD Course Desc'\n    assert result['duration'] == 28835\n    entries = result['entries']\n    assert len(entries) == 4\n    # non-dict, quiz, missing-url and missing-type items are skipped\n    first, second, third, fourth = entries\n    assert first['title'] == 'Lesson One'\n    assert first['description'] == 'Lesson MD'\n    assert first['duration'] == 304\n    assert isinstance(first['timestamp'], int)\n    assert first['chapter'] == 'Chapter One'\n    assert first['chapter_id'] == 'mod-1'\n    assert first['chapter_number'] == 1\n    assert first['url'].endswith('/cp/courses/lesson/course/7971/lesson/2')\n    assert first['_type'] == 'url_transparent'\n    assert first['ie_key'] == LinuxAcademyIE.ie_key()\n    assert second['title'] == 'Fallback Title'\n    assert second['description'] == 'HTML Desc'\n    assert second['duration'] == 600\n    assert isinstance(second['timestamp'], int)\n    assert second['chapter'] == 'Chapter Two'\n    assert second['chapter_id'] == 'mod-2'\n    assert second['chapter_number'] == 2\n    assert third['title'] == 'T4'\n    assert third['description'] == 'Text Desc'\n    assert third['timestamp'] is None\n    assert third['duration'] is None\n    assert third['chapter_number'] == 2\n    assert fourth['title'] == 'T5'\n    assert fourth['description'] is None\n    assert fourth['timestamp'] is None\n    assert fourth['duration'] is None\n\n\ndef test_course_playlist_desc_fallback(monkeypatch):\n    ie = _make_ie(monkeypatch)\n    module = {\n        'title': 'Fallback Course',\n        'desc': '<p>Course <b>Desc</b></p>',\n        'items': [\n            {'type': {'name': 'section', 'slug': 'section'},\n             'course_name': 'Only Chapter', 'course_module': 'mod-9'},\n            {'type': {'name': 'lesson', 'slug': 'lesson'},\n             'url': '/cp/courses/lesson/course/9/lesson/9',\n             'title': 'Only Lesson'},\n        ],\n    }\n    webpage = 'window.module = %s;' % json.dumps(module)\n    _patch_webpage(monkeypatch, ie, webpage)\n\n    result = ie._real_extract(COURSE_URL)\n\n    assert result['_type'] == 'playlist'\n    assert result['id'] == '154'\n    assert result['title'] == 'Fallback Course'\n    assert result['description'] == 'Course Desc'\n    assert result['duration'] is None\n    assert len(result['entries']) == 1\n    entry = result['entries'][0]\n    assert entry['chapter'] == 'Only Chapter'\n    assert entry['chapter_id'] == 'mod-9'\n    assert entry['chapter_number'] == 1\n    assert entry['description'] is None\n    assert entry['timestamp'] is None\n    assert entry['duration'] is None\n\n\ndef test_single_video_with_window_lesson(monkeypatch):\n    ie = _make_ie(monkeypatch)\n    lesson = {\n        'lesson_name': 'What Is Data Science',\n        'md_desc': 'Lesson MD Desc',\n        'date': '2020-12-08',\n        'created_on': '2020-01-01',\n        'duration': '5:04',\n    }\n    webpage = (\n        'player.playlist = [{\"file\": \"https://example.com/v.m3u8\"}];'\n        'window.lesson = %s;' % json.dumps(lesson)\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n    seen = {}\n    fake_formats = [{'format_id': 'hls', 'url': 'https://example.com/v.m3u8', 'ext': 'mp4'}]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert seen['url'] == 'https://example.com/v.m3u8'\n    assert result['title'] == 'What Is Data Science'\n    assert result['description'] == 'Lesson MD Desc'\n    assert result['duration'] == 304\n    assert isinstance(result['timestamp'], int)\n\n\ndef test_single_video_player_lesson_lecture_title(monkeypatch):\n    ie = _make_ie(monkeypatch)\n    lesson = {\n        'desc': '<p>Lesson Desc</p>',\n        'created_on': '2020-12-09',\n        'duration': '10:00',\n    }\n    webpage = (\n        'player.playlist = [{\"file\": \"https://example.com/other.m3u8\"}];'\n        'player.lesson = %s;'\n        '<span>Lecture : My Lecture Title</span>' % json.dumps(lesson)\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n    seen = {}\n    fake_formats = [{'format_id': 'hls', 'url': 'https://example.com/other.m3u8', 'ext': 'mp4'}]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert seen['url'] == 'https://example.com/other.m3u8'\n    assert result['title'] == 'My Lecture Title'\n    assert result['description'] == 'Lesson Desc'\n    assert result['duration'] == 600\n    assert isinstance(result['timestamp'], int)\n\n\ndef test_single_video_no_lesson_lessonname_title(monkeypatch):\n    ie = _make_ie(monkeypatch)\n    webpage = (\n        'player.playlist = [{\"file\": \"https://example.com/third.m3u8\"}];'\n        '<script>lessonName = \"Quoted Title\";</script>'\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n    seen = {}\n    fake_formats = [{'format_id': 'hls', 'url': 'https://example.com/third.m3u8', 'ext': 'mp4'}]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert seen['url'] == 'https://example.com/third.m3u8'\n    assert result['title'] == 'Quoted Title'\n```",
+      "role": "assistant",
+      "tool_calls": null,
+      "function_call": null,
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "role": "user",
+      "content": "Executing the test yields an error, shown below.\nModify or rewrite the test to correct it; respond only with the complete Python code in backticks.\nUse the get_info tool function as necessary.\n\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x709e0af2aea0>\n\n    def test_course_playlist_branches(monkeypatch):\n        ie = _make_ie(monkeypatch)\n        module = {\n            'title': 'Course Title',\n            'md_desc': 'MD Course Desc',\n            'duration': '8:00:35',\n            'items': [\n                'not-a-dict',\n                12345,\n                {'type': {'name': 'Module', 'slug': 'section'},\n                 'course_name': 'Chapter One', 'course_module': 'mod-1'},\n                {'type': {'name': 'Quiz', 'slug': 'quiz'},\n                 'url': '/quiz/1', 'title': 'Quiz 1'},\n                {'type': {'name': 'Lesson', 'slug': 'lesson'},\n                 'title': 'No URL Lesson'},\n                {'type': {'name': 'Lesson', 'slug': 'lesson'},\n                 'url': '/cp/courses/lesson/course/7971/lesson/2',\n                 'title': 'Lesson One',\n                 'md_desc': 'Lesson MD',\n                 'date': '2020-12-08',\n                 'created_on': '2020-01-01',\n                 'duration': '5:04'},\n                {'type': {'name': 'Section', 'slug': 'something-else'},\n                 'course_name': 'Chapter Two', 'course_module': 'mod-2'},\n                {'type': {'name': 'Video', 'slug': 'Lesson'},\n                 'url': 'https://linuxacademy.com/cp/courses/lesson/course/1/lesson/3',\n                 'lesson_name': 'Fallback Title',\n                 'description': '<p>HTML Desc</p>',\n                 'created_on': '2020-12-09',\n                 'duration': '10:00'},\n                {'type': {'name': 'Lesson'},\n                 'url': '/cp/lesson/4',\n                 'title': 'T4',\n                 'text': '<b>Text Desc</b>'},\n                {'url': '/x', 'title': 'NoType'},\n                {'type': None, 'url': '/y', 'title': 'NoneType'},\n                {'type': {'name': 'LESSON', 'slug': 'LESSON'},\n                 'url': '/cp/lesson/5',\n                 'title': 'T5'},\n            ],\n        }\n        webpage = 'window.module = %s;' % json.dumps(module)\n        _patch_webpage(monkeypatch, ie, webpage)\n    \n>       result = ie._real_extract(COURSE_URL)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/tmp_test_hr_2dyj5.py:77: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nproject/youtube_dl/extractor/linuxacademy.py:164: in _real_extract\n    self._search_regex(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <youtube_dl.extractor.linuxacademy.LinuxAcademyIE object at 0x709e07d79fd0>\npattern = 'window\\\\.module\\\\s*=\\\\s*({.+?})\\\\s*;'\nstring = 'window.module = {\"title\": \"Course Title\", \"md_desc\": \"MD Course Desc\", \"duration\": \"8:00:35\", \"items\": [\"not-a-dict\",...\": \"/y\", \"title\": \"NoneType\"}, {\"type\": {\"name\": \"LESSON\", \"slug\": \"LESSON\"}, \"url\": \"/cp/lesson/5\", \"title\": \"T5\"}]};'\nname = 'module', default = <object object at 0x709e09aa1f10>, fatal = True\nflags = 0, group = None\n\n    def _search_regex(self, pattern, string, name, default=NO_DEFAULT, fatal=True, flags=0, group=None):\n        \"\"\"\n        Perform a regex search on the given string, using a single or a list of\n        patterns returning the first matching group.\n        In case of failure return a default value or raise a WARNING or a\n        RegexNotFoundError, depending on fatal, specifying the field name.\n        \"\"\"\n        if isinstance(pattern, (str, compat_str, compiled_regex_type)):\n            mobj = re.search(pattern, string, flags)\n        else:\n            for p in pattern:\n                mobj = re.search(p, string, flags)\n                if mobj:\n                    break\n    \n>       if not self._downloader.params.get('no_color') and compat_os_name != 'nt' and sys.stderr.isatty():\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'NoneType' object has no attribute 'params'\n\nproject/youtube_dl/extractor/common.py:998: AttributeError\n"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-24T15:44:32 project/youtube_dl/extractor/linuxacademy.py:154-243 ----
+{
+  "id": "chatcmpl_req_b39b27e644c77cb80f3ce260",
+  "created": 1792831472,
+  "model": "auto",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```python\nimport json\n\nimport pytest\n\nfrom youtube_dl import YoutubeDL\nfrom youtube_dl.extractor.linuxacademy import LinuxAcademyIE\n\n\nCOURSE_URL = 'https://linuxacademy.com/cp/modules/view/id/154'\nSINGLE_URL = 'https://linuxacademy.com/cp/courses/lesson/course/7971/lesson/2'\n\n\n@pytest.fixture\ndef ie(monkeypatch):\n    ydl = YoutubeDL({'quiet': True, 'no_color': True, 'skip_download': True})\n    extractor = LinuxAcademyIE()\n    extractor._downloader = ydl\n    # Avoid any need for a real downloader in _sort_formats\n    monkeypatch.setattr(extractor, '_sort_formats', lambda formats: None)\n    yield extractor\n    ydl.close()\n\n\ndef _patch_webpage(monkeypatch, ie, webpage):\n    monkeypatch.setattr(\n        ie, '_download_webpage',\n        lambda url, video_id, *a, **k: webpage)\n\n\ndef _patch_m3u8(monkeypatch, ie, seen, formats):\n    def _fake_extract(m3u8_url, *a, **k):\n        seen['url'] = m3u8_url\n        return list(formats)\n    monkeypatch.setattr(ie, '_extract_m3u8_formats', _fake_extract)\n\n\ndef test_course_playlist_branches(monkeypatch, ie):\n    module = {\n        'title': 'Course Title',\n        'md_desc': 'MD Course Desc',\n        'duration': '8:00:35',\n        'items': [\n            'not-a-dict',\n            12345,\n            {'type': {'name': 'Module', 'slug': 'section'},\n             'course_name': 'Chapter One', 'course_module': 'mod-1'},\n            {'type': {'name': 'Quiz', 'slug': 'quiz'},\n             'url': '/quiz/1', 'title': 'Quiz 1'},\n            {'type': {'name': 'Lesson', 'slug': 'lesson'},\n             'title': 'No URL Lesson'},\n            {'type': {'name': 'Lesson', 'slug': 'lesson'},\n             'url': '/cp/courses/lesson/course/7971/lesson/2',\n             'title': 'Lesson One',\n             'md_desc': 'Lesson MD',\n             'date': '2020-12-08',\n             'created_on': '2020-01-01',\n             'duration': '5:04'},\n            {'type': {'name': 'Section', 'slug': 'something-else'},\n             'course_name': 'Chapter Two', 'course_module': 'mod-2'},\n            {'type': {'name': 'Video', 'slug': 'Lesson'},\n             'url': 'https://linuxacademy.com/cp/courses/lesson/course/1/lesson/3',\n             'lesson_name': 'Fallback Title',\n             'description': '<p>HTML Desc</p>',\n             'created_on': '2020-12-09',\n             'duration': '10:00'},\n            {'type': {'name': 'Lesson'},\n             'url': '/cp/lesson/4',\n             'title': 'T4',\n             'text': '<b>Text Desc</b>'},\n            {'url': '/x', 'title': 'NoType'},\n            {'type': None, 'url': '/y', 'title': 'NoneType'},\n            {'type': {'name': 'LESSON', 'slug': 'LESSON'},\n             'url': '/cp/lesson/5',\n             'title': 'T5'},\n        ],\n    }\n    webpage = 'window.module = %s;' % json.dumps(module)\n    _patch_webpage(monkeypatch, ie, webpage)\n\n    result = ie._real_extract(COURSE_URL)\n\n    assert result['_type'] == 'playlist'\n    assert result['id'] == '154'\n    assert result['title'] == 'Course Title'\n    assert result['description'] == 'MD Course Desc'\n    assert result['duration'] == 28835\n    entries = result['entries']\n    assert len(entries) == 4\n    # non-dict, quiz, missing-url and missing-type items are skipped\n    first, second, third, fourth = entries\n    assert first['title'] == 'Lesson One'\n    assert first['description'] == 'Lesson MD'\n    assert first['duration'] == 304\n    assert isinstance(first['timestamp'], int)\n    assert first['chapter'] == 'Chapter One'\n    assert first['chapter_id'] == 'mod-1'\n    assert first['chapter_number'] == 1\n    assert first['url'].endswith('/cp/courses/lesson/course/7971/lesson/2')\n    assert first['_type'] == 'url_transparent'\n    assert first['ie_key'] == LinuxAcademyIE.ie_key()\n    assert second['title'] == 'Fallback Title'\n    assert second['description'] == 'HTML Desc'\n    assert second['duration'] == 600\n    assert isinstance(second['timestamp'], int)\n    assert second['chapter'] == 'Chapter Two'\n    assert second['chapter_id'] == 'mod-2'\n    assert second['chapter_number'] == 2\n    assert third['title'] == 'T4'\n    assert third['description'] == 'Text Desc'\n    assert third['timestamp'] is None\n    assert third['duration'] is None\n    assert third['chapter_number'] == 2\n    assert fourth['title'] == 'T5'\n    assert fourth['description'] is None\n    assert fourth['timestamp'] is None\n    assert fourth['duration'] is None\n\n\ndef test_course_playlist_desc_fallback(monkeypatch, ie):\n    module = {\n        'title': 'Fallback Course',\n        'desc': '<p>Course <b>Desc</b></p>',\n        'items': [\n            {'type': {'name': 'section', 'slug': 'section'},\n             'course_name': 'Only Chapter', 'course_module': 'mod-9'},\n            {'type': {'name': 'lesson', 'slug': 'lesson'},\n             'url': '/cp/courses/lesson/course/9/lesson/9',\n             'title': 'Only Lesson'},\n        ],\n    }\n    webpage = 'window.module = %s;' % json.dumps(module)\n    _patch_webpage(monkeypatch, ie, webpage)\n\n    result = ie._real_extract(COURSE_URL)\n\n    assert result['_type'] == 'playlist'\n    assert result['id'] == '154'\n    assert result['title'] == 'Fallback Course'\n    assert result['description'] == 'Course Desc'\n    assert result['duration'] is None\n    assert len(result['entries']) == 1\n    entry = result['entries'][0]\n    assert entry['chapter'] == 'Only Chapter'\n    assert entry['chapter_id'] == 'mod-9'\n    assert entry['chapter_number'] == 1\n    assert entry['description'] is None\n    assert entry['timestamp'] is None\n    assert entry['duration'] is None\n\n\ndef test_single_video_with_window_lesson(monkeypatch, ie):\n    lesson = {\n        'lesson_name': 'What Is Data Science',\n        'md_desc': 'Lesson MD Desc',\n        'date': '2020-12-08',\n        'created_on': '2020-01-01',\n        'duration': '5:04',\n    }\n    webpage = (\n        'player.playlist = [{\"file\": \"https://example.com/v.m3u8\"}];'\n        'window.lesson = %s;' % json.dumps(lesson)\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n    seen = {}\n    fake_formats = [{'format_id': 'hls', 'url': 'https://example.com/v.m3u8', 'ext': 'mp4'}]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert seen['url'] == 'https://example.com/v.m3u8'\n    assert result['title'] == 'What Is Data Science'\n    assert result['description'] == 'Lesson MD Desc'\n    assert result['duration'] == 304\n    assert isinstance(result['timestamp'], int)\n\n\ndef test_single_video_player_lesson_lecture_title(monkeypatch, ie):\n    lesson = {\n        'desc': '<p>Lesson Desc</p>',\n        'created_on': '2020-12-09',\n        'duration': '10:00',\n    }\n    webpage = (\n        'player.playlist = [{\"file\": \"https://example.com/other.m3u8\"}];'\n        'player.lesson = %s;'\n        '<span>Lecture : My Lecture Title</span>' % json.dumps(lesson)\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n    seen = {}\n    fake_formats = [{'format_id': 'hls', 'url': 'https://example.com/other.m3u8', 'ext': 'mp4'}]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert seen['url'] == 'https://example.com/other.m3u8'\n    assert result['title'] == 'My Lecture Title'\n    assert result['description'] == 'Lesson Desc'\n    assert result['duration'] == 600\n    assert isinstance(result['timestamp'], int)\n\n\ndef test_single_video_no_lesson_lessonname_title(monkeypatch, ie):\n    webpage = (\n        'player.playlist = [{\"file\": \"https://example.com/third.m3u8\"}];'\n        '<script>lessonName = \"Quoted Title\";</script>'\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n    seen = {}\n    fake_formats = [{'format_id': 'hls', 'url': 'https://example.com/third.m3u8', 'ext': 'mp4'}]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert seen['url'] == 'https://example.com/third.m3u8'\n    assert result['title'] == 'Quoted Title'\n```",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {
+        "matched_stop": null
+      }
+    }
+  ],
+  "usage": {
+    "completion_tokens": 4316,
+    "prompt_tokens": 9161,
+    "total_tokens": 13477,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 1960,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": 3328
+    }
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-24T15:44:38 project/youtube_dl/extractor/linuxacademy.py:154-243 ----
+{
+  "model": "openai/entah/auto",
+  "temperature": 0.0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from youtube_dl/extractor/linuxacademy.py, does not achieve full coverage:\nwhen tested, lines 155-243 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            import re\n            from youtube_dl.compat import compat_str\n            from youtube_dl.utils import clean_html, parse_duration, try_get, unified_timestamp, urljoin\n            class LinuxAcademyIE(InfoExtractor):\n                def _real_extract(self, url):\n       155:         mobj = re.match(self._VALID_URL, url)\n       156:         chapter_id, lecture_id, course_id = mobj.group('chapter_id', 'lesson_id', 'course_id')\n       157:         item_id = course_id if course_id else '%s-%s' % (chapter_id, lecture_id)\n            \n       159:         webpage = self._download_webpage(url, item_id)\n            \n                    # course path\n       162:         if course_id:\n       163:             module = self._parse_json(\n       164:                 self._search_regex(\n       165:                     r'window\\.module\\s*=\\s*({.+?})\\s*;', webpage, 'module'),\n       166:                 item_id)\n       167:             entries = []\n       168:             chapter_number = None\n       169:             chapter = None\n       170:             chapter_id = None\n       171:             for item in module['items']:\n       172:                 if not isinstance(item, dict):\n       173:                     continue\n            \n       175:                 def type_field(key):\n       176:                     return (try_get(item, lambda x: x['type'][key], compat_str) or '').lower()\n       177:                 type_fields = (type_field('name'), type_field('slug'))\n                            # Move to next module section\n       179:                 if 'section' in type_fields:\n       180:                     chapter = item.get('course_name')\n       181:                     chapter_id = item.get('course_module')\n       182:                     chapter_number = 1 if not chapter_number else chapter_number + 1\n       183:                     continue\n                            # Skip non-lessons\n       185:                 if 'lesson' not in type_fields:\n       186:                     continue\n       187:                 lesson_url = urljoin(url, item.get('url'))\n       188:                 if not lesson_url:\n       189:                     continue\n       190:                 title = item.get('title') or item.get('lesson_name')\n       191:                 description = item.get('md_desc') or clean_html(item.get('description')) or clean_html(item.get('text'))\n       192:                 entries.append({\n       193:                     '_type': 'url_transparent',\n       194:                     'url': lesson_url,\n       195:                     'ie_key': LinuxAcademyIE.ie_key(),\n       196:                     'title': title,\n       197:                     'description': description,\n       198:                     'timestamp': unified_timestamp(item.get('date')) or unified_timestamp(item.get('created_on')),\n       199:                     'duration': parse_duration(item.get('duration')),\n       200:                     'chapter': chapter,\n       201:                     'chapter_id': chapter_id,\n       202:                     'chapter_number': chapter_number,\n                            })\n       204:             return {\n       205:                 '_type': 'playlist',\n       206:                 'entries': entries,\n       207:                 'id': course_id,\n       208:                 'title': module.get('title'),\n       209:                 'description': module.get('md_desc') or clean_html(module.get('desc')),\n       210:                 'duration': parse_duration(module.get('duration')),\n                        }\n            \n                    # single video path\n       214:         m3u8_url = self._parse_json(\n       215:             self._search_regex(\n       216:                 r'player\\.playlist\\s*=\\s*(\\[.+?\\])\\s*;', webpage, 'playlist'),\n       217:             item_id)[0]['file']\n       218:         formats = self._extract_m3u8_formats(\n       219:             m3u8_url, item_id, 'mp4', entry_protocol='m3u8_native',\n       220:             m3u8_id='hls')\n       221:         self._sort_formats(formats)\n       222:         info = {\n       223:             'id': item_id,\n       224:             'formats': formats,\n                    }\n       226:         lesson = self._parse_json(\n       227:             self._search_regex(\n       228:                 (r'window\\.lesson\\s*=\\s*({.+?})\\s*;',\n                             r'player\\.lesson\\s*=\\s*({.+?})\\s*;'),\n       230:                 webpage, 'lesson', default='{}'), item_id, fatal=False)\n       231:         if lesson:\n       232:             info.update({\n       233:                 'title': lesson.get('lesson_name'),\n       234:                 'description': lesson.get('md_desc') or clean_html(lesson.get('desc')),\n       235:                 'timestamp': unified_timestamp(lesson.get('date')) or unified_timestamp(lesson.get('created_on')),\n       236:                 'duration': parse_duration(lesson.get('duration')),\n                        })\n       238:         if not info.get('title'):\n       239:             info['title'] = self._search_regex(\n       240:                 (r'>Lecture\\s*:\\s*(?P<value>[^<]+)',\n       241:                  r'lessonName\\s*=\\s*([\"\\'])(?P<value>(?:(?!\\1).)+)\\1'), webpage,\n       242:                 'title', group='value')\n       243:         return info\n\n```\n"
+    },
+    {
+      "content": "",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"name\":\"LinuxAcademyIE\"}",
+            "name": "get_info"
+          },
+          "id": "call_QCkfoUYqapLgwNThjSqN37Wd",
+          "type": "function"
+        }
+      ],
+      "function_call": null,
+      "reasoning_content": "**Planning code exploration using get_info**",
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "tool_call_id": "call_QCkfoUYqapLgwNThjSqN37Wd",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\n```python\nfrom youtube_dl.extractor.common import InfoExtractor\n\nclass LinuxAcademyIE(InfoExtractor):\n    _VALID_URL = '(?x)\\n                    https?://\\n                        (?:www\\\\.)?linuxacademy\\\\.com/cp/\\n                        (?:\\n                            courses/lesson/course/(?P<chapter_id>\\\\d+)/lesson/(?P<lesson_id>\\\\d+)|\\n                            modules/view/id/(?P<course_id>\\\\d+)\\n                        )\\n                    '\n    _TESTS = [{'url': 'https://linuxacademy.com/cp/courses/lesson/course/7971/lesson/2/module/675', 'info_dict': {'id': '7971-2', 'ext': 'mp4', 'title': 'What Is Data Science', 'description': 'md5:c574a3c20607144fb36cb65bdde76c99', 'timestamp': 1607387907, 'upload_date': '20201208', 'duration': 304}, 'params': {'skip_download': True}, 'skip': 'Requires Linux Academy account credentials'}, {'url': 'https://linuxacademy.com/cp/courses/lesson/course/1498/lesson/2', 'only_matching': True}, {'url': 'https://linuxacademy.com/cp/modules/view/id/154', 'info_dict': {'id': '154', 'title': 'AWS Certified Cloud Practitioner', 'description': 'md5:a68a299ca9bb98d41cca5abc4d4ce22c', 'duration': 28835}, 'playlist_count': 41, 'skip': 'Requires Linux Academy account credentials'}]\n    _AUTHORIZE_URL = 'https://login.linuxacademy.com/authorize'\n    _ORIGIN_URL = 'https://linuxacademy.com'\n    _CLIENT_ID = 'KaWxNn1C2Gc7n83W9OFeXltd8Utb5vvx'\n    _NETRC_MACHINE = 'linuxacademy'\n\n    def _real_initialize(self):\n        ...\n\n    def _login(self):\n        ...\n\n    def _real_extract(self, url):\n        ...\n```"
+    },
+    {
+      "content": "",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "index": 0,
+          "function": {
+            "arguments": "{\"name\":\"LinuxAcademyIE._VALID_URL\"}",
+            "name": "get_info"
+          },
+          "id": "call_0_5e4e4485a04e8f47",
+          "type": "function"
+        },
+        {
+          "index": 1,
+          "function": {
+            "arguments": "{\"name\":\"urljoin\"}",
+            "name": "get_info"
+          },
+          "id": "call_1_cbaea0c0886a7b59",
+          "type": "function"
+        }
+      ],
+      "function_call": null,
+      "reasoning_content": "Let me look at the actual source file to know the class definition, _VALID_URL, and how to instantiate. Let me get info on the module or the class attributes. get_info only gives class info. Let me check the real youtube_dl source for linuxacademy.py.\n\nI recall the file:\n\n```python\nclass LinuxAcademyIE(InfoExtractor):\n    _VALID_URL = r'''(?x)\n                    https?://\n                        (?:www\\.)?linuxacademy\\.com/cp/\n                        (?:\n                            courses/lesson/course/(?P<chapter_id>\\d+)/lesson/(?P<lesson_id>\\d+)|\n                            modules/view/id/(?P<course_id>\\d+)\n                        )\n                    '''\n    _TESTS = [...]\n```\n\nI need to write tests that mock _download_webpage, _extract_m3u8_formats, _sort_formats, etc. Best approach: use `LinuxAcademyIE` with a fake downloader? Simpler: instantiate the IE with a mock downloader and monkeypatch methods.\n\nCommon approach in these tasks: create the IE via `LinuxAcademyIE()` \u2014 but InfoExtractor requires a downloader param? `InfoExtractor(downloader=None)` works; `_download_webpage` would fail. We monkeypatch instance methods.\n\nLet me write tests:\n\n```python\nimport pytest\nfrom youtube_dl.extractor.linuxacademy import LinuxAcademyIE\n\n@pytest.fixture\ndef ie():\n    return LinuxAcademyIE()\n```\n\nBut `_real_extract` calls `self._download_webpage`, `self._parse_json`, `self._search_regex`, `self._extract_m3u8_formats`, `self._sort_formats`. `_parse_json` and `_search_regex` are real methods that work fine. `_extract_m3u8_formats` needs network \u2014 monkeypatch. `_sort_formats` \u2014 in newer versions it's a no-op-ish but may warn; monkeypatch to avoid issues.\n\nAlso `_download_webpage` monkeypatched.\n\nTest 1: course path (course_id) with module JSON containing section, non-dict item, non-lesson item, lesson without url, lesson with all fields, lesson with fallback fields.\n\nTest 2: single video path with lesson present.\n\nTest 3: single video path with lesson absent (default '{}' \u2192 falsy) and title fallback via '>Lecture : ...'.\n\nTest 4: title fallback via lessonName = \"...\" regex.\n\nAlso need to cover `if not lesson_url: continue` \u2014 urljoin(url, None) raises? urljoin with None... `urljoin('http://a/b', None)` \u2192 TypeError? Actually urljoin requires str; None would raise AttributeError. Hmm. In youtube_dl's urljoin (from utils), it's `compat_urlparse.urljoin`? Let's check: `from youtube_dl.utils import urljoin`. In youtube_dl/utils.py, `urljoin = compat_urlparse.urljoin`? Actually there's:\n\n```python\ndef urljoin(base, path):\n    if not isinstance(path, compat_str) or not path:\n        return None\n    ...\n```\n\nHmm, I think youtube_dl has:\n\n```python\ndef urljoin(base, path):\n    if not isinstance(path, compat_str) or not path:\n        return None\n    if re.match(r'^(?:[a-zA-Z][a-zA-Z0-9+-.]*:)?//', path):\n        return path\n    if isinstance(base, bytes):\n        base = base.decode('utf-8')\n    return compat_urlparse.urljoin(base, path)\n```\n\nYes! I'm fairly confident youtube_dl.utils has that urljoin returning None for empty path. So `item.get('url')` missing \u2192 urljoin returns None \u2192 `if not lesson_url: continue` covered. Good.\n\nLet me verify by checking the installed youtube_dl. I can't run code, but I can use get_info on 'urljoin'? get_info returns info about a symbol \u2014 maybe it works for functions in the module. Let's try get_info('urljoin') and get_info('LinuxAcademyIE._real_extract').\n\nActually the tool says \"Returns information about a symbol\" \u2014 class, function or method name. Let's query.\n\nAlso need `_VALID_URL` groups. Let me query get_info for the class again? It gave _TESTS only. Maybe query 'LinuxAcademyIE._VALID_URL'.\n\nLet me do parallel calls.",
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "tool_call_id": "call_0_5e4e4485a04e8f47",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\n```python\nfrom youtube_dl.extractor.common import InfoExtractor\n\nclass LinuxAcademyIE(InfoExtractor):\n    ...\n    _VALID_URL = '(?x)\\n                    https?://\\n                        (?:www\\\\.)?linuxacademy\\\\.com/cp/\\n                        (?:\\n                            courses/lesson/course/(?P<chapter_id>\\\\d+)/lesson/(?P<lesson_id>\\\\d+)|\\n                            modules/view/id/(?P<course_id>\\\\d+)\\n                        )\\n                    '\n```"
+    },
+    {
+      "tool_call_id": "call_1_cbaea0c0886a7b59",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\nin youtube_dl/utils.py:\n```python\nimport re\nfrom youtube_dl.compat import compat_str, compat_urlparse\n\ndef urljoin(base, path):\n    if isinstance(path, bytes):\n        path = path.decode('utf-8')\n    if not isinstance(path, compat_str) or not path:\n        return None\n    if re.match('^(?:[a-zA-Z][a-zA-Z0-9+-.]*:)?//', path):\n        return path\n    if isinstance(base, bytes):\n        base = base.decode('utf-8')\n    if not isinstance(base, compat_str) or not re.match('^(?:https?:)?//', base):\n        return None\n    return compat_urlparse.urljoin(base, path)\n```"
+    },
+    {
+      "role": "user",
+      "content": "Stop calling tools. Using the information you already have, respond now with the complete pytest test file enclosed in a ```python code block and nothing else."
+    },
+    {
+      "content": "```python\nimport json\n\nimport pytest\n\nfrom youtube_dl.extractor.linuxacademy import LinuxAcademyIE\n\n\nCOURSE_URL = 'https://linuxacademy.com/cp/modules/view/id/154'\nSINGLE_URL = 'https://linuxacademy.com/cp/courses/lesson/course/7971/lesson/2'\n\n\ndef _make_ie(monkeypatch):\n    ie = LinuxAcademyIE()\n    # Avoid any need for a real downloader in _sort_formats\n    monkeypatch.setattr(\n        ie, '_sort_formats', lambda formats: None)\n    return ie\n\n\ndef _patch_webpage(monkeypatch, ie, webpage):\n    monkeypatch.setattr(\n        ie, '_download_webpage',\n        lambda url, video_id, *a, **k: webpage)\n\n\ndef _patch_m3u8(monkeypatch, ie, seen, formats):\n    def _fake_extract(m3u8_url, *a, **k):\n        seen['url'] = m3u8_url\n        return list(formats)\n    monkeypatch.setattr(ie, '_extract_m3u8_formats', _fake_extract)\n\n\ndef test_course_playlist_branches(monkeypatch):\n    ie = _make_ie(monkeypatch)\n    module = {\n        'title': 'Course Title',\n        'md_desc': 'MD Course Desc',\n        'duration': '8:00:35',\n        'items': [\n            'not-a-dict',\n            12345,\n            {'type': {'name': 'Module', 'slug': 'section'},\n             'course_name': 'Chapter One', 'course_module': 'mod-1'},\n            {'type': {'name': 'Quiz', 'slug': 'quiz'},\n             'url': '/quiz/1', 'title': 'Quiz 1'},\n            {'type': {'name': 'Lesson', 'slug': 'lesson'},\n             'title': 'No URL Lesson'},\n            {'type': {'name': 'Lesson', 'slug': 'lesson'},\n             'url': '/cp/courses/lesson/course/7971/lesson/2',\n             'title': 'Lesson One',\n             'md_desc': 'Lesson MD',\n             'date': '2020-12-08',\n             'created_on': '2020-01-01',\n             'duration': '5:04'},\n            {'type': {'name': 'Section', 'slug': 'something-else'},\n             'course_name': 'Chapter Two', 'course_module': 'mod-2'},\n            {'type': {'name': 'Video', 'slug': 'Lesson'},\n             'url': 'https://linuxacademy.com/cp/courses/lesson/course/1/lesson/3',\n             'lesson_name': 'Fallback Title',\n             'description': '<p>HTML Desc</p>',\n             'created_on': '2020-12-09',\n             'duration': '10:00'},\n            {'type': {'name': 'Lesson'},\n             'url': '/cp/lesson/4',\n             'title': 'T4',\n             'text': '<b>Text Desc</b>'},\n            {'url': '/x', 'title': 'NoType'},\n            {'type': None, 'url': '/y', 'title': 'NoneType'},\n            {'type': {'name': 'LESSON', 'slug': 'LESSON'},\n             'url': '/cp/lesson/5',\n             'title': 'T5'},\n        ],\n    }\n    webpage = 'window.module = %s;' % json.dumps(module)\n    _patch_webpage(monkeypatch, ie, webpage)\n\n    result = ie._real_extract(COURSE_URL)\n\n    assert result['_type'] == 'playlist'\n    assert result['id'] == '154'\n    assert result['title'] == 'Course Title'\n    assert result['description'] == 'MD Course Desc'\n    assert result['duration'] == 28835\n    entries = result['entries']\n    assert len(entries) == 4\n    # non-dict, quiz, missing-url and missing-type items are skipped\n    first, second, third, fourth = entries\n    assert first['title'] == 'Lesson One'\n    assert first['description'] == 'Lesson MD'\n    assert first['duration'] == 304\n    assert isinstance(first['timestamp'], int)\n    assert first['chapter'] == 'Chapter One'\n    assert first['chapter_id'] == 'mod-1'\n    assert first['chapter_number'] == 1\n    assert first['url'].endswith('/cp/courses/lesson/course/7971/lesson/2')\n    assert first['_type'] == 'url_transparent'\n    assert first['ie_key'] == LinuxAcademyIE.ie_key()\n    assert second['title'] == 'Fallback Title'\n    assert second['description'] == 'HTML Desc'\n    assert second['duration'] == 600\n    assert isinstance(second['timestamp'], int)\n    assert second['chapter'] == 'Chapter Two'\n    assert second['chapter_id'] == 'mod-2'\n    assert second['chapter_number'] == 2\n    assert third['title'] == 'T4'\n    assert third['description'] == 'Text Desc'\n    assert third['timestamp'] is None\n    assert third['duration'] is None\n    assert third['chapter_number'] == 2\n    assert fourth['title'] == 'T5'\n    assert fourth['description'] is None\n    assert fourth['timestamp'] is None\n    assert fourth['duration'] is None\n\n\ndef test_course_playlist_desc_fallback(monkeypatch):\n    ie = _make_ie(monkeypatch)\n    module = {\n        'title': 'Fallback Course',\n        'desc': '<p>Course <b>Desc</b></p>',\n        'items': [\n            {'type': {'name': 'section', 'slug': 'section'},\n             'course_name': 'Only Chapter', 'course_module': 'mod-9'},\n            {'type': {'name': 'lesson', 'slug': 'lesson'},\n             'url': '/cp/courses/lesson/course/9/lesson/9',\n             'title': 'Only Lesson'},\n        ],\n    }\n    webpage = 'window.module = %s;' % json.dumps(module)\n    _patch_webpage(monkeypatch, ie, webpage)\n\n    result = ie._real_extract(COURSE_URL)\n\n    assert result['_type'] == 'playlist'\n    assert result['id'] == '154'\n    assert result['title'] == 'Fallback Course'\n    assert result['description'] == 'Course Desc'\n    assert result['duration'] is None\n    assert len(result['entries']) == 1\n    entry = result['entries'][0]\n    assert entry['chapter'] == 'Only Chapter'\n    assert entry['chapter_id'] == 'mod-9'\n    assert entry['chapter_number'] == 1\n    assert entry['description'] is None\n    assert entry['timestamp'] is None\n    assert entry['duration'] is None\n\n\ndef test_single_video_with_window_lesson(monkeypatch):\n    ie = _make_ie(monkeypatch)\n    lesson = {\n        'lesson_name': 'What Is Data Science',\n        'md_desc': 'Lesson MD Desc',\n        'date': '2020-12-08',\n        'created_on': '2020-01-01',\n        'duration': '5:04',\n    }\n    webpage = (\n        'player.playlist = [{\"file\": \"https://example.com/v.m3u8\"}];'\n        'window.lesson = %s;' % json.dumps(lesson)\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n    seen = {}\n    fake_formats = [{'format_id': 'hls', 'url': 'https://example.com/v.m3u8', 'ext': 'mp4'}]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert seen['url'] == 'https://example.com/v.m3u8'\n    assert result['title'] == 'What Is Data Science'\n    assert result['description'] == 'Lesson MD Desc'\n    assert result['duration'] == 304\n    assert isinstance(result['timestamp'], int)\n\n\ndef test_single_video_player_lesson_lecture_title(monkeypatch):\n    ie = _make_ie(monkeypatch)\n    lesson = {\n        'desc': '<p>Lesson Desc</p>',\n        'created_on': '2020-12-09',\n        'duration': '10:00',\n    }\n    webpage = (\n        'player.playlist = [{\"file\": \"https://example.com/other.m3u8\"}];'\n        'player.lesson = %s;'\n        '<span>Lecture : My Lecture Title</span>' % json.dumps(lesson)\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n    seen = {}\n    fake_formats = [{'format_id': 'hls', 'url': 'https://example.com/other.m3u8', 'ext': 'mp4'}]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert seen['url'] == 'https://example.com/other.m3u8'\n    assert result['title'] == 'My Lecture Title'\n    assert result['description'] == 'Lesson Desc'\n    assert result['duration'] == 600\n    assert isinstance(result['timestamp'], int)\n\n\ndef test_single_video_no_lesson_lessonname_title(monkeypatch):\n    ie = _make_ie(monkeypatch)\n    webpage = (\n        'player.playlist = [{\"file\": \"https://example.com/third.m3u8\"}];'\n        '<script>lessonName = \"Quoted Title\";</script>'\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n    seen = {}\n    fake_formats = [{'format_id': 'hls', 'url': 'https://example.com/third.m3u8', 'ext': 'mp4'}]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert seen['url'] == 'https://example.com/third.m3u8'\n    assert result['title'] == 'Quoted Title'\n```",
+      "role": "assistant",
+      "tool_calls": null,
+      "function_call": null,
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "role": "user",
+      "content": "Executing the test yields an error, shown below.\nModify or rewrite the test to correct it; respond only with the complete Python code in backticks.\nUse the get_info tool function as necessary.\n\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x709e0af2aea0>\n\n    def test_course_playlist_branches(monkeypatch):\n        ie = _make_ie(monkeypatch)\n        module = {\n            'title': 'Course Title',\n            'md_desc': 'MD Course Desc',\n            'duration': '8:00:35',\n            'items': [\n                'not-a-dict',\n                12345,\n                {'type': {'name': 'Module', 'slug': 'section'},\n                 'course_name': 'Chapter One', 'course_module': 'mod-1'},\n                {'type': {'name': 'Quiz', 'slug': 'quiz'},\n                 'url': '/quiz/1', 'title': 'Quiz 1'},\n                {'type': {'name': 'Lesson', 'slug': 'lesson'},\n                 'title': 'No URL Lesson'},\n                {'type': {'name': 'Lesson', 'slug': 'lesson'},\n                 'url': '/cp/courses/lesson/course/7971/lesson/2',\n                 'title': 'Lesson One',\n                 'md_desc': 'Lesson MD',\n                 'date': '2020-12-08',\n                 'created_on': '2020-01-01',\n                 'duration': '5:04'},\n                {'type': {'name': 'Section', 'slug': 'something-else'},\n                 'course_name': 'Chapter Two', 'course_module': 'mod-2'},\n                {'type': {'name': 'Video', 'slug': 'Lesson'},\n                 'url': 'https://linuxacademy.com/cp/courses/lesson/course/1/lesson/3',\n                 'lesson_name': 'Fallback Title',\n                 'description': '<p>HTML Desc</p>',\n                 'created_on': '2020-12-09',\n                 'duration': '10:00'},\n                {'type': {'name': 'Lesson'},\n                 'url': '/cp/lesson/4',\n                 'title': 'T4',\n                 'text': '<b>Text Desc</b>'},\n                {'url': '/x', 'title': 'NoType'},\n                {'type': None, 'url': '/y', 'title': 'NoneType'},\n                {'type': {'name': 'LESSON', 'slug': 'LESSON'},\n                 'url': '/cp/lesson/5',\n                 'title': 'T5'},\n            ],\n        }\n        webpage = 'window.module = %s;' % json.dumps(module)\n        _patch_webpage(monkeypatch, ie, webpage)\n    \n>       result = ie._real_extract(COURSE_URL)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/tmp_test_hr_2dyj5.py:77: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nproject/youtube_dl/extractor/linuxacademy.py:164: in _real_extract\n    self._search_regex(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <youtube_dl.extractor.linuxacademy.LinuxAcademyIE object at 0x709e07d79fd0>\npattern = 'window\\\\.module\\\\s*=\\\\s*({.+?})\\\\s*;'\nstring = 'window.module = {\"title\": \"Course Title\", \"md_desc\": \"MD Course Desc\", \"duration\": \"8:00:35\", \"items\": [\"not-a-dict\",...\": \"/y\", \"title\": \"NoneType\"}, {\"type\": {\"name\": \"LESSON\", \"slug\": \"LESSON\"}, \"url\": \"/cp/lesson/5\", \"title\": \"T5\"}]};'\nname = 'module', default = <object object at 0x709e09aa1f10>, fatal = True\nflags = 0, group = None\n\n    def _search_regex(self, pattern, string, name, default=NO_DEFAULT, fatal=True, flags=0, group=None):\n        \"\"\"\n        Perform a regex search on the given string, using a single or a list of\n        patterns returning the first matching group.\n        In case of failure return a default value or raise a WARNING or a\n        RegexNotFoundError, depending on fatal, specifying the field name.\n        \"\"\"\n        if isinstance(pattern, (str, compat_str, compiled_regex_type)):\n            mobj = re.search(pattern, string, flags)\n        else:\n            for p in pattern:\n                mobj = re.search(p, string, flags)\n                if mobj:\n                    break\n    \n>       if not self._downloader.params.get('no_color') and compat_os_name != 'nt' and sys.stderr.isatty():\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'NoneType' object has no attribute 'params'\n\nproject/youtube_dl/extractor/common.py:998: AttributeError\n"
+    },
+    {
+      "content": "```python\nimport json\n\nimport pytest\n\nfrom youtube_dl import YoutubeDL\nfrom youtube_dl.extractor.linuxacademy import LinuxAcademyIE\n\n\nCOURSE_URL = 'https://linuxacademy.com/cp/modules/view/id/154'\nSINGLE_URL = 'https://linuxacademy.com/cp/courses/lesson/course/7971/lesson/2'\n\n\n@pytest.fixture\ndef ie(monkeypatch):\n    ydl = YoutubeDL({'quiet': True, 'no_color': True, 'skip_download': True})\n    extractor = LinuxAcademyIE()\n    extractor._downloader = ydl\n    # Avoid any need for a real downloader in _sort_formats\n    monkeypatch.setattr(extractor, '_sort_formats', lambda formats: None)\n    yield extractor\n    ydl.close()\n\n\ndef _patch_webpage(monkeypatch, ie, webpage):\n    monkeypatch.setattr(\n        ie, '_download_webpage',\n        lambda url, video_id, *a, **k: webpage)\n\n\ndef _patch_m3u8(monkeypatch, ie, seen, formats):\n    def _fake_extract(m3u8_url, *a, **k):\n        seen['url'] = m3u8_url\n        return list(formats)\n    monkeypatch.setattr(ie, '_extract_m3u8_formats', _fake_extract)\n\n\ndef test_course_playlist_branches(monkeypatch, ie):\n    module = {\n        'title': 'Course Title',\n        'md_desc': 'MD Course Desc',\n        'duration': '8:00:35',\n        'items': [\n            'not-a-dict',\n            12345,\n            {'type': {'name': 'Module', 'slug': 'section'},\n             'course_name': 'Chapter One', 'course_module': 'mod-1'},\n            {'type': {'name': 'Quiz', 'slug': 'quiz'},\n             'url': '/quiz/1', 'title': 'Quiz 1'},\n            {'type': {'name': 'Lesson', 'slug': 'lesson'},\n             'title': 'No URL Lesson'},\n            {'type': {'name': 'Lesson', 'slug': 'lesson'},\n             'url': '/cp/courses/lesson/course/7971/lesson/2',\n             'title': 'Lesson One',\n             'md_desc': 'Lesson MD',\n             'date': '2020-12-08',\n             'created_on': '2020-01-01',\n             'duration': '5:04'},\n            {'type': {'name': 'Section', 'slug': 'something-else'},\n             'course_name': 'Chapter Two', 'course_module': 'mod-2'},\n            {'type': {'name': 'Video', 'slug': 'Lesson'},\n             'url': 'https://linuxacademy.com/cp/courses/lesson/course/1/lesson/3',\n             'lesson_name': 'Fallback Title',\n             'description': '<p>HTML Desc</p>',\n             'created_on': '2020-12-09',\n             'duration': '10:00'},\n            {'type': {'name': 'Lesson'},\n             'url': '/cp/lesson/4',\n             'title': 'T4',\n             'text': '<b>Text Desc</b>'},\n            {'url': '/x', 'title': 'NoType'},\n            {'type': None, 'url': '/y', 'title': 'NoneType'},\n            {'type': {'name': 'LESSON', 'slug': 'LESSON'},\n             'url': '/cp/lesson/5',\n             'title': 'T5'},\n        ],\n    }\n    webpage = 'window.module = %s;' % json.dumps(module)\n    _patch_webpage(monkeypatch, ie, webpage)\n\n    result = ie._real_extract(COURSE_URL)\n\n    assert result['_type'] == 'playlist'\n    assert result['id'] == '154'\n    assert result['title'] == 'Course Title'\n    assert result['description'] == 'MD Course Desc'\n    assert result['duration'] == 28835\n    entries = result['entries']\n    assert len(entries) == 4\n    # non-dict, quiz, missing-url and missing-type items are skipped\n    first, second, third, fourth = entries\n    assert first['title'] == 'Lesson One'\n    assert first['description'] == 'Lesson MD'\n    assert first['duration'] == 304\n    assert isinstance(first['timestamp'], int)\n    assert first['chapter'] == 'Chapter One'\n    assert first['chapter_id'] == 'mod-1'\n    assert first['chapter_number'] == 1\n    assert first['url'].endswith('/cp/courses/lesson/course/7971/lesson/2')\n    assert first['_type'] == 'url_transparent'\n    assert first['ie_key'] == LinuxAcademyIE.ie_key()\n    assert second['title'] == 'Fallback Title'\n    assert second['description'] == 'HTML Desc'\n    assert second['duration'] == 600\n    assert isinstance(second['timestamp'], int)\n    assert second['chapter'] == 'Chapter Two'\n    assert second['chapter_id'] == 'mod-2'\n    assert second['chapter_number'] == 2\n    assert third['title'] == 'T4'\n    assert third['description'] == 'Text Desc'\n    assert third['timestamp'] is None\n    assert third['duration'] is None\n    assert third['chapter_number'] == 2\n    assert fourth['title'] == 'T5'\n    assert fourth['description'] is None\n    assert fourth['timestamp'] is None\n    assert fourth['duration'] is None\n\n\ndef test_course_playlist_desc_fallback(monkeypatch, ie):\n    module = {\n        'title': 'Fallback Course',\n        'desc': '<p>Course <b>Desc</b></p>',\n        'items': [\n            {'type': {'name': 'section', 'slug': 'section'},\n             'course_name': 'Only Chapter', 'course_module': 'mod-9'},\n            {'type': {'name': 'lesson', 'slug': 'lesson'},\n             'url': '/cp/courses/lesson/course/9/lesson/9',\n             'title': 'Only Lesson'},\n        ],\n    }\n    webpage = 'window.module = %s;' % json.dumps(module)\n    _patch_webpage(monkeypatch, ie, webpage)\n\n    result = ie._real_extract(COURSE_URL)\n\n    assert result['_type'] == 'playlist'\n    assert result['id'] == '154'\n    assert result['title'] == 'Fallback Course'\n    assert result['description'] == 'Course Desc'\n    assert result['duration'] is None\n    assert len(result['entries']) == 1\n    entry = result['entries'][0]\n    assert entry['chapter'] == 'Only Chapter'\n    assert entry['chapter_id'] == 'mod-9'\n    assert entry['chapter_number'] == 1\n    assert entry['description'] is None\n    assert entry['timestamp'] is None\n    assert entry['duration'] is None\n\n\ndef test_single_video_with_window_lesson(monkeypatch, ie):\n    lesson = {\n        'lesson_name': 'What Is Data Science',\n        'md_desc': 'Lesson MD Desc',\n        'date': '2020-12-08',\n        'created_on': '2020-01-01',\n        'duration': '5:04',\n    }\n    webpage = (\n        'player.playlist = [{\"file\": \"https://example.com/v.m3u8\"}];'\n        'window.lesson = %s;' % json.dumps(lesson)\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n    seen = {}\n    fake_formats = [{'format_id': 'hls', 'url': 'https://example.com/v.m3u8', 'ext': 'mp4'}]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert seen['url'] == 'https://example.com/v.m3u8'\n    assert result['title'] == 'What Is Data Science'\n    assert result['description'] == 'Lesson MD Desc'\n    assert result['duration'] == 304\n    assert isinstance(result['timestamp'], int)\n\n\ndef test_single_video_player_lesson_lecture_title(monkeypatch, ie):\n    lesson = {\n        'desc': '<p>Lesson Desc</p>',\n        'created_on': '2020-12-09',\n        'duration': '10:00',\n    }\n    webpage = (\n        'player.playlist = [{\"file\": \"https://example.com/other.m3u8\"}];'\n        'player.lesson = %s;'\n        '<span>Lecture : My Lecture Title</span>' % json.dumps(lesson)\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n    seen = {}\n    fake_formats = [{'format_id': 'hls', 'url': 'https://example.com/other.m3u8', 'ext': 'mp4'}]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert seen['url'] == 'https://example.com/other.m3u8'\n    assert result['title'] == 'My Lecture Title'\n    assert result['description'] == 'Lesson Desc'\n    assert result['duration'] == 600\n    assert isinstance(result['timestamp'], int)\n\n\ndef test_single_video_no_lesson_lessonname_title(monkeypatch, ie):\n    webpage = (\n        'player.playlist = [{\"file\": \"https://example.com/third.m3u8\"}];'\n        '<script>lessonName = \"Quoted Title\";</script>'\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n    seen = {}\n    fake_formats = [{'format_id': 'hls', 'url': 'https://example.com/third.m3u8', 'ext': 'mp4'}]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert seen['url'] == 'https://example.com/third.m3u8'\n    assert result['title'] == 'Quoted Title'\n```",
+      "role": "assistant",
+      "tool_calls": null,
+      "function_call": null,
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "role": "user",
+      "content": "Executing the test yields an error, shown below.\nModify or rewrite the test to correct it; respond only with the complete Python code in backticks.\nUse the get_info tool function as necessary.\n\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7450e14b2ea0>\n\n    @pytest.fixture\n    def ie(monkeypatch):\n        ydl = YoutubeDL({'quiet': True, 'no_color': True, 'skip_download': True})\n        extractor = LinuxAcademyIE()\n        extractor._downloader = ydl\n        # Avoid any need for a real downloader in _sort_formats\n        monkeypatch.setattr(extractor, '_sort_formats', lambda formats: None)\n        yield extractor\n>       ydl.close()\n        ^^^^^^^^^\nE       AttributeError: 'YoutubeDL' object has no attribute 'close'\n\ntests/tmp_test_isco7mkk.py:21: AttributeError\n"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-24T15:45:14 project/youtube_dl/extractor/linuxacademy.py:154-243 ----
+{
+  "id": "chatcmpl_req_7993461e8acdec154680daf4",
+  "created": 1792831514,
+  "model": "auto",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```python\nimport json\nfrom types import SimpleNamespace\n\nimport pytest\n\nfrom youtube_dl.extractor.linuxacademy import LinuxAcademyIE\n\n\nCOURSE_URL = 'https://linuxacademy.com/cp/modules/view/id/154'\nSINGLE_URL = 'https://linuxacademy.com/cp/courses/lesson/course/7971/lesson/2'\n\n\n@pytest.fixture\ndef ie(monkeypatch):\n    extractor = LinuxAcademyIE()\n    extractor._downloader = SimpleNamespace(params={'no_color': True})\n    monkeypatch.setattr(extractor, '_sort_formats', lambda formats: None)\n    return extractor\n\n\ndef _patch_webpage(monkeypatch, ie, webpage):\n    monkeypatch.setattr(\n        ie, '_download_webpage',\n        lambda url, video_id, *args, **kwargs: webpage)\n\n\ndef _patch_m3u8(monkeypatch, ie, seen, formats):\n    def fake_extract(m3u8_url, video_id, *args, **kwargs):\n        seen.update({\n            'url': m3u8_url,\n            'video_id': video_id,\n            'args': args,\n            'kwargs': kwargs,\n        })\n        return list(formats)\n\n    monkeypatch.setattr(ie, '_extract_m3u8_formats', fake_extract)\n\n\ndef test_course_playlist_branches(monkeypatch, ie):\n    module = {\n        'title': 'Course Title',\n        'md_desc': 'MD Course Desc',\n        'duration': '8:00:35',\n        'items': [\n            'not-a-dict',\n            12345,\n            {\n                'type': {'name': 'Module', 'slug': 'section'},\n                'course_name': 'Chapter One',\n                'course_module': 'mod-1',\n            },\n            {\n                'type': {'name': 'Quiz', 'slug': 'quiz'},\n                'url': '/quiz/1',\n                'title': 'Quiz 1',\n            },\n            {\n                'type': {'name': 'Lesson', 'slug': 'lesson'},\n                'title': 'No URL Lesson',\n            },\n            {\n                'type': {'name': 'Lesson', 'slug': 'lesson'},\n                'url': '/cp/courses/lesson/course/7971/lesson/2',\n                'title': 'Lesson One',\n                'md_desc': 'Lesson MD',\n                'date': '2020-12-08',\n                'created_on': '2020-01-01',\n                'duration': '5:04',\n            },\n            {\n                'type': {'name': 'Section', 'slug': 'something-else'},\n                'course_name': 'Chapter Two',\n                'course_module': 'mod-2',\n            },\n            {\n                'type': {'name': 'Video', 'slug': 'Lesson'},\n                'url': (\n                    'https://linuxacademy.com/cp/courses/lesson/'\n                    'course/1/lesson/3'\n                ),\n                'lesson_name': 'Fallback Title',\n                'description': '<p>HTML Desc</p>',\n                'created_on': '2020-12-09',\n                'duration': '10:00',\n            },\n            {\n                'type': {'name': 'Lesson'},\n                'url': '/cp/lesson/4',\n                'title': 'T4',\n                'text': '<b>Text Desc</b>',\n            },\n            {'url': '/x', 'title': 'NoType'},\n            {'type': None, 'url': '/y', 'title': 'NoneType'},\n            {\n                'type': {'name': 'LESSON', 'slug': 'LESSON'},\n                'url': '/cp/lesson/5',\n                'title': 'T5',\n            },\n        ],\n    }\n    _patch_webpage(\n        monkeypatch, ie, 'window.module = %s;' % json.dumps(module))\n\n    result = ie._real_extract(COURSE_URL)\n\n    assert result['_type'] == 'playlist'\n    assert result['id'] == '154'\n    assert result['title'] == 'Course Title'\n    assert result['description'] == 'MD Course Desc'\n    assert result['duration'] == 28835\n\n    entries = result['entries']\n    assert len(entries) == 4\n    first, second, third, fourth = entries\n\n    assert first == {\n        '_type': 'url_transparent',\n        'url': (\n            'https://linuxacademy.com/cp/courses/lesson/'\n            'course/7971/lesson/2'\n        ),\n        'ie_key': LinuxAcademyIE.ie_key(),\n        'title': 'Lesson One',\n        'description': 'Lesson MD',\n        'timestamp': 1607385600,\n        'duration': 304,\n        'chapter': 'Chapter One',\n        'chapter_id': 'mod-1',\n        'chapter_number': 1,\n    }\n\n    assert second['_type'] == 'url_transparent'\n    assert second['url'].endswith('/cp/courses/lesson/course/1/lesson/3')\n    assert second['ie_key'] == LinuxAcademyIE.ie_key()\n    assert second['title'] == 'Fallback Title'\n    assert second['description'] == 'HTML Desc'\n    assert second['timestamp'] == 1607472000\n    assert second['duration'] == 600\n    assert second['chapter'] == 'Chapter Two'\n    assert second['chapter_id'] == 'mod-2'\n    assert second['chapter_number'] == 2\n\n    assert third['title'] == 'T4'\n    assert third['description'] == 'Text Desc'\n    assert third['timestamp'] is None\n    assert third['duration'] is None\n    assert third['chapter'] == 'Chapter Two'\n    assert third['chapter_id'] == 'mod-2'\n    assert third['chapter_number'] == 2\n\n    assert fourth['title'] == 'T5'\n    assert fourth['description'] is None\n    assert fourth['timestamp'] is None\n    assert fourth['duration'] is None\n    assert fourth['chapter'] == 'Chapter Two'\n    assert fourth['chapter_id'] == 'mod-2'\n    assert fourth['chapter_number'] == 2\n\n\ndef test_course_playlist_description_fallback(monkeypatch, ie):\n    module = {\n        'title': 'Fallback Course',\n        'desc': '<p>Course <b>Desc</b></p>',\n        'items': [\n            {\n                'type': {'name': 'section', 'slug': 'section'},\n                'course_name': 'Only Chapter',\n                'course_module': 'mod-9',\n            },\n            {\n                'type': {'name': 'lesson', 'slug': 'lesson'},\n                'url': '/cp/courses/lesson/course/9/lesson/9',\n                'title': 'Only Lesson',\n            },\n        ],\n    }\n    _patch_webpage(\n        monkeypatch, ie, 'window.module = %s;' % json.dumps(module))\n\n    result = ie._real_extract(COURSE_URL)\n\n    assert result['_type'] == 'playlist'\n    assert result['id'] == '154'\n    assert result['title'] == 'Fallback Course'\n    assert result['description'] == 'Course Desc'\n    assert result['duration'] is None\n    assert len(result['entries']) == 1\n\n    entry = result['entries'][0]\n    assert entry['title'] == 'Only Lesson'\n    assert entry['chapter'] == 'Only Chapter'\n    assert entry['chapter_id'] == 'mod-9'\n    assert entry['chapter_number'] == 1\n    assert entry['description'] is None\n    assert entry['timestamp'] is None\n    assert entry['duration'] is None\n\n\ndef test_single_video_with_window_lesson(monkeypatch, ie):\n    lesson = {\n        'lesson_name': 'What Is Data Science',\n        'md_desc': 'Lesson MD Desc',\n        'date': '2020-12-08',\n        'created_on': '2020-01-01',\n        'duration': '5:04',\n    }\n    webpage = (\n        'player.playlist = '\n        '[{\"file\": \"https://example.com/v.m3u8\"}];'\n        'window.lesson = %s;' % json.dumps(lesson)\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n\n    seen = {}\n    fake_formats = [{\n        'format_id': 'hls',\n        'url': 'https://example.com/v.m3u8',\n        'ext': 'mp4',\n    }]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result == {\n        'id': '7971-2',\n        'formats': fake_formats,\n        'title': 'What Is Data Science',\n        'description': 'Lesson MD Desc',\n        'timestamp': 1607385600,\n        'duration': 304,\n    }\n    assert seen['url'] == 'https://example.com/v.m3u8'\n    assert seen['video_id'] == '7971-2'\n    assert seen['args'] == ('mp4',)\n    assert seen['kwargs'] == {\n        'entry_protocol': 'm3u8_native',\n        'm3u8_id': 'hls',\n    }\n\n\ndef test_single_video_player_lesson_and_lecture_title(monkeypatch, ie):\n    lesson = {\n        'desc': '<p>Lesson Desc</p>',\n        'created_on': '2020-12-09',\n        'duration': '10:00',\n    }\n    webpage = (\n        'player.playlist = '\n        '[{\"file\": \"https://example.com/other.m3u8\"}];'\n        'player.lesson = %s;'\n        '<span>Lecture : My Lecture Title</span>' % json.dumps(lesson)\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n\n    seen = {}\n    fake_formats = [{\n        'format_id': 'hls',\n        'url': 'https://example.com/other.m3u8',\n        'ext': 'mp4',\n    }]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result['id'] == '7971-2'\n    assert result['formats'] == fake_formats\n    assert result['title'] == 'My Lecture Title'\n    assert result['description'] == 'Lesson Desc'\n    assert result['timestamp'] == 1607472000\n    assert result['duration'] == 600\n    assert seen['url'] == 'https://example.com/other.m3u8'\n    assert seen['video_id'] == '7971-2'\n\n\ndef test_single_video_without_lesson_uses_lesson_name_title(monkeypatch, ie):\n    webpage = (\n        'player.playlist = '\n        '[{\"file\": \"https://example.com/third.m3u8\"}];'\n        '<script>lessonName = \"Quoted Title\";</script>'\n    )\n    _patch_webpage(monkeypatch, ie, webpage)\n\n    seen = {}\n    fake_formats = [{\n        'format_id': 'hls',\n        'url': 'https://example.com/third.m3u8',\n        'ext': 'mp4',\n    }]\n    _patch_m3u8(monkeypatch, ie, seen, fake_formats)\n\n    result = ie._real_extract(SINGLE_URL)\n\n    assert result == {\n        'id': '7971-2',\n        'formats': fake_formats,\n        'title': 'Quoted Title',\n    }\n    assert seen['url'] == 'https://example.com/third.m3u8'\n    assert seen['video_id'] == '7971-2'\n```",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "reasoning_content": "",
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {}
+    }
+  ],
+  "usage": {
+    "completion_tokens": 2773,
+    "prompt_tokens": 10482,
+    "total_tokens": 13255,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 294,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": 0
+    }
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-24T15:45:20 project/youtube_dl/extractor/linuxacademy.py:154-243 ----
+.....                                                                    [100%]
+
+---- 2026-10-24T15:45:20 project/youtube_dl/extractor/linuxacademy.py:154-243 ----
+Saved as /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B1-youtube_dl_extractor_linuxacademy-r04/tests/test_coverup_1.py
+
+---- 2026-10-24T15:45:20 project/youtube_dl/extractor/linuxacademy.py:72-152 ----
+{
+  "model": "openai/entah/auto",
+  "temperature": 0.0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from youtube_dl/extractor/linuxacademy.py, does not achieve full coverage:\nwhen tested, lines 73-152 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            import json\n            import random\n            from youtube_dl.compat import compat_b64decode, compat_HTTPError\n            from youtube_dl.utils import ExtractorError, js_to_json, urlencode_postdata\n            class LinuxAcademyIE(InfoExtractor):\n                def _login(self):\n        73:         username, password = self._get_login_info()\n        74:         if username is None:\n        75:             return\n            \n        77:         def random_string():\n        78:             return ''.join([\n        79:                 random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._~')\n        80:                 for _ in range(32)])\n            \n        82:         webpage, urlh = self._download_webpage_handle(\n        83:             self._AUTHORIZE_URL, None, 'Downloading authorize page', query={\n        84:                 'client_id': self._CLIENT_ID,\n        85:                 'response_type': 'token id_token',\n        86:                 'response_mode': 'web_message',\n        87:                 'redirect_uri': self._ORIGIN_URL,\n        88:                 'scope': 'openid email user_impersonation profile',\n        89:                 'audience': self._ORIGIN_URL,\n        90:                 'state': random_string(),\n        91:                 'nonce': random_string(),\n                        })\n            \n        94:         login_data = self._parse_json(\n        95:             self._search_regex(\n        96:                 r'atob\\(\\s*([\"\\'])(?P<value>(?:(?!\\1).)+)\\1', webpage,\n        97:                 'login info', group='value'), None,\n        98:             transform_source=lambda x: compat_b64decode(x).decode('utf-8')\n        99:         )['extraParams']\n            \n       101:         login_data.update({\n       102:             'client_id': self._CLIENT_ID,\n       103:             'redirect_uri': self._ORIGIN_URL,\n       104:             'tenant': 'lacausers',\n       105:             'connection': 'Username-Password-Authentication',\n       106:             'username': username,\n       107:             'password': password,\n       108:             'sso': 'true',\n                    })\n            \n       111:         login_state_url = urlh.geturl()\n            \n       113:         try:\n       114:             login_page = self._download_webpage(\n       115:                 'https://login.linuxacademy.com/usernamepassword/login', None,\n       116:                 'Downloading login page', data=json.dumps(login_data).encode(),\n       117:                 headers={\n       118:                     'Content-Type': 'application/json',\n       119:                     'Origin': 'https://login.linuxacademy.com',\n       120:                     'Referer': login_state_url,\n                            })\n       122:         except ExtractorError as e:\n       123:             if isinstance(e.cause, compat_HTTPError) and e.cause.code == 401:\n       124:                 error = self._parse_json(e.cause.read(), None)\n       125:                 message = error.get('description') or error['code']\n       126:                 raise ExtractorError(\n       127:                     '%s said: %s' % (self.IE_NAME, message), expected=True)\n       128:             raise\n            \n       130:         callback_page, urlh = self._download_webpage_handle(\n       131:             'https://login.linuxacademy.com/login/callback', None,\n       132:             'Downloading callback page',\n       133:             data=urlencode_postdata(self._hidden_inputs(login_page)),\n       134:             headers={\n       135:                 'Content-Type': 'application/x-www-form-urlencoded',\n       136:                 'Origin': 'https://login.linuxacademy.com',\n       137:                 'Referer': login_state_url,\n                        })\n            \n       140:         access_token = self._search_regex(\n       141:             r'access_token=([^=&]+)', urlh.geturl(),\n       142:             'access token', default=None)\n       143:         if not access_token:\n       144:             access_token = self._parse_json(\n       145:                 self._search_regex(\n       146:                     r'authorizationResponse\\s*=\\s*({.+?})\\s*;', callback_page,\n       147:                     'authorization response'), None,\n       148:                 transform_source=js_to_json)['response']['access_token']\n            \n       150:         self._download_webpage(\n       151:             'https://linuxacademy.com/cp/login/tokenValidateLogin/token/%s'\n       152:             % access_token, None, 'Downloading token validation page')\n\n```\n"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-24T15:45:25 project/youtube_dl/extractor/linuxacademy.py:72-152 ----
+{
+  "id": "chatcmpl_req_b045e0f8b6600a9e21d4192b",
+  "created": 1792831525,
+  "model": "auto",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "message": {
+        "content": "Covering those login lines \u2014 crafting tests to hit every branch.",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"name\":\"LinuxAcademyIE\"}",
+              "name": "get_info"
+            },
+            "id": "call_ef049157-b6b5-44b5-b736-3cbcac993584",
+            "type": "function"
+          }
+        ],
+        "function_call": null,
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {}
+    }
+  ],
+  "usage": {
+    "completion_tokens": 279,
+    "prompt_tokens": 4111,
+    "total_tokens": 4390,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 205,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": 881
+    }
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-24T15:45:25 project/youtube_dl/extractor/linuxacademy.py:72-152 ----
+{
+  "model": "openai/entah/auto",
+  "temperature": 0.0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from youtube_dl/extractor/linuxacademy.py, does not achieve full coverage:\nwhen tested, lines 73-152 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            import json\n            import random\n            from youtube_dl.compat import compat_b64decode, compat_HTTPError\n            from youtube_dl.utils import ExtractorError, js_to_json, urlencode_postdata\n            class LinuxAcademyIE(InfoExtractor):\n                def _login(self):\n        73:         username, password = self._get_login_info()\n        74:         if username is None:\n        75:             return\n            \n        77:         def random_string():\n        78:             return ''.join([\n        79:                 random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._~')\n        80:                 for _ in range(32)])\n            \n        82:         webpage, urlh = self._download_webpage_handle(\n        83:             self._AUTHORIZE_URL, None, 'Downloading authorize page', query={\n        84:                 'client_id': self._CLIENT_ID,\n        85:                 'response_type': 'token id_token',\n        86:                 'response_mode': 'web_message',\n        87:                 'redirect_uri': self._ORIGIN_URL,\n        88:                 'scope': 'openid email user_impersonation profile',\n        89:                 'audience': self._ORIGIN_URL,\n        90:                 'state': random_string(),\n        91:                 'nonce': random_string(),\n                        })\n            \n        94:         login_data = self._parse_json(\n        95:             self._search_regex(\n        96:                 r'atob\\(\\s*([\"\\'])(?P<value>(?:(?!\\1).)+)\\1', webpage,\n        97:                 'login info', group='value'), None,\n        98:             transform_source=lambda x: compat_b64decode(x).decode('utf-8')\n        99:         )['extraParams']\n            \n       101:         login_data.update({\n       102:             'client_id': self._CLIENT_ID,\n       103:             'redirect_uri': self._ORIGIN_URL,\n       104:             'tenant': 'lacausers',\n       105:             'connection': 'Username-Password-Authentication',\n       106:             'username': username,\n       107:             'password': password,\n       108:             'sso': 'true',\n                    })\n            \n       111:         login_state_url = urlh.geturl()\n            \n       113:         try:\n       114:             login_page = self._download_webpage(\n       115:                 'https://login.linuxacademy.com/usernamepassword/login', None,\n       116:                 'Downloading login page', data=json.dumps(login_data).encode(),\n       117:                 headers={\n       118:                     'Content-Type': 'application/json',\n       119:                     'Origin': 'https://login.linuxacademy.com',\n       120:                     'Referer': login_state_url,\n                            })\n       122:         except ExtractorError as e:\n       123:             if isinstance(e.cause, compat_HTTPError) and e.cause.code == 401:\n       124:                 error = self._parse_json(e.cause.read(), None)\n       125:                 message = error.get('description') or error['code']\n       126:                 raise ExtractorError(\n       127:                     '%s said: %s' % (self.IE_NAME, message), expected=True)\n       128:             raise\n            \n       130:         callback_page, urlh = self._download_webpage_handle(\n       131:             'https://login.linuxacademy.com/login/callback', None,\n       132:             'Downloading callback page',\n       133:             data=urlencode_postdata(self._hidden_inputs(login_page)),\n       134:             headers={\n       135:                 'Content-Type': 'application/x-www-form-urlencoded',\n       136:                 'Origin': 'https://login.linuxacademy.com',\n       137:                 'Referer': login_state_url,\n                        })\n            \n       140:         access_token = self._search_regex(\n       141:             r'access_token=([^=&]+)', urlh.geturl(),\n       142:             'access token', default=None)\n       143:         if not access_token:\n       144:             access_token = self._parse_json(\n       145:                 self._search_regex(\n       146:                     r'authorizationResponse\\s*=\\s*({.+?})\\s*;', callback_page,\n       147:                     'authorization response'), None,\n       148:                 transform_source=js_to_json)['response']['access_token']\n            \n       150:         self._download_webpage(\n       151:             'https://linuxacademy.com/cp/login/tokenValidateLogin/token/%s'\n       152:             % access_token, None, 'Downloading token validation page')\n\n```\n"
+    },
+    {
+      "content": "",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"name\":\"LinuxAcademyIE\"}",
+            "name": "get_info"
+          },
+          "id": "call_ef049157-b6b5-44b5-b736-3cbcac993584",
+          "type": "function"
+        }
+      ],
+      "function_call": null,
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "tool_call_id": "call_ef049157-b6b5-44b5-b736-3cbcac993584",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\n```python\nfrom youtube_dl.extractor.common import InfoExtractor\n\nclass LinuxAcademyIE(InfoExtractor):\n    _VALID_URL = '(?x)\\n                    https?://\\n                        (?:www\\\\.)?linuxacademy\\\\.com/cp/\\n                        (?:\\n                            courses/lesson/course/(?P<chapter_id>\\\\d+)/lesson/(?P<lesson_id>\\\\d+)|\\n                            modules/view/id/(?P<course_id>\\\\d+)\\n                        )\\n                    '\n    _TESTS = [{'url': 'https://linuxacademy.com/cp/courses/lesson/course/7971/lesson/2/module/675', 'info_dict': {'id': '7971-2', 'ext': 'mp4', 'title': 'What Is Data Science', 'description': 'md5:c574a3c20607144fb36cb65bdde76c99', 'timestamp': 1607387907, 'upload_date': '20201208', 'duration': 304}, 'params': {'skip_download': True}, 'skip': 'Requires Linux Academy account credentials'}, {'url': 'https://linuxacademy.com/cp/courses/lesson/course/1498/lesson/2', 'only_matching': True}, {'url': 'https://linuxacademy.com/cp/modules/view/id/154', 'info_dict': {'id': '154', 'title': 'AWS Certified Cloud Practitioner', 'description': 'md5:a68a299ca9bb98d41cca5abc4d4ce22c', 'duration': 28835}, 'playlist_count': 41, 'skip': 'Requires Linux Academy account credentials'}]\n    _AUTHORIZE_URL = 'https://login.linuxacademy.com/authorize'\n    _ORIGIN_URL = 'https://linuxacademy.com'\n    _CLIENT_ID = 'KaWxNn1C2Gc7n83W9OFeXltd8Utb5vvx'\n    _NETRC_MACHINE = 'linuxacademy'\n\n    def _real_initialize(self):\n        ...\n\n    def _login(self):\n        ...\n\n    def _real_extract(self, url):\n        ...\n```"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-24T15:45:33 project/youtube_dl/extractor/linuxacademy.py:72-152 ----
+{
+  "id": "chatcmpl_req_104329abe4e3893a472c6306",
+  "created": 1792831533,
+  "model": "auto",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "message": {
+        "content": "Building full-coverage login tests \u2014 mapping every branch to craft precise cases.",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"name\":\"InfoExtractor._get_login_info\"}",
+              "name": "get_info"
+            },
+            "id": "call_a44821d3-9e45-419c-85b0-00b1edf75960",
+            "type": "function"
+          },
+          {
+            "function": {
+              "arguments": "{\"name\":\"InfoExtractor._download_webpage_handle\"}",
+              "name": "get_info"
+            },
+            "id": "call_e66fff61-101f-4e89-8ad6-0b2496d6ef61",
+            "type": "function"
+          },
+          {
+            "function": {
+              "arguments": "{\"name\":\"InfoExtractor._download_webpage\"}",
+              "name": "get_info"
+            },
+            "id": "call_95bf3a09-e12a-4856-a8ff-c34b3da988e6",
+            "type": "function"
+          },
+          {
+            "function": {
+              "arguments": "{\"name\":\"InfoExtractor._hidden_inputs\"}",
+              "name": "get_info"
+            },
+            "id": "call_a74dd09d-fac0-45d5-a585-cd7c05b38230",
+            "type": "function"
+          }
+        ],
+        "function_call": null,
+        "provider_specific_fields": {
+          "refusal": null
+        }
+      },
+      "provider_specific_fields": {}
+    }
+  ],
+  "usage": {
+    "completion_tokens": 671,
+    "prompt_tokens": 4635,
+    "total_tokens": 5306,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 437,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": 881
+    }
+  },
+  "moderation": null,
+  "service_tier": null
+}
+---- 2026-10-24T15:45:34 project/youtube_dl/extractor/linuxacademy.py:72-152 ----
+2 tool rounds without code; requesting the test file (nudge 1/2)
+---- 2026-10-24T15:45:34 project/youtube_dl/extractor/linuxacademy.py:72-152 ----
+{
+  "model": "openai/entah/auto",
+  "temperature": 0.0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from youtube_dl/extractor/linuxacademy.py, does not achieve full coverage:\nwhen tested, lines 73-152 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            import json\n            import random\n            from youtube_dl.compat import compat_b64decode, compat_HTTPError\n            from youtube_dl.utils import ExtractorError, js_to_json, urlencode_postdata\n            class LinuxAcademyIE(InfoExtractor):\n                def _login(self):\n        73:         username, password = self._get_login_info()\n        74:         if username is None:\n        75:             return\n            \n        77:         def random_string():\n        78:             return ''.join([\n        79:                 random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._~')\n        80:                 for _ in range(32)])\n            \n        82:         webpage, urlh = self._download_webpage_handle(\n        83:             self._AUTHORIZE_URL, None, 'Downloading authorize page', query={\n        84:                 'client_id': self._CLIENT_ID,\n        85:                 'response_type': 'token id_token',\n        86:                 'response_mode': 'web_message',\n        87:                 'redirect_uri': self._ORIGIN_URL,\n        88:                 'scope': 'openid email user_impersonation profile',\n        89:                 'audience': self._ORIGIN_URL,\n        90:                 'state': random_string(),\n        91:                 'nonce': random_string(),\n                        })\n            \n        94:         login_data = self._parse_json(\n        95:             self._search_regex(\n        96:                 r'atob\\(\\s*([\"\\'])(?P<value>(?:(?!\\1).)+)\\1', webpage,\n        97:                 'login info', group='value'), None,\n        98:             transform_source=lambda x: compat_b64decode(x).decode('utf-8')\n        99:         )['extraParams']\n            \n       101:         login_data.update({\n       102:             'client_id': self._CLIENT_ID,\n       103:             'redirect_uri': self._ORIGIN_URL,\n       104:             'tenant': 'lacausers',\n       105:             'connection': 'Username-Password-Authentication',\n       106:             'username': username,\n       107:             'password': password,\n       108:             'sso': 'true',\n                    })\n            \n       111:         login_state_url = urlh.geturl()\n            \n       113:         try:\n       114:             login_page = self._download_webpage(\n       115:                 'https://login.linuxacademy.com/usernamepassword/login', None,\n       116:                 'Downloading login page', data=json.dumps(login_data).encode(),\n       117:                 headers={\n       118:                     'Content-Type': 'application/json',\n       119:                     'Origin': 'https://login.linuxacademy.com',\n       120:                     'Referer': login_state_url,\n                            })\n       122:         except ExtractorError as e:\n       123:             if isinstance(e.cause, compat_HTTPError) and e.cause.code == 401:\n       124:                 error = self._parse_json(e.cause.read(), None)\n       125:                 message = error.get('description') or error['code']\n       126:                 raise ExtractorError(\n       127:                     '%s said: %s' % (self.IE_NAME, message), expected=True)\n       128:             raise\n            \n       130:         callback_page, urlh = self._download_webpage_handle(\n       131:             'https://login.linuxacademy.com/login/callback', None,\n       132:             'Downloading callback page',\n       133:             data=urlencode_postdata(self._hidden_inputs(login_page)),\n       134:             headers={\n       135:                 'Content-Type': 'application/x-www-form-urlencoded',\n       136:                 'Origin': 'https://login.linuxacademy.com',\n       137:                 'Referer': login_state_url,\n                        })\n            \n       140:         access_token = self._search_regex(\n       141:             r'access_token=([^=&]+)', urlh.geturl(),\n       142:             'access token', default=None)\n       143:         if not access_token:\n       144:             access_token = self._parse_json(\n       145:                 self._search_regex(\n       146:                     r'authorizationResponse\\s*=\\s*({.+?})\\s*;', callback_page,\n       147:                     'authorization response'), None,\n       148:                 transform_source=js_to_json)['response']['access_token']\n            \n       150:         self._download_webpage(\n       151:             'https://linuxacademy.com/cp/login/tokenValidateLogin/token/%s'\n       152:             % access_token, None, 'Downloading token validation page')\n\n```\n"
+    },
+    {
+      "content": "",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"name\":\"LinuxAcademyIE\"}",
+            "name": "get_info"
+          },
+          "id": "call_ef049157-b6b5-44b5-b736-3cbcac993584",
+          "type": "function"
+        }
+      ],
+      "function_call": null,
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "tool_call_id": "call_ef049157-b6b5-44b5-b736-3cbcac993584",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\n```python\nfrom youtube_dl.extractor.common import InfoExtractor\n\nclass LinuxAcademyIE(InfoExtractor):\n    _VALID_URL = '(?x)\\n                    https?://\\n                        (?:www\\\\.)?linuxacademy\\\\.com/cp/\\n                        (?:\\n                            courses/lesson/course/(?P<chapter_id>\\\\d+)/lesson/(?P<lesson_id>\\\\d+)|\\n                            modules/view/id/(?P<course_id>\\\\d+)\\n                        )\\n                    '\n    _TESTS = [{'url': 'https://linuxacademy.com/cp/courses/lesson/course/7971/lesson/2/module/675', 'info_dict': {'id': '7971-2', 'ext': 'mp4', 'title': 'What Is Data Science', 'description': 'md5:c574a3c20607144fb36cb65bdde76c99', 'timestamp': 1607387907, 'upload_date': '20201208', 'duration': 304}, 'params': {'skip_download': True}, 'skip': 'Requires Linux Academy account credentials'}, {'url': 'https://linuxacademy.com/cp/courses/lesson/course/1498/lesson/2', 'only_matching': True}, {'url': 'https://linuxacademy.com/cp/modules/view/id/154', 'info_dict': {'id': '154', 'title': 'AWS Certified Cloud Practitioner', 'description': 'md5:a68a299ca9bb98d41cca5abc4d4ce22c', 'duration': 28835}, 'playlist_count': 41, 'skip': 'Requires Linux Academy account credentials'}]\n    _AUTHORIZE_URL = 'https://login.linuxacademy.com/authorize'\n    _ORIGIN_URL = 'https://linuxacademy.com'\n    _CLIENT_ID = 'KaWxNn1C2Gc7n83W9OFeXltd8Utb5vvx'\n    _NETRC_MACHINE = 'linuxacademy'\n\n    def _real_initialize(self):\n        ...\n\n    def _login(self):\n        ...\n\n    def _real_extract(self, url):\n        ...\n```"
+    },
+    {
+      "content": "",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"name\":\"InfoExtractor._get_login_info\"}",
+            "name": "get_info"
+          },
+          "id": "call_a44821d3-9e45-419c-85b0-00b1edf75960",
+          "type": "function"
+        },
+        {
+          "function": {
+            "arguments": "{\"name\":\"InfoExtractor._download_webpage_handle\"}",
+            "name": "get_info"
+          },
+          "id": "call_e66fff61-101f-4e89-8ad6-0b2496d6ef61",
+          "type": "function"
+        },
+        {
+          "function": {
+            "arguments": "{\"name\":\"InfoExtractor._download_webpage\"}",
+            "name": "get_info"
+          },
+          "id": "call_95bf3a09-e12a-4856-a8ff-c34b3da988e6",
+          "type": "function"
+        },
+        {
+          "function": {
+            "arguments": "{\"name\":\"InfoExtractor._hidden_inputs\"}",
+            "name": "get_info"
+          },
+          "id": "call_a74dd09d-fac0-45d5-a585-cd7c05b38230",
+          "type": "function"
+        }
+      ],
+      "function_call": null,
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "tool_call_id": "call_a44821d3-9e45-419c-85b0-00b1edf75960",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\nin youtube_dl/extractor/common.py:\n```python\nclass InfoExtractor(object):\n    ...\n\n    def _get_login_info(self, username_option='username', password_option='password', netrc_machine=None):\n        \"\"\"\n        Get the login info as (username, password)\n        First look for the manually specified credentials using username_option\n        and password_option as keys in params dictionary. If no such credentials\n        available look in the netrc file using the netrc_machine or _NETRC_MACHINE\n        value.\n        If there's no info available, return (None, None)\n        \"\"\"\n        if self._downloader is None:\n            return (None, None)\n        downloader_params = self._downloader.params\n        if downloader_params.get(username_option) is not None:\n            username = downloader_params[username_option]\n            password = downloader_params[password_option]\n        else:\n            username, password = self._get_netrc_login_info(netrc_machine)\n        return (username, password)\n```"
+    },
+    {
+      "tool_call_id": "call_e66fff61-101f-4e89-8ad6-0b2496d6ef61",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\nin youtube_dl/extractor/common.py:\n```python\nfrom youtube_dl.compat import compat_str\n\nclass InfoExtractor(object):\n    ...\n\n    def _download_webpage_handle(self, url_or_request, video_id, note=None, errnote=None, fatal=True, encoding=None, data=None, headers={}, query={}, expected_status=None):\n        \"\"\"\n        Return a tuple (page content as string, URL handle).\n\n        See _download_webpage docstring for arguments specification.\n        \"\"\"\n        if isinstance(url_or_request, (compat_str, str)):\n            url_or_request = url_or_request.partition('#')[0]\n        urlh = self._request_webpage(url_or_request, video_id, note, errnote, fatal, data=data, headers=headers, query=query, expected_status=expected_status)\n        if urlh is False:\n            assert not fatal\n            return False\n        content = self._webpage_read_content(urlh, url_or_request, video_id, note, errnote, fatal, encoding=encoding)\n        return (content, urlh)\n```"
+    },
+    {
+      "tool_call_id": "call_95bf3a09-e12a-4856-a8ff-c34b3da988e6",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\nin youtube_dl/extractor/common.py:\n```python\nfrom youtube_dl.compat import compat_http_client\n\nclass InfoExtractor(object):\n    ...\n\n    def _download_webpage(self, url_or_request, video_id, note=None, errnote=None, fatal=True, tries=1, timeout=5, encoding=None, data=None, headers={}, query={}, expected_status=None):\n        \"\"\"\n        Return the data of the page as a string.\n\n        Arguments:\n        url_or_request -- plain text URL as a string or\n            a compat_urllib_request.Requestobject\n        video_id -- Video/playlist/item identifier (string)\n\n        Keyword arguments:\n        note -- note printed before downloading (string)\n        errnote -- note printed in case of an error (string)\n        fatal -- flag denoting whether error should be considered fatal,\n            i.e. whether it should cause ExtractionError to be raised,\n            otherwise a warning will be reported and extraction continued\n        tries -- number of tries\n        timeout -- sleep interval between tries\n        encoding -- encoding for a page content decoding, guessed automatically\n            when not explicitly specified\n        data -- POST data (bytes)\n        headers -- HTTP headers (dict)\n        query -- URL query (dict)\n        expected_status -- allows to accept failed HTTP requests (non 2xx\n            status code) by explicitly specifying a set of accepted status\n            codes. Can be any of the following entities:\n                - an integer type specifying an exact failed status code to\n                  accept\n                - a list or a tuple of integer types specifying a list of\n                  failed status codes to accept\n                - a callable accepting an actual failed status code and\n                  returning True if it should be accepted\n            Note that this argument does not affect success status codes (2xx)\n            which are always accepted.\n        \"\"\"\n        success = False\n        try_count = 0\n        while success is False:\n            try:\n                res = self._download_webpage_handle(url_or_request, video_id, note, errnote, fatal, encoding=encoding, data=data, headers=headers, query=query, expected_status=expected_status)\n                success = True\n            except compat_http_client.IncompleteRead as e:\n                try_count += 1\n                if try_count >= tries:\n                    raise e\n                self._sleep(timeout, video_id)\n        if res is False:\n            return res\n        else:\n            content, _ = res\n            return content\n```"
+    },
+    {
+      "tool_call_id": "call_a74dd09d-fac0-45d5-a585-cd7c05b38230",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\nin youtube_dl/extractor/common.py:\n```python\nimport re\nfrom youtube_dl.utils import extract_attributes\n\nclass InfoExtractor(object):\n    ...\n\n    @staticmethod\n    def _hidden_inputs(html):\n        html = re.sub('<!--(?:(?!<!--).)*-->', '', html)\n        hidden_inputs = {}\n        for input in re.findall('(?i)(<input[^>]+>)', html):\n            attrs = extract_attributes(input)\n            if not input:\n                continue\n            if attrs.get('type') not in ('hidden', 'submit'):\n                continue\n            name = attrs.get('name') or attrs.get('id')\n            value = attrs.get('value')\n            if name and value is not None:\n                hidden_inputs[name] = value\n        return hidden_inputs\n```"
+    },
+    {
+      "role": "user",
+      "content": "Stop calling tools. Using the information you already have, respond now with the complete pytest test file enclosed in a ```python code block and nothing else."
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}

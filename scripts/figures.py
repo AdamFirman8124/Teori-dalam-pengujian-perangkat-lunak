@@ -20,9 +20,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def ci95(values: pd.Series) -> float:
+    values = values.dropna()
     if len(values) < 2:
         return 0.0
-    return st.sem(values, nan_policy="omit") * st.t.ppf(0.975, len(values) - 1)
+    return float(st.sem(values) * st.t.ppf(0.975, len(values) - 1))
 
 
 def main() -> None:
@@ -78,20 +79,32 @@ def main() -> None:
     plt.close("all")
 
     # Figure 5: Pareto (log cost vs median effectiveness).
-    pareto = df.groupby(["suite", "tool", "backbone"]).agg(
+    pareto = df[df.status == "ok"].groupby(["suite", "tool", "backbone"]).agg(
         cost=("cost_usd", "median"), bc=("bc", "median"), ms=("ms", "median")
     ).reset_index()
-    fig, ax = plt.subplots(figsize=(6, 5))
-    for (suite, grp) in pareto.groupby("suite"):
-        ax.scatter(grp.cost, grp.ms, label=f"{suite} MS", s=60)
-        ax.scatter(grp.cost, grp.bc, label=f"{suite} BC", s=40, marker="x")
-    ax.set_xscale("log")
-    ax.set_xlabel("Median generation cost (USD, log scale)")
-    ax.set_ylabel("Median effectiveness (%)")
-    ax.set_title("Figure 5 — Pareto: cost vs effectiveness")
-    ax.legend()
-    fig.tight_layout()
-    fig.savefig(args.output / "figure5_pareto.png", dpi=150)
+    # A logarithmic axis cannot represent free/zero-cost configurations.  Keep
+    # paid points on their measured cost and place zero-cost points at one
+    # decade below the cheapest paid configuration, preserving them visibly
+    # without inventing a positive measured cost.
+    positive_costs = pareto.loc[pareto.cost > 0, "cost"]
+    effectiveness = pareto[["bc", "ms"]].notna().any(axis=1)
+    if positive_costs.empty or not effectiveness.any():
+        print("SKIPPED Figure 5: positive cost and effectiveness measurements are both required.")
+    else:
+        pareto = pareto[effectiveness].copy()
+        plot_floor = float(positive_costs.min()) / 10
+        pareto["plot_cost"] = pareto.cost.where(pareto.cost > 0, plot_floor)
+        fig, ax = plt.subplots(figsize=(6, 5))
+        for suite, grp in pareto.groupby("suite"):
+            ax.scatter(grp.plot_cost, grp.ms, label=f"{suite} MS", s=60)
+            ax.scatter(grp.plot_cost, grp.bc, label=f"{suite} BC", s=40, marker="x")
+        ax.set_xscale("log")
+        ax.set_xlabel("Median generation cost (USD, log scale)")
+        ax.set_ylabel("Median effectiveness (%)")
+        ax.set_title("Figure 5 — Pareto: cost vs effectiveness")
+        ax.legend()
+        fig.tight_layout()
+        fig.savefig(args.output / "figure5_pareto.png", dpi=150)
     print(f"Figures written to {args.output}")
 
 

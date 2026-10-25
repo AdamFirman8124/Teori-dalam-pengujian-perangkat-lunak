@@ -1,0 +1,78 @@
+
+
+# Generated at 2026-10-24 12:03:30.639719
+# Unit test for function count_up_to
+
+# Generated at 2026-10-24 12:03:33.055025
+# Unit test for function count_up_to
+
+# Generated at 2026-10-24 12:03:35.470740
+# Unit test for function count_up_to
+
+# Generated at 2026-10-24 12:03:37.890443
+# Unit test for function count_up_to
+
+# Generated at 2026-10-24 12:03:40.311935
+# Unit test for function count_up_to
+
+# Generated at 2026-10-24 12:03:42.732125
+# Unit test for function count_up_to
+
+# Generated at 2026-10-24 12:03:45.146907
+# Unit test for function count_up_to
+
+# Generated at 2026-10-24 12:03:47.578571
+# Unit test for function count_up_to
+
+# Generated at 2026-10-24 12:03:49.995503
+# Unit test for function count_up_to
+
+# Generated at 2026-10-24 12:04:01.074939
+# Unit test for function count_up_to
+def test_count_up_to():
+    # Basic cases
+    assert module_0.count_up_to(10) == [2, 3, 5, 7]
+    assert module_0.count_up_to(2) == []          # range excludes 2
+    assert module_0.count_up_to(3) == [2]
+    assert module_0.count_up_to(0) == []
+    assert module_0.count_up_to(-5) == []
+
+    # Boundary: n is exclusive
+    assert module_0.count_up_to(11) == [2, 3, 5, 7]
+
+    # Larger check
+    result = module_0.count_up_to(30)
+    assert result == [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+
+    # Types
+    assert all(isinstance(p, int) for p in module_0.count_up_to(20))
+
+    print("All tests passed!")
+
+
+test_count_up_to()
+
+# Generated at 2026-10-24 12:04:02.387497
+# Unit test for function count_up_to
+def test_count_up_to():
+    # Basic cases
+    assert module_0.count_up_to(10) == [2, 3, 5, 7]
+    assert module_0.count_up_to(2) == []          # range excludes 2
+    assert module_0.count_up_to(3) == [2]
+    assert module_0.count_up_to(0) == []
+    assert module_0.count_up_to(-5) == []
+
+    # Boundary: n is exclusive
+    assert module_0.count_up_to(11) == [2, 3, 5, 7]
+
+    # Larger check
+    result = module_0.count_up_to(30)
+    assert result == [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+
+    # Types
+    assert all(isinstance(p, int) for p in module_0.count_up_to(20))
+
+    print("All tests passed!")
+
+
+test_count_up_to()

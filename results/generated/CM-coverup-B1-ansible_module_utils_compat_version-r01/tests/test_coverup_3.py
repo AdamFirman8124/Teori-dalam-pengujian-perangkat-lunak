@@ -1,0 +1,44 @@
+# file: project/ansible/module_utils/compat/version.py:330-341
+# asked: {"lines": [331, 332, 333, 334, 336, 337, 338, 339, 340, 341], "branches": [[331, 332], [331, 333], [333, 334], [333, 336], [336, 337], [336, 338], [338, 339], [338, 340], [340, 0], [340, 341]]}
+# gained: {"lines": [331, 332, 333, 334, 336, 337, 338, 339, 340, 341], "branches": [[331, 332], [331, 333], [333, 334], [333, 336], [336, 337], [336, 338], [338, 339], [338, 340], [340, 0], [340, 341]]}
+
+from ansible.module_utils.compat.version import LooseVersion
+
+
+def test_loose_version_cmp_with_strings():
+    version = LooseVersion("1.0")
+
+    assert version._cmp("1.0") == 0
+    assert version._cmp("2.0") == -1
+    assert version._cmp("0.9") == 1
+
+
+def test_loose_version_cmp_with_loose_version():
+    version = LooseVersion("1.0")
+
+    assert version._cmp(LooseVersion("1.0")) == 0
+    assert version._cmp(LooseVersion("2.0")) == -1
+    assert version._cmp(LooseVersion("0.9")) == 1
+
+
+def test_loose_version_cmp_with_unsupported_type():
+    assert LooseVersion("1.0")._cmp(object()) is NotImplemented
+
+
+def test_loose_version_cmp_when_values_are_unordered():
+    class Unordered:
+        def __eq__(self, other):
+            return False
+
+        def __lt__(self, other):
+            return False
+
+        def __gt__(self, other):
+            return False
+
+    version = LooseVersion("1.0")
+    other = LooseVersion("2.0")
+    version.version = Unordered()
+    other.version = Unordered()
+
+    assert version._cmp(other) is None

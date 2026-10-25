@@ -1,0 +1,13 @@
+# file: project/youtube_dl/socks.py:134-136
+# asked: {"lines": [136], "branches": []}
+# gained: {"lines": [136], "branches": []}
+
+from youtube_dl.socks import sockssocket
+
+
+def test_len_and_data_prefixes_payload_with_one_byte_length():
+    payload = b"test payload"
+
+    result = sockssocket._len_and_data(payload)
+
+    assert result == b"\x0c" + payload

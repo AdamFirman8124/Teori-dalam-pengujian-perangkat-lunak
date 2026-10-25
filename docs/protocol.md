@@ -20,7 +20,7 @@ Status: **draft** — belum difreeze (belum ada tag `protocol-frozen`). File A t
 | 0.5 | Temperatur CodaMOSA | 0.8 | Konfigurasi asli `0.8-uninterp` |
 | 0.6 | Perlakuan mutan timeout | Dihitung terbunuh, dilaporkan terpisah (`n_mutant_timeout`) | Tidak ditandai selesai saat timeout |
 | 0.7 | Batas modul per proyek (CM sample) | Maksimal 25% sampel dari satu proyek | Terapkan saat sampling CM |
-| 0.8 | Anggaran biaya & waktu maksimum | USD 900, 14 hari | Stop peluncuran pada 80%; henti pada 100% |
+| 0.8 | Anggaran biaya & waktu maksimum | USD 1,200, 14 hari | Stop peluncuran pada 80% (USD 960); henti pada 100%. Revised by researcher on 2026-10-24 after the first USD 720 launch stop. |
 | 0.9 | Daftar harga `cost_usd` | USD 4.00/M input, USD 20.00/M output (paid-equivalent, OpenAI GPT-5.6 Sol) | Sumber: https://developers.openai.com/api/docs/models/gpt-5.6-sol.md, diakses 2026-10-22. B2 gunakan estimasi yang sama sementara route sama |
 | 0.10 | Aturan waktu per run | W1–W8 (lihat bawah) | Budget 600 s, rate-limit wait ikut dihitung, `gen_time_s = wall − wait` |
 

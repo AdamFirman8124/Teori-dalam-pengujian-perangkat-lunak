@@ -582,6 +582,13 @@ class _OpenAILanguageModel:
                     url, data=json.dumps(payload), headers=headers,
                     timeout=_request_timeout,
                 )
+                # Some OpenAI-compatible gateways append an SSE terminator
+                # (``data: [DONE]``) even for non-streaming requests.  Keep the
+                # valid JSON document and discard only that known trailer.
+                if "\ndata: [DONE]" in res.text:
+                    body_text, trailer = res.text.split("\ndata: [DONE]", 1)
+                    if not trailer.strip():
+                        res._content = body_text.rstrip().encode(res.encoding or "utf-8")
                 self._last_completion_at = time.time()
                 last_connection_error = None
             except (requests.ConnectionError, requests.Timeout) as exc:

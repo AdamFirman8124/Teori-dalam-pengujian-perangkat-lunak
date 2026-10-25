@@ -238,9 +238,18 @@ def run_codamosa(row: dict[str, str], output_root: Path) -> dict[str, Any]:
     container = "exp-" + _model_slug(row["run_id"]).lower()
     budget = int(load_config()["experiment"]["budget_seconds"])
     grace = int(load_config()["experiment"]["kill_grace_seconds"])
+    # The default Docker bridge network cannot resolve localhost to the host
+    # (e.g. a local LLM gateway).  Route local backbone URLs through Docker's
+    # host-gateway alias instead; this works with Docker Desktop and Engine.
+    host_network = "://localhost:" in base or "://127.0.0.1:" in base
+    container_base_url = base
+    if host_network:
+        container_base_url = base.replace("://localhost:", "://host.docker.internal:").replace(
+            "://127.0.0.1:", "://host.docker.internal:")
     command = [
         "docker", "run", "--rm", "--name", container,
         "--label", "teori.experiment=codamosa",
+        *(["--add-host", "host.docker.internal:host-gateway"] if host_network else []),
         "--cpus", str(load_config()["experiment"]["worker_cpus"]),
         "--memory", str(load_config()["experiment"]["worker_memory"]),
         "--memory-swap", str(load_config()["experiment"]["worker_memory"]),
@@ -262,7 +271,7 @@ def run_codamosa(row: dict[str, str], output_root: Path) -> dict[str, Any]:
         "--output-variables", "TargetModule,LineCoverage,BranchCoverage,LLMCalls,LLMQueryTime",
         "--report-dir", "/output",
         "--model-name", row["model_requested"],
-        "--model-base-url", base,
+        "--model-base-url", container_base_url,
         "--model-relative-url", "/chat/completions",
         "--temperature", "0.8",
         "--large-language-model-seeding", "True",

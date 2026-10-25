@@ -1,0 +1,58 @@
+
+
+# Generated at 2026-10-25 04:09:18.294631
+# Unit test for function fibfib
+
+# Generated at 2026-10-25 04:09:20.709957
+# Unit test for function fibfib
+
+# Generated at 2026-10-25 04:09:23.135260
+# Unit test for function fibfib
+
+# Generated at 2026-10-25 04:09:33.112887
+# Unit test for function fibfib
+def test_fibfib():
+    assert module_0.fibfib(0) == 0
+    assert module_0.fibfib(1) == 0
+    assert module_0.fibfib(2) == 1
+    assert module_0.fibfib(3) == 1
+    assert module_0.fibfib(4) == 2
+    assert module_0.fibfib(5) == 4
+    assert module_0.fibfib(6) == 7
+    assert module_0.fibfib(7) == 13
+    assert module_0.fibfib(8) == 24
+    assert module_0.fibfib(10) == 81
+
+# Generated at 2026-10-25 04:09:38.022121
+# Unit test for function fibfib
+def test_fibfib():
+    assert module_0.fibfib(0) == 0
+    assert module_0.fibfib(1) == 0
+    assert module_0.fibfib(2) == 1
+    assert module_0.fibfib(3) == 1
+    assert module_0.fibfib(4) == 2
+    assert module_0.fibfib(5) == 4
+    assert module_0.fibfib(8) == 24
+    assert module_0.fibfib(10) == 81
+    assert module_0.fibfib(12) == 274
+
+# Generated at 2026-10-25 04:09:42.840916
+# Unit test for function fibfib
+def test_fibfib():
+    expected = [0, 0, 1, 1, 2, 4, 7, 13, 24, 44]
+
+    for n, expected_value in enumerate(expected):
+        assert module_0.fibfib(n) == expected_value
+
+# Generated at 2026-10-25 04:09:48.268835
+# Unit test for function fibfib
+def test_fibfib():
+    assert module_0.fibfib(0) == 0
+    assert module_0.fibfib(1) == 0
+    assert module_0.fibfib(2) == 1
+    assert module_0.fibfib(3) == 1
+    assert module_0.fibfib(4) == 2
+    assert module_0.fibfib(5) == 4
+    assert module_0.fibfib(8) == 24
+    assert module_0.fibfib(10) == 81
+    assert module_0.fibfib(12) == 274

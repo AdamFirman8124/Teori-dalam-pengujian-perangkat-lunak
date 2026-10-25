@@ -1,0 +1,139 @@
+
+
+# Generated at 2026-10-24 21:44:18.612848
+# Unit test for function iscube
+def test_iscube():
+    # perfect cubes
+    assert module_0.iscube(0)
+    assert module_0.iscube(1)
+    assert module_0.iscube(8)
+    assert module_0.iscube(27)
+    assert module_0.iscube(64)
+    assert module_0.iscube(125)
+    assert module_0.iscube(1000)
+    assert module_0.iscube(1728)  # 12**3
+
+    # negative cubes - function uses abs(a)
+    assert module_0.iscube(-1)
+    assert module_0.iscube(-8)
+    assert module_0.iscube(-27)
+
+    # non-cubes
+    assert not module_0.iscube(2)
+    assert not module_0.iscube(3)
+    assert not module_0.iscube(4)
+    assert not module_0.iscube(7)
+    assert not module_0.iscube(9)
+    assert not module_0.iscube(26)
+    assert not module_0.iscube(28)
+    assert not module_0.iscube(63)
+    assert not module_0.iscube(65)
+    assert not module_0.iscube(124)
+    assert not module_0.iscube(126)
+
+    # negative non-cubes
+    assert not module_0.iscube(-2)
+    assert not module_0.iscube(-9)
+
+    # larger values
+    assert module_0.iscube(100**3)
+    assert not module_0.iscube(100**3 + 1)
+    assert not module_0.iscube(100**3 - 1)
+
+# Generated at 2026-10-24 21:44:19.978036
+# Unit test for function iscube
+def test_iscube():
+    # perfect cubes
+    assert module_0.iscube(0)
+    assert module_0.iscube(1)
+    assert module_0.iscube(8)
+    assert module_0.iscube(27)
+    assert module_0.iscube(64)
+    assert module_0.iscube(125)
+    assert module_0.iscube(1000)
+    assert module_0.iscube(1728)  # 12**3
+
+    # negative cubes - function uses abs(a)
+    assert module_0.iscube(-1)
+    assert module_0.iscube(-8)
+    assert module_0.iscube(-27)
+
+    # non-cubes
+    assert not module_0.iscube(2)
+    assert not module_0.iscube(3)
+    assert not module_0.iscube(4)
+    assert not module_0.iscube(7)
+    assert not module_0.iscube(9)
+    assert not module_0.iscube(26)
+    assert not module_0.iscube(28)
+    assert not module_0.iscube(63)
+    assert not module_0.iscube(65)
+    assert not module_0.iscube(124)
+    assert not module_0.iscube(126)
+
+    # negative non-cubes
+    assert not module_0.iscube(-2)
+    assert not module_0.iscube(-9)
+
+    # larger values
+    assert module_0.iscube(100**3)
+    assert not module_0.iscube(100**3 + 1)
+    assert not module_0.iscube(100**3 - 1)
+
+# Generated at 2026-10-24 21:44:21.340910
+# Unit test for function iscube
+def test_iscube():
+    # perfect cubes
+    assert module_0.iscube(0)
+    assert module_0.iscube(1)
+    assert module_0.iscube(8)
+    assert module_0.iscube(27)
+    assert module_0.iscube(64)
+    assert module_0.iscube(125)
+    assert module_0.iscube(1000)
+    assert module_0.iscube(1728)  # 12**3
+
+    # negative cubes - function uses abs(a)
+    assert module_0.iscube(-1)
+    assert module_0.iscube(-8)
+    assert module_0.iscube(-27)
+
+    # non-cubes
+    assert not module_0.iscube(2)
+    assert not module_0.iscube(3)
+    assert not module_0.iscube(4)
+    assert not module_0.iscube(7)
+    assert not module_0.iscube(9)
+    assert not module_0.iscube(26)
+    assert not module_0.iscube(28)
+    assert not module_0.iscube(63)
+    assert not module_0.iscube(65)
+    assert not module_0.iscube(124)
+    assert not module_0.iscube(126)
+
+    # negative non-cubes
+    assert not module_0.iscube(-2)
+    assert not module_0.iscube(-9)
+
+    # larger values
+    assert module_0.iscube(100**3)
+    assert not module_0.iscube(100**3 + 1)
+    assert not module_0.iscube(100**3 - 1)
+
+# Generated at 2026-10-24 21:44:23.878048
+# Unit test for function iscube
+
+# Generated at 2026-10-24 21:44:26.393554
+# Unit test for function iscube
+
+# Generated at 2026-10-24 21:44:28.813343
+# Unit test for function iscube
+
+# Generated at 2026-10-24 21:44:31.232804
+# Unit test for function iscube
+
+# Generated at 2026-10-24 21:44:33.803422
+# Unit test for function iscube
+
+# Generated at 2026-10-24 21:44:36.219969
+# Unit test for function iscube

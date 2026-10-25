@@ -173,17 +173,36 @@ def main() -> int:
     cap = float(experiment["cost_cap_usd"])
     launch_cap = cap * float(experiment["stop_launch_fraction"])
     if total_cost(results) >= launch_cap:
-        raise RuntimeError("Cost reached the 80% launch-stop threshold")
+        print(json.dumps({
+            **state,
+            "status": "stopped",
+            "reason": "cost_launch_stop",
+            "launch_cap_usd": launch_cap,
+        }, indent=2))
+        return 0
     pilot_started = ROOT / "results" / "pilot_started_at.txt"
     if args.pilot and not pilot_started.exists():
         pilot_started.write_text(datetime.now(timezone.utc).isoformat(), encoding="utf-8")
     if pilot_started.exists():
         start = datetime.fromisoformat(pilot_started.read_text(encoding="utf-8").strip())
         elapsed_days = (datetime.now(timezone.utc) - start).total_seconds() / 86400
-        if elapsed_days >= float(experiment["elapsed_cap_days"]) * float(experiment["stop_launch_fraction"]):
-            raise RuntimeError("Elapsed time reached the 80% launch-stop threshold")
+        elapsed_launch_cap = float(experiment["elapsed_cap_days"]) * float(experiment["stop_launch_fraction"])
+        if elapsed_days >= elapsed_launch_cap:
+            print(json.dumps({
+                **state,
+                "status": "stopped",
+                "reason": "elapsed_time_launch_stop",
+                "elapsed_days": elapsed_days,
+                "elapsed_launch_cap_days": elapsed_launch_cap,
+            }, indent=2))
+            return 0
 
-    workers = args.workers or plan_workers(int(experiment["parallel_workers"]), experiment["worker_memory"])
+    workers = args.workers or plan_workers(
+        int(experiment["parallel_workers"]),
+        experiment["worker_memory"],
+        max_workers=int(experiment.get("max_workers", physical_cpus())),
+        worker_ram_estimate_mb=int(experiment.get("worker_memory_estimate_mb", 0) or 0) or None,
+    )
     print(json.dumps(state, indent=2))
     print(
         f"Starting {len(pending)} runs with {workers} workers "

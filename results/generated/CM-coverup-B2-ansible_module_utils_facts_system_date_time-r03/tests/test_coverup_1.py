@@ -1,0 +1,190 @@
+# file: project/ansible/module_utils/facts/system/date_time.py:27-68
+# asked: {"lines": [32, 33, 36, 37, 38, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 67, 68], "branches": [[51, 52], [51, 54], [55, 56], [55, 57]]}
+# gained: {"lines": [32, 33, 36, 37, 38, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 67, 68], "branches": [[51, 52], [51, 54], [55, 56], [55, 57]]}
+
+import builtins
+import calendar
+import datetime as real_datetime
+import time as real_time
+
+import pytest
+
+from ansible.module_utils.facts.system import date_time as dt_module
+from ansible.module_utils.facts.system.date_time import DateTimeFactCollector
+
+FIXED_TS = 1234567890.0
+FIXED_DT = real_datetime.datetime(2009, 2, 13, 23, 31, 30, 123456)
+FIXED_UTC = real_datetime.datetime(2009, 2, 13, 23, 31, 30, 123456)
+
+EXPECTED_KEYS = {
+    'year', 'month', 'weekday', 'weekday_number', 'weeknumber', 'day',
+    'hour', 'minute', 'second', 'epoch', 'epoch_int', 'date', 'time',
+    'iso8601_micro', 'iso8601', 'iso8601_basic', 'iso8601_basic_short',
+    'tz', 'tz_dst', 'tz_offset',
+}
+
+
+class _FakeNow:
+    """Stand-in for a datetime instance with per-format strftime overrides."""
+
+    def __init__(self, base, overrides):
+        self._base = base
+        self._overrides = overrides
+
+    def strftime(self, fmt):
+        if fmt in self._overrides:
+            value = self._overrides[fmt]
+            return value() if callable(value) else value
+        return self._base.strftime(fmt)
+
+
+class _FakeDatetime:
+    """Stand-in for the datetime.datetime class."""
+
+    def __init__(self, overrides):
+        self._overrides = overrides
+
+    def fromtimestamp(self, ts):
+        assert ts == FIXED_TS
+        return _FakeNow(FIXED_DT, self._overrides)
+
+    def utcfromtimestamp(self, ts):
+        assert ts == FIXED_TS
+        return _FakeNow(FIXED_UTC, self._overrides)
+
+
+class _FakeTime:
+    """Stand-in for the time module with a frozen clock."""
+
+    tzname = ('UTC', 'UTC')
+
+    @staticmethod
+    def time():
+        return FIXED_TS
+
+    @staticmethod
+    def strftime(fmt):
+        return {'%Z': 'UTC', '%z': '+0000'}[fmt]
+
+
+def _patch_clock(monkeypatch, overrides=None):
+    overrides = overrides or {}
+    monkeypatch.setattr(dt_module, 'time', _FakeTime)
+    monkeypatch.setattr(
+        dt_module,
+        'datetime',
+        type('FakeDatetimeModule', (), {'datetime': _FakeDatetime(overrides)}),
+    )
+
+
+def _sequence(*values):
+    """Return a callable yielding the given values in order, then the last one."""
+    state = {'index': 0}
+
+    def _next():
+        index = min(state['index'], len(values) - 1)
+        state['index'] += 1
+        return values[index]
+
+    return _next
+
+
+def test_collect_returns_all_date_time_facts():
+    collector = DateTimeFactCollector()
+    facts_dict = collector.collect(module=object(), collected_facts={})
+
+    assert set(facts_dict) == {'date_time'}
+    facts = facts_dict['date_time']
+    assert set(facts) == EXPECTED_KEYS
+
+    # Values are consistent with each other.
+    assert facts['date'] == '%s-%s-%s' % (facts['year'], facts['month'], facts['day'])
+    assert facts['time'] == '%s:%s:%s' % (facts['hour'], facts['minute'], facts['second'])
+    assert facts['weekday'] in calendar.day_name
+    assert facts['weekday_number'] == str(
+        real_datetime.date(
+            int(facts['year']), int(facts['month']), int(facts['day'])
+        ).strftime('%w')
+    )
+
+    # Epoch values are integers close to the real clock.
+    assert facts['epoch_int'].isdigit()
+    assert abs(int(facts['epoch_int']) - int(real_time.time())) <= 5
+    assert facts['epoch'].isdigit()
+
+    # ISO8601 shapes.
+    assert facts['iso8601'].endswith('Z') and len(facts['iso8601']) == 20
+    assert facts['iso8601_micro'].endswith('Z') and len(facts['iso8601_micro']) == 27
+    assert len(facts['iso8601_basic']) == 21
+    assert len(facts['iso8601_basic_short']) == 15
+    assert facts['iso8601_basic_short'] == facts['iso8601_basic'][:15]
+
+    # Timezone facts come from the time module.
+    assert facts['tz_dst'] == real_time.tzname[1]
+    assert facts['tz'] == real_time.strftime('%Z')
+    assert facts['tz_offset'] == real_time.strftime('%z')
+
+    # No shared state between calls.
+    assert collector.collect()['date_time'] is not facts
+
+
+def test_collect_epoch_falls_back_when_strftime_returns_empty(monkeypatch):
+    _patch_clock(monkeypatch, {'%s': _sequence('', str(int(FIXED_TS)))})
+
+    facts = DateTimeFactCollector().collect()['date_time']
+
+    assert facts['epoch'] == str(int(FIXED_TS))
+    assert facts['epoch_int'] == str(int(FIXED_TS))
+    assert facts['year'] == '2009'
+    assert facts['month'] == '02'
+    assert facts['day'] == '13'
+    assert facts['hour'] == '23'
+    assert facts['minute'] == '31'
+    assert facts['second'] == '30'
+    assert facts['weekday'] == 'Friday'
+    assert facts['weekday_number'] == '5'
+    assert facts['weeknumber'] == FIXED_DT.strftime('%W')
+    assert facts['date'] == '2009-02-13'
+    assert facts['time'] == '23:31:30'
+    assert facts['iso8601_micro'] == '2009-02-13T23:31:30.123456Z'
+    assert facts['iso8601'] == '2009-02-13T23:31:30Z'
+    assert facts['iso8601_basic'] == '20090213T233130123456'
+    assert facts['iso8601_basic_short'] == '20090213T233130'
+    assert facts['tz'] == 'UTC'
+    assert facts['tz_dst'] == 'UTC'
+    assert facts['tz_offset'] == '+0000'
+
+
+def test_collect_epoch_falls_back_when_strftime_returns_percent(monkeypatch):
+    _patch_clock(monkeypatch, {'%s': _sequence('%s', str(int(FIXED_TS)))})
+
+    facts = DateTimeFactCollector().collect()['date_time']
+
+    assert facts['epoch'] == str(int(FIXED_TS))
+    assert facts['epoch_int'] == str(int(FIXED_TS))
+    assert facts['date'] == '2009-02-13'
+    assert facts['time'] == '23:31:30'
+
+
+def test_collect_epoch_int_falls_back_when_strftime_returns_percent(monkeypatch):
+    _patch_clock(monkeypatch, {'%s': '%s'})
+    real_int = int
+
+    class _PercentInt:
+        def __str__(self):
+            return '%s'
+
+    def fake_int(value=0, *args, **kwargs):
+        if value == '%s':
+            return _PercentInt()
+        return real_int(value, *args, **kwargs)
+
+    with monkeypatch.context() as patch:
+        patch.setattr(builtins, 'int', fake_int)
+        facts = DateTimeFactCollector().collect()['date_time']
+
+    assert facts['epoch'] == str(real_int(FIXED_TS))
+    assert facts['epoch_int'] == str(real_int(FIXED_TS))
+    assert facts['date'] == '2009-02-13'
+    assert facts['time'] == '23:31:30'
+    assert facts['iso8601'] == '2009-02-13T23:31:30Z'

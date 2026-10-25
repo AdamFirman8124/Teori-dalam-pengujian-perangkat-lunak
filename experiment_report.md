@@ -6,7 +6,7 @@ Dokumen ini dibuat otomatis dari artefak pipeline. Angka hasil hanya diisi dari 
 
 - Probe endpoint: **selesai**
 - Pilot R=2: **selesai/sebagian**
-- Run utama R=10: **belum dijalankan**
+- Run utama R=10: **selesai/sebagian**
 
 ## 2. Interpretasi Rancangan
 
@@ -80,18 +80,27 @@ B1 dilaporkan sebagai `gpt-5.6-sol (seller-claimed; endpoint reports "auto")`. I
 
 | Suite | Tool | Backbone | Run tercatat | OK | Gagal | Biaya USD |
 |---|---|---|---|---|---|---|
-| CM | CodaMOSA | B1 | 6 | 0 | 6 | 0.000000 |
-| CM | CodaMOSA | B2 | 6 | 0 | 6 | 0.000000 |
-| CM | CoverUp | B1 | 6 | 0 | 6 | 1.130484 |
-| CM | CoverUp | B2 | 6 | 0 | 6 | 0.848164 |
-| MT | CodaMOSA | B1 | 10 | 0 | 10 | 0.000000 |
-| MT | CodaMOSA | B2 | 10 | 0 | 10 | 0.000000 |
-| MT | CoverUp | B1 | 10 | 0 | 10 | 0.783260 |
-| MT | CoverUp | B2 | 10 | 0 | 10 | 0.608100 |
+| CM | CodaMOSA | B1 | 6 | 6 | 0 | 2.913744 |
+| CM | CodaMOSA | B2 | 6 | 6 | 0 | 3.129988 |
+| CM | CoverUp | B1 | 6 | 6 | 0 | 0.402708 |
+| CM | CoverUp | B2 | 6 | 6 | 0 | 0.331296 |
+| MT | CodaMOSA | B1 | 10 | 10 | 0 | 0.452280 |
+| MT | CodaMOSA | B2 | 10 | 10 | 0 | 0.685280 |
+| MT | CoverUp | B1 | 10 | 10 | 0 | 0.428944 |
+| MT | CoverUp | B2 | 10 | 10 | 0 | 0.430608 |
 
 ## 7. Hasil Utama
 
-_Belum tersedia._
+| Suite | Tool | Backbone | Run tercatat | OK | Gagal | Biaya USD |
+|---|---|---|---|---|---|---|
+| CM | CodaMOSA | B1 | 301 | 151 | 150 | 277.110820 |
+| CM | CodaMOSA | B2 | 299 | 140 | 159 | 258.273104 |
+| CM | CoverUp | B1 | 318 | 193 | 125 | 143.269424 |
+| CM | CoverUp | B2 | 309 | 174 | 135 | 132.161204 |
+| MT | CodaMOSA | B1 | 1206 | 719 | 487 | 126.393836 |
+| MT | CodaMOSA | B2 | 1255 | 762 | 493 | 160.444660 |
+| MT | CoverUp | B1 | 1261 | 1259 | 2 | 58.889344 |
+| MT | CoverUp | B2 | 1241 | 1238 | 3 | 56.723896 |
 
 Analisis akhir menggunakan mean, median, dan standard deviation; Wilcoxon signed-rank berpasangan; koreksi Holm; Vargha–Delaney A12; dan bootstrap CI 95% untuk selisih mean.
 

@@ -6,23 +6,14 @@ import pytest
 
 from f002 import truncate_number
 
-def test_truncate_number_positive_fraction():
- assert truncate_number(3.5) == pytest.approx(0.5)
 
-def test_truncate_number_negative_fraction():
- # Python's % keeps the result in [0.0, 1.0) even for negative inputs.
- assert truncate_number(-1.25) == pytest.approx(0.75)
-
-def test_truncate_number_zero():
- assert truncate_number(0.0) == 0.0
-
-def test_truncate_number_integer_input():
- assert truncate_number(10) == 0.0
-
-def test_truncate_number_just_below_one():
- assert truncate_number(0.999) == pytest.approx(0.999)
-
-def test_truncate_number_returns_float_type():
- result = truncate_number(2.75)
- assert isinstance(result, float)
- assert result == pytest.approx(0.75)
+@pytest.mark.parametrize(
+    ("number", "expected"),
+    [
+        (3.75, 0.75),
+        (5.0, 0.0),
+        (-1.25, 0.75),
+    ],
+)
+def test_truncate_number_returns_fractional_part(number, expected):
+    assert truncate_number(number) == pytest.approx(expected)

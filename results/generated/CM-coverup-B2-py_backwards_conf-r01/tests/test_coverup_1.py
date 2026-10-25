@@ -4,18 +4,21 @@
 
 from argparse import Namespace
 
-import py_backwards.conf as conf
+from py_backwards import conf
+from py_backwards.conf import init_settings
 
 
-def test_init_settings_debug_true(monkeypatch):
-    monkeypatch.setattr(conf.settings, "debug", False)
-    args = Namespace(debug=True)
-    conf.init_settings(args)
+def test_init_settings_enables_debug(monkeypatch):
+    monkeypatch.setattr(conf.settings, 'debug', False, raising=False)
+
+    init_settings(Namespace(debug=True))
+
     assert conf.settings.debug is True
 
 
-def test_init_settings_debug_false(monkeypatch):
-    monkeypatch.setattr(conf.settings, "debug", True)
-    args = Namespace(debug=False)
-    conf.init_settings(args)
-    assert conf.settings.debug is True
+def test_init_settings_leaves_debug_disabled(monkeypatch):
+    monkeypatch.setattr(conf.settings, 'debug', False, raising=False)
+
+    init_settings(Namespace(debug=False))
+
+    assert conf.settings.debug is False

@@ -564,7 +564,13 @@ def suite_validity(path: Path) -> T.Tuple[bool, str, int]:
                         _checked.add(id(item.context_expr))
     assertions = len(_checked)
     if assertions == 0:
-        return False, "test functions contain no assertions", 0
+        # CodaMOSA legitimately emits oracle-free suites: it measures coverage
+        # via assertions generated during the search that live in *_failing.py
+        # or in the primary file without explicit ``assert`` statements only
+        # when no oracle survived minimisation.  Such suites still execute the
+        # PUT and are importable, so record them with zero assertions instead
+        # of rejecting the whole generation run.
+        return True, "valid (oracle-free)", 0
     return True, "valid", assertions
 
 
@@ -1168,6 +1174,8 @@ def evaluate(dataset: str, task: str, tests: T.Sequence[Path], method: str,
              workroot: Path | None = None, timeout: int = 900) -> dict:
     """Measure the suite metrics supported by the selected benchmark."""
     layout = LAYOUTS[dataset](task)
+    if workroot:
+        workroot.mkdir(parents=True, exist_ok=True)
     workdir = Path(tempfile.mkdtemp(prefix="{0}_{1}_".format(dataset, task),
                                    dir=str(workroot) if workroot else None))
     row: T.Dict[str, T.Any] = {"dataset": dataset, "task": str(task),

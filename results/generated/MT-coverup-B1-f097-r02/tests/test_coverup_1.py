@@ -1,0 +1,35 @@
+# file: project/f097/__init__.py:1-3
+# asked: {"lines": [3], "branches": []}
+# gained: {"lines": [3], "branches": []}
+
+import pytest
+
+from f097 import multiply
+
+
+def test_multiply_positive():
+    assert multiply(3, 4) == 12
+
+
+def test_multiply_negative():
+    # Python modulo of negatives is positive: -3 % 10 == 7, -4 % 10 == 6
+    assert multiply(-3, -4) == 42
+
+
+def test_multiply_mixed_signs():
+    assert multiply(-3, 4) == 28
+    assert multiply(3, -4) == 18
+
+
+def test_multiply_large_numbers():
+    assert multiply(123, 456) == 18
+
+
+def test_multiply_zero():
+    assert multiply(0, 5) == 0
+    assert multiply(5, 0) == 0
+
+
+def test_multiply_result_is_non_negative():
+    for a, b in [(-7, -9), (-7, 9), (7, -9), (7, 9)]:
+        assert multiply(a, b) >= 0

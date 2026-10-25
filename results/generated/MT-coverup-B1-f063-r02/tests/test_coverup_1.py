@@ -1,0 +1,28 @@
+# file: project/f063/__init__.py:1-9
+# asked: {"lines": [3, 4, 5, 6, 7, 8, 9], "branches": [[3, 4], [3, 5], [5, 6], [5, 7], [7, 8], [7, 9]]}
+# gained: {"lines": [3, 4, 5, 6, 7, 8, 9], "branches": [[3, 4], [3, 5], [5, 6], [5, 7], [7, 8], [7, 9]]}
+
+import pytest
+
+from f063 import fibfib
+
+
+def test_fibfib_base_case_zero():
+    assert fibfib(0) == 0
+
+
+def test_fibfib_base_case_one():
+    assert fibfib(1) == 0
+
+
+def test_fibfib_base_case_two():
+    assert fibfib(2) == 1
+
+
+def test_fibfib_recursive_case():
+    # fibfib(3) = fibfib(2) + fibfib(1) + fibfib(0) = 1 + 0 + 0 = 1
+    assert fibfib(3) == 1
+    # fibfib(4) = fibfib(3) + fibfib(2) + fibfib(1) = 1 + 1 + 0 = 2
+    assert fibfib(4) == 2
+    # fibfib(5) = fibfib(4) + fibfib(3) + fibfib(2) = 2 + 1 + 1 = 4
+    assert fibfib(5) == 4

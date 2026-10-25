@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 import re
 
-RESERVE_RAM_MB = 2048  # 2 GB left free for OS / navigation / desktop
+RESERVE_RAM_MB = 1024  # 1 GB left free for OS / navigation / desktop
 
 
 def read_mem_available_mb() -> int:
@@ -69,13 +69,16 @@ def plan_workers(
     *,
     reserve_mb: int = RESERVE_RAM_MB,
     max_workers: int | None = None,
+    worker_ram_estimate_mb: int | None = None,
 ) -> int:
     """Choose worker count that keeps ``reserve_mb`` free for the OS.
 
     Boosts workers only when spare RAM exceeds the reserve; never exceeds the
-    configured limit or physical cores.
+    configured limit or physical cores.  ``worker_ram_estimate_mb`` overrides
+    the Docker ``--memory`` cap as the per-worker RAM estimate when the observed
+    peak RSS is well below the container limit.
     """
-    worker_mb = parse_memory_mb(worker_memory)
+    worker_mb = worker_ram_estimate_mb or parse_memory_mb(worker_memory)
     if worker_mb <= 0:
         worker_mb = 512
     caps = physical_cpus() if max_workers is None else min(physical_cpus(), max_workers)

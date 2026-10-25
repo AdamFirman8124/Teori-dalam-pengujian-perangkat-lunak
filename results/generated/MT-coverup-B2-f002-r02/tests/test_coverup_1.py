@@ -7,16 +7,17 @@ import pytest
 from f002 import truncate_number
 
 
-def test_truncate_number_integer_part():
-    result = truncate_number(3.5)
-    assert result == pytest.approx(0.5)
-
-
-def test_truncate_number_whole_number():
-    result = truncate_number(4.0)
-    assert result == pytest.approx(0.0)
+def test_truncate_number_positive():
+    assert truncate_number(3.7) == pytest.approx(0.7)
 
 
 def test_truncate_number_negative():
-    result = truncate_number(-1.25)
-    assert result == pytest.approx(0.75)
+    assert truncate_number(-2.25) == pytest.approx(0.75)
+
+
+def test_truncate_number_integer_returns_zero():
+    assert truncate_number(5.0) == 0.0
+
+
+def test_truncate_number_less_than_one():
+    assert truncate_number(0.125) == pytest.approx(0.125)

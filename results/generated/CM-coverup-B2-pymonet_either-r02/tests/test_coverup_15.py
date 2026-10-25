@@ -1,0 +1,15 @@
+# file: project/pymonet/either.py:106-111
+# asked: {"lines": [111], "branches": []}
+# gained: {"lines": [111], "branches": []}
+
+from pymonet.either import Left
+
+
+def test_left_ap_returns_new_left_with_same_value():
+    value = object()
+    left = Left(value)
+    result = left.ap(object())
+
+    assert isinstance(result, Left)
+    assert result is not left
+    assert result.value is value
