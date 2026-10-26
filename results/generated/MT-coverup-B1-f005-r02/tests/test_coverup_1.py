@@ -5,29 +5,17 @@
 from f005 import intersperse
 
 
-def test_intersperse_empty_list():
-    numbers = []
-
-    result = intersperse(numbers, 0)
-
-    assert result == []
-    assert numbers == []
+def test_intersperse_empty_returns_empty():
+    assert intersperse([], 4) == []
 
 
-def test_intersperse_single_number():
-    numbers = [7]
-
-    result = intersperse(numbers, 0)
-
-    assert result == [7]
-    assert numbers == [7]
-    assert result is not numbers
+def test_intersperse_single_element_no_delimiter_added():
+    assert intersperse([1], 4) == [1]
 
 
-def test_intersperse_multiple_numbers():
-    numbers = [1, 2, 3]
+def test_intersperse_two_elements():
+    assert intersperse([1, 2], 4) == [1, 4, 2]
 
-    result = intersperse(numbers, -1)
 
-    assert result == [1, -1, 2, -1, 3]
-    assert numbers == [1, 2, 3]
+def test_intersperse_multiple_elements():
+    assert intersperse([1, 2, 3], 4) == [1, 4, 2, 4, 3]

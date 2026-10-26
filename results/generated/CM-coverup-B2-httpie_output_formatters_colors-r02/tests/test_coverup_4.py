@@ -2,26 +2,36 @@
 # asked: {"lines": [75, 76, 77, 78, 79], "branches": []}
 # gained: {"lines": [75, 76, 77, 78, 79], "branches": []}
 
-import httpie.output.formatters.colors as colors
+import pytest
+
+from httpie.output.formatters.colors import ColorFormatter
 
 
-def test_format_headers_highlights_and_strips_output(monkeypatch):
-    color_formatter = colors.ColorFormatter.__new__(colors.ColorFormatter)
-    http_lexer = object()
-    pygments_formatter = object()
-    color_formatter.http_lexer = http_lexer
-    color_formatter.formatter = pygments_formatter
-    calls = []
+class FakeEnv:
+    """Minimal stand-in for httpie.context.Environment.
 
-    def fake_highlight(*, code, lexer, formatter):
-        calls.append((code, lexer, formatter))
-        return "  highlighted headers\n"
+    ColorFormatter.__init__ only reads ``env.colors``, so a tiny fake
+    avoids any dependency on real TTY state (no state pollution).
+    """
 
-    monkeypatch.setattr(colors.pygments, "highlight", fake_highlight)
+    def __init__(self, colors):
+        self.colors = colors
 
-    result = color_formatter.format_headers("Content-Type: application/json")
 
-    assert result == "highlighted headers"
-    assert calls == [
-        ("Content-Type: application/json", http_lexer, pygments_formatter)
-    ]
+@pytest.mark.parametrize('colors', [256, 4])
+def test_format_headers_highlights_and_strips(colors):
+    formatter = ColorFormatter(
+        FakeEnv(colors=colors),
+        format_options={},
+    )
+    assert formatter.enabled
+
+    headers = 'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n'
+    result = formatter.format_headers(headers)
+
+    # Postconditions: something was produced, it is fully stripped
+    # (no leading/trailing whitespace), and pygments actually
+    # colorized the output (ANSI escape sequences present).
+    assert result
+    assert result == result.strip()
+    assert '\x1b[' in result

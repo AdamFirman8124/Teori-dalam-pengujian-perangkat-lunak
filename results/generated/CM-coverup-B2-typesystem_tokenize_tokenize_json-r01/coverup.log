@@ -1,0 +1,40 @@
+---- 2026-10-26T00:30:55 startup ----
+Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/__main__.py --tests-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B2-typesystem_tokenize_tokenize_json-r01/tests /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B2-typesystem_tokenize_tokenize_json-r01/project/typesystem/tokenize/tokenize_json.py --model openai/entah/auto --checkpoint /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B2-typesystem_tokenize_tokenize_json-r01/coverup.checkpoint --package-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B2-typesystem_tokenize_tokenize_json-r01/project/typesystem --log-file /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B2-typesystem_tokenize_tokenize_json-r01/coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3 --max-concurrency 1 --model-temperature 0
+---- 2026-10-26T00:30:56 project/typesystem/tokenize/tokenize_json.py:20-95 ----
+{
+  "model": "openai/entah/auto",
+  "temperature": 0.0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from typesystem/tokenize/tokenize_json.py, does not achieve full coverage:\nwhen tested, lines 29-95 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            import typing\n            from json.decoder import JSONDecodeError, scanstring\n            from typesystem.tokenize.tokens import ScalarToken, Token\n            def _TokenizingJSONObject(\n                s_and_end: typing.Tuple[str, int],\n                strict: bool,\n                scan_once: typing.Callable[[str, int], typing.Tuple[Token, int]],\n                memo: dict,\n                content: str,\n                _w: typing.Callable = WHITESPACE.match,\n                _ws: str = WHITESPACE_STR,\n            ) -> typing.Tuple[dict, int]:\n        29:     s, end = s_and_end\n        30:     pairs: typing.List[typing.Tuple[Token, Token]] = []\n        31:     pairs_append = pairs.append\n        32:     memo_get = memo.setdefault\n                # Use a slice to prevent IndexError from being raised, the following\n                # check will raise a more specific ValueError if the string is empty\n        35:     nextchar = s[end : end + 1]\n                # Normally we expect nextchar == '\"'\n        37:     if nextchar != '\"':\n        38:         if nextchar in _ws:\n        39:             end = _w(s, end).end()\n        40:             nextchar = s[end : end + 1]\n                    # Trivial empty object\n        42:         if nextchar == \"}\":\n        43:             return {}, end + 1\n        44:         elif nextchar != '\"':\n        45:             raise JSONDecodeError(\n        46:                 \"Expecting property name enclosed in double quotes\", s, end\n                        )\n        48:     end += 1\n        49:     while True:\n        50:         start = end - 1\n        51:         key, end = scanstring(s, end, strict)\n        52:         key = memo_get(key, key)\n        53:         key = ScalarToken(memo_get(key, key), start, end - 1, content)\n                    # To skip some function call overhead we optimize the fast paths where\n                    # the JSON key separator is \": \" or just \":\".\n        56:         if s[end : end + 1] != \":\":\n        57:             end = _w(s, end).end()\n        58:             if s[end : end + 1] != \":\":\n        59:                 raise JSONDecodeError(\"Expecting ':' delimiter\", s, end)\n        60:         end += 1\n            \n        62:         try:\n        63:             if s[end] in _ws:\n        64:                 end += 1\n        65:                 if s[end] in _ws:\n        66:                     end = _w(s, end + 1).end()\n        67:         except IndexError:\n        68:             pass\n            \n        70:         try:\n        71:             value, end = scan_once(s, end)\n        72:         except StopIteration as err:\n        73:             raise JSONDecodeError(\"Expecting value\", s, err.value) from None\n        74:         pairs_append((key, value))\n        75:         try:\n        76:             nextchar = s[end]\n        77:             if nextchar in _ws:\n        78:                 end = _w(s, end + 1).end()\n        79:                 nextchar = s[end]\n        80:         except IndexError:\n        81:             nextchar = \"\"\n        82:         end += 1\n            \n        84:         if nextchar == \"}\":\n        85:             break\n        86:         elif nextchar != \",\":\n        87:             raise JSONDecodeError(\"Expecting ',' delimiter\", s, end - 1)\n        88:         end = _w(s, end).end()\n        89:         nextchar = s[end : end + 1]\n        90:         end += 1\n        91:         if nextchar != '\"':\n        92:             raise JSONDecodeError(\n        93:                 \"Expecting property name enclosed in double quotes\", s, end - 1\n                        )\n        95:     return dict(pairs), end\n\n```\n"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-26T00:34:05 project/typesystem/tokenize/tokenize_json.py:20-95 ----
+Error: <class 'litellm.exceptions.ServiceUnavailableError'> litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - [openai-compatible-chat-6c50e89e-8d2e-40c6-a8d6-322c0adc212c/auto] [401]: {"error":{"message":"The API key is invalid, inactive, or revoked. (srbyte.id)","type":"authentication_error"}}
+ (reset after 1s) sleep=2 sleep_time=1.8946882740170645
+---- 2026-10-26T00:38:13 project/typesystem/tokenize/tokenize_json.py:20-95 ----
+Error: <class 'litellm.exceptions.ServiceUnavailableError'> litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - [openai-compatible-chat-6c50e89e-8d2e-40c6-a8d6-322c0adc212c/auto] [401]: {"error":{"message":"The API key is invalid, inactive, or revoked. (srbyte.id)","type":"authentication_error"}}
+ (reset after 3s) sleep=4 sleep_time=3.3355664606368816

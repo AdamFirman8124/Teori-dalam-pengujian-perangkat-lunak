@@ -2,24 +2,52 @@
 import f001 as module_0
 
 def test_case_0():
-    str_0 = '( ) (( )) (( )( ))'
+    str_0 = '(()()) ((())) () ((())()())'
     list_0 = module_0.separate_paren_groups(str_0)
-    assert list_0 == ['()', '(())', '(()())']
-    str_1 = ''
+    assert list_0 == ['(()())', '((()))', '()', '((())()())']
+    str_1 = '() (()) ((())) (((())))'
+    list_1 = module_0.separate_paren_groups(str_1)
+    assert list_1 == ['()', '(())', '((()))', '(((())))']
+    str_2 = '(((())))'
+    list_2 = module_0.separate_paren_groups(str_2)
+    assert list_2 == ['(((())))']
+    str_3 = '()()()'
+    list_3 = module_0.separate_paren_groups(str_3)
+    assert list_3 == ['()', '()', '()']
+    str_4 = '(()) () (())'
+    list_4 = module_0.separate_paren_groups(str_4)
+    assert list_4 == ['(())', '()', '(())']
+    str_5 = ''
+    list_5 = module_0.separate_paren_groups(str_5)
+    assert list_5 == []
+    str_6 = '   '
+    list_6 = module_0.separate_paren_groups(str_6)
+    assert list_6 == []
+
+def test_case_1():
+    str_0 = '['
+    list_0 = module_0.separate_paren_groups(str_0)
+    assert list_0 == []
+
+def test_case_2():
+    str_0 = 'aQY3'
+    list_0 = module_0.separate_paren_groups(str_0)
+    assert list_0 == []
+    str_1 = 'zF\x0b0l-^ZdGb'
     list_1 = module_0.separate_paren_groups(str_1)
     assert list_1 == []
-    str_2 = '()'
-    list_2 = module_0.separate_paren_groups(str_2)
-    assert list_2 == ['()']
-    str_3 = '()()'
-    list_3 = module_0.separate_paren_groups(str_3)
-    assert list_3 == ['()', '()']
-    str_4 = '(())'
-    list_4 = module_0.separate_paren_groups(str_4)
-    assert list_4 == ['(())']
-    str_5 = '(()()) ((()))'
+    str_2 = 'x'
+    str_3 = 'pHh0kFLu)gK?'
+    list_2 = module_0.separate_paren_groups(str_3)
+    assert list_2 == []
+    str_4 = '\x0c/0d'
+    list_3 = module_0.separate_paren_groups(str_4)
+    assert list_3 == []
+    str_5 = '9MnB{l9 ;&)jFmw/Aj'
+    str_6 = '|'
+    list_4 = module_0.separate_paren_groups(str_6)
+    assert list_4 == []
     list_5 = module_0.separate_paren_groups(str_5)
-    assert list_5 == ['(()())', '((()))']
-    str_6 = ' ( ) '
-    list_6 = module_0.separate_paren_groups(str_6)
-    assert list_6 == ['()']
+    assert list_5 == []
+    list_6 = module_0.separate_paren_groups(str_2)
+    assert list_6 == []

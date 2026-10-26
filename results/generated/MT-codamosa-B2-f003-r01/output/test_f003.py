@@ -2,37 +2,43 @@
 import f003 as module_0
 
 def test_case_0():
+    var_0 = []
+    bool_0 = module_0.below_zero(var_0)
+    assert bool_0 is False
     int_0 = 1
     int_1 = 2
-    int_2 = -3
+    int_2 = 3
+    int_3 = [int_0, int_1, int_2]
+    bool_1 = module_0.below_zero(int_3)
+    assert bool_1 is False
+    int_4 = -1
+    int_5 = [int_4]
+    bool_2 = module_0.below_zero(int_5)
+    assert bool_2 is True
+    int_6 = -2
+    int_7 = [int_0, int_6]
+    bool_3 = module_0.below_zero(int_7)
+    assert bool_3 is True
+    int_8 = -1
+    int_9 = [int_0, int_8]
+    bool_4 = module_0.below_zero(int_9)
+    assert bool_4 is False
+    int_10 = 5
+    int_11 = -3
+    int_12 = -2
+    int_13 = [int_10, int_11, int_12]
+    bool_5 = module_0.below_zero(int_13)
+    assert bool_5 is False
+    int_14 = -6
+    int_15 = 10
+    int_16 = [int_10, int_14, int_15]
+    bool_6 = module_0.below_zero(int_16)
+    assert bool_6 is True
+
+def test_case_1():
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
     int_3 = [int_0, int_1, int_2]
     bool_0 = module_0.below_zero(int_3)
-    assert bool_0 is True
     assert bool_0 is False
-    int_4 = 3
-    int_5 = [int_0, int_1, int_4]
-    bool_1 = module_0.below_zero(int_5)
-    assert bool_1 is False
-    int_6 = -3
-    int_7 = 4
-    int_8 = [int_0, int_1, int_6, int_7]
-    bool_2 = module_0.below_zero(int_8)
-    assert bool_2 is False
-    int_9 = -1
-    int_10 = [int_9]
-    bool_3 = module_0.below_zero(int_10)
-    assert bool_3 is True
-    var_0 = []
-    bool_4 = module_0.below_zero(var_0)
-    assert bool_4 is False
-    int_11 = 5
-    int_12 = -10
-    int_13 = [int_11, int_12]
-    bool_5 = module_0.below_zero(int_13)
-    assert bool_5 is True
-    int_14 = -3
-    int_15 = [int_4, int_14]
-    bool_6 = module_0.below_zero(int_15)
-    assert bool_6 is False
-    str_0 = 'All tests passed!'
-    var_1 = print(str_0)

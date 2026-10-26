@@ -3,12 +3,17 @@ import pytest
 import f002 as module_0
 
 def test_case_0():
-    float_0 = 3.5
+    float_0 = 1413.615
     float_1 = module_0.truncate_number(float_0)
-    assert float_1 == pytest.approx(0.5, abs=0.01, rel=0.01)
-    float_2 = 10.25
-    float_3 = module_0.truncate_number(float_2)
-    assert float_3 == pytest.approx(0.25, abs=0.01, rel=0.01)
-    float_4 = 7.0
-    float_5 = module_0.truncate_number(float_4)
-    assert float_5 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    assert float_1 == pytest.approx(0.6150000000000091, abs=0.01, rel=0.01)
+    float_2 = 1050.88781
+    float_3 = module_0.truncate_number(float_0)
+    assert float_3 == pytest.approx(0.6150000000000091, abs=0.01, rel=0.01)
+    float_4 = module_0.truncate_number(float_2)
+    assert float_4 == pytest.approx(0.8878099999999449, abs=0.01, rel=0.01)
+    float_5 = 836.57
+    float_6 = -101.09032
+    float_7 = module_0.truncate_number(float_6)
+    assert float_7 == pytest.approx(0.9096799999999945, abs=0.01, rel=0.01)
+    float_8 = module_0.truncate_number(float_5)
+    assert float_8 == pytest.approx(0.57000000000005, abs=0.01, rel=0.01)

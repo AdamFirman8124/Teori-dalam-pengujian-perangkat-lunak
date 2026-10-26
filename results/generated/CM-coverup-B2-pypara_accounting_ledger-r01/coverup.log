@@ -1,0 +1,40 @@
+---- 2026-10-25T23:17:25 startup ----
+Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/__main__.py --tests-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B2-pypara_accounting_ledger-r01/tests /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B2-pypara_accounting_ledger-r01/project/pypara/accounting/ledger.py --model openai/entah/auto --checkpoint /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B2-pypara_accounting_ledger-r01/coverup.checkpoint --package-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B2-pypara_accounting_ledger-r01/project/pypara --log-file /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/CM-coverup-B2-pypara_accounting_ledger-r01/coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3 --max-concurrency 1 --model-temperature 0
+---- 2026-10-25T23:17:26 project/pypara/accounting/ledger.py:162-186 ----
+{
+  "model": "openai/entah/auto",
+  "temperature": 0.0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from pypara/accounting/ledger.py, does not achieve full coverage:\nwhen tested, lines 174-186 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            from decimal import Decimal\n            from typing import Dict, Iterable\n            from pypara.commons.numbers import Quantity\n            from pypara.commons.zeitgeist import DateRange\n            from pypara.accounting.accounts import Account\n            from pypara.accounting.generic import Balance\n            from pypara.accounting.journaling import JournalEntry\n            def build_general_ledger(\n                period: DateRange, journal: Iterable[JournalEntry[_T]], initial: InitialBalances\n            ) -> GeneralLedger[_T]:\n                \"\"\"\n                Builds a general ledger.\n            \n                :param period: Accounting period.\n                :param journal: All available journal entries.\n                :param initial: Opening balances for terminal accounts, if any.\n                :return: A :py:class:`GeneralLedger` instance.\n                \"\"\"\n                ## Initialize ledgers buffer as per available initial balances:\n       174:     ledgers: Dict[Account, Ledger[_T]] = {a: Ledger(a, b) for a, b in initial.items()}\n            \n                ## Iterate over journal postings and populate ledgers:\n       177:     for posting in (p for j in journal for p in j.postings if period.since <= j.date <= period.until):\n                    ## Check if we have the ledger yet, and create if not:\n       179:         if posting.account not in ledgers:\n       180:             ledgers[posting.account] = Ledger(posting.account, Balance(period.since, Quantity(Decimal(0))))\n            \n                    ## Add the posting to the ledger:\n       183:         ledgers[posting.account].add(posting)\n            \n                ## Done, return general ledger.\n       186:     return GeneralLedger(period, ledgers)\n\n```\n"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-10-25T23:21:22 project/pypara/accounting/ledger.py:162-186 ----
+Error: <class 'litellm.exceptions.ServiceUnavailableError'> litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - [openai-compatible-chat-6c50e89e-8d2e-40c6-a8d6-322c0adc212c/auto] [401]: {"error":{"message":"The API key is invalid, inactive, or revoked. (srbyte.id)","type":"authentication_error"}}
+ (reset after 1s) sleep=2 sleep_time=1.1347470725302031
+---- 2026-10-25T23:25:30 project/pypara/accounting/ledger.py:162-186 ----
+Error: <class 'litellm.exceptions.ServiceUnavailableError'> litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - [openai-compatible-chat-6c50e89e-8d2e-40c6-a8d6-322c0adc212c/auto] [401]: {"error":{"message":"The API key is invalid, inactive, or revoked. (srbyte.id)","type":"authentication_error"}}
+ (reset after 1s) sleep=4 sleep_time=2.872183690631217
