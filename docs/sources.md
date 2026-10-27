@@ -14,3 +14,11 @@ Parent repository HEAD: `c9c42f5b59f42c8a7d72db52428711fa6de59d18` (sebelum clea
 Catatan:
 - CoverUp submodule pada coverup-eval `f3173196…` tak semula menggunakan CoverUp `130238e…` / 0.6.1, sedangkan paket yang dipisahkan adalah 0.6.3. Kedua fakta dicatat; tidak diperlakukan sebagai satu snapshots yang sama.
 - Image historis hanya tersedia sebagai pointer Git LFS (tidak dapat dimuat); image Linux baru diperlukan untuk reproduksi.
+
+## Relabel model 2026-10-27 (provenance)
+
+- Provider OctaLabs (router.octalabs.id) kini melayani model dengan nama spesifik (66 model bernama, tanpa alias `auto`); `gpt-5.6-sol` terverifikasi langsung dilayani dan dikembalikan dalam field `model` respons.
+- Per pengumapan operator: router `auto` pada endpoint lama (localhost:20128) melayani pool GPT-5.6-Sol selama periode eksperimen (22–26 Okt 2026).
+- Kolom `model_requested` dan `model_returned` pada `results/results.csv`, `pilot_results.csv`, `run_matrix.csv`, `pilot_matrix.csv` diganti dari `entah/auto`/`auto` menjadi `gpt-5.6-sol` pada 2026-10-27.
+- Nilai asli per panggilan tetap terpelihara di log mentah `results/raw/<run_id>/llm_log.jsonl` (field `returned_model: auto`) dan `results/generated/<run_id>/output/llm_calls.jsonl`; backup pra-relabel tersedia sebagai `*.pre-relabel`.
+- Penghitungan biaya (`cost_usd`) sejak awal memakai harga gpt-5.6-sol (`price_source` di `config/experiment.toml`), jadi relabel ini membuat kolom model konsisten dengan kolom biaya.

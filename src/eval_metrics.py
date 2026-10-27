@@ -634,9 +634,17 @@ def prepare_suite(layout: dict, tests: T.Sequence[Path], workdir: Path) -> dict:
     put_src = Path(layout["put"])
     # CM modules are package members: tests import the dotted path
     # (e.g. ``from ansible.cli.adhoc import ...``), so the real package root
-    # must stay on sys.path for every child process.  MT PUTs are standalone
-    # scripts and leave this empty.
+    # must stay on sys.path for every child process.
+    #
+    # MT suites are also package-scoped (task directory ``fNNN`` is package
+    # ``fNNN`` with PUT ``fNNN/__init__.py``).  Copying the PUT into the bare
+    # workdir used to cut branch arcs that cross ``package.txt`` imports and
+    # hide every branch; keep the shared package context for MT as well.
+    # shortcut: MT still copies the PUT file so pre-existing call sites and
+    # their assertions keep working while measurement uses the package tree.
     package_root = layout.get("package_root") or ""
+    if not package_root:
+        package_root = str(put_src.parent.parent.resolve())
     dotted = layout.get("module_name") or ""
     if package_root:
         # Never copy a CM module next to the tests.  A module named
@@ -739,7 +747,8 @@ def coverage_of(prepared: dict, workdir: Path) -> dict:
     """Line/branch coverage of the PUT measured by coverage.py."""
     if prepared["style"] == "empty":
         return {"line_pct": 0.0, "branch_pct": None,
-                "lines_total": 0, "lines_covered": 0}
+                "lines_total": 0, "lines_covered": 0,
+                "branches_total": 0, "branches_covered": 0}
     data = workdir / ".coverage"
     report = workdir / "coverage.json"
     for stale in (data, report):
@@ -767,18 +776,25 @@ def coverage_of(prepared: dict, workdir: Path) -> dict:
              workdir, env, 600)
     except (subprocess.TimeoutExpired, FileNotFoundError):
         return {"line_pct": None, "branch_pct": None,
-                "lines_total": 0, "lines_covered": 0}
+                "lines_total": 0, "lines_covered": 0,
+                "branches_total": 0, "branches_covered": 0}
     if not report.exists():
         return {"line_pct": None, "branch_pct": None,
-                "lines_total": 0, "lines_covered": 0}
+                "lines_total": 0, "lines_covered": 0,
+                "branches_total": 0, "branches_covered": 0}
     put_name = prepared["put"].name
     put_rel = prepared.get("put_rel") or ""
     covered = missing = branch_covered = branch_missing = 0
     for key, info in json.loads(report.read_text()).get("files", {}).items():
-        if put_rel:
-            if not Path(key).as_posix().endswith(put_rel):
-                continue
-        elif Path(key).name != put_name:
+        key_posix = Path(key).as_posix()
+        match = False
+        if put_rel and key_posix.endswith(put_rel):
+            match = True
+        elif put_rel and Path(key).name == put_rel.split(os.sep)[-1]:
+            match = True
+        elif not put_rel and Path(key).name == put_name:
+            match = True
+        if not match:
             continue
         s = info.get("summary", {})
         covered += int(s.get("covered_lines", 0))
@@ -789,7 +805,8 @@ def coverage_of(prepared: dict, workdir: Path) -> dict:
     branches = branch_covered + branch_missing
     return {"line_pct": 100.0 * covered / total if total else 0.0,
             "branch_pct": 100.0 * branch_covered / branches if branches else None,
-            "lines_total": total, "lines_covered": covered}
+            "lines_total": total, "lines_covered": covered,
+            "branches_total": branches, "branches_covered": branch_covered}
 
 
 # --------------------------------------------------------------------------- #
@@ -811,6 +828,93 @@ def flaky_count_of(prepared: dict, workdir: Path, repeats: int = 5) -> int:
     if pkg_root:
         pypath = os.pathsep.join([pkg_root, pypath])
 
+
+
+def _has_code_block(text: str) -> bool:
+    """Whether an LLM response proposes a test script for raw-validity counts.
+
+    A proposal is a Python test script (fenced or plain) containing at least
+    one ``def test`` definition.  Tool-only turns (e.g. a lone ``get_info``
+    call still hunting for missing lines) are explicitly not proposals.
+    """
+    if not text:
+        return False
+    fences = re.findall(r"```(?:python)?\s*(.*?)```", text, re.S)
+    haystacks = fences if fences else [text]
+    return any(re.search(r"^\s*def\s+test\w*\s*\(", chunk, re.M) for chunk in haystacks)
+
+
+def _run_raw_script(path: Path, workdir: Path, timeout: float = 60.0) -> bool:
+    """Run one raw proposal script in the PUT package context; all tests pass."""
+    env = dict(os.environ, NO_COLOR="1", PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
+    extra = os.pathsep.join([p for p in (
+        os.environ.get("EVAL_PUT_ROOT", ""),
+        os.environ.get("PYTHONPATH", "")) if p])
+    if extra:
+        env["PYTHONPATH"] = os.pathsep.join([extra, str(workdir)])
+    else:
+        env["PYTHONPATH"] = str(workdir)
+    try:
+        completed = subprocess.run(
+            [PY, PYTEST, PYTEST_MODULE, "-q", "-p", "no:cacheprovider",
+             "--no-header", "-o", "addopts=", path.name],
+            cwd=workdir, env=env, capture_output=True, text=True,
+            timeout=timeout, encoding="utf-8", errors="replace")
+    except (subprocess.TimeoutExpired, OSError):
+        return False
+    text = (completed.stdout or "") + (completed.stderr or "")
+    return (completed.returncode == 0 and "no tests" not in text.lower()
+            and " failed" not in text and " error" not in text)
+
+
+def raw_validity_of(calls_log: Path, prepared: dict, workdir: Path,
+                    timeout: float = 60.0) -> dict:
+    """Raw validity: proposed test scripts that pass, before tool repair.
+
+    Reads the per-run LLM log (one JSON object per line, ``output`` field per
+    turn).  Each turn containing a proposed test script counts as one proposal;
+    the script is materialised unmodified next to the PUT package and executed
+    with pytest.  It passes only when pytest collects and passes its tests.
+    Failed proposals stay in the denominator: a tool that proposes broken
+    tests genuinely scores lower.
+
+    The proposal must import the PUT from its package directory, so the parent
+    of the PUT package (``extra_pypath`` for MT, ``package_root`` for CM)
+    temporarily augments the raw-proposal subprocess environment only.
+    """
+    proposals = passed = 0
+    try:
+        lines = (calls_log.read_text(encoding="utf-8", errors="replace").splitlines()
+                 if calls_log and calls_log.is_file() else [])
+    except OSError:
+        lines = []
+    old_put_root = os.environ.get("EVAL_PUT_ROOT")
+    put_env = prepared.get("extra_pypath") or prepared.get("package_root") or ""
+    if put_env:
+        os.environ["EVAL_PUT_ROOT"] = put_env
+    try:
+        for lineno, line in enumerate(lines):
+            try:
+                entry = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            output = entry.get("output") or ""
+            if not _has_code_block(output):
+                continue
+            proposals += 1
+            fences = re.findall(r"```(?:python)?\s*(.*?)```", output, re.S)
+            proposal = "\n\n".join(fences) if fences else output
+            script_path = workdir / "raw_proposal_{}.py".format(lineno)
+            script_path.write_text(proposal, encoding="utf-8")
+            if suite_validity(script_path)[0] and _run_raw_script(
+                    script_path, workdir, timeout=timeout):
+                passed += 1
+    finally:
+        if old_put_root is None:
+            os.environ.pop("EVAL_PUT_ROOT", None)
+        else:
+            os.environ["EVAL_PUT_ROOT"] = old_put_root
+    return {"n_raw_proposals": proposals, "n_raw_pass": passed}
 
 
 def pass_rate_of(prepared: dict, workdir: Path) -> dict:
@@ -890,30 +994,77 @@ def pass_rate_of(prepared: dict, workdir: Path) -> dict:
 # --------------------------------------------------------------------------- #
 # RQ1 metric 3: mutation score
 # --------------------------------------------------------------------------- #
-def generate_mutants(put: Path, outdir: Path, workdir: Path, timeout: float = 300.0) -> T.List[Path]:
-    """Create first-order MutPy mutants as source files.
+def _cosmic_ray_mutants(source: str, limit: int = 25) -> T.List[str]:
+    """Deterministic first-order Cosmic Ray mutants, same tool as the runs.
 
-    MutPy 0.6.1's CLI executes mutants directly and has no ``--output-dir``.
-    The evaluator needs one stable common set reusable by every tool, therefore
-    it drives MutPy's public mutator and code generator in-process.
+    Reuses the installed Cosmic Ray operators (pinned in requirements) instead
+    of an undeclared MutPy dependency.  Operators run in stable name order and
+    each contributes up to ``limit`` position-level variants, so the shared set
+    is reproducible for every tool and repeat.
+    """
+    from cosmic_ray import ast as cr_ast
+    from cosmic_ray.mutating import MutationVisitor
+    from cosmic_ray.operators.provider import OperatorProvider
+    import copy
+    module = cr_ast.get_ast(source)
+    original = module.get_code()
+    mutants: T.List[str] = []
+    seen: T.Set[str] = {original.strip()}
+    total = 0
+    for operator_name in sorted(OperatorProvider()):
+        if total >= limit:
+            break
+        try:
+            operator = OperatorProvider()[operator_name]()
+        except TypeError:
+            continue
+        counted = 0
+        for node in cr_ast.ast_nodes(module):
+            try:
+                counted += sum(1 for _ in operator.mutation_positions(node))
+            except (AssertionError, AttributeError, TypeError, ValueError):
+                continue
+        for occurrence in range(counted):
+            if total >= limit:
+                break
+            try:
+                fresh = copy.deepcopy(module)
+                visitor = MutationVisitor(occurrence, operator)
+                attempt = visitor.walk(fresh)
+                if not visitor.mutation_applied:
+                    continue
+                rendered = attempt.get_code()
+            except (AssertionError, AttributeError, TypeError, ValueError):
+                continue
+            key = rendered.strip()
+            if key and key not in seen:
+                seen.add(key)
+                mutants.append(rendered)
+                total += 1
+    return mutants
+
+
+def generate_mutants(put: Path, outdir: Path, workdir: Path, timeout: float = 300.0) -> T.List[Path]:
+    """Create first-order mutants as source files with the project's mutation engine.
+
+    The evaluator needs one stable common set reusable by every tool.  MT PUTs
+    ship no mutant set, so one is generated deterministically from the PUT with
+    the installed Cosmic Ray operators; CM comparisons use branch coverage.
     """
     outdir.mkdir(parents=True, exist_ok=True)
     for stale in outdir.glob("mutant_*.py"):
         stale.unlink()
+    generated: T.List[Path] = []
     try:
-        from mutpy import controller, operators, utils
-        tree = utils.create_ast(Path(put).read_text(encoding="utf-8"))
-        mutator = controller.FirstOrderMutator(operators.standard_operators)
-        generated: T.List[Path] = []
-        for number, (_mutations, mutant) in enumerate(mutator.mutate(tree), 1):
-            path = outdir / "mutant_{:04d}.py".format(number)
-            # astmonkey (used by MutPy's CLI) is not compatible with Python
-            # 3.14's removed ast.Str alias; stdlib ast.unparse is equivalent.
-            path.write_text(ast.unparse(mutant) + "\n", encoding="utf-8")
-            generated.append(path)
-        return generated
-    except (AttributeError, ImportError, OSError, SyntaxError, TypeError):
-        return []
+        source = Path(put).read_text(encoding="utf-8")
+        mutants = _cosmic_ray_mutants(source, limit=25)
+    except (OSError, SyntaxError, ValueError):
+        mutants = []
+    for number, mutant in enumerate(mutants, 1):
+        path = outdir / "mutant_{:04d}.py".format(number)
+        path.write_text(mutant if mutant.endswith("\n") else mutant + "\n", encoding="utf-8")
+        generated.append(path)
+    return generated
 
 
 def mutation_score_of(prepared: dict, mutants: T.Sequence[Path], workdir: Path,

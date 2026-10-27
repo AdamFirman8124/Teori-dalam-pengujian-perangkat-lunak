@@ -115,6 +115,22 @@ def _evaluation_fields(evaluated: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _raw_validity_for(calls_log: Path, row: dict[str, str], valid: list[Path]) -> dict[str, int]:
+    """Raw-validity fields with a zero-valued fallback that never fails a run.
+
+    Uses the run's own valid tests to build the package context; when the log
+    or context is unusable the run keeps zero proposals instead of crashing.
+    """
+    work = calls_log.parent.parent
+    raw_work = work / "rawwork"
+    raw_work.mkdir(parents=True, exist_ok=True)
+    try:
+        prepared = em.prepare_suite(_layout(row["suite"], row["unit_id"]), valid, raw_work)
+        return em.raw_validity_of(calls_log, prepared, raw_work)
+    except Exception:
+        return {"n_raw_proposals": 0, "n_raw_pass": 0}
+
+
 class UnsupportedBackbone(RuntimeError):
     """Raised when a model's transport alias no longer belongs to a probed backbone."""
 
@@ -191,6 +207,7 @@ def run_coverup(row: dict[str, str], output_root: Path) -> dict[str, Any]:
             timeout=int(load_config()["experiment"]["evaluation_timeout_seconds"]),
         )
         result.update(_evaluation_fields(evaluated))
+        result.update(_raw_validity_for(calls, row, valid))
         result["status"] = "ok"
         result["error_category"] = ""
     except Exception as exc:
@@ -301,6 +318,7 @@ def run_codamosa(row: dict[str, str], output_root: Path) -> dict[str, Any]:
             timeout=int(load_config()["experiment"]["evaluation_timeout_seconds"]),
         )
         result.update(_evaluation_fields(evaluated))
+        result.update(_raw_validity_for(output / "llm_calls.jsonl", row, valid))
         info = _read_calls(output / "llm_calls.jsonl")
         result.update(info)
         result["cost_usd"] = _cost(row["backbone"], info["tokens_in"], info["tokens_out"])

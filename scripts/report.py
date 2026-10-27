@@ -4,10 +4,14 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import sys
 from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+
+sys.path.insert(0, str(ROOT / "src"))
+from protocol import load_config  # noqa: E402
 
 
 def rows(path: Path) -> list[dict[str, str]]:
@@ -110,7 +114,7 @@ def main() -> None:
             [[item.get("backbone"), item.get("model_requested"), item.get("model_returned"), item.get("function_calling"), "PASS" if item.get("passed") else item.get("error", "FAIL")] for item in probes],
         ),
         "",
-        "B1 dilaporkan sebagai `gpt-5.6-sol (seller-claimed; endpoint reports \"auto\")`. Identitas model adalah klaim penjual dan tidak dapat diverifikasi. Field model mentah dari setiap respons harus tetap disimpan untuk audit routing.",
+        f"B1 dilaporkan sebagai `{load_config()['backbones']['B1']['label']}`; model terverifikasi dari respons endpoint (nama model spesifik dikembalikan sejak router per 2026-10-27). Run historis (22–26 Okt 2026) memakai router `auto` yang identitas per-panggilannya tidak diungkap; nilai asli tersimpan di `results/raw/*/llm_log.jsonl`.",
         "",
         "## 6. Hasil Pilot",
         "",

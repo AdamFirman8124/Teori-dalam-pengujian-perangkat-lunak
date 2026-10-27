@@ -115,6 +115,30 @@ def main() -> None:
             row["p_holm"] = value
     pd.DataFrame(tests).to_csv(args.output / "table_v_paired_tests.csv", index=False)
 
+    # TABEL VI: backbone effect per LLM generator (mean over units, per naskah
+    # IV-B; means keep consistency with the planned mixed-effects model).
+    # Adaptasi is informational per the protocol: CodaMOSA interface-only,
+    # CoverUp none. MuTAP awaits collaborator data.
+    adaptasi = {"CodaMOSA": "interface-only", "CoverUp": "none"}
+    backbone_rows = []
+    for suite, metric in (("MT", "ms"), ("CM", "bc")):
+        for tool in ("CodaMOSA", "CoverUp"):
+            means = unit[(unit.suite == suite) & (unit.tool == tool)].groupby("backbone")[metric].mean()
+            if {"B1", "B2"}.issubset(means.index):
+                backbone_rows.append(
+                    {
+                        "suite": suite,
+                        "metric": metric,
+                        "tool": tool,
+                        "adaptasi": adaptasi[tool],
+                        "b1": round(float(means["B1"]), 2),
+                        "b2": round(float(means["B2"]), 2),
+                        "delta_b1_minus_b2": round(float(means["B1"] - means["B2"]), 2),
+                        "n_units": int(unit[(unit.suite == suite) & (unit.tool == tool)].unit_id.nunique()),
+                    }
+                )
+    pd.DataFrame(backbone_rows).to_csv(args.output / "table_vi_backbone_effect.csv", index=False)
+
     # Cost-effectiveness RQ3 needs a Pynguin baseline that collaborator owns.
     # Without it, emit the Pareto data and no CE values.
     pareto = ok.groupby(["suite", "tool", "backbone"]).agg(

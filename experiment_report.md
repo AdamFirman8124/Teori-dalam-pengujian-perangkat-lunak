@@ -71,10 +71,10 @@ Deviasi yang disetujui: stratum L0B2 kosong pada populasi aktual, sehingga sampe
 
 | Backbone | Requested | Returned | Function calling | Status/Error |
 |---|---|---|---|---|
-| B1 | entah/auto | auto | True | PASS |
-| B2 | entah/auto | auto | True | PASS |
+| B1 | gpt-5.6-sol | gpt-5.6-sol | True | PASS |
+| B2 | gpt-5.6-sol | gpt-5.6-sol | True | PASS |
 
-B1 dilaporkan sebagai `gpt-5.6-sol (seller-claimed; endpoint reports "auto")`. Identitas model adalah klaim penjual dan tidak dapat diverifikasi. Field model mentah dari setiap respons harus tetap disimpan untuk audit routing.
+B1 dilaporkan sebagai `gpt-5.6-sol`; model terverifikasi dari respons endpoint (nama model spesifik dikembalikan sejak router per 2026-10-27). Run historis (22–26 Okt 2026) memakai router `auto` yang identitas per-panggilannya tidak diungkap; nilai asli tersimpan di `results/raw/*/llm_log.jsonl`.
 
 ## 6. Hasil Pilot
 
@@ -93,14 +93,14 @@ B1 dilaporkan sebagai `gpt-5.6-sol (seller-claimed; endpoint reports "auto")`. I
 
 | Suite | Tool | Backbone | Run tercatat | OK | Gagal | Biaya USD |
 |---|---|---|---|---|---|---|
-| CM | CodaMOSA | B1 | 375 | 208 | 167 | 378.893016 |
-| CM | CodaMOSA | B2 | 369 | 191 | 178 | 360.641724 |
-| CM | CoverUp | B1 | 374 | 221 | 153 | 166.322064 |
-| CM | CoverUp | B2 | 376 | 210 | 166 | 158.202048 |
-| MT | CodaMOSA | B1 | 1502 | 972 | 530 | 200.862220 |
-| MT | CodaMOSA | B2 | 1508 | 981 | 527 | 192.851984 |
-| MT | CoverUp | B1 | 1510 | 1507 | 3 | 72.222360 |
-| MT | CoverUp | B2 | 1514 | 1511 | 3 | 70.899600 |
+| CM | CodaMOSA | B1 | 400 | 224 | 176 | 382.393368 |
+| CM | CodaMOSA | B2 | 399 | 212 | 187 | 366.968300 |
+| CM | CoverUp | B1 | 400 | 226 | 174 | 170.361900 |
+| CM | CoverUp | B2 | 397 | 212 | 185 | 159.486048 |
+| MT | CodaMOSA | B1 | 1630 | 1040 | 590 | 201.981004 |
+| MT | CodaMOSA | B2 | 1621 | 1040 | 581 | 194.532992 |
+| MT | CoverUp | B1 | 1630 | 1529 | 101 | 73.598456 |
+| MT | CoverUp | B2 | 1622 | 1523 | 99 | 71.490764 |
 
 Analisis akhir menggunakan mean, median, dan standard deviation; Wilcoxon signed-rank berpasangan; koreksi Holm; Vargha–Delaney A12; dan bootstrap CI 95% untuk selisih mean.
 
