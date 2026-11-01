@@ -138,7 +138,8 @@ def run_mutap(row: dict[str, str], output_root: Path) -> dict[str, Any]:
     output.mkdir(parents=True, exist_ok=True)
     layout = _layout(row["suite"], row["unit_id"])
     task_id = int(row["unit_id"][1:])  # f001 -> collaborator task 1
-    container = "exp-" + _model_slug(row["run_id"]).lower()
+    container = f"exp-{_model_slug(row['run_id']).lower()}-{int(time.time()*1000)%1000000}"
+    subprocess.run(["docker", "rm", "-f", container], capture_output=True)
     budget = int(load_config()["experiment"]["budget_seconds"])
     grace = int(load_config()["experiment"]["kill_grace_seconds"])
     command = [
@@ -268,7 +269,8 @@ def run_pynguin(row: dict[str, str], output_root: Path) -> dict[str, Any]:
     layout = _layout(row["suite"], row["unit_id"])
     project = Path(layout["package_root"]).resolve()
     package = _filtered_requirements(layout, work)
-    container = "exp-" + _model_slug(row["run_id"]).lower()
+    container = f"exp-{_model_slug(row['run_id']).lower()}-{int(time.time()*1000)%1000000}"
+    subprocess.run(["docker", "rm", "-f", container], capture_output=True)
     budget = int(load_config()["experiment"]["budget_seconds"])
     grace = int(load_config()["experiment"]["kill_grace_seconds"])
     command = [
@@ -376,6 +378,8 @@ def run_coverup(row: dict[str, str], output_root: Path) -> dict[str, Any]:
             "LLM_PROXY_BACKBONE": row["backbone"],
             "LLM_PROXY_RUN_ID": row["run_id"],
             "FLAKY_REPEATS": str(load_config()["experiment"]["flaky_repetitions"]),
+            "RPM_GATE_STATE": str((ROOT / "results" / "rate_gate.jsonl").resolve()),
+            "RPM_LIMIT": str(load_config()["experiment"].get("rate_limit_rpm", 20)),
         })
         wait_s = _rate_limited()
         run = em.run_coverup(
@@ -459,7 +463,8 @@ def run_codamosa(row: dict[str, str], output_root: Path) -> dict[str, Any]:
     auth = work / "auth.args"
     auth.write_text("--authorization-key\n" + key + "\n", encoding="utf-8")
     auth.chmod(0o600)
-    container = "exp-" + _model_slug(row["run_id"]).lower()
+    container = f"exp-{_model_slug(row['run_id']).lower()}-{int(time.time()*1000)%1000000}"
+    subprocess.run(["docker", "rm", "-f", container], capture_output=True)
     budget = int(load_config()["experiment"]["budget_seconds"])
     grace = int(load_config()["experiment"]["kill_grace_seconds"])
     # The default Docker bridge network cannot resolve localhost to the host
@@ -482,9 +487,15 @@ def run_codamosa(row: dict[str, str], output_root: Path) -> dict[str, Any]:
         "-v", f"{output.resolve()}:/output",
         "-v", f"{work.resolve()}:/package:ro",
         "-v", f"{auth.resolve()}:/run/codamosa-auth:ro",
+        "-v", f"{(ROOT / 'results').resolve()}:/results",
+        "-v", f"{(ROOT / 'src' / 'rate_gate.py').resolve()}:/usr/local/lib/python3.10/site-packages/rate_gate.py:ro",
+        "-v", f"{(ROOT / 'codamosa' / 'pynguin' / 'languagemodels' / 'model.py').resolve()}:/usr/local/lib/python3.10/site-packages/pynguin/languagemodels/model.py:ro",
         "-e", "CODAMOSA_LLM_CALLS_LOG=/output/llm_calls.jsonl",
         "-e", "CODAMOSA_REQUEST_TIMEOUT=600",
         "-e", "CODAMOSA_MAX_TRANSPORT_RETRIES=4",
+        "-e", "RPM_GATE_STATE=/results/rate_gate.jsonl",
+        "-e", f"RPM_LIMIT={load_config()['experiment'].get('rate_limit_rpm', 50)}",
+        "-e", "CODAMOSA_CALL_SPACING=1.2",
         "pynguin-runner:latest", "@/run/codamosa-auth",
         "--assertion-generation", "MUTATION_ANALYSIS",
         "--project-path", "/input",

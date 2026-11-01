@@ -158,9 +158,9 @@ def main() -> int:
     clear_pause()
 
     experiment = config["experiment"]
-    rpm = int(experiment.get("rate_limit_rpm", 0) or 0)
-    if rpm > 0:
-        os.environ["RPM_LIMIT"] = str(rpm)
+    rpm = int(experiment.get("rate_limit_rpm", 20) or 20)
+    os.environ["RPM_LIMIT"] = str(rpm)
+    os.environ["RPM_GATE_STATE"] = str((ROOT / "results" / "rate_gate.jsonl").resolve())
     probe_path = ROOT / "results" / "endpoint_probe.json"
     probes = json.loads(probe_path.read_text(encoding="utf-8")) if probe_path.exists() else []
     probed_models = {
@@ -246,11 +246,13 @@ def main() -> int:
     try:
         with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="experiment") as pool:
             future_rows: dict[Future, dict] = {pool.submit(run_task, row, ROOT / "results"): row for row in pending}
+            total_tasks = len(pending)
             index = 0
             while future_rows:
                 done, _ = wait(future_rows.keys(), timeout=1.0, return_when=FIRST_COMPLETED)
                 for future in done:
                     index += 1
+                    pct = (index / total_tasks * 100) if total_tasks else 100.0
                     matrix_row = future_rows.pop(future)
                     try:
                         result = future.result()
@@ -270,7 +272,7 @@ def main() -> int:
                         attempt = retries + 2
                         result["attempt"] = attempt
                         print(
-                            f"[{index}] {run_id} failed (api) -> auto-retry attempt {attempt}"
+                            f"[{index}/{total_tasks} ({pct:.1f}%)] {run_id} failed (api) -> auto-retry attempt {attempt}"
                         )
                         with WRITE_LOCK:
                             results = [row for row in results if row.get("run_id") != run_id]
@@ -283,8 +285,17 @@ def main() -> int:
                         results.append(result)
                         write_results(results_path, results)
                     status = result.get("status")
+                    cov_info = ""
+                    try:
+                        lt = int(result.get("lines_total") or 0)
+                        le = int(result.get("lines_exec") or 0)
+                        if lt > 0:
+                            cov_info = f" cov={le / lt * 100:.1f}%"
+                    except (ValueError, TypeError):
+                        pass
+                    err_info = f" ({result.get('error_category')})" if result.get("error_category") and status != "ok" else ""
                     print(
-                        f"[{index}] {run_id} {status} "
+                        f"[{index}/{total_tasks} ({pct:.1f}%)] {run_id} {status}{err_info}{cov_info} "
                         f"cost=${float(result.get('cost_usd') or 0):.6f} "
                         f"elapsed={time.monotonic() - started:.1f}s"
                         f"{' (attempt ' + str(result.get('attempt') or 1) + ')' if api_retries.get(run_id) else ''}"

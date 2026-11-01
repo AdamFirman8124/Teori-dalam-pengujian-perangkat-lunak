@@ -43,7 +43,12 @@ def request(backbone: str) -> dict:
     }
     for attempt in range(5):
         with httpx.Client(timeout=90) as client:
-            response = client.post(base + "/chat/completions", headers={"Authorization": "Bearer " + key}, json=payload)
+            headers = {
+                "Authorization": "Bearer " + key,
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache",
+            }
+            response = client.post(base + "/chat/completions", headers=headers, json=payload)
         if response.status_code == 429 and attempt < 4:
             time.sleep(5 * (attempt + 1))
             continue

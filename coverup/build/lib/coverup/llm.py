@@ -21,6 +21,8 @@ litellm.suppress_debug_info = True
 logging.getLogger().setLevel(logging.ERROR)
 # Ignore unavailable parameters
 litellm.drop_params = True
+litellm.enable_cache = False
+litellm.cache = None
 
 # Tier 5 rate limits for models; tuples indicate limit and interval in seconds
 # Extracted from https://platform.openai.com/account/limits on 8/30/2024
@@ -322,16 +324,27 @@ class Chatter:
         self._functions[schema['name']] = {"function": function, "schema": schema}
 
     def _request(self, messages: T.List[dict]) -> dict:
+        import uuid
+        nonce = uuid.uuid4().hex[:8]
         return {
             'model': self._model,
             **({'temperature': self._model_temperature} if self._model_temperature is not None else {}),
             'messages': messages,
+            'user': f"cu-{nonce}",
             **({'tools': [{'type': 'function', 'function': f['schema']} for f in self._functions.values()]} if self._functions else {}),
             **(self._extra_request_pars if self._extra_request_pars else {})
         }
 
     async def _send_request(self, request: dict, ctx: object) -> litellm.ModelResponse | None:
         """Sends the LLM chat request, handling common failures and returning the response."""
+        request.setdefault("extra_headers", {}).update({
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "x-litellm-cache": "False",
+            "x-bypass-cache": "true",
+            "cf-skip-cache": "1",
+        })
+        request["caching"] = False
         sleep = 1
         attempts = 0
         while True:
@@ -362,7 +375,15 @@ class Chatter:
                         self._log_msg(ctx, f"Error: too many tokens for rate limit ({e})")
                         return None # gives up this segment
 
-                return await litellm.acreate(**request)
+                try:
+                    return await litellm.acreate(**request)
+                finally:
+                    if _gate_state and _gate_limit:
+                        try:
+                            import rate_gate as _rate_gate
+                            _rate_gate.release(_gate_state)
+                        except Exception:
+                            pass
 
             except (litellm.exceptions.ServiceUnavailableError,
                     openai.RateLimitError,

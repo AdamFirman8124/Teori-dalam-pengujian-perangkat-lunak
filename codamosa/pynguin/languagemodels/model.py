@@ -13,6 +13,7 @@ import os
 import re
 import string
 import time
+import uuid
 from collections import defaultdict
 from datetime import datetime
 from typing import Dict, Iterable, List
@@ -124,6 +125,8 @@ def _openai_api_legacy_request(self, function_header, context):
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {self._authorization_key}",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
     }
     return url, payload, headers
 
@@ -140,6 +143,8 @@ def _openai_api_request(self, function_header, context):
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {self._authorization_key}",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
     }
     return url, payload, headers
 
@@ -161,17 +166,31 @@ def _openai_chat_request(self, function_header, context):
         max_tokens = max(200, int(os.environ.get("CODAMOSA_MAX_TOKENS", "2048")))
     except ValueError:
         max_tokens = 2048
+    nonce = uuid.uuid4().hex[:8]
+    system_msg = {
+        "role": "system",
+        "content": "You are a Python unit test completion engine. Output valid Python test code directly. Be concise and do not engage in lengthy internal monologue."
+    }
     payload = {
         "model": self._complete_model,
-        "messages": [{"role": "user", "content": context + "\n" + function_header}],
+        "messages": [
+            system_msg,
+            {"role": "user", "content": context + "\n" + function_header + f"\n# nonce:{nonce}"}
+        ],
         "max_tokens": max_tokens,
         "temperature": self._temperature,
+        "user": f"cm-{nonce}",
     }
     if os.environ.get("CODAMOSA_SEND_STOP", "0").strip().lower() in {"1", "true", "yes"}:
         payload["stop"] = ["\n# Unit test for", "\ndef ", "\nclass "]
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {self._authorization_key}",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "x-litellm-cache": "False",
+        "x-bypass-cache": "true",
+        "cf-skip-cache": "1",
     }
     return url, payload, headers
 
@@ -578,10 +597,18 @@ class _OpenAILanguageModel:
                     _wait = _pause - (time.time() - _last)
                     if _wait > 0:
                         time.sleep(_wait)
-                res = requests.post(
-                    url, data=json.dumps(payload), headers=headers,
-                    timeout=_request_timeout,
-                )
+                try:
+                    res = requests.post(
+                        url, data=json.dumps(payload), headers=headers,
+                        timeout=_request_timeout,
+                    )
+                finally:
+                    if gate:
+                        try:
+                            import rate_gate
+                            rate_gate.release(gate)
+                        except Exception:
+                            pass
                 # Some OpenAI-compatible gateways append an SSE terminator
                 # (``data: [DONE]``) even for non-streaming requests.  Keep the
                 # valid JSON document and discard only that known trailer.

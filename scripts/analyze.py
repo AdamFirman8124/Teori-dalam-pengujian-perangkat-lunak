@@ -112,8 +112,9 @@ def main() -> None:
     # Matched per-unit medians for paired tool comparisons
     unit = ok_clean.groupby(["suite", "backbone", "unit_id", "tool"])[["bc", "ms", "cost_usd", "gen_time_s"]].median().reset_index()
 
-    # TABEL V: 12 paired comparisons specified in research design (B1 backbone)
+    # TABEL V: Paired comparisons specified in research design (B1 & B2 backbones)
     paired_spec = [
+        # B1 Backbone (RQ1)
         ("MT", "ms", "B1", "MuTAP", "Pynguin"),
         ("MT", "ms", "B1", "MuTAP", "CodaMOSA"),
         ("MT", "ms", "B1", "MuTAP", "CoverUp"),
@@ -126,6 +127,16 @@ def main() -> None:
         ("CM", "ms", "B1", "CoverUp", "Pynguin"),
         ("CM", "ms", "B1", "CoverUp", "CodaMOSA"),
         ("CM", "ms", "B1", "CodaMOSA", "Pynguin"),
+        # B2 Backbone (RQ1)
+        ("MT", "ms", "B2", "CoverUp", "Pynguin"),
+        ("MT", "ms", "B2", "CoverUp", "CodaMOSA"),
+        ("MT", "ms", "B2", "CodaMOSA", "Pynguin"),
+        ("CM", "bc", "B2", "CoverUp", "Pynguin"),
+        ("CM", "bc", "B2", "CoverUp", "CodaMOSA"),
+        ("CM", "bc", "B2", "CodaMOSA", "Pynguin"),
+        ("CM", "ms", "B2", "CoverUp", "Pynguin"),
+        ("CM", "ms", "B2", "CoverUp", "CodaMOSA"),
+        ("CM", "ms", "B2", "CodaMOSA", "Pynguin"),
     ]
 
     tests = []
