@@ -163,9 +163,9 @@ def _openai_chat_request(self, function_header, context):
     """
     url = f"{self._model_base_url}{self._model_relative_url}"
     try:
-        max_tokens = max(200, int(os.environ.get("CODAMOSA_MAX_TOKENS", "2048")))
+        max_tokens = max(200, int(os.environ.get("CODAMOSA_MAX_TOKENS", "4096")))
     except ValueError:
-        max_tokens = 2048
+        max_tokens = 4096
     nonce = uuid.uuid4().hex[:8]
     system_msg = {
         "role": "system",

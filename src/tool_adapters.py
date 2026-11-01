@@ -496,6 +496,7 @@ def run_codamosa(row: dict[str, str], output_root: Path) -> dict[str, Any]:
         "-e", "CODAMOSA_LLM_CALLS_LOG=/output/llm_calls.jsonl",
         "-e", "CODAMOSA_REQUEST_TIMEOUT=600",
         "-e", "CODAMOSA_MAX_TRANSPORT_RETRIES=4",
+        "-e", "CODAMOSA_MAX_TOKENS=4096",
         "-e", "RPM_GATE_STATE=/results/rate_gate.jsonl",
         "-e", f"RPM_LIMIT={load_config()['experiment'].get('rate_limit_rpm', 50)}",
         "-e", "CODAMOSA_CALL_SPACING=1.2",
