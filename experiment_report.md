@@ -72,7 +72,7 @@ Deviasi yang disetujui: stratum L0B2 kosong pada populasi aktual, sehingga sampe
 | Backbone | Requested | Returned | Function calling | Status/Error |
 |---|---|---|---|---|
 | B1 | gpt-5.6-sol | gpt-5.6-sol | True | PASS |
-| B2 | gpt-5.6-luna | gpt-5.6-luna | True | PASS |
+| B2 | deepseek-v4.1-flash | deepseek-v4.1-flash | True | PASS |
 
 B1 dilaporkan sebagai `gpt-5.6-sol`; model terverifikasi dari respons endpoint (nama model spesifik dikembalikan sejak router per 2026-10-27). Run historis (22–26 Okt 2026) memakai router `auto` yang identitas per-panggilannya tidak diungkap; nilai asli tersimpan di `results/raw/*/llm_log.jsonl`.
 
