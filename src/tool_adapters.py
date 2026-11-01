@@ -434,6 +434,7 @@ def _filtered_requirements(layout: dict[str, Any], work: Path) -> Path:
     pynguin_conflicts = {
         "pytest", "pygments", "setuptools", "wheel", "pip",
         "pycurl", "gssapi", "kerberos", "urllib_gssapi",
+        "py2exe", "python_apt",
     }
     wanted = []
     if source.is_file():
