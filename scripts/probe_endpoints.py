@@ -5,6 +5,7 @@ import json
 import os
 import re
 import sys
+import time
 from pathlib import Path
 
 import httpx
@@ -25,7 +26,7 @@ def request(backbone: str) -> dict:
         "model": config["model_requested"],
         "messages": [{"role": "user", "content": "Call the echo tool with value exactly probe. You MUST use the echo function."}],
         "temperature": 0,
-        "max_tokens": 128,
+        "max_tokens": 512,
         "tools": [{
             "type": "function",
             "function": {
@@ -40,8 +41,13 @@ def request(backbone: str) -> dict:
         }],
         "tool_choice": "required",
     }
-    with httpx.Client(timeout=90) as client:
-        response = client.post(base + "/chat/completions", headers={"Authorization": "Bearer " + key}, json=payload)
+    for attempt in range(5):
+        with httpx.Client(timeout=90) as client:
+            response = client.post(base + "/chat/completions", headers={"Authorization": "Bearer " + key}, json=payload)
+        if response.status_code == 429 and attempt < 4:
+            time.sleep(5 * (attempt + 1))
+            continue
+        break
     # Some middleware emits SSE trailing data ("data: [DONE]") after the JSON
     # object, breaking response.json().  Parse only the first JSON object.
     try:

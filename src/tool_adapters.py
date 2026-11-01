@@ -115,6 +115,117 @@ def _evaluation_fields(evaluated: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def run_mutap(row: dict[str, str], output_root: Path) -> dict[str, Any]:
+    """Generate a MuTAP suite in Docker and evaluate it with the shared S3-S4 pipeline.
+
+    MuTAP (fork plasma-umass/MuTAP @888ab58a, prpl-test/) is assertion-focused:
+    the LLM proposes assertions against the PUT, invalid ones are filtered
+    (raw validity), and surviving mutants drive an augmented prompt.  The
+    collaborator image embeds the PUT inline in its test file; the adapter
+    swaps that block for an import of our dataset package so coverage and
+    mutation are measured on the same PUT and mutant set as every other tool
+    (pedoman rule 14-4).  Internal MutPy mutants are MuTAP's algorithm input,
+    not the evaluation engine; final metrics come from our pipeline.
+    """
+    started = dt.datetime.now(dt.timezone.utc)
+    result = _base_result(row, started)
+    result["tool_version"] = "fork@888ab58a"
+    base, key, model = _secret_env(row["backbone"])
+    work = output_root / "generated" / row["run_id"]
+    if work.exists():
+        shutil.rmtree(work, ignore_errors=True)
+    output = work / "output"
+    output.mkdir(parents=True, exist_ok=True)
+    layout = _layout(row["suite"], row["unit_id"])
+    task_id = int(row["unit_id"][1:])  # f001 -> collaborator task 1
+    container = "exp-" + _model_slug(row["run_id"]).lower()
+    budget = int(load_config()["experiment"]["budget_seconds"])
+    grace = int(load_config()["experiment"]["kill_grace_seconds"])
+    command = [
+        "docker", "run", "--rm", "--name", container,
+        "--label", "teori.experiment=mutap",
+        "--cpus", str(load_config()["experiment"]["worker_cpus"]),
+        "--memory", str(load_config()["experiment"]["worker_memory"]),
+        "--memory-swap", str(load_config()["experiment"]["worker_memory"]),
+        "-v", f"{output.resolve()}:/workspace/output/mutap",
+        "-e", f"API_KEY={key}",
+        "-e", f"BASE_URL_API_KEY={base}",
+        "-e", f"MODEL_AI_1={model['model_requested']}",
+        "mutap-runner:latest",
+        "python", "run_mutap_experiment.py", str(task_id),
+        "--model", model["model_requested"],
+    ]
+    t0 = time.monotonic()
+    try:
+        completed = subprocess.run(command, capture_output=True, text=True,
+                                   encoding="utf-8", errors="replace",
+                                   timeout=budget + grace)
+        (work / "docker.stdout.log").write_text(completed.stdout or "", encoding="utf-8")
+        (work / "docker.stderr.log").write_text(completed.stderr or "", encoding="utf-8")
+        if completed.returncode:
+            raise RuntimeError(f"MuTAP exit {completed.returncode}: {(completed.stdout + completed.stderr)[-1500:]}")
+        summary = _read_mutap_summary(output)
+        test_path = output / f"test_mutap_task_{task_id}.py"
+        if not test_path.is_file():
+            raise RuntimeError("MuTAP produced no test file")
+        put_code = Path(layout["put"]).read_text(encoding="utf-8")
+        func_name = summary.get("function_name") or re.search(r"def\s+(\w+)\s*\(", put_code).group(1)
+        test_code = test_path.read_text(encoding="utf-8")
+        # The collaborator file embeds its own PUT copy (script_N.py), which
+        # does not byte-match our dataset module; cut everything before the
+        # test function and import the PUT from our package instead, so
+        # coverage and mutation are measured on the shared dataset PUT.
+        test_start = test_code.find(f"def test_{func_name}")
+        if test_start < 0:
+            raise RuntimeError("MuTAP test file has no test function to transform")
+        transformed_code = (
+            f"from {layout['module_name']} import {func_name}\n\n"
+            + test_code[test_start:]
+        )
+        transformed = output / "test_mutap.py"
+        transformed.write_text(transformed_code, encoding="utf-8")
+        valid = [transformed] if em.suite_validity(transformed)[0] else []
+        if not valid:
+            raise RuntimeError("MuTAP test suite not importable after PUT swap; refusing to score empty coverage")
+        evaluated = em.evaluate(
+            row["suite"], row["unit_id"], valid, "MuTAP",
+            wall_time_s=time.monotonic() - t0, cost_usd=0.0,
+            workroot=output_root / "work",
+            timeout=int(load_config()["experiment"]["evaluation_timeout_seconds"]),
+        )
+        result.update(_evaluation_fields(evaluated))
+        result["gen_time_s"] = max(0.0, time.monotonic() - t0)
+        result["hit_budget"] = int(result["gen_time_s"] >= budget - 5)
+        result["wait_flag"] = 0
+        tokens_in = int(summary.get("prompt_tokens") or 0)
+        tokens_out = int(summary.get("completion_tokens") or 0)
+        result["n_api_calls"] = int(summary.get("api_calls") or 0)
+        result["tokens_in"] = tokens_in
+        result["tokens_out"] = tokens_out
+        result["cost_usd"] = round(_cost(row["backbone"], tokens_in, tokens_out), 8)
+        result["model_returned"] = model["model_requested"]
+        result["n_raw_proposals"] = int(summary.get("raw_total_assertions") or 0)
+        result["n_raw_pass"] = int(summary.get("raw_valid_assertions") or 0)
+        result["status"] = "ok"
+        result["error_category"] = ""
+    except subprocess.TimeoutExpired:
+        subprocess.run(["docker", "rm", "-f", container], capture_output=True, text=True)
+        result.update({"hit_budget": 1, "error_category": "timeout", "gen_time_s": budget})
+    except Exception as exc:
+        result["error_category"] = _error_category(exc)
+        result["error_message"] = str(exc)[-2000:]
+    result["end_time"] = dt.datetime.now(dt.timezone.utc).isoformat()
+    return result
+
+
+def _read_mutap_summary(output: Path) -> dict[str, Any]:
+    for candidate in output.glob("model_*_results.json"):
+        entries = json.loads(candidate.read_text(encoding="utf-8"))
+        if entries:
+            return entries[-1]
+    return {}
+
+
 def _raw_validity_for(calls_log: Path, row: dict[str, str], valid: list[Path]) -> dict[str, int]:
     """Raw-validity fields with a zero-valued fallback that never fails a run.
 
@@ -129,6 +240,94 @@ def _raw_validity_for(calls_log: Path, row: dict[str, str], valid: list[Path]) -
         return em.raw_validity_of(calls_log, prepared, raw_work)
     except Exception:
         return {"n_raw_proposals": 0, "n_raw_pass": 0}
+
+
+def run_pynguin(row: dict[str, str], output_root: Path) -> dict[str, Any]:
+    """Generate a Pynguin suite in Docker and evaluate it with the shared S3-S4 pipeline.
+
+    Pynguin uses no LLM: cost is zero, no backbone, no API calls.  Runs in the
+    pynguin-runner image (python:3.10 + pynguin==0.47.0, per docs/sources.md)
+    with DYNAMOSA and the same 600 s budget as every other tool (W1/W4).
+    """
+    started = dt.datetime.now(dt.timezone.utc)
+    result = _base_result(row, started)
+    result["tool_version"] = "0.47.0"
+    result["model_requested"] = ""
+    result["model_returned"] = ""
+    result["backbone"] = ""
+    result["n_api_calls"] = 0
+    result["tokens_in"] = ""
+    result["tokens_out"] = ""
+    result["cost_usd"] = 0.0
+    result["ratelimit_wait_s"] = 0.0
+    work = output_root / "generated" / row["run_id"]
+    if work.exists():
+        shutil.rmtree(work, ignore_errors=True)
+    output = work / "output"
+    output.mkdir(parents=True, exist_ok=True)
+    layout = _layout(row["suite"], row["unit_id"])
+    project = Path(layout["package_root"]).resolve()
+    package = _filtered_requirements(layout, work)
+    container = "exp-" + _model_slug(row["run_id"]).lower()
+    budget = int(load_config()["experiment"]["budget_seconds"])
+    grace = int(load_config()["experiment"]["kill_grace_seconds"])
+    command = [
+        "docker", "run", "--rm", "--name", container,
+        "--label", "teori.experiment=pynguin",
+        "--oom-score-adj", "1000",
+        "--cpus", str(load_config()["experiment"]["worker_cpus"]),
+        "--memory", str(load_config()["experiment"]["worker_memory"]),
+        "--memory-swap", str(load_config()["experiment"]["worker_memory"]),
+        "-v", f"{project}:/input:ro",
+        "-v", f"{output.resolve()}:/output",
+        "-v", f"{work.resolve()}:/package:ro",
+        "-e", "PYNGUIN_DANGER_AWARE=1",
+        "img-pynguin:latest",
+        "--project-path", "/input",
+        "--module-name", layout["module_name"],
+        "--output-path", "/output",
+        "--algorithm", "DYNAMOSA",
+        "--maximum-search-time", str(budget),
+        "--seed", row["seed"],
+        "--coverage-metrics", "BRANCH", "LINE",
+        "--output-variables", "TargetModule,LineCoverage,BranchCoverage",
+    ]
+    t0 = time.monotonic()
+    try:
+        completed = subprocess.run(command, capture_output=True, text=True,
+                                   encoding="utf-8", errors="replace",
+                                   timeout=budget + grace)
+        (work / "docker.stdout.log").write_text(completed.stdout or "", encoding="utf-8")
+        (work / "docker.stderr.log").write_text(completed.stderr or "", encoding="utf-8")
+        if completed.returncode:
+            raise RuntimeError(
+                f"Pynguin exit {completed.returncode}: {(completed.stdout + completed.stderr)[-2000:]}")
+        tests = sorted(output.rglob("test_*.py"))
+        if not tests:
+            raise RuntimeError("Pynguin produced no test suite")
+        valid = [path for path in tests if em.suite_validity(path)[0]]
+        if not valid:
+            raise RuntimeError("Pynguin produced no importable test file; refusing to score empty coverage")
+        evaluated = em.evaluate(
+            row["suite"], row["unit_id"], valid, "Pynguin",
+            wall_time_s=time.monotonic() - t0, cost_usd=0.0,
+            workroot=output_root / "work",
+            timeout=int(load_config()["experiment"]["evaluation_timeout_seconds"]),
+        )
+        result.update(_evaluation_fields(evaluated))
+        result["gen_time_s"] = max(0.0, time.monotonic() - t0)
+        result["hit_budget"] = int(result["gen_time_s"] >= budget - 5)
+        result["wait_flag"] = 0
+        result["status"] = "ok"
+        result["error_category"] = ""
+    except subprocess.TimeoutExpired:
+        subprocess.run(["docker", "rm", "-f", container], capture_output=True, text=True)
+        result.update({"hit_budget": 1, "error_category": "timeout", "gen_time_s": budget})
+    except Exception as exc:
+        result["error_category"] = _error_category(exc)
+        result["error_message"] = str(exc)[-2000:]
+    result["end_time"] = dt.datetime.now(dt.timezone.utc).isoformat()
+    return result
 
 
 class UnsupportedBackbone(RuntimeError):
@@ -224,13 +423,21 @@ def _filtered_requirements(layout: dict[str, Any], work: Path) -> Path:
     source = Path(layout.get("package_txt") or Path(layout["package_root"]) / "package.txt")
     target = work / "package.txt"
     stdlib = getattr(__import__("sys"), "stdlib_module_names", set())
+    # Project pins for these packages downgrade Pynguin 0.47.0's own runtime
+    # inside the container (e.g. pytest 7 vs >=8.3.5), breaking the tool before
+    # search starts; the generated tests never import them at analysis time.
+    pynguin_conflicts = {"pytest", "pygments", "setuptools", "wheel", "pip"}
     wanted = []
     if source.is_file():
         for line in source.read_text(encoding="utf-8", errors="replace").splitlines():
             name = line.strip()
             package = re.split(r"[<>=\[]", name)[0].replace("-", "_").lower()
             if name and not name.startswith("#") and package not in stdlib:
-                wanted.append(name)
+                if package not in pynguin_conflicts:
+                    if package == "psycopg2":
+                        wanted.append("psycopg2-binary")
+                    else:
+                        wanted.append(name)
     target.write_text("\n".join(wanted) + ("\n" if wanted else ""), encoding="utf-8")
     return target
 
@@ -266,6 +473,7 @@ def run_codamosa(row: dict[str, str], output_root: Path) -> dict[str, Any]:
     command = [
         "docker", "run", "--rm", "--name", container,
         "--label", "teori.experiment=codamosa",
+        "--oom-score-adj", "1000",
         *(["--add-host", "host.docker.internal:host-gateway"] if host_network else []),
         "--cpus", str(load_config()["experiment"]["worker_cpus"]),
         "--memory", str(load_config()["experiment"]["worker_memory"]),
@@ -345,6 +553,11 @@ def _error_category(exc: Exception) -> str:
         return "timeout"
     if "syntax" in text:
         return "syntax"
+    # SlipCover cannot import some modules under Python 3.14; this is a
+    # deterministic environment failure, not a transient provider error,
+    # so it must never be retried as "api".
+    if "measuring coverage" in text or "slipcover" in text:
+        return "env"
     if "importable" in text or "empty coverage" in text:
         return "invalid_tests"
     if any(value in text for value in ("429", "401", "403", "unauthorized", "invalid_request", "api", "connection", "model")):
@@ -359,4 +572,8 @@ def run_task(row: dict[str, str], output_root: Path) -> dict[str, Any]:
         return run_coverup(row, output_root)
     if row["tool"] == "CodaMOSA":
         return run_codamosa(row, output_root)
+    if row["tool"] == "Pynguin":
+        return run_pynguin(row, output_root)
+    if row["tool"] == "MuTAP":
+        return run_mutap(row, output_root)
     raise ValueError("Unsupported tool: " + row["tool"])

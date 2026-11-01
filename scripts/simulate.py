@@ -31,17 +31,23 @@ for row in rows:
     lc = max(0, min(100, bc + rng.uniform(5, 15)))
     mutants = rng.randint(1, 35)
     ms = max(0, min(100, (62 if suite == "MT" else 48) + quality + rng.gauss(0, 5)))
-    tokens_in = rng.randint(1000, 12000)
-    tokens_out = rng.randint(500, 5000)
-    price = config["backbones"][backbone]
-    cost = tokens_in * price["input_usd_per_million"] / 1_000_000 + tokens_out * price["output_usd_per_million"] / 1_000_000
+    is_pynguin = tool == "Pynguin"
+    tokens_in = 0 if is_pynguin else rng.randint(1000, 12000)
+    tokens_out = 0 if is_pynguin else rng.randint(500, 5000)
+    if is_pynguin:
+        cost = 0.0
+        model_returned = ""
+    else:
+        price = config["backbones"][backbone]
+        cost = tokens_in * price["input_usd_per_million"] / 1_000_000 + tokens_out * price["output_usd_per_million"] / 1_000_000
+        model_returned = price["model_requested"]
     failed = rng.random() < 0.02
     now = datetime.now(timezone.utc).isoformat()
     record = {field: "" for field in FIELDS}
     record.update(row)
     record.update({
         "tool_version": "simulated",
-        "model_returned": price["model_requested"],
+        "model_returned": model_returned,
         "start_time": now,
         "end_time": now,
         "budget_s": 600,

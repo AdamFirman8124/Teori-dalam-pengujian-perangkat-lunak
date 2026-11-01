@@ -30,6 +30,23 @@ def generate_matrix(output: Path, pilot: bool) -> int:
     cm = selected_cm(pilot)
     rows = []
     for suite, units in (("MT", [{"unit_id": value, "project": "MuTAP-benchmarks"} for value in mt]), ("CM", cm)):
+        # Pynguin baseline block first (pedoman Fase 8 ordering: Pynguin MT ->
+        # Pynguin CM -> LLM MT -> LLM CM): no backbone, no LLM, seed per unit/run.
+        for unit in units:
+            for run_idx in range(1, repetitions + 1):
+                unit_id = unit["unit_id"]
+                rows.append({
+                    "run_id": f"{suite}-pynguin---{unit_id.replace('.', '_')}-r{run_idx:02d}",
+                    "suite": suite,
+                    "unit_id": unit_id,
+                    "project": unit["project"],
+                    "tool": "Pynguin",
+                    "backbone": "",
+                    "model_requested": "",
+                    "run_idx": run_idx,
+                    "seed": stable_seed(base_seed, suite, "Pynguin", "", unit_id, run_idx),
+                    "status": "pending",
+                })
         for tool in ("CodaMOSA", "CoverUp"):
             for backbone, model in config["backbones"].items():
                 for unit in units:

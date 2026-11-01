@@ -10,7 +10,7 @@ import subprocess
 import sys
 import threading
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed, Future
+from concurrent.futures import ThreadPoolExecutor, as_completed, Future, wait, FIRST_COMPLETED
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -112,16 +112,27 @@ def main() -> int:
     parser.add_argument("--retry-failed", action="store_true")
     parser.add_argument("--pause", action="store_true", help="Create pause.requested and exit without launching runs")
     parser.add_argument("--resume", action="store_true", help="Remove pause.requested before launching")
+    parser.add_argument("--tool", type=str, help="Only run rows of this tool (e.g. Pynguin baseline)")
+    parser.add_argument("--exclude-tool", type=str, dest="exclude_tool", help="Skip rows of this tool (e.g. Pynguin when running the LLM queue)")
+    parser.add_argument("--backbone", type=str, help="Only run rows of this backbone (e.g. B2 for the luna rerun)")
+    parser.add_argument("--matrix", type=Path, help="Override the run matrix file (e.g. the B2-luna rerun matrix)")
+    parser.add_argument("--results", type=Path, help="Override the results checkpoint file (e.g. a separate Pynguin baseline file)")
     args = parser.parse_args()
     load_local_env()
     config = load_config()
     if not args.dry_run:
         require_environment(config)
-    matrix = ROOT / "results" / ("pilot_matrix.csv" if args.pilot else "run_matrix.csv")
-    results_path = ROOT / "results" / ("pilot_results.csv" if args.pilot else "results.csv")
+    matrix = args.matrix if args.matrix else ROOT / "results" / ("pilot_matrix.csv" if args.pilot else "run_matrix.csv")
+    results_path = args.results if args.results else ROOT / "results" / ("pilot_results.csv" if args.pilot else "results.csv")
     if not matrix.exists():
         subprocess.run([sys.executable, str(ROOT / "scripts" / "build_matrix.py"), *(["--pilot"] if args.pilot else [])], check=True)
     matrix_rows = list(csv.DictReader(matrix.open(newline="", encoding="utf-8")))
+    if args.tool:
+        matrix_rows = [row for row in matrix_rows if row["tool"] == args.tool]
+    if args.exclude_tool:
+        matrix_rows = [row for row in matrix_rows if row["tool"] != args.exclude_tool]
+    if args.backbone:
+        matrix_rows = [row for row in matrix_rows if row["backbone"] == args.backbone]
     results = read_results(results_path)
     done = completed_ids(results)
     pending = [row for row in matrix_rows if row["run_id"] not in done]
@@ -156,7 +167,11 @@ def main() -> int:
         (str(entry.get("backbone")), str(entry.get("model_requested")))
         for entry in probes if entry.get("passed")
     }
-    unprobed = [row for row in pending if (row["backbone"], row["model_requested"]) not in probed_models]
+    # The probe gate applies to LLM runs only: Pynguin carries no backbone and
+    # no model, so there is nothing to probe for it.
+    unprobed = [row for row in pending
+                if row["tool"] != "Pynguin"
+                and (row["backbone"], row["model_requested"]) not in probed_models]
     if unprobed:
         totals: dict[str, int] = {}
         for row in unprobed:
@@ -172,14 +187,24 @@ def main() -> int:
 
     cap = float(experiment["cost_cap_usd"])
     launch_cap = cap * float(experiment["stop_launch_fraction"])
+    # The cost cap protects paid (LLM) launches.  Zero-cost baseline runs
+    # (Pynguin) may still proceed: once the cap is reached, exclude paid rows
+    # from this launch and continue with the free ones.
     if total_cost(results) >= launch_cap:
-        print(json.dumps({
-            **state,
-            "status": "stopped",
-            "reason": "cost_launch_stop",
-            "launch_cap_usd": launch_cap,
-        }, indent=2))
-        return 0
+        paid_pending = [row for row in pending if row["tool"] != "Pynguin"]
+        free_pending = [row for row in pending if row["tool"] == "Pynguin"]
+        if paid_pending:
+            print(json.dumps({
+                **state,
+                "status": "paid_rows_excluded",
+                "reason": "cost_launch_stop",
+                "launch_cap_usd": launch_cap,
+                "paid_pending_excluded": len(paid_pending),
+                "free_pending_kept": len(free_pending),
+            }, indent=2))
+        pending = free_pending
+        if not pending:
+            return 0
     pilot_started = ROOT / "results" / "pilot_started_at.txt"
     if args.pilot and not pilot_started.exists():
         pilot_started.write_text(datetime.now(timezone.utc).isoformat(), encoding="utf-8")
@@ -197,6 +222,7 @@ def main() -> int:
             }, indent=2))
             return 0
 
+    has_paid_pending = any(row["tool"] != "Pynguin" for row in pending)
     workers = args.workers or plan_workers(
         int(experiment["parallel_workers"]),
         experiment["worker_memory"],
@@ -214,33 +240,62 @@ def main() -> int:
     cleanup_containers()
     started = time.monotonic()
     interrupt = GracefulInterrupt()
+    # Transient provider errors ("api" category) are retried automatically
+    # until they succeed; the cost gate and pause remain the safety valves.
+    api_retries: dict[str, int] = {}
     try:
         with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="experiment") as pool:
             future_rows: dict[Future, dict] = {pool.submit(run_task, row, ROOT / "results"): row for row in pending}
-            for index, future in enumerate(as_completed(future_rows), 1):
-                matrix_row = future_rows[future]
-                try:
-                    result = future.result()
-                except Exception as exc:
-                    result = {field: "" for field in FIELDS}
-                    result.update(matrix_row)
-                    result.update(status="failed", error_category="crash", end_time=datetime.now(timezone.utc).isoformat())
-                    print(f"{matrix_row['run_id']}: unexpected worker error: {exc}")
-                with WRITE_LOCK:
-                    results = [row for row in results if row.get("run_id") != result["run_id"]]
-                    results.append(result)
-                    write_results(results_path, results)
-                status = result.get("status")
-                print(
-                    f"[{index}/{len(pending)}] {result['run_id']} {status} "
-                    f"cost=${float(result.get('cost_usd') or 0):.6f} "
-                    f"elapsed={time.monotonic() - started:.1f}s"
-                )
-                if total_cost(results) >= launch_cap:
+            index = 0
+            while future_rows:
+                done, _ = wait(future_rows.keys(), timeout=1.0, return_when=FIRST_COMPLETED)
+                for future in done:
+                    index += 1
+                    matrix_row = future_rows.pop(future)
+                    try:
+                        result = future.result()
+                    except Exception as exc:
+                        result = {field: "" for field in FIELDS}
+                        result.update(matrix_row)
+                        result.update(status="failed", error_category="crash", end_time=datetime.now(timezone.utc).isoformat())
+                        print(f"{matrix_row['run_id']}: unexpected worker error: {exc}")
+                    run_id = result["run_id"]
+                    retries = api_retries.get(run_id, 0)
+                    should_retry = (
+                        result.get("status") == "failed"
+                        and result.get("error_category") == "api"
+                    )
+                    if should_retry:
+                        api_retries[run_id] = retries + 1
+                        attempt = retries + 2
+                        result["attempt"] = attempt
+                        print(
+                            f"[{index}] {run_id} failed (api) -> auto-retry attempt {attempt}"
+                        )
+                        with WRITE_LOCK:
+                            results = [row for row in results if row.get("run_id") != run_id]
+                            results.append(result)
+                            write_results(results_path, results)
+                        future_rows[pool.submit(run_task, matrix_row, ROOT / "results")] = matrix_row
+                        continue
+                    with WRITE_LOCK:
+                        results = [row for row in results if row.get("run_id") != run_id]
+                        results.append(result)
+                        write_results(results_path, results)
+                    status = result.get("status")
+                    print(
+                        f"[{index}] {run_id} {status} "
+                        f"cost=${float(result.get('cost_usd') or 0):.6f} "
+                        f"elapsed={time.monotonic() - started:.1f}s"
+                        f"{' (attempt ' + str(result.get('attempt') or 1) + ')' if api_retries.get(run_id) else ''}"
+                    )
+                if total_cost(results) >= launch_cap and has_paid_pending:
                     print("STOP: reached 80% cost threshold; no further runs should launch")
+                    future_rows.clear()
                     break
                 if interrupt.interrupted or pause_requested():
                     print("Interrupt/pause detected; not launching additional runs.")
+                    future_rows.clear()
                     break
     finally:
         cleanup_containers()
