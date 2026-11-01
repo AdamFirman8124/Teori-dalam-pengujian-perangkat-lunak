@@ -382,6 +382,7 @@ def run_coverup(row: dict[str, str], output_root: Path) -> dict[str, Any]:
             "RPM_LIMIT": str(load_config()["experiment"].get("rate_limit_rpm", 20)),
         })
         wait_s = _rate_limited()
+        print(f"[{row['run_id']}] CoverUp prompting {row['model_requested']}...", flush=True)
         run = em.run_coverup(
             Path(layout["put"]), tests_dir, work,
             model=transport_model,
@@ -404,6 +405,7 @@ def run_coverup(row: dict[str, str], output_root: Path) -> dict[str, Any]:
         valid = [Path(path) for path in run.generated_tests if em.suite_validity(Path(path))[0]]
         if not valid:
             raise RuntimeError("CoverUp produced no importable test file; refusing to score empty coverage")
+        print(f"[{row['run_id']}] CoverUp evaluating {len(valid)} tests & mutation score...", flush=True)
         evaluated = em.evaluate(
             row["suite"], row["unit_id"], valid, "CoverUp",
             wall_time_s=result["gen_time_s"], cost_usd=result["cost_usd"], workroot=output_root / "work",
@@ -523,6 +525,7 @@ def run_codamosa(row: dict[str, str], output_root: Path) -> dict[str, Any]:
     ]
     t0 = time.monotonic()
     wait_s = _rate_limited()
+    print(f"[{row['run_id']}] CodaMOSA search active in Docker container...", flush=True)
     try:
         completed = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=budget + grace)
         (work / "docker.stdout.log").write_text(completed.stdout or "", encoding="utf-8")
@@ -535,6 +538,7 @@ def run_codamosa(row: dict[str, str], output_root: Path) -> dict[str, Any]:
         valid = [path for path in primary if em.suite_validity(path)[0]]
         if not valid:
             raise RuntimeError("CodaMOSA produced no importable primary test file; refusing to score empty coverage")
+        print(f"[{row['run_id']}] CodaMOSA evaluating {len(valid)} tests & mutation score...", flush=True)
         evaluated = em.evaluate(
             row["suite"], row["unit_id"], valid, "CodaMOSA",
             wall_time_s=time.monotonic() - t0, workroot=output_root / "work",
@@ -583,6 +587,7 @@ def _error_category(exc: Exception) -> str:
 
 
 def run_task(row: dict[str, str], output_root: Path) -> dict[str, Any]:
+    print(f"[{row['run_id']}] START -> Tool: {row['tool']} | Target: {row['suite']}:{row['unit_id']}", flush=True)
     if row["tool"] == "CoverUp":
         return run_coverup(row, output_root)
     if row["tool"] == "CodaMOSA":
