@@ -22,3 +22,9 @@ Catatan:
 - Kolom `model_requested` dan `model_returned` pada `results/results.csv`, `pilot_results.csv`, `run_matrix.csv`, `pilot_matrix.csv` diganti dari `entah/auto`/`auto` menjadi `gpt-5.6-sol` pada 2026-10-27.
 - Nilai asli per panggilan tetap terpelihara di log mentah `results/raw/<run_id>/llm_log.jsonl` (field `returned_model: auto`) dan `results/generated/<run_id>/output/llm_calls.jsonl`; backup pra-relabel tersedia sebagai `*.pre-relabel`.
 - Penghitungan biaya (`cost_usd`) sejak awal memakai harga gpt-5.6-sol (`price_source` di `config/experiment.toml`), jadi relabel ini membuat kolom model konsisten dengan kolom biaya.
+
+## Image Pynguin (2026-10-27, GERBANG 1)
+
+- `img-pynguin:latest` = `python:3.10-slim` + `pynguin==0.47.0` (+ entrypoint menginstal `/package/package.txt` per run, mirip pynguin-docker.sh CodaMOSA).
+- `pynguin --version` → 0.47.0; `--help` jalan tanpa error (syarat GERBANG 1).
+- Adapter: `run_pynguin` (`src/tool_adapters.py`) — DYNAMOSA, `--maximum-search-time 600`, seed per run, `PYNGUIN_DANGER_AWARE`, tanpa LLM (biaya 0, backbone "-").
