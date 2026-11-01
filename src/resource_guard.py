@@ -81,7 +81,8 @@ def plan_workers(
     worker_mb = worker_ram_estimate_mb or parse_memory_mb(worker_memory)
     if worker_mb <= 0:
         worker_mb = 512
-    caps = physical_cpus() if max_workers is None else min(physical_cpus(), max_workers)
+    threads = len(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else (os.cpu_count() or 1)
+    caps = max_workers if max_workers is not None else max(1, threads - 1)
     available = read_mem_available_mb()
     headroom = max(0, available - reserve_mb)
     ram_workers = headroom // worker_mb if worker_mb else 0
