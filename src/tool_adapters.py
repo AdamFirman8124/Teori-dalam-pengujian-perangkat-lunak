@@ -428,9 +428,12 @@ def _filtered_requirements(layout: dict[str, Any], work: Path) -> Path:
     target = work / "package.txt"
     stdlib = getattr(__import__("sys"), "stdlib_module_names", set())
     # Project pins for these packages downgrade Pynguin 0.47.0's own runtime
-    # inside the container (e.g. pytest 7 vs >=8.3.5), breaking the tool before
-    # search starts; the generated tests never import them at analysis time.
-    pynguin_conflicts = {"pytest", "pygments", "setuptools", "wheel", "pip"}
+    # inside the container (e.g. pytest 7 vs >=8.3.5), or require missing native C
+    # headers (pycurl, gssapi) not needed by the specific modules under test.
+    pynguin_conflicts = {
+        "pytest", "pygments", "setuptools", "wheel", "pip",
+        "pycurl", "gssapi", "kerberos", "urllib_gssapi",
+    }
     wanted = []
     if source.is_file():
         for line in source.read_text(encoding="utf-8", errors="replace").splitlines():
