@@ -39,7 +39,8 @@ def main() -> None:
     pilot_matrix = rows(ROOT / "results" / "pilot_matrix.csv")
     full_matrix = rows(ROOT / "results" / "run_matrix.csv")
     pilot_results = rows(ROOT / "results" / "pilot_results.csv")
-    final_results = rows(ROOT / "results" / "results.csv")
+    combined_results_path = ROOT / "results" / "results_combined.csv"
+    final_results = rows(combined_results_path) if combined_results_path.exists() else rows(ROOT / "results" / "results.csv")
     probe_path = ROOT / "results" / "endpoint_probe.json"
     probes = json.loads(probe_path.read_text(encoding="utf-8")) if probe_path.exists() else []
 
