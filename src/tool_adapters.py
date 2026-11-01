@@ -21,11 +21,10 @@ RATE_STATE = ROOT / "results" / "rate_gate.jsonl"
 
 
 def _rate_limited() -> float:
-    config = load_config()["experiment"]
-    rpm = int(config.get("rate_limit_rpm", 0) or 0)
-    if rpm <= 0:
-        return 0.0
-    return acquire(RATE_STATE, rpm)
+    # Rate gating is handled per LLM call inside CoverUp (llm.py)
+    # and CodaMOSA (model.py). Calling acquire() here at the task level
+    # creates an exclusive lock deadlock against child processes.
+    return 0.0
 
 
 def _secret_env(backbone: str) -> tuple[str, str, dict[str, Any]]:
@@ -379,7 +378,7 @@ def run_coverup(row: dict[str, str], output_root: Path) -> dict[str, Any]:
             "LLM_PROXY_RUN_ID": row["run_id"],
             "FLAKY_REPEATS": str(load_config()["experiment"]["flaky_repetitions"]),
             "RPM_GATE_STATE": str((ROOT / "results" / "rate_gate.jsonl").resolve()),
-            "RPM_LIMIT": str(load_config()["experiment"].get("rate_limit_rpm", 20)),
+            "RPM_LIMIT": str(load_config()["experiment"].get("rate_limit_rpm", 50)),
         })
         wait_s = _rate_limited()
         print(f"[{row['run_id']}] CoverUp prompting {row['model_requested']}...", flush=True)
