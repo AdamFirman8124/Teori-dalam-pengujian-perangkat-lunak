@@ -208,7 +208,7 @@ def main() -> int:
     pilot_started = ROOT / "results" / "pilot_started_at.txt"
     if args.pilot and not pilot_started.exists():
         pilot_started.write_text(datetime.now(timezone.utc).isoformat(), encoding="utf-8")
-    if pilot_started.exists():
+    if args.pilot and pilot_started.exists():
         start = datetime.fromisoformat(pilot_started.read_text(encoding="utf-8").strip())
         elapsed_days = (datetime.now(timezone.utc) - start).total_seconds() / 86400
         elapsed_launch_cap = float(experiment["elapsed_cap_days"]) * float(experiment["stop_launch_fraction"])
