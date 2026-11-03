@@ -5,36 +5,45 @@
 from f117 import select_words
 
 
-def test_select_words_basic_n4():
-    # Mary=3 (M,r,y), had=2, a=0, little=4, lamb=3
+def test_select_words_empty_string():
+    """Empty input: the outer loop never runs, result stays empty."""
+    assert select_words("", 0) == []
+    assert select_words("", 3) == []
+
+
+def test_select_words_basic_match():
+    """Words whose consonant count equals n are selected."""
     assert select_words("Mary had a little lamb", 4) == ["little"]
-
-
-def test_select_words_basic_n3():
     assert select_words("Mary had a little lamb", 3) == ["Mary", "lamb"]
 
 
-def test_select_words_empty_string():
-    assert select_words("", 4) == []
-
-
 def test_select_words_no_match():
-    assert select_words("simple little time", 1) == []
+    """No word has exactly n consonants -> empty result."""
+    assert select_words("simple white space", 2) == []
 
 
 def test_select_words_case_insensitive_vowels():
-    # 'E' lowered is a vowel, so bEd has 2 consonants
-    assert select_words("bEd", 2) == ["bEd"]
+    """Uppercase vowels are excluded from the consonant count too."""
+    assert select_words("AEIOU aeiou", 0) == ["AEIOU", "aeiou"]
 
 
-def test_select_words_multiple_matches_and_order():
-    # uncle=3, our=1, who=2, used=2
-    assert select_words("uncle our who used", 2) == ["who", "used"]
+def test_select_words_mixed_case():
+    """Mixed-case words count consonants case-insensitively."""
+    assert select_words("Hello World", 4) == ["World"]
+    assert select_words("Hello World", 3) == ["Hello"]
+
+
+def test_select_words_punctuation_counts_as_consonant():
+    """Non-alphabetic characters are treated as consonants."""
+    assert select_words("a!b", 2) == ["a!b"]
+    assert select_words("a!b", 1) == []
 
 
 def test_select_words_zero_consonants():
-    assert select_words("aeiou hello", 0) == ["aeiou"]
+    """Words made only of vowels match n=0."""
+    assert select_words("a e i o u xyz", 0) == ["a", "e", "i", "o", "u"]
 
 
-def test_select_words_whitespace_splitting():
-    assert select_words("  cat\tdog  ", 2) == ["cat", "dog"]
+def test_select_words_multiple_matches_preserve_order():
+    """Matches are appended in order of appearance."""
+    assert select_words("uncle andy", 3) == ["uncle", "andy"]

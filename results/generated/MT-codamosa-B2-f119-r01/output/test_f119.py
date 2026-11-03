@@ -7,19 +7,124 @@ def test_case_0():
     str_2 = [str_0, str_1]
     var_0 = module_0.match_parens(str_2)
     assert var_0 == 'Yes'
+    str_3 = [str_1, str_1]
+    var_1 = module_0.match_parens(str_3)
+    assert var_1 == 'No'
+    str_4 = '('
+    str_5 = [str_4, str_1]
+    var_2 = module_0.match_parens(str_5)
+    assert var_2 == 'Yes'
+    str_6 = [str_1, str_4]
+    var_3 = module_0.match_parens(str_6)
+    assert var_3 == 'Yes'
+    str_7 = '()'
+    str_8 = [str_7, str_7]
+    var_4 = module_0.match_parens(str_8)
+    assert var_4 == 'Yes'
+    str_9 = '(())'
+    str_10 = [str_9, str_7]
+    var_5 = module_0.match_parens(str_10)
+    assert var_5 == 'Yes'
+    str_11 = ')('
+    str_12 = [str_11, str_7]
+    var_6 = module_0.match_parens(str_12)
+    assert var_6 == 'Yes'
+    assert var_6 == 'No'
+    str_13 = [str_7, str_1]
+    var_7 = module_0.match_parens(str_13)
+    assert var_7 == 'No'
+    str_14 = '))'
+    str_15 = '(('
+    str_16 = [str_14, str_15]
+    var_8 = module_0.match_parens(str_16)
+    assert var_8 == 'No'
+    assert var_8 == 'Yes'
+    str_17 = '(()'
+    str_18 = ')))'
+    str_19 = [str_17, str_18]
+    var_9 = module_0.match_parens(str_19)
+    assert var_9 == 'No'
+    str_20 = ''
+    str_21 = [str_20, str_20]
+    var_10 = module_0.match_parens(str_21)
+    assert var_10 == 'Yes'
+    str_22 = [str_20, str_7]
+    var_11 = module_0.match_parens(str_22)
+    assert var_11 == 'Yes'
+    str_23 = [str_20, str_1]
+    var_12 = module_0.match_parens(str_23)
+    assert var_12 == 'No'
+    str_24 = 'All tests passed!'
+    var_13 = print(str_24)
 
 def test_case_1():
     str_0 = '()('
-    str_1 = [str_0, str_0]
-    var_0 = module_0.match_parens(str_1)
-    assert var_0 == 'No'
-
-def test_case_2():
-    str_0 = '%[c0-vH|sSt4bMTw|)D'
-    var_0 = module_0.match_parens(str_0)
-    assert var_0 == 'No'
-
-def test_case_3():
-    str_0 = 'n(\noqF\nKQ-hu@)PAXJ'
-    var_0 = module_0.match_parens(str_0)
+    str_1 = ')'
+    str_2 = [str_0, str_1]
+    var_0 = module_0.match_parens(str_2)
     assert var_0 == 'Yes'
+    str_3 = [str_1, str_1]
+    var_1 = module_0.match_parens(str_3)
+    assert var_1 == 'No'
+    str_4 = '()'
+    str_5 = [str_4, str_4]
+    var_2 = module_0.match_parens(str_5)
+    assert var_2 == 'Yes'
+    str_6 = '()()'
+    str_7 = [str_4, str_6]
+    var_3 = module_0.match_parens(str_7)
+    assert var_3 == 'Yes'
+    str_8 = '('
+    str_9 = [str_8, str_1]
+    var_4 = module_0.match_parens(str_9)
+    assert var_4 == 'Yes'
+    str_10 = [str_1, str_8]
+    var_5 = module_0.match_parens(str_10)
+    assert var_5 == 'No'
+    assert var_5 == 'Yes'
+    str_11 = '(('
+    str_12 = '))'
+    str_13 = [str_11, str_12]
+    var_6 = module_0.match_parens(str_13)
+    assert var_6 == 'Yes'
+    str_14 = [str_12, str_11]
+    var_7 = module_0.match_parens(str_14)
+    assert var_7 == 'Yes'
+    str_15 = '(()'
+    str_16 = [str_15, str_12]
+    var_8 = module_0.match_parens(str_16)
+    assert var_8 == 'Yes'
+    assert var_8 == 'No'
+    str_17 = [str_12, str_15]
+    var_9 = module_0.match_parens(str_17)
+    assert var_9 == 'No'
+    str_18 = '(())'
+    str_19 = [str_18, str_4]
+    var_10 = module_0.match_parens(str_19)
+    assert var_10 == 'Yes'
+    str_20 = '(()))'
+    str_21 = [str_20, str_15]
+    var_11 = module_0.match_parens(str_21)
+    assert var_11 == 'Yes'
+    str_22 = [str_4, str_1]
+    var_12 = module_0.match_parens(str_22)
+    assert var_12 == 'No'
+    str_23 = [str_8, str_8]
+    var_13 = module_0.match_parens(str_23)
+    assert var_13 == 'No'
+    str_24 = [str_12, str_12]
+    var_14 = module_0.match_parens(str_24)
+    assert var_14 == 'No'
+    str_25 = ''
+    str_26 = [str_25, str_8]
+    var_15 = module_0.match_parens(str_26)
+    assert var_15 == 'No'
+    str_27 = [str_25, str_25]
+    var_16 = module_0.match_parens(str_27)
+    assert var_16 == 'Yes'
+    str_28 = [str_25, str_4]
+    var_17 = module_0.match_parens(str_28)
+    assert var_17 == 'Yes'
+    str_29 = [str_4, str_25]
+    var_18 = module_0.match_parens(str_29)
+    assert var_18 == 'Yes'

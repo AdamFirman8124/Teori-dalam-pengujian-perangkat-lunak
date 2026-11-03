@@ -7,36 +7,28 @@ import pytest
 from f035 import max_element
 
 
-def test_max_element_max_in_middle_or_end():
-    """Covers lines 3-7 including the branch where e > m is True."""
-    result = max_element([1, 5, 3, 2])
-    assert result == 5
+def test_max_element_first_is_max():
+    """Covers lines 3-5 (False branch of `if e > m`) and line 7:
+    the first element is already the maximum, so line 6 never runs."""
+    assert max_element([3, 2, 1]) == 3
 
 
-def test_max_element_max_is_first_element():
-    """Covers the branch where e > m is never True (max is l[0])."""
-    result = max_element([9, 1, 2, 3])
-    assert result == 9
+def test_max_element_later_is_max():
+    """Covers lines 3-7 including the True branch of `if e > m` (line 6):
+    a later element replaces the running maximum."""
+    assert max_element([1, 5, 3]) == 5
 
 
 def test_max_element_single_element():
-    """Covers loop with a single element (loop body executes once, branch False)."""
-    result = max_element([42])
-    assert result == 42
+    """Covers the loop body executing exactly once with the False branch."""
+    assert max_element([7]) == 7
 
 
 def test_max_element_with_duplicates():
-    """Duplicates never trigger the e > m branch for equal values."""
-    result = max_element([7, 7, 7])
-    assert result == 7
+    """Duplicates exercise both branches of the comparison across iterations."""
+    assert max_element([2, 2, 3, 3, 1]) == 3
 
 
 def test_max_element_negative_numbers():
-    result = max_element([-10, -3, -50])
-    assert result == -3
-
-
-def test_max_element_empty_list_raises():
-    """l[0] on an empty list raises IndexError; no state to pollute."""
-    with pytest.raises(IndexError):
-        max_element([])
+    """Works correctly with all-negative values (max is the least negative)."""
+    assert max_element([-5, -1, -3]) == -1

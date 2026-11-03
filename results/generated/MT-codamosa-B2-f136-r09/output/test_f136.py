@@ -2,9 +2,46 @@
 import f136 as module_0
 
 def test_case_0():
-    pass
-
-def test_case_1():
-    set_0 = set()
-    var_0 = module_0.largest_smallest_integers(set_0)
-    assert var_0 == (None, None)
+    int_0 = 2
+    int_1 = -4
+    int_2 = 1
+    int_3 = -7
+    int_4 = 5
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    var_0 = module_0.largest_smallest_integers(int_5)
+    assert var_0 == (-4, 1)
+    int_6 = -3
+    int_7 = -1
+    int_8 = -5
+    int_9 = [int_6, int_7, int_8]
+    var_1 = module_0.largest_smallest_integers(int_9)
+    assert var_1 == (-1, None)
+    int_10 = 3
+    int_11 = [int_10, int_2, int_4]
+    var_2 = module_0.largest_smallest_integers(int_11)
+    assert var_2 == (None, 1)
+    var_3 = []
+    var_4 = module_0.largest_smallest_integers(var_3)
+    assert var_4 == (None, None)
+    int_12 = 0
+    int_13 = [int_12, int_12, int_12]
+    var_5 = module_0.largest_smallest_integers(int_13)
+    assert var_5 == (None, None)
+    int_14 = -5
+    int_15 = [int_14]
+    var_6 = module_0.largest_smallest_integers(int_15)
+    assert var_6 == (-5, None)
+    int_16 = [int_4]
+    var_7 = module_0.largest_smallest_integers(int_16)
+    assert var_7 == (None, 5)
+    int_17 = -2
+    int_18 = [int_12, int_17, int_12, int_10]
+    var_8 = module_0.largest_smallest_integers(int_18)
+    assert var_8 == (-2, 3)
+    int_19 = -1
+    int_20 = -1
+    int_21 = [int_19, int_20, int_0, int_0]
+    var_9 = module_0.largest_smallest_integers(int_21)
+    assert var_9 == (-1, 2)
+    str_0 = 'All tests passed!'
+    var_10 = print(str_0)

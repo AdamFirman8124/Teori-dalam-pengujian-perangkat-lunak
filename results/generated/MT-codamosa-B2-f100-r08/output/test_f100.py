@@ -2,26 +2,25 @@
 import f100 as module_0
 
 def test_case_0():
-    int_0 = 1
+    int_0 = 3
     var_0 = module_0.make_a_pile(int_0)
-    assert var_0 == [1]
-    int_1 = 2
+    assert var_0 == [3, 5, 7]
+    int_1 = 1
     var_1 = module_0.make_a_pile(int_1)
-    assert var_1 == [2, 4]
-    int_2 = 3
+    assert var_1 == [1]
+    int_2 = 0
     var_2 = module_0.make_a_pile(int_2)
-    assert var_2 == [3, 5, 7]
+    assert var_2 == []
     int_3 = 5
     var_3 = module_0.make_a_pile(int_3)
     assert var_3 == [5, 7, 9, 11, 13]
-    int_4 = 10
+    int_4 = 4
     var_4 = module_0.make_a_pile(int_4)
-    assert var_4 == [10, 12, 14, 16, 18, 20, 22, 24, 26, 28]
+    assert var_4 == [4, 6, 8, 10]
     var_5 = len(var_4)
-    assert var_5 == 10
-    int_5 = 0
-    var_6 = module_0.make_a_pile(int_4)[int_5]
-    assert var_6 == 10
-    int_6 = -1
-    var_7 = module_0.make_a_pile(int_4)[int_6]
-    assert var_7 == 28
+    var_6 = var_5 - int_1
+    var_7 = range(var_6)
+    int_5 = 6
+    var_8 = module_0.make_a_pile(int_5)
+    assert var_8 == [6, 8, 10, 12, 14, 16]
+    var_9 = len(var_8)

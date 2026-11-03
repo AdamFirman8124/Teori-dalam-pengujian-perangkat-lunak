@@ -2,6 +2,25 @@
 import f142 as module_0
 
 def test_case_0():
-    bytes_0 = b'b\x19\x7f{7\x15\xd1\x07\xe7AMWD\xe2\x14kl\xc2c'
-    var_0 = module_0.sum_squares(bytes_0)
-    assert var_0 == 13851775
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = 4
+    int_4 = 5
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    var_0 = module_0.sum_squares(int_5)
+    assert var_0 == 147
+    var_1 = []
+    var_2 = module_0.sum_squares(var_1)
+    assert var_2 == 0
+    int_6 = -2
+    int_7 = [int_6]
+    var_3 = module_0.sum_squares(int_7)
+    assert var_3 == 4
+    int_8 = -1
+    int_9 = -2
+    int_10 = 6
+    int_11 = 7
+    int_12 = [int_8, int_9, int_2, int_3, int_4, int_10, int_11]
+    var_4 = module_0.sum_squares(int_12)
+    assert var_4 == 198

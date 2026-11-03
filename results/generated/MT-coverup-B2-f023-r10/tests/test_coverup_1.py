@@ -5,31 +5,9 @@
 from f023 import strlen
 
 
-def test_strlen_empty_string():
-    result = strlen("")
-    assert result == 0
-    assert isinstance(result, int)
-
-
-def test_strlen_single_character():
-    result = strlen("a")
-    assert result == 1
-    assert isinstance(result, int)
-
-
-def test_strlen_typical_string():
-    result = strlen("hello")
-    assert result == 5
-    assert isinstance(result, int)
-
-
-def test_strlen_string_with_spaces_and_punctuation():
-    result = strlen("hello world!")
-    assert result == 12
-    assert isinstance(result, int)
-
-
-def test_strlen_unicode_string():
-    result = strlen("héllo")
-    assert result == 5
-    assert isinstance(result, int)
+def test_strlen_returns_length_of_string():
+    # Calling strlen executes line 3: `return len(string)`
+    assert strlen("hello") == 5
+    assert strlen("") == 0
+    assert strlen("a b c") == 5
+    assert strlen("héllo") == 5

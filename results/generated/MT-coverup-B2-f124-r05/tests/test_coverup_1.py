@@ -7,74 +7,45 @@ import pytest
 from f124 import valid_date
 
 
-def test_valid_date_31_day_month_valid():
-    # Exercises lines 3-6 (parse), line 9 False branch, line 18 (return True).
-    # NOTE: due to operator precedence in the source, days 30/31 in any month
-    # are rejected by the later checks, so 29 is the max accepted day.
-    assert valid_date("01-29-2020") is True
+def test_valid_dates_return_true():
+    # Exercises lines 3-6 (try, strip, split, int conversion) and line 18 (return True)
+    assert valid_date("03-11-1948") is True
+    assert valid_date(" 06-04-2020 ") is True  # leading/trailing whitespace exercises strip()
+    assert valid_date("02-29-2020") is True    # Feb 29 passes (day <= 29)
 
 
-def test_valid_date_strips_whitespace():
-    # Exercises line 4 (strip) plus the success path
-    assert valid_date("  06-29-2021  ") is True
+def test_month_out_of_range_returns_false():
+    # Exercises lines 7-8, both disjuncts of the condition
+    assert valid_date("00-15-2023") is False   # month < 1
+    assert valid_date("13-15-2023") is False   # month > 12
 
 
-def test_valid_date_month_out_of_range_low():
-    # Exercises lines 7-8 (month < 1)
-    assert valid_date("0-15-2020") is False
+def test_31_day_months_bad_day_returns_false():
+    # Exercises lines 9-10, both disjuncts of the condition
+    assert valid_date("01-00-2023") is False   # month in 31-day list and day < 1
+    assert valid_date("04-32-2023") is False   # day > 31 (month not in 31-day list)
 
 
-def test_valid_date_month_out_of_range_high():
-    # Exercises lines 7-8 (month > 12)
-    assert valid_date("13-15-2020") is False
+def test_30_day_months_bad_day_returns_false():
+    # Exercises lines 11-12, both disjuncts of the condition
+    assert valid_date("04-00-2023") is False   # month in 30-day list and day < 1
+    assert valid_date("02-31-2023") is False   # day > 30 (month not in 30-day list)
 
 
-def test_valid_date_31_day_month_day_too_large():
-    # Exercises lines 9-10 (day > 31 for a 31-day month)
-    assert valid_date("1-32-2020") is False
+def test_february_bad_day_returns_false():
+    # Exercises lines 13-14, both disjuncts of the condition
+    assert valid_date("02-00-2023") is False   # month == 2 and day < 1
+    assert valid_date("02-30-2023") is False   # day > 29 (but not > 30, so line 11 passes)
 
 
-def test_valid_date_31_day_month_day_31_rejected():
-    # Due to operator precedence, day=31 in a 31-day month is rejected
-    # by the day > 30 check on line 11 instead
-    assert valid_date("1-31-2020") is False
+def test_malformed_input_returns_false():
+    # Exercises lines 15-16 (except -> return False)
+    assert valid_date("01-ab-2023") is False        # int() raises ValueError
+    assert valid_date("01-15") is False             # too few '-'-separated parts
+    assert valid_date("01-15-2023-extra") is False  # too many parts
 
 
-def test_valid_date_30_day_month_day_31_rejected():
-    # Exercises lines 11-12 (day > 30 for a 30-day month)
-    assert valid_date("4-31-2020") is False
-
-
-def test_valid_date_30_day_month_valid():
-    # Exercises line 11 False branch
-    assert valid_date("4-29-2020") is True
-
-
-def test_valid_date_february_day_29_valid():
-    # Exercises line 13 False branch
-    assert valid_date("2-29-2020") is True
-
-
-def test_valid_date_february_day_too_large():
-    # Exercises lines 13-14 (day > 29)
-    assert valid_date("2-30-2020") is False
-
-
-def test_valid_date_day_zero_rejected():
-    # Exercises the day < 1 branch of line 9 (31-day month, day=0)
-    assert valid_date("1-0-2020") is False
-
-
-def test_valid_date_exception_bad_format():
-    # Exercises lines 15-16 (except -> return False): split produces wrong arity
-    assert valid_date("1-2020") is False
-
-
-def test_valid_date_exception_non_numeric():
-    # Exercises lines 15-16 via int() raising ValueError
-    assert valid_date("aa-bb-cccc") is False
-
-
-def test_valid_date_exception_non_string():
-    # Exercises lines 15-16 via .strip() raising AttributeError
+def test_non_string_input_returns_false():
+    # .strip() raises AttributeError, caught by the bare except
     assert valid_date(None) is False
+    assert valid_date(123) is False

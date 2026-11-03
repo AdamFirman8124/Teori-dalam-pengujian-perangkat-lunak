@@ -7,55 +7,56 @@ import pytest
 from f140 import fix_spaces
 
 
-def test_no_spaces():
-    assert fix_spaces("abc") == "abc"
+# fix_spaces is a pure function (no I/O, no globals, no side effects),
+# so no monkeypatching/cleanup is required to avoid state pollution.
 
 
-def test_empty_string():
-    assert fix_spaces("") == ""
+@pytest.mark.parametrize(
+    "text, expected",
+    [
+        # Empty input: while-loop body never runs, no trailing branch taken.
+        ("", ""),
+        # No spaces at all: covers inner else (line 15) and no trailing branch.
+        ("abc", "abc"),
+        # Single space before a char: covers inner elif end-start > 0 (lines 12-13).
+        ("a b", "a_b"),
+        # Two spaces before a char: covers inner elif end-start > 0 (lines 12-13).
+        ("a  b", "a__b"),
+        # Three spaces before a char: covers inner if end-start > 2 (lines 10-11).
+        ("a   b", "a-b"),
+        # Leading spaces: spaces counted from the initial start=0.
+        ("  a", "__a"),
+        # Trailing single space: covers outer elif end-start > 0 (lines 20-21);
+        # the function appends exactly one "_" on the trailing branch.
+        ("a ", "a_"),
+        # Trailing two spaces: end-start == 2, so still the outer elif branch
+        # (lines 20-21), which appends only a single "_".
+        ("a  ", "a_"),
+        # Trailing three spaces: end-start == 3, covers outer if end-start > 2
+        # (lines 18-19), which appends "-".
+        ("a   ", "a-"),
+        # Only spaces: covers outer if end-start > 2 (lines 18-19).
+        ("   ", "-"),
+        # Single space only: covers outer elif end-start > 0 (lines 20-21).
+        (" ", "_"),
+        # Mixed run lengths in one string: exercises all inner branches together.
+        ("a b  c   d", "a_b__c-d"),
+    ],
+)
+def test_fix_spaces(text, expected):
+    assert fix_spaces(text) == expected
 
 
-def test_single_space_replaced_with_underscore():
-    assert fix_spaces("a b") == "a_b"
+def test_fix_spaces_returns_new_string():
+    # Postcondition: a new string object is returned, input is not mutated.
+    text = "a   b"
+    result = fix_spaces(text)
+    assert result == "a-b"
+    assert result is not text
+    assert text == "a   b"
 
 
-def test_two_spaces_replaced_with_two_underscores():
-    assert fix_spaces("a  b") == "a__b"
-
-
-def test_three_spaces_replaced_with_dash():
-    assert fix_spaces("a   b") == "a-b"
-
-
-def test_many_spaces_replaced_with_single_dash():
-    assert fix_spaces("a     b") == "a-b"
-
-
-def test_multiple_space_groups():
-    assert fix_spaces("a b   c  d") == "a_b-c__d"
-
-
-def test_trailing_single_space():
-    assert fix_spaces("a ") == "a_"
-
-
-def test_trailing_two_spaces():
-    # trailing runs collapse to a single "_" regardless of length 1 or 2
-    assert fix_spaces("a  ") == "a_"
-
-
-def test_trailing_three_spaces():
-    assert fix_spaces("a   ") == "a-"
-
-
-def test_trailing_many_spaces():
-    assert fix_spaces("a      ") == "a-"
-
-
-def test_leading_spaces():
-    assert fix_spaces("   a") == "-a"
-
-
-def test_only_spaces():
-    # trailing run of 2 spaces collapses to a single "_"
-    assert fix_spaces("  ") == "_"
+def test_fix_spaces_result_type():
+    # Postcondition: result is always a str, even for empty input.
+    assert isinstance(fix_spaces(""), str)
+    assert isinstance(fix_spaces("x y"), str)

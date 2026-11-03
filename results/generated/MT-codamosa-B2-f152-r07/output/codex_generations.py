@@ -1,94 +1,116 @@
 
 
-# Generated at 2026-10-24 14:49:13.904439
+# Generated at 2026-11-03 03:46:31.915366
 # Unit test for function compare
 def test_compare():
-    # Exact matches -> 0
+    # Typical case: guesses differ from game scores
+    assert module_0.compare([1, 2, 3, 4, 5, 1], [1, 1, 1, 1, 1, 1]) == [0, 1, 2, 3, 4, 0]
+    # All guesses are zero
+    assert module_0.compare([1, 2, 3, 4, 5, 1], [0, 0, 0, 0, 0, 0]) == [1, 2, 3, 4, 5, 1]
+    # Mixed exact and off-by-one guesses
+    assert module_0.compare([1, 2, 3, 4, 5, 1], [2, 2, 2, 2, 2, 2]) == [1, 0, 1, 2, 3, 1]
+    # Perfect match
+    assert module_0.compare([5, 5, 5], [5, 5, 5]) == [0, 0, 0]
+    # Empty lists
+    assert module_0.compare([], []) == []
+    # Single element lists
+    assert module_0.compare([0], [0]) == [0]
+    assert module_0.compare([10], [0]) == [10]
+    # Negative numbers
+    assert module_0.compare([-1, -2], [1, 2]) == [2, 4]
+    # Order of subtraction doesn't matter (absolute value)
+    assert module_0.compare([3, 7], [7, 3]) == [4, 4]
+    print("All tests passed!")
+
+test_compare()
+
+# Generated at 2026-11-03 03:47:34.774169
+# Unit test for function compare
+def test_compare():
+    # nonce:ab0f5288
+    assert module_0.compare([1, 2, 3, 4, 5, 1], [1, 2, 3, 4, 2, -2]) == [0, 0, 0, 0, 3, 3]
+    assert module_0.compare([0, 5, 0, 5, 0, 5], [0, 5, 0, 5, 0, 5]) == [0, 0, 0, 0, 0, 0]
+    assert module_0.compare([1, 2, 3], [4, 5, 6]) == [3, 3, 3]
+    assert module_0.compare([0, 0, 0], [0, 0, 0]) == [0, 0, 0]
+    assert module_0.compare([10], [3]) == [7]
+    assert module_0.compare([-1, -2], [-4, -5]) == [3, 3]
+
+# Generated at 2026-11-03 03:49:44.925723
+# Unit test for function compare
+def test_compare():
+    # Test with identical lists
     assert module_0.compare([1, 2, 3], [1, 2, 3]) == [0, 0, 0]
 
-    # All wrong -> absolute differences
+    # Test with different lists
     assert module_0.compare([1, 2, 3], [4, 5, 6]) == [3, 3, 3]
 
-    # Mixed hits and misses
-    assert module_0.compare([1, 2, 3, 4], [1, 2, 3, -4]) == [0, 0, 0, 8]
+    # Test with mixed differences
+    assert module_0.compare([1, 5, 3], [4, 2, 3]) == [3, 3, 0]
 
-    # Negative numbers
-    assert module_0.compare([-1, -2, -3], [-1, -2, -4]) == [0, 0, 1]
-
-    # Empty input -> empty output
+    # Test with empty lists
     assert module_0.compare([], []) == []
 
-    # Unequal lengths raise no error with zip, but should be tested intentionally
-    assert module_0.compare([1, 2], [1]) == [0]  # zip truncates â document this behavior
+    # Test with negative numbers
+    assert module_0.compare([-1, -2, -3], [-4, -5, -6]) == [3, 3, 3]
+
+    # Test with mixed positive and negative numbers
+    assert module_0.compare([-1, 2, -3], [1, -2, 3]) == [2, 4, 6]
+
+    # Test with single element lists
+    assert module_0.compare([0], [0]) == [0]
+    assert module_0.compare([0], [10]) == [10]
+
+    # Test with larger lists
+    assert module_0.compare([1, 2, 3, 4, 5], [5, 4, 3, 2, 1]) == [4, 2, 0, 2, 4]
+
+    # Test with zeros
+    assert module_0.compare([0, 0, 0], [0, 0, 0]) == [0, 0, 0]
+
+    # Test with floats
+    assert module_0.compare([1.5, 2.5], [1.0, 3.0]) == [0.5, 0.5]
 
     print("All tests passed!")
 
 test_compare()
 
-# Generated at 2026-10-24 14:49:15.220837
+# Generated at 2026-11-03 03:51:36.441360
 # Unit test for function compare
 def test_compare():
-    # Exact matches -> 0
+    # All guesses exactly correct
     assert module_0.compare([1, 2, 3], [1, 2, 3]) == [0, 0, 0]
 
-    # All wrong -> absolute differences
+    # All guesses wrong with same difference
     assert module_0.compare([1, 2, 3], [4, 5, 6]) == [3, 3, 3]
 
-    # Mixed hits and misses
-    assert module_0.compare([1, 2, 3, 4], [1, 2, 3, -4]) == [0, 0, 0, 8]
+    # Mixed differences including negative guess values
+    assert module_0.compare([1, 2, 3, 4, 5, 1], [1, 2, 3, 4, 2, -2]) == [0, 0, 0, 0, 3, 3]
 
-    # Negative numbers
-    assert module_0.compare([-1, -2, -3], [-1, -2, -4]) == [0, 0, 1]
+    # Negative numbers in both lists
+    assert module_0.compare([-1, -2, -3], [-4, -5, -6]) == [3, 3, 3]
 
-    # Empty input -> empty output
+    # Single element lists
+    assert module_0.compare([0], [5]) == [5]
+    assert module_0.compare([5], [0]) == [5]
+
+    # Empty lists
     assert module_0.compare([], []) == []
 
-    # Unequal lengths raise no error with zip, but should be tested intentionally
-    assert module_0.compare([1, 2], [1]) == [0]  # zip truncates â document this behavior
+    # Float values
+    assert module_0.compare([1.5, 2.5], [2.0, 1.0]) == [0.5, 1.5]
+
+    # Order of arguments does not affect absolute difference
+    assert module_0.compare([10, 20], [1, 2]) == module_0.compare([1, 2], [10, 20])
 
     print("All tests passed!")
 
-test_compare()
-
-# Generated at 2026-10-24 14:49:16.603282
+# Generated at 2026-11-03 03:54:12.091947
 # Unit test for function compare
 def test_compare():
-    # Exact matches -> 0
     assert module_0.compare([1, 2, 3], [1, 2, 3]) == [0, 0, 0]
-
-    # All wrong -> absolute differences
     assert module_0.compare([1, 2, 3], [4, 5, 6]) == [3, 3, 3]
-
-    # Mixed hits and misses
-    assert module_0.compare([1, 2, 3, 4], [1, 2, 3, -4]) == [0, 0, 0, 8]
-
-    # Negative numbers
-    assert module_0.compare([-1, -2, -3], [-1, -2, -4]) == [0, 0, 1]
-
-    # Empty input -> empty output
+    assert module_0.compare([0, 0, 0], [0, 0, 0]) == [0, 0, 0]
+    assert module_0.compare([-1, -2, -3], [1, 2, 3]) == [2, 4, 6]
+    assert module_0.compare([10, 20, 30], [30, 20, 10]) == [20, 0, 20]
+    assert module_0.compare([5], [3]) == [2]
     assert module_0.compare([], []) == []
-
-    # Unequal lengths raise no error with zip, but should be tested intentionally
-    assert module_0.compare([1, 2], [1]) == [0]  # zip truncates â document this behavior
-
-    print("All tests passed!")
-
-test_compare()
-
-# Generated at 2026-10-24 14:49:19.019149
-# Unit test for function compare
-
-# Generated at 2026-10-24 14:49:21.539545
-# Unit test for function compare
-
-# Generated at 2026-10-24 14:49:24.054380
-# Unit test for function compare
-
-# Generated at 2026-10-24 14:49:26.467266
-# Unit test for function compare
-
-# Generated at 2026-10-24 14:49:28.881129
-# Unit test for function compare
-
-# Generated at 2026-10-24 14:49:31.293891
-# Unit test for function compare
+    assert module_0.compare([2, 4, 6], [1, 2, 3]) == [1, 2, 3]

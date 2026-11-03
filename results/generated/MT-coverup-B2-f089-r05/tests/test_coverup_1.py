@@ -8,26 +8,32 @@ from f089 import encrypt
 
 
 def test_encrypt_shifts_lowercase_letters():
-    # 'a' -> 'e', 'b' -> 'f' (shift of 2*2 = 4)
-    assert encrypt("ab") == "ef"
+    # Each lowercase letter is shifted forward by 4 positions.
+    assert encrypt('abcd') == 'efgh'
+    assert encrypt('hello') == 'lipps'
 
 
 def test_encrypt_wraps_around_alphabet():
-    # 'w' + 4 -> wraps to 'a', 'z' + 4 -> 'd'
-    assert encrypt("wxyz") == "abcd"
+    # 'w' -> 'a', 'x' -> 'b', 'y' -> 'c', 'z' -> 'd' (mod 26 wrap-around).
+    assert encrypt('wxyz') == 'abcd'
+    assert encrypt('z') == 'd'
 
 
 def test_encrypt_leaves_non_letters_unchanged():
-    # Digits, punctuation, uppercase, and spaces hit the else branch
-    assert encrypt("a1B c!") == "e1B g!"
+    # Characters not in the alphabet are appended as-is (else branch).
+    assert encrypt('a1b2!') == 'e1f2!'
+    assert encrypt('HELLO, World!') == 'HELLO, Wsvph!'
+    assert encrypt(' ') == ' '
 
 
 def test_encrypt_empty_string():
-    # Loop body never executes; still returns empty string
-    assert encrypt("") == ""
+    # Loop body never executes; result is the initial empty string.
+    assert encrypt('') == ''
 
 
-def test_encrypt_full_alphabet():
-    plain = "abcdefghijklmnopqrstuvwxyz"
-    expected = "efghijklmnopqrstuvwxyzabcd"
-    assert encrypt(plain) == expected
+def test_encrypt_mixed_content_roundtrip_shape():
+    # Combined coverage of both branches in a single call.
+    result = encrypt('attack at dawn!')
+    assert result == 'exxego ex hear!'
+    assert len(result) == len('attack at dawn!')
+    assert all(ch == '!' for ch in result if not ch.isalpha() and ch != ' ')

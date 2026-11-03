@@ -1,110 +1,165 @@
 
 
-# Generated at 2026-10-24 19:49:37.974027
+# Generated at 2026-11-03 03:26:45.996974
 # Unit test for function string_xor
 def test_string_xor():
-    # Basic cases
+    # Basic XOR cases
     assert module_0.string_xor('010', '110') == '100'
-    assert module_0.string_xor('1010', '0110') == '1100'
+    assert module_0.string_xor('111', '000') == '111'
+    assert module_0.string_xor('1010', '1011') == '0001'
 
-    # Identical strings -> all zeros
-    assert module_0.string_xor('1111', '1111') == '0000'
-    assert module_0.string_xor('0000', '0000') == '0000'
+    # Same strings result in all zeros
+    assert module_0.string_xor('1010', '1010') == '0000'
+    assert module_0.string_xor('000', '000') == '000'
 
-    # Complementary strings -> all ones
+    # Complementary strings result in all ones
     assert module_0.string_xor('1010', '0101') == '1111'
 
-    # Single character
+    # Single character cases
+    assert module_0.string_xor('0', '0') == '0'
     assert module_0.string_xor('0', '1') == '1'
+    assert module_0.string_xor('1', '0') == '1'
     assert module_0.string_xor('1', '1') == '0'
 
     # Empty strings
     assert module_0.string_xor('', '') == ''
 
-    # Property check: xor is its own inverse
-    a, b = '1101001', '0010110'
-    assert module_0.string_xor(module_0.string_xor(a, b), b) == a
+    # Different lengths: zip truncates to the shorter length
+    assert module_0.string_xor('1101', '10') == '01'
+
+    # Longer strings
+    assert module_0.string_xor('11110000', '10101010') == '01011010'
 
     print("All tests passed!")
 
 
-test_string_xor()
+if __name__ == "__main__":
+    test_string_xor()
 
-# Generated at 2026-10-24 19:49:40.523450
-# Unit test for function string_xor
-
-# Generated at 2026-10-24 19:49:42.939541
-# Unit test for function string_xor
-
-# Generated at 2026-10-24 19:49:45.367737
-# Unit test for function string_xor
-
-# Generated at 2026-10-24 19:49:47.788596
-# Unit test for function string_xor
-
-# Generated at 2026-10-24 19:49:50.206353
-# Unit test for function string_xor
-
-# Generated at 2026-10-24 19:49:56.588521
-# Unit test for function string_xor
-def test_string_xor():assert module_0.string_xor("0101", "1100") == "1001"
-
-# Generated at 2026-10-24 19:49:57.913110
+# Generated at 2026-11-03 03:27:57.981778
 # Unit test for function string_xor
 def test_string_xor():
-    # Basic cases
+    # Basic case: differing bits produce '1', matching bits produce '0'
     assert module_0.string_xor('010', '110') == '100'
-    assert module_0.string_xor('1010', '0110') == '1100'
+    # Example from classic spec
+    assert module_0.string_xor('111', '101') == '010'
+    # Identical strings should produce all zeros
+    assert module_0.string_xor('1010', '1010') == '0000'
+    # All differing bits produce all ones
+    assert module_0.string_xor('0000', '1111') == '1111'
+    # Single character cases
+    assert module_0.string_xor('0', '0') == '0'
+    assert module_0.string_xor('0', '1') == '1'
+    assert module_0.string_xor('1', '0') == '1'
+    assert module_0.string_xor('1', '1') == '0'
+    # Empty strings produce empty result
+    assert module_0.string_xor('', '') == ''
+    # Zip truncates to the shorter string
+    assert module_0.string_xor('101', '10') == '01'
+    assert module_0.string_xor('1', '1010') == '1'
+    # Longer binary strings
+    assert module_0.string_xor('110010', '011000') == '101010'
+    # XOR is commutative
+    assert module_0.string_xor('1101', '0110') == module_0.string_xor('0110', '1101')
+    # XOR with itself yields all zeros
+    s = '1101001'
+    assert module_0.string_xor(s, s) == '0' * len(s)
 
-    # Identical strings -> all zeros
-    assert module_0.string_xor('1111', '1111') == '0000'
-    assert module_0.string_xor('0000', '0000') == '0000'
+# Generated at 2026-11-03 03:29:51.959316
+# Unit test for function string_xor
+def test_string_xor():
+    assert module_0.string_xor('010', '110') == '100'
+    assert module_0.string_xor('111', '000') == '111'
+    assert module_0.string_xor('1010', '1010') == '0000'
+    assert module_0.string_xor('1', '0') == '1'
+    assert module_0.string_xor('0', '1') == '1'
+    assert module_0.string_xor('0', '0') == '0'
+    assert module_0.string_xor('1', '1') == '0'
+    assert module_0.string_xor('1101', '0110') == '1011'
+    assert module_0.string_xor('0000', '1111') == '1111'
+    assert module_0.string_xor('10101010', '01010101') == '11111111'
 
-    # Complementary strings -> all ones
-    assert module_0.string_xor('1010', '0101') == '1111'
-
-    # Single character
+# Generated at 2026-11-03 03:31:29.851449
+# Unit test for function string_xor
+def test_string_xor():
+    # Basic XOR cases
+    assert module_0.string_xor('010', '110') == '100'
+    assert module_0.string_xor('111', '000') == '111'
+    assert module_0.string_xor('1010', '1010') == '0000'
+    assert module_0.string_xor('1', '0') == '1'
     assert module_0.string_xor('0', '1') == '1'
     assert module_0.string_xor('1', '1') == '0'
+    assert module_0.string_xor('0', '0') == '0'
+
+    # Identical strings yield all zeros
+    assert module_0.string_xor('1111', '1111') == '0000'
+    assert module_0.string_xor('0101', '0101') == '0000'
+
+    # Complementary strings yield all ones
+    assert module_0.string_xor('0101', '1010') == '1111'
+
+    # Longer strings
+    assert module_0.string_xor('110011', '101010') == '011001'
+    assert module_0.string_xor('00000000', '11111111') == '11111111'
+
+    # Unequal lengths: zip truncates to shorter length
+    assert module_0.string_xor('110', '1') == '0'
+    assert module_0.string_xor('10', '101') == '01'
 
     # Empty strings
     assert module_0.string_xor('', '') == ''
+    assert module_0.string_xor('abc', '') == ''
 
-    # Property check: xor is its own inverse
-    a, b = '1101001', '0010110'
-    assert module_0.string_xor(module_0.string_xor(a, b), b) == a
+    # Non-binary characters also work (any differing chars -> '1')
+    assert module_0.string_xor('ab', 'ab') == '00'
+    assert module_0.string_xor('ab', 'ba') == '11'
+
+    # Result is always composed of '0' and '1'
+    result = module_0.string_xor('0123456789', '9876543210')
+    assert all(c in '01' for c in result)
+    assert len(result) == 10
 
     print("All tests passed!")
 
 
-test_string_xor()
+if __name__ == "__main__":
+    test_string_xor()
 
-# Generated at 2026-10-24 19:49:59.241244
+# Generated at 2026-11-03 03:33:16.657422
 # Unit test for function string_xor
 def test_string_xor():
-    # Basic cases
-    assert module_0.string_xor('010', '110') == '100'
-    assert module_0.string_xor('1010', '0110') == '1100'
-
-    # Identical strings -> all zeros
+    # Identical strings produce all zeros
+    assert module_0.string_xor('010', '010') == '000'
     assert module_0.string_xor('1111', '1111') == '0000'
-    assert module_0.string_xor('0000', '0000') == '0000'
-
-    # Complementary strings -> all ones
-    assert module_0.string_xor('1010', '0101') == '1111'
-
-    # Single character
-    assert module_0.string_xor('0', '1') == '1'
-    assert module_0.string_xor('1', '1') == '0'
-
-    # Empty strings
     assert module_0.string_xor('', '') == ''
 
-    # Property check: xor is its own inverse
-    a, b = '1101001', '0010110'
-    assert module_0.string_xor(module_0.string_xor(a, b), b) == a
+    # Completely different strings produce all ones
+    assert module_0.string_xor('010', '101') == '111'
+    assert module_0.string_xor('0000', '1111') == '1111'
+
+    # Mixed cases
+    assert module_0.string_xor('1010', '0110') == '1100'
+    assert module_0.string_xor('111000', '101010') == '010010'
+    assert module_0.string_xor('1', '0') == '1'
+    assert module_0.string_xor('1', '1') == '0'
+
+    # zip truncates to the shorter string
+    assert module_0.string_xor('1010', '101') == '000'
+    assert module_0.string_xor('1', '101010') == '0'
+
+    # Single characters
+    assert module_0.string_xor('0', '0') == '0'
+    assert module_0.string_xor('0', '1') == '1'
+
+    # XOR is symmetric
+    assert module_0.string_xor('1101', '0110') == module_0.string_xor('0110', '1101')
+
+    # XOR with itself yields all zeros
+    s = '1101001'
+    assert module_0.string_xor(s, s) == '0' * len(s)
 
     print("All tests passed!")
 
 
-test_string_xor()
+if __name__ == "__main__":
+    test_string_xor()

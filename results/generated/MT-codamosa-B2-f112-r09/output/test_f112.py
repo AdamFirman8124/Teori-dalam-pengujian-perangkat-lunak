@@ -2,41 +2,40 @@
 import f112 as module_0
 
 def test_case_0():
-    str_0 = 'abcdef'
-    str_1 = 'b'
+    str_0 = 'abcde'
+    str_1 = 'ae'
     var_0 = module_0.reverse_delete(str_0, str_1)
-    assert var_0 == ('acdef', False)
-    str_2 = 'abcde'
-    str_3 = 'ae'
+    assert var_0 == ('bcd', False)
+    str_2 = 'abcdef'
+    str_3 = 'b'
     var_1 = module_0.reverse_delete(str_2, str_3)
-    assert var_1 == ('bcd', False)
-    str_4 = 'abcd'
-    str_5 = 'x'
+    assert var_1 == ('acdef', False)
+    str_4 = 'abcdedcba'
+    str_5 = 'ab'
     var_2 = module_0.reverse_delete(str_4, str_5)
-    assert var_2 == ('abcd', False)
-    str_6 = 'abcba'
-    var_3 = module_0.reverse_delete(str_6, str_5)
-    assert var_3 == ('abcba', True)
-    str_7 = 'abccba'
+    assert var_2 == ('cdedc', True)
+    str_6 = 'dwik'
+    str_7 = 'w'
+    var_3 = module_0.reverse_delete(str_6, str_7)
+    assert var_3 == ('dik', False)
     str_8 = 'a'
-    var_4 = module_0.reverse_delete(str_7, str_8)
-    assert var_4 == ('bccb', True)
-    str_9 = 'abcdedcba'
-    str_10 = 'ab'
-    var_5 = module_0.reverse_delete(str_9, str_10)
-    assert var_5 == ('cdedc', True)
-    str_11 = 'hello'
-    str_12 = 'l'
-    var_6 = module_0.reverse_delete(str_11, str_12)
-    assert var_6 == ('heo', False)
-    str_13 = ''
-    str_14 = 'abc'
-    var_7 = module_0.reverse_delete(str_13, str_14)
+    var_4 = module_0.reverse_delete(str_8, str_8)
+    assert var_4 == ('', True)
+    str_9 = ''
+    var_5 = module_0.reverse_delete(str_4, str_9)
+    assert var_5 == ('abcdedcba', True)
+    str_10 = 'abc'
+    str_11 = 'xyz'
+    var_6 = module_0.reverse_delete(str_10, str_11)
+    assert var_6 == ('abc', False)
+    str_12 = 'aaaa'
+    var_7 = module_0.reverse_delete(str_12, str_8)
     assert var_7 == ('', True)
-    str_15 = 'aaa'
-    var_8 = module_0.reverse_delete(str_15, str_8)
+    var_8 = module_0.reverse_delete(str_9, str_8)
     assert var_8 == ('', True)
-    var_9 = module_0.reverse_delete(str_10, str_10)
-    assert var_9 == ('', True)
-    str_16 = 'All tests passed.'
-    var_10 = print(str_16)
+    str_13 = 'Aba'
+    var_9 = module_0.reverse_delete(str_13, str_8)
+    assert var_9 == ('Ab', False)
+
+def test_case_1():
+    pass

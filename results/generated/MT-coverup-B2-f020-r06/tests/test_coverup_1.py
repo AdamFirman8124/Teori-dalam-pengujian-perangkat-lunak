@@ -7,36 +7,35 @@ import pytest
 from f020 import find_closest_elements
 
 
-def test_first_pair_initializes_distance():
-    # Covers lines 6-7 (init), 9-14 (first comparison sets distance/closest_pair)
-    result = find_closest_elements([1.0, 2.0, 3.9, 4.0, 5.0, 2.2])
-    assert result == (3.9, 4.0)
+def test_find_closest_elements_initial_pair_and_no_improvement():
+    """Covers lines 6-14 (first pair found, 'distance is None' branch) and
+    lines 16-17 with the 'new_distance < distance' condition evaluating False
+    (later pairs are not closer, so the initial pair is kept)."""
+    result = find_closest_elements([1.0, 2.0, 3.0])
+    # The closest pair in [1.0, 2.0, 3.0] is (1.0, 2.0) with distance 1.0;
+    # every subsequent candidate (e.g. |1.0-3.0| = 2.0) fails the '<' check.
+    assert result == (1.0, 2.0)
 
 
-def test_improves_on_initial_distance():
-    # Covers lines 16-19 (new_distance computed and improves on current distance)
-    result = find_closest_elements([10.0, 1.0, 1.5])
-    assert result == (1.0, 1.5)
+def test_find_closest_elements_finds_closer_pair():
+    """Covers lines 17-19: a later candidate pair has a strictly smaller
+    distance, so 'closest_pair' is updated."""
+    result = find_closest_elements([1.0, 5.0, 4.5])
+    # Trace: (1.0, 5.0) -> distance 4.0; (1.0, 4.5) -> 3.5 < 4.0 (update);
+    # (5.0, 4.5) -> 0.5 < 3.5 (update). Final pair is (4.5, 5.0).
+    assert result == (4.5, 5.0)
 
 
-def test_unsorted_input_returns_sorted_pair():
-    # Covers line 14/19 sorted() branch when elem < elem2
-    result = find_closest_elements([5.0, 4.9])
-    assert result == (4.9, 5.0)
+def test_find_closest_elements_returns_sorted_tuple():
+    """Covers the 'tuple(sorted(...))' construction: the pair is returned in
+    ascending order regardless of input order."""
+    result = find_closest_elements([3.0, 1.0])
+    assert result == (1.0, 3.0)
+    assert result[0] <= result[1]
 
 
-def test_negative_numbers():
-    result = find_closest_elements([-1.0, -1.1, 3.0])
-    assert result == (-1.1, -1.0)
-
-
-def test_duplicate_values():
-    result = find_closest_elements([2.0, 2.0, 5.0])
-    assert result == (2.0, 2.0)
-
-
-def test_skips_self_comparison():
-    # idx == idx2 branch (line 11 false) must be skipped; with two equal
-    # elements the only valid pair is the cross pair.
-    result = find_closest_elements([1.0, 1.0])
-    assert result == (1.0, 1.0)
+def test_find_closest_elements_single_element_returns_none():
+    """Covers the False branch of 'if idx != idx2': with a single element the
+    inner condition is never satisfied, so no pair is ever assigned and the
+    function returns the initial None value."""
+    assert find_closest_elements([7.0]) is None

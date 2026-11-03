@@ -17,6 +17,12 @@ def test_case_0():
     int_4 = 100
     var_4 = module_0.sum_to_n(int_4)
     assert var_4 == 5050
-    int_5 = 7
+    int_5 = 1000
     var_5 = module_0.sum_to_n(int_5)
-    assert var_5 == 28
+    assert var_5 == 500500
+    int_6 = -1
+    var_6 = module_0.sum_to_n(int_6)
+    assert var_6 == 0
+    int_7 = -10
+    var_7 = module_0.sum_to_n(int_7)
+    assert var_7 == 0

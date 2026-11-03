@@ -5,18 +5,37 @@ def test_case_0():
     str_0 = 'racecar'
     var_0 = module_0.is_palindrome(str_0)
     assert var_0 is True
-    str_1 = 'level'
+    str_1 = 'abba'
     var_1 = module_0.is_palindrome(str_1)
     assert var_1 is True
-    str_2 = 'hello'
+    str_2 = 'aba'
     var_2 = module_0.is_palindrome(str_2)
-    assert var_2 is False
-    str_3 = ''
+    assert var_2 is True
+    str_3 = 'aa'
     var_3 = module_0.is_palindrome(str_3)
     assert var_3 is True
-    str_4 = 'a'
+    str_4 = 'hello'
     var_4 = module_0.is_palindrome(str_4)
-    assert var_4 is True
-    str_5 = 'Racecar'
+    assert var_4 is False
+    str_5 = 'ab'
     var_5 = module_0.is_palindrome(str_5)
     assert var_5 is False
+    str_6 = 'abca'
+    var_6 = module_0.is_palindrome(str_6)
+    assert var_6 is False
+    str_7 = ''
+    var_7 = module_0.is_palindrome(str_7)
+    assert var_7 is True
+    str_8 = 'a'
+    var_8 = module_0.is_palindrome(str_8)
+    assert var_8 is True
+    var_9 = module_0.is_palindrome(str_5)
+    assert var_9 is False
+    str_9 = 'Racecar'
+    var_10 = module_0.is_palindrome(str_9)
+    assert var_10 is False
+    str_10 = 'ab ba'
+    var_11 = module_0.is_palindrome(str_10)
+    assert var_11 is True
+    str_11 = 'test_is_palindrome passed'
+    var_12 = print(str_11)

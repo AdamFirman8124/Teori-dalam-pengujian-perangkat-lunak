@@ -7,20 +7,15 @@ import pytest
 from f063 import fibfib
 
 
-def test_fibfib_base_cases():
-    assert fibfib(0) == 0
-    assert fibfib(1) == 0
-    assert fibfib(2) == 1
-
-
-def test_fibfib_recursive():
-    # fibfib(3) = fibfib(2) + fibfib(1) + fibfib(0) = 1 + 0 + 0 = 1
-    assert fibfib(3) == 1
-    # fibfib(4) = fibfib(3) + fibfib(2) + fibfib(1) = 1 + 1 + 0 = 2
-    assert fibfib(4) == 2
-    # fibfib(5) = fibfib(4) + fibfib(3) + fibfib(2) = 2 + 1 + 1 = 4
-    assert fibfib(5) == 4
-    # fibfib(6) = fibfib(5) + fibfib(4) + fibfib(3) = 4 + 2 + 1 = 7
-    assert fibfib(6) == 7
-    # fibfib(7) = fibfib(6) + fibfib(5) + fibfib(4) = 7 + 4 + 2 = 13
-    assert fibfib(7) == 13
+@pytest.mark.parametrize(
+    "n,expected",
+    [
+        (0, 0),   # covers lines 3-4: base case n == 0
+        (1, 0),   # covers lines 5-6: base case n == 1
+        (2, 1),   # covers lines 7-8: base case n == 2
+        (3, 1),   # covers line 9: recursion fibfib(2) + fibfib(1) + fibfib(0) = 1 + 0 + 0
+        (5, 4),   # covers line 9 with deeper recursion: fibfib(4) + fibfib(3) + fibfib(2) = 2 + 1 + 1
+    ],
+)
+def test_fibfib(n, expected):
+    assert fibfib(n) == expected

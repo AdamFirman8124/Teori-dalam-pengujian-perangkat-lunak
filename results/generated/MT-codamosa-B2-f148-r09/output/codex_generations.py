@@ -1,712 +1,210 @@
 
 
-# Generated at 2026-10-25 17:54:00.690780
+# Generated at 2026-11-02 00:27:03.146995
 # Unit test for function bf
+def test_bf():
+    # Planets between Mercury and Jupiter (in order)
+    assert module_0.bf("Mercury", "Jupiter") == ("Venus", "Earth", "Mars")
 
-# Generated at 2026-10-25 17:54:03.104820
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:05.519070
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:07.933393
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:10.349088
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:12.767177
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:15.251679
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:17.665155
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:20.080647
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:22.494480
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:24.909079
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:27.324366
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:29.740141
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:32.153822
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:34.568330
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:36.982547
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:39.397143
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:41.810130
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:44.223792
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:46.638009
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:49.054492
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:54.498777
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:56.911813
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:54:59.330735
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:01.741698
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:04.155829
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:06.571569
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:08.989031
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:11.405863
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:13.828796
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:16.241345
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:18.655866
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:21.069778
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:23.483632
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:25.899025
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:28.313388
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:30.732245
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:33.180907
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:35.561946
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:37.975705
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:40.389952
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:42.804193
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:45.219811
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:47.633704
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:50.053304
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:52.468711
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:54.883011
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:57.299004
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:55:59.741297
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:02.155649
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:04.570172
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:06.983764
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:09.397738
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:11.817029
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:14.229783
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:16.645305
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:19.058937
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:21.472757
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:23.885223
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:26.299880
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:28.714521
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:31.131963
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:33.547989
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:35.960747
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:38.375144
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:40.788560
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:43.203750
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:45.617007
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:48.033048
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:50.449468
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:52.865622
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:56:58.304010
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:00.719876
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:03.177681
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:05.588477
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:08.002213
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:10.418333
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:12.835490
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:15.248921
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:17.662833
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:20.076959
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:22.491834
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:24.906351
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:27.320627
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:29.736235
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:32.152911
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:34.570637
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:36.982676
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:39.396346
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:41.810955
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:44.225302
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:46.639843
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:49.054310
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:51.471903
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:53.888808
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:56.302379
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:57:58.715346
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:01.132170
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:03.545908
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:05.961060
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:08.374786
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:10.791524
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:13.204906
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:15.619100
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:18.032393
-# Unit test for function bf
+    # Order reversed should yield the same result
+    assert module_0.bf("Jupiter", "Mercury") == ("Venus", "Earth", "Mars")
 
-# Generated at 2026-10-25 17:58:20.446033
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:22.859733
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:25.274166
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:27.687906
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:30.104296
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:32.521542
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:34.935919
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:37.350287
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:39.776217
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:42.179895
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:44.593316
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:47.007188
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:49.421478
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:51.835282
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:54.253142
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:58:56.665851
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:02.108823
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:04.523372
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:06.938540
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:09.354686
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:11.771478
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:14.185962
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:16.600535
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:19.013647
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:21.499974
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:23.913541
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:26.327941
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:28.742107
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:31.157115
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:33.570580
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:35.984706
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:38.399713
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:40.815603
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:43.230427
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:45.644078
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:48.091641
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:50.472335
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:52.890537
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:55.307060
-# Unit test for function bf
-
-# Generated at 2026-10-25 17:59:57.719771
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:00.133756
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:02.546902
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:04.961352
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:07.375216
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:09.789761
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:12.206300
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:14.623736
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:17.038282
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:19.451714
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:21.868879
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:24.283240
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:26.697368
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:29.112182
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:31.526065
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:33.943316
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:36.360228
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:38.773257
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:41.187364
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:43.601699
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:46.016495
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:49.651338
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:52.066506
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:54.485670
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:56.899920
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:00:59.311206
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:01.727204
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:07.171621
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:09.585240
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:11.998543
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:14.414861
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:16.829139
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:19.242678
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:21.656385
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:24.069795
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:26.486316
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:28.899810
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:31.313920
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:33.728269
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:36.143820
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:38.558747
-# Unit test for function bf
+    # Planets between Earth and Uranus
+    assert module_0.bf("Earth", "Uranus") == ("Mars", "Jupiter", "Saturn")
 
-# Generated at 2026-10-25 18:01:40.969436
-# Unit test for function bf
-
-# Generated at 2026-10-25 18:01:43.383956
-# Unit test for function bf
+    # Planets between Uranus and Earth (reversed order)
+    assert module_0.bf("Uranus", "Earth") == ("Mars", "Jupiter", "Saturn")
 
-# Generated at 2026-10-25 18:01:45.797626
-# Unit test for function bf
+    # Adjacent planets -> no planets in between
+    assert module_0.bf("Earth", "Mars") == ()
 
-# Generated at 2026-10-25 18:01:48.212322
-# Unit test for function bf
+    # Adjacent planets reversed -> no planets in between
+    assert module_0.bf("Mars", "Earth") == ()
 
-# Generated at 2026-10-25 18:01:50.628318
-# Unit test for function bf
+    # Full range: everything between Mercury and Neptune
+    assert module_0.bf("Mercury", "Neptune") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus")
 
-# Generated at 2026-10-25 18:01:53.042629
-# Unit test for function bf
+    # Invalid planet names -> empty tuple
+    assert module_0.bf("Pluto", "Earth") == ()
+    assert module_0.bf("Earth", "Pluto") == ()
+    assert module_0.bf("Sun", "Moon") == ()
 
-# Generated at 2026-10-25 18:01:55.456923
-# Unit test for function bf
+    # Same planet -> empty tuple
+    assert module_0.bf("Earth", "Earth") == ()
+    assert module_0.bf("Neptune", "Neptune") == ()
 
-# Generated at 2026-10-25 18:01:57.873955
-# Unit test for function bf
+    # Case sensitivity check - wrong casing is invalid input
+    assert module_0.bf("earth", "mars") == ()
 
-# Generated at 2026-10-25 18:02:00.290137
-# Unit test for function bf
+    # Non-string inputs -> empty tuple
+    assert module_0.bf(None, "Earth") == ()
+    assert module_0.bf(1, 2) == ()
 
-# Generated at 2026-10-25 18:02:02.702230
-# Unit test for function bf
+    print("All tests passed!")
 
-# Generated at 2026-10-25 18:02:09.643862
-# Unit test for function bf
 
-# Generated at 2026-10-25 18:02:12.058788
-# Unit test for function bf
+if __name__ == "__main__":
+    test_bf()
 
-# Generated at 2026-10-25 18:02:14.472089
+# Generated at 2026-11-02 00:28:11.449672
 # Unit test for function bf
+def test_bf():import unittest
 
-# Generated at 2026-10-25 18:02:16.887149
-# Unit test for function bf
 
-# Generated at 2026-10-25 18:02:19.304044
-# Unit test for function bf
+class TestBf(unittest.TestCase):
 
-# Generated at 2026-10-25 18:02:21.721193
-# Unit test for function bf
+    def test_planets_between_earth_and_mars(self):
+        # Earth and Mars are adjacent, so no planets between them
+        self.assertEqual(module_0.bf("Earth", "Mars"), ())
 
-# Generated at 2026-10-25 18:02:24.166429
-# Unit test for function bf
+    def test_planets_between_earth_and_jupiter(self):
+        self.assertEqual(module_0.bf("Earth", "Jupiter"), ("Mars",))
 
-# Generated at 2026-10-25 18:02:26.546690
-# Unit test for function bf
+    def test_planets_between_jupiter_and_earth(self):
+        # Order reversed should still return planets in sun order
+        self.assertEqual(module_0.bf("Jupiter", "Earth"), ("Mars",))
 
-# Generated at 2026-10-25 18:02:28.961875
-# Unit test for function bf
+    def test_planets_between_mercury_and_neptune(self):
+        self.assertEqual(
+            module_0.bf("Mercury", "Neptune"),
+            ("Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus"),
+        )
 
-# Generated at 2026-10-25 18:02:31.375013
-# Unit test for function bf
+    def test_planets_between_neptune_and_mercury(self):
+        self.assertEqual(
+            module_0.bf("Neptune", "Mercury"),
+            ("Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus"),
+        )
 
-# Generated at 2026-10-25 18:02:33.789667
-# Unit test for function bf
+    def test_planets_between_venus_and_saturn(self):
+        self.assertEqual(module_0.bf("Venus", "Saturn"), ("Earth", "Mars", "Jupiter"))
 
-# Generated at 2026-10-25 18:02:36.204068
-# Unit test for function bf
+    def test_planets_between_saturn_and_venus(self):
+        self.assertEqual(module_0.bf("Saturn", "Venus"), ("Earth", "Mars", "Jupiter"))
 
-# Generated at 2026-10-25 18:02:38.620560
-# Unit test for function bf
+    def test_invalid_planet_name(self):
+        self.assertEqual(module_0.bf("Pluto", "Earth"), ())
+        self.assertEqual(module_0.bf("Earth", "Pluto"), ())
 
-# Generated at 2026-10-25 18:02:41.037109
-# Unit test for function bf
+    def test_both_invalid_planet_names(self):
+        self.assertEqual(module_0.bf("Xena", "Pluto"), ())
 
-# Generated at 2026-10-25 18:02:43.450953
-# Unit test for function bf
+    def test_same_planet(self):
+        self.assertEqual(module_0.bf("Earth", "Earth"), ())
+        self.assertEqual(module_0.bf("Jupiter", "Jupiter"), ())
 
-# Generated at 2026-10-25 18:02:45.864038
-# Unit test for function bf
+    def test_case_sensitivity(self):
+        # Names are case-sensitive
+        self.assertEqual(module_0.bf("earth", "mars"), ())
 
-# Generated at 2026-10-25 18:02:48.277809
-# Unit test for function bf
+    def test_return_type_is_tuple(self):
+        result = module_0.bf("Earth", "Jupiter")
+        self.assertIsInstance(result, tuple)
 
-# Generated at 2026-10-25 18:02:50.691861
-# Unit test for function bf
+    def test_empty_tuple_type_for_invalid(self):
+        result = module_0.bf("Foo", "Bar")
+        self.assertIsInstance(result, tuple)
+        self.assertEqual(len(result), 0)
 
-# Generated at 2026-10-25 18:02:53.105288
-# Unit test for function bf
 
-# Generated at 2026-10-25 18:02:55.518638
-# Unit test for function bf
+if __name__ == "__main__":
+    unittest.main()
 
-# Generated at 2026-10-25 18:02:57.935078
+# Generated at 2026-11-02 00:29:04.698490
 # Unit test for function bf
+def test_bf():
+    # Basic case: planets between Mercury and Neptune (in orbit order)
+    assert module_0.bf("Mercury", "Neptune") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus")
 
-# Generated at 2026-10-25 18:03:00.353495
-# Unit test for function bf
+    # Reversed arguments should yield the same result
+    assert module_0.bf("Neptune", "Mercury") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus")
 
-# Generated at 2026-10-25 18:03:02.885834
-# Unit test for function bf
+    # Single planet in between
+    assert module_0.bf("Earth", "Jupiter") == ("Mars",)
+    assert module_0.bf("Jupiter", "Earth") == ("Mars",)
 
-# Generated at 2026-10-25 18:03:05.228941
-# Unit test for function bf
+    # Multiple planets in between
+    assert module_0.bf("Venus", "Saturn") == ("Earth", "Mars", "Jupiter")
+    assert module_0.bf("Saturn", "Venus") == ("Earth", "Mars", "Jupiter")
 
-# Generated at 2026-10-25 18:03:10.669772
-# Unit test for function bf
+    # Adjacent planets -> no planets in between
+    assert module_0.bf("Earth", "Mars") == ()
+    assert module_0.bf("Mars", "Earth") == ()
 
-# Generated at 2026-10-25 18:03:13.083310
-# Unit test for function bf
+    # Invalid planet names -> empty tuple
+    assert module_0.bf("Pluto", "Mars") == ()
+    assert module_0.bf("Earth", "Sun") == ()
+    assert module_0.bf("", "Mars") == ()
 
-# Generated at 2026-10-25 18:03:15.499317
-# Unit test for function bf
+    # Same planet passed twice -> empty tuple
+    assert module_0.bf("Venus", "Venus") == ()
+    assert module_0.bf("Neptune", "Neptune") == ()
 
-# Generated at 2026-10-25 18:03:17.915683
+# Generated at 2026-11-02 00:29:40.021564
 # Unit test for function bf
+def test_bf():
+    # Test with planet1 before planet2 (forward order)
+    assert module_0.bf("Jupiter", "Neptune") == ("Saturn", "Uranus")
+    assert module_0.bf("Mercury", "Mars") == ("Venus", "Earth")
 
-# Generated at 2026-10-25 18:03:20.332945
-# Unit test for function bf
+    # Test with planet1 after planet2 (reverse order)
+    assert module_0.bf("Neptune", "Earth") == ("Mars", "Jupiter", "Saturn", "Uranus")
+    assert module_0.bf("Mars", "Mercury") == ("Venus",)
 
-# Generated at 2026-10-25 18:03:22.749374
-# Unit test for function bf
+    # Test with adjacent planets (no planets in between)
+    assert module_0.bf("Mercury", "Venus") == ()
+    assert module_0.bf("Venus", "Mercury") == ()
 
-# Generated at 2026-10-25 18:03:35.345346
-# Unit test for function bf
+    # Test with the same planet
+    assert module_0.bf("Earth", "Earth") == ()
+    assert module_0.bf("Saturn", "Saturn") == ()
 
-# Generated at 2026-10-25 18:03:37.758236
-# Unit test for function bf
+    # Test with invalid planet names
+    assert module_0.bf("Pluto", "Earth") == ()
+    assert module_0.bf("Earth", "Pluto") == ()
+    assert module_0.bf("Xyz", "Abc") == ()
 
-# Generated at 2026-10-25 18:03:40.172683
-# Unit test for function bf
+    # Test one valid and one invalid argument
+    assert module_0.bf("Mercury", "moon") == ()
 
-# Generated at 2026-10-25 18:03:42.585166
-# Unit test for function bf
+    print("All tests passed!")
 
-# Generated at 2026-10-25 18:03:44.998904
-# Unit test for function bf
+# Run tests
+test_bf()
 
-# Generated at 2026-10-25 18:03:47.414069
+# Generated at 2026-11-02 00:34:34.938882
 # Unit test for function bf
+def test_bf():
+    # Adjacent planets -> empty tuple
+    assert module_0.bf("Earth", "Mars") == ()
+    assert module_0.bf("Mars", "Earth") == ()
+    assert module_0.bf("Mercury", "Venus") == ()
+    assert module_0.bf("Uranus", "Neptune") == ()
 
-# Generated at 2026-10-25 18:03:49.826436
-# Unit test for function bf
+    # One planet in between
+    assert module_0.bf("Venus", "Mars") == ("Earth",)
+    assert module_0.bf("Mars", "Venus") == ("Earth",)
 
-# Generated at 2026-10-25 18:03:52.272387
-# Unit test for function bf
+    # Multiple planets in between, forward order
+    assert module_0.bf("Earth", "Jupiter") == ("Mars",)
+    assert module_0.bf("Mercury", "Mars") == ("Venus", "Earth")
+    assert module_0.bf("Mercury", "Neptune") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus")
 
-# Generated at 2026-10-25 18:03:54.686774
-# Unit test for function bf
+    # Multiple planets in between, reverse order
+    assert module_0.bf("Jupiter", "Earth") == ("Mars",)
+    assert module_0.bf("Mars", "Mercury") == ("Venus", "Earth")
+    assert module_0.bf("Neptune", "Mercury") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus")
 
-# Generated at 2026-10-25 18:03:57.131628
-# Unit test for function bf
+    # Same planet -> empty tuple
+    assert module_0.bf("Earth", "Earth") == ()
+    assert module_0.bf("Neptune", "Neptune") == ()
 
-# Generated at 2026-10-25 18:03:59.514588
-# Unit test for function bf
+    # Invalid planet names -> empty tuple
+    assert module_0.bf("Earth", "Pluto") == ()
+    assert module_0.bf("Pluto", "Earth") == ()
+    assert module_0.bf("Foo", "Bar") == ()
+    assert module_0.bf("", "Earth") == ()
 
-# Generated at 2026-10-25 18:04:01.931086
-# Unit test for function bf
+    # Case sensitivity: lowercase names are invalid
+    assert module_0.bf("earth", "Mars") == ()
+    assert module_0.bf("Earth", "mars") == ()

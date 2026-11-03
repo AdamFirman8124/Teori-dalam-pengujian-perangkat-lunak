@@ -2,30 +2,47 @@
 import f013 as module_0
 
 def test_case_0():
-    int_0 = 48
-    int_1 = 18
+    int_0 = 3
+    int_1 = 5
     int_2 = module_0.greatest_common_divisor(int_0, int_1)
-    assert int_2 == 6
-    int_3 = module_0.greatest_common_divisor(int_1, int_0)
-    assert int_3 == 6
-    int_4 = 270
-    int_5 = 192
-    int_6 = module_0.greatest_common_divisor(int_4, int_5)
-    assert int_6 == 6
-
-def test_case_1():
-    int_0 = -1230
-    int_1 = module_0.greatest_common_divisor(int_0, int_0)
-    assert int_1 == -1230
-    int_2 = 1208
-    int_3 = module_0.greatest_common_divisor(int_0, int_2)
-    assert int_3 == 2
-    int_4 = None
-    int_5 = module_0.greatest_common_divisor(int_0, int_4)
-    assert int_5 == -1230
-    int_6 = 4226
-    int_7 = module_0.greatest_common_divisor(int_6, int_0)
-    assert int_7 == -2
-    int_8 = -377
-    int_9 = module_0.greatest_common_divisor(int_8, int_8)
-    assert int_9 == -377
+    assert int_2 == 1
+    int_3 = 25
+    int_4 = 15
+    int_5 = module_0.greatest_common_divisor(int_3, int_4)
+    assert int_5 == 5
+    int_6 = 48
+    int_7 = 18
+    int_8 = module_0.greatest_common_divisor(int_6, int_7)
+    assert int_8 == 6
+    int_9 = 12
+    int_10 = module_0.greatest_common_divisor(int_9, int_9)
+    assert int_10 == 12
+    int_11 = 0
+    int_12 = module_0.greatest_common_divisor(int_11, int_1)
+    assert int_12 == 5
+    int_13 = module_0.greatest_common_divisor(int_1, int_11)
+    assert int_13 == 5
+    int_14 = module_0.greatest_common_divisor(int_11, int_11)
+    assert int_14 == 0
+    int_15 = 7
+    int_16 = 21
+    int_17 = module_0.greatest_common_divisor(int_15, int_16)
+    assert int_17 == 7
+    int_18 = module_0.greatest_common_divisor(int_16, int_15)
+    assert int_18 == 7
+    int_19 = 17
+    int_20 = 13
+    int_21 = module_0.greatest_common_divisor(int_19, int_20)
+    assert int_21 == 1
+    int_22 = 1071
+    int_23 = 462
+    int_24 = module_0.greatest_common_divisor(int_22, int_23)
+    assert int_24 == 21
+    int_25 = 1000000
+    int_26 = 999999
+    int_27 = module_0.greatest_common_divisor(int_25, int_26)
+    assert int_27 == 1
+    int_28 = module_0.greatest_common_divisor(int_6, int_7)
+    assert int_28 == 6
+    int_29 = module_0.greatest_common_divisor(int_7, int_6)
+    assert int_29 == 6

@@ -5,9 +5,18 @@ def test_case_0():
     int_0 = 0
     str_0 = module_0.string_sequence(int_0)
     assert str_0 == '0'
-    int_1 = 1
+    int_1 = 3
     str_1 = module_0.string_sequence(int_1)
-    assert str_1 == '0 1'
-    int_2 = 5
+    assert str_1 == '0 1 2 3'
+    int_2 = 10
     str_2 = module_0.string_sequence(int_2)
-    assert str_2 == '0 1 2 3 4 5'
+    assert str_2 == '0 1 2 3 4 5 6 7 8 9 10'
+    int_3 = 1
+    str_3 = module_0.string_sequence(int_3)
+    assert str_3 == '0 1'
+    int_4 = -1
+    str_4 = module_0.string_sequence(int_4)
+    assert str_4 == ''
+    int_5 = -5
+    str_5 = module_0.string_sequence(int_5)
+    assert str_5 == ''

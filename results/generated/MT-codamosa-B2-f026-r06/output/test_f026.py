@@ -2,24 +2,36 @@
 import f026 as module_0
 
 def test_case_0():
-    var_0 = []
-    list_0 = module_0.remove_duplicates(var_0)
-    assert list_0 == []
     int_0 = 1
     int_1 = 2
     int_2 = 3
-    int_3 = [int_0, int_1, int_2]
-    list_1 = module_0.remove_duplicates(int_3)
-    assert list_1 == [1, 2, 3]
-    int_4 = [int_0, int_1, int_1, int_2]
-    list_2 = module_0.remove_duplicates(int_4)
-    assert list_2 == [1, 3]
-    int_5 = [int_0, int_0, int_1, int_1]
-    list_3 = module_0.remove_duplicates(int_5)
+    int_3 = 4
+    int_4 = [int_0, int_1, int_2, int_1, int_3]
+    list_0 = module_0.remove_duplicates(int_4)
+    assert list_0 == [1, 3, 4]
+    int_5 = 5
+    int_6 = [int_0, int_1, int_2, int_3, int_5]
+    list_1 = module_0.remove_duplicates(int_6)
+    assert list_1 == [1, 2, 3, 4, 5]
+    int_7 = [int_0, int_0, int_1, int_1, int_2, int_2]
+    list_2 = module_0.remove_duplicates(int_7)
+    assert list_2 == []
+    var_0 = []
+    list_3 = module_0.remove_duplicates(var_0)
     assert list_3 == []
-    int_6 = -1
-    int_7 = 0
-    int_8 = -1
-    int_9 = [int_6, int_7, int_8, int_1]
+    int_8 = 42
+    int_9 = [int_8]
     list_4 = module_0.remove_duplicates(int_9)
-    assert list_4 == [0, 2]
+    assert list_4 == [42]
+    int_10 = -1
+    int_11 = -1
+    int_12 = 0
+    int_13 = 10
+    int_14 = [int_10, int_11, int_12, int_5, int_5, int_13]
+    list_5 = module_0.remove_duplicates(int_14)
+    assert list_5 == [0, 10]
+    int_15 = [int_5, int_2, int_5, int_1, int_2, int_0]
+    list_6 = module_0.remove_duplicates(int_15)
+    assert list_6 == [2, 1]
+    str_0 = 'All tests passed!'
+    var_1 = print(str_0)

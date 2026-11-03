@@ -11,8 +11,6 @@ def test_case_0():
     int_2 = 5
     str_2 = module_0.string_sequence(int_2)
     assert str_2 == '0 1 2 3 4 5'
-
-def test_case_1():
-    int_0 = -3763
-    str_0 = module_0.string_sequence(int_0)
-    assert str_0 == ''
+    int_3 = 10
+    str_3 = module_0.string_sequence(int_3)
+    assert str_3 == '0 1 2 3 4 5 6 7 8 9 10'

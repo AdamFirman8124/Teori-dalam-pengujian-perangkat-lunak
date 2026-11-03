@@ -2,17 +2,37 @@
 import f049 as module_0
 
 def test_case_0():
-    int_0 = 0
+    int_0 = 3
     int_1 = 5
     var_0 = module_0.modp(int_0, int_1)
-    assert var_0 == 1
-    int_2 = 1
-    var_1 = module_0.modp(int_2, int_1)
-    assert var_1 == 2
-    int_3 = 3
-    var_2 = module_0.modp(int_3, int_1)
-    assert var_2 == 3
-    int_4 = 10
-    int_5 = 7
-    var_3 = module_0.modp(int_4, int_5)
-    assert var_3 == 2
+    assert var_0 == 3
+    int_2 = 11
+    var_1 = module_0.modp(int_0, int_2)
+    assert var_1 == 8
+    var_2 = module_0.modp(int_1, int_0)
+    assert var_2 == 2
+    int_3 = 10
+    int_4 = 1000
+    var_3 = module_0.modp(int_3, int_4)
+    assert var_3 == 24
+    int_5 = 0
+    int_6 = 101
+    var_4 = module_0.modp(int_5, int_6)
+    assert var_4 == 1
+    int_7 = 1
+    var_5 = module_0.modp(int_7, int_6)
+    assert var_5 == 2
+    var_6 = module_0.modp(int_5, int_7)
+    assert var_6 == 0
+    assert var_6 == 1
+    int_8 = 1101
+    var_7 = module_0.modp(int_8, int_6)
+    assert var_7 == 2
+    int_9 = 100
+    var_8 = module_0.modp(int_9, int_6)
+    assert var_8 == 1
+    int_10 = 1000000007
+    var_9 = module_0.modp(int_4, int_10)
+    assert var_9 == 688423210
+    str_0 = 'All modp tests passed!'
+    var_10 = print(str_0)

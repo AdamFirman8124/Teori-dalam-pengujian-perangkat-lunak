@@ -6,47 +6,48 @@ def test_case_0():
     int_1 = 2
     int_2 = 3
     int_3 = 4
-    int_4 = [int_0, int_1, int_2, int_3]
-    var_0 = module_0.can_arrange(int_4)
+    int_4 = 5
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    var_0 = module_0.can_arrange(int_5)
     assert var_0 == 1
     assert var_0 == -1
-    var_1 = []
-    var_2 = module_0.can_arrange(var_1)
-    assert var_2 == 1
-    assert var_2 == -1
-    int_5 = 5
-    int_6 = [int_5]
-    var_3 = module_0.can_arrange(int_6)
-    assert var_3 == 1
-    assert var_3 == -1
-    int_7 = [int_0, int_1, int_3, int_2, int_5]
-    var_4 = module_0.can_arrange(int_7)
-    assert var_4 == 3
-    int_8 = [int_0, int_1, int_2, int_3, int_2]
-    var_5 = module_0.can_arrange(int_8)
+    int_6 = [int_0, int_0, int_1, int_1, int_2]
+    var_1 = module_0.can_arrange(int_6)
+    assert var_1 == 1
+    assert var_1 == -1
+    int_7 = [int_0, int_1, int_3, int_2, int_4]
+    var_2 = module_0.can_arrange(int_7)
+    assert var_2 == 3
+    int_8 = [int_2, int_1, int_3, int_0, int_4]
+    var_3 = module_0.can_arrange(int_8)
+    assert var_3 == 3
+    int_9 = 6
+    int_10 = [int_0, int_4, int_3, int_2, int_9, int_1]
+    var_4 = module_0.can_arrange(int_10)
+    assert var_4 == 5
+    int_11 = [int_4, int_3, int_2, int_1, int_0]
+    var_5 = module_0.can_arrange(int_11)
     assert var_5 == 4
-    int_9 = [int_1, int_0]
-    var_6 = module_0.can_arrange(int_9)
-    assert var_6 == 1
-    int_10 = [int_0, int_1, int_1, int_1]
-    var_7 = module_0.can_arrange(int_10)
+    var_6 = []
+    var_7 = module_0.can_arrange(var_6)
     assert var_7 == 1
     assert var_7 == -1
-    int_11 = [int_0, int_1, int_1, int_0]
-    var_8 = module_0.can_arrange(int_11)
-    assert var_8 == 3
-    int_12 = [int_5, int_3, int_2, int_1, int_0]
-    var_9 = module_0.can_arrange(int_12)
-    assert var_9 == 4
-    str_0 = 'All tests passed.'
-    var_10 = print(str_0)
-
-def test_case_1():
-    int_0 = 1
-    int_1 = 2
-    int_2 = 3
-    int_3 = 4
-    int_4 = [int_0, int_1, int_2, int_3]
-    var_0 = module_0.can_arrange(int_4)
-    assert var_0 == 1
-    assert var_0 == -1
+    int_12 = 7
+    int_13 = [int_12]
+    var_8 = module_0.can_arrange(int_13)
+    assert var_8 == 1
+    assert var_8 == -1
+    int_14 = [int_1, int_0]
+    var_9 = module_0.can_arrange(int_14)
+    assert var_9 == 1
+    int_15 = [int_0, int_1]
+    var_10 = module_0.can_arrange(int_15)
+    assert var_10 == 1
+    assert var_10 == -1
+    int_16 = 9
+    int_17 = [int_16, int_0, int_1, int_2]
+    var_11 = module_0.can_arrange(int_17)
+    assert var_11 == 1
+    int_18 = [int_0, int_2, int_2, int_1, int_3]
+    var_12 = module_0.can_arrange(int_18)
+    assert var_12 == 3

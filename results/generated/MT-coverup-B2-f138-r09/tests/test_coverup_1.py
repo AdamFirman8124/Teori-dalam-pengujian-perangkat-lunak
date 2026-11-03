@@ -7,17 +7,35 @@ import pytest
 from f138 import is_equal_to_sum_even
 
 
-@pytest.mark.parametrize(
-    "n, expected",
-    [
-        (8, True),    # even and >= 8 -> True branch
-        (10, True),   # even and >= 8 -> True branch
-        (6, False),   # even but < 8 -> False branch
-        (7, False),   # odd and >= 8 -> False branch
-        (9, False),   # odd and < 8 -> False branch
-        (0, False),   # even but < 8 -> False branch
-        (-2, False),  # even but < 8 -> False branch
-    ],
-)
-def test_is_equal_to_sum_even(n, expected):
-    assert is_equal_to_sum_even(n) is expected
+def test_true_when_even_and_at_least_8():
+    # even (n % 2 == 0 -> True) and n >= 8 -> True: covers full 'and' expression
+    assert is_equal_to_sum_even(8) is True
+    assert is_equal_to_sum_even(10) is True
+    assert is_equal_to_sum_even(100) is True
+
+
+def test_false_when_even_but_below_8():
+    # even (n % 2 == 0 -> True) but n >= 8 is False: covers second branch of 'and'
+    assert is_equal_to_sum_even(0) is False
+    assert is_equal_to_sum_even(2) is False
+    assert is_equal_to_sum_even(4) is False
+    assert is_equal_to_sum_even(6) is False
+
+
+def test_false_when_odd():
+    # odd: n % 2 == 0 is False, 'and' short-circuits without evaluating n >= 8
+    assert is_equal_to_sum_even(1) is False
+    assert is_equal_to_sum_even(7) is False
+    assert is_equal_to_sum_even(9) is False
+
+
+def test_false_when_negative_even():
+    # negative even number: even but below 8
+    assert is_equal_to_sum_even(-8) is False
+    assert is_equal_to_sum_even(-2) is False
+
+
+def test_false_when_negative_odd():
+    # negative odd number: odd, short-circuits the 'and'
+    assert is_equal_to_sum_even(-1) is False
+    assert is_equal_to_sum_even(-7) is False

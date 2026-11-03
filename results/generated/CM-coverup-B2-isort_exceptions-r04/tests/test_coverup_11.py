@@ -7,24 +7,22 @@ import pytest
 from isort.exceptions import FileSkipComment, FileSkipped, ISortError
 
 
-def test_file_skip_comment_message_and_file_path():
-    file_path = "example.py"
-    exc = FileSkipComment(file_path)
-    expected_message = f"{file_path} contains an file skip comment and was skipped."
-    assert exc.file_path == file_path
-    assert str(exc) == expected_message
-    assert exc.args[0] == expected_message
+def test_file_skip_comment_message_and_attributes():
+    """Instantiating FileSkipComment must exercise the super().__init__ call
+    (lines 58-59) and produce the expected message and file_path attribute."""
+    file_path = "some/module.py"
 
-
-def test_file_skip_comment_inheritance_and_raise():
-    file_path = "/path/to/file.py"
-    with pytest.raises(FileSkipped) as exc_info:
+    with pytest.raises(FileSkipComment) as exc_info:
         raise FileSkipComment(file_path)
+
     exc = exc_info.value
-    assert isinstance(exc, FileSkipComment)
+
+    # The exception was raised and is part of the expected hierarchy.
     assert isinstance(exc, FileSkipped)
     assert isinstance(exc, ISortError)
-    assert isinstance(exc, Exception)
+
+    # Postcondition of FileSkipped.__init__: message stored via Exception
+    # and file_path attribute set.
     assert exc.file_path == file_path
-    assert file_path in str(exc)
-    assert "file skip comment" in str(exc)
+    assert str(exc) == f"{file_path} contains an file skip comment and was skipped."
+    assert exc.args == (f"{file_path} contains an file skip comment and was skipped.",)

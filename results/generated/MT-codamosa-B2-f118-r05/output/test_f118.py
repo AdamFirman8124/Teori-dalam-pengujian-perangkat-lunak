@@ -4,50 +4,38 @@ import f118 as module_0
 def test_case_0():
     str_0 = 'yogurt'
     var_0 = module_0.get_closest_vowel(str_0)
+    assert var_0 == 'U'
     assert var_0 == 'u'
     str_1 = 'FULL'
     var_1 = module_0.get_closest_vowel(str_1)
     assert var_1 == 'U'
-    str_2 = 'full'
+    str_2 = 'cat'
     var_2 = module_0.get_closest_vowel(str_2)
-    assert var_2 == 'u'
-    str_3 = 'cat'
+    assert var_2 == 'a'
+    str_3 = 'banana'
     var_3 = module_0.get_closest_vowel(str_3)
     assert var_3 == 'a'
-    str_4 = 'quick'
+    str_4 = 'happy'
     var_4 = module_0.get_closest_vowel(str_4)
-    assert var_4 == ''
-    str_5 = 'aeiou'
+    assert var_4 == 'a'
+    str_5 = 'quick'
     var_5 = module_0.get_closest_vowel(str_5)
     assert var_5 == ''
-    str_6 = 'ab'
+    str_6 = 'aeiou'
     var_6 = module_0.get_closest_vowel(str_6)
     assert var_6 == ''
-    str_7 = 'a'
+    str_7 = 'baa'
     var_7 = module_0.get_closest_vowel(str_7)
     assert var_7 == ''
     str_8 = ''
     var_8 = module_0.get_closest_vowel(str_8)
     assert var_8 == ''
-    str_9 = 'bat'
+    str_9 = 'a'
     var_9 = module_0.get_closest_vowel(str_9)
-    assert var_9 == 'a'
-    str_10 = 'bbc'
+    assert var_9 == ''
+    str_10 = 'ab'
     var_10 = module_0.get_closest_vowel(str_10)
     assert var_10 == ''
-    str_11 = 'bottle'
+    str_11 = 'Ae'
     var_11 = module_0.get_closest_vowel(str_11)
-    assert var_11 == 'o'
-    str_12 = 'l'
-    var_12 = var_11 == str_12
-    var_13 = module_0.get_closest_vowel(str_11)
-    assert var_13 == 'o'
-    var_14 = var_13 == str_8
-    var_15 = module_0.get_closest_vowel(str_11)
-    assert var_15 == ''
-    assert var_15 == 'o'
-    str_13 = 'BaT'
-    var_16 = module_0.get_closest_vowel(str_13)
-    assert var_16 == 'a'
-    str_14 = 'All tests passed!'
-    var_17 = print(str_14)
+    assert var_11 == ''

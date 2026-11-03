@@ -3,16 +3,11 @@ import flutils.setuputils.cfg as module_0
 
 def test_case_0():
     try:
-        str_0 = 's_t\rp.$'
-        generator_0 = module_0.each_sub_command_config(str_0)
-        var_0 = list(generator_0)
-    except BaseException:
-        pass
-
-def test_case_1():
-    try:
-        str_0 = ''
-        generator_0 = module_0.each_sub_command_config(str_0)
-        var_0 = list(generator_0)
+        str_0 = '# setup.py\n'
+        var_0 = list(str_0)
+        str_1 = '# setup.py\n'
+        var_1 = list(str_1)
+        generator_0 = module_0.each_sub_command_config(var_1)
+        var_2 = list(generator_0)
     except BaseException:
         pass

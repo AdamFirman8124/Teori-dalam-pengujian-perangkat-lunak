@@ -1,46 +1,176 @@
 
 
-# Generated at 2026-10-25 15:19:27.643221
+# Generated at 2026-11-02 06:31:10.000190
 # Unit test for function common
+def test_common():
+    # Test basic common elements
+    assert module_0.common([1, 2, 3], [2, 3, 4]) == [2, 3]
+    assert module_0.common([1, 2, 3, 4], [3, 4, 5, 6]) == [3, 4]
 
-# Generated at 2026-10-25 15:19:30.059460
-# Unit test for function common
+    # Test no common elements
+    assert module_0.common([1, 2, 3], [4, 5, 6]) == []
 
-# Generated at 2026-10-25 15:19:32.474181
-# Unit test for function common
+    # Test empty lists
+    assert module_0.common([], []) == []
+    assert module_0.common([1, 2, 3], []) == []
+    assert module_0.common([], [1, 2, 3]) == []
 
-# Generated at 2026-10-25 15:19:34.889235
-# Unit test for function common
+    # Test duplicates in both lists
+    assert module_0.common([1, 1, 2, 2, 3], [2, 2, 3, 3, 4]) == [2, 3]
 
-# Generated at 2026-10-25 15:19:37.304545
-# Unit test for function common
+    # Test identical lists
+    assert module_0.common([1, 2, 3], [1, 2, 3]) == [1, 2, 3]
 
-# Generated at 2026-10-25 15:19:39.718640
-# Unit test for function common
+    # Test result is sorted
+    assert module_0.common([5, 1, 3], [3, 5, 1]) == [1, 3, 5]
 
-# Generated at 2026-10-25 15:19:42.133333
-# Unit test for function common
+    # Test strings
+    assert module_0.common(["apple", "banana", "cherry"], ["banana", "date", "apple"]) == ["apple", "banana"]
 
-# Generated at 2026-10-25 15:19:44.559082
-# Unit test for function common
+    # Test negative numbers
+    assert module_0.common([-1, -2, 3], [-2, 3, 4]) == [-2, 3]
 
-# Generated at 2026-10-25 15:19:46.976312
-# Unit test for function common
+    # Test mixed types (int and float equal values)
+    assert module_0.common([1, 2.0, 3], [2, 3.0, 4]) == [2, 3]
 
-# Generated at 2026-10-25 15:19:49.393137
-# Unit test for function common
+    # Test single common element
+    assert module_0.common([7], [7]) == [7]
 
-# Generated at 2026-10-25 15:19:51.806871
-# Unit test for function common
+    # Test large lists
+    assert module_0.common(list(range(100)), list(range(50, 150))) == list(range(50, 100))
 
-# Generated at 2026-10-25 15:19:54.220282
+# Generated at 2026-11-02 06:31:21.591904
 # Unit test for function common
+def test_common():
+    # nonce:26ffc0c9
+    # Common elements present
+    assert module_0.common([1, 2, 3], [2, 3, 4]) == [2, 3]
+    # No common elements
+    assert module_0.common([1, 2, 3], [4, 5, 6]) == []
+    # Duplicates in inputs are deduplicated
+    assert module_0.common([1, 1, 2, 2], [1, 1, 3]) == [1]
+    # Empty list cases
+    assert module_0.common([], [1, 2, 3]) == []
+    assert module_0.common([1, 2, 3], []) == []
+    assert module_0.common([], []) == []
+    # Result is sorted regardless of input order
+    assert module_0.common([5, 3, 1], [1, 5, 3]) == [1, 3, 5]
+    # Works with strings
+    assert module_0.common(['a', 'b', 'c'], ['b', 'c', 'd']) == ['b', 'c']
+    # Works with negative numbers and zero
+    assert module_0.common([-1, -2, 0], [-2, 3, 0]) == [-2, 0]
+    # Single element lists
+    assert module_0.common([7], [7]) == [7]
+    assert module_0.common([7], [8]) == []
+    # One list fully contained in the other
+    assert module_0.common([1, 2, 3, 4, 5], [2, 4]) == [2, 4]
 
-# Generated at 2026-10-25 15:19:56.638301
+# Generated at 2026-11-02 06:31:28.841434
 # Unit test for function common
+def test_common():
+    # Basic case with common elements
+    assert module_0.common([1, 2, 3, 4], [3, 4, 5, 6]) == [3, 4]
+    
+    # No common elements
+    assert module_0.common([1, 2, 3], [4, 5, 6]) == []
+    
+    # Duplicates in input should not cause duplicates in output
+    assert module_0.common([1, 1, 2, 3], [1, 1, 3, 3]) == [1, 3]
+    
+    # Empty lists
+    assert module_0.common([], [1, 2, 3]) == []
+    assert module_0.common([1, 2, 3], []) == []
+    assert module_0.common([], []) == []
+    
+    # Identical lists
+    assert module_0.common([1, 2, 3], [1, 2, 3]) == [1, 2, 3]
+    
+    # Unsorted input should produce sorted output
+    assert module_0.common([5, 1, 3], [3, 5, 2]) == [3, 5]
+    
+    # Strings
+    assert module_0.common(["apple", "banana"], ["banana", "cherry"]) == ["banana"]
+    
+    # Overlapping string elements with duplicates
+    assert module_0.common(["a", "b", "a"], ["a", "c", "a"]) == ["a"]
+    
+    # One list is a subset of the other
+    assert module_0.common([1, 2], [1, 2, 3, 4]) == [1, 2]
+    
+    # Mixed integers and floats that are equal
+    assert module_0.common([1, 2.0], [2, 1.0]) == [1, 2]
+    
+    # Negative numbers
+    assert module_0.common([-1, -2, 3], [-2, 3, 4]) == [-2, 3]
 
-# Generated at 2026-10-25 15:19:59.049984
+# Generated at 2026-11-02 06:31:34.810723
 # Unit test for function common
+def test_common():
+    # Test with common elements
+    assert module_0.common([1, 2, 3, 4], [3, 4, 5, 6]) == [3, 4]
 
-# Generated at 2026-10-25 15:20:01.464807
+    # Test with no common elements
+    assert module_0.common([1, 2, 3], [4, 5, 6]) == []
+
+    # Test with empty lists
+    assert module_0.common([], [1, 2, 3]) == []
+    assert module_0.common([1, 2, 3], []) == []
+    assert module_0.common([], []) == []
+
+    # Test with duplicate elements
+    assert module_0.common([1, 2, 2, 3], [2, 2, 4]) == [2]
+
+    # Test with identical lists
+    assert module_0.common([5, 1, 3], [3, 1, 5]) == [1, 3, 5]
+
+    # Test with strings
+    assert module_0.common(["a", "b", "c"], ["b", "c", "d"]) == ["b", "c"]
+
+    # Test with unsorted input, sorted output
+    assert module_0.common([9, 4, 7], [7, 2, 9]) == [7, 9]
+
+    # Test with mixed types (int and float equality)
+    assert module_0.common([1, 2.0], [2, 3]) == [2]
+
+    # Test with negative numbers
+    assert module_0.common([-1, -2, 3], [-2, 3, 5]) == [-2, 3]
+
+    # Test with one element
+    assert module_0.common([1], [1]) == [1]
+
+# Generated at 2026-11-02 06:31:39.595177
 # Unit test for function common
+def test_common():
+    # Test with common elements
+    assert module_0.common([1, 2, 3, 4], [3, 4, 5, 6]) == [3, 4]
+    
+    # Test with no common elements
+    assert module_0.common([1, 2, 3], [4, 5, 6]) == []
+    
+    # Test with empty lists
+    assert module_0.common([], []) == []
+    assert module_0.common([1, 2, 3], []) == []
+    assert module_0.common([], [1, 2, 3]) == []
+    
+    # Test with duplicates in both lists
+    assert module_0.common([1, 1, 2, 2, 3], [2, 2, 3, 3, 4]) == [2, 3]
+    
+    # Test with strings
+    assert module_0.common(["a", "b", "c"], ["b", "c", "d"]) == ["b", "c"]
+    
+    # Test with unsorted input, checking sorted output
+    assert module_0.common([5, 1, 3], [3, 5, 2]) == [3, 5]
+    
+    # Test with mixed types (ints and floats that are equal)
+    assert module_0.common([1, 2.0, 3], [2, 3.0, 4]) == [2, 3]
+    
+    # Test with identical lists
+    assert module_0.common([1, 2, 3], [1, 2, 3]) == [1, 2, 3]
+    
+    # Test result is a list
+    result = module_0.common([1], [1])
+    assert isinstance(result, list)
+    
+    # Test single element lists
+    assert module_0.common([7], [7]) == [7]
+    assert module_0.common([7], [8]) == []

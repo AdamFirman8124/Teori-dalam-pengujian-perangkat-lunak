@@ -2,14 +2,37 @@
 import f113 as module_0
 
 def test_case_0():
-    int_0 = 1
-    int_1 = 2
-    int_2 = 3
-    int_3 = [int_0, int_1, int_2]
-    int_4 = 4
-    int_5 = 6
-    int_6 = [int_4, int_5]
-    var_0 = []
-    var_1 = [int_3, int_6, var_0]
-    var_2 = module_0.odd_count(var_1)
-    assert var_2 == ['the number of odd elements 2n the str2ng 2 of the 2nput.', 'the number of odd elements 0n the str0ng 0 of the 0nput.', 'the number of odd elements 0n the str0ng 0 of the 0nput.']
+    str_0 = '2468'
+    str_1 = [str_0]
+    var_0 = module_0.odd_count(str_1)
+    assert var_0 == ['the number of odd elements 0n the str0ng 0 of the 0nput.']
+    str_2 = '1357'
+    str_3 = [str_2]
+    var_1 = module_0.odd_count(str_3)
+    assert var_1 == ['the number of odd elements 4n the str4ng 4 of the 4nput.']
+    str_4 = '1234567'
+    str_5 = [str_4]
+    var_2 = module_0.odd_count(str_5)
+    assert var_2 == ['the number of odd elements 4n the str4ng 4 of the 4nput.']
+    str_6 = '3'
+    str_7 = '11111111'
+    str_8 = [str_6, str_7]
+    var_3 = module_0.odd_count(str_8)
+    assert var_3 == ['the number of odd elements 1n the str1ng 1 of the 1nput.', 'the number of odd elements 8n the str8ng 8 of the 8nput.']
+    str_9 = '271'
+    str_10 = '137'
+    str_11 = '314'
+    str_12 = [str_9, str_10, str_11]
+    var_4 = module_0.odd_count(str_12)
+    assert var_4 == ['the number of odd elements 2n the str2ng 2 of the 2nput.', 'the number of odd elements 3n the str3ng 3 of the 3nput.', 'the number of odd elements 2n the str2ng 2 of the 2nput.']
+    var_5 = []
+    var_6 = module_0.odd_count(var_5)
+    assert var_6 == []
+    str_13 = ''
+    str_14 = [str_13]
+    var_7 = module_0.odd_count(str_14)
+    assert var_7 == ['the number of odd elements 0n the str0ng 0 of the 0nput.']
+    str_15 = '0246'
+    str_16 = [str_15]
+    var_8 = module_0.odd_count(str_16)
+    assert var_8 == ['the number of odd elements 0n the str0ng 0 of the 0nput.']

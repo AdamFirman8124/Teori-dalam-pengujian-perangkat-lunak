@@ -8,22 +8,23 @@ from f028 import concatenate
 
 
 def test_concatenate_empty_list():
-    result = concatenate([])
-    assert result == ""
-    assert isinstance(result, str)
+    """Calling with an empty list executes the join and returns an empty string."""
+    assert concatenate([]) == ""
 
 
 def test_concatenate_single_string():
-    result = concatenate(["hello"])
-    assert result == "hello"
+    """Calling with a single string executes the join and returns it unchanged."""
+    assert concatenate(["hello"]) == "hello"
 
 
 def test_concatenate_multiple_strings():
-    result = concatenate(["foo", "bar", "baz"])
-    assert result == "foobarbaz"
+    """Calling with multiple strings executes the join and concatenates them."""
+    assert concatenate(["a", "b", "c"]) == "abc"
 
 
-def test_concatenate_does_not_mutate_input():
-    strings = ["a", "b"]
-    concatenate(strings)
-    assert strings == ["a", "b"]
+def test_concatenate_no_mutation():
+    """The join must not mutate the input list."""
+    strings = ["x", "y"]
+    result = concatenate(strings)
+    assert result == "xy"
+    assert strings == ["x", "y"]

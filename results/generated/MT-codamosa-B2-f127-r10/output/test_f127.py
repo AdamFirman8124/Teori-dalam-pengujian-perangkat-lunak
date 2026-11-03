@@ -2,54 +2,57 @@
 import f127 as module_0
 
 def test_case_0():
-    int_0 = 5
-    int_1 = 3
-    int_2 = [int_1, int_0]
-    var_0 = module_0.intersection(int_2, int_2)
-    assert var_0 == 'YES'
-
-def test_case_1():
     int_0 = 1
-    int_1 = 5
-    int_2 = [int_0, int_1]
+    int_1 = 2
+    int_2 = (int_0, int_1)
     int_3 = 3
-    int_4 = 7
-    int_5 = [int_3, int_4]
-    var_0 = module_0.intersection(int_2, int_5)
-    assert var_0 == 'YES'
-    int_6 = 6
-    int_7 = [int_1, int_6]
-    int_8 = 8
-    int_9 = [int_3, int_8]
-    var_1 = module_0.intersection(int_7, int_9)
+    int_4 = (int_1, int_3)
+    var_0 = module_0.intersection(int_2, int_4)
+    assert var_0 == 'NO'
+    int_5 = -1
+    int_6 = (int_5, int_0)
+    int_7 = 0
+    int_8 = 4
+    int_9 = (int_7, int_8)
+    var_1 = module_0.intersection(int_6, int_9)
     assert var_1 == 'NO'
-    int_10 = 2
-    int_11 = [int_0, int_10]
-    int_12 = 4
-    int_13 = [int_12, int_6]
-    var_2 = module_0.intersection(int_11, int_13)
-    assert var_2 == 'NO'
-    int_14 = [int_0, int_8]
-    int_15 = [int_10, int_1]
-    var_3 = module_0.intersection(int_14, int_15)
-    assert var_3 == 'YES'
-    int_16 = [int_0, int_12]
-    int_17 = [int_3, int_6]
-    var_4 = module_0.intersection(int_16, int_17)
+    int_10 = -3
+    int_11 = -1
+    int_12 = (int_10, int_11)
+    int_13 = -5
+    int_14 = 5
+    int_15 = (int_13, int_14)
+    var_2 = module_0.intersection(int_12, int_15)
+    assert var_2 == 'YES'
+    int_16 = (int_0, int_3)
+    int_17 = (int_1, int_14)
+    var_3 = module_0.intersection(int_16, int_17)
+    assert var_3 == 'NO'
+    int_18 = 10
+    int_19 = (int_0, int_18)
+    int_20 = 8
+    int_21 = (int_1, int_20)
+    var_4 = module_0.intersection(int_19, int_21)
     assert var_4 == 'NO'
-    int_18 = -10
-    int_19 = -1
-    int_20 = [int_18, int_19]
-    int_21 = [int_19, int_3]
-    var_5 = module_0.intersection(int_20, int_21)
+    int_22 = (int_7, int_14)
+    int_23 = (int_3, int_18)
+    var_5 = module_0.intersection(int_22, int_23)
     assert var_5 == 'YES'
-    assert var_5 == 'NO'
-    int_22 = 0
-    int_23 = 10
-    int_24 = [int_22, int_23]
-    int_25 = 12
-    int_26 = [int_0, int_25]
-    var_6 = module_0.intersection(int_24, int_26)
+    int_24 = (int_0, int_1)
+    int_25 = (int_3, int_8)
+    var_6 = module_0.intersection(int_24, int_25)
     assert var_6 == 'NO'
-    str_0 = 'All tests passed!'
-    var_7 = print(str_0)
+    int_26 = (int_7, int_8)
+    int_27 = (int_0, int_8)
+    var_7 = module_0.intersection(int_26, int_27)
+    assert var_7 == 'YES'
+    int_28 = 6
+    int_29 = (int_7, int_28)
+    int_30 = (int_1, int_28)
+    var_8 = module_0.intersection(int_29, int_30)
+    assert var_8 == 'NO'
+    int_31 = 7
+    int_32 = (int_1, int_31)
+    int_33 = (int_1, int_31)
+    var_9 = module_0.intersection(int_32, int_33)
+    assert var_9 == 'YES'

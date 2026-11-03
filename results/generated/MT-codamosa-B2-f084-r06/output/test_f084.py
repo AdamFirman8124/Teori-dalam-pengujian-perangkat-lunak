@@ -5,3 +5,39 @@ def test_case_0():
     int_0 = 0
     var_0 = module_0.solve(int_0)
     assert var_0 == '0'
+    int_1 = 1
+    var_1 = module_0.solve(int_1)
+    assert var_1 == '1'
+    int_2 = 5
+    var_2 = module_0.solve(int_2)
+    assert var_2 == '101'
+    int_3 = 10
+    var_3 = module_0.solve(int_3)
+    assert var_3 == '1'
+    int_4 = 100
+    var_4 = module_0.solve(int_4)
+    assert var_4 == '1'
+    int_5 = 150
+    var_5 = module_0.solve(int_5)
+    assert var_5 == '110'
+    int_6 = 147
+    var_6 = module_0.solve(int_6)
+    assert var_6 == '1100'
+    int_7 = 9999
+    var_7 = module_0.solve(int_7)
+    assert var_7 == '100100'
+    int_8 = 123456789
+    var_8 = module_0.solve(int_8)
+    assert var_8 == '100101'
+    assert var_8 == '101101'
+    int_9 = 222
+    var_9 = module_0.solve(int_9)
+    assert var_9 == '110'
+    int_10 = 88
+    var_10 = module_0.solve(int_10)
+    assert var_10 == '10000'
+    int_11 = 777
+    var_11 = module_0.solve(int_11)
+    assert var_11 == '10101'
+    str_0 = 'All test cases passed!'
+    var_12 = print(str_0)

@@ -2,41 +2,22 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
-import pytest
-
 from f138 import is_equal_to_sum_even
 
 
-@pytest.mark.parametrize(
-    "n, expected",
-    [
-        (8, True),
-        (10, True),
-        (100, True),
-        (6, False),
-        (2, False),
-        (0, False),
-        (-8, False),
-        (7, False),
-        (9, False),
-        (1, False),
-        (-7, False),
-    ],
-)
-def test_is_equal_to_sum_even(n, expected):
-    assert is_equal_to_sum_even(n) is expected
-
-
-def test_is_equal_to_sum_even_even_and_at_least_eight():
+def test_true_when_even_and_at_least_eight():
+    # Covers the branch where n % 2 == 0 is True and n >= 8 is True.
     assert is_equal_to_sum_even(8) is True
-    assert is_equal_to_sum_even(12) is True
+    assert is_equal_to_sum_even(10) is True
 
 
-def test_is_equal_to_sum_even_even_but_less_than_eight():
+def test_false_when_even_but_below_eight():
+    # Covers the branch where n % 2 == 0 is True but n >= 8 is False.
     assert is_equal_to_sum_even(6) is False
     assert is_equal_to_sum_even(0) is False
 
 
-def test_is_equal_to_sum_even_odd():
-    assert is_equal_to_sum_even(9) is False
+def test_false_when_odd():
+    # Covers the short-circuit branch where n % 2 == 0 is False.
     assert is_equal_to_sum_even(7) is False
+    assert is_equal_to_sum_even(-3) is False

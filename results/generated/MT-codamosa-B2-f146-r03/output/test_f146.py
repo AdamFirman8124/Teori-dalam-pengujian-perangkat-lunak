@@ -2,13 +2,16 @@
 import f146 as module_0
 
 def test_case_0():
+    var_0 = []
+    var_1 = module_0.specialFilter(var_0)
+    assert var_1 == 0
     int_0 = 15
     int_1 = -73
     int_2 = 14
     int_3 = -15
     int_4 = [int_0, int_1, int_2, int_3]
-    var_0 = module_0.specialFilter(int_4)
-    assert var_0 == 1
+    var_2 = module_0.specialFilter(int_4)
+    assert var_2 == 1
     int_5 = 33
     int_6 = -2
     int_7 = -3
@@ -16,22 +19,54 @@ def test_case_0():
     int_9 = 21
     int_10 = 109
     int_11 = [int_5, int_6, int_7, int_8, int_9, int_10]
-    var_1 = module_0.specialFilter(int_11)
-    assert var_1 == 2
-    var_2 = []
-    var_3 = module_0.specialFilter(var_2)
-    assert var_3 == 0
+    var_3 = module_0.specialFilter(int_11)
+    assert var_3 == 2
     int_12 = 11
-    int_13 = [int_12]
-    var_4 = module_0.specialFilter(int_13)
-    assert var_4 == 1
-    int_14 = 10
-    int_15 = [int_14]
-    var_5 = module_0.specialFilter(int_15)
+    int_13 = 13
+    int_14 = 35
+    int_15 = 57
+    int_16 = 79
+    int_17 = 97
+    int_18 = [int_12, int_13, int_14, int_15, int_16, int_17]
+    var_4 = module_0.specialFilter(int_18)
+    assert var_4 == 6
+    int_19 = 1
+    int_20 = 3
+    int_21 = 5
+    int_22 = 7
+    int_23 = 9
+    int_24 = 10
+    int_25 = [int_19, int_20, int_21, int_22, int_23, int_24]
+    var_5 = module_0.specialFilter(int_25)
     assert var_5 == 0
-    int_16 = 101
-    int_17 = 303
-    int_18 = 505
-    int_19 = [int_16, int_17, int_18]
-    var_6 = module_0.specialFilter(int_19)
-    assert var_6 == 3
+    int_26 = 23
+    int_27 = 25
+    int_28 = 27
+    int_29 = [int_9, int_26, int_27, int_28]
+    var_6 = module_0.specialFilter(int_29)
+    assert var_6 == 0
+    int_30 = 12
+    int_31 = 16
+    int_32 = 18
+    int_33 = [int_30, int_2, int_31, int_32]
+    var_7 = module_0.specialFilter(int_33)
+    assert var_7 == 0
+    int_34 = [int_24, int_12]
+    var_8 = module_0.specialFilter(int_34)
+    assert var_8 == 1
+    int_35 = 101
+    int_36 = 133
+    int_37 = 155
+    int_38 = 177
+    int_39 = 199
+    int_40 = [int_35, int_36, int_37, int_38, int_39]
+    var_9 = module_0.specialFilter(int_40)
+    assert var_9 == 5
+    int_41 = -11
+    int_42 = -13
+    int_43 = -35
+    int_44 = [int_41, int_42, int_43]
+    var_10 = module_0.specialFilter(int_44)
+    assert var_10 == 0
+    str_0 = 'All tests passed!'
+    var_11 = print(str_0)

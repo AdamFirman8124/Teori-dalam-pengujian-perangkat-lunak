@@ -1,69 +1,68 @@
 
 
-# Generated at 2026-10-24 22:42:11.959708
-# Unit test for function prime_length
-
-# Generated at 2026-10-24 22:42:14.377722
-# Unit test for function prime_length
-
-# Generated at 2026-10-24 22:42:16.795160
-# Unit test for function prime_length
-
-# Generated at 2026-10-24 22:42:19.214633
-# Unit test for function prime_length
-
-# Generated at 2026-10-24 22:42:22.343682
+# Generated at 2026-11-03 04:31:05.398161
 # Unit test for function prime_length
 def test_prime_length():
-    assert module_0.prime_length("Hello") == True
-    assert module_0.prime_length("abcdcba") == True
-    assert module_0.prime_length("kittens") == True
-    assert module_0.prime_length("orange") == False
-    assert module_0.prime_length("wow") == True
-    assert module_0.prime_length("a") == False
-    assert module_0.prime_length("") == False
-    assert module_0.prime_length("ab") == True
-    assert module_0.prime_length("abcdefghijklmnop") == False
-    assert module_0.prime_length("abcdefghijklmnopqrstuvwxyz") == False
+    # Test strings with prime lengths
+    assert module_0.prime_length("Hello") == True       # length 5 (prime)
+    assert module_0.prime_length("abcdcba") == True     # length 7 (prime)
+    assert module_0.prime_length("kittens") == True     # length 7 (prime)
+    assert module_0.prime_length("wow") == True         # length 3 (prime)
+    assert module_0.prime_length("ab") == True          # length 2 (prime)
 
-# Generated at 2026-10-24 22:42:27.962271
+    # Test strings with non-prime lengths
+    assert module_0.prime_length("orange") == False     # length 6 (not prime)
+    assert module_0.prime_length("abcd") == False       # length 4 (not prime)
+    assert module_0.prime_length("abcdefgh") == False   # length 8 (not prime)
+
+    # Test edge cases
+    assert module_0.prime_length("") == False           # length 0
+    assert module_0.prime_length("a") == False          # length 1
+
+# Generated at 2026-11-03 04:34:20.372386
 # Unit test for function prime_length
 def test_prime_length():
-    assert module_0.prime_length("") is False          # Length 0
-    assert module_0.prime_length("a") is False         # Length 1
-    assert module_0.prime_length("ab") is True         # Length 2 (prime)
-    assert module_0.prime_length("abc") is True        # Length 3 (prime)
-    assert module_0.prime_length("abcd") is False      # Length 4 (composite)
-    assert module_0.prime_length("abcde") is True      # Length 5 (prime)
-    assert module_0.prime_length("abcdef") is False    # Length 6 (composite)
-    assert module_0.prime_length("abcdefghijk") is True  # Length 11 (prime)
-
-# Generated at 2026-10-24 22:42:32.263694
-# Unit test for function prime_length
-def test_prime_length():
-    assert module_0.prime_length("") is False       # Length 0
-    assert module_0.prime_length("a") is False      # Length 1
-    assert module_0.prime_length("ab") is True      # Length 2 (prime)
-    assert module_0.prime_length("abc") is True     # Length 3 (prime)
-    assert module_0.prime_length("abcd") is False   # Length 4 (not prime)
-    assert module_0.prime_length("abcde") is True   # Length 5 (prime)
-    assert module_0.prime_length("abcdef") is False # Length 6 (not prime)
-
-# Generated at 2026-10-24 22:42:37.292174
-# Unit test for function prime_length
-def test_prime_length():
-    # Lengths 0 and 1 are not prime
-    assert module_0.prime_length("") is False
-    assert module_0.prime_length("a") is False
+    # Non-prime lengths (composite or trivial)
+    assert module_0.prime_length("") == False          # length 0
+    assert module_0.prime_length("a") == False         # length 1
+    assert module_0.prime_length("abab") == False      # length 4
+    assert module_0.prime_length("orange") == False    # length 6
+    assert module_0.prime_length("abcdefgh") == False  # length 8
+    assert module_0.prime_length("a" * 9) == False     # length 9
+    assert module_0.prime_length("a" * 10) == False    # length 10
 
     # Prime lengths
-    assert module_0.prime_length("ab") is True       # 2
-    assert module_0.prime_length("abc") is True      # 3
-    assert module_0.prime_length("abcde") is True    # 5
-    assert module_0.prime_length("abcdefg") is True  # 7
+    assert module_0.prime_length("ab") == True         # length 2
+    assert module_0.prime_length("abc") == True        # length 3
+    assert module_0.prime_length("Hello") == True      # length 5
+    assert module_0.prime_length("abcdcba") == True    # length 7
+    assert module_0.prime_length("kittens") == True    # length 7
+    assert module_0.prime_length("a" * 11) == True     # length 11
+    assert module_0.prime_length("a" * 13) == True     # length 13
+    assert module_0.prime_length("a" * 97) == True     # length 97
 
-    # Composite lengths
-    assert module_0.prime_length("abcd") is False      # 4
-    assert module_0.prime_length("abcdef") is False    # 6
-    assert module_0.prime_length("abcdefgh") is False  # 8
-    assert module_0.prime_length("abcdefghi") is False # 9
+    print("All test cases passed!")
+
+# Generated at 2026-11-03 04:37:46.485818
+# Unit test for function prime_length
+def test_prime_length():
+    # Length 0 - not prime
+    assert module_0.prime_length("") == False
+    # Length 1 - not prime
+    assert module_0.prime_length("a") == False
+    # Length 2 - prime
+    assert module_0.prime_length("ab") == True
+    # Length 3 - prime
+    assert module_0.prime_length("abc") == True
+    # Length 4 - not prime (2*2)
+    assert module_0.prime_length("abcd") == False
+    # Length 5 - prime
+    assert module_0.prime_length("hello") == True
+    # Length 6 - not prime (2*3)
+    assert module_0.prime_length("abcdef") == False
+    # Length 7 - prime
+    assert module_0.prime_length("aaaaaaa") == True
+    # Length 9 - not prime (3*3)
+    assert module_0.prime_length("a" * 9) == False
+    # Length 11 - prime
+    assert module_0.prime_length("hello world") == True

@@ -7,18 +7,20 @@ import pytest
 from f050 import encode_shift
 
 
-def test_encode_shift_executes_line_3():
-    # Executes line 3 (the return statement) with a non-empty string.
-    result = encode_shift("abc")
-    assert result == "fgh"
+def test_encode_shift_basic_shift():
+    """Calling encode_shift with a non-empty string executes line 3 (the comprehension)."""
+    # Each lowercase letter shifts forward by 5 positions.
+    assert encode_shift("hello") == "mjqqt"
+    assert encode_shift("aaaaa") == "fffff"
 
 
 def test_encode_shift_wraps_around_alphabet():
-    # Exercises the modulo branch: 'v' + 5 wraps past 'z' back to 'a'.
-    result = encode_shift("vwxyz")
-    assert result == "abcde"
+    """Verify the modulo-26 wraparound branch of the comprehension logic."""
+    # 'v' is the first letter that wraps around: 'v' -> 'a', ..., 'z' -> 'e'.
+    assert encode_shift("vwxyz") == "abcde"
+    assert encode_shift("xyz") == "cde"
 
 
 def test_encode_shift_empty_string():
-    # Executes line 3 with an empty input; join over empty list.
+    """Calling with an empty string still executes line 3 (comprehension yields empty join)."""
     assert encode_shift("") == ""

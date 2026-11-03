@@ -16,45 +16,49 @@ def test_case_0():
     var_1 = module_0.minSubArraySum(int_8)
     assert var_1 == 6
     assert var_1 == -6
-    int_9 = 5
-    int_10 = [int_9]
-    var_2 = module_0.minSubArraySum(int_10)
-    assert var_2 == 5
-    int_11 = -1
-    int_12 = -2
-    int_13 = [int_3, int_11, int_12, int_0]
-    var_3 = module_0.minSubArraySum(int_13)
-    assert var_3 == 3
-    assert var_3 == -3
-    int_14 = -1
-    int_15 = -2
-    int_16 = -3
-    int_17 = -4
-    int_18 = [int_14, int_15, int_16, int_17]
-    var_4 = module_0.minSubArraySum(int_18)
-    assert var_4 == 10
-    assert var_4 == -10
-    int_19 = 0
-    int_20 = -1
-    int_21 = [int_19, int_3, int_19, int_20, int_19]
-    var_5 = module_0.minSubArraySum(int_21)
-    assert var_5 == 1
-    assert var_5 == -1
-    int_22 = 10
-    int_23 = 20
-    int_24 = -5
-    int_25 = 30
-    int_26 = [int_22, int_23, int_24, int_25]
-    var_6 = module_0.minSubArraySum(int_26)
-    assert var_6 == 5
-    assert var_6 == -5
-    int_27 = -2
-    int_28 = -3
-    int_29 = -1
-    int_30 = -5
-    int_31 = [int_27, int_3, int_28, int_2, int_29, int_0, int_3, int_30, int_2]
-    var_7 = module_0.minSubArraySum(int_31)
-    assert var_7 == 5
-    assert var_7 == -5
-    str_0 = 'All tests passed!'
-    var_8 = print(str_0)
+    int_9 = -1
+    int_10 = -2
+    int_11 = -3
+    int_12 = [int_9, int_10, int_11, int_2]
+    var_2 = module_0.minSubArraySum(int_12)
+    assert var_2 == 6
+    assert var_2 == -6
+    int_13 = -1
+    int_14 = [int_3, int_13]
+    var_3 = module_0.minSubArraySum(int_14)
+    assert var_3 == 1
+    assert var_3 == -1
+    int_15 = [int_3]
+    var_4 = module_0.minSubArraySum(int_15)
+    assert var_4 == 1
+    int_16 = -5
+    int_17 = [int_16]
+    var_5 = module_0.minSubArraySum(int_17)
+    assert var_5 == 5
+    assert var_5 == -5
+    int_18 = -3
+    int_19 = -1
+    int_20 = -2
+    int_21 = 5
+    int_22 = [int_0, int_18, int_2, int_19, int_20, int_21]
+    var_6 = module_0.minSubArraySum(int_22)
+    assert var_6 == 3
+    assert var_6 == -3
+    int_23 = 0
+    int_24 = [int_23, int_23, int_23]
+    var_7 = module_0.minSubArraySum(int_24)
+    assert var_7 == 0
+    int_25 = -2
+    int_26 = -3
+    int_27 = [int_25, int_23, int_26]
+    var_8 = module_0.minSubArraySum(int_27)
+    assert var_8 == 5
+    assert var_8 == -5
+    int_28 = -4
+    int_29 = -5
+    int_30 = [int_28, int_3, int_29]
+    var_9 = module_0.minSubArraySum(int_30)
+    assert var_9 == 5
+    assert var_9 == -8
+    str_0 = 'All test cases passed!'
+    var_10 = print(str_0)

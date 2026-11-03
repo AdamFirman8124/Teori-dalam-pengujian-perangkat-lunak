@@ -3,20 +3,43 @@ import f054 as module_0
 
 def test_case_0():
     str_0 = 'abc'
-    str_1 = 'cba'
-    var_0 = module_0.same_chars(str_0, str_1)
+    var_0 = module_0.same_chars(str_0, str_0)
     assert var_0 is True
-    str_2 = 'aabbcc'
-    var_1 = module_0.same_chars(str_2, str_0)
+    str_1 = 'cba'
+    var_1 = module_0.same_chars(str_0, str_1)
     assert var_1 is True
-    str_3 = ''
-    var_2 = module_0.same_chars(str_3, str_3)
+    str_2 = 'aabbcc'
+    var_2 = module_0.same_chars(str_2, str_0)
     assert var_2 is True
-    str_4 = 'abd'
-    var_3 = module_0.same_chars(str_0, str_4)
-    assert var_3 is False
+    var_3 = module_0.same_chars(str_0, str_2)
+    assert var_3 is True
+    str_3 = 'abd'
     var_4 = module_0.same_chars(str_0, str_3)
     assert var_4 is False
-    str_5 = 'abcd'
-    var_5 = module_0.same_chars(str_0, str_5)
-    assert var_5 is False
+    str_4 = ''
+    var_5 = module_0.same_chars(str_4, str_4)
+    assert var_5 is True
+    str_5 = 'a'
+    var_6 = module_0.same_chars(str_4, str_5)
+    assert var_6 is False
+    var_7 = module_0.same_chars(str_5, str_4)
+    assert var_7 is False
+    str_6 = 'ABC'
+    var_8 = module_0.same_chars(str_0, str_6)
+    assert var_8 is False
+    str_7 = 'a1!'
+    str_8 = '1!a'
+    var_9 = module_0.same_chars(str_7, str_8)
+    assert var_9 is True
+    str_9 = 'a1?'
+    var_10 = module_0.same_chars(str_7, str_9)
+    assert var_10 is False
+    str_10 = 'x'
+    var_11 = module_0.same_chars(str_10, str_10)
+    assert var_11 is True
+    str_11 = 'y'
+    var_12 = module_0.same_chars(str_10, str_11)
+    assert var_12 is False
+    str_12 = 'ab'
+    var_13 = module_0.same_chars(str_0, str_12)
+    assert var_13 is False

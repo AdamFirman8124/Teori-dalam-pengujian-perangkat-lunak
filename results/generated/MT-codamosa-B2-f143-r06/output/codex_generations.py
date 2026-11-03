@@ -1,1844 +1,1015 @@
 
 
-# Generated at 2026-10-25 00:59:56.113213
+# Generated at 2026-11-01 23:25:16.277366
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
+    # Only words with prime-number lengths are kept
+    assert module_0.words_in_sentence("There is no place like home") == "There is no place"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
+
+    # All words have prime lengths -> everything kept
+    assert module_0.words_in_sentence("hello world") == "hello world"
+    assert module_0.words_in_sentence("one two three six seven") == "one two three six seven"
+
+    # Mix of prime (2, 3, 5) and composite (1, 4) lengths
     assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
+    assert module_0.words_in_sentence("I am ok today") == "am ok today"
 
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Length-2 words are always kept even though the loop never runs
+    assert module_0.words_in_sentence("an at on") == "an at on"
 
-    # Edge cases
+    # No qualifying words
+    assert module_0.words_in_sentence("four down") == ""
+
+    # Empty and single-word inputs
     assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
     assert module_0.words_in_sentence("a") == ""
+    assert module_0.words_in_sentence("cat") == "cat"
+    assert module_0.words_in_sentence("fish") == ""
 
-# Generated at 2026-10-25 00:59:57.472669
+    # Extra whitespace handled by split()
+    assert module_0.words_in_sentence("  cat   dog  ") == "cat dog"
+
+    # Longer lengths: crocodiles (10, composite), mississippi (11, prime)
+    assert module_0.words_in_sentence("crocodiles mississippi") == "mississippi"
+
+# Generated at 2026-11-01 23:25:25.650013
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
+    # nonce:2c536dfa
+    # Words with prime-length (2, 3, 5, 7, ...) are kept
+    assert module_0.words_in_sentence("There is no place like home") == "There is no place like"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
+    # Single-character words are excluded (length 1 is not prime)
+    assert module_0.words_in_sentence("a cat and a dog") == "cat and dog"
+    # All words prime length
+    assert module_0.words_in_sentence("monkeys are funny") == "monkeys are funny"
+    # Length 2 words kept
+    assert module_0.words_in_sentence("go go") == "go go"
+    # Length 4 and 6 words excluded
+    assert module_0.words_in_sentence("like python") == ""
+    # Length 5 and 7 words kept
+    assert module_0.words_in_sentence("hello monkeys") == "hello monkeys"
+    # Empty string
+    assert module_0.words_in_sentence("") == ""
+    # Single word, prime length
+    assert module_0.words_in_sentence("is") == "is"
+    # Single word, non-prime length
+    assert module_0.words_in_sentence("abcd") == ""
+    # Length 9 (divisible by 3) excluded, length 11 kept
+    assert module_0.words_in_sentence("understand extraordinary") == "extraordinary"
+
+# Generated at 2026-11-01 23:25:42.033788
+# Unit test for function words_in_sentence
+def test_words_in_sentence():
+    # Words with prime lengths (2, 3, 5, 7, ...) are kept; others removed
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
+    assert module_0.words_in_sentence("There is no place for him here") == "There is no place for him"
+    assert module_0.words_in_sentence("") == ""                       # empty sentence
+    assert module_0.words_in_sentence("a") == ""                      # length 1 excluded
+    assert module_0.words_in_sentence("ok") == "ok"                   # length 2 is prime
+    assert module_0.words_in_sentence("four") == ""                   # length 4 not prime
+    assert module_0.words_in_sentence("hello") == "hello"             # length 5 is prime
+    assert module_0.words_in_sentence("abcdefghi") == ""              # length 9 = 3*3 not prime
+    assert module_0.words_in_sentence("sevennn") == "sevennn"         # length 7 is prime
     assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
+    assert module_0.words_in_sentence("cat dog bird elephant") == "cat dog bird"
+    assert module_0.words_in_sentence("elevenchars") == "elevenchars"  # length 11 is prime
+    assert module_0.words_in_sentence("is here") == "is"              # only prime-length words kept
+    print("test_words_in_sentence passed")
 
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+test_words_in_sentence()
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:00:00.006088
+# Generated at 2026-11-01 23:25:55.166814
 # Unit test for function words_in_sentence
+def test_words_in_sentence():import unittest
 
-# Generated at 2026-10-25 01:00:02.781745
-# Unit test for function words_in_sentence
 
-# Generated at 2026-10-25 01:00:05.197704
-# Unit test for function words_in_sentence
+class TestWordsInSentence(unittest.TestCase):
 
-# Generated at 2026-10-25 01:00:07.615221
-# Unit test for function words_in_sentence
+    def test_mixed_lengths(self):
+        # "This"(4)=out, "is"(2)=in, "a"(1)=out, "test"(4)=out
+        self.assertEqual(module_0.words_in_sentence("This is a test"), "is")
 
-# Generated at 2026-10-25 01:00:10.202951
-# Unit test for function words_in_sentence
+    def test_example(self):
+        # "lets"(4)=out, "go"(2)=in, "for"(3)=in, "swimming"(8)=out
+        self.assertEqual(module_0.words_in_sentence("lets go for swimming"), "go for")
 
-# Generated at 2026-10-25 01:00:12.616462
-# Unit test for function words_in_sentence
+    def test_all_prime_lengths_kept(self):
+        # all words have prime lengths (2, 2, 2, 3)
+        self.assertEqual(module_0.words_in_sentence("to be or not"), "to be or not")
 
-# Generated at 2026-10-25 01:00:15.030470
-# Unit test for function words_in_sentence
+    def test_single_char_word_excluded(self):
+        # "a"(1)=out, "bb"(2)=in, "ccc"(3)=in, "dddd"(4)=out, "eeeee"(5)=in
+        self.assertEqual(module_0.words_in_sentence("a bb ccc dddd eeeee"), "bb ccc eeeee")
 
-# Generated at 2026-10-25 01:00:17.444928
-# Unit test for function words_in_sentence
+    def test_length_two_always_kept(self):
+        self.assertEqual(module_0.words_in_sentence("he we hi go"), "he we hi go")
 
-# Generated at 2026-10-25 01:00:29.801639
-# Unit test for function words_in_sentence
-def test_words_in_sentence():assert module_0.words_in_sentence("cat dog four five six") == "cat dog six"
+    def test_large_prime_lengths(self):
+        # seven(5)=in, letters(7)=in, between(7)=in
+        self.assertEqual(
+            module_0.words_in_sentence("seven letters between"),
+            "seven letters between",
+        )
 
-# Generated at 2026-10-25 01:00:31.159415
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
+    def test_composite_odd_length_excluded(self):
+        # nine-letter word (9 = 3*3) must be excluded
+        self.assertEqual(module_0.words_in_sentence("wonderful good"), "good")
 
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    def test_square_of_prime_excluded(self):
+        # 25 = 5*5 -> excluded
+        self.assertEqual(
+            module_0.words_in_sentence("aaaaabbbbbcccccdddddeeeee"),
+            "",
+        )
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    def test_empty_string(self):
+        self.assertEqual(module_0.words_in_sentence(""), "")
 
-# Generated at 2026-10-25 01:00:32.552000
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
+    def test_only_non_prime_words_returns_empty(self):
+        self.assertEqual(module_0.words_in_sentence("one four nine"), "")
 
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    def test_preserves_order(self):
+        self.assertEqual(module_0.words_in_sentence("zebra cat ox dog bat"), "cat ox bat")
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    def test_multiple_spaces_between_words(self):
+        # split() handles extra whitespace
+        self.assertEqual(module_0.words_in_sentence("hi   there     ok"), "hi ok")
 
-# Generated at 2026-10-25 01:00:33.869956
+
+if __name__ == "__main__":
+    unittest.main()
+
+# Generated at 2026-11-01 23:26:20.441349
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
+    # Prime-length words are kept, in original order
+    assert module_0.words_in_sentence("There is no place available here") == "There is no place here"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
 
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Words of length 1 are excluded
+    assert module_0.words_in_sentence("a b c") == ""
 
-    # Edge cases
+    # Words of length 2 (prime) are kept
+    assert module_0.words_in_sentence("is") == "is"
+    assert module_0.words_in_sentence("go") == "go"
+
+    # Empty input
     assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
 
-# Generated at 2026-10-25 01:00:35.228693
+    # Mixed lengths: keep 3-letter words, drop 4-letter word
+    assert module_0.words_in_sentence("cat dog bird") == "cat dog"
+    assert module_0.words_in_sentence("elephant run fast") == "run"
+
+    # Length 7 (prime) kept, length 9 excluded
+    assert module_0.words_in_sentence("example elephant") == "example"
+
+    # Only prime-length words survive
+    assert module_0.words_in_sentence("hi there") == "hi there"
+    assert module_0.words_in_sentence("hello world") == ""
+
+# Generated at 2026-11-01 23:26:30.792228
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
+    # Single word with prime length (2)
+    assert module_0.words_in_sentence("is") == "is"
+    # Mixed sentence: only words with prime-length kept ("is" -> 2)
+    assert module_0.words_in_sentence("This is a test") == "is"
+    # "lets"(4) excluded, "go"(2) kept, "for"(3) kept, "swimming"(8) excluded
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
+    # Single character word (length 1) is not prime -> empty result
     assert module_0.words_in_sentence("a") == ""
+    # "go"(2) kept, "home"(4) excluded
+    assert module_0.words_in_sentence("go home") == "go"
+    # "there"(5), "is"(2), "no"(2), "place"(5) kept; "like"(4), "home"(4) excluded
+    assert module_0.words_in_sentence("there is no place like home") == "there is no place like home"
+    # "two"(3), "three"(5) kept; "four"(4) excluded
+    assert module_0.words_in_sentence("two three four") == "two three"
+    # Empty string
+    assert module_0.words_in_sentence("") == ""
+    # Word with prime length 5 kept, length 6 excluded
+    assert module_0.words_in_sentence("house houses") == "house"
+    # Length 7 (prime) kept, length 9 (composite) excluded
+    assert module_0.words_in_sentence("kittens elephant") == "kittens"
+    # Length 1 and length 4 both excluded
+    assert module_0.words_in_sentence("I will") == ""
 
-# Generated at 2026-10-25 01:00:36.556454
+# Generated at 2026-11-01 23:26:41.224867
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
+    # Prime-length words kept: There(5), is(2), no(2), place(5); like(4), home(4) dropped
+    assert module_0.words_in_sentence("There is no place like home") == "There is no place"
+    # All words have prime lengths (2, 5, 2)
+    assert module_0.words_in_sentence("is going to") == "is going to"
+    # All words have prime lengths (2, 3, 2)
+    assert module_0.words_in_sentence("go for it") == "go for it"
+    # Single-letter word "I" dropped (flg=1 and len != 2), am(2) kept, here(4) dropped
+    assert module_0.words_in_sentence("I am here") == "am"
+    # Single-letter words are dropped in this variant
     assert module_0.words_in_sentence("a") == ""
+    assert module_0.words_in_sentence("a b c") == ""
+    # Both words have prime length (5, 5)
+    assert module_0.words_in_sentence("hello world") == "hello world"
+    # Single word with prime length (7)
+    assert module_0.words_in_sentence("program") == "program"
+    # cat(3), and(3) kept; dogs(4) dropped
+    assert module_0.words_in_sentence("cat and dogs") == "cat and"
+    # elephant(8), ran(3), fast(4) -> only "ran" kept
+    assert module_0.words_in_sentence("elephant ran fast") == "ran"
+    # All composite lengths (4, 4) -> empty result
+    assert module_0.words_in_sentence("dogs cats") == ""
+    # Empty sentence
+    assert module_0.words_in_sentence("") == ""
+# nonce:f7280aa1
 
-# Generated at 2026-10-25 01:00:37.875773
+# Generated at 2026-11-01 23:27:03.026938
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:00:39.225179
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:00:40.554365
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:00:41.987430
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:00:43.305031
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:00:44.627630
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:00:47.050229
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:00:49.466990
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:00:51.884533
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:00:54.297841
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:00:56.714114
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:00:59.131220
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:01.544929
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:03.958965
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:06.539767
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:08.954528
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:11.369572
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:13.784200
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:16.199864
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:18.625033
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:21.040326
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:23.453774
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:25.882779
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:28.299276
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:30.715280
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:33.133617
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:35.546315
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:01:55.924650
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
+    # Words with prime lengths are kept, order preserved
     assert module_0.words_in_sentence("This is a test") == "is"
     assert module_0.words_in_sentence("lets go for swimming") == "go for"
+
+    # All words have prime lengths (2, 3, 5, 7)
+    assert module_0.words_in_sentence("is fun ok") == "is fun ok"
+    assert module_0.words_in_sentence("the quick brown") == "the quick brown"
+    assert module_0.words_in_sentence("quality is a must") == "quality is"
+
+    # No prime-length words -> empty result
+    assert module_0.words_in_sentence("good school time") == ""
+    assert module_0.words_in_sentence("elephant computer") == ""
+
+    # Single-character words are never kept
+    assert module_0.words_in_sentence("a") == ""
+    assert module_0.words_in_sentence("a i") == ""
+
+    # Two-character words are always kept
+    assert module_0.words_in_sentence("hi") == "hi"
+    assert module_0.words_in_sentence("no go") == "no go"
+
+    # Mixed sentences keep only prime-length words in order
+    assert module_0.words_in_sentence("python is fun to write") == "is fun to write"
+    assert module_0.words_in_sentence("the fast fox runs") == "the fox"
+    assert module_0.words_in_sentence("i love programming") == "programming"
+
+    # Long prime-length word (11 letters) vs non-prime word (9 letters)
+    assert module_0.words_in_sentence("wonderful programming") == "programming"
+
+    # Empty input
+    assert module_0.words_in_sentence("") == ""
+
+# Generated at 2026-11-01 23:27:17.898544
+# Unit test for function words_in_sentence
+def test_words_in_sentence():
+    # Example cases from spec
+    assert module_0.words_in_sentence("There is no place available here") == "There is no place"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
+
+    # All words have prime lengths (5, 5)
     assert module_0.words_in_sentence("hello world") == "hello world"
-    assert module_0.words_in_sentence("beautiful is better than ugly") == "is"
-    assert module_0.words_in_sentence("a") == ""
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("ab cd efgh ijklm") == "ab cd ijklm"
-    assert module_0.words_in_sentence("This beautiful test") == "beautiful"
-
-# Generated at 2026-10-25 01:01:57.257070
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:01:58.685766
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:00.118765
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:01.443331
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:02.766812
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:04.098984
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:05.499047
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:06.853897
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:08.179814
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:09.509621
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:10.845133
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:12.429972
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:13.805103
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:15.175005
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:17.593994
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:02:20.011892
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:02:22.552332
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:02:24.967516
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:02:27.381828
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:02:29.798673
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:02:32.213112
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:02:34.627584
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:02:37.042587
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:02:39.458043
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:02:40.911895
-# Unit test for function words_in_sentence
-def test_words_in_sentence():assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-
-# Generated at 2026-10-25 01:02:42.239225
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:43.561724
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:44.881370
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:46.195517
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:47.514054
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:48.844320
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:50.206547
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:51.533003
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:52.848574
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:54.183599
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:55.500922
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:56.855716
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:02:58.200902
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:03:00.084275
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:03:01.482081
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:03:02.838688
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:03:04.168657
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:03:05.521175
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:03:06.853164
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:03:09.506648
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:03:11.922292
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:03:14.350350
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:03:16.765086
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:03:19.178842
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:03:21.596047
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:03:24.020638
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:03:26.590153
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:03:29.005202
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:03:31.420527
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:03:34.006411
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:03:36.422773
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:03:40.644660
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:03:43.063907
-# Unit test for function words_in_sentence
-
-# Generated at 2026-10-25 01:03:45.481898
-# Unit test for function words_in_sentence
 
-# Generated at 2026-10-25 01:03:46.844691
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:03:48.170903
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:03:49.687705
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Mixed lengths: 1 (excluded), 2, 3 (kept), 4 (excluded)
+    assert module_0.words_in_sentence("a bb ccc dddd") == "bb ccc"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
+    # Single character word (length 1, not prime) -> empty result
     assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:03:51.017499
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
 
-    # Edge cases
+    # Empty sentence -> empty result
     assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
-
-# Generated at 2026-10-25 01:03:52.452508
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    # Single word of prime length (2)
+    assert module_0.words_in_sentence("is") == "is"
 
-# Generated at 2026-10-25 01:03:53.780439
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Single word of non-prime length (4)
+    assert module_0.words_in_sentence("word") == ""
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    # Lengths: 6 (excluded), 2 (kept), 3 (kept)
+    assert module_0.words_in_sentence("python is fun") == "is fun"
 
-# Generated at 2026-10-25 01:03:55.167292
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Lengths: 3, 5, 5, 3 - all prime
+    assert module_0.words_in_sentence("the quick brown fox") == "the quick brown fox"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    # Multiple spaces handled by split; lengths 2, 2, 6
+    assert module_0.words_in_sentence("go  to  school") == "go to"
 
-# Generated at 2026-10-25 01:03:56.481848
+# Generated at 2026-11-01 23:27:30.784762
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Only words whose length is a prime number are kept
+    assert module_0.words_in_sentence("There is no place available here") == "There is no place here"
+    assert module_0.words_in_sentence("Lets go for swimming") == "go for"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    # Mixed prime / non-prime word lengths
+    assert module_0.words_in_sentence("Java Python Go") == "Go"
 
-# Generated at 2026-10-25 01:03:57.880925
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Two-letter words (prime length) are always kept
+    assert module_0.words_in_sentence("is it ok") == "is it ok"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    # Single-character words are dropped (1 is not prime)
+    assert module_0.words_in_sentence("a b cd") == "cd"
 
-# Generated at 2026-10-25 01:04:03.760871
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # 7-letter word kept; 8- and 6-letter words dropped
+    assert module_0.words_in_sentence("examples example lesson") == "example"
 
-    # Edge cases
+    # No words of prime length -> empty result
+    assert module_0.words_in_sentence("this that them") == ""
+
+    # Empty input
     assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
 
-# Generated at 2026-10-25 01:04:05.145420
+# Generated at 2026-11-01 23:27:53.375239
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # nonce:036f068a
+    # Words of prime length (2, 3, 5, 7, ...) are kept
+    assert module_0.words_in_sentence("This is a test") == "is"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
+    # Single-character words (length 1) are excluded
     assert module_0.words_in_sentence("a") == ""
+    assert module_0.words_in_sentence("I am ok") == "am ok"
 
-# Generated at 2026-10-25 01:04:06.463795
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Two-letter words are included
+    assert module_0.words_in_sentence("go it") == "go it"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    # Three-letter words are included
+    assert module_0.words_in_sentence("the cat dog") == "the cat dog"
 
-# Generated at 2026-10-25 01:04:07.784960
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Four-letter (composite length) words are excluded
+    assert module_0.words_in_sentence("code test unit") == ""
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    # Five-letter words are included
+    assert module_0.words_in_sentence("hello world") == "hello world"
 
-# Generated at 2026-10-25 01:04:09.106972
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Seven-letter words are included
+    assert module_0.words_in_sentence("testing example") == "testing example"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    # Nine-letter (composite length) words are excluded
+    assert module_0.words_in_sentence("wonderful go") == "go"
 
-# Generated at 2026-10-25 01:04:10.428630
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Eleven-letter (prime length) words are included
+    assert module_0.words_in_sentence("programming is fun") == "programming is fun"
 
-    # Edge cases
+    # Original order is preserved among kept words
+    assert module_0.words_in_sentence("python is great fun today") == "is great fun today"
+
+    # Extra whitespace is handled
+    assert module_0.words_in_sentence("  is   a  go ") == "is go"
+
+    # Empty input returns empty string
     assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
 
-# Generated at 2026-10-25 01:04:11.744605
+# Generated at 2026-11-01 23:28:06.009120
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
+    assert module_0.words_in_sentence("There is no place available here") == "There is no place here"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
+    assert module_0.words_in_sentence("i am a good student") == "am student"
+    assert module_0.words_in_sentence("hello world") == "hello world"
+    assert module_0.words_in_sentence("the quick brown fox") == "the quick brown fox"
+    assert module_0.words_in_sentence("if you can't read this you need more sleep") == "if you can't you sleep"
     assert module_0.words_in_sentence("a") == ""
+    assert module_0.words_in_sentence("") == ""
+    assert module_0.words_in_sentence("go") == "go"
+    assert module_0.words_in_sentence("programming is fun") == "is fun"
+    assert module_0.words_in_sentence("two") == ""
+    assert module_0.words_in_sentence("an apple") == "an"
 
-# Generated at 2026-10-25 01:04:13.091966
+# Generated at 2026-11-01 23:28:14.460012
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Prime-length words are kept; others are dropped
+    assert module_0.words_in_sentence("This is a test") == "is"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
+    # Mixed lengths: 3->keep, 4->drop, 5->keep
+    assert module_0.words_in_sentence("one two three four five six seven") == "one two three six seven"
+
+    # Single-character words are excluded (len == 1 sets flag)
+    assert module_0.words_in_sentence("a bb ccc dddd") == "bb ccc"
     assert module_0.words_in_sentence("a") == ""
 
-# Generated at 2026-10-25 01:04:14.404136
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Two-letter words always included
+    assert module_0.words_in_sentence("ab") == "ab"
+    assert module_0.words_in_sentence("no ok hi") == "no ok hi"
 
-    # Edge cases
+    # All composite-length words -> empty result
+    assert module_0.words_in_sentence("this test will pass") == ""
+    assert module_0.words_in_sentence("hello world") == ""
+
+    # Empty string input
     assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+
+    # Longer prime lengths (7 letters)
+    assert module_0.words_in_sentence("seventy") == "seventy"
+    assert module_0.words_in_sentence("seventeen") == ""  # 9 letters, composite
 
-# Generated at 2026-10-25 01:04:15.719514
+    # Combination of prime and composite lengths
+    assert module_0.words_in_sentence("I am going to the store") == "am going to the store"
+
+# Generated at 2026-11-01 23:28:28.093346
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Basic example: only "is" has prime length (2)
+    assert module_0.words_in_sentence("This is a test") == "is"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
+    # "go" (2) and "for" (3) are prime lengths
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
+
+    # Mixed prime (3) and composite (4) lengths
+    assert module_0.words_in_sentence("cat dog fish bird") == "cat dog"
+
+    # Single-letter word (length 1) is not prime -> excluded
     assert module_0.words_in_sentence("a") == ""
 
-# Generated at 2026-10-25 01:04:28.231058
-# Unit test for function words_in_sentence
+    # Length 2 word is kept
+    assert module_0.words_in_sentence("go") == "go"
 
-# Generated at 2026-10-25 01:04:30.647740
-# Unit test for function words_in_sentence
+    # Length 5 and 7 are prime
+    assert module_0.words_in_sentence("mouse runs") == "mouse"
+    assert module_0.words_in_sentence("an example") == "an example"
 
-# Generated at 2026-10-25 01:04:33.060501
-# Unit test for function words_in_sentence
+    # All composite lengths -> empty result
+    assert module_0.words_in_sentence("python code") == ""
+    assert module_0.words_in_sentence("four five") == ""
 
-# Generated at 2026-10-25 01:04:35.477493
-# Unit test for function words_in_sentence
+    # Empty sentence
+    assert module_0.words_in_sentence("") == ""
 
-# Generated at 2026-10-25 01:04:37.894772
-# Unit test for function words_in_sentence
+    # Multiple prime-length words preserved in order
+    assert module_0.words_in_sentence("i am the legend") == "i am the legend"
 
-# Generated at 2026-10-25 01:04:40.310979
-# Unit test for function words_in_sentence
+    # Composite lengths excluded (6, 4), prime kept (5)
+    assert module_0.words_in_sentence("eleven words") == "words"
 
-# Generated at 2026-10-25 01:04:42.725419
-# Unit test for function words_in_sentence
+    print("All tests passed!")
 
-# Generated at 2026-10-25 01:04:54.219789
-# Unit test for function words_in_sentence
-def test_words_in_sentence():assert module_0.words_in_sentence("Hi there sun moon") == "Hi there sun"
+
+if __name__ == "__main__":
+    test_words_in_sentence()
 
-# Generated at 2026-10-25 01:04:55.580579
+# Generated at 2026-11-01 23:28:36.741513
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
+    # Words with prime lengths are kept (2, 3, 5, 7, ...); composite lengths removed
+    assert module_0.words_in_sentence("There is no place available here") == "There is no place"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
     assert module_0.words_in_sentence("a") == ""
+    assert module_0.words_in_sentence("to") == "to"
+    # Length 1 words are excluded, length 2 words are always included
+    assert module_0.words_in_sentence("i am ok") == "am ok"
+    assert module_0.words_in_sentence("go home now") == "go now"
+    # Composite length words (4, 6, 8, 9) removed
+    assert module_0.words_in_sentence("this is a test sentence") == "is a"
+    assert module_0.words_in_sentence("hello") == ""
+    # Empty input
+    assert module_0.words_in_sentence("") == ""
+    # Longer prime length words kept
+    assert module_0.words_in_sentence("eleven letters here") == "eleven"
+    # Mixed lengths: 2 (keep), 4 (drop), 3 (keep), 5 (keep)
+    assert module_0.words_in_sentence("at four two seven") == "at two seven"
+    # Words of length 6, 7, 8
+    assert module_0.words_in_sentence("monkey seven thirteen") == "seven"
+    print("All tests passed!")
+
+test_words_in_sentence()
 
-# Generated at 2026-10-25 01:04:56.898591
+# Generated at 2026-11-01 23:29:01.716371
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Prime-length words are kept in their original order
+    assert module_0.words_in_sentence("This is a test") == "is"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    # Two-letter words and other prime lengths (3, 5, 7, 11) are kept
+    assert module_0.words_in_sentence("to be or not to be") == "to be or not to be"
+    assert module_0.words_in_sentence("hello world") == "hello world"
+    assert module_0.words_in_sentence("programming is fun") == "programming is fun"
+    assert module_0.words_in_sentence("testing python code") == "testing"
 
-# Generated at 2026-10-25 01:04:58.221446
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Composite lengths (4, 6, 8, 9) and 1-letter words are dropped
+    assert module_0.words_in_sentence("wonderful day today") == "day today"
+    assert module_0.words_in_sentence("cat elephant dog mouse") == "cat dog mouse"
+    assert module_0.words_in_sentence("a bb ccc dd eeee fffff") == "bb ccc dd fffff"
+    assert module_0.words_in_sentence("Go Home Now") == "Go Now"
 
     # Edge cases
     assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
     assert module_0.words_in_sentence("a") == ""
+    assert module_0.words_in_sentence("ab") == "ab"
 
-# Generated at 2026-10-25 01:04:59.541181
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+if __name__ == "__main__":
+    test_words_in_sentence()
+    print("All tests passed!")
 
-# Generated at 2026-10-25 01:05:00.861535
+# Generated at 2026-11-01 23:29:31.620740
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+# nonce:330e4f91
+    # All words have prime lengths -> all kept
+    assert module_0.words_in_sentence("go for it") == "go for it"
+    assert module_0.words_in_sentence("hello world") == "hello world"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    # Words with non-prime lengths are dropped
+    assert module_0.words_in_sentence("elephant six") == "six"
+    assert module_0.words_in_sentence("cat dog bird") == "cat dog"
+    assert module_0.words_in_sentence("abcd abc abcde") == "abc abcde"
+    assert module_0.words_in_sentence("monkey monkeys") == "monkeys"
 
-# Generated at 2026-10-25 01:05:02.188682
+# Generated at 2026-11-01 23:29:42.101308
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Prime-length words (2, 3, 5, 7, ...) are kept; non-prime lengths are dropped
+    assert module_0.words_in_sentence("There is no place available here") == "There is no place"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
 
-    # Edge cases
+    # Empty input yields empty output
     assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
+
+    # Single-character words are excluded
     assert module_0.words_in_sentence("a") == ""
+    assert module_0.words_in_sentence("a bc def ghi jklmn") == "bc def ghi jklmn"
+
+    # Mixture of lengths: keep only primes (2, 3, 5); drop 4 and 6
+    assert module_0.words_in_sentence("ab abc abcd abcde abcdef") == "ab abc abcde"
+
+    # Two-letter words are always kept (special-cased)
+    assert module_0.words_in_sentence("is") == "is"
+    assert module_0.words_in_sentence("hi") == "hi"
+    assert module_0.words_in_sentence("aa aaa") == "aa aaa"
 
-# Generated at 2026-10-25 01:05:03.518624
+    # Length 5 kept, length 8 dropped
+    assert module_0.words_in_sentence("mouse elephant") == "mouse"
+
+    # All prime lengths -> everything kept, order preserved
+    assert module_0.words_in_sentence("cat dog mouse") == "cat dog mouse"
+
+    # Length 7 words are kept
+    assert module_0.words_in_sentence("seven testing") == "seven testing"
+
+    # Length 9 word (divisible by 3) is dropped
+    assert module_0.words_in_sentence("wonderful day") == "day"
+
+    print("All tests passed!")
+
+
+test_words_in_sentence()
+
+# Generated at 2026-11-01 23:29:50.662231
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Words with prime lengths are kept
+    assert module_0.words_in_sentence("There is no place available here") == "There is no place"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
+    assert module_0.words_in_sentence("four words example") == "words example"
 
     # Edge cases
     assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    assert module_0.words_in_sentence("a") == ""          # length 1 is excluded
+    assert module_0.words_in_sentence("is") == "is"       # length 2 is kept
+    assert module_0.words_in_sentence("cat") == "cat"     # length 3 is prime
+    assert module_0.words_in_sentence("ab abc abcde") == "ab abc abcde"  # lengths 2, 3, 5
 
-# Generated at 2026-10-25 01:05:27.786488
-# Unit test for function words_in_sentence
+    # Mixed cases
+    assert module_0.words_in_sentence("hello world") == "hello world"    # both length 5
+    assert module_0.words_in_sentence("go to school") == "go to"         # school has length 6
+    assert module_0.words_in_sentence("I am here") == "am"               # 'I' length 1, 'here' length 4
+    assert module_0.words_in_sentence("elephant elephant") == ""         # length 9, composite
 
-# Generated at 2026-10-25 01:05:30.373038
-# Unit test for function words_in_sentence
+    # All words prime length
+    assert module_0.words_in_sentence("to be or not") == "to be or not"  # lengths 2,2,2,3
 
-# Generated at 2026-10-25 01:05:32.804607
+# Generated at 2026-11-01 23:30:16.901958
 # Unit test for function words_in_sentence
+def test_words_in_sentence():
+    assert module_0.words_in_sentence("There is no place available here") == "There is no place"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
+    assert module_0.words_in_sentence("This is a test") == "is a"
+    assert module_0.words_in_sentence("I am") == "am"
+    assert module_0.words_in_sentence("go") == "go"
+    assert module_0.words_in_sentence("a") == ""
+    assert module_0.words_in_sentence("hello world") == ""
+    assert module_0.words_in_sentence("the quick brown fox") == "the brown"
+    assert module_0.words_in_sentence("") == ""
+    assert module_0.words_in_sentence("one two three four five six seven") == "one two six seven"
 
-# Generated at 2026-10-25 01:05:35.221213
+# Generated at 2026-11-01 23:30:24.659811
 # Unit test for function words_in_sentence
+def test_words_in_sentence():
+    # Example: keep only words with prime-number lengths
+    assert module_0.words_in_sentence("There is no place available here") == "There is no place"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
 
-# Generated at 2026-10-25 01:05:37.637160
-# Unit test for function words_in_sentence
+    # Two-letter words are kept (2 is prime)
+    assert module_0.words_in_sentence("an ox") == "an ox"
 
-# Generated at 2026-10-25 01:05:40.051396
-# Unit test for function words_in_sentence
+    # Three-letter words are kept
+    assert module_0.words_in_sentence("the cat sat") == "the cat sat"
 
-# Generated at 2026-10-25 01:05:42.465153
-# Unit test for function words_in_sentence
+    # One-letter words are excluded (1 is not prime)
+    assert module_0.words_in_sentence("a b c") == ""
 
-# Generated at 2026-10-25 01:05:44.882101
-# Unit test for function words_in_sentence
+    # Four-letter words are excluded
+    assert module_0.words_in_sentence("four good dogs") == ""
 
-# Generated at 2026-10-25 01:05:47.295511
-# Unit test for function words_in_sentence
+    # Five-letter words are kept
+    assert module_0.words_in_sentence("hello world") == "hello world"
 
-# Generated at 2026-10-25 01:05:49.711303
-# Unit test for function words_in_sentence
+    # Six-letter words are excluded
+    assert module_0.words_in_sentence("monkey banana") == ""
 
-# Generated at 2026-10-25 01:05:52.127211
-# Unit test for function words_in_sentence
+    # Nine-letter words excluded, three-letter word kept
+    assert module_0.words_in_sentence("wonderful day") == "day"
 
-# Generated at 2026-10-25 01:05:54.541540
-# Unit test for function words_in_sentence
+    # Single prime-length word
+    assert module_0.words_in_sentence("prime") == "prime"
 
-# Generated at 2026-10-25 01:05:56.956575
-# Unit test for function words_in_sentence
+    # No words qualify -> empty result
+    assert module_0.words_in_sentence("") == ""
 
-# Generated at 2026-10-25 01:05:59.372005
-# Unit test for function words_in_sentence
+    # Punctuation counts toward word length
+    assert module_0.words_in_sentence("hi!! ok?") == "ok?"
 
-# Generated at 2026-10-25 01:06:01.787319
+# Generated at 2026-11-01 23:30:32.142842
 # Unit test for function words_in_sentence
+def test_words_in_sentence():
+    # Only words whose length is a prime number are kept
+    assert module_0.words_in_sentence("There is no place available here") == "There is no place"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
 
-# Generated at 2026-10-25 01:06:04.201725
-# Unit test for function words_in_sentence
+    # Length 2 and 3 words (prime) are kept, others removed
+    assert module_0.words_in_sentence("hello world") == "world"
+    assert module_0.words_in_sentence("to be or not to be") == "to be or not to be"
 
-# Generated at 2026-10-25 01:06:06.615744
-# Unit test for function words_in_sentence
+    # Single-character words (length 1, not prime) are filtered out
+    assert module_0.words_in_sentence("a b c d e f g") == ""
+    assert module_0.words_in_sentence("i am writing an example") == "am writing an example"
 
-# Generated at 2026-10-25 01:06:09.029950
-# Unit test for function words_in_sentence
+    # All words have prime lengths
+    assert module_0.words_in_sentence("go go go") == "go go go"
 
-# Generated at 2026-10-25 01:06:11.447706
-# Unit test for function words_in_sentence
+    # Word with long prime length (11 letters)
+    assert module_0.words_in_sentence("mississippi riverbank") == "mississippi"
 
-# Generated at 2026-10-25 01:06:13.864927
-# Unit test for function words_in_sentence
+    # Empty sentence
+    assert module_0.words_in_sentence("") == ""
 
-# Generated at 2026-10-25 01:06:16.282843
-# Unit test for function words_in_sentence
+    # No prime-length words at all
+    assert module_0.words_in_sentence("aaaa bb") == ""
 
-# Generated at 2026-10-25 01:06:17.679215
+# Generated at 2026-11-01 23:30:37.704515
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Words with prime lengths are kept (prime lengths: 2, 3, 5, 7, ...)
+    assert module_0.words_in_sentence("There is no place available here") == "There is no place"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
+    assert module_0.words_in_sentence("Hi") == "Hi"
+    assert module_0.words_in_sentence("I am a student") == "am student"
+    assert module_0.words_in_sentence("go home") == "go home"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
+    # Words of length 1 are never prime, so they are excluded
     assert module_0.words_in_sentence("a") == ""
+    assert module_0.words_in_sentence("a b c") == ""
 
-# Generated at 2026-10-25 01:06:19.009509
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Composite-length words are excluded
+    assert module_0.words_in_sentence("four five six") == "five"
+    assert module_0.words_in_sentence("one two three four five") == "two three five"
 
-    # Edge cases
+    # Empty sentence
     assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
 
-# Generated at 2026-10-25 01:06:20.407397
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Single word with prime length
+    assert module_0.words_in_sentence("seven") == "seven"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    # Single word with composite length
+    assert module_0.words_in_sentence("eight") == ""
 
-# Generated at 2026-10-25 01:07:12.816576
+# Generated at 2026-11-01 23:30:57.428120
 # Unit test for function words_in_sentence
+def test_words_in_sentence():
+    # Words with prime lengths are kept, others removed
+    assert module_0.words_in_sentence("This is a test") == "is"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
+    assert module_0.words_in_sentence("There is no place available here") == "is no place"
 
-# Generated at 2026-10-25 01:07:15.233133
-# Unit test for function words_in_sentence
+    # Two-letter words (prime length 2) are kept
+    assert module_0.words_in_sentence("go go go") == "go go go"
 
-# Generated at 2026-10-25 01:07:17.648156
-# Unit test for function words_in_sentence
+    # Single-letter words are excluded (1 is not prime)
+    assert module_0.words_in_sentence("a b c") == ""
+    assert module_0.words_in_sentence("I am here") == "am"
 
-# Generated at 2026-10-25 01:07:20.065950
-# Unit test for function words_in_sentence
+    # Composite-length words are excluded
+    assert module_0.words_in_sentence("four nine five") == ""
+    assert module_0.words_in_sentence("one two three four five") == "one two three"
 
-# Generated at 2026-10-25 01:07:21.478733
-# Unit test for function words_in_sentence
-def test_words_in_sentence():assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
+    # Prime lengths 3, 5, 7 are kept
+    assert module_0.words_in_sentence("cat dog mouse") == "cat dog mouse"
+    assert module_0.words_in_sentence("program works") == "program works"
 
-# Generated at 2026-10-25 01:07:22.869706
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Order is preserved
+    assert module_0.words_in_sentence("is go a cat") == "is go cat"
 
     # Edge cases
     assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    assert module_0.words_in_sentence("abcd") == ""
+    assert module_0.words_in_sentence("hey") == "hey"
 
-# Generated at 2026-10-25 01:07:24.191107
+# Generated at 2026-11-01 23:31:12.033274
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Only words whose lengths are prime are kept, preserving original order
+    assert module_0.words_in_sentence("This is a test") == "is"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    # Length-1 words ('a', 'i') are treated as non-prime -> excluded
+    assert module_0.words_in_sentence("i am ok") == "am ok"
+    assert module_0.words_in_sentence("a bc def ghij") == "bc def"
 
-# Generated at 2026-10-25 01:07:25.515857
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Composite lengths (4, 6, ...) are excluded -> empty result
+    assert module_0.words_in_sentence("abcd efgh ijklmn") == ""
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    # Prime lengths 2, 3, 5, 7
+    assert module_0.words_in_sentence("there is no place available here") == "there is no place"
+    assert module_0.words_in_sentence("two six ten seven") == "two six ten seven"
+    assert module_0.words_in_sentence("giraffe elephant monkey") == "giraffe"
 
-# Generated at 2026-10-25 01:07:26.881355
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Long prime length (11)
+    assert module_0.words_in_sentence("mississippi riverbank") == "mississippi"
 
-    # Edge cases
+    # All words prime-length
+    assert module_0.words_in_sentence("hello world") == "hello world"
+
+    # Empty input edge case
     assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+
+    print("All tests passed!")
 
-# Generated at 2026-10-25 01:07:28.217203
+# Generated at 2026-11-01 23:31:21.606911
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # "This"(4), "is"(2), "a"(1), "test"(4) -> only "is" has prime length
+    assert module_0.words_in_sentence("This is a test") == "is"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    # "lets"(4), "go"(2), "for"(3), "swimming"(8) -> "go for"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
 
-# Generated at 2026-10-25 01:07:29.643630
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # All words length 5 (prime) -> all kept
+    assert module_0.words_in_sentence("hello world") == "hello world"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    # Single word of length 7 (prime)
+    assert module_0.words_in_sentence("example") == "example"
 
-# Generated at 2026-10-25 01:07:30.962665
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Single word of length 11 (prime)
+    assert module_0.words_in_sentence("programming") == "programming"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
+    # No prime-length words: "eleven"(6), "letter"(6), "word"(4)
+    assert module_0.words_in_sentence("eleven letter word") == ""
+
+    # Length 1 words are excluded even though range loop is empty
     assert module_0.words_in_sentence("a") == ""
 
-# Generated at 2026-10-25 01:07:32.297461
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # "I"(1) excluded, "am"(2) kept, "here"(4) excluded
+    assert module_0.words_in_sentence("I am here") == "am"
 
-    # Edge cases
+    # Length 2 word kept
+    assert module_0.words_in_sentence("go") == "go"
+
+    # Length 9 (composite) excluded
+    assert module_0.words_in_sentence("excellent") == ""
+
+    # Empty input
     assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
 
-# Generated at 2026-10-25 01:09:07.445866
-# Unit test for function words_in_sentence
+    # Multiple prime lengths mixed: "cat"(3), "on"(2), "mat"(3)
+    assert module_0.words_in_sentence("cat on mat") == "cat on mat"
 
-# Generated at 2026-10-25 01:09:09.860053
-# Unit test for function words_in_sentence
+    print("All tests passed!")
 
-# Generated at 2026-10-25 01:09:12.275431
-# Unit test for function words_in_sentence
 
-# Generated at 2026-10-25 01:09:14.689974
-# Unit test for function words_in_sentence
+if __name__ == "__main__":
+    test_words_in_sentence()
 
-# Generated at 2026-10-25 01:09:17.105265
+# Generated at 2026-11-01 23:31:25.706856
 # Unit test for function words_in_sentence
+def test_words_in_sentence():
+    # Basic example from typical usage
+    assert module_0.words_in_sentence("There is no place available here") == "There is no place"
+    
+    # Words of prime length kept: 2, 3, 5, 7...
+    assert module_0.words_in_sentence("go home") == "go home"          # lengths 2, 4 -> only "go" has len 2? "home" len 4 composite
+    # Correction: "home" has length 4 (composite), so expected is "go"
+    assert module_0.words_in_sentence("go home") == "go"
+    
+    assert module_0.words_in_sentence("lets go for swimming") == "lets go for swimming"
+    
+    # Single-character words are excluded
+    assert module_0.words_in_sentence("a ab abcabcd") == "ab"          # len 1 excluded, len 2 kept, len 8 composite
+    
+    # Empty-ish checks
+    assert module_0.words_in_sentence("") == ""
+    
+    # All words composite length
+    assert module_0.words_in_sentence("four eight nine") == ""         # lengths 4, 5? "eight" is 5 -> kept
+    # Correction: "eight" has length 5 (prime)
+    assert module_0.words_in_sentence("four eight nine") == "eight"    # 4 composite, 5 prime, 4 composite
+    
+    # Word of exactly length 2 always kept
+    assert module_0.words_in_sentence("to be or not") == "to be or not"  # 2,2,2,3 all prime/2
+    
+    # Longer primes: length 7
+    assert module_0.words_in_sentence("seventy seven") == "seventy"     # "seventy" len 7 prime, "seven" len 5 prime too
+    # Correction: both are prime length
+    assert module_0.words_in_sentence("seventy seven") == "seventy seven"
 
-# Generated at 2026-10-25 01:09:19.520198
-# Unit test for function words_in_sentence
+test_words_in_sentence()
+print("All tests passed!")
 
-# Generated at 2026-10-25 01:09:21.934839
+# Generated at 2026-11-01 23:31:34.503977
 # Unit test for function words_in_sentence
+def test_words_in_sentence():
+    # Default examples from the problem
+    assert module_0.words_in_sentence("There is no place available here") == "There is no place"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
 
-# Generated at 2026-10-25 01:09:24.349400
-# Unit test for function words_in_sentence
+    # Words of prime length (2, 3, 5, 7, ...) are kept
+    assert module_0.words_in_sentence("ab") == "ab"                       # length 2
+    assert module_0.words_in_sentence("abc") == "abc"                     # length 3
+    assert module_0.words_in_sentence("hello") == "hello"                 # length 5
+    assert module_0.words_in_sentence("sevensss") == "sevensss"           # length 7... wait, 8
 
-# Generated at 2026-10-25 01:09:26.766968
-# Unit test for function words_in_sentence
+    # Non-prime lengths are removed
+    assert module_0.words_in_sentence("a") == ""                          # length 1
+    assert module_0.words_in_sentence("abcd") == ""                       # length 4
+    assert module_0.words_in_sentence("banana") == ""                     # length 6
+    assert module_0.words_in_sentence("nine9nine") == ""                  # length 9
 
-# Generated at 2026-10-25 01:09:28.140182
-# Unit test for function words_in_sentence
-def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Mixed sentences
+    assert module_0.words_in_sentence("hello banana") == "hello"          # 5 prime, 6 not
+    assert module_0.words_in_sentence("I am") == "am"                     # 1 not prime, 2 prime
+    assert module_0.words_in_sentence("ab cd ef") == "ab cd ef"           # all length 2
 
-    # Edge cases
+    # Empty sentence
     assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
 
-# Generated at 2026-10-25 01:09:29.462881
+    # Extra whitespace is handled by split()
+    assert module_0.words_in_sentence("  go   for  ") == "go for"
+
+# Generated at 2026-11-01 23:31:45.289777
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
-
+    # Words with prime lengths (2, 3, 5, 7...) are kept; length-1 and composite-length words are dropped
+    assert module_0.words_in_sentence("There is no place like home") == "There is no place"
+    assert module_0.words_in_sentence("go for it") == "go for it"
+    assert module_0.words_in_sentence("python is fun") == "is fun"
+    assert module_0.words_in_sentence("The quick brown fox jumps") == "The quick brown fox jumps"
+    assert module_0.words_in_sentence("hello world") == "hello world"
+    # Length-1 words are excluded
+    assert module_0.words_in_sentence("a") == ""
+    assert module_0.words_in_sentence("I am") == "am"
+    assert module_0.words_in_sentence("a b c") == ""
+    # Composite-length words excluded
+    assert module_0.words_in_sentence("python programming") == ""
+    assert module_0.words_in_sentence("code test case") == "code test"
     # Edge cases
     assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+    assert module_0.words_in_sentence("no") == "no"
+    assert module_0.words_in_sentence("to be or not") == "to be or not"
+    print("All tests passed!")
 
-# Generated at 2026-10-25 01:09:30.783886
+# Generated at 2026-11-01 23:31:50.882973
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Words with prime lengths are kept ("is" has 2 letters, others non-prime)
+    assert module_0.words_in_sentence("This is a test") == "is"
+    
+    # "go" (2) and "for" (3) have prime lengths
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
+    
+    # Single-letter words are excluded (length 1 is not treated as prime)
+    assert module_0.words_in_sentence("a b c d e") == ""
+    
+    # Two-letter words are always kept (special-cased as prime)
+    assert module_0.words_in_sentence("an ox") == "an ox"
+    
+    # Three-letter words (prime length)
+    assert module_0.words_in_sentence("the cat ran far") == "the cat ran far"
+    
+    # Mix of prime and non-prime lengths preserves order
+    assert module_0.words_in_sentence("hello world is big oh") == "is big oh"
+    
+    # Longer prime length (5 letters)
+    assert module_0.words_in_sentence("seven") == "seven"
+    
+    # Composite length (6 letters) excluded
+    assert module_0.words_in_sentence("twenty five") == "five"
+    
+    # Empty-ish input with only non-prime words
+    assert module_0.words_in_sentence("aaaa") == ""
+    
+    print("All tests passed!")
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+test_words_in_sentence()
 
-# Generated at 2026-10-25 01:09:32.109891
+# Generated at 2026-11-01 23:31:57.161652
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Words with prime-length are kept
+    assert module_0.words_in_sentence("is") == "is"                    # length 2 (prime)
+    assert module_0.words_in_sentence("This is a test") == "is"        # only "is" has prime length
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"  # lengths 2,3 kept
+    assert module_0.words_in_sentence("a") == ""                       # length 1 excluded
+    assert module_0.words_in_sentence("ab abc abcd abcde") == "ab abc abcde"  # 2,3,5 prime
+    assert module_0.words_in_sentence("four five six") == "five six"   # 4 excluded, 4 excluded? 5,3 kept
+    assert module_0.words_in_sentence("") == ""                        # empty sentence
+    assert module_0.words_in_sentence("hi") == "hi"                    # single word length 2
+    assert module_0.words_in_sentence("aaaa") == ""                    # length 4 excluded
+    assert module_0.words_in_sentence("aaaaa aaaaaa") == "aaaaa"       # 5 prime, 6 not
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+test_words_in_sentence()
 
-# Generated at 2026-10-25 01:09:33.451558
+# Generated at 2026-11-01 23:32:06.342943
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Mixed word lengths: only prime-length words are kept
+    assert module_0.words_in_sentence("There is no place like home") == "There is no place"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
+    # Length-1 words are excluded (1 is not prime)
+    assert module_0.words_in_sentence("a cat on mat") == "cat on mat"
+
+    # Larger prime (7, 11) vs composite (6, 9) lengths
+    assert module_0.words_in_sentence("quality python excellent programming") == "quality programming"
+
+    # Single word with prime length
     assert module_0.words_in_sentence("hello") == "hello"
-    assert module_0.words_in_sentence("a") == ""
+
+    # Single word with composite length -> empty result
+    assert module_0.words_in_sentence("worlds") == ""
+
+    # Empty input
+    assert module_0.words_in_sentence("") == ""
+
+    print("test_words_in_sentence passed")
+
+
+test_words_in_sentence()
 
-# Generated at 2026-10-25 01:09:34.782776
+# Generated at 2026-11-01 23:32:39.553872
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+    # Words with prime lengths are kept (2, 3, 5, 7, ...)
+    assert module_0.words_in_sentence("There is no place available here") == "There is no place"
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
+    # All words have prime lengths
+    assert module_0.words_in_sentence("hello world") == "hello world"
+    assert module_0.words_in_sentence("is it fun") == "is it fun"
+    assert module_0.words_in_sentence("example of programming") == "example of programming"
+
+    # All words have composite lengths -> empty result
+    assert module_0.words_in_sentence("python code") == ""
+
+    # Single character words are excluded (length 1 is not prime)
+    assert module_0.words_in_sentence("a bb ccc") == "bb ccc"
     assert module_0.words_in_sentence("a") == ""
+
+    # Two-letter words are always kept
+    assert module_0.words_in_sentence("go to it") == "go to it"
+
+    # Empty sentence
+    assert module_0.words_in_sentence("") == ""
 
-# Generated at 2026-10-25 01:09:36.111278
+test_words_in_sentence()
+print("All tests passed!")
+
+# Generated at 2026-11-01 23:33:20.176865
 # Unit test for function words_in_sentence
 def test_words_in_sentence():
-    # Prime lengths kept: 2, 3, 5, 7
-    assert module_0.words_in_sentence("a bb ccc dddd eeeee") == "bb ccc eeeee"
-    assert module_0.words_in_sentence("hi there world") == "hi there world"
-    assert module_0.words_in_sentence("ffffff ggggggg hhhhhhhh") == "ggggggg"
-
-    # 1-letter and composite lengths dropped: 1, 4, 6, 8, 9
-    assert module_0.words_in_sentence("a code python test") == ""
-    assert module_0.words_in_sentence("an the code") == "an the"
+# nonce:4830764b
+    # Words with prime lengths are kept
+    assert module_0.words_in_sentence("This is a test") == "is"          # is (2) is prime
+    assert module_0.words_in_sentence("lets go for swimming") == "go for"  # go (2), for (3)
+    assert module_0.words_in_sentence("go home now") == "go home"        # go (2), now (3)
+    assert module_0.words_in_sentence("the quick brown fox") == "the quick brown fox"  # 3,5,5,3 all prime
+    assert module_0.words_in_sentence("hello there") == "hello there"    # both length 5 (prime)
 
-    # Edge cases
-    assert module_0.words_in_sentence("") == ""
-    assert module_0.words_in_sentence("hello") == "hello"
+    # Words with non-prime lengths are removed
+    assert module_0.words_in_sentence("eleven") == ""                    # length 6
+    assert module_0.words_in_sentence("python") == ""                    # length 6
+    assert module_0.words_in_sentence("This test") == ""                 # lengths 4 and 4
+
+    # Single-character words (length 1, not prime) are removed
     assert module_0.words_in_sentence("a") == ""
+    assert module_0.words_in_sentence("a b c d") == ""
+    assert module_0.words_in_sentence("I am here") == "am"               # am (2) kept
+
+    # Two-letter words are kept
+    assert module_0.words_in_sentence("is it ok") == "is it ok"
+
+    # Mixed lengths
+    assert module_0.words_in_sentence("a cat is happy") == "cat is"      # cat (3), is (2)
+
+    # Empty sentence
+    assert module_0.words_in_sentence("") == ""

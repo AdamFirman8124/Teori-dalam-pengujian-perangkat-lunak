@@ -2,56 +2,43 @@
 # asked: {"lines": [6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 22], "branches": [[10, 11], [10, 22], [11, 12], [11, 14], [14, 10], [14, 15], [18, 10], [18, 19]]}
 # gained: {"lines": [6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 22], "branches": [[10, 11], [10, 22], [11, 12], [11, 14], [14, 10], [14, 15], [18, 10], [18, 19]]}
 
+import pytest
+
 from f001 import separate_paren_groups
 
 
-def test_single_group():
+def test_simple_group_covers_open_close_and_emit():
+    """'(' branch, ')' branch, inner if True (depth back to 0), append+clear, return."""
     result = separate_paren_groups("()")
+    assert isinstance(result, list)
     assert result == ["()"]
 
 
-def test_multiple_groups():
-    result = separate_paren_groups("() () ()")
-    assert result == ["()", "()", "()"]
+def test_nested_group_covers_depth_not_zero_branch():
+    """Inner ')' leaves current_depth == 1, so the 'if current_depth == 0' check is False there."""
+    result = separate_paren_groups("(())")
+    assert result == ["(())"]
 
 
-def test_nested_groups():
-    result = separate_paren_groups("(()) ((()))")
-    assert result == ["(())", "((()))"]
+def test_multiple_groups_with_non_paren_characters():
+    """Spaces exercise neither the '(' nor the ')' branch (both conditions False)."""
+    result = separate_paren_groups("() (()) ()")
+    assert result == ["()", "(())", "()"]
 
 
-def test_mixed_depth_and_separators():
-    result = separate_paren_groups("(()()) ((())) ()")
-    assert result == ["(()())", "((()))", "()"]
-
-
-def test_empty_string_returns_empty_list():
+def test_empty_string_skips_loop_and_returns_empty_list():
+    """Loop body never executes; function still returns an empty list."""
     result = separate_paren_groups("")
     assert result == []
 
 
-def test_only_separators_returns_empty_list():
-    # Non-paren characters are skipped; depth never reaches 0 via a ')'
-    result = separate_paren_groups("   ")
+def test_unbalanced_open_never_emits():
+    """Depth never returns to 0, so nothing is appended even though '(' chars are consumed."""
+    result = separate_paren_groups("((")
     assert result == []
 
 
-def test_non_paren_chars_inside_group_are_dropped():
-    # Only '(' and ')' are appended, so inner text is discarded.
-    result = separate_paren_groups("( ) (a)")
-    assert result == ["()", "()"]
-
-
-def test_non_paren_chars_between_groups_are_dropped():
-    result = separate_paren_groups("(x) y (z)")
-    assert result == ["()", "()"]
-
-
-def test_result_is_fresh_list_each_call(monkeypatch):
-    # Ensures no state pollution between calls (result/current_string are local).
-    monkeypatch.setattr("builtins.print", lambda *a, **k: None)  # no-op guard
-    first = separate_paren_groups("()")
-    second = separate_paren_groups("()")
-    assert first == ["()"]
-    assert second == ["()"]
-    assert first is not second
+def test_leading_close_paren_makes_depth_negative():
+    """')' first drives depth to -1, so the depth == 0 check is False on that iteration."""
+    result = separate_paren_groups(")(")
+    assert result == []

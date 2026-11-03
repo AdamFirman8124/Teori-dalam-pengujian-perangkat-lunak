@@ -7,17 +7,17 @@ import pytest
 from f045 import triangle_area
 
 
-def test_triangle_area_executes_return_line():
-    result = triangle_area(3, 4)
-    assert result == 6.0
-    assert isinstance(result, float)
+def test_triangle_area_basic():
+    assert triangle_area(4, 3) == 6.0
 
 
-def test_triangle_area_float_values():
-    result = triangle_area(2.5, 4.0)
-    assert result == 5.0
+def test_triangle_area_floats():
+    assert triangle_area(2.5, 4.0) == 5.0
 
 
 def test_triangle_area_zero_base():
-    result = triangle_area(0, 10)
-    assert result == 0.0
+    assert triangle_area(0, 5) == 0.0
+
+
+def test_triangle_area_negative_height():
+    assert triangle_area(6, -2) == -6.0

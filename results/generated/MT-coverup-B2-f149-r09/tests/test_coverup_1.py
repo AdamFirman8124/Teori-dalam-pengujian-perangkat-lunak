@@ -7,31 +7,46 @@ import pytest
 from f149 import sorted_list_sum
 
 
-def test_sorted_list_sum_filters_odd_and_sorts_by_length():
-    result = sorted_list_sum(["aa", "a", "aaa", "bb"])
-    # "a" and "aaa" have odd lengths and are removed;
-    # "aa" and "bb" are sorted by length (stable, so original order kept)
-    assert result == ["aa", "bb"]
+def test_filters_odd_lengths_and_sorts_by_length():
+    """Covers lines 3-8 including both branches of the parity check."""
+    lst = ["school", "AI", "asdf", "b"]
+    result = sorted_list_sum(lst)
+    # "b" (len 1) is odd -> dropped; remaining sorted by length
+    assert result == ["AI", "asdf", "school"]
 
 
-def test_sorted_list_sum_sorts_equal_lengths_alphabetically():
-    # lst.sort() on line 3 makes equal-length strings come out alphabetically
-    result = sorted_list_sum(["dd", "cc", "bb", "aa"])
+def test_input_list_is_sorted_in_place():
+    """Line 3 (lst.sort()) mutates the caller's list; verify that side effect."""
+    lst = ["ccc", "a", "bb"]
+    result = sorted_list_sum(lst)
+    assert lst == ["a", "bb", "ccc"]          # in-place sort happened
+    assert result == ["bb"]                    # only even-length string kept
+
+
+def test_equal_lengths_keep_alphabetical_order():
+    """Stable sort by len must preserve the earlier alphabetical ordering."""
+    lst = ["dd", "bb", "cc", "aa"]
+    result = sorted_list_sum(lst)
     assert result == ["aa", "bb", "cc", "dd"]
 
 
-def test_sorted_list_sum_empty_input():
+def test_empty_list_returns_empty_list():
+    """Covers the loop-skipped branch (line 5 with empty iterable)."""
     assert sorted_list_sum([]) == []
 
 
-def test_sorted_list_sum_all_odd_lengths_removed():
+def test_all_odd_lengths_yields_empty_list():
+    """Every element takes the False branch of the parity check."""
     assert sorted_list_sum(["a", "abc", "abcde"]) == []
 
 
-def test_sorted_list_sum_does_not_mutate_callers_list():
-    original = ["aaa", "bb", "c"]
-    snapshot = list(original)
-    sorted_list_sum(original)
-    # the function sorts in place, but the caller's list content order
-    # is the only observable mutation; verify content is preserved
-    assert sorted(original) == sorted(snapshot)
+@pytest.mark.parametrize(
+    "input_list, expected",
+    [
+        (["ab", "a", "aaa", "cd"], ["ab", "cd"]),
+        (["a", "b", "c"], []),
+        (["aaaa", "bb", "cc"], ["bb", "cc", "aaaa"]),
+    ],
+)
+def test_parametrized_behavior(input_list, expected):
+    assert sorted_list_sum(list(input_list)) == expected

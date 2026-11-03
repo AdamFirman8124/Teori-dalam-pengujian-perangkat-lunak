@@ -5,26 +5,44 @@ def test_case_0():
     int_0 = 8
     var_0 = module_0.is_equal_to_sum_even(int_0)
     assert var_0 is True
-
-def test_case_1():
-    int_0 = 8
-    var_0 = module_0.is_equal_to_sum_even(int_0)
-    assert var_0 is True
     int_1 = 10
     var_1 = module_0.is_equal_to_sum_even(int_1)
     assert var_1 is True
-    int_2 = 100
+    int_2 = 12
     var_2 = module_0.is_equal_to_sum_even(int_2)
     assert var_2 is True
-    int_3 = 6
+    int_3 = 100
     var_3 = module_0.is_equal_to_sum_even(int_3)
-    assert var_3 is False
-    int_4 = 7
+    assert var_3 is True
+    int_4 = 0
     var_4 = module_0.is_equal_to_sum_even(int_4)
     assert var_4 is False
-    int_5 = 9
+    int_5 = 2
     var_5 = module_0.is_equal_to_sum_even(int_5)
     assert var_5 is False
-    int_6 = -8
+    int_6 = 4
     var_6 = module_0.is_equal_to_sum_even(int_6)
     assert var_6 is False
+    int_7 = 6
+    var_7 = module_0.is_equal_to_sum_even(int_7)
+    assert var_7 is False
+    int_8 = 1
+    var_8 = module_0.is_equal_to_sum_even(int_8)
+    assert var_8 is False
+    int_9 = 7
+    var_9 = module_0.is_equal_to_sum_even(int_9)
+    assert var_9 is False
+    int_10 = 9
+    var_10 = module_0.is_equal_to_sum_even(int_10)
+    assert var_10 is False
+    int_11 = 101
+    var_11 = module_0.is_equal_to_sum_even(int_11)
+    assert var_11 is False
+    int_12 = -2
+    var_12 = module_0.is_equal_to_sum_even(int_12)
+    assert var_12 is False
+    int_13 = -8
+    var_13 = module_0.is_equal_to_sum_even(int_13)
+    assert var_13 is False
+    str_0 = 'All tests passed!'
+    var_14 = print(str_0)

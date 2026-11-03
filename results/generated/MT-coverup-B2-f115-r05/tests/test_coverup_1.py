@@ -7,52 +7,47 @@ import pytest
 from f115 import max_fill
 
 
-def test_max_fill_empty_grid():
-    assert max_fill([], 1) == 0
+@pytest.mark.parametrize(
+    "grid, capacity, expected",
+    [
+        # Classic HumanEval examples
+        ([[0, 0, 1, 0], [0, 1, 0, 0], [1, 1, 1, 1]], 1, 6),
+        ([[0, 0, 1, 1], [0, 0, 0, 0], [1, 1, 1, 1], [0, 1, 1, 1]], 2, 5),
+        # Empty wells contribute zero trips
+        ([[0, 0, 0], [0, 0, 0]], 5, 0),
+        # Ceiling behaviour: partial bucket loads round up
+        ([[1, 1, 1]], 2, 2),
+        ([[1, 1, 1, 1]], 3, 2),
+        # Exact multiples require no extra trip
+        ([[1, 1, 1, 1]], 4, 1),
+        # Single well, single unit
+        ([[1]], 1, 1),
+        # Empty grid -> no trips at all
+        ([], 10, 0),
+    ],
+)
+def test_max_fill(grid, capacity, expected):
+    """max_fill must return the total number of bucket extractions,
+    i.e. sum over wells of ceil(water_in_well / capacity)."""
+    result = max_fill(grid, capacity)
+    assert isinstance(result, int)
+    assert result == expected
 
 
-def test_max_fill_all_zero_rows():
-    assert max_fill([[0, 0], [0, 0, 0]], 5) == 0
-
-
-def test_max_fill_single_row_exact_capacity():
-    assert max_fill([[1, 1, 1]], 3) == 1
-
-
-def test_max_fill_single_row_needs_rounding_up():
-    assert max_fill([[1, 1, 1, 1]], 3) == 2
-
-
-def test_max_fill_multiple_rows():
-    grid = [[0, 0, 1, 0], [0, 1, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0]]
-    assert max_fill(grid, 1) == 6
-    assert max_fill(grid, 2) == 4
-    assert max_fill(grid, 3) == 4
+def test_max_fill_matches_manual_computation():
+    """Verify against an independent manual computation."""
+    grid = [[0, 1, 0, 1, 1], [1, 1, 1], [0, 0, 0]]
+    capacity = 2
+    # Well 1: 3 units -> ceil(3/2) = 2 trips
+    # Well 2: 3 units -> ceil(3/2) = 2 trips
+    # Well 3: 0 units -> ceil(0/2) = 0 trips
+    expected = 2 + 2 + 0
+    assert max_fill(grid, capacity) == expected
 
 
 def test_max_fill_does_not_mutate_input():
+    """The function must be side-effect free w.r.t. its argument."""
     grid = [[1, 0, 1], [0, 1, 0]]
     snapshot = [row[:] for row in grid]
-    max_fill(grid, 2)
+    max_fill(grid, 1)
     assert grid == snapshot
-
-
-def test_max_fill_returns_int():
-    result = max_fill([[1, 1], [1, 1]], 2)
-    assert isinstance(result, int)
-    assert result == 2
-
-
-def test_max_fill_imports_math_lazily(monkeypatch):
-    import math
-
-    calls = []
-    real_ceil = math.ceil
-
-    def spy_ceil(value):
-        calls.append(value)
-        return real_ceil(value)
-
-    monkeypatch.setattr(math, "ceil", spy_ceil)
-    assert max_fill([[1, 1, 1]], 2) == 2
-    assert calls == [1.5]

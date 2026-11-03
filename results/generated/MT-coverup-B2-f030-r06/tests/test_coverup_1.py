@@ -2,27 +2,19 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
+import pytest
+
 from f030 import get_positive
 
 
-def test_get_positive_mixed():
-    inp = [1, -2, 3, 0, -5, 4]
-    result = get_positive(inp)
-    assert result == [1, 3, 4]
-    # verify input not mutated
-    assert inp == [1, -2, 3, 0, -5, 4]
-
-
-def test_get_positive_empty():
-    result = get_positive([])
-    assert result == []
-
-
-def test_get_positive_all_non_positive():
-    result = get_positive([-3, -1, 0, -10])
-    assert result == []
-
-
-def test_get_positive_all_positive():
-    result = get_positive([2, 5, 1])
-    assert result == [2, 5, 1]
+def test_get_positive_filters_positive_numbers():
+    # Mixed input exercises both branches of the `e > 0` condition on line 3
+    assert get_positive([-1, 0, 2, -3, 5]) == [2, 5]
+    # All positive: condition always true
+    assert get_positive([1, 2, 3]) == [1, 2, 3]
+    # All non-positive: condition always false
+    assert get_positive([-1, -2, 0]) == []
+    # Empty list: comprehension body never executes
+    assert get_positive([]) == []
+    # Order and duplicates are preserved
+    assert get_positive([4, -4, 4]) == [4, 4]

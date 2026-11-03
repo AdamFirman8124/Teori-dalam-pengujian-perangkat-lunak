@@ -1,46 +1,132 @@
 
 
-# Generated at 2026-10-25 17:13:19.409102
+# Generated at 2026-11-01 22:45:16.667121
 # Unit test for function solve
+def test_solve():import unittest
 
-# Generated at 2026-10-25 17:13:24.854621
-# Unit test for function solve
+class TestSolve(unittest.TestCase):
+    def test_mixed_case(self):
+        self.assertEqual(module_0.solve("Hello4!"), "hELLO4!")
 
-# Generated at 2026-10-25 17:13:27.271279
-# Unit test for function solve
+    def test_all_lowercase(self):
+        self.assertEqual(module_0.solve("abcd"), "ABCD")
 
-# Generated at 2026-10-25 17:13:29.686109
-# Unit test for function solve
+    def test_all_uppercase(self):
+        self.assertEqual(module_0.solve("ABCD"), "abcd")
 
-# Generated at 2026-10-25 17:13:32.099895
-# Unit test for function solve
+    def test_no_letters_reversed(self):
+        self.assertEqual(module_0.solve("1234"), "4321")
 
-# Generated at 2026-10-25 17:13:34.513274
-# Unit test for function solve
+    def test_special_chars_reversed(self):
+        self.assertEqual(module_0.solve("#@"), "@#")
 
-# Generated at 2026-10-25 17:13:36.926922
-# Unit test for function solve
+    def test_empty_string(self):
+        self.assertEqual(module_0.solve(""), "")
 
-# Generated at 2026-10-25 17:13:39.341277
-# Unit test for function solve
+    def test_mixed_letters_digits(self):
+        self.assertEqual(module_0.solve("aBc123"), "AbC123")
 
-# Generated at 2026-10-25 17:13:41.755562
-# Unit test for function solve
+    def test_single_letter(self):
+        self.assertEqual(module_0.solve("a"), "A")
 
-# Generated at 2026-10-25 17:13:44.170548
-# Unit test for function solve
+if __name__ == "__main__":
+    unittest.main()
 
-# Generated at 2026-10-25 17:13:46.588205
+# Generated at 2026-11-01 22:45:25.021089
 # Unit test for function solve
+def test_solve():
+    # Basic lowercase -> uppercase swap
+    assert module_0.solve("hello") == "HELLO"
+    # Uppercase -> lowercase swap
+    assert module_0.solve("PYTHON") == "python"
+    # Mixed case swap
+    assert module_0.solve("Hello World") == "hELLO wORLD"
+    # Non-alpha characters preserved when letters present
+    assert module_0.solve("Hello World!") == "hELLO wORLD!"
+    # No alphabetic characters -> reversed string
+    assert module_0.solve("1234") == "4321"
+    assert module_0.solve("!@#$%") == "%$#@!"
+    assert module_0.solve("42") == "24"
+    # Empty string edge case
+    assert module_0.solve("") == ""
+    # Single character cases
+    assert module_0.solve("a") == "A"
+    assert module_0.solve("Z") == "z"
+    # Mixed alphanumerics with letters -> only case swapped, not reversed
+    assert module_0.solve("ab12cd") == "AB12CD"
+    # Only spaces (non-alpha) -> reversed
+    assert module_0.solve("   ") == "   "
 
-# Generated at 2026-10-25 17:13:49.003524
+# Generated at 2026-11-01 22:45:29.916040
 # Unit test for function solve
+def test_solve():
+    # No alphabetic characters -> reversed string
+    assert module_0.solve("1234") == "4321"
+    assert module_0.solve("123@#$") == "$#@321"
+    assert module_0.solve("") == ""
+    assert module_0.solve("!!!") == "!!!"
 
-# Generated at 2026-10-25 17:13:51.416580
-# Unit test for function solve
+    # Alphabetic characters -> swapcase, non-alpha unchanged
+    assert module_0.solve("ab") == "AB"
+    assert module_0.solve("AB") == "ab"
+    assert module_0.solve("a") == "A"
+    assert module_0.solve("aBcD123!") == "AbCd123!"
+    assert module_0.solve("#a@C") == "#A@c"
+    assert module_0.solve("#AsdfW@") == "#aSDFw@"
+    assert module_0.solve("Hello!") == "hELLO!"
 
-# Generated at 2026-10-25 17:13:53.830769
-# Unit test for function solve
+    # Mixed digits and letters keep positions, letters swapped
+    assert module_0.solve("a1b2") == "A1B2"
 
-# Generated at 2026-10-25 17:13:56.244630
+# Generated at 2026-11-01 22:45:46.465207
 # Unit test for function solve
+def test_solve():
+    # Letters only: case is swapped
+    assert module_0.solve("ab") == "AB"
+    assert module_0.solve("AB") == "ab"
+    assert module_0.solve("As") == "aS"
+    assert module_0.solve("Hello World") == "hELLO wORLD"
+
+    # Single letters
+    assert module_0.solve("a") == "A"
+    assert module_0.solve("Z") == "z"
+
+    # Digits only (no alphabetic chars): string is reversed
+    assert module_0.solve("1234") == "4321"
+    assert module_0.solve("42") == "24"
+
+    # Symbols only (no alphabetic chars): string is reversed
+    assert module_0.solve("#$%&^") == "^&%$#"
+    assert module_0.solve("!@#$") == "$#@!"
+    assert module_0.solve("!!!") == "!!!"
+
+    # Mixed content: letters swap case, others stay in place
+    assert module_0.solve("#a@C") == "#A@c"
+    assert module_0.solve("#AsdfW^45") == "#aSDFw^45"
+    assert module_0.solve("#6@2") == "2@6#"
+
+    # Empty string
+    assert module_0.solve("") == ""
+
+# Generated at 2026-11-01 22:45:56.460693
+# Unit test for function solve
+def test_solve():
+    # No alphabetic characters -> returned reversed
+    assert module_0.solve("1234") == "4321"
+    assert module_0.solve("") == ""
+    assert module_0.solve("@#$%") == "%$#@"
+
+    # Alphabetic characters -> case swapped
+    assert module_0.solve("ab") == "AB"
+    assert module_0.solve("AB") == "ab"
+    assert module_0.solve("Hello World!") == "hELLO wORLD!"
+    assert module_0.solve("#a@C") == "#A@c"
+    assert module_0.solve("#AsdW") == "#aSDw"
+    assert module_0.solve("a1b2c3") == "A1B2C3"
+    assert module_0.solve("Z") == "z"
+    assert module_0.solve("z") == "Z"
+
+    print("All test_solve tests passed!")
+
+
+test_solve()

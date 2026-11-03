@@ -7,26 +7,29 @@ import pytest
 from f115 import max_fill
 
 
-def test_max_fill_single_row_exact_division():
-    # sum(arr) = 6, capacity = 3 -> ceil(6/3) = 2
-    assert max_fill([[1, 1, 1, 1, 1, 1]], 3) == 2
+def test_max_fill_executes_all_lines():
+    # Each row's water units divided by capacity, rounded up, then summed.
+    # Row [1, 3] -> sum 4, capacity 5 -> ceil(4/5) = 1
+    # Row [2, 2] -> sum 4, capacity 5 -> ceil(4/5) = 1
+    # Row [0, 0] -> sum 0, capacity 5 -> ceil(0/5) = 0
+    grid = [[1, 3], [2, 2], [0, 0]]
+    assert max_fill(grid, 5) == 2
 
 
-def test_max_fill_multiple_rows_with_remainder():
-    # ceil(5/4) = 2, ceil(4/4) = 1, ceil(7/4) = 2 -> total 5
-    grid = [[1, 1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1]]
-    assert max_fill(grid, 4) == 5
+def test_max_fill_exact_division():
+    # Exact division should not round up.
+    # Row [2, 2] -> sum 4, capacity 2 -> ceil(4/2) = 2
+    # Row [1, 1] -> sum 2, capacity 2 -> ceil(2/2) = 1
+    assert max_fill([[2, 2], [1, 1]], 2) == 3
 
 
 def test_max_fill_empty_grid():
-    assert max_fill([], 5) == 0
+    # An empty grid yields zero trips; still exercises lines 2-4.
+    assert max_fill([], 3) == 0
 
 
-def test_max_fill_empty_rows():
-    # sum([]) = 0, ceil(0/capacity) = 0 for each row
-    assert max_fill([[], [], []], 2) == 0
-
-
-def test_max_fill_capacity_larger_than_row_sum():
-    # ceil(3/10) = 1
-    assert max_fill([[1, 1, 1]], 10) == 1
+def test_max_fill_single_unit_capacity():
+    # Capacity 1 means every unit of water needs its own trip.
+    # Row [1, 1, 1] -> ceil(3/1) = 3
+    # Row [0, 2]    -> ceil(2/1) = 2
+    assert max_fill([[1, 1, 1], [0, 2]], 1) == 5

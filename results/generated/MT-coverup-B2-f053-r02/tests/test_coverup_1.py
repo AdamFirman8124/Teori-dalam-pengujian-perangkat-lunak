@@ -2,13 +2,12 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
+import pytest
+
 from f053 import add
 
 
-def test_add_executes_return():
+def test_add():
     assert add(2, 3) == 5
-
-
-def test_add_negative_and_zero():
     assert add(-1, 1) == 0
     assert add(0, 0) == 0

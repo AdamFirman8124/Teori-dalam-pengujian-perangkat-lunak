@@ -2,38 +2,36 @@
 import f161 as module_0
 
 def test_case_0():
-    str_0 = 'AbC123'
-    var_0 = module_0.solve(str_0)
-    assert var_0 == 'aBc123'
-
-def test_case_1():
     str_0 = 'Python'
     var_0 = module_0.solve(str_0)
     assert var_0 == 'pYTHON'
-    str_1 = 'Hello World!'
+    str_1 = 'hello'
     var_1 = module_0.solve(str_1)
-    assert var_1 == 'hELLO wORLD!'
-    str_2 = 'aBcD'
+    assert var_1 == 'HELLO'
+    str_2 = 'WORLD'
     var_2 = module_0.solve(str_2)
-    assert var_2 == 'AbCd'
-    str_3 = '1234!'
+    assert var_2 == 'world'
+    str_3 = 'abcd123'
     var_3 = module_0.solve(str_3)
-    assert var_3 == '4321'
-    assert var_3 == '!4321'
-    str_4 = '#a'
+    assert var_3 == 'ABCD123'
+    str_4 = 'aBc1dE'
     var_4 = module_0.solve(str_4)
-    assert var_4 == '#A'
-    str_5 = '#AsDf'
+    assert var_4 == 'AbC1De'
+    str_5 = '1234!'
     var_5 = module_0.solve(str_5)
-    assert var_5 == '#aSdF'
-    str_6 = ''
+    assert var_5 == '!4321'
+    str_6 = '##'
     var_6 = module_0.solve(str_6)
-    assert var_6 == ''
-    str_7 = '1234'
+    assert var_6 == '##'
+    str_7 = ''
     var_7 = module_0.solve(str_7)
-    assert var_7 == '4321'
-    str_8 = '!!'
+    assert var_7 == ''
+    str_8 = 'a'
     var_8 = module_0.solve(str_8)
-    assert var_8 == '!!'
-    str_9 = 'All tests passed.'
-    var_9 = print(str_9)
+    assert var_8 == 'A'
+    str_9 = '5'
+    var_9 = module_0.solve(str_9)
+    assert var_9 == '5'
+    str_10 = 'Hello, World! 123'
+    var_10 = module_0.solve(str_10)
+    assert var_10 == 'hELLO, wORLD! 123'

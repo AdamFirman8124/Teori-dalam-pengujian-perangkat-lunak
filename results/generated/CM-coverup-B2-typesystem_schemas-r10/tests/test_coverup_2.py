@@ -1,107 +1,122 @@
-# file: project/typesystem/schemas.py:32-48
-# asked: {"lines": [37, 38, 39, 40, 41, 42, 43, 45, 46, 47, 48], "branches": [[37, 38], [37, 39], [39, 40], [39, 46], [40, 0], [40, 41], [41, 42], [41, 45], [42, 0], [42, 43], [46, 0], [46, 47], [47, 0], [47, 48]]}
-# gained: {"lines": [37, 38, 39, 40, 41, 42, 43, 45, 46, 47, 48], "branches": [[37, 38], [37, 39], [39, 40], [39, 46], [40, 0], [40, 41], [41, 42], [41, 45], [42, 0], [42, 43], [46, 0], [46, 47], [47, 0], [47, 48]]}
+# file: project/typesystem/schemas.py:204-247
+# asked: {"lines": [219, 220, 224, 225, 226, 230, 231, 232, 233, 234, 235, 238, 239, 240, 241, 242, 245, 246, 247], "branches": [[216, 219], [224, 225], [224, 226], [230, 231], [230, 235], [238, 239], [238, 240], [240, 241], [240, 242], [245, 246], [245, 247]]}
+# gained: {"lines": [219, 220, 224, 225, 226, 230, 231, 232, 233, 234, 235, 238, 239, 240, 241, 242, 245, 246, 247], "branches": [[216, 219], [224, 225], [224, 226], [230, 231], [230, 235], [238, 239], [238, 240], [240, 241], [240, 242], [245, 246], [245, 247]]}
 
-from typesystem.fields import Array, Object, String
-from typesystem.schemas import Reference, SchemaDefinitions, set_definitions
+import pytest
 
-
-def test_reference_without_definitions_gets_definitions():
-    definitions = SchemaDefinitions({"name": String()})
-    field = Reference(to="name")
-    assert field.definitions is None
-
-    set_definitions(field, definitions)
-
-    assert field.definitions is definitions
+from typesystem.base import ValidationError
+from typesystem.fields import String
+from typesystem.schemas import Reference, Schema
 
 
-def test_reference_with_existing_definitions_not_overwritten():
-    definitions = SchemaDefinitions({"name": String()})
-    existing = SchemaDefinitions({"other": String()})
-    field = Reference(to="name", definitions=existing)
-
-    set_definitions(field, definitions)
-
-    assert field.definitions is existing
+class Example(Schema):
+    name = String()
 
 
-def test_array_with_single_field_item():
-    definitions = SchemaDefinitions({"name": String()})
-    child = Reference(to="name")
-    field = Array(items=child)
-
-    set_definitions(field, definitions)
-
-    assert child.definitions is definitions
+class NotASchema:
+    pass
 
 
-def test_array_with_list_items():
-    definitions = SchemaDefinitions({"a": String(), "b": String()})
-    child_a = Reference(to="a")
-    child_b = Reference(to="b")
-    field = Array(items=[child_a, child_b])
-
-    set_definitions(field, definitions)
-
-    assert child_a.definitions is definitions
-    assert child_b.definitions is definitions
+def test_reference_to_schema_class_sets_target():
+    """Lines 219-220: 'to' is a Schema subclass, so _target is set directly."""
+    ref = Reference(to=Example)
+    assert ref.to is Example
+    assert ref.definitions is None
+    assert ref.target is Example
 
 
-def test_array_with_tuple_items():
-    definitions = SchemaDefinitions({"a": String()})
-    child = Reference(to="a")
-    field = Array(items=child)
-    # Array normalises tuple/list to list, so force a tuple to cover
-    # the `isinstance(field.items, (tuple, list))` tuple branch.
-    field.items = (child,)
-
-    set_definitions(field, definitions)
-
-    assert child.definitions is definitions
+def test_reference_to_non_schema_class_raises():
+    """Line 219 failing branch: 'to' is a class but not a Schema subclass."""
+    with pytest.raises(AssertionError):
+        Reference(to=NotASchema)
 
 
-def test_array_with_no_items_is_noop():
-    definitions = SchemaDefinitions({"a": String()})
-    field = Array(items=None)
-
-    set_definitions(field, definitions)
-
-    assert field.items is None
-
-
-def test_object_properties_recursion():
-    definitions = SchemaDefinitions({"a": String(), "b": String()})
-    child_a = Reference(to="a")
-    child_b = Reference(to="b")
-    field = Object(properties={"x": child_a, "y": child_b})
-
-    set_definitions(field, definitions)
-
-    assert child_a.definitions is definitions
-    assert child_b.definitions is definitions
+def test_target_string_from_schema_class():
+    """Lines 224-226: target_string computed lazily from the Schema class name."""
+    ref = Reference(to=Example)
+    assert not hasattr(ref, "_target_string")
+    assert ref.target_string == "Example"
+    # The computed value is cached on the instance.
+    assert ref._target_string == "Example"
+    assert ref.target_string == "Example"
 
 
-def test_nested_object_and_array_recursion():
-    definitions = SchemaDefinitions({"a": String(), "b": String()})
-    ref_single = Reference(to="a")
-    ref_in_list = Reference(to="b")
-    ref_in_object = Reference(to="a")
-    inner_array = Array(items=[ref_in_list])
-    inner_object = Object(properties={"nested": ref_in_object})
-    outer = Object(properties={"arr": inner_array, "obj": inner_object, "single": Array(items=ref_single)})
-
-    set_definitions(outer, definitions)
-
-    assert ref_single.definitions is definitions
-    assert ref_in_list.definitions is definitions
-    assert ref_in_object.definitions is definitions
+def test_target_string_from_string_reference():
+    """Lines 224, 226: target_string already set for string references."""
+    ref = Reference(to="Example", definitions={"Example": Example})
+    assert ref.target_string == "Example"
 
 
-def test_plain_field_is_noop():
-    definitions = SchemaDefinitions({"a": String()})
-    field = String()
+def test_target_from_definitions():
+    """Lines 230-235: target resolved lazily from definitions mapping."""
+    ref = Reference(to="Example", definitions={"Example": Example})
+    assert not hasattr(ref, "_target")
+    assert ref.target is Example
+    # The resolved target is cached on the instance.
+    assert ref.target is Example
 
-    set_definitions(field, definitions)
 
-    assert isinstance(field, String)
+def test_target_without_definitions_raises():
+    """Lines 231-233 failing branch: string reference without definitions."""
+    ref = Reference(to="Example")
+    with pytest.raises(AssertionError, match="String reference missing 'definitions'"):
+        ref.target
+
+
+def test_validate_none_with_allow_null():
+    """Lines 238-239: None passes through when allow_null is set."""
+    ref = Reference(to=Example, allow_null=True)
+    assert ref.validate(None) is None
+
+
+def test_validate_none_without_allow_null_raises():
+    """Lines 240-241: None raises the 'null' validation error otherwise."""
+    ref = Reference(to=Example)
+    with pytest.raises(ValidationError) as exc_info:
+        ref.validate(None)
+    assert "May not be null." in str(exc_info.value)
+
+
+def test_validate_delegates_to_target():
+    """Line 242: non-None values are delegated to the target schema."""
+    ref = Reference(to=Example)
+    result = ref.validate({"name": "test"})
+    assert isinstance(result, Example)
+    assert result.name == "test"
+
+
+def test_validate_with_string_reference_resolves_target():
+    """Lines 230-235 and 242 together: lazy resolution during validation."""
+    ref = Reference(to="Example", definitions={"Example": Example})
+    result = ref.validate({"name": "test"})
+    assert isinstance(result, Example)
+    assert result.name == "test"
+
+
+def test_validate_passes_strict_to_target(monkeypatch):
+    """Line 242: both value and strict flag are forwarded to the target."""
+    ref = Reference(to=Example)
+    calls = {}
+
+    def fake_validate(cls, value, *, strict=False):
+        calls["value"] = value
+        calls["strict"] = strict
+        return "sentinel"
+
+    monkeypatch.setattr(Example, "validate", classmethod(fake_validate))
+    result = ref.validate({"name": "test"}, strict=True)
+    assert result == "sentinel"
+    assert calls == {"value": {"name": "test"}, "strict": True}
+
+
+def test_serialize_none():
+    """Lines 245-246: None serializes to None."""
+    ref = Reference(to=Example)
+    assert ref.serialize(None) is None
+
+
+def test_serialize_instance():
+    """Line 247: schema instances serialize to a plain dict."""
+    ref = Reference(to=Example)
+    instance = Example({"name": "test"})
+    assert ref.serialize(instance) == {"name": "test"}

@@ -8,15 +8,21 @@ def test_case_0():
     int_1 = 1
     var_1 = module_0.fizz_buzz(int_1)
     assert var_1 == 0
-    int_2 = 15
+    int_2 = 11
     var_2 = module_0.fizz_buzz(int_2)
     assert var_2 == 0
-    int_3 = 79
+    int_3 = 13
     var_3 = module_0.fizz_buzz(int_3)
-    assert var_3 == 3
-    int_4 = 100
+    assert var_3 == 0
+    int_4 = 50
     var_4 = module_0.fizz_buzz(int_4)
-    assert var_4 == 3
-    int_5 = 144
+    assert var_4 == 0
+    int_5 = 78
     var_5 = module_0.fizz_buzz(int_5)
-    assert var_5 == 4
+    assert var_5 == 2
+    int_6 = 79
+    var_6 = module_0.fizz_buzz(int_6)
+    assert var_6 == 3
+    int_7 = 100
+    var_7 = module_0.fizz_buzz(int_7)
+    assert var_7 == 3

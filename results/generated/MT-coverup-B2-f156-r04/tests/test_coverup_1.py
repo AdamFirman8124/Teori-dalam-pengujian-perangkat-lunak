@@ -10,36 +10,46 @@ from f156 import int_to_mini_roman
 @pytest.mark.parametrize(
     "number, expected",
     [
-        (1, "i"),
-        (4, "iv"),
-        (5, "v"),
-        (9, "ix"),
-        (10, "x"),
+        (1, "i"),        # smallest value, single symbol
+        (4, "iv"),       # subtractive pair
+        (9, "ix"),       # subtractive pair
         (14, "xiv"),
         (19, "xix"),
         (40, "xl"),
-        (50, "l"),
         (90, "xc"),
-        (100, "c"),
         (400, "cd"),
-        (500, "d"),
         (900, "cm"),
         (1000, "m"),
-        (3, "iii"),
-        (8, "viii"),
-        (24, "xxiv"),
-        (58, "lviii"),
-        (426, "cdxxvi"),
-        (1994, "mcmxciv"),
-        (3549, "mmmdxlix"),
-        (3999, "mmmcmxcix"),
+        (1987, "mcmlxxxvii"),   # mixes many numerals
+        (3549, "mmmdxlix"),     # high-end value
+        (3000, "mmm"),          # exercises inner "while div" loop 3 times
+        (38, "xxxviii"),        # repeated X and I
+        (152, "clii"),          # repeated I at the tail
+        (426, "cdxxvi"),        # repeated X
     ],
 )
-def test_int_to_mini_roman(number, expected):
-    assert int_to_mini_roman(number) == expected
-
-
-def test_int_to_mini_roman_returns_lowercase():
-    result = int_to_mini_roman(2024)
-    assert result == "mmxxiv"
+def test_int_to_mini_roman_known_values(number, expected):
+    result = int_to_mini_roman(number)
+    assert result == expected
+    # Postcondition: output is always lowercase roman numerals
     assert result == result.lower()
+    assert result.islower() or not result
+
+
+def test_int_to_mini_roman_repeated_symbol_branch():
+    # 'while div' must execute its body multiple times (div > 1)
+    assert int_to_mini_roman(3) == "iii"
+    assert int_to_mini_roman(20) == "xx"
+    assert int_to_mini_roman(2) == "ii"
+
+
+def test_int_to_mini_roman_all_lines_exercised():
+    # Single call that walks every value in num[]/sym[] and both loops
+    result = int_to_mini_roman(3888)  # mmmdccclxxxviii
+    assert result == "mmmdccclxxxviii"
+    assert result == result.lower()
+
+
+def test_int_to_mini_roman_zero_returns_empty():
+    # number == 0 means the outer while loop is skipped entirely
+    assert int_to_mini_roman(0) == ""

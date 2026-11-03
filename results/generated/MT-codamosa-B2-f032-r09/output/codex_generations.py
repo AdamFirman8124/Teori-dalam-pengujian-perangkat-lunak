@@ -1,496 +1,154 @@
 
 
-# Generated at 2026-10-25 20:13:45.249324
+# Generated at 2026-11-02 09:20:39.339396
 # Unit test for function poly
+def test_poly():
+# nonce:abf2e89d
+    # Constant polynomial
+    assert module_0.poly([5], 3) == 5
+    assert module_0.poly([0], 10) == 0
+    # Empty coefficient list evaluates to 0
+    assert module_0.poly([], 4) == 0
+    # Linear polynomial
+    assert module_0.poly([1, 2], 3) == 7
+    assert module_0.poly([-2, 1], 2) == 0
+    # Quadratic polynomial
+    assert module_0.poly([1, 2, 3], 2) == 17
+    assert module_0.poly([1, 2, 3], -2) == 9
+    # Evaluation at zero returns the constant term
+    assert module_0.poly([1, 2, 3], 0) == 1
+    # Negative coefficients
+    assert module_0.poly([1, -2, 3], -2) == 17
+    # Floating point coefficients and inputs
+    assert abs(module_0.poly([0.5, 0.25, 1.5], 2.0) - 7.0) < 1e-9
+    # Higher degree term only
+    assert module_0.poly([0, 0, 0, 1], 2) == 8
 
-# Generated at 2026-10-25 20:13:47.665136
+
+# Unit test for function find_zero
+def test_find_zero():
+    # Linear: 2x - 4 = 0 -> x = 2
+    assert abs(find_zero([-4, 2]) - 2.0) < 1e-6
+    # Linear: 3 + x = 0 -> x = -3
+    assert abs(find_zero([3, 1]) + 3.0) < 1e-6
+    # Linear: 1 + 2x = 0 -> x = -0.5
+    assert abs(find_zero([1, 2]) + 0.5) < 1e-6
+    # Cubic (x-1)(x-2)(x-3); boundary root at x = 1 is found
+    assert abs(find_zero([-6, 11, -6, 1]) - 1.0) < 1e-6
+    # Returned value should be (near) an actual root
+    for coeffs in [[1, 2], [3, 1], [-6, 11, -6, 1]]:
+        assert abs(module_0.poly(coeffs, find_zero(coeffs))) < 1e-6
+
+# Generated at 2026-11-02 09:22:39.146367
+# Unit test for function find_zero
+def test_find_zero():
+    # Linear: x + 2 = 0 -> root at -0.5
+    xs = [1, 2]
+    result = module_0.find_zero(xs)
+    assert isinstance(result, float)
+    assert abs(poly(xs, result)) < 1e-8
+    assert abs(result - (-0.5)) < 1e-6
+
+    # Linear: 1 - 2x = 0 -> root at 0.5
+    xs = [1, -2]
+    result = module_0.find_zero(xs)
+    assert abs(poly(xs, result)) < 1e-8
+    assert abs(result - 0.5) < 1e-6
+
+    # Linear: 5 + 4x = 0 -> root at -1.25 (requires interval expansion)
+    xs = [5, 4]
+    result = module_0.find_zero(xs)
+    assert abs(poly(xs, result)) < 1e-8
+    assert abs(result - (-1.25)) < 1e-6
+
+    # Cubic: (x - 1)(x - 2)(x - 3) -> converges to root at x = 1
+    xs = [-6, 11, -6, 1]
+    result = module_0.find_zero(xs)
+    assert abs(poly(xs, result)) < 1e-6
+    assert abs(result - 1.0) < 1e-6
+
+    # Quadratic: x^2 - 4 -> root at -2 (requires interval expansion)
+    xs = [-4, 0, 1]
+    result = module_0.find_zero(xs)
+    assert abs(poly(xs, result)) < 1e-8
+    assert abs(result - (-2.0)) < 1e-6
+
+    # Quadratic: x^2 - 1 -> root at boundary x = -1
+    xs = [-1, 0, 1]
+    result = module_0.find_zero(xs)
+    assert abs(poly(xs, result)) < 1e-8
+
+    # Cubic: x^3 - 10 -> root at 10^(1/3), requires multiple expansions
+    xs = [-10, 0, 0, 1]
+    result = module_0.find_zero(xs)
+    assert abs(poly(xs, result)) < 1e-8
+    assert abs(result - math.pow(10, 1.0 / 3.0)) < 1e-6
+
+    # Zero polynomial: every point is a root
+    xs = [0]
+    result = module_0.find_zero(xs)
+    assert abs(poly(xs, result)) < 1e-8
+
+
+test_find_zero()
+
+# Generated at 2026-11-02 09:24:57.724370
 # Unit test for function poly
-
-# Generated at 2026-10-25 20:13:50.081845
-# Unit test for function poly
-
-# Generated at 2026-10-25 20:13:55.526751
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:13:57.940834
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:00.355472
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:02.770147
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:05.186062
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:07.599290
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:10.017759
-# Unit test for function poly
-
-# Generated at 2026-10-25 20:14:12.432334
-# Unit test for function poly
-
-# Generated at 2026-10-25 20:14:14.852997
-# Unit test for function poly
-
-# Generated at 2026-10-25 20:14:17.268111
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:19.682261
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:22.097587
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:24.514267
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:26.923856
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:29.343353
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:31.757933
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:34.175866
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:36.588719
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:39.002379
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:41.417623
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:43.831436
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:46.247483
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:48.662729
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:51.079786
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:53.495161
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:55.935661
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:14:58.324334
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:00.739722
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:03.154187
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:05.569094
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:07.983713
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:10.396732
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:12.813077
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:15.227486
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:17.643154
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:20.056304
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:22.470681
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:24.883774
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:27.297860
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:29.712153
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:32.126540
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:34.544471
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:36.950369
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:39.376425
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:41.790108
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:44.204720
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:46.620893
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:49.033249
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:51.446628
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:53.860480
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:15:59.314959
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:01.727140
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:04.140198
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:06.565724
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:08.979813
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:11.393718
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:13.808104
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:16.225938
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:18.641808
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:21.063659
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:23.477045
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:25.888950
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:28.303850
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:30.717427
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:33.131805
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:35.544910
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:37.962338
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:40.378932
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:42.854095
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:45.218001
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:47.631723
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:50.045444
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:52.458985
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:54.873877
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:57.287143
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:16:59.704447
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:02.121138
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:04.534276
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:06.948758
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:09.361921
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:11.777897
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:14.190009
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:16.604614
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:19.018107
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:21.432759
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:23.850133
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:26.267165
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:28.678967
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:31.092071
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:33.506084
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:35.920387
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:38.334270
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:40.747982
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:43.161893
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:45.578792
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:47.992545
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:50.406894
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:52.820086
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:55.234418
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:17:57.648214
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:03.093600
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:05.510342
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:07.926428
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:10.342004
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:12.756195
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:15.223416
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:17.629741
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:20.044294
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:22.458507
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:24.877577
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:27.295022
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:29.704669
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:32.118448
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:34.531645
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:36.945589
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:39.360281
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:41.774284
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:44.187978
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:46.602698
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:49.019089
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:51.435730
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:53.866699
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:56.275323
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:18:58.722551
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:19:01.120895
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:19:03.536290
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:19:05.951394
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:19:08.365584
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:19:10.780094
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:19:13.193362
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:19:15.607779
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:19:18.022086
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:18.694985
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:21.290624
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:24.002371
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:26.465589
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:29.019272
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:31.859240
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:34.418942
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:37.056354
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:39.830003
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:42.377800
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:45.127083
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:47.713746
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:50.295421
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:52.803594
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:55.725139
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:20:58.462731
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:21:01.125647
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:21:03.703255
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:21:06.572650
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:21:09.207530
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:21:11.756026
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:21:14.252880
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:21:16.880350
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:21:19.415566
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:21:22.021532
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:21:24.579946
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:21:27.297432
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:21:30.055971
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:21:32.623866
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 20:21:35.345403
-# Unit test for function find_zero
+def test_poly():
+    assert module_0.poly([1.0, 2.0], 0.0) == 1.0
+    assert module_0.poly([-6.0, 11.0, -6.0, 1.0], -1.0) == -24.0
+    assert module_0.poly([], 5.0) == 0.0
+    assert module_0.poly([3.0], 2.0) == 3.0
+    assert module_0.poly([1.0, 0.0, 1.0], 2.0) == 5.0
+    assert abs(module_0.poly([1.0, 1.0], 1.0) - 2.0) < 1e-9
+    assert abs(module_0.poly([0.5, -2.0, 1.0], 3.0) - 3.5) < 1e-9
+    assert module_0.poly([1.0, -1.0], 1.0) == 0.0
+
+
+# Unit test for function find_zero
+def test_find_zero():
+    assert abs(find_zero([1.0, 2.0]) - (-0.5)) < 1e-8
+    assert abs(find_zero([-6.0, 11.0, -6.0, 1.0]) - ((1 + math.sqrt(3)) / 2)) < 1e-8
+    assert abs(find_zero([-4.0, 1.0]) - 4.0) < 1e-8
+    assert abs(find_zero([5.0, 3.0, -5.0]) - 0.778539) < 1e-4
+    assert abs(find_zero([1.0, -1.0]) - 1.0) < 1e-8
+    assert abs(module_0.poly(find_zero([-6.0, 11.0, -6.0, 1.0]),
+                    find_zero([-6.0, 11.0, -6.0, 1.0]))) < 1e-8
+
+
+if __name__ == "__main__":
+    test_poly()
+    test_find_zero()
+    print("All tests passed!")
+
+# Generated at 2026-11-02 09:27:27.402887
+# Unit test for function find_zero
+def test_find_zero():
+    # nonce:11efd7f2
+    # Linear: f(x) = 1 + 2x, zero at x = -0.5
+    x = module_0.find_zero([1, 2])
+    assert isinstance(x, float)
+    assert abs(x - (-0.5)) < 1e-6
+    assert abs(poly([1, 2], x)) < 1e-6
+
+    # Linear: f(x) = -1 + x, zero at x = 1
+    assert abs(module_0.find_zero([-1, 1]) - 1.0) < 1e-6
+
+    # Linear: f(x) = 2 + x, zero at x = -2
+    assert abs(module_0.find_zero([2, 1]) - (-2.0)) < 1e-6
+
+    # Linear with large root, exercises the bracket-doubling loop:
+    # f(x) = 100 + x, zero at x = -100
+    assert abs(module_0.find_zero([100, 1]) - (-100.0)) < 1e-6
+
+    # Cubic: f(x) = x^3 - 6x^2 + 11x - 6 = (x-1)(x-2)(x-3)
+    xs = [-6, 11, -6, 1]
+    x = module_0.find_zero(xs)
+    assert abs(poly(xs, x)) < 1e-6
+    assert -4.0 <= x <= 4.0
+
+    # Cubic: f(x) = x^3 + x^2 - 3x + 5, single real root between -3 and -2
+    xs = [5, -3, 1, 1]
+    x = module_0.find_zero(xs)
+    assert abs(poly(xs, x)) < 1e-6
+    assert -4.0 <= x <= -1.0

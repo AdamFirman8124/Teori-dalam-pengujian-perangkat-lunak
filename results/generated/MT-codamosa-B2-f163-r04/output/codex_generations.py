@@ -1,136 +1,143 @@
 
 
-# Generated at 2026-10-25 19:11:35.922550
+# Generated at 2026-11-02 17:07:48.991369
 # Unit test for function generate_integers
+def test_generate_integers():
+    # Both bounds within [2, 8], full even range
+    assert module_0.generate_integers(2, 8) == [2, 4, 6, 8]
 
-# Generated at 2026-10-25 19:11:38.338626
-# Unit test for function generate_integers
+    # Arguments reversed, same result
+    assert module_0.generate_integers(8, 2) == [2, 4, 6, 8]
 
-# Generated at 2026-10-25 19:11:40.752121
-# Unit test for function generate_integers
+    # Range partially below lower clamp of 2
+    assert module_0.generate_integers(1, 5) == [2, 4]
+    assert module_0.generate_integers(0, 7) == [2, 4, 6]
 
-# Generated at 2026-10-25 19:11:43.166692
-# Unit test for function generate_integers
+    # Range partially above upper clamp of 8
+    assert module_0.generate_integers(6, 18) == [6, 8]
+    assert module_0.generate_integers(10, 3) == [4, 6, 8]
 
-# Generated at 2026-10-25 19:11:45.581632
-# Unit test for function generate_integers
+    # Range entirely outside [2, 8] yields empty list
+    assert module_0.generate_integers(10, 14) == []
+    assert module_0.generate_integers(0, 0) == []
+    assert module_0.generate_integers(9, 20) == []
 
-# Generated at 2026-10-25 19:11:47.993534
-# Unit test for function generate_integers
+    # Single-value ranges
+    assert module_0.generate_integers(2, 2) == [2]
+    assert module_0.generate_integers(4, 4) == [4]
+    assert module_0.generate_integers(3, 3) == []  # odd value filtered out
 
-# Generated at 2026-10-25 19:11:50.406984
-# Unit test for function generate_integers
+    # Only odd numbers in range
+    assert module_0.generate_integers(3, 5) == []
 
-# Generated at 2026-10-25 19:11:52.821170
-# Unit test for function generate_integers
+    # Negative bounds clamped to 2
+    assert module_0.generate_integers(-5, 4) == [2, 4]
 
-# Generated at 2026-10-25 19:11:55.235004
+# Generated at 2026-11-02 17:08:06.591158
 # Unit test for function generate_integers
+def test_generate_integers():
+    # Both values within range, a < b
+    assert module_0.generate_integers(2, 8) == [2, 4, 6, 8]
+    # Both values within range, a > b (order shouldn't matter)
+    assert module_0.generate_integers(8, 2) == [2, 4, 6, 8]
+    # Range clamped at lower bound 2
+    assert module_0.generate_integers(1, 5) == [2, 4]
+    assert module_0.generate_integers(5, 1) == [2, 4]
+    # Range clamped at upper bound 8
+    assert module_0.generate_integers(7, 20) == [8]
+    # Both values above 8 -> empty list
+    assert module_0.generate_integers(10, 14) == []
+    assert module_0.generate_integers(14, 10) == []
+    # Both values below 2 -> clamped to 2
+    assert module_0.generate_integers(0, 1) == [2]
+    # Single even value
+    assert module_0.generate_integers(4, 4) == [4]
+    # Single odd value -> empty list
+    assert module_0.generate_integers(3, 3) == []
+    # Boundary: only even numbers included
+    assert module_0.generate_integers(3, 7) == [4, 6]
+    # Negative values clamped to 2
+    assert module_0.generate_integers(-5, 3) == [2]
 
-# Generated at 2026-10-25 19:11:57.649432
-# Unit test for function generate_integers
+    print("All tests passed!")
 
-# Generated at 2026-10-25 19:12:00.066300
-# Unit test for function generate_integers
 
-# Generated at 2026-10-25 19:12:02.478310
-# Unit test for function generate_integers
+if __name__ == "__main__":
+    test_generate_integers()
 
-# Generated at 2026-10-25 19:12:04.891958
+# Generated at 2026-11-02 17:08:22.924137
 # Unit test for function generate_integers
+def test_generate_integers():
+    assert module_0.generate_integers(2, 8) == [2, 4, 6, 8]
+    assert module_0.generate_integers(8, 2) == [2, 4, 6, 8]
+    assert module_0.generate_integers(10, 14) == []
+    assert module_0.generate_integers(14, 10) == []
+    assert module_0.generate_integers(1, 5) == [2, 4]
+    assert module_0.generate_integers(5, 1) == [2, 4]
+    assert module_0.generate_integers(3, 3) == []
+    assert module_0.generate_integers(4, 4) == [4]
+    assert module_0.generate_integers(2, 2) == [2]
+    assert module_0.generate_integers(7, 7) == []
+    assert module_0.generate_integers(9, 9) == []
+    assert module_0.generate_integers(0, 2) == [2]
+    assert module_0.generate_integers(0, 10) == [2, 4, 6, 8]
+    assert module_0.generate_integers(-2, 3) == [2]
 
-# Generated at 2026-10-25 19:12:07.307336
+# Generated at 2026-11-02 17:08:40.861269
 # Unit test for function generate_integers
+def test_generate_integers():
+    # Both bounds within range, ordered
+    assert module_0.generate_integers(2, 8) == [2, 4, 6, 8]
+    
+    # Reversed arguments should give same result
+    assert module_0.generate_integers(8, 2) == [2, 4, 6, 8]
+    
+    # Partially below lower bound of 2
+    assert module_0.generate_integers(1, 5) == [2, 4]
+    
+    # Partially above upper bound of 8
+    assert module_0.generate_integers(7, 15) == [8]
+    
+    # Both bounds above 8 -> empty
+    assert module_0.generate_integers(10, 20) == []
+    
+    # Both bounds below 2 -> empty
+    assert module_0.generate_integers(-3, 1) == []
+    
+    # Single value, even
+    assert module_0.generate_integers(4, 4) == [4]
+    
+    # Single value, odd -> empty
+    assert module_0.generate_integers(3, 3) == []
+    assert module_0.generate_integers(5, 5) == []
+    
+    # Single value at boundary
+    assert module_0.generate_integers(2, 2) == [2]
+    assert module_0.generate_integers(8, 8) == [8]
+    
+    # No even numbers in interval
+    assert module_0.generate_integers(3, 3) == []
+    
+    # Interval with one even number
+    assert module_0.generate_integers(5, 7) == [6]
+    
+    # Negative inputs clamped
+    assert module_0.generate_integers(-10, -5) == []
+    
+    print("All tests passed!")
 
-# Generated at 2026-10-25 19:12:09.721705
-# Unit test for function generate_integers
 
-# Generated at 2026-10-25 19:12:12.135643
-# Unit test for function generate_integers
+if __name__ == "__main__":
+    test_generate_integers()
 
-# Generated at 2026-10-25 19:12:14.549789
+# Generated at 2026-11-02 17:09:09.714204
 # Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:16.963347
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:19.381534
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:21.800581
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:24.209808
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:26.622953
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:29.037744
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:31.451343
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:33.869759
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:36.279987
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:38.696289
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:41.113288
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:43.528217
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:45.940705
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:48.355425
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:50.769909
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:53.183207
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:55.596347
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:12:58.010584
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:13:00.425395
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:13:02.842062
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:13:05.256008
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:13:07.669496
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:13:10.083701
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:13:12.496445
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:13:14.910610
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:13:17.324171
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:13:19.738161
-# Unit test for function generate_integers
-
-# Generated at 2026-10-25 19:13:22.154685
-# Unit test for function generate_integers
+def test_generate_integers():
+    assert module_0.generate_integers(2, 8) == [2, 4, 6, 8]
+    assert module_0.generate_integers(8, 2) == [2, 4, 6, 8]
+    assert module_0.generate_integers(1, 5) == [2, 4]
+    assert module_0.generate_integers(3, 3) == []
+    assert module_0.generate_integers(10, 14) == []
+    assert module_0.generate_integers(0, 0) == []
+    assert module_0.generate_integers(-2, 5) == [2, 4]
+    print("All tests passed!")

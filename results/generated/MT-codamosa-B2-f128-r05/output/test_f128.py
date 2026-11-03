@@ -2,43 +2,55 @@
 import f128 as module_0
 
 def test_case_0():
-    var_0 = []
-    var_1 = module_0.prod_signs(var_0)
-    assert var_1 is None
     int_0 = 1
     int_1 = 2
-    int_2 = 3
-    int_3 = [int_0, int_1, int_2]
-    var_2 = module_0.prod_signs(int_3)
-    assert var_2 == 6
-    int_4 = -1
-    int_5 = -2
-    int_6 = -3
-    int_7 = [int_4, int_5, int_6]
-    var_3 = module_0.prod_signs(int_7)
-    assert var_3 == 6
-    assert var_3 == -6
-    int_8 = -2
-    int_9 = [int_0, int_8, int_2]
-    var_4 = module_0.prod_signs(int_9)
+    int_2 = -4
+    int_3 = [int_0, int_1, int_1, int_2]
+    var_0 = module_0.prod_signs(int_3)
+    assert var_0 == 9
+    assert var_0 == -9
+    int_4 = 0
+    int_5 = [int_4, int_0]
+    var_1 = module_0.prod_signs(int_5)
+    assert var_1 == 0
+    var_2 = []
+    var_3 = module_0.prod_signs(var_2)
+    assert var_3 is None
+    int_6 = 3
+    int_7 = [int_0, int_1, int_6]
+    var_4 = module_0.prod_signs(int_7)
     assert var_4 == 6
-    assert var_4 == -6
-    int_10 = -1
-    int_11 = -2
-    int_12 = [int_10, int_11, int_2]
-    var_5 = module_0.prod_signs(int_12)
+    int_8 = -1
+    int_9 = -2
+    int_10 = -3
+    int_11 = [int_8, int_9, int_10]
+    var_5 = module_0.prod_signs(int_11)
     assert var_5 == 6
-    int_13 = 0
-    int_14 = -2
-    int_15 = [int_13, int_0, int_14]
-    var_6 = module_0.prod_signs(int_15)
-    assert var_6 == 0
-    int_16 = 5
-    int_17 = [int_16]
-    var_7 = module_0.prod_signs(int_17)
-    assert var_7 == 5
-    int_18 = -5
-    int_19 = [int_18]
+    assert var_5 == -6
+    int_12 = -5
+    int_13 = [int_12]
+    var_6 = module_0.prod_signs(int_13)
+    assert var_6 == 5
+    assert var_6 == -5
+    int_14 = -1
+    int_15 = [int_4, int_14, int_1, int_6]
+    var_7 = module_0.prod_signs(int_15)
+    assert var_7 == 0
+    int_16 = -1
+    int_17 = -3
+    int_18 = 4
+    int_19 = [int_16, int_1, int_17, int_18]
     var_8 = module_0.prod_signs(int_19)
-    assert var_8 == 5
-    assert var_8 == -5
+    assert var_8 == 10
+    int_20 = 6
+    int_21 = [int_1, int_18, int_20]
+    var_9 = module_0.prod_signs(int_21)
+    assert var_9 == 12
+    int_22 = -2
+    int_23 = -4
+    int_24 = [int_22, int_23, int_20]
+    var_10 = module_0.prod_signs(int_24)
+    assert var_10 == 12
+
+def test_case_1():
+    pass

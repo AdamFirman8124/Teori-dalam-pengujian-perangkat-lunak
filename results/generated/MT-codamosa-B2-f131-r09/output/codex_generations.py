@@ -1,226 +1,152 @@
 
 
-# Generated at 2026-10-25 17:54:00.833750
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:03.246271
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:05.660995
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:08.074981
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:10.492148
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:12.909000
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:15.321463
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:17.735086
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:20.150190
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:22.565153
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:24.978806
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:27.392479
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:29.809452
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:32.225767
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:34.640159
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:37.053756
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:39.467716
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:41.881707
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:44.295919
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:46.709928
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:49.126918
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:54.566262
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:56.980505
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:54:59.393609
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:01.807585
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:04.221023
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:06.637714
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:09.054503
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:11.471073
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:13.886048
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:16.299320
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:18.716734
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:21.130699
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:23.544844
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:25.958197
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:28.372212
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:30.789881
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:33.203521
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:35.616584
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:38.030156
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:40.444103
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:42.857384
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:45.270786
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:47.685919
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:50.102643
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:52.517545
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:54.931089
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:57.345006
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:55:59.759658
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:56:02.173147
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:56:04.586836
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:56:07.001651
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:56:09.413017
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:56:11.825658
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:56:14.238548
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:56:16.652131
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:56:19.066137
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:56:21.480594
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:56:23.893263
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:56:26.307985
-# Unit test for function digits
+# Generated at 2026-11-02 23:02:56.247514
+# Unit test for function digits
+def test_digits():
+    # Single odd digits return themselves
+    assert module_0.digits(1) == 1
+    assert module_0.digits(3) == 3
+    assert module_0.digits(7) == 7
+
+    # Single even module_0.digits(and 0) have no odd digits -> return 0
+    assert module_0.digits(0) == 0
+    assert module_0.digits(2) == 0
+    assert module_0.digits(4) == 0
+    assert module_0.digits(8) == 0
+
+    # Mixed digits: only odd digits are multiplied
+    assert module_0.digits(235) == 15        # 3 * 5
+    assert module_0.digits(12) == 1          # only 1 is odd
+    assert module_0.digits(10) == 1          # only 1 is odd
+    assert module_0.digits(305) == 15        # 3 * 5 (0 is even)
+    assert module_0.digits(123456789) == 945 # 1 * 3 * 5 * 7 * 9
+
+    # All even digits -> 0
+    assert module_0.digits(2468) == 0
+    assert module_0.digits(222) == 0
+
+    # All odd digits
+    assert module_0.digits(13579) == 945
+    assert module_0.digits(999) == 729
+    assert module_0.digits(11111) == 1
+
+    # Two-digit odd numbers
+    assert module_0.digits(57) == 35
+    assert module_0.digits(99) == 81
+
+    print("All tests passed!")
+
+# Generated at 2026-11-02 23:04:56.268335
+# Unit test for function digits
+def test_digits():
+    # Single odd digit
+    assert module_0.digits(1) == 1
+    assert module_0.digits(3) == 3
+    assert module_0.digits(9) == 9
+
+    # Single even digit -> no odd digits, return 0
+    assert module_0.digits(4) == 0
+    assert module_0.digits(0) == 0
+
+    # All even digits -> return 0
+    assert module_0.digits(2468) == 0
+
+    # Mixed digits -> product of odd digits only
+    assert module_0.digits(235) == 15      # 3 * 5
+    assert module_0.digits(123) == 3       # 1 * 3
+    assert module_0.digits(13) == 3        # 1 * 3
+    assert module_0.digits(13579) == 945   # 1 * 3 * 5 * 7 * 9
+
+    # Repeated odd digits
+    assert module_0.digits(555) == 125     # 5 * 5 * 5
+    assert module_0.digits(7777) == 2401   # 7 * 7 * 7 * 7
+
+    # Large number with even digits interspersed
+    assert module_0.digits(123456789) == 945  # 1 * 3 * 5 * 7 * 9
+
+    # Negative number (sign is ignored, '-' is not a digit)
+    assert module_0.digits(-15) == 5       # odd digit 5
+    assert module_0.digits(-246) == 0      # all even
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_digits()
+
+# Generated at 2026-11-02 23:07:13.476944
+# Unit test for function digits
+def test_digits():
+    # No odd digits -> 0
+    assert module_0.digits(4) == 0
+    assert module_0.digits(2468) == 0
+    assert module_0.digits(0) == 0
+    assert module_0.digits(22) == 0
+    assert module_0.digits(88) == 0
+
+    # Single odd digit
+    assert module_0.digits(1) == 1
+    assert module_0.digits(7) == 9 or module_0.digits(7) == 7  # module_0.digits(7) == 7
+    assert module_0.digits(7) == 7
+    assert module_0.digits(9) == 9
+
+    # Multiple odd digits -> product of odd digits
+    assert module_0.digits(235) == 15          # 3 * 5
+    assert module_0.digits(123455) == 75       # 1 * 3 * 5 * 5
+    assert module_0.digits(13579) == 945       # 1 * 3 * 5 * 7 * 9
+    assert module_0.digits(13) == 3            # 1 * 3
+    assert module_0.digits(999) == 729         # 9 * 9 * 9
+    assert module_0.digits(111) == 1           # 1 * 1 * 1
+
+    # Mixed even and odd digits
+    assert module_0.digits(2048) == 0          # only even digits
+    assert module_0.digits(1234) == 3          # 1 * 3
+    assert module_0.digits(5678) == 35         # 5 * 7
+    assert module_0.digits(120) == 1           # only odd digit is 1
 
-# Generated at 2026-10-25 17:56:28.721673
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:56:31.140397
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:56:33.556252
-# Unit test for function digits
-
-# Generated at 2026-10-25 17:56:35.968733
-# Unit test for function digits
+    # Larger numbers
+    assert module_0.digits(111111111) == 1     # all ones
+    assert module_0.digits(33333) == 243       # 3^5
 
-# Generated at 2026-10-25 17:56:38.381865
-# Unit test for function digits
+    print("All tests passed!")
 
-# Generated at 2026-10-25 17:56:40.796150
+# Generated at 2026-11-02 23:09:59.101337
 # Unit test for function digits
+def test_digits():
+    # Single odd digit
+    assert module_0.digits(1) == 1
+    assert module_0.digits(9) == 9
+    assert module_0.digits(7) == 7
 
-# Generated at 2026-10-25 17:56:43.211048
-# Unit test for function digits
+    # Single even digit -> no odd digits, return 0
+    assert module_0.digits(0) == 0
+    assert module_0.digits(2) == 2 % 2 * 0 or module_0.digits(2) == 0
+    assert module_0.digits(4) == 0
+    assert module_0.digits(8) == 0
 
-# Generated at 2026-10-25 17:56:45.625310
-# Unit test for function digits
+    # Mixed even and odd digits
+    assert module_0.digits(235) == 15      # 3 * 5
+    assert module_0.digits(1234) == 3      # 1 * 3
+    assert module_0.digits(123456789) == 945  # 1 * 3 * 5 * 7 * 9
 
-# Generated at 2026-10-25 17:56:48.040266
-# Unit test for function digits
+    # All even digits -> return 0
+    assert module_0.digits(2468) == 0
+    assert module_0.digits(22) == 0
+    assert module_0.digits(86420) == 0
 
-# Generated at 2026-10-25 17:56:50.457357
-# Unit test for function digits
+    # All odd digits
+    assert module_0.digits(13579) == 945   # 1 * 3 * 5 * 7 * 9
+    assert module_0.digits(111) == 1       # 1 * 1 * 1
+    assert module_0.digits(333) == 27      # 3 * 3 * 3
 
-# Generated at 2026-10-25 17:56:52.873405
-# Unit test for function digits
+    # Number containing zeros (zero is even)
+    assert module_0.digits(101) == 1       # 1 * 1
+    assert module_0.digits(305) == 15      # 3 * 5
 
-# Generated at 2026-10-25 17:56:58.358247
-# Unit test for function digits
+    # Multi-digit with repeated odd digits
+    assert module_0.digits(7777) == 2401   # 7^4
 
-# Generated at 2026-10-25 17:57:00.771649
-# Unit test for function digits
+    print("All test cases passed!")
 
-# Generated at 2026-10-25 17:57:03.185920
-# Unit test for function digits
 
-# Generated at 2026-10-25 17:57:05.598315
-# Unit test for function digits
+test_digits()

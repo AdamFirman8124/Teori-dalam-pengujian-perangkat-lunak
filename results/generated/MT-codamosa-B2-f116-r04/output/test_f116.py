@@ -2,28 +2,34 @@
 import f116 as module_0
 
 def test_case_0():
-    var_0 = []
-    var_1 = module_0.sort_array(var_0)
-    assert var_1 == []
     int_0 = 1
-    int_1 = [int_0]
-    var_2 = module_0.sort_array(int_1)
-    assert var_2 == [1]
-    int_2 = 3
-    int_3 = 8
-    int_4 = 6
-    int_5 = 5
-    int_6 = 7
-    int_7 = 9
-    int_8 = [int_2, int_3, int_2, int_4, int_5, int_6, int_7, int_0]
-    var_3 = module_0.sort_array(int_8)
-    assert var_3 == [1, 8, 3, 3, 5, 6, 9, 7]
-    int_9 = 15
-    int_10 = 2
-    int_11 = 4
-    int_12 = [int_9, int_10, int_11, int_3, int_2]
-    var_4 = module_0.sort_array(int_12)
-    assert var_4 == [2, 4, 8, 3, 15]
-    int_13 = [int_6, int_6, int_2, int_2, int_0]
-    var_5 = module_0.sort_array(int_13)
-    assert var_5 == [1, 3, 3, 7, 7]
+    int_1 = 5
+    int_2 = 0
+    int_3 = 3
+    int_4 = 2
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    var_0 = module_0.sort_array(int_5)
+    assert var_0 == [0, 1, 2, 3, 5]
+    int_6 = 4
+    int_7 = 6
+    int_8 = [int_4, int_3, int_6, int_1, int_7]
+    var_1 = module_0.sort_array(int_8)
+    assert var_1 == [2, 4, 3, 5, 6]
+    var_2 = []
+    var_3 = module_0.sort_array(var_2)
+    assert var_3 == []
+    int_9 = 7
+    int_10 = [int_9]
+    var_4 = module_0.sort_array(int_10)
+    assert var_4 == [7]
+    int_11 = [int_2, int_2, int_0]
+    var_5 = module_0.sort_array(int_11)
+    assert var_5 == [0, 0, 1]
+    int_12 = 8
+    int_13 = [int_12, int_6, int_4, int_0]
+    var_6 = module_0.sort_array(int_13)
+    assert var_6 == [1, 2, 4, 8]
+    int_14 = 12
+    int_15 = [int_7, int_3, int_1, int_14]
+    var_7 = module_0.sort_array(int_15)
+    assert var_7 == [3, 5, 6, 12]

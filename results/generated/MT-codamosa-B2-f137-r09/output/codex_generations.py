@@ -1,98 +1,144 @@
 
 
-# Generated at 2026-10-25 03:16:33.406874
+# Generated at 2026-11-01 21:52:33.313080
 # Unit test for function compare_one
+def test_compare_one():assert module_0.compare_one(1, 2.5) == 2.5
 
-# Generated at 2026-10-25 03:16:35.818773
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 03:16:38.242539
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 03:16:40.658138
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 03:16:43.070103
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 03:16:48.370702
-# Unit test for function compare_one
-def test_compare_one():assert module_0.compare_one("1,5", 2) == 2
-
-# Generated at 2026-10-25 03:16:54.522909
-# Unit test for function compare_one
-def test_compare_one():import pytest
-
-def module_0.compare_one(a, b):
-    temp_a, temp_b = a, b
-
-    if isinstance(temp_a, str):
-        temp_a = temp_a.replace(',', '.')
-    if isinstance(temp_b, str):
-        temp_b = temp_b.replace(',', '.')
-
-    if float(temp_a) == float(temp_b):
-        return None
-
-    return a if float(temp_a) > float(temp_b) else b
-
-
-@pytest.mark.parametrize(
-    ("a", "b", "expected"),
-    [
-        (10, 5, 10),
-        (5, 10, 10),
-        (5, 5, None),
-        ("10", "5", "10"),
-        ("5", "10", "10"),
-        ("1,5", "1.2", "1,5"),
-        ("1,5", 1.5, None),
-        (-2, -5, -2),
-        (0, "0,0", None),
-    ],
-)
-def test_compare_one(a, b, expected):
-    assert module_0.compare_one(a, b) == expected
-
-
-def test_compare_one_invalid_value():
-    with pytest.raises(ValueError):
-        module_0.compare_one("not-a-number", 10)
-
-# Generated at 2026-10-25 03:17:00.305940
+# Generated at 2026-11-01 21:52:43.673675
 # Unit test for function compare_one
 def test_compare_one():
-    assert module_0.compare_one(10, 5) == 10
-    assert module_0.compare_one(3, 8) == 8
-    assert module_0.compare_one(4, 4) is None
+    # Basic integer comparisons
+    assert module_0.compare_one(1, 2) == 2
+    assert module_0.compare_one(5, 3) == 5
+    assert module_0.compare_one(2, 2) is None
 
-    # Numeric strings with decimal commas
-    assert module_0.compare_one("2,5", "3,1") == "3,1"
-    assert module_0.compare_one("7,5", "2,5") == "7,5"
+    # Float comparisons
+    assert module_0.compare_one(1, 2.5) == 2.5
+    assert module_0.compare_one(2.5, 1) == 2.5
+    assert module_0.compare_one(1.0, 1) is None
 
-    # Mixed types and equal numeric values
-    assert module_0.compare_one("10", 5) == "10"
-    assert module_0.compare_one("4,0", 4) is None
+    # String comparisons
+    assert module_0.compare_one("1", "2") == "2"
+    assert module_0.compare_one("3", "2") == "3"
 
-    # Negative values
-    assert module_0.compare_one(-2, -5) == -2
+    # Strings with comma decimal separators
+    assert module_0.compare_one("5,1", "6") == "6"
+    assert module_0.compare_one("1", "1,5") == "1,5"
+    assert module_0.compare_one("2,5", "2,5") is None
 
-# Generated at 2026-10-25 03:17:05.975606
+    # Mixed types
+    assert module_0.compare_one("1", 1) is None
+    assert module_0.compare_one("1", 2) == 2
+    assert module_0.compare_one(2, "1") == 2
+    assert module_0.compare_one("2,5", 2.5) is None
+    assert module_0.compare_one("3,5", 3) == "3,5"
+
+    # Negative numbers
+    assert module_0.compare_one(-1, -2) == -1
+    assert module_0.compare_one("-1,5", -2) == "-1,5"
+
+    # Zero handling
+    assert module_0.compare_one(0, 0.0) is None
+    assert module_0.compare_one(0, 1) == 1
+
+    # Large numbers
+    assert module_0.compare_one(1000000, 999999) == 1000000
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_compare_one()
+
+# Generated at 2026-11-01 21:53:33.616315
 # Unit test for function compare_one
 def test_compare_one():
-    # Returns the larger original value
-    assert module_0.compare_one(10, 5) == 10
-    assert module_0.compare_one(3, 8) == 8
+    # Equal values (after conversion) -> None
+    assert module_0.compare_one(1, 1) is None
+    assert module_0.compare_one("1", 1) is None
+    assert module_0.compare_one(2.5, "2,5") is None
+
+    # Returns the larger of two plain numbers
+    assert module_0.compare_one(1, 2.5) == 2.5
+    assert module_0.compare_one(3, 2) == 3
+    assert module_0.compare_one(-1, -5) == -1
+
+    # Strings with comma decimal separators are handled;
+    # the ORIGINAL argument (not converted) is returned
+    assert module_0.compare_one(1, "2,3") == "2,3"
+    assert module_0.compare_one("5,1", "6") == "6"
+    assert module_0.compare_one("0,5", 0.4) == "0,5"
+
+    # Numeric strings compared correctly
+    assert module_0.compare_one("10", "9") == "10"
+    assert module_0.compare_one("9", "10") == "10"
+
+# Generated at 2026-11-01 21:54:09.935746
+# Unit test for function compare_one
+def test_compare_one():
+    # Basic numeric comparisons
+    assert module_0.compare_one(1, 2.5) == 2.5
+    assert module_0.compare_one(2.5, 1) == 2.5
+    assert module_0.compare_one(1, 2) == 2
+    assert module_0.compare_one(2, 1) == 2
 
     # Equal values return None
-    assert module_0.compare_one(4, 4) is None
+    assert module_0.compare_one(1, 1) is None
+    assert module_0.compare_one(1.0, 1) is None
+    assert module_0.compare_one("1", 1) is None
+
+    # Strings with comma decimal separators
+    assert module_0.compare_one(1, "2,3") == "2,3"
+    assert module_0.compare_one("2,3", 1) == "2,3"
+    assert module_0.compare_one("5,1", "6") == "6"
+    assert module_0.compare_one("6", "5,1") == "6"
+
+    # Equal string/number combos return None
+    assert module_0.compare_one("1,1", "1.1") is None
     assert module_0.compare_one("2.5", "2,5") is None
 
-    # Supports numeric strings with dots and commas
-    assert module_0.compare_one("3,5", "2.9") == "3,5"
-    assert module_0.compare_one("1.5", "2,5") == "2,5"
+    # Negative numbers
+    assert module_0.compare_one(-1, 1) == 1
+    assert module_0.compare_one(1, -1) == 1
+    assert module_0.compare_one(-1, -2) == -1
 
-    # Supports comparisons between strings and numbers
-    assert module_0.compare_one("10,5", 10) == "10,5"
-    assert module_0.compare_one(7, "8.0") == "8.0"
-    assert module_0.compare_one("5,0", 5) is None
+    # Original values (not converted) should be returned
+    assert module_0.compare_one("10", 9) == "10"
+    assert module_0.compare_one(0.1, "0,2") == "0,2"
+
+    # Invalid input raises ValueError
+    with pytest.raises(ValueError):
+        module_0.compare_one("abc", 1)
+    with pytest.raises(ValueError):
+        module_0.compare_one(1, "xyz")
+
+# Generated at 2026-11-01 21:55:04.749466
+# Unit test for function compare_one
+def test_compare_one():
+    # int vs int
+    assert module_0.compare_one(1, 2) == 2
+    assert module_0.compare_one(2, 1) == 2
+    # float vs float
+    assert module_0.compare_one(2.5, 1.5) == 2.5
+    assert module_0.compare_one(1.5, 2.5) == 2.5
+    # string with comma decimal vs int
+    assert module_0.compare_one("1,5", 2) == 2
+    assert module_0.compare_one("2,3", 2) == "2,3"
+    # string vs string
+    assert module_0.compare_one("1,5", "2,5") == "2,5"
+    assert module_0.compare_one("1.5", "0.5") == "1.5"
+    # equal values return None
+    assert module_0.compare_one(5, 5) is None
+    assert module_0.compare_one(2.5, 2.5) is None
+    assert module_0.compare_one("1,0", "1") is None
+    assert module_0.compare_one("1", "1.0") is None
+    # negative numbers
+    assert module_0.compare_one(-1, 1) == 1
+    assert module_0.compare_one(-2, -1) == -1
+    assert module_0.compare_one("-1,5", -1) == "-1,5"
+    # mixed int and float
+    assert module_0.compare_one(1, 2.5) == 2.5
+    assert module_0.compare_one(3, 2.5) == 3
+    # zero comparisons
+    assert module_0.compare_one(0, 0.0) is None
+    assert module_0.compare_one(0, 1) == 1

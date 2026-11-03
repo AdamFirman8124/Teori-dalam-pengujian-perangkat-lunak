@@ -5,15 +5,37 @@ def test_case_0():
     str_0 = ''
     var_0 = module_0.digitSum(str_0)
     assert var_0 == 0
-    str_1 = 'abc123'
+    str_1 = 'abAB'
     var_1 = module_0.digitSum(str_1)
-    assert var_1 == 0
-    str_2 = 'ABC'
+    assert var_1 == 131
+    str_2 = 'abcCd'
     var_2 = module_0.digitSum(str_2)
-    assert var_2 == 198
-    str_3 = 'aB3D!'
+    assert var_2 == 67
+    str_3 = 'helloE'
     var_3 = module_0.digitSum(str_3)
-    assert var_3 == 134
-    str_4 = 'Z'
+    assert var_3 == 69
+    str_4 = 'woArBld'
     var_4 = module_0.digitSum(str_4)
-    assert var_4 == 90
+    assert var_4 == 131
+    str_5 = 'aAaaaXa'
+    var_5 = module_0.digitSum(str_5)
+    assert var_5 == 153
+    str_6 = 'a b C d'
+    var_6 = module_0.digitSum(str_6)
+    assert var_6 == 67
+    str_7 = 'ZZZZZ'
+    var_7 = module_0.digitSum(str_7)
+    assert var_7 == 450
+    str_8 = '1234'
+    var_8 = module_0.digitSum(str_8)
+    assert var_8 == 0
+    str_9 = 'aBcD'
+    var_9 = module_0.digitSum(str_9)
+    assert var_9 == 134
+    str_10 = 'B'
+    var_10 = ord(str_10)
+    str_11 = 'D'
+    var_11 = ord(str_11)
+    var_12 = var_10 + var_11
+    str_12 = 'All tests passed!'
+    var_13 = print(str_12)

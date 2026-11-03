@@ -9,41 +9,63 @@ def test_case_0():
     var_0 = module_0.will_it_fly(int_2, int_3)
     assert var_0 is True
     int_4 = [int_0, int_1, int_0]
-    int_5 = 8
+    int_5 = 1
     var_1 = module_0.will_it_fly(int_4, int_5)
-    assert var_1 is True
-    int_6 = 1
-    int_7 = [int_6, int_1, int_6]
-    int_8 = 4
-    var_2 = module_0.will_it_fly(int_7, int_8)
-    assert var_2 is True
-    int_9 = [int_1, int_1]
-    var_3 = module_0.will_it_fly(int_9, int_8)
-    assert var_3 is True
-    int_10 = [int_6, int_1, int_1, int_6]
-    int_11 = 6
-    var_4 = module_0.will_it_fly(int_10, int_11)
+    assert var_1 is False
+    int_6 = [int_5, int_1]
+    int_7 = 5
+    var_2 = module_0.will_it_fly(int_6, int_7)
+    assert var_2 is False
+    var_3 = []
+    var_4 = module_0.will_it_fly(var_3, int_7)
     assert var_4 is True
-    int_12 = [int_6]
-    var_5 = module_0.will_it_fly(int_12, int_6)
-    assert var_5 is True
-    var_6 = []
-    int_13 = 0
-    var_7 = module_0.will_it_fly(var_6, int_13)
+    var_5 = []
+    int_8 = 0
+    var_6 = module_0.will_it_fly(var_5, int_8)
+    assert var_6 is True
+    int_9 = [int_7]
+    var_7 = module_0.will_it_fly(int_9, int_7)
     assert var_7 is True
-    int_14 = [int_0, int_1, int_0]
-    var_8 = module_0.will_it_fly(int_14, int_6)
+    int_10 = [int_7]
+    int_11 = 4
+    var_8 = module_0.will_it_fly(int_10, int_11)
     assert var_8 is False
-    int_15 = [int_6, int_1, int_6]
-    var_9 = module_0.will_it_fly(int_15, int_0)
-    assert var_9 is False
-    int_16 = [int_6, int_1]
-    int_17 = 5
-    var_10 = module_0.will_it_fly(int_16, int_17)
+    int_12 = [int_5, int_1, int_0, int_1, int_5]
+    var_9 = module_0.will_it_fly(int_12, int_3)
+    assert var_9 is True
+    int_13 = [int_5, int_1, int_0, int_1, int_5]
+    int_14 = 8
+    var_10 = module_0.will_it_fly(int_13, int_14)
     assert var_10 is False
-    int_18 = [int_6, int_1, int_0]
-    var_11 = module_0.will_it_fly(int_18, int_11)
-    assert var_11 is False
-    int_19 = [int_6, int_1, int_0]
-    var_12 = module_0.will_it_fly(int_19, int_17)
+    int_15 = [int_11, int_11]
+    var_11 = module_0.will_it_fly(int_15, int_14)
+    assert var_11 is True
+    int_16 = [int_11, int_11]
+    int_17 = 7
+    var_12 = module_0.will_it_fly(int_16, int_17)
     assert var_12 is False
+    int_18 = [int_11, int_7]
+    int_19 = 100
+    var_13 = module_0.will_it_fly(int_18, int_19)
+    assert var_13 is False
+    int_20 = [int_5, int_1, int_0, int_11, int_0, int_1, int_5]
+    int_21 = 16
+    var_14 = module_0.will_it_fly(int_20, int_21)
+    assert var_14 is True
+    int_22 = [int_5, int_1, int_0, int_11, int_0, int_1, int_5]
+    int_23 = 15
+    var_15 = module_0.will_it_fly(int_22, int_23)
+    assert var_15 is False
+    int_24 = [int_5, int_1, int_0, int_1, int_1]
+    var_16 = module_0.will_it_fly(int_24, int_19)
+    assert var_16 is False
+    int_25 = [int_5]
+    int_26 = -1
+    var_17 = module_0.will_it_fly(int_25, int_26)
+    assert var_17 is False
+    int_27 = [int_8, int_8]
+    var_18 = module_0.will_it_fly(int_27, int_8)
+    assert var_18 is True
+
+def test_case_1():
+    pass

@@ -7,37 +7,44 @@ import pytest
 from f127 import intersection
 
 
-def test_intersection_prime_length_returns_yes():
-    # Overlap [2, 4] -> length 2, which is prime (covers num == 2 branch)
-    assert intersection([1, 5], [2, 4]) == "YES"
+def test_intersection_prime_length_two_returns_yes():
+    """Covers is_prime num == 2 branch and the 'YES' return (lines 6-7, 16-17)."""
+    # Overlap is [2, 4], length = 2, which is prime.
+    assert intersection((2, 4), (2, 4)) == "YES"
 
 
-def test_intersection_odd_prime_length_returns_yes():
-    # Overlap [2, 5] -> length 3, prime found via the loop's "return True" path
-    assert intersection([1, 6], [2, 5]) == "YES"
-
-
-def test_intersection_length_one_returns_no():
-    # Overlap [2, 3] -> length 1, hits the "num == 1" early return in is_prime
-    assert intersection([1, 3], [2, 4]) == "NO"
-
-
-def test_intersection_zero_length_returns_no():
-    # Overlap is a single point -> length 0, hits the "num == 0" early return
-    # and the "length > 0" short-circuit
-    assert intersection([1, 3], [3, 5]) == "NO"
+def test_intersection_prime_length_three_returns_yes():
+    """Covers is_prime loop completing without finding a divisor (lines 8-11)."""
+    # Overlap is [2, 5], length = 3, prime verified via the loop.
+    assert intersection((1, 5), (2, 6)) == "YES"
 
 
 def test_intersection_composite_length_returns_no():
-    # Overlap [2, 6] -> length 4, composite: loop finds num % i == 0
-    assert intersection([1, 7], [2, 6]) == "NO"
+    """Covers is_prime loop finding a divisor and returning False (lines 9-10)."""
+    # Overlap is [2, 6], length = 4, composite (divisible by 2).
+    assert intersection((1, 6), (2, 7)) == "NO"
 
 
-def test_intersection_large_composite_length_returns_no():
-    # Overlap [1, 9] -> length 8, composite, exercises loop iterations
-    assert intersection([0, 10], [1, 9]) == "NO"
+def test_intersection_length_one_returns_no():
+    """Covers is_prime num == 1 branch (lines 4-5) and the final 'NO' return (line 18)."""
+    # Overlap is [2, 3], length = 1, not prime.
+    assert intersection((1, 3), (2, 4)) == "NO"
 
 
-def test_intersection_no_overlap_returns_no():
-    # Disjoint intervals -> r < l, negative length, "length > 0" is False
-    assert intersection([1, 2], [5, 8]) == "NO"
+def test_intersection_zero_length_returns_no():
+    """Covers the short-circuit when length == 0 (line 16 condition False)."""
+    # Intervals touch at a single point: length = 0.
+    assert intersection((1, 2), (2, 3)) == "NO"
+
+
+def test_intersection_negative_length_returns_no():
+    """Covers the short-circuit when length < 0 (line 16 condition False)."""
+    # Disjoint intervals: length = -1.
+    assert intersection((1, 2), (3, 4)) == "NO"
+
+
+def test_intersection_uses_max_start_and_min_end():
+    """Verifies l = max(starts) and r = min(ends) regardless of argument order."""
+    # Overlap is [3, 5], length = 2 (prime) -> "YES".
+    assert intersection((3, 10), (1, 5)) == "YES"
+    assert intersection((1, 5), (3, 10)) == "YES"

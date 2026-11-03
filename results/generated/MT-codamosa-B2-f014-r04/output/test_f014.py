@@ -2,12 +2,21 @@
 import f014 as module_0
 
 def test_case_0():
-    str_0 = 'hello'
+    str_0 = 'abc'
     list_0 = module_0.all_prefixes(str_0)
-    assert list_0 == ['h', 'he', 'hel', 'hell', 'hello']
+    assert list_0 == ['a', 'ab', 'abc']
     str_1 = 'a'
     list_1 = module_0.all_prefixes(str_1)
     assert list_1 == ['a']
     str_2 = ''
     list_2 = module_0.all_prefixes(str_2)
     assert list_2 == []
+    str_3 = 'aaa'
+    list_3 = module_0.all_prefixes(str_3)
+    assert list_3 == ['a', 'aa', 'aaa']
+    str_4 = 'a b!'
+    list_4 = module_0.all_prefixes(str_4)
+    assert list_4 == ['a', 'a ', 'a b', 'a b!']
+    str_5 = '123'
+    list_5 = module_0.all_prefixes(str_5)
+    assert list_5 == ['1', '12', '123']

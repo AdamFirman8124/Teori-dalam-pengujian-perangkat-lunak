@@ -24,12 +24,49 @@ def test_case_0():
     var_4 = module_0.search(int_9)
     assert var_4 == 1
     assert var_4 == -1
-    int_10 = [int_2, int_2]
-    var_5 = module_0.search(int_10)
-    assert var_5 == 2
-    int_11 = [int_1, int_1, int_2, int_2, int_3, int_3, int_3]
-    var_6 = module_0.search(int_11)
+    int_10 = 10
+    int_11 = [int_10]
+    var_5 = module_0.search(int_11)
+    assert var_5 == 1
+    assert var_5 == -1
+    int_12 = [int_3, int_3, int_3]
+    var_6 = module_0.search(int_12)
     assert var_6 == 3
-    int_12 = [int_1, int_1, int_1]
-    var_7 = module_0.search(int_12)
-    assert var_7 == 1
+    int_13 = [int_6, int_6, int_6, int_6, int_6]
+    var_7 = module_0.search(int_13)
+    assert var_7 == 5
+    int_14 = [int_2, int_1]
+    var_8 = module_0.search(int_14)
+    assert var_8 == 1
+    int_15 = 7
+    int_16 = [int_15, int_15, int_15]
+    var_9 = module_0.search(int_16)
+    assert var_9 == 1
+    assert var_9 == -1
+    int_17 = [int_2, int_2, int_3, int_3, int_3]
+    var_10 = module_0.search(int_17)
+    assert var_10 == 3
+    int_18 = [int_1, int_1, int_2, int_2, int_3, int_3, int_3]
+    var_11 = module_0.search(int_18)
+    assert var_11 == 3
+    int_19 = [int_0, int_0, int_0, int_0]
+    var_12 = module_0.search(int_19)
+    assert var_12 == 4
+    int_20 = [int_0, int_0, int_0]
+    var_13 = module_0.search(int_20)
+    assert var_13 == 1
+    assert var_13 == -1
+    int_21 = 6
+    int_22 = [int_1, int_2, int_3, int_0, int_6, int_21, int_15]
+    var_14 = int_22 * int_15
+    var_15 = module_0.search(var_14)
+    assert var_15 == 7
+    int_23 = [int_21, int_21, int_21, int_21, int_21, int_21, int_1, int_1, int_1, int_1, int_1, int_1]
+    var_16 = module_0.search(int_23)
+    assert var_16 == 6
+    int_24 = [int_1, int_6, int_6]
+    var_17 = module_0.search(int_24)
+    assert var_17 == 1
+
+def test_case_1():
+    pass

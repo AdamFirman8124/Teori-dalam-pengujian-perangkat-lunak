@@ -2,23 +2,45 @@
 import f096 as module_0
 
 def test_case_0():
-    int_0 = 10
+    int_0 = 0
     var_0 = module_0.count_up_to(int_0)
-    assert var_0 == [2, 3, 5, 7]
-    int_1 = 3
+    assert var_0 == []
+    int_1 = 1
     var_1 = module_0.count_up_to(int_1)
-    assert var_1 == [2]
+    assert var_1 == []
     int_2 = 2
     var_2 = module_0.count_up_to(int_2)
     assert var_2 == []
-    int_3 = 0
+    int_3 = 3
     var_3 = module_0.count_up_to(int_3)
-    assert var_3 == []
-    int_4 = -5
+    assert var_3 == [2]
+    int_4 = 5
     var_4 = module_0.count_up_to(int_4)
-    assert var_4 == []
+    assert var_4 == [2, 3]
+    int_5 = 10
+    var_5 = module_0.count_up_to(int_5)
+    assert var_5 == [2, 3, 5, 7]
+    int_6 = 11
+    var_6 = module_0.count_up_to(int_6)
+    assert var_6 == [2, 3, 5, 7]
+    int_7 = 12
+    var_7 = module_0.count_up_to(int_7)
+    assert var_7 == [2, 3, 5, 7, 11]
+    int_8 = 20
+    var_8 = module_0.count_up_to(int_8)
+    assert var_8 == [2, 3, 5, 7, 11, 13, 17, 19]
+    int_9 = 30
+    var_9 = module_0.count_up_to(int_9)
+    assert var_9 == [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+    int_10 = 50
+    var_10 = module_0.count_up_to(int_10)
+    assert var_10 == [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
+    var_11 = sorted(var_10)
+    int_11 = -5
+    var_12 = module_0.count_up_to(int_11)
+    assert var_12 == []
+    str_0 = 'All tests passed!'
+    var_13 = print(str_0)
 
 def test_case_1():
-    int_0 = 2
-    var_0 = module_0.count_up_to(int_0)
-    assert var_0 == []
+    pass

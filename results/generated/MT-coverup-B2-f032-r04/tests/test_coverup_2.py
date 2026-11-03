@@ -8,21 +8,28 @@ from f032 import poly
 
 
 def test_poly_evaluates_polynomial():
-    # 3 + 2x + x^2 at x = 2 -> 3 + 4 + 4 = 11
-    result = poly([3, 2, 1], 2.0)
-    assert result == 11.0
-    assert isinstance(result, float)
+    # poly([c0, c1, c2, ...], x) == c0*x^0 + c1*x^1 + c2*x^2 + ...
+    # For xs = [1, 3, 2] and x = 2: 1*1 + 3*2 + 2*4 = 15
+    assert poly([1, 3, 2], 2) == 15
+
+
+def test_poly_with_negative_x():
+    # For xs = [1, 2] and x = -3: 1 + 2*(-3) = -5
+    assert poly([1, 2], -3) == -5
+
+
+def test_poly_at_zero():
+    # At x = 0, every term with i > 0 vanishes; result is c0.
+    assert poly([7, 5, 9], 0) == 7
 
 
 def test_poly_empty_coefficients():
-    assert poly([], 5.0) == 0
+    # Sum of an empty list is 0.
+    assert poly([], 4.2) == 0
 
 
-def test_poly_constant():
-    assert poly([7], 100.0) == 7
-
-
-def test_poly_uses_math_pow_for_fractional_exponent_base():
-    # x = 0.5: 1 + 1*0.5 + 1*0.25 = 1.75
-    result = poly([1, 1, 1], 0.5)
-    assert math.isclose(result, 1.75)
+def test_poly_matches_math_pow_semantics():
+    xs = [0.5, -1.5, 2.0]
+    x = 1.5
+    expected = sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])
+    assert poly(xs, x) == expected

@@ -7,11 +7,15 @@ import pytest
 from youtube_dl.postprocessor.common import PostProcessor
 
 
-def test_run_returns_empty_list_and_information():
+def test_run_default_returns_empty_files_and_information():
+    """PostProcessor.run must hit line 56: return [], information."""
     pp = PostProcessor()
-    information = {"filepath": "/tmp/somefile.mp4", "title": "test video"}
+    information = {'filepath': 'somefile.mp4', 'title': 'test video'}
 
-    files_to_delete, updated_info = pp.run(information)
+    files, info = pp.run(information)
 
-    assert files_to_delete == []
-    assert updated_info is information
+    # By default, no files should be deleted and the information
+    # must be passed through unchanged (same object).
+    assert files == []
+    assert info is information
+    assert info == {'filepath': 'somefile.mp4', 'title': 'test video'}

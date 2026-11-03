@@ -2,22 +2,53 @@
 import f154 as module_0
 
 def test_case_0():
-    str_0 = 'abcdef'
-    str_1 = 'abc'
+    str_0 = 'abcd'
+    str_1 = 'abd'
     var_0 = module_0.cycpattern_check(str_0, str_1)
-    assert var_0 is True
-    str_2 = 'xxbcaxx'
-    var_1 = module_0.cycpattern_check(str_2, str_1)
+    assert var_0 is False
+    str_2 = 'hello'
+    str_3 = 'ell'
+    var_1 = module_0.cycpattern_check(str_2, str_3)
     assert var_1 is True
-    str_3 = 'xxcabxx'
-    var_2 = module_0.cycpattern_check(str_3, str_1)
-    assert var_2 is True
-    str_4 = 'acb'
-    var_3 = module_0.cycpattern_check(str_0, str_4)
-    assert var_3 is False
-    str_5 = 'ab'
-    var_4 = module_0.cycpattern_check(str_5, str_1)
+    str_4 = 'whassup'
+    str_5 = 'psus'
+    var_2 = module_0.cycpattern_check(str_4, str_5)
+    assert var_2 is False
+    str_6 = 'abab'
+    str_7 = 'baa'
+    var_3 = module_0.cycpattern_check(str_6, str_7)
+    assert var_3 is True
+    str_8 = 'efef'
+    str_9 = 'eeff'
+    var_4 = module_0.cycpattern_check(str_8, str_9)
     assert var_4 is False
-    str_6 = ''
-    var_5 = module_0.cycpattern_check(str_1, str_6)
+    str_10 = 'himenss'
+    str_11 = 'simen'
+    var_5 = module_0.cycpattern_check(str_10, str_11)
     assert var_5 is True
+    str_12 = 'aaaa'
+    str_13 = 'aa'
+    var_6 = module_0.cycpattern_check(str_12, str_13)
+    assert var_6 is True
+    str_14 = 'ab'
+    var_7 = module_0.cycpattern_check(str_14, str_14)
+    assert var_7 is True
+    str_15 = 'abc'
+    var_8 = module_0.cycpattern_check(str_15, str_0)
+    assert var_8 is False
+    str_16 = ''
+    str_17 = 'a'
+    var_9 = module_0.cycpattern_check(str_16, str_17)
+    assert var_9 is False
+    var_10 = module_0.cycpattern_check(str_15, str_16)
+    assert var_10 is True
+    str_18 = 'xyz'
+    str_19 = 'zyx'
+    var_11 = module_0.cycpattern_check(str_18, str_19)
+    assert var_11 is True
+    assert var_11 is False
+    str_20 = 'abcde'
+    str_21 = 'deab'
+    var_12 = module_0.cycpattern_check(str_20, str_21)
+    assert var_12 is True
+    assert var_12 is False

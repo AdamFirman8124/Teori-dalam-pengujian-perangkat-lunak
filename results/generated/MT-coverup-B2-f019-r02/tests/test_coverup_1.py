@@ -7,42 +7,47 @@ import pytest
 from f019 import sort_numbers
 
 
-def test_sort_numbers_sorts_ascending():
-    assert sort_numbers("three one two") == "one two three"
+def test_sort_numbers_basic():
+    """Several words in unsorted order are sorted by their numeric value."""
+    result = sort_numbers("three one five")
+    assert result == "one three five"
+    # Postcondition: output words are exactly the input words, re-ordered.
+    assert sorted(result.split(" "), key={"one": 1, "three": 3, "five": 5}.get) == \
+        ["one", "three", "five"]
 
 
-def test_sort_numbers_single_value():
-    assert sort_numbers("nine") == "nine"
+def test_sort_numbers_all_words_reverse():
+    """Every key of value_map is exercised (covers the full mapping)."""
+    result = sort_numbers("nine eight seven six five four three two one zero")
+    assert result == "zero one two three four five six seven eight nine"
 
 
-def test_sort_numbers_already_sorted():
-    assert sort_numbers("zero one two three four five six seven eight nine") == (
-        "zero one two three four five six seven eight nine"
-    )
-
-
-def test_sort_numbers_reverse_order():
-    assert sort_numbers("nine eight seven six five four three two one zero") == (
-        "zero one two three four five six seven eight nine"
-    )
-
-
-def test_sort_numbers_ignores_empty_tokens():
-    assert sort_numbers("  two   one ") == "one two"
+def test_sort_numbers_empty_string():
+    """Empty input yields empty output (exercises the `if x` filter's false branch)."""
     assert sort_numbers("") == ""
 
 
-def test_sort_numbers_duplicates_preserved():
-    assert sort_numbers("five five zero") == "zero five five"
+def test_sort_numbers_multiple_spaces():
+    """Empty tokens produced by repeated spaces are filtered out."""
+    assert sort_numbers("three  one   five") == "one three five"
+    assert sort_numbers("  two ") == "two"
 
 
-def test_sort_numbers_unknown_word_raises_key_error():
-    with pytest.raises(KeyError):
-        sort_numbers("one banana")
+def test_sort_numbers_single_word():
+    assert sort_numbers("seven") == "seven"
 
 
-def test_sort_numbers_does_not_mutate_input():
-    numbers = "two one"
-    result = sort_numbers(numbers)
-    assert numbers == "two one"
-    assert result == "one two"
+def test_sort_numbers_duplicates_and_stability():
+    """Duplicates are kept and equal keys keep their relative order."""
+    assert sort_numbers("two one two zero") == "zero one two two"
+
+
+def test_sort_numbers_already_sorted():
+    assert sort_numbers("zero one two") == "zero one two"
+
+
+def test_sort_numbers_returns_only_single_spaces():
+    """Postcondition: output is joined with exactly one space between words."""
+    result = sort_numbers("five   one nine")
+    assert result == "one five nine"
+    assert "  " not in result

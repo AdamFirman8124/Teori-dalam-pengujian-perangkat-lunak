@@ -1,47 +1,117 @@
 
 
-# Generated at 2026-10-24 10:42:51.098879
+# Generated at 2026-11-02 00:08:11.619947
 # Unit test for function triangle_area
 def test_triangle_area():
-    assert module_0.triangle_area(10, 5) == 25.0
-    assert module_0.triangle_area(3, 4) == 6.0
-    assert module_0.triangle_area(0, 10) == 0.0
+    # Basic integer inputs
+    assert math.isclose(module_0.triangle_area(5, 3), 7.5)
+    assert math.isclose(module_0.triangle_area(4, 2), 4.0)
+    assert math.isclose(module_0.triangle_area(10, 8), 40.0)
 
-# Generated at 2026-10-24 10:42:53.523880
-# Unit test for function triangle_area
+    # Floating point inputs
+    assert math.isclose(module_0.triangle_area(2.5, 4.0), 5.0)
+    assert math.isclose(module_0.triangle_area(1.5, 2.5), 1.875)
 
-# Generated at 2026-10-24 10:42:56.032057
-# Unit test for function triangle_area
+    # Zero base or height yields zero area
+    assert module_0.triangle_area(0, 5) == 0.0
+    assert module_0.triangle_area(5, 0) == 0.0
+    assert module_0.triangle_area(0, 0) == 0.0
 
-# Generated at 2026-10-24 10:42:58.455249
-# Unit test for function triangle_area
+    # Fractional results
+    assert math.isclose(module_0.triangle_area(3, 7), 10.5)
+    assert math.isclose(module_0.triangle_area(1, 1), 0.5)
 
-# Generated at 2026-10-24 10:43:00.879739
-# Unit test for function triangle_area
+    # Large values
+    assert math.isclose(module_0.triangle_area(1000, 2000), 1000000.0)
 
-# Generated at 2026-10-24 10:43:03.304634
-# Unit test for function triangle_area
-
-# Generated at 2026-10-24 10:43:05.725699
-# Unit test for function triangle_area
-
-# Generated at 2026-10-24 10:43:08.146312
-# Unit test for function triangle_area
-
-# Generated at 2026-10-24 10:43:36.872538
+# Generated at 2026-11-02 00:09:27.922778
 # Unit test for function triangle_area
 def test_triangle_area():
+    # Basic positive values
     assert module_0.triangle_area(3, 4) == 6.0
     assert module_0.triangle_area(10, 5) == 25.0
-    assert module_0.triangle_area(2.5, 2.0) == 2.5
-    assert module_0.triangle_area(0, 7) == 0.0
+    
+    # Floating point values
+    assert module_0.triangle_area(2.5, 4.0) == 5.0
+    assert abs(module_0.triangle_area(1.5, 3.7) - 2.775) < 1e-9
+    
+    # Zero base or height yields zero area
+    assert module_0.triangle_area(0, 5) == 0.0
+    assert module_0.triangle_area(5, 0) == 0.0
+    
+    # Result is always a float
+    assert isinstance(module_0.triangle_area(2, 3), float)
+    
+    # Large values
+    assert module_0.triangle_area(1e6, 1e6) == 5e11
+    
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_triangle_area()
+
+# Generated at 2026-11-02 00:10:15.542025
+# Unit test for function triangle_area
+def test_triangle_area():
+    # Basic positive case
     assert module_0.triangle_area(1, 1) == 0.5
+    assert module_0.triangle_area(2, 3) == 3.0
+    assert module_0.triangle_area(4, 5) == 10.0
 
-# Generated at 2026-10-24 10:43:39.384592
-# Unit test for function triangle_area
+    # Floating point inputs
+    assert module_0.triangle_area(2.5, 4.0) == 5.0
+    assert module_0.triangle_area(0.1, 0.2) == 0.1 * 0.2 / 2.0
 
-# Generated at 2026-10-24 10:43:41.810109
-# Unit test for function triangle_area
+    # Zero input
+    assert module_0.triangle_area(0, 5) == 0.0
+    assert module_0.triangle_area(5, 0) == 0.0
+    assert module_0.triangle_area(0, 0) == 0.0
 
-# Generated at 2026-10-24 10:43:44.233463
+    # Negative inputs (mathematically signed area)
+    assert module_0.triangle_area(-2, 3) == -3.0
+    assert module_0.triangle_area(2, -3) == -3.0
+
+    # Result is always a float
+    assert isinstance(module_0.triangle_area(3, 4), float)
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_triangle_area()
+
+# Generated at 2026-11-02 00:11:18.277190
 # Unit test for function triangle_area
+def test_triangle_area():
+    assert module_0.triangle_area(3, 4) == 6.0
+    assert module_0.triangle_area(5, 10) == 25.0
+    assert module_0.triangle_area(0, 10) == 0.0
+    assert module_0.triangle_area(2.5, 4.0) == 5.0
+    assert module_0.triangle_area(-3, 4) == -6.0
+    assert module_0.triangle_area(1, 1) == 0.5
+    assert isinstance(module_0.triangle_area(3, 4), float)
+    print("All tests passed!")
+
+test_triangle_area()
+
+# Generated at 2026-11-02 00:12:08.164167
+# Unit test for function triangle_area
+def test_triangle_area():
+    # Basic case: base and height
+    assert module_0.triangle_area(5, 3) == 7.5
+    assert module_0.triangle_area(4, 2) == 4.0
+    assert module_0.triangle_area(10, 10) == 50.0
+
+    # Zero base yields zero area
+    assert module_0.triangle_area(0, 5) == 0.0
+    assert module_0.triangle_area(5, 0) == 0.0
+
+    # Fractional inputs
+    assert module_0.triangle_area(2.5, 4.0) == 5.0
+    assert module_0.triangle_area(1.5, 1.5) == 1.125
+
+    # Result is always a float
+    assert isinstance(module_0.triangle_area(2, 3), float)
+
+    print("All tests passed!")

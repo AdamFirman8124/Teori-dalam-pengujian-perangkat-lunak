@@ -2,18 +2,37 @@
 import f028 as module_0
 
 def test_case_0():
-    str_0 = '=vs'
-    list_0 = [str_0, str_0]
-    str_1 = module_0.concatenate(list_0)
-    assert str_1 == '=vs=vs'
-    str_2 = '<\t&'
-    str_3 = '2_'
-    str_4 = module_0.concatenate(list_0)
-    assert str_4 == '=vs=vs'
-    list_1 = [str_2, str_3, str_2]
-    str_5 = module_0.concatenate(list_1)
-    assert str_5 == '<\t&2_<\t&'
-    str_6 = module_0.concatenate(list_1)
-    assert str_6 == '<\t&2_<\t&'
-    str_7 = module_0.concatenate(list_1)
-    assert str_7 == '<\t&2_<\t&'
+    pass
+
+def test_case_1():
+    var_0 = []
+    str_0 = module_0.concatenate(var_0)
+    assert str_0 == ''
+    str_1 = 'hello'
+    str_2 = [str_1]
+    str_3 = module_0.concatenate(str_2)
+    assert str_3 == 'hello'
+    str_4 = ' '
+    str_5 = 'world'
+    str_6 = [str_1, str_4, str_5]
+    str_7 = module_0.concatenate(str_6)
+    assert str_7 == 'hello world'
+    str_8 = 'foo'
+    str_9 = 'bar'
+    str_10 = 'baz'
+    str_11 = [str_8, str_9, str_10]
+    str_12 = module_0.concatenate(str_11)
+    assert str_12 == 'foobarbaz'
+    str_13 = ''
+    str_14 = 'a'
+    str_15 = 'b'
+    str_16 = [str_13, str_14, str_13, str_15]
+    str_17 = module_0.concatenate(str_16)
+    assert str_17 == 'ab'
+    str_18 = '!@#'
+    str_19 = '$%^'
+    str_20 = [str_18, str_19]
+    str_21 = module_0.concatenate(str_20)
+    assert str_21 == '!@#$%^'
+    str_22 = 'All tests passed!'
+    var_1 = print(str_22)

@@ -12,15 +12,20 @@ def test_case_0():
     int_5 = 9
     var_1 = module_0.eat(int_3, int_4, int_5)
     assert var_1 == [12, 1]
-    int_6 = 1
-    var_2 = module_0.eat(int_6, int_2, int_2)
-    assert var_2 == [11, 0]
-    int_7 = 2
-    int_8 = 0
-    var_3 = module_0.eat(int_7, int_8, int_0)
-    assert var_3 == [2, 5]
-    int_9 = 3
-    var_4 = module_0.eat(int_8, int_9, int_8)
-    assert var_4 == [0, 0]
+    int_6 = 2
+    int_7 = 11
+    var_2 = module_0.eat(int_6, int_7, int_0)
+    assert var_2 == [7, 0]
+    int_8 = 1
+    var_3 = module_0.eat(int_8, int_2, int_2)
+    assert var_3 == [11, 0]
+    int_9 = 0
+    var_4 = module_0.eat(int_2, int_0, int_9)
+    assert var_4 == [10, 0]
+    var_5 = module_0.eat(int_9, int_9, int_0)
+    assert var_5 == [0, 5]
     str_0 = 'All tests passed!'
-    var_5 = print(str_0)
+    var_6 = print(str_0)
+
+def test_case_1():
+    pass

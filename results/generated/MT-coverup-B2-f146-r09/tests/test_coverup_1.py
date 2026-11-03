@@ -8,31 +8,42 @@ from f146 import specialFilter
 
 
 def test_empty_list():
+    """Empty input: lines 4 and 12 execute, loop body never runs."""
     assert specialFilter([]) == 0
 
 
-def test_no_numbers_above_ten():
-    assert specialFilter([1, 10, -3, 9]) == 0
+def test_no_numbers_greater_than_ten():
+    """Numbers <= 10 take the False branch of 'num > 10' (line 6)."""
+    assert specialFilter([10, 9, -11, 0, 3]) == 0
 
 
-def test_above_ten_but_even_first_digit():
-    # num > 10 branch taken, but first digit is even -> not counted
-    assert specialFilter([22, 44, 68]) == 0
+def test_numbers_greater_than_ten_but_not_both_odd_digits():
+    """Numbers > 10 whose first or last digit is even: line 9 condition False."""
+    # 12: first digit 1 (odd), last digit 2 (even) -> not counted
+    # 20: first digit 2 (even), last digit 0 (even) -> not counted
+    # 21: first digit 2 (even), last digit 1 (odd) -> not counted
+    assert specialFilter([12, 20, 21, 44, 100]) == 0
 
 
-def test_above_ten_but_even_last_digit():
-    # num > 10 branch taken, first digit odd but last digit even -> not counted
-    assert specialFilter([12, 14, 16]) == 0
+def test_numbers_greater_than_ten_with_both_odd_digits():
+    """Numbers > 10 with odd first and last digit: all lines including 9-10 execute."""
+    assert specialFilter([11, 13, 15, 97, 31]) == 5
 
 
-def test_first_and_last_digits_odd():
-    assert specialFilter([11, 13, 15, 17, 19, 31, 97, 135, 339]) == 9
+def test_mixed_input():
+    """Mixed input exercising every branch in a single call."""
+    nums = [1, 10, 11, 12, 33, 44, 135, -15, 79]
+    # qualifying: 11, 33, 135, 79
+    assert specialFilter(nums) == 4
 
 
 def test_negative_numbers_ignored():
-    # negative numbers are never > 10, so never counted
-    assert specialFilter([-11, -33, -97]) == 0
+    """Negative numbers are never > 10, so they take the False branch."""
+    assert specialFilter([-11, -13, -97]) == 0
 
 
-def test_mixed_list():
-    assert specialFilter([15, -2, 44, 0, 12, 33, 100, 101]) == 3
+def test_result_is_non_negative_int():
+    """Postcondition: result is always a non-negative int."""
+    result = specialFilter([11, 22, 33])
+    assert isinstance(result, int)
+    assert result >= 0

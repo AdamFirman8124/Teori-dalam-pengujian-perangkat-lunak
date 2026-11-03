@@ -3,173 +3,49 @@ import semantic_release.helpers as module_0
 import urllib3.util.retry as module_1
 
 def test_case_0():
-    list_0 = []
-    session_0 = module_0.build_requests_session()
-    assert len(session_0.hooks) == 1
-    assert len(session_0.adapters) == 2
-    bool_0 = False
-    bytes_0 = b'\x07\x7f\xf3\xe7\xda?\xfd\xea\xa3Z\xd7\xa8\xcf\xdc\xbd\xb9\xd6\xd0R'
-    retry_0 = module_1.Retry(session_0, list_0, bytes_0, bool_0, bool_0)
-    session_1 = module_0.build_requests_session(session_0, retry_0)
-    assert len(session_0.headers) == 4
-    assert session_0.auth is None
-    assert session_0.proxies == {}
-    assert session_0.params == {}
-    assert session_0.stream is False
-    assert session_0.verify is True
-    assert session_0.cert is None
-    assert session_0.max_redirects == 30
-    assert session_0.trust_env is True
-    assert len(session_0.cookies) == 0
-    assert retry_0.connect == []
-    assert retry_0.read == b'\x07\x7f\xf3\xe7\xda?\xfd\xea\xa3Z\xd7\xa8\xcf\xdc\xbd\xb9\xd6\xd0R'
-    assert retry_0.status is False
-    assert retry_0.other is None
-    assert retry_0.redirect == 0
-    assert retry_0.status_forcelist == {*()}
-    assert len(retry_0.allowed_methods) == 6
-    assert retry_0.backoff_factor == 0
-    assert retry_0.raise_on_redirect is False
-    assert retry_0.raise_on_status is True
-    assert retry_0.history == ()
-    assert retry_0.respect_retry_after_header is True
-    assert len(retry_0.remove_headers_on_redirect) == 1
-    assert len(session_1.headers) == 4
-    assert session_1.auth is None
-    assert session_1.proxies == {}
-    assert len(session_1.hooks) == 1
-    assert session_1.params == {}
-    assert session_1.stream is False
-    assert session_1.verify is True
-    assert session_1.cert is None
-    assert session_1.max_redirects == 30
-    assert session_1.trust_env is True
-    assert len(session_1.cookies) == 0
-    assert len(session_1.adapters) == 2
-    assert module_1.absolute_import.optional == (2, 5, 0, 'alpha', 1)
-    assert module_1.absolute_import.mandatory == (3, 0, 0, 'alpha', 0)
-    assert module_1.absolute_import.compiler_flag == 262144
-    assert module_1.log.filters == []
-    assert module_1.log.name == 'urllib3.util.retry'
-    assert module_1.log.level == 0
-    assert module_1.log.propagate is True
-    assert module_1.log.handlers == []
-    assert module_1.log.disabled is False
-    assert len(module_1.Retry.DEFAULT_ALLOWED_METHODS) == 6
-    assert len(module_1.Retry.RETRY_AFTER_STATUS_CODES) == 3
-    assert len(module_1.Retry.DEFAULT_REMOVE_HEADERS_ON_REDIRECT) == 1
-    assert module_1.Retry.DEFAULT_BACKOFF_MAX == 120
-    assert module_1.Retry.from_int is not None
-    assert module_1.Retry.DEFAULT.total == 3
-    assert module_1.Retry.DEFAULT.connect is None
-    assert module_1.Retry.DEFAULT.read is None
-    assert module_1.Retry.DEFAULT.status is None
-    assert module_1.Retry.DEFAULT.other is None
-    assert module_1.Retry.DEFAULT.redirect is None
-    assert module_1.Retry.DEFAULT.status_forcelist == {*()}
-    assert len(module_1.Retry.DEFAULT.allowed_methods) == 6
-    assert module_1.Retry.DEFAULT.backoff_factor == 0
-    assert module_1.Retry.DEFAULT.raise_on_redirect is True
-    assert module_1.Retry.DEFAULT.raise_on_status is True
-    assert module_1.Retry.DEFAULT.history == ()
-    assert module_1.Retry.DEFAULT.respect_retry_after_header is True
-    assert len(module_1.Retry.DEFAULT.remove_headers_on_redirect) == 1
-    var_0 = module_0.format_arg(list_0)
-    assert var_0 == '[]'
-
-def test_case_1():
-    list_0 = []
-    session_0 = module_0.build_requests_session()
-    assert len(session_0.hooks) == 1
-    assert len(session_0.adapters) == 2
-    bool_0 = True
-    bytes_0 = b'\x07\x7f\xf3\xe7\xda?\xfd\xea\xa3Z\xd7\xa8\xcf\xdc\xbd\xb9\xd6\xd0R'
-    retry_0 = module_1.Retry(session_0, list_0, bytes_0, bool_0, bool_0)
-    session_1 = module_0.build_requests_session(session_0, retry_0)
-    assert len(session_0.headers) == 4
-    assert session_0.auth is None
-    assert session_0.proxies == {}
-    assert session_0.params == {}
-    assert session_0.stream is False
-    assert session_0.verify is True
-    assert session_0.cert is None
-    assert session_0.max_redirects == 30
-    assert session_0.trust_env is True
-    assert len(session_0.cookies) == 0
-    assert retry_0.connect == []
-    assert retry_0.read == b'\x07\x7f\xf3\xe7\xda?\xfd\xea\xa3Z\xd7\xa8\xcf\xdc\xbd\xb9\xd6\xd0R'
-    assert retry_0.status is True
-    assert retry_0.other is None
-    assert retry_0.redirect is True
-    assert retry_0.status_forcelist == {*()}
-    assert len(retry_0.allowed_methods) == 6
-    assert retry_0.backoff_factor == 0
-    assert retry_0.raise_on_redirect is True
-    assert retry_0.raise_on_status is True
-    assert retry_0.history == ()
-    assert retry_0.respect_retry_after_header is True
-    assert len(retry_0.remove_headers_on_redirect) == 1
-    assert len(session_1.headers) == 4
-    assert session_1.auth is None
-    assert session_1.proxies == {}
-    assert len(session_1.hooks) == 1
-    assert session_1.params == {}
-    assert session_1.stream is False
-    assert session_1.verify is True
-    assert session_1.cert is None
-    assert session_1.max_redirects == 30
-    assert session_1.trust_env is True
-    assert len(session_1.cookies) == 0
-    assert len(session_1.adapters) == 2
-    assert module_1.absolute_import.optional == (2, 5, 0, 'alpha', 1)
-    assert module_1.absolute_import.mandatory == (3, 0, 0, 'alpha', 0)
-    assert module_1.absolute_import.compiler_flag == 262144
-    assert module_1.log.filters == []
-    assert module_1.log.name == 'urllib3.util.retry'
-    assert module_1.log.level == 0
-    assert module_1.log.propagate is True
-    assert module_1.log.handlers == []
-    assert module_1.log.disabled is False
-    assert len(module_1.Retry.DEFAULT_ALLOWED_METHODS) == 6
-    assert len(module_1.Retry.RETRY_AFTER_STATUS_CODES) == 3
-    assert len(module_1.Retry.DEFAULT_REMOVE_HEADERS_ON_REDIRECT) == 1
-    assert module_1.Retry.DEFAULT_BACKOFF_MAX == 120
-    assert module_1.Retry.from_int is not None
-    assert module_1.Retry.DEFAULT.total == 3
-    assert module_1.Retry.DEFAULT.connect is None
-    assert module_1.Retry.DEFAULT.read is None
-    assert module_1.Retry.DEFAULT.status is None
-    assert module_1.Retry.DEFAULT.other is None
-    assert module_1.Retry.DEFAULT.redirect is None
-    assert module_1.Retry.DEFAULT.status_forcelist == {*()}
-    assert len(module_1.Retry.DEFAULT.allowed_methods) == 6
-    assert module_1.Retry.DEFAULT.backoff_factor == 0
-    assert module_1.Retry.DEFAULT.raise_on_redirect is True
-    assert module_1.Retry.DEFAULT.raise_on_status is True
-    assert module_1.Retry.DEFAULT.history == ()
-    assert module_1.Retry.DEFAULT.respect_retry_after_header is True
-    assert len(module_1.Retry.DEFAULT.remove_headers_on_redirect) == 1
-
-def test_case_2():
     pass
 
-def test_case_3():
-    str_0 = '8%PW+'
-    list_0 = []
-    tuple_0 = None
+def test_case_1():
+    var_0 = object()
+    logged_function_0 = module_0.LoggedFunction(var_0)
     session_0 = module_0.build_requests_session()
     assert len(session_0.hooks) == 1
     assert len(session_0.adapters) == 2
-    set_0 = None
-    list_1 = [session_0, set_0]
-    logged_function_0 = module_0.LoggedFunction(list_1)
-    assert len(logged_function_0.logger) == 2
+
+def test_case_2():
+    str_0 = ''
+    dict_0 = {str_0: str_0, str_0: str_0}
+    bytes_0 = b'\xd8'
+    logged_function_0 = module_0.LoggedFunction(bytes_0)
+    assert logged_function_0.logger == b'\xd8'
+    var_0 = logged_function_0.__call__(dict_0)
+    logged_function_1 = None
+    logged_function_2 = module_0.LoggedFunction(logged_function_1)
+    assert logged_function_2.logger is None
+    dict_1 = None
+    session_0 = module_0.build_requests_session(dict_1)
+    assert session_0.hooks == {'response': []}
+    assert len(session_0.adapters) == 2
+
+def test_case_3():
+    str_0 = 'Test LoggedFunction constructor stores the logger.'
+    str_1 = 'test_logger'
+    var_0 = object()
+    logged_function_0 = None
+    var_1 = module_0.format_arg(logged_function_0)
+    assert var_1 == 'None'
+    bytes_0 = b'y\x92\xf1\xcf\xf9\xe0\xa5z\x8f\xc3@\xd7\x85J\x9d'
+    logged_function_1 = module_0.LoggedFunction(bytes_0)
+    assert logged_function_1.logger == b'y\x92\xf1\xcf\xf9\xe0\xa5z\x8f\xc3@\xd7\x85J\x9d'
+    int_0 = 3
+    logged_function_2 = module_0.LoggedFunction(int_0)
+    assert logged_function_2.logger == 3
     bool_0 = False
-    retry_0 = module_1.Retry(list_0, tuple_0, session_0, logged_function_0, bool_0, session_0)
-    session_1 = module_0.build_requests_session(str_0, retry_0)
+    session_0 = module_0.build_requests_session()
     assert len(session_0.headers) == 4
     assert session_0.auth is None
     assert session_0.proxies == {}
+    assert len(session_0.hooks) == 1
     assert session_0.params == {}
     assert session_0.stream is False
     assert session_0.verify is True
@@ -177,9 +53,16 @@ def test_case_3():
     assert session_0.max_redirects == 30
     assert session_0.trust_env is True
     assert len(session_0.cookies) == 0
-    assert retry_0.total == []
-    assert retry_0.connect is None
-    assert retry_0.status is False
+    assert len(session_0.adapters) == 2
+    dict_0 = {str_1: logged_function_1, str_0: logged_function_2, logged_function_0: bytes_0}
+    int_1 = -895
+    retry_0 = module_1.Retry(dict_0, bytes_0, int_1)
+    assert len(retry_0.total) == 3
+    assert retry_0.connect == b'y\x92\xf1\xcf\xf9\xe0\xa5z\x8f\xc3@\xd7\x85J\x9d'
+    assert retry_0.read == -895
+    assert retry_0.status is None
+    assert retry_0.other is None
+    assert retry_0.redirect is None
     assert retry_0.status_forcelist == {*()}
     assert len(retry_0.allowed_methods) == 6
     assert retry_0.backoff_factor == 0
@@ -188,18 +71,6 @@ def test_case_3():
     assert retry_0.history == ()
     assert retry_0.respect_retry_after_header is True
     assert len(retry_0.remove_headers_on_redirect) == 1
-    assert len(session_1.headers) == 4
-    assert session_1.auth is None
-    assert session_1.proxies == {}
-    assert len(session_1.hooks) == 1
-    assert session_1.params == {}
-    assert session_1.stream is False
-    assert session_1.verify is True
-    assert session_1.cert is None
-    assert session_1.max_redirects == 30
-    assert session_1.trust_env is True
-    assert len(session_1.cookies) == 0
-    assert len(session_1.adapters) == 2
     assert module_1.absolute_import.optional == (2, 5, 0, 'alpha', 1)
     assert module_1.absolute_import.mandatory == (3, 0, 0, 'alpha', 0)
     assert module_1.absolute_import.compiler_flag == 262144
@@ -228,276 +99,130 @@ def test_case_3():
     assert module_1.Retry.DEFAULT.history == ()
     assert module_1.Retry.DEFAULT.respect_retry_after_header is True
     assert len(module_1.Retry.DEFAULT.remove_headers_on_redirect) == 1
+    session_1 = module_0.build_requests_session(retry_0, bool_0)
+    assert len(session_1.headers) == 4
+    assert session_1.auth is None
+    assert session_1.proxies == {}
+    assert len(session_1.hooks) == 1
+    assert session_1.params == {}
+    assert session_1.stream is False
+    assert session_1.verify is True
+    assert session_1.cert is None
+    assert session_1.max_redirects == 30
+    assert session_1.trust_env is True
+    assert len(session_1.cookies) == 0
+    assert len(session_1.adapters) == 2
+    tuple_0 = ()
+    session_2 = module_0.build_requests_session()
+    assert len(session_2.headers) == 4
+    assert session_2.auth is None
+    assert session_2.proxies == {}
+    assert len(session_2.hooks) == 1
+    assert session_2.params == {}
+    assert session_2.stream is False
+    assert session_2.verify is True
+    assert session_2.cert is None
+    assert session_2.max_redirects == 30
+    assert session_2.trust_env is True
+    assert len(session_2.cookies) == 0
+    assert len(session_2.adapters) == 2
+    dict_1 = {session_0: str_0, tuple_0: var_0, session_2: var_1}
+    complex_0 = None
+    complex_1 = None
+    retry_1 = module_1.Retry(dict_1, complex_0, complex_1)
+    assert len(retry_1.total) == 3
+    assert retry_1.connect is None
+    assert retry_1.read is None
+    assert retry_1.status is None
+    assert retry_1.other is None
+    assert retry_1.redirect is None
+    assert retry_1.status_forcelist == {*()}
+    assert len(retry_1.allowed_methods) == 6
+    assert retry_1.backoff_factor == 0
+    assert retry_1.raise_on_redirect is True
+    assert retry_1.raise_on_status is True
+    assert retry_1.history == ()
+    assert retry_1.respect_retry_after_header is True
+    assert len(retry_1.remove_headers_on_redirect) == 1
+    int_2 = -141
+    var_2 = logged_function_1.__call__(int_2)
+    assert var_2 is not None
+    list_0 = None
+    logged_function_3 = module_0.LoggedFunction(list_0)
+    assert logged_function_3.logger is None
 
 def test_case_4():
-    int_0 = 3
-    str_0 = 'D[P<\\vA\n?0B2mb#Ua'
-    list_0 = [int_0, int_0, int_0]
-    session_0 = module_0.build_requests_session(list_0)
+    str_0 = "k$ l>`\t9'vQ?/pE1#I{P"
+    list_0 = [str_0, str_0, str_0]
+    float_0 = -1434.0
+    list_1 = [float_0]
+    var_0 = object()
+    logged_function_0 = None
+    var_1 = module_0.format_arg(logged_function_0)
+    assert var_1 == 'None'
+    logged_function_1 = module_0.LoggedFunction(var_0)
+    str_1 = ''
+    str_2 = 'ou"u1^F\'zS-EG%th~'
+    dict_0 = {str_1: var_0, str_2: logged_function_1, str_2: list_1, str_2: var_1}
+    logged_function_2 = module_0.LoggedFunction(dict_0)
+    assert len(logged_function_2.logger) == 2
+    tuple_0 = (dict_0, float_0)
+    int_0 = 404
+    session_0 = module_0.build_requests_session(tuple_0, int_0)
+    assert len(session_0.headers) == 4
+    assert session_0.auth is None
+    assert session_0.proxies == {}
     assert len(session_0.hooks) == 1
+    assert session_0.params == {}
+    assert session_0.stream is False
+    assert session_0.verify is True
+    assert session_0.cert is None
+    assert session_0.max_redirects == 30
+    assert session_0.trust_env is True
+    assert len(session_0.cookies) == 0
     assert len(session_0.adapters) == 2
-    logged_function_0 = module_0.LoggedFunction(session_0)
-    var_0 = logged_function_0.__call__(str_0)
+    logged_function_3 = module_0.LoggedFunction(list_0)
+    assert logged_function_3.logger == ["k$ l>`\t9'vQ?/pE1#I{P", "k$ l>`\t9'vQ?/pE1#I{P", "k$ l>`\t9'vQ?/pE1#I{P"]
 
 def test_case_5():
-    tuple_0 = None
-    session_0 = module_0.build_requests_session()
-    assert len(session_0.hooks) == 1
-    assert len(session_0.adapters) == 2
-    bool_0 = False
-    set_0 = set()
-    session_1 = module_0.build_requests_session()
-    assert len(session_1.hooks) == 1
-    assert len(session_1.adapters) == 2
-    session_2 = module_0.build_requests_session(bool_0)
-    assert session_2.hooks == {'response': []}
-    assert len(session_2.adapters) == 2
-    session_3 = module_0.build_requests_session(tuple_0)
-    assert session_3.hooks == {'response': []}
-    assert len(session_3.adapters) == 2
-    logged_function_0 = module_0.LoggedFunction(set_0)
-    assert logged_function_0.logger == {*()}
-
-def test_case_6():
-    str_0 = '9&b,XkZY,'
-    session_0 = module_0.build_requests_session()
-    assert len(session_0.hooks) == 1
-    assert len(session_0.adapters) == 2
-    bool_0 = False
+    str_0 = 'hello'
     var_0 = module_0.format_arg(str_0)
-    assert var_0 == "'9&b,XkZY,'"
-    session_1 = module_0.build_requests_session(bool_0)
-    assert session_1.hooks == {'response': []}
-    assert len(session_1.adapters) == 2
-    bytes_0 = b'8(\xa7\x1b]K\xf4\xb5\xd5\xd8^4\xfc\xd1\x88'
-    logged_function_0 = module_0.LoggedFunction(bytes_0)
-    assert logged_function_0.logger == b'8(\xa7\x1b]K\xf4\xb5\xd5\xd8^4\xfc\xd1\x88'
-    session_2 = module_0.build_requests_session()
-    assert len(session_2.hooks) == 1
-    assert len(session_2.adapters) == 2
-
-def test_case_7():
-    str_0 = '9&b,XkZY,'
-    list_0 = []
-    tuple_0 = None
-    session_0 = module_0.build_requests_session()
-    assert len(session_0.hooks) == 1
-    assert len(session_0.adapters) == 2
-    set_0 = None
-    list_1 = [session_0, set_0]
-    logged_function_0 = module_0.LoggedFunction(list_1)
-    assert len(logged_function_0.logger) == 2
-    bool_0 = False
-    retry_0 = module_1.Retry(list_0, tuple_0, session_0, logged_function_0, bool_0, session_0)
-    session_1 = module_0.build_requests_session(str_0, retry_0)
-    assert len(session_0.headers) == 4
-    assert session_0.auth is None
-    assert session_0.proxies == {}
-    assert session_0.params == {}
-    assert session_0.stream is False
-    assert session_0.verify is True
-    assert session_0.cert is None
-    assert session_0.max_redirects == 30
-    assert session_0.trust_env is True
-    assert len(session_0.cookies) == 0
-    assert retry_0.total == []
-    assert retry_0.connect is None
-    assert retry_0.status is False
-    assert retry_0.status_forcelist == {*()}
-    assert len(retry_0.allowed_methods) == 6
-    assert retry_0.backoff_factor == 0
-    assert retry_0.raise_on_redirect is True
-    assert retry_0.raise_on_status is True
-    assert retry_0.history == ()
-    assert retry_0.respect_retry_after_header is True
-    assert len(retry_0.remove_headers_on_redirect) == 1
-    assert len(session_1.headers) == 4
-    assert session_1.auth is None
-    assert session_1.proxies == {}
-    assert len(session_1.hooks) == 1
-    assert session_1.params == {}
-    assert session_1.stream is False
-    assert session_1.verify is True
-    assert session_1.cert is None
-    assert session_1.max_redirects == 30
-    assert session_1.trust_env is True
-    assert len(session_1.cookies) == 0
-    assert len(session_1.adapters) == 2
-    assert module_1.absolute_import.optional == (2, 5, 0, 'alpha', 1)
-    assert module_1.absolute_import.mandatory == (3, 0, 0, 'alpha', 0)
-    assert module_1.absolute_import.compiler_flag == 262144
-    assert module_1.log.filters == []
-    assert module_1.log.name == 'urllib3.util.retry'
-    assert module_1.log.level == 0
-    assert module_1.log.propagate is True
-    assert module_1.log.handlers == []
-    assert module_1.log.disabled is False
-    assert len(module_1.Retry.DEFAULT_ALLOWED_METHODS) == 6
-    assert len(module_1.Retry.RETRY_AFTER_STATUS_CODES) == 3
-    assert len(module_1.Retry.DEFAULT_REMOVE_HEADERS_ON_REDIRECT) == 1
-    assert module_1.Retry.DEFAULT_BACKOFF_MAX == 120
-    assert module_1.Retry.from_int is not None
-    assert module_1.Retry.DEFAULT.total == 3
-    assert module_1.Retry.DEFAULT.connect is None
-    assert module_1.Retry.DEFAULT.read is None
-    assert module_1.Retry.DEFAULT.status is None
-    assert module_1.Retry.DEFAULT.other is None
-    assert module_1.Retry.DEFAULT.redirect is None
-    assert module_1.Retry.DEFAULT.status_forcelist == {*()}
-    assert len(module_1.Retry.DEFAULT.allowed_methods) == 6
-    assert module_1.Retry.DEFAULT.backoff_factor == 0
-    assert module_1.Retry.DEFAULT.raise_on_redirect is True
-    assert module_1.Retry.DEFAULT.raise_on_status is True
-    assert module_1.Retry.DEFAULT.history == ()
-    assert module_1.Retry.DEFAULT.respect_retry_after_header is True
-    assert len(module_1.Retry.DEFAULT.remove_headers_on_redirect) == 1
-    list_2 = []
-    var_0 = logged_function_0.__call__(set_0)
-    assert var_0 is not None
-    var_1 = logged_function_0.__call__(list_2)
-    assert var_1 is not None
-    session_2 = module_0.build_requests_session(tuple_0, bool_0)
-    assert len(session_2.headers) == 4
-    assert session_2.auth is None
-    assert session_2.proxies == {}
-    assert session_2.hooks == {'response': []}
-    assert session_2.params == {}
-    assert session_2.stream is False
-    assert session_2.verify is True
-    assert session_2.cert is None
-    assert session_2.max_redirects == 30
-    assert session_2.trust_env is True
-    assert len(session_2.cookies) == 0
-    assert len(session_2.adapters) == 2
-    logged_function_1 = module_0.LoggedFunction(list_1)
-    assert len(logged_function_1.logger) == 2
-
-def test_case_8():
-    str_0 = '8%PW+'
-    list_0 = []
-    tuple_0 = None
-    session_0 = module_0.build_requests_session()
-    assert len(session_0.hooks) == 1
-    assert len(session_0.adapters) == 2
-    set_0 = None
-    list_1 = [session_0, set_0]
-    logged_function_0 = module_0.LoggedFunction(list_1)
-    assert len(logged_function_0.logger) == 2
-    bool_0 = False
-    retry_0 = module_1.Retry(list_0, tuple_0, session_0, logged_function_0, bool_0, session_0)
-    session_1 = module_0.build_requests_session(str_0, retry_0)
-    assert len(session_0.headers) == 4
-    assert session_0.auth is None
-    assert session_0.proxies == {}
-    assert session_0.params == {}
-    assert session_0.stream is False
-    assert session_0.verify is True
-    assert session_0.cert is None
-    assert session_0.max_redirects == 30
-    assert session_0.trust_env is True
-    assert len(session_0.cookies) == 0
-    assert retry_0.total == []
-    assert retry_0.connect is None
-    assert retry_0.status is False
-    assert retry_0.status_forcelist == {*()}
-    assert len(retry_0.allowed_methods) == 6
-    assert retry_0.backoff_factor == 0
-    assert retry_0.raise_on_redirect is True
-    assert retry_0.raise_on_status is True
-    assert retry_0.history == ()
-    assert retry_0.respect_retry_after_header is True
-    assert len(retry_0.remove_headers_on_redirect) == 1
-    assert len(session_1.headers) == 4
-    assert session_1.auth is None
-    assert session_1.proxies == {}
-    assert len(session_1.hooks) == 1
-    assert session_1.params == {}
-    assert session_1.stream is False
-    assert session_1.verify is True
-    assert session_1.cert is None
-    assert session_1.max_redirects == 30
-    assert session_1.trust_env is True
-    assert len(session_1.cookies) == 0
-    assert len(session_1.adapters) == 2
-    assert module_1.absolute_import.optional == (2, 5, 0, 'alpha', 1)
-    assert module_1.absolute_import.mandatory == (3, 0, 0, 'alpha', 0)
-    assert module_1.absolute_import.compiler_flag == 262144
-    assert module_1.log.filters == []
-    assert module_1.log.name == 'urllib3.util.retry'
-    assert module_1.log.level == 0
-    assert module_1.log.propagate is True
-    assert module_1.log.handlers == []
-    assert module_1.log.disabled is False
-    assert len(module_1.Retry.DEFAULT_ALLOWED_METHODS) == 6
-    assert len(module_1.Retry.RETRY_AFTER_STATUS_CODES) == 3
-    assert len(module_1.Retry.DEFAULT_REMOVE_HEADERS_ON_REDIRECT) == 1
-    assert module_1.Retry.DEFAULT_BACKOFF_MAX == 120
-    assert module_1.Retry.from_int is not None
-    assert module_1.Retry.DEFAULT.total == 3
-    assert module_1.Retry.DEFAULT.connect is None
-    assert module_1.Retry.DEFAULT.read is None
-    assert module_1.Retry.DEFAULT.status is None
-    assert module_1.Retry.DEFAULT.other is None
-    assert module_1.Retry.DEFAULT.redirect is None
-    assert module_1.Retry.DEFAULT.status_forcelist == {*()}
-    assert len(module_1.Retry.DEFAULT.allowed_methods) == 6
-    assert module_1.Retry.DEFAULT.backoff_factor == 0
-    assert module_1.Retry.DEFAULT.raise_on_redirect is True
-    assert module_1.Retry.DEFAULT.raise_on_status is True
-    assert module_1.Retry.DEFAULT.history == ()
-    assert module_1.Retry.DEFAULT.respect_retry_after_header is True
-    assert len(module_1.Retry.DEFAULT.remove_headers_on_redirect) == 1
-    list_2 = []
-    var_0 = logged_function_0.__call__(set_0)
-    assert var_0 is not None
-    var_1 = logged_function_0.__call__(list_2)
-    assert var_1 is not None
-    var_2 = module_0.format_arg(list_0)
-    assert var_2 == '[]'
-    bool_1 = False
-    session_2 = module_0.build_requests_session(bool_1, bool_0)
-    assert len(session_2.headers) == 4
-    assert session_2.auth is None
-    assert session_2.proxies == {}
-    assert session_2.hooks == {'response': []}
-    assert session_2.params == {}
-    assert session_2.stream is False
-    assert session_2.verify is True
-    assert session_2.cert is None
-    assert session_2.max_redirects == 30
-    assert session_2.trust_env is True
-    assert len(session_2.cookies) == 0
-    assert len(session_2.adapters) == 2
-    bytes_0 = b'\x1e'
-    session_3 = module_0.build_requests_session(bytes_0)
-    assert len(session_3.headers) == 4
-    assert session_3.auth is None
-    assert session_3.proxies == {}
-    assert len(session_3.hooks) == 1
-    assert session_3.params == {}
-    assert session_3.stream is False
-    assert session_3.verify is True
-    assert session_3.cert is None
-    assert session_3.max_redirects == 30
-    assert session_3.trust_env is True
-    assert len(session_3.cookies) == 0
-    assert len(session_3.adapters) == 2
-    logged_function_1 = module_0.LoggedFunction(session_3)
-    int_0 = -2770
-    float_0 = -147.0
-    session_4 = module_0.build_requests_session(float_0, int_0)
-    assert len(session_4.headers) == 4
-    assert session_4.auth is None
-    assert session_4.proxies == {}
-    assert len(session_4.hooks) == 1
-    assert session_4.params == {}
-    assert session_4.stream is False
-    assert session_4.verify is True
-    assert session_4.cert is None
-    assert session_4.max_redirects == 30
-    assert session_4.trust_env is True
-    assert len(session_4.cookies) == 0
-    assert len(session_4.adapters) == 2
-    str_1 = 'L0yS/In/\t\nhV5:8'
-    logged_function_2 = module_0.LoggedFunction(str_1)
-    assert logged_function_2.logger == 'L0yS/In/\t\nhV5:8'
+    assert var_0 == "'hello'"
+    str_1 = '  hello  '
+    var_1 = module_0.format_arg(str_1)
+    assert var_1 == "'hello'"
+    str_2 = ''
+    var_2 = module_0.format_arg(str_2)
+    assert var_2 == "''"
+    int_0 = 42
+    var_3 = module_0.format_arg(int_0)
+    assert var_3 == '42'
+    int_1 = -7
+    var_4 = module_0.format_arg(int_1)
+    assert var_4 == '-7'
+    float_0 = 3.14
+    var_5 = module_0.format_arg(float_0)
+    assert var_5 == '3.14'
+    bool_0 = True
+    var_6 = module_0.format_arg(bool_0)
+    assert var_6 == 'True'
+    var_7 = None
+    var_8 = module_0.format_arg(var_7)
+    assert var_8 == 'None'
+    int_2 = 2
+    int_3 = 3
+    var_9 = [bool_0, int_2, int_3]
+    var_10 = module_0.format_arg(var_9)
+    assert var_10 == '[1, 2, 3]'
+    assert var_10 == '[True, 2, 3]'
+    str_3 = 'a'
+    bool_1 = {str_3: bool_0}
+    var_11 = module_0.format_arg(bool_1)
+    assert var_11 == "{'a': 1}"
+    assert var_11 == "{'a': True}"
+    str_4 = "it's"
+    var_12 = module_0.format_arg(str_4)
+    assert var_12 == "'it's'"
+    str_5 = '  a b  '
+    var_13 = module_0.format_arg(str_5)
+    assert var_13 == "'a b'"

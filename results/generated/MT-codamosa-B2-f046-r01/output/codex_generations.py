@@ -1,22 +1,15 @@
 
 
-# Generated at 2026-10-25 08:52:17.221021
-# Unit test for function fib4
-
-# Generated at 2026-10-25 08:52:35.427142
-# Unit test for function fib4
-def test_fib4():assert module_0.fib4(0) == 0
-
-# Generated at 2026-10-25 08:52:36.864673
+# Generated at 2026-11-02 00:41:04.069215
 # Unit test for function fib4
 def test_fib4():
-    # base cases
+    # Test base cases
     assert module_0.fib4(0) == 0
     assert module_0.fib4(1) == 0
     assert module_0.fib4(2) == 2
     assert module_0.fib4(3) == 0
 
-    # recurrence: module_0.fib4(n) = module_0.fib4(n-1) + module_0.fib4(n-2) + module_0.fib4(n-3) + module_0.fib4(n-4)
+    # Test computed values
     assert module_0.fib4(4) == 2
     assert module_0.fib4(5) == 4
     assert module_0.fib4(6) == 8
@@ -24,31 +17,117 @@ def test_fib4():
     assert module_0.fib4(8) == 28
     assert module_0.fib4(9) == 54
     assert module_0.fib4(10) == 104
+
+    # Test a larger value
+    assert module_0.fib4(15) == 1080
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_fib4()
+
+# Generated at 2026-11-02 00:42:14.781346
+# Unit test for function fib4
+def test_fib4():
+    # Base cases
+    assert module_0.fib4(0) == 0
+    assert module_0.fib4(1) == 0
+    assert module_0.fib4(2) == 2
+    assert module_0.fib4(3) == 0
+
+    # Computed values from the recurrence module_0.fib4(n) = module_0.fib4(n-1)+module_0.fib4(n-2)+module_0.fib4(n-3)+module_0.fib4(n-4)
+    assert module_0.fib4(4) == 2
+    assert module_0.fib4(5) == 4
+    assert module_0.fib4(6) == 8
+    assert module_0.fib4(7) == 14
+    assert module_0.fib4(8) == 28
+    assert module_0.fib4(9) == 54
+    assert module_0.fib4(10) == 104
+    assert module_0.fib4(11) == 200
     assert module_0.fib4(12) == 386
+    assert module_0.fib4(15) == 2764
 
-# Generated at 2026-10-25 08:52:39.511551
+# Generated at 2026-11-02 00:43:45.964960
 # Unit test for function fib4
+def test_fib4():
+    # Base cases (n < 4)
+    assert module_0.fib4(0) == 0
+    assert module_0.fib4(1) == 0
+    assert module_0.fib4(2) == 2
+    assert module_0.fib4(3) == 0
 
-# Generated at 2026-10-25 08:52:41.932914
-# Unit test for function fib4
+    # Iterative cases
+    assert module_0.fib4(4) == 2
+    assert module_0.fib4(5) == 4
+    assert module_0.fib4(6) == 8
+    assert module_0.fib4(7) == 14
+    assert module_0.fib4(8) == 28
+    assert module_0.fib4(9) == 54
+    assert module_0.fib4(10) == 104
 
-# Generated at 2026-10-25 08:52:44.348074
-# Unit test for function fib4
+    # Larger value to verify recurrence and sliding window logic
+    assert module_0.fib4(15) == 1436
 
-# Generated at 2026-10-25 08:52:46.886321
-# Unit test for function fib4
+    print("All test_fib4 tests passed!")
 
-# Generated at 2026-10-25 08:52:49.446572
-# Unit test for function fib4
 
-# Generated at 2026-10-25 08:52:51.864186
-# Unit test for function fib4
+if __name__ == "__main__":
+    test_fib4()
 
-# Generated at 2026-10-25 08:52:54.282242
+# Generated at 2026-11-02 00:45:14.744649
 # Unit test for function fib4
+def test_fib4():
+    # Base cases
+    assert module_0.fib4(0) == 0
+    assert module_0.fib4(1) == 0
+    assert module_0.fib4(2) == 2
+    assert module_0.fib4(3) == 0
 
-# Generated at 2026-10-25 08:52:56.700737
-# Unit test for function fib4
+    # First few computed values
+    assert module_0.fib4(4) == 2
+    assert module_0.fib4(5) == 4
+    assert module_0.fib4(6) == 8
+    assert module_0.fib4(7) == 14
+    assert module_0.fib4(8) == 28
+    assert module_0.fib4(9) == 54
+    assert module_0.fib4(10) == 104
 
-# Generated at 2026-10-25 08:52:59.117350
+    # Larger value
+    assert module_0.fib4(20) == 73552
+
+    # Verify recurrence: each term is sum of previous four terms
+    for n in range(4, 15):
+        assert module_0.fib4(n) == module_0.fib4(n - 1) + module_0.fib4(n - 2) + module_0.fib4(n - 3) + module_0.fib4(n - 4)
+
+    print("All tests passed!")
+
+# Generated at 2026-11-02 00:46:14.753617
 # Unit test for function fib4
+def test_fib4():
+    # Base cases (n < 4)
+    assert module_0.fib4(0) == 0
+    assert module_0.fib4(1) == 0
+    assert module_0.fib4(2) == 2
+    assert module_0.fib4(3) == 0
+
+    # Iterative cases (n >= 4)
+    assert module_0.fib4(4) == 2
+    assert module_0.fib4(5) == 4
+    assert module_0.fib4(6) == 8
+    assert module_0.fib4(7) == 14
+    assert module_0.fib4(8) == 28
+    assert module_0.fib4(9) == 54
+    assert module_0.fib4(10) == 104
+    assert module_0.fib4(11) == 200
+    assert module_0.fib4(12) == 386
+    assert module_0.fib4(15) == 2764
+
+    # Larger input to verify iterative correctness
+    assert module_0.fib4(20) == 73552
+
+    print("All fib4 tests passed!")
+
+
+if __name__ == "__main__":
+    test_fib4()

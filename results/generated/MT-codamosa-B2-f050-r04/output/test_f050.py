@@ -2,31 +2,26 @@
 import f050 as module_0
 
 def test_case_0():
-    str_0 = 'GP(R\x0b`*1\x0bHP|4TQ!'
+    str_0 = 'a'
     var_0 = module_0.encode_shift(str_0)
-    assert var_0 == 'foaqxecjxgogmspt'
-    var_1 = module_0.encode_shift(str_0)
-    assert var_1 == 'foaqxecjxgogmspt'
-
-def test_case_1():
-    str_0 = 'c K'
-    var_0 = module_0.decode_shift(str_0)
-    assert var_0 == 'xiz'
-    str_1 = '15}dS1etgR.|'
+    assert var_0 == 'f'
+    str_1 = 'b'
     var_1 = module_0.encode_shift(str_1)
-    assert var_1 == 'jnhirjjylqgg'
-    str_2 = '|qZp\x0bp)*-?r_'
+    assert var_1 == 'g'
+    str_2 = 'z'
     var_2 = module_0.encode_shift(str_2)
-    assert var_2 == 'gvyuxubcfxwd'
-    var_3 = module_0.decode_shift(str_1)
-    assert var_3 == 'zdxyhzzobgww'
-    var_4 = module_0.encode_shift(str_1)
-    assert var_4 == 'jnhirjjylqgg'
-    var_5 = module_0.decode_shift(str_0)
-    assert var_5 == 'xiz'
-    str_3 = '\\%c\x0ba}m'
-    str_4 = '~+7U(`>\\)h=XIMoY'
-    var_6 = module_0.encode_shift(str_4)
-    assert var_6 == 'idptaewabmvwhltx'
-    var_7 = module_0.encode_shift(str_3)
-    assert var_7 == 'axhxfhr'
+    assert var_2 == 'e'
+    str_3 = 'xyz'
+    var_3 = module_0.encode_shift(str_3)
+    assert var_3 == 'cde'
+    str_4 = 'hello'
+    var_4 = module_0.encode_shift(str_4)
+    assert var_4 == 'mjqqt'
+    str_5 = ''
+    var_5 = module_0.encode_shift(str_5)
+    assert var_5 == ''
+    str_6 = 'abcdefghijklmnopqrstuvwxyz'
+    var_6 = module_0.encode_shift(str_6)
+    assert var_6 == 'fghijklmnopqrstuvwxyzabcde'
+    var_7 = module_0.decode_shift(str_0)
+    assert var_7 == 'v'

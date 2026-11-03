@@ -1,231 +1,232 @@
 
 
-# Generated at 2026-10-25 04:06:27.410823
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:06:29.828390
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:06:32.247670
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:06:34.664823
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:06:37.079841
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:06:39.506631
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:06:41.921284
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:06:44.335487
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:06:46.751802
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:06:49.167589
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:06:51.580900
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:06:53.996127
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:06:56.410644
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:06:58.824883
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:01.251260
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:03.678714
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:06.096628
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:08.511198
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:10.924902
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:13.340254
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:15.759661
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:18.173155
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:20.588092
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:23.003606
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:25.417735
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:27.833630
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:30.248826
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:32.664215
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:35.077982
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:37.493590
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:39.906821
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:42.324237
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:44.740704
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:47.168677
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:49.587521
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:52.002082
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:54.416811
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:56.864120
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:07:59.308175
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:08:01.746067
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:08:04.164215
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:08:06.578962
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:08:08.994053
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:08:11.408609
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:08:13.824906
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:08:16.238893
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:08:18.653759
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:08:21.071609
-# Unit test for function strange_sort_list
-
-# Generated at 2026-10-25 04:08:43.661097
+# Generated at 2026-11-03 06:19:10.464791
 # Unit test for function strange_sort_list
 def test_strange_sort_list():
-    assert module_0.strange_sort_list([]) == []
-    assert module_0.strange_sort_list([1]) == [1]
-    assert module_0.strange_sort_list([1, 2, 3, 4, 5]) == [1, 5, 2, 4, 3]
-    assert module_0.strange_sort_list([5, 1, 3, 2, 4]) == [1, 5, 2, 4, 3]
-    assert module_0.strange_sort_list([3, 1, 2, 3, 1]) == [1, 3, 1, 3, 2]
-    assert module_0.strange_sort_list([-1, -3, 2, 0]) == [-3, 2, -1, 0]
-
-# Generated at 2026-10-25 04:08:58.091867
-# Unit test for function strange_sort_list
-def test_strange_sort_list():
-    assert module_0.strange_sort_list([3, 1, 5, 2, 4]) == [1, 5, 2, 4, 3]
-    assert module_0.strange_sort_list([7, 2, 9, 1]) == [1, 9, 2, 7]
-    assert module_0.strange_sort_list([4, 4, 2, 2]) == [2, 4, 2, 4]
-    assert module_0.strange_sort_list([10]) == [10]
-    assert module_0.strange_sort_list([]) == []
-
-# Generated at 2026-10-25 04:09:13.905529
-# Unit test for function strange_sort_list
-def test_strange_sort_list():
-    values = [1, 2, 3, 4, 5]
-    assert module_0.strange_sort_list(values) == [1, 5, 2, 4, 3]
-    assert values == []  # The function consumes the input list
-
-    assert module_0.strange_sort_list([5, 1, 4, 2, 3]) == [1, 5, 2, 4, 3]
+    # Basic alternating min/max behavior
     assert module_0.strange_sort_list([1, 2, 3, 4]) == [1, 4, 2, 3]
-    assert module_0.strange_sort_list([3, 3, 1, 2]) == [1, 3, 2, 3]
+    assert module_0.strange_sort_list([5, 6, 7, 8, 9]) == [5, 9, 6, 8, 7]
+
+    # Empty list
     assert module_0.strange_sort_list([]) == []
-    assert module_0.strange_sort_list([7]) == [7]
 
-# Generated at 2026-10-25 04:09:16.322607
-# Unit test for function strange_sort_list
+    # Single element
+    assert module_0.strange_sort_list([42]) == [42]
 
-# Generated at 2026-10-25 04:09:18.736395
-# Unit test for function strange_sort_list
+    # Two elements
+    assert module_0.strange_sort_list([2, 1]) == [1, 2]
+    assert module_0.strange_sort_list([10, 3]) == [3, 10]
 
-# Generated at 2026-10-25 04:09:21.151966
-# Unit test for function strange_sort_list
+    # All identical elements
+    assert module_0.strange_sort_list([5, 5, 5, 5]) == [5, 5, 5, 5]
 
-# Generated at 2026-10-25 04:09:23.569088
-# Unit test for function strange_sort_list
+    # Unsorted input with duplicates
+    assert module_0.strange_sort_list([3, 1, 3, 2]) == [1, 3, 2, 3]
 
-# Generated at 2026-10-25 04:09:28.607452
-# Unit test for function strange_sort_list
-def test_strange_sort_list():lst = [1, 2, 3, 4, 5]
+    # Negative numbers
+    assert module_0.strange_sort_list([-1, -5, 0, 3]) == [-5, 3, -1, 0]
 
-# Generated at 2026-10-25 04:09:43.748743
+    # Already sorted input
+    assert module_0.strange_sort_list([1, 2, 3]) == [1, 3, 2]
+
+    # Reverse sorted input
+    assert module_0.strange_sort_list([9, 7, 5, 3, 1]) == [1, 9, 3, 7, 5]
+
+    # Result contains the same elements as input
+    original = [4, 1, 7, 2, 9]
+    result = module_0.strange_sort_list(original[:])
+    assert sorted(result) == sorted(original)
+    assert len(result) == len(original)
+
+    # Input list should not be mutated by the function's external behavior
+    # (function modifies its own copy of the reference, verify typical usage)
+    data = [3, 1, 2]
+    module_0.strange_sort_list(data)
+    # Note: the function mutates the passed list (removes all elements)
+    assert data == []
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_strange_sort_list()
+
+# Generated at 2026-11-03 06:20:16.410950
 # Unit test for function strange_sort_list
 def test_strange_sort_list():
-    values = [5, 1, 4, 2, 3]
+    # Empty list
+    assert module_0.strange_sort_list([]) == []
 
-    result = module_0.strange_sort_list(values)
+    # Single element
+    assert module_0.strange_sort_list([1]) == [1]
 
-    assert result == [1, 5, 2, 4, 3]
-    assert values == []  # The function consumes the input list
+    # Two elements
+    assert module_0.strange_sort_list([1, 2]) == [1, 2]
+    assert module_0.strange_sort_list([5, 5]) == [5, 5]
 
-# Generated at 2026-10-25 04:09:59.122711
+    # Simple sorted list
+    assert module_0.strange_sort_list([1, 2, 3, 4]) == [1, 4, 2, 3]
+
+    # Reverse sorted list
+    assert module_0.strange_sort_list([5, 4, 3, 2, 1]) == [1, 5, 2, 4, 3]
+
+    # Unsorted list
+    assert module_0.strange_sort_list([3, 1, 4, 1, 5, 9, 2, 6]) == [1, 9, 1, 6, 2, 5, 3, 4]
+
+    # List with duplicates
+    assert module_0.strange_sort_list([2, 2, 2, 2]) == [2, 2, 2, 2]
+
+    # Negative numbers
+    assert module_0.strange_sort_list([-5, -1, -3, -2]) == [-5, -1, -3, -2]
+
+    # Mixed positive and negative
+    assert module_0.strange_sort_list([-1, 3, 0, -4, 2]) == [-4, 3, -1, 2, 0]
+
+    # Three elements
+    assert module_0.strange_sort_list([10, 20, 30]) == [10, 30, 20]
+
+# Generated at 2026-11-03 06:21:07.918981
 # Unit test for function strange_sort_list
 def test_strange_sort_list():
-    values = [5, 1, 4, 2, 3]
+    # Basic alternating min/max sort
+    assert module_0.strange_sort_list([1, 2, 3, 4]) == [1, 4, 2, 3]
+    assert module_0.strange_sort_list([5, 6, 7, 8, 9]) == [5, 9, 6, 8, 7]
 
-    result = module_0.strange_sort_list(values)
+    # Unsorted input
+    assert module_0.strange_sort_list([3, 1, 4, 2, 5]) == [1, 5, 2, 4, 3]
 
-    assert result == [1, 5, 2, 4, 3]
-    assert values == []  # The function consumes the input list
+    # Empty list
+    assert module_0.strange_sort_list([]) == []
 
-# Generated at 2026-10-25 04:10:01.686368
+    # Single element
+    assert module_0.strange_sort_list([42]) == [42]
+
+    # Two elements
+    assert module_0.strange_sort_list([10, 1]) == [1, 10]
+
+    # All duplicates
+    assert module_0.strange_sort_list([5, 5, 5, 5]) == [5, 5, 5, 5]
+
+    # Negative numbers
+    assert module_0.strange_sort_list([-1, 0, 1]) == [-1, 1, 0]
+    assert module_0.strange_sort_list([-5, -10, -3]) == [-10, -3, -5]
+
+    # Mixed positives and negatives
+    assert module_0.strange_sort_list([-2, 3, -1, 2]) == [-2, 3, -1, 2]
+
+    # Even-length list
+    assert module_0.strange_sort_list([7, 1, 9, 3]) == [1, 9, 3, 7]
+
+    # Odd-length list
+    assert module_0.strange_sort_list([4, 2, 8]) == [2, 8, 4]
+
+    # Input list should not be mutated by the caller's reference check
+    original = [3, 1, 2]
+    input_copy = list(original)
+    result = module_0.strange_sort_list(original)
+    assert result == [1, 3, 2]
+    assert original == input_copy  # original remains unchanged
+
+    # Larger list
+    assert module_0.strange_sort_list([9, 1, 8, 2, 7, 3, 6, 4, 5]) == [1, 9, 2, 8, 3, 7, 4, 6, 5]
+
+    # Duplicates mixed with distinct values
+    assert module_0.strange_sort_list([2, 2, 1, 3]) == [1, 3, 2, 2]
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_strange_sort_list()
+
+# Generated at 2026-11-03 06:22:03.793333
 # Unit test for function strange_sort_list
+def test_strange_sort_list():
+    # Alternating min/max from a typical list
+    assert module_0.strange_sort_list([1, 2, 3, 4]) == [1, 4, 2, 3]
 
-# Generated at 2026-10-25 04:10:04.102238
-# Unit test for function strange_sort_list
+    # Odd-length list
+    assert module_0.strange_sort_list([1, 2, 3, 4, 5]) == [1, 5, 2, 4, 3]
 
-# Generated at 2026-10-25 04:10:06.516515
-# Unit test for function strange_sort_list
+    # All identical elements
+    assert module_0.strange_sort_list([5, 5, 5, 5]) == [5, 5, 5, 5]
 
-# Generated at 2026-10-25 04:10:09.104791
-# Unit test for function strange_sort_list
+    # Empty list
+    assert module_0.strange_sort_list([]) == []
 
-# Generated at 2026-10-25 04:10:11.521854
-# Unit test for function strange_sort_list
+    # Single element
+    assert module_0.strange_sort_list([1]) == [1]
 
-# Generated at 2026-10-25 04:10:13.936141
+    # Two elements
+    assert module_0.strange_sort_list([3, 1]) == [1, 3]
+
+    # Negative numbers and zero
+    assert module_0.strange_sort_list([-2, 5, 0, -1]) == [-2, 5, -1, 0]
+
+    # Unsorted input with duplicates
+    assert module_0.strange_sort_list([7, 1, 7, 3, 3]) == [1, 7, 3, 7, 3]
+
+    # Already sorted descending input
+    assert module_0.strange_sort_list([9, 7, 5, 3]) == [3, 9, 5, 7]
+
+    # Float values
+    assert module_0.strange_sort_list([1.5, 0.5, 2.5]) == [0.5, 2.5, 1.5]
+
+    # Verify the function does not modify behavior across repeated calls
+    original = [4, 2, 6, 1]
+    assert module_0.strange_sort_list(original) == [1, 6, 2, 4]
+
+    print("All tests passed!")
+
+# Generated at 2026-11-03 06:22:54.513614
 # Unit test for function strange_sort_list
+def test_strange_sort_list():import unittest
+
+
+class TestStrangeSortList(unittest.TestCase):
+
+    def test_empty_list(self):
+        self.assertEqual(module_0.strange_sort_list([]), [])
+
+    def test_single_element(self):
+        self.assertEqual(module_0.strange_sort_list([1]), [1])
+
+    def test_two_elements(self):
+        self.assertEqual(module_0.strange_sort_list([1, 2]), [1, 2])
+        self.assertEqual(module_0.strange_sort_list([2, 1]), [1, 2])
+
+    def test_sorted_list(self):
+        self.assertEqual(module_0.strange_sort_list([1, 2, 3, 4]), [1, 4, 2, 3])
+
+    def test_reverse_sorted_list(self):
+        self.assertEqual(module_0.strange_sort_list([5, 4, 3, 2, 1]), [1, 5, 2, 4, 3])
+
+    def test_unsorted_list(self):
+        self.assertEqual(module_0.strange_sort_list([3, 1, 4, 2, 5]), [1, 5, 2, 4, 3])
+
+    def test_duplicates(self):
+        self.assertEqual(module_0.strange_sort_list([2, 2, 2, 2]), [2, 2, 2, 2])
+        self.assertEqual(module_0.strange_sort_list([1, 1, 2, 2]), [1, 2, 1, 2])
+
+    def test_negative_numbers(self):
+        self.assertEqual(module_0.strange_sort_list([-3, -1, -2]), [-3, -1, -2])
+
+    def test_mixed_positive_negative(self):
+        self.assertEqual(module_0.strange_sort_list([-5, 10, 0, 3]), [-5, 10, 0, 3])
+
+    def test_all_same_values(self):
+        self.assertEqual(module_0.strange_sort_list([7, 7, 7]), [7, 7, 7])
+
+    def test_result_length_matches_input(self):
+        lst = [9, 3, 5, 1, 8, 2]
+        result = module_0.strange_sort_list(lst[:])
+        self.assertEqual(len(result), len(lst))
+        self.assertEqual(sorted(result), sorted(lst))
+
+    def test_alternating_pattern(self):
+        result = module_0.strange_sort_list([1, 2, 3, 4, 5, 6])
+        self.assertEqual(result, [1, 6, 2, 5, 3, 4])
+
+
+if __name__ == "__main__":
+    unittest.main()

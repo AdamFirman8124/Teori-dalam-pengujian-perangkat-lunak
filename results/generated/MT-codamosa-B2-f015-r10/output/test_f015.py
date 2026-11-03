@@ -11,3 +11,12 @@ def test_case_0():
     int_2 = 5
     str_2 = module_0.string_sequence(int_2)
     assert str_2 == '0 1 2 3 4 5'
+    int_3 = 10
+    str_3 = module_0.string_sequence(int_3)
+    assert str_3 == '0 1 2 3 4 5 6 7 8 9 10'
+    int_4 = 3
+    str_4 = module_0.string_sequence(int_4)
+    assert str_4 == '0 1 2 3'
+    int_5 = 20
+    str_5 = module_0.string_sequence(int_5)
+    assert str_5 == '0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20'

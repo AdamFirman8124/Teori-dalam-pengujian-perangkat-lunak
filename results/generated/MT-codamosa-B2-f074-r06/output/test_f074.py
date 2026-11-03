@@ -2,11 +2,62 @@
 import f074 as module_0
 
 def test_case_0():
-    str_0 = '\tt.a'
-    str_1 = 'S{CaMY\nK C'
-    var_0 = module_0.total_match(str_0, str_1)
-    assert var_0 == '\tt.a'
-    set_0 = set()
-    tuple_0 = ()
-    var_1 = module_0.total_match(set_0, tuple_0)
-    assert var_1 == {*()}
+    str_0 = 'hi'
+    str_1 = 'admin'
+    str_2 = [str_0, str_1]
+    str_3 = 'hI'
+    str_4 = 'Hi'
+    str_5 = [str_3, str_4]
+    var_0 = module_0.total_match(str_2, str_5)
+    assert var_0 == ['hI', 'Hi']
+    str_6 = [str_0, str_1]
+    str_7 = 'project'
+    str_8 = [str_0, str_0, str_1, str_7]
+    var_1 = module_0.total_match(str_6, str_8)
+    assert var_1 == ['hi', 'admin']
+    str_9 = [str_0]
+    str_10 = 'hello'
+    str_11 = [str_0, str_10]
+    var_2 = module_0.total_match(str_9, str_11)
+    assert var_2 == ['hi']
+    str_12 = [str_0]
+    str_13 = [str_0]
+    var_3 = module_0.total_match(str_12, str_13)
+    assert var_3 == ['hi']
+    var_4 = []
+    var_5 = []
+    var_6 = module_0.total_match(var_4, var_5)
+    assert var_6 == []
+    var_7 = []
+    str_14 = 'a'
+    str_15 = 'b'
+    str_16 = [str_14, str_15]
+    var_8 = module_0.total_match(var_7, str_16)
+    assert var_8 == []
+    str_17 = [str_14, str_15]
+    var_9 = []
+    var_10 = module_0.total_match(str_17, var_9)
+    assert var_10 == []
+    str_18 = [str_14]
+    str_19 = 'c'
+    str_20 = [str_15, str_19]
+    var_11 = module_0.total_match(str_18, str_20)
+    assert var_11 == ['a']
+    str_21 = 'abc'
+    str_22 = [str_21]
+    str_23 = 'x'
+    str_24 = 'y'
+    str_25 = [str_23, str_24]
+    var_12 = module_0.total_match(str_22, str_25)
+    assert var_12 == ['x', 'y']
+    str_26 = 'AAA'
+    str_27 = [str_26]
+    str_28 = 'bb'
+    str_29 = [str_28]
+    var_13 = module_0.total_match(str_27, str_29)
+    assert var_13 == ['bb']
+    str_30 = 'All tests passed!'
+    var_14 = print(str_30)
+
+def test_case_1():
+    pass

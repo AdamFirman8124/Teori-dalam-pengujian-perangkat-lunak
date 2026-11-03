@@ -2,41 +2,54 @@
 import f153 as module_0
 
 def test_case_0():
-    str_0 = 'Slices'
-    str_1 = 'SErviNGSliCes'
-    str_2 = 'Cheese'
-    str_3 = 'StuFfed'
+    str_0 = 'my_class'
+    str_1 = 'AA'
+    str_2 = 'Be'
+    str_3 = 'CC'
     str_4 = [str_1, str_2, str_3]
     var_0 = module_0.Strongest_Extension(str_0, str_4)
-    assert var_0 == 'Slices.SErviNGSliCes'
-    str_5 = 'my_class'
-    str_6 = 'AA'
-    str_7 = 'Be'
-    str_8 = 'CC'
-    str_9 = [str_6, str_7, str_8]
-    var_1 = module_0.Strongest_Extension(str_5, str_9)
-    assert var_1 == 'my_class.AA'
-    str_10 = 'A'
-    str_11 = 'b'
-    str_12 = [str_11]
-    var_2 = module_0.Strongest_Extension(str_10, str_12)
-    assert var_2 == 'A.b'
-    str_13 = 'Test'
-    str_14 = 'abc'
-    str_15 = 'DEF'
-    str_16 = [str_14, str_15]
-    var_3 = module_0.Strongest_Extension(str_13, str_16)
-    assert var_3 == 'Test.DEF'
-    str_17 = 'MyClass'
-    str_18 = 'A1B2c'
-    str_19 = 'a-b_c'
-    str_20 = [str_18, str_19]
-    var_4 = module_0.Strongest_Extension(str_17, str_20)
-    assert var_4 == 'MyClass.A1B2c'
-    str_21 = 'C'
-    str_22 = 'aa'
-    str_23 = 'BB'
-    str_24 = 'cC'
-    str_25 = [str_22, str_23, str_24]
-    var_5 = module_0.Strongest_Extension(str_21, str_25)
-    assert var_5 == 'C.BB'
+    assert var_0 == 'my_class.AA'
+    str_5 = 'Slices'
+    str_6 = 'SErviCSsHmi'
+    str_7 = 'SOUrCE'
+    str_8 = 'TablE'
+    str_9 = 'lasT'
+    str_10 = 'Get'
+    str_11 = [str_6, str_7, str_8, str_9, str_10]
+    var_1 = module_0.Strongest_Extension(str_5, str_11)
+    assert var_1 == 'Slices.SOUrCE'
+    str_12 = 'class1'
+    str_13 = 'abc'
+    str_14 = [str_13]
+    var_2 = module_0.Strongest_Extension(str_12, str_14)
+    assert var_2 == 'class1.abc'
+    str_15 = 'Tie'
+    str_16 = 'AB'
+    str_17 = 'CD'
+    str_18 = [str_16, str_17]
+    var_3 = module_0.Strongest_Extension(str_15, str_18)
+    assert var_3 == 'Tie.AB'
+    str_19 = 'Num'
+    str_20 = 'A1b!'
+    str_21 = [str_20, str_16]
+    var_4 = module_0.Strongest_Extension(str_19, str_21)
+    assert var_4 == 'Num.AB'
+    str_22 = 'Low'
+    str_23 = 'ab'
+    str_24 = [str_23, str_13]
+    var_5 = module_0.Strongest_Extension(str_22, str_24)
+    assert var_5 == 'Low.ab'
+    str_25 = 'My_Class-2'
+    str_26 = 'X'
+    str_27 = [str_26]
+    var_6 = module_0.Strongest_Extension(str_25, str_27)
+    assert var_6 == 'My_Class-2.X'
+    str_28 = 'Neg'
+    str_29 = 'abCd'
+    str_30 = 'aBc'
+    str_31 = [str_29, str_30]
+    var_7 = module_0.Strongest_Extension(str_28, str_31)
+    assert var_7 == 'Neg.aBc'
+
+def test_case_1():
+    pass

@@ -8,27 +8,37 @@ def test_case_0():
     int_3 = [int_0, int_1, int_2]
     var_0 = module_0.incr_list(int_3)
     assert var_0 == [2, 3, 4]
-    int_4 = 5
-    int_5 = 9
-    int_6 = 0
-    int_7 = 123
-    int_8 = [int_4, int_2, int_4, int_1, int_2, int_2, int_5, int_6, int_7]
-    var_1 = module_0.incr_list(int_8)
-    assert var_1 == [6, 4, 6, 3, 4, 4, 10, 1, 124]
-    var_2 = []
-    var_3 = module_0.incr_list(var_2)
-    assert var_3 == []
-    int_9 = [int_6]
+    var_1 = []
+    var_2 = module_0.incr_list(var_1)
+    assert var_2 == []
+    int_4 = -1
+    int_5 = -2
+    int_6 = -3
+    int_7 = [int_4, int_5, int_6]
+    var_3 = module_0.incr_list(int_7)
+    assert var_3 == [0, -1, -2]
+    int_8 = 0
+    int_9 = [int_8]
     var_4 = module_0.incr_list(int_9)
     assert var_4 == [1]
-    int_10 = -1
-    int_11 = -5
-    int_12 = -100
+    int_10 = 5
+    int_11 = 10
+    int_12 = 15
     int_13 = [int_10, int_11, int_12]
     var_5 = module_0.incr_list(int_13)
-    assert var_5 == [0, -4, -99]
-    int_14 = [int_0, int_1, int_2]
-    var_6 = module_0.incr_list(int_14)
-    assert var_6 == [2, 3, 4]
-    str_0 = 'All tests passed!'
-    var_7 = print(str_0)
+    assert var_5 == [6, 11, 16]
+    int_14 = 100
+    int_15 = 200
+    int_16 = 300
+    int_17 = [int_14, int_15, int_16]
+    var_6 = module_0.incr_list(int_17)
+    assert var_6 == [101, 201, 301]
+    int_18 = -5
+    int_19 = [int_18, int_8, int_10]
+    var_7 = module_0.incr_list(int_19)
+    assert var_7 == [-4, 1, 6]
+    float_0 = 1.5
+    float_1 = 2.5
+    float_2 = [float_0, float_1]
+    var_8 = module_0.incr_list(float_2)
+    assert len(var_8) == 2

@@ -5,6 +5,36 @@ def test_case_0():
     float_0 = 1.0
     float_1 = 2.0
     float_2 = 3.0
-    float_3 = [float_0, float_1, float_2]
-    list_0 = module_0.rescale_to_unit(float_3)
-    assert len(list_0) == 3
+    float_3 = 4.0
+    float_4 = 5.0
+    float_5 = [float_0, float_1, float_2, float_3, float_4]
+    list_0 = module_0.rescale_to_unit(float_5)
+    assert len(list_0) == 5
+    float_6 = 6.0
+    float_7 = [float_1, float_3, float_6]
+    list_1 = module_0.rescale_to_unit(float_7)
+    assert len(list_1) == 3
+    float_8 = 100.0
+    float_9 = 49.9
+    float_10 = [float_8, float_9]
+    list_2 = module_0.rescale_to_unit(float_10)
+    assert len(list_2) == 2
+    float_11 = [float_1, float_9]
+    list_3 = module_0.rescale_to_unit(float_11)
+    assert len(list_3) == 2
+    float_12 = -5.0
+    float_13 = 0.0
+    float_14 = [float_12, float_13, float_4]
+    list_4 = module_0.rescale_to_unit(float_14)
+    assert len(list_4) == 3
+    float_15 = [float_0, float_0, float_4]
+    list_5 = module_0.rescale_to_unit(float_15)
+    assert len(list_5) == 3
+    float_16 = 7.0
+    float_17 = 1.5
+    float_18 = 9.2
+    float_19 = [float_2, float_16, float_17, float_18]
+    list_6 = module_0.rescale_to_unit(float_19)
+    assert len(list_6) == 4
+    var_0 = len(list_6)
+    assert var_0 == 4

@@ -5,30 +5,18 @@
 from f161 import solve
 
 
-def test_solve_with_letters_swaps_case():
-    assert solve("aBc") == "AbC"
-    assert solve("Hello") == "hELLO"
-    assert solve("ABC") == "abc"
-    assert solve("xyz") == "XYZ"
+def test_solve_no_alpha_returns_reversed_string():
+    # Covers lines 3-15, specifically the flg == 0 branch (lines 14-15):
+    # no alphabetic characters means the result string is returned reversed.
+    assert solve("12345") == "54321"
+    assert solve("!@# $%") == "%$ #@!"
+    assert solve("") == ""  # empty string also hits the flg == 0 branch
 
 
-def test_solve_without_letters_reverses_string():
-    assert solve("123") == "321"
-    assert solve("12 34") == "43 21"
-    assert solve("!@#") == "#@!"
-
-
-def test_solve_mixed_alpha_and_non_alpha():
-    assert solve("a1B!") == "A1b!"
-    assert solve("Hello, World! 123") == "hELLO, wORLD! 123"
-
-
-def test_solve_empty_string():
-    assert solve("") == ""
-
-
-def test_solve_single_character():
-    assert solve("a") == "A"
-    assert solve("Z") == "z"
-    assert solve("7") == "7"
-    assert solve(" ") == " "
+def test_solve_with_alpha_returns_swapcased_string():
+    # Covers lines 3-13 and line 16 (flg == 1): alphabetic characters are
+    # swapcased, non-alphabetic characters are left unchanged, and the
+    # result is NOT reversed.
+    assert solve("abCD") == "ABcd"
+    assert solve("a1b2!") == "A1B2!"
+    assert solve("Hello, World!") == "hELLO, wORLD!"

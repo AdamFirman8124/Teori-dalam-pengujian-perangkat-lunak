@@ -2,6 +2,9 @@
 import f053 as module_0
 
 def test_case_0():
+    pass
+
+def test_case_1():
     int_0 = 2
     int_1 = 3
     var_0 = module_0.add(int_0, int_1)
@@ -13,8 +16,12 @@ def test_case_0():
     int_4 = 0
     var_2 = module_0.add(int_4, int_4)
     assert var_2 == 0
-    int_5 = -2
-    int_6 = -3
+    int_5 = -5
+    int_6 = -7
     var_3 = module_0.add(int_5, int_6)
-    assert var_3 == 5
-    assert var_3 == -5
+    assert var_3 == 12
+    assert var_3 == -12
+    int_7 = 100
+    int_8 = 200
+    var_4 = module_0.add(int_7, int_8)
+    assert var_4 == 300

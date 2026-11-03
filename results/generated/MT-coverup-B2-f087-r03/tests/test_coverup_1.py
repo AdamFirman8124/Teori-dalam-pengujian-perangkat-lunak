@@ -5,20 +5,28 @@
 from f087 import get_row
 
 
-def test_get_row_finds_and_sorts_matching_coordinates():
-    matrix = [
-        [7, 1, 7, 2],
-        [],
-        [7, 7, 3],
-        [4, 7],
-    ]
-    original = [row.copy() for row in matrix]
-
-    assert get_row(matrix, 7) == [(0, 2), (0, 0), (2, 1), (2, 0), (3, 1)]
-    assert matrix == original
+def test_get_row_single_match():
+    lst = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    result = get_row(lst, 5)
+    assert result == [(1, 1)]
+    # the input list must not be mutated by the function
+    assert lst == [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
 
-def test_get_row_returns_empty_list_when_value_is_absent():
-    matrix = [[1, 2], [3], []]
+def test_get_row_multiple_matches_row_ascending_col_descending():
+    lst = [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 1, 6], [1, 2, 3, 4, 5, 1]]
+    result = get_row(lst, 1)
+    # rows ascending; within a row, columns descending (stable sort)
+    assert result == [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]
 
-    assert get_row(matrix, 99) == []
+
+def test_get_row_ragged_rows():
+    lst = [[], [1], [1, 2, 1]]
+    result = get_row(lst, 1)
+    assert result == [(1, 0), (2, 2), (2, 0)]
+
+
+def test_get_row_no_match_and_empty_inputs():
+    assert get_row([[1, 2], [3, 4]], 99) == []
+    assert get_row([], 1) == []
+    assert get_row([[], []], 1) == []

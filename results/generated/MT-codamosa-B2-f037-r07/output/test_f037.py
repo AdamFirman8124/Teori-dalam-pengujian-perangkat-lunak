@@ -2,15 +2,43 @@
 import f037 as module_0
 
 def test_case_0():
-    bytes_0 = b'\x95\xec\xac\xea#d\xa6\x01q\xebv|'
-    list_0 = [bytes_0]
-    var_0 = module_0.sort_even(list_0)
-    assert var_0 == [b'\x95\xec\xac\xea#d\xa6\x01q\xebv|']
-    bytes_1 = b'/C\xb6bx"\xafI\x87J'
-    var_1 = module_0.sort_even(list_0)
-    assert var_1 == [b'\x95\xec\xac\xea#d\xa6\x01q\xebv|']
-    list_1 = [bytes_1, bytes_1, bytes_1]
-    var_2 = module_0.sort_even(list_1)
-    assert var_2 == [b'/C\xb6bx"\xafI\x87J', b'/C\xb6bx"\xafI\x87J', b'/C\xb6bx"\xafI\x87J']
-    var_3 = module_0.sort_even(list_0)
-    assert var_3 == [b'\x95\xec\xac\xea#d\xa6\x01q\xebv|']
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = [int_0, int_1, int_2]
+    var_0 = module_0.sort_even(int_3)
+    assert var_0 == [1, 2, 3]
+    int_4 = 5
+    int_5 = 6
+    int_6 = 4
+    int_7 = [int_4, int_5, int_2, int_6]
+    var_1 = module_0.sort_even(int_7)
+    assert var_1 == [3, 6, 5, 4]
+    int_8 = [int_6, int_2, int_1, int_0, int_4]
+    var_2 = module_0.sort_even(int_8)
+    assert var_2 == [2, 3, 4, 1, 5]
+    var_3 = []
+    var_4 = module_0.sort_even(var_3)
+    assert var_4 == []
+    int_9 = [int_0]
+    var_5 = module_0.sort_even(int_9)
+    assert var_5 == [1]
+    int_10 = [int_1, int_0]
+    var_6 = module_0.sort_even(int_10)
+    assert var_6 == [2, 1]
+    int_11 = [int_2, int_0, int_2, int_1, int_0]
+    var_7 = module_0.sort_even(int_11)
+    assert var_7 == [1, 1, 3, 2, 3]
+    int_12 = -2
+    int_13 = -1
+    int_14 = -3
+    int_15 = [int_12, int_4, int_13, int_6, int_14]
+    var_8 = module_0.sort_even(int_15)
+    assert var_8 == [-3, 5, -2, 4, -1]
+    int_16 = 10
+    int_17 = 9
+    int_18 = 8
+    int_19 = 7
+    int_20 = [int_16, int_0, int_17, int_1, int_18, int_2, int_19]
+    var_9 = module_0.sort_even(int_20)
+    assert var_9 == [7, 1, 8, 2, 9, 3, 10]

@@ -2,6 +2,42 @@
 import f148 as module_0
 
 def test_case_0():
-    str_0 = 'aW'
-    var_0 = module_0.bf(str_0, str_0)
-    assert var_0 == ()
+    str_0 = 'Mercury'
+    str_1 = 'Neptune'
+    var_0 = module_0.bf(str_0, str_1)
+    assert var_0 == ('Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus')
+    var_1 = module_0.bf(str_1, str_0)
+    assert var_1 == ('Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus')
+    str_2 = 'Earth'
+    str_3 = 'Jupiter'
+    var_2 = module_0.bf(str_2, str_3)
+    assert var_2 == ('Mars',)
+    var_3 = module_0.bf(str_3, str_2)
+    assert var_3 == ('Mars',)
+    str_4 = 'Venus'
+    str_5 = 'Saturn'
+    var_4 = module_0.bf(str_4, str_5)
+    assert var_4 == ('Earth', 'Mars', 'Jupiter')
+    var_5 = module_0.bf(str_5, str_4)
+    assert var_5 == ('Earth', 'Mars', 'Jupiter')
+    str_6 = 'Mars'
+    var_6 = module_0.bf(str_2, str_6)
+    assert var_6 == ()
+    var_7 = module_0.bf(str_6, str_2)
+    assert var_7 == ()
+    str_7 = 'Pluto'
+    var_8 = module_0.bf(str_7, str_6)
+    assert var_8 == ()
+    str_8 = 'Sun'
+    var_9 = module_0.bf(str_2, str_8)
+    assert var_9 == ()
+    str_9 = ''
+    var_10 = module_0.bf(str_9, str_6)
+    assert var_10 == ()
+    var_11 = module_0.bf(str_4, str_4)
+    assert var_11 == ()
+    var_12 = module_0.bf(str_1, str_1)
+    assert var_12 == ()
+
+def test_case_1():
+    pass

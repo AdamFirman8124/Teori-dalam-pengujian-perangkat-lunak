@@ -4,13 +4,51 @@ import f087 as module_0
 def test_case_0():
     int_0 = 1
     int_1 = 2
-    int_2 = [int_0, int_1, int_0]
-    int_3 = 3
-    int_4 = [int_3, int_0, int_0]
-    int_5 = [int_0]
-    int_6 = [int_2, int_4, int_5]
-    var_0 = module_0.get_row(int_6, int_0)
-    assert var_0 == [(0, 2), (0, 0), (1, 2), (1, 1), (2, 0)]
-    int_7 = 99
-    var_1 = module_0.get_row(int_6, int_7)
-    assert var_1 == []
+    int_2 = 3
+    int_3 = 4
+    int_4 = 5
+    int_5 = 6
+    int_6 = [int_0, int_1, int_2, int_3, int_4, int_5]
+    int_7 = [int_0, int_1, int_2, int_3, int_0, int_5]
+    int_8 = [int_0, int_1, int_2, int_3, int_4, int_0]
+    int_9 = [int_6, int_7, int_8]
+    var_0 = module_0.get_row(int_9, int_0)
+    assert var_0 == [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]
+    var_1 = []
+    var_2 = module_0.get_row(var_1, int_0)
+    assert var_2 == []
+    int_10 = [int_0, int_1, int_2]
+    int_11 = [int_10]
+    var_3 = module_0.get_row(int_11, int_4)
+    assert var_3 == []
+    int_12 = 7
+    int_13 = [int_12]
+    int_14 = [int_13]
+    var_4 = module_0.get_row(int_14, int_12)
+    assert var_4 == [(0, 0)]
+    int_15 = [int_0, int_1, int_0, int_1]
+    int_16 = [int_15]
+    var_5 = module_0.get_row(int_16, int_1)
+    assert var_5 == [(0, 3), (0, 1)]
+    int_17 = [int_2, int_2, int_2]
+    int_18 = [int_17]
+    var_6 = module_0.get_row(int_18, int_2)
+    assert var_6 == [(0, 2), (0, 1), (0, 0)]
+    int_19 = [int_0]
+    int_20 = [int_1, int_0]
+    int_21 = [int_0, int_0]
+    int_22 = [int_19, int_20, int_21]
+    var_7 = module_0.get_row(int_22, int_0)
+    assert var_7 == [(0, 0), (1, 1), (2, 1), (2, 0)]
+    int_23 = 9
+    int_24 = 8
+    int_25 = [int_23, int_24]
+    int_26 = [int_24, int_23]
+    int_27 = [int_25, int_26]
+    var_8 = module_0.get_row(int_27, int_23)
+    assert var_8 == [(0, 0), (1, 1)]
+    int_28 = [int_0, int_1]
+    int_29 = [int_2, int_3]
+    int_30 = [int_28, int_29]
+    var_9 = module_0.get_row(int_30, int_23)
+    assert var_9 == []

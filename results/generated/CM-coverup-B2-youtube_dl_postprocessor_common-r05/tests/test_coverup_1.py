@@ -4,12 +4,12 @@
 
 import os
 
-import pytest
-
 from youtube_dl.postprocessor.common import PostProcessor
 
 
 class FakeDownloader(object):
+    """Minimal downloader stub that records report_warning calls."""
+
     def __init__(self):
         self.warnings = []
 
@@ -17,70 +17,59 @@ class FakeDownloader(object):
         self.warnings.append(msg)
 
 
-@pytest.fixture
-def pp():
-    return PostProcessor(FakeDownloader())
+def test_try_utime_updates_file_times(tmp_path):
+    """Covers lines 59-60 (success path): os.utime is called, no warning emitted."""
+    downloader = FakeDownloader()
+    pp = PostProcessor(downloader)
+
+    fpath = os.path.join(str(tmp_path), 'video.mp4')
+    with open(fpath, 'wb'):
+        pass  # create an empty file
+
+    atime, mtime = 1000000000, 2000000000
+    result = pp.try_utime(fpath, atime, mtime)
+
+    st = os.stat(fpath)
+    assert st.st_atime == atime
+    assert st.st_mtime == mtime
+    # No exception occurred, so no warning must have been reported.
+    assert downloader.warnings == []
+    # try_utime has no explicit return value.
+    assert result is None
 
 
-def test_try_utime_success(pp, tmp_path, monkeypatch):
-    """Lines 59-61: os.utime is called with encoded path and (atime, mtime)."""
-    f = tmp_path / "video.mp4"
-    f.write_bytes(b"data")
-    path = str(f)
-    old_atime, old_mtime = os.stat(path).st_atime, os.stat(path).st_mtime
+def test_try_utime_reports_warning_on_failure(tmp_path):
+    """Covers lines 61-62 (exception path): os.utime on a missing file fails
+    and the errnote is reported instead of propagating."""
+    downloader = FakeDownloader()
+    pp = PostProcessor(downloader)
 
-    calls = {}
+    fpath = os.path.join(str(tmp_path), 'missing.mp4')  # parent exists, file does not
+    errnote = 'utime failed on purpose'
 
-    def fake_utime(filename, times):
-        calls["filename"] = filename
-        calls["times"] = times
+    result = pp.try_utime(fpath, 1, 2, errnote=errnote)
 
-    monkeypatch.setattr(
-        "youtube_dl.postprocessor.common.os.utime", fake_utime
-    )
-
-    pp.try_utime(path, 1000, 2000)
-
-    assert calls["filename"] == path.encode("utf-8") if isinstance(
-        __import__("youtube_dl.utils", fromlist=["encodeFilename"]).encodeFilename(path),
-        bytes,
-    ) else calls["filename"] == path
-    assert calls["times"] == (1000, 2000)
-    # No warning reported on success
-    assert pp._downloader.warnings == []
-    # File untouched since os.utime was mocked
-    st = os.stat(path)
-    assert (st.st_atime, st.st_mtime) == (old_atime, old_mtime)
+    assert downloader.warnings == [errnote]
+    assert result is None
 
 
-def test_try_utime_real_file(pp, tmp_path):
-    """Success path with the real os.utime: timestamps actually change."""
-    f = tmp_path / "video.mp4"
-    f.write_bytes(b"data")
-    path = str(f)
+def test_try_utime_reports_default_warning(monkeypatch, tmp_path):
+    """Covers lines 59-62 with the default errnote when os.utime raises."""
+    downloader = FakeDownloader()
+    pp = PostProcessor(downloader)
 
-    pp.try_utime(path, 1000, 2000)
+    utime_calls = []
 
-    st = os.stat(path)
-    assert st.st_atime == 1000
-    assert st.st_mtime == 2000
-    assert pp._downloader.warnings == []
+    def fake_utime(path, times):
+        utime_calls.append((path, times))
+        raise OSError('simulated utime failure')
 
+    # monkeypatch restores os.utime automatically at test teardown.
+    monkeypatch.setattr(os, 'utime', fake_utime)
 
-def test_try_utime_failure_reports_warning(pp, monkeypatch):
-    """Lines 61-62: exception from os.utime triggers report_warning(errnote)."""
-    def failing_utime(filename, times):
-        raise OSError("no such file")
+    fpath = os.path.join(str(tmp_path), 'whatever.mp4')
+    result = pp.try_utime(fpath, 3, 4)
 
-    monkeypatch.setattr(
-        "youtube_dl.postprocessor.common.os.utime", failing_utime
-    )
-
-    # Default errnote
-    pp.try_utime("nonexistent_file.mp4", 1000, 2000)
-    assert pp._downloader.warnings == ["Cannot update utime of file"]
-
-    # Custom errnote
-    pp._downloader.warnings = []
-    pp.try_utime("nonexistent_file.mp4", 1000, 2000, errnote="custom failure")
-    assert pp._downloader.warnings == ["custom failure"]
+    assert utime_calls == [(fpath, (3, 4))]
+    assert downloader.warnings == ['Cannot update utime of file']
+    assert result is None

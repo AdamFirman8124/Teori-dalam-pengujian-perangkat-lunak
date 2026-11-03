@@ -14,39 +14,38 @@ def test_case_0():
     str_3 = 'abc'
     var_3 = module_0.is_happy(str_3)
     assert var_3 is True
-    str_4 = 'aab'
+    str_4 = 'aaa'
     var_4 = module_0.is_happy(str_4)
     assert var_4 is False
-    str_5 = 'aba'
+    str_5 = 'aab'
     var_5 = module_0.is_happy(str_5)
     assert var_5 is False
     str_6 = 'abb'
     var_6 = module_0.is_happy(str_6)
     assert var_6 is False
-    str_7 = 'aaa'
+    str_7 = 'aba'
     var_7 = module_0.is_happy(str_7)
     assert var_7 is False
-    str_8 = 'abcd'
+    str_8 = 'adb'
     var_8 = module_0.is_happy(str_8)
     assert var_8 is True
-    str_9 = 'abcabc'
+    str_9 = 'abcd'
     var_9 = module_0.is_happy(str_9)
     assert var_9 is True
-    str_10 = 'abcdefg'
+    str_10 = 'abcabc'
     var_10 = module_0.is_happy(str_10)
     assert var_10 is True
-    str_11 = 'abcc'
+    str_11 = 'aabb'
     var_11 = module_0.is_happy(str_11)
     assert var_11 is False
-    str_12 = 'aabc'
+    str_12 = 'xyy'
     var_12 = module_0.is_happy(str_12)
     assert var_12 is False
-    str_13 = 'abcaa'
+    str_13 = 'abcba'
     var_13 = module_0.is_happy(str_13)
     assert var_13 is False
-    str_14 = 'xyzyy'
+    str_14 = 'aabbcc'
     var_14 = module_0.is_happy(str_14)
     assert var_14 is False
-    str_15 = 'abac'
-    var_15 = module_0.is_happy(str_15)
-    assert var_15 is False
+    str_15 = 'All tests passed!'
+    var_15 = print(str_15)

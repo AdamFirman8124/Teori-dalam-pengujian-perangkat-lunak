@@ -2,42 +2,55 @@
 # asked: {"lines": [64], "branches": []}
 # gained: {"lines": [64], "branches": []}
 
-import pysnooper.utils as utils_module
+from pysnooper.utils import DEFAULT_REPR_RE, normalize_repr
 
 
-def test_get_shortish_repr_normalize_true_strips_address():
-    class WithAddress:
-        def __repr__(self):
-            return "<WithAddress at 0x1234ABCD>"
-
-    result = utils_module.get_shortish_repr(WithAddress(), normalize=True)
-    assert result == "<WithAddress>"
-    assert "at 0x" not in result
-    assert "0x1234ABCD" not in result
+def test_normalize_repr_removes_memory_address():
+    """A default repr containing an address has the address stripped."""
+    item_repr = '<Foo object at 0x7f8a2b3c4d5e>'
+    result = normalize_repr(item_repr)
+    assert result == '<Foo object>'
 
 
-def test_get_shortish_repr_normalize_false_keeps_address():
-    class WithAddress:
-        def __repr__(self):
-            return "<WithAddress at 0x1234ABCD>"
-
-    result = utils_module.get_shortish_repr(WithAddress(), normalize=False)
-    assert result == "<WithAddress at 0x1234ABCD>"
-    assert "at 0x" in result
+def test_normalize_repr_without_address_is_unchanged():
+    """A repr without an address passes through untouched."""
+    item_repr = '<Foo object>'
+    assert normalize_repr(item_repr) == '<Foo object>'
 
 
-def test_normalize_repr_direct_strips_address():
-    func = getattr(utils_module, "normalize_repr", None)
-    if func is None:
-        # normalize_repr is nested; already exercised via normalize=True above
-        result = utils_module.get_shortish_repr("<X at 0xDEADBEEF>", normalize=True)
-        assert "at 0x" not in result
-        return
-    assert func("<object object at 0x7f8b8c0d5e00>") == "<object object>"
-    assert func("<MyClass object at 0x00abCD12>") == "<MyClass object>"
-    assert func("<plain object>") == "<plain object>"
-    assert func("hello") == "hello"
-    assert func("") == ""
-    # Regex requires at least 4 hex digits, so short address is kept
-    assert func("foo at 0x12") == "foo at 0x12"
-    assert "0x" not in func("<X at 0xDEADBEEF>")
+def test_normalize_repr_removes_all_addresses():
+    """Every address occurrence is removed, not just the first one."""
+    item_repr = '[<A object at 0xdeadbeef>, <B object at 0x12345678>]'
+    assert normalize_repr(item_repr) == '[<A object>, <B object>]'
+
+
+def test_normalize_repr_requires_at_least_four_hex_digits():
+    """The pattern needs at least 4 hex digits; shorter ones are kept."""
+    item_repr = '<Foo object at 0x123>'
+    assert normalize_repr(item_repr) == '<Foo object at 0x123>'
+
+
+def test_normalize_repr_accepts_uppercase_hex_digits():
+    """Hex digits may be uppercase (the 0x prefix must be lowercase)."""
+    item_repr = '<Foo object at 0xABCDEF01>'
+    assert normalize_repr(item_repr) == '<Foo object>'
+
+
+def test_normalize_repr_ignores_hex_without_at_prefix():
+    """Hex numbers not preceded by ' at ' are left alone."""
+    item_repr = 'value 0x1234abcd'
+    assert normalize_repr(item_repr) == 'value 0x1234abcd'
+
+
+def test_normalize_repr_on_real_object_repr():
+    """Works on the default repr of an actual object instance."""
+
+    class Foo:
+        pass
+
+    item_repr = repr(Foo())
+    # Precondition: the default repr really contains a memory address.
+    assert DEFAULT_REPR_RE.search(item_repr)
+    result = normalize_repr(item_repr)
+    assert ' at 0x' not in result
+    assert result == item_repr.split(' at 0x')[0] + '>'

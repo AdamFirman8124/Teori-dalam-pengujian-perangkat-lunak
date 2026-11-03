@@ -2,30 +2,38 @@
 import f016 as module_0
 
 def test_case_0():
-    str_0 = '*>-QRgmu\x0cyirF/~Ok='
+    str_0 = ''
     int_0 = module_0.count_distinct_characters(str_0)
-    assert int_0 == 17
-    int_1 = module_0.count_distinct_characters(str_0)
-    assert int_1 == 17
-    str_1 = '`#Hd`-/|vHM5'
-    int_2 = module_0.count_distinct_characters(str_1)
-    assert int_2 == 10
-    str_2 = 'h\x0ct%n'
-    int_3 = module_0.count_distinct_characters(str_2)
-    assert int_3 == 5
-    str_3 = 'm*?9d03'
-    int_4 = module_0.count_distinct_characters(str_0)
-    assert int_4 == 17
-    str_4 = '8/NUAp`'
-    int_5 = module_0.count_distinct_characters(str_4)
-    assert int_5 == 7
-    int_6 = module_0.count_distinct_characters(str_1)
-    assert int_6 == 10
-    str_5 = 'g2*3x*b*jC]Uo'
-    int_7 = module_0.count_distinct_characters(str_5)
-    assert int_7 == 11
-    str_6 = 'm'
-    int_8 = module_0.count_distinct_characters(str_6)
-    assert int_8 == 1
-    int_9 = module_0.count_distinct_characters(str_3)
-    assert int_9 == 7
+    assert int_0 == 0
+    str_1 = 'a'
+    int_1 = module_0.count_distinct_characters(str_1)
+    assert int_1 == 1
+    str_2 = 'aaa'
+    int_2 = module_0.count_distinct_characters(str_2)
+    assert int_2 == 1
+    str_3 = 'xyzXYZ'
+    int_3 = module_0.count_distinct_characters(str_3)
+    assert int_3 == 3
+    str_4 = 'Jerry'
+    int_4 = module_0.count_distinct_characters(str_4)
+    assert int_4 == 4
+    str_5 = 'AAAAaaaa'
+    int_5 = module_0.count_distinct_characters(str_5)
+    assert int_5 == 1
+    str_6 = 'AbCdEfG'
+    int_6 = module_0.count_distinct_characters(str_6)
+    assert int_6 == 7
+    str_7 = 'a b c'
+    int_7 = module_0.count_distinct_characters(str_7)
+    assert int_7 == 4
+    str_8 = 'a1b2a1'
+    int_8 = module_0.count_distinct_characters(str_8)
+    assert int_8 == 4
+    str_9 = 'Hello, World!'
+    int_9 = module_0.count_distinct_characters(str_9)
+    assert int_9 == 10
+    str_10 = 'Ää'
+    int_10 = module_0.count_distinct_characters(str_10)
+    assert int_10 == 1
+    str_11 = 'All tests passed!'
+    var_0 = print(str_11)

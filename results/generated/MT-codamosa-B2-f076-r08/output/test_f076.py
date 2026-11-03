@@ -2,32 +2,52 @@
 import f076 as module_0
 
 def test_case_0():
-    bytes_0 = b'YEmR\xe2\x12]\x9bw\xecJ\x82\xd8\xf5\x8a\x86\x16'
-    bool_0 = True
-    set_0 = {bytes_0}
-    var_0 = module_0.is_simple_power(bool_0, set_0)
+    int_0 = 1
+    int_1 = 4
+    var_0 = module_0.is_simple_power(int_0, int_1)
     assert var_0 is True
+    int_2 = 2
+    var_1 = module_0.is_simple_power(int_2, int_2)
+    assert var_1 is True
+    int_3 = 8
+    var_2 = module_0.is_simple_power(int_3, int_2)
+    assert var_2 is True
+    int_4 = 27
+    int_5 = 3
+    var_3 = module_0.is_simple_power(int_4, int_5)
+    assert var_3 is True
+    int_6 = 64
+    var_4 = module_0.is_simple_power(int_6, int_1)
+    assert var_4 is True
+    var_5 = module_0.is_simple_power(int_0, int_0)
+    assert var_5 is True
+    var_6 = module_0.is_simple_power(int_5, int_2)
+    assert var_6 is False
+    int_7 = 5
+    var_7 = module_0.is_simple_power(int_7, int_5)
+    assert var_7 is False
+    int_8 = 7
+    var_8 = module_0.is_simple_power(int_8, int_2)
+    assert var_8 is False
+    int_9 = 0
+    var_9 = module_0.is_simple_power(int_9, int_2)
+    assert var_9 is False
+    var_10 = module_0.is_simple_power(int_0, int_0)
+    assert var_10 is True
+    var_11 = module_0.is_simple_power(int_2, int_0)
+    assert var_11 is False
+    var_12 = module_0.is_simple_power(int_5, int_0)
+    assert var_12 is False
+    int_10 = 100
+    var_13 = module_0.is_simple_power(int_10, int_0)
+    assert var_13 is False
+    int_11 = 1000000
+    int_12 = 10
+    var_14 = module_0.is_simple_power(int_11, int_12)
+    assert var_14 is True
+    int_13 = 999999
+    var_15 = module_0.is_simple_power(int_13, int_12)
+    assert var_15 is False
 
 def test_case_1():
-    bytes_0 = b'YEmR\xe2\x12]\x9bw\xecJ\x82\xd8\xf5\x8a\x86\x16'
-    bool_0 = True
-    float_0 = -653.2027352270662
-    var_0 = module_0.is_simple_power(bool_0, bool_0)
-    assert var_0 is True
-    str_0 = None
-    var_1 = module_0.is_simple_power(float_0, str_0)
-    assert var_1 is False
-    set_0 = {bytes_0}
-    var_2 = module_0.is_simple_power(bool_0, set_0)
-    assert var_2 is True
-
-def test_case_2():
-    bool_0 = True
-    var_0 = module_0.is_simple_power(bool_0, bool_0)
-    assert var_0 is True
-    str_0 = None
-    var_1 = module_0.is_simple_power(bool_0, str_0)
-    assert var_1 is True
-    float_0 = 2089.45
-    var_2 = module_0.is_simple_power(float_0, float_0)
-    assert var_2 is True
+    pass

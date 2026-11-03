@@ -3,9 +3,30 @@ import pytest
 import f002 as module_0
 
 def test_case_0():
-    float_0 = -6255.4429
-    float_1 = -2278.415
-    float_2 = module_0.truncate_number(float_1)
-    assert float_2 == pytest.approx(0.5850000000000364, abs=0.01, rel=0.01)
-    float_3 = module_0.truncate_number(float_0)
-    assert float_3 == pytest.approx(0.5570999999999913, abs=0.01, rel=0.01)
+    float_0 = 3.5
+    float_1 = module_0.truncate_number(float_0)
+    assert float_1 == pytest.approx(0.5, abs=0.01, rel=0.01)
+    float_2 = 2.25
+    float_3 = module_0.truncate_number(float_2)
+    assert float_3 == pytest.approx(0.25, abs=0.01, rel=0.01)
+    float_4 = 0.75
+    float_5 = module_0.truncate_number(float_4)
+    assert float_5 == pytest.approx(0.75, abs=0.01, rel=0.01)
+    float_6 = 4.0
+    float_7 = module_0.truncate_number(float_6)
+    assert float_7 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    float_8 = 0.0
+    float_9 = module_0.truncate_number(float_8)
+    assert float_9 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    float_10 = 123.456
+    float_11 = module_0.truncate_number(float_10)
+    assert float_11 == pytest.approx(0.45600000000000307, abs=0.01, rel=0.01)
+    float_12 = -1.5
+    float_13 = module_0.truncate_number(float_12)
+    assert float_13 == pytest.approx(0.5, abs=0.01, rel=0.01)
+    float_14 = -3.25
+    float_15 = module_0.truncate_number(float_14)
+    assert float_15 == pytest.approx(0.75, abs=0.01, rel=0.01)
+    float_16 = 1.1
+    float_17 = module_0.truncate_number(float_16)
+    assert float_17 == pytest.approx(0.10000000000000009, abs=0.01, rel=0.01)

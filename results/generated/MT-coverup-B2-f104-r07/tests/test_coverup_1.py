@@ -7,29 +7,37 @@ import pytest
 from f104 import unique_digits
 
 
-def test_unique_digits_empty_list():
+def test_unique_digits_mixed_matches_and_sorting():
+    """Covers init (line 3), loop (line 4), both branches of the all() check
+    (line 5), append (line 6), and sorted return (line 7)."""
+    result = unique_digits([15, 33, 1422, 1])
+    # 15 -> digits 1,5 (odd); 33 -> 3,3 (odd); 1422 -> contains 4 and 2 (even); 1 -> odd
+    assert result == [1, 15, 33]
+    # Verify the returned list is sorted regardless of input order
+    assert result == sorted(result)
+
+
+def test_unique_digits_no_matches_returns_empty_sorted_list():
+    """Covers the if-false branch (line 5) and returning an empty sorted list
+    (lines 4 and 7)."""
+    result = unique_digits([152, 323, 1422, 10])
+    assert result == []
+    assert isinstance(result, list)
+
+
+def test_unique_digits_empty_input():
+    """Covers the loop executing zero times (line 4) and the return (line 7)."""
     assert unique_digits([]) == []
 
 
-def test_unique_digits_all_odd_digits():
-    assert unique_digits([1, 3, 135, 975]) == [1, 3, 135, 975]
+def test_unique_digits_all_match_out_of_order_input():
+    """Covers append being called repeatedly (line 6) and sorting of the
+    accumulated elements (line 7)."""
+    result = unique_digits([135, 9, 57, 3])
+    assert result == [3, 9, 57, 135]
 
 
-def test_unique_digits_mixed():
-    assert unique_digits([15, 33, 1422, 1, 12, 135]) == [1, 15, 33, 135]
-
-
-def test_unique_digits_no_odd_digit_numbers():
-    assert unique_digits([2, 24, 100, 468]) == []
-
-
-def test_unique_digits_negative_and_duplicates():
-    # Negative numbers: str(-15) contains '-' which raises ValueError on int(c)
-    # is not exercised here; only non-negative inputs are covered by the source.
-    assert unique_digits([135, 135, 11]) == [11, 135, 135]
-
-
-def test_unique_digits_result_is_sorted():
-    result = unique_digits([971, 13, 5])
-    assert result == [5, 13, 971]
-    assert result == sorted(result)
+def test_unique_digits_single_digit_even_and_odd():
+    """Exercises int(c) % 2 == 1 on single-character strings for both parities."""
+    result = unique_digits([2, 3, 4, 5])
+    assert result == [3, 5]

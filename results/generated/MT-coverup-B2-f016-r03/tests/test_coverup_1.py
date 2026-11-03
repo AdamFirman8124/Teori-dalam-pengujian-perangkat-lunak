@@ -7,17 +7,18 @@ import pytest
 from f016 import count_distinct_characters
 
 
-def test_count_distinct_characters_basic():
-    # Exercises line 3: the return statement.
-    assert count_distinct_characters("abcde") == 5
+def test_count_distinct_characters_mixed_case():
+    # Exercises line 3: the return statement, including the .lower() branch.
+    assert count_distinct_characters("xyzXYZ") == 3
+    assert count_distinct_characters("Jerry") == 4
 
 
-def test_count_distinct_characters_case_insensitive():
-    # Verifies the .lower() branch: mixed case collapses to distinct lowercase chars.
-    assert count_distinct_characters("abcdeAaBb") == 5
-
-
-def test_count_distinct_characters_duplicates_and_empty():
-    assert count_distinct_characters("xyzXYZ   ") == 4  # x, y, z, space
+def test_count_distinct_characters_empty_string():
+    # Covers the edge case where set() is empty.
     assert count_distinct_characters("") == 0
-    assert count_distinct_characters("aA") == 1
+
+
+def test_count_distinct_characters_repeated_characters():
+    # Duplicates collapse in the set; case-insensitivity is verified.
+    assert count_distinct_characters("aAaA") == 1
+    assert count_distinct_characters("Hello, World!") == 10

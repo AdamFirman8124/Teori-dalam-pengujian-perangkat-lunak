@@ -7,52 +7,29 @@ import pytest
 from isort.exceptions import ISortError, UnsupportedSettings
 
 
-def test_unsupported_settings_single_option():
-    unsupported_settings = {
-        "unknown_option": {"value": "true", "source": "CLI"},
-    }
+def test_format_option_returns_formatted_string():
+    result = UnsupportedSettings._format_option(
+        name="profile", value="black", source="cli"
+    )
+    assert result == "\t- profile = black  (source: 'cli')"
 
-    with pytest.raises(UnsupportedSettings) as exc_info:
-        raise UnsupportedSettings(unsupported_settings)
 
-    exc = exc_info.value
+def test_format_option_handles_non_string_value():
+    result = UnsupportedSettings._format_option(
+        name="line_length", value=88, source="/home/user/pyproject.toml"
+    )
+    assert result == "\t- line_length = 88  (source: '/home/user/pyproject.toml')"
+
+
+def test_unsupported_settings_no_settings():
+    settings: dict = {}
+    exc = UnsupportedSettings(settings)
+
+    # The unsupported settings are stored verbatim on the instance.
+    assert exc.unsupported_settings is settings
+
     assert isinstance(exc, ISortError)
-    assert exc.unsupported_settings is unsupported_settings
-    assert exc.unsupported_settings == {
-        "unknown_option": {"value": "true", "source": "CLI"},
-    }
-    assert str(exc) == (
-        "isort was provided settings that it doesn't support:\n\n"
-        "\t- unknown_option = true  (source: 'CLI')\n\n"
-        "For a complete and up-to-date listing of supported settings see: "
-        "https://pycqa.github.io/isort/docs/configuration/options/.\n"
-    )
-
-
-def test_unsupported_settings_multiple_options():
-    unsupported_settings = {
-        "bad_setting": {"value": "42", "source": "/path/to/pyproject.toml"},
-        "other_setting": {"value": "['a', 'b']", "source": "runtime"},
-    }
-
-    exc = UnsupportedSettings(unsupported_settings)
-
-    assert exc.unsupported_settings == unsupported_settings
-    assert str(exc) == (
-        "isort was provided settings that it doesn't support:\n\n"
-        "\t- bad_setting = 42  (source: '/path/to/pyproject.toml')\n"
-        "\t- other_setting = ['a', 'b']  (source: 'runtime')\n\n"
-        "For a complete and up-to-date listing of supported settings see: "
-        "https://pycqa.github.io/isort/docs/configuration/options/.\n"
-    )
-
-
-def test_unsupported_settings_empty():
-    unsupported_settings = {}
-
-    exc = UnsupportedSettings(unsupported_settings)
-
-    assert exc.unsupported_settings == {}
+    assert isinstance(exc, Exception)
     assert str(exc) == (
         "isort was provided settings that it doesn't support:\n\n"
         "\n\n"
@@ -61,13 +38,47 @@ def test_unsupported_settings_empty():
     )
 
 
-def test_unsupported_settings_format_option():
-    assert UnsupportedSettings._format_option("my_option", "my_value", "CLI") == (
-        "\t- my_option = my_value  (source: 'CLI')"
+def test_unsupported_settings_single_setting():
+    settings = {"profile": {"value": "black", "source": "cli"}}
+    exc = UnsupportedSettings(settings)
+
+    assert exc.unsupported_settings is settings
+    assert exc.unsupported_settings == settings
+
+    assert str(exc) == (
+        "isort was provided settings that it doesn't support:\n\n"
+        "\t- profile = black  (source: 'cli')\n\n"
+        "For a complete and up-to-date listing of supported settings see: "
+        "https://pycqa.github.io/isort/docs/configuration/options/.\n"
     )
-    assert UnsupportedSettings._format_option("count", 3, "config file") == (
-        "\t- count = 3  (source: 'config file')"
+
+
+def test_unsupported_settings_multiple_settings():
+    settings = {
+        "profile": {"value": "black", "source": "cli"},
+        "line_length": {"value": 100, "source": "/home/user/.isort.cfg"},
+        "known_first_party": {"value": ["foo", "bar"], "source": "pyproject.toml"},
+    }
+    exc = UnsupportedSettings(settings)
+
+    assert exc.unsupported_settings is settings
+
+    # Insertion order is preserved, so the formatted options appear in order.
+    assert str(exc) == (
+        "isort was provided settings that it doesn't support:\n\n"
+        "\t- profile = black  (source: 'cli')\n"
+        "\t- line_length = 100  (source: '/home/user/.isort.cfg')\n"
+        "\t- known_first_party = ['foo', 'bar']  (source: 'pyproject.toml')\n\n"
+        "For a complete and up-to-date listing of supported settings see: "
+        "https://pycqa.github.io/isort/docs/configuration/options/.\n"
     )
-    assert UnsupportedSettings._format_option("items", ["a", "b"], "runtime") == (
-        "\t- items = ['a', 'b']  (source: 'runtime')"
-    )
+
+
+def test_unsupported_settings_can_be_raised_and_caught():
+    settings = {"profile": {"value": "black", "source": "cli"}}
+    with pytest.raises(UnsupportedSettings) as excinfo:
+        raise UnsupportedSettings(settings)
+
+    assert excinfo.value.unsupported_settings is settings
+    assert "\t- profile = black  (source: 'cli')" in str(excinfo.value)
+    assert "isort was provided settings that it doesn't support" in str(excinfo.value)

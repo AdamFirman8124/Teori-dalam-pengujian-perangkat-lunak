@@ -1,113 +1,156 @@
 
 
-# Generated at 2026-10-24 05:58:05.249897
+# Generated at 2026-11-02 17:22:31.108081
 # Unit test for function Strongest_Extension
 def test_Strongest_Extension():
-    # Extension with the highest strength wins
-    assert module_0.Strongest_Extension("MyClass", ["AA", "Be", "CCc"]) == "MyClass.AA"
+    # Basic case: extension with more uppercase letters wins
+    assert module_0.Strongest_Extension('Slices', ['SErviCSHUB', 'Ptns', 'ware']) == 'Slices.SErviCSHUB'
 
-    # Strength = uppercase letters - lowercase letters
-    assert module_0.Strongest_Extension("Sample", ["abc", "aBC", "XYZ"]) == "Sample.XYZ"
+    # Tie in strength: first extension in the list wins
+    assert module_0.Strongest_Extension('my_class', ['AA', 'Be', 'CC']) == 'my_class.AA'
 
-    # In a tie, the first extension is selected
-    assert module_0.Strongest_Extension("Test", ["AB", "CD", "EF"]) == "Test.AB"
+    # Single extension
+    assert module_0.Strongest_Extension('Test', ['onlyOne']) == 'Test.onlyOne'
 
-    # All extensions can have negative strength
-    assert module_0.Strongest_Extension("Lower", ["abcd", "Abc", "ABc"]) == "Lower.ABc"
+    # Non-alphabetic characters are ignored in strength calculation
+    assert module_0.Strongest_Extension('Nums', ['a1B2', 'xyz']) == 'Nums.a1B2'
 
-    # Non-alphabetic characters do not affect strength
-    assert module_0.Strongest_Extension("File", ["A1!", "BB2", "C_"]) == "File.BB2"
+    # Both strengths negative: the less negative one wins
+    assert module_0.Strongest_Extension('Neg', ['abcdef', 'abc']) == 'Neg.abc'
 
-    # A single extension
-    assert module_0.Strongest_Extension("Only", ["Py"]) == "Only.Py"
+    # Later strictly stronger extension replaces earlier one
+    assert module_0.Strongest_Extension('X', ['aB', 'AB', 'Ab']) == 'X.AB'
 
-# Generated at 2026-10-24 05:58:16.924125
+    # Class name joined with a dot
+    assert module_0.Strongest_Extension('C', ['e']) == 'C.e'
+
+    print("All tests passed!")
+
+
+test_Strongest_Extension()
+
+# Generated at 2026-11-02 17:23:50.719847
 # Unit test for function Strongest_Extension
 def test_Strongest_Extension():
-    # Extension with the greatest uppercase-minus-lowercase score
-    assert module_0.Strongest_Extension(
-        "Slices", ["SErvice", "SSE", "sse"]
-    ) == "Slices.SSE"
+    # Basic case: strength = uppercase count - lowercase count
+    assert module_0.Strongest_Extension('my_class', ['AA', 'Be', 'CC']) == 'my_class.AA'
 
-    # A single uppercase letter is stronger than mixed-case extensions
-    assert module_0.Strongest_Extension(
-        "MyClass", ["Aa", "B", "Cc"]
-    ) == "MyClass.B"
+    # Example with all-negative strengths; highest (least negative) wins
+    assert module_0.Strongest_Extension('Slices', ['SErviNGSliCes', 'Cheese', 'StuFfed']) == 'Slices.SErviNGSliCes'
 
-    # On a tie, the first strongest extension is selected
-    assert module_0.Strongest_Extension(
-        "Document", ["AA", "BB", "cc"]
-    ) == "Document.AA"
+    # Tie in strength: first occurrence wins (strict > comparison)
+    assert module_0.Strongest_Extension('Tie', ['AB', 'cd', 'EF']) == 'Tie.AB'
 
-    # Non-alphabetic characters do not affect strength
-    assert module_0.Strongest_Extension(
-        "File", ["A1!", "BB2", "ccc"]
-    ) == "File.BB2"
+    # Single extension list
+    assert module_0.Strongest_Extension('Single', ['only']) == 'Single.only'
 
-    # Works with a single extension
-    assert module_0.Strongest_Extension(
-        "Example", ["Test"]
-    ) == "Example.Test"
+    # Non-alphabetic characters are ignored in strength calculation
+    assert module_0.Strongest_Extension('Nums', ['a1B2', 'xy']) == 'Nums.a1B2'
 
-# Generated at 2026-10-24 05:58:19.428814
-# Unit test for function Strongest_Extension
+    # Mixed case comparison
+    assert module_0.Strongest_Extension('C', ['abc', 'aB']) == 'C.aB'
 
-# Generated at 2026-10-24 05:58:27.980826
-# Unit test for function Strongest_Extension
-def test_Strongest_Extension():assert module_0.Strongest_Extension('Slices', ['SErviNGSliCes', 'Cheese', 'StuFfed']) == 'Slices.SErviNGSliCes'
+    # Extension with only uppercase letters is strongest
+    assert module_0.Strongest_Extension('X', ['aaa', 'ZZZ', 'bBb']) == 'X.ZZZ'
 
-# Generated at 2026-10-24 05:58:37.709891
+    print("All tests passed!")
+
+
+test_Strongest_Extension()
+
+# Generated at 2026-11-02 17:26:25.905130
 # Unit test for function Strongest_Extension
 def test_Strongest_Extension():
-    # Extension with the greatest uppercase-minus-lowercase score
-    assert module_0.Strongest_Extension(
-        "Slices", ["SErvice", "LIFE"]
-    ) == "Slices.LIFE"
+    # Basic case: extension with more uppercase letters is strongest
+    assert module_0.Strongest_Extension('my_class', ['AA', 'Be', 'CC']) == 'my_class.AA'
 
-    # Lowercase letters reduce the strength
+    # Classic example: strongest by upper-lower difference
     assert module_0.Strongest_Extension(
-        "MyClass", ["aBc", "ABc", "ABC"]
-    ) == "MyClass.ABC"
+        'Slices',
+        ['SErviCS_ScHED', 'SErviCS_ScHEDing', 'SErviCS_ScHEDule', 'SErviCS_ScHEDuling']
+    ) == 'Slices.SErviCS_ScHED'
 
-    # On a tie, the first extension is selected
-    assert module_0.Strongest_Extension(
-        "MyClass", ["AB", "CD"]
-    ) == "MyClass.AB"
+    # Tie in strength: first extension wins
+    assert module_0.Strongest_Extension('X', ['aB', 'Ab']) == 'X.aB'
 
-    # A single extension
-    assert module_0.Strongest_Extension(
-        "Test", ["Extension"]
-    ) == "Test.Extension"
+    # Single extension with negative strength
+    assert module_0.Strongest_Extension('Foo', ['bar']) == 'Foo.bar'
 
-    # Non-alphabetic characters do not affect strength
-    assert module_0.Strongest_Extension(
-        "File", ["A1b", "AB-1"]
-    ) == "File.AB-1"
+    # Empty string (strength 0) beats negative-strength extension
+    assert module_0.Strongest_Extension('Cls', ['', 'a']) == 'Cls.'
 
-# Generated at 2026-10-24 05:58:49.114858
+    # Non-alphabetic characters contribute 0 to strength
+    assert module_0.Strongest_Extension('Cls', ['123', 'Ab']) == 'Cls.123'
+
+    # All uppercase beats all lowercase
+    assert module_0.Strongest_Extension('Test', ['UPPER', 'lower']) == 'Test.UPPER'
+
+    # Later extension wins only if strictly stronger
+    assert module_0.Strongest_Extension('Mod', ['a', 'B']) == 'Mod.B'
+
+# Generated at 2026-11-02 17:28:06.183388
 # Unit test for function Strongest_Extension
 def test_Strongest_Extension():
-    # Extension with the greatest uppercase/lowercase difference
-    assert module_0.Strongest_Extension(
-        "MyClass", ["aB", "ABC", "ab"]
-    ) == "MyClass.ABC"
+    # Basic case: extension with highest (uppercase - lowercase) count wins
+    assert module_0.Strongest_Extension('my_class', ['AA', 'Be', 'CC']) == 'my_class.AA'
+    assert module_0.Strongest_Extension('Slices', ['SErviSes', 'NamiSeS', 'manage', 'stack', 'extend']) == 'Slices.NamiSeS'
 
-    # If strengths are equal, the first extension is selected
-    assert module_0.Strongest_Extension(
-        "Test", ["ABcd", "XYzz"]
-    ) == "Test.ABcd"
+    # Tie in strength: first extension in the list wins
+    assert module_0.Strongest_Extension('my_class', ['Ab', 'Cd', 'Ef']) == 'my_class.Ab'
 
-    # Non-alphabetic characters are ignored
-    assert module_0.Strongest_Extension(
-        "File", ["a!1", "B-2"]
-    ) == "File.B-2"
+    # Single extension in the list
+    assert module_0.Strongest_Extension('Klass', ['onlyOne']) == 'Klass.onlyOne'
 
-    # Negative strengths are compared normally
-    assert module_0.Strongest_Extension(
-        "Module", ["abc", "de"]
-    ) == "Module.de"
+    # Non-alphabetic characters are ignored when counting
+    assert module_0.Strongest_Extension('test', ['A1b!', 'BB']) == 'test.BB'
+    assert module_0.Strongest_Extension('pkg', ['x_9Y', 'z']) == 'pkg.x_9Y'
 
-    # A single extension
-    assert module_0.Strongest_Extension(
-        "Base", ["Only"]
-    ) == "Base.Only"
+    # All-lowercase extensions: least negative strength wins
+    assert module_0.Strongest_Extension('mod', ['abc', 'ab', 'abcd']) == 'mod.ab'
+
+    # All strengths negative: the strongest (least negative) is still chosen
+    assert module_0.Strongest_Extension('C', ['bAd', 'bbAd']) == 'C.bAd'
+
+    # Extension stronger than the first element replaces it
+    assert module_0.Strongest_Extension('cls', ['a', 'XY']) == 'cls.XY'
+
+    # Class name containing dots/special characters is used verbatim
+    assert module_0.Strongest_Extension('My.Class_v2', ['X']) == 'My.Class_v2.X'
+
+# Generated at 2026-11-02 17:29:20.698512
+# Unit test for function Strongest_Extension
+def test_Strongest_Extension():
+    # Basic case: extension with more uppercase letters wins
+    assert module_0.Strongest_Extension('Sushi', ['SErviNGSliCes', 'Cheese', 'StuFfed']) == 'Sushi.SErviNGSliCes'
+
+    # Strongest extension at the end of the list
+    assert module_0.Strongest_Extension('X', ['VarL', 'x', 'XX']) == 'X.XX'
+
+    # All extensions have equal strength -> first one is chosen
+    assert module_0.Strongest_Extension('my_class', ['AA', 'Be', 'CC']) == 'my_class.AA'
+
+    # Ties broken by first occurrence
+    assert module_0.Strongest_Extension('Tie', ['AB', 'CD']) == 'Tie.AB'
+
+    # Extension with negative strength (more lowercase)
+    assert module_0.Strongest_Extension('Neg', ['abcdef', 'aB']) == 'Neg.aB'
+
+    # Single extension list
+    assert module_0.Strongest_Extension('Single', ['OnlyOne']) == 'Single.OnlyOne'
+
+    # Empty string extension vs normal one
+    assert module_0.Strongest_Extension('Empty', ['', 'A']) == 'Empty.A'
+
+    # Extension with non-alpha characters ignored in counting
+    assert module_0.Strongest_Extension('Mixed', ['A1b2C3', 'abc']) == 'Mixed.A1b2C3'
+
+    # Class name with dots/underscores is preserved
+    assert module_0.Strongest_Extension('my.Class_name', ['Ext']) == 'my.Class_name.Ext'
+
+    # Strength comparison ignores case of class name
+    assert module_0.Strongest_Extension('CLASS', ['a', 'B']) == 'CLASS.B'
+
+    print("All tests passed!")
+
+
+test_Strongest_Extension()

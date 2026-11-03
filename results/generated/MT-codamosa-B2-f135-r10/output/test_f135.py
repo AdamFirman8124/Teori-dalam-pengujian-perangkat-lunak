@@ -10,21 +10,39 @@ def test_case_0():
     int_5 = [int_0, int_1, int_2, int_3, int_4]
     var_0 = module_0.can_arrange(int_5)
     assert var_0 == 3
-    int_6 = [int_3, int_1, int_0]
+    int_6 = [int_0, int_1, int_3, int_2, int_4]
     var_1 = module_0.can_arrange(int_6)
-    assert var_1 == 2
-    int_7 = [int_0, int_1, int_3]
+    assert var_1 == 1
+    assert var_1 == -1
+    int_7 = [int_0, int_3, int_1, int_4, int_2]
     var_2 = module_0.can_arrange(int_7)
-    assert var_2 == 1
-    assert var_2 == -1
-    int_8 = [int_4]
+    assert var_2 == 4
+    int_8 = [int_4, int_2, int_3, int_1, int_0]
     var_3 = module_0.can_arrange(int_8)
-    assert var_3 == 1
-    assert var_3 == -1
+    assert var_3 == 4
     var_4 = []
     var_5 = module_0.can_arrange(var_4)
     assert var_5 == 1
     assert var_5 == -1
-    int_9 = [int_2, int_1, int_3, int_0]
-    var_6 = module_0.can_arrange(int_9)
-    assert var_6 == 3
+    int_9 = 7
+    int_10 = [int_9]
+    var_6 = module_0.can_arrange(int_10)
+    assert var_6 == 1
+    assert var_6 == -1
+    int_11 = [int_1, int_1, int_1, int_1]
+    var_7 = module_0.can_arrange(int_11)
+    assert var_7 == 1
+    assert var_7 == -1
+    int_12 = [int_0, int_1, int_3, int_2, int_3]
+    var_8 = module_0.can_arrange(int_12)
+    assert var_8 == 4
+    int_13 = 6
+    int_14 = 8
+    int_15 = [int_4, int_3, int_13, int_9, int_14]
+    var_9 = module_0.can_arrange(int_15)
+    assert var_9 == 1
+    int_16 = [int_0, int_0, int_1, int_1, int_0]
+    var_10 = module_0.can_arrange(int_16)
+    assert var_10 == 4
+    str_0 = 'All tests passed!'
+    var_11 = print(str_0)

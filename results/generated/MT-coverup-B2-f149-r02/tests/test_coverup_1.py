@@ -2,36 +2,41 @@
 # asked: {"lines": [3, 4, 5, 6, 7, 8], "branches": [[5, 6], [5, 8], [6, 5], [6, 7]]}
 # gained: {"lines": [3, 4, 5, 6, 7, 8], "branches": [[5, 6], [5, 8], [6, 5], [6, 7]]}
 
-import pytest
-
 from f149 import sorted_list_sum
 
 
-def test_sorted_list_sum_filters_odd_and_sorts_by_length():
-    result = sorted_list_sum(["aa", "a", "aaa", "bb"])
-    # "a" and "aaa" have odd lengths and are removed;
-    # "aa" and "bb" are sorted by length (stable, so original order kept)
-    assert result == ["aa", "bb"]
+def test_mixed_lengths_filters_odd_and_sorts_by_length():
+    # Covers: sort (line 3), init (4), loop (5), both branches of the
+    # even-length check (6), append (7), and final return (8).
+    result = sorted_list_sum(["ab", "a", "aaa", "cd"])
+    assert result == ["ab", "cd"]
 
 
-def test_sorted_list_sum_sorts_equal_lengths_alphabetically():
-    # lst.sort() on line 3 makes equal-length strings come out alphabetically
+def test_all_even_lengths_sorted_by_length():
+    result = sorted_list_sum(["dddd", "bb", "aa", "cc"])
+    assert result == ["aa", "bb", "cc", "dddd"]
+
+
+def test_equal_lengths_keep_lexicographic_order():
+    # Stable sort by len preserves the lexicographic order from lst.sort().
     result = sorted_list_sum(["dd", "cc", "bb", "aa"])
     assert result == ["aa", "bb", "cc", "dd"]
 
 
-def test_sorted_list_sum_empty_input():
-    assert sorted_list_sum([]) == []
+def test_no_even_length_strings_returns_empty():
+    # Exercises the False branch of the length check for every element.
+    result = sorted_list_sum(["a", "bbb", "abcde"])
+    assert result == []
 
 
-def test_sorted_list_sum_all_odd_lengths_removed():
-    assert sorted_list_sum(["a", "abc", "abcde"]) == []
+def test_empty_list_returns_empty():
+    result = sorted_list_sum([])
+    assert result == []
 
 
-def test_sorted_list_sum_does_not_mutate_callers_list():
-    original = ["aaa", "bb", "c"]
-    snapshot = list(original)
-    sorted_list_sum(original)
-    # the function sorts in place, but the caller's list content order
-    # is the only observable mutation; verify content is preserved
-    assert sorted(original) == sorted(snapshot)
+def test_input_list_is_sorted_in_place():
+    # lst.sort() mutates the caller's list; verify that side effect too.
+    lst = ["ccc", "a", "bb"]
+    result = sorted_list_sum(lst)
+    assert lst == ["a", "bb", "ccc"]
+    assert result == ["bb"]

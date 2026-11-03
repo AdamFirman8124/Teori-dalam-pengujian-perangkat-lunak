@@ -3,30 +3,32 @@ import pytest
 import f004 as module_0
 
 def test_case_0():
-    int_0 = 1
-    int_1 = 2
-    int_2 = 3
-    int_3 = 4
-    int_4 = 5
-    int_5 = [int_0, int_1, int_2, int_3, int_4]
-    float_0 = module_0.mean_absolute_deviation(int_5)
-    assert float_0 == pytest.approx(1.2, abs=0.01, rel=0.01)
-    int_6 = [int_4]
-    float_1 = module_0.mean_absolute_deviation(int_6)
-    assert float_1 == pytest.approx(0.0, abs=0.01, rel=0.01)
-    int_7 = [int_1, int_1, int_1, int_1]
-    float_2 = module_0.mean_absolute_deviation(int_7)
-    assert float_2 == pytest.approx(0.0, abs=0.01, rel=0.01)
-    int_8 = 10
-    int_9 = 20
-    int_10 = [int_8, int_9]
-    float_3 = module_0.mean_absolute_deviation(int_10)
-    assert float_3 == pytest.approx(5.0, abs=0.01, rel=0.01)
-    int_11 = -1
-    int_12 = 0
-    int_13 = [int_11, int_12, int_0]
-    float_4 = module_0.mean_absolute_deviation(int_13)
+    float_0 = 1.0
+    float_1 = 2.0
+    float_2 = 3.0
+    float_3 = [float_0, float_1, float_2]
+    float_4 = module_0.mean_absolute_deviation(float_3)
     assert float_4 == pytest.approx(0.6666666666666666, abs=0.01, rel=0.01)
-    var_0 = int_1 / int_2
-    var_1 = float_4 - var_0
+    var_0 = float_1 / float_2
+    float_5 = 4.0
+    float_6 = [float_0, float_1, float_2, float_5]
+    float_7 = module_0.mean_absolute_deviation(float_6)
+    assert float_7 == pytest.approx(1.0, abs=0.01, rel=0.01)
+    float_8 = 5.0
+    float_9 = [float_8]
+    float_10 = module_0.mean_absolute_deviation(float_9)
+    assert float_10 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    float_11 = [float_1, float_1, float_1, float_1]
+    float_12 = module_0.mean_absolute_deviation(float_11)
+    assert float_12 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    float_13 = -2.0
+    float_14 = -1.0
+    float_15 = [float_13, float_14, float_0, float_1]
+    float_16 = module_0.mean_absolute_deviation(float_15)
+    assert float_16 == pytest.approx(1.5, abs=0.01, rel=0.01)
+    float_17 = [float_0, float_1, float_2]
+    float_18 = module_0.mean_absolute_deviation(float_17)
+    assert float_18 == pytest.approx(0.6666666666666666, abs=0.01, rel=0.01)
+    float_19 = 0.6666666666666666
+    var_1 = float_18 - float_19
     var_2 = abs(var_1)

@@ -5,17 +5,26 @@
 from f078 import hex_key
 
 
-def test_hex_key_empty():
+def test_hex_key_empty_string():
+    """Empty input: loop body never runs, result is 0."""
     assert hex_key("") == 0
 
 
 def test_hex_key_no_primes():
-    assert hex_key("014689ACEF018") == 0
+    """Only non-prime hex digits: the if-branch is never taken."""
+    assert hex_key("1010") == 0
+    assert hex_key("01489ACEF") == 0
 
 
 def test_hex_key_all_primes():
+    """Every character is a prime hex digit: the if-branch is always taken."""
     assert hex_key("2357BD") == 6
 
 
 def test_hex_key_mixed():
-    assert hex_key("0123456789ABCDEF") == 6
+    """Mixed digits exercise both branches of the if."""
+    assert hex_key("AB") == 1
+    assert hex_key("1077E") == 2
+    assert hex_key("ABED1A33") == 4
+    assert hex_key("123456789ABCDEF0") == 6
+    assert hex_key("2020") == 2

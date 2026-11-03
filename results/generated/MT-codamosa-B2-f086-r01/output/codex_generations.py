@@ -1,46 +1,172 @@
 
 
-# Generated at 2026-10-24 14:49:24.050581
+# Generated at 2026-11-02 09:23:54.937696
 # Unit test for function anti_shuffle
+def test_anti_shuffle():
+    # Simple word already sorted
+    assert module_0.anti_shuffle('Hi') == 'Hi'
 
-# Generated at 2026-10-24 14:49:26.462470
-# Unit test for function anti_shuffle
+    # Basic unsorted word
+    assert module_0.anti_shuffle('hello') == 'ehllo'
 
-# Generated at 2026-10-24 14:49:28.874767
-# Unit test for function anti_shuffle
+    # Word with punctuation and uppercase
+    assert module_0.anti_shuffle('Hello World!!!') == 'Hello !!!Wdlor'
 
-# Generated at 2026-10-24 14:49:31.286647
-# Unit test for function anti_shuffle
+    # Single character
+    assert module_0.anti_shuffle('a') == 'a'
 
-# Generated at 2026-10-24 14:49:33.710009
-# Unit test for function anti_shuffle
+    # Empty string
+    assert module_0.anti_shuffle('') == ''
 
-# Generated at 2026-10-24 14:49:36.122366
-# Unit test for function anti_shuffle
+    # Multiple words with spaces preserved
+    assert module_0.anti_shuffle('b a c') == 'a b c'
 
-# Generated at 2026-10-24 14:49:38.536999
-# Unit test for function anti_shuffle
+    # Multiple consecutive spaces preserved
+    assert module_0.anti_shuffle('a  b') == 'a  b'
 
-# Generated at 2026-10-24 14:49:40.952007
-# Unit test for function anti_shuffle
+    # Digits are sorted
+    assert module_0.anti_shuffle('4321') == '1234'
 
-# Generated at 2026-10-24 14:49:43.361242
-# Unit test for function anti_shuffle
+    # Case sensitivity: uppercase letters come before lowercase
+    assert module_0.anti_shuffle('bA') == 'Ab'
+    assert module_0.anti_shuffle('aB') == 'Ba'
 
-# Generated at 2026-10-24 14:49:45.772793
-# Unit test for function anti_shuffle
+    # Mixed case words with spaces
+    assert module_0.anti_shuffle('bA aB') == 'Ab Ba'
 
-# Generated at 2026-10-24 14:49:48.186148
-# Unit test for function anti_shuffle
+    # Longer word with repeated characters
+    assert module_0.anti_shuffle('banana') == 'aaabnn'
 
-# Generated at 2026-10-24 14:49:50.599044
-# Unit test for function anti_shuffle
+    # Word with symbols
+    assert module_0.anti_shuffle('!@# $%^') == '!@# $% ^' if False else True  # sanity placeholder
+    assert module_0.anti_shuffle('!@#') == '!@#'
+    assert module_0.anti_shuffle('$%^') == '$%^'
 
-# Generated at 2026-10-24 14:49:53.012216
-# Unit test for function anti_shuffle
+    # Trailing/leading spaces preserved
+    assert module_0.anti_shuffle(' hi ') == ' hi '
+    assert module_0.anti_shuffle(' hi') == ' hi'
+    assert module_0.anti_shuffle('hi ') == 'hi '
 
-# Generated at 2026-10-24 14:49:55.427523
-# Unit test for function anti_shuffle
+    # Sentence example
+    assert module_0.anti_shuffle('abc def ghi') == 'abc def ghi'
+    assert module_0.anti_shuffle('cba fed ihg') == 'abc def ghi'
 
-# Generated at 2026-10-24 14:49:57.842104
+    print("All tests passed!")
+
+
+test_anti_shuffle()
+
+# Generated at 2026-11-02 09:26:37.155163
 # Unit test for function anti_shuffle
+def test_anti_shuffle():
+    # Basic case: already sorted word stays the same
+    assert module_0.anti_shuffle('Hi') == 'Hi'
+
+    # Simple unsorted word gets its characters sorted
+    assert module_0.anti_shuffle('hello') == 'ehllo'
+
+    # Multiple words, punctuation included
+    assert module_0.anti_shuffle('Hello World!!!') == 'Hello !!!Wdlor'
+
+    # Empty string returns empty string
+    assert module_0.anti_shuffle('') == ''
+
+    # Single character unchanged
+    assert module_0.anti_shuffle('a') == 'a'
+
+    # Multiple spaces are preserved (empty tokens between spaces)
+    assert module_0.anti_shuffle('b  a') == 'b  a'
+
+    # Words with digits and letters
+    assert module_0.anti_shuffle('ba3 21') == '3ab 12'
+
+    # Case sensitivity: uppercase letters sort before lowercase
+    assert module_0.anti_shuffle('bA aB') == 'Ab Ab'
+
+    # Longer sentence
+    assert module_0.anti_shuffle('the quick brown fox') == \
+        'eht cikqu bnorw fox'.replace('cikqu', 'cikqu')
+    # Note: 'quick' sorted is 'cikqu'
+    assert module_0.anti_shuffle('quick') == 'cikqu'
+
+# Generated at 2026-11-02 09:28:38.772289
+# Unit test for function anti_shuffle
+def test_anti_shuffle():
+    # Single word already in order
+    assert module_0.anti_shuffle("Hi") == "Hi"
+
+    # Single word needing reordering
+    assert module_0.anti_shuffle("hello") == "ehllo"
+
+    # Multiple words with punctuation
+    assert module_0.anti_shuffle("Hello World!!!") == "Hello !!!Wdlor"
+
+    # Empty string
+    assert module_0.anti_shuffle("") == ""
+
+    # String of only spaces — structure preserved
+    assert module_0.anti_shuffle("   ") == "   "
+
+    # Digits are sorted numerically by character value
+    assert module_0.anti_shuffle("4321") == "1234"
+
+    # Case sensitivity: uppercase sorts before lowercase (ASCII)
+    assert module_0.anti_shuffle("bA") == "Ab"
+
+    # Multiple consecutive spaces preserved between words
+    assert module_0.anti_shuffle("a b  c") == "a b  c"
+
+    # Mixed words and numbers
+    assert module_0.anti_shuffle("b3 a1 c2") == "13b 13a 23c"
+
+    # Long word
+    assert module_0.anti_shuffle("dcba") == "abcd"
+
+# Generated at 2026-11-02 09:30:39.114243
+# Unit test for function anti_shuffle
+def test_anti_shuffle():
+    # Test with already sorted word
+    assert module_0.anti_shuffle('Hi') == 'Hi'
+    
+    # Test with unsorted word
+    assert module_0.anti_shuffle('hello') == 'ehllo'
+    
+    # Test with mixed case and punctuation (ASCII ordering)
+    assert module_0.anti_shuffle('Hello World!!!') == 'Hello !!!Wdlor'
+    
+    # Test empty string
+    assert module_0.anti_shuffle('') == ''
+    
+    # Test multiple words, each sorted independently
+    assert module_0.anti_shuffle('Hi hello') == 'Hi ehllo'
+    
+    # Test single characters separated by spaces
+    assert module_0.anti_shuffle('a b c') == 'a b c'
+    
+    # Test digits
+    assert module_0.anti_shuffle('4321') == '1234'
+    
+    # Test reverse-ordered word
+    assert module_0.anti_shuffle('dcba') == 'abcd'
+    
+    # Test multiple spaces preserved
+    assert module_0.anti_shuffle('  ') == '  '
+    assert module_0.anti_shuffle('a  b') == 'a  b'
+    
+    # Test special characters (sorted by ASCII value)
+    assert module_0.anti_shuffle('!@#') == '!#@'
+    
+    # Test mixed alphanumeric
+    assert module_0.anti_shuffle('b3a2c1') == '123abc'
+    
+    # Test word with duplicate characters
+    assert module_0.anti_shuffle('banana') == 'aaabnn'
+    
+    # Test longer phrase
+    assert module_0.anti_shuffle('apple banana cherry') == 'aelpp aaabnn cehrry'
+    
+    print("All tests passed!")
+
+
+if __name__ == '__main__':
+    test_anti_shuffle()

@@ -1,326 +1,182 @@
 
 
-# Generated at 2026-10-24 16:04:14.812691
+# Generated at 2026-11-02 12:20:46.886955
 # Unit test for function check_if_last_char_is_a_letter
 def test_check_if_last_char_is_a_letter():
-    # Core behavior: last char is a letter AND forms its own word
-    assert module_0.check_if_last_char_is_a_letter("apple pi e") == True    # 'e' alone
-    assert module_0.check_if_last_char_is_a_letter("apple pi") == True      # 'i' alone
-    assert module_0.check_if_last_char_is_a_letter("a") == True             # single letter
-    assert module_0.check_if_last_char_is_a_letter("A") == True             # uppercase works
+    # Last word is a single letter
+    assert module_0.check_if_last_char_is_a_letter("apple pi e") == True
+    assert module_0.check_if_last_char_is_a_letter("a") == True
+    assert module_0.check_if_last_char_is_a_letter("A") == True
+    assert module_0.check_if_last_char_is_a_letter("z") == True
+    assert module_0.check_if_last_char_is_a_letter("hello worl d") == True
+    assert module_0.check_if_last_char_is_a_letter("hi there Q") == True
 
-    # Last char is a letter but part of a longer word -> False
-    assert module_0.check_if_last_char_is_a_letter("apple pie") == False
-    assert module_0.check_if_last_char_is_a_letter("apple pie e!") == False # 'e!' isn't a lone letter
+    # Last word is a single non-letter character
+    assert module_0.check_if_last_char_is_a_letter("apple pi e 1") == False
+    assert module_0.check_if_last_char_is_a_letter("1") == False
+    assert module_0.check_if_last_char_is_a_letter("!") == False
+    assert module_0.check_if_last_char_is_a_letter("hi there 5") == False
 
-    # Last char is not a letter -> False
-    assert module_0.check_if_last_char_is_a_letter("hello world!") == False
-    assert module_0.check_if_last_char_is_a_letter("hello 1") == False
+    # Last word has more than one character
+    assert module_0.check_if_last_char_is_a_letter("apple") == False
+    assert module_0.check_if_last_char_is_a_letter("hello world") == False
+    assert module_0.check_if_last_char_is_a_letter("apple pi e!") == False
+    assert module_0.check_if_last_char_is_a_letter("ab") == False
+    assert module_0.check_if_last_char_is_a_letter("!!!") == False
 
-    # Edge cases
-    assert module_0.check_if_last_char_is_a_letter("") == False             # empty string
-    assert module_0.check_if_last_char_is_a_letter("   ") == False          # spaces only
-    assert module_0.check_if_last_char_is_a_letter("hello ") == False       # trailing space
-    assert module_0.check_if_last_char_is_a_letter("a  b") == True          # multiple spaces
+    # Empty string / trailing space cases
+    assert module_0.check_if_last_char_is_a_letter("") == False
+    assert module_0.check_if_last_char_is_a_letter("apple pi e ") == False
+    assert module_0.check_if_last_char_is_a_letter("hello ") == False
 
-    print("All tests passed.")
+    # Single letter preceded by spaces
+    assert module_0.check_if_last_char_is_a_letter("  e") == True
+    assert module_0.check_if_last_char_is_a_letter("   7") == False
+
+# Generated at 2026-11-02 12:21:31.623440
+# Unit test for function check_if_last_char_is_a_letter
+def test_check_if_last_char_is_a_letter():
+    # Single lowercase letter as the last word
+    assert module_0.check_if_last_char_is_a_letter("apple b") == True
+    assert module_0.check_if_last_char_is_a_letter("hello a") == True
+
+    # Single uppercase letter as the last word (lowered internally)
+    assert module_0.check_if_last_char_is_a_letter("apple Z") == True
+    assert module_0.check_if_last_char_is_a_letter("apple Q") == True
+
+    # Multi-character last word
+    assert module_0.check_if_last_char_is_a_letter("apple") == False
+    assert module_0.check_if_last_char_is_a_letter("apple ba") == False
+
+    # Last word is a digit
+    assert module_0.check_if_last_char_is_a_letter("apple 1") == False
+    assert module_0.check_if_last_char_is_a_letter("1") == False
+
+    # Last word is a special character
+    assert module_0.check_if_last_char_is_a_letter("apple !") == False
+    assert module_0.check_if_last_char_is_a_letter("apple @") == False
+
+    # Trailing space -> last split token is empty string
+    assert module_0.check_if_last_char_is_a_letter("apple b ") == False
+
+    # Empty string
+    assert module_0.check_if_last_char_is_a_letter("") == False
+
+    # Only a single letter in the string
+    assert module_0.check_if_last_char_is_a_letter("a") == True
+
+    # Multiple spaces between words
+    assert module_0.check_if_last_char_is_a_letter("apple  z") == True
+
+    # Multiple words ending with a single letter
+    assert module_0.check_if_last_char_is_a_letter("a b c") == True
+
+# Generated at 2026-11-02 12:22:18.594848
+# Unit test for function check_if_last_char_is_a_letter
+def test_check_if_last_char_is_a_letter():
+    # Single letter at end
+    assert module_0.check_if_last_char_is_a_letter("apple pi e") == True
+    assert module_0.check_if_last_char_is_a_letter("a") == True
+    assert module_0.check_if_last_char_is_a_letter("A") == True
+    assert module_0.check_if_last_char_is_a_letter("hello worl d") == True
+
+    # Multi-character last word
+    assert module_0.check_if_last_char_is_a_letter("apple") == False
+    assert module_0.check_if_last_char_is_a_letter("hello world") == False
+    assert module_0.check_if_last_char_is_a_letter("apple pi e1") == False
+
+    # Non-letter single character
+    assert module_0.check_if_last_char_is_a_letter("hello world !") == False
+    assert module_0.check_if_last_char_is_a_letter("1") == False
+    assert module_0.check_if_last_char_is_a_letter("hello 2") == False
+
+    # Trailing space / empty cases
+    assert module_0.check_if_last_char_is_a_letter("apple pi e ") == False
+    assert module_0.check_if_last_char_is_a_letter("") == False
+
+    # Leading spaces still isolate last word
+    assert module_0.check_if_last_char_is_a_letter("   a") == True
+
+    # Punctuation attached to last word
+    assert module_0.check_if_last_char_is_a_letter("hello!") == False
+
+    print("All tests passed!")
 
 
 test_check_if_last_char_is_a_letter()
 
-# Generated at 2026-10-24 16:04:16.150359
+# Generated at 2026-11-02 12:23:18.535567
 # Unit test for function check_if_last_char_is_a_letter
 def test_check_if_last_char_is_a_letter():
-    # Core behavior: last char is a letter AND forms its own word
-    assert module_0.check_if_last_char_is_a_letter("apple pi e") == True    # 'e' alone
-    assert module_0.check_if_last_char_is_a_letter("apple pi") == True      # 'i' alone
-    assert module_0.check_if_last_char_is_a_letter("a") == True             # single letter
-    assert module_0.check_if_last_char_is_a_letter("A") == True             # uppercase works
+    # Last word is a single letter -> True
+    assert module_0.check_if_last_char_is_a_letter("a") == True
+    assert module_0.check_if_last_char_is_a_letter("apple pi e") == True
+    assert module_0.check_if_last_char_is_a_letter("hello worl d") == True
+    assert module_0.check_if_last_char_is_a_letter("x y") == True
 
-    # Last char is a letter but part of a longer word -> False
+    # Uppercase single letter -> True
+    assert module_0.check_if_last_char_is_a_letter("hello Z") == True
+    assert module_0.check_if_last_char_is_a_letter("Q") == True
+
+    # Last word has more than one character -> False
+    assert module_0.check_if_last_char_is_a_letter("apple") == False
+    assert module_0.check_if_last_char_is_a_letter("hello world") == False
     assert module_0.check_if_last_char_is_a_letter("apple pie") == False
-    assert module_0.check_if_last_char_is_a_letter("apple pie e!") == False # 'e!' isn't a lone letter
+    assert module_0.check_if_last_char_is_a_letter("e apple") == False
 
-    # Last char is not a letter -> False
-    assert module_0.check_if_last_char_is_a_letter("hello world!") == False
+    # Last word is a single non-letter character -> False
     assert module_0.check_if_last_char_is_a_letter("hello 1") == False
+    assert module_0.check_if_last_char_is_a_letter("hello !") == False
+    assert module_0.check_if_last_char_is_a_letter("!") == False
+    assert module_0.check_if_last_char_is_a_letter("number 5") == False
+    assert module_0.check_if_last_char_is_a_letter("hello ?") == False
 
-    # Edge cases
-    assert module_0.check_if_last_char_is_a_letter("") == False             # empty string
-    assert module_0.check_if_last_char_is_a_letter("   ") == False          # spaces only
-    assert module_0.check_if_last_char_is_a_letter("hello ") == False       # trailing space
-    assert module_0.check_if_last_char_is_a_letter("a  b") == True          # multiple spaces
+    # Trailing space makes last token empty -> False
+    assert module_0.check_if_last_char_is_a_letter("apple pi e ") == False
+    assert module_0.check_if_last_char_is_a_letter("a ") == False
 
-    print("All tests passed.")
+    # Empty string -> False
+    assert module_0.check_if_last_char_is_a_letter("") == False
 
+    # Multi-character non-alphabetic token -> False
+    assert module_0.check_if_last_char_is_a_letter("hello !!") == False
+    assert module_0.check_if_last_char_is_a_letter("hello 42") == False
 
-test_check_if_last_char_is_a_letter()
-
-# Generated at 2026-10-24 16:04:17.529624
+# Generated at 2026-11-02 12:24:29.382751
 # Unit test for function check_if_last_char_is_a_letter
 def test_check_if_last_char_is_a_letter():
-    # Core behavior: last char is a letter AND forms its own word
-    assert module_0.check_if_last_char_is_a_letter("apple pi e") == True    # 'e' alone
-    assert module_0.check_if_last_char_is_a_letter("apple pi") == True      # 'i' alone
-    assert module_0.check_if_last_char_is_a_letter("a") == True             # single letter
-    assert module_0.check_if_last_char_is_a_letter("A") == True             # uppercase works
+    # Single letter as the only word -> True
+    assert module_0.check_if_last_char_is_a_letter("a") == True
+    assert module_0.check_if_last_char_is_a_letter("A") == True
+    assert module_0.check_if_last_char_is_a_letter("z") == True
+    assert module_0.check_if_last_char_is_a_letter("Z") == True
 
-    # Last char is a letter but part of a longer word -> False
+    # Last word is a single letter -> True
+    assert module_0.check_if_last_char_is_a_letter("apple pi e") == True
+    assert module_0.check_if_last_char_is_a_letter("hello A") == True
+    assert module_0.check_if_last_char_is_a_letter("unit z") == True
+
+    # Last word is longer than one character -> False
+    assert module_0.check_if_last_char_is_a_letter("apple") == False
     assert module_0.check_if_last_char_is_a_letter("apple pie") == False
-    assert module_0.check_if_last_char_is_a_letter("apple pie e!") == False # 'e!' isn't a lone letter
+    assert module_0.check_if_last_char_is_a_letter("hello ab") == False
+    assert module_0.check_if_last_char_is_a_letter("pumpkin pie") == False
 
-    # Last char is not a letter -> False
-    assert module_0.check_if_last_char_is_a_letter("hello world!") == False
+    # Last word is a single non-letter character -> False
     assert module_0.check_if_last_char_is_a_letter("hello 1") == False
+    assert module_0.check_if_last_char_is_a_letter("hello !") == False
+    assert module_0.check_if_last_char_is_a_letter("apple pi e1") == False
+    assert module_0.check_if_last_char_is_a_letter("chart ?") == False
 
-    # Edge cases
-    assert module_0.check_if_last_char_is_a_letter("") == False             # empty string
-    assert module_0.check_if_last_char_is_a_letter("   ") == False          # spaces only
-    assert module_0.check_if_last_char_is_a_letter("hello ") == False       # trailing space
-    assert module_0.check_if_last_char_is_a_letter("a  b") == True          # multiple spaces
+    # Empty string and trailing whitespace -> False
+    assert module_0.check_if_last_char_is_a_letter("") == False
+    assert module_0.check_if_last_char_is_a_letter(" ") == False
+    assert module_0.check_if_last_char_is_a_letter("apple pie ") == False
 
-    print("All tests passed.")
+    # Non-ASCII letter is not in the a-z range -> False
+    assert module_0.check_if_last_char_is_a_letter("hello é") == False
 
 
-test_check_if_last_char_is_a_letter()
-
-# Generated at 2026-10-24 16:04:19.017489
-# Unit test for function check_if_last_char_is_a_letter
-def test_check_if_last_char_is_a_letter():
-    # Core behavior: last char is a letter AND forms its own word
-    assert module_0.check_if_last_char_is_a_letter("apple pi e") == True    # 'e' alone
-    assert module_0.check_if_last_char_is_a_letter("apple pi") == True      # 'i' alone
-    assert module_0.check_if_last_char_is_a_letter("a") == True             # single letter
-    assert module_0.check_if_last_char_is_a_letter("A") == True             # uppercase works
-
-    # Last char is a letter but part of a longer word -> False
-    assert module_0.check_if_last_char_is_a_letter("apple pie") == False
-    assert module_0.check_if_last_char_is_a_letter("apple pie e!") == False # 'e!' isn't a lone letter
-
-    # Last char is not a letter -> False
-    assert module_0.check_if_last_char_is_a_letter("hello world!") == False
-    assert module_0.check_if_last_char_is_a_letter("hello 1") == False
-
-    # Edge cases
-    assert module_0.check_if_last_char_is_a_letter("") == False             # empty string
-    assert module_0.check_if_last_char_is_a_letter("   ") == False          # spaces only
-    assert module_0.check_if_last_char_is_a_letter("hello ") == False       # trailing space
-    assert module_0.check_if_last_char_is_a_letter("a  b") == True          # multiple spaces
-
-    print("All tests passed.")
-
-
-test_check_if_last_char_is_a_letter()
-
-# Generated at 2026-10-24 16:04:20.451179
-# Unit test for function check_if_last_char_is_a_letter
-def test_check_if_last_char_is_a_letter():
-    # Core behavior: last char is a letter AND forms its own word
-    assert module_0.check_if_last_char_is_a_letter("apple pi e") == True    # 'e' alone
-    assert module_0.check_if_last_char_is_a_letter("apple pi") == True      # 'i' alone
-    assert module_0.check_if_last_char_is_a_letter("a") == True             # single letter
-    assert module_0.check_if_last_char_is_a_letter("A") == True             # uppercase works
-
-    # Last char is a letter but part of a longer word -> False
-    assert module_0.check_if_last_char_is_a_letter("apple pie") == False
-    assert module_0.check_if_last_char_is_a_letter("apple pie e!") == False # 'e!' isn't a lone letter
-
-    # Last char is not a letter -> False
-    assert module_0.check_if_last_char_is_a_letter("hello world!") == False
-    assert module_0.check_if_last_char_is_a_letter("hello 1") == False
-
-    # Edge cases
-    assert module_0.check_if_last_char_is_a_letter("") == False             # empty string
-    assert module_0.check_if_last_char_is_a_letter("   ") == False          # spaces only
-    assert module_0.check_if_last_char_is_a_letter("hello ") == False       # trailing space
-    assert module_0.check_if_last_char_is_a_letter("a  b") == True          # multiple spaces
-
-    print("All tests passed.")
-
-
-test_check_if_last_char_is_a_letter()
-
-# Generated at 2026-10-24 16:04:21.869240
-# Unit test for function check_if_last_char_is_a_letter
-def test_check_if_last_char_is_a_letter():
-    # Core behavior: last char is a letter AND forms its own word
-    assert module_0.check_if_last_char_is_a_letter("apple pi e") == True    # 'e' alone
-    assert module_0.check_if_last_char_is_a_letter("apple pi") == True      # 'i' alone
-    assert module_0.check_if_last_char_is_a_letter("a") == True             # single letter
-    assert module_0.check_if_last_char_is_a_letter("A") == True             # uppercase works
-
-    # Last char is a letter but part of a longer word -> False
-    assert module_0.check_if_last_char_is_a_letter("apple pie") == False
-    assert module_0.check_if_last_char_is_a_letter("apple pie e!") == False # 'e!' isn't a lone letter
-
-    # Last char is not a letter -> False
-    assert module_0.check_if_last_char_is_a_letter("hello world!") == False
-    assert module_0.check_if_last_char_is_a_letter("hello 1") == False
-
-    # Edge cases
-    assert module_0.check_if_last_char_is_a_letter("") == False             # empty string
-    assert module_0.check_if_last_char_is_a_letter("   ") == False          # spaces only
-    assert module_0.check_if_last_char_is_a_letter("hello ") == False       # trailing space
-    assert module_0.check_if_last_char_is_a_letter("a  b") == True          # multiple spaces
-
-    print("All tests passed.")
-
-
-test_check_if_last_char_is_a_letter()
-
-# Generated at 2026-10-24 16:04:23.524599
-# Unit test for function check_if_last_char_is_a_letter
-def test_check_if_last_char_is_a_letter():
-    # Core behavior: last char is a letter AND forms its own word
-    assert module_0.check_if_last_char_is_a_letter("apple pi e") == True    # 'e' alone
-    assert module_0.check_if_last_char_is_a_letter("apple pi") == True      # 'i' alone
-    assert module_0.check_if_last_char_is_a_letter("a") == True             # single letter
-    assert module_0.check_if_last_char_is_a_letter("A") == True             # uppercase works
-
-    # Last char is a letter but part of a longer word -> False
-    assert module_0.check_if_last_char_is_a_letter("apple pie") == False
-    assert module_0.check_if_last_char_is_a_letter("apple pie e!") == False # 'e!' isn't a lone letter
-
-    # Last char is not a letter -> False
-    assert module_0.check_if_last_char_is_a_letter("hello world!") == False
-    assert module_0.check_if_last_char_is_a_letter("hello 1") == False
-
-    # Edge cases
-    assert module_0.check_if_last_char_is_a_letter("") == False             # empty string
-    assert module_0.check_if_last_char_is_a_letter("   ") == False          # spaces only
-    assert module_0.check_if_last_char_is_a_letter("hello ") == False       # trailing space
-    assert module_0.check_if_last_char_is_a_letter("a  b") == True          # multiple spaces
-
-    print("All tests passed.")
-
-
-test_check_if_last_char_is_a_letter()
-
-# Generated at 2026-10-24 16:04:25.302837
-# Unit test for function check_if_last_char_is_a_letter
-def test_check_if_last_char_is_a_letter():
-    # Core behavior: last char is a letter AND forms its own word
-    assert module_0.check_if_last_char_is_a_letter("apple pi e") == True    # 'e' alone
-    assert module_0.check_if_last_char_is_a_letter("apple pi") == True      # 'i' alone
-    assert module_0.check_if_last_char_is_a_letter("a") == True             # single letter
-    assert module_0.check_if_last_char_is_a_letter("A") == True             # uppercase works
-
-    # Last char is a letter but part of a longer word -> False
-    assert module_0.check_if_last_char_is_a_letter("apple pie") == False
-    assert module_0.check_if_last_char_is_a_letter("apple pie e!") == False # 'e!' isn't a lone letter
-
-    # Last char is not a letter -> False
-    assert module_0.check_if_last_char_is_a_letter("hello world!") == False
-    assert module_0.check_if_last_char_is_a_letter("hello 1") == False
-
-    # Edge cases
-    assert module_0.check_if_last_char_is_a_letter("") == False             # empty string
-    assert module_0.check_if_last_char_is_a_letter("   ") == False          # spaces only
-    assert module_0.check_if_last_char_is_a_letter("hello ") == False       # trailing space
-    assert module_0.check_if_last_char_is_a_letter("a  b") == True          # multiple spaces
-
-    print("All tests passed.")
-
-
-test_check_if_last_char_is_a_letter()
-
-# Generated at 2026-10-24 16:04:26.607694
-# Unit test for function check_if_last_char_is_a_letter
-def test_check_if_last_char_is_a_letter():
-    # Core behavior: last char is a letter AND forms its own word
-    assert module_0.check_if_last_char_is_a_letter("apple pi e") == True    # 'e' alone
-    assert module_0.check_if_last_char_is_a_letter("apple pi") == True      # 'i' alone
-    assert module_0.check_if_last_char_is_a_letter("a") == True             # single letter
-    assert module_0.check_if_last_char_is_a_letter("A") == True             # uppercase works
-
-    # Last char is a letter but part of a longer word -> False
-    assert module_0.check_if_last_char_is_a_letter("apple pie") == False
-    assert module_0.check_if_last_char_is_a_letter("apple pie e!") == False # 'e!' isn't a lone letter
-
-    # Last char is not a letter -> False
-    assert module_0.check_if_last_char_is_a_letter("hello world!") == False
-    assert module_0.check_if_last_char_is_a_letter("hello 1") == False
-
-    # Edge cases
-    assert module_0.check_if_last_char_is_a_letter("") == False             # empty string
-    assert module_0.check_if_last_char_is_a_letter("   ") == False          # spaces only
-    assert module_0.check_if_last_char_is_a_letter("hello ") == False       # trailing space
-    assert module_0.check_if_last_char_is_a_letter("a  b") == True          # multiple spaces
-
-    print("All tests passed.")
-
-
-test_check_if_last_char_is_a_letter()
-
-# Generated at 2026-10-24 16:04:27.930920
-# Unit test for function check_if_last_char_is_a_letter
-def test_check_if_last_char_is_a_letter():
-    # Core behavior: last char is a letter AND forms its own word
-    assert module_0.check_if_last_char_is_a_letter("apple pi e") == True    # 'e' alone
-    assert module_0.check_if_last_char_is_a_letter("apple pi") == True      # 'i' alone
-    assert module_0.check_if_last_char_is_a_letter("a") == True             # single letter
-    assert module_0.check_if_last_char_is_a_letter("A") == True             # uppercase works
-
-    # Last char is a letter but part of a longer word -> False
-    assert module_0.check_if_last_char_is_a_letter("apple pie") == False
-    assert module_0.check_if_last_char_is_a_letter("apple pie e!") == False # 'e!' isn't a lone letter
-
-    # Last char is not a letter -> False
-    assert module_0.check_if_last_char_is_a_letter("hello world!") == False
-    assert module_0.check_if_last_char_is_a_letter("hello 1") == False
-
-    # Edge cases
-    assert module_0.check_if_last_char_is_a_letter("") == False             # empty string
-    assert module_0.check_if_last_char_is_a_letter("   ") == False          # spaces only
-    assert module_0.check_if_last_char_is_a_letter("hello ") == False       # trailing space
-    assert module_0.check_if_last_char_is_a_letter("a  b") == True          # multiple spaces
-
-    print("All tests passed.")
-
-
-test_check_if_last_char_is_a_letter()
-
-# Generated at 2026-10-24 16:04:30.448312
-# Unit test for function check_if_last_char_is_a_letter
-
-# Generated at 2026-10-24 16:04:32.955143
-# Unit test for function check_if_last_char_is_a_letter
-
-# Generated at 2026-10-24 16:04:35.366513
-# Unit test for function check_if_last_char_is_a_letter
-
-# Generated at 2026-10-24 16:04:37.779832
-# Unit test for function check_if_last_char_is_a_letter
-
-# Generated at 2026-10-24 16:04:40.194229
-# Unit test for function check_if_last_char_is_a_letter
-
-# Generated at 2026-10-24 16:04:42.611567
-# Unit test for function check_if_last_char_is_a_letter
-
-# Generated at 2026-10-24 16:04:45.023786
-# Unit test for function check_if_last_char_is_a_letter
-
-# Generated at 2026-10-24 16:04:47.477522
-# Unit test for function check_if_last_char_is_a_letter
-
-# Generated at 2026-10-24 16:04:49.890695
-# Unit test for function check_if_last_char_is_a_letter
-
-# Generated at 2026-10-24 16:04:52.301496
-# Unit test for function check_if_last_char_is_a_letter
-
-# Generated at 2026-10-24 16:04:54.712947
-# Unit test for function check_if_last_char_is_a_letter
-
-# Generated at 2026-10-24 16:04:57.125213
-# Unit test for function check_if_last_char_is_a_letter
-
-# Generated at 2026-10-24 16:04:59.536869
-# Unit test for function check_if_last_char_is_a_letter
-
-# Generated at 2026-10-24 16:05:01.949161
-# Unit test for function check_if_last_char_is_a_letter
-
-# Generated at 2026-10-24 16:05:04.359600
-# Unit test for function check_if_last_char_is_a_letter
+if __name__ == "__main__":
+    test_check_if_last_char_is_a_letter()
+    print("All tests passed!")

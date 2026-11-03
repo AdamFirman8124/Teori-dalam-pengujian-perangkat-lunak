@@ -2,40 +2,54 @@
 # asked: {"lines": [3, 4, 6, 7, 8, 9, 10, 11, 12], "branches": [[3, 4], [3, 6], [7, 8], [7, 12], [8, 9], [8, 10]]}
 # gained: {"lines": [3, 4, 6, 7, 8, 9, 10, 11, 12], "branches": [[3, 4], [3, 6], [7, 8], [7, 12], [8, 9], [8, 10]]}
 
+"""Tests for f072.will_it_fly, covering all previously missed lines 3-12
+and every branch (overweight, non-palindrome, even/odd/empty palindromes).
+
+will_it_fly is a pure function with no external state, so no monkeypatching
+or fixture teardown is required; each test is fully self-contained.
+"""
+
 import pytest
 
 from f072 import will_it_fly
 
 
-def test_too_heavy_returns_false():
-    # sum(q) > w -> line 3 branch True, line 4
-    assert will_it_fly([3, 2, 3], 1) is False
-    assert will_it_fly([5], 4) is False
+@pytest.mark.parametrize(
+    "q, w",
+    [
+        ([3, 2, 3], 5),   # sum(q) == 8 > 5
+        ([1, 2, 3], 5),   # sum(q) == 6 > 5
+    ],
+)
+def test_overweight_returns_false(q, w):
+    """Lines 3-4: when the total weight exceeds w, the result is False."""
+    assert will_it_fly(q, w) is False
 
 
-def test_not_palindromic_returns_false():
-    # sum <= w but q[i] != q[j] -> lines 6-9
+def test_balanced_but_not_palindrome_returns_false():
+    """Lines 6-9: weight is balanced but objects are asymmetric -> False."""
     assert will_it_fly([1, 2], 5) is False
-    assert will_it_fly([1, 2, 3, 4], 100) is False
-
-
-def test_balanced_palindrome_returns_true():
-    # loop runs, i+=1 / j-=1 execute (lines 10-11), then return True (line 12)
-    assert will_it_fly([3, 2, 3], 9) is True
-    assert will_it_fly([1, 2, 1], 5) is True
 
 
 def test_even_length_palindrome_returns_true():
-    # exercises the loop with even-length q
-    assert will_it_fly([2, 2], 4) is True
-    assert will_it_fly([1, 2, 2, 1], 6) is True
+    """Lines 7-12: balanced even-length palindrome -> True.
+
+    Exercises the mismatch check evaluating False and both pointer
+    updates (i += 1, j -= 1) before the loop terminates.
+    """
+    assert will_it_fly([1, 2, 2, 1], 10) is True
 
 
-def test_single_element_returns_true():
-    # while loop never runs (i == j), line 12 reached
-    assert will_it_fly([1], 1) is True
+def test_odd_length_palindrome_returns_true():
+    """Lines 10-11 with i == j at loop exit, then line 12 -> True."""
+    assert will_it_fly([1, 2, 1], 5) is True
 
 
 def test_empty_list_returns_true():
-    # len(q)-1 == -1, loop skipped, line 12 reached
-    assert will_it_fly([], 0) is True
+    """Lines 6-7: the while loop is never entered for an empty q -> True."""
+    assert will_it_fly([], 5) is True
+
+
+def test_single_object_at_exact_capacity_returns_true():
+    """Boundary: sum(q) == w (not > w) and trivially palindromic -> True."""
+    assert will_it_fly([5], 5) is True

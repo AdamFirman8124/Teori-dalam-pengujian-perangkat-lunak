@@ -7,26 +7,42 @@ import pytest
 from f080 import is_happy
 
 
-def test_is_happy_short_string_returns_false():
-    # Covers line 3-4: len(s) < 3 branch (True path)
-    assert is_happy("") is False
-    assert is_happy("a") is False
-    assert is_happy("ab") is False
+@pytest.mark.parametrize("s", ["", "a", "ab", "x", "yz"])
+def test_too_short_returns_false(s):
+    # Covers lines 3-4: the len(s) < 3 branch taken (and its False outcome
+    # is exercised by the longer-string tests below).
+    assert is_happy(s) is False
 
 
-def test_is_happy_repeated_adjacent_chars_returns_false():
-    # Covers lines 6, 8-9: loop entered, adjacent-equal branch (True path)
-    assert is_happy("aab") is False
-    assert is_happy("abb") is False
+@pytest.mark.parametrize("s", ["aab", "aabb", "aaab", "xx"])
+def test_first_disjunct_returns_false(s):
+    # Covers lines 6, 8-9 with the first condition s[i] == s[i+1] true.
+    assert is_happy(s) is False
 
 
-def test_is_happy_repeated_skip_one_chars_returns_false():
-    # Covers lines 6, 8-9: s[i] == s[i+2] branch (True path)
-    assert is_happy("aba") is False
+@pytest.mark.parametrize("s", ["abb", "adbbd", "abbb"])
+def test_second_disjunct_returns_false(s):
+    # Covers lines 8-9 with s[i] != s[i+1] but s[i+1] == s[i+2] true.
+    assert is_happy(s) is False
 
 
-def test_is_happy_valid_string_returns_true():
-    # Covers lines 6, 8, 10: loop completes with no early return
+@pytest.mark.parametrize("s", ["aba", "abab", "abcac"])
+def test_third_disjunct_returns_false(s):
+    # Covers lines 8-9 with the first two conditions false but
+    # s[i] == s[i+2] true (e.g. "aba").
+    assert is_happy(s) is False
+
+
+@pytest.mark.parametrize("s", ["abc", "adb", "abcd", "abcdef", "xyz"])
+def test_happy_strings_return_true(s):
+    # Covers line 10: loop runs to completion without any violation.
+    # Also covers the False outcome of the len(s) < 3 branch (line 3).
+    assert is_happy(s) is True
+
+
+def test_exact_length_three_boundaries():
+    # Boundary between the two branches: length 3 is the smallest happy case,
+    # length 2 is the largest short case.
     assert is_happy("abc") is True
-    assert is_happy("abcd") is True
-    assert is_happy("abcdef") is True
+    assert is_happy("aba") is False
+    assert is_happy("ab") is False

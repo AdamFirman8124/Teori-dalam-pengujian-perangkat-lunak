@@ -2,13 +2,49 @@
 import f104 as module_0
 
 def test_case_0():
-    int_0 = 135
-    int_1 = 246
-    int_2 = 7
-    int_3 = 31
-    int_4 = 99
-    int_5 = 123
-    int_6 = 5
-    int_7 = [int_0, int_1, int_2, int_3, int_4, int_5, int_6]
-    var_0 = module_0.unique_digits(int_7)
-    assert var_0 == [5, 7, 31, 99, 135]
+    int_0 = 15
+    int_1 = 33
+    int_2 = 1422
+    int_3 = 1
+    int_4 = [int_0, int_1, int_2, int_3]
+    var_0 = module_0.unique_digits(int_4)
+    assert var_0 == [1, 15, 33]
+    int_5 = 152
+    int_6 = 323
+    int_7 = 10
+    int_8 = [int_5, int_6, int_2, int_7]
+    var_1 = module_0.unique_digits(int_8)
+    assert var_1 == []
+    int_9 = [int_1, int_3, int_0]
+    var_2 = module_0.unique_digits(int_9)
+    assert var_2 == [1, 15, 33]
+    var_3 = []
+    var_4 = module_0.unique_digits(var_3)
+    assert var_4 == []
+    int_10 = 7
+    int_11 = 4
+    int_12 = 9
+    int_13 = 2
+    int_14 = [int_10, int_11, int_12, int_13]
+    var_5 = module_0.unique_digits(int_14)
+    assert var_5 == [7, 9]
+    int_15 = 11
+    int_16 = 22
+    int_17 = 13
+    int_18 = [int_15, int_15, int_16, int_17]
+    var_6 = module_0.unique_digits(int_18)
+    assert var_6 == [11, 11, 13]
+    int_19 = 135
+    int_20 = 579
+    int_21 = 246
+    int_22 = 111
+    int_23 = [int_19, int_20, int_21, int_22]
+    var_7 = module_0.unique_digits(int_23)
+    assert var_7 == [111, 135, 579]
+    int_24 = 3
+    int_25 = 5
+    int_26 = [int_12, int_24, int_25, int_3]
+    var_8 = module_0.unique_digits(int_26)
+    assert var_8 == [1, 3, 5, 9]
+    str_0 = 'All tests passed!'
+    var_9 = print(str_0)

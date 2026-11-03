@@ -7,33 +7,30 @@ import pytest
 from youtube_dl.postprocessor.common import PostProcessor
 
 
-class _FakeDownloader(object):
+class _DummyDownloader(object):
     """Minimal stand-in for a downloader object."""
 
 
-def test_set_downloader_sets_attribute():
+def test_set_downloader_sets_attribute_on_fresh_instance():
     pp = PostProcessor()
-    # Precondition: no downloader set yet
+    # Precondition: a PP created without a downloader has none set.
     assert pp._downloader is None
 
-    downloader = _FakeDownloader()
+    downloader = _DummyDownloader()
     pp.set_downloader(downloader)
 
-    # Postcondition: line 39 executed, attribute now holds the downloader
+    # Postcondition: set_downloader stored the downloader on the instance.
     assert pp._downloader is downloader
 
 
-def test_set_downloader_overwrites_existing_downloader(monkeypatch):
-    pp = PostProcessor()
-    first = _FakeDownloader()
-    second = _FakeDownloader()
+def test_set_downloader_replaces_existing_downloader():
+    initial = _DummyDownloader()
+    pp = PostProcessor(initial)
+    assert pp._downloader is initial
 
-    # Ensure no state leaks: restore the class-level default afterwards
-    monkeypatch.setattr(PostProcessor, '_downloader', None, raising=True)
+    replacement = _DummyDownloader()
+    pp.set_downloader(replacement)
 
-    pp.set_downloader(first)
-    assert pp._downloader is first
-
-    pp.set_downloader(second)
-    assert pp._downloader is second
-    assert pp._downloader is not first
+    # Postcondition: the previous downloader was replaced by the new one.
+    assert pp._downloader is replacement
+    assert pp._downloader is not initial

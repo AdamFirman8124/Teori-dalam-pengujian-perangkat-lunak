@@ -2,35 +2,21 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
-import pytest
-
 from f084 import solve
 
 
-def test_solve_returns_binary_of_digit_sum():
-    # Line 3 must execute: call the function and check the postcondition.
-    result = solve(123)
-    assert result == "110"  # digit sum 1+2+3 = 6 -> bin(6)[2:] == "110"
-    assert isinstance(result, str)
-    assert not result.startswith("0b")
-    assert int(result, 2) == sum(int(d) for d in str(123))
-
-
-def test_solve_single_digit():
+def test_solve_returns_binary_of_digit_sum_without_prefix():
+    # Each call executes line 3 (the return statement).
+    # Digit sum of 10 is 1 -> bin(1)[2:] == '1'
+    assert solve(10) == "1"
+    # Digit sum of 99 is 18 -> bin(18)[2:] == '10010'
+    assert solve(99) == "10010"
+    # Digit sum of 0 is 0 -> bin(0)[2:] == '0'
     assert solve(0) == "0"
-    assert solve(9) == "1001"
-    assert int(solve(9), 2) == 9
-
-
-def test_solve_all_nines():
-    result = solve(999)
-    assert result == "11011"  # 27 -> bin(27)[2:]
-    assert int(result, 2) == 27
-
-
-@pytest.mark.parametrize("n", [1, 7, 10, 42, 100, 2024, 99999])
-def test_solve_matches_digit_sum_for_various_inputs(n):
-    result = solve(n)
-    assert result == bin(sum(int(d) for d in str(n)))[2:]
-    assert int(result, 2) == sum(int(d) for d in str(n))
-    assert set(result) <= {"0", "1"}
+    # Digit sum of 12345 is 15 -> bin(15)[2:] == '1111'
+    assert solve(12345) == "1111"
+    # Generic consistency check: result equals binary of digit sum, prefix stripped
+    for n in (7, 100, 9999, 2024):
+        expected = bin(sum(int(d) for d in str(n)))[2:]
+        assert solve(n) == expected
+        assert not expected.startswith("0b")

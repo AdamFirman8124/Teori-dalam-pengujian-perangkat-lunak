@@ -2,9 +2,44 @@
 import f135 as module_0
 
 def test_case_0():
-    str_0 = '\t@0O<W)t&tEhd[,wX-'
-    str_1 = '@\x0cW,}W*J'
-    var_0 = module_0.can_arrange(str_1)
-    assert var_0 == 6
-    var_1 = module_0.can_arrange(str_0)
-    assert var_1 == 17
+    int_0 = 1
+    int_1 = 2
+    int_2 = 4
+    int_3 = 3
+    int_4 = 5
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    var_0 = module_0.can_arrange(int_5)
+    assert var_0 == 3
+    int_6 = [int_0, int_1, int_3]
+    var_1 = module_0.can_arrange(int_6)
+    assert var_1 == 1
+    assert var_1 == -1
+    int_7 = 6
+    int_8 = 7
+    int_9 = [int_0, int_1, int_3, int_2, int_4, int_7, int_8]
+    var_2 = module_0.can_arrange(int_9)
+    assert var_2 == 1
+    assert var_2 == -1
+    int_10 = [int_3, int_2, int_4, int_0, int_1]
+    var_3 = module_0.can_arrange(int_10)
+    assert var_3 == 3
+    int_11 = [int_0, int_1, int_2, int_3, int_4, int_3, int_2]
+    var_4 = module_0.can_arrange(int_11)
+    assert var_4 == 5
+    int_12 = [int_0, int_3, int_1, int_2, int_3, int_4]
+    var_5 = module_0.can_arrange(int_12)
+    assert var_5 == 4
+    var_6 = []
+    var_7 = module_0.can_arrange(var_6)
+    assert var_7 == 1
+    assert var_7 == -1
+    int_13 = [int_4]
+    var_8 = module_0.can_arrange(int_13)
+    assert var_8 == 1
+    assert var_8 == -1
+    int_14 = [int_1, int_0]
+    var_9 = module_0.can_arrange(int_14)
+    assert var_9 == 1
+    int_15 = [int_4, int_2, int_3, int_1, int_0]
+    var_10 = module_0.can_arrange(int_15)
+    assert var_10 == 4

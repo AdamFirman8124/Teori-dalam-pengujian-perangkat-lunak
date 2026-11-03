@@ -7,23 +7,29 @@ import pytest
 from f024 import largest_divisor
 
 
-def test_largest_divisor_composite():
-    # Exercises lines 3-5: loop over reversed(range(n)) and early return
-    # on the first divisor found.
+def test_largest_divisor_even_composite():
+    # Covers line 3 (loop), line 4 false branch (i=9,8,7,6), line 4 true
+    # branch (i=5) and line 5 (return).
     assert largest_divisor(10) == 5
-    assert largest_divisor(12) == 6
-    assert largest_divisor(100) == 50
+
+
+def test_largest_divisor_odd_composite():
+    # Exercises several false-branch iterations (i=14..6) before the
+    # true branch at i=5 returns.
+    assert largest_divisor(15) == 5
 
 
 def test_largest_divisor_prime():
-    # For a prime, the loop must run down to i == 1 before returning,
-    # covering the loop-exhaustion branch of line 3 as well.
+    # For a prime, every candidate except 1 fails the modulo check,
+    # so the false branch is taken many times before returning 1.
     assert largest_divisor(7) == 1
-    assert largest_divisor(13) == 1
 
 
-def test_largest_divisor_even():
-    # Even numbers return n // 2 on the very first iteration (i = n - 1
-    # fails, i = n - 2 succeeds for even n >= 4).
-    assert largest_divisor(4) == 2
-    assert largest_divisor(8) == 4
+def test_largest_divisor_smallest_valid_input():
+    # n=2 hits the true branch on the very first iteration (i=1).
+    assert largest_divisor(2) == 1
+
+
+def test_largest_divisor_perfect_square():
+    # The largest proper divisor of 9 is 3 (its square root).
+    assert largest_divisor(9) == 3

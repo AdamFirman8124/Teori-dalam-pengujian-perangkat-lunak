@@ -5,8 +5,39 @@ def test_case_0():
     int_0 = 1
     int_1 = 2
     int_2 = 3
-    int_3 = [int_0, int_1, int_2]
+    int_3 = 4
     int_4 = 5
-    int_5 = [int_2, int_0, int_4]
-    var_0 = module_0.compare(int_3, int_5)
-    assert var_0 == [2, 1, 2]
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    int_6 = [int_0, int_1, int_2, int_3, int_4]
+    var_0 = module_0.compare(int_5, int_6)
+    assert var_0 == [0, 0, 0, 0, 0]
+    int_7 = [int_0, int_1, int_2, int_3, int_4, int_0]
+    int_8 = -2
+    int_9 = [int_0, int_1, int_2, int_3, int_1, int_8]
+    var_1 = module_0.compare(int_7, int_9)
+    assert var_1 == [0, 0, 0, 0, 3, 3]
+    int_10 = 0
+    int_11 = 10
+    int_12 = [int_10, int_4, int_11]
+    int_13 = [int_2, int_10, int_3]
+    var_2 = module_0.compare(int_12, int_13)
+    assert var_2 == [3, 5, 6]
+    int_14 = -1
+    int_15 = -5
+    int_16 = -3
+    int_17 = [int_14, int_15, int_16]
+    int_18 = -1
+    int_19 = -2
+    int_20 = -7
+    int_21 = [int_18, int_19, int_20]
+    var_3 = module_0.compare(int_17, int_21)
+    assert var_3 == [0, 3, 4]
+    int_22 = 7
+    int_23 = [int_22]
+    int_24 = [int_1]
+    var_4 = module_0.compare(int_23, int_24)
+    assert var_4 == [5]
+    var_5 = []
+    var_6 = []
+    var_7 = module_0.compare(var_5, var_6)
+    assert var_7 == []

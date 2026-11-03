@@ -2,29 +2,32 @@
 import f111 as module_0
 
 def test_case_0():
-    str_0 = 'cat dog cat bird dog'
+    str_0 = 'a b c'
     var_0 = module_0.histogram(str_0)
-    assert var_0 == {'cat': 2, 'dog': 2}
+    assert var_0 == {'a': 1, 'b': 1, 'c': 1}
+    str_1 = 'a b b a'
+    var_1 = module_0.histogram(str_1)
+    assert var_1 == {'a': 2, 'b': 2}
+    str_2 = 'a b c a b'
+    var_2 = module_0.histogram(str_2)
+    assert var_2 == {'a': 2, 'b': 2}
+    str_3 = 'b b b b a'
+    var_3 = module_0.histogram(str_3)
+    assert var_3 == {'b': 4}
+    str_4 = ''
+    var_4 = module_0.histogram(str_4)
+    assert var_4 == {}
+    str_5 = 'hello'
+    var_5 = module_0.histogram(str_5)
+    assert var_5 == {'hello': 1}
+    str_6 = 'a  b'
+    var_6 = module_0.histogram(str_6)
+    assert var_6 == {'a': 1, '': 1, 'b': 1}
+    str_7 = 'cat dog cat dog cat'
+    var_7 = module_0.histogram(str_7)
+    assert var_7 == {'cat': 3}
+    str_8 = 'All histogram tests passed!'
+    var_8 = print(str_8)
 
 def test_case_1():
-    str_0 = ''
-    var_0 = module_0.histogram(str_0)
-    assert var_0 == {}
-    str_1 = '   '
-    var_1 = module_0.histogram(str_1)
-    assert var_1 == {}
-    str_2 = 'hello'
-    var_2 = module_0.histogram(str_2)
-    assert var_2 == {'hello': 1}
-    str_3 = 'a b a'
-    var_3 = module_0.histogram(str_3)
-    assert var_3 == {'a': 2}
-    str_4 = 'a a a b b c'
-    var_4 = module_0.histogram(str_4)
-    assert var_4 == {'a': 3}
-    str_5 = 'a b a b'
-    var_5 = module_0.histogram(str_5)
-    assert var_5 == {'a': 2, 'b': 2}
-    str_6 = 'a b c'
-    var_6 = module_0.histogram(str_6)
-    assert var_6 == {'a': 1, 'b': 1, 'c': 1}
+    pass

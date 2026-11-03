@@ -1,291 +1,162 @@
 
 
-# Generated at 2026-10-24 15:31:18.269938
+# Generated at 2026-11-02 13:49:52.528719
 # Unit test for method __eq__ of class Version
 def test_Version___eq__():
-    # Version is abstract: it routes __eq__ through _cmp, which
-    # subclasses must implement. Use a stub subclass to test the routing.
-    class DummyVersion(Version):
-        def __init__(self, cmp_result):
-            self.cmp_result = cmp_result
+    '''Unit test for method __eq__ of class Version'''
+
+    class ConcreteVersion(Version):
+        """Minimal concrete Version subclass providing _cmp for testing."""
+
+        def __init__(self, vstring=None, value=0):
+            Version.__init__(self, vstring)
+            self.value = value
+
+        def __str__(self):
+            return str(self.value)
 
         def _cmp(self, other):
-            if isinstance(other, DummyVersion):
-                return self.cmp_result
-            return NotImplemented
+            if isinstance(other, ConcreteVersion):
+                other_value = other.value
+            elif isinstance(other, str):
+                other_value = ConcreteVersion(other).value
+            else:
+                return NotImplemented
+            return (self.value > other_value) - (self.value < other_value)
 
-    # _cmp == 0  ->  equal
-    assert DummyVersion(0) == DummyVersion(0)
+    # Identical values compare equal
+    assert ConcreteVersion(value=1) == ConcreteVersion(value=1)
 
-    # _cmp != 0  ->  not equal
-    assert not (DummyVersion(1) == DummyVersion(-1))
+    # An instance compares equal to itself
+    v = ConcreteVersion(value=5)
+    assert v == v
 
-    # _cmp returns NotImplemented -> __eq__ returns NotImplemented,
-    # Python falls back to identity comparison
-    a = DummyVersion(NotImplemented)
-    assert a == a                      # same object -> True
-    assert not (a == DummyVersion(0))  # different objects -> False
+    # Different values do not compare equal
+    assert not (ConcreteVersion(value=1) == ConcreteVersion(value=2))
 
-    # Comparing against an unsupported type (e.g. str) must not raise;
-    # it falls through to False via NotImplemented
-    assert not (DummyVersion(0) == "1.0")
+    # Comparison against a string that parses to an equal version
+    assert ConcreteVersion(value=3) == ConcreteVersion('3')
 
-    # The abstract base class itself has no _cmp: comparison raises
+    # Comparison against a string that parses to a different version
+    assert not (ConcreteVersion(value=3) == ConcreteVersion('4'))
+
+    # _cmp returning NotImplemented propagates out of __eq__
+    assert ConcreteVersion(value=1).__eq__(42) is NotImplemented
+
+    # When both sides return NotImplemented, == falls back to identity
+    assert not (ConcreteVersion(value=1) == 42)
+
+    # The abstract Version class has no _cmp, so == delegates and fails
     try:
-        Version() == Version()
+        Version('1') == Version('1')
     except AttributeError:
         pass
     else:
-        raise AssertionError("Version() comparison should raise AttributeError")
+        assert False, "expected AttributeError from missing _cmp"
 
-# Generated at 2026-10-24 15:31:20.779960
+# Generated at 2026-11-02 13:52:36.463940
 # Unit test for method __lt__ of class Version
+def test_Version___lt__():
+    from ansible.module_utils.compat.version import Version
 
-# Generated at 2026-10-24 15:31:23.196368
-# Unit test for method __lt__ of class Version
+    class ConcreteVersion(Version):
+        """Concrete subclass implementing _cmp for testing Version.__lt__."""
 
-# Generated at 2026-10-24 15:31:25.608872
-# Unit test for method __lt__ of class Version
-
-# Generated at 2026-10-24 15:31:28.024514
-# Unit test for method __str__ of class StrictVersion
-
-# Generated at 2026-10-24 15:31:30.436482
-# Unit test for method __str__ of class StrictVersion
-
-# Generated at 2026-10-24 15:31:32.850467
-# Unit test for method __str__ of class StrictVersion
-
-# Generated at 2026-10-24 15:31:35.265180
-# Unit test for method parse of class LooseVersion
-
-# Generated at 2026-10-24 15:31:37.676840
-# Unit test for method parse of class LooseVersion
-
-# Generated at 2026-10-24 15:31:40.094257
-# Unit test for method parse of class LooseVersion
-
-# Generated at 2026-10-24 15:31:42.513485
-# Unit test for constructor of class LooseVersion
-
-# Generated at 2026-10-24 15:31:44.923192
-# Unit test for constructor of class LooseVersion
-
-# Generated at 2026-10-24 15:31:47.336909
-# Unit test for constructor of class LooseVersion
-
-# Generated at 2026-10-24 15:31:49.750276
-# Unit test for method __gt__ of class Version
-
-# Generated at 2026-10-24 15:31:52.163692
-# Unit test for method __gt__ of class Version
-
-# Generated at 2026-10-24 15:31:54.575919
-# Unit test for method __gt__ of class Version
-
-# Generated at 2026-10-24 15:31:56.988513
-# Unit test for method parse of class StrictVersion
-
-# Generated at 2026-10-24 15:31:59.401729
-# Unit test for method parse of class StrictVersion
-
-# Generated at 2026-10-24 15:32:01.813888
-# Unit test for method parse of class StrictVersion
-
-# Generated at 2026-10-24 15:32:04.226576
-# Unit test for method __gt__ of class Version
-
-# Generated at 2026-10-24 15:32:06.639291
-# Unit test for method __gt__ of class Version
-
-# Generated at 2026-10-24 15:32:09.052592
-# Unit test for method __gt__ of class Version
-
-# Generated at 2026-10-24 15:32:11.465915
-# Unit test for method __eq__ of class Version
-
-# Generated at 2026-10-24 15:32:13.878313
-# Unit test for method __eq__ of class Version
-
-# Generated at 2026-10-24 15:32:16.295481
-# Unit test for method __eq__ of class Version
-
-# Generated at 2026-10-24 15:32:18.704289
-# Unit test for method parse of class LooseVersion
-
-# Generated at 2026-10-24 15:32:21.117777
-# Unit test for method parse of class LooseVersion
-
-# Generated at 2026-10-24 15:32:23.535235
-# Unit test for method parse of class LooseVersion
-
-# Generated at 2026-10-24 15:32:25.951187
-# Unit test for method __str__ of class StrictVersion
-
-# Generated at 2026-10-24 15:32:28.362495
-# Unit test for method __str__ of class StrictVersion
-
-# Generated at 2026-10-24 15:32:30.774816
-# Unit test for method __str__ of class StrictVersion
-
-# Generated at 2026-10-24 15:32:33.188731
-# Unit test for method __ge__ of class Version
-
-# Generated at 2026-10-24 15:32:35.602495
-# Unit test for method __ge__ of class Version
-
-# Generated at 2026-10-24 15:32:38.015202
-# Unit test for method __ge__ of class Version
-
-# Generated at 2026-10-24 15:32:40.461751
-# Unit test for method parse of class LooseVersion
-
-# Generated at 2026-10-24 15:32:42.841137
-# Unit test for method parse of class LooseVersion
-
-# Generated at 2026-10-24 15:32:45.254077
-# Unit test for method parse of class LooseVersion
-
-# Generated at 2026-10-24 15:32:47.666133
-# Unit test for method __str__ of class StrictVersion
-
-# Generated at 2026-10-24 15:32:50.078752
-# Unit test for method __str__ of class StrictVersion
-
-# Generated at 2026-10-24 15:32:52.491722
-# Unit test for method __str__ of class StrictVersion
-
-# Generated at 2026-10-24 15:32:54.905803
-# Unit test for method __le__ of class Version
-
-# Generated at 2026-10-24 15:32:57.318463
-# Unit test for method __le__ of class Version
-
-# Generated at 2026-10-24 15:32:59.731600
-# Unit test for method __le__ of class Version
-
-# Generated at 2026-10-24 15:33:02.145593
-# Unit test for method __le__ of class Version
-
-# Generated at 2026-10-24 15:33:04.559234
-# Unit test for method __le__ of class Version
-
-# Generated at 2026-10-24 15:33:06.976136
-# Unit test for method __le__ of class Version
-
-# Generated at 2026-10-24 15:33:09.388456
-# Unit test for method parse of class StrictVersion
-
-# Generated at 2026-10-24 15:33:11.801176
-# Unit test for method parse of class StrictVersion
-
-# Generated at 2026-10-24 15:33:14.216343
-# Unit test for method parse of class StrictVersion
-
-# Generated at 2026-10-24 15:33:16.628487
-# Unit test for method __str__ of class StrictVersion
-
-# Generated at 2026-10-24 15:33:19.046080
-# Unit test for method __str__ of class StrictVersion
-
-# Generated at 2026-10-24 15:33:21.454516
-# Unit test for method __str__ of class StrictVersion
-
-# Generated at 2026-10-24 15:33:23.866890
-# Unit test for method __str__ of class StrictVersion
-
-# Generated at 2026-10-24 15:33:26.279426
-# Unit test for method __str__ of class StrictVersion
-
-# Generated at 2026-10-24 15:33:28.692653
-# Unit test for method __str__ of class StrictVersion
-
-# Generated at 2026-10-24 15:33:31.105529
-# Unit test for method __ge__ of class Version
-
-# Generated at 2026-10-24 15:33:33.518552
-# Unit test for method __ge__ of class Version
-
-# Generated at 2026-10-24 15:33:55.174435
-# Unit test for method __ge__ of class Version
-
-# Generated at 2026-10-24 15:34:09.514960
-# Unit test for method parse of class StrictVersion
-def test_StrictVersion_parse():
-    # valid string -> (expected .version, expected .prerelease)
-    valid = {
-        "0.4":     ((0, 4, 0), None),
-        "0.4.0":   ((0, 4, 0), None),  # equivalent to 0.4
-        "0.4.1":   ((0, 4, 1), None),
-        "0.5a1":   ((0, 5, 0), ("a", 1)),
-        "0.5b3":   ((0, 5, 0), ("b", 3)),
-        "0.5":     ((0, 5, 0), None),
-        "0.9.6":   ((0, 9, 6), None),
-        "1.0":     ((1, 0, 0), None),
-        "1.0.4a3": ((1, 0, 4), ("a", 3)),
-        "1.0.4b1": ((1, 0, 4), ("b", 1)),
-        "1.0.4":   ((1, 0, 4), None),
-        "1.2.3":   ((1, 2, 3), None),
-        "1.0a0":   ((1, 0, 0), ("a", 0)),
-        "10.20.30b10": ((10, 20, 30), ("b", 10)),
-    }
-
-
-# Generated at 2026-10-24 15:34:14.758371
-# Unit test for method __eq__ of class Version
-
-# Generated at 2026-10-24 15:34:46.288004
-# Unit test for method __eq__ of class Version
-
-# Generated at 2026-10-24 15:35:33.875955
-# Unit test for method __eq__ of class Version
-
-# Generated at 2026-10-24 15:36:13.544412
-# Unit test for method __gt__ of class Version
-def test_Version___gt__():
-    class FakeVersion(Version):
-        def parse(self, vstring=None):
+        def parse(self, vstring):
             self.vstring = vstring
+            self.version = tuple(int(p) for p in vstring.split('.'))
+
+        def __str__(self):
+            return self.vstring
+
         def _cmp(self, other):
-            self.last_other = other
-            return self.cmp_result
-    greater = FakeVersion()
-    greater.cmp_result = 1
-    lesser = FakeVersion()
-    lesser.cmp_result = -1
-    equal = FakeVersion()
-    equal.cmp_result = 0
-    assert greater.__gt__(lesser) is True
+            if isinstance(other, str):
+                other = ConcreteVersion(other)
+            if not isinstance(other, ConcreteVersion):
+                return NotImplemented
+            if self.version < other.version:
+                return -1
+            if self.version > other.version:
+                return 1
+            return 0
 
-# Generated at 2026-10-24 15:36:59.521783
-# Unit test for method __gt__ of class Version
+    # Less than
+    assert ConcreteVersion('1.0') < ConcreteVersion('2.0')
+    assert ConcreteVersion('1.0') < '2.0'
+    # Not less than
+    assert not (ConcreteVersion('2.0') < ConcreteVersion('1.0'))
+    assert not (ConcreteVersion('1.0') < ConcreteVersion('1.0'))
+    assert not (ConcreteVersion('2.0') < '1.0')
+    # NotImplemented path: comparison with unsupported type raises TypeError
+    try:
+        ConcreteVersion('1.0') < 123
+        assert False, "Expected TypeError for unsupported comparison type"
+    except TypeError:
+        pass
 
-# Generated at 2026-10-24 15:37:38.647715
-# Unit test for method __gt__ of class Version
+# Generated at 2026-11-02 13:54:30.171495
+# Unit test for method __str__ of class StrictVersion
+def test_StrictVersion___str__():
+    # Two-component versions
+    assert str(StrictVersion('0.4')) == '0.4'
+    assert str(StrictVersion('1.0')) == '1.0'
+    assert str(StrictVersion('2.13')) == '2.13'
 
-# Generated at 2026-10-24 15:37:47.137633
-# Unit test for method __le__ of class Version
+    # Three-component version with zero patch collapses to two components
+    assert str(StrictVersion('0.4.0')) == '0.4'
+    assert str(StrictVersion('1.0.0')) == '1.0'
 
-# Generated at 2026-10-24 15:37:48.554929
-# Unit test for method __le__ of class Version
+    # Three-component versions with non-zero patch
+    assert str(StrictVersion('0.4.1')) == '0.4.1'
+    assert str(StrictVersion('0.9.6')) == '0.9.6'
+    assert str(StrictVersion('1.0.4')) == '1.0.4'
 
-# Generated at 2026-10-24 15:37:49.947392
-# Unit test for method __le__ of class Version
+    # Prerelease versions without a patch component
+    assert str(StrictVersion('0.5a1')) == '0.5a1'
+    assert str(StrictVersion('0.5b3')) == '0.5b3'
+    assert str(StrictVersion('1.0a2')) == '1.0a2'
+    assert str(StrictVersion('1.0b10')) == '1.0b10'
 
-# Generated at 2026-10-24 15:39:10.801049
-# Unit test for method __ge__ of class Version
+    # Prerelease versions with a non-zero patch component
+    assert str(StrictVersion('1.0.4a3')) == '1.0.4a3'
+    assert str(StrictVersion('1.0.4b1')) == '1.0.4b1'
+    assert str(StrictVersion('2.7.2a0')) == '2.7.2a0'
 
-# Generated at 2026-10-24 15:39:55.240838
-# Unit test for method __ge__ of class Version
+    # __str__ output should round-trip through parse
+    for vstring in ('0.4', '0.4.0', '0.4.1', '0.5a1', '0.5b3',
+                    '0.9.6', '1.0', '1.0.4a3', '1.0.4b1', '1.0.4'):
+        assert str(StrictVersion(StrictVersion(vstring))) == \
+            str(StrictVersion(vstring))
 
-# Generated at 2026-10-24 15:40:42.939202
-# Unit test for method __ge__ of class Version
+# Generated at 2026-11-02 13:56:16.153124
+# Unit test for method __str__ of class LooseVersion
+def test_LooseVersion___str__():
+    # nonce:02d9c01f
+    vstrings = [
+        '1.5.1',
+        '1.5.2b2',
+        '161',
+        '3.10a',
+        '8.02',
+        '3.4j',
+        '1996.07.12',
+        '3.2.pl0',
+        '3.1.1.6',
+        '2g6',
+        '11g',
+        '0.960923',
+        '2.2beta29',
+        '1.13++',
+        '5.5.kw',
+        '2.0b1pl0',
+    ]
+    for vstring in vstrings:
+        v = LooseVersion(vstring)
+        assert str(v) == vstring, \
+            "str(LooseVersion(%r)) should return %r, got %r" % (
+                vstring, vstring, str(v))
 
-# Generated at 2026-10-24 15:40:45.351002
-# Unit test for method __le__ of class Version
-
-# Generated at 2026-10-24 15:40:47.055866
-# Unit test for method __le__ of class Version
-
-# Generated at 2026-10-24 15:40:49.718381
-# Unit test for method __le__ of class Version
+    # __str__ must return the exact string passed to parse
+    v = LooseVersion('9.9.9')
+    v.parse('4.5.6a1')
+    assert str(v) == '4.5.6a1'

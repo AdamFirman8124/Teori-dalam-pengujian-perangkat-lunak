@@ -2,23 +2,21 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
-import pytest
-
 from f050 import encode_shift
 
 
 def test_encode_shift_executes_line_3():
-    # Executes line 3 (the return statement) with a non-empty string.
-    result = encode_shift("abc")
-    assert result == "fgh"
+    """Calling encode_shift with a non-empty string executes line 3
+    (the list-comprehension return statement) and verifies the +5
+    Caesar-shift postcondition."""
+    # Basic shift: each letter moves 5 positions forward in the alphabet.
+    assert encode_shift("hello") == "mjqqt"
 
+    # Wrap-around branch: 'z' wraps back to 'e' via the modulo operation.
+    assert encode_shift("xyz") == "cde"
 
-def test_encode_shift_wraps_around_alphabet():
-    # Exercises the modulo branch: 'v' + 5 wraps past 'z' back to 'a'.
-    result = encode_shift("vwxyz")
-    assert result == "abcde"
+    # 'a' maps to 'f'.
+    assert encode_shift("a") == "f"
 
-
-def test_encode_shift_empty_string():
-    # Executes line 3 with an empty input; join over empty list.
+    # Empty string still executes line 3 (with an empty comprehension).
     assert encode_shift("") == ""

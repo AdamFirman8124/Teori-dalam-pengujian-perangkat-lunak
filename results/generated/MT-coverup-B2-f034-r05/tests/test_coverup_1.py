@@ -7,21 +7,16 @@ import pytest
 from f034 import unique
 
 
-def test_unique_returns_sorted_distinct_elements():
+def test_unique_removes_duplicates_and_sorts():
     result = unique([3, 1, 2, 3, 1])
+    # Postcondition: duplicates removed and result is sorted ascending
     assert result == [1, 2, 3]
-    assert isinstance(result, list)
+    assert result == sorted(set(result))
 
 
 def test_unique_empty_list():
     assert unique([]) == []
 
 
-def test_unique_already_sorted_no_duplicates():
-    assert unique(["a", "b"]) == ["a", "b"]
-
-
-def test_unique_does_not_mutate_input():
-    original = [2, 1, 2]
-    unique(original)
-    assert original == [2, 1, 2]
+def test_unique_already_sorted_unique_input():
+    assert unique(["a", "b", "c"]) == ["a", "b", "c"]

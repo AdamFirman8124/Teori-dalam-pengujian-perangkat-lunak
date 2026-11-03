@@ -2,61 +2,46 @@
 # asked: {"lines": [33, 34, 35], "branches": [[33, 34], [33, 35]]}
 # gained: {"lines": [33, 34, 35], "branches": [[33, 34], [33, 35]]}
 
-import pytest
-
 from pymonet.either import Left, Right
 
 
-def test_case_on_right_calls_success_handler():
-    either = Right(42)
+def test_case_on_right_invokes_success_handler_only():
+    """case() on a Right must call only the success handler with the wrapped
+    value and return its result (covers the True branch of line 33 and line 34)."""
     calls = []
 
     def error(value):
-        calls.append(('error', value))
-        return 'error'
+        calls.append(("error", value))
+        return "error: {}".format(value)
 
     def success(value):
-        calls.append(('success', value))
-        return 'success'
+        calls.append(("success", value))
+        return "success: {}".format(value)
 
-    result = either.case(error, success)
+    result = Right(42).case(error, success)
 
-    assert result == 'success'
-    assert calls == [('success', 42)]
-    assert either.value == 42
+    # Postcondition: success handler ran with the wrapped value and its
+    # return value was propagated; the error handler was never invoked.
+    assert result == "success: 42"
+    assert calls == [("success", 42)]
 
 
-def test_case_on_left_calls_error_handler():
-    either = Left('boom')
+def test_case_on_left_invokes_error_handler_only():
+    """case() on a Left must call only the error handler with the wrapped
+    value and return its result (covers the False branch of line 33 and line 35)."""
     calls = []
 
     def error(value):
-        calls.append(('error', value))
-        return 'handled'
+        calls.append(("error", value))
+        return "error: {}".format(value)
 
     def success(value):
-        calls.append(('success', value))
-        return 'success'
+        calls.append(("success", value))
+        return "success: {}".format(value)
 
-    result = either.case(error, success)
+    result = Left("boom").case(error, success)
 
-    assert result == 'handled'
-    assert calls == [('error', 'boom')]
-    assert either.value == 'boom'
-
-
-def test_case_returns_handler_result_verbatim():
-    sentinel = object()
-
-    assert Right(1).case(lambda _: 'err', lambda _: sentinel) is sentinel
-    assert Left(1).case(lambda _: sentinel, lambda _: 'ok') is sentinel
-
-
-def test_case_does_not_mutate_either(monkeypatch):
-    either = Right(7)
-    monkeypatch.setattr(either, 'value', 7, raising=False)
-
-    assert either.case(lambda v: v, lambda v: v * 2) == 14
-    assert either.value == 7
-    assert either.is_right() is True
-    assert either.is_left() is False
+    # Postcondition: error handler ran with the wrapped value and its
+    # return value was propagated; the success handler was never invoked.
+    assert result == "error: boom"
+    assert calls == [("error", "boom")]

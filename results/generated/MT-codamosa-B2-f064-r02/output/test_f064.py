@@ -2,39 +2,52 @@
 import f064 as module_0
 
 def test_case_0():
-    str_0 = 'hello'
+    str_0 = 'abcde'
     var_0 = module_0.vowels_count(str_0)
     assert var_0 == 2
-    str_1 = 'abcde'
+    str_1 = 'Alone'
     var_1 = module_0.vowels_count(str_1)
-    assert var_1 == 2
-    str_2 = 'bcdfg'
+    assert var_1 == 3
+    str_2 = 'key'
     var_2 = module_0.vowels_count(str_2)
-    assert var_2 == 0
-    str_3 = 'aeiouAEIOU'
+    assert var_2 == 2
+    str_3 = 'bye'
     var_3 = module_0.vowels_count(str_3)
-    assert var_3 == 10
-    str_4 = 'ACEDY'
+    assert var_3 == 1
+    str_4 = 'keY'
     var_4 = module_0.vowels_count(str_4)
-    assert var_4 == 3
-    str_5 = 'y'
+    assert var_4 == 2
+    str_5 = 'bYe'
     var_5 = module_0.vowels_count(str_5)
     assert var_5 == 1
-    str_6 = 'Y'
+    str_6 = 'ACEDY'
     var_6 = module_0.vowels_count(str_6)
-    assert var_6 == 1
-    str_7 = 'sky'
+    assert var_6 == 3
+    str_7 = 'hello'
     var_7 = module_0.vowels_count(str_7)
-    assert var_7 == 1
-    str_8 = 'happy'
+    assert var_7 == 2
+    str_8 = 'xyz'
     var_8 = module_0.vowels_count(str_8)
-    assert var_8 == 2
-    str_9 = 'boy'
+    assert var_8 == 1
+    assert var_8 == 0
+    str_9 = 'rhythm'
     var_9 = module_0.vowels_count(str_9)
-    assert var_9 == 2
-    str_10 = 'yellow'
+    assert var_9 == 0
+    str_10 = 'AEIOUaeiou'
     var_10 = module_0.vowels_count(str_10)
-    assert var_10 == 2
-    str_11 = 'Year'
+    assert var_10 == 10
+    str_11 = 'happy'
     var_11 = module_0.vowels_count(str_11)
     assert var_11 == 2
+    str_12 = 'HAPPY'
+    var_12 = module_0.vowels_count(str_12)
+    assert var_12 == 2
+    str_13 = 'b'
+    var_13 = module_0.vowels_count(str_13)
+    assert var_13 == 0
+    str_14 = 'y'
+    var_14 = module_0.vowels_count(str_14)
+    assert var_14 == 1
+    str_15 = 'Y'
+    var_15 = module_0.vowels_count(str_15)
+    assert var_15 == 1

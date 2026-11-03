@@ -2,98 +2,71 @@
 # asked: {"lines": [53, 56, 57, 59, 60, 61, 62, 63, 64, 70, 73, 74, 75, 77], "branches": [[73, 74], [73, 75]]}
 # gained: {"lines": [53, 56, 57, 59, 60, 61, 62, 63, 64, 70, 73, 74, 75, 77], "branches": [[73, 74], [73, 75]]}
 
-from unittest.mock import MagicMock
+from unittest import mock
+
+import logging
+
+import pytest
 
 from semantic_release.helpers import LoggedFunction
 
 
-def test_init_stores_logger():
-    logger = MagicMock()
+def test_logged_function_stores_logger():
+    """Line 53: __init__ must store the given logger."""
+    logger = logging.getLogger("test-logged-function")
     decorator = LoggedFunction(logger)
     assert decorator.logger is logger
 
 
-def test_call_with_positional_args_and_return_value():
-    logger = MagicMock()
-    decorator = LoggedFunction(logger)
+def test_logged_function_logs_args_kwargs_and_result():
+    """Lines 56-77: decorator wraps function, logs inputs and non-None result."""
+    logger = mock.Mock(spec=logging.Logger)
 
-    def add(a, b):
-        """Add two numbers."""
-        return a + b
+    @LoggedFunction(logger)
+    def add(a, b, *, c=0):
+        """Add numbers."""
+        return a + b + c
 
-    wrapped = decorator(add)
+    # functools.wraps preserves the wrapped function's metadata
+    assert add.__name__ == "add"
+    assert add.__doc__ == "Add numbers."
 
-    # functools.wraps preserved
-    assert wrapped.__name__ == "add"
+    result = add(1, 2, c=3)
+    assert result == 6
 
-    result = wrapped(1, 2)
-
-    assert result == 3
-    # entry log + exit log
+    # One debug call for the input, one for the result
     assert logger.debug.call_count == 2
-    entry_msg = logger.debug.call_args_list[0][0][0]
-    assert "add" in entry_msg
-    assert "1" in entry_msg
-    assert "2" in entry_msg
-    exit_msg = logger.debug.call_args_list[1][0][0]
-    assert exit_msg == "add -> 3"
+    entry_log = logger.debug.call_args_list[0][0][0]
+    assert entry_log == "add(1, 2, c=3)"
+    exit_log = logger.debug.call_args_list[1][0][0]
+    assert exit_log == "add -> 6"
 
 
-def test_call_with_kwargs_and_none_result_logs_once():
-    logger = MagicMock()
-    decorator = LoggedFunction(logger)
+def test_logged_function_string_args_are_formatted():
+    """Lines 59-64: string args are quoted/stripped via format_arg."""
+    logger = mock.Mock(spec=logging.Logger)
 
-    def greet(name, greeting="hello"):
+    @LoggedFunction(logger)
+    def greet(name, punctuation):
+        return f"Hello {name}{punctuation}"
+
+    result = greet("world", "!")
+    assert result == "Hello world!"
+
+    entry_log = logger.debug.call_args_list[0][0][0]
+    assert entry_log == "greet('world', '!')"
+
+
+def test_logged_function_none_result_is_not_logged():
+    """Branch at line 73: a None result must not produce a result log line."""
+    logger = mock.Mock(spec=logging.Logger)
+
+    @LoggedFunction(logger)
+    def do_nothing():
         return None
 
-    wrapped = decorator(greet)
+    assert do_nothing() is None
 
-    result = wrapped("world", greeting="hi")
-
-    assert result is None
-    # only entry log, no exit log when result is None
+    # Only the "input" debug message should have been emitted
     assert logger.debug.call_count == 1
-    entry_msg = logger.debug.call_args[0][0]
-    assert "greet" in entry_msg
-    assert "'world'" in entry_msg
-    assert "greeting='hi'" in entry_msg
-
-
-def test_call_with_no_args_and_string_result():
-    logger = MagicMock()
-    decorator = LoggedFunction(logger)
-
-    def get_value():
-        return "val"
-
-    wrapped = decorator(get_value)
-
-    result = wrapped()
-
-    assert result == "val"
-    assert logger.debug.call_count == 2
-    entry_msg = logger.debug.call_args_list[0][0][0]
-    assert entry_msg == "get_value()"
-    exit_msg = logger.debug.call_args_list[1][0][0]
-    assert exit_msg == "get_value -> val"
-
-
-def test_call_with_mixed_args_and_kwargs():
-    logger = MagicMock()
-    decorator = LoggedFunction(logger)
-
-    def func(a, b=" default "):
-        return a
-
-    wrapped = decorator(func)
-
-    result = wrapped(42, b=" padded ")
-
-    assert result == 42
-    assert logger.debug.call_count == 2
-    entry_msg = logger.debug.call_args_list[0][0][0]
-    # format_arg strips strings
-    assert "42" in entry_msg
-    assert "b='padded'" in entry_msg
-    exit_msg = logger.debug.call_args_list[1][0][0]
-    assert exit_msg == "func -> 42"
+    assert logger.debug.call_args_list[0][0][0] == "do_nothing()"

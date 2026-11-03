@@ -5,8 +5,61 @@ def test_case_0():
     int_0 = 1
     int_1 = 2
     int_2 = 3
-    int_3 = [int_0, int_1, int_2]
-    int_4 = 4
-    int_5 = [int_1, int_2, int_4]
-    var_0 = module_0.common(int_3, int_5)
-    assert var_0 == [2, 3]
+    int_3 = 4
+    int_4 = [int_0, int_1, int_2, int_3]
+    int_5 = 5
+    int_6 = 6
+    int_7 = [int_2, int_3, int_5, int_6]
+    var_0 = module_0.common(int_4, int_7)
+    assert var_0 == [3, 4]
+    int_8 = [int_0, int_1, int_2]
+    int_9 = [int_3, int_5, int_6]
+    var_1 = module_0.common(int_8, int_9)
+    assert var_1 == []
+    var_2 = []
+    int_10 = [int_0, int_1, int_2]
+    var_3 = module_0.common(var_2, int_10)
+    assert var_3 == []
+    int_11 = [int_0, int_1, int_2]
+    var_4 = []
+    var_5 = module_0.common(int_11, var_4)
+    assert var_5 == []
+    var_6 = []
+    var_7 = []
+    var_8 = module_0.common(var_6, var_7)
+    assert var_8 == []
+    int_12 = [int_0, int_0, int_1, int_1, int_2]
+    int_13 = [int_1, int_1, int_2, int_2, int_3]
+    var_9 = module_0.common(int_12, int_13)
+    assert var_9 == [2, 3]
+    int_14 = [int_5, int_2, int_0]
+    int_15 = [int_0, int_2, int_5]
+    var_10 = module_0.common(int_14, int_15)
+    assert var_10 == [1, 3, 5]
+    int_16 = 9
+    int_17 = 7
+    int_18 = [int_16, int_17, int_5]
+    int_19 = [int_5, int_17, int_16]
+    var_11 = module_0.common(int_18, int_19)
+    assert var_11 == [5, 7, 9]
+    str_0 = 'apple'
+    str_1 = 'banana'
+    str_2 = [str_0, str_1]
+    str_3 = 'cherry'
+    str_4 = [str_1, str_3]
+    var_12 = module_0.common(str_2, str_4)
+    assert var_12 == ['banana']
+    int_20 = -1
+    int_21 = -2
+    int_22 = [int_20, int_21, int_2]
+    int_23 = -2
+    int_24 = [int_23, int_2, int_3]
+    var_13 = module_0.common(int_22, int_24)
+    assert var_13 == [-2, 3]
+    int_25 = 10
+    int_26 = [int_25]
+    int_27 = [int_25]
+    var_14 = module_0.common(int_26, int_27)
+    assert var_14 == [10]
+    str_5 = 'All tests passed!'
+    var_15 = print(str_5)

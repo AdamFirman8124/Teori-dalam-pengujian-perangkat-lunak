@@ -2,33 +2,53 @@
 import f121 as module_0
 
 def test_case_0():
-    int_0 = 1
-    int_1 = 2
-    int_2 = 3
-    int_3 = [int_0, int_1, int_2]
-    var_0 = module_0.solution(int_3)
-    assert var_0 == 3
-    assert var_0 == 4
-    var_1 = []
-    var_2 = module_0.solution(var_1)
+    int_0 = 5
+    int_1 = 8
+    int_2 = 7
+    int_3 = 1
+    int_4 = [int_0, int_1, int_2, int_3]
+    var_0 = module_0.solution(int_4)
+    assert var_0 == 12
+    int_5 = 3
+    int_6 = [int_5, int_5, int_5, int_5, int_5]
+    var_1 = module_0.solution(int_6)
+    assert var_1 == 9
+    int_7 = 30
+    int_8 = 13
+    int_9 = 24
+    int_10 = 321
+    int_11 = [int_7, int_8, int_9, int_10]
+    var_2 = module_0.solution(int_11)
     assert var_2 == 0
-    int_4 = 0
-    int_5 = [int_4, int_0, int_1, int_2]
-    var_3 = module_0.solution(int_5)
+    int_12 = 2
+    int_13 = 4
+    int_14 = [int_12, int_5, int_13, int_0]
+    var_3 = module_0.solution(int_14)
     assert var_3 == 0
-    int_6 = 5
-    int_7 = [int_6, int_6, int_6, int_6, int_6]
-    var_4 = module_0.solution(int_7)
-    assert var_4 == 15
-    int_8 = 4
-    int_9 = 6
-    int_10 = 7
-    int_11 = [int_1, int_2, int_8, int_6, int_9, int_10]
-    var_5 = module_0.solution(int_11)
+    var_4 = []
+    var_5 = module_0.solution(var_4)
     assert var_5 == 0
-    int_12 = [int_10]
-    var_6 = module_0.solution(int_12)
-    assert var_6 == 7
-    int_13 = [int_0, int_0, int_0, int_0]
-    var_7 = module_0.solution(int_13)
-    assert var_7 == 2
+    int_15 = [int_0]
+    var_6 = module_0.solution(int_15)
+    assert var_6 == 5
+    int_16 = [int_13]
+    var_7 = module_0.solution(int_16)
+    assert var_7 == 0
+    int_17 = -3
+    int_18 = -5
+    int_19 = [int_17, int_12, int_18]
+    var_8 = module_0.solution(int_19)
+    assert var_8 == 8
+    assert var_8 == -8
+    int_20 = [int_3, int_12, int_5, int_13, int_0]
+    var_9 = module_0.solution(int_20)
+    assert var_9 == 9
+    int_21 = 1000001
+    int_22 = 1000003
+    int_23 = [int_21, int_12, int_22]
+    var_10 = module_0.solution(int_23)
+    assert var_10 == 2000004
+    int_24 = 0
+    int_25 = [int_24, int_3, int_24, int_3]
+    var_11 = module_0.solution(int_25)
+    assert var_11 == 0

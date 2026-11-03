@@ -1,201 +1,201 @@
 
 
-# Generated at 2026-10-24 19:12:59.846353
+# Generated at 2026-11-03 05:56:30.782903
 # Unit test for function iscube
 def test_iscube():
-    # perfect cubes
-    assert module_0.iscube(0)
-    assert module_0.iscube(1)
-    assert module_0.iscube(8)
-    assert module_0.iscube(27)
-    assert module_0.iscube(64)
-    assert module_0.iscube(125)
-    assert module_0.iscube(1000)
-    assert module_0.iscube(1728)  # 12**3
+    # Positive perfect cubes
+    assert module_0.iscube(1) == True
+    assert module_0.iscube(8) == True
+    assert module_0.iscube(27) == True
+    assert module_0.iscube(64) == True
+    assert module_0.iscube(125) == True
+    assert module_0.iscube(1000) == True
 
-    # negative cubes - function uses abs(a)
-    assert module_0.iscube(-1)
-    assert module_0.iscube(-8)
-    assert module_0.iscube(-27)
+    # Negative perfect cubes (abs is applied, so these are cubes)
+    assert module_0.iscube(-1) == True
+    assert module_0.iscube(-8) == True
+    assert module_0.iscube(-27) == True
+    assert module_0.iscube(-64) == True
 
-    # non-cubes
-    assert not module_0.iscube(2)
-    assert not module_0.iscube(3)
-    assert not module_0.iscube(4)
-    assert not module_0.iscube(7)
-    assert not module_0.iscube(9)
-    assert not module_0.iscube(26)
-    assert not module_0.iscube(28)
-    assert not module_0.iscube(63)
-    assert not module_0.iscube(65)
-    assert not module_0.iscube(124)
-    assert not module_0.iscube(126)
+    # Zero is a perfect cube
+    assert module_0.iscube(0) == True
 
-    # negative non-cubes
-    assert not module_0.iscube(-2)
-    assert not module_0.iscube(-9)
+    # Non-cubes
+    assert module_0.iscube(2) == False
+    assert module_0.iscube(3) == False
+    assert module_0.iscube(4) == False
+    assert module_0.iscube(9) == False
+    assert module_0.iscube(10) == False
+    assert module_0.iscube(-2) == False
+    assert module_0.iscube(180) == False
 
-    # larger values
-    assert module_0.iscube(100**3)
-    assert not module_0.iscube(100**3 + 1)
-    assert not module_0.iscube(100**3 - 1)
+    # Large values
+    assert module_0.iscube(10**18) == True          # (10**6)**3
+    assert module_0.iscube(-(10**18)) == True
+    assert module_0.iscube(10**18 + 1) == False
 
-# Generated at 2026-10-24 19:13:01.278038
+    # Values near cube roots that could suffer floating point issues
+    assert module_0.iscube(3**3) == True
+    assert module_0.iscube(4**3 + 1) == False
+    assert module_0.iscube(5**3 - 1) == False
+
+# Generated at 2026-11-03 05:57:38.174698
 # Unit test for function iscube
 def test_iscube():
-    # perfect cubes
-    assert module_0.iscube(0)
-    assert module_0.iscube(1)
-    assert module_0.iscube(8)
-    assert module_0.iscube(27)
-    assert module_0.iscube(64)
-    assert module_0.iscube(125)
-    assert module_0.iscube(1000)
-    assert module_0.iscube(1728)  # 12**3
+    # Test positive perfect cubes
+    assert module_0.iscube(1) == True
+    assert module_0.iscube(8) == True
+    assert module_0.iscube(27) == True
+    assert module_0.iscube(64) == True
+    assert module_0.iscube(125) == True
+    assert module_0.iscube(1000) == True
 
-    # negative cubes - function uses abs(a)
-    assert module_0.iscube(-1)
-    assert module_0.iscube(-8)
-    assert module_0.iscube(-27)
+    # Test zero
+    assert module_0.iscube(0) == True
 
-    # non-cubes
-    assert not module_0.iscube(2)
-    assert not module_0.iscube(3)
-    assert not module_0.iscube(4)
-    assert not module_0.iscube(7)
-    assert not module_0.iscube(9)
-    assert not module_0.iscube(26)
-    assert not module_0.iscube(28)
-    assert not module_0.iscube(63)
-    assert not module_0.iscube(65)
-    assert not module_0.iscube(124)
-    assert not module_0.iscube(126)
+    # Test negative perfect cubes (abs is applied)
+    assert module_0.iscube(-1) == True
+    assert module_0.iscube(-8) == True
+    assert module_0.iscube(-27) == True
+    assert module_0.iscube(-64) == True
 
-    # negative non-cubes
-    assert not module_0.iscube(-2)
-    assert not module_0.iscube(-9)
+    # Test non-cubes
+    assert module_0.iscube(2) == False
+    assert module_0.iscube(3) == False
+    assert module_0.iscube(9) == False
+    assert module_0.iscube(10) == False
+    assert module_0.iscube(100) == False
+    assert module_0.iscube(-2) == False
 
-    # larger values
-    assert module_0.iscube(100**3)
-    assert not module_0.iscube(100**3 + 1)
-    assert not module_0.iscube(100**3 - 1)
+    # Test large numbers
+    assert module_0.iscube(10**9) == True      # 1000^3
+    assert module_0.iscube(1000000) == True    # 100^3
+    assert module_0.iscube(10**9 + 1) == False
 
-# Generated at 2026-10-24 19:13:02.714587
+    # Test float input that is a cube value
+    assert module_0.iscube(27.0) == True
+    assert module_0.iscube(27.5) == False
+
+    print("All tests passed!")
+
+if __name__ == "__main__":
+    test_iscube()
+
+# Generated at 2026-11-03 05:59:01.943468
 # Unit test for function iscube
 def test_iscube():
-    # perfect cubes
-    assert module_0.iscube(0)
-    assert module_0.iscube(1)
-    assert module_0.iscube(8)
-    assert module_0.iscube(27)
-    assert module_0.iscube(64)
-    assert module_0.iscube(125)
-    assert module_0.iscube(1000)
-    assert module_0.iscube(1728)  # 12**3
+    # Perfect positive cubes
+    assert module_0.iscube(1) == True
+    assert module_0.iscube(8) == True
+    assert module_0.iscube(27) == True
+    assert module_0.iscube(64) == True
+    assert module_0.iscube(125) == True
+    assert module_0.iscube(1000) == True
 
-    # negative cubes - function uses abs(a)
-    assert module_0.iscube(-1)
-    assert module_0.iscube(-8)
-    assert module_0.iscube(-27)
+    # Zero is a cube (0 ** 3 == 0)
+    assert module_0.iscube(0) == True
 
-    # non-cubes
-    assert not module_0.iscube(2)
-    assert not module_0.iscube(3)
-    assert not module_0.iscube(4)
-    assert not module_0.iscube(7)
-    assert not module_0.iscube(9)
-    assert not module_0.iscube(26)
-    assert not module_0.iscube(28)
-    assert not module_0.iscube(63)
-    assert not module_0.iscube(65)
-    assert not module_0.iscube(124)
-    assert not module_0.iscube(126)
+    # Negative perfect cubes (abs makes them checkable)
+    assert module_0.iscube(-1) == True
+    assert module_0.iscube(-8) == True
+    assert module_0.iscube(-27) == True
+    assert module_0.iscube(-64) == True
+    assert module_0.iscube(-1000) == True
 
-    # negative non-cubes
-    assert not module_0.iscube(-2)
-    assert not module_0.iscube(-9)
+    # Non-cubes
+    assert module_0.iscube(2) == False
+    assert module_0.iscube(3) == False
+    assert module_0.iscube(10) == False
+    assert module_0.iscube(25) == False
+    assert module_0.iscube(-5) == False
 
-    # larger values
-    assert module_0.iscube(100**3)
-    assert not module_0.iscube(100**3 + 1)
-    assert not module_0.iscube(100**3 - 1)
+    # Values adjacent to cubes
+    assert module_0.iscube(7) == False
+    assert module_0.iscube(9) == False
+    assert module_0.iscube(26) == False
+    assert module_0.iscube(28) == False
+    assert module_0.iscube(63) == False
+    assert module_0.iscube(65) == False
 
-# Generated at 2026-10-24 19:13:04.080921
+    # Large cubes
+    assert module_0.iscube(10**9) == True        # 1000**3
+    assert module_0.iscube(10**12) == True       # 10000**3
+    assert module_0.iscube(2**30) == True        # 1024**3
+    assert module_0.iscube(-10**9) == True
+
+    # Large non-cubes
+    assert module_0.iscube(10**9 + 1) == False
+    assert module_0.iscube(10**9 - 1) == False
+    assert module_0.iscube(2**30 + 1) == False
+# nonce:20c95d0f
+
+# Generated at 2026-11-03 06:00:09.513020
 # Unit test for function iscube
 def test_iscube():
-    # perfect cubes
-    assert module_0.iscube(0)
-    assert module_0.iscube(1)
-    assert module_0.iscube(8)
-    assert module_0.iscube(27)
-    assert module_0.iscube(64)
-    assert module_0.iscube(125)
-    assert module_0.iscube(1000)
-    assert module_0.iscube(1728)  # 12**3
+    # Perfect cubes (positive)
+    assert module_0.iscube(1) == True
+    assert module_0.iscube(8) == True
+    assert module_0.iscube(27) == True
+    assert module_0.iscube(64) == True
+    assert module_0.iscube(125) == True
+    assert module_0.iscube(1000) == True
 
-    # negative cubes - function uses abs(a)
-    assert module_0.iscube(-1)
-    assert module_0.iscube(-8)
-    assert module_0.iscube(-27)
+    # Perfect cubes (negative) - abs is applied, so negatives of cubes are cubes
+    assert module_0.iscube(-1) == True
+    assert module_0.iscube(-8) == True
+    assert module_0.iscube(-27) == True
+    assert module_0.iscube(-64) == True
 
-    # non-cubes
-    assert not module_0.iscube(2)
-    assert not module_0.iscube(3)
-    assert not module_0.iscube(4)
-    assert not module_0.iscube(7)
-    assert not module_0.iscube(9)
-    assert not module_0.iscube(26)
-    assert not module_0.iscube(28)
-    assert not module_0.iscube(63)
-    assert not module_0.iscube(65)
-    assert not module_0.iscube(124)
-    assert not module_0.iscube(126)
+    # Zero is a perfect cube
+    assert module_0.iscube(0) == True
 
-    # negative non-cubes
-    assert not module_0.iscube(-2)
-    assert not module_0.iscube(-9)
+    # Non-cubes (positive)
+    assert module_0.iscube(2) == False
+    assert module_0.iscube(3) == False
+    assert module_0.iscube(4) == False
+    assert module_0.iscube(10) == False
+    assert module_0.iscube(26) == False
+    assert module_0.iscube(28) == False
+    assert module_0.iscube(63) == False
+    assert module_0.iscube(65) == False
 
-    # larger values
-    assert module_0.iscube(100**3)
-    assert not module_0.iscube(100**3 + 1)
-    assert not module_0.iscube(100**3 - 1)
+    # Non-cubes (negative)
+    assert module_0.iscube(-2) == False
+    assert module_0.iscube(-10) == False
 
-# Generated at 2026-10-24 19:13:05.552734
+    # Large perfect cube
+    assert module_0.iscube(1000000) == True  # 100^3
+    assert module_0.iscube(10**18) == True   # (10^6)^3
+
+    # Large non-cube
+    assert module_0.iscube(1000001) == False
+
+# Generated at 2026-11-03 06:01:28.567238
 # Unit test for function iscube
 def test_iscube():
-    # perfect cubes
-    assert module_0.iscube(0)
-    assert module_0.iscube(1)
-    assert module_0.iscube(8)
-    assert module_0.iscube(27)
-    assert module_0.iscube(64)
-    assert module_0.iscube(125)
-    assert module_0.iscube(1000)
-    assert module_0.iscube(1728)  # 12**3
+    # Positive perfect cubes
+    assert module_0.iscube(1) == True
+    assert module_0.iscube(8) == True
+    assert module_0.iscube(27) == True
+    assert module_0.iscube(64) == True
+    assert module_0.iscube(125) == True
+    assert module_0.iscube(1000000) == True
 
-    # negative cubes - function uses abs(a)
-    assert module_0.iscube(-1)
-    assert module_0.iscube(-8)
-    assert module_0.iscube(-27)
+    # Negative perfect cubes (abs makes them cubes)
+    assert module_0.iscube(-1) == True
+    assert module_0.iscube(-8) == True
+    assert module_0.iscube(-27) == True
+    assert module_0.iscube(-64) == True
+    assert module_0.iscube(-125) == True
 
-    # non-cubes
-    assert not module_0.iscube(2)
-    assert not module_0.iscube(3)
-    assert not module_0.iscube(4)
-    assert not module_0.iscube(7)
-    assert not module_0.iscube(9)
-    assert not module_0.iscube(26)
-    assert not module_0.iscube(28)
-    assert not module_0.iscube(63)
-    assert not module_0.iscube(65)
-    assert not module_0.iscube(124)
-    assert not module_0.iscube(126)
+    # Zero is a perfect cube
+    assert module_0.iscube(0) == True
 
-    # negative non-cubes
-    assert not module_0.iscube(-2)
-    assert not module_0.iscube(-9)
-
-    # larger values
-    assert module_0.iscube(100**3)
-    assert not module_0.iscube(100**3 + 1)
-    assert not module_0.iscube(100**3 - 1)
+    # Non-cubes
+    assert module_0.iscube(2) == False
+    assert module_0.iscube(3) == False
+    assert module_0.iscube(10) == False
+    assert module_0.iscube(100) == False
+    assert module_0.iscube(180) == False
+    assert module_0.iscube(-2) == False
+    assert module_0.iscube(999999) == False

@@ -2,6 +2,29 @@
 import f016 as module_0
 
 def test_case_0():
-    str_0 = 'abcABC'
+    str_0 = 'abc'
     int_0 = module_0.count_distinct_characters(str_0)
     assert int_0 == 3
+    str_1 = 'aabbcc'
+    int_1 = module_0.count_distinct_characters(str_1)
+    assert int_1 == 3
+    str_2 = 'AaBb'
+    int_2 = module_0.count_distinct_characters(str_2)
+    assert int_2 == 2
+    str_3 = ''
+    int_3 = module_0.count_distinct_characters(str_3)
+    assert int_3 == 0
+    str_4 = 'x'
+    int_4 = module_0.count_distinct_characters(str_4)
+    assert int_4 == 1
+    str_5 = 'a b!a'
+    int_5 = module_0.count_distinct_characters(str_5)
+    assert int_5 == 4
+    str_6 = '1122'
+    int_6 = module_0.count_distinct_characters(str_6)
+    assert int_6 == 2
+    str_7 = 'Hello World'
+    int_7 = module_0.count_distinct_characters(str_7)
+    assert int_7 == 8
+    str_8 = 'All tests passed!'
+    var_0 = print(str_8)

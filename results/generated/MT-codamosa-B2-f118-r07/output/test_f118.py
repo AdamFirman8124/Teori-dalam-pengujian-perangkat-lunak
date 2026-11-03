@@ -11,26 +11,34 @@ def test_case_0():
     str_2 = 'cat'
     var_2 = module_0.get_closest_vowel(str_2)
     assert var_2 == 'a'
-    str_3 = 'beautiful'
+    str_3 = 'bAc'
     var_3 = module_0.get_closest_vowel(str_3)
-    assert var_3 == 'u'
-    str_4 = 'quick'
+    assert var_3 == 'A'
+    str_4 = 'ab'
     var_4 = module_0.get_closest_vowel(str_4)
     assert var_4 == ''
-    str_5 = 'rhythm'
+    str_5 = 'a'
     var_5 = module_0.get_closest_vowel(str_5)
     assert var_5 == ''
-    str_6 = 'aei'
+    str_6 = ''
     var_6 = module_0.get_closest_vowel(str_6)
     assert var_6 == ''
-    str_7 = ''
+    str_7 = 'quick'
     var_7 = module_0.get_closest_vowel(str_7)
     assert var_7 == ''
-    str_8 = 'a'
+    str_8 = 'aeiou'
     var_8 = module_0.get_closest_vowel(str_8)
     assert var_8 == ''
-    str_9 = 'ab'
+    str_9 = 'spa'
     var_9 = module_0.get_closest_vowel(str_9)
     assert var_9 == ''
-    str_10 = 'All tests passed.'
-    var_10 = print(str_10)
+    str_10 = 'bAced'
+    var_10 = module_0.get_closest_vowel(str_10)
+    assert var_10 == 'e'
+    str_11 = 'banana'
+    var_11 = module_0.get_closest_vowel(str_11)
+    assert var_11 == ''
+    assert var_11 == 'a'
+    str_12 = 'happy'
+    var_12 = module_0.get_closest_vowel(str_12)
+    assert var_12 == 'a'

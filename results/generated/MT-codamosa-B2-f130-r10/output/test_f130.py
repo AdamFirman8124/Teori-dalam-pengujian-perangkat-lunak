@@ -2,16 +2,22 @@
 import f130 as module_0
 
 def test_case_0():
-    bool_0 = True
-    var_0 = module_0.tri(bool_0)
-    assert var_0 == [1, 3]
-
-def test_case_1():
-    bool_0 = False
-    var_0 = module_0.tri(bool_0)
-    assert var_0 == [1]
-
-def test_case_2():
-    int_0 = 1807
+    int_0 = 0
     var_0 = module_0.tri(int_0)
-    assert len(var_0) == 1808
+    assert var_0 == [1]
+    int_1 = 1
+    var_1 = module_0.tri(int_1)
+    assert var_1 == [1, 3]
+    int_2 = 5
+    var_2 = module_0.tri(int_2)
+    assert len(var_2) == 6
+    var_3 = len(var_2)
+    assert var_3 == 6
+    int_3 = 10
+    var_4 = module_0.tri(int_3)
+    assert len(var_4) == 11
+    int_4 = 20
+    var_5 = module_0.tri(int_4)
+    assert len(var_5) == 21
+    var_6 = len(var_5)
+    assert var_6 == 21

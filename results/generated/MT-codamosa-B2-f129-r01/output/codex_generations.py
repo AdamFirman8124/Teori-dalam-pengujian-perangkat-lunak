@@ -1,406 +1,177 @@
 
 
-# Generated at 2026-10-25 19:04:23.211130
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:04:25.624039
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:04:28.038314
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:04:30.452514
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:04:32.866042
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:04:35.278030
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:04:37.694947
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:04:40.111813
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:04:42.573839
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:04:44.949315
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:04:47.434343
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:04:49.829110
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:04:52.246921
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:04:54.657682
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:04:57.071418
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:04:59.488077
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:01.903423
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:04.316448
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:06.733044
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:09.147251
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:11.561582
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:13.976094
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:16.393592
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:21.833173
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:24.250725
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:26.662730
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:29.076916
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:31.490853
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:33.905237
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:36.319605
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:38.735011
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:41.152512
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:43.570505
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:45.983943
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:48.397047
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:50.811691
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:53.229486
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:55.639989
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:05:58.053376
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:00.466526
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:02.883128
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:05.300036
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:07.713742
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:10.127145
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:12.541096
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:14.954632
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:17.368803
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:19.782920
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:22.196715
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:24.613997
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:27.032393
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:29.442404
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:31.856127
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:34.269871
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:36.684100
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:39.098492
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:41.512716
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:43.926535
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:46.344425
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:48.759094
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:51.172324
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:53.585358
-# Unit test for function minPath
+# Generated at 2026-11-02 10:20:18.962024
+# Unit test for function minPath
+def test_minPath():
+    # 1 is in corner (0,0); smallest neighbor is 2
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 3) == [1, 2, 1]
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 1) == [1]
+
+    # 1 is in the center; smallest neighbor is 4
+    assert module_0.minPath([[5, 9, 3], [4, 1, 6], [7, 8, 2]], 5) == [1, 4, 1, 4, 1]
+    assert module_0.minPath([[5, 9, 3], [4, 1, 6], [7, 8, 2]], 1) == [1]
+
+    # 1 at bottom-left; both neighbors are 2
+    assert module_0.minPath([[2, 2], [1, 2]], 4) == [1, 2, 1, 2]
+
+    # k = 0 returns empty list
+    assert module_0.minPath([[1, 2], [3, 4]], 0) == []
+
+# Generated at 2026-11-02 10:21:31.875676
+# Unit test for function minPath
+def test_minPath():
+    # 1 at corner (0,0): neighbors are 2 (right) and 4 (down), min = 2
+    grid = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ]
+    assert module_0.minPath(grid, 3) == [1, 2, 1]
+    assert module_0.minPath(grid, 1) == [1]
+    assert module_0.minPath(grid, 4) == [1, 2, 1, 2]
+
+    # 1 in the middle: neighbors are 4, 2, 8, 6, min = 2
+    grid = [
+        [3, 4, 5],
+        [2, 1, 6],
+        [7, 8, 9]
+    ]
+    assert module_0.minPath(grid, 2) == [1, 2]
+    assert module_0.minPath(grid, 5) == [1, 2, 1, 2, 1]
+
+    # 1 at bottom-right corner: neighbors are 5 (up) and 7 (left), min = 5
+    grid = [
+        [6, 7, 8],
+        [9, 5, 4],
+        [3, 7, 1]
+    ]
+    assert module_0.minPath(grid, 3) == [1, 4, 1]
+
+    # 1 on edge (top row, middle): neighbors are 1's left 2, right 3, down 5, min = 2
+    grid = [
+        [9, 2, 1],
+        [8, 5, 3],
+        [7, 6, 4]
+    ]
+    assert module_0.minPath(grid, 2) == [1, 2]
+
+    # 2x2 grid, 1 at top-left: neighbors 2 and 3, min = 2
+    grid = [
+        [1, 2],
+        [3, 4]
+    ]
+    assert module_0.minPath(grid, 6) == [1, 2, 1, 2, 1, 2]
+
+    # 1 not present in grid: val stays n*n + 1
+    grid = [
+        [2, 3],
+        [4, 5]
+    ]
+    assert module_0.minPath(grid, 2) == [1, 5]
+
+    # k = 0 returns empty list
+    grid = [
+        [1, 2],
+        [3, 4]
+    ]
+    assert module_0.minPath(grid, 0) == []
+
+    # Larger grid, 1 surrounded by large values
+    grid = [
+        [10, 20, 30],
+        [40, 1, 50],
+        [60, 70, 80]
+    ]
+    assert module_0.minPath(grid, 4) == [1, 20, 1, 20]
+
+# Generated at 2026-11-02 10:22:30.137978
+# Unit test for function minPath
+def test_minPath():
+    # Standard 3x3 grid, path of length 3: [1, 2, 1]
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 3) == [1, 2, 1]
+
+    # Path of length 1
+    assert module_0.minPath([[5, 9, 3], [4, 1, 6], [7, 8, 2]], 1) == [1]
+
+    # Longer path of length 5
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 5) == [1, 2, 1, 2, 1]
+
+    # 2x2 grid, 1 in corner, min neighbor is 2
+    assert module_0.minPath([[1, 3], [2, 4]], 4) == [1, 2, 1, 2]
+
+    # 1 in top-right corner; neighbors are 10 (left) and 12 (down) -> val = 10
+    assert module_0.minPath([[10, 1], [11, 12]], 3) == [1, 10, 1]
 
-# Generated at 2026-10-25 19:06:55.999948
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:06:58.413753
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:00.827740
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:03.241906
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:05.658327
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:08.103753
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:10.484524
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:12.898468
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:15.312847
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:17.727534
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:20.141246
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:22.555406
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:28.001863
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:30.417983
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:32.830058
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:35.244528
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:37.659366
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:40.072664
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:42.486316
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:44.900739
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:47.314931
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:49.728741
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:52.142243
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:54.556262
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:56.969425
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:07:59.412519
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:01.829724
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:04.242162
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:06.655398
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:09.070074
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:11.488295
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:13.905588
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:16.316841
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:18.732931
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:21.146862
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:23.560433
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:25.975827
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:28.389536
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:30.806481
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:33.219515
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:35.633434
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:38.047564
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:40.462065
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:42.940289
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:45.354222
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:47.768010
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:50.181671
-# Unit test for function minPath
+    # 1 in center of 3x3 grid; smallest neighbor is 2
+    assert module_0.minPath([[9, 8, 7], [6, 1, 2], [5, 4, 3]], 3) == [1, 2, 1]
 
-# Generated at 2026-10-25 19:08:52.598094
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:55.009538
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:57.424661
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:08:59.836319
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:09:02.249393
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:09:04.663061
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:09:07.077137
-# Unit test for function minPath
-
-# Generated at 2026-10-25 19:09:09.491874
-# Unit test for function minPath
+    # 1 at bottom-right corner; neighbors are 4 (up) and 6 (left) -> val = 4
+    assert module_0.minPath([[7, 8, 9], [5, 6, 3], [1, 2, 4]], 4) == [1, 2, 1, 2]
 
-# Generated at 2026-10-25 19:09:11.906343
-# Unit test for function minPath
+    # Verify structure: even indices are 1, odd indices equal the min neighbor
+    result = module_0.minPath([[3, 5, 7], [1, 9, 8], [6, 4, 2]], 6)
+    assert result == [1, 2, 1, 2, 1, 2]
+    for idx, v in enumerate(result):
+        if idx % 2 == 0:
+            assert v == 1
+        else:
+            assert v == 2
 
-# Generated at 2026-10-25 19:09:14.321051
+# Generated at 2026-11-02 10:24:08.653288
 # Unit test for function minPath
+def test_minPath():
+# nonce:8d3d1b8d
+    # 1 in top-left corner; min neighbor is 2 (right)
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 3) == [1, 2, 1]
 
-# Generated at 2026-10-25 19:09:16.736730
-# Unit test for function minPath
+    # k=1 returns just [1]
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 1) == [1]
 
-# Generated at 2026-10-25 19:09:19.153215
-# Unit test for function minPath
+    # 1 in center of grid; min neighbor is 4 (left)
+    assert module_0.minPath([[5, 9, 3], [4, 1, 6], [7, 8, 2]], 1) == [1]
+    assert module_0.minPath([[5, 9, 3], [4, 1, 6], [7, 8, 2]], 4) == [1, 4, 1, 4]
 
-# Generated at 2026-10-25 19:09:21.565727
-# Unit test for function minPath
+    # 2x2 grid, 1 in top-left corner; min neighbor is 2
+    assert module_0.minPath([[1, 2], [3, 4]], 3) == [1, 2, 1]
 
-# Generated at 2026-10-25 19:09:23.980297
-# Unit test for function minPath
+    # 1 with min neighbor on the left
+    assert module_0.minPath([[2, 1], [3, 4]], 2) == [1, 2]
 
-# Generated at 2026-10-25 19:09:26.394729
-# Unit test for function minPath
+    # larger values around 1; min neighbor is 20
+    assert module_0.minPath([[10, 20, 30], [40, 1, 50], [60, 70, 80]], 5) == [1, 20, 1, 20, 1]
 
-# Generated at 2026-10-25 19:09:31.836318
-# Unit test for function minPath
+    # k=0 returns empty list
+    assert module_0.minPath([[1, 2], [3, 4]], 0) == []
 
-# Generated at 2026-10-25 19:09:34.250264
-# Unit test for function minPath
+    # 1 in bottom-right corner; min neighbor is 7 (left)
+    assert module_0.minPath([[9, 8], [7, 1]], 3) == [1, 7, 1]
 
-# Generated at 2026-10-25 19:09:36.667222
-# Unit test for function minPath
+    print("All tests passed!")
 
-# Generated at 2026-10-25 19:09:39.084301
-# Unit test for function minPath
 
-# Generated at 2026-10-25 19:09:41.498386
-# Unit test for function minPath
+if __name__ == "__main__":
+    test_minPath()
 
-# Generated at 2026-10-25 19:09:43.912701
+# Generated at 2026-11-02 10:26:00.262490
 # Unit test for function minPath
+def test_minPath():
+    # 3x3 grid, value 1 at corner: min neighbor is 2
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 3) == [1, 2, 1]
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 5) == [1, 2, 1, 2, 1]
 
-# Generated at 2026-10-25 19:09:46.329202
-# Unit test for function minPath
+    # value 1 in the middle of the grid
+    assert module_0.minPath([[5, 9, 3], [4, 1, 6], [7, 8, 2]], 1) == [1]
+    assert module_0.minPath([[5, 9, 3], [4, 1, 6], [7, 8, 2]], 4) == [1, 2, 1, 2]
 
-# Generated at 2026-10-25 19:09:48.742274
-# Unit test for function minPath
+    # 2x2 grid, value 1 at top-right: neighbors are 2 (left) and 3 (down)
+    assert module_0.minPath([[2, 1], [4, 3]], 5) == [1, 2, 1, 2, 1]
 
-# Generated at 2026-10-25 19:09:51.155675
-# Unit test for function minPath
+    # 2x2 grid, value 1 at top-left: neighbors are 2 (right) and 3 (down)
+    assert module_0.minPath([[1, 2], [3, 4]], 4) == [1, 2, 1, 2]
 
-# Generated at 2026-10-25 19:09:53.569724
-# Unit test for function minPath
+    # value 1 with larger neighbor values
+    assert module_0.minPath([[10, 1], [11, 12]], 2) == [1, 10]
+    assert module_0.minPath([[20, 15, 1]], 6) == [1, 15, 1, 15, 1, 15]
 
-# Generated at 2026-10-25 19:09:55.983297
-# Unit test for function minPath
+    # k = 0 returns an empty path
+    assert module_0.minPath([[1, 2], [3, 4]], 0) == []

@@ -5,25 +5,43 @@
 from pymonet.either import Left, Right
 
 
-def test_case_calls_success_handler_on_right():
-    right = Right(42)
+def test_case_on_right_invokes_success_handler_only():
+    """case() on a Right must call only the success handler with the wrapped
+    value and return its result (covers the True branch of line 33 and line 34)."""
+    calls = []
 
-    result = right.case(
-        error=lambda value: "error: {}".format(value),
-        success=lambda value: "success: {}".format(value)
-    )
+    def error(value):
+        calls.append(("error", value))
+        return "error: {}".format(value)
 
+    def success(value):
+        calls.append(("success", value))
+        return "success: {}".format(value)
+
+    result = Right(42).case(error, success)
+
+    # Postcondition: success handler ran with the wrapped value and its
+    # return value was propagated; the error handler was never invoked.
     assert result == "success: 42"
-    assert right.is_right() is True
+    assert calls == [("success", 42)]
 
 
-def test_case_calls_error_handler_on_left():
-    left = Left("boom")
+def test_case_on_left_invokes_error_handler_only():
+    """case() on a Left must call only the error handler with the wrapped
+    value and return its result (covers the False branch of line 33 and line 35)."""
+    calls = []
 
-    result = left.case(
-        error=lambda value: "error: {}".format(value),
-        success=lambda value: "success: {}".format(value)
-    )
+    def error(value):
+        calls.append(("error", value))
+        return "error: {}".format(value)
 
+    def success(value):
+        calls.append(("success", value))
+        return "success: {}".format(value)
+
+    result = Left("boom").case(error, success)
+
+    # Postcondition: error handler ran with the wrapped value and its
+    # return value was propagated; the success handler was never invoked.
     assert result == "error: boom"
-    assert left.is_right() is False
+    assert calls == [("error", "boom")]

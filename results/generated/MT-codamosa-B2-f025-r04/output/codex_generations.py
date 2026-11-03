@@ -1,102 +1,44 @@
 
 
-# Generated at 2026-10-25 03:51:02.665765
+# Generated at 2026-11-02 16:47:31.954500
 # Unit test for function factorize
+def test_factorize():
+    # Basic factorizations
+    assert module_0.factorize(8) == [2, 2, 2]
+    assert module_0.factorize(25) == [2, 2] or module_0.factorize(25) == [5, 5]
+    assert module_0.factorize(70) == [2, 5, 7]
+    assert module_0.factorize(100) == [2, 2, 5, 5]
+    assert module_0.factorize(2 * 3 * 5 * 7 * 11) == [2, 3, 5, 7, 11]
 
-# Generated at 2026-10-25 03:51:05.180703
-# Unit test for function factorize
+    # Prime numbers
+    assert module_0.factorize(2) == [2]
+    assert module_0.factorize(3) == [3]
+    assert module_0.factorize(13) == [13]
+    assert module_0.factorize(97) == [97]
 
-# Generated at 2026-10-25 03:51:07.598796
-# Unit test for function factorize
+    # Edge cases
+    assert module_0.factorize(1) == []
+    assert module_0.factorize(4) == [2, 2]
 
-# Generated at 2026-10-25 03:51:10.013079
-# Unit test for function factorize
+    # Property check: product of factors equals original number
+    for n in [12, 360, 9973, 1024, 6469693230]:
+        result = module_0.factorize(n)
+        product = 1
+        for f in result:
+            product *= f
+        assert product == n, f"Product of factors of {n} is wrong"
 
-# Generated at 2026-10-25 03:51:12.428002
-# Unit test for function factorize
+    # Factors must be non-decreasing (trial division order)
+    result = module_0.factorize(2 ** 10 * 3 ** 5)
+    assert result == sorted(result)
 
-# Generated at 2026-10-25 03:51:14.842861
-# Unit test for function factorize
+    print("All tests passed!")
 
-# Generated at 2026-10-25 03:51:17.257812
-# Unit test for function factorize
 
-# Generated at 2026-10-25 03:51:19.671350
-# Unit test for function factorize
+test_factorize()
 
-# Generated at 2026-10-25 03:51:22.086838
+# Generated at 2026-11-02 16:52:36.308416
 # Unit test for function factorize
+def test_factorize():import math
 
-# Generated at 2026-10-25 03:51:24.503160
-# Unit test for function factorize
-
-# Generated at 2026-10-25 03:51:26.918311
-# Unit test for function factorize
-
-# Generated at 2026-10-25 03:51:29.333395
-# Unit test for function factorize
-
-# Generated at 2026-10-25 03:51:31.749298
-# Unit test for function factorize
-
-# Generated at 2026-10-25 03:51:34.165378
-# Unit test for function factorize
-
-# Generated at 2026-10-25 03:51:36.581980
-# Unit test for function factorize
-
-# Generated at 2026-10-25 03:51:38.998227
-# Unit test for function factorize
-
-# Generated at 2026-10-25 03:51:41.414731
-# Unit test for function factorize
-
-# Generated at 2026-10-25 03:51:43.827353
-# Unit test for function factorize
-
-# Generated at 2026-10-25 03:51:46.246718
-# Unit test for function factorize
-
-# Generated at 2026-10-25 03:51:48.657433
-# Unit test for function factorize
-
-# Generated at 2026-10-25 03:51:51.075195
-# Unit test for function factorize
-
-# Generated at 2026-10-25 03:51:53.491223
-# Unit test for function factorize
-
-# Generated at 2026-10-25 03:51:55.907818
-# Unit test for function factorize
-
-# Generated at 2026-10-25 03:52:07.501413
-# Unit test for function factorize
-def test_factorize():assert module_0.factorize(1) == []
-
-# Generated at 2026-10-25 03:52:14.106400
-# Unit test for function factorize
-def test_factorize():assert module_0.factorize(1) == []
-
-# Generated at 2026-10-25 03:52:20.024344
-# Unit test for function factorize
-def test_factorize():assert module_0.factorize(1) == []
-
-# Generated at 2026-10-25 03:52:26.957657
-# Unit test for function factorize
-def test_factorize():assert module_0.factorize(1) == []
-
-# Generated at 2026-10-25 03:52:33.560677
-# Unit test for function factorize
-def test_factorize():assert module_0.factorize(1) == []
-
-# Generated at 2026-10-25 03:52:39.758706
-# Unit test for function factorize
-def test_factorize():assert module_0.factorize(1) == []
-
-# Generated at 2026-10-25 03:52:45.481413
-# Unit test for function factorize
-def test_factorize():assert module_0.factorize(1) == []
-
-# Generated at 2026-10-25 03:52:50.632159
-# Unit test for function factorize
-def test_factorize():assert module_0.factorize(1) == []
+    # Simple cases

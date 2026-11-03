@@ -2,13 +2,11 @@
 import f116 as module_0
 
 def test_case_0():
-    int_0 = 3
-    int_1 = 8
-    int_2 = 6
-    int_3 = 5
-    int_4 = 7
-    int_5 = 9
-    int_6 = 1
-    int_7 = [int_0, int_1, int_0, int_2, int_3, int_4, int_5, int_6]
-    var_0 = module_0.sort_array(int_7)
-    assert var_0 == [1, 8, 3, 3, 5, 6, 9, 7]
+    int_0 = 1
+    int_1 = 5
+    int_2 = 2
+    int_3 = 3
+    int_4 = 4
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    var_0 = module_0.sort_array(int_5)
+    assert var_0 == [1, 2, 4, 3, 5]

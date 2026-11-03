@@ -2,18 +2,37 @@
 import f091 as module_0
 
 def test_case_0():
-    str_0 = 'Hello world'
+    str_0 = 'I love this weather'
     var_0 = module_0.is_bored(str_0)
-    assert var_0 == 0
-    str_1 = 'I love this weather'
+    assert var_0 == 1
+    str_1 = 'You are great. The sky is blue.'
     var_1 = module_0.is_bored(str_1)
-    assert var_1 == 1
-    str_2 = 'The sky is blue. The sun is shining. I love this weather'
+    assert var_1 == 0
+    str_2 = 'I love it. The weather is nice. I feel great!'
     var_2 = module_0.is_bored(str_2)
-    assert var_2 == 1
-    str_3 = 'I am bored. I am bored? I am bored!'
+    assert var_2 == 2
+    str_3 = "It's a beautiful day."
     var_3 = module_0.is_bored(str_3)
-    assert var_3 == 3
-    str_4 = 'i am bored. She loves it.'
+    assert var_3 == 0
+    str_4 = ''
     var_4 = module_0.is_bored(str_4)
     assert var_4 == 0
+    str_5 = 'I'
+    var_5 = module_0.is_bored(str_5)
+    assert var_5 == 0
+    str_6 = 'I am here?You are there!I like it.'
+    var_6 = module_0.is_bored(str_6)
+    assert var_6 == 2
+    str_7 = 'You and I are friends.'
+    var_7 = module_0.is_bored(str_7)
+    assert var_7 == 0
+    str_8 = 'I think. I know! I believe?'
+    var_8 = module_0.is_bored(str_8)
+    assert var_8 == 3
+    str_9 = '  I am bored.  I am sleepy.'
+    var_9 = module_0.is_bored(str_9)
+    assert var_9 == 2
+    assert var_9 == 1
+
+def test_case_1():
+    pass

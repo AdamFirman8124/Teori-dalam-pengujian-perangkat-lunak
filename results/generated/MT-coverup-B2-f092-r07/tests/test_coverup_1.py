@@ -7,22 +7,36 @@ import pytest
 from f092 import any_int
 
 
-def test_any_int_true_when_sum_matches():
-    # x + y == z
+def test_any_int_sum_matches_z():
+    """All ints and x + y == z -> True (covers lines 4, 5, 6)."""
     assert any_int(2, 3, 5) is True
-    # x + z == y
-    assert any_int(5, 3, -2) is True
-    # y + z == x
-    assert any_int(10, 4, 6) is True
 
 
-def test_any_int_false_when_no_sum_matches():
+def test_any_int_sum_matches_y():
+    """All ints and x + z == y -> True (covers second branch of line 5)."""
+    assert any_int(2, 7, 5) is True
+
+
+def test_any_int_sum_matches_x():
+    """All ints and y + z == x -> True (covers third branch of line 5)."""
+    assert any_int(7, 2, 5) is True
+
+
+def test_any_int_no_match_returns_false():
+    """All ints but no pair sums to the third -> False (covers line 7)."""
     assert any_int(1, 2, 4) is False
 
 
-def test_any_int_false_with_non_int_args():
+def test_any_int_non_int_returns_false():
+    """Non-int argument short-circuits the isinstance check -> False (covers line 8)."""
     assert any_int(1.5, 2, 3) is False
     assert any_int(1, "2", 3) is False
     assert any_int(1, 2, None) is False
-    # bool is a subclass of int; still counts as int here
-    assert any_int(True, 2, 3) is True
+
+
+def test_any_int_negative_and_zero():
+    """Edge cases with negatives and zero still satisfy the sum condition."""
+    assert any_int(-1, 1, 0) is True
+    assert any_int(0, 0, 0) is True
+    assert any_int(-1, -2, -3) is True
+    assert any_int(-1, -2, 0) is False

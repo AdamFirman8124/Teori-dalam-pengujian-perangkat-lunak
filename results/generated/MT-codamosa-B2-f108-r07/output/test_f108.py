@@ -5,28 +5,51 @@ def test_case_0():
     var_0 = []
     var_1 = module_0.count_nums(var_0)
     assert var_1 == 0
-    int_0 = 0
-    int_1 = 1
-    int_2 = -1
-    int_3 = [int_0, int_1, int_2]
-    var_2 = module_0.count_nums(int_3)
-    assert var_2 == 1
-    int_4 = 12
-    int_5 = 5
-    int_6 = 101
-    int_7 = [int_4, int_5, int_6]
-    var_3 = module_0.count_nums(int_7)
-    assert var_3 == 3
-    int_8 = -123
-    int_9 = -21
-    int_10 = -10
-    int_11 = -11
-    int_12 = [int_8, int_9, int_10, int_11]
-    var_4 = module_0.count_nums(int_12)
+    int_0 = 1
+    int_1 = 2
+    int_2 = [int_0, int_0, int_1]
+    var_2 = module_0.count_nums(int_2)
+    assert var_2 == 3
+    int_3 = 0
+    int_4 = [int_3]
+    var_3 = module_0.count_nums(int_4)
+    assert var_3 == 0
+    int_5 = -1
+    int_6 = 11
+    int_7 = -11
+    int_8 = [int_5, int_6, int_7]
+    var_4 = module_0.count_nums(int_8)
     assert var_4 == 1
-    int_13 = 10
-    int_14 = -123
-    int_15 = -21
-    int_16 = [int_13, int_14, int_15, int_0, int_5]
-    var_5 = module_0.count_nums(int_16)
-    assert var_5 == 3
+    int_9 = -10
+    int_10 = 10
+    int_11 = [int_9, int_10]
+    var_5 = module_0.count_nums(int_11)
+    assert var_5 == 1
+    int_12 = 123
+    int_13 = -123
+    int_14 = [int_12, int_13]
+    var_6 = module_0.count_nums(int_14)
+    assert var_6 == 2
+    int_15 = -5
+    int_16 = 5
+    int_17 = [int_15, int_16]
+    var_7 = module_0.count_nums(int_17)
+    assert var_7 == 1
+    int_18 = -19
+    int_19 = [int_18]
+    var_8 = module_0.count_nums(int_19)
+    assert var_8 == 1
+    int_20 = -18
+    int_21 = [int_20]
+    var_9 = module_0.count_nums(int_21)
+    assert var_9 == 1
+    int_22 = -2
+    int_23 = 34
+    int_24 = -34
+    int_25 = 100
+    int_26 = -100
+    int_27 = [int_3, int_22, int_23, int_24, int_25, int_26]
+    var_10 = module_0.count_nums(int_27)
+    assert var_10 == 3
+    str_0 = 'All tests passed!'
+    var_11 = print(str_0)

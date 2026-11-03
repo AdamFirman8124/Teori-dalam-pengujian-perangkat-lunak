@@ -1,733 +1,450 @@
 
 
-# Generated at 2026-10-25 08:06:31.429157
+# Generated at 2026-11-01 23:11:29.688057
 # Unit test for method get_converter of class Conversion
-def test_Conversion_get_converter():from unittest.mock import MagicMock, patch
+def test_Conversion_get_converter():
+    class DummyConverter(ConverterPlugin):
+        @classmethod
+        def supports(cls, mime):
+            return mime == 'application/json'
 
+        def convert(self, body):
+            return body
 
-# Generated at 2026-10-25 08:06:42.281669
+    # Valid mime with a supporting converter registered
+    with mock.patch.object(plugin_manager, 'get_converters', return_value=[DummyConverter]):
+        converter = Conversion.get_converter('application/json')
+        assert converter is not None
+        assert isinstance(converter, DummyConverter)
+        assert converter.mime == 'application/json'
+
+        # Valid mime but no converter supports it
+        assert Conversion.get_converter('text/plain') is None
+
+    # No converters registered at all
+    with mock.patch.object(plugin_manager, 'get_converters', return_value=[]):
+        assert Conversion.get_converter('application/json') is None
+
+    # Invalid mimes return None without touching plugins
+    with mock.patch.object(plugin_manager, 'get_converters') as m:
+        assert Conversion.get_converter('invalid-mime') is None
+        assert Conversion.get_converter('') is None
+        assert Conversion.get_converter(None) is None
+        assert not m.called
+
+# Generated at 2026-11-01 23:12:20.145338
 # Unit test for method get_converter of class Conversion
-def test_Conversion_get_converter():from unittest.mock import Mock, patch
+def test_Conversion_get_converter():
+    # Case 1: invalid or missing mime -> None, plugin manager never queried
+    with patch.object(plugin_manager, 'get_converters') as mock_get_converters:
+        assert Conversion.get_converter('not-a-mime') is None
+        assert Conversion.get_converter('a/b/c') is None
+        assert Conversion.get_converter('') is None
+        assert Conversion.get_converter(None) is None
+        mock_get_converters.assert_not_called()
 
+    # Case 2: valid mime, but no registered converter supports it -> None
+    unsupported = MagicMock()
+    unsupported.supports.return_value = False
+    with patch.object(plugin_manager, 'get_converters', return_value=[unsupported]):
+        assert Conversion.get_converter('application/json') is None
+        unsupported.supports.assert_called_once_with('application/json')
 
-# Generated at 2026-10-25 08:06:49.860423
+    # Case 3: valid mime and a converter supports it -> converter instance
+    matching = MagicMock()
+    matching.supports.return_value = True
+    instance = MagicMock()
+    matching.return_value = instance
+    with patch.object(plugin_manager, 'get_converters', return_value=[unsupported, matching]):
+        converter = Conversion.get_converter('text/plain')
+        assert converter is instance
+        matching.supports.assert_called_once_with('text/plain')
+        matching.assert_called_once_with('text/plain')
+
+    # Case 4: the first supporting converter wins
+    second_matching = MagicMock()
+    second_matching.supports.return_value = True
+    second_instance = MagicMock()
+    second_matching.return_value = second_instance
+    with patch.object(plugin_manager, 'get_converters',
+                      return_value=[matching, second_matching]):
+        assert Conversion.get_converter('text/plain') is instance
+
+# Generated at 2026-11-01 23:12:59.457616
 # Unit test for method format_headers of class Formatting
 def test_Formatting_format_headers():
-    first_formatter = Mock()
-    first_formatter.format_headers.return_value = "formatted-by-first"
+    from unittest import mock
 
-    second_formatter = Mock()
-    second_formatter.format_headers.return_value = "formatted-by-second"
+    class UpperCaseFormatter:
+        def __init__(self, env=None, **kwargs):
+            self.env = env
+            self.kwargs = kwargs
+            self.enabled = True
 
-    formatting = Formatting.__new__(Formatting)
-    formatting.enabled_plugins = [first_formatter, second_formatter]
+        def module_0.format_headers(self, headers):
+            return headers.upper()
 
-    result = formatting.format_headers("original-headers")
+    class SuffixFormatter:
+        def __init__(self, env=None, **kwargs):
+            self.env = env
+            self.kwargs = kwargs
+            self.enabled = True
 
-    assert result == "formatted-by-second"
-    first_formatter.format_headers.assert_called_once_with("original-headers")
-    second_formatter.format_headers.assert_called_once_with("formatted-by-first")
+        def module_0.format_headers(self, headers):
+            return headers + '|suffix'
 
-# Generated at 2026-10-25 08:06:52.502292
+    class DisabledFormatter:
+        def __init__(self, env=None, **kwargs):
+            self.enabled = False
+
+        def module_0.format_headers(self, headers):
+            raise AssertionError('disabled formatter must not be invoked')
+
+    grouped = {
+        'upper': [UpperCaseFormatter],
+        'suffix': [SuffixFormatter],
+        'disabled': [DisabledFormatter],
+        'chain': [UpperCaseFormatter, SuffixFormatter],
+    }
+
+    with mock.patch.object(plugin_manager, 'get_formatters_grouped',
+                           return_value=grouped):
+        # Single active formatter
+        formatting = Formatting(groups=['upper'])
+        assert len(formatting.enabled_plugins) == 1
+        assert isinstance(formatting.enabled_plugins[0], UpperCaseFormatter)
+        assert formatting.format_headers(
+            'Content-Type: application/json'
+        ) == 'CONTENT-TYPE: APPLICATION/JSON'
+
+        # Empty headers string passes through
+        assert formatting.format_headers('') == ''
+
+        # Multiple formators chained in group order
+        chain = Formatting(groups=['chain'])
+        assert len(chain.enabled_plugins) == 2
+        assert chain.format_headers('x-header: value') == 'X-HEADER: VALUE|suffix'
+
+        # Disabled formatters are skipped entirely
+        disabled = Formatting(groups=['disabled'])
+        assert disabled.enabled_plugins == []
+        assert disabled.format_headers('untouched') == 'untouched'
+
+# Generated at 2026-11-01 23:13:17.169867
 # Unit test for constructor of class Formatting
+def test_Formatting():
+    # Empty groups should result in no enabled plugins
+    formatting = Formatting(groups=[])
+    assert formatting.enabled_plugins == []
 
-# Generated at 2026-10-25 08:06:54.918560
-# Unit test for constructor of class Formatting
+    # Each group's plugins should be instantiated (may all be disabled by default)
+    formatting = Formatting(groups=['formatting'])
+    assert isinstance(formatting.enabled_plugins, list)
+    for plugin in formatting.enabled_plugins:
+        assert plugin.enabled is True
 
-# Generated at 2026-10-25 08:06:57.329838
-# Unit test for constructor of class Formatting
+    # Unknown group should raise KeyError
+    with pytest.raises(KeyError):
+        Formatting(groups=['nonexistent_group'])
 
-# Generated at 2026-10-25 08:06:59.732434
-# Unit test for function is_valid_mime
+# Generated at 2026-11-01 23:14:07.981608
+# Unit test for method format_headers of class Formatting
+def test_Formatting_format_headers():
+    calls = []
 
-# Generated at 2026-10-25 08:07:02.145731
-# Unit test for function is_valid_mime
+    class EnabledFormatter:
+        enabled = True
 
-# Generated at 2026-10-25 08:07:04.559868
-# Unit test for function is_valid_mime
+        def __init__(self, env=None, **kwargs):
+            self.env = env
+            self.kwargs = kwargs
 
-# Generated at 2026-10-25 08:07:13.401753
-# Unit test for constructor of class Formatting
-def test_Formatting():from unittest.mock import MagicMock, patch
+        def module_0.format_headers(self, headers):
+            calls.append(headers)
+            return headers + '\nX-Mock: yes'
+
+    class DisabledFormatter:
+        enabled = False
+
+        def __init__(self, env=None, **kwargs):
+            pass
+
+        def module_0.format_headers(self, headers):
+            raise AssertionError('disabled formatter must not be invoked')
+
+    with patch.object(plugin_manager, 'get_formatters_grouped') as grouped:
+        grouped.return_value = {
+            'headers': [EnabledFormatter, DisabledFormatter],
+            'format': [],
+        }
+
+        formatting = Formatting(['headers', 'format'], env=Environment(), sort_headers=True)
+
+        # Only enabled plugins are instantiated and kept
+        assert len(formating.enabled_plugins) == 1 if False else len(formatting.enabled_plugins) == 1
+        assert isinstance(formatting.enabled_plugins[0], EnabledFormatter)
+        assert formatting.enabled_plugins[0].kwargs == {'sort_headers': True}
+
+        headers = 'Content-Type: text/plain'
+        assert formatting.format_headers(headers) == headers + '\nX-Mock: yes'
+        assert calls == [headers]
+
+        grouped.assert_called_once_with()
 
 
-# Generated at 2026-10-25 08:07:38.807465
+def test_Formatting_format_headers_multiple_plugins_chained():
+    class Upper:
+        enabled = True
+
+        def __init__(self, env=None, **kwargs):
+            pass
+
+        def module_0.format_headers(self, headers):
+            return headers.upper()
+
+    class Bracket:
+        enabled = True
+
+        def __init__(self, env=None, **kwargs):
+            pass
+
+        def module_0.format_headers(self, headers):
+            return '[{}]'.format(headers)
+
+    with patch.object(plugin_manager, 'get_formatters_grouped',
+                      return_value={'g1': [Upper], 'g2': [Bracket]}):
+        formatting = Formatting(['g1', 'g2'])
+        # Plugins are applied in group order, output of one feeds the next
+        assert formatting.format_headers('a: b') == '[A: B]'
+
+
+def test_Formatting_format_headers_no_plugins():
+    with patch.object(plugin_manager, 'get_formatters_grouped', return_value={'g': []}):
+        formatting = Formatting(['g'])
+        # With no plugins enabled, headers pass through unchanged
+        assert formatting.format_headers('A: b') == 'A: b'
+
+# Generated at 2026-11-01 23:15:32.344858
 # Unit test for method format_body of class Formatting
 def test_Formatting_format_body():
-    formatting = Formatting.__new__(Formatting)
+    from httpie.plugins import FormatterPlugin
 
-    first_plugin = Mock()
-    first_plugin.format_body.return_value = "formatted by first"
+    class PrefixFormatter(FormatterPlugin):
+        group_name = 'utest_prefix'
 
-    second_plugin = Mock()
-    second_plugin.format_body.return_value = "formatted by second"
-
-    formatting.enabled_plugins = [first_plugin, second_plugin]
-
-    result = formatting.format_body("original content", "application/json")
-
-    first_plugin.format_body.assert_called_once_with(
-        "original content", "application/json"
-    )
-    second_plugin.format_body.assert_called_once_with(
-        "formatted by first", "application/json"
-    )
-    assert result == "formatted by second"
-
-    # An invalid MIME type must leave the content unchanged and skip plugins.
-    first_plugin.reset_mock()
-    second_plugin.reset_mock()
-
-    result = formatting.format_body("original content", "invalid-mime")
-
-    assert result == "original content"
-    first_plugin.format_body.assert_not_called()
-    second_plugin.format_body.assert_not_called()
-
-# Generated at 2026-10-25 08:07:56.502683
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:07:58.914902
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:08:01.533370
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:08:03.966466
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:08:06.378177
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:08:08.791417
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:08:11.204300
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:08:13.617640
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:08:16.031941
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:08:18.445930
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:08:20.864523
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:08:23.275972
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:08:25.691771
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:08:28.106142
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:08:30.522799
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:08:32.939386
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:08:35.355837
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:08:37.862149
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:08:40.203319
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:08:42.611557
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:08:45.024843
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:08:47.439503
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:08:49.851533
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:08:52.268607
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:08:54.681392
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:08:57.095440
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:08:59.512874
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:09:01.929431
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:09:11.462699
-# Unit test for constructor of class Formatting
-def test_Formatting():from unittest.mock import patch
-
-
-# Generated at 2026-10-25 08:09:25.201971
-# Unit test for method get_converter of class Conversion
-def test_Conversion_get_converter():from unittest.mock import patch
-
-
-# Generated at 2026-10-25 08:09:34.825768
-# Unit test for method get_converter of class Conversion
-def test_Conversion_get_converter():from unittest.mock import patch
-
-
-# Generated at 2026-10-25 08:09:37.241550
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:09:39.821235
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:09:42.239881
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:09:44.652539
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:09:47.066968
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:09:49.484288
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:09:51.896305
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:09:54.310307
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:09:56.727037
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:09:59.140285
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:10:01.555970
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:10:03.970553
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:10:06.387460
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:10:08.804396
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:10:11.218597
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:10:13.632876
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:10:16.050696
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:10:18.467817
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:10:20.926257
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:10:23.340770
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:10:25.752904
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:10:28.167380
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:10:30.581190
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:10:32.997508
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:10:35.414586
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:10:37.938256
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:10:40.264920
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:10:42.675886
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:10:48.640382
-# Unit test for method get_converter of class Conversion
-def test_Conversion_get_converter():result = Conversion.get_converter("invalid")
-
-# Generated at 2026-10-25 08:11:14.073055
-# Unit test for method format_body of class Formatting
-def test_Formatting_format_body():import pytest
-from unittest.mock import patch, MagicMock
-
-from httpie.plugins import ConverterPlugin
-from httpie.context import Environment
-import sys
-sys.path.insert(0, '/path/to/your/project')  # adjust as needed
-from your_module import Formatting  # module containing the code above
-
-
-class DummyFormatter:
-    """Minimal formatter plugin for testing."""
-    enabled = True
-
-    def __init__(self, env=None, **kwargs):
-        self.env = env
-        self.kwargs = kwargs
-
-    def format_headers(self, headers: str) -> str:
-        return headers
-
-    def module_0.format_body(self, content: str, mime: str) -> str:
-        return content.upper()
-
-
-class DisabledFormatter(DummyFormatter):
-    enabled = False
-
-
-def test_format_body_applies_enabled_formatters():
-    fmt = Formatting(groups=['group1'], env=Environment())
-
-    # Inject a mock grouped-plugins dict
-    with patch.object(fmt, 'enabled_plugins', [DummyFormatter()]):
-        result = fmt.format_body('hello', 'application/json')
-    assert result == 'HELLO'
-
-
-def test_format_body_skips_invalid_mime():
-    fmt = Formatting(groups=['group1'], env=Environment())
-
-    called = []
-    class RecordingFormatter(DummyFormatter):
         def module_0.format_body(self, content, mime):
-            called.append(mime)
-            return content
+            return 'P:' + content
 
-    with patch.object(fmt, 'enabled_plugins', [RecordingFormatter()]):
-        result = fmt.format_body('hello', 'not-a-mime')  # no slash -> invalid
+    class SuffixFormatter(FormatterPlugin):
+        group_name = 'utest_suffix'
 
-    assert result == 'hello'
-    assert called == []  # formatter never invoked
-
-
-def test_format_body_chains_multiple_formatters():
-    fmt = Formatting(groups=['group1'], env=Environment())
-
-    class SuffixFormatter(DummyFormatter):
         def module_0.format_body(self, content, mime):
-            return content + '-A'
+            return content + ':S'
 
-    class PrefixFormatter(DummyFormatter):
+    plugin_manager.register(PrefixFormatter, SuffixFormatter)
+
+# Generated at 2026-11-01 23:17:12.192512
+# Unit test for constructor of class Formatting
+def test_Formatting():
+    class FakeFormatter:
+        enabled = True
+
+        def __init__(self, env=None, **kwargs):
+            self.env = env
+            self.kwargs = kwargs
+
+    class DisabledFormatter(FakeFormatter):
+        enabled = False
+
+    fake_groups = {
+        'format': [FakeFormatter, DisabledFormatter],
+        'colors': [FakeFormatter],
+    }
+
+    env = Environment()
+    with patch.object(plugin_manager, 'get_formatters_grouped', return_value=fake_groups):
+        formatting = Formatting(groups=['format', 'colors'], env=env, pretty=True, foo='bar')
+
+        assert isinstance(formatting, Formatting)
+        assert len(formatting.enabled_plugins) == 2
+        assert all(p.enabled for p in formatting.enabled_plugins)
+        assert all(isinstance(p, FakeFormatter) for p in formatting.enabled_plugins)
+        assert formatting.enabled_plugins[0].env is env
+        assert formatting.enabled_plugins[0].kwargs == {'pretty': True, 'foo': 'bar'}
+
+        # Empty groups should produce no enabled plugins
+        empty_formatting = Formatting(groups=[], env=env)
+        assert empty_formatting.enabled_plugins == []
+
+        # Unknown group should raise KeyError
+        try:
+            Formatting(groups=['nonexistent_group'])
+            raised = False
+        except KeyError:
+            raised = True
+        assert raised
+
+# Generated at 2026-11-01 23:17:52.527907
+# Unit test for method format_body of class Formatting
+def test_Formatting_format_body():
+    groups = {'upper': [UpperCaseFormatter], 'suffix': [SuffixFormatter]}
+
+    with patch.object(plugin_manager, 'get_formatters_grouped', return_value=groups):
+        # Valid mime: a single enabled plugin transforms the content
+        formatting = Formatting(['upper'], env=Environment())
+        assert len(formatting.enabled_plugins) == 1
+        assert formatting.format_body('body', 'application/json') == 'BODY'
+
+        # Multiple groups: plugins are applied in order, chaining the content
+        formatting = Formatting(['upper', 'suffix'], env=Environment())
+        assert len(formatting.enabled_plugins) == 2
+        assert formatting.format_body('body', 'text/plain') == 'BODY<text/plain>'
+
+        # Invalid mime: content returned unchanged (plugins must not run,
+        # otherwise the uppercase transformation would be visible)
+        assert formatting.format_body('body', 'invalid') == 'body'
+        assert formatting.format_body('body', 'no-slash') == 'body'
+        assert formatting.format_body('body', 'trailing/') == 'body'
+        assert formatting.format_body('body', '') == 'body'
+        assert formatting.format_body('body', None) == 'body'
+
+    # Disabled plugins are not instantiated and therefore not applied
+    try:
+        UpperCaseFormatter.enabled = False
+        with patch.object(plugin_manager, 'get_formatters_grouped', return_value=groups):
+            formatting = Formatting(['upper'], env=Environment())
+            assert len(formatting.enabled_plugins) == 0
+            assert formatting.format_body('body', 'application/json') == 'body'
+    finally:
+        UpperCaseFormatter.enabled = True
+
+# Generated at 2026-11-01 23:18:32.360849
+# Unit test for method format_headers of class Formatting
+def test_Formatting_format_headers():
+    from unittest.mock import patch
+
+    class FormatterA:
+        def __init__(self, *args, **kwargs):
+            self.enabled = True
+
+        def module_0.format_headers(self, headers):
+            return headers + '-A'
+
+    class FormatterB:
+        def __init__(self, *args, **kwargs):
+            self.enabled = True
+
+        def module_0.format_headers(self, headers):
+            return headers + '-B'
+
+    class DisabledFormatter:
+        def __init__(self, *args, **kwargs):
+            self.enabled = False
+
+        def module_0.format_headers(self, headers):
+            return headers + '-disabled'
+
+    plugins = {
+        'group1': [FormatterA],
+        'group2': [DisabledFormatter, FormatterB],
+    }
+
+    with patch.object(plugin_manager, 'get_formatters_grouped', return_value=plugins):
+        formatting = Formatting(['group1', 'group2'])
+
+        # Only enabled plugins are collected, in group order
+        assert len(formatting.enabled_plugins) == 2
+        assert isinstance(formatting.enabled_plugins[0], FormatterA)
+        assert isinstance(formatting.enabled_plugins[1], FormatterB)
+
+        # Headers are piped through each enabled plugin in order
+        assert formatting.format_headers('headers') == 'headers-A-B'
+
+        # Empty input is still passed through the chain
+        assert formatting.format_headers('') == '-A-B'
+
+    # No groups -> no plugins -> headers returned unchanged
+    with patch.object(plugin_manager, 'get_formatters_grouped', return_value=plugins):
+        formatting = Formatting([])
+        assert formatting.enabled_plugins == []
+        assert formatting.format_headers('headers') == 'headers'
+
+# Generated at 2026-11-01 23:19:14.254603
+# Unit test for constructor of class Formatting
+def test_Formatting():
+    from httpie.plugins.base import BaseFormatter
+
+    class DummyFormatter(BaseFormatter):
+        group_name = 'dummy'
+
+    class DisabledFormatter(BaseFormatter):
+        group_name = 'disabled'
+
+        @property
+        def enabled(self):
+            return False
+
+    # Empty groups -> no plugins enabled
+    formatting = Formatting(groups=[])
+    assert isinstance(formatting, Formatting)
+    assert formatting.enabled_plugins == []
+
+    plugin_manager.register(DummyFormatter)
+    plugin_manager.register(DisabledFormatter)
+    try:
+        # Plugins from requested groups get instantiated; only enabled ones kept
+        formatting = Formatting(groups=['dummy', 'disabled'], env=Environment())
+        assert len(formatting.enabled_plugins) == 1
+        assert isinstance(formatting.enabled_plugins[0], DummyFormatter)
+        assert formatting.enabled_plugins[0].env is not None
+
+        # Extra kwargs are forwarded to the plugin constructors
+        formatting = Formatting(
+            groups=['dummy'],
+            env=Environment(),
+            sort_headers=True,
+            pretty_options={'format': True},
+        )
+        assert len(formatting.enabled_plugins) == 1
+        assert formatting.enabled_plugins[0].kwargs == {
+            'sort_headers': True,
+            'pretty_options': {'format': True},
+        }
+    finally:
+        plugin_manager.unregister(DummyFormatter)
+        plugin_manager.unregister(DisabledFormatter)
+
+    # Requesting an unregistered group raises KeyError
+    raised = False
+    try:
+        Formatting(groups=['nonexistent_group'])
+    except KeyError:
+        raised = True
+    assert raised
+
+# Generated at 2026-11-01 23:19:55.204906
+# Unit test for method format_body of class Formatting
+def test_Formatting_format_body():
+    class UpperFormatter(FormatterPlugin):
         def module_0.format_body(self, content, mime):
-            return 'B-' + content
-
-    with patch.object(fmt, 'enabled_plugins', [SuffixFormatter(), PrefixFormatter()]):
-        result = fmt.format_body('x', 'text/plain')
-
-    assert result == 'B-x-A'  # applied in registration order
-
-
-def test_format_body_with_no_plugins_returns_content_unchanged():
-    fmt = Formatting(groups=['group1'], env=Environment())
-    with patch.object(fmt, 'enabled_plugins', []):
-        assert fmt.format_body('raw', 'application/json') == 'raw'
-
-# Generated at 2026-10-25 08:11:23.851014
-# Unit test for method get_converter of class Conversion
-def test_Conversion_get_converter():from unittest.mock import patch
-
-
-# Generated at 2026-10-25 08:11:26.482913
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:11:28.898601
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:11:31.312375
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:11:33.760908
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:11:36.148465
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:11:38.563733
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:11:40.977857
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:11:43.858296
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:11:46.332208
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:11:48.745425
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:11:51.158379
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:11:53.573507
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:11:55.986880
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:11:58.400387
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:12:00.816394
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:12:03.230930
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:12:05.643647
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:12:08.059413
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:12:10.475976
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:12:12.891581
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:12:15.309966
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:12:17.725978
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:12:20.141639
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:12:22.559898
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:12:24.975362
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:12:27.393058
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:12:29.808632
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:12:32.223258
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:12:34.638716
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:12:37.057078
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:12:39.473403
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:12:41.887334
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:12:44.304281
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:12:46.722285
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:12:49.183270
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:12:51.619516
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:12:54.035131
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:12:56.451188
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:12:58.864881
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:13:01.270221
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:13:03.689595
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:13:06.107868
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:13:08.520429
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:13:10.942058
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:13:13.356142
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:13:15.768957
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:13:18.183484
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:13:20.598917
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:13:23.016535
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:13:25.462569
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:13:27.847220
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:13:30.275625
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:13:32.692842
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:13:35.108461
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:13:37.524615
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:13:39.941330
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:13:42.357800
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:13:44.773182
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:13:47.186815
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:13:49.603816
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:13:52.024110
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:13:54.436494
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:13:56.851940
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:13:59.271455
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:14:01.687773
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:14:04.131344
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:14:06.582297
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:14:09.000203
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:14:11.413392
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:14:13.827975
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:14:16.244636
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:14:18.659712
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:14:21.081828
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:14:23.492698
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:14:25.995640
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:14:28.403874
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:14:30.823365
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:14:33.235958
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:14:35.650139
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:14:38.069025
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:14:40.487123
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:14:42.898379
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:14:45.317530
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:14:47.733017
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:14:50.246031
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:14:52.633656
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:14:55.048725
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:14:57.465791
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:14:59.880027
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:15:02.294433
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:15:04.710919
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:15:07.128416
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:15:09.541358
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:15:11.955130
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:15:14.374093
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:15:16.788410
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:15:19.203904
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:15:21.618522
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:15:24.035099
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:15:26.449514
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:15:28.863039
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:15:31.360240
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:15:33.812642
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:15:36.230193
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:15:38.642104
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:15:41.058067
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:15:43.469987
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:15:45.883607
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:15:48.299067
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:15:50.711757
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:15:53.126173
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:15:55.538132
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:15:57.950084
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:16:00.364929
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:16:02.779761
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:16:05.194023
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:16:07.607971
-# Unit test for method format_body of class Formatting
-
-# Generated at 2026-10-25 08:16:10.021812
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:16:12.434004
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:16:14.847045
-# Unit test for constructor of class Formatting
-
-# Generated at 2026-10-25 08:16:17.262295
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:16:19.674785
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:16:22.087354
-# Unit test for method format_headers of class Formatting
-
-# Generated at 2026-10-25 08:16:24.500247
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:16:26.914559
-# Unit test for method get_converter of class Conversion
-
-# Generated at 2026-10-25 08:16:29.328980
-# Unit test for method get_converter of class Conversion
+            return content.upper()
+
+    class SuffixFormatter(FormatterPlugin):
+        def module_0.format_body(self, content, mime):
+            return content + '!'
+
+    with mock.patch.object(
+        plugin_manager,
+        'get_formatters_grouped',
+        return_value={'format': [UpperFormatter, SuffixFormatter]},
+    ):
+        formatting = Formatting(groups=['format'])
+
+    # Valid MIME: each enabled plugin is applied in order.
+    assert formatting.format_body('data', 'text/plain') == 'DATA!'
+
+    # Invalid MIME (no slash): content is returned unchanged.
+    assert formatting.format_body('data', 'invalid-mime') == 'data'
+
+    # Empty MIME: content is returned unchanged.
+    assert formatting.format_body('data', '') == 'data'

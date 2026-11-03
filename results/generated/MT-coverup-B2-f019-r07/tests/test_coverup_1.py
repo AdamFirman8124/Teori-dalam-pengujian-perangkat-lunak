@@ -8,41 +8,49 @@ from f019 import sort_numbers
 
 
 def test_sort_numbers_basic():
-    result = sort_numbers("three one five")
-    assert result == "one three five"
+    """Unsorted words are sorted by their numeric value."""
+    assert sort_numbers("three one two") == "one two three"
 
 
-def test_sort_numbers_all_values():
-    result = sort_numbers(
-        "nine eight seven six five four three two one zero"
-    )
-    assert result == "zero one two three four five six seven eight nine"
+def test_sort_numbers_all_words_reverse():
+    """All ten number words, given in reverse order, come back sorted zero..nine."""
+    words = ["nine", "eight", "seven", "six", "five",
+             "four", "three", "two", "one", "zero"]
+    assert sort_numbers(" ".join(words)) == \
+        "zero one two three four five six seven eight nine"
 
 
 def test_sort_numbers_single_word():
-    assert sort_numbers("four") == "four"
+    """A single word input passes through (covers the value_map lookup and lambda key)."""
+    assert sort_numbers("five") == "five"
 
 
 def test_sort_numbers_empty_string():
-    # The 'if x' branch filters out empty tokens produced by split(' ')
+    """An empty string yields an empty string; exercises the `if x` false branch."""
     assert sort_numbers("") == ""
 
 
-def test_sort_numbers_extra_spaces():
-    # Empty tokens between spaces must be filtered out
-    assert sort_numbers("two  zero   one") == "zero one two"
+def test_sort_numbers_multiple_spaces():
+    """Extra internal spaces are filtered out by the `if x` guard."""
+    assert sort_numbers("three  one") == "one three"
+
+
+def test_sort_numbers_leading_trailing_spaces():
+    """Leading/trailing spaces produce empty tokens that are filtered out."""
+    assert sort_numbers(" four one ") == "one four"
+
+
+def test_sort_numbers_already_sorted():
+    """Already sorted input is unchanged."""
+    assert sort_numbers("zero one two") == "zero one two"
 
 
 def test_sort_numbers_duplicates():
-    assert sort_numbers("one one zero") == "zero one one"
+    """Duplicate words are preserved and sorted."""
+    assert sort_numbers("two zero two") == "zero two two"
 
 
-def test_sort_numbers_stability_and_repeated_calls():
-    # Verify deterministic output across calls (no state pollution)
-    assert sort_numbers("five two") == "two five"
-    assert sort_numbers("five two") == "two five"
-
-
-def test_sort_numbers_invalid_word_raises():
-    with pytest.raises(KeyError):
-        sort_numbers("ten")
+def test_sort_numbers_heavier_shuffle():
+    """A larger shuffled input sorts correctly, exercising the sort key lambda repeatedly."""
+    result = sort_numbers("eight zero five nine two six one four seven three")
+    assert result == "zero one two three four five six seven eight nine"

@@ -11,9 +11,18 @@ def test_case_0():
     int_2 = 2
     var_2 = module_0.f(int_2)
     assert var_2 == [1, 2]
-    int_3 = 5
+    int_3 = 3
     var_3 = module_0.f(int_3)
-    assert var_3 == [1, 2, 6, 24, 15]
-    int_4 = 6
+    assert var_3 == [1, 2, 6]
+    int_4 = 5
     var_4 = module_0.f(int_4)
-    assert var_4 == [1, 2, 6, 24, 15, 720]
+    assert var_4 == [1, 2, 6, 24, 15]
+    int_5 = 6
+    var_5 = module_0.f(int_5)
+    assert var_5 == [1, 2, 6, 24, 15, 720]
+    int_6 = -1
+    var_6 = module_0.f(int_6)
+    assert var_6 == []
+
+def test_case_1():
+    pass

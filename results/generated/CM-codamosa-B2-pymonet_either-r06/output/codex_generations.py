@@ -1,1642 +1,819 @@
 
 
-# Generated at 2026-10-24 07:18:21.550369
+# Generated at 2026-11-02 17:11:19.509024
 # Unit test for method to_maybe of class Right
+def test_Right_to_maybe():
+    from pymonet.maybe import Maybe
 
-# Generated at 2026-10-24 07:18:23.966406
-# Unit test for method to_maybe of class Right
+    right = Right(42)
+    maybe = right.to_maybe()
 
-# Generated at 2026-10-24 07:18:26.390415
-# Unit test for method to_maybe of class Right
+    assert isinstance(maybe, Maybe)
+    assert maybe.is_just is True
+    assert maybe.value == 42
 
-# Generated at 2026-10-24 07:18:28.800589
-# Unit test for method bind of class Left
-
-# Generated at 2026-10-24 07:18:31.217197
-# Unit test for method bind of class Left
-
-# Generated at 2026-10-24 07:18:33.630378
-# Unit test for method bind of class Left
-
-# Generated at 2026-10-24 07:18:36.044239
-# Unit test for method bind of class Right
-
-# Generated at 2026-10-24 07:18:38.467122
-# Unit test for method bind of class Right
-
-# Generated at 2026-10-24 07:18:40.880035
-# Unit test for method bind of class Right
-
-# Generated at 2026-10-24 07:18:43.295230
-# Unit test for method is_right of class Left
-
-# Generated at 2026-10-24 07:18:45.707779
-# Unit test for method is_right of class Left
-
-# Generated at 2026-10-24 07:18:48.123361
-# Unit test for method is_right of class Left
-
-# Generated at 2026-10-24 07:18:50.538910
-# Unit test for method to_box of class Either
-
-# Generated at 2026-10-24 07:18:52.954897
-# Unit test for method to_box of class Either
-
-# Generated at 2026-10-24 07:18:55.367704
-# Unit test for method to_box of class Either
-
-# Generated at 2026-10-24 07:19:09.995585
+# Generated at 2026-11-02 17:11:32.909093
 # Unit test for method to_validation of class Right
 def test_Right_to_validation():
-    result = Right(42).to_validation()
-
-    assert isinstance(result, Validation)
-    assert result == Validation.success(42)
-
-# Generated at 2026-10-24 07:19:11.634124
-# Unit test for method to_validation of class Left
-def test_Left_to_validation():
-    from pymonet.validation import Validation
-
-    left = Left('error')
-
-    validation = left.to_validation()
-
-    assert isinstance(validation, Validation)
-    assert validation.value == ['error']
-    assert validation.is_success is False
-    assert validation.is_failed() is True
-
-# Generated at 2026-10-24 07:19:12.967978
-# Unit test for method to_validation of class Left
-def test_Left_to_validation():
-    from pymonet.validation import Validation
-
-    left = Left('error')
-
-    validation = left.to_validation()
-
-    assert isinstance(validation, Validation)
-    assert validation.value == ['error']
-    assert validation.is_success is False
-    assert validation.is_failed() is True
-
-# Generated at 2026-10-24 07:19:14.405036
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:19:30.885692
-# Unit test for method is_right of class Right
-def test_Right_is_right():
-    from pymonet.either import Right, Left
-
-    assert Right(42).is_right() is True
-    assert Right(None).is_right() is True   # right-ness is independent of value
-    assert Left("error").is_right() is False
-
-# Generated at 2026-10-24 07:19:45.323818
-# Unit test for method is_right of class Right
-def test_Right_is_right():
-    right = Right("success")
-
-    assert right.is_right() is True
-
-# Generated at 2026-10-24 07:19:46.629804
-# Unit test for method case of class Either
-def test_Either_case():
-    # Right -> only `success` is called, with the Right value, and its result is returned
-    success = Mock(return_value='success-result')
-    error = Mock(return_value='error-result')
     right = Right(42)
 
-    assert right.case(error, success) == 'success-result'
-    success.assert_called_once_with(42)
-    error.assert_not_called()
+    validation = right.to_validation()
 
-    # Left -> only `error` is called, with the Left value, and its result is returned
-    success = Mock(return_value='success-result')
-    error = Mock(return_value='error-result')
-    left = Left('boom')
+    assert validation == Validation.success(42)
+    assert validation.value == 42
+    assert validation.errors == []
+    assert validation.is_success() is True
+    assert validation.is_fail() is False
 
-    assert left.case(error, success) == 'error-result'
-    error.assert_called_once_with('boom')
-    success.assert_not_called()
-
-    # The handler's own return value (of any type) is passed through unchanged
-    assert Right(1).case(lambda _: None, lambda v: v + 1) == 2
-    assert Left(1).case(lambda v: v - 1, lambda _: None) == 0
-
-# Generated at 2026-10-24 07:19:48.093152
-# Unit test for method to_validation of class Left
-def test_Left_to_validation():
+# Generated at 2026-11-02 17:11:49.376875
+# Unit test for method to_validation of class Right
+def test_Right_to_validation():
     from pymonet.validation import Validation
 
+    either = Right(42)
+    validation = either.to_validation()
+
+    assert validation == Validation.success(42)
+    assert validation.value == 42
+    assert validation.errors == []
+
+# Generated at 2026-11-02 17:11:52.552255
+# Unit test for constructor of class Right
+def test_Right():
+    right = Right(42)
+    assert right.value == 42
+    assert right.is_right() is True
+    assert right.is_left() is False
+    assert right == Right(42)
+    assert right != Left(42)
+
+# Generated at 2026-11-02 17:11:59.469808
+# Unit test for method ap of class Left
+def test_Left_ap():
+    left = Left(42)
+    result = left.ap(Right(lambda value: value + 1))
+
+    # ap on Left ignores the applicative and returns a copy of self
+    assert result == Left(42)
+    assert result is not left
+    assert result.is_left() is True
+    assert result.is_right() is False
+
+    # works regardless of the argument passed
+    assert left.ap(Left(lambda value: value)) == Left(42)
+
+# Generated at 2026-11-02 17:12:04.959509
+# Unit test for method to_try of class Either
+def test_Either_to_try():
+    from pymonet.monad_try import Try
+
+    # Right should transform into a successful Try with the same value
+    right = Right(42)
+    try_from_right = right.to_try()
+    assert isinstance(try_from_right, Try)
+    assert try_from_right.is_success() is True
+    assert try_from_right.value == 42
+
+    # Left should transform into a failed Try with the same value
     left = Left('error')
+    try_from_left = left.to_try()
+    assert isinstance(try_from_left, Try)
+    assert try_from_left.is_success() is False
+    assert try_from_left.value == 'error'
 
-    validation = left.to_validation()
+    # Right with a falsy value should still be a successful Try
+    try_from_right_falsy = Right(0).to_try()
+    assert try_from_right_falsy.is_success() is True
+    assert try_from_right_falsy.value == 0
 
-    assert isinstance(validation, Validation)
-    assert validation.value == ['error']
-    assert validation.is_success is False
-    assert validation.is_failed() is True
+    # Left with a falsy value should still be a failed Try
+    try_from_left_falsy = Left(None).to_try()
+    assert try_from_left_falsy.is_success() is False
+    assert try_from_left_falsy.value is None
 
-# Generated at 2026-10-24 07:19:49.458411
-# Unit test for method to_validation of class Left
-def test_Left_to_validation():
-    from pymonet.validation import Validation
+# Generated at 2026-11-02 17:12:15.009372
+# Unit test for method to_try of class Either
+def test_Either_to_try():
+    from pymonet.monad_try import Try
+    from pymonet.either import Left, Right
+
+    # Right should be transformed into successfully resolved Try
+    right = Right(42)
+    try_result = right.to_try()
+
+    assert isinstance(try_result, Try)
+    assert try_result.value == 42
+    assert try_result.is_success is True
+    assert try_result == Try(42, is_success=True)
+
+    # Left should be transformed into failed Try
+    left = Left('error')
+    try_result = left.to_try()
+
+    assert isinstance(try_result, Try)
+    assert try_result.value == 'error'
+    assert try_result.is_success is False
+    assert try_result == Try('error', is_success=False)
+
+    # Transformed Try should not be equal to Try with different success flag
+    assert Right(1).to_try() != Left(1).to_try()
+
+    # Value kept inside Try should be usable
+    assert Right(10).to_try().map(lambda x: x * 2).value == 20
+
+# Generated at 2026-11-02 17:12:19.991824
+# Unit test for method to_lazy of class Either
+def test_Either_to_lazy():
+    from pymonet.lazy import Lazy
+
+    # Right Either should produce a Lazy returning its value
+    right = Right(42)
+    lazy = right.to_lazy()
+    assert isinstance(lazy, Lazy)
+    assert lazy() == 42
+
+    # Left Either should produce a Lazy returning its value
+    left = Left('error')
+    lazy = left.to_lazy()
+    assert isinstance(lazy, Lazy)
+    assert lazy() == 'error'
+
+# Generated at 2026-11-02 17:12:26.271582
+# Unit test for method case of class Either
+def test_Either_case():
+    from unittest.mock import MagicMock
+
+    from pymonet.either import Left, Right
+
+    error_mock = MagicMock(return_value='error_result')
+    success_mock = MagicMock(return_value='success_result')
+
+    # Right should call the success handler with its value
+    right = Right(42)
+    result = right.case(error_mock, success_mock)
+
+    assert result == 'success_result'
+    success_mock.assert_called_once_with(42)
+    error_mock.assert_not_called()
+
+    error_mock.reset_mock()
+    success_mock.reset_mock()
+
+    # Left should call the error handler with its value
+    left = Left('oops')
+    result = left.case(error_mock, success_mock)
+
+    assert result == 'error_result'
+    error_mock.assert_called_once_with('oops')
+    success_mock.assert_not_called()
+
+# Generated at 2026-11-02 17:12:31.870646
+# Unit test for method to_try of class Either
+def test_Either_to_try():
+    from pymonet.monad_try import Try
+
+    # Right should be transformed into a successfully resolved Try
+    right = Right(42)
+    try_right = right.to_try()
+
+    assert isinstance(try_right, Try)
+    assert try_right.value == 42
+    assert try_right.is_success is True
+    assert try_right == Try(42, is_success=True)
+
+    # Left should be transformed into a failed (not resolved) Try
+    left = Left('error')
+    try_left = left.to_try()
+
+    assert isinstance(try_left, Try)
+    assert try_left.value == 'error'
+    assert try_left.is_success is False
+    assert try_left == Try('error', is_success=False)
+
+    # Both results should not be equal to each other
+    assert try_right != try_left
+
+# Generated at 2026-11-02 17:12:42.263878
+# Unit test for method to_lazy of class Either
+def test_Either_to_lazy():
+    """Unit test for method to_lazy of class Either"""
+    from pymonet.lazy import Lazy
+
+    # Test with Right
+    either = Right(42)
+    lazy = either.to_lazy()
+
+    assert isinstance(lazy, Lazy)
+    assert lazy.get() == 42
+    assert lazy.is_evaluated is True
+
+    # Test with Left
+    either = Left('error')
+    lazy = either.to_lazy()
+
+    assert isinstance(lazy, Lazy)
+    assert lazy.get() == 'error'
+    assert lazy.is_evaluated is True
+
+    # Test laziness - value is not evaluated until get() is called
+    lazy = Right(100).to_lazy()
+    assert lazy.is_evaluated is False
+    assert lazy.value is None
+    assert lazy.get() == 100
+
+    # Test with object identity preservation
+    custom_value = object()
+    lazy = Right(custom_value).to_lazy()
+    assert lazy.get() is custom_value
+
+    # Test fold over the lazy value
+    lazy = Right(5).to_lazy()
+    assert lazy.fold(lambda value: value + 1) == 6
+
+# Generated at 2026-11-02 17:12:49.457428
+# Unit test for method to_lazy of class Either
+def test_Either_to_lazy():
+    from pymonet.lazy import Lazy
+
+    # Either base class
+    lazy = Either(42).to_lazy()
+    assert isinstance(lazy, Lazy)
+    assert lazy.fold(lambda value: value) == 42
+
+    # Left
+    left_lazy = Left(42).to_lazy()
+    assert isinstance(left_lazy, Lazy)
+    assert left_lazy.fold(lambda value: value) == 42
+
+    # Right
+    right_lazy = Right(42).to_lazy()
+    assert isinstance(right_lazy, Lazy)
+    assert right_lazy.fold(lambda value: value) == 42
+
+# Generated at 2026-11-02 17:12:58.450429
+# Unit test for method to_lazy of class Either
+def test_Either_to_lazy():
+    """Unit test for method to_lazy of class Either."""
+    from pymonet.lazy import Lazy
+
+    # Right should be transformed into Lazy returning its value
+    right = Right(42)
+    lazy = right.to_lazy()
+    assert isinstance(lazy, Lazy)
+    assert lazy.get() == 42
+
+    # Left should be transformed into Lazy returning its value too
+    left = Left('error')
+    lazy_left = left.to_lazy()
+    assert isinstance(lazy_left, Lazy)
+    assert lazy_left.get() == 'error'
+
+    # to_lazy should not be evaluated eagerly
+    right_none = Right(None)
+    lazy_none = right_none.to_lazy()
+    assert isinstance(lazy_none, Lazy)
+    assert lazy_none.get() is None
+
+# Generated at 2026-11-02 17:13:02.938684
+# Unit test for method __eq__ of class Either
+def test_Either___eq__():
+    # Left vs Left with equal values
+    assert Left(1) == Left(1)
+    assert Left('test') == Left('test')
+
+    # Right vs Right with equal values
+    assert Right(1) == Right(1)
+    assert Right('test') == Right('test')
+
+    # Left vs Right with equal values should not be equal
+    assert not Left(1) == Right(1)
+    assert not Right(1) == Left(1)
+
+    # Different values should not be equal
+    assert not Left(1) == Left(2)
+    assert not Right(1) == Right(2)
+
+    # Comparison with non-Either objects should be False
+    assert not Left(1) == 1
+    assert not Right(1) == 1
+    assert not Left(1) == 'Left'
+    assert not Right(1) == None
+    assert not Left(1) == [1]
+
+    # Inequality operator
+    assert Left(1) != Right(1)
+    assert Right(1) != Left(1)
+    assert not Left(1) != Left(1)
+    assert not Right(1) != Right(1)
+
+    # Comparison with other monad-like objects should be False
+    from pymonet.box import Box
+    assert not Left(1) == Box(1)
+    assert not Right(1) == Box(1)
+
+# Generated at 2026-11-02 17:13:08.436449
+# Unit test for method to_try of class Either
+def test_Either_to_try():
+    from pymonet.monad_try import Try
+    from pymonet.either import Left, Right
+
+    # Right should be transformed into a successfully resolved Try
+    right = Right(42)
+    try_monad = right.to_try()
+
+    assert isinstance(try_monad, Try)
+    assert try_monad.is_success is True
+    assert try_monad.value == 42
+
+    # Left should be transformed into a non-resolved (failed) Try
+    left = Left('error')
+    try_monad = left.to_try()
+
+    assert isinstance(try_monad, Try)
+    assert try_monad.is_success is False
+    assert try_monad.value == 'error'
+
+# Generated at 2026-11-02 17:13:14.460852
+# Unit test for method case of class Either
+def test_Either_case():
+    error_handler = lambda value: 'error: {}'.format(value)
+    success_handler = lambda value: 'success: {}'.format(value)
+
+    # Left should call the error handler with its value
+    assert Left('left_value').case(error_handler, success_handler) == 'error: left_value'
+
+    # Right should call the success handler with its value
+    assert Right('right_value').case(error_handler, success_handler) == 'success: right_value'
+
+    # Only one handler should be called per invocation
+    called = []
+
+    def tracking_error(value):
+        called.append(('error', value))
+        return 'error'
+
+    def tracking_success(value):
+        called.append(('success', value))
+        return 'success'
+
+    Left('l').case(tracking_error, tracking_success)
+    assert called == [('error', 'l')]
+
+    called = []
+    Right('r').case(tracking_error, tracking_success)
+    assert called == [('success', 'r')]
+
+# Generated at 2026-11-02 17:13:22.404482
+# Unit test for method case of class Either
+def test_Either_case():
+    from pymonet.either import Left, Right
+
+    error_calls = []
+    success_calls = []
+
+    def error_handler(value):
+        error_calls.append(value)
+        return 'error: {}'.format(value)
+
+    def success_handler(value):
+        success_calls.append(value)
+        return 'success: {}'.format(value)
+
+    # Right should call only the success handler with its value
+    right = Right(42)
+    assert right.case(error_handler, success_handler) == 'success: 42'
+    assert success_calls == [42]
+    assert error_calls == []
+
+    # Left should call only the error handler with its value
+    left = Left('oops')
+    assert left.case(error_handler, success_handler) == 'error: oops'
+    assert error_calls == ['oops']
+    assert success_calls == [42]
+
+    # case should work with chained transformations as well
+    assert Right(10).map(lambda x: x + 1).case(error_handler, success_handler) == 'success: 11'
+    assert Left(10).map(lambda x: x + 1).case(error_handler, success_handler) == 'error: 10'
+
+# Generated at 2026-11-02 17:13:41.189959
+# Unit test for method to_lazy of class Either
+def test_Either_to_lazy():
+    from pymonet.lazy import Lazy
+
+    # Right either should transform into Lazy wrapping its value
+    right = Right(42)
+    lazy = right.to_lazy()
+    assert isinstance(lazy, Lazy)
+    assert lazy.fn() == 42
+
+    # Left either should transform into Lazy wrapping its value as well
+    left = Left('error')
+    lazy = left.to_lazy()
+    assert isinstance(lazy, Lazy)
+    assert lazy.fn() == 'error'
+
+# Generated at 2026-11-02 17:14:01.494441
+# Unit test for method to_lazy of class Either
+def test_Either_to_lazy():
+    from pymonet.lazy import Lazy
+
+    # Right is transformed into Lazy which resolves to stored value
+    either = Right(42)
+    lazy = either.to_lazy()
+    assert isinstance(lazy, Lazy)
+    assert lazy.get_value() == 42
+
+    # Left is also transformed into Lazy which resolves to stored value
+    either = Left('error')
+    lazy = either.to_lazy()
+    assert isinstance(lazy, Lazy)
+    assert lazy.get_value() == 'error'
+
+# Generated at 2026-11-02 17:14:06.422029
+# Unit test for method case of class Either
+def test_Either_case():
+    assert Left(42).case(lambda value: value + 1, lambda value: value + 2) == 43
+    assert Right(42).case(lambda value: value + 1, lambda value: value + 2) == 44
+
+# Generated at 2026-11-02 17:14:16.395034
+# Unit test for method to_lazy of class Either
+def test_Either_to_lazy():
+    from pymonet.lazy import Lazy
+
+    # Test transformation from Right to Lazy
+    right = Right(42)
+    lazy = right.to_lazy()
+    assert isinstance(lazy, Lazy)
+    assert lazy.fold(lambda value: value) == 42
+
+    # Test transformation from Left to Lazy
+    left = Left('error')
+    lazy = left.to_lazy()
+    assert isinstance(lazy, Lazy)
+    assert lazy.fold(lambda value: value) == 'error'
+
+    # Test that Lazy holds the correct value for various types
+    assert Right({'key': 'value'}).to_lazy().fold(lambda value: value) == {'key': 'value'}
+    assert Left(None).to_lazy().fold(lambda value: value) is None
+
+# Generated at 2026-11-02 17:14:23.384708
+# Unit test for method case of class Either
+def test_Either_case():
+    error_handler_calls = []
+    success_handler_calls = []
+
+    def error_handler(value):
+        error_handler_calls.append(value)
+        return 'error: {}'.format(value)
+
+    def success_handler(value):
+        success_handler_calls.append(value)
+        return 'success: {}'.format(value)
+
+    # Right should call only the success handler with its value
+    right = Right(42)
+    assert right.case(error_handler, success_handler) == 'success: 42'
+    assert error_handler_calls == []
+    assert success_handler_calls == [42]
+
+    # Left should call only the error handler with its value
+    left = Left('oops')
+    assert left.case(error_handler, success_handler) == 'error: oops'
+    assert error_handler_calls == ['oops']
+    assert success_handler_calls == [42]
+
+    # Handlers can transform the wrapped value
+    assert Right(10).case(lambda x: x + 1, lambda x: x * 2) == 20
+    assert Left(10).case(lambda x: x + 1, lambda x: x * 2) == 11
+
+# Generated at 2026-11-02 17:14:32.158391
+# Unit test for method to_lazy of class Either
+def test_Either_to_lazy():
+    from pymonet.lazy import Lazy
+
+    # Right value transformed to Lazy
+    either_right = Right(42)
+    lazy = either_right.to_lazy()
+
+    assert isinstance(lazy, Lazy)
+    assert not lazy.is_evaluated()
+    assert lazy.get() == 42
+    assert lazy.is_evaluated()
+
+    # Left value transformed to Lazy
+    either_left = Left('error')
+    lazy_left = either_left.to_lazy()
+
+    assert isinstance(lazy_left, Lazy)
+    assert not lazy_left.is_evaluated()
+    assert lazy_left.get() == 'error'
+    assert lazy_left.is_evaluated()
+
+    # Equality check between lazies created from Either
+    assert Right(1).to_lazy() == Right(1).to_lazy()
+
+# Generated at 2026-11-02 17:14:39.605179
+# Unit test for method case of class Either
+def test_Either_case():
+    from pymonet.either import Left, Right
+
+    # Test Left: error function should be called with the value
+    error_called = []
+    success_called = []
+
+    left = Left('error_value')
+    result = left.case(
+        lambda value: error_called.append(value) or 'error handled',
+        lambda value: success_called.append(value) or 'success handled'
+    )
+
+    assert result == 'error handled'
+    assert error_called == ['error_value']
+    assert success_called == []
+
+    # Test Right: success function should be called with the value
+    error_called = []
+    success_called = []
+
+    right = Right('success_value')
+    result = right.case(
+        lambda value: error_called.append(value) or 'error handled',
+        lambda value: success_called.append(value) or 'success handled'
+    )
+
+    assert result == 'success handled'
+    assert error_called == []
+    assert success_called == ['success_value']
+
+    # Test that case returns the result of the applied function
+    left = Left(10)
+    right = Right(10)
+
+    assert left.case(lambda x: x + 1, lambda x: x * 2) == 11
+    assert right.case(lambda x: x + 1, lambda x: x * 2) == 20
+
+# Generated at 2026-11-02 17:14:47.215451
+# Unit test for method case of class Either
+def test_Either_case():from pymonet.either import Left, Right
+
+
+def test_Either_case_should_call_success_function_when_either_is_right():
+    def success_mock(value):
+        return 'success_called_with_{}'.format(value)
+
+    def error_mock(value):
+        return 'error_called_with_{}'.format(value)
+
+    either = Right(42)
+
+    assert either.case(error_mock, success_mock) == 'success_called_with_42'
+
+
+def test_Either_case_should_call_error_function_when_either_is_left():
+    def success_mock(value):
+        return 'success_called_with_{}'.format(value)
+
+    def error_mock(value):
+        return 'error_called_with_{}'.format(value)
+
+    either = Left(42)
+
+    assert either.case(error_mock, success_mock) == 'error_called_with_42'
+
+
+def test_Either_case_should_call_only_success_function_when_either_is_right():
+    called = []
+
+    def success_mock(value):
+        called.append('success')
+
+        return 'success'
+
+    def error_mock(value):
+        called.append('error')
+
+        return 'error'
+
+    either = Right(42)
+    result = either.case(error_mock, success_mock)
+
+    assert result == 'success'
+    assert called == ['success']
+
+
+def test_Either_case_should_call_only_error_function_when_either_is_left():
+    called = []
+
+    def success_mock(value):
+        called.append('success')
+
+        return 'success'
+
+    def error_mock(value):
+        called.append('error')
+
+        return 'error'
+
+    either = Left(42)
+    result = either.case(error_mock, success_mock)
+
+    assert result == 'error'
+    assert called == ['error']
+
+# Generated at 2026-11-02 17:15:21.375960
+# Unit test for method to_lazy of class Either
+def test_Either_to_lazy():
+    """Unit test for method to_lazy of class Either"""
+    from pymonet.lazy import Lazy
+
+    right = Right(42)
+    lazy = right.to_lazy()
+    assert isinstance(lazy, Lazy)
+    assert lazy.force() == 42
 
     left = Left('error')
+    lazy = left.to_lazy()
+    assert isinstance(lazy, Lazy)
+    assert lazy.force() == 'error'
 
-    validation = left.to_validation()
-
-    assert isinstance(validation, Validation)
-    assert validation.value == ['error']
-    assert validation.is_success is False
-    assert validation.is_failed() is True
-
-# Generated at 2026-10-24 07:19:52.116127
-# Unit test for method is_right of class Right
-
-# Generated at 2026-10-24 07:19:54.496652
-# Unit test for method is_right of class Right
-
-# Generated at 2026-10-24 07:19:56.921054
-# Unit test for method is_right of class Right
-
-# Generated at 2026-10-24 07:20:12.929991
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():assert Left(1) == Left(1)
-
-# Generated at 2026-10-24 07:20:14.247805
+# Generated at 2026-11-02 17:15:29.444217
 # Unit test for method to_lazy of class Either
 def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
+    from pymonet.lazy import Lazy
 
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
+    # Right case
+    right_either = Right(42)
+    lazy_from_right = right_either.to_lazy()
+    assert isinstance(lazy_from_right, Lazy)
+    assert lazy_from_right.is_evaluated is False
+    assert lazy_from_right() == 42
+    assert lazy_from_right.is_evaluated is True
 
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
+    # Left case
+    left_either = Left(42)
+    lazy_from_left = left_either.to_lazy()
+    assert isinstance(lazy_from_left, Lazy)
+    assert lazy_from_left.is_evaluated is False
+    assert lazy_from_left() == 42
+    assert lazy_from_left.is_evaluated is True
 
-# Generated at 2026-10-24 07:20:15.588915
+    # Value is preserved exactly (including None)
+    assert Right(None).to_lazy()() is None
+    assert Left(None).to_lazy()() is None
+
+    # Lazy returned wraps the original value, evaluated lazily each time
+    lazy = Right(100).to_lazy()
+    assert lazy() == 100
+    assert lazy() == 100
+
+# Generated at 2026-11-02 17:16:02.739864
+# Unit test for method to_lazy of class Either
+
+# Generated at 2026-11-02 17:16:16.846897
+# Unit test for method to_lazy of class Either
+def test_Either_to_lazy():from pymonet.lazy import Lazy
+
+
+# Generated at 2026-11-02 17:16:21.272661
 # Unit test for method to_lazy of class Either
 def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
+    from pymonet.lazy import Lazy
 
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
+    # Left case
+    left_either = Left('error_value')
+    lazy_from_left = left_either.to_lazy()
+    assert isinstance(lazy_from_left, Lazy)
+    assert lazy_from_left.is_evaluated is False
+    assert lazy_from_left() == 'error_value'
+    assert lazy_from_left.is_evaluated is True
 
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
+    # Right case
+    right_either = Right('success_value')
+    lazy_from_right = right_either.to_lazy()
+    assert isinstance(lazy_from_right, Lazy)
+    assert lazy_from_right.is_evaluated is False
+    assert lazy_from_right() == 'success_value'
+    assert lazy_from_right.is_evaluated is True
 
-# Generated at 2026-10-24 07:20:16.893000
+# Generated at 2026-11-02 17:16:32.296179
 # Unit test for method to_lazy of class Either
 def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
+    from pymonet.lazy import Lazy
+    from pymonet.either import Left, Right
 
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
+    # to_lazy on Right should produce a Lazy monad wrapping the value
+    right_either = Right(42)
+    lazy_from_right = right_either.to_lazy()
+    assert isinstance(lazy_from_right, Lazy)
+    assert lazy_from_right.fold() == 42
 
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
+    # to_lazy on Left should also produce a Lazy monad wrapping the value
+    left_either = Left('error')
+    lazy_from_left = left_either.to_lazy()
+    assert isinstance(lazy_from_left, Lazy)
+    assert lazy_from_left.fold() == 'error'
 
-# Generated at 2026-10-24 07:20:18.211290
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
+    # Lazy should be evaluated lazily and cache the result
+    lazy = Right(100).to_lazy()
+    assert lazy.is_evaluated is False
+    assert lazy.fold() == 100
+    assert lazy.is_evaluated is True
+    assert lazy.fold() == 100
 
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:20:19.533131
+# Generated at 2026-11-02 17:16:56.548431
 # Unit test for method to_lazy of class Either
 def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
+    from pymonet.lazy import Lazy
 
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
+    right = Right(42)
+    lazy = right.to_lazy()
+    assert isinstance(lazy, Lazy)
+    assert lazy.get() == 42
 
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
+    left = Left('error')
+    lazy = left.to_lazy()
+    assert isinstance(lazy, Lazy)
+    assert lazy.get() == 'error'
 
-# Generated at 2026-10-24 07:20:22.036118
+# Generated at 2026-11-02 17:17:07.970322
+# Unit test for method to_lazy of class Either
+def test_Either_to_lazy():
+    from pymonet.lazy import Lazy
+
+    # to_lazy on Right should return a Lazy evaluating to the stored value
+    right = Right(42)
+    lazy = right.to_lazy()
+
+    assert isinstance(lazy, Lazy)
+    assert lazy.fold(lambda value: value) == 42
+
+    # to_lazy on Left should return a Lazy evaluating to the stored value
+    left = Left('error')
+    lazy_left = left.to_lazy()
+
+    assert isinstance(lazy_left, Lazy)
+    assert lazy_left.fold(lambda value: value) == 'error'
+
+# Generated at 2026-11-02 17:17:15.044277
+# Unit test for method to_lazy of class Either
+def test_Either_to_lazy():
+    from pymonet.lazy import Lazy
+
+    # Right case: should return Lazy monad wrapping the value
+    either_right = Right(42)
+    lazy = either_right.to_lazy()
+
+    assert isinstance(lazy, Lazy)
+    assert lazy.get() == 42
+
+    # Left case: should also return Lazy monad wrapping the value
+    either_left = Left(0)
+    lazy_left = either_left.to_lazy()
+
+    assert isinstance(lazy_left, Lazy)
+    assert lazy_left.get() == 0
+
+# Generated at 2026-11-02 17:17:51.403514
 # Unit test for method to_lazy of class Either
 
-# Generated at 2026-10-24 07:20:24.459239
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:20:26.874136
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:20:29.291058
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:20:31.847234
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:20:34.262036
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:20:36.688476
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:20:39.098868
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:20:41.507705
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:20:43.919888
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:20:46.336771
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:20:48.752764
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:20:51.164776
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:20:53.579179
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:20:55.994088
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:20:58.409006
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:21:00.821455
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:21:03.236144
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:21:05.649883
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:21:08.067498
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:21:10.482932
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:21:12.897236
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:21:15.309607
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:21:17.734381
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:21:20.139331
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:21:22.553188
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:21:24.966508
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:21:27.380050
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:21:29.795222
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:21:32.208999
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:21:34.624148
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:21:58.576610
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():assert Right(1) == Right(1)
-
-# Generated at 2026-10-24 07:22:01.159481
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:22:03.784233
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:22:06.425946
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:22:08.840591
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:22:11.258946
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:22:13.896473
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:22:16.312218
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:22:18.729085
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:22:21.143049
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:22:23.559880
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:22:25.977876
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:22:28.392138
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:22:30.807152
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:22:33.221938
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:22:35.641581
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:22:38.050885
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:22:40.467351
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:22:42.880124
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:22:45.293661
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:22:46.687618
+# Generated at 2026-11-02 17:17:59.627589
 # Unit test for method to_lazy of class Either
 def test_Either_to_lazy():from pymonet.either import Left, Right
 
-# Generated at 2026-10-24 07:22:48.022874
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:22:49.328863
+# Generated at 2026-11-02 17:19:05.834272
 # Unit test for method to_lazy of class Either
 def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
+    from pymonet.lazy import Lazy
+
+    right_either = Right(42)
+    right_lazy = right_either.to_lazy()
     assert isinstance(right_lazy, Lazy)
     assert right_lazy.get() == 42
 
-    left_lazy = Left('error').to_lazy()
+    left_either = Left('error')
+    left_lazy = left_either.to_lazy()
     assert isinstance(left_lazy, Lazy)
     assert left_lazy.get() == 'error'
 
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
-
-# Generated at 2026-10-24 07:22:50.639541
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:22:51.963397
+# Generated at 2026-11-02 17:19:43.149160
 # Unit test for method to_lazy of class Either
 def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
-
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
-
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
-
-# Generated at 2026-10-24 07:22:53.276432
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:22:54.585071
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:22:55.899862
-# Unit test for method to_lazy of class Either
-def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
-
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
-
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
-
-# Generated at 2026-10-24 07:22:57.234784
-# Unit test for method to_lazy of class Either
-def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
-
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
-
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
-
-# Generated at 2026-10-24 07:22:58.545941
-# Unit test for method to_lazy of class Either
-def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
-
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
-
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
-
-# Generated at 2026-10-24 07:22:59.859265
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:23:01.169633
-# Unit test for method to_lazy of class Either
-def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
-
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
-
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
-
-# Generated at 2026-10-24 07:23:02.505474
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:23:03.809510
-# Unit test for method to_lazy of class Either
-def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
-
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
-
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
-
-# Generated at 2026-10-24 07:23:05.129644
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:23:07.658994
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:10.173442
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:12.586684
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:15.002472
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:17.417334
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:19.831001
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:22.275596
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:24.691264
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:27.106468
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:29.522040
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:23:31.934844
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:23:34.348626
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:23:36.763943
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:39.181971
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:41.598906
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:44.014837
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:46.431118
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:48.842714
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:51.263743
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:53.673433
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:56.086374
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:23:58.501095
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:24:00.916885
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:24:03.332331
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:24:05.746796
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:24:08.161200
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:24:10.574889
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:24:12.992770
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:24:15.405869
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:24:17.819806
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:24:20.233056
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:24:22.650175
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:24:25.067786
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:24:27.481668
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:24:29.895792
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:24:32.310008
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:24:35.946684
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:24:38.361800
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:24:40.775702
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:24:43.188854
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:24:44.653857
-# Unit test for method to_lazy of class Either
-def test_Either_to_lazy():from pymonet.either import Left, Right
-
-# Generated at 2026-10-24 07:24:45.991505
-# Unit test for method to_lazy of class Either
-def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
-
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
-
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
-
-# Generated at 2026-10-24 07:24:47.311559
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:24:48.639945
-# Unit test for method to_lazy of class Either
-def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
-
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
-
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
-
-# Generated at 2026-10-24 07:24:49.950889
-# Unit test for method to_lazy of class Either
-def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
-
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
-
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
-
-# Generated at 2026-10-24 07:24:51.264500
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:24:52.589022
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:24:53.941767
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:24:55.245790
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:25:00.305104
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:25:01.623658
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:25:02.943383
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:25:04.302049
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:25:06.719149
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:25:09.231522
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:25:11.798960
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:25:14.294238
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:25:16.708865
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:25:19.128086
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:25:21.541297
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:25:23.956969
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:25:26.371345
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:25:28.784059
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:25:31.198652
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:25:33.613798
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:25:36.032627
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:25:38.446241
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:25:40.863589
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:25:43.277897
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:25:45.696279
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:25:48.121216
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:25:59.274628
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:26:00.616051
-# Unit test for method to_lazy of class Either
-def test_Either_to_lazy():from pymonet.either import Left, Right
-
-# Generated at 2026-10-24 07:26:01.948648
-# Unit test for method to_lazy of class Either
-def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
-
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
-
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
-
-# Generated at 2026-10-24 07:26:03.285941
-# Unit test for method to_lazy of class Either
-def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
-
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
-
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
-
-# Generated at 2026-10-24 07:26:04.594416
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:26:05.925330
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:26:07.237217
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:26:08.567487
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:26:09.879624
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:26:11.241567
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:26:12.548967
-# Unit test for method to_lazy of class Either
-def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
-
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
-
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
-
-# Generated at 2026-10-24 07:26:32.945692
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:26:35.366183
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:26:37.776556
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:26:40.189952
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:26:42.603811
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:26:45.018227
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:26:47.436664
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:26:49.850860
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:26:52.265714
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:26:54.678305
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:26:57.095193
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:26:59.511756
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:27:01.927493
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:27:04.339624
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:27:06.794581
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:27:08.179568
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:27:09.571623
-# Unit test for method to_lazy of class Either
-def test_Either_to_lazy():
-    right_lazy = Right(42).to_lazy()
-    assert isinstance(right_lazy, Lazy)
-    assert right_lazy.get() == 42
-
-    left_lazy = Left('error').to_lazy()
-    assert isinstance(left_lazy, Lazy)
-    assert left_lazy.get() == 'error'
-
-    # same value each call, Lazy wraps a constant thunk
-    lazy = Right([1, 2]).to_lazy()
-    assert lazy.get() == lazy.get() == [1, 2]
-
-# Generated at 2026-10-24 07:27:10.889270
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:27:12.213081
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:27:13.525834
-# Unit test for method __eq__ of class Either
-def test_Either___eq__():
-    # same side, same value -> equal
-    assert Left(1) == Left(1)
-    assert Right(1) == Right(1)
-
-    # same side, different value -> not equal
-    assert Left(1) != Left(2)
-    assert Right(1) != Right(2)
-
-    # different side, same value -> not equal
-    assert Left(1) != Right(1)
-    assert Right(1) != Left(1)
-
-    # not an Either at all -> not equal
-    assert Left(1) != 1
-    assert Right(1) != 1
-    assert Left(1) != None  # noqa: E711
-    assert Right(1) != 'Right(1)'
-
-    # bare Either: is_right() returns None on both sides, so it compares equal
-    assert Either(1) == Either(1)
-    assert Either(1) != Either(2)
-    # ...but never equal to a Left/Right (None != False/True)
-    assert Either(1) != Left(1)
-    assert Either(1) != Right(1)
-
-# Generated at 2026-10-24 07:27:59.488966
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:28:01.908225
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:28:04.325606
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:28:07.181855
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:28:09.621283
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:28:12.042525
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:28:14.456639
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:28:16.869198
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:28:19.281094
-# Unit test for method __eq__ of class Either
-
-# Generated at 2026-10-24 07:28:21.693833
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:28:24.110409
-# Unit test for method to_lazy of class Either
-
-# Generated at 2026-10-24 07:28:26.522980
-# Unit test for method to_lazy of class Either
+    '''Unit test for method Either.to_lazy'''
+    from pymonet.either import Left, Right
+    from pymonet.lazy import Lazy
+
+    # Right instance transforms into a Lazy holding its value
+    right = Right(42)
+    lazy_right = right.to_lazy()
+    assert isinstance(lazy_right, Lazy)
+    assert lazy_right.get_value() == 42
+
+    # Left instance transforms into a Lazy holding its value too
+    left = Left('error')
+    lazy_left = left.to_lazy()
+    assert isinstance(lazy_left, Lazy)
+    assert lazy_left.get_value() == 'error'
+
+    # repeated evaluation returns the same (cached) value
+    assert lazy_right.get_value() == 42
+    assert lazy_left.get_value() == 'error'

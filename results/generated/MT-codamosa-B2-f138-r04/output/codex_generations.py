@@ -1,66 +1,137 @@
 
 
-# Generated at 2026-10-25 06:56:15.290215
+# Generated at 2026-11-01 19:20:43.755290
 # Unit test for function is_equal_to_sum_even
 def test_is_equal_to_sum_even():
-    # True: even numbers >= 8
-    assert module_0.is_equal_to_sum_even(8) is True
-    assert module_0.is_equal_to_sum_even(10) is True
-    assert module_0.is_equal_to_sum_even(12) is True
-    assert module_0.is_equal_to_sum_even(100) is True
+    # Even numbers >= 8 should return True
+    assert module_0.is_equal_to_sum_even(8) == True
+    assert module_0.is_equal_to_sum_even(10) == True
+    assert module_0.is_equal_to_sum_even(12) == True
+    assert module_0.is_equal_to_sum_even(100) == True
 
-    # False: odd numbers, even if >= 8
-    assert module_0.is_equal_to_sum_even(9) is False
-    assert module_0.is_equal_to_sum_even(11) is False
-    assert module_0.is_equal_to_sum_even(15) is False
+    # Even numbers < 8 should return False
+    assert module_0.is_equal_to_sum_even(0) == False
+    assert module_0.is_equal_to_sum_even(2) == False
+    assert module_0.is_equal_to_sum_even(4) == False
+    assert module_0.is_equal_to_sum_even(6) == False
 
-    # False: even numbers < 8
-    assert module_0.is_equal_to_sum_even(6) is False
-    assert module_0.is_equal_to_sum_even(4) is False
-    assert module_0.is_equal_to_sum_even(2) is False
-    assert module_0.is_equal_to_sum_even(0) is False
+    # Odd numbers >= 8 should return False
+    assert module_0.is_equal_to_sum_even(7) == False
+    assert module_0.is_equal_to_sum_even(9) == False
+    assert module_0.is_equal_to_sum_even(11) == False
+    assert module_0.is_equal_to_sum_even(21) == False
 
-    # False: negative numbers
-    assert module_0.is_equal_to_sum_even(-8) is False
-    assert module_0.is_equal_to_sum_even(-10) is False
+    # Negative numbers should return False
+    assert module_0.is_equal_to_sum_even(-2) == False
+    assert module_0.is_equal_to_sum_even(-8) == False
 
-    # Boundary: 7 / 8 / 9
-    assert module_0.is_equal_to_sum_even(7) is False
-    assert module_0.is_equal_to_sum_even(8) is True
-    assert module_0.is_equal_to_sum_even(9) is False
+    print("All tests passed!")
 
-# Generated at 2026-10-25 06:56:17.705715
+
+test_is_equal_to_sum_even()
+
+# Generated at 2026-11-01 19:21:02.551414
 # Unit test for function is_equal_to_sum_even
+def test_is_equal_to_sum_even():
+    # Valid cases: even numbers >= 8 (can be written as sum of 4 positive even numbers)
+    assert module_0.is_equal_to_sum_even(8) == True    # 2+2+2+2
+    assert module_0.is_equal_to_sum_even(10) == True   # 2+2+2+4
+    assert module_0.is_equal_to_sum_even(12) == True   # 2+2+4+4
+    assert module_0.is_equal_to_sum_even(14) == True
+    assert module_0.is_equal_to_sum_even(100) == True
 
-# Generated at 2026-10-25 06:56:20.120464
-# Unit test for function is_equal_to_sum_even
+    # Even numbers less than 8 -> False
+    assert module_0.is_equal_to_sum_even(0) == False
+    assert module_0.is_equal_to_sum_even(2) == False
+    assert module_0.is_equal_to_sum_even(4) == False
+    assert module_0.is_equal_to_sum_even(6) == False
 
-# Generated at 2026-10-25 06:56:22.534116
-# Unit test for function is_equal_to_sum_even
+    # Odd numbers -> False
+    assert module_0.is_equal_to_sum_even(1) == False
+    assert module_0.is_equal_to_sum_even(3) == False
+    assert module_0.is_equal_to_sum_even(5) == False
+    assert module_0.is_equal_to_sum_even(7) == False
+    assert module_0.is_equal_to_sum_even(9) == False
 
-# Generated at 2026-10-25 06:56:25.121314
-# Unit test for function is_equal_to_sum_even
+    # Negative numbers -> False
+    assert module_0.is_equal_to_sum_even(-8) == False
+    assert module_0.is_equal_to_sum_even(-2) == False
 
-# Generated at 2026-10-25 06:56:27.544266
+# Generated at 2026-11-01 19:21:26.097157
 # Unit test for function is_equal_to_sum_even
+def test_is_equal_to_sum_even():
+    # Even numbers >= 8 should return True
+    assert module_0.is_equal_to_sum_even(8) == True
+    assert module_0.is_equal_to_sum_even(10) == True
+    assert module_0.is_equal_to_sum_even(12) == True
+    assert module_0.is_equal_to_sum_even(100) == True
 
-# Generated at 2026-10-25 06:56:29.960751
-# Unit test for function is_equal_to_sum_even
+    # Even numbers < 8 should return False
+    assert module_0.is_equal_to_sum_even(0) == False
+    assert module_0.is_equal_to_sum_even(2) == False
+    assert module_0.is_equal_to_sum_even(4) == False
+    assert module_0.is_equal_to_sum_even(6) == False
 
-# Generated at 2026-10-25 06:56:32.373226
-# Unit test for function is_equal_to_sum_even
+    # Odd numbers should return False, even if >= 8
+    assert module_0.is_equal_to_sum_even(7) == False
+    assert module_0.is_equal_to_sum_even(9) == False
+    assert module_0.is_equal_to_sum_even(11) == False
+    assert module_0.is_equal_to_sum_even(15) == False
 
-# Generated at 2026-10-25 06:56:34.788327
-# Unit test for function is_equal_to_sum_even
+    # Negative numbers should return False
+    assert module_0.is_equal_to_sum_even(-4) == False
+    assert module_0.is_equal_to_sum_even(-8) == False
+    assert module_0.is_equal_to_sum_even(-3) == False
 
-# Generated at 2026-10-25 06:56:37.205430
-# Unit test for function is_equal_to_sum_even
+    print("All tests passed!")
 
-# Generated at 2026-10-25 06:56:39.625388
+# Generated at 2026-11-01 19:21:45.248771
 # Unit test for function is_equal_to_sum_even
+def test_is_equal_to_sum_even():
+    # Even numbers >= 8 should return True
+    assert module_0.is_equal_to_sum_even(8) == True
+    assert module_0.is_equal_to_sum_even(10) == True
+    assert module_0.is_equal_to_sum_even(12) == True
+    assert module_0.is_equal_to_sum_even(100) == True
 
-# Generated at 2026-10-25 06:56:42.059953
-# Unit test for function is_equal_to_sum_even
+    # Even numbers less than 8 should return False
+    assert module_0.is_equal_to_sum_even(0) == False
+    assert module_0.is_equal_to_sum_even(2) == False
+    assert module_0.is_equal_to_sum_even(4) == False
+    assert module_0.is_equal_to_sum_even(6) == False
 
-# Generated at 2026-10-25 06:56:44.474526
+    # Odd numbers should return False
+    assert module_0.is_equal_to_sum_even(1) == False
+    assert module_0.is_equal_to_sum_even(7) == False
+    assert module_0.is_equal_to_sum_even(9) == False
+    assert module_0.is_equal_to_sum_even(11) == False
+
+    # Negative numbers should return False
+    assert module_0.is_equal_to_sum_even(-2) == False
+    assert module_0.is_equal_to_sum_even(-8) == False
+    assert module_0.is_equal_to_sum_even(-7) == False
+
+# Generated at 2026-11-01 19:22:11.052861
 # Unit test for function is_equal_to_sum_even
+def test_is_equal_to_sum_even():
+    # Even numbers >= 8 should return True
+    assert module_0.is_equal_to_sum_even(8) == True
+    assert module_0.is_equal_to_sum_even(10) == True
+    assert module_0.is_equal_to_sum_even(12) == True
+    assert module_0.is_equal_to_sum_even(100) == True
+
+    # Even numbers < 8 should return False
+    assert module_0.is_equal_to_sum_even(0) == False
+    assert module_0.is_equal_to_sum_even(2) == False
+    assert module_0.is_equal_to_sum_even(4) == False
+    assert module_0.is_equal_to_sum_even(6) == False
+
+    # Odd numbers should return False regardless
+    assert module_0.is_equal_to_sum_even(7) == False
+    assert module_0.is_equal_to_sum_even(9) == False
+    assert module_0.is_equal_to_sum_even(11) == False
+    assert module_0.is_equal_to_sum_even(1) == False
+
+    # Negative numbers should return False
+    assert module_0.is_equal_to_sum_even(-2) == False
+    assert module_0.is_equal_to_sum_even(-8) == False

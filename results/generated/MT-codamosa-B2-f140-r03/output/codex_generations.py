@@ -1,95 +1,85 @@
 
 
-# Generated at 2026-10-24 07:01:17.660961
-# Unit test for function fix_spaces
-def test_fix_spaces():assert module_0.fix_spaces("") == ""
-
-# Generated at 2026-10-24 07:01:20.369643
-# Unit test for function fix_spaces
-def test_fix_spaces():assert module_0.fix_spaces("") == ""
-
-# Generated at 2026-10-24 07:01:23.061443
-# Unit test for function fix_spaces
-def test_fix_spaces():assert module_0.fix_spaces("") == ""
-
-# Generated at 2026-10-24 07:01:25.727775
-# Unit test for function fix_spaces
-def test_fix_spaces():assert module_0.fix_spaces("") == ""
-
-# Generated at 2026-10-24 07:01:28.471992
-# Unit test for function fix_spaces
-def test_fix_spaces():assert module_0.fix_spaces("") == ""
-
-# Generated at 2026-10-24 07:01:31.294408
-# Unit test for function fix_spaces
-def test_fix_spaces():assert module_0.fix_spaces("") == ""
-
-# Generated at 2026-10-24 07:01:33.982054
-# Unit test for function fix_spaces
-def test_fix_spaces():assert module_0.fix_spaces("") == ""
-
-# Generated at 2026-10-24 07:01:36.670452
-# Unit test for function fix_spaces
-def test_fix_spaces():assert module_0.fix_spaces("") == ""
-
-# Generated at 2026-10-24 07:01:39.500285
-# Unit test for function fix_spaces
-def test_fix_spaces():assert module_0.fix_spaces("") == ""
-
-# Generated at 2026-10-24 07:01:42.160254
-# Unit test for function fix_spaces
-def test_fix_spaces():assert module_0.fix_spaces("") == ""
-
-# Generated at 2026-10-24 07:01:44.725348
-# Unit test for function fix_spaces
-
-# Generated at 2026-10-24 07:01:47.295139
-# Unit test for function fix_spaces
-
-# Generated at 2026-10-24 07:01:49.805387
-# Unit test for function fix_spaces
-
-# Generated at 2026-10-24 07:01:52.220967
-# Unit test for function fix_spaces
-
-# Generated at 2026-10-24 07:01:54.640731
-# Unit test for function fix_spaces
-
-# Generated at 2026-10-24 07:01:57.057583
-# Unit test for function fix_spaces
-
-# Generated at 2026-10-24 07:01:59.473059
-# Unit test for function fix_spaces
-
-# Generated at 2026-10-24 07:02:01.887224
-# Unit test for function fix_spaces
-
-# Generated at 2026-10-24 07:02:04.302515
-# Unit test for function fix_spaces
-
-# Generated at 2026-10-24 07:02:06.718947
-# Unit test for function fix_spaces
-
-# Generated at 2026-10-24 07:02:09.132079
-# Unit test for function fix_spaces
-
-# Generated at 2026-10-24 07:02:11.546249
-# Unit test for function fix_spaces
-
-# Generated at 2026-10-24 07:02:13.964222
-# Unit test for function fix_spaces
-
-# Generated at 2026-10-24 07:02:16.380722
-# Unit test for function fix_spaces
-
-# Generated at 2026-10-24 07:04:08.887870
+# Generated at 2026-11-02 11:37:22.387656
 # Unit test for function fix_spaces
 def test_fix_spaces():
-    assert module_0.fix_spaces("Example") == "Example"
-    assert module_0.fix_spaces("Example 1") == "Example_1"
-    assert module_0.fix_spaces(" Example 2") == "_Example_2"
+    # No spaces - text returned unchanged
+    assert module_0.fix_spaces("example") == "example"
+    assert module_0.fix_spaces("abc") == "abc"
+
+    # Single space -> single underscore
+    assert module_0.fix_spaces("example 1") == "example_1"
+    assert module_0.fix_spaces("a b c") == "a_b_c"
+    assert module_0.fix_spaces("Mudasir Raza") == "Mudasir_Raza"
+
+    # Two consecutive spaces -> two underscores
+    assert module_0.fix_spaces("example  1") == "example__1"
     assert module_0.fix_spaces("a  b") == "a__b"
-    assert module_0.fix_spaces("a   b") == "a-b"
-    assert module_0.fix_spaces("   a") == "-a"
-    assert module_0.fix_spaces("abc   ") == "abc-"
-    assert module_0.fix_spaces("abc  ") == "abc_"
+
+    # Three or more consecutive spaces -> single dash
+    assert module_0.fix_spaces("example   1") == "example-1"
+    assert module_0.fix_spaces("example    1") == "example-1"
+    assert module_0.fix_spaces("hello   world") == "hello-world"
+    assert module_0.fix_spaces("hello    world") == "hello-world"
+    assert module_0.fix_spaces("Multiple   spaces") == "Multiple-spaces"
+
+    # Leading spaces
+    assert module_0.fix_spaces(" example") == "_example"
+    assert module_0.fix_spaces("  leading") == "__leading"
+    assert module_0.fix_spaces("   leading") == "-leading"
+
+    # Trailing spaces (trailing runs collapse to one "_" or "-")
+    assert module_0.fix_spaces("example ") == "example_"
+    assert module_0.fix_spaces("example  ") == "example_"
+    assert module_0.fix_spaces("example   ") == "example-"
+    assert module_0.fix_spaces("abc  x   ") == "abc__x-"
+
+    # Mixed runs within one string
+    assert module_0.fix_spaces("a  b   c") == "a__b-c"
+    assert module_0.fix_spaces("text with  four spaces") == "text_with__four_spaces"
+
+    # Only spaces / empty string
+    assert module_0.fix_spaces("") == ""
+    assert module_0.fix_spaces(" ") == "_"
+    assert module_0.fix_spaces("  ") == "_"
+    assert module_0.fix_spaces("   ") == "-"
+    assert module_0.fix_spaces("     ") == "-"
+
+# Generated at 2026-11-02 11:41:10.518274
+# Unit test for function fix_spaces
+def test_fix_spaces():
+    # No spaces — text unchanged
+    assert module_0.fix_spaces("example") == "example"
+    # Single space replaced by underscore
+    assert module_0.fix_spaces("example 1") == "example_1"
+    assert module_0.fix_spaces(" example 2") == "_example_2"
+    assert module_0.fix_spaces("example 3") == "example_3"
+    # Two consecutive spaces -> two underscores
+    assert module_0.fix_spaces("hello  world") == "hello__world"
+    # Three or more consecutive spaces -> single dash
+    assert module_0.fix_spaces("hello   world") == "hello-world"
+    assert module_0.fix_spaces("a    b") == "a-b"
+    assert module_0.fix_spaces("a     b") == "a-b"
+    # Leading spaces
+    assert module_0.fix_spaces("  hello") == "__hello"
+    assert module_0.fix_spaces("   hello") == "-hello"
+    # Trailing spaces (1-2 -> one underscore, 3+ -> dash)
+    assert module_0.fix_spaces("hello ") == "hello_"
+    assert module_0.fix_spaces("hello  ") == "hello_"
+    assert module_0.fix_spaces("hello   ") == "hello-"
+    # Mixed groups
+    assert module_0.fix_spaces("hello   world  foo") == "hello-world__foo"
+    assert module_0.fix_spaces("a  b   c d") == "a__b-c_d"
+    assert module_0.fix_spaces("a b c") == "a_b_c"
+    # Empty string
+    assert module_0.fix_spaces("") == ""
+    # Strings consisting only of spaces
+    assert module_0.fix_spaces(" ") == "_"
+    assert module_0.fix_spaces("  ") == "_"
+    assert module_0.fix_spaces("   ") == "-"
+    assert module_0.fix_spaces("    ") == "-"
+    # Punctuation preserved
+    assert module_0.fix_spaces("hello   world!") == "hello-world!"
+    print("All test cases passed!")
+
+test_fix_spaces()

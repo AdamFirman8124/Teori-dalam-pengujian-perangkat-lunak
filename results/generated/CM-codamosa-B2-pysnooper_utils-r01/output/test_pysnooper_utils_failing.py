@@ -3,61 +3,104 @@ import pysnooper.utils as module_0
 
 def test_case_0():
     try:
-        str_0 = '-{'
-        dict_0 = {str_0: str_0, str_0: str_0}
-        var_0 = module_0.get_shortish_repr(str_0, dict_0)
+        int_0 = 1
+        var_0 = ()
+        var_1 = module_0.get_repr_function(int_0, var_0)
+        assert len(module_0.string_types) == 1
+        assert len(module_0.file_reading_errors) == 3
+        str_0 = 'foo'
+        var_2 = []
+        var_3 = module_0.get_repr_function(str_0, var_2)
+        str_1 = 'INT'
+        var_4 = lambda x: str_1
+        str_2 = 'ODD'
+        var_5 = lambda x: str_2
+        int_1 = 3
+        int_2 = 2
+        var_6 = lambda x: x % int_2 == int_0
+        var_7 = (var_6, var_5)
+        var_8 = [var_7]
+        var_9 = module_0.get_repr_function(int_1, var_8)
     except BaseException:
         pass
 
 def test_case_1():
     try:
-        str_0 = '-{'
-        str_1 = ''
-        var_0 = module_0.ensure_tuple(str_1)
-        assert var_0 == ('',)
-        dict_0 = {str_0: str_0, str_0: str_0}
-        var_1 = module_0.get_shortish_repr(str_0, dict_0)
+        str_0 = 'foo'
+        var_0 = module_0.shitcode(str_0)
+        assert var_0 == 'foo'
+        int_0 = 8364
+        list_0 = [int_0, var_0]
+        var_1 = module_0.get_repr_function(int_0, list_0)
     except BaseException:
         pass
 
 def test_case_2():
     try:
-        str_0 = '$|"Qj\x0cF'
-        tuple_0 = ()
-        var_0 = module_0.get_shortish_repr(str_0, tuple_0, str_0)
+        writable_stream_0 = module_0.WritableStream()
     except BaseException:
         pass
 
 def test_case_3():
     try:
-        str_0 = 'novOUf\tctC9\t|#'
-        var_0 = module_0.normalize_repr(str_0)
-        assert var_0 == 'novOUf\tctC9\t|#'
+        str_0 = 'G`m\rJ\r88}\x0bT{U+3!'
+        var_0 = module_0.ensure_tuple(str_0)
+        assert var_0 == ('G`m\rJ\r88}\x0bT{U+3!',)
+        str_1 = 'foo'
+        var_1 = module_0.shitcode(str_1)
+        assert var_1 == 'foo'
+        str_2 = '*'
+        bool_0 = False
+        var_2 = module_0.ensure_tuple(bool_0)
+        assert var_2 == (False,)
         assert len(module_0.string_types) == 1
         assert len(module_0.file_reading_errors) == 3
-        str_1 = '$#a)e'
-        set_0 = set()
-        var_1 = module_0.get_shortish_repr(set_0, set_0)
-        assert var_1 == 'set()'
-        dict_0 = {var_1: str_1, var_1: str_1, var_1: str_1, var_1: set_0, str_1: str_1}
-        var_2 = module_0.get_shortish_repr(str_1, dict_0)
+        var_3 = module_0.shitcode(str_2)
+        assert var_3 == ''
+        assert var_3 == '*'
+        str_3 = 'א'
+        var_4 = module_0.shitcode(str_3)
+        assert var_4 == '?'
+        str_4 = 'aאb'
+        var_5 = module_0.shitcode(str_4)
+        assert var_5 == 'a?b'
+        str_5 = '€'
+        var_6 = module_0.shitcode(str_5)
+        assert var_6 == '?'
+        str_6 = 'café'
+        var_7 = module_0.shitcode(str_6)
+        assert var_7 == 'café'
+        int_0 = 0
+        var_8 = chr(int_0)
+        var_9 = module_0.shitcode(var_8)
+        assert var_9 == '?'
+        int_1 = 255
+        var_10 = chr(int_1)
+        var_11 = module_0.shitcode(var_10)
+        assert var_11 == 'ÿ'
+        var_12 = chr(int_1)
+        int_2 = 256
+        var_13 = chr(int_2)
+        bytes_0 = None
+        var_14 = module_0.shitcode(bytes_0)
     except BaseException:
         pass
 
 def test_case_4():
     try:
-        set_0 = set()
-        var_0 = module_0.get_shortish_repr(set_0, set_0)
-        assert var_0 == 'set()'
-        assert len(module_0.string_types) == 1
-        assert len(module_0.file_reading_errors) == 3
-        str_0 = '?154nvM7d\x0b#Sh$sg&M*'
-        dict_0 = {str_0: var_0}
-        list_0 = []
-        int_0 = None
-        int_1 = None
-        str_1 = '\r'
-        tuple_0 = (int_0, list_0, int_1, str_1)
-        var_1 = module_0.get_shortish_repr(dict_0, list_0, str_0, tuple_0)
+        dict_0 = {}
+        var_0 = module_0.normalize_repr(dict_0)
+    except BaseException:
+        pass
+
+def test_case_5():
+    try:
+        str_0 = 'G`m\rJ\r88}\x0bT{U+3!'
+        str_1 = 'foo'
+        bytes_0 = b'\xda\x94\x96\xe3\xc3\x8e'
+        str_2 = '4T<&i\\@)olFi0'
+        str_3 = '&'
+        dict_0 = {str_1: str_1, str_2: bytes_0, str_3: bytes_0, str_0: str_1}
+        var_0 = module_0.truncate(bytes_0, dict_0)
     except BaseException:
         pass

@@ -2,6 +2,24 @@
 import f106 as module_0
 
 def test_case_0():
-    int_0 = 6
+    int_0 = 0
     var_0 = module_0.f(int_0)
-    assert var_0 == [1, 2, 6, 24, 15, 720]
+    assert var_0 == []
+    int_1 = 1
+    var_1 = module_0.f(int_1)
+    assert var_1 == [1]
+    int_2 = 2
+    var_2 = module_0.f(int_2)
+    assert var_2 == [1, 2]
+    int_3 = 3
+    var_3 = module_0.f(int_3)
+    assert var_3 == [1, 2, 6]
+    int_4 = 5
+    var_4 = module_0.f(int_4)
+    assert var_4 == [1, 2, 6, 24, 15]
+    int_5 = 6
+    var_5 = module_0.f(int_5)
+    assert var_5 == [1, 2, 6, 24, 15, 720]
+    int_6 = 4
+    var_6 = module_0.f(int_6)
+    assert var_6 == [1, 2, 6, 24]

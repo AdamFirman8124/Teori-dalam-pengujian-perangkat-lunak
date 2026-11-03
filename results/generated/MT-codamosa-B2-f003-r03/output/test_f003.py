@@ -7,26 +7,39 @@ def test_case_0():
     int_2 = -3
     int_3 = [int_0, int_1, int_2]
     bool_0 = module_0.below_zero(int_3)
+    assert bool_0 is True
     assert bool_0 is False
-    int_4 = -4
+    int_4 = 3
     int_5 = [int_0, int_1, int_4]
     bool_1 = module_0.below_zero(int_5)
-    assert bool_1 is True
-    int_6 = -1
-    int_7 = [int_6, int_1]
-    bool_2 = module_0.below_zero(int_7)
-    assert bool_2 is True
+    assert bool_1 is False
     var_0 = []
-    bool_3 = module_0.below_zero(var_0)
-    assert bool_3 is False
-    int_8 = 10
+    bool_2 = module_0.below_zero(var_0)
+    assert bool_2 is False
+    int_6 = -1
+    int_7 = [int_6]
+    bool_3 = module_0.below_zero(int_7)
+    assert bool_3 is True
+    int_8 = 5
     int_9 = -5
-    int_10 = -4
-    int_11 = [int_8, int_9, int_10]
-    bool_4 = module_0.below_zero(int_11)
+    int_10 = [int_8, int_9, int_4]
+    bool_4 = module_0.below_zero(int_10)
     assert bool_4 is False
-    int_12 = -5
-    int_13 = -6
-    int_14 = [int_8, int_12, int_13]
-    bool_5 = module_0.below_zero(int_14)
+    int_11 = -10
+    int_12 = 10
+    int_13 = [int_8, int_11, int_12]
+    bool_5 = module_0.below_zero(int_13)
     assert bool_5 is True
+    int_14 = 0
+    int_15 = [int_14, int_14, int_14]
+    bool_6 = module_0.below_zero(int_15)
+    assert bool_6 is False
+    int_16 = 1000000
+    int_17 = -2000000
+    int_18 = [int_16, int_17]
+    bool_7 = module_0.below_zero(int_18)
+    assert bool_7 is True
+    int_19 = -1000000
+    int_20 = [int_16, int_19, int_0]
+    bool_8 = module_0.below_zero(int_20)
+    assert bool_8 is False

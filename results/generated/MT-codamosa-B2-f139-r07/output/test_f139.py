@@ -2,20 +2,26 @@
 import f139 as module_0
 
 def test_case_0():
-    int_0 = 1
+    int_0 = 0
     var_0 = module_0.special_factorial(int_0)
     assert var_0 == 1
-    int_1 = 2
+    int_1 = 1
     var_1 = module_0.special_factorial(int_1)
-    assert var_1 == 2
-    int_2 = 3
+    assert var_1 == 1
+    int_2 = 2
     var_2 = module_0.special_factorial(int_2)
-    assert var_2 == 12
-    int_3 = 4
+    assert var_2 == 2
+    int_3 = 3
     var_3 = module_0.special_factorial(int_3)
-    assert var_3 == 288
-    int_4 = 0
+    assert var_3 == 12
+    int_4 = 4
     var_4 = module_0.special_factorial(int_4)
-    assert var_4 == 1
+    assert var_4 == 288
+    int_5 = 5
+    var_5 = module_0.special_factorial(int_5)
+    assert var_5 == 34560
     str_0 = 'All tests passed!'
-    var_5 = print(str_0)
+    var_6 = print(str_0)
+
+def test_case_1():
+    pass

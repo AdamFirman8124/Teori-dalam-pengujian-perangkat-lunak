@@ -2,22 +2,43 @@
 import f011 as module_0
 
 def test_case_0():
-    str_0 = '.'
-    str_1 = ''
+    str_0 = '010'
+    str_1 = '110'
     str_2 = module_0.string_xor(str_0, str_1)
-    assert str_2 == ''
-    str_3 = 'dYv'
-    str_4 = 'D1v~pC U_m\r'
+    assert str_2 == '100'
+    str_3 = '111'
+    str_4 = '000'
     str_5 = module_0.string_xor(str_3, str_4)
-    assert str_5 == '110'
-    str_6 = '5,0)hd$3\nUc'
-    str_7 = module_0.string_xor(str_3, str_6)
-    assert str_7 == '111'
-    str_8 = module_0.string_xor(str_3, str_3)
-    assert str_8 == '000'
-
-def test_case_1():
-    str_0 = 'NY?\x0c_EDWSjV g\r}qV'
-    str_1 = '\nGPBT'
-    str_2 = module_0.string_xor(str_0, str_1)
-    assert str_2 == '11111'
+    assert str_5 == '111'
+    str_6 = module_0.string_xor(str_4, str_4)
+    assert str_6 == '000'
+    str_7 = module_0.string_xor(str_3, str_3)
+    assert str_7 == '000'
+    str_8 = '1010'
+    str_9 = '0110'
+    str_10 = module_0.string_xor(str_8, str_9)
+    assert str_10 == '1100'
+    str_11 = '0'
+    str_12 = '1'
+    str_13 = module_0.string_xor(str_11, str_12)
+    assert str_13 == '1'
+    str_14 = module_0.string_xor(str_12, str_11)
+    assert str_14 == '1'
+    str_15 = module_0.string_xor(str_11, str_11)
+    assert str_15 == '0'
+    str_16 = module_0.string_xor(str_12, str_12)
+    assert str_16 == '0'
+    str_17 = ''
+    str_18 = module_0.string_xor(str_17, str_17)
+    assert str_18 == ''
+    str_19 = '10'
+    str_20 = module_0.string_xor(str_19, str_12)
+    assert str_20 == '0'
+    str_21 = module_0.string_xor(str_12, str_19)
+    assert str_21 == '0'
+    str_22 = '1101001'
+    str_23 = '1010101'
+    str_24 = module_0.string_xor(str_22, str_23)
+    assert str_24 == '0111100'
+    str_25 = 'All string_xor tests passed!'
+    var_0 = print(str_25)

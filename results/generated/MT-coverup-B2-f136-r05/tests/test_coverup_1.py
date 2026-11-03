@@ -7,26 +7,39 @@ import pytest
 from f136 import largest_smallest_integers
 
 
-def test_mixed_integers():
-    result = largest_smallest_integers([2, -3, 5, -7, 1])
-    assert result == (-3, 1)
+def test_both_negatives_and_positives():
+    """Both filter results non-empty: max() and min() branches both taken."""
+    result = largest_smallest_integers([5, -3, 2, -8, 7])
+    assert result == (-3, 2)
 
 
 def test_only_negatives():
-    result = largest_smallest_integers([-1, -5, -3])
+    """smallest non-empty (max branch), largest empty (None branch)."""
+    result = largest_smallest_integers([-1, -2, -3])
     assert result == (-1, None)
 
 
 def test_only_positives():
-    result = largest_smallest_integers([4, 2, 9])
-    assert result == (None, 2)
+    """smallest empty (None branch), largest non-empty (min branch)."""
+    result = largest_smallest_integers([2, 4, 1, 3, 5, 7])
+    assert result == (None, 1)
 
 
 def test_empty_list():
+    """Both filters empty: both None branches taken."""
     result = largest_smallest_integers([])
     assert result == (None, None)
 
 
-def test_zero_is_neither():
-    result = largest_smallest_integers([0, 0])
+def test_zeros_only():
+    """Zeros are filtered out by both lambdas: both None branches taken."""
+    result = largest_smallest_integers([0, 0, 0])
     assert result == (None, None)
+
+
+def test_does_not_mutate_input():
+    """The function must not modify the input list."""
+    lst = [3, -1, 0, 2]
+    snapshot = list(lst)
+    largest_smallest_integers(lst)
+    assert lst == snapshot

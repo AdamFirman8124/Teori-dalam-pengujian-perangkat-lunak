@@ -2,90 +2,90 @@
 # asked: {"lines": [115, 116, 117, 118, 120, 121, 122, 123, 124, 129, 130, 133, 134, 135, 136, 137, 138, 139, 141, 142, 143, 144, 145, 147, 149, 150, 151, 152, 154, 156], "branches": [[117, 118], [117, 120], [129, 130], [129, 133], [134, 135], [134, 141], [141, 134], [141, 142], [147, 149], [147, 156]]}
 # gained: {"lines": [115, 116, 117, 118, 120, 121, 122, 123, 124, 129, 130, 133, 134, 135, 136, 137, 138, 139, 141, 142, 143, 144, 145, 147, 149, 150, 151, 152, 154, 156], "branches": [[117, 118], [117, 120], [129, 130], [129, 133], [134, 135], [134, 141], [141, 134], [141, 142], [147, 149], [147, 156]]}
 
-import json
+"""
+Coverage tests for httpie.output.formatters.colors.get_lexer (lines 115-156).
 
-import pytest
-from pygments.lexers.special import TextLexer
+get_lexer() is a pure function: it only reads its arguments and pygments'
+public lookup API and mutates no module or global state, so no
+monkeypatching/cleanup is required to avoid state pollution.
+
+Note: this environment's TextLexer only registers the 'text' alias
+(no 'plain'/'verbatim'), so the name-fallback test uses 'x-foo/text'.
+"""
 from pygments.lexers.data import JsonLexer
-from pygments.lexers.html import HtmlLexer
-from pygments.util import ClassNotFound
+from pygments.lexers.html import XmlLexer
+from pygments.lexers.special import TextLexer
 
 from httpie.output.formatters.colors import get_lexer
 
 
-def test_get_lexer_simple_mime_resolved_by_mimetype():
-    """Covers lines 115-118, 133-138 (mime loop success, break)."""
-    lexer = get_lexer('text/html')
-    assert isinstance(lexer, HtmlLexer)
-
-
-def test_get_lexer_subtype_without_plus_and_json_fallback_name():
-    """Covers line 117-118 (no '+'), 129-130 ('json' in subtype), 141-145 (name loop)."""
+def test_get_lexer_resolves_by_mime_type():
+    # Lines 115-118 (no '+' in subtype), 133-137 (mimetype hit -> break).
     lexer = get_lexer('application/json')
     assert isinstance(lexer, JsonLexer)
 
 
-def test_get_lexer_vendor_plus_suffix():
-    """Covers lines 120-124 ('+' in subtype: split, extended mime_types and names)."""
+def test_get_lexer_mime_type_with_suffix():
+    # Lines 120-124 ('+' in subtype: extra names and mime types built),
+    # lines 138-139 (ClassNotFound for the unknown candidates) and the
+    # eventual mimetype hit on '<type>/<subtype_suffix>'.
     lexer = get_lexer('application/vnd.api+json')
     assert isinstance(lexer, JsonLexer)
 
 
-def test_get_lexer_unknown_mime_returns_none():
-    """Covers lines 138-139, 141-145 with all lookups failing, and 147 (False branch)."""
-    lexer = get_lexer('foo/bar')
-    assert lexer is None
+def test_get_lexer_falls_back_to_lexer_name():
+    # Lines 138-139 (mimetype lookup fails), 140-141 (for/else fallback),
+    # 142-143 (name lookup succeeds: 'text' -> TextLexer).
+    lexer = get_lexer('x-foo/text')
+    assert isinstance(lexer, TextLexer)
+
+
+def test_get_lexer_json_subtype_appends_json_name():
+    # Lines 129-130 ('json' in subtype -> 'json' name appended), then the
+    # name fallback resolves it.
+    lexer = get_lexer('x-foo/json')
+    assert isinstance(lexer, JsonLexer)
+
+
+def test_get_lexer_unknown_returns_none():
+    # Lines 144-145 (ClassNotFound in the name loop) and line 156
+    # returning the untouched None.
+    assert get_lexer('x-foo/bar-baz-qux') is None
 
 
 def test_get_lexer_explicit_json_valid_body_overrides_text_lexer():
-    """Covers lines 147-154: explicit_json, TextLexer resolved, valid JSON body."""
-    body = '{"a": 1}'
-    lexer = get_lexer('text/plain', explicit_json=True, body=body)
+    # Line 147 condition true via `isinstance(lexer, TextLexer)`,
+    # lines 149-150 (json.loads succeeds), 153-154 (JSON lexer chosen).
+    lexer = get_lexer('text/plain', explicit_json=True, body='{"a": [1, 2]}')
     assert isinstance(lexer, JsonLexer)
 
 
 def test_get_lexer_explicit_json_invalid_body_keeps_text_lexer():
-    """Covers lines 149-152: ValueError branch (invalid JSON body)."""
-    body = 'not json at all'
-    lexer = get_lexer('text/plain', explicit_json=True, body=body)
+    # Line 147 condition true, lines 151-152 (ValueError -> pass),
+    # original TextLexer returned.
+    lexer = get_lexer('text/plain', explicit_json=True, body='definitely not json {')
     assert isinstance(lexer, TextLexer)
 
 
-def test_get_lexer_explicit_json_valid_body_with_no_lexer():
-    """Covers line 147 'not lexer' branch: unknown mime, valid JSON body."""
-    body = '[1, 2, 3]'
-    lexer = get_lexer('foo/bar', explicit_json=True, body=body)
+def test_get_lexer_explicit_json_no_lexer_valid_body():
+    # Line 147 condition true via `not lexer`, lines 149-150 and 153-154.
+    lexer = get_lexer('x-foo/bar-baz-qux', explicit_json=True, body='{"a": 1}')
     assert isinstance(lexer, JsonLexer)
 
 
-def test_get_lexer_explicit_json_empty_body_no_override():
-    """Covers line 147 'body' falsy branch: no JSON parsing happens."""
+def test_get_lexer_explicit_json_no_lexer_invalid_body():
+    # Line 147 condition true via `not lexer`, lines 151-152, still None.
+    assert get_lexer('x-foo/bar-baz-qux', explicit_json=True, body='not json') is None
+
+
+def test_get_lexer_explicit_json_does_not_override_resolved_lexer():
+    # Line 147 condition false (a non-Text lexer was found): the body must
+    # not be re-parsed and the XML lexer must survive untouched.
+    lexer = get_lexer('application/xml', explicit_json=True, body='{"a": 1}')
+    assert isinstance(lexer, XmlLexer)
+
+
+def test_get_lexer_explicit_json_empty_body_short_circuits():
+    # Line 147 condition false via the falsy `body` operand.
     lexer = get_lexer('text/plain', explicit_json=True, body='')
     assert isinstance(lexer, TextLexer)
-
-
-def test_get_lexer_explicit_json_not_needed_when_real_lexer_found():
-    """Covers line 147 'isinstance TextLexer' False branch: JSON mime already resolved."""
-    body = '{"a": 1}'
-    lexer = get_lexer('application/json', explicit_json=True, body=body)
-    assert isinstance(lexer, JsonLexer)
-
-
-def test_get_lexer_explicit_json_false_does_not_parse_body():
-    """Covers line 147 explicit_json False branch even with a JSON-looking body."""
-    lexer = get_lexer('text/plain', explicit_json=False, body='{"a": 1}')
-    assert isinstance(lexer, TextLexer)
-
-
-def test_get_lexer_json_fallback_name_used_when_mime_unknown():
-    """Covers line 129-130 plus name-loop resolution for a json-ish unknown mime."""
-    lexer = get_lexer('foo/json')
-    assert isinstance(lexer, JsonLexer)
-
-
-def test_get_lexer_does_not_mutate_pygments_state():
-    """Postcondition: repeated calls are pure (no global state pollution)."""
-    first = get_lexer('application/vnd.api+json')
-    second = get_lexer('application/vnd.api+json')
-    assert type(first) is type(second)
-    assert isinstance(first, JsonLexer)

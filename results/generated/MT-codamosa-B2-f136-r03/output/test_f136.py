@@ -2,14 +2,66 @@
 import f136 as module_0
 
 def test_case_0():
-    pass
-
-def test_case_1():
-    bytes_0 = b'V\x0c\x96\xb5\x8f\xb5'
-    var_0 = module_0.largest_smallest_integers(bytes_0)
-    assert var_0 == (None, 12)
-
-def test_case_2():
-    set_0 = set()
-    var_0 = module_0.largest_smallest_integers(set_0)
-    assert var_0 == (None, None)
+    int_0 = 2
+    int_1 = 4
+    int_2 = 1
+    int_3 = 3
+    int_4 = 5
+    int_5 = 7
+    int_6 = [int_0, int_1, int_2, int_3, int_4, int_5]
+    var_0 = module_0.largest_smallest_integers(int_6)
+    assert var_0 == (None, 1)
+    int_7 = -1
+    int_8 = -3
+    int_9 = -5
+    int_10 = -7
+    int_11 = [int_7, int_8, int_9, int_10]
+    var_1 = module_0.largest_smallest_integers(int_11)
+    assert var_1 == (-1, None)
+    int_12 = -4
+    int_13 = -3
+    int_14 = -7
+    int_15 = [int_0, int_12, int_2, int_13, int_4, int_14]
+    var_2 = module_0.largest_smallest_integers(int_15)
+    assert var_2 == (-3, 1)
+    int_16 = 0
+    int_17 = [int_16]
+    var_3 = module_0.largest_smallest_integers(int_17)
+    assert var_3 == (None, None)
+    int_18 = -2
+    int_19 = [int_18, int_16, int_3]
+    var_4 = module_0.largest_smallest_integers(int_19)
+    assert var_4 == (-2, 3)
+    var_5 = []
+    var_6 = module_0.largest_smallest_integers(var_5)
+    assert var_6 == (None, None)
+    int_20 = -10
+    int_21 = -20
+    int_22 = -3
+    int_23 = [int_20, int_21, int_22]
+    var_7 = module_0.largest_smallest_integers(int_23)
+    assert var_7 == (-3, None)
+    int_24 = 10
+    int_25 = 20
+    int_26 = [int_24, int_25, int_3]
+    var_8 = module_0.largest_smallest_integers(int_26)
+    assert var_8 == (None, 3)
+    int_27 = -1
+    int_28 = -1
+    int_29 = [int_27, int_28, int_0, int_0]
+    var_9 = module_0.largest_smallest_integers(int_29)
+    assert var_9 == (-1, 2)
+    int_30 = -5
+    int_31 = [int_30]
+    var_10 = module_0.largest_smallest_integers(int_31)
+    assert var_10 == (-5, None)
+    int_32 = [int_4]
+    var_11 = module_0.largest_smallest_integers(int_32)
+    assert var_11 == (None, 5)
+    int_33 = -1000000
+    int_34 = 1000000
+    int_35 = [int_33, int_34]
+    var_12 = module_0.largest_smallest_integers(int_35)
+    assert var_12 == (-1000000, 1000000)
+    str_0 = 'All tests passed!'
+    var_13 = print(str_0)

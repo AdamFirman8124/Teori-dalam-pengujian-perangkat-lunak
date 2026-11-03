@@ -6,8 +6,31 @@ def test_case_0():
     int_1 = 2
     var_0 = module_0.change_base(int_0, int_1)
     assert var_0 == '1010'
-
-def test_case_1():
-    int_0 = -1031
-    var_0 = module_0.change_base(int_0, int_0)
-    assert var_0 == ''
+    int_2 = 7
+    var_1 = module_0.change_base(int_2, int_1)
+    assert var_1 == '111'
+    int_3 = 1
+    var_2 = module_0.change_base(int_3, int_1)
+    assert var_2 == '1'
+    int_4 = 8
+    int_5 = 3
+    var_3 = module_0.change_base(int_4, int_5)
+    assert var_3 == '22'
+    int_6 = 9
+    var_4 = module_0.change_base(int_6, int_5)
+    assert var_4 == '100'
+    int_7 = 123
+    var_5 = module_0.change_base(int_7, int_0)
+    assert var_5 == '123'
+    int_8 = 255
+    int_9 = 16
+    var_6 = module_0.change_base(int_8, int_9)
+    assert var_6 == '1515'
+    int_10 = 5
+    var_7 = module_0.change_base(int_10, int_4)
+    assert var_7 == '5'
+    int_11 = 0
+    var_8 = module_0.change_base(int_11, int_1)
+    assert var_8 == ''
+    str_0 = 'All tests passed!'
+    var_9 = print(str_0)

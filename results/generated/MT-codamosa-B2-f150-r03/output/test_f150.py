@@ -2,37 +2,47 @@
 import f150 as module_0
 
 def test_case_0():
-    int_0 = 7
+    int_0 = 1
     str_0 = 'prime'
-    str_1 = 'not'
+    str_1 = 'not prime'
     var_0 = module_0.x_or_y(int_0, str_0, str_1)
-    assert var_0 == 'prime'
+    assert var_0 == 'not prime'
     int_1 = 2
     var_1 = module_0.x_or_y(int_1, str_0, str_1)
     assert var_1 == 'prime'
     int_2 = 3
     var_2 = module_0.x_or_y(int_2, str_0, str_1)
     assert var_2 == 'prime'
-    int_3 = 13
-    int_4 = 1
-    int_5 = 0
-    var_3 = module_0.x_or_y(int_3, int_4, int_5)
-    assert var_3 == 1
-    int_6 = 4
-    var_4 = module_0.x_or_y(int_6, str_0, str_1)
-    assert var_4 == 'not'
-    int_7 = 9
-    var_5 = module_0.x_or_y(int_7, str_0, str_1)
-    assert var_5 == 'not'
-    int_8 = 100
-    var_6 = module_0.x_or_y(int_8, int_4, int_5)
-    assert var_6 == 0
-    var_7 = module_0.x_or_y(int_4, str_0, str_1)
-    assert var_7 == 'not'
-    var_8 = module_0.x_or_y(int_5, str_0, str_1)
-    assert var_8 == 'prime'
-    int_9 = -5
-    var_9 = module_0.x_or_y(int_9, str_0, str_1)
-    assert var_9 == 'prime'
-    str_2 = 'All tests passed.'
-    var_10 = print(str_2)
+    int_3 = 4
+    var_3 = module_0.x_or_y(int_3, str_0, str_1)
+    assert var_3 == 'not prime'
+    int_4 = 5
+    var_4 = module_0.x_or_y(int_4, str_0, str_1)
+    assert var_4 == 'prime'
+    int_5 = 7
+    int_6 = 100
+    int_7 = 200
+    var_5 = module_0.x_or_y(int_5, int_6, int_7)
+    assert var_5 == 100
+    int_8 = 9
+    var_6 = module_0.x_or_y(int_8, int_6, int_7)
+    assert var_6 == 200
+    int_9 = 10
+    var_7 = module_0.x_or_y(int_9, int_6, int_7)
+    assert var_7 == 200
+    int_10 = 13
+    var_8 = module_0.x_or_y(int_10, int_6, int_7)
+    assert var_8 == 100
+    int_11 = 997
+    str_2 = 'yes'
+    str_3 = 'no'
+    var_9 = module_0.x_or_y(int_11, str_2, str_3)
+    assert var_9 == 'yes'
+    int_12 = 1000
+    var_10 = module_0.x_or_y(int_12, str_2, str_3)
+    assert var_10 == 'no'
+    str_4 = 'All tests passed!'
+    var_11 = print(str_4)
+
+def test_case_1():
+    pass

@@ -14,26 +14,29 @@ def test_case_0():
     str_3 = 'ab'
     var_3 = module_0.get_closest_vowel(str_3)
     assert var_3 == ''
-    str_4 = 'a'
+    str_4 = 'ae'
     var_4 = module_0.get_closest_vowel(str_4)
     assert var_4 == ''
-    str_5 = ''
+    str_5 = 'cat'
     var_5 = module_0.get_closest_vowel(str_5)
-    assert var_5 == ''
-    str_6 = 'quickly'
+    assert var_5 == 'a'
+    str_6 = 'bAc'
     var_6 = module_0.get_closest_vowel(str_6)
-    assert var_6 == ''
-    str_7 = 'bca'
+    assert var_6 == 'A'
+    str_7 = 'a'
     var_7 = module_0.get_closest_vowel(str_7)
     assert var_7 == ''
-    str_8 = 'bAcA'
+    str_8 = ''
     var_8 = module_0.get_closest_vowel(str_8)
     assert var_8 == ''
-    assert var_8 == 'A'
-    str_9 = 'cat'
+    str_9 = 'bcdfg'
     var_9 = module_0.get_closest_vowel(str_9)
     assert var_9 == ''
-    assert var_9 == 'a'
-    str_10 = 'rhythm'
+    str_10 = 'bEAd'
     var_10 = module_0.get_closest_vowel(str_10)
     assert var_10 == ''
+    str_11 = 'xIz'
+    var_11 = module_0.get_closest_vowel(str_11)
+    assert var_11 == 'I'
+    str_12 = 'All tests passed!'
+    var_12 = print(str_12)

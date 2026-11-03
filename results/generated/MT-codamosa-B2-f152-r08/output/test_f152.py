@@ -10,27 +10,41 @@ def test_case_0():
     var_0 = module_0.compare(int_3, int_4)
     assert var_0 == [0, 0, 0]
     int_5 = [int_0, int_1, int_2]
-    int_6 = 4
-    int_7 = [int_0, int_1, int_6]
-    var_1 = module_0.compare(int_5, int_7)
-    assert var_1 == [0, 0, 1]
-    int_8 = [int_0, int_1, int_2]
-    int_9 = [int_2, int_1, int_0]
-    var_2 = module_0.compare(int_8, int_9)
-    assert var_2 == [2, 0, 2]
-    int_10 = -1
-    int_11 = 5
-    int_12 = [int_10, int_11]
-    int_13 = -3
-    int_14 = [int_13, int_11]
-    var_3 = module_0.compare(int_12, int_14)
-    assert var_3 == [2, 0]
-    float_0 = 1.5
-    var_4 = [float_0, int_1]
-    float_1 = 3.5
-    var_5 = [int_0, float_1]
-    var_6 = module_0.compare(var_4, var_5)
-    assert len(var_6) == 2
+    int_6 = [int_2, int_1, int_0]
+    var_1 = module_0.compare(int_5, int_6)
+    assert var_1 == [2, 0, 2]
+    int_7 = 5
+    int_8 = 10
+    int_9 = 15
+    int_10 = [int_7, int_8, int_9]
+    int_11 = 13
+    int_12 = 20
+    int_13 = [int_2, int_11, int_12]
+    var_2 = module_0.compare(int_10, int_13)
+    assert var_2 == [2, 3, 5]
+    int_14 = 7
+    int_15 = [int_14]
+    int_16 = [int_14]
+    var_3 = module_0.compare(int_15, int_16)
+    assert var_3 == [0]
+    int_17 = 0
+    int_18 = [int_17]
+    int_19 = 9
+    int_20 = [int_19]
+    var_4 = module_0.compare(int_18, int_20)
+    assert var_4 == [9]
+    int_21 = [int_17, int_17]
+    int_22 = -5
+    int_23 = [int_7, int_22]
+    var_5 = module_0.compare(int_21, int_23)
+    assert var_5 == [5, 5]
+    int_24 = -1
+    int_25 = -2
+    int_26 = [int_24, int_25]
+    int_27 = -4
+    int_28 = [int_27, int_1]
+    var_6 = module_0.compare(int_26, int_28)
+    assert var_6 == [3, 4]
     var_7 = []
     var_8 = []
     var_9 = module_0.compare(var_7, var_8)

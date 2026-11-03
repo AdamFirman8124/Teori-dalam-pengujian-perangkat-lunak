@@ -2,90 +2,45 @@
 # asked: {"lines": [3, 4, 5, 6, 7, 8], "branches": [[4, 5], [4, 8], [5, 4], [5, 6], [6, 5], [6, 7]]}
 # gained: {"lines": [3, 4, 5, 6, 7, 8], "branches": [[4, 5], [4, 8], [5, 4], [5, 6], [6, 5], [6, 7]]}
 
-import pytest
-
 from f058 import common
 
 
-def _assert_postconditions(result, l1, l2):
-    assert isinstance(result, list)
-    assert result == sorted(result)
-    assert len(result) == len(set(result))
-    assert all(e in l1 and e in l2 for e in result)
+def test_common_with_intersection():
+    # Exercises lines 3-8: set creation, both nested loops, the True branch
+    # of the equality check, ret.add, and the sorted return.
+    assert common([1, 2, 3], [2, 3, 4]) == [2, 3]
 
 
-def test_common_basic_overlap():
-    l1, l2 = [1, 2, 3], [2, 3, 4]
-    result = common(l1, l2)
-    assert result == [2, 3]
-    _assert_postconditions(result, l1, l2)
+def test_common_no_intersection():
+    # Exercises the False branch of the equality check (line 6) with
+    # non-empty inputs, so both loop bodies still run.
+    assert common([1, 2], [3, 4]) == []
 
 
-def test_common_no_overlap_covers_false_branch():
-    l1, l2 = [1, 2], [3, 4]
-    result = common(l1, l2)
-    assert result == []
-    _assert_postconditions(result, l1, l2)
+def test_common_empty_l1():
+    # Exercises line 4 with an empty l1: the outer loop body (lines 5-7)
+    # never runs, but line 8 still returns.
+    assert common([], [1, 2, 3]) == []
 
 
-def test_common_empty_first_list_skips_outer_loop():
-    l1, l2 = [], [1, 2, 3]
-    result = common(l1, l2)
-    assert result == []
-    _assert_postconditions(result, l1, l2)
-
-
-def test_common_empty_second_list_skips_inner_loop():
-    l1, l2 = [1, 2, 3], []
-    result = common(l1, l2)
-    assert result == []
-    _assert_postconditions(result, l1, l2)
+def test_common_empty_l2():
+    # Exercises line 5 with an empty l2: the inner loop body (lines 6-7)
+    # never runs even though the outer loop does.
+    assert common([1, 2, 3], []) == []
 
 
 def test_common_both_empty():
-    result = common([], [])
-    assert result == []
+    # Both loops skipped entirely; only lines 3 and 8 run.
+    assert common([], []) == []
 
 
-def test_common_duplicates_are_deduplicated():
-    l1, l2 = [1, 1, 2, 2], [1, 2, 2, 3]
-    result = common(l1, l2)
-    assert result == [1, 2]
-    _assert_postconditions(result, l1, l2)
+def test_common_duplicates_deduplicated():
+    # The set (line 3) must deduplicate repeated matches before sorting.
+    assert common([1, 1, 2, 2], [2, 2, 1, 1]) == [1, 2]
 
 
-def test_common_output_is_sorted_regardless_of_input_order():
-    l1, l2 = [3, 1, 2], [2, 3, 1]
-    result = common(l1, l2)
-    assert result == [1, 2, 3]
-    _assert_postconditions(result, l1, l2)
-
-
-def test_common_with_strings():
-    l1, l2 = ["b", "a", "c"], ["c", "a", "z"]
-    result = common(l1, l2)
-    assert result == ["a", "c"]
-    _assert_postconditions(result, l1, l2)
-
-
-def test_common_does_not_mutate_inputs():
-    l1, l2 = [1, 2, 3], [2, 3, 4]
-    l1_copy, l2_copy = list(l1), list(l2)
-    common(l1, l2)
-    assert l1 == l1_copy
-    assert l2 == l2_copy
-
-
-@pytest.mark.parametrize(
-    "l1, l2, expected",
-    [
-        ([1], [1], [1]),
-        ([1], [2], []),
-        ([1, 2, 3], [3, 2, 1], [1, 2, 3]),
-        ([0, -1, 5], [-1, 0], [-1, 0]),
-    ],
-)
-def test_common_parametrized(l1, l2, expected):
-    result = common(l1, l2)
-    assert result == expected
-    _assert_postconditions(result, l1, l2)
+def test_common_result_is_sorted():
+    # Verifies the sorted() call on line 8 orders the result regardless
+    # of input ordering: every element of l1 appears in l2, but in
+    # descending order, so the returned list must be ascending.
+    assert common([5, 3, 1], [5, 3, 1]) == [1, 3, 5]

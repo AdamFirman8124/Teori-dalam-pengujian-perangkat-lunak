@@ -3,6 +3,7 @@ import ansible.plugins.lookup.random_choice as module_0
 
 def test_case_0():
     try:
+        int_0 = 3600
         lookup_module_0 = module_0.LookupModule()
         assert lookup_module_0 is not None
         assert module_0.absolute_import.optional == (2, 5, 0, 'alpha', 1)
@@ -17,34 +18,6 @@ def test_case_0():
         assert module_0.DOCUMENTATION == '\n    name: random_choice\n    author: Michael DeHaan\n    version_added: "1.1"\n    short_description: return random element from list\n    description:\n      - The \'random_choice\' feature can be used to pick something at random. While it\'s not a load balancer (there are modules for those),\n        it can somewhat be used as a poor man\'s load balancer in a MacGyver like situation.\n      - At a more basic level, they can be used to add chaos and excitement to otherwise predictable automation environments.\n'
         assert module_0.EXAMPLES == '\n- name: Magic 8 ball for MUDs\n  debug:\n    msg: "{{ item }}"\n  with_random_choice:\n     - "go through the door"\n     - "drink from the goblet"\n     - "press the red button"\n     - "do nothing"\n'
         assert module_0.RETURN == '\n  _raw:\n    description:\n      - random item\n    type: raw\n'
-        var_0 = lookup_module_0.run(lookup_module_0)
-    except BaseException:
-        pass
-
-def test_case_1():
-    try:
-        tuple_0 = ()
-        str_0 = './%sS'
-        str_1 = '\rV\\5i1rA'
-        dict_0 = {str_0: str_0, str_0: str_0, str_1: str_0}
-        lookup_module_0 = module_0.LookupModule(**dict_0)
-        assert lookup_module_0 is not None
-        assert module_0.absolute_import.optional == (2, 5, 0, 'alpha', 1)
-        assert module_0.absolute_import.mandatory == (3, 0, 0, 'alpha', 0)
-        assert module_0.absolute_import.compiler_flag == 262144
-        assert module_0.division.optional == (2, 2, 0, 'alpha', 2)
-        assert module_0.division.mandatory == (3, 0, 0, 'alpha', 0)
-        assert module_0.division.compiler_flag == 131072
-        assert module_0.print_function.optional == (2, 6, 0, 'alpha', 2)
-        assert module_0.print_function.mandatory == (3, 0, 0, 'alpha', 0)
-        assert module_0.print_function.compiler_flag == 1048576
-        assert module_0.DOCUMENTATION == '\n    name: random_choice\n    author: Michael DeHaan\n    version_added: "1.1"\n    short_description: return random element from list\n    description:\n      - The \'random_choice\' feature can be used to pick something at random. While it\'s not a load balancer (there are modules for those),\n        it can somewhat be used as a poor man\'s load balancer in a MacGyver like situation.\n      - At a more basic level, they can be used to add chaos and excitement to otherwise predictable automation environments.\n'
-        assert module_0.EXAMPLES == '\n- name: Magic 8 ball for MUDs\n  debug:\n    msg: "{{ item }}"\n  with_random_choice:\n     - "go through the door"\n     - "drink from the goblet"\n     - "press the red button"\n     - "do nothing"\n'
-        assert module_0.RETURN == '\n  _raw:\n    description:\n      - random item\n    type: raw\n'
-        var_0 = lookup_module_0.run(tuple_0)
-        assert var_0 == ()
-        str_2 = None
-        dict_1 = {str_2: str_2}
-        lookup_module_1 = module_0.LookupModule(**dict_1)
+        var_0 = lookup_module_0.run(int_0)
     except BaseException:
         pass

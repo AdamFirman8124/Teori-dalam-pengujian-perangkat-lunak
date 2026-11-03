@@ -13,17 +13,20 @@ def test_case_1():
     int_1 = 9
     var_1 = module_0.even_odd_palindrome(int_1)
     assert var_1 == (4, 5)
-    int_2 = 12
+    int_2 = 10
     var_2 = module_0.even_odd_palindrome(int_2)
-    assert var_2 == (4, 6)
-    int_3 = 100
+    assert var_2 == (4, 5)
+    int_3 = 11
     var_3 = module_0.even_odd_palindrome(int_3)
-    assert var_3 == (8, 10)
-    int_4 = 0
+    assert var_3 == (4, 6)
+    int_4 = 22
     var_4 = module_0.even_odd_palindrome(int_4)
-    assert var_4 == (0, 0)
-
-def test_case_2():
-    int_0 = 0
-    var_0 = module_0.even_odd_palindrome(int_0)
-    assert var_0 == (0, 0)
+    assert var_4 == (5, 6)
+    int_5 = 100
+    var_5 = module_0.even_odd_palindrome(int_5)
+    assert var_5 == (8, 10)
+    int_6 = 0
+    var_6 = module_0.even_odd_palindrome(int_6)
+    assert var_6 == (0, 0)
+    str_0 = 'All tests passed!'
+    var_7 = print(str_0)

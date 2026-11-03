@@ -11,9 +11,12 @@ def test_case_0():
     int_2 = 12
     var_2 = module_0.even_odd_palindrome(int_2)
     assert var_2 == (4, 6)
-    int_3 = 100
+    int_3 = 0
     var_3 = module_0.even_odd_palindrome(int_3)
-    assert var_3 == (8, 10)
-    int_4 = 0
+    assert var_3 == (0, 0)
+    int_4 = 22
     var_4 = module_0.even_odd_palindrome(int_4)
-    assert var_4 == (0, 0)
+    assert var_4 == (5, 6)
+    int_5 = 100
+    var_5 = module_0.even_odd_palindrome(int_5)
+    assert var_5 == (8, 10)

@@ -2,13 +2,9 @@
 import f152 as module_0
 
 def test_case_0():
-    int_0 = 1
-    int_1 = 5
-    int_2 = 10
-    int_3 = [int_0, int_1, int_2]
-    int_4 = 4
-    int_5 = 2
-    int_6 = 7
-    int_7 = [int_4, int_5, int_6]
-    var_0 = module_0.compare(int_3, int_7)
-    assert var_0 == [3, 3, 3]
+    int_0 = 10
+    int_1 = [int_0]
+    int_2 = 4
+    int_3 = [int_2]
+    var_0 = module_0.compare(int_1, int_3)
+    assert var_0 == [6]

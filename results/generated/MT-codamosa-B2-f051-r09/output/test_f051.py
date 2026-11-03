@@ -2,33 +2,34 @@
 import f051 as module_0
 
 def test_case_0():
-    str_0 = 'hello world'
+    str_0 = ''
     var_0 = module_0.remove_vowels(str_0)
-    assert var_0 == 'hll wrld'
-    str_1 = 'aeiou'
+    assert var_0 == ''
+    str_1 = 'abcdef\nghijklm'
     var_1 = module_0.remove_vowels(str_1)
-    assert var_1 == ''
-    str_2 = 'AEIOU'
+    assert var_1 == 'bcdf\nghjklm'
+    str_2 = 'abcdef'
     var_2 = module_0.remove_vowels(str_2)
-    assert var_2 == ''
-    str_3 = 'StackOverflow'
+    assert var_2 == 'bcdf'
+    str_3 = 'aaaaa'
     var_3 = module_0.remove_vowels(str_3)
-    assert var_3 == 'Stckvrflw'
-    str_4 = 'rhythm'
+    assert var_3 == ''
+    str_4 = 'aaBAA'
     var_4 = module_0.remove_vowels(str_4)
-    assert var_4 == 'rhythm'
-    str_5 = ''
+    assert var_4 == 'B'
+    str_5 = 'AEIOUaeiou'
     var_5 = module_0.remove_vowels(str_5)
     assert var_5 == ''
-    str_6 = '123 !?'
+    str_6 = 'zbcd'
     var_6 = module_0.remove_vowels(str_6)
-    assert var_6 == '123 !?'
-    str_7 = 'my gym'
+    assert var_6 == 'zbcd'
+    str_7 = 'xyz'
     var_7 = module_0.remove_vowels(str_7)
-    assert var_7 == 'my gym'
-    str_8 = 'a e i o u'
+    assert var_7 == 'xyz'
+    str_8 = 'hello world! 123'
     var_8 = module_0.remove_vowels(str_8)
-    assert var_8 == '    '
-    str_9 = 'cafÃ©'
+    assert var_8 == 'hll wrld! 123'
+    str_9 = 'ThIs Is A tEsT'
     var_9 = module_0.remove_vowels(str_9)
-    assert var_9 == 'cfÃ©'
+    assert var_9 == 'Ths s  tst'
+    assert var_9 == 'Ths s  tsT'

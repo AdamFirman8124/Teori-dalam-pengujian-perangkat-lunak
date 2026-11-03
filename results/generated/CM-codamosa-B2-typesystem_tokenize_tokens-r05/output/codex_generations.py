@@ -1,1252 +1,266 @@
 
 
-# Generated at 2026-10-24 23:26:06.854745
+# Generated at 2026-11-01 23:47:56.845443
 # Unit test for method lookup of class Token
 def test_Token_lookup():
-    content = '{"a": 1, "b": [10, 20], "c": {"d": "x"}}'
+    # Build a nested structure: {"example": [123]}
+    key_token = ScalarToken("example", 0, 8)
+    value_token = ScalarToken(123, 12, 14)
+    inner_list = ListToken([value_token], 11, 15)
+    dict_token = DictToken({key_token: inner_list}, 0, 17, content='{"example": [123]}')
 
-    # Build token tree manually (values are Token instances for DictToken)
-    scalar_1 = ScalarToken(1, 7, 7, content)
-    scalar_10 = ScalarToken(10, 14, 15, content)
-    scalar_20 = ScalarToken(20, 18, 19, content)
-    list_b = ListToken([scalar_10, scalar_20], 11, 20, content)
-    scalar_x = ScalarToken("x", 33, 35, content)
-    dict_d = DictToken({ScalarToken("d", 30, 32, content): scalar_x}, 29, 36, content)
-    key_a = ScalarToken("a", 1, 3, content)
-    key_b = ScalarToken("b", 10, 12, content)
-    key_c = ScalarToken("c", 23, 25, content)
-    dict_root = DictToken(
-        {key_a: scalar_1, key_b: list_b, key_c: dict_d}, 0, 37, content
-    )
+    # Lookup a direct child by key
+    assert dict_token.lookup(["example"]) == inner_list
 
-    # Lookup a nested scalar by index path
-    token = dict_root.lookup(["b", 1])
-    assert token.value == 20
-    assert token.start == Position(line_no=1, column_no=19, index=18)
-    assert token.end == Position(line_no=1, column_no=20, index=19)
+    # Lookup a nested child via a list index
+    assert dict_token.lookup(["example", 0]) == value_token
 
-    # Lookup a nested dict
-    token = dict_root.lookup(["c"])
-    assert token.value == {"d": "x"}
+    # Empty index returns the token itself
+    assert dict_token.lookup([]) == dict_token
 
-    # Lookup a deeply nested scalar
-    token = dict_root.lookup(["c", "d"])
-    assert token.value == "x"
+    # Missing key raises KeyError
+    try:
+        dict_token.lookup(["missing"])
+    except KeyError:
+        pass
+    else:
+        raise AssertionError("Expected KeyError")
 
-    # Lookup the root itself (empty index)
-    token = dict_root.lookup([])
-    assert token is dict_root
-
-# Generated at 2026-10-24 23:26:08.287414
+# Generated at 2026-11-01 23:48:33.277030
 # Unit test for method lookup of class Token
 def test_Token_lookup():
-    content = '{"a": 1, "b": [10, 20], "c": {"d": "x"}}'
+    content = '{"a": [1, 2, {"b": "hello"}]}'
 
-    # Build token tree manually (values are Token instances for DictToken)
-    scalar_1 = ScalarToken(1, 7, 7, content)
-    scalar_10 = ScalarToken(10, 14, 15, content)
-    scalar_20 = ScalarToken(20, 18, 19, content)
-    list_b = ListToken([scalar_10, scalar_20], 11, 20, content)
-    scalar_x = ScalarToken("x", 33, 35, content)
-    dict_d = DictToken({ScalarToken("d", 30, 32, content): scalar_x}, 29, 36, content)
-    key_a = ScalarToken("a", 1, 3, content)
-    key_b = ScalarToken("b", 10, 12, content)
-    key_c = ScalarToken("c", 23, 25, content)
-    dict_root = DictToken(
-        {key_a: scalar_1, key_b: list_b, key_c: dict_d}, 0, 37, content
-    )
+    # Build token tree mirroring the content string
+    hello = ScalarToken("hello", 19, 25, content)
+    b_key = ScalarToken("b", 14, 16, content)
+    inner_dict = DictToken({b_key: hello}, 13, 26, content)
+    one = ScalarToken(1, 7, 7, content)
+    two = ScalarToken(2, 10, 10, content)
+    inner_list = ListToken([one, two, inner_dict], 6, 27, content)
+    a_key = ScalarToken("a", 1, 3, content)
+    root = DictToken({a_key: inner_list}, 0, 28, content)
 
-    # Lookup a nested scalar by index path
-    token = dict_root.lookup(["b", 1])
-    assert token.value == 20
-    assert token.start == Position(line_no=1, column_no=19, index=18)
-    assert token.end == Position(line_no=1, column_no=20, index=19)
+    # Empty index returns the token itself
+    assert root.lookup([]) is root
 
-    # Lookup a nested dict
-    token = dict_root.lookup(["c"])
-    assert token.value == {"d": "x"}
+    # Single key lookup into a dict token
+    assert root.lookup(["a"]) is inner_list
 
-    # Lookup a deeply nested scalar
-    token = dict_root.lookup(["c", "d"])
-    assert token.value == "x"
+    # Integer index lookup into a list token
+    assert root.lookup(["a", 0]) is one
+    assert root.lookup(["a", 1]) is two
+    assert root.lookup(["a", 2]) is inner_dict
 
-    # Lookup the root itself (empty index)
-    token = dict_root.lookup([])
-    assert token is dict_root
+    # Deeply nested lookup through dict -> list -> dict
+    assert root.lookup(["a", 2, "b"]) is hello
+    assert root.lookup(["a", 2, "b"]).value == "hello"
+    assert root.lookup(["a", 2, "b"]).string == '"hello"'
+    assert root.lookup(["a", 2, "b"]).start == Position(1, 20, 19)
+    assert root.lookup(["a", 2, "b"]).end == Position(1, 26, 25)
 
-# Generated at 2026-10-24 23:26:16.979756
+    # Looking up a missing key raises KeyError
+    import pytest
+
+    with pytest.raises(KeyError):
+        root.lookup(["missing"])
+
+    with pytest.raises(KeyError):
+        root.lookup(["a", 5])
+
+    with pytest.raises(KeyError):
+        root.lookup(["a", 2, "c"])
+
+# Generated at 2026-11-01 23:49:34.424332
 # Unit test for method __eq__ of class Token
 def test_Token___eq__():
-    token = ScalarToken("value", 1, 5, " value")
+    token = ScalarToken(value=1, start_index=0, end_index=3, content="[1]")
 
-    assert token == ScalarToken("value", 1, 5, " value")
-    assert token == ScalarToken("value", 1, 5, "different content")
+    # Same class, same value, same start/end indices -> equal
+    assert token == ScalarToken(1, 0, 3, content="xyz")
+    assert ScalarToken(1, 0, 3) == token
 
-    assert token != ScalarToken("other", 1, 5, " other")
-    assert token != ScalarToken("value", 0, 5, "value")
-    assert token != ScalarToken("value", 1, 4, " valu")
-    assert token != "value"
+    # Different value -> not equal
+    assert token != ScalarToken(2, 0, 3)
+    assert not (token == ScalarToken(2, 0, 3))
+
+    # Different start_index -> not equal
+    assert token != ScalarToken(1, 1, 3)
+
+    # Different end_index -> not equal
+    assert token != ScalarToken(1, 0, 4)
+
+    # Comparison against non-Token objects -> not equal
+    assert token != 1
+    assert token != "1"
     assert token != None
+    assert token != [1]
+    assert token != {}
 
-# Generated at 2026-10-24 23:26:25.286597
+    # Different container token types holding different values -> not equal
+    dict_token = DictToken({}, 0, 1)
+    list_token = ListToken([], 0, 1)
+    assert dict_token != list_token
+    assert not (dict_token == list_token)
+
+    # DictTokens built from equivalent child tokens compare equal by resolved value
+    key1 = ScalarToken("a", 1, 1, content='"a"')
+    val1 = ScalarToken(1, 4, 4, content="1")
+    dict_token_a = DictToken({key1: val1}, 0, 5, content='{"a": 1}')
+
+    key2 = ScalarToken("a", 1, 1, content='"a"')
+    val2 = ScalarToken(1, 4, 4, content="1")
+    dict_token_b = DictToken({key2: val2}, 0, 5, content='{"a": 1}')
+
+    assert dict_token_a == dict_token_b
+
+    # Same resolved value but different indices -> not equal
+    dict_token_c = DictToken({ScalarToken("a", 9, 9): ScalarToken(1, 12, 12)}, 7, 8)
+    assert dict_token_a != dict_token_c
+
+# Generated at 2026-11-01 23:50:46.430096
 # Unit test for constructor of class DictToken
 def test_DictToken():
-    content = '{"name":"Alice","age":30}'
+    content = '{"key": "value"}'
+    key_token = ScalarToken("key", 1, 5, content=content)
+    value_token = ScalarToken("value", 8, 14, content=content)
+    dict_token = DictToken({key_token: value_token}, 0, 15, content=content)
 
-    name_key = ScalarToken("name", 1, 6, content)
-    name_value = ScalarToken("Alice", 8, 14, content)
-    age_key = ScalarToken("age", 16, 20, content)
-    age_value = ScalarToken(30, 22, 23, content)
+    # Constructor stores the raw token parts.
+    assert dict_token._value == {key_token: value_token}
+    assert dict_token._start_index == 0
+    assert dict_token._end_index == 15
+    assert dict_token._content == content
 
-    value = {
-        name_key: name_value,
-        age_key: age_value,
-    }
+    # Constructor indexes child key tokens and child value tokens.
+    assert dict_token._child_keys == {"key": key_token}
+    assert dict_token._child_tokens == {"key": value_token}
 
-    token = DictToken(value, 0, 24, content)
+    # The value property resolves nested token values.
+    assert dict_token.value == {"key": "value"}
 
-    assert token._value is value
-    assert token._start_index == 0
-    assert token._end_index == 24
-    assert token._content == content
+    # String and positions are derived from content and indices.
+    assert dict_token.string == content
+    assert dict_token.start == Position(1, 1, 0)
+    assert dict_token.end == Position(1, 16, 15)
 
-    assert token._child_keys == {
-        "name": name_key,
-        "age": age_key,
-    }
-    assert token._child_tokens == {
-        "name": name_value,
-        "age": age_value,
-    }
+    # Child tokens and key tokens can be looked up.
+    assert dict_token.lookup(["key"]) == value_token
+    assert dict_token.lookup_key(["key"]) == key_token
 
-    assert token.value == {
-        "name": "Alice",
-        "age": 30,
-    }
-    assert token.string == content
-    assert token.lookup(["name"]) is name_value
-    assert token.lookup_key(["age"]) is age_key
+    # An empty dict token is handled correctly.
+    empty_token = DictToken({}, 0, 1, content="{}")
+    assert empty_token.value == {}
+    assert empty_token._child_keys == {}
+    assert empty_token._child_tokens == {}
 
-# Generated at 2026-10-24 23:26:32.941301
+# Generated at 2026-11-01 23:52:02.798714
 # Unit test for method __eq__ of class Token
 def test_Token___eq__():
-    token = ScalarToken("value", 1, 5, " value")
-
+    # A token equals itself.
+    token = ScalarToken("a", 0, 0)
     assert token == token
-    assert token == ScalarToken("value", 1, 5, "different content")
-    assert token != ScalarToken("different", 1, 5, " value")
-    assert token != ScalarToken("value", 2, 5, " value")
-    assert token != ScalarToken("value", 1, 6, " value")
-    assert token != "value"
-    assert token != object()
 
-# Generated at 2026-10-24 23:26:40.031613
+    # Two tokens with the same value and indexes are equal.
+    assert ScalarToken("a", 0, 0) == ScalarToken("a", 0, 0)
+
+    # Content is not part of equality.
+    assert ScalarToken("a", 0, 0, content="abc") == ScalarToken("a", 0, 0, content="xyz")
+
+    # Different values are not equal.
+    assert ScalarToken("a", 0, 0) != ScalarToken("b", 0, 0)
+
+    # Different start indexes are not equal.
+    assert ScalarToken("a", 0, 0) != ScalarToken("a", 1, 1)
+
+    # Different end indexes are not equal.
+    assert ScalarToken("a", 0, 0) != ScalarToken("a", 0, 2)
+
+    # Comparison against non-Token objects returns False (not NotImplemented).
+    assert ScalarToken("a", 0, 0).__eq__("a") is False
+    assert ScalarToken("a", 0, 0) != "a"
+    assert ScalarToken(1, 0, 0) != 1
+    assert ScalarToken(None, 0, 0) != None  # noqa: E711
+
+    # DictToken equality is based on resolved values and outer indexes.
+    def make_dict_token(key_start=0, key_end=4, value_start=7, value_end=13):
+        return DictToken(
+            {
+                ScalarToken("key", key_start, key_end): ScalarToken(
+                    "value", value_start, value_end
+                )
+            },
+            start_index=0,
+            end_index=14,
+            content='{"key": "value"}',
+        )
+
+    assert make_dict_token() == make_dict_token()
+
+    # Child token indexes don't affect equality, only resolved values do.
+    assert make_dict_token(2, 6, 9, 15) == make_dict_token()
+
+    assert make_dict_token() != ScalarToken("key", 0, 4)
+
+    # ListToken equality is based on resolved values and outer indexes.
+    def make_list_token(second=2):
+        return ListToken(
+            [ScalarToken(1, 0, 0), ScalarToken(second, 2, 2)],
+            start_index=0,
+            end_index=3,
+            content="[1, %d]" % second,
+        )
+
+    assert make_list_token() == make_list_token()
+    assert make_list_token() != make_list_token(second=3)
+    assert make_list_token() != ScalarToken(1, 0, 0)
+
+    # Different subclasses with equal resolved values and indexes are equal.
+    assert ScalarToken([1], 0, 2) == ListToken([ScalarToken(1, 0, 0)], 0, 2)
+
+# Generated at 2026-11-01 23:53:35.169473
 # Unit test for constructor of class DictToken
-def test_DictToken():
-    content = '{"name": "Alice"}'
+def test_DictToken():content = '{"a": 123}'
 
-    key_token = ScalarToken("name", 1, 6, content)
-    value_token = ScalarToken("Alice", 9, 15, content)
-
-    token = DictToken(
-        value={key_token: value_token},
-        start_index=0,
-        end_index=16,
-        content=content,
-    )
-
-    assert token.string == content
-    assert token.value == {"name": "Alice"}
-    assert token.lookup(["name"]) is value_token
-    assert token.lookup_key(["name"]) is key_token
-    assert token._child_tokens == {"name": value_token}
-    assert token._child_keys == {"name": key_token}
-
-# Generated at 2026-10-24 23:26:46.366978
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 1, 5, " value")
-
-    # Tokens with the same value and indexes are equal.
-    assert token == ScalarToken("value", 1, 5, "different content")
-
-    # Each compared attribute affects equality.
-    assert token != ScalarToken("other", 1, 5, " value")
-    assert token != ScalarToken("value", 0, 5, " value")
-    assert token != ScalarToken("value", 1, 4, " value")
-
-    # Objects that are not Token instances are never equal.
-    assert token != "value"
-    assert token != None
-
-# Generated at 2026-10-24 23:26:47.814976
-# Unit test for method lookup of class Token
-def test_Token_lookup():
-    content = '{"a": 1, "b": [10, 20], "c": {"d": "x"}}'
-
-    # Build token tree manually (values are Token instances for DictToken)
-    scalar_1 = ScalarToken(1, 7, 7, content)
-    scalar_10 = ScalarToken(10, 14, 15, content)
-    scalar_20 = ScalarToken(20, 18, 19, content)
-    list_b = ListToken([scalar_10, scalar_20], 11, 20, content)
-    scalar_x = ScalarToken("x", 33, 35, content)
-    dict_d = DictToken({ScalarToken("d", 30, 32, content): scalar_x}, 29, 36, content)
-    key_a = ScalarToken("a", 1, 3, content)
-    key_b = ScalarToken("b", 10, 12, content)
-    key_c = ScalarToken("c", 23, 25, content)
-    dict_root = DictToken(
-        {key_a: scalar_1, key_b: list_b, key_c: dict_d}, 0, 37, content
-    )
-
-    # Lookup a nested scalar by index path
-    token = dict_root.lookup(["b", 1])
-    assert token.value == 20
-    assert token.start == Position(line_no=1, column_no=19, index=18)
-    assert token.end == Position(line_no=1, column_no=20, index=19)
-
-    # Lookup a nested dict
-    token = dict_root.lookup(["c"])
-    assert token.value == {"d": "x"}
-
-    # Lookup a deeply nested scalar
-    token = dict_root.lookup(["c", "d"])
-    assert token.value == "x"
-
-    # Lookup the root itself (empty index)
-    token = dict_root.lookup([])
-    assert token is dict_root
-
-# Generated at 2026-10-24 23:26:56.629438
-# Unit test for constructor of class DictToken
-def test_DictToken():
-    content = '{"name": "Alice"}'
-    key_token = ScalarToken("name", 1, 6, content)
-    value_token = ScalarToken("Alice", 9, 15, content)
-    token_mapping = {key_token: value_token}
-
-    token = DictToken(token_mapping, 0, 16, content)
-
-    assert token._value is token_mapping
-    assert token._start_index == 0
-    assert token._end_index == 16
-    assert token._content == content
-
-    assert token._child_keys == {"name": key_token}
-    assert token._child_tokens == {"name": value_token}
-
-    assert token.value == {"name": "Alice"}
-    assert token.string == content
-    assert token.lookup(["name"]) is value_token
-    assert token.lookup_key(["name"]) is key_token
-
-# Generated at 2026-10-24 23:27:03.748631
-# Unit test for method lookup_key of class Token
-def test_Token_lookup_key():
-    content = '{"outer": {"inner": 1}}'
-
-    outer_key = ScalarToken("outer", 1, 7, content)
-    inner_key = ScalarToken("inner", 11, 17, content)
-    inner_value = ScalarToken(1, 20, 20, content)
-
-    inner_dict = DictToken(
-        {inner_key: inner_value},
-        10,
-        21,
-        content,
-    )
-    root = DictToken(
-        {outer_key: inner_dict},
-        0,
-        22,
-        content,
-    )
-
-    assert root.lookup_key(["outer"]) is outer_key
-    assert root.lookup_key(["outer", "inner"]) is inner_key
-
-# Generated at 2026-10-24 23:27:12.082972
-# Unit test for constructor of class DictToken
-def test_DictToken():
-    content = '{"name": "Alice"}'
-
-    key_token = ScalarToken("name", 1, 6, content)
-    value_token = ScalarToken("Alice", 9, 15, content)
-    children = {key_token: value_token}
-
-    token = DictToken(children, 0, 16, content)
-
-    assert token._value is children
-    assert token._start_index == 0
-    assert token._end_index == 16
-    assert token._content == content
-
-    assert token._child_keys == {"name": key_token}
-    assert token._child_tokens == {"name": value_token}
-
-    assert token.value == {"name": "Alice"}
-    assert token.string == content
-    assert token.lookup(["name"]) is value_token
-    assert token.lookup_key(["name"]) is key_token
-
-# Generated at 2026-10-24 23:27:20.583949
-# Unit test for constructor of class DictToken
-def test_DictToken():
-    content = '{"name": 42}'
-    key_token = ScalarToken("name", 1, 6, content)
-    value_token = ScalarToken(42, 9, 10, content)
-    values = {key_token: value_token}
-
-    token = DictToken(values, 0, 11, content)
-
-    assert token._value is values
-    assert token._start_index == 0
-    assert token._end_index == 11
-    assert token._content == content
-
-    assert token._child_keys["name"] is key_token
-    assert token._child_tokens["name"] is value_token
-
-    assert token.value == {"name": 42}
-    assert token.string == content
-    assert token._get_key_token("name") is key_token
-    assert token._get_child_token("name") is value_token
-
-# Generated at 2026-10-24 23:27:28.366161
-# Unit test for method lookup_key of class Token
-def test_Token_lookup_key():
-    content = '{"outer": {"inner": 1}}'
-
-    outer_key = ScalarToken("outer", 1, 7, content)
-    inner_key = ScalarToken("inner", 11, 17, content)
-    inner_value = ScalarToken(1, 20, 20, content)
-
-    inner_dict = DictToken({inner_key: inner_value}, 10, 21, content)
-    root_dict = DictToken({outer_key: inner_dict}, 0, 22, content)
-
-    assert root_dict.lookup_key(["outer"]) is outer_key
-    assert root_dict.lookup_key(["outer", "inner"]) is inner_key
-
-# Generated at 2026-10-24 23:27:29.801497
-# Unit test for method lookup of class Token
-def test_Token_lookup():
-    content = '{"a": 1, "b": [10, 20], "c": {"d": "x"}}'
-
-    # Build token tree manually (values are Token instances for DictToken)
-    scalar_1 = ScalarToken(1, 7, 7, content)
-    scalar_10 = ScalarToken(10, 14, 15, content)
-    scalar_20 = ScalarToken(20, 18, 19, content)
-    list_b = ListToken([scalar_10, scalar_20], 11, 20, content)
-    scalar_x = ScalarToken("x", 33, 35, content)
-    dict_d = DictToken({ScalarToken("d", 30, 32, content): scalar_x}, 29, 36, content)
-    key_a = ScalarToken("a", 1, 3, content)
-    key_b = ScalarToken("b", 10, 12, content)
-    key_c = ScalarToken("c", 23, 25, content)
-    dict_root = DictToken(
-        {key_a: scalar_1, key_b: list_b, key_c: dict_d}, 0, 37, content
-    )
-
-    # Lookup a nested scalar by index path
-    token = dict_root.lookup(["b", 1])
-    assert token.value == 20
-    assert token.start == Position(line_no=1, column_no=19, index=18)
-    assert token.end == Position(line_no=1, column_no=20, index=19)
-
-    # Lookup a nested dict
-    token = dict_root.lookup(["c"])
-    assert token.value == {"d": "x"}
-
-    # Lookup a deeply nested scalar
-    token = dict_root.lookup(["c", "d"])
-    assert token.value == "x"
-
-    # Lookup the root itself (empty index)
-    token = dict_root.lookup([])
-    assert token is dict_root
-
-# Generated at 2026-10-24 23:27:35.430332
+# Generated at 2026-11-01 23:55:30.366674
 # Unit test for method __repr__ of class Token
 def test_Token___repr__():
-    token = Token(value=None, start_index=1, end_index=3, content="012345")
-
-    assert repr(token) == "Token('123')"
-
-# Generated at 2026-10-24 23:27:45.266305
-# Unit test for constructor of class DictToken
-def test_DictToken():
-    content = '{"name": "Alice", "age": 30}'
-
-    name_key = ScalarToken("name", 1, 6, content)
-    name_value = ScalarToken("Alice", 9, 15, content)
-    age_key = ScalarToken("age", 18, 22, content)
-    age_value = ScalarToken(30, 25, 26, content)
-
-    children = {
-        name_key: name_value,
-        age_key: age_value,
-    }
-
-    token = DictToken(children, 0, len(content) - 1, content)
-
-    assert token._value is children
-    assert token._start_index == 0
-    assert token._end_index == len(content) - 1
-    assert token._content == content
-
-    assert token._child_keys == {
-        "name": name_key,
-        "age": age_key,
-    }
-    assert token._child_tokens == {
-        "name": name_value,
-        "age": age_value,
-    }
-
-    assert token.value == {"name": "Alice", "age": 30}
-    assert token.string == content
-    assert token.lookup(["name"]) is name_value
-    assert token.lookup_key(["age"]) is age_key
-
-# Generated at 2026-10-24 23:27:54.068497
-# Unit test for constructor of class DictToken
-def test_DictToken():
-    content = '{"name": "Alice", "age": 30}'
-
-    name_key = ScalarToken("name", 1, 6, content)
-    name_value = ScalarToken("Alice", 9, 15, content)
-    age_key = ScalarToken("age", 18, 22, content)
-    age_value = ScalarToken(30, 25, 26, content)
-
-    value = {
-        name_key: name_value,
-        age_key: age_value,
-    }
-
-    token = DictToken(value, 0, len(content) - 1, content)
-
-    assert token._value is value
-    assert token._start_index == 0
-    assert token._end_index == len(content) - 1
-    assert token._content == content
-
-    assert token._child_keys == {
-        "name": name_key,
-        "age": age_key,
-    }
-    assert token._child_tokens == {
-        "name": name_value,
-        "age": age_value,
-    }
-
-    assert token.value == {"name": "Alice", "age": 30}
-    assert token.lookup(["name"]) is name_value
-    assert token.lookup_key(["age"]) is age_key
-    assert token.string == content
-
-# Generated at 2026-10-24 23:27:56.600832
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:27:59.118323
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:28:07.071468
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():left = ScalarToken("value", 0, 4, "value")
-
-# Generated at 2026-10-24 23:28:15.371557
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 1, 3, " value")
-
-    # Tokens are equal when their values and indexes match.
-    assert token == ScalarToken("value", 1, 3, "different content")
-
-    # Differences in value or position make tokens unequal.
-    assert token != ScalarToken("other", 1, 3, " value")
-    assert token != ScalarToken("value", 0, 3, " value")
-    assert token != ScalarToken("value", 1, 4, " value")
-
-    # Tokens are not equal to objects of other types.
-    assert token != "value"
-    assert token != None
-
-# Generated at 2026-10-24 23:28:23.048613
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 1, 5, " value")
-
-    # Equal when value and indexes match; content is not considered.
-    assert token == ScalarToken("value", 1, 5, "different content")
-
-    # Each compared attribute affects equality.
-    assert token != ScalarToken("other", 1, 5, " value")
-    assert token != ScalarToken("value", 2, 5, " value")
-    assert token != ScalarToken("value", 1, 6, " value")
-
-    # Objects that are not Token instances are never equal.
-    assert token != "value"
-    assert token != None
-
-# Generated at 2026-10-24 23:28:29.180232
-# Unit test for constructor of class DictToken
-def test_DictToken():
-    content = '{"name": "Alice"}'
-    key_token = ScalarToken("name", 1, 6, content)
-    value_token = ScalarToken("Alice", 9, 15, content)
-    token_value = {key_token: value_token}
-
-    token = DictToken(token_value, 0, len(content) - 1, content)
-
-    assert token._value is token_value
-    assert token._start_index == 0
-    assert token._end_index == len(content) - 1
-    assert token._content == content
-
-    assert token._child_keys == {"name": key_token}
-    assert token._child_tokens == {"name": value_token}
-    assert token._child_keys["name"] is key_token
-    assert token._child_tokens["name"] is value_token
-
-    assert token.value == {"name": "Alice"}
-    assert token.string == content
-
-# Generated at 2026-10-24 23:28:39.919632
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 1, 5, " value")
-
-    # Tokens are equal when value and indexes match.
-    assert token == ScalarToken("value", 1, 5, "different content")
-
-    # Each compared attribute affects equality.
-    assert token != ScalarToken("other", 1, 5, " value")
-    assert token != ScalarToken("value", 2, 5, " value")
-    assert token != ScalarToken("value", 1, 4, " value")
-
-    # Non-Token instances are never equal.
-    assert token != "value"
-    assert token != None
-
-# Generated at 2026-10-24 23:28:42.444650
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:28:44.862732
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:28:47.277687
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:28:49.694730
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:28:52.113460
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:28:54.684315
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:28:57.106053
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:28:59.524381
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:29:01.945012
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:29:04.359369
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:29:21.312544
-# Unit test for constructor of class DictToken
-def test_DictToken():content = '{"a": 1, "b": 2}'
-
-# Generated at 2026-10-24 23:29:27.671619
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 1, 3, " value")
-
-    # Tokens are equal when their values and indexes match.
-    assert token == ScalarToken("value", 1, 3, "different content")
-
-    # Value and both indexes participate in equality.
-    assert token != ScalarToken("other", 1, 3, " value")
-    assert token != ScalarToken("value", 0, 3, " value")
-    assert token != ScalarToken("value", 1, 4, " value")
-
-    # A Token is not equal to an unrelated object.
-    assert token != "value"
-    assert token != None
-
-# Generated at 2026-10-24 23:29:35.037826
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 1, 3, " value")
-
-    # Equality depends on value and start/end indexes, not source content.
-    assert token == ScalarToken("value", 1, 3, "different content")
-
-    assert token != ScalarToken("other", 1, 3, " value")
-    assert token != ScalarToken("value", 0, 3, " value")
-    assert token != ScalarToken("value", 1, 4, " value")
-
-    # Objects that are not Token instances are never equal.
-    assert token != "value"
-    assert token != object()
-    assert token != None
-
-# Generated at 2026-10-24 23:29:42.415199
-# Unit test for constructor of class DictToken
-def test_DictToken():
-    content = '{"name": "Alice"}'
-
-    key_token = ScalarToken("name", 1, 6, content)
-    value_token = ScalarToken("Alice", 9, 15, content)
-    token_mapping = {key_token: value_token}
-
-    token = DictToken(token_mapping, 0, 16, content)
-
-    assert token._value is token_mapping
-    assert token._start_index == 0
-    assert token._end_index == 16
-    assert token._content == content
-
-    assert token._child_keys == {"name": key_token}
-    assert token._child_tokens == {"name": value_token}
-    assert token._child_keys["name"] is key_token
-    assert token._child_tokens["name"] is value_token
-
-    assert token.value == {"name": "Alice"}
-    assert token.string == content
-
-# Generated at 2026-10-24 23:29:50.393486
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 0, 4, "value")
-
-    # Tokens are equal when their values and indexes match.
-    assert token == ScalarToken("value", 0, 4, "other")
-
-    # Value and both indexes participate in equality.
-    assert token != ScalarToken("different", 0, 4, "value")
-    assert token != ScalarToken("value", 1, 4, "value")
-    assert token != ScalarToken("value", 0, 3, "value")
-
-    # A token is never equal to an unrelated object.
-    assert token != "value"
-    assert token != object()
-
-# Generated at 2026-10-24 23:29:53.038811
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:29:55.456991
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:29:57.873814
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:00.290617
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:02.706613
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:05.124494
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:07.543364
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:30:09.963224
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:30:12.378818
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:30:14.796418
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:17.220138
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:19.635794
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:22.054355
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:24.472323
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:26.891809
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:29.311940
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:31.727133
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:34.144579
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:36.561664
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:30:38.979026
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:30:41.400103
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:30:43.820353
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:30:46.236445
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:30:48.654440
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:30:51.071008
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:53.486966
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:55.906188
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:30:58.322681
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:31:00.740081
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:31:03.158008
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:31:12.542616
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():token = ScalarToken("value", 1, 3, " value")
-
-# Generated at 2026-10-24 23:31:21.106972
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 1, 3, " value")
-
-    assert token == ScalarToken("value", 1, 3, "different content")
-    assert token != ScalarToken("other", 1, 3, " value")
-    assert token != ScalarToken("value", 0, 3, " value")
-    assert token != ScalarToken("value", 1, 4, " value")
-    assert token != object()
-
-# Generated at 2026-10-24 23:31:29.821525
-# Unit test for constructor of class DictToken
-def test_DictToken():
-    content = '{"name": "Alice", "age": 30}'
-
-    name_key = ScalarToken("name", 1, 6, content)
-    name_value = ScalarToken("Alice", 9, 15, content)
-    age_key = ScalarToken("age", 18, 22, content)
-    age_value = ScalarToken(30, 25, 26, content)
-
-    children = {
-        name_key: name_value,
-        age_key: age_value,
-    }
-
-    token = DictToken(children, 0, len(content) - 1, content)
-
-    assert token._value is children
-    assert token._start_index == 0
-    assert token._end_index == len(content) - 1
-    assert token._content == content
-
-    assert token._child_keys == {
-        "name": name_key,
-        "age": age_key,
-    }
-    assert token._child_tokens == {
-        "name": name_value,
-        "age": age_value,
-    }
-
-    assert token.value == {"name": "Alice", "age": 30}
-    assert token.string == content
-    assert token.lookup(["name"]) is name_value
-    assert token.lookup_key(["age"]) is age_key
-
-# Generated at 2026-10-24 23:31:38.120887
-# Unit test for constructor of class DictToken
-def test_DictToken():
-    content = '{"name": "Alice"}'
-
-    key_token = ScalarToken("name", 1, 6, content)
-    value_token = ScalarToken("Alice", 9, 15, content)
-    token_mapping = {key_token: value_token}
-
-    token = DictToken(token_mapping, 0, 16, content)
-
-    assert token._value == token_mapping
-    assert token._start_index == 0
-    assert token._end_index == 16
-    assert token._content == content
-
-    assert token._child_keys == {"name": key_token}
-    assert token._child_tokens == {"name": value_token}
-
-    assert token.value == {"name": "Alice"}
-    assert token.lookup(["name"]) is value_token
-    assert token.lookup_key(["name"]) is key_token
-    assert token.string == content
-
-# Generated at 2026-10-24 23:31:46.441185
-# Unit test for constructor of class DictToken
-def test_DictToken():
-    content = '{"name": "Alice"}'
-
-    key_token = ScalarToken("name", 1, 6, content)
-    value_token = ScalarToken("Alice", 9, 15, content)
-    children = {key_token: value_token}
-
-    token = DictToken(children, 0, len(content) - 1, content)
-
-    assert token._value is children
-    assert token._start_index == 0
-    assert token._end_index == len(content) - 1
-    assert token._content == content
-
-    assert token._child_keys == {"name": key_token}
-    assert token._child_tokens == {"name": value_token}
-
-    assert token.value == {"name": "Alice"}
-    assert token.lookup(["name"]) is value_token
-    assert token.lookup_key(["name"]) is key_token
-    assert token.string == content
-
-# Generated at 2026-10-24 23:31:56.653805
-# Unit test for constructor of class DictToken
-def test_DictToken():
-    content = '{"name": "Alice"}'
-    key_token = ScalarToken("name", 2, 5, content)
-    value_token = ScalarToken("Alice", 9, 15, content)
-    children = {key_token: value_token}
-
-    token = DictToken(children, 0, len(content) - 1, content)
-
-    assert token._value is children
-    assert token._start_index == 0
-    assert token._end_index == len(content) - 1
-    assert token._content == content
-    assert token._child_keys["name"] is key_token
-    assert token._child_tokens["name"] is value_token
-    assert token.value == {"name": "Alice"}
-    assert token.lookup(["name"]) is value_token
-    assert token.lookup_key(["name"]) is key_token
-
-# Generated at 2026-10-24 23:31:59.071787
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:32:01.488463
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:32:04.095772
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:32:06.513759
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:32:08.929558
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:32:11.345688
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:32:13.763200
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:32:16.180233
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:32:18.595630
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:32:27.786146
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():token = ScalarToken("value", 1, 5, " value")
-
-
-# Generated at 2026-10-24 23:32:38.023402
-# Unit test for constructor of class DictToken
-def test_DictToken():
-    content = '{"name": "Alice"}'
-
-    key_token = ScalarToken("name", 1, 6, content)
-    value_token = ScalarToken("Alice", 9, 15, content)
-
-    token = DictToken(
-        {key_token: value_token},
-        start_index=0,
-        end_index=len(content) - 1,
-        content=content,
-    )
-
-    assert token.value == {"name": "Alice"}
-    assert token.string == content
-    assert token.lookup(["name"]) is value_token
-    assert token.lookup_key(["name"]) is key_token
-    assert token._child_keys == {"name": key_token}
-    assert token._child_tokens == {"name": value_token}
-
-# Generated at 2026-10-24 23:32:46.830177
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 0, 4, "value")
-
-    # Tokens with the same value and boundaries are equal.
-    assert token == ScalarToken("value", 0, 4, "value")
-
-    # Content itself is not part of the equality comparison.
-    assert token == ScalarToken("value", 0, 4, "other")
-
-    # Value and token boundaries are part of the comparison.
-    assert token != ScalarToken("different", 0, 4, "value")
-    assert token != ScalarToken("value", 1, 4, "value")
-    assert token != ScalarToken("value", 0, 3, "value")
-
-    # A Token is not equal to an instance of another type.
-    assert token != "value"
-    assert token != object()
-
-# Generated at 2026-10-24 23:32:53.998000
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 0, 4, "value")
-
-    assert token == ScalarToken("value", 0, 4, "value")
-    assert token == ScalarToken("value", 0, 4, "other")  # Content is ignored.
-
-    assert token != ScalarToken("different", 0, 4, "value")
-    assert token != ScalarToken("value", 1, 4, "value")
-    assert token != ScalarToken("value", 0, 3, "value")
-    assert token != "value"
-    assert token != None  # noqa: E711
-
-# Generated at 2026-10-24 23:33:05.467774
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 1, 3, "content")
-
-    # Tokens are equal when their values and indexes match.
-    assert token == ScalarToken("value", 1, 3, "different content")
-
-    # Value and both indexes participate in equality.
-    assert token != ScalarToken("other", 1, 3, "content")
-    assert token != ScalarToken("value", 0, 3, "content")
-    assert token != ScalarToken("value", 1, 4, "content")
-
-    # Objects that are not tokens are never equal.
-    assert token != "value"
-    assert token != object()
-
-# Generated at 2026-10-24 23:33:11.919714
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 0, 4, "value")
-
-    assert token == ScalarToken("value", 0, 4, "value")
-    assert token == ScalarToken("value", 0, 4, "different content")
-
-    assert token != ScalarToken("other", 0, 4, "other")
-    assert token != ScalarToken("value", 1, 4, " value")
-    assert token != ScalarToken("value", 0, 3, "value")
-    assert token != object()
-
-# Generated at 2026-10-24 23:33:14.338982
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:33:20.314415
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():token = ScalarToken("a", 0, 0, "a")
-
-# Generated at 2026-10-24 23:33:27.518356
-# Unit test for constructor of class DictToken
-def test_DictToken():
-    content = '{"name": "Alice"}'
-
-    key_token = ScalarToken("name", 1, 6, content)
-    value_token = ScalarToken("Alice", 9, 15, content)
-    token_mapping = {key_token: value_token}
-
-    token = DictToken(token_mapping, 0, len(content) - 1, content)
-
-    assert token._value is token_mapping
-    assert token._start_index == 0
-    assert token._end_index == len(content) - 1
-    assert token._content == content
-
-    assert token._child_keys == {"name": key_token}
-    assert token._child_tokens == {"name": value_token}
-    assert token.value == {"name": "Alice"}
-    assert token.string == content
-
-# Generated at 2026-10-24 23:33:35.462115
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 1, 3, "012345")
-
-    # Tokens are equal when value and indexes match.
-    assert token == ScalarToken("value", 1, 3, "different content")
-
-    # Each compared attribute affects equality.
-    assert token != ScalarToken("other", 1, 3, "012345")
-    assert token != ScalarToken("value", 0, 3, "012345")
-    assert token != ScalarToken("value", 1, 4, "012345")
-
-    # Tokens are not equal to instances of unrelated types.
-    assert token != "value"
-    assert token != object()
-
-# Generated at 2026-10-24 23:33:42.433426
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 1, 5, " value ")
-
-    # Equal when value and indexes match; content is not part of equality.
-    assert token == ScalarToken("value", 1, 5, "different content")
-
-    assert token != ScalarToken("other", 1, 5, " value ")
-    assert token != ScalarToken("value", 0, 5, " value ")
-    assert token != ScalarToken("value", 1, 6, " value ")
-    assert token != "not a token"
-
-# Generated at 2026-10-24 23:33:49.397454
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 0, 4, "value")
-
-    assert token == ScalarToken("value", 0, 4, "value")
-    assert token == ScalarToken("value", 0, 4, "other")  # Content is not compared.
-
-    assert token != ScalarToken("different", 0, 4, "value")
-    assert token != ScalarToken("value", 1, 4, "value")
-    assert token != ScalarToken("value", 0, 3, "value")
-    assert token != object()
-
-# Generated at 2026-10-24 23:33:55.657354
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 1, 3, " value")
-
-    assert token == ScalarToken("value", 1, 3, " value")
-    assert token == ScalarToken("value", 1, 3, "different content")
-
-    assert token != ScalarToken("other", 1, 3, " value")
-    assert token != ScalarToken("value", 0, 3, " value")
-    assert token != ScalarToken("value", 1, 4, " value")
-    assert token != "not a token"
-
-# Generated at 2026-10-24 23:34:02.093711
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 1, 3, " value")
-
-    # Tokens are equal when value and source indexes match.
-    assert token == ScalarToken("value", 1, 3, "different content")
-
-    # Each compared attribute affects equality.
-    assert token != ScalarToken("other", 1, 3, " value")
-    assert token != ScalarToken("value", 0, 3, " value")
-    assert token != ScalarToken("value", 1, 4, " value")
-
-    # A token cannot equal an unrelated object.
-    assert token != "value"
-    assert token != object()
-    assert token != None
-
-# Generated at 2026-10-24 23:34:04.513893
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:34:07.037180
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:34:09.452828
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:34:11.870543
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:34:14.286496
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:34:16.701861
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:34:19.120265
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:34:21.538907
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:34:28.514112
-# Unit test for constructor of class DictToken
-def test_DictToken():content = '{"a": 1}'
-
-# Generated at 2026-10-24 23:34:35.638084
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 1, 3, " value")
-
-    # Equality depends on value and start/end indexes, but not content.
-    assert token == ScalarToken("value", 1, 3, "different content")
-
-    assert token != ScalarToken("other", 1, 3, " value")
-    assert token != ScalarToken("value", 0, 3, " value")
-    assert token != ScalarToken("value", 1, 4, " value")
-
-    # Objects that are not Token instances are never equal.
-    assert token != "value"
-    assert token != object()
-
-# Generated at 2026-10-24 23:34:43.960928
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 1, 3, "01234")
-
-    # Tokens are equal when their values and index ranges match.
-    assert token == ScalarToken("value", 1, 3, "different content")
-
-    # Differences in value or position make tokens unequal.
-    assert token != ScalarToken("other", 1, 3, "01234")
-    assert token != ScalarToken("value", 0, 3, "01234")
-    assert token != ScalarToken("value", 1, 4, "01234")
-
-    # A token is never equal to an unrelated object.
-    assert token != "value"
-    assert token != None
-
-# Generated at 2026-10-24 23:34:51.760522
-# Unit test for constructor of class DictToken
-def test_DictToken():
-    content = '{"name": "Alice"}'
-
-    key_token = ScalarToken("name", 1, 6, content)
-    value_token = ScalarToken("Alice", 9, 15, content)
-
-    token = DictToken(
-        {key_token: value_token},
-        start_index=0,
-        end_index=len(content) - 1,
-        content=content,
-    )
-
-    assert token._value == {key_token: value_token}
-    assert token._start_index == 0
-    assert token._end_index == len(content) - 1
-    assert token._content == content
-
-    assert token._child_keys == {"name": key_token}
-    assert token._child_tokens == {"name": value_token}
-    assert token._child_keys["name"] is key_token
-    assert token._child_tokens["name"] is value_token
-
-    assert token.value == {"name": "Alice"}
-    assert token.string == content
-
-# Generated at 2026-10-24 23:34:58.845706
-# Unit test for method __eq__ of class Token
-def test_Token___eq__():
-    token = ScalarToken("value", 1, 5, " value")
-
-    # Tokens with the same value and indices are equal.
-    assert token == ScalarToken("value", 1, 5, "different content")
-
-    # Each compared attribute affects equality.
-    assert token != ScalarToken("other", 1, 5, " value")
-    assert token != ScalarToken("value", 2, 5, " value")
-    assert token != ScalarToken("value", 1, 6, " value")
-
-    # A Token is not equal to an unrelated object.
-    assert token != "value"
-    assert token != object()
-
-# Generated at 2026-10-24 23:35:01.265646
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:35:03.682043
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:35:06.240347
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:35:08.660507
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:35:11.077510
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:35:13.493837
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:35:16.063671
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:35:18.482211
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:35:20.901001
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:35:23.317702
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:35:25.735529
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:35:28.151665
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:35:30.568636
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:35:32.985068
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:35:35.405311
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:35:37.821149
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:35:40.240748
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:35:42.658948
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:35:45.738854
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:35:48.156082
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:35:50.573429
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:35:52.986908
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:35:55.403337
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:35:57.819707
-# Unit test for constructor of class DictToken
-
-# Generated at 2026-10-24 23:36:00.234186
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:36:02.654158
-# Unit test for method __eq__ of class Token
-
-# Generated at 2026-10-24 23:36:05.071396
-# Unit test for method __eq__ of class Token
+    # Base Token: repr uses class name and the sliced string from content
+    token = Token(value=None, start_index=0, end_index=4, content="hello")
+    assert repr(token) == "Token('hello')"
+
+    # Single character slice
+    token = Token(value=None, start_index=2, end_index=2, content="abc")
+    assert repr(token) == "Token('c')"
+
+    # String containing a quote character is escaped by repr
+    token = Token(value=None, start_index=0, end_index=2, content="a'b")
+    assert repr(token) == 'Token("a\'b")'
+
+    # ScalarToken: repr reflects the subclass name and content slice
+    token = ScalarToken(value=42, start_index=1, end_index=3, content="abc 123 def")
+    assert repr(token) == "ScalarToken(' 123')"
+
+    # DictToken with empty dict value
+    token = DictToken(value={}, start_index=0, end_index=1, content="{}")
+    assert repr(token) == "DictToken('{}')"
+
+    # ListToken with empty list value
+    token = ListToken(value=[], start_index=0, end_index=1, content="[]")
+    assert repr(token) == "ListToken('[]')"
+
+    # Default content (empty string) with valid indices yields empty slice
+    token = Token(value=None, start_index=0, end_index=0)
+    assert repr(token) == "Token('')"
+
+# Generated at 2026-11-01 23:56:44.610346
+# Unit test for method __repr__ of class Token
+def test_Token___repr__():
+    token = ScalarToken("abc", 0, 2, content="abc")
+    assert repr(token) == "ScalarToken('abc')"
+
+    token = ScalarToken("abc", 3, 7, content="key: 'abc',")
+    assert repr(token) == "ScalarToken(\"'abc'\")"
+
+    token = ScalarToken(123, 1, 3, content="[123]")
+    assert repr(token) == "ScalarToken('123')"

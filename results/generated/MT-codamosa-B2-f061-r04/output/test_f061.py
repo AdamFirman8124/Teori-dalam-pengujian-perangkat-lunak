@@ -11,48 +11,29 @@ def test_case_0():
     str_2 = '(())'
     var_2 = module_0.correct_bracketing(str_2)
     assert var_2 is True
-    str_3 = '()()'
+    str_3 = '(()())'
     var_3 = module_0.correct_bracketing(str_3)
     assert var_3 is True
-    str_4 = '(()())'
+    str_4 = '()()()'
     var_4 = module_0.correct_bracketing(str_4)
     assert var_4 is True
-    str_5 = '(((())))'
+    str_5 = '('
     var_5 = module_0.correct_bracketing(str_5)
-    assert var_5 is True
+    assert var_5 is False
     str_6 = ')'
     var_6 = module_0.correct_bracketing(str_6)
     assert var_6 is False
     str_7 = ')('
     var_7 = module_0.correct_bracketing(str_7)
     assert var_7 is False
-    str_8 = '())'
+    str_8 = '(()'
     var_8 = module_0.correct_bracketing(str_8)
     assert var_8 is False
-    str_9 = '())(()'
+    str_9 = '())'
     var_9 = module_0.correct_bracketing(str_9)
     assert var_9 is False
-    str_10 = '('
+    str_10 = '((()))'
     var_10 = module_0.correct_bracketing(str_10)
-    assert var_10 is False
-    str_11 = '(()'
-    var_11 = module_0.correct_bracketing(str_11)
-    assert var_11 is False
-    str_12 = '((('
-    var_12 = module_0.correct_bracketing(str_12)
-    assert var_12 is False
-    str_13 = '())(())'
-    var_13 = module_0.correct_bracketing(str_13)
-    assert var_13 is False
-    int_0 = 5000
-    var_14 = str_10 * int_0
-    var_15 = str_6 * int_0
-    var_16 = var_14 + var_15
-    var_17 = module_0.correct_bracketing(var_16)
-    assert var_17 is True
-    var_18 = str_10 * int_0
-    int_1 = 4999
-    var_19 = str_6 * int_1
-    var_20 = var_18 + var_19
-    var_21 = module_0.correct_bracketing(var_20)
-    assert var_21 is False
+    assert var_10 is True
+    str_11 = 'All tests passed!'
+    var_11 = print(str_11)

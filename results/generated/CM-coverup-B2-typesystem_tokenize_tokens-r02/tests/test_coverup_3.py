@@ -2,54 +2,57 @@
 # asked: {"lines": [57, 58, 59, 60, 61], "branches": []}
 # gained: {"lines": [57, 58, 59, 60, 61], "branches": []}
 
-import pytest
-
-from typesystem.tokenize.tokens import Token
 from typesystem.base import Position
+from typesystem.tokenize.tokens import Token
 
 
-def _make_token(content: str) -> Token:
-    token = object.__new__(Token)
-    token._content = content
-    return token
-
-
-def test_get_position_empty_content():
-    token = _make_token("")
-    pos = token._get_position(0)
-    assert isinstance(pos, Position)
-    assert pos.line_no == 1
-    assert pos.column_no == 1
-    assert pos.char_index == 0
+def test_get_position_with_empty_content():
+    """Covers the 'no lines' branch: line_no=1, column_no=1."""
+    token = Token(value=None, start_index=0, end_index=0, content="")
+    position = token._get_position(0)
+    assert position == Position(line_no=1, column_no=1, char_index=0)
+    assert position.line_no == 1
+    assert position.column_no == 1
+    assert position.char_index == 0
 
 
 def test_get_position_single_line():
-    token = _make_token("hello")
-    pos = token._get_position(4)
-    assert pos.line_no == 1
-    assert pos.column_no == 5
-    assert pos.char_index == 4
+    """Covers a single line: column_no is the length of the last line."""
+    token = Token(value=None, start_index=0, end_index=4, content="hello")
+    position = token._get_position(4)
+    assert position == Position(line_no=1, column_no=5, char_index=4)
+    assert position.line_no == 1
+    assert position.column_no == 5
+    assert position.char_index == 4
 
 
-def test_get_position_multiline():
-    token = _make_token("ab\ncd\nefgh")
-    pos = token._get_position(9)
-    assert pos.line_no == 3
-    assert pos.column_no == 4
-    assert pos.char_index == 9
+def test_get_position_multiple_lines():
+    """Covers the multi-line branch: line_no counts lines, column_no is
+    the length of the last line."""
+    token = Token(value=None, start_index=0, end_index=6, content="abc\ndef")
+    position = token._get_position(6)
+    assert position == Position(line_no=2, column_no=3, char_index=6)
+    assert position.line_no == 2
+    assert position.column_no == 3
+    assert position.char_index == 6
 
 
-def test_get_position_index_at_line_start():
-    token = _make_token("ab\ncd")
-    pos = token._get_position(3)
-    assert pos.line_no == 2
-    assert pos.column_no == 1
-    assert pos.char_index == 3
+def test_get_position_empty_last_line():
+    """Covers the max(len(lines[-1]), 1) fallback when the last line is
+    empty (content ends with a blank line)."""
+    token = Token(value=None, start_index=0, end_index=2, content="a\n\n")
+    position = token._get_position(2)
+    assert position == Position(line_no=2, column_no=1, char_index=2)
+    assert position.line_no == 2
+    assert position.column_no == 1
+    assert position.char_index == 2
 
 
 def test_get_position_index_beyond_content():
-    token = _make_token("abc")
-    pos = token._get_position(100)
-    assert pos.line_no == 1
-    assert pos.column_no == 3
-    assert pos.char_index == 100
+    """Slicing beyond the content length is safe and clamps to the content."""
+    token = Token(value=None, start_index=0, end_index=3, content="abc")
+    position = token._get_position(10)
+    assert position == Position(line_no=1, column_no=3, char_index=10)
+    assert position.line_no == 1
+    assert position.column_no == 3
+    assert position.char_index == 10

@@ -2,41 +2,57 @@
 import f074 as module_0
 
 def test_case_0():
-    str_0 = 'a'
-    str_1 = 'bb'
+    str_0 = 'hi'
+    str_1 = 'admin'
     str_2 = [str_0, str_1]
-    str_3 = 'cccc'
-    str_4 = [str_3]
-    var_0 = module_0.total_match(str_2, str_4)
-    assert var_0 == ['a', 'bb']
-    str_5 = 'hello'
-    str_6 = 'world'
-    str_7 = [str_5, str_6]
-    str_8 = 'hi'
-    str_9 = [str_8]
-    var_1 = module_0.total_match(str_7, str_9)
-    assert var_1 == ['hi']
-    str_10 = 'ab'
-    str_11 = 'cd'
-    str_12 = [str_10, str_11]
-    str_13 = 'efgh'
-    str_14 = [str_13]
-    var_2 = module_0.total_match(str_12, str_14)
-    assert var_2 == ['ab', 'cd']
+    str_3 = 'hI'
+    str_4 = 'Hi'
+    str_5 = [str_3, str_4]
+    var_0 = module_0.total_match(str_2, str_5)
+    assert var_0 == ['hI', 'Hi']
+    str_6 = [str_0, str_1]
+    str_7 = 'project'
+    str_8 = [str_0, str_0, str_1, str_7]
+    var_1 = module_0.total_match(str_6, str_8)
+    assert var_1 == ['hi', 'admin']
+    str_9 = [str_0]
+    str_10 = [str_0]
+    var_2 = module_0.total_match(str_9, str_10)
+    assert var_2 == ['hi']
     var_3 = []
-    str_15 = [str_0]
-    var_4 = module_0.total_match(var_3, str_15)
+    str_11 = 'a'
+    str_12 = 'b'
+    str_13 = [str_11, str_12]
+    var_4 = module_0.total_match(var_3, str_13)
     assert var_4 == []
-    str_16 = [str_0]
+    str_14 = [str_11, str_12]
     var_5 = []
-    var_6 = module_0.total_match(str_16, var_5)
+    var_6 = module_0.total_match(str_14, var_5)
     assert var_6 == []
     var_7 = []
     var_8 = []
     var_9 = module_0.total_match(var_7, var_8)
     assert var_9 == []
-    str_17 = ''
-    str_18 = [str_17, str_17]
-    str_19 = [str_17]
-    var_10 = module_0.total_match(str_18, str_19)
-    assert var_10 == ['', '']
+    str_15 = [str_11]
+    str_16 = 'ab'
+    str_17 = [str_16]
+    var_10 = module_0.total_match(str_15, str_17)
+    assert var_10 == ['a']
+    str_18 = [str_16]
+    str_19 = [str_11]
+    var_11 = module_0.total_match(str_18, str_19)
+    assert var_11 == ['a']
+    str_20 = 'four'
+    str_21 = [str_20]
+    str_22 = [str_20]
+    var_12 = module_0.total_match(str_21, str_22)
+    assert var_12 == ['four']
+    str_23 = 'longer'
+    str_24 = 'strings'
+    str_25 = [str_23, str_24]
+    str_26 = 'tiny'
+    str_27 = [str_26]
+    var_13 = module_0.total_match(str_25, str_27)
+    assert var_13 == ['tiny']
+    str_28 = 'All tests passed!'
+    var_14 = print(str_28)

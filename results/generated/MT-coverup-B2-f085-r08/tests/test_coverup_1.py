@@ -2,35 +2,34 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
-import f085
+import pytest
+
+from f085 import add
+
+
+def test_add_empty_list_loop_never_runs():
+    """Empty list -> range(1, 0, 2) is empty, so the comprehension loop
+    body (and its condition) never executes; sum of nothing is 0."""
+    assert add([]) == 0
+
+
+def test_add_single_element_loop_never_runs():
+    """Single-element list -> range(1, 1, 2) is empty, loop body skipped."""
+    assert add([7]) == 0
 
 
 def test_add_sums_even_values_at_odd_indices():
-    assert f085.add([1, 2, 3, 4]) == 6
+    """Even values at odd indices satisfy the condition and are summed
+    (covers the True branch of the comprehension's if)."""
+    assert add([1, 2, 3, 4]) == 6  # lst[1] == 2 and lst[3] == 4
 
 
-def test_add_ignores_odd_values_at_odd_indices():
-    assert f085.add([1, 3, 5, 7]) == 0
+def test_add_skips_odd_values_at_odd_indices():
+    """Odd values at odd indices fail the condition and are filtered out
+    (covers the False branch of the comprehension's if)."""
+    assert add([1, 1, 3, 3]) == 0
 
 
-def test_add_mixed_parity():
-    assert f085.add([10, 1, 20, 2, 30, 3, 40, 4]) == 6
-
-
-def test_add_empty_list_returns_zero():
-    assert f085.add([]) == 0
-
-
-def test_add_single_element_returns_zero():
-    assert f085.add([2]) == 0
-
-
-def test_add_two_elements_uses_index_one():
-    assert f085.add([1, 2]) == 2
-    assert f085.add([1, 3]) == 0
-
-
-def test_add_does_not_mutate_input():
-    lst = [1, 2, 3, 4]
-    f085.add(lst)
-    assert lst == [1, 2, 3, 4]
+def test_add_mixed_values():
+    """Mixed input: only even values located at odd indices contribute."""
+    assert add([0, 1, 2, 4, 5, 6]) == 10  # lst[1]=1 (odd, skipped), lst[3]=4, lst[5]=6

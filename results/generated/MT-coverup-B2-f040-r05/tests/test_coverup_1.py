@@ -7,26 +7,51 @@ import pytest
 from f040 import triples_sum_to_zero
 
 
-def test_triples_sum_to_zero_true():
-    # Covers lines 3-7: nested loops find a triple summing to zero
-    assert triples_sum_to_zero([1, 3, 5, 0, -1]) is True
+def test_triples_sum_to_zero_true_early():
+    """A triple summing to zero exists; found early in the loops (lines 3-7)."""
+    assert triples_sum_to_zero([1, 2, -3]) is True
+
+
+def test_triples_sum_to_zero_true_with_zeros():
+    """Triple of zeros sums to zero."""
+    assert triples_sum_to_zero([0, 0, 0]) is True
+
+
+def test_triples_sum_to_zero_true_late():
+    """Triple found only at the very last (i, j, k) combination, exercising
+    the deepest loop iterations before returning True."""
+    assert triples_sum_to_zero([1, 2, 3, 4, -7]) is True
 
 
 def test_triples_sum_to_zero_false():
-    # Covers lines 3-6 and line 8: loops complete without finding a triple
-    assert triples_sum_to_zero([1, 3, 5, 7]) is False
+    """No triple sums to zero; all loops run to completion and line 8 executes."""
+    assert triples_sum_to_zero([1, 2, 3, 4]) is False
+
+
+def test_triples_sum_to_zero_false_negatives_only():
+    """All-negative list can never sum to zero."""
+    assert triples_sum_to_zero([-1, -2, -3, -4]) is False
 
 
 def test_triples_sum_to_zero_empty():
-    # Covers line 8 immediately: loop body (lines 4-7) never runs
+    """Empty list: outer loop body never runs, returns False."""
     assert triples_sum_to_zero([]) is False
 
 
-def test_triples_sum_to_zero_too_short():
-    # Fewer than 3 elements: inner loops never execute, returns False
+def test_triples_sum_to_zero_single_element():
+    """Fewer than three elements: inner loops never run, returns False."""
+    assert triples_sum_to_zero([5]) is False
+
+
+def test_triples_sum_to_zero_two_elements():
+    """Exactly two elements: innermost loop never runs, returns False."""
     assert triples_sum_to_zero([1, -1]) is False
 
 
-def test_triples_sum_to_zero_negative_only():
-    # All-negative list: no triple sums to zero, full loop traversal
-    assert triples_sum_to_zero([-1, -2, -3]) is False
+def test_triples_sum_to_zero_does_not_mutate_input():
+    """The function must not modify its argument (postcondition check)."""
+    original = [1, 2, -3]
+    snapshot = list(original)
+    result = triples_sum_to_zero(original)
+    assert result is True
+    assert original == snapshot

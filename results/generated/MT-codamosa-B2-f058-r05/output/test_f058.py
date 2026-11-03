@@ -2,11 +2,66 @@
 import f058 as module_0
 
 def test_case_0():
-    str_0 = 'SDB'
-    list_0 = [str_0]
-    var_0 = module_0.common(list_0, list_0)
-    assert var_0 == ['SDB']
-    float_0 = -607.82
-    list_1 = [float_0]
-    var_1 = module_0.common(list_1, list_1)
-    assert len(var_1) == 1
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = 4
+    int_4 = [int_0, int_1, int_2, int_3]
+    int_5 = 5
+    int_6 = 6
+    int_7 = [int_2, int_3, int_5, int_6]
+    var_0 = module_0.common(int_4, int_7)
+    assert var_0 == [3, 4]
+    int_8 = [int_0, int_1, int_2]
+    int_9 = [int_3, int_5, int_6]
+    var_1 = module_0.common(int_8, int_9)
+    assert var_1 == []
+    var_2 = []
+    int_10 = [int_0, int_1, int_2]
+    var_3 = module_0.common(var_2, int_10)
+    assert var_3 == []
+    int_11 = [int_0, int_1, int_2]
+    var_4 = []
+    var_5 = module_0.common(int_11, var_4)
+    assert var_5 == []
+    var_6 = []
+    var_7 = []
+    var_8 = module_0.common(var_6, var_7)
+    assert var_8 == []
+    int_12 = [int_0, int_1, int_1, int_2]
+    int_13 = [int_1, int_1, int_3]
+    var_9 = module_0.common(int_12, int_13)
+    assert var_9 == [2]
+    int_14 = [int_5, int_0, int_2]
+    int_15 = [int_2, int_0, int_5]
+    var_10 = module_0.common(int_14, int_15)
+    assert var_10 == [1, 3, 5]
+    str_0 = 'a'
+    str_1 = 'b'
+    str_2 = 'c'
+    str_3 = [str_0, str_1, str_2]
+    str_4 = 'd'
+    str_5 = [str_1, str_2, str_4]
+    var_11 = module_0.common(str_3, str_5)
+    assert var_11 == ['b', 'c']
+    int_16 = 9
+    int_17 = 7
+    int_18 = [int_16, int_3, int_17]
+    int_19 = [int_17, int_1, int_16]
+    var_12 = module_0.common(int_18, int_19)
+    assert var_12 == [7, 9]
+    int_20 = [int_0, int_1]
+    int_21 = [int_1, int_2]
+    var_13 = module_0.common(int_20, int_21)
+    assert var_13 == [2]
+    int_22 = -1
+    int_23 = -2
+    int_24 = [int_22, int_23, int_2]
+    int_25 = -2
+    int_26 = [int_25, int_2, int_5]
+    var_14 = module_0.common(int_24, int_26)
+    assert var_14 == [-2, 3]
+    int_27 = [int_0]
+    int_28 = [int_0]
+    var_15 = module_0.common(int_27, int_28)
+    assert var_15 == [1]

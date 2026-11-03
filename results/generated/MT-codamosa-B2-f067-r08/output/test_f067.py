@@ -6,19 +6,39 @@ def test_case_0():
     int_0 = 19
     var_0 = module_0.fruit_distribution(str_0, int_0)
     assert var_0 == 8
+    int_1 = 21
+    var_1 = module_0.fruit_distribution(str_0, int_1)
+    assert var_1 == 10
     str_1 = '0 apples and 1 oranges'
-    int_1 = 3
-    var_1 = module_0.fruit_distribution(str_1, int_1)
-    assert var_1 == 2
-    str_2 = '2 apples and 3 oranges'
-    int_2 = 100
-    var_2 = module_0.fruit_distribution(str_2, int_2)
-    assert var_2 == 95
-    str_3 = '100 apples and 1 oranges'
-    int_3 = 120
-    var_3 = module_0.fruit_distribution(str_3, int_3)
-    assert var_3 == 19
-    str_4 = '0 apples and 0 oranges'
-    int_4 = 7
-    var_4 = module_0.fruit_distribution(str_4, int_4)
-    assert var_4 == 7
+    int_2 = 3
+    var_2 = module_0.fruit_distribution(str_1, int_2)
+    assert var_2 == 2
+    str_2 = '1 apples and 1 oranges'
+    int_3 = 10
+    var_3 = module_0.fruit_distribution(str_2, int_3)
+    assert var_3 == 8
+    str_3 = 'apples and oranges'
+    var_4 = module_0.fruit_distribution(str_3, int_3)
+    assert var_4 == 10
+    str_4 = '100 apples and 200 oranges'
+    int_4 = 350
+    var_5 = module_0.fruit_distribution(str_4, int_4)
+    assert var_5 == 50
+    str_5 = '2 apples'
+    int_5 = 7
+    var_6 = module_0.fruit_distribution(str_5, int_5)
+    assert var_6 == 5
+    str_6 = '3 apples and 4 oranges'
+    var_7 = module_0.fruit_distribution(str_6, int_5)
+    assert var_7 == 0
+    str_7 = '10 apples and 5 oranges'
+    int_6 = 5
+    var_8 = module_0.fruit_distribution(str_7, int_6)
+    assert var_8 == 10
+    assert var_8 == -10
+    str_8 = '30 apples and 40 oranges'
+    int_7 = 100
+    var_9 = module_0.fruit_distribution(str_8, int_7)
+    assert var_9 == 30
+    str_9 = 'All tests passed!'
+    var_10 = print(str_9)

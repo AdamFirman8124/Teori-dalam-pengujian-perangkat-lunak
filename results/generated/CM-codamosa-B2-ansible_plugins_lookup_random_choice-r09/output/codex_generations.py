@@ -1,721 +1,519 @@
 
 
-# Generated at 2026-10-25 19:14:54.366066
+# Generated at 2026-11-01 21:53:35.563196
 # Unit test for method run of class LookupModule
+def test_LookupModule_run():from ansible.errors import AnsibleError
 
-# Generated at 2026-10-25 19:14:56.779913
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:14:59.194576
-# Unit test for method run of class LookupModule
+def test_LookupModule_run(mocker):
+    lookup_plugin = LookupModule()
+    mocker.patch.object(random, 'choice', side_effect=Exception("mocked error"))
 
-# Generated at 2026-10-25 19:15:01.608860
-# Unit test for method run of class LookupModule
+    with pytest.raises(AnsibleError) as e:
+        lookup_plugin.run(['a', 'b'])
+    assert "Unable to choose random term: mocked error" in to_native(e.value)
 
-# Generated at 2026-10-25 19:15:04.022850
-# Unit test for method run of class LookupModule
+    mocker.stopall()
+    result = lookup_plugin.run(['a', 'b'])
+    assert result in [['a'], ['b']]
 
-# Generated at 2026-10-25 19:15:06.440302
-# Unit test for method run of class LookupModule
+    result = lookup_plugin.run([])
+    assert result == []
 
-# Generated at 2026-10-25 19:15:08.857154
+# Generated at 2026-11-01 21:54:14.225723
 # Unit test for constructor of class LookupModule
+def test_LookupModule():
+    """
+    Test the constructor of class LookupModule.
+    """
+    # Instantiate the lookup module without any arguments
+    lookup_module = LookupModule()
 
-# Generated at 2026-10-25 19:15:11.273606
+    # Verify that the instance was created successfully
+    assert lookup_module is not None
+    assert isinstance(lookup_module, LookupModule)
+
+    # Verify inherited attributes/methods exist from LookupBase
+    assert hasattr(lookup_module, 'run')
+    assert callable(lookup_module.run)
+    assert hasattr(lookup_module, 'get_options')
+
+    # Verify instantiation with explicit keyword arguments
+    lookup_module_kwargs = LookupModule(loader=None, templar=None, variable_params={})
+    assert lookup_module_kwargs is not None
+    assert isinstance(lookup_module_kwargs, LookupModule)
+
+    # Verify run() is callable on the new instance
+    assert callable(lookup_module_kwargs.run)
+
+# Generated at 2026-11-01 21:55:08.635996
 # Unit test for constructor of class LookupModule
+def test_LookupModule():
+    '''
+    Test the constructor of LookupModule
+    '''
+    lookup_plugin = LookupModule()
+    assert isinstance(lookup_plugin, LookupModule)
+    assert isinstance(lookup_plugin, LookupBase)
+    assert lookup_plugin._loader is None
+    assert lookup_plugin._templar is None
+    assert lookup_plugin._basedir == '.'
 
-# Generated at 2026-10-25 19:15:13.686971
-# Unit test for constructor of class LookupModule
-
-# Generated at 2026-10-25 19:15:16.100960
-# Unit test for constructor of class LookupModule
-
-# Generated at 2026-10-25 19:15:18.514889
-# Unit test for constructor of class LookupModule
-
-# Generated at 2026-10-25 19:15:20.928372
-# Unit test for constructor of class LookupModule
-
-# Generated at 2026-10-25 19:15:23.342964
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:15:25.757323
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:15:28.173913
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:15:30.590002
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:15:33.003704
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:15:35.416935
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:15:37.834555
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:15:40.251525
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:15:45.688426
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:15:48.101930
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:15:50.519366
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:15:52.935465
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:15:55.347408
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:15:57.760043
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:00.175353
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:02.589164
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:05.003485
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:07.418912
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:09.832044
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:12.244350
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:14.657714
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:17.070684
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:19.483647
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:21.896547
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:24.308980
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:26.722241
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:29.135616
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:31.550030
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:33.966891
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:36.384615
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:38.797295
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:41.210871
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:43.623921
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:46.038119
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:48.452692
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:50.866156
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:53.279213
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:55.694185
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:16:58.108024
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:00.521902
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:02.936350
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:05.350383
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:07.764416
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:10.178755
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:12.592867
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:15.010770
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:17.429525
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:19.840239
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:22.254211
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:24.667776
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:27.082144
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:29.496861
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:31.911182
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:34.325769
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:36.742724
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:39.159440
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:41.572611
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:43.986363
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:49.427237
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:51.841101
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:54.256369
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:56.673355
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:17:59.089474
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:01.505805
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:03.919068
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:06.333906
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:08.748825
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:11.166213
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:13.576634
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:15.989271
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:18.403020
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:20.817975
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:23.234620
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:25.647019
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:28.060065
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:30.474845
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:32.890311
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:35.302830
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:37.717137
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:40.133914
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:42.551292
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:44.967099
+# Generated at 2026-11-01 21:55:52.059643
 # Unit test for method run of class LookupModule
+def test_LookupModule_run():import pytest
 
-# Generated at 2026-10-25 19:18:47.380312
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:49.793992
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:52.208482
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:54.622714
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:57.036617
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:18:59.450158
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:01.867524
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:04.285820
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:06.701403
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:09.116820
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:11.529737
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:13.942755
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:16.357072
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:18.771506
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:21.186509
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:23.601812
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:26.015194
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:28.430803
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:30.843618
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:33.257172
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:35.672323
-# Unit test for method run of class LookupModule
+from ansible.errors import AnsibleError
+from ansible.plugins.lookup.random_choice import LookupModule
 
-# Generated at 2026-10-25 19:19:38.086794
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:40.501418
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:42.916073
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:45.333429
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:47.746124
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:50.218613
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:55.653996
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:19:58.068082
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:20:00.482358
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:20:02.896724
-# Unit test for method run of class LookupModule
+@pytest.fixture
+def lookup():
+    return LookupModule()
 
-# Generated at 2026-10-25 19:20:05.314214
-# Unit test for method run of class LookupModule
-
-# Generated at 2026-10-25 19:20:07.731158
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:20:10.144163
-# Unit test for method run of class LookupModule
+def test_empty_terms(lookup):
+    """An empty list returns an empty list unchanged."""
+    assert lookup.run([]) == []
 
-# Generated at 2026-10-25 19:20:12.558064
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:20:14.972272
-# Unit test for method run of class LookupModule
+def test_none_terms(lookup):
+    """Falsy (None) terms return None unchanged."""
+    assert lookup.run(None) is None
 
-# Generated at 2026-10-25 19:20:17.387335
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:20:19.800861
-# Unit test for method run of class LookupModule
+def test_single_term(lookup):
+    """A single-item list always yields that item."""
+    assert lookup.run(["only"]) == ["only"]
 
-# Generated at 2026-10-25 19:20:22.215121
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:20:24.629574
-# Unit test for method run of class LookupModule
+def test_multiple_terms_returns_one_of_them(lookup):
+    """Result must be a single-element list containing one of the input terms."""
+    terms = ["a", "b", "c", "d"]
+    result = lookup.run(terms)
+    assert len(result) == 1
+    assert result[0] in terms
 
-# Generated at 2026-10-25 19:20:27.048950
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:20:29.462446
-# Unit test for method run of class LookupModule
+def test_all_choices_eventually_selected(lookup):
+    """Repeated runs eventually exercise every possible choice."""
+    terms = ["x", "y", "z"]
+    seen = set()
+    for _ in range(200):
+        seen.add(lookup.run(terms)[0])
+    assert seen == set(terms)
 
-# Generated at 2026-10-25 19:20:31.876912
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:20:34.290788
-# Unit test for method run of class LookupModule
+def test_non_string_terms(lookup):
+    """Works with arbitrary object types."""
+    terms = [1, {"key": "value"}, ("t",), None]
+    result = lookup.run(terms)
+    assert len(result) == 1
+    assert result[0] in terms
 
-# Generated at 2026-10-25 19:20:36.705120
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:20:39.119540
-# Unit test for method run of class LookupModule
+def test_error_raised_on_failure(lookup, monkeypatch):
+    """Exceptions from random.choice are wrapped in AnsibleError."""
 
-# Generated at 2026-10-25 19:20:41.534284
-# Unit test for method run of class LookupModule
+    def boom(seq):
+        raise ValueError("boom")
 
-# Generated at 2026-10-25 19:20:43.949816
-# Unit test for method run of class LookupModule
+    monkeypatch.setattr(
+        "ansible.plugins.lookup.random_choice.random.choice", boom
+    )
+    with pytest.raises(AnsibleError, match="Unable to choose random term: boom"):
+        lookup.run(["a"])
 
-# Generated at 2026-10-25 19:20:46.362393
+# Generated at 2026-11-01 21:56:41.829328
 # Unit test for method run of class LookupModule
+def test_LookupModule_run():import pytest
+from unittest.mock import patch
 
-# Generated at 2026-10-25 19:20:48.778114
-# Unit test for method run of class LookupModule
+from ansible.errors import AnsibleError
+from ansible.plugins.lookup.random_choice import LookupModule
 
-# Generated at 2026-10-25 19:20:51.195871
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:20:53.606840
-# Unit test for method run of class LookupModule
+@pytest.fixture
+def lookup():
+    return LookupModule()
 
-# Generated at 2026-10-25 19:20:56.021259
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:20:58.436637
-# Unit test for method run of class LookupModule
+def test_run_empty_terms(lookup):
+    # Falsy terms should be returned as-is (empty list)
+    assert lookup.run([]) == []
 
-# Generated at 2026-10-25 19:21:00.849985
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:21:03.264148
-# Unit test for method run of class LookupModule
+def test_run_none_terms(lookup):
+    # None terms should be returned as-is
+    assert lookup.run(None) is None
 
-# Generated at 2026-10-25 19:21:05.677948
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:21:08.094003
-# Unit test for method run of class LookupModule
+def test_run_single_term(lookup):
+    result = lookup.run(["only"])
+    assert result == ["only"]
 
-# Generated at 2026-10-25 19:21:10.511253
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:21:12.927334
-# Unit test for method run of class LookupModule
+def test_run_returns_element_from_terms(lookup):
+    terms = ["go through the door", "drink from the goblet", "press the red button"]
+    result = lookup.run(terms)
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert result[0] in terms
 
-# Generated at 2026-10-25 19:21:15.338539
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:21:17.752552
-# Unit test for method run of class LookupModule
+def test_run_multiple_calls_valid(lookup):
+    terms = [1, 2, 3, 4, 5]
+    for _ in range(20):
+        result = lookup.run(terms)
+        assert len(result) == 1
+        assert result[0] in terms
 
-# Generated at 2026-10-25 19:21:20.166554
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:21:22.582305
-# Unit test for method run of class LookupModule
+def test_run_with_inject_and_kwargs(lookup):
+    terms = ["a", "b"]
+    result = lookup.run(terms, inject={"some": "var"}, variables=None)
+    assert len(result) == 1
+    assert result[0] in terms
 
-# Generated at 2026-10-25 19:21:24.996257
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:21:27.411861
-# Unit test for method run of class LookupModule
+@patch("ansible.plugins.lookup.random_choice.random.choice")
+def test_run_calls_random_choice(mock_choice, lookup):
+    mock_choice.return_value = "b"
+    terms = ["a", "b", "c"]
+    result = lookup.run(terms)
+    mock_choice.assert_called_once_with(terms)
+    assert result == ["b"]
 
-# Generated at 2026-10-25 19:21:29.825482
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:21:32.239443
-# Unit test for method run of class LookupModule
+@patch("ansible.plugins.lookup.random_choice.random.choice")
+def test_run_wraps_exception_in_ansible_error(mock_choice, lookup):
+    mock_choice.side_effect = ValueError("boom")
+    with pytest.raises(AnsibleError) as excinfo:
+        lookup.run(["a", "b"])
 
-# Generated at 2026-10-25 19:21:34.657602
+# Generated at 2026-11-01 21:57:17.155226
 # Unit test for method run of class LookupModule
+def test_LookupModule_run():import pytest
+from unittest.mock import patch
 
-# Generated at 2026-10-25 19:21:37.068617
-# Unit test for method run of class LookupModule
+from ansible.errors import AnsibleError
+from ansible.plugins.lookup.random_choice import LookupModule
 
-# Generated at 2026-10-25 19:21:39.483427
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:21:43.350385
-# Unit test for method run of class LookupModule
+def test_LookupModule_run_empty_terms():
+    lookup = LookupModule()
+    assert lookup.run([]) == []
 
-# Generated at 2026-10-25 19:21:45.766126
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:21:48.179996
-# Unit test for method run of class LookupModule
+def test_LookupModule_run_none_terms():
+    lookup = LookupModule()
+    assert lookup.run(None) is None
 
-# Generated at 2026-10-25 19:21:50.597352
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:21:53.011436
-# Unit test for method run of class LookupModule
+def test_LookupModule_run_single_term():
+    lookup = LookupModule()
+    assert lookup.run(['only_choice']) == ['only_choice']
 
-# Generated at 2026-10-25 19:21:55.425383
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:22:00.866363
-# Unit test for method run of class LookupModule
+def test_LookupModule_run_multiple_terms():
+    lookup = LookupModule()
+    terms = ['go through the door', 'drink from the goblet', 'press the red button']
+    result = lookup.run(terms)
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert result[0] in terms
 
-# Generated at 2026-10-25 19:22:03.282587
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:22:05.708344
-# Unit test for method run of class LookupModule
+def test_LookupModule_run_returns_list_even_with_tuple():
+    lookup = LookupModule()
+    terms = ('a', 'b', 'c')
+    result = lookup.run(terms)
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert result[0] in terms
 
-# Generated at 2026-10-25 19:22:08.112014
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:22:10.528275
-# Unit test for method run of class LookupModule
+def test_LookupModule_run_error_wrapped_in_ansible_error():
+    lookup = LookupModule()
+    with patch('ansible.plugins.lookup.random_choice.random.choice',
+               side_effect=ValueError('boom')):
+        with pytest.raises(AnsibleError, match="Unable to choose random term: boom"):
+            lookup.run(['x', 'y'])
 
-# Generated at 2026-10-25 19:22:12.945754
+# Generated at 2026-11-01 21:57:56.785112
 # Unit test for method run of class LookupModule
+def test_LookupModule_run():
+    import random
+    from unittest.mock import patch
 
-# Generated at 2026-10-25 19:22:15.363414
-# Unit test for method run of class LookupModule
+    from ansible.errors import AnsibleError
+    from ansible.plugins.lookup.random_choice import LookupModule
 
-# Generated at 2026-10-25 19:22:17.776895
-# Unit test for method run of class LookupModule
+    lookup = LookupModule()
 
-# Generated at 2026-10-25 19:22:20.204369
-# Unit test for method run of class LookupModule
+    # Empty (falsy) terms are returned as-is
+    assert lookup.run([]) == []
+    assert lookup.run(None) is None
 
-# Generated at 2026-10-25 19:22:22.657093
-# Unit test for method run of class LookupModule
+    # Non-empty terms return a single-element list containing a member of terms
+    terms = ['go through the door', 'drink from the goblet', 'press the red button']
+    result = lookup.run(terms)
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert result[0] in terms
 
-# Generated at 2026-10-25 19:22:25.070722
-# Unit test for method run of class LookupModule
+    # Deterministic behavior: random.choice is called once with the terms
+    with patch('random.choice', return_value='drink from the goblet') as mock_choice:
+        result = lookup.run(terms)
+        mock_choice.assert_called_once_with(terms)
+        assert result == ['drink from the goblet']
 
-# Generated at 2026-10-25 19:22:27.485219
-# Unit test for method run of class LookupModule
+    # inject and extra kwargs are accepted and ignored
+    result = lookup.run(terms, inject={'some': 'var'}, arbitrary_kwarg=True)
+    assert len(result) == 1
+    assert result[0] in terms
 
-# Generated at 2026-10-25 19:22:29.899640
-# Unit test for method run of class LookupModule
+    # Exceptions raised by random.choice are wrapped in AnsibleError
+    with patch('random.choice', side_effect=ValueError('boom')):
+        try:
+            lookup.run(terms)
+        except AnsibleError as e:
+            assert 'Unable to choose random term' in str(e)
+            assert 'boom' in str(e)
+        else:
+            raise AssertionError("AnsibleError was not raised")
 
-# Generated at 2026-10-25 19:22:32.316442
+# Generated at 2026-11-01 21:58:48.189660
 # Unit test for method run of class LookupModule
+def test_LookupModule_run():
+    lookup = LookupModule()
 
-# Generated at 2026-10-25 19:22:34.733457
-# Unit test for method run of class LookupModule
+    # Empty list is returned unchanged
+    assert lookup.run([]) == []
 
-# Generated at 2026-10-25 19:22:37.150843
-# Unit test for method run of class LookupModule
+    # Falsy terms (None) are returned unchanged
+    assert lookup.run(None) is None
 
-# Generated at 2026-10-25 19:22:39.563384
-# Unit test for method run of class LookupModule
+    # Single term returns a list with that term
+    assert lookup.run(['only']) == ['only']
 
-# Generated at 2026-10-25 19:22:41.978091
-# Unit test for method run of class LookupModule
+    # Multiple terms: result contains exactly one element from terms
+    terms = ['go through the door', 'drink from the goblet', 'press the red button']
+    result = lookup.run(terms)
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert result[0] in terms
 
-# Generated at 2026-10-25 19:22:44.392159
-# Unit test for method run of class LookupModule
+    # Repeated runs always pick one of the provided terms
+    for _ in range(50):
+        assert lookup.run(terms)[0] in terms
 
-# Generated at 2026-10-25 19:22:46.806232
-# Unit test for method run of class LookupModule
+    # Terms of various types are handled
+    mixed_terms = [1, 'two', 3.0, None]
+    result = lookup.run(mixed_terms)
+    assert len(result) == 1
+    assert result[0] in mixed_terms
 
-# Generated at 2026-10-25 19:22:49.220220
-# Unit test for method run of class LookupModule
+    # Exception during random.choice is wrapped in an AnsibleError
+    with patch('random.choice', side_effect=Exception('boom')):
+        with pytest.raises(AnsibleError) as exc_info:
+            lookup.run(['a', 'b'])
+        assert 'Unable to choose random term' in str(exc_info.value)
+        assert 'boom' in str(exc_info.value)
 
-# Generated at 2026-10-25 19:22:51.634435
+# Generated at 2026-11-01 21:59:39.084913
 # Unit test for method run of class LookupModule
+def test_LookupModule_run():
+    lookup = LookupModule()
 
-# Generated at 2026-10-25 19:22:54.051145
-# Unit test for method run of class LookupModule
+    # Empty input returns empty list
+    assert lookup.run([]) == []
 
-# Generated at 2026-10-25 19:22:56.468303
-# Unit test for method run of class LookupModule
+    # None input is returned as-is
+    assert lookup.run(None) is None
 
-# Generated at 2026-10-25 19:23:02.273856
-# Unit test for method run of class LookupModule
+    # Non-empty input returns exactly one element chosen from the terms
+    terms = ['go through the door', 'drink from the goblet', 'press the red button', 'do nothing']
+    result = lookup.run(terms)
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert result[0] in terms
 
-# Generated at 2026-10-25 19:23:04.688453
-# Unit test for method run of class LookupModule
+    # Single-element input deterministically returns that element
+    assert lookup.run(['only']) == ['only']
 
-# Generated at 2026-10-25 19:23:07.104299
-# Unit test for method run of class LookupModule
+    # Failure inside random.choice is wrapped in AnsibleError
+    with mock.patch('random.choice', side_effect=ValueError('boom')):
+        try:
+            lookup.run(['a', 'b'])
+            assert False, 'AnsibleError was not raised'
+        except AnsibleError as e:
+            assert 'Unable to choose random term: boom' in str(e)
 
-# Generated at 2026-10-25 19:23:09.518544
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:23:11.965375
-# Unit test for method run of class LookupModule
+if __name__ == '__main__':
+    unittest.main()
 
-# Generated at 2026-10-25 19:23:14.348574
+# Generated at 2026-11-01 22:00:26.396263
 # Unit test for method run of class LookupModule
+def test_LookupModule_run():
+    lookup = LookupModule()
 
-# Generated at 2026-10-25 19:23:16.765544
-# Unit test for method run of class LookupModule
+    # Empty or missing terms are returned unchanged
+    assert lookup.run([]) == []
+    assert lookup.run(None) is None
 
-# Generated at 2026-10-25 19:23:19.288265
-# Unit test for method run of class LookupModule
+    # Non-empty terms: result must be a single-element list drawn from terms
+    terms = ["go through the door", "drink from the goblet", "press the red button"]
+    result = lookup.run(terms)
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert result[0] in terms
 
-# Generated at 2026-10-25 19:23:21.604855
-# Unit test for method run of class LookupModule
+    # Deterministic behavior when random.choice is patched
+    with patch('random.choice', return_value="drink from the goblet"):
+        assert lookup.run(["a", "b"]) == ["drink from the goblet"]
 
-# Generated at 2026-10-25 19:23:24.024800
-# Unit test for method run of class LookupModule
+    # Errors raised by random.choice are wrapped in AnsibleError
+    with patch('random.choice', side_effect=ValueError("boom")):
+        with pytest.raises(AnsibleError) as excinfo:
+            lookup.run(["a", "b"])
+    assert "Unable to choose random term" in str(excinfo.value)
+    assert "boom" in str(excinfo.value)
 
-# Generated at 2026-10-25 19:23:26.436793
-# Unit test for method run of class LookupModule
+    # Extra kwargs (like inject/variables) are accepted without breaking behavior
+    with patch('random.choice', return_value=42):
+        assert lookup.run([1, 2, 3], inject={"foo": "bar"}, some_kwarg=True) == [42]
 
-# Generated at 2026-10-25 19:23:28.850716
+# Generated at 2026-11-01 22:01:04.484686
 # Unit test for method run of class LookupModule
+def test_LookupModule_run():import pytest
+from unittest.mock import patch
 
-# Generated at 2026-10-25 19:23:31.265718
-# Unit test for method run of class LookupModule
+from ansible.errors import AnsibleError
+from ansible.plugins.lookup.random_choice import LookupModule
 
-# Generated at 2026-10-25 19:23:33.684096
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:23:36.099069
-# Unit test for method run of class LookupModule
+def test_run_with_empty_terms():
+    lookup = LookupModule()
+    assert lookup.run([]) == []
 
-# Generated at 2026-10-25 19:23:38.516067
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:23:40.931017
-# Unit test for method run of class LookupModule
+def test_run_with_none_terms():
+    lookup = LookupModule()
+    assert lookup.run(None) is None
 
-# Generated at 2026-10-25 19:23:43.345190
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:23:45.759351
-# Unit test for method run of class LookupModule
+def test_run_with_single_term():
+    lookup = LookupModule()
+    terms = ['only_option']
+    assert lookup.run(terms) == ['only_option']
 
-# Generated at 2026-10-25 19:23:48.174623
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:23:50.589222
-# Unit test for method run of class LookupModule
+def test_run_with_multiple_terms_returns_one():
+    lookup = LookupModule()
+    terms = ['go through the door', 'drink from the goblet', 'press the red button']
+    result = lookup.run(terms)
+    assert len(result) == 1
+    assert result[0] in terms
 
-# Generated at 2026-10-25 19:23:53.003857
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:23:55.418668
-# Unit test for method run of class LookupModule
+def test_run_returns_list_of_one():
+    lookup = LookupModule()
+    terms = ['a', 'b', 'c', 'd']
+    result = lookup.run(terms)
+    assert isinstance(result, list)
+    assert len(result) == 1
 
-# Generated at 2026-10-25 19:23:57.836680
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:24:00.254809
-# Unit test for method run of class LookupModule
+def test_run_wraps_exception_in_ansible_error():
+    lookup = LookupModule()
+    with patch('ansible.plugins.lookup.random_choice.random.choice',
+               side_effect=Exception('boom')):
+        with pytest.raises(AnsibleError) as exc_info:
+            lookup.run(['a', 'b'])
+    assert 'Unable to choose random term' in to_text(exc_info.value)
+    assert 'boom' in to_text(exc_info.value)
 
-# Generated at 2026-10-25 19:24:05.735708
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:24:08.149037
-# Unit test for method run of class LookupModule
+def test_run_with_unhashable_terms():
+    lookup = LookupModule()
+    terms = [{'key': 'value1'}, {'key': 'value2'}]
+    result = lookup.run(terms)
+    assert len(result) == 1
+    assert result[0] in terms
 
-# Generated at 2026-10-25 19:24:10.563549
-# Unit test for method run of class LookupModule
 
-# Generated at 2026-10-25 19:24:12.977899
-# Unit test for method run of class LookupModule
+def to_text(value):
+    return str(value)
 
-# Generated at 2026-10-25 19:24:15.391960
+# Generated at 2026-11-01 22:02:00.090824
 # Unit test for method run of class LookupModule
+def test_LookupModule_run():
+    lookup = LookupModule()
 
-# Generated at 2026-10-25 19:24:25.099345
-# Unit test for method run of class LookupModule
+    # Non-empty terms: result must be a single-element list containing one of the terms
+    terms = ['go through the door', 'drink from the goblet', 'press the red button']
+    result = lookup.run(terms)
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert result[0] in terms
 
-# Generated at 2026-10-25 19:24:27.513610
-# Unit test for method run of class LookupModule
+    # Single-element list
+    assert lookup.run(['only']) == ['only']
 
-# Generated at 2026-10-25 19:24:29.928023
-# Unit test for method run of class LookupModule
+    # Empty list is returned as-is (falsy short-circuit)
+    assert lookup.run([]) == []
 
-# Generated at 2026-10-25 19:24:32.375080
-# Unit test for method run of class LookupModule
+    # None terms are returned as-is
+    assert lookup.run(None) is None
 
-# Generated at 2026-10-25 19:24:34.756271
-# Unit test for method run of class LookupModule
+    # inject kwarg is accepted and ignored
+    assert lookup.run(['a', 'b'], inject={'foo': 'bar'})[0] in ['a', 'b']
 
-# Generated at 2026-10-25 19:24:37.171371
-# Unit test for method run of class LookupModule
+    # Deterministic behavior via mocked random.choice
+    with patch('ansible.plugins.lookup.random_choice.random.choice', return_value='b') as m_choice:
+        assert lookup.run(['a', 'b', 'c']) == ['b']
+        m_choice.assert_called_once_with(['a', 'b', 'c'])
 
-# Generated at 2026-10-25 19:24:39.590125
-# Unit test for method run of class LookupModule
+    # Any exception from random.choice is wrapped in AnsibleError
+    with patch('ansible.plugins.lookup.random_choice.random.choice', side_effect=Exception('boom')):
+        with pytest.raises(AnsibleError) as excinfo:
+            lookup.run(['a', 'b'])
+        assert 'Unable to choose random term: boom' in str(excinfo.value)
 
-# Generated at 2026-10-25 19:24:42.007274
+# Generated at 2026-11-01 22:02:53.542645
 # Unit test for method run of class LookupModule
+def test_LookupModule_run():
+    import pytest
+    from unittest.mock import patch
 
-# Generated at 2026-10-25 19:24:44.419702
-# Unit test for method run of class LookupModule
+    from ansible.errors import AnsibleError
+    from ansible.plugins.lookup.random_choice import LookupModule
 
-# Generated at 2026-10-25 19:24:46.834085
-# Unit test for method run of class LookupModule
+    lookup = LookupModule()
 
-# Generated at 2026-10-25 19:24:49.248580
-# Unit test for method run of class LookupModule
+    # Empty terms are returned as-is
+    assert lookup.run([]) == []
 
-# Generated at 2026-10-25 19:24:51.662597
-# Unit test for method run of class LookupModule
+    # None terms are returned as-is
+    assert lookup.run(None) is None
 
-# Generated at 2026-10-25 19:24:54.077262
-# Unit test for method run of class LookupModule
+    # Single term list returns that single term
+    assert lookup.run(['only']) == ['only']
 
-# Generated at 2026-10-25 19:24:56.491534
-# Unit test for method run of class LookupModule
+    # Multiple terms: result is a list containing exactly one element
+    # chosen from the input terms
+    terms = ['go through the door', 'drink from the goblet', 'press the red button']
+    for _ in range(20):
+        result = lookup.run(terms)
+        assert isinstance(result, list)
+        assert len(result) == 1
+        assert result[0] in terms
 
-# Generated at 2026-10-25 19:24:58.908851
-# Unit test for method run of class LookupModule
+    # If random.choice raises, an AnsibleError is raised with a message
+    with patch('random.choice', side_effect=Exception('boom')):
+        with pytest.raises(AnsibleError) as excinfo:
+            lookup.run(terms)
+        assert 'Unable to choose random term' in str(excinfo.value)
+        assert 'boom' in str(excinfo.value)

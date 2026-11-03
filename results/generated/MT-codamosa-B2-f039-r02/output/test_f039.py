@@ -5,12 +5,24 @@ def test_case_0():
     int_0 = 1
     var_0 = module_0.prime_fib(int_0)
     assert var_0 == 2
-
-def test_case_1():
-    int_0 = -117
-    var_0 = module_0.prime_fib(int_0)
-    var_1 = module_0.prime_fib(int_0)
-    int_1 = 1759
-    int_2 = -549
+    int_1 = 2
+    var_1 = module_0.prime_fib(int_1)
+    assert var_1 == 3
+    int_2 = 3
     var_2 = module_0.prime_fib(int_2)
-    var_3 = module_0.prime_fib(int_1)
+    assert var_2 == 5
+    int_3 = 4
+    var_3 = module_0.prime_fib(int_3)
+    assert var_3 == 13
+    int_4 = 5
+    var_4 = module_0.prime_fib(int_4)
+    assert var_4 == 89
+    int_5 = 6
+    var_5 = module_0.prime_fib(int_5)
+    assert var_5 == 233
+    int_6 = 7
+    var_6 = module_0.prime_fib(int_6)
+    assert var_6 == 1597
+    int_7 = 8
+    var_7 = module_0.prime_fib(int_7)
+    assert var_7 == 28657

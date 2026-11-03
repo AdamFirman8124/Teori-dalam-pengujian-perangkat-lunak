@@ -2,18 +2,29 @@
 import f111 as module_0
 
 def test_case_0():
-    str_0 = 'apple banana apple orange apple'
+    str_0 = 'a b c'
     var_0 = module_0.histogram(str_0)
-    assert var_0 == {'apple': 3}
-    str_1 = 'cat dog cat dog bird'
+    assert var_0 == {'a': 1, 'b': 1, 'c': 1}
+    str_1 = 'a b b a'
     var_1 = module_0.histogram(str_1)
-    assert var_1 == {'cat': 2, 'dog': 2}
-    str_2 = 'one two three'
+    assert var_1 == {'a': 2, 'b': 2}
+    str_2 = 'a b c a'
     var_2 = module_0.histogram(str_2)
-    assert var_2 == {'one': 1, 'two': 1, 'three': 1}
-    str_3 = ''
+    assert var_2 == {'a': 2}
+    str_3 = 'b b b b a b'
     var_3 = module_0.histogram(str_3)
-    assert var_3 == {}
-    str_4 = 'cat  dog'
+    assert var_3 == {'b': 5}
+    str_4 = 'apple banana apple banana orange'
     var_4 = module_0.histogram(str_4)
-    assert var_4 == {'cat': 1, '': 1, 'dog': 1}
+    assert var_4 == {'apple': 2, 'banana': 2}
+    str_5 = 'hello'
+    var_5 = module_0.histogram(str_5)
+    assert var_5 == {'hello': 1}
+    str_6 = ''
+    var_6 = module_0.histogram(str_6)
+    assert var_6 == {}
+    str_7 = '   '
+    var_7 = module_0.histogram(str_7)
+    assert var_7 == {}
+    str_8 = 'All tests passed!'
+    var_8 = print(str_8)

@@ -2,19 +2,60 @@
 import f144 as module_0
 
 def test_case_0():
-    str_0 = '1/2'
-    str_1 = '4/2'
+    str_0 = '1/5'
+    str_1 = '5/1'
     var_0 = module_0.simplify(str_0, str_1)
     assert var_0 is True
-    str_2 = '1/3'
-    str_3 = '2/1'
+    str_2 = '7/10'
+    str_3 = '10/2'
     var_1 = module_0.simplify(str_2, str_3)
+    assert var_1 is True
     assert var_1 is False
-    str_4 = '-1/2'
-    str_5 = '6/3'
+    str_4 = '1/2'
+    str_5 = '2/1'
     var_2 = module_0.simplify(str_4, str_5)
     assert var_2 is True
-    str_6 = '0/5'
-    str_7 = '3/2'
+    str_6 = '3/4'
+    str_7 = '4/3'
     var_3 = module_0.simplify(str_6, str_7)
     assert var_3 is True
+    str_8 = '2/3'
+    str_9 = '3/2'
+    var_4 = module_0.simplify(str_8, str_9)
+    assert var_4 is True
+    str_10 = '1/6'
+    var_5 = module_0.simplify(str_10, str_5)
+    assert var_5 is False
+    str_11 = '1/3'
+    var_6 = module_0.simplify(str_11, str_6)
+    assert var_6 is False
+    str_12 = '2/5'
+    str_13 = '5/7'
+    var_7 = module_0.simplify(str_12, str_13)
+    assert var_7 is False
+    str_14 = '7/4'
+    var_8 = module_0.simplify(str_14, str_7)
+    assert var_8 is False
+    str_15 = '0/5'
+    var_9 = module_0.simplify(str_15, str_1)
+    assert var_9 is True
+    str_16 = '-1/2'
+    var_10 = module_0.simplify(str_16, str_5)
+    assert var_10 is True
+    str_17 = '-1/3'
+    var_11 = module_0.simplify(str_17, str_5)
+    assert var_11 is False
+    str_18 = '4/1'
+    var_12 = module_0.simplify(str_18, str_4)
+    assert var_12 is True
+    str_19 = '1/1'
+    var_13 = module_0.simplify(str_1, str_19)
+    assert var_13 is True
+    str_20 = '100/7'
+    var_14 = module_0.simplify(str_20, str_2)
+    assert var_14 is True
+    str_21 = '100/9'
+    str_22 = '9/10'
+    var_15 = module_0.simplify(str_21, str_22)
+    assert var_15 is False
+    assert var_15 is True

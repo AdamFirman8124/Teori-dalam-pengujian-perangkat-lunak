@@ -2,6 +2,9 @@
 import f041 as module_0
 
 def test_case_0():
+    pass
+
+def test_case_1():
     int_0 = 0
     var_0 = module_0.car_race_collision(int_0)
     assert var_0 == 0
@@ -11,9 +14,12 @@ def test_case_0():
     int_2 = 2
     var_2 = module_0.car_race_collision(int_2)
     assert var_2 == 4
-    int_3 = 5
+    int_3 = 3
     var_3 = module_0.car_race_collision(int_3)
-    assert var_3 == 25
+    assert var_3 == 9
     int_4 = 10
     var_4 = module_0.car_race_collision(int_4)
     assert var_4 == 100
+    int_5 = 100
+    var_5 = module_0.car_race_collision(int_5)
+    assert var_5 == 10000

@@ -7,34 +7,26 @@ import pytest
 from f155 import even_odd_count
 
 
-def test_even_odd_count_all_even_digits():
+def test_even_digits_only():
+    """Covers the even-digit branch (lines 6-7) with all-even digits."""
     assert even_odd_count(2468) == (4, 0)
 
 
-def test_even_odd_count_all_odd_digits():
+def test_odd_digits_only():
+    """Covers the odd-digit branch (lines 6, 9) with all-odd digits."""
     assert even_odd_count(1357) == (0, 4)
 
 
-def test_even_odd_count_mixed_digits():
+def test_mixed_digits():
+    """Covers both branches within a single call."""
     assert even_odd_count(123456) == (3, 3)
 
 
-def test_even_odd_count_negative_number_uses_absolute_value():
-    assert even_odd_count(-123456) == (3, 3)
+def test_negative_number():
+    """Covers the abs(num) call on line 5 with a negative input."""
+    assert even_odd_count(-123) == (1, 2)
 
 
-def test_even_odd_count_zero():
+def test_zero():
+    """Covers the single-digit '0' case, which is even."""
     assert even_odd_count(0) == (1, 0)
-
-
-def test_even_odd_count_single_digit():
-    assert even_odd_count(7) == (0, 1)
-    assert even_odd_count(8) == (1, 0)
-
-
-def test_even_odd_count_returns_tuple_of_ints():
-    result = even_odd_count(1234)
-    assert isinstance(result, tuple)
-    assert len(result) == 2
-    assert all(isinstance(count, int) for count in result)
-    assert sum(result) == len(str(abs(1234)))

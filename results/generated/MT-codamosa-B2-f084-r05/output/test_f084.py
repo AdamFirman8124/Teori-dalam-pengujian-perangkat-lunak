@@ -2,6 +2,24 @@
 import f084 as module_0
 
 def test_case_0():
-    int_0 = 1234
+    int_0 = 1000
     var_0 = module_0.solve(int_0)
-    assert var_0 == '1010'
+    assert var_0 == '1'
+    int_1 = 150
+    var_1 = module_0.solve(int_1)
+    assert var_1 == '110'
+    int_2 = 147
+    var_2 = module_0.solve(int_2)
+    assert var_2 == '1100'
+    int_3 = 0
+    var_3 = module_0.solve(int_3)
+    assert var_3 == '0'
+    int_4 = 999
+    var_4 = module_0.solve(int_4)
+    assert var_4 == '11011'
+    int_5 = 5
+    var_5 = module_0.solve(int_5)
+    assert var_5 == '101'
+    int_6 = 12
+    var_6 = module_0.solve(int_6)
+    assert var_6 == '11'

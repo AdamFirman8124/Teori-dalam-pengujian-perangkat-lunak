@@ -2,22 +2,34 @@
 import f028 as module_0
 
 def test_case_0():
-    str_0 = 'Hello'
-    str_1 = ' '
-    str_2 = 'world!'
-    str_3 = [str_0, str_1, str_2]
-    str_4 = module_0.concatenate(str_3)
-    assert str_4 == 'Hello world!'
+    pass
+
+def test_case_1():
     var_0 = []
-    str_5 = module_0.concatenate(var_0)
-    assert str_5 == ''
-    str_6 = 'Python'
-    str_7 = [str_6]
+    str_0 = module_0.concatenate(var_0)
+    assert str_0 == ''
+    str_1 = 'x'
+    str_2 = [str_1]
+    str_3 = module_0.concatenate(str_2)
+    assert str_3 == 'x'
+    str_4 = 'a'
+    str_5 = 'b'
+    str_6 = 'c'
+    str_7 = [str_4, str_5, str_6]
     str_8 = module_0.concatenate(str_7)
-    assert str_8 == 'Python'
-    str_9 = 'a'
-    str_10 = ''
-    str_11 = 'b'
+    assert str_8 == 'abc'
+    str_9 = 'hello'
+    str_10 = ' '
+    str_11 = 'world'
     str_12 = [str_9, str_10, str_11]
     str_13 = module_0.concatenate(str_12)
-    assert str_13 == 'ab'
+    assert str_13 == 'hello world'
+    str_14 = ''
+    str_15 = [str_14, str_14, str_14]
+    str_16 = module_0.concatenate(str_15)
+    assert str_16 == ''
+    str_17 = [str_4, str_14, str_5]
+    str_18 = module_0.concatenate(str_17)
+    assert str_18 == 'ab'
+    str_19 = 'All tests passed!'
+    var_1 = print(str_19)

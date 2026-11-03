@@ -7,13 +7,28 @@ import pytest
 from f050 import encode_shift
 
 
-def test_encode_shift_executes_line_3():
-    # Wrap-around: 'x' + 5 -> 'c' (exercises the % 26 branch)
-    assert encode_shift("xyz") == "cde"
-    # Plain shift within range
-    assert encode_shift("abc") == "fgh"
-    # Empty string still executes the return line
+def test_encode_shift_basic_shift():
+    """Each lowercase letter should be shifted forward by 5 positions."""
+    assert encode_shift("a") == "f"
+    assert encode_shift("b") == "g"
+    assert encode_shift("hello") == "mjqqt"
+
+
+def test_encode_shift_wraparound():
+    """Letters near the end of the alphabet must wrap around to the beginning."""
+    assert encode_shift("v") == "a"
+    assert encode_shift("z") == "e"
+    assert encode_shift("vwxyz") == "abcde"
+
+
+def test_encode_shift_empty_string():
+    """An empty input should produce an empty output (exercises the join on an empty list)."""
     assert encode_shift("") == ""
-    # Full alphabet shifts by 5 with wrap-around at the end
-    assert encode_shift("abcdefghijklmnopqrstuvwxyz") == "fghijklmnopqrstuvwxyzabcde"
-    # No state is created or modified; nothing to clean up.
+
+
+def test_encode_shift_is_pure():
+    """The function must not mutate its input."""
+    original = "abc"
+    result = encode_shift(original)
+    assert original == "abc"
+    assert result == "fgh"

@@ -2,23 +2,43 @@
 import f065 as module_0
 
 def test_case_0():
-    int_0 = 12345
-    int_1 = 2
+    int_0 = 12
+    int_1 = 1
     var_0 = module_0.circular_shift(int_0, int_1)
-    assert var_0 == '45123'
-    int_2 = 1
+    assert var_0 == '21'
+    int_2 = 2
     var_1 = module_0.circular_shift(int_0, int_2)
-    assert var_1 == '51234'
-    int_3 = 5
+    assert var_1 == '12'
+    int_3 = 3
     var_2 = module_0.circular_shift(int_0, int_3)
-    assert var_2 == '12345'
-    int_4 = 6
-    var_3 = module_0.circular_shift(int_0, int_4)
-    assert var_3 == '54321'
-    int_5 = 7
-    var_4 = module_0.circular_shift(int_5, int_2)
-    assert var_4 == '7'
-    int_6 = 123
+    assert var_2 == '21'
+    int_4 = 12345
+    var_3 = module_0.circular_shift(int_4, int_2)
+    assert var_3 == '45123'
+    var_4 = module_0.circular_shift(int_4, int_3)
+    assert var_4 == '34512'
+    int_5 = 5
+    var_5 = module_0.circular_shift(int_4, int_5)
+    assert var_5 == '12345'
+    int_6 = 6
+    var_6 = module_0.circular_shift(int_4, int_6)
+    assert var_6 == '54321'
     int_7 = 0
-    var_5 = module_0.circular_shift(int_6, int_7)
-    assert var_5 == '123'
+    var_7 = module_0.circular_shift(int_4, int_7)
+    assert var_7 == '12345'
+    int_8 = 7
+    var_8 = module_0.circular_shift(int_8, int_1)
+    assert var_8 == '7'
+    var_9 = module_0.circular_shift(int_8, int_5)
+    assert var_9 == '7'
+    int_9 = 100
+    var_10 = module_0.circular_shift(int_9, int_2)
+    assert var_10 == '001'
+    var_11 = module_0.circular_shift(int_9, int_1)
+    assert var_11 == '010'
+    var_12 = module_0.circular_shift(int_7, int_1)
+    assert var_12 == '0'
+    var_13 = module_0.circular_shift(int_0, int_9)
+    assert var_13 == '21'
+    str_0 = 'All tests passed!'
+    var_14 = print(str_0)

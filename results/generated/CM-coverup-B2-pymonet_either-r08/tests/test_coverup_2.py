@@ -2,62 +2,72 @@
 # asked: {"lines": [18, 19, 20], "branches": []}
 # gained: {"lines": [18, 19, 20], "branches": []}
 
+import pytest
+
 from pymonet.either import Either, Left, Right
 
 
-def test_eq_right_with_equal_right():
-    assert Right(1) == Right(1)
-    assert (Right(1) == Right(1)) is True
+def test_eq_left_with_equal_left_is_true():
+    """Left(1) == Left(1): isinstance, value and is_right all match -> True.
 
-
-def test_eq_left_with_equal_left():
+    Exercises the full True path through lines 18-20.
+    """
+    result = Left(1).__eq__(Left(1))
+    assert result is True
     assert Left(1) == Left(1)
-    assert (Left(1) == Left(1)) is True
 
 
-def test_eq_right_with_different_value_is_false():
-    assert (Right(1) == Right(2)) is False
+def test_eq_left_with_non_either_is_false():
+    """Left(1) == <non-Either>: isinstance check fails -> False.
+
+    Exercises the False branch of the isinstance check on line 18.
+    """
+    assert Left(1).__eq__(1) is False
+    assert Left(1).__eq__(None) is False
+    assert (Left(1) == 1) is False
 
 
-def test_eq_left_with_different_value_is_false():
+def test_eq_left_with_left_of_different_value_is_false():
+    """Left(1) == Left(2): values differ -> False.
+
+    Exercises the False branch of the value comparison on line 19.
+    """
+    assert Left(1).__eq__(Left(2)) is False
     assert (Left(1) == Left(2)) is False
 
 
-def test_eq_right_with_left_same_value_is_false():
-    # value equality holds, but is_right() differs -> third condition decides
-    assert (Right(1) == Left(1)) is False
+def test_eq_left_with_right_of_same_value_is_false():
+    """Left(1) == Right(1): values equal but is_right differs -> False.
+
+    Exercises the False branch of the is_right comparison on line 20.
+    """
+    assert Left(1).__eq__(Right(1)) is False
     assert (Left(1) == Right(1)) is False
 
 
-def test_eq_with_non_either_is_false():
-    # isinstance(other, Either) is False -> short-circuits before .value access
-    assert (Right(1) == 1) is False
-    assert (Left(1) == 1) is False
-    assert (Right(1) == object()) is False
-    assert (Right(1) == None) is False
+def test_eq_right_with_equal_right_is_true():
+    """Right(1) == Right(1): all conditions hold -> True.
+
+    Exercises the full True path through lines 18-20 for the Right subclass.
+    """
+    result = Right(1).__eq__(Right(1))
+    assert result is True
+    assert Right(1) == Right(1)
 
 
-def test_eq_with_non_either_lacking_value_attribute():
-    class NoValue:
-        pass
-
-    # must not raise AttributeError thanks to the isinstance short-circuit
-    assert (Right(1) == NoValue()) is False
+def test_eq_right_with_right_of_different_value_is_false():
+    """Right(1) == Right(2): values differ -> False."""
+    assert Right(1).__eq__(Right(2)) is False
+    assert (Right(1) == Right(2)) is False
 
 
-def test_eq_is_symmetric_and_reflexive():
-    right = Right('a')
-    left = Left('a')
-    assert right == right
-    assert left == left
-    assert (right == left) == (left == right)
+def test_eq_right_with_left_of_same_value_is_false():
+    """Right(1) == Left(1): values equal but is_right differs -> False."""
+    assert Right(1).__eq__(Left(1)) is False
+    assert (Right(1) == Left(1)) is False
 
 
-def test_eq_does_not_mutate_operands():
-    right = Right(5)
-    left = Left(5)
-    before = (right.value, left.value, right.is_right(), left.is_right())
-    right == left
-    left == right
-    after = (right.value, left.value, right.is_right(), left.is_right())
-    assert before == after
+def test_eq_right_with_non_either_is_false():
+    """Right(1) == <non-Either>: isinstance check fails -> False."""
+    assert Right(1).__eq__('not an either') is False
+    assert (Right(1) == 'not an either') is False

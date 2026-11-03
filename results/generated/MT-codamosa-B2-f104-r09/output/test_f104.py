@@ -18,16 +18,39 @@ def test_case_0():
     var_2 = []
     var_3 = module_0.unique_digits(var_2)
     assert var_3 == []
-    int_9 = 31
-    int_10 = 9
-    int_11 = 135
-    int_12 = [int_9, int_0, int_10, int_11]
-    var_4 = module_0.unique_digits(int_12)
-    assert var_4 == [9, 15, 31, 135]
-    int_13 = 2
-    int_14 = 20
-    int_15 = 101
-    int_16 = 4
-    int_17 = [int_13, int_14, int_15, int_16]
+    int_9 = 2
+    int_10 = 3
+    int_11 = 4
+    int_12 = 5
+    int_13 = [int_3, int_9, int_10, int_11, int_12]
+    var_4 = module_0.unique_digits(int_13)
+    assert var_4 == [1, 3, 5]
+    int_14 = 135
+    int_15 = 357
+    int_16 = 579
+    int_17 = [int_14, int_15, int_16]
     var_5 = module_0.unique_digits(int_17)
-    assert var_5 == []
+    assert var_5 == [135, 357, 579]
+    int_18 = [int_16, int_14, int_15]
+    var_6 = module_0.unique_digits(int_18)
+    assert var_6 == [135, 357, 579]
+    int_19 = 11
+    int_20 = 22
+    int_21 = [int_19, int_19, int_20, int_1]
+    var_7 = module_0.unique_digits(int_21)
+    assert var_7 == [11, 11, 33]
+    int_22 = 101
+    int_23 = 111
+    int_24 = 202
+    int_25 = 999
+    int_26 = [int_22, int_23, int_24, int_25]
+    var_8 = module_0.unique_digits(int_26)
+    assert var_8 == [111, 999]
+    int_27 = 13579
+    int_28 = 24680
+    int_29 = 113355
+    int_30 = [int_27, int_28, int_29]
+    var_9 = module_0.unique_digits(int_30)
+    assert var_9 == [13579, 113355]
+    str_0 = 'All tests passed!'
+    var_10 = print(str_0)

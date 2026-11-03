@@ -2,11 +2,47 @@
 import f033 as module_0
 
 def test_case_0():
-    dict_0 = None
-    list_0 = [dict_0, dict_0, dict_0]
-    var_0 = module_0.sort_third(list_0)
-    assert var_0 == [None, None, None]
-    bool_0 = False
-    list_1 = [bool_0, bool_0, bool_0]
-    var_1 = module_0.sort_third(list_1)
-    assert var_1 == [False, False, False]
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = [int_0, int_1, int_2]
+    var_0 = module_0.sort_third(int_3)
+    assert var_0 == [1, 2, 3]
+    int_4 = 5
+    int_5 = 6
+    int_6 = 4
+    int_7 = 8
+    int_8 = 9
+    int_9 = [int_4, int_5, int_2, int_6, int_7, int_8, int_1]
+    var_1 = module_0.sort_third(int_9)
+    assert var_1 == [2, 6, 3, 4, 8, 9, 5]
+    int_10 = -5
+    int_11 = -3
+    int_12 = 0
+    int_13 = 123
+    int_14 = -10
+    int_15 = [int_4, int_2, int_10, int_1, int_11, int_2, int_8, int_12, int_13, int_0, int_14]
+    var_2 = module_0.sort_third(int_15)
+    assert var_2 == [1, 3, -5, 2, -3, 3, 5, 0, 123, 9, -10]
+    var_3 = []
+    var_4 = module_0.sort_third(var_3)
+    assert var_4 == []
+    int_16 = 7
+    int_17 = [int_16]
+    var_5 = module_0.sort_third(int_17)
+    assert var_5 == [7]
+    int_18 = [int_2, int_0]
+    var_6 = module_0.sort_third(int_18)
+    assert var_6 == [3, 1]
+    int_19 = [int_2, int_0, int_1, int_2, int_0, int_1]
+    var_7 = module_0.sort_third(int_19)
+    assert var_7 == [3, 1, 2, 3, 1, 2]
+    int_20 = -1
+    int_21 = -3
+    int_22 = [int_20, int_4, int_1, int_21]
+    var_8 = module_0.sort_third(int_22)
+    assert var_8 == [-3, 5, 2, -1]
+    int_23 = 10
+    int_24 = [int_23, int_1, int_2, int_6, int_4, int_5, int_16, int_7, int_8, int_0]
+    var_9 = module_0.sort_third(int_24)
+    assert var_9 == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]

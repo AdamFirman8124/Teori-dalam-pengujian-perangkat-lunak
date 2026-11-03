@@ -2,10 +2,46 @@
 import f158 as module_0
 
 def test_case_0():
-    str_0 = 'apple'
-    str_1 = 'banana'
-    str_2 = 'cherry'
-    str_3 = 'date'
-    str_4 = [str_0, str_1, str_2, str_3]
-    var_0 = module_0.find_max(str_4)
-    assert var_0 == 'cherry'
+    str_0 = 'name'
+    str_1 = 'of'
+    str_2 = 'string'
+    str_3 = [str_0, str_1, str_2]
+    var_0 = module_0.find_max(str_3)
+    assert var_0 == 'string'
+    str_4 = 'enam'
+    str_5 = 'game'
+    str_6 = [str_0, str_4, str_5]
+    var_1 = module_0.find_max(str_6)
+    assert var_1 == 'enam'
+    str_7 = 'aaaaaaa'
+    str_8 = 'bb'
+    str_9 = 'cc'
+    str_10 = [str_7, str_8, str_9]
+    var_2 = module_0.find_max(str_10)
+    assert var_2 == 'aaaaaaa'
+    str_11 = 'hello'
+    str_12 = [str_11]
+    var_3 = module_0.find_max(str_12)
+    assert var_3 == 'hello'
+    str_13 = 'abcabc'
+    str_14 = 'abcd'
+    str_15 = [str_13, str_14]
+    var_4 = module_0.find_max(str_15)
+    assert var_4 == 'abcd'
+    str_16 = 'aA'
+    str_17 = 'ab'
+    str_18 = [str_16, str_17]
+    var_5 = module_0.find_max(str_18)
+    assert var_5 == 'aA'
+    str_19 = 'xy'
+    str_20 = 'z'
+    str_21 = 'wxyz'
+    str_22 = [str_19, str_20, str_21]
+    var_6 = module_0.find_max(str_22)
+    assert var_6 == 'wxyz'
+    str_23 = 'b'
+    str_24 = 'a'
+    str_25 = 'c'
+    str_26 = [str_23, str_24, str_25]
+    var_7 = module_0.find_max(str_26)
+    assert var_7 == 'a'

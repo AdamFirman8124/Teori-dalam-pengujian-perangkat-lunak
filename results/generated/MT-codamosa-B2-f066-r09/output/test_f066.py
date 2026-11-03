@@ -5,30 +5,25 @@ def test_case_0():
     str_0 = ''
     var_0 = module_0.digitSum(str_0)
     assert var_0 == 0
-    str_1 = 'abc'
+    str_1 = 'abAB'
     var_1 = module_0.digitSum(str_1)
-    assert var_1 == 0
-    str_2 = '123!@# '
+    assert var_1 == 131
+    str_2 = 'abcCd'
     var_2 = module_0.digitSum(str_2)
-    assert var_2 == 0
-    str_3 = 'Z'
+    assert var_2 == 67
+    str_3 = 'ignore'
     var_3 = module_0.digitSum(str_3)
-    assert var_3 == 90
-    str_4 = 'A'
+    assert var_3 == 0
+    str_4 = 'aA'
     var_4 = module_0.digitSum(str_4)
     assert var_4 == 65
-    str_5 = 'ABC'
+    str_5 = 'Z'
     var_5 = module_0.digitSum(str_5)
-    assert var_5 == 198
-    str_6 = 'HELLO'
+    assert var_5 == 90
+    str_6 = '1234'
     var_6 = module_0.digitSum(str_6)
-    assert var_6 == 372
-    str_7 = 'aBcDe'
+    assert var_6 == 0
+    str_7 = 'HelloWorld'
     var_7 = module_0.digitSum(str_7)
-    assert var_7 == 134
-    str_8 = 'A1b2C3'
-    var_8 = module_0.digitSum(str_8)
-    assert var_8 == 132
-    str_9 = 'aB cD'
-    var_9 = module_0.digitSum(str_9)
-    assert var_9 == 134
+    assert var_7 == 338
+    assert var_7 == 159

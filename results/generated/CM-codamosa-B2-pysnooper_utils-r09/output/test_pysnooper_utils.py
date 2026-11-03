@@ -2,124 +2,149 @@
 import pysnooper.utils as module_0
 
 def test_case_0():
-    str_0 = 'call'
+    str_0 = "C>'hP3"
     var_0 = module_0.shitcode(str_0)
-    assert var_0 == 'call'
+    assert var_0 == 'abc'
+    assert var_0 == "C>'hP3"
+    dict_0 = None
+    var_1 = module_0.get_shortish_repr(dict_0)
+    assert var_1 == 'None'
+    assert len(module_0.string_types) == 1
+    assert len(module_0.file_reading_errors) == 3
+    str_1 = 'ÿ'
+    var_2 = module_0.shitcode(str_1)
+    assert var_2 == 'ÿ'
+    str_2 = 'é'
+    var_3 = module_0.shitcode(str_2)
+    assert var_3 == 'é'
+    str_3 = '\x00'
+    var_4 = module_0.shitcode(str_3)
+    assert var_4 == '?'
+    str_4 = '€'
+    var_5 = module_0.shitcode(str_4)
+    assert var_5 == '?'
+    str_5 = 'א'
+    var_6 = module_0.shitcode(str_5)
+    assert var_6 == '?'
+    str_6 = '0ulMz09 8s^!{ '
+    var_7 = module_0.shitcode(str_6)
+    assert var_7 == 'héllo?'
+    assert var_7 == '0ulMz09 8s^!{ '
+    set_0 = set()
+    var_8 = module_0.shitcode(set_0)
+    assert var_8 == ''
+    assert len(module_0.string_types) == 1
+    assert len(module_0.file_reading_errors) == 3
 
 def test_case_1():
-    str_0 = '\x0b'
-    var_0 = module_0.shitcode(str_0)
-    assert var_0 == ''
-    assert var_0 == '\x0b'
-    str_1 = 'abc XYZ 123 !@#'
-    var_1 = module_0.shitcode(str_1)
-    assert var_1 == 'abc XYZ 123 !@#'
-    str_2 = '\x01ÿ'
-    var_2 = module_0.shitcode(str_2)
-    assert var_2 == '\x01ÿ'
-    str_3 = 'Ã©Ã¿'
-    var_3 = module_0.shitcode(str_3)
-    assert var_3 == 'Ã©Ã¿'
-    str_4 = '\x00'
-    var_4 = module_0.shitcode(str_4)
-    assert var_4 == '?'
-    str_5 = 'Ä\x80â\x98\x83ð\x9f\x98\x80'
-    var_5 = module_0.shitcode(str_5)
-    assert var_5 == '???'
-    assert var_5 == 'Ä\x80â\x98\x83ð\x9f\x98\x80'
-    str_6 = 'abc'
-    var_6 = module_0.shitcode(str_6)
-    assert var_6 == 'abc'
-
-def test_case_2():
-    dict_0 = {}
-    var_0 = module_0.get_shortish_repr(dict_0)
-    assert var_0 == '{}'
-    assert len(module_0.string_types) == 1
-    assert len(module_0.file_reading_errors) == 3
-
-def test_case_3():
     pass
 
-def test_case_4():
+def test_case_2():
+    str_0 = '12345'
+    int_0 = 10
+    var_0 = module_0.truncate(str_0, int_0)
+    assert var_0 == '12345'
+    int_1 = 5
+    var_1 = module_0.truncate(str_0, int_1)
+    assert var_1 == '12345'
+    var_2 = None
+    var_3 = module_0.truncate(str_0, var_2)
+    assert var_3 == '12345'
+    assert len(module_0.string_types) == 1
+    assert len(module_0.file_reading_errors) == 3
+    str_1 = '1234567890'
+    int_2 = 8
+    var_4 = module_0.truncate(str_1, int_2)
+    assert var_4 == '12...890'
+    str_2 = 'abcdefghijklmnopqrstuvwxyz'
+    var_5 = module_0.truncate(str_2, int_0)
+    assert var_5 == 'abcde...yz'
+    assert var_5 == 'abc...wxyz'
+    var_6 = len(var_5)
+    assert var_6 == 10
+    str_3 = 'abcdefghijklmnop'
+    int_3 = 7
+    var_7 = module_0.truncate(str_3, int_3)
+    assert var_7 == 'ab...op'
+    var_8 = len(var_7)
+    assert var_8 == 7
+    str_4 = 'abcdef'
+    int_4 = 3
+    var_9 = module_0.truncate(str_4, int_4)
+    assert var_9 == '...'
+    assert var_9 == '...abcdef'
+    int_5 = 4
+    var_10 = module_0.truncate(str_4, int_5)
+    assert var_10 == 'a...f'
+    assert var_10 == '...f'
+    str_5 = 'áéíóúáéíóúáéíóú'
+    var_11 = module_0.truncate(str_5, int_2)
+    assert var_11 == 'áé...íóú'
+    var_12 = len(var_11)
+    assert var_12 == 8
+
+def test_case_3():
     int_0 = 1
+    var_0 = module_0.ensure_tuple(int_0)
+    assert var_0 == (1,)
+    assert len(module_0.string_types) == 1
+    assert len(module_0.file_reading_errors) == 3
+    float_0 = 3.5
+    var_1 = module_0.ensure_tuple(float_0)
+    assert len(var_1) == 1
+    var_2 = None
+    var_3 = module_0.ensure_tuple(var_2)
+    assert var_3 == (None,)
+    bool_0 = True
+    var_4 = module_0.ensure_tuple(bool_0)
+    assert var_4 == (True,)
+    var_5 = object()
+    var_6 = module_0.ensure_tuple(var_5)
+    assert len(var_6) == 1
+    str_0 = 'abc'
+    var_7 = module_0.ensure_tuple(str_0)
+    assert var_7 == ('abc',)
+    var_8 = module_0.ensure_tuple(str_0)
+    assert var_8 == ('abc',)
+    str_1 = ''
+    var_9 = module_0.ensure_tuple(str_1)
+    assert var_9 == ('',)
+    var_10 = []
+    var_11 = module_0.ensure_tuple(var_10)
+    assert var_11 == ()
     int_1 = 2
     int_2 = 3
-    int_3 = [int_0, int_1, int_2]
-    var_0 = module_0.ensure_tuple(int_3)
-    assert var_0 == (1, 2, 3)
-    int_4 = (int_0, int_1, int_2)
-    var_1 = module_0.ensure_tuple(int_4)
-    assert var_1 == (1, 2, 3)
-    var_2 = range(int_2)
-    var_3 = module_0.ensure_tuple(var_2)
-    assert var_3 == (0, 1, 2)
-    var_4 = range(int_2)
-    var_5 = []
-    var_6 = module_0.ensure_tuple(var_5)
-    assert var_6 == ()
-    str_0 = 'hello'
-    var_7 = module_0.ensure_tuple(str_0)
-    assert var_7 == ('hello',)
-    int_5 = 42
-    var_8 = module_0.ensure_tuple(int_5)
-    assert var_8 == (42,)
-    assert len(module_0.string_types) == 1
-    assert len(module_0.file_reading_errors) == 3
-    var_9 = None
-    var_10 = module_0.ensure_tuple(var_9)
-    assert var_10 == (None,)
-
-def test_case_5():
-    str_0 = '__slots__'
-    list_0 = []
-    var_0 = module_0.get_shortish_repr(list_0)
-    assert var_0 == '[]'
-    assert len(module_0.string_types) == 1
-    assert len(module_0.file_reading_errors) == 3
-    var_1 = module_0.normalize_repr(str_0)
-    assert var_1 == '__slots__'
-
-def test_case_6():
-    str_0 = 'abcdef'
-    var_0 = None
-    var_1 = module_0.truncate(str_0, var_0)
-    assert var_1 == 'abcdef'
-    assert len(module_0.string_types) == 1
-    assert len(module_0.file_reading_errors) == 3
-    int_0 = 6
-    var_2 = module_0.truncate(str_0, int_0)
-    assert var_2 == 'abcdef'
-    int_1 = 10
-    var_3 = module_0.truncate(str_0, int_1)
-    assert var_3 == 'abcdef'
-    str_1 = 'abcdefghij'
-    int_2 = 7
-    var_4 = module_0.truncate(str_1, int_2)
-    assert var_4 == 'ab...ij'
-    int_3 = 8
-    var_5 = module_0.truncate(str_1, int_3)
-    assert var_5 == 'ab...hij'
-    str_2 = 'abcdefghijklmnopqrstuvwxyz'
-    int_4 = 12
-    var_6 = module_0.truncate(str_2, int_4)
-    assert var_6 == 'abcd...vwxyz'
-    var_7 = len(var_6)
-    assert var_7 == 12
-
-def test_case_7():
-    list_0 = []
-    str_0 = '\x01ÿ'
-    var_0 = module_0.shitcode(str_0)
-    assert var_0 == '\x01ÿ'
-    str_1 = 'Ã©Ã¿'
-    int_0 = -638
-    var_1 = module_0.truncate(list_0, int_0)
-    assert var_1 == '[]...[]'
-    assert len(module_0.string_types) == 1
-    assert len(module_0.file_reading_errors) == 3
-    var_2 = module_0.shitcode(str_1)
-    assert var_2 == 'a?b?c'
-    assert var_2 == 'Ã©Ã¿'
-    var_3 = module_0.shitcode(list_0)
-    assert var_3 == ''
+    var_12 = [bool_0, int_1, int_2]
+    var_13 = module_0.ensure_tuple(var_12)
+    assert var_13 == (True, 2, 3)
+    var_14 = ()
+    var_15 = module_0.ensure_tuple(var_14)
+    assert var_15 == ()
+    var_16 = (bool_0, int_1, int_2)
+    var_17 = module_0.ensure_tuple(var_16)
+    assert var_17 == (True, 2, 3)
+    int_3 = 4
+    var_18 = range(int_3)
+    var_19 = module_0.ensure_tuple(var_18)
+    assert var_19 == (0, 1, 2, 3)
+    var_20 = range(int_2)
+    str_2 = 'a'
+    str_3 = 'b'
+    str_4 = {str_2, str_3}
+    var_21 = module_0.ensure_tuple(str_4)
+    assert var_21 == ('a', 'b')
+    var_22 = set(var_21)
+    str_5 = 'x'
+    str_6 = 'y'
+    var_23 = {str_5: bool_0, str_6: int_1}
+    var_24 = module_0.ensure_tuple(var_23)
+    assert var_24 == ('x', 'y')
+    var_25 = sorted(var_24)
+    var_26 = [bool_0, int_1]
+    int_4 = [int_2]
+    var_27 = [var_26, int_4]
+    var_28 = module_0.ensure_tuple(var_27)
+    assert var_28 == ([True, 2], [3])
+    var_29 = [bool_0, int_1]
+    var_30 = module_0.ensure_tuple(var_29)
+    assert var_30 == (True, 2)

@@ -2,11 +2,34 @@
 import f050 as module_0
 
 def test_case_0():
-    str_0 = 'eJZGG?Z^6Bg7i\x0c0E}!P'
-    str_1 = '/'
-    var_0 = module_0.encode_shift(str_1)
-    assert var_0 == 'h'
-    var_1 = module_0.encode_shift(str_0)
-    assert var_1 == 'jiyffxycoalpnyidhto'
-    var_2 = module_0.decode_shift(str_0)
-    assert var_2 == 'zyovvnoseqbfdoytxje'
+    str_0 = 'abc'
+    var_0 = module_0.encode_shift(str_0)
+    assert var_0 == 'fgh'
+    str_1 = 'hello'
+    var_1 = module_0.encode_shift(str_1)
+    assert var_1 == 'mjqqt'
+    str_2 = 'z'
+    var_2 = module_0.encode_shift(str_2)
+    assert var_2 == 'e'
+    str_3 = 'vwxyz'
+    var_3 = module_0.encode_shift(str_3)
+    assert var_3 == 'abcde'
+    str_4 = ''
+    var_4 = module_0.encode_shift(str_4)
+    assert var_4 == ''
+    str_5 = 'a'
+    var_5 = module_0.encode_shift(str_5)
+    assert var_5 == 'f'
+    str_6 = 'roundtrip'
+    var_6 = module_0.encode_shift(str_6)
+    assert var_6 == 'wtzsiywnu'
+    var_7 = module_0.decode_shift(var_6)
+    assert var_7 == 'roundtrip'
+    str_7 = 'abcdefghijklmnopqrstuvwxyz'
+    var_8 = module_0.encode_shift(str_7)
+    assert var_8 == 'fghijklmnopqrstuvwxyzabcde'
+    var_9 = module_0.decode_shift(var_8)
+    assert var_9 == 'abcdefghijklmnopqrstuvwxyz'
+
+def test_case_1():
+    pass

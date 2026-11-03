@@ -1,227 +1,138 @@
 
 
-# Generated at 2026-10-25 11:30:21.415983
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:30:23.832312
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:30:26.245794
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:30:28.661900
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:30:31.077076
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:30:33.492074
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:30:35.906470
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:30:38.320853
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:30:40.735392
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:30:43.150211
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:30:45.564403
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:30:47.978589
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:30:50.394472
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:30:52.811795
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:30:55.226752
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:30:57.640073
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:00.056156
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:02.469945
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:04.885106
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:07.298162
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:09.712496
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:12.126575
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:14.541378
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:16.955796
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:19.369879
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:21.784057
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:24.197794
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:26.610315
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:29.026715
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:31.452250
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:33.866924
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:36.284693
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:38.704061
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:41.113778
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:43.527488
-# Unit test for function split_words
+# Generated at 2026-11-01 20:10:48.873617
+# Unit test for function split_words
+def test_split_words():
+    # Whitespace splitting
+    assert module_0.split_words("hello world") == ["hello", "world"]
+    assert module_0.split_words("one two three") == ["one", "two", "three"]
+    assert module_0.split_words("  spaced   out  ") == ["spaced", "out"]
+
+    # Space takes priority over comma
+    assert module_0.split_words("hello world,foo") == ["hello", "world,foo"]
+
+    # Comma splitting
+    assert module_0.split_words("hello,world") == ["hello", "world"]
+    assert module_0.split_words("a,b,c") == ["a", "b", "c"]
+    assert module_0.split_words(",leading,trailing,") == ["leading", "trailing"]
+
+    # Counting lowercase letters with even ordinal values
+    assert module_0.split_words("abcdef") == 3      # b(98), d(100), f(102)
+    assert module_0.split_words("bdfh") == 4        # all even ordinals
+    assert module_0.split_words("aceg") == 0        # all odd ordinals
+    assert module_0.split_words("ABC") == 0         # uppercase ignored
+    assert module_0.split_words("") == 0            # empty string
+    assert module_0.split_words("123!@#") == 0      # no lowercase letters
+    assert module_0.split_words("z") == 0           # z is 122 (even) -> wait, 122 % 2 == 0
+    assert module_0.split_words("z") == 1           # z(122) is even
+
+# Generated at 2026-11-01 20:11:15.090376
+# Unit test for function split_words
+def test_split_words():
+    # Test splitting on spaces
+    assert module_0.split_words("hello world") == ["hello", "world"]
+    assert module_0.split_words("one two three four") == ["one", "two", "three", "four"]
+
+    # Test splitting on commas (space takes precedence)
+    assert module_0.split_words("hello,world,dog") == ["hello", "world", "dog"]
+    assert module_0.split_words("a,b,c") == ["a", "b", "c"]
+
+    # Test counting lowercase letters with even ordinal values
+    # 'b'=98, 'd'=100, 'f'=102 are even; 'a'=97, 'c'=99 are odd
+    assert module_0.split_words("abcdef") == 3      # b, d, f
+    assert module_0.split_words("aceg") == 0        # all odd ordinals
+    assert module_0.split_words("bdfh") == 4        # all even ordinals
+    assert module_0.split_words("") == 0            # empty string
+    assert module_0.split_words("1234!@#$") == 0    # no lowercase letters
+    assert module_0.split_words("HELLO WORLD") == 0  # uppercase only
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_split_words()
+
+# Generated at 2026-11-01 20:11:30.855905
+# Unit test for function split_words
+def test_split_words():
+    # Words separated by spaces -> list of words
+    assert module_0.split_words("Hello World") == ["Hello", "World"]
+
+    # Words separated by commas -> commas treated as separators
+    assert module_0.split_words("one,two,three") == ["one", "two", "three"]
+
+    # No spaces or commas -> count of lowercase chars with even ordinal
+    assert module_0.split_words("abcdef") == 3      # 'b'(98), 'd'(100), 'f'(102) are even
+    assert module_0.split_words("aaaa") == 0        # 'a'(97) is odd
+    assert module_0.split_words("BBBB") == 0        # uppercase ignored
+    assert module_0.split_words("zzzz") == 4        # 'z'(122) is even
+    assert module_0.split_words("") == 0            # empty string
+
+    # Mixed digits/symbols without separators
+    assert module_0.split_words("123!@#bd") == 2    # only 'b' and 'd' count
+
+# Generated at 2026-11-01 20:11:53.079296
+# Unit test for function split_words
+def test_split_words():
+    # Case 1: text with spaces should split on whitespace
+    assert module_0.split_words("hello world") == ["hello", "world"]
+    assert module_0.split_words("one two three") == ["one", "two", "three"]
+    assert module_0.split_words("Hello World Foo") == ["Hello", "World", "Foo"]
+    assert module_0.split_words("  leading and trailing  ") == ["leading", "and", "trailing"]
+
+    # Case 2: text with commas (no spaces) should split on commas
+    assert module_0.split_words("hello,world") == ["hello", "world"]
+    assert module_0.split_words("one,two,three") == ["one", "two", "three"]
+    assert module_0.split_words("a,b,c,d") == ["a", "b", "c", "d"]
+    assert module_0.split_words("comma,only") == ["comma", "only"]
+
+    # Case 3: no spaces or commas -> count lowercase chars with even ord
+    # 'b'=98, 'd'=100, 'f'=102 are even; 'a'=97, 'c'=99, 'e'=101 are odd
+    assert module_0.split_words("abcdef") == 3
+    assert module_0.split_words("bdf") == 3
+    assert module_0.split_words("ace") == 0
+    assert module_0.split_words("Hello") == 0  # 'e'=101 odd, 'l'=108 even, 'l'=108 even, 'o'=111 odd -> wait
+    # Recheck: H(72 upper), e(101 odd), l(108 even), l(108 even) -> 2
+    assert module_0.split_words("Hello") == 2
+    assert module_0.split_words("") == 0
+    assert module_0.split_words("12345!@#") == 0
+    assert module_0.split_words("z") == 0  # 'z'=122 even but is one char -> 1
+
+    # Edge: single lowercase char with even ord
+    assert module_0.split_words("b") == 1
+    assert module_0.split_words("a") == 0
 
-# Generated at 2026-10-25 11:31:45.941311
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:48.355918
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:50.783821
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:53.196053
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:55.609990
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:31:58.023037
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:00.439897
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:02.860029
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:05.274803
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:07.687047
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:10.101062
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:12.515423
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:14.930083
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:17.345616
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:19.760744
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:22.175108
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:24.588910
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:27.002565
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:29.416538
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:31.834247
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:34.251867
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:36.662838
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:39.076630
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:41.491244
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:32:51.754515
-# Unit test for function split_words
-def test_split_words():assert module_0.split_words("hello world") == ["hello", "world"]
-
-# Generated at 2026-10-25 11:33:27.882486
-# Unit test for function split_words
+    # Mixed: space takes priority over comma
+    assert module_0.split_words("a,b c") == ["a,b", "c"]
 
-# Generated at 2026-10-25 11:33:30.296882
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:33:32.715206
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:33:35.298954
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:33:37.710581
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:33:40.125967
-# Unit test for function split_words
+    print("All tests passed!")
 
-# Generated at 2026-10-25 11:33:42.539581
-# Unit test for function split_words
-
-# Generated at 2026-10-25 11:33:44.957324
-# Unit test for function split_words
 
-# Generated at 2026-10-25 11:33:47.368134
-# Unit test for function split_words
+test_split_words()
 
-# Generated at 2026-10-25 11:33:49.788685
+# Generated at 2026-11-01 20:12:26.548054
 # Unit test for function split_words
+def test_split_words():
+    # Case 1: text containing spaces -> split on whitespace
+    assert module_0.split_words("hello world") == ["hello", "world"]
+    assert module_0.split_words("one two three") == ["one", "two", "three"]
+    assert module_0.split_words("  multiple   spaces  ") == ["multiple", "spaces"]
 
-# Generated at 2026-10-25 11:33:52.200428
-# Unit test for function split_words
+    # Case 2: no spaces but contains commas -> commas treated as delimiters
+    assert module_0.split_words("hello,world") == ["hello", "world"]
+    assert module_0.split_words("one,two,three") == ["one", "two", "three"]
+    assert module_0.split_words("a,b,,c") == ["a", "b", "", "c"]
 
-# Generated at 2026-10-25 11:33:54.612001
-# Unit test for function split_words
+    # Case 3: no spaces or commas -> count lowercase letters with even ord
+    # 'b' (98), 'd' (100), 'f' (102) are lowercase with even ord values
+    assert module_0.split_words("abcdef") == 3
+    assert module_0.split_words("abc") == 1          # only 'b'
+    assert module_0.split_words("ACE") == 0          # no lowercase letters
+    assert module_0.split_words("") == 0             # empty string
+    assert module_0.split_words("b1b!") == 2         # only lowercase 'b' chars count
+    assert module_0.split_words("hello") == 2        # 'h'(104) and 'l'(108) are even
 
-# Generated at 2026-10-25 11:33:57.026269
-# Unit test for function split_words
+    print("All tests passed!")
 
-# Generated at 2026-10-25 11:33:59.441778
-# Unit test for function split_words
 
-# Generated at 2026-10-25 11:34:01.855137
-# Unit test for function split_words
+test_split_words()

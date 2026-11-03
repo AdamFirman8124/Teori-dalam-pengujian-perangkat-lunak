@@ -2,17 +2,56 @@
 import f068 as module_0
 
 def test_case_0():
-    set_0 = set()
-    var_0 = module_0.pluck(set_0)
-    assert var_0 == []
-
-def test_case_1():
-    bytes_0 = b'\xe9n:m\x8f#\x91\x99oU\xad\x1d\xa7d,%98$\x89'
-    var_0 = module_0.pluck(bytes_0)
-    assert var_0 == [36, 18]
-    float_0 = -1034.2679939890752
-    list_0 = [float_0]
-    var_1 = module_0.pluck(list_0)
+    var_0 = []
+    var_1 = module_0.pluck(var_0)
     assert var_1 == []
-    var_2 = module_0.pluck(list_0)
+    int_0 = 1
+    int_1 = 3
+    int_2 = 5
+    int_3 = [int_0, int_1, int_2]
+    var_2 = module_0.pluck(int_3)
     assert var_2 == []
+    int_4 = 2
+    int_5 = [int_4]
+    var_3 = module_0.pluck(int_5)
+    assert var_3 == [2, 0]
+    int_6 = [int_0, int_4, int_1]
+    var_4 = module_0.pluck(int_6)
+    assert var_4 == [2, 1]
+    int_7 = 4
+    int_8 = [int_7, int_4, int_1]
+    var_5 = module_0.pluck(int_8)
+    assert var_5 == [2, 1]
+    int_9 = 0
+    int_10 = [int_2, int_9, int_1, int_9, int_7, int_4]
+    var_6 = module_0.pluck(int_10)
+    assert var_6 == [0, 1]
+    int_11 = 6
+    int_12 = [int_0, int_1, int_11]
+    var_7 = module_0.pluck(int_12)
+    assert var_7 == [6, 2]
+    int_13 = 8
+    int_14 = [int_13, int_7, int_11]
+    var_8 = module_0.pluck(int_14)
+    assert var_8 == [4, 1]
+    int_15 = [int_0, int_9, int_2]
+    var_9 = module_0.pluck(int_15)
+    assert var_9 == [0, 1]
+    int_16 = -4
+    int_17 = -2
+    int_18 = [int_16, int_17, int_1]
+    var_10 = module_0.pluck(int_18)
+    assert var_10 == [-4, 0]
+    int_19 = 7
+    int_20 = 9
+    int_21 = [int_19, int_4, int_20, int_7]
+    var_11 = module_0.pluck(int_21)
+    assert var_11 == [2, 1]
+    int_22 = [int_1]
+    var_12 = module_0.pluck(int_22)
+    assert var_12 == []
+    int_23 = [int_4, int_4, int_0]
+    var_13 = module_0.pluck(int_23)
+    assert var_13 == [2, 0]
+    str_0 = 'All test_pluck tests passed!'
+    var_14 = print(str_0)

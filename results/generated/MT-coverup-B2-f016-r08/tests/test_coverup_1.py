@@ -7,43 +7,17 @@ import pytest
 from f016 import count_distinct_characters
 
 
-@pytest.mark.parametrize(
-    "string, expected",
-    [
-        ("", 0),
-        ("a", 1),
-        ("abcABC", 3),
-        ("aA", 1),
-        ("Hello, World!", 10),
-        ("  ", 1),
-        ("123123", 3),
-        ("MiXeD CaSe", 9),
-    ],
-)
-def test_count_distinct_characters_returns_expected_counts(string, expected):
-    result = count_distinct_characters(string)
-
-    assert result == expected
-    assert result == len(set(string.lower()))
-    assert isinstance(result, int)
-    assert result >= 0
-    assert result <= len(string)
-
-
-def test_count_distinct_characters_is_case_insensitive():
-    lower = count_distinct_characters("abcdef")
-    upper = count_distinct_characters("ABCDEF")
-    mixed = count_distinct_characters("aBcDeF")
-
-    assert lower == upper == mixed == 6
-
-
-def test_count_distinct_characters_does_not_mutate_input():
-    original = "Some String"
-    snapshot = str(original)
-
-    result = count_distinct_characters(original)
-
-    assert result == len(set(original.lower()))
-    assert original == snapshot
-    assert isinstance(original, str)
+def test_count_distinct_characters_basic():
+    """Execute line 3 and verify correct distinct-character counts."""
+    # Mixed case: 'A' and 'a' collapse to one distinct character.
+    assert count_distinct_characters("AaBb") == 2
+    # All distinct characters.
+    assert count_distinct_characters("abcdef") == 6
+    # Repeated characters collapse.
+    assert count_distinct_characters("aaaa") == 1
+    # Empty string has zero distinct characters.
+    assert count_distinct_characters("") == 0
+    # Digits and punctuation are counted too.
+    assert count_distinct_characters("a1!a1!") == 3
+    # Spaces count as characters.
+    assert count_distinct_characters("a b c") == 4

@@ -5,21 +5,36 @@ def test_case_0():
     var_0 = []
     var_1 = module_0.sort_array(var_0)
     assert var_1 == []
-    int_0 = 3
-    int_1 = 1
-    int_2 = 2
-    int_3 = [int_0, int_1, int_2]
-    var_2 = module_0.sort_array(int_3)
-    assert var_2 == [1, 2, 3]
-    int_4 = 5
-    int_5 = [int_0, int_1, int_2, int_4]
+    int_0 = 2
+    int_1 = 4
+    int_2 = 3
+    int_3 = 1
+    int_4 = [int_0, int_1, int_2, int_3]
+    var_2 = module_0.sort_array(int_4)
+    assert var_2 == [1, 2, 3, 4]
+    int_5 = [int_3, int_0]
     var_3 = module_0.sort_array(int_5)
-    assert var_3 == [5, 3, 2, 1]
-    int_6 = 7
-    int_7 = [int_6]
+    assert var_3 == [1, 2]
+    int_6 = 5
+    int_7 = [int_6, int_0, int_3, int_1]
     var_4 = module_0.sort_array(int_7)
-    assert var_4 == [7]
-    int_8 = 4
-    int_9 = [int_8, int_1, int_0]
-    var_5 = module_0.sort_array(int_9)
-    assert var_5 == [1, 3, 4]
+    assert var_4 == [1, 2, 4, 5]
+    int_8 = [int_2, int_3, int_3, int_0]
+    var_5 = module_0.sort_array(int_8)
+    assert var_5 == [1, 1, 2, 3]
+    int_9 = 0
+    int_10 = [int_9, int_3]
+    var_6 = module_0.sort_array(int_10)
+    assert var_6 == [0, 1]
+    int_11 = [int_0, int_1, int_2, int_9]
+    var_7 = module_0.sort_array(int_11)
+    assert var_7 == [4, 3, 2, 0]
+    int_12 = [int_6, int_0, int_3, int_2]
+    var_8 = module_0.sort_array(int_12)
+    assert var_8 == [5, 3, 2, 1]
+    int_13 = [int_3, int_2]
+    var_9 = module_0.sort_array(int_13)
+    assert var_9 == [3, 1]
+    int_14 = [int_3, int_0, int_2]
+    var_10 = module_0.sort_array(int_14)
+    assert var_10 == [3, 2, 1]

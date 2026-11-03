@@ -2,6 +2,68 @@
 import f124 as module_0
 
 def test_case_0():
-    str_0 = 'Yf21fp8nB M3|'
+    str_0 = '03-04-2003'
     var_0 = module_0.valid_date(str_0)
-    assert var_0 is False
+    assert var_0 is True
+    str_1 = '  03-04-2003  '
+    var_1 = module_0.valid_date(str_1)
+    assert var_1 is True
+    str_2 = '1-1-2020'
+    var_2 = module_0.valid_date(str_2)
+    assert var_2 is True
+    str_3 = '12-31-2000'
+    var_3 = module_0.valid_date(str_3)
+    assert var_3 is True
+    assert var_3 is False
+    str_4 = '04-30-2001'
+    var_4 = module_0.valid_date(str_4)
+    assert var_4 is True
+    assert var_4 is False
+    str_5 = '02-29-2020'
+    var_5 = module_0.valid_date(str_5)
+    assert var_5 is True
+    str_6 = '13-01-2000'
+    var_6 = module_0.valid_date(str_6)
+    assert var_6 is False
+    str_7 = '00-01-2000'
+    var_7 = module_0.valid_date(str_7)
+    assert var_7 is False
+    str_8 = '01-32-2000'
+    var_8 = module_0.valid_date(str_8)
+    assert var_8 is False
+    str_9 = '04-31-2001'
+    var_9 = module_0.valid_date(str_9)
+    assert var_9 is False
+    str_10 = '02-30-2000'
+    var_10 = module_0.valid_date(str_10)
+    assert var_10 is False
+    str_11 = '01-00-2000'
+    var_11 = module_0.valid_date(str_11)
+    assert var_11 is False
+    str_12 = '04-00-2001'
+    var_12 = module_0.valid_date(str_12)
+    assert var_12 is False
+    str_13 = '02-00-2000'
+    var_13 = module_0.valid_date(str_13)
+    assert var_13 is False
+    str_14 = ''
+    var_14 = module_0.valid_date(str_14)
+    assert var_14 is False
+    str_15 = '   '
+    var_15 = module_0.valid_date(str_15)
+    assert var_15 is False
+    str_16 = '03-04'
+    var_16 = module_0.valid_date(str_16)
+    assert var_16 is False
+    str_17 = '03/04/2003'
+    var_17 = module_0.valid_date(str_17)
+    assert var_17 is False
+    str_18 = 'ab-cd-efgh'
+    var_18 = module_0.valid_date(str_18)
+    assert var_18 is False
+    str_19 = '03-04-2003-01'
+    var_19 = module_0.valid_date(str_19)
+    assert var_19 is False
+    int_0 = 20030304
+    var_20 = module_0.valid_date(int_0)
+    assert var_20 is False

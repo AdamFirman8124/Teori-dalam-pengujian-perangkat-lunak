@@ -2,6 +2,30 @@
 import f093 as module_0
 
 def test_case_0():
-    str_0 = 'Hello'
+    str_0 = 'test'
     var_0 = module_0.encode(str_0)
-    assert var_0 == 'hGLLQ'
+    assert var_0 == 'TGST'
+    str_1 = 'This is a message'
+    var_1 = module_0.encode(str_1)
+    assert var_1 == 'tHKS KS C MGSSCGG'
+    str_2 = ''
+    var_2 = module_0.encode(str_2)
+    assert var_2 == ''
+    str_3 = 'hello'
+    var_3 = module_0.encode(str_3)
+    assert var_3 == 'HGLLQ'
+    str_4 = 'AEIOU'
+    var_4 = module_0.encode(str_4)
+    assert var_4 == 'cgkqw'
+    str_5 = 'aeiou'
+    var_5 = module_0.encode(str_5)
+    assert var_5 == 'CGKQW'
+    str_6 = 'Python'
+    var_6 = module_0.encode(str_6)
+    assert var_6 == 'pYTHQN'
+    str_7 = 'AbC'
+    var_7 = module_0.encode(str_7)
+    assert var_7 == 'cBc'
+    str_8 = '123!@#'
+    var_8 = module_0.encode(str_8)
+    assert var_8 == '123!@#'

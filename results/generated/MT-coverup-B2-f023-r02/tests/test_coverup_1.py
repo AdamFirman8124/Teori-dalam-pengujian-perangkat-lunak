@@ -7,20 +7,19 @@ import pytest
 from f023 import strlen
 
 
-def test_strlen_empty_string():
-    assert strlen("") == 0
-
-
-def test_strlen_non_empty_string():
+def test_strlen_returns_length_of_string():
+    """Calling strlen must execute line 3 (return len(string)) and return the
+    correct length for a non-empty string."""
     assert strlen("hello") == 5
 
 
-def test_strlen_unicode_and_whitespace():
-    assert strlen("héllo wörld") == 11
-    assert strlen(" ") == 1
+def test_strlen_empty_string():
+    """Edge case: empty string should return 0, still exercising line 3."""
+    assert strlen("") == 0
 
 
-def test_strlen_returns_int_type():
+def test_strlen_returns_int():
+    """Postcondition: the result is an int equal to len of the input."""
     result = strlen("abc")
     assert isinstance(result, int)
-    assert result == 3
+    assert result == len("abc")

@@ -6,29 +6,51 @@ def test_case_0():
     str_1 = '2/1'
     var_0 = module_0.simplify(str_0, str_1)
     assert var_0 is True
-    str_2 = '2/3'
-    str_3 = '3/2'
+    str_2 = '1/3'
+    str_3 = '3/1'
     var_1 = module_0.simplify(str_2, str_3)
     assert var_1 is True
-    str_4 = '4/8'
-    var_2 = module_0.simplify(str_4, str_1)
+    str_4 = '2/4'
+    str_5 = '4/2'
+    var_2 = module_0.simplify(str_4, str_5)
     assert var_2 is True
-    var_3 = module_0.simplify(str_0, str_0)
-    assert var_3 is False
-    str_5 = '1/3'
-    var_4 = module_0.simplify(str_5, str_2)
-    assert var_4 is False
-    str_6 = '2/5'
-    str_7 = '3/7'
-    var_5 = module_0.simplify(str_6, str_7)
-    assert var_5 is False
-    str_8 = '0/5'
-    str_9 = '7/3'
-    var_6 = module_0.simplify(str_8, str_9)
-    assert var_6 is True
-    str_10 = '-1/2'
-    var_7 = module_0.simplify(str_10, str_1)
-    assert var_7 is True
-    str_11 = '-2/1'
-    var_8 = module_0.simplify(str_10, str_11)
-    assert var_8 is True
+    str_6 = '1/1'
+    var_3 = module_0.simplify(str_6, str_6)
+    assert var_3 is True
+    str_7 = '4/3'
+    var_4 = module_0.simplify(str_3, str_7)
+    assert var_4 is True
+    str_8 = '7/2'
+    str_9 = '2/7'
+    var_5 = module_0.simplify(str_8, str_9)
+    assert var_5 is True
+    var_6 = module_0.simplify(str_0, str_0)
+    assert var_6 is False
+    str_10 = '1/4'
+    var_7 = module_0.simplify(str_10, str_0)
+    assert var_7 is False
+    str_11 = '3/4'
+    var_8 = module_0.simplify(str_11, str_0)
+    assert var_8 is False
+    str_12 = '2/3'
+    var_9 = module_0.simplify(str_12, str_11)
+    assert var_9 is False
+    str_13 = '0/1'
+    var_10 = module_0.simplify(str_13, str_0)
+    assert var_10 is True
+    str_14 = '0/5'
+    str_15 = '3/7'
+    var_11 = module_0.simplify(str_14, str_15)
+    assert var_11 is True
+    str_16 = '-1/2'
+    var_12 = module_0.simplify(str_16, str_1)
+    assert var_12 is True
+    str_17 = '-2/1'
+    var_13 = module_0.simplify(str_16, str_17)
+    assert var_13 is True
+    var_14 = module_0.simplify(str_16, str_0)
+    assert var_14 is False
+    var_15 = module_0.simplify(str_0, str_1)
+    assert var_15 is True
+    str_18 = 'All test cases passed!'
+    var_16 = print(str_18)

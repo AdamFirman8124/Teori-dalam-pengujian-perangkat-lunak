@@ -2,33 +2,36 @@
 import f161 as module_0
 
 def test_case_0():
-    str_0 = 'Python'
+    str_0 = 'Hello4!'
     var_0 = module_0.solve(str_0)
-    assert var_0 == 'pYTHON'
-    str_1 = 'Hello World!'
+    assert var_0 == 'hELLO4!'
+    str_1 = 'abcde'
     var_1 = module_0.solve(str_1)
-    assert var_1 == 'hELLO wORLD!'
-    str_2 = 'aBcD'
+    assert var_1 == 'ABCDE'
+    str_2 = 'EDCBA'
     var_2 = module_0.solve(str_2)
-    assert var_2 == 'AbCd'
+    assert var_2 == 'edcba'
     str_3 = '1234!'
     var_3 = module_0.solve(str_3)
-    assert var_3 == '4321'
     assert var_3 == '!4321'
-    str_4 = '#a'
+    str_4 = '#@'
     var_4 = module_0.solve(str_4)
-    assert var_4 == '#A'
-    str_5 = '#AsDf'
+    assert var_4 == '@#'
+    str_5 = ''
     var_5 = module_0.solve(str_5)
-    assert var_5 == '#aSdF'
-    str_6 = ''
+    assert var_5 == ''
+    str_6 = 'a'
     var_6 = module_0.solve(str_6)
-    assert var_6 == ''
-    str_7 = '1234'
+    assert var_6 == 'A'
+    str_7 = '7'
     var_7 = module_0.solve(str_7)
-    assert var_7 == '4321'
-    str_8 = '!!'
+    assert var_7 == '7'
+    str_8 = 'a1b2'
     var_8 = module_0.solve(str_8)
-    assert var_8 == '!!'
-    str_9 = 'All tests passed.'
-    var_9 = print(str_9)
+    assert var_8 == 'A1B2'
+    str_9 = 'PyThOn'
+    var_9 = module_0.solve(str_9)
+    assert var_9 == 'pYtHoN'
+
+def test_case_1():
+    pass

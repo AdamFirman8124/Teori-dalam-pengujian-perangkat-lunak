@@ -7,30 +7,18 @@ import pytest
 from f036 import fizz_buzz
 
 
-def test_fizz_buzz_counts_sevens():
-    # i in 0..49 divisible by 11 or 13: 0, 11, 13, 22, 26, 33, 39, 44
-    # concatenated: "011132226333944" -> digits 0,1,1,1,3,2,2,2,6,3,3,3,9,4,4 -> zero 7s
-    assert fizz_buzz(50) == 0
-
-
-def test_fizz_buzz_counts_sevens_positive():
-    # i in 0..77 divisible by 11 or 13: 0,11,13,22,26,33,39,44,52,55,65,66,77
-    # concatenated: "0111322263339445255656677" -> "77" contributes two '7's
-    assert fizz_buzz(78) == 2
-
-
-def test_fizz_buzz_zero_n():
-    # range(0) is empty: loop body (lines 4-6) skipped, s == '', second loop skipped
+def test_fizz_buzz_empty_range():
+    """n=0: loops never execute; result must be 0."""
     assert fizz_buzz(0) == 0
 
 
-def test_fizz_buzz_no_multiples():
-    # n=11: only i=0 qualifies, s == '0', no 7s
-    assert fizz_buzz(11) == 0
+def test_fizz_buzz_both_branches_of_condition():
+    """n=2: i=0 satisfies (0 % 11 == 0), i=1 does not; no '7' digits yet."""
+    assert fizz_buzz(2) == 0
 
 
-def test_fizz_buzz_multiple_sevens():
-    # multiples of 11 or 13 up to 117: 0,11,13,22,26,33,39,44,52,55,65,66,77,78,88,91,99,104,110,117
-    # concatenated: "0111322263339445255656677889199104110117"
-    # digits containing 7: 77 -> two, 78 -> one, 117 -> one (91 has no '7') => total 4
-    assert fizz_buzz(118) == 4
+def test_fizz_buzz_counts_sevens():
+    """n=78: multiples of 11/13 up to 77; '77' contributes two '7' chars."""
+    # Multiples: 0, 11, 13, 22, 26, 33, 39, 44, 52, 55, 65, 66, 77
+    # Concatenated: "011132239445255656677" -> exactly two '7' characters.
+    assert fizz_buzz(78) == 2

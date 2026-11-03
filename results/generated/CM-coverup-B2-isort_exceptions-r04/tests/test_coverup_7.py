@@ -7,40 +7,56 @@ import pytest
 from isort.exceptions import AssignmentsFormatMismatch, ISortError
 
 
-def test_assignments_format_mismatch_stores_code_and_message():
-    code = "x = 1\ny = 2\nnot an assignment"
-    exc = AssignmentsFormatMismatch(code)
+class TestAssignmentsFormatMismatch:
+    def test_message_and_code_attribute(self):
+        code = "x = 1\ny = 2"
+        error = AssignmentsFormatMismatch(code)
 
-    assert isinstance(exc, AssignmentsFormatMismatch)
-    assert isinstance(exc, ISortError)
-    assert isinstance(exc, Exception)
-    assert exc.code == code
-    assert exc.args[0] == str(exc)
-    assert (
-        "isort was told to sort a section of assignments, however the given code:\n\n"
-        f"{code}\n\n"
-        "Does not match isort's strict single line formatting requirement for assignment "
-        "sorting:\n\n"
-        "{variable_name} = {value}\n"
-        "{variable_name2} = {value2}\n"
-        "...\n\n"
-    ) == str(exc)
+        # Verify the exception is properly initialized (lines 128-137)
+        assert isinstance(error, AssignmentsFormatMismatch)
+        assert isinstance(error, ISortError)
+        assert isinstance(error, Exception)
 
+        # Verify the code attribute is stored (line 137)
+        assert error.code == code
 
-def test_assignments_format_mismatch_can_be_raised_and_caught():
-    code = "value: int = 1"
+        # Verify the full message built in super().__init__ (lines 128-136)
+        expected_message = (
+            "isort was told to sort a section of assignments, however the given code:\n\n"
+            f"{code}\n\n"
+            "Does not match isort's strict single line formatting requirement for assignment "
+            "sorting:\n\n"
+            "{variable_name} = {value}\n"
+            "{variable_name2} = {value2}\n"
+            "...\n\n"
+        )
+        assert str(error) == expected_message
 
-    with pytest.raises(AssignmentsFormatMismatch) as exc_info:
-        raise AssignmentsFormatMismatch(code)
+    def test_message_embeds_given_code(self):
+        code = "foo = 'bar'"
+        error = AssignmentsFormatMismatch(code)
 
-    assert exc_info.value.code == code
-    assert code in str(exc_info.value)
-    assert "{variable_name} = {value}" in str(exc_info.value)
-    assert "{variable_name2} = {value2}" in str(exc_info.value)
+        assert code in str(error)
+        assert "isort was told to sort a section of assignments" in str(error)
+        assert "Does not match isort's strict single line formatting requirement" in str(error)
+        assert "{variable_name} = {value}" in str(error)
+        assert "{variable_name2} = {value2}" in str(error)
 
+    def test_empty_code(self):
+        error = AssignmentsFormatMismatch("")
+        assert error.code == ""
+        assert "however the given code:\n\n\n\n" in str(error)
 
-def test_assignments_format_mismatch_with_empty_code():
-    exc = AssignmentsFormatMismatch("")
+    def test_multiline_code_preserved(self):
+        code = "a = 1\nb = 2\nc = 3"
+        error = AssignmentsFormatMismatch(code)
+        assert error.code == code
+        assert code in str(error)
 
-    assert exc.code == ""
-    assert "given code:\n\n\n\nDoes not match" in str(exc)
+    def test_can_be_raised_and_caught(self):
+        code = "bad = format"
+        with pytest.raises(AssignmentsFormatMismatch) as exc_info:
+            raise AssignmentsFormatMismatch(code)
+
+        assert exc_info.value.code == code
+        assert code in str(exc_info.value)

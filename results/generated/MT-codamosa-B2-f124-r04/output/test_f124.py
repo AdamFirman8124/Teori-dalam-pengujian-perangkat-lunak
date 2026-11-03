@@ -2,154 +2,206 @@
 import f124 as module_0
 
 def test_case_0():
-    str_0 = '04-30-2023'
+    str_0 = '03-11-2000'
     var_0 = module_0.valid_date(str_0)
     assert var_0 is True
-    assert var_0 is False
-    str_1 = '02-29-2024'
+    str_1 = '06-04-2020'
     var_1 = module_0.valid_date(str_1)
     assert var_1 is True
-    str_2 = '00-1\x0c0-2023'
+    str_2 = '01-15-2019'
     var_2 = module_0.valid_date(str_2)
-    assert var_2 is False
-    str_3 = '13-10-2023'
+    assert var_2 is True
+    str_3 = '02-29-2020'
     var_3 = module_0.valid_date(str_3)
-    assert var_3 is False
-    str_4 = '01-00-2023'
+    assert var_3 is True
+    str_4 = '12-31-2021'
     var_4 = module_0.valid_date(str_4)
+    assert var_4 is True
     assert var_4 is False
-    str_5 = '01-32-2023'
+    str_5 = '1-1-2011'
     var_5 = module_0.valid_date(str_5)
-    assert var_5 is False
-    var_6 = module_0.valid_date(str_2)
-    assert var_6 is False
-    str_6 = 'not-a-date'
-    var_7 = module_0.valid_date(str_6)
+    assert var_5 is True
+    str_6 = '  03-11-2000  '
+    var_6 = module_0.valid_date(str_6)
+    assert var_6 is True
+    str_7 = '15-01-2019'
+    var_7 = module_0.valid_date(str_7)
     assert var_7 is False
-    str_7 = '01-01'
-    var_8 = module_0.valid_date(str_7)
+    str_8 = '00-01-2019'
+    var_8 = module_0.valid_date(str_8)
     assert var_8 is False
+    str_9 = '13-01-2019'
+    var_9 = module_0.valid_date(str_9)
+    assert var_9 is False
+    str_10 = '03-32-2011'
+    var_10 = module_0.valid_date(str_10)
+    assert var_10 is False
+    str_11 = '02-30-2021'
+    var_11 = module_0.valid_date(str_11)
+    assert var_11 is False
+    str_12 = '02-00-2021'
+    var_12 = module_0.valid_date(str_12)
+    assert var_12 is False
+    str_13 = ''
+    var_13 = module_0.valid_date(str_13)
+    assert var_13 is False
+    str_14 = 'abc'
+    var_14 = module_0.valid_date(str_14)
+    assert var_14 is False
+    str_15 = '03/11/2000'
+    var_15 = module_0.valid_date(str_15)
+    assert var_15 is False
+    str_16 = '03-11'
+    var_16 = module_0.valid_date(str_16)
+    assert var_16 is False
+    str_17 = '03-11-20a0'
+    var_17 = module_0.valid_date(str_17)
+    assert var_17 is False
+    str_18 = '03-11-2000-extra'
+    var_18 = module_0.valid_date(str_18)
+    assert var_18 is False
 
 def test_case_1():
-    str_0 = '02-29-2024'
+    str_0 = '03-11-2000'
     var_0 = module_0.valid_date(str_0)
     assert var_0 is True
+    str_1 = '06-04-2020'
+    var_1 = module_0.valid_date(str_1)
+    assert var_1 is True
+    str_2 = '11-30-2021'
+    var_2 = module_0.valid_date(str_2)
+    assert var_2 is True
+    assert var_2 is False
+    str_3 = '12-31-2022'
+    var_3 = module_0.valid_date(str_3)
+    assert var_3 is True
+    assert var_3 is False
+    str_4 = '02-29-2020'
+    var_4 = module_0.valid_date(str_4)
+    assert var_4 is True
+    str_5 = '1-1-2021'
+    var_5 = module_0.valid_date(str_5)
+    assert var_5 is True
+    str_6 = '  03-11-2000  '
+    var_6 = module_0.valid_date(str_6)
+    assert var_6 is True
+    str_7 = '15-01-2019'
+    var_7 = module_0.valid_date(str_7)
+    assert var_7 is False
+    str_8 = '00-01-2019'
+    var_8 = module_0.valid_date(str_8)
+    assert var_8 is False
+    str_9 = '13-01-2019'
+    var_9 = module_0.valid_date(str_9)
+    assert var_9 is False
+    str_10 = '04-0-2040'
+    var_10 = module_0.valid_date(str_10)
+    assert var_10 is False
+    str_11 = '04-31-2021'
+    var_11 = module_0.valid_date(str_11)
+    assert var_11 is False
+    str_12 = '06-31-2021'
+    var_12 = module_0.valid_date(str_12)
+    assert var_12 is False
+    str_13 = '09-31-2021'
+    var_13 = module_0.valid_date(str_13)
+    assert var_13 is False
+    str_14 = '02-30-2021'
+    var_14 = module_0.valid_date(str_14)
+    assert var_14 is False
+    str_15 = '03-32-2021'
+    var_15 = module_0.valid_date(str_15)
+    assert var_15 is False
+    str_16 = '01-32-2021'
+    var_16 = module_0.valid_date(str_16)
+    assert var_16 is False
+    str_17 = ''
+    var_17 = module_0.valid_date(str_17)
+    assert var_17 is False
+    str_18 = '06/04/2020'
+    var_18 = module_0.valid_date(str_18)
+    assert var_18 is False
+    str_19 = '06-04-2020extra'
+    var_19 = module_0.valid_date(str_19)
+    assert var_19 is False
+    str_20 = 'abc-def-ghij'
+    var_20 = module_0.valid_date(str_20)
+    assert var_20 is False
+    str_21 = '1-1'
+    var_21 = module_0.valid_date(str_21)
+    assert var_21 is False
+    str_22 = '06-04'
+    var_22 = module_0.valid_date(str_22)
+    assert var_22 is False
+    str_23 = '06-04-2020-01'
+    var_23 = module_0.valid_date(str_23)
+    assert var_23 is False
 
 def test_case_2():
-    str_0 = '12-31-2024'
+    str_0 = '03-11-2000'
     var_0 = module_0.valid_date(str_0)
     assert var_0 is True
-    assert var_0 is False
-    str_1 = '04-30-2024'
+    str_1 = '12-31-2020'
     var_1 = module_0.valid_date(str_1)
     assert var_1 is True
     assert var_1 is False
-    str_2 = '02-29-2024'
+    str_2 = '01-01-1999'
     var_2 = module_0.valid_date(str_2)
     assert var_2 is True
-
-def test_case_3():
-    str_0 = '04-30-2023'
-    var_0 = module_0.valid_date(str_0)
-    assert var_0 is True
-    assert var_0 is False
-    str_1 = ' 06-15-2023 '
-    var_1 = module_0.valid_date(str_1)
-    assert var_1 is True
-    str_2 = '02-29-2024'
-    var_2 = module_0.valid_date(str_2)
-    assert var_2 is True
-    str_3 = '00-10-2023'
+    str_3 = '04-30-2021'
     var_3 = module_0.valid_date(str_3)
+    assert var_3 is True
     assert var_3 is False
-    list_0 = [var_1]
-    var_4 = module_0.valid_date(list_0)
-    assert var_4 is False
-    str_4 = "':G3Q*3@?xjS\x0crC~EUAX"
-    var_5 = module_0.valid_date(str_4)
-    assert var_5 is False
-    float_0 = 2106.380332
-    var_6 = module_0.valid_date(float_0)
-    assert var_6 is False
-
-def test_case_4():
-    str_0 = '12-31-2023'
-    str_1 = '04-30-2023'
-    var_0 = module_0.valid_date(str_1)
-    assert var_0 is True
-    assert var_0 is False
-    str_2 = ' 06-15-2023 '
-    var_1 = module_0.valid_date(str_2)
-    assert var_1 is True
-    str_3 = '02-29-2024'
-    var_2 = module_0.valid_date(str_3)
-    assert var_2 is True
-    var_3 = module_0.valid_date(str_0)
-    assert var_3 is False
-    str_4 = '01-00-2023'
+    str_4 = '02-29-2020'
     var_4 = module_0.valid_date(str_4)
-    assert var_4 is False
-
-def test_case_5():
-    str_0 = '01-31-2024'
-    str_1 = '04-0-204'
-    str_2 = '02-28-2023'
-    var_0 = module_0.valid_date(str_2)
-    assert var_0 is True
-    str_3 = '02-29-2024'
-    var_1 = module_0.valid_date(str_3)
-    assert var_1 is True
-    var_2 = module_0.valid_date(str_1)
-    assert var_2 is False
-    var_3 = module_0.valid_date(str_1)
-    assert var_3 is False
-    str_4 = '02-30-2024'
-    var_4 = module_0.valid_date(str_4)
-    assert var_4 is False
-    str_5 = '02-29-2023'
+    assert var_4 is True
+    str_5 = '  06-15-2025  '
     var_5 = module_0.valid_date(str_5)
-    assert var_5 is False
     assert var_5 is True
-    var_6 = module_0.valid_date(str_1)
+    str_6 = '13-11-2000'
+    var_6 = module_0.valid_date(str_6)
     assert var_6 is False
-    str_6 = '01-01-0000'
-    var_7 = module_0.valid_date(str_6)
+    str_7 = '00-11-2000'
+    var_7 = module_0.valid_date(str_7)
     assert var_7 is False
-    assert var_7 is True
-    var_8 = module_0.valid_date(str_0)
+    str_8 = '99-11-2000'
+    var_8 = module_0.valid_date(str_8)
     assert var_8 is False
-    str_7 = ''
-    var_9 = module_0.valid_date(str_7)
+    str_9 = '03-32-2011'
+    var_9 = module_0.valid_date(str_9)
     assert var_9 is False
-
-def test_case_6():
-    str_0 = '01-31-2024'
-    str_1 = '04-0-204'
-    str_2 = '02-28-2023'
-    var_0 = module_0.valid_date(str_2)
-    assert var_0 is True
-    str_3 = '02-29-2024'
-    var_1 = module_0.valid_date(str_3)
-    assert var_1 is True
-    var_2 = module_0.valid_date(str_1)
-    assert var_2 is False
-    var_3 = module_0.valid_date(str_1)
-    assert var_3 is False
-    str_4 = '2-0-2024'
-    var_4 = module_0.valid_date(str_4)
-    assert var_4 is False
-    str_5 = '02-29-2023'
-    var_5 = module_0.valid_date(str_5)
-    assert var_5 is False
-    assert var_5 is True
-    var_6 = module_0.valid_date(str_1)
-    assert var_6 is False
-    str_6 = '01-01-0000'
-    var_7 = module_0.valid_date(str_6)
-    assert var_7 is False
-    assert var_7 is True
-    var_8 = module_0.valid_date(str_0)
-    assert var_8 is False
-    str_7 = ''
-    var_9 = module_0.valid_date(str_7)
-    assert var_9 is False
+    str_10 = '03-00-2011'
+    var_10 = module_0.valid_date(str_10)
+    assert var_10 is False
+    str_11 = '04-31-2011'
+    var_11 = module_0.valid_date(str_11)
+    assert var_11 is False
+    str_12 = '02-30-2021'
+    var_12 = module_0.valid_date(str_12)
+    assert var_12 is False
+    str_13 = '06-32-2022'
+    var_13 = module_0.valid_date(str_13)
+    assert var_13 is False
+    str_14 = '2000-03-11'
+    var_14 = module_0.valid_date(str_14)
+    assert var_14 is False
+    str_15 = '03/11/2000'
+    var_15 = module_0.valid_date(str_15)
+    assert var_15 is False
+    str_16 = 'month-4-2044'
+    var_16 = module_0.valid_date(str_16)
+    assert var_16 is False
+    str_17 = ''
+    var_17 = module_0.valid_date(str_17)
+    assert var_17 is False
+    str_18 = '03-11'
+    var_18 = module_0.valid_date(str_18)
+    assert var_18 is False
+    str_19 = 'abc'
+    var_19 = module_0.valid_date(str_19)
+    assert var_19 is False
+    str_20 = '03-11-2000-01'
+    var_20 = module_0.valid_date(str_20)
+    assert var_20 is False
+    str_21 = 'All test_valid_date tests passed!'
+    var_21 = print(str_21)

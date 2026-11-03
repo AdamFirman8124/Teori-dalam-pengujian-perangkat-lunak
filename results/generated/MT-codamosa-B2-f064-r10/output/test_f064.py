@@ -2,44 +2,54 @@
 import f064 as module_0
 
 def test_case_0():
-    str_0 = 'hello'
+    str_0 = 'abcde'
     var_0 = module_0.vowels_count(str_0)
     assert var_0 == 2
-    str_1 = 'abcde'
+    str_1 = 'ABCDE'
     var_1 = module_0.vowels_count(str_1)
     assert var_1 == 2
-    str_2 = 'bcdfg'
+    str_2 = 'ACEDY'
     var_2 = module_0.vowels_count(str_2)
-    assert var_2 == 0
-    str_3 = 'aeiouAEIOU'
+    assert var_2 == 3
+    str_3 = 'Alone'
     var_3 = module_0.vowels_count(str_3)
-    assert var_3 == 10
-    str_4 = 'ACEDY'
+    assert var_3 == 3
+    str_4 = 'hey'
     var_4 = module_0.vowels_count(str_4)
-    assert var_4 == 3
-    str_5 = 'y'
+    assert var_4 == 2
+    str_5 = 'busy'
     var_5 = module_0.vowels_count(str_5)
-    assert var_5 == 1
-    str_6 = 'Y'
+    assert var_5 == 2
+    str_6 = 'y'
     var_6 = module_0.vowels_count(str_6)
     assert var_6 == 1
-    str_7 = 'sky'
+    str_7 = 'Y'
     var_7 = module_0.vowels_count(str_7)
     assert var_7 == 1
-    str_8 = 'happy'
+    str_8 = 'EASY'
     var_8 = module_0.vowels_count(str_8)
-    assert var_8 == 2
-    str_9 = 'boy'
+    assert var_8 == 3
+    str_9 = 'yellow'
     var_9 = module_0.vowels_count(str_9)
     assert var_9 == 2
-    str_10 = 'yellow'
+    str_10 = 'myth'
     var_10 = module_0.vowels_count(str_10)
-    assert var_10 == 2
-    str_11 = 'Year'
+    assert var_10 == 0
+    str_11 = 'bcdfg'
     var_11 = module_0.vowels_count(str_11)
-    assert var_11 == 2
-
-def test_case_1():
-    str_0 = 'hello'
-    var_0 = module_0.vowels_count(str_0)
-    assert var_0 == 2
+    assert var_11 == 0
+    str_12 = '12345'
+    var_12 = module_0.vowels_count(str_12)
+    assert var_12 == 0
+    str_13 = 'Hello, World!'
+    var_13 = module_0.vowels_count(str_13)
+    assert var_13 == 2
+    assert var_13 == 3
+    str_14 = 'AbE'
+    var_14 = module_0.vowels_count(str_14)
+    assert var_14 == 2
+    str_15 = 'aeiouAEIOU'
+    var_15 = module_0.vowels_count(str_15)
+    assert var_15 == 10
+    str_16 = 'All vowels_count tests passed!'
+    var_16 = print(str_16)

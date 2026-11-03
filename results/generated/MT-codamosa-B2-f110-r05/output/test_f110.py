@@ -10,27 +10,57 @@ def test_case_0():
     int_5 = [int_0, int_1, int_2, int_3]
     var_0 = module_0.exchange(int_4, int_5)
     assert var_0 == 'YES'
-    int_6 = 5
-    int_7 = 7
-    int_8 = [int_0, int_6, int_2, int_7]
+    int_6 = [int_0, int_1, int_2, int_3]
+    int_7 = 5
+    int_8 = [int_0, int_7, int_2, int_3]
+    var_1 = module_0.exchange(int_6, int_8)
+    assert var_1 == 'NO'
     int_9 = 6
-    int_10 = 8
-    int_11 = [int_1, int_3, int_9, int_10]
-    var_1 = module_0.exchange(int_8, int_11)
-    assert var_1 == 'YES'
-    int_12 = [int_0, int_1, int_2, int_3]
-    int_13 = [int_0, int_6, int_2, int_3]
-    var_2 = module_0.exchange(int_12, int_13)
-    assert var_2 == 'NO'
-    int_14 = [int_1, int_3, int_9]
-    int_15 = [int_0, int_2, int_6]
-    var_3 = module_0.exchange(int_14, int_15)
+    int_10 = [int_1, int_3, int_9]
+    int_11 = [int_0, int_2, int_7]
+    var_2 = module_0.exchange(int_10, int_11)
+    assert var_2 == 'YES'
+    int_12 = [int_0]
+    int_13 = [int_1]
+    var_3 = module_0.exchange(int_12, int_13)
     assert var_3 == 'YES'
-    int_16 = [int_0, int_2, int_6]
-    int_17 = [int_1, int_3, int_9]
-    var_4 = module_0.exchange(int_16, int_17)
-    assert var_4 == 'YES'
+    int_14 = [int_0, int_2]
+    int_15 = [int_1]
+    var_4 = module_0.exchange(int_14, int_15)
+    assert var_4 == 'NO'
     var_5 = []
     var_6 = []
     var_7 = module_0.exchange(var_5, var_6)
     assert var_7 == 'YES'
+    int_16 = [int_0, int_2, int_7]
+    int_17 = [int_1, int_3, int_9]
+    var_8 = module_0.exchange(int_16, int_17)
+    assert var_8 == 'YES'
+    int_18 = [int_0, int_2, int_7]
+    int_19 = [int_0, int_3, int_9]
+    var_9 = module_0.exchange(int_18, int_19)
+    assert var_9 == 'NO'
+    int_20 = 0
+    int_21 = [int_0, int_20]
+    int_22 = [int_20]
+    var_10 = module_0.exchange(int_21, int_22)
+    assert var_10 == 'YES'
+    int_23 = -1
+    int_24 = -3
+    int_25 = [int_23, int_24]
+    int_26 = -2
+    int_27 = -4
+    int_28 = [int_26, int_27]
+    var_11 = module_0.exchange(int_25, int_28)
+    assert var_11 == 'YES'
+    int_29 = -1
+    int_30 = -3
+    int_31 = [int_29, int_30]
+    int_32 = -2
+    int_33 = [int_32]
+    var_12 = module_0.exchange(int_31, int_33)
+    assert var_12 == 'NO'
+    int_34 = [int_0]
+    int_35 = [int_1, int_3, int_9]
+    var_13 = module_0.exchange(int_34, int_35)
+    assert var_13 == 'YES'

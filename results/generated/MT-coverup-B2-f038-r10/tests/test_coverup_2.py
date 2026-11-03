@@ -7,22 +7,44 @@ import pytest
 from f038 import decode_cyclic, encode_cyclic
 
 
-def test_decode_cyclic_roundtrip():
-    s = "abcdefghij"
-    encoded = encode_cyclic(s)
-    assert decode_cyclic(encoded) == s
+@pytest.mark.parametrize(
+    "s",
+    [
+        "",
+        "a",
+        "ab",
+        "abc",
+        "abcd",
+        "abcde",
+        "abcdef",
+        "abcdefghi",
+        "abcdefghij",
+        "Hello, World!",
+        "xY z_12",
+    ],
+)
+def test_decode_cyclic_inverts_encode(s):
+    """decode_cyclic must undo encode_cyclic for every input length."""
+    assert decode_cyclic(encode_cyclic(s)) == s
 
 
-def test_decode_cyclic_known_value():
-    # encode_cyclic rotates each 3-char group left by 1; applying it twice
-    # (as decode_cyclic does) rotates left by 2.
-    assert decode_cyclic("abc") == "cab"
-    assert decode_cyclic("abcdef") == "cabfde"
-    # groups shorter than 3 chars are left untouched by encode_cyclic
-    assert decode_cyclic("ab") == "ab"
-    assert decode_cyclic("") == ""
+@pytest.mark.parametrize(
+    "s, expected",
+    [
+        ("", ""),
+        ("a", "a"),
+        ("ab", "ab"),
+        ("abc", "cab"),
+        ("abcd", "cabd"),
+        ("abcdef", "cabfde"),
+    ],
+)
+def test_decode_cyclic_known_values(s, expected):
+    """Each complete group of three characters is rotated right by one."""
+    assert decode_cyclic(s) == expected
 
 
-def test_decode_cyclic_is_inverse_of_encode():
-    for s in ["", "a", "ab", "abc", "abcd", "abcde", "abcdefg", "xyzxyz"]:
-        assert decode_cyclic(encode_cyclic(s)) == s
+def test_decode_cyclic_matches_double_encode():
+    """decode_cyclic is literally encode_cyclic applied twice."""
+    s = "pytest coverage!"
+    assert decode_cyclic(s) == encode_cyclic(encode_cyclic(s))

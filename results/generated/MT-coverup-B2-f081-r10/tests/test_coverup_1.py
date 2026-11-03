@@ -5,29 +5,33 @@
 from f081 import numerical_letter_grade
 
 
-def test_numerical_letter_grade_covers_every_grade_branch():
-    grades = [4.0, 3.8, 3.7, 3.2, 2.8, 2.5, 2.1, 1.8, 1.5, 1.1, 0.8, 0.1, 0.0]
-    original_grades = grades.copy()
-
+def test_numerical_letter_grade_all_branches():
+    grades = [4.0, 3.9, 3.75, 3.5, 3.2, 2.9, 2.5, 2.1, 1.9, 1.5, 1.15, 0.9, 0.5, 0.0, -1.0]
+    expected = ["A+", "A", "A", "A-", "B+", "B", "B-", "C+", "C", "C-",
+                "D+", "D", "D-", "E", "E"]
     result = numerical_letter_grade(grades)
-
-    assert result == [
-        "A+",
-        "A",
-        "A-",
-        "B+",
-        "B",
-        "B-",
-        "C+",
-        "C",
-        "C-",
-        "D+",
-        "D",
-        "D-",
-        "E",
-    ]
-    assert grades == original_grades
+    assert result == expected
+    assert len(result) == len(grades)
 
 
-def test_numerical_letter_grade_with_empty_input():
+def test_numerical_letter_grade_empty():
     assert numerical_letter_grade([]) == []
+
+
+def test_numerical_letter_grade_boundaries():
+    assert numerical_letter_grade([3.7]) == ["A-"]
+    assert numerical_letter_grade([3.3]) == ["B+"]
+    assert numerical_letter_grade([3.0]) == ["B"]
+    assert numerical_letter_grade([2.7]) == ["B-"]
+    assert numerical_letter_grade([2.3]) == ["C+"]
+    assert numerical_letter_grade([2.0]) == ["C"]
+    assert numerical_letter_grade([1.7]) == ["C-"]
+    assert numerical_letter_grade([1.3]) == ["D+"]
+    assert numerical_letter_grade([1.0]) == ["D"]
+    assert numerical_letter_grade([0.7]) == ["D-"]
+
+
+def test_numerical_letter_grade_does_not_mutate_input():
+    grades = [4.0, 0.0]
+    numerical_letter_grade(grades)
+    assert grades == [4.0, 0.0]

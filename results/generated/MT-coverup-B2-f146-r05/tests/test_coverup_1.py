@@ -8,42 +8,40 @@ from f146 import specialFilter
 
 
 def test_empty_list_returns_zero():
+    """Covers lines 4, 5 (loop-exit branch) and 12."""
     assert specialFilter([]) == 0
 
 
 def test_numbers_not_greater_than_ten_are_ignored():
-    # Covers the False branch of `num > 10` (line 6)
-    assert specialFilter([10, -33, 5, 0, -100]) == 0
+    """Covers the False branch of 'if num > 10' (line 6)."""
+    # 10 is not strictly greater than 10; negatives and small numbers also skipped.
+    assert specialFilter([10, 5, 0, -15, -33]) == 0
 
 
 def test_numbers_greater_than_ten_with_even_digits_are_ignored():
-    # Covers lines 7-8 and the False branch of line 9
-    assert specialFilter([12, 20, 22, 100, 246]) == 0
+    """Covers lines 7, 8 and the False branch of line 9.
+
+    - 22: first digit 2 is even (short-circuits the 'and').
+    - 12: first digit 1 is odd but last digit 2 is even.
+    """
+    assert specialFilter([22, 12]) == 0
 
 
-def test_first_digit_odd_last_digit_even_is_ignored():
-    # First digit odd, last digit even -> not counted
-    assert specialFilter([12, 14, 16, 18]) == 0
+def test_numbers_with_odd_first_and_last_digits_are_counted():
+    """Covers the True branch of line 9 and line 10 (count += 1)."""
+    # 15 -> first 1, last 5; 33 -> first 3, last 3; 97 -> first 9, last 7; 111 -> 1 and 1.
+    assert specialFilter([15, 33, 97, 111]) == 4
 
 
-def test_first_digit_even_last_digit_odd_is_ignored():
-    # First digit even, last digit odd -> not counted
-    assert specialFilter([21, 41, 61, 81]) == 0
+def test_mixed_list():
+    """Exercises every branch in a single call: empty-ish, <=10, >10 rejected, >10 accepted."""
+    result = specialFilter([15, -2, 11, 22, 33, 10, 97, 5])
+    # Counted: 15, 11, 33, 97 -> 4
+    assert result == 4
 
 
-def test_first_and_last_digits_odd_are_counted():
-    # Covers the True branch of line 9 and line 10 (count += 1)
-    assert specialFilter([11, 33, 15, 97, 111, 575]) == 6
-
-
-def test_mixed_input_counts_only_matching_numbers():
-    # Covers loop iteration over multiple elements with mixed outcomes
-    nums = [1, 10, 12, 13, 33, 44, 57, 99, 100, 101, -15]
-    # Matching: 13, 33, 57, 99, 101
-    assert specialFilter(nums) == 5
-
-
-def test_result_is_int_and_non_negative():
-    result = specialFilter([11, 22, 33])
+def test_result_is_always_non_negative_int():
+    """Sanity check on the return type/value for a list with no qualifying numbers."""
+    result = specialFilter([24, 68, 100])
+    assert result == 0
     assert isinstance(result, int)
-    assert result == 2

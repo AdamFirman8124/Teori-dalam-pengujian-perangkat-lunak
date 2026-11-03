@@ -7,45 +7,45 @@ import pytest
 from f109 import move_one_ball
 
 
-def test_empty_array_returns_true():
+def test_move_one_ball_empty_returns_true():
+    """Covers lines 3-4: empty array short-circuits to True."""
     assert move_one_ball([]) is True
 
 
-def test_single_element_returns_true():
+def test_move_one_ball_single_element_returns_true():
+    """Covers lines 5-10 with a single-element array (min_index == 0)."""
     assert move_one_ball([7]) is True
 
 
-def test_already_sorted_returns_true():
-    arr = [1, 2, 3, 4, 5]
-    assert move_one_ball(arr) is True
-    # postcondition: input not mutated
-    assert arr == [1, 2, 3, 4, 5]
+def test_move_one_ball_already_sorted_returns_true():
+    """Covers lines 5-11 and 14 with min_index == 0 (no rotation needed)."""
+    assert move_one_ball([1, 2, 3, 4]) is True
 
 
-def test_valid_rotation_returns_true():
+def test_move_one_ball_rotated_returns_true():
+    """Covers lines 5-11 and 14 with min_index > 0 (valid rotation)."""
+    assert move_one_ball([3, 4, 5, 1, 2]) is True
+
+
+def test_move_one_ball_unrotatable_returns_false():
+    """Covers lines 12-13: mismatch found during comparison -> False."""
+    assert move_one_ball([1, 3, 2]) is False
+
+
+def test_move_one_ball_rotated_unrotatable_returns_false():
+    """Covers lines 12-13 with a rotated array that cannot be sorted."""
+    assert move_one_ball([2, 3, 4, 1, 5]) is False
+
+
+def test_move_one_ball_duplicates_rotated_returns_true():
+    """Duplicate minimum values still rotate into sorted order -> True."""
+    assert move_one_ball([2, 3, 1, 1, 2]) is True
+
+
+def test_move_one_ball_pure_function_no_state_pollution():
+    """The function must not mutate its input (no side effects)."""
     arr = [3, 4, 5, 1, 2]
-    assert move_one_ball(arr) is True
-    assert arr == [3, 4, 5, 1, 2]
-
-
-def test_rotation_with_duplicates_returns_true():
-    assert move_one_ball([2, 2, 3, 1, 2]) is True
-
-
-def test_non_rotation_returns_false():
-    arr = [1, 3, 2, 4]
-    assert move_one_ball(arr) is False
-    assert arr == [1, 3, 2, 4]
-
-
-def test_descending_returns_false():
-    assert move_one_ball([5, 4, 3, 2, 1]) is False
-
-
-def test_minimum_at_end_rotation_returns_true():
-    assert move_one_ball([2, 3, 4, 1]) is True
-
-
-def test_returns_bool_type():
-    assert isinstance(move_one_ball([1, 2]), bool)
-    assert isinstance(move_one_ball([2, 1, 3]), bool)
+    original = list(arr)
+    result = move_one_ball(arr)
+    assert result is True
+    assert arr == original

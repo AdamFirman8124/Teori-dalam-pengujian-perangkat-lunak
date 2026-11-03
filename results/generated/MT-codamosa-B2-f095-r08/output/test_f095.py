@@ -5,55 +5,116 @@ def test_case_0():
     var_0 = {}
     var_1 = module_0.check_dict_case(var_0)
     assert var_1 is False
+    str_0 = 'a'
+    str_1 = 'b'
+    str_2 = 'c'
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = {str_0: int_0, str_1: int_1, str_2: int_2}
+    var_2 = module_0.check_dict_case(int_3)
+    assert var_2 is True
+    str_3 = 'A'
+    str_4 = 'B'
+    str_5 = 'C'
+    int_4 = {str_3: int_0, str_4: int_1, str_5: int_2}
+    var_3 = module_0.check_dict_case(int_4)
+    assert var_3 is True
+    int_5 = {str_0: int_0, str_4: int_1}
+    var_4 = module_0.check_dict_case(int_5)
+    assert var_4 is False
+    str_6 = 'aB'
+    str_7 = 'Av'
+    int_6 = {str_6: int_0, str_7: int_1}
+    var_5 = module_0.check_dict_case(int_6)
+    assert var_5 is False
+    int_7 = {int_0: int_0, int_1: int_1}
+    var_6 = module_0.check_dict_case(int_7)
+    assert var_6 is False
+    int_8 = {str_0: int_0, int_1: int_1}
+    var_7 = module_0.check_dict_case(int_8)
+    assert var_7 is False
+    str_8 = '1'
+    str_9 = '2'
+    int_9 = {str_8: int_0, str_9: int_1}
+    var_8 = module_0.check_dict_case(int_9)
+    assert var_8 is False
+    int_10 = {str_0: int_0, str_8: int_1}
+    var_9 = module_0.check_dict_case(int_10)
+    assert var_9 is False
+    int_11 = {str_0: int_0}
+    var_10 = module_0.check_dict_case(int_11)
+    assert var_10 is True
+    int_12 = {str_3: int_0}
+    var_11 = module_0.check_dict_case(int_12)
+    assert var_11 is True
+    int_13 = {str_0: int_0, str_1: int_1, str_5: int_2}
+    var_12 = module_0.check_dict_case(int_13)
+    assert var_12 is False
+    assert var_12 is True
+    str_10 = 'All tests passed!'
+    var_13 = print(str_10)
 
 def test_case_1():
-    bool_0 = True
-    var_0 = {bool_0: bool_0, bool_0: bool_0, bool_0: bool_0}
+    var_0 = {}
     var_1 = module_0.check_dict_case(var_0)
     assert var_1 is False
-
-def test_case_2():
-    str_0 = '%\x0c1iEyz@O_*'
-    dict_0 = {str_0: str_0, str_0: str_0}
-    var_0 = module_0.check_dict_case(dict_0)
-    assert var_0 is False
-
-def test_case_3():
-    str_0 = 'F'
-    str_1 = "'D7^\rmm9%Fa78*`EWo"
-    int_0 = 7
-    int_1 = {str_0: int_0, str_1: int_0, int_0: int_0, str_1: str_0, int_0: int_0}
-    var_0 = module_0.check_dict_case(int_1)
-    assert var_0 is False
-
-def test_case_4():
-    str_0 = 'FV'
-    str_1 = '\n%TF'
-    int_0 = 78
-    int_1 = {str_0: int_0, str_1: int_0, int_0: int_0}
-    var_0 = module_0.check_dict_case(int_1)
-    assert var_0 is True
-
-def test_case_5():
-    str_0 = '9BC+NX7.'
-    dict_0 = {str_0: str_0, str_0: str_0}
-    var_0 = module_0.check_dict_case(dict_0)
-    assert var_0 is True
-
-def test_case_6():
-    str_0 = 'a'
-    str_1 = ''
-    int_0 = 7
-    int_1 = {str_0: int_0, str_1: int_0, int_0: int_0, int_0: int_0, int_0: str_0}
-    var_0 = module_0.check_dict_case(int_1)
-    assert var_0 is True
-    assert var_0 is False
-
-def test_case_7():
     str_0 = 'a'
     str_1 = 'b'
     int_0 = 1
     int_1 = 2
     int_2 = {str_0: int_0, str_1: int_1}
-    var_0 = module_0.check_dict_case(int_2)
-    assert var_0 is True
+    var_2 = module_0.check_dict_case(int_2)
+    assert var_2 is True
+    str_2 = 'c'
+    int_3 = 3
+    int_4 = {str_0: int_0, str_1: int_1, str_2: int_3}
+    var_3 = module_0.check_dict_case(int_4)
+    assert var_3 is True
+    str_3 = 'B'
+    int_5 = {str_0: int_0, str_3: int_1}
+    var_4 = module_0.check_dict_case(int_5)
+    assert var_4 is False
+    str_4 = 'Hello'
+    str_5 = 'World'
+    int_6 = {str_4: int_0, str_5: int_1}
+    var_5 = module_0.check_dict_case(int_6)
+    assert var_5 is False
+    int_7 = {int_0: int_0, int_1: int_1}
+    var_6 = module_0.check_dict_case(int_7)
+    assert var_6 is False
+    int_8 = {str_0: int_0, int_1: int_1}
+    var_7 = module_0.check_dict_case(int_8)
+    assert var_7 is False
+    str_6 = 'A'
+    int_9 = {str_6: int_0}
+    var_8 = module_0.check_dict_case(int_9)
+    assert var_8 is True
+    int_10 = {str_0: int_0}
+    var_9 = module_0.check_dict_case(int_10)
+    assert var_9 is True
+    str_7 = 'Ab'
+    int_11 = {str_7: int_0}
+    var_10 = module_0.check_dict_case(int_11)
+    assert var_10 is False
+    str_8 = '1'
+    str_9 = '2'
+    int_12 = {str_8: int_0, str_9: int_1}
+    var_11 = module_0.check_dict_case(int_12)
+    assert var_11 is False
+    int_13 = {str_6: int_0, str_1: int_1}
+    var_12 = module_0.check_dict_case(int_13)
+    assert var_12 is False
+    int_14 = {str_0: int_0, str_3: int_1}
+    var_13 = module_0.check_dict_case(int_14)
+    assert var_13 is False
+    str_10 = 'KEY1'
+    str_11 = 'KEY2'
+    int_15 = {str_10: int_0, str_11: int_1}
+    var_14 = module_0.check_dict_case(int_15)
+    assert var_14 is True
+    str_12 = 'key_one'
+    str_13 = 'key_two'
+    int_16 = {str_12: int_0, str_13: int_1}
+    var_15 = module_0.check_dict_case(int_16)
+    assert var_15 is True

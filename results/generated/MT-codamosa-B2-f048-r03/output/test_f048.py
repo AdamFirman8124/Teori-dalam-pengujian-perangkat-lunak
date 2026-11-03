@@ -2,6 +2,59 @@
 import f048 as module_0
 
 def test_case_0():
-    str_0 = 'racecar'
+    str_0 = ''
     var_0 = module_0.is_palindrome(str_0)
     assert var_0 is True
+    str_1 = 'a'
+    var_1 = module_0.is_palindrome(str_1)
+    assert var_1 is True
+    str_2 = 'x'
+    var_2 = module_0.is_palindrome(str_2)
+    assert var_2 is True
+    str_3 = 'aba'
+    var_3 = module_0.is_palindrome(str_3)
+    assert var_3 is True
+    str_4 = 'racecar'
+    var_4 = module_0.is_palindrome(str_4)
+    assert var_4 is True
+    str_5 = 'madam'
+    var_5 = module_0.is_palindrome(str_5)
+    assert var_5 is True
+    str_6 = 'abba'
+    var_6 = module_0.is_palindrome(str_6)
+    assert var_6 is True
+    str_7 = 'noon'
+    var_7 = module_0.is_palindrome(str_7)
+    assert var_7 is True
+    str_8 = 'abc'
+    var_8 = module_0.is_palindrome(str_8)
+    assert var_8 is False
+    str_9 = 'ab'
+    var_9 = module_0.is_palindrome(str_9)
+    assert var_9 is False
+    str_10 = 'hello'
+    var_10 = module_0.is_palindrome(str_10)
+    assert var_10 is False
+    str_11 = 'Abba'
+    var_11 = module_0.is_palindrome(str_11)
+    assert var_11 is False
+    str_12 = 'Aa'
+    var_12 = module_0.is_palindrome(str_12)
+    assert var_12 is True
+    assert var_12 is False
+    str_13 = '12321'
+    var_13 = module_0.is_palindrome(str_13)
+    assert var_13 is True
+    str_14 = '1231'
+    var_14 = module_0.is_palindrome(str_14)
+    assert var_14 is False
+    str_15 = 'ab!ba'
+    var_15 = module_0.is_palindrome(str_15)
+    assert var_15 is True
+    str_16 = 'a man a plan a canal panama'
+    var_16 = module_0.is_palindrome(str_16)
+    assert var_16 is False
+    str_17 = 'step on no pets'
+    var_17 = module_0.is_palindrome(str_17)
+    assert var_17 is False
+    assert var_17 is True

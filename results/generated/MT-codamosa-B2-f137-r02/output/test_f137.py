@@ -3,10 +3,48 @@ import pytest
 import f137 as module_0
 
 def test_case_0():
-    int_0 = -549
-    float_0 = 1441.29
+    int_0 = 1
+    float_0 = 2.5
     var_0 = module_0.compare_one(int_0, float_0)
-    assert var_0 == pytest.approx(1441.29, abs=0.01, rel=0.01)
-    int_1 = 2676
-    var_1 = module_0.compare_one(int_1, int_1)
-    assert var_1 is None
+    assert var_0 == pytest.approx(2.5, abs=0.01, rel=0.01)
+    var_1 = module_0.compare_one(float_0, int_0)
+    assert var_1 == pytest.approx(2.5, abs=0.01, rel=0.01)
+    int_1 = 5
+    int_2 = 3
+    var_2 = module_0.compare_one(int_1, int_2)
+    assert var_2 == 5
+    var_3 = module_0.compare_one(int_2, int_1)
+    assert var_3 == 5
+    str_0 = '2,3'
+    var_4 = module_0.compare_one(int_0, str_0)
+    assert var_4 == '2,3'
+    str_1 = '5,1'
+    str_2 = '6'
+    var_5 = module_0.compare_one(str_1, str_2)
+    assert var_5 == '6'
+    var_6 = module_0.compare_one(str_0, int_0)
+    assert var_6 == '2,3'
+    var_7 = module_0.compare_one(str_2, str_1)
+    assert var_7 == '6'
+    str_3 = '1'
+    var_8 = module_0.compare_one(str_3, int_0)
+    assert var_8 is None
+    int_3 = 2
+    var_9 = module_0.compare_one(int_3, int_3)
+    assert var_9 is None
+    str_4 = '1,1'
+    str_5 = '1.1'
+    var_10 = module_0.compare_one(str_4, str_5)
+    assert var_10 is None
+    var_11 = module_0.compare_one(float_0, float_0)
+    assert var_11 is None
+    int_4 = -1
+    var_12 = module_0.compare_one(int_4, int_0)
+    assert var_12 == 1
+    int_5 = -2
+    int_6 = -1
+    var_13 = module_0.compare_one(int_5, int_6)
+    assert var_13 == 1
+    assert var_13 == -1
+    str_6 = 'All tests passed!'
+    var_14 = print(str_6)

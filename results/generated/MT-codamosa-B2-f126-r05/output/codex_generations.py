@@ -1,79 +1,191 @@
 
 
-# Generated at 2026-10-24 19:47:57.620708
+# Generated at 2026-11-02 17:30:17.961772
 # Unit test for function is_sorted
 def test_is_sorted():
-    # Empty and single-element lists
-    assert module_0.is_sorted([]) is True
-    assert module_0.is_sorted([1]) is True
+    # Sorted list with unique elements
+    assert module_0.is_sorted([1, 2, 3, 4, 5]) == True
+    # Sorted list with an element appearing twice
+    assert module_0.is_sorted([1, 2, 2, 3, 4]) == True
+    # Sorted list with an element appearing three times
+    assert module_0.is_sorted([1, 2, 2, 2, 3]) == False
+    # Unsorted list
+    assert module_0.is_sorted([5, 3, 1, 2]) == False
+    # Unsorted list with duplicates
+    assert module_0.is_sorted([1, 3, 2, 2]) == False
+    # Empty list is sorted
+    assert module_0.is_sorted([]) == True
+    # Single element list
+    assert module_0.is_sorted([7]) == True
+    # Two equal elements
+    assert module_0.is_sorted([4, 4]) == True
+    # Three equal elements (exceeds duplicate limit)
+    assert module_0.is_sorted([4, 4, 4]) == False
+    # Non-decreasing with multiple pairs of duplicates
+    assert module_0.is_sorted([1, 1, 2, 2, 3]) == True
+    # Negative numbers sorted
+    assert module_0.is_sorted([-3, -2, -1, 0]) == True
+    # Negative numbers unsorted
+    assert module_0.is_sorted([-1, -3, -2]) == False
+    # Descending list
+    assert module_0.is_sorted([5, 4, 3, 2, 1]) == False
+    # Duplicates elsewhere but list unsorted
+    assert module_0.is_sorted([2, 2, 1]) == False
+    # Large sorted list with max two duplicates each
+    assert module_0.is_sorted([1, 1, 2, 2, 3, 3, 4, 4]) == True
+    # One element repeated three times breaks rule even at end
+    assert module_0.is_sorted([1, 2, 3, 3, 3]) == False
 
-    # Sorted lists
-    assert module_0.is_sorted([1, 2, 3, 4]) is True
-    assert module_0.is_sorted([1, 1, 2, 2, 3]) is True
-
-    # Unsorted lists
-    assert module_0.is_sorted([2, 1]) is False
-    assert module_0.is_sorted([1, 3, 2, 4]) is False
-
-    # A value occurring more than twice is invalid
-    assert module_0.is_sorted([1, 1, 1, 2, 3]) is False
-
-    # Negative values
-    assert module_0.is_sorted([-3, -2, -2, -1]) is True
-
-# Generated at 2026-10-24 19:48:02.534980
-# Unit test for function is_sorted
-def test_is_sorted():
-    assert module_0.is_sorted([]) is True
-    assert module_0.is_sorted([1]) is True
-    assert module_0.is_sorted([1, 2, 3, 4]) is True
-    assert module_0.is_sorted([1, 1, 2, 2, 3]) is True
-
-    assert module_0.is_sorted([1, 1, 1, 2, 3]) is False  # More than two duplicates
-    assert module_0.is_sorted([3, 2, 1]) is False        # Descending order
-    assert module_0.is_sorted([1, 3, 2, 4]) is False     # Unsorted
-    assert module_0.is_sorted([2, 2, 1]) is False
-
-    print("All tests passed.")
+    print("All tests passed!")
 
 
 test_is_sorted()
 
-# Generated at 2026-10-24 19:48:07.505019
+# Generated at 2026-11-02 17:31:42.005267
 # Unit test for function is_sorted
 def test_is_sorted():
-    # Sorted lists
-    assert module_0.is_sorted([1, 2, 3, 4]) is True
-    assert module_0.is_sorted([1, 1, 2, 2, 3]) is True
-    assert module_0.is_sorted([-3, -1, 0, 2]) is True
+    # Sorted list with unique elements
+    assert module_0.is_sorted([1, 2, 3, 4, 5]) == True
+    # Sorted list with elements appearing at most twice
+    assert module_0.is_sorted([1, 2, 2, 3, 3, 4]) == True
+    # Sorted list but an element appears more than twice
+    assert module_0.is_sorted([1, 2, 2, 2, 3]) == False
+    # Unsorted list
+    assert module_0.is_sorted([1, 3, 2, 4, 5]) == False
+    # Descending list
+    assert module_0.is_sorted([5, 4, 3, 2, 1]) == False
+    # Empty list is considered sorted
+    assert module_0.is_sorted([]) == True
+    # Single element list
+    assert module_0.is_sorted([1]) == True
+    # Duplicate appearing exactly twice, still sorted
+    assert module_0.is_sorted([1, 1]) == True
+    # Same element appearing three times
+    assert module_0.is_sorted([1, 1, 1]) == False
+    # Sorted with mixed duplicates at limit
+    assert module_0.is_sorted([1, 1, 2, 2, 3, 3]) == True
+    # Sorted but duplicates exceed limit at the end
+    assert module_0.is_sorted([1, 2, 3, 3, 3]) == False
+    # Negative numbers sorted
+    assert module_0.is_sorted([-3, -2, -1, 0, 1]) == True
+    # Not sorted due to one out-of-place element
+    assert module_0.is_sorted([1, 2, 5, 3, 4]) == False
 
-    # Unsorted lists
-    assert module_0.is_sorted([3, 2, 1]) is False
-    assert module_0.is_sorted([1, 3, 2, 4]) is False
+# Generated at 2026-11-02 17:33:05.303712
+# Unit test for function is_sorted
+def test_is_sorted():
+    # nonce:5a167ea1
+    # Sorted lists with no duplicates
+    assert module_0.is_sorted([1, 2, 3, 4]) == True
+    assert module_0.is_sorted([5]) == True
+    assert module_0.is_sorted([]) == True
 
-    # A value appearing more than twice is rejected
-    assert module_0.is_sorted([1, 1, 1, 2]) is False
-    assert module_0.is_sorted([1, 2, 2, 2, 3]) is False
+    # Sorted lists with at most one duplicate of each element
+    assert module_0.is_sorted([1, 2, 2, 3, 4]) == True
+    assert module_0.is_sorted([1, 1, 2, 3, 4]) == True
+    assert module_0.is_sorted([1, 2, 3, 4, 4]) == True
+    assert module_0.is_sorted([1, 1, 2, 2, 3, 3]) == True
+
+    # Sorted but with an element appearing more than twice
+    assert module_0.is_sorted([1, 2, 2, 2, 3]) == False
+    assert module_0.is_sorted([1, 1, 1]) == False
+    assert module_0.is_sorted([2, 2, 2, 3, 4]) == False
+
+    # Not sorted
+    assert module_0.is_sorted([1, 3, 2, 4]) == False
+    assert module_0.is_sorted([2, 1]) == False
+    assert module_0.is_sorted([5, 4, 3, 2, 1]) == False
+
+    # Not sorted and duplicate constraint violated
+    assert module_0.is_sorted([1, 2, 2, 1]) == False
+
+    # Negative numbers
+    assert module_0.is_sorted([-3, -2, -1, 0]) == True
+    assert module_0.is_sorted([-1, -1, -2]) == False
+
+    print("All tests passed!")
+
+
+test_is_sorted()
+
+# Generated at 2026-11-02 17:34:25.709236
+# Unit test for function is_sorted
+def test_is_sorted():
+    # nonce:120d3d59
+    # Sorted lists with at most 2 duplicates of any number
+    assert module_0.is_sorted([1, 2, 3, 4]) == True
+    assert module_0.is_sorted([1, 2, 2, 3]) == True
+    assert module_0.is_sorted([1, 1]) == True
+    assert module_0.is_sorted([0, 0, 1, 1, 2]) == True
+    assert module_0.is_sorted([5]) == True
+    assert module_0.is_sorted([]) == True
+    assert module_0.is_sorted([-2, -1, 0, 1, 2]) == True
+
+    # More than 2 duplicates of any number -> False
+    assert module_0.is_sorted([1, 1, 1]) == False
+    assert module_0.is_sorted([1, 2, 2, 2, 3]) == False
+    assert module_0.is_sorted([3, 3, 3, 3]) == False
+    assert module_0.is_sorted([1, 1, 2, 2, 2]) == False
+    assert module_0.is_sorted([100, 100, 100]) == False
+
+    # Not sorted -> False
+    assert module_0.is_sorted([2, 1]) == False
+    assert module_0.is_sorted([1, 3, 2]) == False
+    assert module_0.is_sorted([1, 2, 3, 2]) == False
+    assert module_0.is_sorted([5, 4, 3, 2, 1]) == False
+    assert module_0.is_sorted([1, 2, 2, 2, 1]) == False
+    assert module_0.is_sorted([1, 1, 1, 2]) == False
 
     # Edge cases
-    assert module_0.is_sorted([]) is True
-    assert module_0.is_sorted([5]) is True
-    assert module_0.is_sorted([5, 5]) is True
+    assert module_0.is_sorted([0]) == True
+    assert module_0.is_sorted([100, 100]) == True
+    assert module_0.is_sorted([7, 7, 8, 8, 9]) == True
 
-# Generated at 2026-10-24 19:48:10.046196
-# Unit test for function is_sorted
+    print("All tests passed!")
 
-# Generated at 2026-10-24 19:48:12.554444
-# Unit test for function is_sorted
 
-# Generated at 2026-10-24 19:48:14.977792
-# Unit test for function is_sorted
+if __name__ == "__main__":
+    test_is_sorted()
 
-# Generated at 2026-10-24 19:48:17.492078
+# Generated at 2026-11-02 17:35:50.679750
 # Unit test for function is_sorted
+def test_is_sorted():
+    # Sorted lists with no element appearing more than twice
+    assert module_0.is_sorted([1, 2, 3]) == True
+    assert module_0.is_sorted([1, 2, 2, 3]) == True
+    assert module_0.is_sorted([1, 1, 2]) == True
+    assert module_0.is_sorted([5]) == True
+    assert module_0.is_sorted([]) == True
+    assert module_0.is_sorted([1, 1]) == True
 
-# Generated at 2026-10-24 19:48:19.911627
-# Unit test for function is_sorted
+    # Sorted but an element appears more than twice
+    assert module_0.is_sorted([1, 2, 2, 2, 3]) == False
+    assert module_0.is_sorted([1, 1, 1]) == False
+    assert module_0.is_sorted([2, 2, 2, 3, 4]) == False
 
-# Generated at 2026-10-24 19:48:22.330506
-# Unit test for function is_sorted
+    # Not sorted
+    assert module_0.is_sorted([3, 2, 1]) == False
+    assert module_0.is_sorted([1, 3, 2]) == False
+    assert module_0.is_sorted([5, 4, 3, 2, 1]) == False
+    assert module_0.is_sorted([2, 1]) == False
+
+    # Duplicates plus unsorted
+    assert module_0.is_sorted([1, 2, 2, 1]) == False
+
+    # Negative numbers and mixed values
+    assert module_0.is_sorted([-3, -2, -1, 0]) == True
+    assert module_0.is_sorted([-1, -1, 0, 1]) == True
+    assert module_0.is_sorted([-1, -1, -1, 0]) == False
+    assert module_0.is_sorted([0, -1, 1]) == False
+
+    # Non-integer values (works with comparables)
+    assert module_0.is_sorted(['a', 'b', 'c']) == True
+    assert module_0.is_sorted(['b', 'a']) == False
+    assert module_0.is_sorted([1.5, 2.5, 2.5]) == True
+    assert module_0.is_sorted([1.5, 2.5, 2.5, 2.5]) == False
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_is_sorted()

@@ -2,59 +2,51 @@
 import f151 as module_0
 
 def test_case_0():
-    var_0 = []
-    var_1 = module_0.double_the_difference(var_0)
-    assert var_1 == 0
     int_0 = 1
     int_1 = 3
-    int_2 = 2
-    int_3 = 0
-    int_4 = [int_0, int_1, int_2, int_3]
-    var_2 = module_0.double_the_difference(int_4)
-    assert var_2 == 10
-    int_5 = -1
-    int_6 = -2
-    int_7 = [int_5, int_6, int_3]
-    var_3 = module_0.double_the_difference(int_7)
-    assert var_3 == 0
-    int_8 = 9
-    int_9 = -2
-    int_10 = [int_8, int_9]
-    var_4 = module_0.double_the_difference(int_10)
-    assert var_4 == 81
-    int_11 = [int_3]
-    var_5 = module_0.double_the_difference(int_11)
+    int_2 = 5
+    int_3 = [int_0, int_1, int_2]
+    var_0 = module_0.double_the_difference(int_3)
+    assert var_0 == 35
+    int_4 = 2
+    int_5 = 0
+    int_6 = [int_0, int_1, int_4, int_5]
+    var_1 = module_0.double_the_difference(int_6)
+    assert var_1 == 10
+    int_7 = -1
+    int_8 = -2
+    int_9 = [int_7, int_8, int_5]
+    var_2 = module_0.double_the_difference(int_9)
+    assert var_2 == 0
+    int_10 = 9
+    int_11 = -2
+    int_12 = [int_10, int_11]
+    var_3 = module_0.double_the_difference(int_12)
+    assert var_3 == 81
+    var_4 = []
+    var_5 = module_0.double_the_difference(var_4)
     assert var_5 == 0
-    int_12 = 4
-    int_13 = 6
-    int_14 = 8
-    int_15 = [int_2, int_12, int_13, int_14]
+    int_13 = 4
+    int_14 = 6
+    int_15 = [int_4, int_13, int_14]
     var_6 = module_0.double_the_difference(int_15)
     assert var_6 == 0
-    int_16 = [int_0, int_0, int_0]
-    var_7 = module_0.double_the_difference(int_16)
-    assert var_7 == 3
-    int_17 = 15
-    int_18 = [int_17]
-    var_8 = module_0.double_the_difference(int_18)
-    assert var_8 == 225
-    int_19 = -3
-    int_20 = 5
-    int_21 = -7
-    int_22 = 7
-    int_23 = [int_19, int_20, int_21, int_22]
-    var_9 = module_0.double_the_difference(int_23)
-    assert var_9 == 74
-    float_0 = 2.5
-    var_10 = [int_0, float_0, int_1, int_12]
-    var_11 = module_0.double_the_difference(var_10)
-    assert var_11 == 10
-    int_24 = [int_0, int_1, int_20]
-    var_12 = module_0.double_the_difference(int_24)
-    assert var_12 == 25
-    assert var_12 == 35
-    float_1 = 1.5
-    float_2 = 3.7
-    var_13 = [float_1, int_2, float_2]
-    var_14 = module_0.double_the_difference(var_13)
-    assert var_14 == 0
+    float_0 = 1.5
+    float_1 = 3.5
+    var_7 = [float_0, float_1, int_0, int_1]
+    var_8 = module_0.double_the_difference(var_7)
+    assert var_8 == 10
+    float_2 = -0.5
+    var_9 = [int_0, int_0, int_5, float_1, float_2]
+    var_10 = module_0.double_the_difference(var_9)
+    assert var_10 == 1
+    assert var_10 == 2
+    int_16 = -2
+    int_17 = -1
+    int_18 = [int_16, int_17, int_5, int_0, int_4, int_1, int_13, int_2]
+    var_11 = module_0.double_the_difference(int_18)
+    assert var_11 == 35
+    int_19 = 7
+    int_20 = [int_19]
+    var_12 = module_0.double_the_difference(int_20)
+    assert var_12 == 49

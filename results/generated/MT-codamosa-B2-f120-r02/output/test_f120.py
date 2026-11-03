@@ -2,42 +2,52 @@
 import f120 as module_0
 
 def test_case_0():
-    var_0 = []
-    int_0 = 0
-    var_1 = module_0.maximum(var_0, int_0)
-    assert var_1 == []
-    int_1 = 1
-    int_2 = 2
-    int_3 = 3
-    int_4 = [int_1, int_2, int_3]
-    var_2 = module_0.maximum(int_4, int_0)
-    assert var_2 == []
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = [int_0, int_1, int_2]
+    int_4 = 0
+    var_0 = module_0.maximum(int_3, int_4)
+    assert var_0 == []
     int_5 = 4
     int_6 = 5
-    int_7 = [int_1, int_2, int_3, int_5, int_6]
-    var_3 = module_0.maximum(int_7, int_1)
-    assert var_3 == [5]
-    int_8 = [int_1, int_2, int_3, int_5, int_6]
-    var_4 = module_0.maximum(int_8, int_2)
-    assert var_4 == [4, 5]
-    int_9 = [int_6, int_5, int_3, int_2, int_1]
-    var_5 = module_0.maximum(int_9, int_3)
-    assert var_5 == [3, 4, 5]
-    int_10 = [int_1, int_1, int_1, int_1]
-    var_6 = module_0.maximum(int_10, int_2)
-    assert var_6 == [1, 1]
-    int_11 = -5
-    int_12 = -1
+    int_7 = [int_0, int_1, int_2, int_5, int_6]
+    var_1 = module_0.maximum(int_7, int_2)
+    assert var_1 == [3, 4, 5]
+    int_8 = [int_6, int_0, int_2]
+    var_2 = module_0.maximum(int_8, int_2)
+    assert var_2 == [1, 3, 5]
+    int_9 = [int_6, int_0, int_2]
+    int_10 = 10
+    var_3 = module_0.maximum(int_9, int_10)
+    assert var_3 == [1, 3, 5]
+    int_11 = -1
+    int_12 = -5
     int_13 = -3
-    int_14 = [int_11, int_12, int_13, int_0, int_2]
-    var_7 = module_0.maximum(int_14, int_2)
-    assert var_7 == [0, 2]
-    int_15 = [int_1, int_2, int_3]
-    var_8 = module_0.maximum(int_15, int_3)
-    assert var_8 == [1, 2, 3]
-    int_16 = [int_1, int_2]
-    var_9 = module_0.maximum(int_16, int_6)
-    assert var_9 == [1, 2]
-    var_10 = []
-    var_11 = module_0.maximum(var_10, int_3)
-    assert var_11 == []
+    int_14 = [int_11, int_12, int_13, int_1]
+    var_4 = module_0.maximum(int_14, int_1)
+    assert var_4 == [-1, 2]
+    int_15 = [int_5, int_5, int_5, int_0]
+    var_5 = module_0.maximum(int_15, int_1)
+    assert var_5 == [4, 4]
+    int_16 = 7
+    int_17 = [int_16]
+    var_6 = module_0.maximum(int_17, int_0)
+    assert var_6 == [7]
+    int_18 = -2
+    int_19 = 8
+    int_20 = 15
+    int_21 = [int_10, int_18, int_19, int_4, int_20, int_2]
+    var_7 = module_0.maximum(int_21, int_5)
+    assert var_7 == [3, 8, 10, 15]
+    int_22 = 100
+    int_23 = 50
+    int_24 = [int_22, int_23]
+    var_8 = module_0.maximum(int_24, int_0)
+    assert var_8 == [100]
+    var_9 = []
+    var_10 = module_0.maximum(var_9, int_1)
+    assert var_10 == []
+
+def test_case_1():
+    pass

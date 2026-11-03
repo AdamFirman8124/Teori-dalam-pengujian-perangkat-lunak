@@ -2,11 +2,6 @@
 import f107 as module_0
 
 def test_case_0():
-    int_0 = 11
-    var_0 = module_0.even_odd_palindrome(int_0)
-    assert var_0 == (4, 6)
-
-def test_case_1():
     int_0 = 1
     var_0 = module_0.even_odd_palindrome(int_0)
     assert var_0 == (0, 1)
@@ -16,9 +11,12 @@ def test_case_1():
     int_2 = 12
     var_2 = module_0.even_odd_palindrome(int_2)
     assert var_2 == (4, 6)
-    int_3 = 100
+    int_3 = 22
     var_3 = module_0.even_odd_palindrome(int_3)
-    assert var_3 == (8, 10)
+    assert var_3 == (5, 6)
     int_4 = 0
     var_4 = module_0.even_odd_palindrome(int_4)
     assert var_4 == (0, 0)
+    int_5 = 123
+    var_5 = module_0.even_odd_palindrome(int_5)
+    assert var_5 == (8, 13)

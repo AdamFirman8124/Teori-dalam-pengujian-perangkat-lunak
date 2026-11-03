@@ -3,7 +3,34 @@ import f079 as module_0
 
 def test_case_0():
     try:
-        float_0 = -1927.0152
-        var_0 = module_0.decimal_to_binary(float_0)
+        int_0 = 0
+        var_0 = module_0.decimal_to_binary(int_0)
+        assert var_0 == 'db0db'
+        int_1 = 1
+        var_1 = module_0.decimal_to_binary(int_1)
+        assert var_1 == 'db1db'
+        int_2 = 2
+        var_2 = module_0.decimal_to_binary(int_2)
+        assert var_2 == 'db10db'
+        int_3 = 3
+        var_3 = module_0.decimal_to_binary(int_3)
+        assert var_3 == 'db11db'
+        int_4 = 5
+        var_4 = module_0.decimal_to_binary(int_4)
+        assert var_4 == 'db101db'
+        int_5 = 15
+        var_5 = module_0.decimal_to_binary(int_5)
+        assert var_5 == 'db1111db'
+        int_6 = 32
+        var_6 = module_0.decimal_to_binary(int_6)
+        assert var_6 == 'db100000db'
+        int_7 = 255
+        var_7 = module_0.decimal_to_binary(int_7)
+        assert var_7 == 'db11111111db'
+        int_8 = 1024
+        var_8 = module_0.decimal_to_binary(int_8)
+        assert var_8 == 'db10000000000db'
+        int_9 = 2
+        var_9 = int(var_2, int_9)
     except BaseException:
         pass

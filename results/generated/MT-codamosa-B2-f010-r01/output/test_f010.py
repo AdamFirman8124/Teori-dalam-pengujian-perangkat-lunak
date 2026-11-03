@@ -8,45 +8,27 @@ def test_case_0():
     str_2 = 'x'
     str_3 = module_0.make_palindrome(str_2)
     assert str_3 == 'x'
-    str_4 = 'aaa'
+    str_4 = 'xyz'
     str_5 = module_0.make_palindrome(str_4)
-    assert str_5 == 'aaa'
-    str_6 = 'racecar'
+    assert str_5 == 'xyzyx'
+    str_6 = 'xyx'
     str_7 = module_0.make_palindrome(str_6)
-    assert str_7 == 'racecar'
+    assert str_7 == 'xyx'
     str_8 = 'cat'
     str_9 = module_0.make_palindrome(str_8)
     assert str_9 == 'catac'
     str_10 = 'cata'
     str_11 = module_0.make_palindrome(str_10)
     assert str_11 == 'catac'
-    str_12 = module_0.make_palindrome(str_0)
-    assert str_12 == ''
-    str_13 = 'xyz'
-    str_14 = module_0.make_palindrome(str_13)
-    assert str_14 == 'xyzyx'
-    str_15 = 'jerry'
-    str_16 = module_0.make_palindrome(str_15)
-    assert str_16 == 'jerryrrej'
-    bool_0 = module_0.is_palindrome(str_0)
-    assert bool_0 is True
-
-def test_case_1():
-    str_0 = ''
-    bool_0 = module_0.is_palindrome(str_0)
-    assert bool_0 is True
-    str_1 = 'a'
-    bool_1 = module_0.is_palindrome(str_1)
-    assert bool_1 is True
-    str_2 = 'racecar'
-    bool_2 = module_0.is_palindrome(str_2)
-    assert bool_2 is True
-    str_3 = 'hello'
-    bool_3 = module_0.is_palindrome(str_3)
-    assert bool_3 is False
-    str_4 = 'Racecar'
-    bool_4 = module_0.is_palindrome(str_4)
-    assert bool_4 is False
-    str_5 = 'a b a'
-    bool_5 = module_0.is_palindrome(str_5)
-    assert bool_5 is True
+    str_12 = 'jerry'
+    str_13 = module_0.make_palindrome(str_12)
+    assert str_13 == 'jerryrrej'
+    str_14 = 'race'
+    str_15 = module_0.make_palindrome(str_14)
+    assert str_15 == 'racecar'
+    str_16 = 'racecar'
+    str_17 = module_0.make_palindrome(str_16)
+    assert str_17 == 'racecar'
+    str_18 = 'A man'
+    str_19 = module_0.make_palindrome(str_18)
+    assert str_19 == 'A manam A'

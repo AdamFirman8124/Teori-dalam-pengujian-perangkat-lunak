@@ -2,7 +2,36 @@
 import f163 as module_0
 
 def test_case_0():
-    int_0 = 1
-    int_1 = 10
+    int_0 = 2
+    int_1 = 8
     var_0 = module_0.generate_integers(int_0, int_1)
     assert var_0 == [2, 4, 6, 8]
+    var_1 = module_0.generate_integers(int_1, int_0)
+    assert var_1 == [2, 4, 6, 8]
+    int_2 = 7
+    int_3 = 3
+    var_2 = module_0.generate_integers(int_2, int_3)
+    assert var_2 == [4, 6]
+    int_4 = 1
+    int_5 = 5
+    var_3 = module_0.generate_integers(int_4, int_5)
+    assert var_3 == [2, 4]
+    int_6 = 9
+    var_4 = module_0.generate_integers(int_6, int_4)
+    assert var_4 == [2, 4, 6, 8]
+    int_7 = 12
+    var_5 = module_0.generate_integers(int_5, int_7)
+    assert var_5 == [6, 8]
+    int_8 = 10
+    int_9 = 14
+    var_6 = module_0.generate_integers(int_8, int_9)
+    assert var_6 == []
+    var_7 = module_0.generate_integers(int_4, int_4)
+    assert var_7 == []
+    int_10 = 4
+    var_8 = module_0.generate_integers(int_10, int_10)
+    assert var_8 == [4]
+    var_9 = module_0.generate_integers(int_0, int_0)
+    assert var_9 == [2]
+    var_10 = module_0.generate_integers(int_3, int_3)
+    assert var_10 == []

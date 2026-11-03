@@ -7,26 +7,20 @@ import pytest
 from f013 import greatest_common_divisor
 
 
-def test_gcd_loop_executes_and_terminates():
-    # b is nonzero, so the while loop body (lines 3-4) runs at least once
+def test_gcd_loop_body_executes_when_b_nonzero():
+    # Covers line 3 (loop condition true) and line 4 (loop body).
     assert greatest_common_divisor(48, 18) == 6
     assert greatest_common_divisor(18, 48) == 6
+    assert greatest_common_divisor(17, 5) == 1
 
 
-def test_gcd_multiple_iterations():
-    # Requires several loop iterations to reach the result
-    assert greatest_common_divisor(270, 192) == 6
-    assert greatest_common_divisor(1071, 462) == 21
-
-
-def test_gcd_b_zero_skips_loop_body():
-    # b == 0: line 3 evaluates the condition as false, line 5 returns a
+def test_gcd_returns_immediately_when_b_zero():
+    # Covers line 3 (loop condition false branch) and line 5 (return).
     assert greatest_common_divisor(7, 0) == 7
+    assert greatest_common_divisor(0, 0) == 0
 
 
-def test_gcd_coprime():
-    assert greatest_common_divisor(17, 13) == 1
-
-
-def test_gcd_equal_values():
-    assert greatest_common_divisor(9, 9) == 9
+def test_gcd_negative_first_argument():
+    # Exercises the loop with a negative operand; Python's % keeps the
+    # invariant so the result is still the (positive) gcd here.
+    assert greatest_common_divisor(-48, 18) == 6

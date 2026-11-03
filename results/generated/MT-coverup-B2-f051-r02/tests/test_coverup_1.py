@@ -2,38 +2,43 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
-import pytest
+"""Tests for f051.remove_vowels."""
 
 from f051 import remove_vowels
 
 
+def test_remove_vowels_removes_lowercase_vowels():
+    """Exercises the branch where characters ARE vowels (filtered out)."""
+    result = remove_vowels("banana")
+    assert result == "bnn"
+    # Postcondition: no vowels remain
+    assert all(ch.lower() not in "aeiou" for ch in result)
+
+
+def test_remove_vowels_removes_uppercase_vowels():
+    """Exercises the .lower() conversion branch for uppercase vowels."""
+    result = remove_vowels("AEIOUaeiou")
+    assert result == ""
+    # Postcondition: every vowel (upper or lower case) was removed
+    assert all(ch.lower() not in ["a", "e", "i", "o", "u"] for ch in result)
+
+
+def test_remove_vowels_keeps_consonants_and_others():
+    """Exercises the branch where characters are NOT vowels (kept)."""
+    result = remove_vowels("Hello, World! 123")
+    assert result == "Hll, Wrld! 123"
+    # Postcondition: non-vowel characters preserved in order
+    assert result == "".join(
+        s for s in "Hello, World! 123" if s.lower() not in ["a", "e", "i", "o", "u"]
+    )
+
+
+def test_remove_vowels_no_vowels_unchanged():
+    """Input without vowels passes through untouched."""
+    text = "rhythm xyz"
+    assert remove_vowels(text) == text
+
+
 def test_remove_vowels_empty_string():
+    """Empty input yields empty output."""
     assert remove_vowels("") == ""
-
-
-def test_remove_vowels_all_lowercase_vowels():
-    assert remove_vowels("aeiou") == ""
-
-
-def test_remove_vowels_all_uppercase_vowels():
-    assert remove_vowels("AEIOU") == ""
-
-
-def test_remove_vowels_mixed_case():
-    assert remove_vowels("Hello World") == "Hll Wrld"
-
-
-def test_remove_vowels_no_vowels():
-    assert remove_vowels("rhythm") == "rhythm"
-
-
-def test_remove_vowels_digits_and_symbols():
-    assert remove_vowels("a1b2!c3") == "1b2!c3"
-
-
-def test_remove_vowels_returns_str_and_does_not_mutate_input():
-    text = "Programming"
-    result = remove_vowels(text)
-    assert isinstance(result, str)
-    assert result == "Prgrmmng"
-    assert text == "Programming"

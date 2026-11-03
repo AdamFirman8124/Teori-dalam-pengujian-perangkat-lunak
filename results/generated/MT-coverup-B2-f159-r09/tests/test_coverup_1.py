@@ -2,41 +2,32 @@
 # asked: {"lines": [3, 4, 6], "branches": [[3, 4], [3, 6]]}
 # gained: {"lines": [3, 4, 6], "branches": [[3, 4], [3, 6]]}
 
+import pytest
+
 from f159 import eat
 
 
-def test_eat_when_enough_remaining():
-    number, need, remaining = 3, 4, 10
-    result = eat(number, need, remaining)
-
-    assert result == [7, 6]
-    assert isinstance(result, list) and len(result) == 2
-    assert result[0] == number + need
-    assert result[1] == remaining - need
-    assert result[1] >= 0
+def test_eat_enough_remaining():
+    """Covers lines 3-4: the need <= remaining branch."""
+    result = eat(5, 3, 10)
+    # number + need, remaining - need
+    assert result == [8, 7]
+    assert result[0] == 5 + 3
+    assert result[1] == 10 - 3
 
 
-def test_eat_when_not_enough_remaining():
-    number, need, remaining = 3, 10, 4
-    result = eat(number, need, remaining)
-
+def test_eat_exactly_enough_remaining():
+    """Covers the boundary of lines 3-4: need == remaining."""
+    result = eat(2, 5, 5)
     assert result == [7, 0]
-    assert isinstance(result, list) and len(result) == 2
-    assert result[0] == number + remaining
+    assert result[0] == 2 + 5
+    assert result[1] == 5 - 5
+
+
+def test_eat_not_enough_remaining():
+    """Covers lines 5-6: the need > remaining branch."""
+    result = eat(5, 12, 4)
+    # number + remaining, 0
+    assert result == [9, 0]
+    assert result[0] == 5 + 4
     assert result[1] == 0
-
-
-def test_eat_exact_remaining_boundary():
-    number, need, remaining = 0, 5, 5
-    result = eat(number, need, remaining)
-
-    assert result == [5, 0]
-    assert result[0] == number + need
-    assert result[1] == remaining - need == 0
-
-
-def test_eat_zero_need():
-    result = eat(2, 0, 7)
-
-    assert result == [2, 7]
-    assert result[1] == 7

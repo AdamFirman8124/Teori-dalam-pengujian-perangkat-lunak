@@ -2,43 +2,57 @@
 import f087 as module_0
 
 def test_case_0():
-    str_0 = '4QWOO*aa8`~IG'
-    list_0 = [str_0, str_0, str_0, str_0]
-    var_0 = module_0.get_row(str_0, list_0)
-    assert var_0 == []
-
-def test_case_1():
-    dict_0 = {}
-    var_0 = module_0.get_row(dict_0, dict_0)
-    assert var_0 == []
-
-def test_case_2():
     int_0 = 1
     int_1 = 2
-    int_2 = [int_0, int_1]
-    int_3 = 3
-    int_4 = [int_3, int_0]
-    int_5 = [int_2, int_4]
-    var_0 = module_0.get_row(int_5, int_0)
-    assert var_0 == [(0, 0), (1, 1)]
-    int_6 = 0
-    int_7 = [int_0, int_6, int_0]
-    int_8 = [int_0, int_0, int_6]
-    int_9 = [int_7, int_8]
-    var_1 = module_0.get_row(int_9, int_0)
-    assert var_1 == [(0, 2), (0, 0), (1, 1), (1, 0)]
+    int_2 = 3
+    int_3 = 4
+    int_4 = 5
+    int_5 = 6
+    int_6 = [int_0, int_1, int_2, int_3, int_4, int_5]
+    int_7 = [int_0, int_1, int_2, int_3, int_0, int_5]
+    int_8 = [int_0, int_1, int_2, int_3, int_4, int_0]
+    int_9 = [int_6, int_7, int_8]
+    var_0 = module_0.get_row(int_9, int_0)
+    assert var_0 == [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]
+    var_1 = []
+    var_2 = module_0.get_row(var_1, int_0)
+    assert var_2 == []
+    var_3 = []
     int_10 = [int_0]
-    int_11 = [int_0, int_0, int_0]
-    int_12 = [int_10, int_11]
-    var_2 = module_0.get_row(int_12, int_0)
-    assert var_2 == [(0, 0), (1, 2), (1, 1), (1, 0)]
-    int_13 = [int_0, int_1]
-    int_14 = 4
-    int_15 = [int_3, int_14]
-    int_16 = [int_13, int_15]
-    int_17 = 9
-    var_3 = module_0.get_row(int_16, int_17)
-    assert var_3 == []
-    var_4 = []
-    var_5 = module_0.get_row(var_4, int_0)
-    assert var_5 == []
+    int_11 = [int_0, int_1, int_2]
+    var_4 = [var_3, int_10, int_11]
+    var_5 = module_0.get_row(var_4, int_2)
+    assert var_5 == [(2, 2)]
+    int_12 = [int_0, int_1]
+    int_13 = [int_2, int_3]
+    int_14 = [int_12, int_13]
+    var_6 = module_0.get_row(int_14, int_4)
+    assert var_6 == []
+    int_15 = [int_0, int_0, int_0]
+    int_16 = [int_15]
+    var_7 = module_0.get_row(int_16, int_0)
+    assert var_7 == [(0, 2), (0, 1), (0, 0)]
+    int_17 = [int_1]
+    int_18 = [int_1]
+    int_19 = [int_1]
+    int_20 = [int_17, int_18, int_19]
+    var_8 = module_0.get_row(int_20, int_1)
+    assert var_8 == [(0, 0), (1, 0), (2, 0)]
+    str_0 = 'a'
+    str_1 = 'b'
+    str_2 = [str_0, str_1]
+    str_3 = [str_0]
+    str_4 = [str_2, str_3]
+    var_9 = module_0.get_row(str_4, str_0)
+    assert var_9 == [(0, 0), (1, 0)]
+    int_21 = -1
+    int_22 = 0
+    int_23 = [int_21, int_22]
+    int_24 = -1
+    int_25 = [int_24]
+    int_26 = [int_23, int_25]
+    int_27 = -1
+    var_10 = module_0.get_row(int_26, int_27)
+    assert var_10 == [(0, 0), (1, 0)]
+    str_5 = 'All tests passed!'
+    var_11 = print(str_5)

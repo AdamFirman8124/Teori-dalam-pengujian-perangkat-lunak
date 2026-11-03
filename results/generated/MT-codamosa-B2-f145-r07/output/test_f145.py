@@ -13,28 +13,48 @@ def test_case_0():
     var_1 = []
     var_2 = module_0.order_by_points(var_1)
     assert var_2 == []
-    int_6 = 123
-    int_7 = 21
-    int_8 = 30
-    int_9 = 4
-    int_10 = [int_6, int_7, int_8, int_9]
-    var_3 = module_0.order_by_points(int_10)
-    assert var_3 == [21, 30, 4, 123]
-    int_11 = -23
-    int_12 = -12
-    int_13 = -3
-    int_14 = [int_11, int_12, int_13]
-    var_4 = module_0.order_by_points(int_14)
-    assert var_4 == [-3, -23, -12]
-    int_15 = 0
-    int_16 = 10
-    int_17 = -10
-    int_18 = 100
-    int_19 = [int_15, int_16, int_17, int_18]
-    var_5 = module_0.order_by_points(int_19)
-    assert var_5 == [-10, 0, 10, 100]
-
-def test_case_1():
-    var_0 = []
-    var_1 = module_0.order_by_points(var_0)
-    assert var_1 == []
+    int_6 = 5
+    int_7 = [int_6]
+    var_3 = module_0.order_by_points(int_7)
+    assert var_3 == [5]
+    int_8 = 21
+    int_9 = 12
+    int_10 = [int_8, int_9]
+    var_4 = module_0.order_by_points(int_10)
+    assert var_4 == [21, 12]
+    int_11 = 56
+    int_12 = 65
+    int_13 = [int_11, int_12]
+    var_5 = module_0.order_by_points(int_13)
+    assert var_5 == [56, 65]
+    int_14 = 100
+    int_15 = 10
+    int_16 = [int_14, int_15, int_0]
+    var_6 = module_0.order_by_points(int_16)
+    assert var_6 == [100, 10, 1]
+    int_17 = -123
+    int_18 = -321
+    int_19 = [int_17, int_18]
+    var_7 = module_0.order_by_points(int_19)
+    assert var_7 == [-321, -123]
+    int_20 = -10
+    int_21 = 2
+    int_22 = -3
+    int_23 = [int_9, int_20, int_21, int_22, int_0]
+    var_8 = module_0.order_by_points(int_23)
+    assert var_8 == [-3, -10, 1, 2, 12]
+    int_24 = 0
+    int_25 = -1
+    int_26 = [int_24, int_25, int_0]
+    var_9 = module_0.order_by_points(int_26)
+    assert var_9 == [-1, 0, 1]
+    int_27 = 3
+    int_28 = 30
+    int_29 = [int_27, int_9, int_28]
+    var_10 = module_0.order_by_points(int_29)
+    assert var_10 == [3, 12, 30]
+    int_30 = -21
+    int_31 = -12
+    int_32 = [int_30, int_31]
+    var_11 = module_0.order_by_points(int_32)
+    assert var_11 == [-21, -12]

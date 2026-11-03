@@ -7,31 +7,30 @@ import pytest
 from f056 import correct_bracketing
 
 
-def test_empty_string_returns_true():
-    """Covers lines 3, 4 (loop over empty), and 11 (depth == 0)."""
-    assert correct_bracketing("") is True
+def test_correct_bracketing_balanced():
+    """Covers lines 3-6 (depth init, loop, '<' branch), line 8 (else branch),
+    and line 11 (final return True)."""
+    assert correct_bracketing("<>") is True
 
 
-def test_balanced_brackets_returns_true():
-    """Covers lines 3-6, 8, 11: '<' branch and else branch, balanced."""
-    assert correct_bracketing("<><>") is True
+def test_correct_bracketing_nested_balanced():
+    """Covers multiple iterations of both branches and final return True."""
+    assert correct_bracketing("<<>>") is True
+    assert correct_bracketing("<<><>>") is True
 
 
-def test_unbalanced_extra_open_returns_false():
-    """Covers line 11 with depth > 0 (returns False via depth == 0 check)."""
-    assert correct_bracketing("<<<") is False
-
-
-def test_unbalanced_extra_close_returns_false():
-    """Covers lines 8-10: depth goes negative, early return False."""
+def test_correct_bracketing_negative_depth():
+    """Covers lines 9-10: early return False when depth goes negative."""
     assert correct_bracketing("><") is False
+    assert correct_bracketing("><><") is False
 
 
-def test_leading_close_returns_false():
-    """Covers line 10 immediately on first character."""
-    assert correct_bracketing(">") is False
+def test_correct_bracketing_unclosed():
+    """Covers line 11 returning False when depth is positive at end."""
+    assert correct_bracketing("<") is False
+    assert correct_bracketing("<<") is False
 
 
-def test_negative_depth_midway_still_false():
-    """Depth dips negative even though it would recover; early return wins."""
-    assert correct_bracketing("<<>>><") is False
+def test_correct_bracketing_empty():
+    """Covers line 3 and line 11 with an empty string (loop body skipped)."""
+    assert correct_bracketing("") is True

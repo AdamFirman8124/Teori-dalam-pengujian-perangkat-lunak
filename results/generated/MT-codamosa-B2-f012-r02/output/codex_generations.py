@@ -1,2834 +1,668 @@
 
 
-# Generated at 2026-10-25 02:23:12.500484
+# Generated at 2026-11-01 20:51:09.509844
 # Unit test for function longest
 def test_longest():
-    # Empty list
+    # Empty list should return None
+    assert module_0.longest([]) is None
+
+    # Single string list returns that string
+    assert module_0.longest(["a"]) == "a"
+    assert module_0.longest(["hello"]) == "hello"
+
+    # Multiple strings with a unique longest
+    assert module_0.longest(["a", "bb", "c"]) == "bb"
+    assert module_0.longest(["abc", "ab", "a"]) == "abc"
+    assert module_0.longest(["x", "yy", "zzz", "w"]) == "zzz"
+
+    # Ties: first occurrence of max length wins
+    assert module_0.longest(["ab", "cd", "e"]) == "ab"
+    assert module_0.longest(["a", "bb", "cc"]) == "bb"
+
+    # All strings same length: returns first
+    assert module_0.longest(["a", "b", "c"]) == "a"
+    assert module_0.longest(["xx", "yy"]) == "xx"
+
+    # Strings with empty string present
+    assert module_0.longest(["", "a"]) == "a"
+    assert module_0.longest([""]) == ""
+
+    # Long strings
+    assert module_0.longest(["short", "a much longer string here"]) == "a much longer string here"
+
+# Generated at 2026-11-01 20:52:04.419623
+# Unit test for function longest
+def test_longest():
+    # Test empty list returns None
+    assert module_0.longest([]) is None
+
+    # Test single element list
+    assert module_0.longest(["a"]) == "a"
+    assert module_0.longest(["hello"]) == "hello"
+
+    # Test multiple elements with distinct lengths
+    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    assert module_0.longest(["ccc", "bb", "a"]) == "ccc"
+    assert module_0.longest(["bb", "ccc", "a"]) == "ccc"
+
+    # Test ties: first occurrence of max length should be returned
+    assert module_0.longest(["ab", "cd", "e"]) == "ab"
+    assert module_0.longest(["abc", "de", "xyz"]) == "abc"
+
+    # Test all elements of equal length
+    assert module_0.longest(["x", "y", "z"]) == "x"
+    assert module_0.longest(["aa", "bb"]) == "aa"
+
+    # Test empty string among values
+    assert module_0.longest(["", "a", ""]) == "a"
+    assert module_0.longest(["", ""]) == ""
+
+    # Test longer lists
+    assert module_0.longest(["one", "two", "three", "four", "five"]) == "three"
+    assert module_0.longest(["cat", "dog", "mouse", "bird"]) == "mouse"
+
+
+if __name__ == "__main__":
+    test_longest()
+    print("All tests passed!")
+
+# Generated at 2026-11-01 20:52:57.824154
+# Unit test for function longest
+def test_longest():
+    # Empty list returns None
+    assert module_0.longest([]) is None
+
+    # Single element list returns that element
+    assert module_0.longest(["a"]) == "a"
+    assert module_0.longest(["hello"]) == "hello"
+
+    # Returns the longest string among multiple
+    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    assert module_0.longest(["abc", "ab", "a"]) == "abc"
+    assert module_0.longest(["one", "two", "three", "four"]) == "three"
+
+    # Multiple strings with same max length returns the first one
+    assert module_0.longest(["ab", "cd", "e"]) == "ab"
+    assert module_0.longest(["xx", "yy", "zz"]) == "xx"
+
+    # Returns first occurrence when duplicates of longest exist
+    assert module_0.longest(["abc", "de", "abc"]) == "abc"
+
+    # Longest at the end of the list
+    assert module_0.longest(["a", "ab", "abc", "abcd"]) == "abcd"
+
+    # Longest at the beginning of the list
+    assert module_0.longest(["abcdef", "a", "ab"]) == "abcdef"
+
+    # Strings with spaces count their full length
+    assert module_0.longest(["a b", "abc"]) == "a b"
+
+    # Empty string in list is handled
+    assert module_0.longest(["", "a"]) == "a"
+
+# Generated at 2026-11-01 20:53:24.626937
+# Unit test for function longest
+def test_longest():
+    # Test with empty list returns None
+    assert module_0.longest([]) is None
+
+    # Test with single element list
+    assert module_0.longest(["a"]) == "a"
+    assert module_0.longest(["hello"]) == "hello"
+
+    # Test with multiple elements of different lengths
+    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    assert module_0.longest(["abc", "ab", "a"]) == "abc"
+
+    # Test tie-breaking: first longest string should be returned
+    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
+    assert module_0.longest(["x", "yy", "z", "ww"]) == "yy"
+
+    # Test with mixed-length strings where max appears later
+    assert module_0.longest(["one", "two", "three", "four"]) == "three"
+
+    # Test with all same-length strings
+    assert module_0.longest(["cat", "dog", "fox"]) == "cat"
+
+    # Test with empty strings in list
+    assert module_0.longest(["", "", ""]) == ""
+    assert module_0.longest(["", "a", ""]) == "a"
+
+    # Test with longer realistic strings
+    assert module_0.longest(["apple", "banana", "cherry"]) == "banana"
+    assert module_0.longest(["hi", "hello", "hey", "greetings"]) == "greetings"
+
+    # Test with whitespace strings
+    assert module_0.longest(["a b", "ab", " abc "]) == " abc "
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_longest()
+
+# Generated at 2026-11-01 20:54:06.110696
+# Unit test for function longest
+def test_longest():
+    # Empty list should return None
+    assert module_0.longest([]) is None
+
+    # Single element list returns that element
+    assert module_0.longest(["a"]) == "a"
+    assert module_0.longest(["hello"]) == "hello"
+
+    # Multiple strings with different lengths
+    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    assert module_0.longest(["abc", "ab", "a"]) == "abc"
+    assert module_0.longest(["one", "two", "three"]) == "three"
+
+    # Tie in length: first occurrence should be returned
+    assert module_0.longest(["ab", "cd", "efg"]) == "ab"
+    assert module_0.longest(["abc", "def", "ghi"]) == "abc"
+    assert module_0.longest(["xx", "yy"]) == "xx"
+
+    # All strings same length: first one returned
+    assert module_0.longest(["a", "b", "c"]) == "a"
+    assert module_0.longest(["same", "size", "word"]) == "same"
+
+    # Empty string in list
+    assert module_0.longest(["", "a", ""]) == "a"
+    assert module_0.longest([""]) == ""
+
+    # Strings with spaces and special characters
+    assert module_0.longest(["a b", "ab!", "long string"]) == "long string"
+
+    # Longer list
+    assert module_0.longest(["x", "yy", "zzz", "w", "wwww"]) == "wwww"
+
+    # Case sensitivity does not affect length
+    assert module_0.longest(["ABC", "a"]) == "ABC"
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_longest()
+
+# Generated at 2026-11-01 20:54:37.100935
+# Unit test for function longest
+def test_longest():
+    # Empty list returns None
     assert module_0.longest([]) is None
 
     # Single element
+    assert module_0.longest(['x']) == 'x'
+    assert module_0.longest(['']) == ''
+
+    # Multiple elements, unique longest
+    assert module_0.longest(['a', 'bb', 'ccc']) == 'ccc'
+    assert module_0.longest(['abc', 'de', 'fghi']) == 'fghi'
+    assert module_0.longest(['one', 'two', 'three', 'four']) == 'three'
+
+    # Ties: first occurrence of the max length is returned
+    assert module_0.longest(['a', 'b', 'c']) == 'a'
+    assert module_0.longest(['aa', 'bb', 'cc']) == 'aa'
+    assert module_0.longest(['abc', 'de', 'xyz']) == 'abc'
+
+    # Empty strings mixed with non-empty
+    assert module_0.longest(['', 'a', '']) == 'a'
+    assert module_0.longest(['', '']) == ''
+
+    # Longer strings later in the list
+    assert module_0.longest(['short', 'a much longer string']) == 'a much longer string'
+
+    # Whitespace counts toward length
+    assert module_0.longest(['ab', 'a b']) == 'a b'
+
+# Generated at 2026-11-01 20:55:14.870515
+# Unit test for function longest
+def test_longest():
+    # Test empty list returns None
+    assert module_0.longest([]) is None
+
+    # Test single string returns that string
+    assert module_0.longest(["hello"]) == "hello"
+
+    # Test multiple strings with different lengths
+    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    assert module_0.longest(["ccc", "bb", "a"]) == "ccc"
+    assert module_0.longest(["bb", "ccc", "a"]) == "ccc"
+
+    # Test tie: first longest string is returned
+    assert module_0.longest(["ab", "cd", "e"]) == "ab"
+    assert module_0.longest(["a", "bb", "cc"]) == "bb"
+
+    # Test all strings of equal length: first is returned
+    assert module_0.longest(["a", "b", "c"]) == "a"
+    assert module_0.longest(["xx", "yy", "zz"]) == "xx"
+
+    # Test with empty strings
+    assert module_0.longest(["", ""]) == ""
+    assert module_0.longest(["", "a"]) == "a"
+    assert module_0.longest(["a", ""]) == "a"
+
+    # Test longest string at the end
+    assert module_0.longest(["a", "ab", "abc", "abcd"]) == "abcd"
+
+    # Test with longer realistic strings
+    assert module_0.longest(["cat", "elephant", "dog"]) == "elephant"
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_longest()
+
+# Generated at 2026-11-01 20:55:41.385334
+# Unit test for function longest
+def test_longest():
+    # Empty list should return None
+    assert module_0.longest([]) is None
+
+    # Single element list returns that element
     assert module_0.longest(["a"]) == "a"
+    assert module_0.longest(["hello"]) == "hello"
 
     # Multiple elements, unique longest
     assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    assert module_0.longest(["abc", "ab", "a"]) == "abc"
+    assert module_0.longest(["one", "two", "three", "four"]) == "three"
 
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
+    # Multiple elements with same max length: return the first one
+    assert module_0.longest(["a", "b", "c"]) == "a"
+    assert module_0.longest(["ab", "cd", "ef"]) == "ab"
+    assert module_0.longest(["xy", "abc", "def"]) == "abc"
+
+    # Longest element at various positions
+    assert module_0.longest(["short", "longest_one", "mid"]) == "longest_one"
+    assert module_0.longest(["mid", "short", "longest_one"]) == "longest_one"
+
+    # Strings with spaces and special characters
+    assert module_0.longest(["a b", "abc!@#", "x"]) == "abc!@#"
+
+    # Empty string in list
+    assert module_0.longest(["", "a"]) == "a"
+    assert module_0.longest(["", ""]) == ""
+
+# Generated at 2026-11-01 20:56:08.037658
+# Unit test for function longest
+def test_longest():
+    # Test empty list returns None
+    assert module_0.longest([]) is None
+
+    # Test single-element list
+    assert module_0.longest(["a"]) == "a"
+    assert module_0.longest(["hello"]) == "hello"
+
+    # Test multiple strings with different lengths
+    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    assert module_0.longest(["ccc", "bb", "a"]) == "ccc"
+    assert module_0.longest(["ab", "abc", "a"]) == "abc"
+
+    # Test ties: first occurrence of the longest length is returned
+    assert module_0.longest(["ab", "cd", "e"]) == "ab"
+    assert module_0.longest(["a", "bb", "cc"]) == "bb"
+    assert module_0.longest(["abc", "def", "ghi"]) == "abc"
+
+    # Test strings with empty strings
+    assert module_0.longest(["", "", ""]) == ""
+    assert module_0.longest(["", "a"]) == "a"
+
+    # Test strings with spaces and special characters
+    assert module_0.longest([" ", "  "]) == "  "
+    assert module_0.longest(["hello world", "hi"]) == "hello world"
+
+    # Test unicode strings
+    assert module_0.longest(["héllo", "hi"]) == "héllo"
+
+    # Test long list
+    assert module_0.longest(["x" * i for i in range(100)]) == "x" * 99
+
+# Generated at 2026-11-01 20:56:25.026063
+# Unit test for function longest
+def test_longest():
+    # Test empty list returns None
+    assert module_0.longest([]) is None
+
+    # Test single element list
+    assert module_0.longest(["a"]) == "a"
+    assert module_0.longest(["hello"]) == "hello"
+
+    # Test multiple strings with a clear maximum
+    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    assert module_0.longest(["abc", "ab", "a"]) == "abc"
+
+    # Test tie case: first longest string wins
+    assert module_0.longest(["one", "two", "three", "four"]) == "three"
     assert module_0.longest(["aa", "bb", "cc"]) == "aa"
 
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
+    # Test all strings of equal length
+    assert module_0.longest(["x", "y", "z"]) == "x"
+    assert module_0.longest(["cat", "dog", "pig"]) == "cat"
+
+    # Test unsorted input preserves original order
+    assert module_0.longest(["longer", "short", "medium"]) == "longer"
+    assert module_0.longest(["a", "abcde", "abcd"]) == "abcde"
+
+    # Test strings with spaces and special characters
+    assert module_0.longest(["hi there", "ok", "!@#$%"]) == "hi there"
+
+    # Test unicode strings
+    assert module_0.longest(["héllo", "wörld!", "hi"]) == "wörld!"
+
+    # Test empty string among non-empty strings
+    assert module_0.longest(["", "b", "cc"]) == "cc"
+
+    # Test list containing only an empty string
+    assert module_0.longest([""]) == ""
+
+if __name__ == "__main__":
+    test_longest()
+    print("All tests passed!")
+
+# Generated at 2026-11-01 20:56:50.527281
+# Unit test for function longest
+def test_longest():
+    # Empty list returns None
+    assert module_0.longest([]) is None
+
+    # Single element list returns that element
+    assert module_0.longest(["a"]) == "a"
+    assert module_0.longest(["hello"]) == "hello"
+
+    # Multiple strings with unique longest
+    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    assert module_0.longest(["abc", "ab", "a"]) == "abc"
+
+    # Ties: returns the first occurrence of the longest string
+    assert module_0.longest(["a", "bb", "cc", "d"]) == "bb"
+    assert module_0.longest(["xx", "yy", "zz"]) == "xx"
+
+    # Mixed lengths with duplicate max length
+    assert module_0.longest(["one", "two", "three", "four"]) == "three"
+    assert module_0.longest(["cat", "dog", "bird", "fish"]) == "bird"
 
     # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
+    assert module_0.longest(["", "", ""]) == ""
+    assert module_0.longest(["", "a", ""]) == "a"
 
-    print("All tests passed.")
+    # Long strings
+    assert module_0.longest(["a" * 100, "b" * 99]) == "a" * 100
+
+    # Unicode strings
+    assert module_0.longest(["héllo", "hi", "wörld!"]) == "wörld!"
+
+    print("All tests passed!")
+
+# Generated at 2026-11-01 20:57:16.984667
+# Unit test for function longest
+def test_longest():
+    # Test with an empty list
+    assert module_0.longest([]) is None
+
+    # Test with a single-element list
+    assert module_0.longest(["a"]) == "a"
+    assert module_0.longest(["hello"]) == "hello"
+
+    # Test with multiple elements of different lengths
+    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    assert module_0.longest(["ccc", "bb", "a"]) == "ccc"
+    assert module_0.longest(["abc", "ab", "a"]) == "abc"
+
+    # Test when multiple strings share the maximum length (first one wins)
+    assert module_0.longest(["one", "two", "three"]) == "three"
+    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
+    assert module_0.longest(["x", "yy", "zz", "w"]) == "yy"
+
+    # Test with all strings of equal length
+    assert module_0.longest(["ab", "cd", "ef"]) == "ab"
+
+    # Test with empty strings in the list
+    assert module_0.longest(["", "", ""]) == ""
+    assert module_0.longest(["", "a"]) == "a"
+    assert module_0.longest(["a", ""]) == "a"
+
+    # Test with longer realistic strings
+    assert module_0.longest(["apple", "banana", "cherry"]) == "banana"
+    assert module_0.longest(["a" * 100, "b" * 50]) == "a" * 100
+
+    # Verify result type
+    result = module_0.longest(["cat", "dog"])
+    assert isinstance(result, str)
 
 
 test_longest()
+print("All tests passed!")
 
-# Generated at 2026-10-25 02:23:13.822279
+# Generated at 2026-11-01 20:58:02.166220
 # Unit test for function longest
 def test_longest():
-    # Empty list
+    # Test with an empty list
     assert module_0.longest([]) is None
 
-    # Single element
-    assert module_0.longest(["a"]) == "a"
+    # Test with a single element
+    assert module_0.longest(['a']) == 'a'
+    assert module_0.longest(['hello']) == 'hello'
 
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    # Test with multiple elements of different lengths
+    assert module_0.longest(['a', 'bb', 'ccc']) == 'ccc'
+    assert module_0.longest(['ccc', 'bb', 'a']) == 'ccc'
+    assert module_0.longest(['abc', 'ab', 'a']) == 'abc'
 
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
+    # Test with multiple elements of the same max length (should return first)
+    assert module_0.longest(['a', 'b', 'c']) == 'a'
+    assert module_0.longest(['ab', 'cd', 'efg']) == 'efg'
+    assert module_0.longest(['one', 'two', 'three']) == 'three'
 
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
+    # Test with duplicates
+    assert module_0.longest(['abc', 'abc', 'ab']) == 'abc'
 
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
+    # Test with strings of same length throughout
+    assert module_0.longest(['x', 'y']) == 'x'
 
-    print("All tests passed.")
+    # Test with longer strings
+    assert module_0.longest(['short', 'medium size', 'the longest string here']) == 'the longest string here'
+
+    # Test with empty strings in list
+    assert module_0.longest(['', 'a']) == 'a'
+    assert module_0.longest(['', '']) == ''
+
+    # Test with unicode strings
+    assert module_0.longest(['héllo', 'hi']) == 'héllo'
+
+    print("All tests passed!")
 
 
-test_longest()
+if __name__ == "__main__":
+    test_longest()
 
-# Generated at 2026-10-25 02:23:15.159935
+# Generated at 2026-11-01 20:58:43.371028
 # Unit test for function longest
 def test_longest():
-    # Empty list
+    # Test empty list returns None
     assert module_0.longest([]) is None
 
-    # Single element
+    # Test single element list
     assert module_0.longest(["a"]) == "a"
+    assert module_0.longest(["hello"]) == "hello"
 
-    # Multiple elements, unique longest
+    # Test multiple elements with unique max length
     assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    assert module_0.longest(["abc", "ab", "a"]) == "abc"
+    assert module_0.longest(["one", "two", "three", "four"]) == "three"
 
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:16.491483
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:17.823332
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:19.175278
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:20.494157
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:21.821023
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:23.146084
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:24.473693
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:25.817305
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:27.140893
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:28.470876
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:29.797308
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:31.147470
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:32.483231
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:33.808203
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:35.126751
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:36.455482
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:37.796936
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:39.125989
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:40.448818
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:23:43.036864
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:23:45.451012
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:23:47.865904
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:23:50.279285
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:23:52.695035
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:23:55.111041
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:23:57.525770
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:24:00.046072
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:24:02.460766
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:24:04.877023
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:24:07.303943
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:24:09.717743
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:24:12.133958
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:24:13.672881
-# Unit test for function longest
-def test_longest():
-    # Empty input returns None
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: first of the longest wins
+    # Test ties - first occurrence should be returned
     assert module_0.longest(["aa", "bb", "c"]) == "aa"
     assert module_0.longest(["x", "yy", "zz"]) == "yy"
 
-    # All same length: first element returned
-    assert module_0.longest(["one", "two", "six"]) == "one"
+    # Test all elements same length - returns first
+    assert module_0.longest(["a", "b", "c"]) == "a"
+    assert module_0.longest(["same", "size", "word"]) == "same"
 
-    # Mixed lengths with longest in the middle
-    assert module_0.longest(["ab", "abcd", "abc"]) == "abcd"
+    # Test with longer realistic strings
+    assert module_0.longest(["apple", "banana", "kiwi"]) == "banana"
+    assert module_0.longest(["", "a", ""]) == "a"
 
-    # Longest at the end
-    assert module_0.longest(["a", "b", "longest"]) == "longest"
+    # Test with empty strings only
+    assert module_0.longest(["", "", ""]) == ""
 
-    # Empty string vs non-empty: empty list of strings case
-    assert module_0.longest(["", ""]) == ""
-
-    # Empty and non-empty mix
-    assert module_0.longest(["", "abc"]) == "abc"
-
-# Generated at 2026-10-25 02:24:14.994190
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
+    # Test order preservation for first max
+    assert module_0.longest(["short", "longest!!", "medium", "longest??"]) == "longest!!"
 
 
 test_longest()
+print("All tests passed!")
 
-# Generated at 2026-10-25 02:24:16.326376
+# Generated at 2026-11-01 20:59:19.311833
 # Unit test for function longest
 def test_longest():
-    # Empty list
+    # Test empty list returns None
     assert module_0.longest([]) is None
 
-    # Single element
+    # Test single element list
     assert module_0.longest(["a"]) == "a"
+    assert module_0.longest(["hello"]) == "hello"
 
-    # Multiple elements, unique longest
+    # Test multiple elements with clear longest
     assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    assert module_0.longest(["ccc", "bb", "a"]) == "ccc"
+    assert module_0.longest(["abc", "ab", "abcd"]) == "abcd"
 
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
+    # Test ties - first occurrence of max length wins
+    assert module_0.longest(["a", "bb", "cc"]) == "bb"
+    assert module_0.longest(["xx", "yy", "z"]) == "xx"
+    assert module_0.longest(["one", "two", "ten"]) == "one"
+
+    # Test all elements same length - returns first
+    assert module_0.longest(["a", "b", "c"]) == "a"
     assert module_0.longest(["aa", "bb", "cc"]) == "aa"
 
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
+    # Test with empty strings mixed in
+    assert module_0.longest(["", "a", ""]) == "a"
+    assert module_0.longest(["", "", ""]) == ""
+    assert module_0.longest([""]) == ""
 
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
+    # Test longer lists
+    assert module_0.longest(["short", "tiny", "moderate!", "big"]) == "moderate!"
+    assert module_0.longest(list("abcdef")) == "a"  # all length 1, first wins
 
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:17.720678
+# Generated at 2026-11-01 20:59:28.007023
 # Unit test for function longest
 def test_longest():
-    # Empty list
+    # Test with an empty list - should return None
     assert module_0.longest([]) is None
 
-    # Single element
+    # Test with a single-element list
     assert module_0.longest(["a"]) == "a"
+    assert module_0.longest(["hello"]) == "hello"
 
-    # Multiple elements, unique longest
+    # Test with multiple elements where one is clearly the longest
     assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    assert module_0.longest(["abc", "ab", "a"]) == "abc"
+    assert module_0.longest(["x", "yyy", "zz"]) == "yyy"
 
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
+    # Test when multiple strings share the maximum length - first occurrence wins
     assert module_0.longest(["aa", "bb", "cc"]) == "aa"
+    assert module_0.longest(["one", "two", "ten"]) == "one"
 
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
+    # Test with mixed lengths and ties
+    assert module_0.longest(["a", "bb", "c", "dd"]) == "bb"
 
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
+    # Test with longer realistic strings
+    assert module_0.longest(["apple", "banana", "kiwi"]) == "banana"
+    assert module_0.longest(["cat", "dog", "elephant", "fox"]) == "elephant"
 
-    print("All tests passed.")
+    # Test with strings containing spaces / special characters
+    assert module_0.longest(["", " ", "  "]) == "  "
+    assert module_0.longest(["!@#", "abcd$%^"]) == "abcd$%^"
+
+    # Test that result is one of the input strings
+    strings = ["ab", "cd", "efg"]
+    result = module_0.longest(strings)
+    assert result in strings
+
+    print("All tests passed!")
 
 
-test_longest()
+if __name__ == "__main__":
+    test_longest()
 
-# Generated at 2026-10-25 02:24:19.101116
+# Generated at 2026-11-01 20:59:53.505957
 # Unit test for function longest
 def test_longest():
-    # Empty list
+    # Test empty list returns None
     assert module_0.longest([]) is None
 
-    # Single element
+    # Test single element list
     assert module_0.longest(["a"]) == "a"
+    assert module_0.longest(["hello"]) == "hello"
 
-    # Multiple elements, unique longest
+    # Test multiple strings with distinct lengths
     assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    assert module_0.longest(["ccc", "bb", "a"]) == "ccc"
+    assert module_0.longest(["abc", "ab", "a"]) == "abc"
 
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
+    # Test ties - should return the first occurrence of max length
+    assert module_0.longest(["a", "bb", "cc"]) == "bb"
+    assert module_0.longest(["xx", "yy", "z"]) == "xx"
+    assert module_0.longest(["aaa", "bbb", "ccc"]) == "aaa"
 
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
+    # Test all strings same length
+    assert module_0.longest(["x", "y", "z"]) == "x"
+    assert module_0.longest(["ab", "cd", "ef"]) == "ab"
 
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
+    # Test with longer realistic strings
+    assert module_0.longest(["apple", "banana", "kiwi"]) == "banana"
+    assert module_0.longest(["", "a", ""]) == "a"
 
-    print("All tests passed.")
+    # Test empty strings only
+    assert module_0.longest(["", "", ""]) == ""
+
+    # Test whitespace strings
+    assert module_0.longest(["  ", " ", "   "]) == "   "
+
+    print("All tests passed!")
 
 
-test_longest()
+if __name__ == "__main__":
+    test_longest()
 
-# Generated at 2026-10-25 02:24:20.430860
+# Generated at 2026-11-01 21:00:38.162672
 # Unit test for function longest
 def test_longest():
-    # Empty list
+    # Empty list should return None
     assert module_0.longest([]) is None
 
-    # Single element
+    # Single string list should return that string
     assert module_0.longest(["a"]) == "a"
+    assert module_0.longest(["hello"]) == "hello"
 
-    # Multiple elements, unique longest
+    # Multiple strings with a unique longest
     assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
+    assert module_0.longest(["abc", "ab", "a"]) == "abc"
+    assert module_0.longest(["one", "two", "three", "four"]) == "three"
 
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:21.794725
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:23.125428
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:24.451714
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:25.795257
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:27.114487
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:28.440837
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:29.799777
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:31.183623
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:32.519595
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:33.846375
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:35.279142
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:36.864224
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:38.248404
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:40.297604
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:41.730099
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:24:44.151137
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:24:46.577579
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:24:49.131808
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:24:51.549408
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:24:53.964820
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:24:56.381006
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:24:58.808632
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:25:01.236650
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:25:03.653789
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:25:06.071938
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:25:08.491187
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:25:10.906181
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:25:13.320789
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:25:14.685882
-# Unit test for function longest
-def test_longest():
-    # Empty input returns None
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: first of the longest wins
+    # Ties: should return the first occurrence of the max length
     assert module_0.longest(["aa", "bb", "c"]) == "aa"
     assert module_0.longest(["x", "yy", "zz"]) == "yy"
+    assert module_0.longest(["ab", "cd", "ef"]) == "ab"
 
-    # All same length: first element returned
-    assert module_0.longest(["one", "two", "six"]) == "one"
+    # Longest string appears later in the list
+    assert module_0.longest(["short", "tiny", "a much longer string"]) == "a much longer string"
 
-    # Mixed lengths with longest in the middle
-    assert module_0.longest(["ab", "abcd", "abc"]) == "abcd"
-
-    # Longest at the end
-    assert module_0.longest(["a", "b", "longest"]) == "longest"
-
-    # Empty string vs non-empty: empty list of strings case
+    # Empty string handling
+    assert module_0.longest([""]) == ""
+    assert module_0.longest(["", "a"]) == "a"
     assert module_0.longest(["", ""]) == ""
 
-    # Empty and non-empty mix
-    assert module_0.longest(["", "abc"]) == "abc"
+    # Strings with spaces and special characters
+    assert module_0.longest(["hi there", "hi", "hello world!"]) == "hello world!"
 
-# Generated at 2026-10-25 02:25:16.021409
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
+    # Unicode strings
+    assert module_0.longest(["héllo", "wörld"]) == "héllo"
 
-    # Single element
-    assert module_0.longest(["a"]) == "a"
+    print("All tests passed!")
 
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
 
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:17.339636
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:18.763227
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:21.403629
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:22.737187
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:24.061351
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:25.469319
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:26.892048
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:28.221532
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:29.543268
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:30.865619
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:32.317491
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:33.706997
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:39.253125
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:40.629068
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:42.147152
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:43.479444
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:25:46.070667
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:25:48.684934
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:25:51.102027
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:25:53.521064
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:25:56.044015
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:25:58.458724
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:00.873453
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:03.288542
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:05.705390
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:08.121270
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:10.547667
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:12.956511
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:15.371644
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:17.786413
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:20.204600
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:22.616993
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:25.032245
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:27.446986
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:39.942435
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:42.357902
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:44.772629
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:26:46.191289
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:26:47.617403
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:26:48.989851
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:26:50.322696
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:26:51.668958
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:26:52.999633
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:26:54.326030
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:26:55.647368
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:26:56.974849
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:27:19.821532
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:27:21.154246
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:27:22.806326
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:27:24.129192
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:27:25.478340
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:27:26.815346
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:27:28.439073
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:27:29.769869
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:27:32.303550
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:27:34.905193
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:27:37.335011
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:27:39.875678
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:27:42.292305
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:27:43.684496
-# Unit test for function longest
-def test_longest():
-    # Empty input returns None
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: first of the longest wins
-    assert module_0.longest(["aa", "bb", "c"]) == "aa"
-    assert module_0.longest(["x", "yy", "zz"]) == "yy"
-
-    # All same length: first element returned
-    assert module_0.longest(["one", "two", "six"]) == "one"
-
-    # Mixed lengths with longest in the middle
-    assert module_0.longest(["ab", "abcd", "abc"]) == "abcd"
-
-    # Longest at the end
-    assert module_0.longest(["a", "b", "longest"]) == "longest"
-
-    # Empty string vs non-empty: empty list of strings case
-    assert module_0.longest(["", ""]) == ""
-
-    # Empty and non-empty mix
-    assert module_0.longest(["", "abc"]) == "abc"
-
-# Generated at 2026-10-25 02:28:31.913839
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:28:34.328868
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:28:36.842925
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:28:39.268709
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:28:41.684521
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:28:44.100075
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:28:45.491873
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:28:46.933647
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:28:48.288307
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:28:49.744540
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:28:51.068589
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:28:52.406717
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:28:53.730270
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:28:55.139058
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:30:26.960410
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:30:28.281112
-# Unit test for function longest
-def test_longest():
-    # Empty list
-    assert module_0.longest([]) is None
-
-    # Single element
-    assert module_0.longest(["a"]) == "a"
-
-    # Multiple elements, unique longest
-    assert module_0.longest(["a", "bb", "ccc"]) == "ccc"
-
-    # Tie: returns the FIRST longest
-    assert module_0.longest(["one", "two", "three"]) == "three"
-    assert module_0.longest(["aa", "bb", "cc"]) == "aa"
-
-    # Longest at start / middle / end
-    assert module_0.longest(["abcd", "x", "y"]) == "abcd"
-    assert module_0.longest(["x", "abcd", "y"]) == "abcd"
-    assert module_0.longest(["x", "y", "abcd"]) == "abcd"
-
-    # Empty strings in list
-    assert module_0.longest(["", "", "a"]) == "a"
-
-    print("All tests passed.")
-
-
-test_longest()
-
-# Generated at 2026-10-25 02:30:30.801351
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:30:33.316221
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:30:35.735193
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:30:38.145691
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:30:40.562208
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:30:43.170724
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:30:45.585517
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:30:48.002238
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:30:50.415582
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:30:52.985328
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:30:55.400310
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:30:57.816424
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:31:00.232566
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:31:02.648862
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:31:05.062488
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:31:07.476855
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:31:09.893462
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:31:12.307263
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:31:14.722859
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:31:17.141232
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:31:19.552739
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:31:21.967375
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:31:24.381899
-# Unit test for function longest
-
-# Generated at 2026-10-25 02:31:26.796657
-# Unit test for function longest
+if __name__ == "__main__":
+    test_longest()

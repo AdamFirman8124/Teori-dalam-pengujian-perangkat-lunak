@@ -3,6 +3,25 @@ import f117 as module_0
 
 def test_case_0():
     str_0 = 'Mary had a little lamb'
-    int_0 = 4
+    int_0 = 3
     var_0 = module_0.select_words(str_0, int_0)
-    assert var_0 == ['little']
+    assert var_0 == ['Mary', 'lamb']
+    int_1 = 4
+    var_1 = module_0.select_words(str_0, int_1)
+    assert var_1 == ['little']
+    str_1 = 'simple little space'
+    var_2 = module_0.select_words(str_1, int_1)
+    assert var_2 == ['simple', 'little']
+    str_2 = 'world'
+    var_3 = module_0.select_words(str_2, int_1)
+    assert var_3 == ['world']
+    str_3 = 'Uncle sam'
+    var_4 = module_0.select_words(str_3, int_0)
+    assert var_4 == ['Uncle']
+    str_4 = ''
+    var_5 = module_0.select_words(str_4, int_1)
+    assert var_5 == []
+    str_5 = 'a a a a'
+    int_2 = 0
+    var_6 = module_0.select_words(str_5, int_2)
+    assert var_6 == ['a', 'a', 'a', 'a']

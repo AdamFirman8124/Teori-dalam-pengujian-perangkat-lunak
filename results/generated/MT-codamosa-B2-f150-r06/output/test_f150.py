@@ -2,37 +2,49 @@
 import f150 as module_0
 
 def test_case_0():
-    int_0 = 7
-    str_0 = 'prime'
-    str_1 = 'not'
-    var_0 = module_0.x_or_y(int_0, str_0, str_1)
-    assert var_0 == 'prime'
-    int_1 = 2
-    var_1 = module_0.x_or_y(int_1, str_0, str_1)
-    assert var_1 == 'prime'
-    int_2 = 3
-    var_2 = module_0.x_or_y(int_2, str_0, str_1)
-    assert var_2 == 'prime'
-    int_3 = 13
-    int_4 = 1
-    int_5 = 0
-    var_3 = module_0.x_or_y(int_3, int_4, int_5)
-    assert var_3 == 1
-    int_6 = 4
-    var_4 = module_0.x_or_y(int_6, str_0, str_1)
-    assert var_4 == 'not'
-    int_7 = 9
-    var_5 = module_0.x_or_y(int_7, str_0, str_1)
-    assert var_5 == 'not'
-    int_8 = 100
-    var_6 = module_0.x_or_y(int_8, int_4, int_5)
-    assert var_6 == 0
-    var_7 = module_0.x_or_y(int_4, str_0, str_1)
-    assert var_7 == 'not'
-    var_8 = module_0.x_or_y(int_5, str_0, str_1)
-    assert var_8 == 'prime'
-    int_9 = -5
-    var_9 = module_0.x_or_y(int_9, str_0, str_1)
-    assert var_9 == 'prime'
-    str_2 = 'All tests passed.'
-    var_10 = print(str_2)
+    int_0 = 1
+    int_1 = 5
+    int_2 = 10
+    var_0 = module_0.x_or_y(int_0, int_1, int_2)
+    assert var_0 == 10
+    int_3 = 2
+    var_1 = module_0.x_or_y(int_3, int_1, int_2)
+    assert var_1 == 5
+    int_4 = 3
+    var_2 = module_0.x_or_y(int_4, int_1, int_2)
+    assert var_2 == 5
+    int_5 = 4
+    var_3 = module_0.x_or_y(int_5, int_1, int_2)
+    assert var_3 == 10
+    var_4 = module_0.x_or_y(int_1, int_1, int_2)
+    assert var_4 == 5
+    int_6 = 7
+    int_7 = 21
+    var_5 = module_0.x_or_y(int_6, int_6, int_7)
+    assert var_5 == 7
+    int_8 = 9
+    var_6 = module_0.x_or_y(int_8, int_6, int_7)
+    assert var_6 == 21
+    int_9 = 12
+    var_7 = module_0.x_or_y(int_9, int_6, int_7)
+    assert var_7 == 21
+    int_10 = 13
+    int_11 = 100
+    int_12 = 200
+    var_8 = module_0.x_or_y(int_10, int_11, int_12)
+    assert var_8 == 100
+    int_13 = 15
+    var_9 = module_0.x_or_y(int_13, int_11, int_12)
+    assert var_9 == 200
+    int_14 = 17
+    var_10 = module_0.x_or_y(int_14, int_11, int_12)
+    assert var_10 == 100
+    int_15 = 25
+    var_11 = module_0.x_or_y(int_15, int_11, int_12)
+    assert var_11 == 200
+    int_16 = 29
+    var_12 = module_0.x_or_y(int_16, int_11, int_12)
+    assert var_12 == 100
+    int_17 = 30
+    var_13 = module_0.x_or_y(int_17, int_11, int_12)
+    assert var_13 == 200

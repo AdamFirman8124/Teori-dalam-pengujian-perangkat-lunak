@@ -1,677 +1,500 @@
 
 
-# Generated at 2026-10-25 06:41:58.524736
+# Generated at 2026-11-02 17:47:48.262565
 # Unit test for function main
+def test_main():
+    # Mock sys.stdin as a byte stream
+    vars_data = cPickle.dumps({'ansible_connection': 'local'})
+    init_data = cPickle.dumps(PlayContext().serialize())
+    mock_stdin = StringIO()
+    mock_stdin.buffer = mock_stdin
 
-# Generated at 2026-10-25 06:42:00.906789
-# Unit test for function main
+    with patch('sys.stdin', mock_stdin), \
+         patch('ansible.module_utils.service.fork_process') as mock_fork, \
+         patch('ansible.plugins.loader.connection_loader.get') as mock_conn_loader, \
+         patch('ansible.utils.path.makedirs_safe'), \
+         patch('ansible.utils.path.unfrackpath') as mock_unfrackpath, \
+         patch('os.path.exists') as mock_exists, \
+         patch('os.getcwd') as mock_getcwd, \
+         patch('os.pipe') as mock_pipe, \
+         patch('os.fdopen') as mock_fdopen, \
+         patch('os.close'), \
+         patch('sys.argv', ['ansible-connection', '12345', 'abc-123']), \
+         patch('sys.exit') as mock_exit:
 
-# Generated at 2026-10-25 06:42:03.322257
-# Unit test for function main
+        mock_unfrackpath.side_effect = lambda p: p
+        mock_getcwd.return_value = '/tmp'
+        mock_exists.return_value = False
 
-# Generated at 2026-10-25 06:42:05.735938
-# Unit test for method connect_timeout of class ConnectionProcess
+        # Setup mock connection class
+        mock_ssh = MagicMock()
+        mock_ssh._create_control_path.return_value = '%(directory)s/%(socket)s'
+        mock_conn_loader.return_value = mock_ssh
 
-# Generated at 2026-10-25 06:42:08.151815
-# Unit test for method connect_timeout of class ConnectionProcess
+        # Setup fork_process to return a child pid
+        mock_fork.return_value = 12345
 
-# Generated at 2026-10-25 06:42:51.239588
-# Unit test for method connect_timeout of class ConnectionProcess
+        # Setup pipe
+        mock_pipe.return_value = (10, 11)
+        mock_rfd = MagicMock()
+        mock_rfd.read.return_value = json.dumps({
+            'messages': [],
+            'socket_path': '/tmp/socket'
+        })
+        mock_fdopen.return_value = mock_rfd
 
-# Generated at 2026-10-25 06:42:53.807729
-# Unit test for method connect_timeout of class ConnectionProcess
+        # Set stdin data
+        mock_stdin.write(read_stream(io.BytesIO(vars_data)) if False else '')
+        mock_stdin.seek(0)
 
-# Generated at 2026-10-25 06:42:56.215041
-# Unit test for method connect_timeout of class ConnectionProcess
+        # Mock read_stream to return pickled data
+        with patch.object(sys.modules[__name__], 'read_stream') as mock_read_stream:
+            mock_read_stream.side_effect = [vars_data, init_data]
 
-# Generated at 2026-10-25 06:42:58.632693
-# Unit test for method connect_timeout of class ConnectionProcess
+            # Mock sys.stdout to capture output
+            saved_stdout = sys.stdout
+            sys.stdout = StringIO()
 
-# Generated at 2026-10-25 06:43:01.061599
-# Unit test for method handler of class ConnectionProcess
+            try:
+                module_0.main()
+            except SystemExit:
+                pass
+            finally:
+                sys.stdout = saved_stdout
 
-# Generated at 2026-10-25 06:43:03.474232
-# Unit test for method handler of class ConnectionProcess
+        mock_exit.assert_called_once_with(0)
 
-# Generated at 2026-10-25 06:43:05.890843
-# Unit test for method handler of class ConnectionProcess
-
-# Generated at 2026-10-25 06:43:08.340247
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:43:10.748900
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:43:13.168270
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:43:15.582121
+# Generated at 2026-11-02 17:49:17.550954
 # Unit test for function file_lock
-
-# Generated at 2026-10-25 06:43:17.997665
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:43:20.412166
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:43:22.854922
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:43:25.638791
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:43:28.513509
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:43:29.948414
-# Unit test for method shutdown of class ConnectionProcess
-
-# Generated at 2026-10-25 06:43:46.358147
-# Unit test for method shutdown of class ConnectionProcess
-def test_ConnectionProcess_shutdown():import tempfile
-
-
-# Generated at 2026-10-25 06:43:48.774880
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:43:51.190571
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:43:53.769725
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:43:56.183616
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:43:58.601918
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:44:01.017496
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:44:03.435434
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:44:05.854270
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:44:08.470669
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:44:10.889956
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:44:13.349602
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:44:15.731581
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:44:18.149006
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:44:20.638677
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:44:22.991856
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:44:25.410647
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:44:27.959247
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:44:30.258668
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:44:32.675504
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:44:35.182866
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:44:37.519741
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:44:39.936462
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:44:42.424998
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:44:44.768283
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:44:47.185388
-# Unit test for function main
-
-# Generated at 2026-10-25 06:44:50.317870
-# Unit test for function main
-
-# Generated at 2026-10-25 06:44:53.235939
-# Unit test for function main
-
-# Generated at 2026-10-25 06:44:56.095241
-# Unit test for method start of class ConnectionProcess
-def test_ConnectionProcess_start():
-    import shutil
+def test_file_lock():
     import tempfile
-    from mock import MagicMock, patch
+    from unittest.mock import patch, call
 
-    socket_dir = tempfile.mkdtemp()
-    socket_path = os.path.join(socket_dir, 'ansiballz_socket')
-    fd = MagicMock()
+    lock_path = '/tmp/ansible_test_file_lock'
+    fake_fd = 42
 
-    play_context = PlayContext()
-    play_context.connection = 'local'
-    play_context.private_key_file = None
+    # Normal operation: lock acquired on enter, released and fd closed on exit
+    with patch('os.open', return_value=fake_fd) as mock_open, \
+            patch('fcntl.lockf') as mock_lockf, \
+            patch('os.close') as mock_close:
+        with module_0.file_lock(lock_path):
+            mock_open.assert_called_once_with(lock_path, os.O_RDWR | os.O_CREAT, 0o600)
+            mock_lockf.assert_called_once_with(fake_fd, fcntl.LOCK_EX)
 
-    original_path = os.getcwd()
-    cp = ConnectionProcess(fd, play_context, socket_path, original_path,
-                           ansible_playbook_pid=os.getpid())
+        assert mock_lockf.call_args_list == [
+            call(fake_fd, fcntl.LOCK_EX),
+            call(fake_fd, fcntl.LOCK_UN),
+        ]
+        mock_close.assert_called_once_with(fake_fd)
 
-    fake_connection = MagicMock()
-    fake_connection.pop_messages.return_value = []
-    fake_connection.get_option.return_value = False
+    # Exception safety: lock still released and fd closed when body raises
+    with patch('os.open', return_value=fake_fd), \
+            patch('fcntl.lockf') as mock_lockf, \
+            patch('os.close') as mock_close:
+        try:
+            with module_0.file_lock(lock_path):
+                raise RuntimeError('boom')
+        except RuntimeError:
+            pass
+        else:
+            raise AssertionError('expected RuntimeError to propagate')
 
-    variables = {'ansible_connection': 'local'}
+        assert mock_lockf.call_args_list == [
+            call(fake_fd, fcntl.LOCK_EX),
+            call(fake_fd, fcntl.LOCK_UN),
+        ]
+        mock_close.assert_called_once_with(fake_fd)
 
+    # Integration check with a real lock file: it is created and cleaned up
+    lock_dir = tempfile.mkdtemp()
+    real_path = os.path.join(lock_dir, 'lockfile')
+    try:
+        with module_0.file_lock(real_path):
+            assert os.path.exists(real_path)
+        # Re-acquiring after release must succeed (no deadlock)
+        with module_0.file_lock(real_path):
+            assert os.path.exists(real_path)
+    finally:
+        if os.path.exists(real_path):
+            os.remove(real_path)
+        os.rmdir(lock_dir)
 
-# Generated at 2026-10-25 06:44:59.036077
-# Unit test for function file_lock
-def test_file_lock():import fcntl
+# Generated at 2026-11-02 17:51:43.372722
+# Unit test for method connect_timeout of class ConnectionProcess
+def test_ConnectionProcess_connect_timeout():"""Test connect_timeout of ConnectionProcess"""
+
+# Generated at 2026-11-02 17:54:22.419418
+# Unit test for function main
+def test_main():import json
 import os
+import sys
+import hashlib
+import errno
+import signal
+import time
+import traceback
+import fcntl
+from io import StringIO
+from unittest.mock import MagicMock, patch, mock_open, PropertyMock
+from contextlib import contextmanager
 
 import pytest
 
+from ansible.module_utils.service import fork_process
+from ansible.parsing.ajson import AnsibleJSONEncoder, AnsibleJSONDecoder
+from ansible.playbook.play_context import PlayContext
+from ansible.plugins.loader import connection_loader
+from ansible.utils.path import unfrackpath, makedirs_safe
+from ansible.utils.display import Display
+from ansible.utils.jsonrpc import JsonRpcServer
 
-def test_file_lock(tmp_path):
-    lock_path = str(tmp_path / "test.lock")
 
-    # The lock file should not exist before the context is entered
-    assert not os.path.exists(lock_path)
+def _make_stream_data(vars_data, init_data):
+    """Helper to create byte stream data with length prefix and hash."""
+    def _encode(data):
+        data_bytes = data if isinstance(data, bytes) else data.encode()
+        size = len(data_bytes)
+        data_hash = hashlib.sha1(data_bytes).hexdigest()
+        return b"%d\n%s\n%s\n" % (size, data_bytes, to_bytes(data_hash))
+    return _encode(vars_data) + _encode(init_data)
 
-    with module_0.file_lock(lock_path):
-        # Entering the context should create the lock file with 0600 perms
-        assert os.path.exists(lock_path)
-        assert (os.stat(lock_path).st_mode & 0o777) == 0o600
 
-        # While held, a second non-blocking exclusive lock must fail
-        fd = os.open(lock_path, os.O_RDWR | os.O_CREAT, 0o600)
-        with pytest.raises(IOError):
-            fcntl.lockf(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        os.close(fd)
+@patch('ansible.module_utils.persistent_connection.sys.exit')
+@patch('ansible.module_utils.persistent_connection.sys.stdout', new_callable=StringIO)
+@patch('ansible.module_utils.persistent_connection.sys.stderr', new_callable=StringIO)
+@patch('ansible.module_utils.persistent_connection.os.getcwd')
+@patch('ansible.module_utils.persistent_connection.fork_process')
+@patch('ansible.module_utils.persistent_connection.os.pipe')
+@patch('ansible.module_utils.persistent_connection.makedirs_safe')
+@patch('ansible.module_utils.persistent_connection.unfrackpath')
+@patch('ansible.module_utils.persistent_connection.connection_loader')
+@patch('ansible.module_utils.persistent_connection.PlayContext')
+@patch('ansible.module_utils.persistent_connection.file_lock')
+@patch('ansible.module_utils.persistent_connection.os.path.exists')
+def test_main(mock_exists, mock_file_lock, mock_play_context, mock_connection_loader,
+              mock_unfrackpath, mock_makedirs_safe, mock_pipe, mock_fork_process,
+              mock_getcwd, mock_stderr, mock_stdout, mock_exit):
+    """Test that module_0.main() runs successfully in the parent process path."""
+    # Setup mocks
+    mock_exists.return_value = False
+    mock_file_lock.return_value.__enter__ = MagicMock()
+    mock_file_lock.return_value.__exit__ = MagicMock(return_value=False)
 
-    # After leaving the context, the lock must be released
-    fd = os.open(lock_path, os.O_RDWR | os.O_CREAT, 0o600)
-    fcntl.lockf(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-    fcntl.lockf(fd, fcntl.LOCK_UN)
-    os.close(fd)
-
-    # The context manager must not close or delete the lock file itself
-    assert os.path.exists(lock_path)
-
-# Generated at 2026-10-25 06:45:17.467132
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:45:20.186133
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:45:22.699765
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:45:25.116617
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:45:27.546692
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:45:29.968621
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:45:32.384611
-# Unit test for function main
-
-# Generated at 2026-10-25 06:45:34.800843
-# Unit test for function main
-
-# Generated at 2026-10-25 06:45:37.214220
-# Unit test for function main
-
-# Generated at 2026-10-25 06:45:39.631231
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:45:42.043588
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:45:44.461776
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:45:46.878186
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:45:49.414281
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:45:51.768911
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:45:54.186151
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:46:10.268958
-# Unit test for function read_stream
-def test_read_stream():import io
-
-# Generated at 2026-10-25 06:46:25.665942
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:46:28.844956
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:46:46.632639
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:46:49.050995
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:46:51.781878
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:46:54.195728
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:46:56.670979
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:46:59.088662
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:47:27.110766
-# Unit test for method start of class ConnectionProcess
-def test_ConnectionProcess_start():
-    import tempfile
-    from io import StringIO
-    from unittest.mock import MagicMock, patch
-
-    tmpdir = tempfile.mkdtemp()
-    socket_path = os.path.join(tmpdir, 'test_socket')
-
-    fd = StringIO()
-    fake_stdout = StringIO()
-
-    play_context = PlayContext()
-    play_context.connection = 'local'
+    play_context = MagicMock()
+    play_context.remote_addr = '127.0.0.1'
+    play_context.port = 22
+    play_context.remote_user = 'test'
+    play_context.connection = 'ssh'
+    play_context.verbosity = 0
     play_context.private_key_file = None
-
-    mock_connection = MagicMock()
-    mock_connection.pop_messages.return_value = []
-
-    with patch('ansible.plugins.connection.connection_loader.get', return_value=mock_connection), \
-            patch('ansible.plugins.connection.sys.stdout', fake_stdout):
-        process = ConnectionProcess(fd, play_context, socket_path, tmpdir)
-        process.start({})
-
-    result = json.loads(fd.getvalue())
-
-    assert 'error' not in result
-    assert 'exception' not in result
-    assert 'control socket path is %s' % socket_path in result['messages']
-    assert 'local domain socket listeners started successfully' in result['messages']
-    assert process.connection is mock_connection
-    assert mock_connection._socket_path == socket_path
-    assert os.path.exists(socket_path)
-
-    process.sock.close()
-    os.remove(socket_path)
-
-# Generated at 2026-10-25 06:47:29.522477
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:47:31.942338
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:47:34.587080
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:47:37.008016
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:47:39.417252
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:47:41.840755
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:47:44.549276
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:47:46.965896
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:47:49.378419
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:47:51.794382
-# Unit test for function main
-
-# Generated at 2026-10-25 06:47:54.209824
-# Unit test for function main
-
-# Generated at 2026-10-25 06:47:56.628600
-# Unit test for function main
-
-# Generated at 2026-10-25 06:47:59.046466
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:48:01.459047
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:48:03.904212
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:48:06.295929
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:48:08.709763
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:48:11.129295
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:48:13.544394
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:48:15.959762
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:48:18.380793
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:48:23.021781
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:48:25.440641
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:48:27.856393
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:48:30.286202
-# Unit test for method shutdown of class ConnectionProcess
-
-# Generated at 2026-10-25 06:48:32.696159
-# Unit test for method shutdown of class ConnectionProcess
-
-# Generated at 2026-10-25 06:48:35.113776
-# Unit test for method shutdown of class ConnectionProcess
-
-# Generated at 2026-10-25 06:48:37.526000
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:48:39.943727
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:48:42.362736
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:48:44.863299
-# Unit test for function main
-
-# Generated at 2026-10-25 06:48:47.274878
-# Unit test for function main
-
-# Generated at 2026-10-25 06:48:49.689394
-# Unit test for function main
-
-# Generated at 2026-10-25 06:48:52.103333
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:48:54.517314
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:48:56.933627
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:48:59.346898
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:49:01.764390
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:49:04.181404
-# Unit test for function read_stream
-
-# Generated at 2026-10-25 06:49:06.594528
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:49:09.011012
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:49:11.427943
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:49:13.841778
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:49:16.259569
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:49:18.676641
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:49:21.090480
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:49:23.507844
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:49:25.924919
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:49:28.341179
-# Unit test for method shutdown of class ConnectionProcess
-
-# Generated at 2026-10-25 06:49:30.756959
-# Unit test for method shutdown of class ConnectionProcess
-
-# Generated at 2026-10-25 06:49:33.175294
-# Unit test for method shutdown of class ConnectionProcess
-
-# Generated at 2026-10-25 06:49:40.115508
-# Unit test for function main
-
-# Generated at 2026-10-25 06:49:42.498526
-# Unit test for function main
-
-# Generated at 2026-10-25 06:49:44.915356
-# Unit test for function main
-
-# Generated at 2026-10-25 06:49:47.332589
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:49:49.746814
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:49:52.163853
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:49:54.580767
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:49:56.996130
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:49:59.412333
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:50:01.829891
-# Unit test for method shutdown of class ConnectionProcess
-
-# Generated at 2026-10-25 06:50:04.246281
-# Unit test for method shutdown of class ConnectionProcess
-
-# Generated at 2026-10-25 06:50:06.682859
-# Unit test for method shutdown of class ConnectionProcess
-
-# Generated at 2026-10-25 06:50:09.097567
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:50:11.523974
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:50:13.934104
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:50:16.350842
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:50:18.862689
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:50:21.197016
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:50:23.614587
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:50:26.025432
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:50:28.440156
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:50:30.854583
-# Unit test for function main
-
-# Generated at 2026-10-25 06:50:33.268708
-# Unit test for function main
-
-# Generated at 2026-10-25 06:50:35.791290
-# Unit test for function main
-
-# Generated at 2026-10-25 06:50:38.205176
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:50:40.622661
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:50:43.105497
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:50:45.473711
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:50:47.891468
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:50:50.345635
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:51:06.085264
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:51:08.501845
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:51:10.916363
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:51:13.366871
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:51:15.751811
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:51:18.167454
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:51:20.604500
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:51:23.021440
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:51:25.436141
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:51:27.926230
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:51:30.342639
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:51:32.757296
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:51:35.171540
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:51:37.587483
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:51:40.002795
-# Unit test for method run of class ConnectionProcess
-
-# Generated at 2026-10-25 06:51:42.419807
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:51:44.837155
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:51:47.251480
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:51:49.669591
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:51:52.081027
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:51:54.495217
-# Unit test for function file_lock
-
-# Generated at 2026-10-25 06:51:56.909225
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:51:59.326872
-# Unit test for method start of class ConnectionProcess
-
-# Generated at 2026-10-25 06:52:00.825254
-# Unit test for method start of class ConnectionProcess
-def test_ConnectionProcess_start():
-    import tempfile
-    from io import StringIO
-    from unittest.mock import MagicMock, patch
-
-    tmpdir = tempfile.mkdtemp()
-    socket_path = os.path.join(tmpdir, 'test_socket')
-
-    fd = StringIO()
-    fake_stdout = StringIO()
-
-    play_context = PlayContext()
-    play_context.connection = 'local'
+    mock_play_context.return_value = play_context
+
+    mock_unfrackpath.side_effect = lambda path: path
+    mock_getcwd.return_value = '/tmp'
+
+    r_fd, w_fd = 10, 11
+    mock_pipe.return_value = (r_fd, w_fd)
+    mock_fork_process.return_value = 1  # simulate parent process
+
+    mock_ssh = MagicMock()
+    mock_ssh._create_control_path.return_value = '%(directory)s/.ansible_pc_%(user)s@%(host)s:%(port)s'
+    mock_connection_loader.get.return_value = mock_ssh
+
+    # Prepare stdin data
+    vars_data = {'ANSIBLE_NET_USERNAME': 'test'}
+    pc_data = play_context.serialize()
+    stdin_data = _make_stream_data(cPickle.dumps(vars_data), cPickle.dumps(pc_data))
+
+    mock_stdin = MagicMock()
+    mock_stdin.buffer = MagicMock()
+    mock_stdin.buffer.readline.side_effect = [
+        to_bytes(str(len(cPickle.dumps(vars_data)))) + b'\n',
+        to_bytes(str(len(cPickle.dumps(pc_data)))) + b'\n',
+    ]
+    mock_stdin.buffer.read.side_effect = [
+        cPickle.dumps(vars_data),
+        cPickle.dumps(pc_data),
+    ]
+
+    # Simulate parent reading from pipe
+    parent_result = {'messages': [], 'socket_path': '/tmp/.ansible_pc_test@127.0.0.1:22'}
+
+    with patch('ansible.module_utils.persistent_connection.sys.stdin', mock_stdin), \
+         patch('ansible.module_utils.persistent_connection.os.fdopen') as mock_fdopen, \
+         patch('ansible.module_utils.persistent_connection.os.close') as mock_close:
+
+        mock_rfd = MagicMock()
+        mock_rfd.read.return_value = json.dumps(parent_result, cls=AnsibleJSONEncoder)
+        mock_wfd = MagicMock()
+        mock_fdopen.side_effect = [mock_wfd, mock_rfd]
+
+        # Call main
+        import ansible.module_utils.persistent_connection as pc_module
+        pc_module.main()
+
+    # Verify exit was called
+    mock_exit.assert_called_once()
+    assert mock_exit.call_args[0][0] == 0
+
+
+@patch('ansible.module_utils.persistent_connection.sys.exit')
+@patch('ansible.module_utils.persistent_connection.sys.stdout', new_callable=StringIO)
+@patch('ansible.module_utils.persistent_connection.sys.stderr', new_callable=StringIO)
+@patch('ansible.module_utils.persistent_connection.os.getcwd')
+@patch('ansible.module_utils.persistent_connection.fork_process')
+@patch('ansible.module_utils.persistent_connection.os.pipe')
+@patch('ansible.module_utils.persistent_connection.makedirs_safe')
+@patch('ansible.module_utils.persistent_connection.unfrackpath')
+@patch('ansible.module_utils.persistent_connection.connection_loader')
+@patch('ansible.module_utils.persistent_connection.PlayContext')
+@patch('ansible.module_utils.persistent_connection.file_lock')
+@patch('ansible.module_utils.persistent_connection.os.path.exists')
+def test_main_fork_child_process(mock_exists, mock_file_lock, mock_play_context, mock_connection_loader,
+                                 mock_unfrackpath, mock_makedirs_safe, mock_pipe, mock_fork_process,
+                                 mock_getcwd, mock_stderr, mock_stdout, mock_exit):
+    """Test module_0.main() when running in the child process (pid == 0)."""
+    mock_exists.return_value = False
+    mock_file_lock.return_value.__enter__ = MagicMock()
+    mock_file_lock.return_value.__exit__ = MagicMock(return_value=False)
+
+    play_context = MagicMock()
+    play_context.remote_addr = '127.0.0.1'
+    play_context.port = 22
+    play_context.remote_user = 'test'
+    play_context.connection = 'ssh'
+    play_context.verbosity = 0
     play_context.private_key_file = None
+    mock_play_context.return_value = play_context
 
-    mock_connection = MagicMock()
-    mock_connection.pop_messages.return_value = []
+    mock_unfrackpath.side_effect = lambda path: path
+    mock_getcwd.return_value = '/tmp'
 
-    with patch('ansible.plugins.connection.connection_loader.get', return_value=mock_connection), \
-            patch('ansible.plugins.connection.sys.stdout', fake_stdout):
-        process = ConnectionProcess(fd, play_context, socket_path, tmpdir)
-        process.start({})
+    r_fd, w_fd = 10, 11
+    mock_pipe.return_value = (r_fd, w_fd)
+    mock_fork_process.return_value = 0  # simulate child process
 
-    result = json.loads(fd.getvalue())
+    mock_ssh = MagicMock()
+    mock_ssh._create_control_path.return_value = '%(directory)s/.ansible_pc_%(user)s@%(host)s:%(port)s'
+    mock_connection_loader.get.return_value = mock_ssh
 
-    assert 'error' not in result
-    assert 'exception' not in result
-    assert 'control socket path is %s' % socket_path in result['messages']
-    assert 'local domain socket listeners started successfully' in result['messages']
-    assert process.connection is mock_connection
-    assert mock_connection._socket_path == socket_path
-    assert os.path.exists(socket_path)
+    vars_data = {'ANSIBLE_NET_USERNAME': 'test'}
+    pc_data = play_context.serialize()
 
-    process.sock.close()
-    os.remove(socket_path)
+    mock_stdin = MagicMock()
+    mock_stdin.buffer = MagicMock()
+    mock_stdin.buffer.readline.side_effect = [
+        to_bytes(str(len(cPickle.dumps(vars_data)))) + b'\n',
+        to_bytes(str(len(cPickle.dumps(pc_data)))) + b'\n',
+    ]
+    mock_stdin.buffer.read.side_effect = [
+        cPickle.dumps(vars_data),
+        cPickle.dumps(pc_data),
+    ]
+
+    with patch('ansible.module_utils.persistent_connection.sys.stdin', mock_stdin), \
+         patch('ansible.module_utils.persistent_connection.os.fdopen') as mock_fdopen, \
+         patch('ansible.module_utils.persistent_connection.os.close') as mock_close, \
+         patch('ansible.module_utils.persistent_connection.ConnectionProcess') as mock_cp:
+
+        mock_wfd = MagicMock()
+        mock_fdopen.return_value = mock_wfd
+        mock_process = MagicMock()
+        mock_cp.return_value = mock_process
+
+        import ansible.module_utils.persistent_connection as pc_module
+        pc_module.main()
+
+    # In child process, ConnectionProcess should be created and started
+    mock_cp.assert_called_once()
+    mock_process.start.assert_called_once_with(vars_data)
+    mock_process.run.assert_called_once()
+    mock_exit.assert_called_once()
+
+
+@patch('ansible.module_utils.persistent_connection.sys.exit')
+@patch('ansible.module_utils.persistent_connection.sys.stdout', new_callable=StringIO)
+@patch('ansible.module_utils.persistent_connection.sys.stderr', new_callable=StringIO)
+@patch('ansible.module_utils.persistent_connection.os.getcwd')
+@patch('ansible.module_utils.persistent_connection.fork_process')
+@patch('ansible.module_utils.persistent_connection.os.pipe')
+@patch('ansible.module_utils.persistent_connection.makedirs_safe')
+@patch('ansible.module_utils.persistent_connection.unfrackpath')
+@patch('ansible.module_utils.persistent_connection.connection_loader')
+@patch('ansible.module_utils.persistent_connection.PlayContext')
+@patch('ansible.module_utils.persistent_connection.file_lock')
+@patch('ansible.module_utils.persistent_connection.os.path.exists')
+def test_main_existing_socket(mock_exists, mock_file_lock, mock_play_context, mock_connection_loader,
+                              mock_unfrackpath, mock_makedirs_safe, mock_pipe, mock_fork_process,
+                              mock_getcwd, mock_stderr, mock_stdout, mock_exit):
+    """Test module_0.main() when an existing socket is found."""
+    mock_exists.return_value = True
+    mock_file_lock.return_value.__enter__ = MagicMock()
+    mock_file_lock.return_value.__exit__ = MagicMock(return_value=False)
+
+    play_context = MagicMock()
+    play_context.remote_addr = '127.0.0.1'
+    play_context.port = 22
+    play_context.remote_user = 'test'
+    play_context.connection = 'ssh'
+    play_context.verbosity = 0
+    play_context.private_key_file = None
+    mock_play_context.return_value = play_context
+
+    mock_unfrackpath.side_effect = lambda path: path
+    mock_getcwd.return_value = '/tmp'
+
+    mock_ssh = MagicMock()
+    mock_ssh._create_control_path.return_value = '%(directory)s/.ansible_pc_%(user)s@%(host)s:%(port)s'
+    mock_connection_loader.get.return_value = mock_ssh
+
+    vars_data = {'ANSIBLE_NET_USERNAME': 'test'}
+    pc_data = play_context.serialize()
+
+    mock_stdin = MagicMock()
+    mock_stdin.buffer = MagicMock()
+    mock_stdin.buffer.readline.side_effect = [
+        to_bytes(str(len(cPickle.dumps(vars_data)))) + b'\n',
+        to_bytes(str(len(cPickle.dumps(pc_data)))) + b'\n',
+    ]
+    mock_stdin.buffer.read.side_effect = [
+        cPickle.dumps(vars_data),
+        cPickle.dumps(pc_data),
+    ]
+
+    with patch('ansible.module_utils.persistent_connection.sys.stdin', mock_stdin), \
+         patch('ansible.module_utils.persistent_connection.Connection') as mock_conn:
+
+        mock_connection = MagicMock()
+        mock_connection.pop_messages.return_value = []
+        mock_conn.return_value = mock_connection
+
+        import ansible.module_utils.persistent_connection as pc_module
+        pc_module.main()
+
+    # Verify Connection was instantiated with socket_path
+    mock_conn.assert_called_once()
+    mock_connection.set_options.assert_called_once()
+    mock_connection.update_play_context.assert_called_once()
+    mock_connection.set_check_prompt.assert_called_once()
+    mock_exit.assert_called_once()
+
+
+@patch('ansible.module_utils.persistent_connection.sys.exit')
+@patch('ansible.module_utils.persistent_connection.sys.stdout', new_callable=StringIO)
+@patch('ansible.module_utils.persistent_connection.sys.stderr', new_callable=StringIO)
+@patch('ansible.module_utils.persistent_connection.os.getcwd')
+@patch('ansible.module_utils.persistent_connection.fork_process')
+@patch('ansible.module_utils.persistent_connection.os.pipe')
+@patch('ansible.module_utils.persistent_connection.makedirs_safe')
+@patch('ansible.module_utils.persistent_connection.unfrackpath')
+@patch('ansible.module_utils.persistent_connection.connection_loader')
+@patch('ansible.module_utils.persistent_connection.PlayContext')
+@patch('ansible.module_utils.persistent_connection.file_lock')
+@patch('ansible.module_utils.persistent_connection.os.path.exists')
+def test_main_existing_socket_update_play_context_error(mock_exists, mock_file_lock, mock_play_context,
+                                                         mock_connection_loader, mock_unfrackpath,
+                                                         mock_makedirs_safe, mock_pipe, mock_fork_process,
+                                                         mock_getcwd, mock_stderr, mock_stdout, mock_exit):
+    """Test module_0.main() with existing socket when update_play_context raises a non-ConnectionError."""
+    mock_exists.return_value = True
+    mock_file_lock.return_value.__enter__ = MagicMock()
+    mock_file_lock.return_value.__exit__ = MagicMock(return_value=False)
+
+    play_context = MagicMock()
+    play_context.remote_addr = '127.0.0.1'
+    play_context.port = 22
+    play_context.remote_user = 'test'
+    play_context.connection = 'ssh'
+    play_context.verbosity = 0
+    play_context.private_key_file = None
+    mock_play_context.return_value = play_context
+
+    mock_unfrackpath.side_effect = lambda path: path
+    mock_getcwd.return_value = '/tmp'
+
+    mock_ssh = MagicMock()
+    mock_ssh._create_control_path.return_value = '%(directory)s/.ansible_pc_%(user)s@%(host)s:%(port)s'
+    mock_connection_loader.get.return_value = mock_ssh
+
+    vars_data = {'ANSIBLE_NET_USERNAME': 'test'}
+    pc_data = play_context.serialize()
+
+    mock_stdin = MagicMock()
+    mock_stdin.buffer = MagicMock()
+    mock_stdin.buffer.readline.side_effect = [
+        to_bytes(str(len(cPickle.dumps(vars_data)))) + b'\n',
+        to_bytes(str(len(cPickle.dumps(pc_data)))) + b'\n',
+    ]
+    mock_stdin.buffer.read.side_effect = [
+        cPickle.dumps(vars_data),
+        cPickle.dumps(pc_data),
+    ]
+
+    with patch('ansible.module_utils.persistent_connection.sys.stdin', mock_stdin), \
+         patch('ansible.module_utils.persistent_connection.Connection') as mock_conn:
+
+        mock_connection = MagicMock()
+        mock_connection.pop_messages.return_value = []
+        mock_connection.update_play_context.side_effect = Exception('some error')
+        mock_conn.return_value = mock_connection
+
+        import ansible.module_utils.persistent_connection as pc_module
+        pc_module.main()
+
+    # Exit should be called with rc=1 due to exception in result
+    mock_exit.assert_called_once()
+    assert mock_exit.call_args[0][0] == 1
+
+# Generated at 2026-11-02 17:55:29.256444
+# Unit test for method handler of class ConnectionProcess
+def test_ConnectionProcess_handler():
+    """
+    Test that ConnectionProcess.handler logs the signal message via display
+    with log_only=True and raises an Exception containing the signal number.
+    """
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    # Arrange
+    fd = MagicMock()
+    play_context = PlayContext()
+    socket_path = '/tmp/ansible_test_socket_path'
+    original_path = '/tmp'
+    connection_process = ConnectionProcess(fd, play_context, socket_path, original_path)
+
+    signum = 15
+    frame = None
+    expected_msg = 'signal handler called with signal %s.' % signum
+
+    # Act / Assert
+    with patch.object(sys.modules[__name__], 'display', create=True) as mock_display:
+        with pytest.raises(Exception) as exc_info:
+            connection_process.handler(signum, frame)
+
+    mock_display.display.assert_called_once_with(expected_msg, log_only=True)
+    assert str(exc_info.value) == expected_msg
+
+
+# Unit test for method handler of class ConnectionProcess with SIGTERM
+def test_ConnectionProcess_handler_sigterm():
+    """
+    Test handler with signal.SIGTERM to ensure the message contains the
+    correct signal number and the exception propagates.
+    """
+    from unittest.mock import MagicMock, patch
+    import pytest
+
+    fd = MagicMock()
+    play_context = PlayContext()
+    socket_path = '/tmp/ansible_test_socket_path_sigterm'
+    original_path = '/tmp'
+    connection_process = ConnectionProcess(fd, play_context, socket_path, original_path)
+
+    signum = signal.SIGTERM
+    expected_msg = 'signal handler called with signal %s.' % signum
+
+    with patch.object(sys.modules[__name__], 'display', create=True) as mock_display:
+        with pytest.raises(Exception, match='signal handler called with signal'):
+            connection_process.handler(signum, None)
+
+    mock_display.display.assert_called_once_with(expected_msg, log_only=True)

@@ -4,42 +4,43 @@
 
 import pytest
 
-from pysnooper import utils
+from pysnooper.utils import truncate
 
 
-class TestTruncate(object):
-    def test_truncate_string_shorter_than_max_length(self):
-        result = utils.truncate('hello', 10)
-        assert result == 'hello'
+def test_truncate_with_none_max_length_returns_string_unchanged():
+    """Covers line 82 (condition, `max_length is None` branch) and line 83."""
+    result = truncate('hello world', None)
+    assert result == 'hello world'
 
-    def test_truncate_string_equal_to_max_length(self):
-        result = utils.truncate('hello', 5)
-        assert result == 'hello'
 
-    def test_truncate_string_longer_than_max_length(self):
-        result = utils.truncate('hello world', 8)
-        # left = (8 - 3) // 2 = 2, right = 8 - 3 - 2 = 3
-        assert result == 'he...rld'
-        assert len(result) == 8
+def test_truncate_short_string_returns_string_unchanged():
+    """Covers line 82 (condition, `len(string) <= max_length` branch) and line 83."""
+    # strictly shorter than max_length
+    assert truncate('abc', 10) == 'abc'
+    # exactly equal to max_length (boundary of the <= comparison)
+    assert truncate('abc', 3) == 'abc'
 
-    def test_truncate_with_max_length_none(self):
-        result = utils.truncate('hello world', None)
-        assert result == 'hello world'
 
-    def test_truncate_with_max_length_three(self):
-        result = utils.truncate('hello', 3)
-        # left = (3 - 3) // 2 = 0, right = 3 - 3 - 0 = 0
-        # string[-0:] is string[0:], i.e. the whole string
-        assert result == '...hello'
+def test_truncate_long_string_odd_max_length():
+    """Covers lines 85, 86, 87 (else branch) with an odd max_length."""
+    result = truncate('abcdefghij', 5)
+    # left = (5 - 3) // 2 == 1, right = 5 - 3 - 1 == 1
+    assert result == 'a...j'
+    assert len(result) == 5
 
-    def test_truncate_with_max_length_four(self):
-        result = utils.truncate('hello', 4)
-        # left = (4 - 3) // 2 = 0, right = 4 - 3 - 0 = 1
-        assert result == '...o'
-        assert len(result) == 4
 
-    def test_truncate_with_max_length_five(self):
-        result = utils.truncate('hello world', 5)
-        # left = (5 - 3) // 2 = 1, right = 5 - 3 - 1 = 1
-        assert result == 'h...d'
-        assert len(result) == 5
+def test_truncate_long_string_even_max_length():
+    """Covers lines 85, 86, 87 (else branch) with an even max_length,
+    exercising the asymmetric left/right split."""
+    result = truncate('abcdefghij', 6)
+    # left = (6 - 3) // 2 == 1, right = 6 - 3 - 1 == 2
+    assert result == 'a...ij'
+    assert len(result) == 6
+
+
+def test_truncate_long_string_larger_odd_max_length():
+    """Covers lines 85, 86, 87 again with a different split."""
+    result = truncate('abcdefghij', 7)
+    # left = (7 - 3) // 2 == 2, right = 7 - 3 - 2 == 2
+    assert result == 'ab...ij'
+    assert len(result) == 7

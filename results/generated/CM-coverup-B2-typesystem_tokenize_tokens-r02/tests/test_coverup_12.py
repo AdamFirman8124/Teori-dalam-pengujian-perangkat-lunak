@@ -6,31 +6,48 @@ from typesystem.base import Position
 from typesystem.tokenize.tokens import Token
 
 
-def test_token_end_returns_position_for_end_index():
-    token = Token("abc", 0, 2, content="abc")
-    end = token.end
-    assert isinstance(end, Position)
-    assert end == token._get_position(2)
-    assert end == Position(1, 3, 2)
+def test_token_end_property_multiline_content():
+    """Covers line 38: `end` delegates to `_get_position(self._end_index)`.
+
+    With content "ab\ncd" and end_index=4, the sliced content is "ab\ncd",
+    which splits into 2 lines, so the end position is line 2, column 2.
+    """
+    token = Token(value="x", start_index=0, end_index=4, content="ab\ncd")
+    position = token.end
+    assert isinstance(position, Position)
+    assert position.line_no == 2
+    assert position.column_no == 2
+    assert position.char_index == 4
+    # char_index equals the end index (not the start index), proving that
+    # `end` used `self._end_index`.
+    assert position == Position(line_no=2, column_no=2, char_index=4)
 
 
-def test_token_end_with_multiline_content():
-    token = Token("b", 2, 3, content="a\nb")
-    end = token.end
-    assert isinstance(end, Position)
-    assert end == token._get_position(3)
-    assert end == Position(2, 1, 3)
+def test_token_end_property_empty_content():
+    """Covers the `not lines` branch of `_get_position` via the `end` property."""
+    token = Token(value="x", start_index=0, end_index=0, content="")
+    position = token.end
+    assert isinstance(position, Position)
+    assert position.line_no == 1
+    assert position.column_no == 1
+    assert position.char_index == 0
 
 
-def test_token_end_with_empty_content():
-    token = Token("", 0, 0, content="")
-    end = token.end
-    assert isinstance(end, Position)
-    assert end == token._get_position(0)
-    assert end == Position(1, 1, 0)
+def test_token_end_property_index_beyond_content():
+    """`end` must still work when end_index exceeds the content length."""
+    token = Token(value="x", start_index=0, end_index=10, content="abc")
+    position = token.end
+    assert isinstance(position, Position)
+    assert position.line_no == 1
+    assert position.column_no == 3
+    assert position.char_index == 10
 
 
-def test_token_end_uses_end_index_not_start_index():
-    token = Token("xyz", 1, 2, content="xyz")
-    assert token.end == token._get_position(2)
-    assert token.end != token.start
+def test_token_end_property_default_content():
+    """`end` works with the default (empty) content argument."""
+    token = Token(value="x", start_index=0, end_index=2)
+    position = token.end
+    assert isinstance(position, Position)
+    assert position.line_no == 1
+    assert position.column_no == 1
+    assert position.char_index == 2

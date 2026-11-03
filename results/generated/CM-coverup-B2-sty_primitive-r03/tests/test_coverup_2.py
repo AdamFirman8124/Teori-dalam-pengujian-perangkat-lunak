@@ -2,78 +2,89 @@
 # asked: {"lines": [150, 153, 154, 155, 156], "branches": [[153, 0], [153, 154], [155, 153], [155, 156]]}
 # gained: {"lines": [150, 153, 154, 155, 156], "branches": [[153, 0], [153, 154], [155, 153], [155, 156]]}
 
-from typing import Callable
+"""Coverage tests for sty.primitive.Register.set_renderfunc (lines 150-156).
 
-import pytest
+All tests operate on fresh, locally created Register instances, so no global
+sty state (e.g. the module-level fg/bg/ef/rs registers) is ever touched or
+mutated.  Consequently no monkeypatching/teardown is required to avoid state
+pollution between tests.
+"""
 
-from sty import Register, Style
+from sty.primitive import Register, Style
 from sty.rendertype import RenderType
 
 
-class _DummyRenderType(RenderType):
-    """Minimal concrete RenderType used only for testing."""
+class _MyRule(RenderType):
+    """Custom render type used only within these tests."""
+
+    def __init__(self, x: str) -> None:
+        self.args = [x]
 
 
-def _dummy_render(*args) -> str:
-    # RenderType.args defaults to [], so render funcs are called with no args.
-    return "<dummy>"
+def test_set_renderfunc_saves_func_and_scans_attributes():
+    """Lines 150-155: the func is stored and non-Style attributes are skipped."""
+    reg = Register()
+
+    def render_func(x):
+        return f"<{x}>"
+
+    reg.set_renderfunc(_MyRule, render_func)
+
+    # Postcondition: the renderfunc was saved under the given rendertype.
+    assert reg.renderfuncs == {_MyRule: render_func}
 
 
-def _other_render(*args) -> str:
-    return "<other>"
+def test_set_renderfunc_replaces_func_and_rerenders_styles():
+    """Lines 150-156: existing Style attributes are re-set (re-rendered)."""
+    reg = Register()
+
+    def old_render(x):
+        return f"<old:{x}>"
+
+    def new_render(x):
+        return f"<new:{x}>"
+
+    # First call: no Style attributes exist yet, so the loop inside
+    # set_renderfunc finds nothing (False branch of the isinstance check).
+    reg.set_renderfunc(_MyRule, old_render)
+    assert reg.renderfuncs[_MyRule] is old_render
+
+    # Assigning a Style attribute renders it with the currently registered
+    # renderfunc (via Register.__setattr__ / _render_rules).
+    rule = _MyRule("X")
+    reg.red = Style(rule)
+    assert reg.red == "<old:X>"
+    assert isinstance(reg.red, Style)
+
+    # Second call: the loop now finds the Style attribute and re-sets it,
+    # which re-renders it with the newly registered renderfunc (line 156).
+    reg.set_renderfunc(_MyRule, new_render)
+
+    # Postconditions: the new func replaced the old one and the style
+    # attribute was re-rendered through it, keeping its styling rule.
+    assert reg.renderfuncs[_MyRule] is new_render
+    assert reg.red == "<new:X>"
+    assert isinstance(reg.red, Style)
+    assert reg.red.rules == (rule,)
 
 
-class _TestRegister(Register):
-    """Register subclass with one Style attribute, isolated from global registers."""
+def test_set_renderfunc_on_muted_register_keeps_styles_empty():
+    """Line 156 also runs for muted registers (styles stay rendered as '')."""
+    reg = Register()
+    reg.mute()
+    assert reg.is_muted is True
 
-    def __init__(self) -> None:
-        super().__init__()
-        # A renderfunc must exist before a Style attribute can be set, because
-        # Register.__setattr__ renders the rules immediately.
-        self.set_renderfunc(_DummyRenderType, _dummy_render)
-        self.mystyle = Style(_DummyRenderType(), value="original")
+    rule = _MyRule("X")
+    reg.red = Style(rule)
+    assert reg.red == ""
 
+    def render_func(x):
+        return f"<{x}>"
 
-def test_set_renderfunc_updates_renderfuncs_and_styles() -> None:
-    reg = _TestRegister()
-    original_rule = reg.mystyle.rules[0]
+    reg.set_renderfunc(_MyRule, render_func)
 
-    # Precondition: the renderfunc registered in __init__ is in place.
-    assert reg.renderfuncs == {_DummyRenderType: _dummy_render}
-    assert isinstance(reg.mystyle, Style)
-    assert reg.mystyle == "<dummy>"
-
-    # Line 150: renderfuncs dict is updated with the new func.
-    reg.set_renderfunc(_DummyRenderType, _other_render)
-    assert reg.renderfuncs == {_DummyRenderType: _other_render}
-
-    # Lines 153-156: the Style attribute was re-set (re-rendered) via setattr,
-    # so it now reflects the new renderfunc.
-    assert isinstance(reg.mystyle, Style)
-    assert isinstance(reg.mystyle, str)
-    assert reg.mystyle == "<other>"
-
-    # The rules of the style are preserved through the re-rendering: the very
-    # same rule object (identity) is carried over, and its type is unchanged.
-    assert len(reg.mystyle.rules) == 1
-    assert reg.mystyle.rules[0] is original_rule
-    assert isinstance(reg.mystyle.rules[0], _DummyRenderType)
-
-    # Replacing the func for the same rendertype works repeatedly (update, not add).
-    reg.set_renderfunc(_DummyRenderType, _dummy_render)
-    assert reg.renderfuncs == {_DummyRenderType: _dummy_render}
-    assert reg.mystyle == "<dummy>"
-    assert isinstance(reg.mystyle, Style)
-
-
-def test_set_renderfunc_ignores_non_style_attributes() -> None:
-    reg = _TestRegister()
-    reg.plain_attr = "not-a-style"  # type: ignore[assignment]
-
-    reg.set_renderfunc(_DummyRenderType, _other_render)
-
-    # Non-Style attributes are untouched by the re-set loop (line 155 is False).
-    assert reg.plain_attr == "not-a-style"
-    assert reg.renderfuncs == {_DummyRenderType: _other_render}
-    assert isinstance(reg.mystyle, Style)
-    assert reg.mystyle == "<other>"
+    # Postconditions: the func was saved; the muted register keeps an empty
+    # rendered value, but the styling rule itself is preserved.
+    assert reg.renderfuncs[_MyRule] is render_func
+    assert reg.red == ""
+    assert reg.red.rules == (rule,)

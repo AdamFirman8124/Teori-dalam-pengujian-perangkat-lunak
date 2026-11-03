@@ -2,20 +2,47 @@
 import f030 as module_0
 
 def test_case_0():
-    int_0 = -3
-    int_1 = -1
-    int_2 = 0
-    int_3 = 1
-    int_4 = 2
-    int_5 = 5
-    int_6 = [int_0, int_1, int_2, int_3, int_4, int_5]
-    var_0 = module_0.get_positive(int_6)
-    assert var_0 == [1, 2, 5]
+    int_0 = -1
+    int_1 = -2
+    int_2 = 4
+    int_3 = 5
+    int_4 = 6
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    var_0 = module_0.get_positive(int_5)
+    assert var_0 == [4, 5, 6]
+    int_6 = 3
     int_7 = -5
-    int_8 = -2
-    int_9 = [int_7, int_8, int_2]
-    var_1 = module_0.get_positive(int_9)
-    assert var_1 == []
-    var_2 = []
-    var_3 = module_0.get_positive(var_2)
-    assert var_3 == []
+    int_8 = 2
+    int_9 = -3
+    int_10 = 9
+    int_11 = 0
+    int_12 = 123
+    int_13 = 1
+    int_14 = -10
+    int_15 = [int_3, int_6, int_7, int_8, int_9, int_6, int_10, int_11, int_12, int_13, int_14]
+    var_1 = module_0.get_positive(int_15)
+    assert var_1 == [5, 3, 2, 3, 9, 123, 1]
+    int_16 = -1
+    int_17 = -2
+    int_18 = [int_16, int_17]
+    var_2 = module_0.get_positive(int_18)
+    assert var_2 == []
+    var_3 = []
+    var_4 = module_0.get_positive(var_3)
+    assert var_4 == []
+    int_19 = [int_13, int_8, int_6]
+    var_5 = module_0.get_positive(int_19)
+    assert var_5 == [1, 2, 3]
+    int_20 = [int_11]
+    var_6 = module_0.get_positive(int_20)
+    assert var_6 == []
+    int_21 = -5
+    int_22 = [int_21]
+    var_7 = module_0.get_positive(int_22)
+    assert var_7 == []
+    float_0 = 0.5
+    float_1 = -0.5
+    float_2 = 1.5
+    float_3 = [float_0, float_1, float_2]
+    var_8 = module_0.get_positive(float_3)
+    assert len(var_8) == 2

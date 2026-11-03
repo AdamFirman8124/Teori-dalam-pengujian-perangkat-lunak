@@ -3,8 +3,37 @@ import pytest
 import f004 as module_0
 
 def test_case_0():
-    float_0 = 1641.0
-    float_1 = 2395.0803
-    list_0 = [float_0, float_0, float_1, float_0]
-    float_2 = module_0.mean_absolute_deviation(list_0)
-    assert float_2 == pytest.approx(282.7801125, abs=0.01, rel=0.01)
+    float_0 = 1.0
+    float_1 = 2.0
+    float_2 = 3.0
+    float_3 = 4.0
+    float_4 = [float_0, float_1, float_2, float_3]
+    float_5 = module_0.mean_absolute_deviation(float_4)
+    assert float_5 == pytest.approx(1.0, abs=0.01, rel=0.01)
+    float_6 = 5.0
+    float_7 = [float_6]
+    float_8 = module_0.mean_absolute_deviation(float_7)
+    assert float_8 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    float_9 = [float_2, float_2, float_2]
+    float_10 = module_0.mean_absolute_deviation(float_9)
+    assert float_10 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    float_11 = -1.0
+    float_12 = 0.0
+    float_13 = [float_11, float_12, float_0]
+    float_14 = module_0.mean_absolute_deviation(float_13)
+    assert float_14 == pytest.approx(0.6666666666666666, abs=0.01, rel=0.01)
+    var_0 = float_1 / float_2
+    float_15 = 1.5
+    float_16 = 2.5
+    float_17 = 3.5
+    float_18 = [float_15, float_16, float_17]
+    float_19 = module_0.mean_absolute_deviation(float_18)
+    assert float_19 == pytest.approx(0.6666666666666666, abs=0.01, rel=0.01)
+    var_1 = float_1 / float_2
+    float_20 = [float_3, float_0, float_2, float_1]
+    float_21 = module_0.mean_absolute_deviation(float_20)
+    assert float_21 == pytest.approx(1.0, abs=0.01, rel=0.01)
+    float_22 = 10.0
+    float_23 = [float_12, float_22]
+    float_24 = module_0.mean_absolute_deviation(float_23)
+    assert float_24 == pytest.approx(5.0, abs=0.01, rel=0.01)

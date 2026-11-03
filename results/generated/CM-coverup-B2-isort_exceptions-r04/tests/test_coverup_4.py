@@ -4,17 +4,23 @@
 
 import pytest
 
-from isort.exceptions import ExistingSyntaxErrors
+from isort.exceptions import ExistingSyntaxErrors, ISortError
 
 
-def test_existing_syntax_error_message_and_attribute():
-    file_path = "example.py"
-    with pytest.raises(ExistingSyntaxErrors) as excinfo:
-        raise ExistingSyntaxErrors(file_path)
+def test_existing_syntax_error_message_and_attributes():
+    file_path = "/path/to/file_with_syntax_errors.py"
+    error = ExistingSyntaxErrors(file_path)
 
-    exception = excinfo.value
-    assert exception.file_path == file_path
-    assert str(exception) == (
+    # The exception should be an instance of the base isort error and Exception.
+    assert isinstance(error, ISortError)
+    assert isinstance(error, Exception)
+
+    # The message passed to super().__init__ should be formatted correctly.
+    expected_message = (
         "isort was told to sort imports within code that contains syntax errors: "
         f"{file_path}."
     )
+    assert str(error) == expected_message
+
+    # The file_path attribute should be stored on the instance.
+    assert error.file_path == file_path

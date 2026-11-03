@@ -2,21 +2,50 @@
 import f098 as module_0
 
 def test_case_0():
-    str_0 = ''
+    str_0 = 'AEIOU'
     var_0 = module_0.count_upper(str_0)
-    assert var_0 == 0
-    str_1 = 'A'
+    assert var_0 == 3
+    str_1 = 'aBCdEf'
     var_1 = module_0.count_upper(str_1)
     assert var_1 == 1
-    str_2 = 'AEIOU'
+    str_2 = 'abcdefg'
     var_2 = module_0.count_upper(str_2)
-    assert var_2 == 3
-    str_3 = 'BAEIOU'
+    assert var_2 == 0
+    str_3 = 'dBBE'
     var_3 = module_0.count_upper(str_3)
-    assert var_3 == 2
-    str_4 = 'aEiOu'
+    assert var_3 == 0
+    str_4 = ''
     var_4 = module_0.count_upper(str_4)
     assert var_4 == 0
-    str_5 = 'XYZ'
+    str_5 = 'A'
     var_5 = module_0.count_upper(str_5)
-    assert var_5 == 0
+    assert var_5 == 1
+    str_6 = 'B'
+    var_6 = module_0.count_upper(str_6)
+    assert var_6 == 0
+    str_7 = 'aeiou'
+    var_7 = module_0.count_upper(str_7)
+    assert var_7 == 0
+    str_8 = 'bAeIo'
+    var_8 = module_0.count_upper(str_8)
+    assert var_8 == 1
+    assert var_8 == 0
+    str_9 = 'AbEcIdOfU'
+    var_9 = module_0.count_upper(str_9)
+    assert var_9 == 0
+    assert var_9 == 5
+    str_10 = 'AEIOUXYZ'
+    var_10 = module_0.count_upper(str_10)
+    assert var_10 == 3
+    str_11 = 'UAAIOU'
+    var_11 = module_0.count_upper(str_11)
+    assert var_11 == 3
+    str_12 = 'AYE'
+    var_12 = module_0.count_upper(str_12)
+    assert var_12 == 1
+    assert var_12 == 2
+    str_13 = 'AEIOUaeiouAEIOU'
+    var_13 = module_0.count_upper(str_13)
+    assert var_13 == 6
+    str_14 = 'All tests passed!'
+    var_14 = print(str_14)

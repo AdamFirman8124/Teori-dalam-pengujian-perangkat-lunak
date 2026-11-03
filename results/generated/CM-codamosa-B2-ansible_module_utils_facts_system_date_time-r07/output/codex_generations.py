@@ -1,657 +1,245 @@
 
 
-# Generated at 2026-10-25 06:41:55.200671
-# Unit test for constructor of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:41:57.616113
-# Unit test for constructor of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:42:00.030023
-# Unit test for constructor of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:42:02.443950
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:42:04.874867
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:42:07.314111
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:42:09.715506
-# Unit test for constructor of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:42:20.769291
-# Unit test for constructor of class DateTimeFactCollector
-def test_DateTimeFactCollector():collector = DateTimeFactCollector()
-
-# Generated at 2026-10-25 06:42:22.179817
+# Generated at 2026-11-02 09:16:08.987681
 # Unit test for constructor of class DateTimeFactCollector
 def test_DateTimeFactCollector():
     collector = DateTimeFactCollector()
     assert collector.name == 'date_time'
     assert collector._fact_ids == set()
+    assert hasattr(collector, 'collect')
 
-    before = int(time.time())
-    facts_dict = collector.collect()
-    after = int(time.time())
+# Generated at 2026-11-02 09:17:35.518925
+# Unit test for method collect of class DateTimeFactCollector
+def test_DateTimeFactCollector_collect():
+    collector = DateTimeFactCollector()
 
-    assert list(facts_dict) == ['date_time']
-    dt = facts_dict['date_time']
+    fake_epoch = 1500000000.5
+    fake_now = datetime.datetime(2017, 7, 14, 2, 40, 0, 500000)
+    fake_utcnow = datetime.datetime(2017, 7, 14, 2, 40, 0, 500000)
 
-    # every key present, nothing extra, all values are str
-    assert set(dt) == EXPECTED_KEYS
-    for key, value in dt.items():
-        assert isinstance(value, str), '%s is %r, not str' % (key, type(value))
 
-    # epoch/epoch_int are integers within the window the collect() call spanned
-    assert dt['epoch'].lstrip('-').isdigit()
-    assert dt['epoch_int'].lstrip('-').isdigit()
-    epoch = int(dt['epoch_int'])
-    assert before - 1 <= epoch <= after + 1
-    assert int(dt['epoch']) == epoch
-
-    # local-time fields are derived from that same epoch (no second-boundary flake)
-    local = datetime.datetime.fromtimestamp(epoch)
-    assert dt['year'] == local.strftime('%Y')
-    assert dt['month'] == local.strftime('%m')
-    assert dt['day'] == local.strftime('%d')
-
-# Generated at 2026-10-25 06:42:23.591453
+# Generated at 2026-11-02 09:18:01.934843
 # Unit test for constructor of class DateTimeFactCollector
 def test_DateTimeFactCollector():
     collector = DateTimeFactCollector()
+
+    # Constructor should create an instance without arguments
+    assert collector is not None
+    assert isinstance(collector, DateTimeFactCollector)
+
+    # Class attributes should be set correctly
     assert collector.name == 'date_time'
     assert collector._fact_ids == set()
 
-    before = int(time.time())
-    facts_dict = collector.collect()
-    after = int(time.time())
+    # Should have a callable collect method
+    assert callable(collector.collect)
 
-    assert list(facts_dict) == ['date_time']
+# Generated at 2026-11-02 09:18:30.403173
+# Unit test for method collect of class DateTimeFactCollector
+def test_DateTimeFactCollector_collect():
+    from unittest.mock import patch
+
+    collector = DateTimeFactCollector()
+    epoch_ts = 1521542000.3566489
+
+    with patch.object(time, 'time', return_value=epoch_ts):
+        facts_dict = collector.collect(module=None, collected_facts=None)
+
+    assert 'date_time' in facts_dict
     dt = facts_dict['date_time']
 
-    # every key present, nothing extra, all values are str
-    assert set(dt) == EXPECTED_KEYS
-    for key, value in dt.items():
-        assert isinstance(value, str), '%s is %r, not str' % (key, type(value))
-
-    # epoch/epoch_int are integers within the window the collect() call spanned
-    assert dt['epoch'].lstrip('-').isdigit()
-    assert dt['epoch_int'].lstrip('-').isdigit()
-    epoch = int(dt['epoch_int'])
-    assert before - 1 <= epoch <= after + 1
-    assert int(dt['epoch']) == epoch
-
-    # local-time fields are derived from that same epoch (no second-boundary flake)
-    local = datetime.datetime.fromtimestamp(epoch)
-    assert dt['year'] == local.strftime('%Y')
-    assert dt['month'] == local.strftime('%m')
-    assert dt['day'] == local.strftime('%d')
-
-# Generated at 2026-10-25 06:42:57.672767
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:00.088117
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:02.501221
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:04.919656
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:07.336243
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:09.753143
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:12.168791
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:14.582953
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:17.028662
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:19.410899
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:21.827849
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:39.264576
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:42.127775
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:44.686979
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:47.100198
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:49.511462
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:51.925824
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:54.338859
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:56.754523
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:43:59.168895
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:01.733518
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:04.149798
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:06.566415
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:08.982307
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:11.400571
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:13.815119
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:16.246625
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:18.664370
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:21.077387
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:23.525732
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:25.942538
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:28.356364
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:30.771584
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:33.188974
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:35.602905
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:38.019488
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:40.434931
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:42.848544
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:44:45.265539
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:00.471413
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:03.290891
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:06.059849
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:08.653331
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:11.105414
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:13.497375
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:16.023711
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:18.441416
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:20.853984
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:23.269783
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:25.711231
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:28.490547
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:30.910077
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:33.322760
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:35.738980
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:38.157706
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:40.699153
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:43.119522
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:45.536402
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:47.960662
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:50.373803
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:52.788044
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:55.203679
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:45:58.011805
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:46:15.836695
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:46:18.680331
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:46:21.786750
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:46:39.693105
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:46:42.131534
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:46:44.732897
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:46:47.144294
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:46:49.567986
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:46:51.977455
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:46:54.390564
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:46:56.806043
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:46:59.221656
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:17.235723
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:20.144802
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:23.205787
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:25.701119
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:28.328436
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:30.743152
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:33.157909
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:35.799612
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:38.216338
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:40.632487
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:43.334841
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:45.752836
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:48.167187
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:50.581029
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:52.998568
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:55.414422
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:47:57.832646
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:00.247411
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:02.664663
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:05.082780
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:07.497086
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:09.915283
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:12.332353
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:14.747511
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:17.165944
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:19.582846
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:21.997435
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:24.416224
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:26.832446
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:29.249182
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:31.667446
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:34.082023
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:36.495816
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:38.912988
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:41.332166
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:43.745792
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:46.160012
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:48.574055
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:50.987925
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:53.452570
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:55.866625
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:48:58.281389
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:00.703839
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:03.121627
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:05.536925
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:07.951371
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:10.366926
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:12.782406
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:15.196381
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:17.615044
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:20.029725
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:22.445875
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:24.894246
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:27.276212
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:29.692637
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:32.109381
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:34.522313
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:36.937768
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:39.354333
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:41.769182
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:44.184736
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:46.603313
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:49.130874
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:51.448556
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:53.865876
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:56.334451
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:49:58.720639
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:01.134686
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:03.572820
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:05.985137
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:08.402072
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:10.816283
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:13.306300
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:15.697576
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:18.111140
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:22.155331
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:24.568594
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:26.982604
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:29.417942
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:31.833263
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:34.248549
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:36.661798
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:39.079051
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:41.493302
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:43.909302
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:46.328526
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:48.741491
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:51.158908
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:53.571392
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:55.985440
-# Unit test for method collect of class DateTimeFactCollector
-
-# Generated at 2026-10-25 06:50:58.401937
-# Unit test for method collect of class DateTimeFactCollector
+    expected_keys = {
+        'year', 'month', 'weekday', 'weekday_number', 'weeknumber', 'day',
+        'hour', 'minute', 'second', 'epoch', 'epoch_int', 'date', 'time',
+        'iso8601_micro', 'iso8601', 'iso8601_basic', 'iso8601_basic_short',
+        'tz', 'tz_dst', 'tz_offset'
+    }
+    assert set(dt.keys()) == expected_keys
+
+    now = datetime.datetime.fromtimestamp(epoch_ts)
+    utcnow = datetime.datetime.utcfromtimestamp(epoch_ts)
+
+    assert dt['year'] == now.strftime('%Y')
+    assert dt['month'] == now.strftime('%m')
+    assert dt['weekday'] == now.strftime('%A')
+    assert dt['weekday_number'] == now.strftime('%w')
+    assert dt['weeknumber'] == now.strftime('%W')
+    assert dt['day'] == now.strftime('%d')
+    assert dt['hour'] == now.strftime('%H')
+    assert dt['minute'] == now.strftime('%M')
+    assert dt['second'] == now.strftime('%S')
+    assert dt['date'] == now.strftime('%Y-%m-%d')
+    assert dt['time'] == now.strftime('%H:%M:%S')
+    assert dt['iso8601_micro'] == utcnow.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+    assert dt['iso8601'] == utcnow.strftime('%Y-%m-%dT%H:%M:%SZ')
+    assert dt['iso8601_basic'] == now.strftime('%Y%m%dT%H%M%S%f')
+    assert dt['iso8601_basic_short'] == now.strftime('%Y%m%dT%H%M%S')
+    assert dt['tz'] == time.strftime('%Z')
+    assert dt['tz_dst'] == time.tzname[1]
+    assert dt['tz_offset'] == time.strftime('%z')
+
+    # epoch falls back to the int of time.time() when %s is unsupported/empty
+    assert dt['epoch'] == str(int(epoch_ts))
+    assert dt['epoch_int'] == str(int(epoch_ts))
+
+# Generated at 2026-11-02 09:18:52.216537
+# Unit test for constructor of class DateTimeFactCollector
+def test_DateTimeFactCollector():
+    from ansible.module_utils.facts.collector import BaseFactCollector
+
+    collector = DateTimeFactCollector()
+
+    assert isinstance(collector, DateTimeFactCollector)
+    assert isinstance(collector, BaseFactCollector)
+    assert collector.name == 'date_time'
+    assert collector._fact_ids == set()
+
+# Generated at 2026-11-02 09:19:36.562865
+# Unit test for method collect of class DateTimeFactCollector
+def test_DateTimeFactCollector_collect():
+    collector = DateTimeFactCollector()
+    facts = collector.collect()
+
+    assert 'date_time' in facts
+    date_time_facts = facts['date_time']
+
+    expected_keys = {
+        'year', 'month', 'weekday', 'weekday_number', 'weeknumber', 'day',
+        'hour', 'minute', 'second', 'epoch', 'epoch_int', 'date', 'time',
+        'iso8601_micro', 'iso8601', 'iso8601_basic', 'iso8601_basic_short',
+        'tz', 'tz_dst', 'tz_offset'
+    }
+    assert expected_keys.issubset(set(date_time_facts.keys()))
+
+    # Verify format of each fact
+    assert re.match(r'^\d{4}$', date_time_facts['year'])
+    assert re.match(r'^\d{2}$', date_time_facts['month'])
+    assert date_time_facts['weekday'] in ('Monday', 'Tuesday', 'Wednesday',
+                                          'Thursday', 'Friday', 'Saturday', 'Sunday')
+    assert date_time_facts['weekday_number'] in ('0', '1', '2', '3', '4', '5', '6')
+    assert re.match(r'^\d{2}$', date_time_facts['weeknumber'])
+    assert re.match(r'^\d{2}$', date_time_facts['day'])
+    assert re.match(r'^\d{2}$', date_time_facts['hour'])
+    assert re.match(r'^\d{2}$', date_time_facts['minute'])
+    assert re.match(r'^\d{2}$', date_time_facts['second'])
+
+    # epoch facts must be integer strings, never empty or an unresolved format
+    assert re.match(r'^\d+$', date_time_facts['epoch'])
+    assert re.match(r'^\d+$', date_time_facts['epoch_int'])
+    assert date_time_facts['epoch'] != ''
+    assert not date_time_facts['epoch'].startswith('%')
+    assert not date_time_facts['epoch_int'].startswith('%')
+
+    assert re.match(r'^\d{4}-\d{2}-\d{2}$', date_time_facts['date'])
+    assert re.match(r'^\d{2}:\d{2}:\d{2}$', date_time_facts['time'])
+    assert re.match(r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z$', date_time_facts['iso8601_micro'])
+    assert re.match(r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$', date_time_facts['iso8601'])
+    assert re.match(r'^\d{8}T\d{6}\d{6}$', date_time_facts['iso8601_basic'])
+    assert re.match(r'^\d{8}T\d{6}$', date_time_facts['iso8601_basic_short'])
+
+    # tz facts should reflect the current local time module values
+    assert date_time_facts['tz'] == time.strftime("%Z")
+    assert date_time_facts['tz_dst'] == time.tzname[1]
+    assert date_time_facts['tz_offset'] == time.strftime("%z")
+
+
+def test_DateTimeFactCollector_collect_fixed_epoch():
+    fixed_epoch = 1234567890.123456
+
+    with patch.object(time, 'time', return_value=fixed_epoch):
+        collector = DateTimeFactCollector()
+        facts = collector.collect()
 
-# Generated at 2026-10-25 06:51:00.816927
-# Unit test for method collect of class DateTimeFactCollector
+    date_time_facts = facts['date_time']
 
-# Generated at 2026-10-25 06:51:03.231288
-# Unit test for method collect of class DateTimeFactCollector
+    now = datetime.datetime.fromtimestamp(fixed_epoch)
+    utcnow = datetime.datetime.utcfromtimestamp(fixed_epoch)
 
-# Generated at 2026-10-25 06:51:05.646132
-# Unit test for method collect of class DateTimeFactCollector
+    assert date_time_facts['year'] == now.strftime('%Y')
+    assert date_time_facts['month'] == now.strftime('%m')
+    assert date_time_facts['weekday'] == now.strftime('%A')
+    assert date_time_facts['weekday_number'] == now.strftime('%w')
+    assert date_time_facts['weeknumber'] == now.strftime('%W')
+    assert date_time_facts['day'] == now.strftime('%d')
+    assert date_time_facts['hour'] == now.strftime('%H')
+    assert date_time_facts['minute'] == now.strftime('%M')
+    assert date_time_facts['second'] == now.strftime('%S')
 
-# Generated at 2026-10-25 06:51:08.064194
-# Unit test for method collect of class DateTimeFactCollector
+    # epoch should be the integer portion of the fixed timestamp
+    assert date_time_facts['epoch'] == str(int(fixed_epoch))
+    assert date_time_facts['epoch_int'] == str(int(fixed_epoch))
 
-# Generated at 2026-10-25 06:51:10.478392
-# Unit test for method collect of class DateTimeFactCollector
+    assert date_time_facts['date'] == now.strftime('%Y-%m-%d')
+    assert date_time_facts['time'] == now.strftime('%H:%M:%S')
+    assert date_time_facts['iso8601_micro'] == utcnow.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+    assert date_time_facts['iso8601'] == utcnow.strftime("%Y-%m-%dT%H:%M:%SZ")
+    assert date_time_facts['iso8601_basic'] == now.strftime("%Y%m%dT%H%M%S%f")
+    assert date_time_facts['iso8601_basic_short'] == now.strftime("%Y%m%dT%H%M%S")
 
-# Generated at 2026-10-25 06:51:12.895096
-# Unit test for method collect of class DateTimeFactCollector
 
-# Generated at 2026-10-25 06:51:15.312266
-# Unit test for method collect of class DateTimeFactCollector
+def test_DateTimeFactCollector_collect_ignores_collected_facts():
+    collector = DateTimeFactCollector()
+    facts = collector.collect(module=None, collected_facts={'date_time': {'stale': 'value'}})
 
-# Generated at 2026-10-25 06:51:17.728343
-# Unit test for method collect of class DateTimeFactCollector
+    date_time_facts = facts['date_time']
+    assert 'stale' not in date_time_facts
+    assert 'year' in date_time_facts
+    assert 'epoch' in date_time_facts
 
-# Generated at 2026-10-25 06:51:20.141732
-# Unit test for method collect of class DateTimeFactCollector
 
-# Generated at 2026-10-25 06:51:22.559738
-# Unit test for method collect of class DateTimeFactCollector
+def test_DateTimeFactCollector_collect_module_none():
+    collector = DateTimeFactCollector()
+    facts = collector.collect(module=None)
 
-# Generated at 2026-10-25 06:51:24.977052
-# Unit test for method collect of class DateTimeFactCollector
+    assert isinstance(facts, dict)
+    assert list(facts.keys()) == ['date_time']
 
-# Generated at 2026-10-25 06:51:27.392122
+# Generated at 2026-11-02 09:21:56.430226
 # Unit test for method collect of class DateTimeFactCollector
+def test_DateTimeFactCollector_collect():
+    collector = DateTimeFactCollector()
 
-# Generated at 2026-10-25 06:51:29.810942
-# Unit test for method collect of class DateTimeFactCollector
+    # Fixed timestamp for deterministic results
+    # 1500000000.123456 == 2017-07-14 02:40:00.123456 UTC
+    epoch_ts = 1500000000.123456
+    now = datetime.datetime.fromtimestamp(epoch_ts)
+    utcnow = datetime.datetime.utcfromtimestamp(epoch_ts)
 
-# Generated at 2026-10-25 06:51:32.224455
-# Unit test for method collect of class DateTimeFactCollector
+    with mock.patch('time.time', return_value=epoch_ts):
+        facts_dict = collector.collect(module=None, collected_facts=None)
 
-# Generated at 2026-10-25 06:51:38.122137
-# Unit test for method collect of class DateTimeFactCollector
+    # The collector returns facts wrapped under its 'date_time' namespace
+    assert list(facts_dict.keys()) == ['date_time']
+    date_time_facts = facts_dict['date_time']
 
-# Generated at 2026-10-25 06:51:40.535102
-# Unit test for method collect of class DateTimeFactCollector
+    # All expected fact keys are present
 
-# Generated at 2026-10-25 06:51:42.952893
+# Generated at 2026-11-02 09:24:21.872242
 # Unit test for method collect of class DateTimeFactCollector
+def test_DateTimeFactCollector_collect():
+    # Fix the timestamp so UTC-derived values are deterministic:
+    # 1557350605 == 2019-05-08 21:23:25 UTC
+    fixed_epoch = 1557350605.0
 
-# Generated at 2026-10-25 06:51:45.370517
-# Unit test for method collect of class DateTimeFactCollector
+    with mock.patch('time.time', return_value=fixed_epoch):
+        collector = DateTimeFactCollector()
+        facts_dict = collector.collect()
 
-# Generated at 2026-10-25 06:51:47.784515
-# Unit test for method collect of class DateTimeFactCollector
+    assert isinstance(facts_dict, dict)
+    assert 'date_time' in facts_dict
 
-# Generated at 2026-10-25 06:51:50.200796
-# Unit test for method collect of class DateTimeFactCollector
+    date_time_facts = facts_dict['date_time']
 
-# Generated at 2026-10-25 06:51:52.620309
-# Unit test for method collect of class DateTimeFactCollector
+    expected_keys = {
+        'year', 'month', 'weekday', 'weekday_number', 'weeknumber', 'day',
+        'hour', 'minute', 'second', 'epoch', 'epoch_int', 'date', 'time',
+        'iso8601_micro', 'iso8601', 'iso8601_basic', 'iso8601_basic_short',
+        'tz', 'tz_dst', 'tz_offset',
+    }
+    assert set(date_time_facts.keys()) == expected_keys
 
-# Generated at 2026-10-25 06:51:55.032273
-# Unit test for method collect of class DateTimeFactCollector
+    # Deterministic, UTC-based values for the fixed timestamp
+    assert date_time_facts['iso8601'] == '2019-05-08T21:23:25Z'
+    assert date_time_facts['iso8601_micro'] == '2019-05-08T21:23:25.000000Z'
 
-# Generated at 2026-10-25 06:51:57.449605
-# Unit test for method collect of class DateTimeFactCollector
+    # epoch must be the integer timestamp whether or not strftime('%s') is supported

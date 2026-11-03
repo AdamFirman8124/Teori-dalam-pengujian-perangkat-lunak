@@ -2,9 +2,41 @@
 import f034 as module_0
 
 def test_case_0():
-    int_0 = 3
-    int_1 = 1
+    int_0 = 5
+    int_1 = 3
     int_2 = 2
-    int_3 = [int_0, int_1, int_2, int_1, int_0]
-    var_0 = module_0.unique(int_3)
-    assert var_0 == [1, 2, 3]
+    int_3 = 9
+    int_4 = 0
+    int_5 = 123
+    int_6 = [int_0, int_1, int_0, int_2, int_1, int_1, int_3, int_4, int_5]
+    var_0 = module_0.unique(int_6)
+    assert var_0 == [0, 2, 3, 5, 9, 123]
+    var_1 = []
+    var_2 = module_0.unique(var_1)
+    assert var_2 == []
+    int_7 = 1
+    int_8 = [int_7]
+    var_3 = module_0.unique(int_8)
+    assert var_3 == [1]
+    int_9 = [int_2, int_2, int_2, int_2]
+    var_4 = module_0.unique(int_9)
+    assert var_4 == [2]
+    int_10 = [int_1, int_7, int_2, int_7, int_1]
+    var_5 = module_0.unique(int_10)
+    assert var_5 == [1, 2, 3]
+    int_11 = -1
+    int_12 = -5
+    int_13 = -1
+    int_14 = [int_11, int_12, int_13, int_4]
+    var_6 = module_0.unique(int_14)
+    assert var_6 == [-5, -1, 0]
+    str_0 = 'b'
+    str_1 = 'a'
+    str_2 = 'c'
+    str_3 = [str_0, str_1, str_2, str_1]
+    var_7 = module_0.unique(str_3)
+    assert var_7 == ['a', 'b', 'c']
+    float_0 = 1.5
+    var_8 = [float_0, float_0, int_2]
+    var_9 = module_0.unique(var_8)
+    assert len(var_9) == 2

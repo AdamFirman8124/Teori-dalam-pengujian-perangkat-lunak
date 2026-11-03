@@ -2,33 +2,38 @@
 import f096 as module_0
 
 def test_case_0():
-    int_0 = 10
+    int_0 = 0
     var_0 = module_0.count_up_to(int_0)
-    assert var_0 == [2, 3, 5, 7]
-    int_1 = 20
+    assert var_0 == []
+    int_1 = 1
     var_1 = module_0.count_up_to(int_1)
-    assert var_1 == [2, 3, 5, 7, 11, 13, 17, 19]
-    int_2 = 11
+    assert var_1 == []
+    int_2 = 2
     var_2 = module_0.count_up_to(int_2)
-    assert var_2 == [2, 3, 5, 7]
-    int_3 = 7
+    assert var_2 == []
+    int_3 = 3
     var_3 = module_0.count_up_to(int_3)
-    assert var_3 == [2, 3, 5]
-    int_4 = 0
+    assert var_3 == [2]
+    int_4 = 10
     var_4 = module_0.count_up_to(int_4)
-    assert var_4 == []
-    int_5 = 1
+    assert var_4 == [2, 3, 5, 7]
+    int_5 = 20
     var_5 = module_0.count_up_to(int_5)
-    assert var_5 == []
-    int_6 = 2
+    assert var_5 == [2, 3, 5, 7, 11, 13, 17, 19]
+    int_6 = 30
     var_6 = module_0.count_up_to(int_6)
-    assert var_6 == []
-    int_7 = 3
+    assert var_6 == [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+    int_7 = 11
     var_7 = module_0.count_up_to(int_7)
-    assert var_7 == [2]
-    int_8 = 5
+    assert var_7 == [2, 3, 5, 7]
+    int_8 = 13
     var_8 = module_0.count_up_to(int_8)
-    assert var_8 == [2, 3]
-    int_9 = 9
-    var_9 = module_0.count_up_to(int_9)
-    assert var_9 == [2, 3, 5, 7]
+    assert var_8 == [2, 3, 5, 7, 11]
+
+def test_case_1():
+    int_0 = 0
+    var_0 = module_0.count_up_to(int_0)
+    assert var_0 == []
+
+def test_case_2():
+    pass

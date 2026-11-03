@@ -5,43 +5,28 @@
 from f116 import sort_array
 
 
-def test_sort_array_empty_executes_line_and_returns_empty():
-    arr = []
-    result = sort_array(arr)
-    assert result == []
-    assert result is not arr
-    assert arr == []
+def test_sort_array_counts_ones():
+    # Pre-sorted: [1, 2, 3, 4, 5]
+    # Ones in binary: 1->1, 2->1, 3->2, 4->1, 5->2
+    # Stable sort by ones count: [1, 2, 4, 3, 5]
+    assert sort_array([1, 5, 2, 3, 4]) == [1, 2, 4, 3, 5]
 
 
-def test_sort_array_single_element_executes_lambda():
-    arr = [7]
-    result = sort_array(arr)
-    assert result == [7]
-    assert arr == [7]
+def test_sort_array_empty():
+    assert sort_array([]) == []
 
 
-def test_sort_array_sorts_by_popcount_then_value():
-    arr = [1, 5, 2, 3, 4]
-    result = sort_array(arr)
-    assert result == [1, 2, 4, 3, 5]
-    assert arr == [1, 5, 2, 3, 4]
+def test_sort_array_single_element():
+    assert sort_array([7]) == [7]
 
 
-def test_sort_array_with_zero_and_duplicates():
-    assert sort_array([1, 0, 2, 3, 4]) == [0, 1, 2, 4, 3]
-    assert sort_array([3, 3, 1]) == [1, 3, 3]
-    assert sort_array([0, 0]) == [0, 0]
+def test_sort_array_ties_preserve_numeric_order():
+    # 1 and 2 both have a single '1' bit; the inner numeric sort
+    # must keep 1 before 2 in the result.
+    assert sort_array([2, 1]) == [1, 2]
 
 
-def test_sort_array_postconditions_on_varied_input():
-    arr = [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
-    result = sort_array(arr)
-    assert result == [0, 1, 2, 4, 8, 3, 5, 6, 9, 10, 12, 7, 11, 13, 14, 15]
-    assert sorted(result) == sorted(arr)
-    assert all(
-        (bin(a)[2:].count("1"), a) <= (bin(b)[2:].count("1"), b) or bin(a)[2:].count("1") < bin(b)[2:].count("1")
-        for a, b in zip(result, result[1:])
-    )
-    keys = [(bin(x)[2:].count("1"), x) for x in result]
-    assert keys == sorted(keys)
-    assert arr == [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+def test_sort_array_multi_digit_counts():
+    # 7 -> '111' (3 ones), 8 -> '1000' (1 one), 15 -> '1111' (4 ones)
+    # Pre-sorted: [3, 7, 8, 15]; ones: 3->2, 7->3, 8->1, 15->4
+    assert sort_array([15, 7, 3, 8]) == [8, 3, 7, 15]

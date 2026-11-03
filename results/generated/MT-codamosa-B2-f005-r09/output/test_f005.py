@@ -2,28 +2,31 @@
 import f005 as module_0
 
 def test_case_0():
-    int_0 = -1938
-    int_1 = -86
-    list_0 = [int_0, int_1, int_1, int_1]
-    list_1 = module_0.intersperse(list_0, int_0)
-    assert list_1 == [-1938, -1938, -86, -1938, -86, -1938, -86]
-    list_2 = module_0.intersperse(list_0, int_0)
-    assert list_2 == [-1938, -1938, -86, -1938, -86, -1938, -86]
-    int_2 = 2812
-    list_3 = []
-    list_4 = module_0.intersperse(list_3, int_1)
-    assert list_4 == []
-    list_5 = module_0.intersperse(list_3, int_2)
-    assert list_5 == []
-    int_3 = 1599
-    list_6 = [int_2, int_2, int_3]
-    list_7 = module_0.intersperse(list_6, int_3)
-    assert list_7 == [2812, 1599, 2812, 1599, 1599]
-    list_8 = module_0.intersperse(list_3, int_3)
-    assert list_8 == []
-
-def test_case_1():
     var_0 = []
-    int_0 = 0
+    int_0 = 4
     list_0 = module_0.intersperse(var_0, int_0)
     assert list_0 == []
+    int_1 = 1
+    int_2 = 2
+    int_3 = 3
+    int_4 = [int_1, int_2, int_3]
+    list_1 = module_0.intersperse(int_4, int_0)
+    assert list_1 == [1, 4, 2, 4, 3]
+    int_5 = 5
+    int_6 = [int_5]
+    list_2 = module_0.intersperse(int_6, int_3)
+    assert list_2 == [5]
+    int_7 = [int_1, int_2]
+    int_8 = 0
+    list_3 = module_0.intersperse(int_7, int_8)
+    assert list_3 == [1, 0, 2]
+    int_9 = 7
+    int_10 = [int_9, int_9, int_9]
+    list_4 = module_0.intersperse(int_10, int_1)
+    assert list_4 == [7, 1, 7, 1, 7]
+    int_11 = -1
+    int_12 = -2
+    int_13 = [int_8, int_11, int_12]
+    int_14 = 100
+    list_5 = module_0.intersperse(int_13, int_14)
+    assert list_5 == [0, 100, -1, 100, -2]

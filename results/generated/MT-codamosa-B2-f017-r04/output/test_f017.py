@@ -2,14 +2,9 @@
 import f017 as module_0
 
 def test_case_0():
-    str_0 = 'o o| .| o o o| o| o| .| .| .| .| o o'
+    str_0 = ''
     list_0 = module_0.parse_music(str_0)
-    assert list_0 == [4, 2, 1, 4, 4, 2, 2, 2, 1, 1, 1, 1, 4, 4]
-
-def test_case_1():
-    str_0 = 'o o| .|'
-    list_0 = module_0.parse_music(str_0)
-    assert list_0 == [4, 2, 1]
+    assert list_0 == []
     str_1 = 'o'
     list_1 = module_0.parse_music(str_1)
     assert list_1 == [4]
@@ -19,19 +14,20 @@ def test_case_1():
     str_3 = '.|'
     list_3 = module_0.parse_music(str_3)
     assert list_3 == [1]
-    str_4 = ''
+    str_4 = 'o o o'
     list_4 = module_0.parse_music(str_4)
-    assert list_4 == []
-    str_5 = '  o   o|  '
+    assert list_4 == [4, 4, 4]
+    str_5 = 'o o| .|'
     list_5 = module_0.parse_music(str_5)
-    assert list_5 == [4, 2]
-    str_6 = 'o o| o .| o| .| o'
+    assert list_5 == [4, 2, 1]
+    str_6 = 'o o| .| o| o| .| .| .| .| o o'
     list_6 = module_0.parse_music(str_6)
-    assert list_6 == [4, 2, 4, 1, 2, 1, 4]
-    str_7 = 'o o| .| .|'
+    assert list_6 == [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]
+    str_7 = '.| .| .| .|'
     list_7 = module_0.parse_music(str_7)
-    assert list_7 == [4, 2, 1, 1]
-    var_0 = sum(list_7)
-    assert var_0 == 8
-    str_8 = 'All tests passed!'
-    var_1 = print(str_8)
+    assert list_7 == [1, 1, 1, 1]
+    str_8 = '  o   o|  '
+    list_8 = module_0.parse_music(str_8)
+    assert list_8 == [4, 2]
+    str_9 = 'All tests passed!'
+    var_0 = print(str_9)

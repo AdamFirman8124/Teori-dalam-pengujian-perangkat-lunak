@@ -2,34 +2,47 @@
 import f085 as module_0
 
 def test_case_0():
-    var_0 = []
-    var_1 = module_0.add(var_0)
-    assert var_1 == 0
-    int_0 = 1
-    int_1 = [int_0]
-    var_2 = module_0.add(int_1)
+    int_0 = 4
+    int_1 = 88
+    int_2 = [int_0, int_1]
+    var_0 = module_0.add(int_2)
+    assert var_0 == 88
+    int_3 = 3
+    int_4 = [int_0, int_1, int_3]
+    var_1 = module_0.add(int_4)
+    assert var_1 == 88
+    int_5 = 2
+    int_6 = 5
+    int_7 = 6
+    int_8 = [int_5, int_3, int_0, int_6, int_7]
+    var_2 = module_0.add(int_8)
     assert var_2 == 0
-    int_2 = 2
-    int_3 = [int_0, int_2]
-    var_3 = module_0.add(int_3)
-    assert var_3 == 2
-    int_4 = 3
-    int_5 = [int_0, int_4]
-    var_4 = module_0.add(int_5)
+    var_3 = []
+    var_4 = module_0.add(var_3)
     assert var_4 == 0
-    int_6 = [int_2, int_0, int_2, int_0]
-    var_5 = module_0.add(int_6)
-    assert var_5 == 0
-    int_7 = 4
-    int_8 = 5
-    int_9 = 6
-    int_10 = [int_0, int_2, int_4, int_7, int_8, int_9]
-    var_6 = module_0.add(int_10)
-    assert var_6 == 12
+    int_9 = 1
+    int_10 = [int_9, int_5, int_3, int_0]
+    var_5 = module_0.add(int_10)
+    assert var_5 == 6
     int_11 = 0
-    int_12 = -2
-    int_13 = -4
-    int_14 = [int_11, int_12, int_11, int_13]
-    var_7 = module_0.add(int_14)
-    assert var_7 == 6
-    assert var_7 == -6
+    int_12 = [int_6, int_11, int_6, int_11]
+    var_6 = module_0.add(int_12)
+    assert var_6 == 0
+    int_13 = [int_9, int_5, int_3, int_0, int_6, int_7]
+    var_7 = module_0.add(int_13)
+    assert var_7 == 12
+    int_14 = 7
+    int_15 = 8
+    int_16 = [int_14, int_6, int_7, int_15, int_3, int_0]
+    var_8 = module_0.add(int_16)
+    assert var_8 == 17
+    assert var_8 == 12
+    int_17 = [int_5, int_5, int_5, int_5]
+    var_9 = module_0.add(int_17)
+    assert var_9 == 4
+    int_18 = [int_11, int_11, int_11, int_11]
+    var_10 = module_0.add(int_18)
+    assert var_10 == 0
+    int_19 = [int_9, int_3, int_6, int_14]
+    var_11 = module_0.add(int_19)
+    assert var_11 == 0

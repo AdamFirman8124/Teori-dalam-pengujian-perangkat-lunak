@@ -2,24 +2,45 @@
 import f029 as module_0
 
 def test_case_0():
-    str_0 = 'apple'
-    str_1 = 'apricot'
-    str_2 = 'banana'
-    str_3 = 'application'
-    str_4 = 'cherry'
-    str_5 = [str_0, str_1, str_2, str_3, str_4]
-    str_6 = 'ap'
-    list_0 = module_0.filter_by_prefix(str_5, str_6)
-    assert list_0 == ['apple', 'apricot', 'application']
-    str_7 = 'ban'
-    list_1 = module_0.filter_by_prefix(str_5, str_7)
-    assert list_1 == ['banana']
-    str_8 = 'xyz'
-    list_2 = module_0.filter_by_prefix(str_5, str_8)
+    str_0 = 'abc'
+    str_1 = 'bcd'
+    str_2 = 'cde'
+    str_3 = 'array'
+    str_4 = [str_0, str_1, str_2, str_3]
+    str_5 = 'a'
+    list_0 = module_0.filter_by_prefix(str_4, str_5)
+    assert list_0 == ['abc', 'array']
+    str_6 = 'abcd'
+    str_7 = 'abcde'
+    str_8 = [str_0, str_6, str_7]
+    list_1 = module_0.filter_by_prefix(str_8, str_0)
+    assert list_1 == ['abc', 'abcd', 'abcde']
+    str_9 = [str_0, str_1, str_2]
+    str_10 = 'z'
+    list_2 = module_0.filter_by_prefix(str_9, str_10)
     assert list_2 == []
+    str_11 = [str_0, str_1, str_2]
+    str_12 = ''
+    list_3 = module_0.filter_by_prefix(str_11, str_12)
+    assert list_3 == ['abc', 'bcd', 'cde']
     var_0 = []
-    list_3 = module_0.filter_by_prefix(var_0, str_6)
-    assert list_3 == []
-    str_9 = ''
-    list_4 = module_0.filter_by_prefix(str_5, str_9)
-    assert list_4 == ['apple', 'apricot', 'banana', 'application', 'cherry']
+    list_4 = module_0.filter_by_prefix(var_0, str_5)
+    assert list_4 == []
+    var_1 = []
+    list_5 = module_0.filter_by_prefix(var_1, str_12)
+    assert list_5 == []
+    str_13 = 'Apple'
+    str_14 = 'apple'
+    str_15 = [str_13, str_14]
+    str_16 = 'A'
+    list_6 = module_0.filter_by_prefix(str_15, str_16)
+    assert list_6 == ['Apple']
+    str_17 = 'hello'
+    str_18 = [str_17]
+    str_19 = 'he'
+    list_7 = module_0.filter_by_prefix(str_18, str_19)
+    assert list_7 == ['hello']
+    str_20 = [str_17]
+    str_21 = 'x'
+    list_8 = module_0.filter_by_prefix(str_20, str_21)
+    assert list_8 == []

@@ -7,21 +7,24 @@ import pytest
 from f054 import same_chars
 
 
-def test_same_chars_equal_sets():
-    assert same_chars("eabcdzzzz", "dddzzzzzzzddeddabc") is True
-
-
-def test_same_chars_different_sets():
-    assert same_chars("abcd", "adc") is False
-
-
-def test_same_chars_empty_vs_nonempty():
-    assert same_chars("", "a") is False
-
-
-def test_same_chars_both_empty():
-    assert same_chars("", "") is True
-
-
-def test_same_chars_order_and_duplicates_ignored():
-    assert same_chars("aabbcc", "cbacba") is True
+@pytest.mark.parametrize(
+    "s0, s1, expected",
+    [
+        # Same set of characters in different order -> True
+        ("eabcdzzzz", "dddzzzzzzzddeddabc", True),
+        ("abcd", "abcd", True),
+        ("aabb", "ab", True),          # duplicates collapse to same set
+        # Different sets of characters -> False
+        ("abcd", "d2cbad", False),
+        ("abc", "abd", False),
+        # Empty string edge cases
+        ("", "", True),
+        ("", "a", False),
+        ("a", "", False),
+        # Unicode characters
+        ("héllo", "olléh", True),
+        ("héllo", "hello", False),
+    ],
+)
+def test_same_chars(s0, s1, expected):
+    assert same_chars(s0, s1) is expected

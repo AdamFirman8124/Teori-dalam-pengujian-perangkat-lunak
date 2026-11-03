@@ -8,18 +8,32 @@ def test_case_0():
     str_1 = 'hello'
     var_1 = module_0.words_string(str_1)
     assert var_1 == ['hello']
-    str_2 = 'hello,world'
+    str_2 = 'hello world'
     var_2 = module_0.words_string(str_2)
     assert var_2 == ['hello', 'world']
-    str_3 = 'one,two,three'
+    str_3 = 'hello,world'
     var_3 = module_0.words_string(str_3)
-    assert var_3 == ['one', 'two', 'three']
+    assert var_3 == ['hello', 'world']
     str_4 = 'one, two, three'
     var_4 = module_0.words_string(str_4)
     assert var_4 == ['one', 'two', 'three']
-    str_5 = 'one,,three'
+    str_5 = 'a,,b'
     var_5 = module_0.words_string(str_5)
-    assert var_5 == ['one', 'three']
-    str_6 = ',one,two,'
+    assert var_5 == ['a', 'b']
+    str_6 = ',hello,world,'
     var_6 = module_0.words_string(str_6)
-    assert var_6 == ['one', 'two']
+    assert var_6 == ['hello', 'world']
+    str_7 = ',,,'
+    var_7 = module_0.words_string(str_7)
+    assert var_7 == []
+    str_8 = '   '
+    var_8 = module_0.words_string(str_8)
+    assert var_8 == []
+    str_9 = 'Hi, my name, is John'
+    var_9 = module_0.words_string(str_9)
+    assert var_9 == ['Hi', 'my', 'name', 'is', 'John']
+    str_10 = 'All tests passed!'
+    var_10 = print(str_10)
+
+def test_case_1():
+    pass

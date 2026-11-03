@@ -4,35 +4,53 @@ import f115 as module_0
 def test_case_0():
     int_0 = 0
     int_1 = 1
-    int_2 = [int_0, int_0, int_1]
-    int_3 = [int_0, int_1, int_0]
-    int_4 = [int_0, int_1, int_0]
+    int_2 = [int_0, int_0, int_1, int_0]
+    int_3 = [int_0, int_1, int_0, int_0]
+    int_4 = [int_1, int_1, int_1, int_1]
     int_5 = [int_2, int_3, int_4]
     var_0 = module_0.max_fill(int_5, int_1)
-    assert var_0 == 3
-    int_6 = [int_0, int_0, int_1, int_0]
-    int_7 = [int_0, int_0, int_0, int_1]
-    int_8 = [int_0, int_1, int_0, int_0]
-    int_9 = [int_6, int_7, int_8]
-    int_10 = 2
-    var_1 = module_0.max_fill(int_9, int_10)
-    assert var_1 == 3
-    int_11 = [int_0, int_0, int_1, int_1]
-    int_12 = [int_0, int_0, int_0, int_0]
-    int_13 = [int_1, int_0, int_0, int_0]
-    int_14 = [int_0, int_1, int_0, int_0]
-    int_15 = [int_11, int_12, int_13, int_14]
-    var_2 = module_0.max_fill(int_15, int_10)
-    assert var_2 == 3
-    var_3 = []
-    var_4 = module_0.max_fill(var_3, int_1)
-    assert var_4 == 0
-    int_16 = [int_0, int_0, int_0]
-    int_17 = [int_16]
-    int_18 = 5
-    var_5 = module_0.max_fill(int_17, int_18)
-    assert var_5 == 0
-    int_19 = [int_1, int_1, int_1]
-    int_20 = [int_19]
-    var_6 = module_0.max_fill(int_20, int_10)
-    assert var_6 == 2
+    assert var_0 == 6
+    int_6 = [int_0, int_0, int_1, int_1]
+    int_7 = [int_0, int_0, int_0, int_0]
+    int_8 = [int_1, int_1, int_1, int_1]
+    int_9 = [int_0, int_1, int_1, int_1]
+    int_10 = [int_6, int_7, int_8, int_9]
+    int_11 = 2
+    var_1 = module_0.max_fill(int_10, int_11)
+    assert var_1 == 5
+    int_12 = [int_0, int_0, int_0]
+    int_13 = [int_0, int_0, int_0]
+    int_14 = [int_12, int_13]
+    int_15 = 5
+    var_2 = module_0.max_fill(int_14, int_15)
+    assert var_2 == 0
+    int_16 = [int_1, int_1, int_1, int_1]
+    int_17 = [int_1, int_1, int_1, int_1]
+    int_18 = [int_16, int_17]
+    int_19 = 4
+    var_3 = module_0.max_fill(int_18, int_19)
+    assert var_3 == 2
+    int_20 = [int_1, int_1, int_1, int_1]
+    int_21 = [int_1, int_1, int_1, int_1]
+    int_22 = [int_20, int_21]
+    int_23 = 3
+    var_4 = module_0.max_fill(int_22, int_23)
+    assert var_4 == 4
+    int_24 = [int_1, int_1]
+    int_25 = [int_24]
+    var_5 = module_0.max_fill(int_25, int_11)
+    assert var_5 == 1
+    int_26 = [int_1, int_1, int_1]
+    int_27 = [int_0, int_1, int_0]
+    int_28 = [int_1, int_0, int_1]
+    int_29 = [int_26, int_27, int_28]
+    int_30 = 100
+    var_6 = module_0.max_fill(int_29, int_30)
+    assert var_6 == 3
+    int_31 = [int_1, int_1, int_1, int_1, int_1]
+    int_32 = [int_1, int_1, int_1, int_1, int_1, int_1, int_1]
+    int_33 = [int_31, int_32]
+    var_7 = module_0.max_fill(int_33, int_23)
+    assert var_7 == 5
+    str_0 = 'All tests passed!'
+    var_8 = print(str_0)

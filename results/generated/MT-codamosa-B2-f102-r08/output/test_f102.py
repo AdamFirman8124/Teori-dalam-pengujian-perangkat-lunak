@@ -2,35 +2,50 @@
 import f102 as module_0
 
 def test_case_0():
-    int_0 = 12
-    int_1 = 82
+    int_0 = 13
+    int_1 = 12
     var_0 = module_0.choose_num(int_0, int_1)
-    assert var_0 == 82
-    int_2 = 13
-    var_1 = module_0.choose_num(int_2, int_0)
+    assert var_0 == 1
+    assert var_0 == -1
+    int_2 = 1
+    var_1 = module_0.choose_num(int_1, int_2)
     assert var_1 == 1
     assert var_1 == -1
-    var_2 = module_0.choose_num(int_0, int_0)
-    assert var_2 == 12
-    var_3 = module_0.choose_num(int_2, int_2)
-    assert var_3 == 1
-    assert var_3 == -1
-    int_3 = 14
-    var_4 = module_0.choose_num(int_2, int_3)
-    assert var_4 == 14
-    int_4 = 15
-    var_5 = module_0.choose_num(int_2, int_4)
-    assert var_5 == 14
-    int_5 = 1
-    int_6 = 2
-    var_6 = module_0.choose_num(int_5, int_6)
-    assert var_6 == 2
-    var_7 = module_0.choose_num(int_5, int_5)
-    assert var_7 == 1
-    assert var_7 == -1
-    int_7 = 3
-    var_8 = module_0.choose_num(int_6, int_7)
-    assert var_8 == 2
-    int_8 = 5
-    var_9 = module_0.choose_num(int_7, int_8)
-    assert var_9 == 4
+    int_3 = 15
+    var_2 = module_0.choose_num(int_1, int_3)
+    assert var_2 == 14
+    int_4 = 33
+    int_5 = 123
+    var_3 = module_0.choose_num(int_4, int_5)
+    assert var_3 == 122
+    int_6 = 5
+    int_7 = 4
+    var_4 = module_0.choose_num(int_6, int_7)
+    assert var_4 == 4
+    assert var_4 == -1
+    int_8 = 10
+    int_9 = 20
+    var_5 = module_0.choose_num(int_8, int_9)
+    assert var_5 == 20
+    var_6 = module_0.choose_num(int_9, int_9)
+    assert var_6 == 20
+    int_10 = 2
+    var_7 = module_0.choose_num(int_2, int_10)
+    assert var_7 == 2
+    int_11 = 0
+    var_8 = module_0.choose_num(int_11, int_11)
+    assert var_8 == 0
+    var_9 = module_0.choose_num(int_0, int_0)
+    assert var_9 == 1
+    assert var_9 == -1
+    int_12 = 7
+    var_10 = module_0.choose_num(int_12, int_12)
+    assert var_10 == 1
+    assert var_10 == -1
+    var_11 = module_0.choose_num(int_0, int_3)
+    assert var_11 == 14
+    int_13 = 3
+    var_12 = module_0.choose_num(int_2, int_13)
+    assert var_12 == 2
+    str_0 = 'All tests passed!'
+    var_13 = print(str_0)

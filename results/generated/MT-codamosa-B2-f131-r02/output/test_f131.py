@@ -2,48 +2,39 @@
 import f131 as module_0
 
 def test_case_0():
-    int_0 = 1
+    int_0 = 5
     var_0 = module_0.digits(int_0)
-    assert var_0 == 1
-    int_1 = 5
+    assert var_0 == 5
+    int_1 = 4
     var_1 = module_0.digits(int_1)
-    assert var_1 == 5
-    int_2 = 13
+    assert var_1 == 0
+    int_2 = 2468
     var_2 = module_0.digits(int_2)
-    assert var_2 == 3
-    int_3 = 123
+    assert var_2 == 0
+    int_3 = 54
     var_3 = module_0.digits(int_3)
-    assert var_3 == 3
-    int_4 = 135
+    assert var_3 == 5
+    int_4 = 120
     var_4 = module_0.digits(int_4)
-    assert var_4 == 15
-    int_5 = 12345
+    assert var_4 == 1
+    int_5 = 5014
     var_5 = module_0.digits(int_5)
-    assert var_5 == 15
-    int_6 = 13579
+    assert var_5 == 5
+    int_6 = 235
     var_6 = module_0.digits(int_6)
-    assert var_6 == 945
-    int_7 = 999
+    assert var_6 == 15
+    int_7 = 98765
     var_7 = module_0.digits(int_7)
-    assert var_7 == 729
-    int_8 = 11111
+    assert var_7 == 315
+    int_8 = 5576543
     var_8 = module_0.digits(int_8)
-    assert var_8 == 1
-    int_9 = 101
+    assert var_8 == 2625
+    int_9 = 0
     var_9 = module_0.digits(int_9)
-    assert var_9 == 1
-    int_10 = 24631
+    assert var_9 == 0
+    int_10 = 1
     var_10 = module_0.digits(int_10)
-    assert var_10 == 3
-    int_11 = 0
+    assert var_10 == 1
+    int_11 = 1024
     var_11 = module_0.digits(int_11)
-    assert var_11 == 0
-    int_12 = 2
-    var_12 = module_0.digits(int_12)
-    assert var_12 == 0
-    int_13 = 2468
-    var_13 = module_0.digits(int_13)
-    assert var_13 == 0
-    int_14 = 2004
-    var_14 = module_0.digits(int_14)
-    assert var_14 == 0
+    assert var_11 == 1

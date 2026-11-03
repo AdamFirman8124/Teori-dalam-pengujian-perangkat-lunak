@@ -1,226 +1,191 @@
 
 
-# Generated at 2026-10-25 15:28:20.085960
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:22.499746
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:24.915182
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:27.328758
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:29.744539
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:32.158929
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:34.576832
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:36.993804
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:39.408547
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:41.822781
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:44.237806
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:46.653427
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:49.065845
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:51.480754
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:53.898022
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:56.314092
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:28:58.727851
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:01.143215
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:03.559249
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:05.972569
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:08.386415
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:10.800343
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:13.216944
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:15.634343
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:18.047915
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:20.461518
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:22.880483
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:25.292332
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:27.706286
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:30.119464
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:35.610460
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:38.023947
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:40.437452
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:42.852887
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:45.266092
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:47.679972
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:50.095475
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:52.512738
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:54.929475
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:57.356515
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:29:59.770408
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:02.186461
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:04.601603
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:07.015527
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:09.430777
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:11.848775
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:14.264359
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:16.679826
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:19.092298
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:21.506220
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:23.919960
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:26.333830
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:28.747660
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:31.163280
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:33.579514
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:35.991300
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:38.405702
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:40.821627
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:43.268929
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:45.648699
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:48.064243
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:50.480333
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:52.898004
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:55.311141
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:30:57.726066
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:31:00.142532
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:31:02.556256
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:31:04.971035
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:31:07.385436
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:31:09.803492
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:31:12.221805
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:31:14.636717
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:31:17.049682
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:31:19.465108
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-25 15:31:21.878855
-# Unit test for function is_simple_power
+# Generated at 2026-11-03 03:27:34.126177
+# Unit test for function is_simple_power
+def test_is_simple_power():
+    # x is a power of n
+    assert module_0.is_simple_power(1, 4) == True
+    assert module_0.is_simple_power(2, 2) == True
+    assert module_0.is_simple_power(8, 2) == True
+    assert module_0.is_simple_power(27, 3) == True
+    assert module_0.is_simple_power(64, 4) == True
+    assert module_0.is_simple_power(1, 1) == True
+
+    # x is not a power of n
+    assert module_0.is_simple_power(3, 2) == False
+    assert module_0.is_simple_power(5, 3) == False
+    assert module_0.is_simple_power(7, 2) == False
+    assert module_0.is_simple_power(0, 2) == False
+
+    # n == 1 special case: only x == 1 is a power
+    assert module_0.is_simple_power(1, 1) == True
+    assert module_0.is_simple_power(2, 1) == False
+    assert module_0.is_simple_power(3, 1) == False
+    assert module_0.is_simple_power(100, 1) == False
+
+    # x greater than any reachable power
+    assert module_0.is_simple_power(1000000, 10) == True
+    assert module_0.is_simple_power(999999, 10) == False
+
+# Generated at 2026-11-03 03:29:32.909984
+# Unit test for function is_simple_power
+def test_is_simple_power():
+    # Basic true cases: x is a power of n
+    assert module_0.is_simple_power(1, 4) == True      # 1 = 4^0
+    assert module_0.is_simple_power(2, 2) == True      # 2 = 2^1
+    assert module_0.is_simple_power(8, 2) == True      # 8 = 2^3
+    assert module_0.is_simple_power(3, 3) == True      # 3 = 3^1
+    assert module_0.is_simple_power(4, 2) == True      # 4 = 2^2
+    assert module_0.is_simple_power(9, 3) == True      # 9 = 3^2
+    assert module_0.is_simple_power(16, 2) == True     # 16 = 2^4
+    assert module_0.is_simple_power(27, 3) == True     # 27 = 3^3
+    assert module_0.is_simple_power(1024, 2) == True   # 1024 = 2^10
+
+    # Basic false cases: x is not a power of n
+    assert module_0.is_simple_power(3, 2) == False
+    assert module_0.is_simple_power(5, 3) == False
+    assert module_0.is_simple_power(6, 2) == False
+    assert module_0.is_simple_power(10, 10) == False
+    assert module_0.is_simple_power(2, 3) == False
+
+    # Edge case: n == 1
+    assert module_0.is_simple_power(1, 1) == True      # only 1 is a power of 1
+    assert module_0.is_simple_power(3, 1) == False
+    assert module_0.is_simple_power(10, 1) == False
+
+    # Edge case: x == 1 (any base to the power 0)
+    assert module_0.is_simple_power(1, 2) == True
+    assert module_0.is_simple_power(1, 10) == True
+
+    # Edge case: x == 0
+    assert module_0.is_simple_power(0, 2) == False
+    assert module_0.is_simple_power(0, 1) == False
+
+    # Edge case: x smaller than n (and not 1)
+    assert module_0.is_simple_power(2, 4) == False
+    assert module_0.is_simple_power(5, 10) == False
+
+    # Large numbers
+    assert module_0.is_simple_power(3125, 5) == True   # 5^5
+    assert module_0.is_simple_power(3126, 5) == False
+
+    print("All tests passed!")
+
+
+test_is_simple_power()
+
+# Generated at 2026-11-03 03:31:14.797235
+# Unit test for function is_simple_power
+def test_is_simple_power():import unittest
+
+
+class TestIsSimplePower(unittest.TestCase):
+
+    def test_is_simple_power(self):
+        # n == 1 cases
+        assert module_0.is_simple_power(1, 1) == True
+        assert module_0.is_simple_power(2, 1) == False
+
+        # True cases: x is a power of n
+        assert module_0.is_simple_power(2, 2) == True      # 2^1
+        assert module_0.is_simple_power(4, 2) == True      # 2^2
+        assert module_0.is_simple_power(8, 2) == True      # 2^3
+        assert module_0.is_simple_power(16, 2) == True     # 2^4
+        assert module_0.is_simple_power(256, 4) == True    # 4^4
+        assert module_0.is_simple_power(125, 5) == True    # 5^3
+        assert module_0.is_simple_power(625, 5) == True    # 5^4
+        assert module_0.is_simple_power(1, 5) == True      # n^0 = 1
+
+        # False cases: x is not a power of n
+        assert module_0.is_simple_power(3, 2) == False
+        assert module_0.is_simple_power(5, 3) == False
+        assert module_0.is_simple_power(10, 2) == False
+        assert module_0.is_simple_power(30, 5) == False
+        assert module_0.is_simple_power(0, 2) == False
+        assert module_0.is_simple_power(7, 7) == False
+
+        print("All test cases passed!")
+
+
+if __name__ == "__main__":
+    test_is_simple_power()
+
+# Generated at 2026-11-03 03:33:07.849471
+# Unit test for function is_simple_power
+def test_is_simple_power():
+    # n == 1 cases
+    assert module_0.is_simple_power(1, 1) == True
+    assert module_0.is_simple_power(2, 1) == False
+    assert module_0.is_simple_power(0, 1) == False
+
+    # x == 1 with n != 1 (power starts at 1, loop doesn't run)
+    assert module_0.is_simple_power(1, 2) == True
+    assert module_0.is_simple_power(1, 5) == True
+
+    # x is a power of n
+    assert module_0.is_simple_power(2, 2) == True
+    assert module_0.is_simple_power(8, 2) == True
+    assert module_0.is_simple_power(16, 2) == True
+    assert module_0.is_simple_power(1024, 2) == True
+    assert module_0.is_simple_power(27, 3) == True
+    assert module_0.is_simple_power(125, 5) == True
+
+    # x is not a power of n
+    assert module_0.is_simple_power(3, 2) == False
+    assert module_0.is_simple_power(5, 3) == False
+    assert module_0.is_simple_power(10, 2) == False
+    assert module_0.is_simple_power(0, 2) == False
+    assert module_0.is_simple_power(-8, 2) == False
+    assert module_0.is_simple_power(7, 7) == True
+
+    print("All tests passed!")
+
+
+# Run the test
+test_is_simple_power()
+
+# Generated at 2026-11-03 03:35:19.229494
+# Unit test for function is_simple_power
+def test_is_simple_power():
+    # n == 1 edge cases
+    assert module_0.is_simple_power(1, 1)
+    assert not module_0.is_simple_power(2, 1)
+    assert not module_0.is_simple_power(0, 1)
+
+    # x == 1 is n^0 for any n != 1
+    assert module_0.is_simple_power(1, 2)
+    assert module_0.is_simple_power(1, 3)
+    assert module_0.is_simple_power(1, 10)
+
+    # exact powers
+    assert module_0.is_simple_power(2, 2)
+    assert module_0.is_simple_power(4, 2)
+    assert module_0.is_simple_power(8, 2)
+    assert module_0.is_simple_power(16, 2)
+    assert module_0.is_simple_power(27, 3)
+    assert module_0.is_simple_power(81, 3)
+    assert module_0.is_simple_power(25, 5)
+    assert module_0.is_simple_power(125, 5)
+    assert module_0.is_simple_power(100, 10)
+    assert module_0.is_simple_power(64, 4)
+
+    # non-powers
+    assert not module_0.is_simple_power(3, 2)
+    assert not module_0.is_simple_power(5, 2)
+    assert not module_0.is_simple_power(6, 2)
+    assert not module_0.is_simple_power(10, 3)
+    assert not module_0.is_simple_power(2, 3)
+    assert not module_0.is_simple_power(26, 5)
+
+    # x == 0
+    assert not module_0.is_simple_power(0, 2)
+    assert not module_0.is_simple_power(0, 5)
+
+    # x == n
+    assert module_0.is_simple_power(7, 7)
+    assert module_0.is_simple_power(13, 13)
+
+    # negative base
+    assert module_0.is_simple_power(4, -2)
+    assert module_0.is_simple_power(16, -2)
+    assert not module_0.is_simple_power(8, -2)

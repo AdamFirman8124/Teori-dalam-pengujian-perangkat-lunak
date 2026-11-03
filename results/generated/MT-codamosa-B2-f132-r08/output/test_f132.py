@@ -5,46 +5,37 @@ def test_case_0():
     str_0 = '[[]]'
     var_0 = module_0.is_nested(str_0)
     assert var_0 is True
-    str_1 = '[[][]]'
+    str_1 = '[]]]]]]][[[[[]'
     var_1 = module_0.is_nested(str_1)
-    assert var_1 is True
-    str_2 = '[[]][['
+    assert var_1 is False
+    str_2 = '[][]'
     var_2 = module_0.is_nested(str_2)
-    assert var_2 is True
+    assert var_2 is False
     str_3 = '[]'
     var_3 = module_0.is_nested(str_3)
     assert var_3 is False
-    str_4 = '[][]'
+    str_4 = '[][][[]'
     var_4 = module_0.is_nested(str_4)
-    assert var_4 is False
-    str_5 = '[]]]]]]][[[[[]'
+    assert var_4 is True
+    str_5 = '[[][]'
     var_5 = module_0.is_nested(str_5)
-    assert var_5 is False
-    str_6 = '[[[]])'
+    assert var_5 is True
+    str_6 = '[[[['
     var_6 = module_0.is_nested(str_6)
-    assert var_6 is True
-    bool_0 = False
-    var_7 = var_6 == bool_0
-    str_7 = ''
-    var_8 = module_0.is_nested(str_7)
+    assert var_6 is False
+    str_7 = ']]][[['
+    var_7 = module_0.is_nested(str_7)
+    assert var_7 is False
+    str_8 = '[]][[]'
+    var_8 = module_0.is_nested(str_8)
+    assert var_8 is True
     assert var_8 is False
-    str_8 = '['
-    var_9 = module_0.is_nested(str_8)
-    assert var_9 is False
-    str_9 = ']'
-    var_10 = module_0.is_nested(str_9)
+    str_9 = '[[]][['
+    var_9 = module_0.is_nested(str_9)
+    assert var_9 is True
+    str_10 = ''
+    var_10 = module_0.is_nested(str_10)
     assert var_10 is False
-    str_10 = '[[['
-    var_11 = module_0.is_nested(str_10)
+    str_11 = ']['
+    var_11 = module_0.is_nested(str_11)
     assert var_11 is False
-    str_11 = ']]]'
-    var_12 = module_0.is_nested(str_11)
-    assert var_12 is False
-    str_12 = '[[[['
-    var_13 = module_0.is_nested(str_12)
-    assert var_13 is False
-    str_13 = '[['
-    var_14 = module_0.is_nested(str_13)
-    assert var_14 is False
-    str_14 = 'All tests passed.'
-    var_15 = print(str_14)

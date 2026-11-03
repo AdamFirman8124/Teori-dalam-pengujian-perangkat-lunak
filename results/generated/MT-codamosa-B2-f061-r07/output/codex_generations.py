@@ -1,46 +1,133 @@
 
 
-# Generated at 2026-10-25 06:45:12.794930
+# Generated at 2026-11-02 16:21:48.050282
 # Unit test for function correct_bracketing
+def test_correct_bracketing():
+    # Empty string is trivially balanced
+    assert module_0.correct_bracketing("") is True
 
-# Generated at 2026-10-25 06:45:15.166422
-# Unit test for function correct_bracketing
+    # Simple balanced cases
+    assert module_0.correct_bracketing("()") is True
+    assert module_0.correct_bracketing("(())") is True
+    assert module_0.correct_bracketing("()()") is True
+    assert module_0.correct_bracketing("(()())") is True
+    assert module_0.correct_bracketing("((()))") is True
 
-# Generated at 2026-10-25 06:45:17.775778
-# Unit test for function correct_bracketing
+    # Unbalanced cases
+    assert module_0.correct_bracketing("(") is False
+    assert module_0.correct_bracketing(")") is False
+    assert module_0.correct_bracketing(")(") is False
+    assert module_0.correct_bracketing("(()") is False
+    assert module_0.correct_bracketing("())") is False
+    assert module_0.correct_bracketing("()(") is False
+    assert module_0.correct_bracketing(")()(") is False
 
-# Generated at 2026-10-25 06:45:20.221809
-# Unit test for function correct_bracketing
+    # Deeper nesting
+    assert module_0.correct_bracketing("(()((())()))") is True
+    assert module_0.correct_bracketing("((()())(") is False
 
-# Generated at 2026-10-25 06:45:22.780062
-# Unit test for function correct_bracketing
+    # Prefix-closing fails early
+    assert module_0.correct_bracketing("())(") is False
 
-# Generated at 2026-10-25 06:45:25.195937
+# Generated at 2026-11-02 16:22:45.873780
 # Unit test for function correct_bracketing
+def test_correct_bracketing():
+    # Empty string is trivially balanced
+    assert module_0.correct_bracketing("") is True
 
-# Generated at 2026-10-25 06:45:27.611070
-# Unit test for function correct_bracketing
+    # Simple balanced pairs
+    assert module_0.correct_bracketing("()") is True
+    assert module_0.correct_bracketing("()()") is True
+    assert module_0.correct_bracketing("()(())") is True
 
-# Generated at 2026-10-25 06:45:30.027394
-# Unit test for function correct_bracketing
+    # Nested brackets
+    assert module_0.correct_bracketing("(())") is True
+    assert module_0.correct_bracketing("((()))") is True
+    assert module_0.correct_bracketing("(()())") is True
+    assert module_0.correct_bracketing("((()())())") is True
 
-# Generated at 2026-10-25 06:45:32.444843
-# Unit test for function correct_bracketing
+    # Unbalanced: closing before opening
+    assert module_0.correct_bracketing(")(") is False
+    assert module_0.correct_bracketing("())(") is False
+    assert module_0.correct_bracketing("(()))(") is False
 
-# Generated at 2026-10-25 06:45:34.857562
-# Unit test for function correct_bracketing
+    # Unbalanced: never closes
+    assert module_0.correct_bracketing("(") is False
+    assert module_0.correct_bracketing("(((") is False
+    assert module_0.correct_bracketing("(()") is False
 
-# Generated at 2026-10-25 06:45:37.270985
-# Unit test for function correct_bracketing
+    # Unbalanced: extra closings
+    assert module_0.correct_bracketing(")") is False
+    assert module_0.correct_bracketing("())") is False
+    assert module_0.correct_bracketing("()))") is False
 
-# Generated at 2026-10-25 06:45:39.687856
-# Unit test for function correct_bracketing
+    # Depth dips negative mid-string even if it ends at zero
+    assert module_0.correct_bracketing("()())()") is False
 
-# Generated at 2026-10-25 06:45:42.101914
-# Unit test for function correct_bracketing
+    print("All tests passed!")
 
-# Generated at 2026-10-25 06:45:44.518151
-# Unit test for function correct_bracketing
 
-# Generated at 2026-10-25 06:45:46.934405
+if __name__ == "__main__":
+    test_correct_bracketing()
+
+# Generated at 2026-11-02 16:24:30.749742
 # Unit test for function correct_bracketing
+def test_correct_bracketing():
+    assert module_0.correct_bracketing("()") == True
+    assert module_0.correct_bracketing("(()") == False
+    assert module_0.correct_bracketing("()()") == True
+    assert module_0.correct_bracketing(")(") == False
+    assert module_0.correct_bracketing("") == True
+    assert module_0.correct_bracketing("((()))") == True
+    assert module_0.correct_bracketing("((()") == False
+    assert module_0.correct_bracketing(")))") == False
+    assert module_0.correct_bracketing("()((())") == False
+    assert module_0.correct_bracketing("(()())") == True
+    assert module_0.correct_bracketing("((())())") == True
+    assert module_0.correct_bracketing("())(") == False
+
+# Generated at 2026-11-02 16:25:19.101470
+# Unit test for function correct_bracketing
+def test_correct_bracketing():
+# nonce:e7415109
+    # Valid cases
+    assert module_0.correct_bracketing("()") == True
+    assert module_0.correct_bracketing("(())") == True
+    assert module_0.correct_bracketing("((()))") == True
+    assert module_0.correct_bracketing("()()()") == True
+    assert module_0.correct_bracketing("(()())") == True
+    assert module_0.correct_bracketing("") == True  # empty string is balanced
+
+    # Invalid cases
+    assert module_0.correct_bracketing("(") == False   # unclosed bracket
+    assert module_0.correct_bracketing(")") == False   # closing without opening
+    assert module_0.correct_bracketing("(()") == False # extra opening
+    assert module_0.correct_bracketing("())") == False # extra closing
+    assert module_0.correct_bracketing(")(") == False  # closing before opening
+    assert module_0.correct_bracketing(")()(") == False
+    assert module_0.correct_bracketing("(()()))") == False
+
+# Generated at 2026-11-02 16:26:07.025157
+# Unit test for function correct_bracketing
+def test_correct_bracketing():
+# nonce:16034f53
+    # Balanced simple case
+    assert module_0.correct_bracketing("()") == True
+    # Nested brackets
+    assert module_0.correct_bracketing("(())") == True
+    assert module_0.correct_bracketing("(()())") == True
+    assert module_0.correct_bracketing("((()))") == True
+    # Sequential brackets
+    assert module_0.correct_bracketing("()()()") == True
+    # Unclosed opening bracket
+    assert module_0.correct_bracketing("(") == False
+    assert module_0.correct_bracketing("(((") == False
+    # Unmatched closing bracket
+    assert module_0.correct_bracketing(")") == False
+    assert module_0.correct_bracketing(")))") == False
+    # Closes before opening (negative depth)
+    assert module_0.correct_bracketing(")(") == False
+    assert module_0.correct_bracketing(")()(") == False
+    assert module_0.correct_bracketing("())(") == False
+    # Empty string is balanced
+    assert module_0.correct_bracketing("") == True

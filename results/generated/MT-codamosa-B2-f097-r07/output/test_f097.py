@@ -2,19 +2,47 @@
 import f097 as module_0
 
 def test_case_0():
-    int_0 = 13
-    int_1 = 25
+    int_0 = 4
+    int_1 = 5
     var_0 = module_0.multiply(int_0, int_1)
-    assert var_0 == 15
-    int_2 = 7
-    int_3 = 8
+    assert var_0 == 20
+    int_2 = 123
+    int_3 = 456
     var_1 = module_0.multiply(int_2, int_3)
-    assert var_1 == 56
-    int_4 = 10
-    int_5 = 20
-    var_2 = module_0.multiply(int_4, int_5)
-    assert var_2 == 0
-    int_6 = -13
-    var_3 = module_0.multiply(int_6, int_1)
-    assert var_3 == 15
-    assert var_3 == 35
+    assert var_1 == 18
+    int_4 = -4
+    var_2 = module_0.multiply(int_4, int_1)
+    assert var_2 == 20
+    assert var_2 == 30
+    int_5 = -4
+    var_3 = module_0.multiply(int_5, int_1)
+    assert var_3 == 30
+    int_6 = -1
+    int_7 = -2
+    var_4 = module_0.multiply(int_6, int_7)
+    assert var_4 == 2
+    assert var_4 == 72
+    int_8 = -1
+    int_9 = -2
+    var_5 = module_0.multiply(int_8, int_9)
+    assert var_5 == 72
+    int_10 = 0
+    var_6 = module_0.multiply(int_10, int_1)
+    assert var_6 == 0
+    int_11 = 10
+    int_12 = 20
+    var_7 = module_0.multiply(int_11, int_12)
+    assert var_7 == 0
+    int_13 = 7
+    int_14 = 8
+    var_8 = module_0.multiply(int_13, int_14)
+    assert var_8 == 56
+    int_15 = 999
+    var_9 = module_0.multiply(int_15, int_15)
+    assert var_9 == 81
+    int_16 = 1000001
+    int_17 = 2000002
+    var_10 = module_0.multiply(int_16, int_17)
+    assert var_10 == 2
+    str_0 = 'All tests passed!'
+    var_11 = print(str_0)

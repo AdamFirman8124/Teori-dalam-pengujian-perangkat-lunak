@@ -2,11 +2,27 @@
 import f062 as module_0
 
 def test_case_0():
-    list_0 = []
-    var_0 = module_0.derivative(list_0)
-    assert var_0 == []
-    int_0 = None
-    tuple_0 = (int_0,)
-    list_1 = [tuple_0]
-    var_1 = module_0.derivative(list_1)
-    assert var_1 == []
+    int_0 = 3
+    int_1 = 1
+    int_2 = 2
+    int_3 = 4
+    int_4 = 5
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    var_0 = module_0.derivative(int_5)
+    assert var_0 == [1, 4, 12, 20]
+    int_6 = [int_1, int_2, int_0]
+    var_1 = module_0.derivative(int_6)
+    assert var_1 == [2, 6]
+    int_7 = [int_3]
+    var_2 = module_0.derivative(int_7)
+    assert var_2 == []
+    int_8 = 0
+    int_9 = [int_8, int_8, int_8]
+    var_3 = module_0.derivative(int_9)
+    assert var_3 == [0, 0]
+    int_10 = -1
+    int_11 = -2
+    int_12 = -3
+    int_13 = [int_10, int_11, int_12]
+    var_4 = module_0.derivative(int_13)
+    assert var_4 == [-2, -6]

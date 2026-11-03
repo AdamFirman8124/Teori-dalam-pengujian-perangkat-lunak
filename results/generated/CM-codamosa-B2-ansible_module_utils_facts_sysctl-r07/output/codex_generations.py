@@ -1,384 +1,200 @@
 
 
-# Generated at 2026-10-24 04:33:46.847763
+# Generated at 2026-11-03 02:42:40.364760
 # Unit test for function get_sysctl
+def test_get_sysctl():import pytest
 
-# Generated at 2026-10-24 04:33:52.800773
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:34:01.298771
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:34:03.801796
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:34:06.214868
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:34:14.302875
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:34:24.249010
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:34:32.529552
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:34:40.313396
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:34:50.654164
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:34:58.129197
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:35:04.898366
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:35:07.314747
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:35:14.391385
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:35:20.657195
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:35:31.898834
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:35:40.835920
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:35:43.376652
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:35:45.775952
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:35:48.187917
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:35:50.599096
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:35:53.009575
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:35:55.420984
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:35:57.832383
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:00.243527
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:02.655005
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:05.065396
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:07.476166
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:09.887853
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:12.298483
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:14.710467
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:17.121582
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:19.533010
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:21.946488
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:24.361734
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:26.766901
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:29.178708
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:31.588164
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:33.999406
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:36.410143
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:38.821483
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:41.232251
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:43.643363
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:50.769778
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:36:58.161335
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:37:08.846043
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:37:14.742199
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:37:22.822605
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:37:25.318421
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:37:27.730250
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:37:30.141880
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:37:32.553501
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:37:34.968416
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:37:37.380907
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:37:39.793839
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:37:48.422285
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:37:56.627518
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:38:09.208742
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:38:16.768811
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:38:19.257673
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:38:21.668455
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:38:24.164902
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:38:26.580137
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:38:28.994850
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:38:31.502424
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:38:33.916512
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:38:36.329811
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:38:38.741815
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:38:46.279259
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:38:56.416387
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:39:03.569301
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:39:09.893015
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:39:21.607912
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:39:24.019110
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:39:26.430415
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:39:28.841437
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:39:31.252675
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:39:33.664730
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:39:36.076638
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:39:38.487301
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:39:40.904315
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:39:52.327702
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:40:01.753762
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:40:08.199868
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:40:21.407182
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:40:29.701241
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:40:32.201569
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:40:34.708238
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:40:37.207864
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:40:39.618723
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:40:42.029595
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:40:49.679027
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:40:57.657701
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:41:09.535956
-# Unit test for function get_sysctl
-def test_get_sysctl():from unittest.mock import MagicMock
-
-
-# Generated at 2026-10-24 04:41:23.052517
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:41:25.560602
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:41:28.632574
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:41:31.042149
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:41:33.455665
-# Unit test for function get_sysctl
 
-# Generated at 2026-10-24 04:41:35.867610
-# Unit test for function get_sysctl
-
-# Generated at 2026-10-24 04:41:38.278490
-# Unit test for function get_sysctl
+class FakeModule(object):
+    """Mimics AnsibleModule for testing get_sysctl."""
 
-# Generated at 2026-10-24 04:41:40.690822
-# Unit test for function get_sysctl
+    def __init__(self, rc=0, out='', err='', exception=None):
+        self.rc = rc
+        self.out = out
+        self.err = err
+        self.exception = exception
+        self.warnings = []
+        self.commands = []
 
-# Generated at 2026-10-24 04:41:43.101590
-# Unit test for function get_sysctl
+    def get_bin_path(self, name):
+        return '/sbin/%s' % name
 
-# Generated at 2026-10-24 04:41:45.513210
-# Unit test for function get_sysctl
+    def run_command(self, cmd):
+        self.commands.append(cmd)
+        if self.exception is not None:
+            raise self.exception
+        return self.rc, self.out, self.err
 
-# Generated at 2026-10-24 04:41:47.930596
-# Unit test for function get_sysctl
+    def warn(self, message):
+        self.warnings.append(message)
 
-# Generated at 2026-10-24 04:41:50.343275
-# Unit test for function get_sysctl
 
-# Generated at 2026-10-24 04:41:52.757147
-# Unit test for function get_sysctl
+def test_get_sysctl_single_key_value():
+    module = FakeModule(out='net.ipv4.ip_forward = 1\n')
+    result = module_0.get_sysctl(module, ['net.ipv4.ip_forward'])
+    assert result == {'net.ipv4.ip_forward': '1'}
+    assert module.commands == [['/sbin/sysctl', 'net.ipv4.ip_forward']]
+    assert module.warnings == []
 
-# Generated at 2026-10-24 04:41:55.168399
-# Unit test for function get_sysctl
 
-# Generated at 2026-10-24 04:41:57.578853
-# Unit test for function get_sysctl
+def test_get_sysctl_multiple_keys():
+    module = FakeModule(out='a = 1\nb = 2\nc = 3\n')
+    result = module_0.get_sysctl(module, ['a', 'b', 'c'])
+    assert result == {'a': '1', 'b': '2', 'c': '3'}
 
-# Generated at 2026-10-24 04:41:59.989686
-# Unit test for function get_sysctl
 
-# Generated at 2026-10-24 04:42:05.446346
-# Unit test for function get_sysctl
+def test_get_sysctl_command_with_multiple_prefixes():
+    module = FakeModule(out='a = 1\nb = 2\n')
+    module_0.get_sysctl(module, ['a', 'b'])
+    assert module.commands == [['/sbin/sysctl', 'a', 'b']]
 
-# Generated at 2026-10-24 04:42:10.054344
-# Unit test for function get_sysctl
 
-# Generated at 2026-10-24 04:42:20.503533
-# Unit test for function get_sysctl
+def test_get_sysctl_colon_separator():
+    module = FakeModule(out='kern.ostype: FreeBSD\nkern.osrelease: 13.0\n')
+    result = module_0.get_sysctl(module, ['kern'])
+    assert result == {'kern.ostype': 'FreeBSD', 'kern.osrelease': '13.0'}
 
-# Generated at 2026-10-24 04:42:27.771169
-# Unit test for function get_sysctl
 
-# Generated at 2026-10-24 04:42:34.942889
-# Unit test for function get_sysctl
+def test_get_sysctl_multiline_value():
+    out = 'vm.stat = a\n b\n c\nother = 2\n'
+    module = FakeModule(out=out)
+    result = module_0.get_sysctl(module, ['vm.stat'])
+    assert result == {'vm.stat': 'a\n b\n c', 'other': '2'}
 
-# Generated at 2026-10-24 04:42:45.177923
-# Unit test for function get_sysctl
 
-# Generated at 2026-10-24 04:42:47.594944
-# Unit test for function get_sysctl
+def test_get_sysctl_empty_lines_skipped():
+    module = FakeModule(out='\n\nkey = value\n\n')
+    result = module_0.get_sysctl(module, ['key'])
+    assert result == {'key': 'value'}
 
-# Generated at 2026-10-24 04:42:50.010764
-# Unit test for function get_sysctl
 
-# Generated at 2026-10-24 04:42:52.422405
-# Unit test for function get_sysctl
+def test_get_sysctl_strips_whitespace():
+    module = FakeModule(out='key =    value   \n')
+    result = module_0.get_sysctl(module, ['key'])
+    assert result == {'key': 'value'}
 
-# Generated at 2026-10-24 04:42:54.835002
-# Unit test for function get_sysctl
 
-# Generated at 2026-10-24 04:42:57.251698
-# Unit test for function get_sysctl
+def test_get_sysctl_no_separator_zero_spaces():
+    module = FakeModule(out='key=value\n')
+    result = module_0.get_sysctl(module, ['key'])
+    assert result == {'key': 'value'}
 
-# Generated at 2026-10-24 04:42:59.662626
-# Unit test for function get_sysctl
 
-# Generated at 2026-10-24 04:43:02.073714
-# Unit test for function get_sysctl
+def test_get_sysctl_nonzero_rc_returns_empty_dict():
+    module = FakeModule(rc=1, out='', err='some error')
+    result = module_0.get_sysctl(module, ['nonexistent'])
+    assert result == {}
 
-# Generated at 2026-10-24 04:43:04.487393
-# Unit test for function get_sysctl
 
-# Generated at 2026-10-24 04:43:06.903047
-# Unit test for function get_sysctl
+def test_get_sysctl_run_command_exception_returns_empty_dict():
+    module = FakeModule(exception=IOError('boom'))
+    result = module_0.get_sysctl(module, ['net'])
+    assert result == {}
+    assert module.warnings == ['Unable to read sysctl: boom']
 
-# Generated at 2026-10-24 04:43:09.314925
-# Unit test for function get_sysctl
 
-# Generated at 2026-10-24 04:43:11.730987
-# Unit test for function get_sysctl
+def test_get_sysctl_run_command_oserror_returns_empty_dict():
+    module = FakeModule(exception=OSError(2, 'No such file'))
+    result = module_0.get_sysctl(module, ['net'])
+    assert result == {}
+    assert len(module.warnings) == 1
+    assert 'Unable to read sysctl' in module.warnings[0]
+
+
+def test_get_sysctl_unparseable_line_warns():
+    out = 'good = 1\nthis-line-has-no-separator\n'
+    module = FakeModule(out=out)
+    result = module_0.get_sysctl(module, ['good'])
+    assert result == {'good': '1'}
+    assert len(module.warnings) == 1
+    assert 'Unable to split sysctl line' in module.warnings[0]
+    assert 'this-line-has-no-separator' in module.warnings[0]
+
+
+def test_get_sysctl_empty_output():
+    module = FakeModule(out='')
+    result = module_0.get_sysctl(module, ['all'])
+    assert result == {}
+    assert module.warnings == []
+
+# Generated at 2026-11-03 02:48:24.882688
+# Unit test for function get_sysctl
+def test_get_sysctl():
+    class MockModule(object):
+        def __init__(self, rc=0, out='', err='', raise_exc=None):
+            self.rc = rc
+            self.out = out
+            self.err = err
+            self.raise_exc = raise_exc
+            self.warnings = []
+            self.run_command_args = None
+
+        def get_bin_path(self, name):
+            return '/sbin/%s' % name
+
+        def run_command(self, cmd):
+            self.run_command_args = cmd
+            if self.raise_exc is not None:
+                raise self.raise_exc
+            return self.rc, self.out, self.err
+
+        def warn(self, msg):
+            self.warnings.append(msg)
+
+    # basic parsing with '=' and ':' separators, prefixes passed to command
+    module = MockModule(out='net.ipv4.ip_forward = 1\nkernel.hostname: myhost\n')
+    result = module_0.get_sysctl(module, ['net.ipv4.ip_forward', 'kernel.hostname'])
+    assert module.run_command_args == ['/sbin/sysctl', 'net.ipv4.ip_forward', 'kernel.hostname']
+    assert result == {'net.ipv4.ip_forward': '1', 'kernel.hostname': 'myhost'}
+
+    # values are stripped of surrounding whitespace
+    module = MockModule(out='key =    value   \n')
+    result = module_0.get_sysctl(module, ['key'])
+    assert result == {'key': 'value'}
+
+    # multiline values keep the newline and internal spacing
+    module = MockModule(out='key1 = value1\nkey2 = line1\n continued line\n')
+    result = module_0.get_sysctl(module, ['key1', 'key2'])
+    assert result == {'key1': 'value1', 'key2': 'line1\n continued line'}
+
+    # blank and whitespace-only lines are skipped
+    module = MockModule(out='key1 = value1\n\n   \nkey2 = value2\n')
+    result = module_0.get_sysctl(module, ['key1', 'key2'])
+    assert result == {'key1': 'value1', 'key2': 'value2'}
+
+    # value containing '=' is preserved (split on first occurrence only)
+    module = MockModule(out='key = a=b\n')
+    result = module_0.get_sysctl(module, ['key'])
+    assert result == {'key': 'a=b'}
+
+    # non-zero return code yields an empty dict
+    module = MockModule(rc=1, out='ignored', err='failure')
+    result = module_0.get_sysctl(module, ['key'])
+    assert result == {}
+
+    # empty output yields an empty dict
+    module = MockModule(out='')
+    assert module_0.get_sysctl(module, ['key']) == {}
+
+    # IOError while running the command warns and returns an empty dict
+    module = MockModule(raise_exc=IOError('boom'))
+    result = module_0.get_sysctl(module, ['key'])
+    assert result == {}
+    assert len(module.warnings) == 1
+    assert 'Unable to read sysctl' in module.warnings[0]
+    assert 'boom' in module.warnings[0]
+
+    # OSError while running the command warns and returns an empty dict
+    module = MockModule(raise_exc=OSError('nope'))
+    result = module_0.get_sysctl(module, ['key'])
+    assert result == {}
+    assert len(module.warnings) == 1
+    assert 'Unable to read sysctl' in module.warnings[0]
+
+    # unparseable line produces a warning but parsing continues
+    module = MockModule(out='badline\nkey = value\n')
+    result = module_0.get_sysctl(module, ['key'])
+    assert result == {'key': 'value'}
+    assert len(module.warnings) == 1
+    assert 'Unable to split sysctl line' in module.warnings[0]
+    assert 'badline' in module.warnings[0]

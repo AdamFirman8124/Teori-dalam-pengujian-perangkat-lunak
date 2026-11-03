@@ -2,16 +2,36 @@
 import f055 as module_0
 
 def test_case_0():
-    int_0 = 977
+    int_0 = 0
     var_0 = module_0.fib(int_0)
-    int_1 = -175
+    assert var_0 == 0
+    int_1 = 1
     var_1 = module_0.fib(int_1)
-    int_2 = None
+    assert var_1 == 1
+    int_2 = 2
     var_2 = module_0.fib(int_2)
-    int_3 = -5796
+    assert var_2 == 1
+    int_3 = 3
     var_3 = module_0.fib(int_3)
-    int_4 = 2527
+    assert var_3 == 2
+    int_4 = 4
     var_4 = module_0.fib(int_4)
-    int_5 = -1499
+    assert var_4 == 3
+    int_5 = 5
     var_5 = module_0.fib(int_5)
-    var_6 = module_0.fib(int_4)
+    assert var_5 == 5
+    int_6 = 6
+    var_6 = module_0.fib(int_6)
+    assert var_6 == 8
+    int_7 = 7
+    var_7 = module_0.fib(int_7)
+    assert var_7 == 13
+    int_8 = 10
+    var_8 = module_0.fib(int_8)
+    assert var_8 == 55
+    int_9 = 15
+    var_9 = module_0.fib(int_9)
+    assert var_9 == 610
+    int_10 = 20
+    var_10 = module_0.fib(int_10)
+    assert var_10 == 6765

@@ -2,18 +2,58 @@
 import f043 as module_0
 
 def test_case_0():
-    bytes_0 = b'\x06]v5+\xa2\xd2qC\xac[\x06'
-    var_0 = module_0.pairs_sum_to_zero(bytes_0)
-    assert var_0 is False
-
-def test_case_1():
-    bool_0 = False
-    list_0 = [bool_0, bool_0, bool_0]
-    var_0 = module_0.pairs_sum_to_zero(list_0)
-    assert var_0 is True
-    str_0 = '}YBF\x0b9mtS>@ahg|"iz9'
-    var_1 = module_0.pairs_sum_to_zero(str_0)
+    var_0 = []
+    var_1 = module_0.pairs_sum_to_zero(var_0)
     assert var_1 is False
-    bytes_0 = b'\x06]v\xc1o\xa2\xd2qC\xac\x1c\x03[\xd3\x06'
-    var_2 = module_0.pairs_sum_to_zero(bytes_0)
+    int_0 = 1
+    int_1 = [int_0]
+    var_2 = module_0.pairs_sum_to_zero(int_1)
     assert var_2 is False
+    int_2 = -1
+    int_3 = [int_0, int_2]
+    var_3 = module_0.pairs_sum_to_zero(int_3)
+    assert var_3 is True
+    int_4 = 2
+    int_5 = 3
+    int_6 = -3
+    int_7 = [int_0, int_4, int_5, int_6]
+    var_4 = module_0.pairs_sum_to_zero(int_7)
+    assert var_4 is True
+    int_8 = 5
+    int_9 = -5
+    int_10 = [int_8, int_9]
+    var_5 = module_0.pairs_sum_to_zero(int_10)
+    assert var_5 is True
+    int_11 = 4
+    int_12 = [int_0, int_4, int_5, int_11]
+    var_6 = module_0.pairs_sum_to_zero(int_12)
+    assert var_6 is False
+    int_13 = 7
+    int_14 = [int_0, int_4, int_5, int_8, int_13]
+    var_7 = module_0.pairs_sum_to_zero(int_14)
+    assert var_7 is False
+    int_15 = -5
+    int_16 = 9
+    int_17 = [int_4, int_11, int_15, int_5, int_16, int_13]
+    var_8 = module_0.pairs_sum_to_zero(int_17)
+    assert var_8 is False
+    int_18 = 0
+    int_19 = [int_18]
+    var_9 = module_0.pairs_sum_to_zero(int_19)
+    assert var_9 is False
+    int_20 = [int_18, int_18]
+    var_10 = module_0.pairs_sum_to_zero(int_20)
+    assert var_10 is True
+    int_21 = -1
+    int_22 = -2
+    int_23 = -3
+    int_24 = [int_21, int_22, int_23]
+    var_11 = module_0.pairs_sum_to_zero(int_24)
+    assert var_11 is False
+    int_25 = 10
+    int_26 = 20
+    int_27 = 30
+    int_28 = -30
+    int_29 = [int_25, int_26, int_27, int_28]
+    var_12 = module_0.pairs_sum_to_zero(int_29)
+    assert var_12 is True

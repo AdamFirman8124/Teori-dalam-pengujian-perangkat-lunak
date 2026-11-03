@@ -7,17 +7,46 @@ import pytest
 from f110 import exchange
 
 
-@pytest.mark.parametrize(
-    ("lst1", "lst2", "expected"),
-    [
-        ([1, 2, 3], [2, 4, 5], "YES"),
-        ([1, 3, 5], [2, 7, 9], "NO"),
-    ],
-)
-def test_exchange(lst1, lst2, expected):
-    original_lst1 = lst1.copy()
-    original_lst2 = lst2.copy()
+def test_exchange_yes_when_even_count_matches_odd_count():
+    """lst1 has odd numbers (odd branch taken), lst2 has enough evens -> 'YES'."""
+    result = exchange([1, 3, 5], [2, 4, 6])
+    assert result == "YES"
 
-    assert exchange(lst1, lst2) == expected
-    assert lst1 == original_lst1
-    assert lst2 == original_lst2
+
+def test_exchange_no_when_odd_count_exceeds_even_count():
+    """More odds in lst1 than evens in lst2 -> 'NO'."""
+    result = exchange([1, 3, 5], [2])
+    assert result == "NO"
+
+
+def test_exchange_yes_with_even_numbers_in_lst1():
+    """Even numbers in lst1 skip the odd-count branch (branch not taken)."""
+    result = exchange([2, 4], [2])
+    assert result == "YES"
+
+
+def test_exchange_no_with_odd_numbers_in_lst2():
+    """Odd numbers in lst2 skip the even-count branch (branch not taken)."""
+    result = exchange([1], [3])
+    assert result == "NO"
+
+
+def test_exchange_empty_lists_returns_yes():
+    """Both lists empty: counts are zero, 0 >= 0 -> 'YES'."""
+    result = exchange([], [])
+    assert result == "YES"
+
+
+def test_exchange_does_not_mutate_inputs():
+    """The function must not modify its arguments (no state pollution)."""
+    lst1 = [1, 2, 3]
+    lst2 = [4, 5, 6]
+    exchange(lst1, lst2)
+    assert lst1 == [1, 2, 3]
+    assert lst2 == [4, 5, 6]
+
+
+def test_exchange_boundary_equal_counts():
+    """Boundary case: even count exactly equals odd count -> 'YES' (>= branch)."""
+    result = exchange([1, 3], [2, 4])
+    assert result == "YES"

@@ -2,52 +2,64 @@
 import f156 as module_0
 
 def test_case_0():
+    list_0 = None
+    var_0 = module_0.int_to_mini_roman(list_0)
+    assert var_0 == ''
     int_0 = 1
-    var_0 = module_0.int_to_mini_roman(int_0)
-    assert var_0 == 'i'
+    var_1 = module_0.int_to_mini_roman(int_0)
+    assert var_1 == 'i'
     int_1 = 4
-    var_1 = module_0.int_to_mini_roman(int_1)
-    assert var_1 == 'iv'
-    int_2 = 9
-    var_2 = module_0.int_to_mini_roman(int_2)
-    assert var_2 == 'ix'
-    int_3 = 14
-    var_3 = module_0.int_to_mini_roman(int_3)
-    assert var_3 == 'xiv'
-    int_4 = 19
-    var_4 = module_0.int_to_mini_roman(int_4)
-    assert var_4 == 'xix'
-    int_5 = 40
-    var_5 = module_0.int_to_mini_roman(int_5)
-    assert var_5 == 'xl'
-    int_6 = 90
-    var_6 = module_0.int_to_mini_roman(int_6)
-    assert var_6 == 'xc'
-    int_7 = 400
-    var_7 = module_0.int_to_mini_roman(int_7)
-    assert var_7 == 'cd'
-    int_8 = 900
-    var_8 = module_0.int_to_mini_roman(int_8)
-    assert var_8 == 'cm'
-    int_9 = 1000
-    var_9 = module_0.int_to_mini_roman(int_9)
-    assert var_9 == 'm'
-    int_10 = 152
-    var_10 = module_0.int_to_mini_roman(int_10)
-    assert var_10 == 'clii'
-    int_11 = 2024
-    var_11 = module_0.int_to_mini_roman(int_11)
-    assert var_11 == 'mmxxiv'
-    int_12 = 3999
-    var_12 = module_0.int_to_mini_roman(int_12)
-    assert var_12 == 'mmmcmxcix'
-    int_13 = 3549
-    var_13 = module_0.int_to_mini_roman(int_13)
-    assert var_13 == 'mmmdxlix'
-    str_0 = 'All tests passed!'
-    var_14 = print(str_0)
+    var_2 = module_0.int_to_mini_roman(int_1)
+    assert var_2 == 'iv'
+    int_2 = 5
+    var_3 = module_0.int_to_mini_roman(int_2)
+    assert var_3 == 'v'
+    int_3 = 9
+    var_4 = module_0.int_to_mini_roman(int_3)
+    assert var_4 == 'ix'
+    int_4 = 14
+    var_5 = module_0.int_to_mini_roman(int_4)
+    assert var_5 == 'xiv'
+    int_5 = 19
+    var_6 = module_0.int_to_mini_roman(int_5)
+    assert var_6 == 'xix'
+    int_6 = 40
+    var_7 = module_0.int_to_mini_roman(int_6)
+    assert var_7 == 'xl'
+    int_7 = 50
+    var_8 = module_0.int_to_mini_roman(int_7)
+    assert var_8 == 'l'
+    int_8 = 102
+    var_9 = module_0.int_to_mini_roman(int_8)
+    assert var_9 == 'xc'
+    assert var_9 == 'cii'
+    int_9 = 100
+    var_10 = module_0.int_to_mini_roman(int_9)
+    assert var_10 == 'c'
+    int_10 = 500
+    var_11 = module_0.int_to_mini_roman(int_10)
+    assert var_11 == 'd'
+    int_11 = 900
+    var_12 = module_0.int_to_mini_roman(int_11)
+    assert var_12 == 'cm'
+    int_12 = 1000
+    var_13 = module_0.int_to_mini_roman(int_12)
+    assert var_13 == 'm'
+    int_13 = 152
+    var_14 = module_0.int_to_mini_roman(int_13)
+    assert var_14 == 'clii'
+    int_14 = 426
+    var_15 = module_0.int_to_mini_roman(int_14)
+    assert var_15 == 'cdxxvi'
+    int_15 = 2024
+    var_16 = module_0.int_to_mini_roman(int_15)
+    assert var_16 == 'mmxxiv'
+    int_16 = 3549
+    var_17 = module_0.int_to_mini_roman(int_16)
+    assert var_17 == 'mmmdxlix'
+    int_17 = 58
+    var_18 = module_0.int_to_mini_roman(int_17)
+    assert var_18 == 'lviii'
 
 def test_case_1():
-    int_0 = 1
-    var_0 = module_0.int_to_mini_roman(int_0)
-    assert var_0 == 'i'
+    pass

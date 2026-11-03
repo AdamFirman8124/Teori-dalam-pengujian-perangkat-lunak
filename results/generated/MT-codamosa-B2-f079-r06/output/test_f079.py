@@ -11,12 +11,26 @@ def test_case_0():
     int_2 = 2
     var_2 = module_0.decimal_to_binary(int_2)
     assert var_2 == 'db10db'
-    int_3 = 5
+    int_3 = 3
     var_3 = module_0.decimal_to_binary(int_3)
-    assert var_3 == 'db101db'
-    int_4 = 10
+    assert var_3 == 'db11db'
+    int_4 = 15
     var_4 = module_0.decimal_to_binary(int_4)
-    assert var_4 == 'db1010db'
-    int_5 = 255
+    assert var_4 == 'db1111db'
+    int_5 = 32
     var_5 = module_0.decimal_to_binary(int_5)
-    assert var_5 == 'db11111111db'
+    assert var_5 == 'db100000db'
+    int_6 = 103
+    var_6 = module_0.decimal_to_binary(int_6)
+    assert var_6 == 'db1100111db'
+    int_7 = 255
+    var_7 = module_0.decimal_to_binary(int_7)
+    assert var_7 == 'db11111111db'
+    int_8 = 1000
+    var_8 = module_0.decimal_to_binary(int_8)
+    assert var_8 == 'db1111101000db'
+    int_9 = 42
+    var_9 = module_0.decimal_to_binary(int_9)
+    assert var_9 == 'db101010db'
+    str_0 = 'All tests passed!'
+    var_10 = print(str_0)

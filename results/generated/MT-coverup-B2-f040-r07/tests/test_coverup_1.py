@@ -7,30 +7,36 @@ import pytest
 from f040 import triples_sum_to_zero
 
 
-def test_triples_sum_to_zero_true():
-    # A triple (2, -3, 1) sums to zero -> returns True
-    assert triples_sum_to_zero([2, -3, 1, 4]) is True
+def test_finds_triple_summing_to_zero():
+    """Covers lines 3-7: loops run, a triple sums to zero, True is returned."""
+    # The first checked triple (1, 2, 3) does not sum to zero, forcing the
+    # loops to continue; (1, 2, -3) does, exercising loop continuation
+    # branches and the True return path.
+    assert triples_sum_to_zero([1, 2, 3, -3]) is True
 
 
-def test_triples_sum_to_zero_false():
-    # No triple sums to zero -> loop completes and returns False
-    assert triples_sum_to_zero([1, 2, 3, 4]) is False
+def test_triple_at_exact_positions():
+    """Covers the triple check succeeding on the very first triple examined."""
+    assert triples_sum_to_zero([-1, 2, -1]) is True
 
 
-def test_triples_sum_to_zero_too_short():
-    # Fewer than 3 elements: inner loops never find a triple -> False
-    assert triples_sum_to_zero([1, -1]) is False
+def test_no_triple_summing_to_zero():
+    """Covers lines 3-6 and line 8: all triples checked, none sum to zero."""
+    assert triples_sum_to_zero([1, 2, 3]) is False
 
 
-def test_triples_sum_to_zero_empty():
+def test_shorter_than_three_elements():
+    """Covers line 3 and line 8 when inner loops have zero iterations."""
     assert triples_sum_to_zero([]) is False
+    assert triples_sum_to_zero([1]) is False
+    assert triples_sum_to_zero([1, 2]) is False
 
 
-def test_triples_sum_to_zero_negative_only():
-    # All negatives, no zero-sum triple -> False
-    assert triples_sum_to_zero([-1, -2, -3]) is False
+def test_negative_only_list():
+    """Full traversal with negatives, taking the False path."""
+    assert triples_sum_to_zero([-1, -2, -3, -4]) is False
 
 
-def test_triples_sum_to_zero_triple_at_end():
-    # Only the last triple (1, 2, -3) sums to zero -> True
-    assert triples_sum_to_zero([10, 20, 1, 2, -3]) is True
+def test_zero_in_list_without_triple():
+    """A zero element alone is not enough for a triple to sum to zero."""
+    assert triples_sum_to_zero([0, 5, 10]) is False

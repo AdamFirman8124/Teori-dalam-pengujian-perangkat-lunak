@@ -2,20 +2,12 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
-from f060 import sum_to_n
+import f060
 
 
-def test_sum_to_n_zero():
-    assert sum_to_n(0) == 0
-
-
-def test_sum_to_n_positive():
-    assert sum_to_n(1) == 1
-    assert sum_to_n(5) == 15
-    assert sum_to_n(100) == 5050
-
-
-def test_sum_to_n_negative():
-    # range(n + 1) is empty for n < 0, so the sum is 0
-    assert sum_to_n(-1) == 0
-    assert sum_to_n(-10) == 0
+def test_sum_to_n_executes_return_line():
+    # Calling the function executes line 3: `return sum(range(n + 1))`
+    assert f060.sum_to_n(5) == 15  # 0+1+2+3+4+5
+    assert f060.sum_to_n(0) == 0  # range(1) -> [0]
+    assert f060.sum_to_n(-1) == 0  # range(0) -> empty
+    assert f060.sum_to_n(1) == 1

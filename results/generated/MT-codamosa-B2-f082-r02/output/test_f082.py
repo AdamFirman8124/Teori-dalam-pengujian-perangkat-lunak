@@ -8,23 +8,30 @@ def test_case_0():
     str_1 = 'a'
     var_1 = module_0.prime_length(str_1)
     assert var_1 is False
-    str_2 = 'ab'
+    str_2 = 'abcd'
     var_2 = module_0.prime_length(str_2)
-    assert var_2 is True
-    str_3 = 'abc'
+    assert var_2 is False
+    str_3 = 'abcdef'
     var_3 = module_0.prime_length(str_3)
-    assert var_3 is True
-    str_4 = 'abcd'
+    assert var_3 is False
+    str_4 = 'abcdefghi'
     var_4 = module_0.prime_length(str_4)
     assert var_4 is False
-    str_5 = 'abcde'
+    str_5 = 'abcdefghijklmn'
     var_5 = module_0.prime_length(str_5)
-    assert var_5 is True
-    str_6 = 'abcdefghi'
+    assert var_5 is False
+    str_6 = 'ab'
     var_6 = module_0.prime_length(str_6)
-    assert var_6 is False
-
-def test_case_1():
-    str_0 = ''
-    var_0 = module_0.prime_length(str_0)
-    assert var_0 is False
+    assert var_6 is True
+    str_7 = 'abc'
+    var_7 = module_0.prime_length(str_7)
+    assert var_7 is True
+    str_8 = 'abcde'
+    var_8 = module_0.prime_length(str_8)
+    assert var_8 is True
+    str_9 = 'abcdefg'
+    var_9 = module_0.prime_length(str_9)
+    assert var_9 is True
+    str_10 = 'abcdefghijk'
+    var_10 = module_0.prime_length(str_10)
+    assert var_10 is True

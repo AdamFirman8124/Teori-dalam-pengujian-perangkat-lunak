@@ -2,40 +2,44 @@
 # asked: {"lines": [12], "branches": []}
 # gained: {"lines": [12], "branches": []}
 
+import pytest
+
 from f038 import decode_cyclic, encode_cyclic
 
 
-def test_decode_cyclic_executes_line_12_basic():
-    assert decode_cyclic("bca") == "abc"
+@pytest.mark.parametrize(
+    "s",
+    [
+        "",                # empty string (no groups at all)
+        "a",               # single character -> partial group branch
+        "ab",              # two characters -> partial group branch
+        "abc",             # exactly one full group
+        "abcd",            # one full group + partial group
+        "abcdef",          # two full groups
+        "abcdefghi",       # three full groups
+        "Hello, World!",   # mixed content with trailing partial group
+        "xyzxyzxyz",       # repeated identical groups
+    ],
+)
+def test_decode_cyclic_roundtrip(s):
+    """decode_cyclic must invert encode_cyclic for any input."""
+    encoded = encode_cyclic(s)
+    assert decode_cyclic(encoded) == s
+
+
+def test_decode_cyclic_known_value():
+    """encode_cyclic('abcdef') == 'bcaefd'; decoding must restore 'abcdef'."""
+    assert decode_cyclic("bcaefd") == "abcdef"
 
 
 def test_decode_cyclic_is_double_encode():
-    s = "abcdef"
+    """decode_cyclic(s) is equivalent to applying encode_cyclic twice."""
+    s = "abcdefgh"
     assert decode_cyclic(s) == encode_cyclic(encode_cyclic(s))
 
 
-def test_decode_cyclic_empty():
-    assert decode_cyclic("") == ""
-
-
-def test_decode_cyclic_short_strings_unchanged():
-    assert decode_cyclic("a") == "a"
-    assert decode_cyclic("ab") == "ab"
-    assert decode_cyclic("xy") == "xy"
-
-
-def test_decode_encode_roundtrip():
-    for s in ["", "a", "ab", "abc", "abcd", "abcde", "abcdef", "abcdefg", "hello world"]:
-        assert decode_cyclic(encode_cyclic(s)) == s
-
-
-def test_encode_decode_roundtrip():
-    for s in ["", "a", "ab", "abc", "abcd", "abcdef", "bcaefd"]:
-        assert encode_cyclic(decode_cyclic(s)) == s
-
-
-def test_decode_cyclic_known_values():
-    # encode_cyclic("abc") == "bca", encode twice: "bca" -> "cab"
-    assert encode_cyclic("abc") == "bca"
-    assert decode_cyclic("abc") == "cab"
-    assert decode_cyclic("bcaefd") == "abcdef"
+def test_decode_cyclic_inverse_of_encode():
+    """Both directions of the round trip must hold."""
+    s = "The quick brown fox jumps over the lazy dog"
+    assert decode_cyclic(encode_cyclic(s)) == s
+    assert encode_cyclic(decode_cyclic(s)) == s

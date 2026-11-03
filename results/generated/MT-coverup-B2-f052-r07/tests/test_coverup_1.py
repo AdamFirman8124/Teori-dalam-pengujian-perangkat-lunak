@@ -7,26 +7,31 @@ import pytest
 from f052 import below_threshold
 
 
-def test_empty_list_returns_true():
-    # Covers line 6 via loop that never executes (empty list)
-    assert below_threshold([], 10) is True
+def test_below_threshold_all_below():
+    """All elements strictly below the threshold -> returns True."""
+    assert below_threshold([1, 2, 3], 5) is True
 
 
-def test_all_elements_below_threshold():
-    # Covers lines 3 and 6: loop runs fully, no element >= t
-    assert below_threshold([1, 2, 3], 10) is True
+def test_below_threshold_empty_list():
+    """Empty list has no elements at or above threshold -> returns True."""
+    assert below_threshold([], 5) is True
 
 
-def test_element_equal_to_threshold_returns_false():
-    # Covers lines 3-5: boundary case e == t triggers early return False
+def test_below_threshold_element_equal_to_threshold():
+    """An element equal to the threshold triggers early return False."""
     assert below_threshold([1, 5, 3], 5) is False
 
 
-def test_element_above_threshold_returns_false():
-    # Covers lines 3-5: e > t triggers early return False
-    assert below_threshold([1, 2, 99], 10) is False
+def test_below_threshold_element_above_threshold():
+    """An element above the threshold triggers early return False."""
+    assert below_threshold([10], 5) is False
 
 
-def test_early_return_skips_rest_of_list():
-    # Covers lines 3-5: first element triggers return, rest never examined
-    assert below_threshold([10, -5, -5], 1) is False
+def test_below_threshold_negative_values():
+    """Negative values below a positive threshold -> True."""
+    assert below_threshold([-10, -5, -1], 0) is True
+
+
+def test_below_threshold_negative_threshold():
+    """Negative threshold with a positive element -> False."""
+    assert below_threshold([-3, -2, 1], -1) is False

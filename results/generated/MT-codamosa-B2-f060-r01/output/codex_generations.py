@@ -1,45 +1,73 @@
 
 
-# Generated at 2026-10-25 01:06:47.663409
+# Generated at 2026-11-03 04:54:10.972433
 # Unit test for function sum_to_n
 def test_sum_to_n():
+    # Basic positive cases
     assert module_0.sum_to_n(0) == 0
     assert module_0.sum_to_n(1) == 1
+    assert module_0.sum_to_n(2) == 3
+    assert module_0.sum_to_n(5) == 15
+    assert module_0.sum_to_n(10) == 55
+    assert module_0.sum_to_n(100) == 5050
+
+    # Verify against the closed-form formula n*(n+1)/2
+    for n in range(1, 50):
+        assert module_0.sum_to_n(n) == n * (n + 1) // 2
+
+    # Negative inputs produce an empty range, so the sum is 0
+    assert module_0.sum_to_n(-1) == 0
+    assert module_0.sum_to_n(-10) == 0
+
+    # Large input sanity check
+    assert module_0.sum_to_n(10000) == 10000 * 10001 // 2
+
+# Generated at 2026-11-03 04:55:56.435701
+# Unit test for function sum_to_n
+def test_sum_to_n():
+    # Test with 0
+    assert module_0.sum_to_n(0) == 0
+    
+    # Test with 1
+    assert module_0.sum_to_n(1) == 1
+    
+    # Test with a small positive number
+    assert module_0.sum_to_n(5) == 15
+    
+    # Test with a larger number
+    assert module_0.sum_to_n(10) == 55
+    
+    # Test with 100
+    assert module_0.sum_to_n(100) == 5050
+    
+    # Test with a negative number (range is empty, sum is 0)
+    assert module_0.sum_to_n(-1) == 0
+    assert module_0.sum_to_n(-10) == 0
+    
+    print("All tests passed!")
+
+# Generated at 2026-11-03 04:58:38.138120
+# Unit test for function sum_to_n
+def test_sum_to_n():
+    # Test with zero
+    assert module_0.sum_to_n(0) == 0
+
+    # Test with one
+    assert module_0.sum_to_n(1) == 1
+
+    # Test with small positive integers
+    assert module_0.sum_to_n(2) == 3
     assert module_0.sum_to_n(5) == 15
     assert module_0.sum_to_n(10) == 55
 
-# Generated at 2026-10-25 01:06:50.190313
-# Unit test for function sum_to_n
+    # Test with larger numbers
+    assert module_0.sum_to_n(100) == 5050
+    assert module_0.sum_to_n(1000) == 500500
 
-# Generated at 2026-10-25 01:06:52.728943
-# Unit test for function sum_to_n
+    # Test with negative input (empty range sums to 0)
+    assert module_0.sum_to_n(-1) == 0
+    assert module_0.sum_to_n(-10) == 0
 
-# Generated at 2026-10-25 01:06:55.143572
-# Unit test for function sum_to_n
-
-# Generated at 2026-10-25 01:06:57.560222
-# Unit test for function sum_to_n
-
-# Generated at 2026-10-25 01:06:59.973724
-# Unit test for function sum_to_n
-
-# Generated at 2026-10-25 01:07:02.387699
-# Unit test for function sum_to_n
-
-# Generated at 2026-10-25 01:07:04.801987
-# Unit test for function sum_to_n
-
-# Generated at 2026-10-25 01:07:07.219129
-# Unit test for function sum_to_n
-
-# Generated at 2026-10-25 01:07:09.641331
-# Unit test for function sum_to_n
-
-# Generated at 2026-10-25 01:07:12.055497
-# Unit test for function sum_to_n
-
-# Generated at 2026-10-25 01:07:14.474547
-# Unit test for function sum_to_n
-
-# Generated at 2026-10-25 01:07:17.099985
-# Unit test for function sum_to_n
+    # Verify against closed-form formula n*(n+1)/2 for a range of values
+    for n in range(0, 50):
+        assert module_0.sum_to_n(n) == n * (n + 1) // 2

@@ -1,60 +1,132 @@
 
 
-# Generated at 2026-10-24 12:23:19.766555
+# Generated at 2026-11-02 23:14:14.142790
 # Unit test for function count_distinct_characters
 def test_count_distinct_characters():
-    # Basic cases
+    # Empty string
     assert module_0.count_distinct_characters("") == 0
-    assert module_0.count_distinct_characters("a") == 1
-    assert module_0.count_distinct_characters("abc") == 3
 
-    # Repeated characters counted once
-    assert module_0.count_distinct_characters("aaa") == 1
-    assert module_0.count_distinct_characters("abbbcddd") == 3
+    # Single character
+    assert module_0.count_distinct_characters("a") == 1
+
+    # Basic distinct characters
+    assert module_0.count_distinct_characters("abc") == 3
+    assert module_0.count_distinct_characters("abcdef") == 6
+
+    # Repeated characters
+    assert module_0.count_distinct_characters("aaaa") == 1
+    assert module_0.count_distinct_characters("banana") == 3  # b, a, n
+    assert module_0.count_distinct_characters("hello") == 4   # h, e, l, o
+    assert module_0.count_distinct_characters("Jerry") == 4   # j, e, r, y
 
     # Case insensitivity
-    assert module_0.count_distinct_characters("abcABC") == 3
-    assert module_0.count_distinct_characters("AaBbCcDd") == 4
-    assert module_0.count_distinct_characters("xyzXYZXYZ") == 3
+    assert module_0.count_distinct_characters("Aa") == 1
+    assert module_0.count_distinct_characters("aAaA") == 1
+    assert module_0.count_distinct_characters("AbC") == 3
+    assert module_0.count_distinct_characters("xyzXYZ") == 3
+    assert module_0.count_distinct_characters("HeLLo") == 4
 
-    # Spaces and punctuation are characters too
-    assert module_0.count_distinct_characters("a b a") == 3   # 'a', ' ', 'b'
-    assert module_0.count_distinct_characters("Hello, World!") == 9
-    # 'h','e','l','o',',',' ','w','r','d','!' -> 10? verify:
-    # "hello, world!" lower = h,e,l,l,o,',',' ',w,o,r,l,d,'!' -> {h,e,l,o,',',' ',w,r,d,'!'} = 10
+    # Strings with spaces
+    assert module_0.count_distinct_characters("a b c") == 4   # a, ' ', b, c
+    assert module_0.count_distinct_characters("   ") == 1     # only spaces
 
-# Generated at 2026-10-24 12:23:22.186085
+    # Strings with digits and special characters
+    assert module_0.count_distinct_characters("12345") == 5
+    assert module_0.count_distinct_characters("!@#$%") == 5
+    assert module_0.count_distinct_characters("1122!!") == 3  # 1, 2, !
+
+    # Mixed alphanumeric and symbols
+    assert module_0.count_distinct_characters("aA1!") == 3    # a, 1, !
+    assert module_0.count_distinct_characters("Hello, World!") == 10
+
+    print("All tests passed!")
+
+
+test_count_distinct_characters()
+
+# Generated at 2026-11-02 23:16:42.005906
 # Unit test for function count_distinct_characters
+def test_count_distinct_characters():
+    assert module_0.count_distinct_characters('') == 0
+    assert module_0.count_distinct_characters('abc') == 3
+    assert module_0.count_distinct_characters('aaaa') == 1
+    assert module_0.count_distinct_characters('xyzXYZ') == 3
+    assert module_0.count_distinct_characters('Jerry') == 4
+    assert module_0.count_distinct_characters('abcde') == 5
+    assert module_0.count_distinct_characters('aAbBcC') == 3
+    assert module_0.count_distinct_characters('hello world') == 8
+    assert module_0.count_distinct_characters('123321') == 3
+    assert module_0.count_distinct_characters('!@#!@#') == 3
+    assert module_0.count_distinct_characters('AlphaBeta') == 7
 
-# Generated at 2026-10-24 12:23:24.703868
+# Generated at 2026-11-02 23:19:15.660901
 # Unit test for function count_distinct_characters
+def test_count_distinct_characters():
+    # Empty string has no distinct characters
+    assert module_0.count_distinct_characters("") == 0
 
-# Generated at 2026-10-24 12:23:27.118115
-# Unit test for function count_distinct_characters
+    # Single character
+    assert module_0.count_distinct_characters("a") == 1
 
-# Generated at 2026-10-24 12:23:29.537260
-# Unit test for function count_distinct_characters
+    # All unique characters
+    assert module_0.count_distinct_characters("abc") == 3
 
-# Generated at 2026-10-24 12:23:31.957814
-# Unit test for function count_distinct_characters
+    # Repeated identical characters count once
+    assert module_0.count_distinct_characters("aaaa") == 1
 
-# Generated at 2026-10-24 12:23:34.375395
-# Unit test for function count_distinct_characters
+    # Case insensitivity: upper and lower count as the same character
+    assert module_0.count_distinct_characters("AaBbCc") == 3
+    assert module_0.count_distinct_characters("xyzXYZ") == 3
 
-# Generated at 2026-10-24 12:23:36.792433
-# Unit test for function count_distinct_characters
+    # Mixed letters with duplicates
+    assert module_0.count_distinct_characters("Jerry") == 4  # j, e, r, y
+    assert module_0.count_distinct_characters("Jerry jerry") == 5  # j, e, r, y, space
 
-# Generated at 2026-10-24 12:23:39.209262
-# Unit test for function count_distinct_characters
+    # Spaces and punctuation are counted as characters
+    assert module_0.count_distinct_characters("abc def") == 7  # a, b, c, space, d, e, f
 
-# Generated at 2026-10-24 12:23:41.620861
-# Unit test for function count_distinct_characters
+    # Digits and special characters
+    assert module_0.count_distinct_characters("a1!a1!") == 3  # a, 1, !
 
-# Generated at 2026-10-24 12:23:44.041806
-# Unit test for function count_distinct_characters
+    # Unicode characters are handled (case-folded where applicable)
+    assert module_0.count_distinct_characters("ÅÄÖåäö") == 3
 
-# Generated at 2026-10-24 12:23:46.450887
+# Generated at 2026-11-02 23:20:34.148248
 # Unit test for function count_distinct_characters
+def test_count_distinct_characters():
+    # Test with empty string
+    assert module_0.count_distinct_characters("") == 0
 
-# Generated at 2026-10-24 12:23:49.000369
-# Unit test for function count_distinct_characters
+    # Test with simple string, all unique characters
+    assert module_0.count_distinct_characters("abcde") == 5
+
+    # Test with repeated characters
+    assert module_0.count_distinct_characters("abcdea") == 5
+
+    # Test case insensitivity (mixed case should be counted once)
+    assert module_0.count_distinct_characters("abcdeA") == 5
+    assert module_0.count_distinct_characters("aAaA") == 1
+
+    # Test with spaces and repeated characters
+    assert module_0.count_distinct_characters("Jerry jerry Jerry") == 5  # j, e, r, y, space
+    assert module_0.count_distinct_characters("xyXXXXX yyy") == 4  # x, y, space
+
+    # Test with digits and special characters
+    assert module_0.count_distinct_characters("a1b2c3!@#") == 9
+    assert module_0.count_distinct_characters("!!!") == 1
+
+    # Test with single character
+    assert module_0.count_distinct_characters("z") == 1
+    assert module_0.count_distinct_characters("Z") == 1
+
+    # Test with numbers only
+    assert module_0.count_distinct_characters("112233") == 3
+
+    # Test with mixed alphanumeric and symbols
+    assert module_0.count_distinct_characters("Hello, World!") == 10  # h,e,l,o,',',space,w,r,d,! -> 10
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_count_distinct_characters()

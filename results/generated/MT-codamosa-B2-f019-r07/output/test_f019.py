@@ -2,21 +2,30 @@
 import f019 as module_0
 
 def test_case_0():
-    str_0 = 'three one two'
+    str_0 = 'three one five'
     str_1 = module_0.sort_numbers(str_0)
-    assert str_1 == 'one two three'
-    str_2 = 'nine zero five'
+    assert str_1 == 'one three five'
+    str_2 = 'zero one two'
     str_3 = module_0.sort_numbers(str_2)
-    assert str_3 == 'zero five nine'
-    str_4 = 'one'
+    assert str_3 == 'zero one two'
+    str_4 = 'nine eight seven'
     str_5 = module_0.sort_numbers(str_4)
-    assert str_5 == 'one'
-    str_6 = ''
+    assert str_5 == 'seven eight nine'
+    str_6 = 'four'
     str_7 = module_0.sort_numbers(str_6)
-    assert str_7 == ''
-    str_8 = 'five  three   one'
+    assert str_7 == 'four'
+    str_8 = ''
     str_9 = module_0.sort_numbers(str_8)
-    assert str_9 == 'one three five'
-    str_10 = 'eight six seven five three zero nine one two four'
+    assert str_9 == ''
+    str_10 = 'two one two'
     str_11 = module_0.sort_numbers(str_10)
-    assert str_11 == 'zero one two three four five six seven eight nine'
+    assert str_11 == 'one two two'
+    str_12 = 'nine eight seven six five four three two one zero'
+    str_13 = module_0.sort_numbers(str_12)
+    assert str_13 == 'zero one two three four five six seven eight nine'
+    str_14 = 'five three eight'
+    str_15 = module_0.sort_numbers(str_14)
+    assert str_15 == 'three five eight'
+    str_16 = '  one   zero  '
+    str_17 = module_0.sort_numbers(str_16)
+    assert str_17 == 'zero one'

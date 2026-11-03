@@ -2,46 +2,49 @@
 import f056 as module_0
 
 def test_case_0():
-    str_0 = '<'
+    str_0 = ''
     var_0 = module_0.correct_bracketing(str_0)
-    assert var_0 is False
-    str_1 = '<>'
+    assert var_0 is True
+    str_1 = '<'
     var_1 = module_0.correct_bracketing(str_1)
-    assert var_1 is True
-    str_2 = '<<><>>'
+    assert var_1 is False
+    str_2 = '>'
     var_2 = module_0.correct_bracketing(str_2)
-    assert var_2 is True
-    str_3 = '><'
+    assert var_2 is False
+    str_3 = '<>'
     var_3 = module_0.correct_bracketing(str_3)
-    assert var_3 is False
-    str_4 = ''
+    assert var_3 is True
+    str_4 = '><'
     var_4 = module_0.correct_bracketing(str_4)
-    assert var_4 is True
-    str_5 = '<><><>'
+    assert var_4 is False
+    str_5 = '<<>'
     var_5 = module_0.correct_bracketing(str_5)
-    assert var_5 is True
-    str_6 = '<<<>>>'
+    assert var_5 is False
+    str_6 = '<>>'
     var_6 = module_0.correct_bracketing(str_6)
-    assert var_6 is True
-    str_7 = '<>>'
+    assert var_6 is False
+    str_7 = '<><>'
     var_7 = module_0.correct_bracketing(str_7)
-    assert var_7 is False
-    str_8 = '<<>'
+    assert var_7 is True
+    str_8 = '<<>>'
     var_8 = module_0.correct_bracketing(str_8)
-    assert var_8 is False
-    str_9 = '><<>'
+    assert var_8 is True
+    str_9 = '<<<>>>'
     var_9 = module_0.correct_bracketing(str_9)
-    assert var_9 is False
-    int_0 = 1000
-    var_10 = str_0 * int_0
-    str_10 = '>'
-    var_11 = str_10 * int_0
-    var_12 = var_10 + var_11
-    var_13 = module_0.correct_bracketing(var_12)
+    assert var_9 is True
+    str_10 = '<<><>>'
+    var_10 = module_0.correct_bracketing(str_10)
+    assert var_10 is True
+    str_11 = '><<>'
+    var_11 = module_0.correct_bracketing(str_11)
+    assert var_11 is False
+    str_12 = '><>>'
+    var_12 = module_0.correct_bracketing(str_12)
+    assert var_12 is False
+    str_13 = '<<<<<>>>>>'
+    var_13 = module_0.correct_bracketing(str_13)
     assert var_13 is True
-    var_14 = str_0 * int_0
-    int_1 = 999
-    var_15 = str_10 * int_1
-    var_16 = var_14 + var_15
-    var_17 = module_0.correct_bracketing(var_16)
-    assert var_17 is False
+    str_14 = '<><<>><>'
+    var_14 = module_0.correct_bracketing(str_14)
+    assert var_14 is False
+    assert var_14 is True

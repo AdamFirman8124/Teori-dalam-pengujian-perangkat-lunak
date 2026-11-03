@@ -3,22 +3,65 @@ import f043 as module_0
 
 def test_case_0():
     int_0 = 1
-    int_1 = 2
-    int_2 = -1
-    int_3 = 3
-    int_4 = [int_0, int_1, int_2, int_3]
+    int_1 = 3
+    int_2 = -2
+    int_3 = -1
+    int_4 = [int_0, int_1, int_2, int_0, int_3]
     var_0 = module_0.pairs_sum_to_zero(int_4)
     assert var_0 is True
-    int_5 = 0
-    int_6 = [int_5, int_5]
-    var_1 = module_0.pairs_sum_to_zero(int_6)
+    int_5 = 2
+    int_6 = 4
+    int_7 = -5
+    int_8 = 5
+    int_9 = 7
+    int_10 = [int_5, int_6, int_7, int_1, int_8, int_9]
+    var_1 = module_0.pairs_sum_to_zero(int_10)
     assert var_1 is True
-    int_7 = [int_0, int_1, int_3]
-    var_2 = module_0.pairs_sum_to_zero(int_7)
-    assert var_2 is False
-    int_8 = [int_5]
-    var_3 = module_0.pairs_sum_to_zero(int_8)
+    int_11 = -1
+    int_12 = [int_0, int_11]
+    var_2 = module_0.pairs_sum_to_zero(int_12)
+    assert var_2 is True
+    int_13 = 0
+    int_14 = [int_0, int_1, int_8, int_13]
+    var_3 = module_0.pairs_sum_to_zero(int_14)
     assert var_3 is False
-    var_4 = []
-    var_5 = module_0.pairs_sum_to_zero(var_4)
+    int_15 = -2
+    int_16 = [int_0, int_1, int_15, int_0]
+    var_4 = module_0.pairs_sum_to_zero(int_16)
+    assert var_4 is False
+    int_17 = [int_0, int_5, int_1, int_9]
+    var_5 = module_0.pairs_sum_to_zero(int_17)
     assert var_5 is False
+    var_6 = []
+    var_7 = module_0.pairs_sum_to_zero(var_6)
+    assert var_7 is False
+    int_18 = [int_0]
+    var_8 = module_0.pairs_sum_to_zero(int_18)
+    assert var_8 is False
+    int_19 = [int_13, int_13]
+    var_9 = module_0.pairs_sum_to_zero(int_19)
+    assert var_9 is True
+    int_20 = [int_13]
+    var_10 = module_0.pairs_sum_to_zero(int_20)
+    assert var_10 is False
+    int_21 = -1
+    int_22 = -2
+    int_23 = -3
+    int_24 = [int_21, int_22, int_23]
+    var_11 = module_0.pairs_sum_to_zero(int_24)
+    assert var_11 is False
+    int_25 = -1
+    int_26 = -2
+    int_27 = [int_25, int_0, int_26, int_5]
+    var_12 = module_0.pairs_sum_to_zero(int_27)
+    assert var_12 is True
+
+def test_case_1():
+    int_0 = 1
+    int_1 = [int_0]
+    var_0 = module_0.pairs_sum_to_zero(int_1)
+    assert var_0 is False
+    int_2 = 0
+    int_3 = [int_2]
+    var_1 = module_0.pairs_sum_to_zero(int_3)
+    assert var_1 is False

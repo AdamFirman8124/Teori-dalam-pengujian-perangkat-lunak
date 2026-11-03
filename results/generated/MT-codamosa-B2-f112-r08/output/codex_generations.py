@@ -1,136 +1,138 @@
 
 
-# Generated at 2026-10-24 14:33:06.744534
+# Generated at 2026-11-03 04:30:24.410482
 # Unit test for function reverse_delete
+def test_reverse_delete():
+    # Basic deletion, result not a palindrome
+    assert module_0.reverse_delete("abcdef", "b") == ("acdef", False)
 
-# Generated at 2026-10-24 14:33:09.156734
-# Unit test for function reverse_delete
+    # Multiple characters deleted, result not a palindrome
+    assert module_0.reverse_delete("abcdef", "bce") == ("adf", False)
 
-# Generated at 2026-10-24 14:33:11.570530
-# Unit test for function reverse_delete
+    # Delete 'd' and 'e', result not a palindrome
+    assert module_0.reverse_delete("abcded", "de") == ("abc", False)
 
-# Generated at 2026-10-24 14:33:13.982665
-# Unit test for function reverse_delete
+    # Delete 'a' and 'b', result is a palindrome
+    assert module_0.reverse_delete("abcdedcba", "ab") == ("cdedc", True)
 
-# Generated at 2026-10-24 14:33:16.396682
-# Unit test for function reverse_delete
+    # Delete most characters, result not a palindrome
+    assert module_0.reverse_delete("abcdedcba", "abcd") == ("edc", False)
 
-# Generated at 2026-10-24 14:33:18.809874
-# Unit test for function reverse_delete
+    # Delete all characters, empty string is a palindrome
+    assert module_0.reverse_delete("abcdedcba", "abcdedcba") == ("", True)
 
-# Generated at 2026-10-24 14:33:21.222280
-# Unit test for function reverse_delete
+    # Delete 'a' and 'e', result not a palindrome
+    assert module_0.reverse_delete("abcde", "ae") == ("bcd", False)
 
-# Generated at 2026-10-24 14:33:23.635082
-# Unit test for function reverse_delete
+    # Delete everything from a plain string, empty string is a palindrome
+    assert module_0.reverse_delete("abc", "abc") == ("", True)
 
-# Generated at 2026-10-24 14:33:26.048023
-# Unit test for function reverse_delete
+    # Delete characters not present in s, string unchanged
+    assert module_0.reverse_delete("hello", "xyz") == ("hello", False)
 
-# Generated at 2026-10-24 14:33:28.461985
-# Unit test for function reverse_delete
+    # Result is a palindrome after deletion
+    assert module_0.reverse_delete("racecar", "e") == ("raccar", False)
+    assert module_0.reverse_delete("abba", "c") == ("abba", True)
 
-# Generated at 2026-10-24 14:33:30.874373
-# Unit test for function reverse_delete
+    # Empty source string
+    assert module_0.reverse_delete("", "a") == ("", True)
 
-# Generated at 2026-10-24 14:33:33.287726
-# Unit test for function reverse_delete
+    # Empty deletion set, string unchanged
+    assert module_0.reverse_delete("abcba", "") == ("abcba", True)
 
-# Generated at 2026-10-24 14:33:35.700219
-# Unit test for function reverse_delete
+    print("All tests passed!")
 
-# Generated at 2026-10-24 14:33:38.115432
-# Unit test for function reverse_delete
 
-# Generated at 2026-10-24 14:33:40.527804
-# Unit test for function reverse_delete
+if __name__ == "__main__":
+    test_reverse_delete()
 
-# Generated at 2026-10-24 14:33:42.940812
+# Generated at 2026-11-03 04:33:53.743686
 # Unit test for function reverse_delete
+def test_reverse_delete():
+    # Basic deletion cases
+    assert module_0.reverse_delete("abcdef", "b") == ("acdef", False)
+    assert module_0.reverse_delete("abcde", "ae") == ("bcd", False)
+    assert module_0.reverse_delete("abcd", "b") == ("acd", False)
 
-# Generated at 2026-10-24 14:33:45.353629
-# Unit test for function reverse_delete
+    # Deleting everything results in an empty palindrome
+    assert module_0.reverse_delete("aaaa", "a") == ("", True)
+    assert module_0.reverse_delete("aabba", "ab") == ("", True)
 
-# Generated at 2026-10-24 14:33:47.766063
-# Unit test for function reverse_delete
+    # Resulting string is a palindrome
+    assert module_0.reverse_delete("abcba", "ab") == ("c", True)
+    assert module_0.reverse_delete("abacaba", "b") == ("aacaa", True)
 
-# Generated at 2026-10-24 14:33:50.179346
-# Unit test for function reverse_delete
+    # No characters removed
+    assert module_0.reverse_delete("abc", "xyz") == ("abc", False)
 
-# Generated at 2026-10-24 14:33:52.591876
-# Unit test for function reverse_delete
+    # Empty input string
+    assert module_0.reverse_delete("", "abc") == ("", True)
 
-# Generated at 2026-10-24 14:33:55.004744
-# Unit test for function reverse_delete
+    # Empty deletion set
+    assert module_0.reverse_delete("racecar", "") == ("racecar", True)
 
-# Generated at 2026-10-24 14:33:57.417551
-# Unit test for function reverse_delete
+    print("All test_reverse_delete tests passed!")
 
-# Generated at 2026-10-24 14:33:59.830265
-# Unit test for function reverse_delete
 
-# Generated at 2026-10-24 14:34:02.243553
-# Unit test for function reverse_delete
+if __name__ == "__main__":
+    test_reverse_delete()
 
-# Generated at 2026-10-24 14:34:04.655943
+# Generated at 2026-11-03 04:37:11.600480
 # Unit test for function reverse_delete
+def test_reverse_delete():
+    # Basic cases
+    assert module_0.reverse_delete("abcde", "ae") == ("bcd", False)
+    assert module_0.reverse_delete("abcdef", "b") == ("acdef", False)
+    assert module_0.reverse_delete("abcdedcba", "ab") == ("cdedc", True)
 
-# Generated at 2026-10-24 14:34:07.068547
-# Unit test for function reverse_delete
+    # Deleting all characters yields empty string, which is a palindrome
+    assert module_0.reverse_delete("abc", "abc") == ("", True)
 
-# Generated at 2026-10-24 14:34:09.482106
-# Unit test for function reverse_delete
+    # No characters deleted (empty c)
+    assert module_0.reverse_delete("abc", "") == ("abc", False)
+    assert module_0.reverse_delete("aba", "") == ("aba", True)
 
-# Generated at 2026-10-24 14:34:11.895122
-# Unit test for function reverse_delete
+    # Empty string input
+    assert module_0.reverse_delete("", "abc") == ("", True)
+    assert module_0.reverse_delete("", "") == ("", True)
 
-# Generated at 2026-10-24 14:34:14.308648
-# Unit test for function reverse_delete
+    # Case sensitivity
+    assert module_0.reverse_delete("Aba", "a") == ("Ab", False)
 
-# Generated at 2026-10-24 14:34:16.724716
-# Unit test for function reverse_delete
+    # Repeated characters in c
+    assert module_0.reverse_delete("hello", "l") == ("heo", False)
+    assert module_0.reverse_delete("racecar", "r") == ("aceca", True)
 
-# Generated at 2026-10-24 14:34:19.140184
-# Unit test for function reverse_delete
+    print("test_reverse_delete passed")
 
-# Generated at 2026-10-24 14:34:21.553823
-# Unit test for function reverse_delete
 
-# Generated at 2026-10-24 14:34:23.966934
-# Unit test for function reverse_delete
+test_reverse_delete()
 
-# Generated at 2026-10-24 14:34:26.380060
+# Generated at 2026-11-03 04:39:38.635059
 # Unit test for function reverse_delete
+def test_reverse_delete():
+    # Basic deletion, not a palindrome
+    assert module_0.reverse_delete("abcde", "ae") == ("bcd", False)
+    # Single character deleted
+    assert module_0.reverse_delete("abcdef", "b") == ("acdef", False)
+    # Deletion results in a palindrome
+    assert module_0.reverse_delete("abcdedcba", "ab") == ("cdedc", True)
+    # Deleting repeated characters
+    assert module_0.reverse_delete("aabbcc", "cc") == ("aabb", False)
+    # Empty strings
+    assert module_0.reverse_delete("", "") == ("", True)
+    # No characters deleted, string is a palindrome
+    assert module_0.reverse_delete("madam", "") == ("madam", True)
+    # All characters deleted
+    assert module_0.reverse_delete("abc", "abc") == ("", True)
+    # Case sensitivity check
+    assert module_0.reverse_delete("Abc", "a") == ("Abc", False)
+    # Deleting all but one character (single char is palindrome)
+    assert module_0.reverse_delete("abab", "ab") == ("", True)
+    # Mixed deletion resulting in palindrome
+    assert module_0.reverse_delete("racecar", "x") == ("racecar", True)
 
-# Generated at 2026-10-24 14:34:28.792363
-# Unit test for function reverse_delete
+    print("All tests passed!")
 
-# Generated at 2026-10-24 14:34:31.206983
-# Unit test for function reverse_delete
-
-# Generated at 2026-10-24 14:34:33.619617
-# Unit test for function reverse_delete
-
-# Generated at 2026-10-24 14:34:36.032632
-# Unit test for function reverse_delete
-
-# Generated at 2026-10-24 14:34:38.445987
-# Unit test for function reverse_delete
-
-# Generated at 2026-10-24 14:34:40.858450
-# Unit test for function reverse_delete
-
-# Generated at 2026-10-24 14:34:43.271079
-# Unit test for function reverse_delete
-
-# Generated at 2026-10-24 14:34:45.684388
-# Unit test for function reverse_delete
-
-# Generated at 2026-10-24 14:34:48.097786
-# Unit test for function reverse_delete
-
-# Generated at 2026-10-24 14:34:50.510459
-# Unit test for function reverse_delete
-
-# Generated at 2026-10-24 14:34:52.923038
-# Unit test for function reverse_delete
+if __name__ == "__main__":
+    test_reverse_delete()

@@ -3,29 +3,40 @@ import f117 as module_0
 
 def test_case_0():
     str_0 = 'Mary had a little lamb'
-    int_0 = 4
+    int_0 = 3
     var_0 = module_0.select_words(str_0, int_0)
-    assert var_0 == ['little']
-    int_1 = 3
+    assert var_0 == ['Mary', 'lamb']
+    int_1 = 4
     var_1 = module_0.select_words(str_0, int_1)
-    assert var_1 == ['Mary', 'lamb']
+    assert var_1 == ['little']
     str_1 = 'simple white space'
     int_2 = 2
     var_2 = module_0.select_words(str_1, int_2)
     assert var_2 == []
-    str_2 = 'Hello world'
-    var_3 = module_0.select_words(str_2, int_0)
-    assert var_3 == ['world']
-    str_3 = 'Uncle sam'
-    var_4 = module_0.select_words(str_3, int_1)
-    assert var_4 == ['Uncle']
-    str_4 = 'a e i o u'
+    var_3 = module_0.select_words(str_1, int_0)
+    assert var_3 == ['white', 'space']
+    str_2 = 'Hello World'
+    var_4 = module_0.select_words(str_2, int_1)
+    assert var_4 == ['World']
+    str_3 = 'a e i o u'
     int_3 = 0
-    var_5 = module_0.select_words(str_4, int_3)
+    var_5 = module_0.select_words(str_3, int_3)
     assert var_5 == ['a', 'e', 'i', 'o', 'u']
-    str_5 = ''
-    var_6 = module_0.select_words(str_5, int_0)
-    assert var_6 == []
-    str_6 = "it's 3rd"
-    var_7 = module_0.select_words(str_6, int_2)
-    assert var_7 == []
+    str_4 = 'AEIOU aeiou'
+    var_6 = module_0.select_words(str_4, int_3)
+    assert var_6 == ['AEIOU', 'aeiou']
+    str_5 = 'y'
+    int_4 = 1
+    var_7 = module_0.select_words(str_5, int_4)
+    assert var_7 == ['y']
+    var_8 = module_0.select_words(str_5, int_3)
+    assert var_8 == []
+    str_6 = ''
+    var_9 = module_0.select_words(str_6, int_0)
+    assert var_9 == []
+    str_7 = 'cat dog'
+    int_5 = 10
+    var_10 = module_0.select_words(str_7, int_5)
+    assert var_10 == []
+    str_8 = 'All tests passed!'
+    var_11 = print(str_8)

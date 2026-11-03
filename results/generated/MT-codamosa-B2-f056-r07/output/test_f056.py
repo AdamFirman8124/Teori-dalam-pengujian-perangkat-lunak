@@ -2,59 +2,36 @@
 import f056 as module_0
 
 def test_case_0():
-    str_0 = 'Iy+g!)"u]?0~'
+    str_0 = '<'
     var_0 = module_0.correct_bracketing(str_0)
     assert var_0 is False
-
-def test_case_1():
-    str_0 = 'xPN*7Ct\\D+4u:XO}@{`'
-    str_1 = '(tg'
-    var_0 = module_0.correct_bracketing(str_1)
-    assert var_0 is False
-    var_1 = module_0.correct_bracketing(str_0)
-    assert var_1 is False
-    str_2 = 'jaMoh8q*~a,|c'
+    str_1 = '<>'
+    var_1 = module_0.correct_bracketing(str_1)
+    assert var_1 is True
+    str_2 = '<<><>>'
     var_2 = module_0.correct_bracketing(str_2)
-    assert var_2 is False
-    str_3 = '=h]? 0.Y6%B4Kf'
+    assert var_2 is True
+    str_3 = '><<>'
     var_3 = module_0.correct_bracketing(str_3)
     assert var_3 is False
-    str_4 = '/c#7'
+    str_4 = ''
     var_4 = module_0.correct_bracketing(str_4)
-    assert var_4 is False
-    var_5 = module_0.correct_bracketing(str_2)
+    assert var_4 is True
+    str_5 = '<<<'
+    var_5 = module_0.correct_bracketing(str_5)
     assert var_5 is False
-    str_5 = ''
-    var_6 = module_0.correct_bracketing(str_5)
-    assert var_6 is True
-    str_6 = 'T1dvTX(Q\x0cP\x0ctl'
-    var_7 = module_0.correct_bracketing(str_6)
-    assert var_7 is False
-
-def test_case_2():
-    str_0 = 'xPN*7Ct\\D+4u:XO}@{`'
-    str_1 = '(tg'
-    var_0 = module_0.correct_bracketing(str_1)
-    assert var_0 is False
-    str_2 = "c\n\r123@T!_Uk1QLXF'"
-    var_1 = module_0.correct_bracketing(str_0)
-    assert var_1 is False
-    str_3 = '}#d$\nJ'
-    var_2 = module_0.correct_bracketing(str_3)
-    assert var_2 is False
-    str_4 = 'jaMoh8q*~a,|c'
-    var_3 = module_0.correct_bracketing(str_4)
-    assert var_3 is False
-    str_5 = '=h]? 0.Y6%B4Kf'
-    var_4 = module_0.correct_bracketing(str_5)
-    assert var_4 is False
-    str_6 = '<'
-    var_5 = module_0.correct_bracketing(str_6)
-    assert var_5 is False
-    var_6 = module_0.correct_bracketing(str_2)
+    str_6 = '>>>'
+    var_6 = module_0.correct_bracketing(str_6)
     assert var_6 is False
-    var_7 = module_0.correct_bracketing(str_5)
+    str_7 = '><'
+    var_7 = module_0.correct_bracketing(str_7)
     assert var_7 is False
-    str_7 = 'T1dvTX(Q\x0cP\x0ctl'
-    var_8 = module_0.correct_bracketing(str_7)
-    assert var_8 is False
+    str_8 = '<<<>>>'
+    var_8 = module_0.correct_bracketing(str_8)
+    assert var_8 is True
+    str_9 = '<><><>'
+    var_9 = module_0.correct_bracketing(str_9)
+    assert var_9 is True
+    str_10 = '<<>>><'
+    var_10 = module_0.correct_bracketing(str_10)
+    assert var_10 is False

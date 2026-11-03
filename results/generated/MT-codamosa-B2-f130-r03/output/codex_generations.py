@@ -1,136 +1,172 @@
 
 
-# Generated at 2026-10-24 12:14:26.405849
+# Generated at 2026-11-03 01:25:48.314033
 # Unit test for function tri
+def test_tri():
+    # Base cases
+    assert module_0.tri(0) == [1]
+    assert module_0.tri(1) == [1, 3]
 
-# Generated at 2026-10-24 12:14:28.824722
-# Unit test for function tri
+    # Even index: i / 2 + 1
+    assert module_0.tri(2) == [1, 3, 2.0]
+    assert module_0.tri(4) == [1, 3, 2.0, 8.0, 3.0]
+    assert module_0.tri(6) == [1, 3, 2.0, 8.0, 3.0, 15.0, 4.0]
 
-# Generated at 2026-10-24 12:14:31.244921
-# Unit test for function tri
+    # Odd index: my_tri[i-1] + my_tri[i-2] + (i + 3) / 2
+    assert module_0.tri(3) == [1, 3, 2.0, 8.0]
+    assert module_0.tri(5) == [1, 3, 2.0, 8.0, 3.0, 15.0]
 
-# Generated at 2026-10-24 12:14:33.665971
-# Unit test for function tri
+    # Verify length matches n + 1
+    result = module_0.tri(8)
+    assert len(result) == 9
+    assert result[7] == 5.0          # (8 / 2) + 1
+    assert result[8] == 5.0 + 5.0 + (8 + 3) / 2  # odd case for i=8? no, i=8 even -> recompute
 
-# Generated at 2026-10-24 12:14:36.081750
-# Unit test for function tri
+    # Recomputed explicit values for n = 8
+    assert module_0.tri(8) == [1, 3, 2.0, 8.0, 3.0, 15.0, 4.0, 18.0, 5.0]
 
-# Generated at 2026-10-24 12:14:38.502864
+# Generated at 2026-11-03 01:27:19.154392
 # Unit test for function tri
+def test_tri():
+    # Test base case
+    assert module_0.tri(0) == [1]
 
-# Generated at 2026-10-24 12:14:40.922617
-# Unit test for function tri
+    # Test n = 1
+    assert module_0.tri(1) == [1, 3]
 
-# Generated at 2026-10-24 12:14:43.341164
-# Unit test for function tri
+    # Test n = 2: even index -> 2/2 + 1 = 2.0
+    assert module_0.tri(2) == [1, 3, 2.0]
 
-# Generated at 2026-10-24 12:14:45.759988
-# Unit test for function tri
+    # Test n = 3: odd index -> 2.0 + 3 + (3+3)/2 = 8.0
+    assert module_0.tri(3) == [1, 3, 2.0, 8.0]
 
-# Generated at 2026-10-24 12:14:48.178383
-# Unit test for function tri
+    # Test n = 4: even index -> 4/2 + 1 = 3.0
+    assert module_0.tri(4) == [1, 3, 2.0, 8.0, 3.0]
 
-# Generated at 2026-10-24 12:14:50.596259
-# Unit test for function tri
+    # Test n = 5: odd index -> 3.0 + 8.0 + (5+3)/2 = 15.0
+    assert module_0.tri(5) == [1, 3, 2.0, 8.0, 3.0, 15.0]
 
-# Generated at 2026-10-24 12:14:53.026581
-# Unit test for function tri
+    # Test length of result
+    assert len(module_0.tri(10)) == 11
 
-# Generated at 2026-10-24 12:14:55.462658
-# Unit test for function tri
+    # Test even-indexed elements follow i/2 + 1
+    result = module_0.tri(10)
+    for i in range(2, 11, 2):
+        assert result[i] == i / 2 + 1
 
-# Generated at 2026-10-24 12:14:57.880363
-# Unit test for function tri
+    # Test odd-indexed elements follow recurrence
+    for i in range(3, 11, 2):
+        assert result[i] == result[i - 1] + result[i - 2] + (i + 3) / 2
 
-# Generated at 2026-10-24 12:15:00.300195
-# Unit test for function tri
+    # Test with larger input for length
+    assert len(module_0.tri(20)) == 21
 
-# Generated at 2026-10-24 12:15:02.717014
-# Unit test for function tri
+    print("All tests passed!")
 
-# Generated at 2026-10-24 12:15:05.135379
-# Unit test for function tri
 
-# Generated at 2026-10-24 12:15:07.553729
-# Unit test for function tri
+test_tri()
 
-# Generated at 2026-10-24 12:15:09.971700
+# Generated at 2026-11-03 01:29:33.013838
 # Unit test for function tri
+def test_tri():
+    # Test base case n = 0
+    assert module_0.tri(0) == [1]
 
-# Generated at 2026-10-24 12:15:12.385654
-# Unit test for function tri
+    # Test n = 1 (only initial seed values)
+    assert module_0.tri(1) == [1, 3]
 
-# Generated at 2026-10-24 12:15:14.806134
-# Unit test for function tri
+    # Test n = 2 (even index: i / 2 + 1)
+    assert module_0.tri(2) == [1, 3, 2.0]
 
-# Generated at 2026-10-24 12:15:17.224314
-# Unit test for function tri
+    # Test n = 3 (odd index: sum of previous two plus (i + 3) / 2)
+    assert module_0.tri(3) == [1, 3, 2.0, 8.0]
 
-# Generated at 2026-10-24 12:15:19.643815
-# Unit test for function tri
+    # Test n = 4
+    assert module_0.tri(4) == [1, 3, 2.0, 8.0, 3.0]
 
-# Generated at 2026-10-24 12:15:22.061687
-# Unit test for function tri
+    # Test n = 5
+    assert module_0.tri(5) == [1, 3, 2.0, 8.0, 3.0, 15.0]
 
-# Generated at 2026-10-24 12:15:24.483422
-# Unit test for function tri
+    # Verify sequence values for larger n
+    result = module_0.tri(8)
+    assert len(result) == 9
+    assert result[6] == 4.0            # even: 6 / 2 + 1
+    assert result[7] == 4.0 + 15.0 + 5.0   # odd: result[6] + result[5] + (7+3)/2
+    assert result[8] == 5.0            # even: 8 / 2 + 1
 
-# Generated at 2026-10-24 12:15:26.903546
-# Unit test for function tri
+    # Structural checks: every even index (>= 2) equals i / 2 + 1
+    for i in range(2, 11, 2):
+        assert module_0.tri(i)[i] == i / 2 + 1
 
-# Generated at 2026-10-24 12:15:29.326112
-# Unit test for function tri
+    print("All tests passed!")
 
-# Generated at 2026-10-24 12:15:31.746354
-# Unit test for function tri
 
-# Generated at 2026-10-24 12:15:34.169290
-# Unit test for function tri
+test_tri()
 
-# Generated at 2026-10-24 12:15:36.590877
+# Generated at 2026-11-03 01:31:09.456176
 # Unit test for function tri
+def test_tri():
+    # Base case
+    assert module_0.tri(0) == [1]
 
-# Generated at 2026-10-24 12:15:39.012796
-# Unit test for function tri
+    # Seed sequence
+    assert module_0.tri(1) == [1, 3]
 
-# Generated at 2026-10-24 12:15:41.428472
-# Unit test for function tri
+    # Even index values: i / 2 + 1
+    assert module_0.tri(2) == [1, 3, 2.0]
+    assert module_0.tri(4) == [1, 3, 2.0, 8.0, 3.0]
+    assert module_0.tri(6) == [1, 3, 2.0, 8.0, 3.0, 15.0, 4.0]
 
-# Generated at 2026-10-24 12:15:43.847186
-# Unit test for function tri
+    # Odd index values: tri[i-1] + tri[i-2] + (i + 3) / 2
+    assert module_0.tri(3) == [1, 3, 2.0, 8.0]
+    assert module_0.tri(5) == [1, 3, 2.0, 8.0, 3.0, 15.0]
+    assert module_0.tri(7) == [1, 3, 2.0, 8.0, 3.0, 15.0, 4.0, 24.0]
 
-# Generated at 2026-10-24 12:15:46.263229
-# Unit test for function tri
+    # Longer sequence
+    assert module_0.tri(10) == [1, 3, 2.0, 8.0, 3.0, 15.0, 4.0, 24.0, 5.0, 35.0, 6.0]
 
-# Generated at 2026-10-24 12:15:48.684496
-# Unit test for function tri
+    # Length check
+    assert len(module_0.tri(20)) == 21
 
-# Generated at 2026-10-24 12:15:51.103979
-# Unit test for function tri
+    # Elements from index 2 onward are floats (true division)
+    for v in module_0.tri(5)[2:]:
+        assert isinstance(v, float)
 
-# Generated at 2026-10-24 12:15:53.519634
-# Unit test for function tri
+    # Verify recurrence property on a longer sequence
+    seq = module_0.tri(15)
+    for i in range(2, 16):
+        if i % 2 == 0:
+            assert seq[i] == i / 2 + 1
+        else:
+            assert seq[i] == seq[i - 1] + seq[i - 2] + (i + 3) / 2
 
-# Generated at 2026-10-24 12:15:55.940120
+# Generated at 2026-11-03 01:32:49.911172
 # Unit test for function tri
+def test_tri():
+    # Base case: n == 0 returns [1]
+    assert module_0.tri(0) == [1]
 
-# Generated at 2026-10-24 12:15:58.355399
-# Unit test for function tri
+    # n == 1 returns initial list without loop execution
+    assert module_0.tri(1) == [1, 3]
 
-# Generated at 2026-10-24 12:16:00.774823
-# Unit test for function tri
+    # Even indices: i / 2 + 1 ; odd indices: sum of previous two + (i + 3) / 2
+    assert module_0.tri(2) == [1, 3, 2.0]
+    assert module_0.tri(3) == [1, 3, 2.0, 8.0]
+    assert module_0.tri(4) == [1, 3, 2.0, 8.0, 3.0]
+    assert module_0.tri(5) == [1, 3, 2.0, 8.0, 3.0, 15.0]
+    assert module_0.tri(6) == [1, 3, 2.0, 8.0, 3.0, 15.0, 4.0]
+    assert module_0.tri(7) == [1, 3, 2.0, 8.0, 3.0, 15.0, 4.0, 24.0]
+    assert module_0.tri(8) == [1, 3, 2.0, 8.0, 3.0, 15.0, 4.0, 24.0, 5.0]
+    assert module_0.tri(9) == [1, 3, 2.0, 8.0, 3.0, 15.0, 4.0, 24.0, 5.0, 35.0]
 
-# Generated at 2026-10-24 12:16:03.187453
-# Unit test for function tri
+    # Result length check
+    result = module_0.tri(10)
+    assert len(result) == 11
 
-# Generated at 2026-10-24 12:16:05.605817
-# Unit test for function tri
+    # Verify even-position recurrence: my_tri[i] == i / 2 + 1
+    for i in range(2, 11, 2):
+        assert result[i] == i / 2 + 1
 
-# Generated at 2026-10-24 12:16:08.023511
-# Unit test for function tri
-
-# Generated at 2026-10-24 12:16:10.438372
-# Unit test for function tri
-
-# Generated at 2026-10-24 12:16:12.857204
-# Unit test for function tri
+    # Verify odd-position recurrence: my_tri[i-1] + my_tri[i-2] + (i + 3) / 2
+    for i in range(3, 11, 2):
+        assert result[i] == result[i - 1] + result[i - 2] + (i + 3) / 2

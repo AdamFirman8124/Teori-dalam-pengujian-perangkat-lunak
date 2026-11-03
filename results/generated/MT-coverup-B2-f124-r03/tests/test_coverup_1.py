@@ -7,62 +7,111 @@ import pytest
 from f124 import valid_date
 
 
-def test_valid_date_returns_true():
-    assert valid_date("03-15-2021") is True
+# NOTE: valid_date is a pure function (no I/O, no global state, no side
+# effects), so no monkeypatching or fixture-based cleanup is required; each
+# test is self-contained and leaves no state behind.
 
 
-def test_valid_date_30_day_month():
-    # Due to operator precedence (`and` binds tighter than `or`), the
-    # `day > 29` check applies to every month, so day 30 is rejected
-    # even for 30-day months. Day 29 is the maximum accepted day.
-    assert valid_date("04-29-2021") is True
+@pytest.mark.parametrize(
+    "date",
+    [
+        "01-01-2020",        # January, mid-range day
+        "12-29-2021",        # 31-day month, highest day actually accepted
+        "04-29-2020",        # 30-day month, highest day actually accepted
+        "02-29-2020",        # February, boundary day (year not validated)
+        "  06-15-1999  ",    # exercises the .strip() call on line 4
+        "1-1-2020",          # single-digit month/day still parse via int()
+    ],
+)
+def test_valid_date_accepts_valid_dates(date):
+    """Dates accepted by the implementation must reach line 18 and return True."""
+    assert valid_date(date) is True
 
 
-def test_valid_date_feb_29():
-    assert valid_date("02-29-2021") is True
+@pytest.mark.parametrize(
+    "date",
+    [
+        "00-10-2020",        # month < 1  -> line 8
+        "13-10-2020",        # month > 12 -> line 8
+    ],
+)
+def test_valid_date_rejects_out_of_range_month(date):
+    assert valid_date(date) is False
 
 
-def test_day_30_and_31_are_rejected_for_all_months():
-    assert valid_date("01-31-2021") is False
-    assert valid_date("04-30-2021") is False
-    assert valid_date("12-31-2021") is False
+@pytest.mark.parametrize(
+    "date",
+    [
+        "01-00-2020",        # 31-day month with day < 1 -> line 10
+        "01-32-2020",        # day > 31                  -> line 10
+        "12-33-2020",        # day > 31 for another 31-day month
+    ],
+)
+def test_valid_date_rejects_bad_day_for_31_day_month(date):
+    assert valid_date(date) is False
 
 
-def test_invalid_month_returns_false():
-    assert valid_date("13-01-2021") is False
-    assert valid_date("00-10-2021") is False
+@pytest.mark.parametrize(
+    "date",
+    [
+        "04-00-2020",        # 30-day month with day < 1 -> line 12
+        "04-31-2020",        # day > 30                  -> line 12
+        "06-31-2020",
+        "09-31-2020",
+        "11-31-2020",
+    ],
+)
+def test_valid_date_rejects_bad_day_for_30_day_month(date):
+    assert valid_date(date) is False
 
 
-def test_day_above_31_returns_false():
-    assert valid_date("01-32-2021") is False
+@pytest.mark.parametrize(
+    "date",
+    [
+        "02-00-2020",        # February with day < 1 -> line 14
+        "02-30-2020",        # day > 29              -> line 14
+    ],
+)
+def test_valid_date_rejects_bad_day_for_february(date):
+    assert valid_date(date) is False
 
 
-def test_day_above_30_returns_false():
-    assert valid_date("04-31-2021") is False
+@pytest.mark.parametrize(
+    "date",
+    [
+        # Because of operator precedence in the implementation, the
+        # `or day > 30` / `or day > 29` arms apply to *every* month, so
+        # days 30 and 31 are rejected regardless of the month.
+        "01-30-2020",        # rejected by line 13's `day > 29`
+        "12-30-2021",        # rejected by line 13's `day > 29`
+        "01-31-2020",        # rejected by line 11's `day > 30`
+        "12-31-2021",        # rejected by line 11's `day > 30`
+    ],
+)
+def test_valid_date_rejects_day_30_and_31_for_all_months(date):
+    """Documents the implementation's actual (precedence-driven) behavior."""
+    assert valid_date(date) is False
 
 
-def test_day_above_29_returns_false():
-    assert valid_date("02-30-2021") is False
+@pytest.mark.parametrize(
+    "date",
+    [
+        "",                  # split('-') on empty string -> ValueError
+        "01-01",             # not enough parts -> ValueError on unpacking
+        "01-01-2020-extra",  # too many parts   -> ValueError on unpacking
+        "aa-bb-cccc",        # non-numeric month/day/year -> ValueError
+        "01-01-20x0",        # non-numeric year -> ValueError
+        None,                # None.strip() -> AttributeError
+        12345,               # int has no .strip() -> AttributeError
+    ],
+)
+def test_valid_date_rejects_malformed_input_via_except_branch(date):
+    """Malformed input must be caught by the bare except (lines 15-16)."""
+    assert valid_date(date) is False
 
 
-def test_day_below_one_returns_false():
-    assert valid_date("01-00-2021") is False
-    assert valid_date("04-00-2021") is False
-    assert valid_date("02-00-2021") is False
-
-
-def test_malformed_input_returns_false():
-    assert valid_date("not-a-date") is False
-
-
-def test_unsplittable_input_returns_false():
-    assert valid_date("2021") is False
-
-
-def test_non_string_input_returns_false():
-    assert valid_date(None) is False
-    assert valid_date(12345) is False
-
-
-def test_whitespace_is_stripped():
-    assert valid_date("  03-15-2021  ") is True
+def test_valid_date_does_not_validate_year():
+    """The year is parsed but never range-checked, so odd years pass."""
+    assert valid_date("02-29-1900") is True
+    assert valid_date("01-01-99999") is True
+    assert valid_date("01-01-0") is True

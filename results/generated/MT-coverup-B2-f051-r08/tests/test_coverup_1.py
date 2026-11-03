@@ -2,36 +2,33 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
+import pytest
+
 from f051 import remove_vowels
 
 
-def test_remove_vowels_lowercase():
-    assert remove_vowels("hello") == "hll"
+def test_remove_vowels_removes_all_vowels_case_insensitive():
+    # Executes line 3: the return statement with the list comprehension.
+    result = remove_vowels("Hello World")
+    assert result == "Hll Wrld"
 
 
-def test_remove_vowels_uppercase():
-    assert remove_vowels("HELLO") == "HLL"
-
-
-def test_remove_vowels_mixed_case():
-    assert remove_vowels("AeIoU") == ""
-
-
-def test_remove_vowels_no_vowels():
-    assert remove_vowels("xyz XYZ") == "xyz XYZ"
-
-
-def test_remove_vowels_all_vowels():
-    assert remove_vowels("aeiouAEIOU") == ""
+def test_remove_vowels_keeps_non_vowel_characters():
+    result = remove_vowels("rhythm & xyz 123!")
+    assert result == "rhythm & xyz 123!"
 
 
 def test_remove_vowels_empty_string():
-    assert remove_vowels("") == ""
+    result = remove_vowels("")
+    assert result == ""
 
 
-def test_remove_vowels_sentence():
-    assert remove_vowels("Python Programming") == "Pythn Prgrmmng"
+def test_remove_vowels_all_vowels():
+    result = remove_vowels("AEIOUaeiou")
+    assert result == ""
 
 
-def test_remove_vowels_consonants_and_punctuation():
-    assert remove_vowels("Hello, World!") == "Hll, Wrld!"
+def test_remove_vowels_returns_string_type():
+    result = remove_vowels("banana")
+    assert isinstance(result, str)
+    assert result == "bnn"

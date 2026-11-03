@@ -2,42 +2,35 @@
 import f078 as module_0
 
 def test_case_0():
-    str_0 = ''
+    str_0 = 'AB'
     var_0 = module_0.hex_key(str_0)
-    assert var_0 == 0
-    str_1 = '0000'
+    assert var_0 == 1
+    str_1 = '1077E'
     var_1 = module_0.hex_key(str_1)
-    assert var_1 == 0
-    str_2 = '0000FFFF'
+    assert var_1 == 2
+    str_2 = 'ABED1A33'
     var_2 = module_0.hex_key(str_2)
-    assert var_2 == 0
-    str_3 = '148AEF'
+    assert var_2 == 4
+    str_3 = '123456789ABCDEF0'
     var_3 = module_0.hex_key(str_3)
-    assert var_3 == 0
-    str_4 = '2'
+    assert var_3 == 6
+    str_4 = '2020'
     var_4 = module_0.hex_key(str_4)
-    assert var_4 == 1
-    str_5 = 'B'
+    assert var_4 == 2
+    str_5 = '111'
     var_5 = module_0.hex_key(str_5)
-    assert var_5 == 1
-    str_6 = 'D'
+    assert var_5 == 0
+    str_6 = '9A0146'
     var_6 = module_0.hex_key(str_6)
-    assert var_6 == 1
-    str_7 = 'AB'
+    assert var_6 == 0
+    str_7 = ''
     var_7 = module_0.hex_key(str_7)
-    assert var_7 == 1
-    str_8 = '1077E'
+    assert var_7 == 0
+    str_8 = '2357BD'
     var_8 = module_0.hex_key(str_8)
-    assert var_8 == 2
-    str_9 = 'ABED1A33'
+    assert var_8 == 6
+    str_9 = 'bd'
     var_9 = module_0.hex_key(str_9)
-    assert var_9 == 4
-    str_10 = '123456789ABCDEF'
-    var_10 = module_0.hex_key(str_10)
-    assert var_10 == 6
-    str_11 = '2357BD'
-    var_11 = module_0.hex_key(str_11)
-    assert var_11 == 6
-    str_12 = '2222'
-    var_12 = module_0.hex_key(str_12)
-    assert var_12 == 4
+    assert var_9 == 0
+    str_10 = 'All tests passed!'
+    var_10 = print(str_10)

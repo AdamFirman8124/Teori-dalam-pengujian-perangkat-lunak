@@ -2,32 +2,43 @@
 # asked: {"lines": [4, 5, 6, 7, 8, 9, 10, 12], "branches": [[5, 6], [5, 12], [6, 5], [6, 7], [9, 5], [9, 10]]}
 # gained: {"lines": [4, 5, 6, 7, 8, 9, 10, 12], "branches": [[5, 6], [5, 12], [6, 5], [6, 7], [9, 5], [9, 10]]}
 
+import pytest
+
 from f146 import specialFilter
 
 
-def test_empty_list():
+def test_empty_list_returns_zero():
+    """Covers lines 4 and 12: initialization and return with no iterations."""
     assert specialFilter([]) == 0
 
 
-def test_all_numbers_le_10_ignored():
-    assert specialFilter([0, 1, 5, 10, -3, 10, 9]) == 0
+def test_numbers_not_greater_than_ten_are_ignored():
+    """Covers line 5-6 with the 'num > 10' branch evaluating to False."""
+    assert specialFilter([5, 10, -2, 0]) == 0
 
 
-def test_first_digit_even_not_counted():
-    # 22, 20, 42, 68: num > 10 True, first digit even -> inner if False
-    assert specialFilter([22, 20, 42, 68, 200]) == 0
+def test_numbers_greater_than_ten_with_even_digits_are_ignored():
+    """Covers lines 7-9 with the odd-digits condition evaluating to False."""
+    # 12: first digit odd, last digit even
+    # 21: first digit even, last digit odd
+    # 22: both digits even
+    # 100: first digit 1 odd, last digit 0 even
+    assert specialFilter([12, 21, 22, 100]) == 0
 
 
-def test_first_odd_last_even_not_counted():
-    # first digit odd True, last digit even False -> inner if False
-    assert specialFilter([12, 14, 16, 32, 38, 50, 100]) == 0
+def test_numbers_with_odd_first_and_last_digits_are_counted():
+    """Covers line 10: count incremented when both first and last digits are odd."""
+    # 15 -> 1 and 5, 33 -> 3 and 3, 97 -> 9 and 7, 53 -> 5 and 3
+    assert specialFilter([15, 33, 97, 53]) == 4
 
 
-def test_both_ends_odd_counted():
-    assert specialFilter([11, 13, 15, 31, 33, 55, 77, 99, 111, 135]) == 10
+def test_mixed_input_counts_only_matching_numbers():
+    """Exercises all branches together in a single call."""
+    # 15 counts, -2 skipped (not > 10), 33 counts, 22 skipped (even digits),
+    # 11 counts, 10 skipped (not > 10), 12 skipped (last digit even)
+    assert specialFilter([15, -2, 33, 22, 11, 10, 12]) == 3
 
 
-def test_mixed_only_counts_gt10_with_odd_first_and_last():
-    # 5 (<=10 ignored), 11 (count), 22 (first even, no count),
-    # 12 (last even, no count), 15 (count), 10 (ignored), 33 (count), 42 (no count)
-    assert specialFilter([5, 11, 22, 12, 15, 10, 33, 42]) == 3
+def test_negative_large_number_with_odd_digits():
+    """Negative numbers are never > 10, so they are skipped even with odd digits."""
+    assert specialFilter([-15, -33]) == 0

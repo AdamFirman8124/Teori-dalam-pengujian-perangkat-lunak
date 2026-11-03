@@ -5,8 +5,29 @@ def test_case_0():
     int_0 = 1
     var_0 = module_0.get_max_triples(int_0)
     assert var_0 == 0
+    int_1 = 2
+    var_1 = module_0.get_max_triples(int_1)
+    assert var_1 == 0
+    int_2 = 3
+    var_2 = module_0.get_max_triples(int_2)
+    assert var_2 == 0
+    int_3 = 4
+    var_3 = module_0.get_max_triples(int_3)
+    assert var_3 == 1
+    int_4 = 5
+    var_4 = module_0.get_max_triples(int_4)
+    assert var_4 == 1
+    int_5 = 6
+    var_5 = module_0.get_max_triples(int_5)
+    assert var_5 == 4
+    int_6 = 7
+    var_6 = module_0.get_max_triples(int_6)
+    assert var_6 == 10
+    int_7 = 8
+    var_7 = module_0.get_max_triples(int_7)
+    assert var_7 == 11
 
 def test_case_1():
-    int_0 = 3053
+    int_0 = 1
     var_0 = module_0.get_max_triples(int_0)
     assert var_0 == 0

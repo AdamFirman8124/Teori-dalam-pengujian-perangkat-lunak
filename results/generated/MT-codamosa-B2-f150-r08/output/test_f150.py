@@ -3,28 +3,37 @@ import f150 as module_0
 
 def test_case_0():
     int_0 = 1
-    str_0 = 'x'
-    str_1 = 'y'
-    var_0 = module_0.x_or_y(int_0, str_0, str_1)
-    assert var_0 == 'y'
     int_1 = 2
-    var_1 = module_0.x_or_y(int_1, str_0, str_1)
-    assert var_1 == 'x'
-    int_2 = 7
-    var_2 = module_0.x_or_y(int_2, str_0, str_1)
-    assert var_2 == 'x'
-    int_3 = 9
-    var_3 = module_0.x_or_y(int_3, str_0, str_1)
-    assert var_3 == 'y'
-    int_4 = 12
-    int_5 = 10
-    int_6 = 20
-    var_4 = module_0.x_or_y(int_4, int_5, int_6)
-    assert var_4 == 20
-
-def test_case_1():
-    int_0 = 1
-    str_0 = 'prime'
-    str_1 = 'not prime'
-    var_0 = module_0.x_or_y(int_0, str_0, str_1)
-    assert var_0 == 'not prime'
+    int_2 = 3
+    var_0 = module_0.x_or_y(int_0, int_1, int_2)
+    assert var_0 == 3
+    int_3 = 5
+    int_4 = 6
+    var_1 = module_0.x_or_y(int_1, int_3, int_4)
+    assert var_1 == 5
+    int_5 = 7
+    int_6 = 8
+    var_2 = module_0.x_or_y(int_2, int_5, int_6)
+    assert var_2 == 7
+    int_7 = 4
+    int_8 = 9
+    int_9 = 10
+    var_3 = module_0.x_or_y(int_7, int_8, int_9)
+    assert var_3 == 10
+    int_10 = 11
+    int_11 = 12
+    var_4 = module_0.x_or_y(int_5, int_10, int_11)
+    assert var_4 == 11
+    int_12 = 13
+    int_13 = 14
+    var_5 = module_0.x_or_y(int_8, int_12, int_13)
+    assert var_5 == 14
+    int_14 = 100
+    int_15 = 200
+    var_6 = module_0.x_or_y(int_12, int_14, int_15)
+    assert var_6 == 100
+    int_16 = 15
+    var_7 = module_0.x_or_y(int_16, int_14, int_15)
+    assert var_7 == 200
+    str_0 = 'All tests passed!'
+    var_8 = print(str_0)

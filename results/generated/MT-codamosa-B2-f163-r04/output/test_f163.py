@@ -2,13 +2,28 @@
 import f163 as module_0
 
 def test_case_0():
-    float_0 = -1329.91
-    bool_0 = False
-    var_0 = module_0.generate_integers(float_0, bool_0)
-    assert var_0 == []
-
-def test_case_1():
-    float_0 = 1538.321
-    bool_0 = False
-    var_0 = module_0.generate_integers(float_0, bool_0)
+    int_0 = 2
+    int_1 = 8
+    var_0 = module_0.generate_integers(int_0, int_1)
     assert var_0 == [2, 4, 6, 8]
+    var_1 = module_0.generate_integers(int_1, int_0)
+    assert var_1 == [2, 4, 6, 8]
+    int_2 = 1
+    int_3 = 5
+    var_2 = module_0.generate_integers(int_2, int_3)
+    assert var_2 == [2, 4]
+    int_4 = 3
+    var_3 = module_0.generate_integers(int_4, int_4)
+    assert var_3 == []
+    int_5 = 10
+    int_6 = 14
+    var_4 = module_0.generate_integers(int_5, int_6)
+    assert var_4 == []
+    int_7 = 0
+    var_5 = module_0.generate_integers(int_7, int_7)
+    assert var_5 == []
+    int_8 = -2
+    var_6 = module_0.generate_integers(int_8, int_3)
+    assert var_6 == [2, 4]
+    str_0 = 'All tests passed!'
+    var_7 = print(str_0)

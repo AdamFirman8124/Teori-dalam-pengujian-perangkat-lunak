@@ -2,27 +2,36 @@
 # asked: {"lines": [3, 4, 6, 8, 9, 10, 12, 14, 15], "branches": [[3, 4], [3, 6], [8, 9], [8, 14], [9, 10], [9, 12]]}
 # gained: {"lines": [3, 4, 6, 8, 9, 10, 12, 14, 15], "branches": [[3, 4], [3, 6], [8, 9], [8, 14], [9, 10], [9, 12]]}
 
+import pytest
+
 from f101 import words_string
 
 
-def test_words_string_empty_string():
+def test_words_string_empty():
+    """Empty string should return an empty list (covers lines 3-4)."""
     assert words_string("") == []
 
 
-def test_words_string_falsy_none():
-    assert words_string(None) == []
-
-
-def test_words_string_no_comma():
-    assert words_string("hello") == ["hello"]
-    assert words_string("hello world") == ["hello", "world"]
-
-
 def test_words_string_with_commas():
-    assert words_string("Hi, my name is John") == ["Hi", "my", "name", "is", "John"]
+    """Commas are replaced by spaces and the result is split (covers lines 6-15)."""
     assert words_string("one,two,three") == ["one", "two", "three"]
 
 
+def test_words_string_without_commas():
+    """A string without commas is simply split on whitespace."""
+    assert words_string("hello world") == ["hello", "world"]
+
+
 def test_words_string_only_commas():
-    assert words_string(",") == []
-    assert words_string(", ,") == []
+    """A string of only commas becomes only spaces, which split to nothing."""
+    assert words_string(",,,") == []
+
+
+def test_words_string_mixed():
+    """Mixed commas and spaces are both treated as separators."""
+    assert words_string("a, b,c d") == ["a", "b", "c", "d"]
+
+
+def test_words_string_single_word():
+    """A single word with no separators returns a one-element list."""
+    assert words_string("word") == ["word"]

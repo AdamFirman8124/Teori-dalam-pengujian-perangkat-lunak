@@ -5,27 +5,22 @@
 from f016 import count_distinct_characters
 
 
-def test_empty_string():
+def test_count_distinct_characters_mixed_case():
+    """Distinct characters are counted case-insensitively."""
+    assert count_distinct_characters("xyzXYZ") == 3
+
+
+def test_count_distinct_characters_empty_string():
+    """An empty string has zero distinct characters."""
     assert count_distinct_characters("") == 0
 
 
-def test_all_same_character_case_insensitive():
-    assert count_distinct_characters("aaaAAA") == 1
+def test_count_distinct_characters_repeated_chars():
+    """Repeated characters (any case) count only once."""
+    assert count_distinct_characters("Jerry") == 4
+    assert count_distinct_characters("aAaA") == 1
 
 
-def test_hello_distinct_count():
-    assert count_distinct_characters("hello") == 4
-
-
-def test_case_insensitivity():
-    assert count_distinct_characters("AaBbCc") == 3
-    assert count_distinct_characters("ABCabc") == 3
-
-
-def test_mixed_with_digits_and_symbols():
-    assert count_distinct_characters("123!@#123") == 6
-
-
-def test_single_character():
-    assert count_distinct_characters("Z") == 1
-    assert count_distinct_characters("z") == 1
+def test_count_distinct_characters_all_unique():
+    """All unique characters are counted."""
+    assert count_distinct_characters("abcdef") == 6

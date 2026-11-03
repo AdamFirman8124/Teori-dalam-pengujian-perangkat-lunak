@@ -2,28 +2,36 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
+import pytest
+
 from f054 import same_chars
 
 
 def test_same_chars_equal_sets():
-    assert same_chars("abc", "cba") is True
-    assert same_chars("abc", "abc") is True
+    """Characters of s0 and s1 form the same set -> True."""
+    assert same_chars("eabcdzzzz", "dddzzzzzzzddeddabc") is True
 
 
-def test_same_chars_different_sets():
-    assert same_chars("abc", "abcd") is False
-    assert same_chars("abc", "abd") is False
+def test_same_chars_equal_sets_subset():
+    """One string's characters are a subset of the other's -> True."""
+    assert same_chars("abcd", "dddddddabc") is True
+
+
+def test_same_chars_extra_char():
+    """s1 has an extra distinct character -> False."""
+    assert same_chars("abcd", "dddddddabce") is False
+
+
+def test_same_chars_missing_char():
+    """s0 has a distinct character missing from s1 -> False."""
+    assert same_chars("eabcdzzzz", "dddzzzzzzzddddabc") is False
 
 
 def test_same_chars_empty_strings():
+    """Both empty strings have the same (empty) character set -> True."""
     assert same_chars("", "") is True
 
 
 def test_same_chars_empty_vs_nonempty():
+    """Empty vs non-empty string -> False."""
     assert same_chars("", "a") is False
-    assert same_chars("a", "") is False
-
-
-def test_same_chars_ignores_multiplicity_and_order():
-    assert same_chars("aab", "ab") is True
-    assert same_chars("aabbcc", "cba") is True

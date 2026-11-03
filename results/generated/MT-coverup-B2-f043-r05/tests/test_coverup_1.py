@@ -2,35 +2,31 @@
 # asked: {"lines": [3, 4, 5, 6, 7], "branches": [[3, 4], [3, 7], [4, 3], [4, 5], [5, 4], [5, 6]]}
 # gained: {"lines": [3, 4, 5, 6, 7], "branches": [[3, 4], [3, 7], [4, 3], [4, 5], [5, 4], [5, 6]]}
 
+import pytest
+
 from f043 import pairs_sum_to_zero
 
 
-def test_empty_list_returns_false():
+def test_pairs_sum_to_zero_true():
+    """Covers lines 3-6: outer loop, inner loop, condition, and True return."""
+    assert pairs_sum_to_zero([1, -1]) is True
+
+
+def test_pairs_sum_to_zero_false():
+    """Covers lines 3-5 and 7: loops run, condition is False, returns False."""
+    assert pairs_sum_to_zero([1, 2, 3]) is False
+
+
+def test_pairs_sum_to_zero_empty():
+    """Covers line 3 and 7 with zero outer-loop iterations (empty list branch)."""
     assert pairs_sum_to_zero([]) is False
 
 
-def test_single_element_returns_false():
-    assert pairs_sum_to_zero([1]) is False
-    assert pairs_sum_to_zero([0]) is False
+def test_pairs_sum_to_zero_single_element():
+    """Covers line 3-4 with zero inner-loop iterations (single element branch)."""
+    assert pairs_sum_to_zero([5]) is False
 
 
-def test_direct_pair_sums_to_zero():
-    assert pairs_sum_to_zero([1, -1]) is True
-    assert pairs_sum_to_zero([0, 0]) is True
-
-
-def test_no_pair_sums_to_zero():
-    assert pairs_sum_to_zero([1, 2, 3]) is False
-    assert pairs_sum_to_zero([1, 2, 3, 4]) is False
-
-
-def test_pair_found_after_failed_inner_iterations():
-    # first inner check fails, second succeeds on same outer iteration
-    assert pairs_sum_to_zero([5, 3, -5, 1]) is True
-    # first outer iteration all fail, success on second outer iteration
-    assert pairs_sum_to_zero([1, 2, -2]) is True
-
-
-def test_pair_found_on_later_outer_iteration():
-    assert pairs_sum_to_zero([1, 2, 3, -3]) is True
-    assert pairs_sum_to_zero([-4, 1, 2, 4]) is True
+def test_pairs_sum_to_zero_pair_later_in_list():
+    """Covers lines 3-6 where the zero-sum pair is not the first two elements."""
+    assert pairs_sum_to_zero([3, 5, 2, -2, 9]) is True

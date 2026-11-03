@@ -2,86 +2,120 @@
 # asked: {"lines": [88, 89, 90, 91, 97, 98, 100, 101, 102], "branches": [[97, 98], [97, 100], [100, 101], [100, 102]]}
 # gained: {"lines": [88, 89, 90, 91, 97, 98, 100, 101, 102], "branches": [[97, 98], [97, 100], [100, 101], [100, 102]]}
 
+from __future__ import absolute_import, division, print_function
+
+from unittest.mock import MagicMock
+
 import pytest
 
-from ansible.utils.display import Display
 from ansible.utils.unsafe_proxy import (
     AnsibleUnsafe,
     AnsibleUnsafeBytes,
     AnsibleUnsafeText,
+    NativeJinjaUnsafeText,
     UnsafeProxy,
 )
 
-
-def _patch_deprecated(monkeypatch):
-    calls = []
-
-    def _fake_deprecated(self, *args, **kwargs):
-        calls.append((args, kwargs))
-        return None
-
-    monkeypatch.setattr(Display, "deprecated", _fake_deprecated)
-    return calls
+DEPRECATION_MSG = (
+    'UnsafeProxy is being deprecated. '
+    'Use wrap_var or AnsibleUnsafeBytes/AnsibleUnsafeText directly instead'
+)
 
 
-def test_unsafeproxy_passthrough_ansible_unsafe_text(monkeypatch):
-    calls = _patch_deprecated(monkeypatch)
-    original = AnsibleUnsafeText(u"already unsafe")
-    result = UnsafeProxy(original)
-    assert result is original
-    assert isinstance(result, AnsibleUnsafe)
+@pytest.fixture
+def mock_display(monkeypatch):
+    """Replace ansible.utils.display.Display with a MagicMock.
+
+    UnsafeProxy.__new__ does ``from ansible.utils.display import Display``
+    at call time, so patching the module attribute intercepts it. This both
+    suppresses real deprecation output and lets us assert the call, and
+    monkeypatch restores the original class afterwards.
+    """
+    display_cls = MagicMock(name='Display')
+    monkeypatch.setattr('ansible.utils.display.Display', display_cls)
+    return display_cls.return_value
+
+
+def assert_deprecated(mock_display):
+    """Assert UnsafeProxy emitted its deprecation warning exactly once."""
+    mock_display.deprecated.assert_called_once_with(
+        DEPRECATION_MSG,
+        version='2.13',
+        collection_name='ansible.builtin',
+    )
+
+
+def test_proxy_emits_deprecation_warning(mock_display):
+    result = UnsafeProxy('abc')
+
+    assert_deprecated(mock_display)
     assert isinstance(result, AnsibleUnsafeText)
-    assert result == u"already unsafe"
-    assert len(calls) == 1
-    args, kwargs = calls[0]
-    assert "UnsafeProxy is being deprecated" in args[0]
-    assert kwargs.get("version") == "2.13"
-    assert kwargs.get("collection_name") == "ansible.builtin"
+    assert result == 'abc'
 
 
-def test_unsafeproxy_passthrough_ansible_unsafe_bytes(monkeypatch):
-    calls = _patch_deprecated(monkeypatch)
-    original = AnsibleUnsafeBytes(b"already unsafe bytes")
-    result = UnsafeProxy(original)
-    assert result is original
+def test_proxy_wraps_text_string(mock_display):
+    result = UnsafeProxy('some string')
+
+    assert_deprecated(mock_display)
+    assert isinstance(result, AnsibleUnsafeText)
     assert isinstance(result, AnsibleUnsafe)
+    assert result.__UNSAFE__ is True
+    assert result == 'some string'
+    # encode() must preserve the unsafe context
+    assert isinstance(result.encode(), AnsibleUnsafeBytes)
+    assert result.encode() == b'some string'
+
+
+def test_proxy_wraps_unicode_string(mock_display):
+    result = UnsafeProxy(u'caf\u00e9')
+
+    assert_deprecated(mock_display)
+    assert isinstance(result, AnsibleUnsafeText)
+    assert result == u'caf\u00e9'
+
+
+def test_proxy_returns_already_unsafe_text_unchanged(mock_display):
+    unsafe = AnsibleUnsafeText('already unsafe')
+
+    result = UnsafeProxy(unsafe)
+
+    assert_deprecated(mock_display)
+    assert result is unsafe
+    assert isinstance(result, AnsibleUnsafeText)
+
+
+def test_proxy_returns_already_unsafe_bytes_unchanged(mock_display):
+    unsafe = AnsibleUnsafeBytes(b'unsafe bytes')
+
+    result = UnsafeProxy(unsafe)
+
+    assert_deprecated(mock_display)
+    assert result is unsafe
     assert isinstance(result, AnsibleUnsafeBytes)
-    assert len(calls) == 1
 
 
-def test_unsafeproxy_wraps_text_string(monkeypatch):
-    calls = _patch_deprecated(monkeypatch)
-    result = UnsafeProxy(u"hello")
-    assert isinstance(result, AnsibleUnsafeText)
-    assert isinstance(result, AnsibleUnsafe)
-    assert result == u"hello"
-    assert type(result) is AnsibleUnsafeText
-    assert len(calls) == 1
+def test_proxy_returns_native_jinja_unsafe_text_unchanged(mock_display):
+    unsafe = NativeJinjaUnsafeText('native jinja unsafe')
+
+    result = UnsafeProxy(unsafe)
+
+    assert_deprecated(mock_display)
+    assert result is unsafe
+    assert isinstance(result, NativeJinjaUnsafeText)
 
 
-def test_unsafeproxy_returns_byte_string_unchanged(monkeypatch):
-    calls = _patch_deprecated(monkeypatch)
-    original = b"hello bytes"
-    result = UnsafeProxy(original)
-    assert result == b"hello bytes"
+@pytest.mark.parametrize('obj', [
+    None,
+    123,
+    1.5,
+    [1, 'two'],
+    {'key': 'value'},
+    ('t', 'u', 'p', 'l', 'e'),
+    b'raw bytes',
+])
+def test_proxy_passes_non_string_objects_through_unchanged(mock_display, obj):
+    result = UnsafeProxy(obj)
+
+    assert_deprecated(mock_display)
+    assert result is obj
     assert not isinstance(result, AnsibleUnsafe)
-    assert len(calls) == 1
-
-
-def test_unsafeproxy_returns_non_string_unchanged(monkeypatch):
-    calls = _patch_deprecated(monkeypatch)
-    sentinel_int = 42
-    result_int = UnsafeProxy(sentinel_int)
-    assert result_int is sentinel_int
-    assert result_int == 42
-    assert not isinstance(result_int, AnsibleUnsafe)
-
-    sentinel_none = None
-    result_none = UnsafeProxy(sentinel_none)
-    assert result_none is None
-
-    sentinel_list = [1, 2, 3]
-    result_list = UnsafeProxy(sentinel_list)
-    assert result_list is sentinel_list
-
-    assert len(calls) == 3

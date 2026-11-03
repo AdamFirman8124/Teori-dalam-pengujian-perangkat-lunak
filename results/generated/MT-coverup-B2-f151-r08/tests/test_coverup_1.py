@@ -7,25 +7,26 @@ import pytest
 from f151 import double_the_difference
 
 
-def test_double_the_difference_basic():
-    # Odd positives only: 1^2 + 3^2 + 5^2 = 35
-    assert double_the_difference([1, 3, 5]) == 35
+def test_double_the_difference_includes_positive_odd_integers():
+    # Positive odd integers (no '.' in their string form) are squared and summed.
+    assert double_the_difference([1, 3, 5]) == 1 + 9 + 25
 
 
-def test_double_the_difference_skips_non_positive_and_even():
-    # 0, negatives, and evens must all be filtered out
-    assert double_the_difference([-2, -1, 0, 2, 4]) == 0
-
-
-def test_double_the_difference_skips_floats():
-    # Floats contain "." in their string representation and must be skipped
-    assert double_the_difference([1.5, 3.0, 1, 3]) == 10
+def test_double_the_difference_filters_all_branches():
+    # Exercise every branch of the comprehension condition:
+    #   i > 0            -> False for 0, -1, -3 (short-circuits first check)
+    #   i % 2 != 0       -> False for 2, 4 (short-circuits second check)
+    #   '.' not in str(i)-> False for 1.5, 3.0 (short-circuits third check)
+    lst = [1, 3, 2, 4, 0, -1, -3, 1.5, 3.0]
+    # Only 1 and 3 qualify: 1**2 + 3**2 == 10
+    assert double_the_difference(lst) == 10
 
 
 def test_double_the_difference_empty_list():
+    # Empty input still executes the return line and yields 0.
     assert double_the_difference([]) == 0
 
 
-def test_double_the_difference_mixed():
-    # 1^2 + 5^2 = 26; -3, 2, 0.5 filtered out
-    assert double_the_difference([1, -3, 2, 5, 0.5]) == 26
+def test_double_the_difference_large_values():
+    # Larger positive odd integers are handled correctly.
+    assert double_the_difference([7, 9]) == 49 + 81

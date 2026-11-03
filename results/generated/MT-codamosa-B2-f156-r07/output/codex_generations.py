@@ -1,46 +1,171 @@
 
 
-# Generated at 2026-10-24 13:47:52.294454
+# Generated at 2026-11-02 11:18:54.798428
 # Unit test for function int_to_mini_roman
+def test_int_to_mini_roman():
+    assert module_0.int_to_mini_roman(1) == "i"
+    assert module_0.int_to_mini_roman(4) == "iv"
+    assert module_0.int_to_mini_roman(5) == "v"
+    assert module_0.int_to_mini_roman(9) == "ix"
+    assert module_0.int_to_mini_roman(10) == "x"
+    assert module_0.int_to_mini_roman(40) == "xl"
+    assert module_0.int_to_mini_roman(50) == "l"
+    assert module_0.int_to_mini_roman(90) == "xc"
+    assert module_0.int_to_mini_roman(100) == "c"
+    assert module_0.int_to_mini_roman(400) == "cd"
+    assert module_0.int_to_mini_roman(500) == "d"
+    assert module_0.int_to_mini_roman(900) == "cm"
+    assert module_0.int_to_mini_roman(1000) == "m"
+    assert module_0.int_to_mini_roman(3) == "iii"
+    assert module_0.int_to_mini_roman(8) == "viii"
+    assert module_0.int_to_mini_roman(14) == "xiv"
+    assert module_0.int_to_mini_roman(19) == "xix"
+    assert module_0.int_to_mini_roman(42) == "xlii"
+    assert module_0.int_to_mini_roman(87) == "lxxxvii"
+    assert module_0.int_to_mini_roman(99) == "xcix"
+    assert module_0.int_to_mini_roman(145) == "cxlv"
+    assert module_0.int_to_mini_roman(421) == "cdxxi"
+    assert module_0.int_to_mini_roman(1946) == "mcmxlvi"
+    assert module_0.int_to_mini_roman(2024) == "mmxxiv"
+    assert module_0.int_to_mini_roman(3999) == "mmmcmxcix"
+    print("All tests passed!")
 
-# Generated at 2026-10-24 13:47:54.711071
+
+if __name__ == "__main__":
+    test_int_to_mini_roman()
+
+# Generated at 2026-11-02 11:20:27.573377
 # Unit test for function int_to_mini_roman
+def test_int_to_mini_roman():
+    # Basic single-symbol values
+    assert module_0.int_to_mini_roman(1) == "i"
+    assert module_0.int_to_mini_roman(5) == "v"
+    assert module_0.int_to_mini_roman(10) == "x"
+    assert module_0.int_to_mini_roman(50) == "l"
+    assert module_0.int_to_mini_roman(100) == "c"
+    assert module_0.int_to_mini_roman(500) == "d"
+    assert module_0.int_to_mini_roman(1000) == "m"
 
-# Generated at 2026-10-24 13:47:57.125824
-# Unit test for function int_to_mini_roman
+    # Subtractive pairs
+    assert module_0.int_to_mini_roman(4) == "iv"
+    assert module_0.int_to_mini_roman(9) == "ix"
+    assert module_0.int_to_mini_roman(40) == "xl"
+    assert module_0.int_to_mini_roman(90) == "xc"
+    assert module_0.int_to_mini_roman(400) == "cd"
+    assert module_0.int_to_mini_roman(900) == "cm"
 
-# Generated at 2026-10-24 13:47:59.541482
-# Unit test for function int_to_mini_roman
+    # Common examples
+    assert module_0.int_to_mini_roman(19) == "xix"
+    assert module_0.int_to_mini_roman(152) == "clii"
+    assert module_0.int_to_mini_roman(426) == "cdxxvi"
+    assert module_0.int_to_mini_roman(14) == "xiv"
+    assert module_0.int_to_mini_roman(21) == "xxi"
+    assert module_0.int_to_mini_roman(354) == "cccliv"
+    assert module_0.int_to_mini_roman(99) == "xcix"
+    assert module_0.int_to_mini_roman(999) == "cmxcix"
+    assert module_0.int_to_mini_roman(1900) == "mcm"
+    assert module_0.int_to_mini_roman(2024) == "mmxxiv"
 
-# Generated at 2026-10-24 13:48:01.953636
-# Unit test for function int_to_mini_roman
+    # Maximum standard value
+    assert module_0.int_to_mini_roman(3999) == "mmmcmxcix"
 
-# Generated at 2026-10-24 13:48:04.379491
-# Unit test for function int_to_mini_roman
+    # Round-trip sanity: length and character checks
+    result = module_0.int_to_mini_roman(1234)
+    assert result == "mccxxxiv"
+    assert result.islower()
 
-# Generated at 2026-10-24 13:48:13.770839
-# Unit test for function int_to_mini_roman
+    print("All tests passed!")
 
-# Generated at 2026-10-24 13:48:16.274747
-# Unit test for function int_to_mini_roman
 
-# Generated at 2026-10-24 13:48:18.808929
-# Unit test for function int_to_mini_roman
+if __name__ == "__main__":
+    test_int_to_mini_roman()
 
-# Generated at 2026-10-24 13:48:21.322523
-# Unit test for function int_to_mini_roman
-
-# Generated at 2026-10-24 13:48:23.821506
-# Unit test for function int_to_mini_roman
-
-# Generated at 2026-10-24 13:48:40.685807
-# Unit test for function int_to_mini_roman
-def test_int_to_mini_roman():assert module_0.int_to_mini_roman(1) == "i"
-
-# Generated at 2026-10-24 13:48:49.055786
+# Generated at 2026-11-02 11:21:58.057448
 # Unit test for function int_to_mini_roman
 def test_int_to_mini_roman():
     # Basic values
+    assert module_0.int_to_mini_roman(1) == 'i'
+    assert module_0.int_to_mini_roman(4) == 'iv'
+    assert module_0.int_to_mini_roman(5) == 'v'
+    assert module_0.int_to_mini_roman(9) == 'ix'
+    assert module_0.int_to_mini_roman(10) == 'x'
+    assert module_0.int_to_mini_roman(40) == 'xl'
+    assert module_0.int_to_mini_roman(50) == 'l'
+    assert module_0.int_to_mini_roman(90) == 'xc'
+    assert module_0.int_to_mini_roman(100) == 'c'
+    assert module_0.int_to_mini_roman(400) == 'cd'
+    assert module_0.int_to_mini_roman(500) == 'd'
+    assert module_0.int_to_mini_roman(900) == 'cm'
+    assert module_0.int_to_mini_roman(1000) == 'm'
+
+    # Composite values
+    assert module_0.int_to_mini_roman(19) == 'xix'
+    assert module_0.int_to_mini_roman(152) == 'clii'
+    assert module_0.int_to_mini_roman(426) == 'cdxxvi'
+    assert module_0.int_to_mini_roman(58) == 'lviii'
+    assert module_0.int_to_mini_roman(1994) == 'mcmxciv'
+
+    # Boundary values
+    assert module_0.int_to_mini_roman(3999) == 'mmmcmxcix'
+    assert module_0.int_to_mini_roman(2023) == 'mmxxii'
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_int_to_mini_roman()
+
+# Generated at 2026-11-02 11:25:12.470955
+# Unit test for function int_to_mini_roman
+def test_int_to_mini_roman():import unittest
+
+
+class TestIntToMiniRoman(unittest.TestCase):
+
+    def test_single_values(self):
+        self.assertEqual(module_0.int_to_mini_roman(1), "i")
+        self.assertEqual(module_0.int_to_mini_roman(4), "iv")
+        self.assertEqual(module_0.int_to_mini_roman(5), "v")
+        self.assertEqual(module_0.int_to_mini_roman(9), "ix")
+        self.assertEqual(module_0.int_to_mini_roman(10), "x")
+        self.assertEqual(module_0.int_to_mini_roman(40), "xl")
+        self.assertEqual(module_0.int_to_mini_roman(50), "l")
+        self.assertEqual(module_0.int_to_mini_roman(90), "xc")
+        self.assertEqual(module_0.int_to_mini_roman(100), "c")
+        self.assertEqual(module_0.int_to_mini_roman(400), "cd")
+        self.assertEqual(module_0.int_to_mini_roman(500), "d")
+        self.assertEqual(module_0.int_to_mini_roman(900), "cm")
+        self.assertEqual(module_0.int_to_mini_roman(1000), "m")
+
+    def test_composite_numbers(self):
+        self.assertEqual(module_0.int_to_mini_roman(19), "xix")
+        self.assertEqual(module_0.int_to_mini_roman(152), "clii")
+        self.assertEqual(module_0.int_to_mini_roman(426), "cdxxvi")
+        self.assertEqual(module_0.int_to_mini_roman(2024), "mmxxiv")
+        self.assertEqual(module_0.int_to_mini_roman(3999), "mmmcmxcix")
+
+    def test_output_is_lowercase(self):
+        result = module_0.int_to_mini_roman(1234)
+        self.assertEqual(result, result.lower())
+
+    def test_repeated_symbols(self):
+        self.assertEqual(module_0.int_to_mini_roman(3), "iii")
+        self.assertEqual(module_0.int_to_mini_roman(30), "xxx")
+        self.assertEqual(module_0.int_to_mini_roman(300), "ccc")
+        self.assertEqual(module_0.int_to_mini_roman(3000), "mmm")
+
+    def test_mixed_composition(self):
+        self.assertEqual(module_0.int_to_mini_roman(1994), "mcmxciv")
+        self.assertEqual(module_0.int_to_mini_roman(3888), "mmmdccclxxxviii")
+
+
+if __name__ == "__main__":
+    unittest.main()
+
+# Generated at 2026-11-02 11:27:21.521365
+# Unit test for function int_to_mini_roman
+def test_int_to_mini_roman():
+    # Single symbols
     assert module_0.int_to_mini_roman(1) == "i"
     assert module_0.int_to_mini_roman(4) == "iv"
     assert module_0.int_to_mini_roman(5) == "v"
@@ -55,34 +180,35 @@ def test_int_to_mini_roman():
     assert module_0.int_to_mini_roman(900) == "cm"
     assert module_0.int_to_mini_roman(1000) == "m"
 
-    # Subtractive combinations
+    # Repeated symbols
+    assert module_0.int_to_mini_roman(2) == "ii"
+    assert module_0.int_to_mini_roman(3) == "iii"
+    assert module_0.int_to_mini_roman(20) == "xx"
+    assert module_0.int_to_mini_roman(300) == "ccc"
+    assert module_0.int_to_mini_roman(2000) == "mm"
+
+    # Composite numbers
     assert module_0.int_to_mini_roman(14) == "xiv"
     assert module_0.int_to_mini_roman(19) == "xix"
-    assert module_0.int_to_mini_roman(44) == "xliv"
-    assert module_0.int_to_mini_roman(99) == "xcix"
-    assert module_0.int_to_mini_roman(444) == "cdxliv"
+    assert module_0.int_to_mini_roman(42) == "xlii"
+    assert module_0.int_to_mini_roman(79) == "lxxix"
+    assert module_0.int_to_mini_roman(152) == "clii"
+    assert module_0.int_to_mini_roman(426) == "cdxxvi"
     assert module_0.int_to_mini_roman(944) == "cmxliv"
-    assert module_0.int_to_mini_roman(1994) == "mcmxciv"
-
-    # Repetition and mixed values
-    assert module_0.int_to_mini_roman(3) == "iii"
-    assert module_0.int_to_mini_roman(38) == "xxxviii"
+    assert module_0.int_to_mini_roman(1666) == "mdclxvi"
     assert module_0.int_to_mini_roman(2023) == "mmxxiii"
-    assert module_0.int_to_mini_roman(3000) == "mmm"
+    assert module_0.int_to_mini_roman(3549) == "mmmdxlix"
+    assert module_0.int_to_mini_roman(3999) == "mmmcmxcix"
 
-    # Round-trip check against a decoder
-    def mini_roman_to_int(s):
-        vals = {"i": 1, "v": 5, "x": 10, "l": 50, "c": 100, "d": 500, "m": 1000}
-        total = 0
-        for a, b in zip(s, s[1:]):
-            total += vals[a] if vals[a] >= vals[b] else -vals[a]
-        return total + (vals[s[-1]] if s else 0)
+    # Edge cases
+    assert module_0.int_to_mini_roman(3888) == "mmmdccclxxxviii"
+    assert module_0.int_to_mini_roman(1994) == "mcmxciv"
+    assert module_0.int_to_mini_roman(58) == "lviii"
 
+    # Verify output is always lowercase
     for n in range(1, 4000):
-        assert mini_roman_to_int(module_0.int_to_mini_roman(n)) == n, f"round-trip failed for {n}"
+        result = module_0.int_to_mini_roman(n)
+        assert result == result.lower()
+        assert len(result) > 0
 
     print("All tests passed!")
-
-
-# Run the test
-test_int_to_mini_roman()

@@ -7,37 +7,31 @@ import pytest
 from f127 import intersection
 
 
-def test_intersection_prime_length_returns_yes():
-    # Overlap [2, 4] -> length 2, which is prime (covers num == 2 branch)
-    assert intersection([1, 5], [2, 4]) == "YES"
+def test_intersection_prime_length_greater_than_two_returns_yes():
+    # Overlap is (2, 5) -> length 3, prime found by completing the loop.
+    assert intersection((1, 6), (2, 5)) == "YES"
 
 
-def test_intersection_odd_prime_length_returns_yes():
-    # Overlap [2, 5] -> length 3, prime found via the loop's "return True" path
-    assert intersection([1, 6], [2, 5]) == "YES"
+def test_intersection_length_two_returns_yes():
+    # Overlap is (2, 4) -> length 2, the special-case prime.
+    assert intersection((1, 5), (2, 4)) == "YES"
 
 
 def test_intersection_length_one_returns_no():
-    # Overlap [2, 3] -> length 1, hits the "num == 1" early return in is_prime
-    assert intersection([1, 3], [2, 4]) == "NO"
+    # Overlap is (2, 3) -> length 1, handled by the num == 1 branch.
+    assert intersection((1, 3), (2, 4)) == "NO"
 
 
 def test_intersection_zero_length_returns_no():
-    # Overlap is a single point -> length 0, hits the "num == 0" early return
-    # and the "length > 0" short-circuit
-    assert intersection([1, 3], [3, 5]) == "NO"
+    # Intervals merely touch: length 0 short-circuits before is_prime.
+    assert intersection((1, 2), (2, 3)) == "NO"
+
+
+def test_intersection_negative_length_returns_no():
+    # Disjoint intervals: negative length, non-positive branch of the guard.
+    assert intersection((3, 4), (1, 2)) == "NO"
 
 
 def test_intersection_composite_length_returns_no():
-    # Overlap [2, 6] -> length 4, composite: loop finds num % i == 0
-    assert intersection([1, 7], [2, 6]) == "NO"
-
-
-def test_intersection_large_composite_length_returns_no():
-    # Overlap [1, 9] -> length 8, composite, exercises loop iterations
-    assert intersection([0, 10], [1, 9]) == "NO"
-
-
-def test_intersection_no_overlap_returns_no():
-    # Disjoint intervals -> r < l, negative length, "length > 0" is False
-    assert intersection([1, 2], [5, 8]) == "NO"
+    # Overlap is (2, 8) -> length 6, composite: loop finds divisor 2.
+    assert intersection((1, 10), (2, 8)) == "NO"

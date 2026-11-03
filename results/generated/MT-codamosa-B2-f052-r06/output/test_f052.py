@@ -2,30 +2,6 @@
 import f052 as module_0
 
 def test_case_0():
-    int_0 = 2188
-    list_0 = [int_0, int_0]
-    int_1 = -1338
-    var_0 = module_0.below_threshold(list_0, int_1)
-    assert var_0 is False
-    list_1 = [int_0, int_0, int_0]
-    int_2 = -76
-    var_1 = module_0.below_threshold(list_0, int_2)
-    assert var_1 is False
-    int_3 = -571
-    int_4 = 2044
-    var_2 = module_0.below_threshold(list_1, int_4)
-    assert var_2 is False
-    var_3 = module_0.below_threshold(list_1, int_4)
-    assert var_3 is False
-    int_5 = -3451
-    var_4 = module_0.below_threshold(list_1, int_5)
-    assert var_4 is False
-    var_5 = module_0.below_threshold(list_1, int_3)
-    assert var_5 is False
-    var_6 = module_0.below_threshold(list_1, int_0)
-    assert var_6 is False
-
-def test_case_1():
     int_0 = 1
     int_1 = 2
     int_2 = 3
@@ -33,3 +9,48 @@ def test_case_1():
     int_4 = 4
     var_0 = module_0.below_threshold(int_3, int_4)
     assert var_0 is True
+    int_5 = [int_0, int_1, int_4]
+    var_1 = module_0.below_threshold(int_5, int_4)
+    assert var_1 is False
+    int_6 = 5
+    int_7 = [int_0, int_6, int_2]
+    var_2 = module_0.below_threshold(int_7, int_4)
+    assert var_2 is False
+    var_3 = []
+    int_8 = 10
+    var_4 = module_0.below_threshold(var_3, int_8)
+    assert var_4 is True
+    int_9 = 0
+    int_10 = [int_9]
+    var_5 = module_0.below_threshold(int_10, int_0)
+    assert var_5 is True
+    int_11 = [int_0]
+    var_6 = module_0.below_threshold(int_11, int_0)
+    assert var_6 is False
+    int_12 = -5
+    int_13 = -3
+    int_14 = -1
+    int_15 = [int_12, int_13, int_14]
+    var_7 = module_0.below_threshold(int_15, int_9)
+    assert var_7 is True
+    int_16 = -5
+    int_17 = -3
+    int_18 = [int_16, int_17]
+    int_19 = -4
+    var_8 = module_0.below_threshold(int_18, int_19)
+    assert var_8 is False
+    int_20 = [int_0, int_1, int_2]
+    int_21 = 100
+    var_9 = module_0.below_threshold(int_20, int_21)
+    assert var_9 is True
+    int_22 = [int_8, int_0, int_1]
+    var_10 = module_0.below_threshold(int_22, int_6)
+    assert var_10 is False
+    int_23 = [int_0, int_1, int_8]
+    var_11 = module_0.below_threshold(int_23, int_6)
+    assert var_11 is False
+    str_0 = 'All tests passed!'
+    var_12 = print(str_0)
+
+def test_case_1():
+    pass

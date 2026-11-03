@@ -7,35 +7,36 @@ import pytest
 from f146 import specialFilter
 
 
-def test_empty_list_returns_zero():
+def test_empty_input_returns_zero():
+    """Covers lines 4 and 12 (loop never runs)."""
     assert specialFilter([]) == 0
 
 
-def test_numbers_not_greater_than_ten_are_ignored():
-    # Covers the False branch of `num > 10` (line 6)
-    assert specialFilter([10, -13, 9, 0, -5]) == 0
+def test_numbers_not_above_ten_are_ignored():
+    """Covers the False branch of line 6 (num > 10)."""
+    assert specialFilter([1, 10, -3, -11, 0]) == 0
 
 
-def test_numbers_greater_than_ten_with_odd_first_and_last_digit():
-    # Covers lines 7-9 and the True branch of line 9, and line 10 (count += 1)
-    assert specialFilter([15, 33, 73, 91, 111]) == 5
+def test_numbers_above_ten_with_even_digits_are_ignored():
+    """Covers lines 7-8 and the False branch of line 9."""
+    assert specialFilter([20, 44, 100, 88]) == 0
 
 
-def test_numbers_greater_than_ten_with_even_first_or_last_digit():
-    # Covers the False branch of line 9
-    assert specialFilter([12, 20, 44, 98, 100]) == 0
+def test_only_first_digit_odd_is_ignored():
+    """Covers line 9 with first digit odd but last digit even."""
+    assert specialFilter([12, 14, 16, 18]) == 0
 
 
-def test_mixed_input_counts_only_matching_numbers():
-    # Exercises both branches of line 9 in a single call
-    # Matching: 11, 35, 57, 79, 99 -> 5
-    assert specialFilter([11, 22, 35, 46, 57, 68, 79, 88, 99, 10]) == 5
+def test_only_last_digit_odd_is_ignored():
+    """Covers line 9 with first digit even but last digit odd."""
+    assert specialFilter([21, 41, 61, 81]) == 0
 
 
-def test_negative_numbers_are_ignored_even_if_abs_matches():
-    # str(-15) is '-15', so first digit '-' is not an odd digit
-    assert specialFilter([-15, -33]) == 0
+def test_numbers_with_odd_first_and_last_digits_are_counted():
+    """Covers line 10 (count += 1) for several qualifying numbers."""
+    assert specialFilter([11, 15, 33, 97, 101]) == 5
 
 
-def test_large_numbers():
-    assert specialFilter([13579, 97531, 135780]) == 2
+def test_mixed_input_counts_only_qualifying_numbers():
+    """Covers all branches together in a single pass."""
+    assert specialFilter([15, -2, 44, 12, 33, 10, 21, 97]) == 3

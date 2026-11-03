@@ -4,20 +4,52 @@ import f087 as module_0
 def test_case_0():
     int_0 = 1
     int_1 = 2
-    int_2 = [int_0, int_1, int_0]
-    int_3 = 3
-    int_4 = [int_0, int_3]
-    int_5 = 4
-    int_6 = [int_5, int_0, int_0]
-    int_7 = [int_2, int_4, int_6]
-    var_0 = module_0.get_row(int_7, int_0)
-    assert var_0 == [(0, 2), (0, 0), (1, 0), (2, 2), (2, 1)]
-    int_8 = 99
-    var_1 = module_0.get_row(int_7, int_8)
-    assert var_1 == []
-    var_2 = []
-    var_3 = module_0.get_row(var_2, int_0)
-    assert var_3 == []
-
-def test_case_1():
-    pass
+    int_2 = 3
+    int_3 = 4
+    int_4 = 5
+    int_5 = 6
+    int_6 = [int_0, int_1, int_2, int_3, int_4, int_5]
+    int_7 = [int_0, int_1, int_2, int_3, int_0, int_5]
+    int_8 = [int_0, int_1, int_2, int_3, int_4, int_0]
+    int_9 = [int_6, int_7, int_8]
+    var_0 = module_0.get_row(int_9, int_0)
+    assert var_0 == [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]
+    var_1 = []
+    var_2 = module_0.get_row(var_1, int_0)
+    assert var_2 == []
+    var_3 = []
+    int_10 = [int_0]
+    int_11 = [int_0, int_1, int_2]
+    var_4 = [var_3, int_10, int_11]
+    var_5 = module_0.get_row(var_4, int_1)
+    assert var_5 == [(2, 1)]
+    int_12 = [int_0, int_0, int_0]
+    int_13 = [int_12]
+    var_6 = module_0.get_row(int_13, int_0)
+    assert var_6 == [(0, 2), (0, 1), (0, 0)]
+    int_14 = [int_0, int_1]
+    int_15 = [int_2, int_3]
+    int_16 = [int_14, int_15]
+    var_7 = module_0.get_row(int_16, int_4)
+    assert var_7 == []
+    int_17 = 9
+    int_18 = 8
+    int_19 = [int_17, int_18]
+    int_20 = 7
+    int_21 = [int_20, int_17]
+    int_22 = [int_17, int_17]
+    int_23 = [int_19, int_21, int_22]
+    var_8 = module_0.get_row(int_23, int_17)
+    assert var_8 == [(0, 0), (1, 1), (2, 1), (2, 0)]
+    int_24 = 42
+    int_25 = [int_24]
+    int_26 = [int_25]
+    var_9 = module_0.get_row(int_26, int_24)
+    assert var_9 == [(0, 0)]
+    int_27 = 0
+    int_28 = [int_27]
+    int_29 = [int_0, int_27]
+    var_10 = []
+    var_11 = [int_28, int_29, var_10]
+    var_12 = module_0.get_row(var_11, int_27)
+    assert var_12 == [(0, 0), (1, 1)]

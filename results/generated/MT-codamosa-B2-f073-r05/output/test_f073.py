@@ -2,32 +2,61 @@
 import f073 as module_0
 
 def test_case_0():
-    var_0 = []
-    var_1 = module_0.smallest_change(var_0)
-    assert var_1 == 0
     int_0 = 1
-    int_1 = [int_0]
-    var_2 = module_0.smallest_change(int_1)
-    assert var_2 == 0
-    int_2 = 2
-    int_3 = [int_0, int_2, int_0]
-    var_3 = module_0.smallest_change(int_3)
+    int_1 = 2
+    int_2 = 3
+    int_3 = [int_0, int_1, int_2, int_1, int_0]
+    var_0 = module_0.smallest_change(int_3)
+    assert var_0 == 0
+    int_4 = [int_0, int_1, int_1, int_0]
+    var_1 = module_0.smallest_change(int_4)
+    assert var_1 == 0
+    var_2 = []
+    var_3 = module_0.smallest_change(var_2)
     assert var_3 == 0
-    int_4 = 3
-    int_5 = [int_0, int_2, int_4]
-    var_4 = module_0.smallest_change(int_5)
-    assert var_4 == 1
-    int_6 = 4
-    int_7 = [int_0, int_2, int_4, int_6]
+    int_5 = 5
+    int_6 = [int_5]
+    var_4 = module_0.smallest_change(int_6)
+    assert var_4 == 0
+    int_7 = [int_0, int_1, int_2, int_5, int_0]
     var_5 = module_0.smallest_change(int_7)
-    assert var_5 == 2
-    str_0 = 'a'
-    str_1 = 'b'
-    str_2 = [str_0, str_1, str_1, str_0]
-    var_6 = module_0.smallest_change(str_2)
-    assert var_6 == 0
-    str_3 = 'c'
-    str_4 = 'd'
-    str_5 = [str_0, str_1, str_3, str_4]
-    var_7 = module_0.smallest_change(str_5)
-    assert var_7 == 2
+    assert var_5 == 1
+    int_8 = 4
+    int_9 = [int_0, int_1, int_2, int_8, int_2, int_5]
+    var_6 = module_0.smallest_change(int_9)
+    assert var_6 == 1
+    assert var_6 == 3
+    int_10 = 6
+    int_11 = [int_0, int_1, int_2, int_8, int_5, int_10]
+    var_7 = module_0.smallest_change(int_11)
+    assert var_7 == 3
+    int_12 = [int_0, int_0, int_0, int_0]
+    var_8 = module_0.smallest_change(int_12)
+    assert var_8 == 0
+    int_13 = [int_0, int_1, int_2, int_8]
+    var_9 = module_0.smallest_change(int_13)
+    assert var_9 == 2
+    int_14 = [int_0, int_0]
+    var_10 = module_0.smallest_change(int_14)
+    assert var_10 == 0
+    int_15 = [int_0, int_1]
+    var_11 = module_0.smallest_change(int_15)
+    assert var_11 == 1
+    int_16 = [int_0, int_1, int_2, int_5, int_8, int_2, int_1, int_0]
+    var_12 = module_0.smallest_change(int_16)
+    assert var_12 == 1
+    int_17 = [int_0, int_8, int_1, int_2, int_1, int_2, int_0]
+    var_13 = module_0.smallest_change(int_17)
+    assert var_13 == 1
+    int_18 = [int_0, int_1, int_1, int_0, int_0, int_1, int_1, int_0]
+    var_14 = module_0.smallest_change(int_18)
+    assert var_14 == 0
+    int_19 = [int_2, int_0, int_1, int_1, int_0, int_8]
+    var_15 = module_0.smallest_change(int_19)
+    assert var_15 == 2
+    assert var_15 == 1
+    str_0 = 'All test cases passed!'
+    var_16 = print(str_0)
+
+def test_case_1():
+    pass

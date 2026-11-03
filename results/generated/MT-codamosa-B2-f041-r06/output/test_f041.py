@@ -11,9 +11,15 @@ def test_case_0():
     int_2 = 2
     var_2 = module_0.car_race_collision(int_2)
     assert var_2 == 4
-    int_3 = 5
+    int_3 = 3
     var_3 = module_0.car_race_collision(int_3)
-    assert var_3 == 25
-    int_4 = 10
+    assert var_3 == 9
+    int_4 = 5
     var_4 = module_0.car_race_collision(int_4)
-    assert var_4 == 100
+    assert var_4 == 25
+    int_5 = 10
+    var_5 = module_0.car_race_collision(int_5)
+    assert var_5 == 100
+    int_6 = 100
+    var_6 = module_0.car_race_collision(int_6)
+    assert var_6 == 10000

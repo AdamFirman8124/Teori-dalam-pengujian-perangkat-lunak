@@ -2,37 +2,47 @@
 import f102 as module_0
 
 def test_case_0():
-    int_0 = 12
-    int_1 = 15
+    int_0 = 13
+    int_1 = 12
     var_0 = module_0.choose_num(int_0, int_1)
-    assert var_0 == 14
-    int_2 = 13
-    var_1 = module_0.choose_num(int_2, int_0)
+    assert var_0 == 1
+    assert var_0 == -1
+    int_2 = 27
+    int_3 = 10
+    var_1 = module_0.choose_num(int_2, int_3)
     assert var_1 == 1
     assert var_1 == -1
-    int_3 = 33
-    int_4 = 12354
-    var_2 = module_0.choose_num(int_3, int_4)
-    assert var_2 == 12354
-    int_5 = 5
-    var_3 = module_0.choose_num(int_5, int_5)
-    assert var_3 == 1
-    assert var_3 == -1
-    int_6 = 4
-    var_4 = module_0.choose_num(int_6, int_6)
-    assert var_4 == 4
-    int_7 = 6
-    var_5 = module_0.choose_num(int_5, int_7)
-    assert var_5 == 6
-    int_8 = 7
-    var_6 = module_0.choose_num(int_7, int_8)
-    assert var_6 == 6
-    int_9 = 9
-    var_7 = module_0.choose_num(int_8, int_9)
-    assert var_7 == 8
-    int_10 = 1
-    int_11 = 2
-    var_8 = module_0.choose_num(int_10, int_11)
+    int_4 = 5234
+    int_5 = 5233
+    var_2 = module_0.choose_num(int_4, int_5)
+    assert var_2 == 1
+    assert var_2 == -1
+    int_6 = 33
+    int_7 = 12354
+    var_3 = module_0.choose_num(int_6, int_7)
+    assert var_3 == 12354
+    int_8 = 546
+    var_4 = module_0.choose_num(int_8, int_8)
+    assert var_4 == 546
+    var_5 = module_0.choose_num(int_3, int_1)
+    assert var_5 == 12
+    int_9 = 15
+    var_6 = module_0.choose_num(int_1, int_9)
+    assert var_6 == 14
+    int_10 = 6
+    int_11 = 29
+    var_7 = module_0.choose_num(int_10, int_11)
+    assert var_7 == 28
+    int_12 = 1
+    int_13 = 3
+    var_8 = module_0.choose_num(int_12, int_13)
     assert var_8 == 2
+    int_14 = 7
+    var_9 = module_0.choose_num(int_14, int_14)
+    assert var_9 == 1
+    assert var_9 == -1
+    var_10 = module_0.choose_num(int_0, int_0)
+    assert var_10 == 1
+    assert var_10 == -1
     str_0 = 'All tests passed!'
-    var_9 = print(str_0)
+    var_11 = print(str_0)

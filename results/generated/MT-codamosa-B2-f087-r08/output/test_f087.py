@@ -2,17 +2,57 @@
 import f087 as module_0
 
 def test_case_0():
+    var_0 = []
     int_0 = 1
-    int_1 = 2
-    int_2 = 3
-    int_3 = [int_0, int_1, int_2]
-    int_4 = 4
-    int_5 = [int_1, int_4, int_1]
-    int_6 = 5
-    int_7 = [int_6, int_1, int_1]
-    int_8 = [int_3, int_5, int_7]
-    var_0 = module_0.get_row(int_8, int_1)
-    assert var_0 == [(0, 1), (1, 2), (1, 0), (2, 2), (2, 1)]
-    int_9 = 9
-    var_1 = module_0.get_row(int_8, int_9)
+    var_1 = module_0.get_row(var_0, int_0)
     assert var_1 == []
+    int_1 = [int_0]
+    int_2 = [int_1]
+    int_3 = 2
+    var_2 = module_0.get_row(int_2, int_3)
+    assert var_2 == []
+    int_4 = [int_0]
+    int_5 = [int_4]
+    var_3 = module_0.get_row(int_5, int_0)
+    assert var_3 == [(0, 0)]
+    int_6 = 3
+    int_7 = 4
+    int_8 = 5
+    int_9 = 6
+    int_10 = [int_0, int_3, int_6, int_7, int_8, int_9]
+    int_11 = [int_0, int_3, int_6, int_7, int_0, int_9]
+    int_12 = [int_0, int_3, int_6, int_7, int_8, int_0]
+    int_13 = [int_10, int_11, int_12]
+    var_4 = module_0.get_row(int_13, int_0)
+    assert var_4 == [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]
+    var_5 = []
+    int_14 = [int_0]
+    int_15 = [int_0, int_3, int_6]
+    var_6 = [var_5, int_14, int_15]
+    var_7 = module_0.get_row(var_6, int_3)
+    assert var_7 == [(2, 1)]
+    int_16 = [int_6, int_6, int_6]
+    int_17 = [int_16]
+    var_8 = module_0.get_row(int_17, int_6)
+    assert var_8 == [(0, 2), (0, 1), (0, 0)]
+    int_18 = [int_0, int_3]
+    int_19 = [int_6, int_7]
+    int_20 = [int_18, int_19]
+    int_21 = 99
+    var_9 = module_0.get_row(int_20, int_21)
+    assert var_9 == []
+    int_22 = [int_8, int_8]
+    int_23 = 7
+    int_24 = [int_9, int_23]
+    int_25 = [int_22, int_24]
+    var_10 = module_0.get_row(int_25, int_8)
+    assert var_10 == [(0, 1), (0, 0)]
+    int_26 = 0
+    int_27 = [int_26, int_0, int_3]
+    int_28 = [int_3, int_3, int_26]
+    int_29 = [int_0, int_3, int_26]
+    int_30 = [int_27, int_28, int_29]
+    var_11 = module_0.get_row(int_30, int_26)
+    assert var_11 == [(0, 0), (1, 2), (2, 2)]
+    str_0 = 'All tests passed!'
+    var_12 = print(str_0)

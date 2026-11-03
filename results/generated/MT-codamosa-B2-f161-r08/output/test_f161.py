@@ -2,33 +2,38 @@
 import f161 as module_0
 
 def test_case_0():
-    str_0 = 'Python'
+    str_0 = 'AsDf'
     var_0 = module_0.solve(str_0)
-    assert var_0 == 'pYTHON'
-    str_1 = 'Hello World!'
+    assert var_0 == 'aSdF'
+    str_1 = '1234'
     var_1 = module_0.solve(str_1)
-    assert var_1 == 'hELLO wORLD!'
-    str_2 = 'aBcD'
+    assert var_1 == '4321'
+    str_2 = 'ab'
     var_2 = module_0.solve(str_2)
-    assert var_2 == 'AbCd'
-    str_3 = '1234!'
+    assert var_2 == 'AB'
+    str_3 = 'BA'
     var_3 = module_0.solve(str_3)
-    assert var_3 == '4321'
-    assert var_3 == '!4321'
-    str_4 = '#a'
+    assert var_3 == 'ba'
+    str_4 = '#a@C'
     var_4 = module_0.solve(str_4)
-    assert var_4 == '#A'
-    str_5 = '#AsDf'
+    assert var_4 == '#A@c'
+    str_5 = '#@%&'
     var_5 = module_0.solve(str_5)
-    assert var_5 == '#aSdF'
-    str_6 = ''
+    assert var_5 == '&%@#'
+    str_6 = '#B@1234'
     var_6 = module_0.solve(str_6)
-    assert var_6 == ''
-    str_7 = '1234'
+    assert var_6 == '#b@1234'
+    str_7 = ''
     var_7 = module_0.solve(str_7)
-    assert var_7 == '4321'
-    str_8 = '!!'
+    assert var_7 == ''
+    str_8 = 'a'
     var_8 = module_0.solve(str_8)
-    assert var_8 == '!!'
-    str_9 = 'All tests passed.'
-    var_9 = print(str_9)
+    assert var_8 == 'A'
+    str_9 = '1'
+    var_9 = module_0.solve(str_9)
+    assert var_9 == '1'
+    str_10 = 'All tests passed!'
+    var_10 = print(str_10)
+
+def test_case_1():
+    pass

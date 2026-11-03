@@ -2,12 +2,33 @@
 import f159 as module_0
 
 def test_case_0():
-    int_0 = 10
-    int_1 = 5
-    int_2 = 8
+    int_0 = 5
+    int_1 = 3
+    int_2 = 10
     var_0 = module_0.eat(int_0, int_1, int_2)
-    assert var_0 == [15, 3]
-    var_1 = module_0.eat(int_0, int_1, int_1)
-    assert var_1 == [15, 0]
-    var_2 = module_0.eat(int_0, int_2, int_1)
-    assert var_2 == [15, 0]
+    assert var_0 == [8, 7]
+    var_1 = module_0.eat(int_0, int_2, int_1)
+    assert var_1 == [8, 0]
+    int_3 = 4
+    int_4 = 6
+    var_2 = module_0.eat(int_3, int_4, int_4)
+    assert var_2 == [10, 0]
+    int_5 = 0
+    var_3 = module_0.eat(int_2, int_0, int_5)
+    assert var_3 == [10, 0]
+    int_6 = 7
+    var_4 = module_0.eat(int_6, int_5, int_0)
+    assert var_4 == [7, 5]
+    var_5 = module_0.eat(int_5, int_5, int_5)
+    assert var_5 == [0, 0]
+    int_7 = 100
+    int_8 = 50
+    int_9 = 200
+    var_6 = module_0.eat(int_7, int_8, int_9)
+    assert var_6 == [150, 150]
+    int_10 = 300
+    var_7 = module_0.eat(int_7, int_10, int_8)
+    assert var_7 == [150, 0]
+
+def test_case_1():
+    pass

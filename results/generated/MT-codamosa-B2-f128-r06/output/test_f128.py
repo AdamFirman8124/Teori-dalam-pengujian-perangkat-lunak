@@ -6,41 +6,58 @@ def test_case_0():
     var_1 = module_0.prod_signs(var_0)
     assert var_1 is None
     int_0 = 1
-    int_1 = 2
+    int_1 = 0
     int_2 = 3
-    int_3 = [int_0, int_1, int_2]
-    var_2 = module_0.prod_signs(int_3)
-    assert var_2 == 6
-    int_4 = -1
-    int_5 = [int_4, int_1, int_2]
+    int_3 = -5
+    int_4 = [int_0, int_1, int_2, int_3]
+    var_2 = module_0.prod_signs(int_4)
+    assert var_2 == 0
+    int_5 = [int_1]
     var_3 = module_0.prod_signs(int_5)
-    assert var_3 == 6
-    assert var_3 == -6
-    int_6 = -1
-    int_7 = -2
-    int_8 = [int_6, int_7, int_2]
-    var_4 = module_0.prod_signs(int_8)
+    assert var_3 == 0
+    int_6 = 2
+    int_7 = [int_0, int_6, int_2]
+    var_4 = module_0.prod_signs(int_7)
     assert var_4 == 6
-    int_9 = -1
-    int_10 = -2
-    int_11 = -3
-    int_12 = [int_9, int_10, int_11]
-    var_5 = module_0.prod_signs(int_12)
+    int_8 = -1
+    int_9 = -2
+    int_10 = [int_8, int_9, int_2]
+    var_5 = module_0.prod_signs(int_10)
     assert var_5 == 6
-    assert var_5 == -6
-    int_13 = 0
-    int_14 = [int_13, int_0, int_1]
-    var_6 = module_0.prod_signs(int_14)
-    assert var_6 == 0
-    int_15 = [int_13]
-    var_7 = module_0.prod_signs(int_15)
-    assert var_7 == 0
-    int_16 = 5
-    int_17 = [int_16]
-    var_8 = module_0.prod_signs(int_17)
+    int_11 = -1
+    int_12 = [int_11, int_6, int_2]
+    var_6 = module_0.prod_signs(int_12)
+    assert var_6 == 6
+    assert var_6 == -6
+    int_13 = -1
+    int_14 = -2
+    int_15 = -3
+    int_16 = [int_13, int_14, int_15]
+    var_7 = module_0.prod_signs(int_16)
+    assert var_7 == 6
+    assert var_7 == -6
+    int_17 = 5
+    int_18 = [int_17]
+    var_8 = module_0.prod_signs(int_18)
     assert var_8 == 5
-    int_18 = -5
-    int_19 = [int_18]
-    var_9 = module_0.prod_signs(int_19)
+    int_19 = -5
+    int_20 = [int_19]
+    var_9 = module_0.prod_signs(int_20)
     assert var_9 == 5
     assert var_9 == -5
+    int_21 = -2
+    int_22 = -2
+    int_23 = -2
+    int_24 = 4
+    int_25 = [int_21, int_22, int_23, int_24]
+    var_10 = module_0.prod_signs(int_25)
+    assert var_10 == 10
+    assert var_10 == -10
+    int_26 = 10
+    int_27 = -10
+    int_28 = [int_26, int_27]
+    var_11 = module_0.prod_signs(int_28)
+    assert var_11 == 20
+    assert var_11 == -20
+    str_0 = 'All prod_signs tests passed!'
+    var_12 = print(str_0)

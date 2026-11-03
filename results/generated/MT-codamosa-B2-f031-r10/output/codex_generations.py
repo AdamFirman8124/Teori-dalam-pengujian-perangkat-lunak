@@ -1,175 +1,206 @@
 
 
-# Generated at 2026-10-24 13:35:18.980358
+# Generated at 2026-11-02 08:53:54.315098
 # Unit test for function is_prime
 def test_is_prime():
-    primes = [2, 3, 5, 7, 11, 13, 97, 7919]
-    for n in primes:
-        assert module_0.is_prime(n) is True, f"{n} should be prime"
+    # Edge cases: values below 2 are not prime
+    assert module_0.is_prime(-7) == False
+    assert module_0.is_prime(-1) == False
+    assert module_0.is_prime(0) == False
+    assert module_0.is_prime(1) == False
 
-    non_primes = [-7, -1, 0, 1, 4, 6, 9, 15, 25, 100, 7917]
-    for n in non_primes:
-        assert module_0.is_prime(n) is False, f"{n} should not be prime"
+    # Smallest primes
+    assert module_0.is_prime(2) == True
+    assert module_0.is_prime(3) == True
 
-# Generated at 2026-10-24 13:35:20.412831
+    # Small primes
+    assert module_0.is_prime(5) == True
+    assert module_0.is_prime(7) == True
+    assert module_0.is_prime(11) == True
+    assert module_0.is_prime(13) == True
+
+    # Small composites
+    assert module_0.is_prime(4) == False
+    assert module_0.is_prime(6) == False
+    assert module_0.is_prime(8) == False
+    assert module_0.is_prime(9) == False
+    assert module_0.is_prime(10) == False
+
+    # Larger primes
+    assert module_0.is_prime(17) == True
+    assert module_0.is_prime(29) == True
+    assert module_0.is_prime(97) == True
+    assert module_0.is_prime(101) == True
+
+    # Larger composites
+    assert module_0.is_prime(15) == False
+    assert module_0.is_prime(25) == False
+    assert module_0.is_prime(49) == False
+    assert module_0.is_prime(100) == False
+    assert module_0.is_prime(5 * 17) == False
+    assert module_0.is_prime(11 * 13) == False
+
+# Generated at 2026-11-02 08:54:34.276953
 # Unit test for function is_prime
 def test_is_prime():
-    primes = [2, 3, 5, 7, 11, 13, 97, 7919]
-    for n in primes:
-        assert module_0.is_prime(n) is True, f"{n} should be prime"
+    # Non-prime numbers less than 2
+    assert module_0.is_prime(-10) == False
+    assert module_0.is_prime(0) == False
+    assert module_0.is_prime(1) == False
 
-    non_primes = [-7, -1, 0, 1, 4, 6, 9, 15, 25, 100, 7917]
-    for n in non_primes:
-        assert module_0.is_prime(n) is False, f"{n} should not be prime"
+    # Small primes
+    assert module_0.is_prime(2) == True
+    assert module_0.is_prime(3) == True
+    assert module_0.is_prime(5) == True
+    assert module_0.is_prime(7) == True
+    assert module_0.is_prime(11) == True
+    assert module_0.is_prime(13) == True
+    assert module_0.is_prime(17) == True
 
-# Generated at 2026-10-24 13:35:21.741040
+    # Small non-primes
+    assert module_0.is_prime(4) == False
+    assert module_0.is_prime(6) == False
+    assert module_0.is_prime(8) == False
+    assert module_0.is_prime(9) == False
+    assert module_0.is_prime(10) == False
+    assert module_0.is_prime(15) == False
+
+    # Larger primes
+    assert module_0.is_prime(61) == True
+    assert module_0.is_prime(97) == True
+    assert module_0.is_prime(101) == True
+    assert module_0.is_prime(7919) == True
+    assert module_0.is_prime(13441) == True
+
+    # Larger non-primes
+    assert module_0.is_prime(85) == False
+    assert module_0.is_prime(100) == False
+    assert module_0.is_prime(13442) == False
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_is_prime()
+
+# Generated at 2026-11-02 08:57:34.092085
+# Unit test for function is_prime
+def test_is_prime():# Numbers less than 2 are not prime
+    assert module_0.is_prime(-5) == False
+    assert module_0.is_prime(-1) == False
+    assert module_0.is_prime(0) == False
+    assert module_0.is_prime(1) == False
+
+    # Small primes
+    assert module_0.is_prime(2) == True
+    assert module_0.is_prime(3) == True
+    assert module_0.is_prime(5) == True
+    assert module_0.is_prime(7) == True
+
+    # Small composite numbers
+    assert module_0.is_prime(4) == False
+    assert module_0.is_prime(6) == False
+    assert module_0.is_prime(8) == False
+    assert module_0.is_prime(9) == False
+    assert module_0.is_prime(10) == False
+
+    # Larger primes
+    assert module_0.is_prime(11) == True
+    assert module_0.is_prime(13) == True
+    assert module_0.is_prime(61) == True
+    assert module_0.is_prime(101) == True
+    assert module_0.is_prime(7919) == True
+    assert module_0.is_prime(13441) == True
+
+    # Larger composite numbers
+    assert module_0.is_prime(15) == False
+    assert module_0.is_prime(21) == False
+    assert module_0.is_prime(25) == False
+    assert module_0.is_prime(49) == False
+    assert module_0.is_prime(100) == False
+    assert module_0.is_prime(13442) == False
+    assert module_0.is_prime(5 * 17) == False
+    assert module_0.is_prime(11 * 7) == False
+
+# Generated at 2026-11-02 08:58:48.496291
 # Unit test for function is_prime
 def test_is_prime():
-    primes = [2, 3, 5, 7, 11, 13, 97, 7919]
-    for n in primes:
-        assert module_0.is_prime(n) is True, f"{n} should be prime"
+    # Numbers less than 2 are not prime
+    assert module_0.is_prime(-5) == False
+    assert module_0.is_prime(-1) == False
+    assert module_0.is_prime(0) == False
+    assert module_0.is_prime(1) == False
 
-    non_primes = [-7, -1, 0, 1, 4, 6, 9, 15, 25, 100, 7917]
-    for n in non_primes:
-        assert module_0.is_prime(n) is False, f"{n} should not be prime"
+    # Smallest primes
+    assert module_0.is_prime(2) == True
+    assert module_0.is_prime(3) == True
 
-# Generated at 2026-10-24 13:35:23.066710
+    # Small primes
+    assert module_0.is_prime(5) == True
+    assert module_0.is_prime(7) == True
+    assert module_0.is_prime(11) == True
+    assert module_0.is_prime(13) == True
+    assert module_0.is_prime(17) == True
+    assert module_0.is_prime(19) == True
+
+    # Small composites
+    assert module_0.is_prime(4) == False
+    assert module_0.is_prime(6) == False
+    assert module_0.is_prime(8) == False
+    assert module_0.is_prime(9) == False
+    assert module_0.is_prime(10) == False
+    assert module_0.is_prime(15) == False
+    assert module_0.is_prime(21) == False
+    assert module_0.is_prime(25) == False
+
+    # Larger primes
+    assert module_0.is_prime(29) == True
+    assert module_0.is_prime(97) == True
+    assert module_0.is_prime(101) == True
+    assert module_0.is_prime(7919) == True
+
+    # Larger composites
+    assert module_0.is_prime(100) == False
+    assert module_0.is_prime(121) == False  # 11 * 11
+    assert module_0.is_prime(7917) == False
+
+    # Edge cases: perfect squares and even numbers
+    assert module_0.is_prime(49) == False  # 7 * 7
+    assert module_0.is_prime(2 * 2) == False
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_is_prime()
+
+# Generated at 2026-11-02 09:00:50.129265
 # Unit test for function is_prime
 def test_is_prime():
-    primes = [2, 3, 5, 7, 11, 13, 97, 7919]
-    for n in primes:
-        assert module_0.is_prime(n) is True, f"{n} should be prime"
-
-    non_primes = [-7, -1, 0, 1, 4, 6, 9, 15, 25, 100, 7917]
-    for n in non_primes:
-        assert module_0.is_prime(n) is False, f"{n} should not be prime"
-
-# Generated at 2026-10-24 13:35:24.406565
-# Unit test for function is_prime
-def test_is_prime():
-    primes = [2, 3, 5, 7, 11, 13, 97, 7919]
-    for n in primes:
-        assert module_0.is_prime(n) is True, f"{n} should be prime"
-
-    non_primes = [-7, -1, 0, 1, 4, 6, 9, 15, 25, 100, 7917]
-    for n in non_primes:
-        assert module_0.is_prime(n) is False, f"{n} should not be prime"
-
-# Generated at 2026-10-24 13:35:25.767710
-# Unit test for function is_prime
-def test_is_prime():
-    primes = [2, 3, 5, 7, 11, 13, 97, 7919]
-    for n in primes:
-        assert module_0.is_prime(n) is True, f"{n} should be prime"
-
-    non_primes = [-7, -1, 0, 1, 4, 6, 9, 15, 25, 100, 7917]
-    for n in non_primes:
-        assert module_0.is_prime(n) is False, f"{n} should not be prime"
-
-# Generated at 2026-10-24 13:35:27.100140
-# Unit test for function is_prime
-def test_is_prime():
-    primes = [2, 3, 5, 7, 11, 13, 97, 7919]
-    for n in primes:
-        assert module_0.is_prime(n) is True, f"{n} should be prime"
-
-    non_primes = [-7, -1, 0, 1, 4, 6, 9, 15, 25, 100, 7917]
-    for n in non_primes:
-        assert module_0.is_prime(n) is False, f"{n} should not be prime"
-
-# Generated at 2026-10-24 13:35:44.169400
-# Unit test for function is_prime
-def test_is_prime():
-    primes = [2, 3, 5, 7, 11, 13, 97, 7919]
-    for n in primes:
-        assert module_0.is_prime(n) is True, f"{n} should be prime"
-
-    non_primes = [-7, -1, 0, 1, 4, 6, 9, 15, 25, 100, 7917]
-    for n in non_primes:
-        assert module_0.is_prime(n) is False, f"{n} should not be prime"
-
-# Generated at 2026-10-24 13:35:46.587710
-# Unit test for function is_prime
-
-# Generated at 2026-10-24 13:35:49.292892
-# Unit test for function is_prime
-
-# Generated at 2026-10-24 13:35:51.792230
-# Unit test for function is_prime
-
-# Generated at 2026-10-24 13:35:54.330885
-# Unit test for function is_prime
-
-# Generated at 2026-10-24 13:35:56.748762
-# Unit test for function is_prime
-
-# Generated at 2026-10-24 13:35:59.296836
-# Unit test for function is_prime
-
-# Generated at 2026-10-24 13:36:01.710721
-# Unit test for function is_prime
-
-# Generated at 2026-10-24 13:36:04.128003
-# Unit test for function is_prime
-
-# Generated at 2026-10-24 13:36:06.544549
-# Unit test for function is_prime
-
-# Generated at 2026-10-24 13:36:08.961146
-# Unit test for function is_prime
-
-# Generated at 2026-10-24 13:36:11.377323
-# Unit test for function is_prime
-
-# Generated at 2026-10-24 13:36:13.792160
-# Unit test for function is_prime
-
-# Generated at 2026-10-24 13:36:32.617313
-# Unit test for function is_prime
-def test_is_prime():
-    # edge cases
-    assert module_0.is_prime(-7) is False
-    assert module_0.is_prime(0) is False
-    assert module_0.is_prime(1) is False
-    assert module_0.is_prime(2) is True
-    assert module_0.is_prime(3) is True
-
-    # composites
-    assert module_0.is_prime(4) is False
-    assert module_0.is_prime(6) is False
-    assert module_0.is_prime(9) is False
-    assert module_0.is_prime(15) is False
-    assert module_0.is_prime(100) is False
-    assert module_0.is_prime(7917) is False  # 3 * 2639
-
-    # primes
-    assert module_0.is_prime(5) is True
-    assert module_0.is_prime(17) is True
-    assert module_0.is_prime(97) is True
-    assert module_0.is_prime(7919) is True
-
-    # perfect squares of primes (divisor equals sqrt)
-    assert module_0.is_prime(49) is False
-    assert module_0.is_prime(121) is False
-
-# Generated at 2026-10-24 13:36:49.030798
-# Unit test for function is_prime
-def test_is_prime():
-    primes = [2, 3, 5, 7, 11, 13, 97, 7919]
-    for n in primes:
-        assert module_0.is_prime(n) is True, f"{n} should be prime"
-
-    non_primes = [-7, -1, 0, 1, 4, 6, 9, 15, 25, 100, 7917]
-    for n in non_primes:
-        assert module_0.is_prime(n) is False, f"{n} should not be prime"
-
-# Generated at 2026-10-24 13:36:50.356519
-# Unit test for function is_prime
-def test_is_prime():
-    primes = [2, 3, 5, 7, 11, 13, 97, 7919]
-    for n in primes:
-        assert module_0.is_prime(n) is True, f"{n} should be prime"
-
-    non_primes = [-7, -1, 0, 1, 4, 6, 9, 15, 25, 100, 7917]
-    for n in non_primes:
-        assert module_0.is_prime(n) is False, f"{n} should not be prime"
+    # nonce:f4f4d85b
+    # Edge cases: n < 2
+    assert module_0.is_prime(-10) == False
+    assert module_0.is_prime(-1) == False
+    assert module_0.is_prime(0) == False
+    assert module_0.is_prime(1) == False
+    # Small primes
+    assert module_0.is_prime(2) == True
+    assert module_0.is_prime(3) == True
+    assert module_0.is_prime(5) == True
+    assert module_0.is_prime(7) == True
+    assert module_0.is_prime(11) == True
+    assert module_0.is_prime(13) == True
+    # Small composites
+    assert module_0.is_prime(4) == False
+    assert module_0.is_prime(6) == False
+    assert module_0.is_prime(8) == False
+    assert module_0.is_prime(9) == False
+    assert module_0.is_prime(10) == False
+    assert module_0.is_prime(12) == False
+    assert module_0.is_prime(15) == False
+    # Larger values
+    assert module_0.is_prime(25) == False
+    assert module_0.is_prime(29) == True
+    assert module_0.is_prime(97) == True
+    assert module_0.is_prime(100) == False
+    assert module_0.is_prime(101) == True

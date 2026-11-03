@@ -1,989 +1,216 @@
 
 
-# Generated at 2026-10-25 04:26:15.961307
+# Generated at 2026-11-02 13:45:23.884357
 # Unit test for constructor of class ViafreeIE
+def test_ViafreeIE():
+    ie = ViafreeIE()
+    assert ie is not None
+    assert isinstance(ie, InfoExtractor)
 
-# Generated at 2026-10-25 04:26:18.372378
-# Unit test for constructor of class ViafreeIE
+    # _VALID_URL should be defined and match viafree URLs
+    assert hasattr(ViafreeIE, '_VALID_URL')
+    assert re.match(ViafreeIE._VALID_URL, 'http://www.viafree.no/programmer/underholdning/det-beste-vorspielet/sesong-2/episode-1') is not None
+    assert re.match(ViafreeIE._VALID_URL, 'http://www.viafree.se/program/reality/sommaren-med-youtube-stjarnorna/sasong-1/avsnitt-1') is not None
+    assert re.match(ViafreeIE._VALID_URL, 'http://www.viafree.dk/programmer/reality/paradise-hotel/saeson-7/episode-5') is not None
 
-# Generated at 2026-10-25 04:26:20.787351
-# Unit test for constructor of class ViafreeIE
+    # suitable() must delegate to TVPlayIE for mtg/tvplay URLs and reject them
+    assert not ViafreeIE.suitable('mtg:418113')
+    assert not ViafreeIE.suitable('http://www.tv3play.se/program/husraddarna/395385?autostart=true')
+    assert not ViafreeIE.suitable('http://tvplay.skaties.lv/parraides/vinas-melo-labak/418113?autostart=true')
 
-# Generated at 2026-10-25 04:26:27.904209
+    # suitable() should accept genuine viafree URLs
+    assert ViafreeIE.suitable('http://www.viafree.no/programmer/underholdning/det-beste-vorspielet/sesong-2/episode-1')
+    assert ViafreeIE.suitable('https://viafree.dk/programmer/reality/paradise-hotel/saeson-7/episode-5')
+
+    # geo bypass flag should be configured to False
+    assert ViafreeIE._GEO_BYPASS is False
+
+    # instance-level suitable() should behave the same as the classmethod
+    assert not ie.suitable('mtg:418113')
+    assert ie.suitable('http://www.viafree.se/program/livsstil/husraddarna/sasong-2/avsnitt-2')
+
+# Generated at 2026-11-02 13:45:54.120989
+# Unit test for constructor of class TVPlayHomeIE
+def test_TVPlayHomeIE():
+    # nonce:376734e2
+    ie = TVPlayHomeIE()
+    assert isinstance(ie, InfoExtractor)
+    assert ie._VALID_URL == r'https?://(?:tv3?)?play\.(?:tv3\.lt|skaties\.lv|tv3\.ee)/(?:[^/]+/)*[^/?#&]+-(?P<id>\d+)'
+    assert ie.suitable('https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/')
+    assert ie.suitable('https://tvplay.skaties.lv/vinas-melo-labak/vinas-melo-labak-10280317/')
+    assert ie.suitable('https://tvplay.tv3.ee/cool-d-ga-mehhikosse/cool-d-ga-mehhikosse-10044354/')
+    assert ie.suitable('https://play.tv3.lt/aferistai-10047125')
+    assert ie.suitable('https://tv3play.skaties.lv/vinas-melo-labak-10280317')
+    assert ie.suitable('https://play.tv3.ee/cool-d-ga-mehhikosse-10044354')
+    assert not ie.suitable('http://www.tv6play.no/programmer/hotelinspektor-alex-polizzi/361883')
+    assert not ie.suitable('http://www.viafree.se/program/underhallning/i-like-radio-live/sasong-1/676869')
+    assert not ie.suitable('mtg:418113')
+    assert ie._match_id('https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/') == '10047125'
+    assert ie._match_id('https://tvplay.skaties.lv/vinas-melo-labak/vinas-melo-labak-10280317/') == '10280317'
+    assert ie._match_id('https://play.tv3.lt/aferistai-10047125') == '10047125'
+    assert ie._match_id('https://play.tv3.ee/cool-d-ga-mehhikosse-10044354') == '10044354'
+    assert ie.geo_verification_headers() == {}
+    assert ie._GEO_BYPASS is True
+
+# Generated at 2026-11-02 13:46:42.699325
 # Unit test for constructor of class TVPlayIE
 def test_TVPlayIE():
     ie = TVPlayIE()
-    assert isinstance(ie, TVPlayIE)
-    assert isinstance(ie, InfoExtractor)
     assert ie.IE_NAME == 'mtg'
     assert ie.IE_DESC == 'MTG services'
     assert ie.suitable('http://www.tvplay.lv/parraides/vinas-melo-labak/418113?autostart=true')
+    assert ie.suitable('http://play.tv3.lt/programos/moterys-meluoja-geriau/409229?autostart=true')
+    assert ie.suitable('http://www.tv3play.ee/sisu/kodu-keset-linna/238551?autostart=true')
+    assert ie.suitable('http://www.tv3play.se/program/husraddarna/395385?autostart=true')
+    assert ie.suitable('http://www.tv6play.se/program/den-sista-dokusapan/266636?autostart=true')
+    assert ie.suitable('http://www.tv8play.se/program/antikjakten/282756?autostart=true')
+    assert ie.suitable('http://www.tv3play.no/programmer/anna-anka-soker-assistent/230898?autostart=true')
+    assert ie.suitable('http://www.viasat4play.no/programmer/budbringerne/21873?autostart=true')
+    assert ie.suitable('http://www.tv6play.no/programmer/hotelinspektor-alex-polizzi/361883?autostart=true')
+    assert ie.suitable('http://play.novatv.bg/programi/zdravei-bulgariya/624952?autostart=true')
+    assert ie.suitable('https://play.nova.bg/programi/zdravei-bulgariya/764300?autostart=true')
+    assert ie.suitable('http://tvplay.skaties.lv/parraides/vinas-melo-labak/418113?autostart=true')
+    assert ie.suitable('http://tv3play.tv3.ee/sisu/kodu-keset-linna/238551?autostart=true')
+    assert ie.suitable('http://www.viafree.se/program/underhallning/i-like-radio-live/sasong-1/676869')
     assert ie.suitable('mtg:418113')
-    assert not ie.suitable('http://www.example.com/video/418113')
-    assert ie._match_id('http://play.tv3.lt/programos/moterys-meluoja-geriau/409229?autostart=true') == '409229'
-    assert ie._match_id('https://play.nova.bg/programi/zdravei-bulgariya/764300?autostart=true') == '764300'
+    assert not ie.suitable('https://www.youtube.com/watch?v=BaW_jenozKc')
+    assert ie._match_id('http://www.tvplay.lv/parraides/vinas-melo-labak/418113?autostart=true') == '418113'
+    assert ie._match_id('mtg:418113') == '418113'
+    assert ie._match_id('http://www.viafree.se/program/underhallning/i-like-radio-live/sasong-1/676869') == '676869'
 
-# Generated at 2026-10-25 04:26:37.517867
+# Generated at 2026-11-02 13:48:00.284989
 # Unit test for constructor of class ViafreeIE
 def test_ViafreeIE():
-    downloader = object()
-    extractor = ViafreeIE(downloader)
-
-    assert isinstance(extractor, ViafreeIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
-    assert extractor._ready is False
-
-# Generated at 2026-10-25 04:26:49.427308
-# Unit test for constructor of class TVPlayHomeIE
-def test_TVPlayHomeIE():
-    # constructor should work with and without downloader
-    ie = TVPlayHomeIE()
+    # Instantiate the extractor via its constructor
+    ie = ViafreeIE()
+    assert isinstance(ie, ViafreeIE)
     assert isinstance(ie, InfoExtractor)
-    assert isinstance(ie, TVPlayHomeIE)
 
-    # no custom __init__ -> uses InfoExtractor.__init__(downloader=None)
-    assert ie._downloader is None
+    # Check basic class-level behavior after construction
+    assert ie.ie_key() == 'Viafree'
+    assert ie._VALID_URL is not None
 
-    downloader = object()
-    ie_with_dl = TVPlayHomeIE(downloader)
-    assert ie_with_dl._downloader is downloader
+    # ViafreeIE must not handle URLs claimed by TVPlayIE
+    assert not ViafreeIE.suitable('http://www.tv3play.se/program/husraddarna/395385?autostart=true')
 
-    # _VALID_URL / _match_id behaviour
-    assert ie._match_id(
-        'https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/'
-    ) == '10047125'
+    # ViafreeIE handles viafree URLs
+    assert ViafreeIE.suitable('http://www.viafree.no/programmer/underholdning/det-beste-vorspielet/sesong-2/episode-1')
+    assert ViafreeIE.suitable('http://www.viafree.se/program/livsstil/husraddarna/sasong-2/avsnitt-2')
+    assert ViafreeIE.suitable('http://www.viafree.dk/programmer/reality/paradise-hotel/saeson-7/episode-5')
 
-    assert ie._match_id(
-        'https://tvplay.skaties.lv/vinas-melo-labak/vinas-melo-labak-10280317/'
-    ) == '10280317'
+    # Non-matching URLs are rejected
+    assert not ViafreeIE.suitable('http://www.example.com/program/episode-1')
 
-    assert TVPlayHomeIE.suitable(
-        'https://play.tv3.lt/aferistai-10047125'
-    )
-    assert TVPlayHomeIE.suitable(
-        'https://tv3play.skaties.lv/vinas-melo-labak-10280317'
-    )
-    assert not TVPlayHomeIE.suitable(
-        'https://www.viafree.se/program/livsstil/husraddarna/sasong-2/avsnitt-2'
-    )
-
-# Generated at 2026-10-25 04:26:51.845086
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:26:54.529673
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:26:56.945334
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:26:59.500786
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:27:01.915808
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:27:04.331043
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:27:06.746661
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:27:09.162233
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:27:11.577625
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:27:13.992940
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:27:16.411637
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:27:18.831557
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:27:21.247192
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:27:23.662054
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:27:26.076709
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:27:28.492375
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:27:30.908120
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:27:33.325018
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:27:35.751222
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:27:46.238056
-# Unit test for constructor of class ViafreeIE
-def test_ViafreeIE():ie = ViafreeIE(None)
-
-# Generated at 2026-10-25 04:27:47.670855
-# Unit test for constructor of class TVPlayHomeIE
-def test_TVPlayHomeIE():
-    # constructor should work with and without downloader
-    ie = TVPlayHomeIE()
-    assert isinstance(ie, InfoExtractor)
-    assert isinstance(ie, TVPlayHomeIE)
-
-    # no custom __init__ -> uses InfoExtractor.__init__(downloader=None)
-    assert ie._downloader is None
-
-    downloader = object()
-    ie_with_dl = TVPlayHomeIE(downloader)
-    assert ie_with_dl._downloader is downloader
-
-    # _VALID_URL / _match_id behaviour
-    assert ie._match_id(
-        'https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/'
-    ) == '10047125'
-
-    assert ie._match_id(
-        'https://tvplay.skaties.lv/vinas-melo-labak/vinas-melo-labak-10280317/'
-    ) == '10280317'
-
-    assert TVPlayHomeIE.suitable(
-        'https://play.tv3.lt/aferistai-10047125'
-    )
-    assert TVPlayHomeIE.suitable(
-        'https://tv3play.skaties.lv/vinas-melo-labak-10280317'
-    )
-    assert not TVPlayHomeIE.suitable(
-        'https://www.viafree.se/program/livsstil/husraddarna/sasong-2/avsnitt-2'
-    )
-
-# Generated at 2026-10-25 04:27:57.195373
+# Generated at 2026-11-02 13:49:28.614143
 # Unit test for constructor of class ViafreeIE
 def test_ViafreeIE():
-    extractor = ViafreeIE()
+    '''
+    Unit test for constructor of class ViafreeIE
+    '''
+    # Instantiation should succeed and produce a ViafreeIE instance
+    ie = ViafreeIE()
+    assert ie is not None
+    assert isinstance(ie, ViafreeIE)
 
-    assert isinstance(extractor, ViafreeIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is None
-    assert extractor._ready is False
+    # GEO bypass is explicitly disabled for this extractor
+    assert ie._GEO_BYPASS is False
 
-# Generated at 2026-10-25 04:27:58.576860
-# Unit test for constructor of class TVPlayHomeIE
-def test_TVPlayHomeIE():
-    # constructor should work with and without downloader
-    ie = TVPlayHomeIE()
-    assert isinstance(ie, InfoExtractor)
-    assert isinstance(ie, TVPlayHomeIE)
+    # Valid viafree URLs should be deemed suitable
+    assert ViafreeIE.suitable(
+        'http://www.viafree.no/programmer/underholdning/det-beste-vorspielet/sesong-2/episode-1')
+    assert ViafreeIE.suitable(
+        'http://www.viafree.se/program/reality/sommaren-med-youtube-stjarnorna/sasong-1/avsnitt-1')
+    assert ViafreeIE.suitable(
+        'http://www.viafree.dk/programmer/reality/paradise-hotel/saeson-7/episode-5')
 
-    # no custom __init__ -> uses InfoExtractor.__init__(downloader=None)
-    assert ie._downloader is None
+    # URLs already handled by TVPlayIE must not be handled by ViafreeIE
+    assert not ViafreeIE.suitable(
+        'http://www.tv3play.se/program/husraddarna/395385?autostart=true')
+    assert not ViafreeIE.suitable('mtg:418113')
 
-    downloader = object()
-    ie_with_dl = TVPlayHomeIE(downloader)
-    assert ie_with_dl._downloader is downloader
+    # Unrelated URLs should not match
+    assert not ViafreeIE.suitable('https://www.youtube.com/watch?v=BaW_jenozKc')
 
-    # _VALID_URL / _match_id behaviour
-    assert ie._match_id(
-        'https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/'
-    ) == '10047125'
-
-    assert ie._match_id(
-        'https://tvplay.skaties.lv/vinas-melo-labak/vinas-melo-labak-10280317/'
-    ) == '10280317'
-
-    assert TVPlayHomeIE.suitable(
-        'https://play.tv3.lt/aferistai-10047125'
-    )
-    assert TVPlayHomeIE.suitable(
-        'https://tv3play.skaties.lv/vinas-melo-labak-10280317'
-    )
-    assert not TVPlayHomeIE.suitable(
-        'https://www.viafree.se/program/livsstil/husraddarna/sasong-2/avsnitt-2'
-    )
-
-# Generated at 2026-10-25 04:27:59.955325
-# Unit test for constructor of class TVPlayHomeIE
-def test_TVPlayHomeIE():
-    # constructor should work with and without downloader
-    ie = TVPlayHomeIE()
-    assert isinstance(ie, InfoExtractor)
-    assert isinstance(ie, TVPlayHomeIE)
-
-    # no custom __init__ -> uses InfoExtractor.__init__(downloader=None)
-    assert ie._downloader is None
-
-    downloader = object()
-    ie_with_dl = TVPlayHomeIE(downloader)
-    assert ie_with_dl._downloader is downloader
-
-    # _VALID_URL / _match_id behaviour
-    assert ie._match_id(
-        'https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/'
-    ) == '10047125'
-
-    assert ie._match_id(
-        'https://tvplay.skaties.lv/vinas-melo-labak/vinas-melo-labak-10280317/'
-    ) == '10280317'
-
-    assert TVPlayHomeIE.suitable(
-        'https://play.tv3.lt/aferistai-10047125'
-    )
-    assert TVPlayHomeIE.suitable(
-        'https://tv3play.skaties.lv/vinas-melo-labak-10280317'
-    )
-    assert not TVPlayHomeIE.suitable(
-        'https://www.viafree.se/program/livsstil/husraddarna/sasong-2/avsnitt-2'
-    )
-
-# Generated at 2026-10-25 04:28:01.368047
-# Unit test for constructor of class TVPlayHomeIE
-def test_TVPlayHomeIE():
-    # constructor should work with and without downloader
-    ie = TVPlayHomeIE()
-    assert isinstance(ie, InfoExtractor)
-    assert isinstance(ie, TVPlayHomeIE)
-
-    # no custom __init__ -> uses InfoExtractor.__init__(downloader=None)
-    assert ie._downloader is None
-
-    downloader = object()
-    ie_with_dl = TVPlayHomeIE(downloader)
-    assert ie_with_dl._downloader is downloader
-
-    # _VALID_URL / _match_id behaviour
-    assert ie._match_id(
-        'https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/'
-    ) == '10047125'
-
-    assert ie._match_id(
-        'https://tvplay.skaties.lv/vinas-melo-labak/vinas-melo-labak-10280317/'
-    ) == '10280317'
-
-    assert TVPlayHomeIE.suitable(
-        'https://play.tv3.lt/aferistai-10047125'
-    )
-    assert TVPlayHomeIE.suitable(
-        'https://tv3play.skaties.lv/vinas-melo-labak-10280317'
-    )
-    assert not TVPlayHomeIE.suitable(
-        'https://www.viafree.se/program/livsstil/husraddarna/sasong-2/avsnitt-2'
-    )
-
-# Generated at 2026-10-25 04:28:09.177696
+# Generated at 2026-11-02 13:52:00.310492
 # Unit test for constructor of class ViafreeIE
 def test_ViafreeIE():
-    downloader = object()
-    extractor = ViafreeIE(downloader)
+    """
+    Test that ViafreeIE can be constructed and that its class-level
+    configuration (suitable(), _VALID_URL, _GEO_BYPASS) behaves correctly.
+    """
+    # The constructor should work with a default (None) downloader
+    ie = ViafreeIE()
+    assert ie is not None
+    assert ie._downloader is None
+    assert ie._GEO_BYPASS is False
 
-    assert isinstance(extractor, ViafreeIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
-    assert extractor._ready is False
-    assert extractor.ie_key() == 'Viafree'
+    # Also construct with a dummy downloader
+    class _FakeDownloader(object):
+        params = {}
+    ie2 = ViafreeIE(_FakeDownloader())
+    assert ie2 is not None
+    assert ie2._downloader is not None
 
-# Generated at 2026-10-25 04:28:11.595122
-# Unit test for constructor of class ViafreeIE
+    # URLs that ViafreeIE should handle
+    handled_urls = [
+        'http://www.viafree.no/programmer/underholdning/det-beste-vorspielet/sesong-2/episode-1',
+        'http://www.viafree.se/program/reality/sommaren-med-youtube-stjarnorna/sasong-1/avsnitt-1',
+        'http://www.viafree.se/program/livsstil/husraddarna/sasong-2/avsnitt-2',
+        'http://www.viafree.dk/programmer/reality/paradise-hotel/saeson-7/episode-5',
+    ]
+    for url in handled_urls:
+        assert ViafreeIE.suitable(url), 'ViafreeIE should handle: %s' % url
+        m = re.match(ViafreeIE._VALID_URL, url)
+        assert m is not None
+        assert m.group('country') in ('dk', 'no', 'se'), url
 
-# Generated at 2026-10-25 04:28:14.009797
-# Unit test for constructor of class ViafreeIE
+    # URLs that ViafreeIE must NOT handle:
+    # - non-viafree hosts
+    # - numeric-id viafree URLs already claimed by TVPlayIE (suitable() returns False)
+    # - mtg: scheme URLs handled by TVPlayIE
+    unhandled_urls = [
+        'https://www.youtube.com/watch?v=BaW_jenozKc',
+        'http://www.tv3play.se/program/husraddarna/395385?autostart=true',
+        'http://www.viafake.se/program/reality/some-show/sasong-1/avsnitt-1',
+        'http://www.viafree.se/program/underhallning/i-like-radio-live/sasong-1/676869',
+        'mtg:418113',
+    ]
+    for url in unhandled_urls:
+        assert not ViafreeIE.suitable(url), 'ViafreeIE should NOT handle: %s' % url
 
-# Generated at 2026-10-25 04:28:16.424821
-# Unit test for constructor of class ViafreeIE
+# nonce:bdd4aabf
 
-# Generated at 2026-10-25 04:28:18.840051
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:28:21.255298
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:28:23.671846
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:28:26.086860
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:28:28.501860
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:28:30.916879
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:28:33.332443
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:28:35.748043
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:28:43.003484
-# Unit test for constructor of class TVPlayIE
-def test_TVPlayIE():extractor = TVPlayIE(None)
-
-# Generated at 2026-10-25 04:28:51.375021
-# Unit test for constructor of class ViafreeIE
-def test_ViafreeIE():
-    downloader = object()
-    extractor = ViafreeIE(downloader)
-
-    assert isinstance(extractor, ViafreeIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
-    assert extractor.ie_key() == 'Viafree'
-
-# Generated at 2026-10-25 04:28:52.797778
+# Generated at 2026-11-02 13:54:05.683460
 # Unit test for constructor of class TVPlayHomeIE
 def test_TVPlayHomeIE():
-    # constructor should work with and without downloader
+    # Constructing the extractor without a downloader should succeed
     ie = TVPlayHomeIE()
+
+    # It must be an InfoExtractor instance
     assert isinstance(ie, InfoExtractor)
-    assert isinstance(ie, TVPlayHomeIE)
 
-    # no custom __init__ -> uses InfoExtractor.__init__(downloader=None)
-    assert ie._downloader is None
-
-    downloader = object()
-    ie_with_dl = TVPlayHomeIE(downloader)
-    assert ie_with_dl._downloader is downloader
-
-    # _VALID_URL / _match_id behaviour
-    assert ie._match_id(
-        'https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/'
-    ) == '10047125'
-
-    assert ie._match_id(
-        'https://tvplay.skaties.lv/vinas-melo-labak/vinas-melo-labak-10280317/'
-    ) == '10280317'
-
-    assert TVPlayHomeIE.suitable(
-        'https://play.tv3.lt/aferistai-10047125'
-    )
-    assert TVPlayHomeIE.suitable(
-        'https://tv3play.skaties.lv/vinas-melo-labak-10280317'
-    )
-    assert not TVPlayHomeIE.suitable(
-        'https://www.viafree.se/program/livsstil/husraddarna/sasong-2/avsnitt-2'
+    # Class-level attributes should be correctly initialized
+    assert TVPlayHomeIE._VALID_URL == (
+        r'https?://(?:tv3?)?play\.(?:tv3\.lt|skaties\.lv|tv3\.ee)'
+        r'/(?:[^/]+/)*[^/?#&]+-(?P<id>\d+)'
     )
 
-# Generated at 2026-10-25 04:29:10.916590
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:29:13.332040
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:29:15.746870
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:29:18.161119
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:29:20.575338
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:29:23.160318
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:29:25.674850
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:29:28.090456
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:29:30.505735
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:29:32.920661
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:29:35.335358
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:29:37.753881
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:29:40.167153
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:29:45.645835
-# Unit test for constructor of class TVPlayIE
-def test_TVPlayIE():extractor = TVPlayIE()
-
-# Generated at 2026-10-25 04:29:54.037849
-# Unit test for constructor of class ViafreeIE
-def test_ViafreeIE():
-    downloader = object()
-    extractor = ViafreeIE(downloader)
-
-    assert isinstance(extractor, ViafreeIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
-    assert extractor._ready is False
-
-    extractor_without_downloader = ViafreeIE()
-    assert extractor_without_downloader._downloader is None
-    assert extractor_without_downloader._ready is False
-
-# Generated at 2026-10-25 04:29:55.467397
-# Unit test for constructor of class TVPlayHomeIE
-def test_TVPlayHomeIE():
-    # constructor should work with and without downloader
-    ie = TVPlayHomeIE()
-    assert isinstance(ie, InfoExtractor)
-    assert isinstance(ie, TVPlayHomeIE)
-
-    # no custom __init__ -> uses InfoExtractor.__init__(downloader=None)
-    assert ie._downloader is None
-
-    downloader = object()
-    ie_with_dl = TVPlayHomeIE(downloader)
-    assert ie_with_dl._downloader is downloader
-
-    # _VALID_URL / _match_id behaviour
-    assert ie._match_id(
-        'https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/'
-    ) == '10047125'
-
-    assert ie._match_id(
-        'https://tvplay.skaties.lv/vinas-melo-labak/vinas-melo-labak-10280317/'
-    ) == '10280317'
-
-    assert TVPlayHomeIE.suitable(
-        'https://play.tv3.lt/aferistai-10047125'
-    )
-    assert TVPlayHomeIE.suitable(
-        'https://tv3play.skaties.lv/vinas-melo-labak-10280317'
-    )
-    assert not TVPlayHomeIE.suitable(
-        'https://www.viafree.se/program/livsstil/husraddarna/sasong-2/avsnitt-2'
-    )
-
-# Generated at 2026-10-25 04:30:03.662198
-# Unit test for constructor of class ViafreeIE
-def test_ViafreeIE():
-    extractor = ViafreeIE()
-
-    assert isinstance(extractor, ViafreeIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is None
-    assert extractor._ready is False
-
-# Generated at 2026-10-25 04:30:14.104863
-# Unit test for constructor of class ViafreeIE
-def test_ViafreeIE():
-    downloader = object()
-
-    extractor = ViafreeIE(downloader)
-
-    assert isinstance(extractor, ViafreeIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
-    assert extractor._ready is False
-
-# Generated at 2026-10-25 04:30:16.523596
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:30:18.938580
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:30:21.355421
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:30:23.946099
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:30:26.372557
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:30:28.778190
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:30:31.193848
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:30:33.609699
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:30:36.028055
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:30:38.449971
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:30:40.871188
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:30:43.285803
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:30:45.701752
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:30:48.117897
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:30:50.535454
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:30:52.949085
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:30:55.363681
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:30:57.777959
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:31:00.192617
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:31:02.608782
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:31:05.024678
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:31:07.441950
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:31:14.110758
-# Unit test for constructor of class TVPlayIE
-def test_TVPlayIE():extractor = TVPlayIE()
-
-# Generated at 2026-10-25 04:31:23.085299
-# Unit test for constructor of class ViafreeIE
-def test_ViafreeIE():
-    downloader = object()
-
-    extractor = ViafreeIE(downloader)
-
-    assert isinstance(extractor, ViafreeIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
-    assert extractor._GEO_BYPASS is False
-
-# Generated at 2026-10-25 04:31:40.956430
-# Unit test for constructor of class TVPlayIE
-def test_TVPlayIE():
-    ie = TVPlayIE()
-    assert isinstance(ie, TVPlayIE)
-    assert isinstance(ie, InfoExtractor)
-    assert ie.IE_NAME == 'mtg'
-    assert ie.IE_DESC == 'MTG services'
-    assert ie.suitable('http://www.tvplay.lv/parraides/vinas-melo-labak/418113?autostart=true')
-    assert ie.suitable('mtg:418113')
-    assert not ie.suitable('http://www.example.com/video/418113')
-    assert ie._match_id('http://play.tv3.lt/programos/moterys-meluoja-geriau/409229?autostart=true') == '409229'
-    assert ie._match_id('https://play.nova.bg/programi/zdravei-bulgariya/764300?autostart=true') == '764300'
-
-# Generated at 2026-10-25 04:31:50.309478
-# Unit test for constructor of class ViafreeIE
-def test_ViafreeIE():
-    downloader = object()
-
-    extractor = ViafreeIE(downloader)
-
-    assert isinstance(extractor, ViafreeIE)
-    assert extractor._downloader is downloader
-    assert extractor.ie_key() == 'Viafree'
-    assert extractor._GEO_BYPASS is False
-
-# Generated at 2026-10-25 04:31:52.726706
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:31:55.142903
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:31:57.670388
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:32:00.275589
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:32:02.691550
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:32:05.105731
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:32:08.695207
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:32:11.109539
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:32:17.906722
-# Unit test for constructor of class TVPlayIE
-def test_TVPlayIE():extractor = TVPlayIE()
-
-# Generated at 2026-10-25 04:32:41.560881
-# Unit test for constructor of class TVPlayIE
-def test_TVPlayIE():
-    downloader = object()
-    extractor = TVPlayIE(downloader)
-
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
-    assert extractor._ready is False
-    assert extractor.IE_NAME == 'mtg'
-    assert extractor.IE_DESC == 'MTG services'
-
-# Generated at 2026-10-25 04:32:44.089591
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:32:46.664377
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:32:49.190464
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:32:51.712060
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:32:54.128063
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:32:56.544789
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:32:59.080928
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:33:01.598607
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:33:04.013630
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:33:06.428528
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:33:08.843254
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:33:11.260156
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:33:13.674416
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:33:16.089149
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:33:18.503702
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:33:20.918601
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:33:23.332703
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:33:25.748152
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:33:28.166110
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:33:30.581339
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:33:32.995924
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:33:35.411525
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:33:37.836918
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:33:40.251374
-# Unit test for constructor of class ViafreeIE
-
-# Generated at 2026-10-25 04:33:45.062606
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:33:47.479459
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:33:49.895561
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:33:52.311366
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:33:54.726505
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:33:57.142428
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:33:59.558752
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:34:01.974836
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:34:04.388642
-# Unit test for constructor of class TVPlayHomeIE
-
-# Generated at 2026-10-25 04:34:06.803025
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:34:09.221555
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:34:15.156211
-# Unit test for constructor of class TVPlayIE
-def test_TVPlayIE():extractor = TVPlayIE()
-
-# Generated at 2026-10-25 04:34:38.503677
-# Unit test for constructor of class TVPlayIE
-def test_TVPlayIE():
-    extractor = TVPlayIE()
-
-    assert isinstance(extractor, TVPlayIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor.IE_NAME == 'mtg'
-    assert extractor.IE_DESC == 'MTG services'
-
-# Generated at 2026-10-25 04:34:48.128617
-# Unit test for constructor of class ViafreeIE
-def test_ViafreeIE():
-    downloader = object()
-    extractor = ViafreeIE(downloader)
-
-    assert isinstance(extractor, ViafreeIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
-    assert extractor._ready is False
-
-# Generated at 2026-10-25 04:34:49.561580
-# Unit test for constructor of class TVPlayHomeIE
-def test_TVPlayHomeIE():
-    # constructor should work with and without downloader
-    ie = TVPlayHomeIE()
-    assert isinstance(ie, InfoExtractor)
-    assert isinstance(ie, TVPlayHomeIE)
-
-    # no custom __init__ -> uses InfoExtractor.__init__(downloader=None)
-    assert ie._downloader is None
-
-    downloader = object()
-    ie_with_dl = TVPlayHomeIE(downloader)
-    assert ie_with_dl._downloader is downloader
-
-    # _VALID_URL / _match_id behaviour
-    assert ie._match_id(
-        'https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/'
-    ) == '10047125'
-
-    assert ie._match_id(
-        'https://tvplay.skaties.lv/vinas-melo-labak/vinas-melo-labak-10280317/'
-    ) == '10280317'
-
-    assert TVPlayHomeIE.suitable(
-        'https://play.tv3.lt/aferistai-10047125'
-    )
-    assert TVPlayHomeIE.suitable(
-        'https://tv3play.skaties.lv/vinas-melo-labak-10280317'
-    )
-    assert not TVPlayHomeIE.suitable(
-        'https://www.viafree.se/program/livsstil/husraddarna/sasong-2/avsnitt-2'
-    )
-
-# Generated at 2026-10-25 04:35:05.330744
-# Unit test for constructor of class TVPlayIE
-def test_TVPlayIE():
-    ie = TVPlayIE()
-
-    assert isinstance(ie, TVPlayIE)
-    assert ie.IE_NAME == 'mtg'
-    assert ie.IE_DESC == 'MTG services'
-    assert ie._VALID_URL
-
-# Generated at 2026-10-25 04:35:07.748837
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:35:10.162015
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:35:12.575754
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:35:14.991846
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:35:20.896404
-# Unit test for constructor of class TVPlayIE
-def test_TVPlayIE():extractor = TVPlayIE(None)
-
-# Generated at 2026-10-25 04:35:28.986079
-# Unit test for constructor of class TVPlayHomeIE
-def test_TVPlayHomeIE():
-    # constructor should work with and without downloader
-    ie = TVPlayHomeIE()
-    assert isinstance(ie, InfoExtractor)
-    assert isinstance(ie, TVPlayHomeIE)
-
-    # no custom __init__ -> uses InfoExtractor.__init__(downloader=None)
-    assert ie._downloader is None
-
-    downloader = object()
-    ie_with_dl = TVPlayHomeIE(downloader)
-    assert ie_with_dl._downloader is downloader
-
-    # _VALID_URL / _match_id behaviour
-    assert ie._match_id(
-        'https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/'
-    ) == '10047125'
-
-    assert ie._match_id(
-        'https://tvplay.skaties.lv/vinas-melo-labak/vinas-melo-labak-10280317/'
-    ) == '10280317'
-
-    assert TVPlayHomeIE.suitable(
-        'https://play.tv3.lt/aferistai-10047125'
-    )
-    assert TVPlayHomeIE.suitable(
-        'https://tv3play.skaties.lv/vinas-melo-labak-10280317'
-    )
-    assert not TVPlayHomeIE.suitable(
-        'https://www.viafree.se/program/livsstil/husraddarna/sasong-2/avsnitt-2'
-    )
-
-# Generated at 2026-10-25 04:35:30.419520
-# Unit test for constructor of class TVPlayHomeIE
-def test_TVPlayHomeIE():
-    # constructor should work with and without downloader
-    ie = TVPlayHomeIE()
-    assert isinstance(ie, InfoExtractor)
-    assert isinstance(ie, TVPlayHomeIE)
-
-    # no custom __init__ -> uses InfoExtractor.__init__(downloader=None)
-    assert ie._downloader is None
-
-    downloader = object()
-    ie_with_dl = TVPlayHomeIE(downloader)
-    assert ie_with_dl._downloader is downloader
-
-    # _VALID_URL / _match_id behaviour
-    assert ie._match_id(
-        'https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/'
-    ) == '10047125'
-
-    assert ie._match_id(
-        'https://tvplay.skaties.lv/vinas-melo-labak/vinas-melo-labak-10280317/'
-    ) == '10280317'
-
-    assert TVPlayHomeIE.suitable(
-        'https://play.tv3.lt/aferistai-10047125'
-    )
-    assert TVPlayHomeIE.suitable(
-        'https://tv3play.skaties.lv/vinas-melo-labak-10280317'
-    )
-    assert not TVPlayHomeIE.suitable(
-        'https://www.viafree.se/program/livsstil/husraddarna/sasong-2/avsnitt-2'
-    )
-
-# Generated at 2026-10-25 04:35:31.853028
-# Unit test for constructor of class TVPlayHomeIE
-def test_TVPlayHomeIE():
-    # constructor should work with and without downloader
-    ie = TVPlayHomeIE()
-    assert isinstance(ie, InfoExtractor)
-    assert isinstance(ie, TVPlayHomeIE)
-
-    # no custom __init__ -> uses InfoExtractor.__init__(downloader=None)
-    assert ie._downloader is None
-
-    downloader = object()
-    ie_with_dl = TVPlayHomeIE(downloader)
-    assert ie_with_dl._downloader is downloader
-
-    # _VALID_URL / _match_id behaviour
-    assert ie._match_id(
-        'https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/'
-    ) == '10047125'
-
-    assert ie._match_id(
-        'https://tvplay.skaties.lv/vinas-melo-labak/vinas-melo-labak-10280317/'
-    ) == '10280317'
-
-    assert TVPlayHomeIE.suitable(
-        'https://play.tv3.lt/aferistai-10047125'
-    )
-    assert TVPlayHomeIE.suitable(
-        'https://tv3play.skaties.lv/vinas-melo-labak-10280317'
-    )
-    assert not TVPlayHomeIE.suitable(
-        'https://www.viafree.se/program/livsstil/husraddarna/sasong-2/avsnitt-2'
-    )
-
-# Generated at 2026-10-25 04:35:43.325064
-# Unit test for constructor of class ViafreeIE
-def test_ViafreeIE():
-    extractor = ViafreeIE()
-
-    assert isinstance(extractor, ViafreeIE)
-    assert extractor._downloader is None
-    assert extractor._ready is False
-    assert extractor.ie_key() == 'Viafree'
-
-# Generated at 2026-10-25 04:35:44.732649
-# Unit test for constructor of class TVPlayHomeIE
-def test_TVPlayHomeIE():
-    # constructor should work with and without downloader
-    ie = TVPlayHomeIE()
-    assert isinstance(ie, InfoExtractor)
-    assert isinstance(ie, TVPlayHomeIE)
-
-    # no custom __init__ -> uses InfoExtractor.__init__(downloader=None)
-    assert ie._downloader is None
-
-    downloader = object()
-    ie_with_dl = TVPlayHomeIE(downloader)
-    assert ie_with_dl._downloader is downloader
-
-    # _VALID_URL / _match_id behaviour
-    assert ie._match_id(
-        'https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/'
-    ) == '10047125'
-
-    assert ie._match_id(
-        'https://tvplay.skaties.lv/vinas-melo-labak/vinas-melo-labak-10280317/'
-    ) == '10280317'
-
-    assert TVPlayHomeIE.suitable(
-        'https://play.tv3.lt/aferistai-10047125'
-    )
-    assert TVPlayHomeIE.suitable(
-        'https://tv3play.skaties.lv/vinas-melo-labak-10280317'
-    )
-    assert not TVPlayHomeIE.suitable(
-        'https://www.viafree.se/program/livsstil/husraddarna/sasong-2/avsnitt-2'
-    )
-
-# Generated at 2026-10-25 04:36:09.332808
-# Unit test for constructor of class TVPlayIE
-def test_TVPlayIE():
-    downloader = object()
-    extractor = TVPlayIE(downloader)
-
-    assert isinstance(extractor, TVPlayIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
-    assert extractor.IE_NAME == 'mtg'
-    assert extractor.IE_DESC == 'MTG services'
-
-# Generated at 2026-10-25 04:36:11.749876
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:36:14.278711
-# Unit test for constructor of class TVPlayIE
-
-# Generated at 2026-10-25 04:36:16.699264
-# Unit test for constructor of class TVPlayIE
+    # IE name / key derived from the class name
+    assert ie.ie_key() == 'TVPlayHome'
+    assert ie.IE_NAME == 'tvplayhome'
+
+    # suitable() should accept matching URLs and reject others
+    assert TVPlayHomeIE.suitable('https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/')
+    assert TVPlayHomeIE.suitable('https://play.tv3.lt/aferistai-10047125')
+    assert TVPlayHomeIE.suitable('https://tvplay.skaties.lv/vinas-melo-labak/vinas-melo-labak-10280317/')
+    assert TVPlayHomeIE.suitable('https://play.tv3.ee/cool-d-ga-mehhikosse-10044354')
+    assert not TVPlayHomeIE.suitable('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+    assert not TVPlayHomeIE.suitable('mtg:418113')
+
+    # _match_id should extract the numeric id from matching URLs
+    assert ie._match_id('https://tvplay.tv3.lt/aferistai-n-7/aferistai-10047125/') == '10047125'
+    assert ie._match_id('https://play.tv3.ee/cool-d-ga-mehhikosse-10044354') == '10044354'
+
+    # Constructing with an explicit downloader argument should also succeed
+    ie2 = TVPlayHomeIE(downloader=None)
+    assert isinstance(ie2, InfoExtractor)

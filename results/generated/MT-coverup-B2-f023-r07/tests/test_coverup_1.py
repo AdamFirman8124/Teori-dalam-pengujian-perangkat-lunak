@@ -7,20 +7,17 @@ import pytest
 from f023 import strlen
 
 
-def test_strlen_empty_string():
-    assert strlen("") == 0
-
-
-def test_strlen_non_empty_string():
+def test_strlen_returns_length_of_string():
+    """Calling strlen executes line 3 (the return statement) and returns the
+    correct length for a non-empty string."""
     assert strlen("hello") == 5
 
 
-def test_strlen_unicode_and_whitespace():
-    assert strlen("héllo wörld") == 11
-    assert strlen(" ") == 1
+def test_strlen_empty_string():
+    """strlen returns 0 for the empty string, also exercising line 3."""
+    assert strlen("") == 0
 
 
-def test_strlen_returns_int_type():
-    result = strlen("abc")
-    assert isinstance(result, int)
-    assert result == 3
+def test_strlen_unicode_string():
+    """strlen counts characters (not bytes) for unicode strings."""
+    assert strlen("héllo") == 5

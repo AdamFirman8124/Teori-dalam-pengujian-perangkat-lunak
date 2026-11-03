@@ -2,12 +2,115 @@
 import f134 as module_0
 
 def test_case_0():
-    str_0 = '{'
+    str_0 = 'a'
     var_0 = module_0.check_if_last_char_is_a_letter(str_0)
-    assert var_0 is False
-    str_1 = 'Z;_m>4\x0ciB1a}53y'
+    assert var_0 is True
+    str_1 = 'apple pi e'
     var_1 = module_0.check_if_last_char_is_a_letter(str_1)
-    assert var_1 is False
-    str_2 = 'T'
+    assert var_1 is True
+    str_2 = 'hello world d'
     var_2 = module_0.check_if_last_char_is_a_letter(str_2)
     assert var_2 is True
+    str_3 = 'a b'
+    var_3 = module_0.check_if_last_char_is_a_letter(str_3)
+    assert var_3 is True
+    str_4 = 'Z'
+    var_4 = module_0.check_if_last_char_is_a_letter(str_4)
+    assert var_4 is True
+    str_5 = 'a B'
+    var_5 = module_0.check_if_last_char_is_a_letter(str_5)
+    assert var_5 is True
+    str_6 = 'apple'
+    var_6 = module_0.check_if_last_char_is_a_letter(str_6)
+    assert var_6 is False
+    str_7 = 'hello world'
+    var_7 = module_0.check_if_last_char_is_a_letter(str_7)
+    assert var_7 is False
+    str_8 = 'ab'
+    var_8 = module_0.check_if_last_char_is_a_letter(str_8)
+    assert var_8 is False
+    str_9 = '1'
+    var_9 = module_0.check_if_last_char_is_a_letter(str_9)
+    assert var_9 is False
+    str_10 = 'a 1'
+    var_10 = module_0.check_if_last_char_is_a_letter(str_10)
+    assert var_10 is False
+    str_11 = 'hello!'
+    var_11 = module_0.check_if_last_char_is_a_letter(str_11)
+    assert var_11 is False
+    str_12 = 'apple pie!'
+    var_12 = module_0.check_if_last_char_is_a_letter(str_12)
+    assert var_12 is False
+    str_13 = ''
+    var_13 = module_0.check_if_last_char_is_a_letter(str_13)
+    assert var_13 is False
+    str_14 = ' '
+    var_14 = module_0.check_if_last_char_is_a_letter(str_14)
+    assert var_14 is False
+    str_15 = 'apple pi e '
+    var_15 = module_0.check_if_last_char_is_a_letter(str_15)
+    assert var_15 is False
+    str_16 = 'hello! '
+    var_16 = module_0.check_if_last_char_is_a_letter(str_16)
+    assert var_16 is False
+
+def test_case_1():
+    str_0 = 'a'
+    var_0 = module_0.check_if_last_char_is_a_letter(str_0)
+    assert var_0 is True
+    str_1 = 'z'
+    var_1 = module_0.check_if_last_char_is_a_letter(str_1)
+    assert var_1 is True
+    str_2 = 'A'
+    var_2 = module_0.check_if_last_char_is_a_letter(str_2)
+    assert var_2 is True
+    str_3 = 'Z'
+    var_3 = module_0.check_if_last_char_is_a_letter(str_3)
+    assert var_3 is True
+    str_4 = 'apple b'
+    var_4 = module_0.check_if_last_char_is_a_letter(str_4)
+    assert var_4 is True
+    str_5 = 'hello world a'
+    var_5 = module_0.check_if_last_char_is_a_letter(str_5)
+    assert var_5 is True
+    str_6 = 'a  b'
+    var_6 = module_0.check_if_last_char_is_a_letter(str_6)
+    assert var_6 is True
+    str_7 = 'ab'
+    var_7 = module_0.check_if_last_char_is_a_letter(str_7)
+    assert var_7 is False
+    str_8 = 'apple'
+    var_8 = module_0.check_if_last_char_is_a_letter(str_8)
+    assert var_8 is False
+    str_9 = 'hello world'
+    var_9 = module_0.check_if_last_char_is_a_letter(str_9)
+    assert var_9 is False
+    str_10 = '1'
+    var_10 = module_0.check_if_last_char_is_a_letter(str_10)
+    assert var_10 is False
+    str_11 = 'apple 1'
+    var_11 = module_0.check_if_last_char_is_a_letter(str_11)
+    assert var_11 is False
+    str_12 = '!'
+    var_12 = module_0.check_if_last_char_is_a_letter(str_12)
+    assert var_12 is False
+    str_13 = 'hello !'
+    var_13 = module_0.check_if_last_char_is_a_letter(str_13)
+    assert var_13 is False
+    str_14 = ''
+    var_14 = module_0.check_if_last_char_is_a_letter(str_14)
+    assert var_14 is False
+    str_15 = 'a '
+    var_15 = module_0.check_if_last_char_is_a_letter(str_15)
+    assert var_15 is False
+    str_16 = 'apple '
+    var_16 = module_0.check_if_last_char_is_a_letter(str_16)
+    assert var_16 is False
+    str_17 = 'é'
+    var_17 = module_0.check_if_last_char_is_a_letter(str_17)
+    assert var_17 is False
+    str_18 = 'apple é'
+    var_18 = module_0.check_if_last_char_is_a_letter(str_18)
+    assert var_18 is False
+    str_19 = 'All tests passed!'
+    var_19 = print(str_19)

@@ -3,62 +3,76 @@ import f160 as module_0
 
 def test_case_0():
     str_0 = '+'
-    str_1 = '*'
-    str_2 = '-'
-    str_3 = [str_0, str_1, str_2]
+    str_1 = [str_0]
     int_0 = 2
     int_1 = 3
-    int_2 = 4
-    int_3 = 5
-    int_4 = [int_0, int_1, int_2, int_3]
-    var_0 = module_0.do_algebra(str_3, int_4)
+    int_2 = [int_0, int_1]
+    var_0 = module_0.do_algebra(str_1, int_2)
     assert var_0 == 5
-    assert var_0 == 9
-    str_4 = '//'
-    str_5 = [str_4, str_1]
-    int_5 = 7
-    int_6 = [int_5, int_1, int_2]
-    var_1 = module_0.do_algebra(str_5, int_6)
-    assert var_1 == 8
-    str_6 = [str_2]
-    int_7 = 10
-    int_8 = [int_7, int_2]
-    var_2 = module_0.do_algebra(str_6, int_8)
-    assert var_2 == 6
-    str_7 = [str_0]
-    int_9 = 1
-    int_10 = [int_9, int_0]
-    var_3 = module_0.do_algebra(str_7, int_10)
+    str_2 = '-'
+    str_3 = [str_2]
+    int_3 = 10
+    int_4 = 4
+    int_5 = [int_3, int_4]
+    var_1 = module_0.do_algebra(str_3, int_5)
+    assert var_1 == 6
+    str_4 = '*'
+    str_5 = [str_4]
+    int_6 = 5
+    int_7 = [int_1, int_6]
+    var_2 = module_0.do_algebra(str_5, int_7)
+    assert var_2 == 15
+    str_6 = '//'
+    str_7 = [str_6]
+    int_8 = [int_3, int_1]
+    var_3 = module_0.do_algebra(str_7, int_8)
     assert var_3 == 3
-    str_8 = [str_1]
-    int_11 = [int_3, int_3]
-    var_4 = module_0.do_algebra(str_8, int_11)
-    assert var_4 == 25
-    str_9 = [str_4]
-    int_12 = 9
-    int_13 = [int_12, int_0]
-    var_5 = module_0.do_algebra(str_9, int_13)
-    assert var_5 == 4
-    str_10 = '**'
-    str_11 = [str_10]
-    int_14 = [int_0, int_1]
-    var_6 = module_0.do_algebra(str_11, int_14)
-    assert var_6 == 8
-    str_12 = [str_0, str_2, str_1]
-    int_15 = [int_9, int_0, int_1, int_2]
-    var_7 = module_0.do_algebra(str_12, int_15)
-    assert var_7 == 7
-    assert var_7 == -9
-    var_8 = []
-    int_16 = 42
-    int_17 = [int_16]
-    var_9 = module_0.do_algebra(var_8, int_17)
-    assert var_9 == 42
-    str_13 = [str_0]
-    int_18 = 11
-    int_19 = 22
-    int_20 = [int_18, int_19]
-    var_10 = module_0.do_algebra(str_13, int_20)
-    assert var_10 == 33
-    str_14 = 'All tests passed.'
-    var_11 = print(str_14)
+    str_8 = '**'
+    str_9 = [str_8]
+    int_9 = [int_0, int_1]
+    var_4 = module_0.do_algebra(str_9, int_9)
+    assert var_4 == 8
+    str_10 = [str_0, str_4, str_2]
+    int_10 = [int_0, int_1, int_4, int_6]
+    var_5 = module_0.do_algebra(str_10, int_10)
+    assert var_5 == 5
+    assert var_5 == 9
+    str_11 = [str_0, str_4]
+    int_11 = [int_0, int_1, int_4]
+    var_6 = module_0.do_algebra(str_11, int_11)
+    assert var_6 == 14
+    str_12 = [str_4, str_0]
+    int_12 = [int_0, int_1, int_4]
+    var_7 = module_0.do_algebra(str_12, int_12)
+    assert var_7 == 10
+    str_13 = [str_2, str_0, str_4]
+    int_13 = 6
+    int_14 = 1
+    int_15 = [int_13, int_14, int_0, int_1]
+    var_8 = module_0.do_algebra(str_13, int_15)
+    assert var_8 == 11
+    str_14 = [str_0, str_4, str_4]
+    int_16 = [int_14, int_0, int_1, int_4]
+    var_9 = module_0.do_algebra(str_14, int_16)
+    assert var_9 == 25
+    str_15 = [str_8, str_6]
+    int_17 = [int_0, int_1, int_4]
+    var_10 = module_0.do_algebra(str_15, int_17)
+    assert var_10 == 2
+    str_16 = [str_2]
+    int_18 = [int_1, int_3]
+    var_11 = module_0.do_algebra(str_16, int_18)
+    assert var_11 == 7
+    assert var_11 == -7
+    str_17 = [str_2, str_4]
+    int_19 = [int_14, int_0, int_6]
+    var_12 = module_0.do_algebra(str_17, int_19)
+    assert var_12 == 9
+    assert var_12 == -9
+    str_18 = [str_0, str_2, str_4, str_6]
+    int_20 = [int_3, int_0, int_1, int_4, int_6]
+    var_13 = module_0.do_algebra(str_18, int_20)
+    assert var_13 == 3
+    assert var_13 == 10
+    str_19 = 'All test cases passed!'
+    var_14 = print(str_19)

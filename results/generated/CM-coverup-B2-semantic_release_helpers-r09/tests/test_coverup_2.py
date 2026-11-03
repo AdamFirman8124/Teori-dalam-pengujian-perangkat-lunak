@@ -2,40 +2,71 @@
 # asked: {"lines": [53, 56, 57, 59, 60, 61, 62, 63, 64, 70, 73, 74, 75, 77], "branches": [[73, 74], [73, 75]]}
 # gained: {"lines": [53, 56, 57, 59, 60, 61, 62, 63, 64, 70, 73, 74, 75, 77], "branches": [[73, 74], [73, 75]]}
 
-from unittest.mock import Mock, call
+import logging
+from unittest import mock
 
 from semantic_release.helpers import LoggedFunction
 
 
-def test_logged_function_logs_arguments_and_return_value():
-    logger = Mock()
+def test_logged_function_logs_input_and_result():
+    """Covers lines 53, 56-57, 59-64, 70, 73-75, 77 (non-None result branch)."""
+    logger = mock.Mock(spec=logging.Logger)
+    decorator = LoggedFunction(logger)
+
+    # Line 53: the logger passed to the constructor is stored on the instance
+    assert decorator.logger is logger
+
+    @decorator
+    def add(a, b, *, c=0):
+        """Add two numbers."""
+        return a + b + c
+
+    # Lines 56-57, 77: decoration returns a wrapper that preserves metadata
+    assert add.__name__ == "add"
+    assert add.__doc__ == "Add two numbers."
+
+    result = add(1, 2, c=3)
+
+    # Lines 70, 75: the wrapped function's return value is passed through
+    assert result == 6
+
+    # Lines 59-64: input message; line 74: result message (result is not None)
+    logger.debug.assert_has_calls(
+        [mock.call("add(1, 2, c=3)"), mock.call("add -> 6")]
+    )
+    assert logger.debug.call_count == 2
+
+
+def test_logged_function_string_args_are_quoted_and_stripped():
+    """Covers lines 59-64 with str args/kwargs (format_arg quoting/stripping)."""
+    logger = mock.Mock(spec=logging.Logger)
 
     @LoggedFunction(logger)
-    def combine(value, *, suffix):
-        """Combine two strings."""
-        return value + suffix
+    def concat(a, b, sep=" "):
+        return f"{a}{sep}{b}"
 
-    result = combine(" hello ", suffix=" world ")
+    result = concat("foo", "bar", sep="-")
 
-    assert result == " hello  world "
-    assert combine.__name__ == "combine"
-    assert combine.__doc__ == "Combine two strings."
-    assert logger.debug.call_args_list == [
-        call("combine('hello', suffix='world')"),
-        call("combine ->  hello  world "),
-    ]
+    assert result == "foo-bar"
+    logger.debug.assert_has_calls(
+        [
+            mock.call("concat('foo', 'bar', sep='-')"),
+            mock.call("concat -> foo-bar"),
+        ]
+    )
+    assert logger.debug.call_count == 2
 
 
-def test_logged_function_does_not_log_none_return_value():
-    logger = Mock()
-    received = []
+def test_logged_function_none_result_is_not_logged():
+    """Covers line 73 (False branch) and line 75: None result returned, not logged."""
+    logger = mock.Mock(spec=logging.Logger)
 
     @LoggedFunction(logger)
-    def record(first, second=0):
-        received.append((first, second))
+    def do_nothing():
+        pass
 
-    result = record(1, second=2)
+    result = do_nothing()
 
     assert result is None
-    assert received == [(1, 2)]
-    logger.debug.assert_called_once_with("record(1, second=2)")
+    # Only the "input" message is logged; the None result is not
+    logger.debug.assert_called_once_with("do_nothing()")

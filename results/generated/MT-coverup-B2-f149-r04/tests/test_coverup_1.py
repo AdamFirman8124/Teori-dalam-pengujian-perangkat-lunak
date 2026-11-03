@@ -5,33 +5,36 @@
 from f149 import sorted_list_sum
 
 
-def test_sorted_list_sum_empty_list():
-    lst = []
+def test_sorted_list_sum_mixed_lengths_filters_and_sorts():
+    lst = ["aa", "a", "aaa", "ab", "abc", "abcd"]
     result = sorted_list_sum(lst)
-    assert result == []
-    assert lst == []
+    # Odd-length strings are filtered out; result sorted by length
+    assert result == ["aa", "ab", "abcd"]
+    # The input list is sorted in place (line 3 side effect)
+    assert lst == ["a", "aa", "aaa", "ab", "abc", "abcd"]
 
 
-def test_sorted_list_sum_mixed_even_odd_filters_and_sorts_by_len():
-    lst = ["abcdef", "a", "ab", "abc", "abcd", "abcde"]
-    original_copy = list(lst)
+def test_sorted_list_sum_sorts_by_length():
+    lst = ["aaaa", "aa", "bb"]
     result = sorted_list_sum(lst)
-    assert result == ["ab", "abcd", "abcdef"]
-    # postcondition: only even-length strings kept
-    assert all(len(s) % 2 == 0 for s in result)
-    # postcondition: sorted by length
-    assert [len(s) for s in result] == sorted(len(s) for s in result)
-    # postcondition: input list was sorted in place
-    assert lst == sorted(original_copy)
+    # Length-based ordering, not lexicographic
+    assert result == ["aa", "bb", "aaaa"]
 
 
-def test_sorted_list_sum_all_odd_returns_empty():
+def test_sorted_list_sum_all_odd_filtered_out():
     lst = ["a", "abc", "abcde"]
     result = sorted_list_sum(lst)
     assert result == []
+    # Input still sorted in place even though nothing is kept
+    assert lst == ["a", "abc", "abcde"]
 
 
-def test_sorted_list_sum_all_even_sorted_by_len():
-    lst = ["abcd", "ab", "abcdef"]
+def test_sorted_list_sum_empty_list():
+    assert sorted_list_sum([]) == []
+
+
+def test_sorted_list_sum_stable_ties():
+    lst = ["dd", "cc", "bb", "aa"]
     result = sorted_list_sum(lst)
-    assert result == ["ab", "abcd", "abcdef"]
+    # All even-length; stable sort preserves alphabetical order for ties
+    assert result == ["aa", "bb", "cc", "dd"]

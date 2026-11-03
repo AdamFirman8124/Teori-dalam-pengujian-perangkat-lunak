@@ -10,21 +10,28 @@ def test_case_0():
     var_1 = module_0.select_words(str_0, int_1)
     assert var_1 == ['Mary', 'lamb']
     str_1 = 'simple white space'
+    var_2 = module_0.select_words(str_1, int_1)
+    assert var_2 == ['white', 'space']
     int_2 = 2
-    var_2 = module_0.select_words(str_1, int_2)
-    assert var_2 == []
-    str_2 = 'Hello world'
-    var_3 = module_0.select_words(str_2, int_0)
-    assert var_3 == ['world']
-    str_3 = 'Uncle sam'
-    var_4 = module_0.select_words(str_3, int_1)
-    assert var_4 == ['Uncle']
-    str_4 = 'AEIOU aeiou'
+    var_3 = module_0.select_words(str_1, int_2)
+    assert var_3 == []
+    str_2 = ''
+    var_4 = module_0.select_words(str_2, int_0)
+    assert var_4 == []
+    str_3 = 'a b c d e f'
     int_3 = 0
-    var_5 = module_0.select_words(str_4, int_3)
-    assert var_5 == ['AEIOU', 'aeiou']
-    str_5 = ''
-    var_6 = module_0.select_words(str_5, int_3)
-    assert var_6 == []
-    str_6 = 'all passed'
-    var_7 = print(str_6)
+    var_5 = module_0.select_words(str_3, int_3)
+    assert var_5 == ['a', 'e']
+    str_4 = 'hello world'
+    var_6 = module_0.select_words(str_4, int_0)
+    assert var_6 == ['world']
+    str_5 = 'Hello'
+    var_7 = module_0.select_words(str_5, int_1)
+    assert var_7 == ['Hello']
+    str_6 = 'xyz'
+    var_8 = module_0.select_words(str_6, int_1)
+    assert var_8 == ['xyz']
+    str_7 = 'one two three'
+    int_4 = 100
+    var_9 = module_0.select_words(str_7, int_4)
+    assert var_9 == []

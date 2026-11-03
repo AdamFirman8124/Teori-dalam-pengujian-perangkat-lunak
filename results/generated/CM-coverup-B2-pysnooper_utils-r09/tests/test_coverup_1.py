@@ -4,63 +4,127 @@
 
 import pytest
 
-from pysnooper.utils import _check_methods
+from pysnooper import utils
 
 
-class HasAll:
-    def a(self):
+def test_check_methods_all_methods_present():
+    """All requested methods are defined and not None -> True.
+
+    Covers: line 11 (mro lookup), line 12 (methods loop), line 13 (mro loop),
+    line 14 True branch, line 15 False branch, line 17 (break), line 20.
+    """
+
+    class Base:
+        def foo(self):
+            return 'foo'
+
+    class Derived(Base):
+        def bar(self):
+            return 'bar'
+
+    result = utils._check_methods(Derived, 'foo', 'bar')
+    assert result is True
+
+
+def test_check_methods_method_is_none_in_base():
+    """A method explicitly set to None in a base class -> NotImplemented.
+
+    Covers: line 14 False branch (skipped over Derived.__dict__),
+    line 14 True branch, line 15 True branch, line 16 (return NotImplemented).
+    """
+
+    class Base:
+        foo = None
+
+    class Derived(Base):
         pass
 
-    def b(self):
+    result = utils._check_methods(Derived, 'foo')
+    assert result is NotImplemented
+
+
+def test_check_methods_method_missing_entirely():
+    """A method absent from every class in the MRO -> NotImplemented.
+
+    Covers: line 14 False branch repeatedly, and the for/else on
+    lines 18-19 (return NotImplemented when the inner loop exhausts).
+    """
+
+    class A:
+        def foo(self):
+            pass
+
+    result = utils._check_methods(A, 'foo', 'missing')
+    assert result is NotImplemented
+
+
+def test_check_methods_found_in_later_mro_class():
+    """Method missing from the subclass dicts but present in a base -> True.
+
+    Covers: line 14 False branch (Derived and Middle dicts), then the
+    True branch on Base, line 15 False branch, line 17, line 20.
+    """
+
+    class Base:
+        def foo(self):
+            pass
+
+    class Middle(Base):
         pass
 
-
-class HasNone:
-    a = None
-
-
-class Base:
-    def a(self):
+    class Derived(Middle):
         pass
 
-
-class InheritsA(Base):
-    pass
-
-
-class Empty:
-    pass
+    result = utils._check_methods(Derived, 'foo')
+    assert result is True
 
 
-def test_check_methods_all_present_returns_true():
-    assert _check_methods(HasAll, 'a', 'b') is True
+def test_check_methods_no_methods_requested():
+    """With no methods requested, the loop body never runs -> True.
 
+    Covers: line 11, line 12 (loop entered but not iterated), line 20.
+    """
 
-def test_check_methods_no_methods_requested_returns_true():
-    assert _check_methods(Empty) is True
-
-
-def test_check_methods_missing_method_returns_notimplemented():
-    assert _check_methods(Empty, 'a') is NotImplemented
-
-
-def test_check_methods_method_set_to_none_returns_notimplemented():
-    assert _check_methods(HasNone, 'a') is NotImplemented
-
-
-def test_check_methods_found_in_base_class_returns_true():
-    assert _check_methods(InheritsA, 'a') is True
-
-
-def test_check_methods_first_found_second_missing_returns_notimplemented():
-    assert _check_methods(HasAll, 'a', 'missing') is NotImplemented
-
-
-def test_check_methods_none_in_base_class_returns_notimplemented():
-    class NoneBase:
-        a = None
-
-    class Child(NoneBase):
+    class A:
         pass
 
-    assert _check_methods(Child, 'a') is NotImplemented
+    result = utils._check_methods(A)
+    assert result is True
+
+
+def test_check_methods_none_shadows_defined_method():
+    """A None in the subclass shadows a real definition in a base.
+
+    Covers: line 14 True branch on the first MRO class, line 15 True
+    branch, line 16 (return NotImplemented before reaching the base).
+    """
+
+    class Base:
+        def foo(self):
+            pass
+
+    class Derived(Base):
+        foo = None
+
+    result = utils._check_methods(Derived, 'foo')
+    assert result is NotImplemented
+
+
+def test_check_methods_multiple_methods_mixed_outcomes():
+    """First method found (break taken), second method is None.
+
+    Exercises re-entry into the inner mro loop for a second method and
+    both outcomes of the None check across iterations.
+    """
+
+    class Base:
+        foo = None
+
+    class Derived(Base):
+        def bar(self):
+            pass
+
+    # 'bar' is found on Derived (break, line 17); 'foo' is None on Base
+    # (line 16) after skipping Derived's dict (line 14 False branch).
+    result = utils._check_methods(Derived, 'bar', 'foo')
+    assert result is NotImplemented

@@ -2,18 +2,30 @@
 import f155 as module_0
 
 def test_case_0():
-    int_0 = 123456
+    int_0 = -12
     var_0 = module_0.even_odd_count(int_0)
-    assert var_0 == (3, 3)
-    int_1 = 2468
+    assert var_0 == (1, 1)
+    int_1 = 123
     var_1 = module_0.even_odd_count(int_1)
-    assert var_1 == (4, 0)
-    int_2 = 1357
+    assert var_1 == (1, 2)
+    int_2 = 0
     var_2 = module_0.even_odd_count(int_2)
-    assert var_2 == (0, 4)
-    int_3 = -34567
+    assert var_2 == (1, 0)
+    int_3 = 2468
     var_3 = module_0.even_odd_count(int_3)
-    assert var_3 == (2, 3)
-    int_4 = 0
+    assert var_3 == (4, 0)
+    int_4 = 1357
     var_4 = module_0.even_odd_count(int_4)
-    assert var_4 == (1, 0)
+    assert var_4 == (0, 4)
+    int_5 = -2468
+    var_5 = module_0.even_odd_count(int_5)
+    assert var_5 == (4, 0)
+    int_6 = 1000000
+    var_6 = module_0.even_odd_count(int_6)
+    assert var_6 == (6, 1)
+    int_7 = -999
+    var_7 = module_0.even_odd_count(int_7)
+    assert var_7 == (0, 3)
+    int_8 = 5050
+    var_8 = module_0.even_odd_count(int_8)
+    assert var_8 == (2, 2)

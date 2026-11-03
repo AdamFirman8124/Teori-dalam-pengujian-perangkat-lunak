@@ -7,26 +7,25 @@ import pytest
 from f008 import sum_product
 
 
-def test_empty_list():
-    """Covers lines 6-7 and 12: initializers and return with loop never entered."""
-    assert sum_product([]) == (0, 1)
+def test_sum_product_empty_list():
+    """Covers lines 6-7 and 12 (loop body skipped for empty input)."""
+    result = sum_product([])
+    assert result == (0, 1)
 
 
-def test_single_element():
-    """Covers lines 9-11: loop body executes exactly once."""
-    assert sum_product([5]) == (5, 5)
+def test_sum_product_single_element():
+    """Covers lines 6-12 including one loop iteration."""
+    result = sum_product([5])
+    assert result == (5, 5)
 
 
-def test_multiple_elements():
-    """Covers lines 9-11 with multiple iterations."""
-    assert sum_product([1, 2, 3, 4]) == (10, 24)
+def test_sum_product_multiple_elements():
+    """Covers lines 6-12 with multiple loop iterations."""
+    result = sum_product([1, 2, 3, 4])
+    assert result == (10, 24)
 
 
-def test_negative_numbers():
-    """Loop body with negative values."""
-    assert sum_product([-1, 2, -3]) == (-2, 6)
-
-
-def test_with_zero():
-    """Zero forces product to 0 while sum still accumulates."""
-    assert sum_product([0, 7, 3]) == (10, 0)
+def test_sum_product_with_negatives_and_zero():
+    """Covers lines 6-12 with negative values and zero."""
+    result = sum_product([-1, 0, 3])
+    assert result == (2, 0)

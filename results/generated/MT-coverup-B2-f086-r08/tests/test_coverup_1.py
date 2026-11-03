@@ -7,47 +7,31 @@ import pytest
 from f086 import anti_shuffle
 
 
-@pytest.mark.parametrize(
-    "s, expected",
-    [
-        ("", ""),
-        ("hello", "ehllo"),
-        ("Hello World", "Hello Wdlor"),
-        ("a", "a"),
-        ("cba fed", "abc def"),
-        ("  ", "  "),
-        ("a  b", "a  b"),
-        (" leading", " adegiln"),
-        ("trailing ", "agiilnrt "),
-        ("Hello, World!", ",Hello !Wdlor"),
-    ],
-)
-def test_anti_shuffle_sorts_each_word(s, expected):
-    assert anti_shuffle(s) == expected
+def test_anti_shuffle_already_sorted():
+    """A word whose characters are already in order is returned unchanged."""
+    assert anti_shuffle("Hi") == "Hi"
 
 
-def test_anti_shuffle_preserves_word_count_and_spaces():
-    s = "the quick  brown fox "
-    result = anti_shuffle(s)
-
-    assert result.count(" ") == s.count(" ")
-    assert len(result.split(" ")) == len(s.split(" "))
-    assert result.split(" ") == ["" if w == "" else "".join(sorted(w)) for w in s.split(" ")]
+def test_anti_shuffle_sorts_characters_within_word():
+    """Characters within a single word are sorted."""
+    assert anti_shuffle("hello") == "ehllo"
 
 
-def test_anti_shuffle_output_words_are_permutations_of_input_words():
-    s = "banana apple cherry"
-    result = anti_shuffle(s)
-
-    for original, shuffled in zip(s.split(" "), result.split(" ")):
-        assert sorted(shuffled) == sorted(original)
-        assert shuffled == "".join(sorted(original))
+def test_anti_shuffle_multiple_words():
+    """Each word is sorted independently; words remain separated by spaces."""
+    assert anti_shuffle("hello world") == "ehllo dlorw"
 
 
-def test_anti_shuffle_does_not_mutate_input():
-    s = "zebra yak"
-    snapshot = str(s)
+def test_anti_shuffle_unsorted_single_word():
+    """A scrambled word is fully sorted."""
+    assert anti_shuffle("bca") == "abc"
 
-    anti_shuffle(s)
 
-    assert s == snapshot
+def test_anti_shuffle_empty_string():
+    """An empty string yields an empty string."""
+    assert anti_shuffle("") == ""
+
+
+def test_anti_shuffle_mixed_case_and_spaces():
+    """Sorting is by character code; multiple spaces are preserved as separators."""
+    assert anti_shuffle("ba dc") == "ab cd"

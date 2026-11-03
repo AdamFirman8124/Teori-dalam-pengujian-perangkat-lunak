@@ -5,27 +5,17 @@ def test_case_0():
     str_0 = ''
     int_0 = module_0.strlen(str_0)
     assert int_0 == 0
-    str_1 = 'a'
+    str_1 = 'abc'
     int_1 = module_0.strlen(str_1)
-    assert int_1 == 1
-    str_2 = 'hello'
+    assert int_1 == 3
+    str_2 = 'hello world'
     int_2 = module_0.strlen(str_2)
-    assert int_2 == 5
-    str_3 = 'hello world'
+    assert int_2 == 11
+    str_3 = ' '
     int_3 = module_0.strlen(str_3)
-    assert int_3 == 11
-    str_4 = '  '
-    int_4 = module_0.strlen(str_4)
-    assert int_4 == 2
-    str_5 = 'hÃ©llo'
-    int_5 = module_0.strlen(str_5)
-    assert int_5 == 5
-    assert int_5 == 6
-    str_6 = 'ð\x9f\x99\x82'
-    int_6 = module_0.strlen(str_6)
-    assert int_6 == 1
-    assert int_6 == 4
-    int_7 = 1000
-    var_0 = str_1 * int_7
-    int_8 = module_0.strlen(var_0)
-    assert int_8 == 1000
+    assert int_3 == 1
+    str_4 = 'a'
+    int_4 = 50
+    var_0 = str_4 * int_4
+    int_5 = module_0.strlen(var_0)
+    assert int_5 == 50

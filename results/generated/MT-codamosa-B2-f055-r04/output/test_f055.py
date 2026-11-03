@@ -14,14 +14,23 @@ def test_case_0():
     int_3 = 3
     var_3 = module_0.fib(int_3)
     assert var_3 == 2
-    int_4 = 5
+    int_4 = 4
     var_4 = module_0.fib(int_4)
-    assert var_4 == 5
-    int_5 = 10
+    assert var_4 == 3
+    int_5 = 5
     var_5 = module_0.fib(int_5)
-    assert var_5 == 55
-
-def test_case_1():
-    int_0 = 0
-    var_0 = module_0.fib(int_0)
-    assert var_0 == 0
+    assert var_5 == 5
+    int_6 = 6
+    var_6 = module_0.fib(int_6)
+    assert var_6 == 8
+    int_7 = 7
+    var_7 = module_0.fib(int_7)
+    assert var_7 == 13
+    int_8 = 10
+    var_8 = module_0.fib(int_8)
+    assert var_8 == 55
+    int_9 = 15
+    var_9 = module_0.fib(int_9)
+    assert var_9 == 610
+    str_0 = 'All test cases passed!'
+    var_10 = print(str_0)

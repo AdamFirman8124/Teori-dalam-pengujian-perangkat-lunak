@@ -1,226 +1,218 @@
 
 
-# Generated at 2026-10-25 17:13:44.373585
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:13:46.790162
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:13:49.203228
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:13:51.617248
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:13:54.030386
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:13:56.446276
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:13:58.862195
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:01.275368
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:03.689762
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:06.106802
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:08.522805
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:10.936005
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:13.349563
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:15.764158
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:18.178811
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:20.592680
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:23.007162
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:25.424055
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:27.841030
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:30.254953
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:32.669733
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:35.084530
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:37.499584
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:39.913726
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:42.328099
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:44.745872
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:47.161753
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:49.575379
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:51.989922
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:54.404017
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:56.818547
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:14:59.232587
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:01.650460
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:04.051402
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:06.466056
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:08.881284
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:11.294554
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:13.709673
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:16.123719
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:18.538135
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:20.952231
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:23.368368
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:25.782569
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:31.224168
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:33.639400
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:36.064447
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:38.479501
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:40.893387
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:43.312249
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:45.728576
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:48.143287
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:50.556822
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:52.970579
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:55.385048
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:15:57.799430
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:00.212697
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:02.630709
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:05.045062
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:07.459755
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:09.873761
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:12.287674
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:14.703060
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:17.115702
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:19.530349
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:21.943960
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:24.362174
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:26.778969
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:29.191149
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:31.605249
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:34.019992
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:36.433715
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:38.847449
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:41.261725
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:43.681647
-# Unit test for function compare_one
-
-# Generated at 2026-10-25 17:16:46.094146
-# Unit test for function compare_one
+# Generated at 2026-11-02 17:35:27.459682
+# Unit test for function compare_one
+def test_compare_one():
+    # Basic numeric comparisons
+    assert module_0.compare_one(1, 2) == 2
+    assert module_0.compare_one(2, 1) == 2
+    assert module_0.compare_one(1, 2.5) == 2.5
+    assert module_0.compare_one(2.5, 1) == 2.5
+
+    # String with comma as decimal separator
+    assert module_0.compare_one(1, "2,3") == "2,3"
+    assert module_0.compare_one("2,3", 1) == "2,3"
+    assert module_0.compare_one("5,1", "6") == "6"
+    assert module_0.compare_one("6", "5,1") == "6"
+
+    # Equal values return None
+    assert module_0.compare_one("1", 1) is None
+    assert module_0.compare_one(1, 1) is None
+    assert module_0.compare_one("1,0", "1.0") is None
+    assert module_0.compare_one("1,0", 1) is None
+    assert module_0.compare_one(2.5, 2.5) is None
+
+    # Negative numbers
+    assert module_0.compare_one(-1, 1) == 1
+    assert module_0.compare_one(1, -1) == 1
+    assert module_0.compare_one(-2, -1) == -1
+    assert module_0.compare_one("-1,5", -1) == "-1,5"
+
+    # Float precision
+    assert module_0.compare_one(0.1, 0.2) == 0.2
+    assert module_0.compare_one("0,1", 0.2) == 0.2
+
+    # Original value (not converted) is returned for strings
+    result = module_0.compare_one("2,5", 2)
+    assert result == "2,5" and isinstance(result, str)
+
+    print("All compare_one tests passed!")
+
+# Generated at 2026-11-02 17:37:23.732320
+# Unit test for function compare_one
+def test_compare_one():
+    # Basic integer comparison
+    assert module_0.compare_one(1, 2) == 2
+    assert module_0.compare_one(5, 3) == 5
+    assert module_0.compare_one(10, 10) is None
+
+    # Float comparison
+    assert module_0.compare_one(2.5, 3.5) == 3.5
+    assert module_0.compare_one(3.5, 2.5) == 3.5
+    assert module_0.compare_one(2.5, 2.5) is None
+
+    # String with dot decimal
+    assert module_0.compare_one("2.3", "4.5") == "4.5"
+    assert module_0.compare_one("4.5", "2.3") == "4.5"
+    assert module_0.compare_one("2.3", "2.3") is None
+
+    # String with comma decimal (European notation)
+    assert module_0.compare_one("2,3", "4,5") == "4,5"
+    assert module_0.compare_one("4,5", "2,3") == "4,5"
+    assert module_0.compare_one("2,3", "2,3") is None
+
+    # Mixed types: string vs int
+    assert module_0.compare_one("5", 3) == "5"
+    assert module_0.compare_one(3, "5") == "5"
+    assert module_0.compare_one("5", 5) is None
+
+    # Mixed types: string vs float
+    assert module_0.compare_one("2.5", 3) == 3
+    assert module_0.compare_one(3, "2,5") == 3
+
+    # Negative numbers
+    assert module_0.compare_one(-1, 2) == 2
+    assert module_0.compare_one(-2, -1) == -1
+    assert module_0.compare_one(-2.5, -2.5) is None
+
+    # Large values
+    assert module_0.compare_one(1000, 999) == 1000
+    assert module_0.compare_one("1000.1", 1000) == "1000.1"
+
+# Generated at 2026-11-02 17:38:18.868716
+# Unit test for function compare_one
+def test_compare_one():
+    # Basic integer comparisons
+    assert module_0.compare_one(1, 2) == 2
+    assert module_0.compare_one(2, 1) == 2
+    assert module_0.compare_one(5, 5) is None
+
+    # Float comparisons
+    assert module_0.compare_one(2.5, 1.5) == 2.5
+    assert module_0.compare_one(1.5, 2.5) == 2.5
+    assert module_0.compare_one(2.5, 2.5) is None
+
+    # String comparisons (dot decimals)
+    assert module_0.compare_one("1", "2") == "2"
+    assert module_0.compare_one("2", "1") == "2"
+    assert module_0.compare_one("1.5", "1.5") is None
+
+    # Strings with comma decimal separators
+    assert module_0.compare_one("1,5", "1") == "1,5"
+    assert module_0.compare_one("1", "1,5") == "1,5"
+    assert module_0.compare_one("1,5", "1,5") is None
+
+    # Mixed types
+    assert module_0.compare_one("1", 1.0) is None
+    assert module_0.compare_one(2, "1") == 2
+    assert module_0.compare_one("1", 2) == 2
+    assert module_0.compare_one("2", 1) == "2"
+
+    # Negative numbers
+    assert module_0.compare_one(-1, 1) == 1
+    assert module_0.compare_one(-1, -2) == -1
+    assert module_0.compare_one("-1,5", "-1") == "-1,5"
+
+    # Zero handling
+    assert module_0.compare_one(0, 0) is None
+    assert module_0.compare_one(0, 1) == 1
+    assert module_0.compare_one("0.1", 0.1) is None
+
+    # Larger / precise values
+    assert module_0.compare_one(100, 99.99) == 100
+    assert module_0.compare_one("3.14159", "3.14159") is None
+
+    print("All compare_one tests passed!")
+
+
+if __name__ == "__main__":
+    test_compare_one()
+
+# Generated at 2026-11-02 17:39:14.151714
+# Unit test for function compare_one
+def test_compare_one():
+    # Basic numeric comparisons
+    assert module_0.compare_one(1, 2.5) == 2.5
+    assert module_0.compare_one(2.5, 1) == 2.5
+    assert module_0.compare_one(1, 2) == 2
+    assert module_0.compare_one(2, 1) == 2
+    assert module_0.compare_one(10, 9.99) == 10
+
+    # Equal values return None
+    assert module_0.compare_one(1, 1) is None
+    assert module_0.compare_one(1.0, 1) is None
+    assert module_0.compare_one(0, 0.0) is None
+
+    # String inputs with comma decimal separators
+    assert module_0.compare_one(1, "2,3") == "2,3"
+    assert module_0.compare_one("5,1", "6") == "6"
+    assert module_0.compare_one("1,5", "1.5") is None
+    assert module_0.compare_one("2,5", 2.5) is None
+
+    # String inputs with dot decimal separators
+    assert module_0.compare_one("1.5", 1) == "1.5"
+    assert module_0.compare_one("0.1", "0.01") == "0.1"
+    assert module_0.compare_one("3.14", 3) == "3.14"
+
+    # Negative numbers
+    assert module_0.compare_one(-1, -2) == -1
+    assert module_0.compare_one(-2, -1) == -1
+    assert module_0.compare_one(-1.5, "-1,5") is None
+
+    # Original values are returned unchanged (type preserved)
+    result = module_0.compare_one(1, "2,3")
+    assert result == "2,3" and isinstance(result, str)
+    result = module_0.compare_one(2, "1,5")
+    assert result == 2 and isinstance(result, int)
+
+    # Invalid string input raises ValueError
+    try:
+        module_0.compare_one("abc", 1)
+        assert False, "Expected ValueError"
+    except ValueError:
+        pass
+
+    print("All test_compare_one tests passed!")
+
+# Generated at 2026-11-02 17:40:35.359582
+# Unit test for function compare_one
+def test_compare_one():
+    # Integer comparisons
+    assert module_0.compare_one(1, 5) == 5
+    assert module_0.compare_one(5, 1) == 5
+    assert module_0.compare_one(10, 2) == 10
+
+    # Float comparisons
+    assert module_0.compare_one(2.5, 1.5) == 2.5
+    assert module_0.compare_one(1.5, 2.5) == 2.5
+
+    # String comparisons
+    assert module_0.compare_one("1", "2") == "2"
+    assert module_0.compare_one("2", "1") == "2"
+
+    # Strings with comma as decimal separator (European notation)
+    assert module_0.compare_one("1,5", "2,5") == "2,5"
+    assert module_0.compare_one("2,5", "1,5") == "2,5"
+    assert module_0.compare_one("1,5", "1.5") is None
+
+    # Equal values return None
+    assert module_0.compare_one(5, 5) is None
+    assert module_0.compare_one(5.0, 5) is None
+    assert module_0.compare_one("5", "5") is None
+    assert module_0.compare_one("5,0", "5.0") is None
+
+    # Mixed types: original object is returned, not the converted one
+    assert module_0.compare_one("2", 3) == 3
+    assert module_0.compare_one(3, "2") == 3
+    assert module_0.compare_one("2,5", 2.0) == "2,5"
+    assert module_0.compare_one(2.0, "2,5") == "2,5"
+
+    # Negative numbers
+    assert module_0.compare_one(-1, -5) == -1
+    assert module_0.compare_one(-5, -1) == -1
+    assert module_0.compare_one(-1.5, -1.5) is None
+
+    print("All tests passed!")
+
+
+test_compare_one()

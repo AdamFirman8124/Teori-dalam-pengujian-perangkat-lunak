@@ -5,3 +5,33 @@ def test_case_0():
     str_0 = '(()()) ((())) () ((())()())'
     list_0 = module_0.parse_nested_parens(str_0)
     assert list_0 == [2, 3, 1, 3]
+    str_1 = '()'
+    list_1 = module_0.parse_nested_parens(str_1)
+    assert list_1 == [1]
+    str_2 = '(())'
+    list_2 = module_0.parse_nested_parens(str_2)
+    assert list_2 == [2]
+    str_3 = '(((())))'
+    list_3 = module_0.parse_nested_parens(str_3)
+    assert list_3 == [4]
+    str_4 = '() (()) ((())) (((())))'
+    list_4 = module_0.parse_nested_parens(str_4)
+    assert list_4 == [1, 2, 3, 4]
+    str_5 = ''
+    list_5 = module_0.parse_nested_parens(str_5)
+    assert list_5 == []
+    str_6 = '()  (())'
+    list_6 = module_0.parse_nested_parens(str_6)
+    assert list_6 == [1, 2]
+    str_7 = '  () (())  '
+    list_7 = module_0.parse_nested_parens(str_7)
+    assert list_7 == [1, 2]
+    str_8 = '()()'
+    list_8 = module_0.parse_nested_parens(str_8)
+    assert list_8 == [1]
+    str_9 = '(()()) ((())) (()(()))'
+    list_9 = module_0.parse_nested_parens(str_9)
+    assert list_9 == [2, 3, 3]
+
+def test_case_1():
+    pass

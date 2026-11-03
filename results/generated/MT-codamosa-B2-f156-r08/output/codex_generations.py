@@ -1,46 +1,218 @@
 
 
-# Generated at 2026-10-25 14:56:35.554808
+# Generated at 2026-11-02 11:57:24.927197
 # Unit test for function int_to_mini_roman
+def test_int_to_mini_roman():
+    # Basic single symbols
+    assert module_0.int_to_mini_roman(1) == "i"
+    assert module_0.int_to_mini_roman(5) == "v"
+    assert module_0.int_to_mini_roman(10) == "x"
+    assert module_0.int_to_mini_roman(50) == "l"
+    assert module_0.int_to_mini_roman(100) == "c"
+    assert module_0.int_to_mini_roman(500) == "d"
+    assert module_0.int_to_mini_roman(1000) == "m"
 
-# Generated at 2026-10-25 14:56:37.966430
-# Unit test for function int_to_mini_roman
+    # Subtractive combinations
+    assert module_0.int_to_mini_roman(4) == "iv"
+    assert module_0.int_to_mini_roman(9) == "ix"
+    assert module_0.int_to_mini_roman(40) == "xl"
+    assert module_0.int_to_mini_roman(90) == "xc"
+    assert module_0.int_to_mini_roman(400) == "cd"
+    assert module_0.int_to_mini_roman(900) == "cm"
 
-# Generated at 2026-10-25 14:56:40.379880
-# Unit test for function int_to_mini_roman
+    # Standard examples
+    assert module_0.int_to_mini_roman(19) == "xix"
+    assert module_0.int_to_mini_roman(152) == "clii"
+    assert module_0.int_to_mini_roman(426) == "cdxxvi"
+    assert module_0.int_to_mini_roman(1994) == "mcmxciv"
+    assert module_0.int_to_mini_roman(2023) == "mmxxiii"
+    assert module_0.int_to_mini_roman(3999) == "mmmcmxcix"
 
-# Generated at 2026-10-25 14:57:11.785808
-# Unit test for function int_to_mini_roman
+    # Repetition of symbols
+    assert module_0.int_to_mini_roman(3) == "iii"
+    assert module_0.int_to_mini_roman(3888) == "mmmdccclxxxviii"
 
-# Generated at 2026-10-25 14:57:14.259792
-# Unit test for function int_to_mini_roman
+    print("All tests passed!")
 
-# Generated at 2026-10-25 14:57:16.753818
-# Unit test for function int_to_mini_roman
 
-# Generated at 2026-10-25 14:57:28.187843
-# Unit test for function int_to_mini_roman
+test_int_to_mini_roman()
 
-# Generated at 2026-10-25 14:57:30.699856
+# Generated at 2026-11-02 12:00:12.652325
 # Unit test for function int_to_mini_roman
+def test_int_to_mini_roman():
+    # Basic single symbols
+    assert module_0.int_to_mini_roman(1) == "i"
+    assert module_0.int_to_mini_roman(5) == "v"
+    assert module_0.int_to_mini_roman(10) == "x"
+    assert module_0.int_to_mini_roman(50) == "l"
+    assert module_0.int_to_mini_roman(100) == "c"
+    assert module_0.int_to_mini_roman(500) == "d"
+    assert module_0.int_to_mini_roman(1000) == "m"
 
-# Generated at 2026-10-25 14:57:33.245601
-# Unit test for function int_to_mini_roman
+    # Subtractive combinations
+    assert module_0.int_to_mini_roman(4) == "iv"
+    assert module_0.int_to_mini_roman(9) == "ix"
+    assert module_0.int_to_mini_roman(40) == "xl"
+    assert module_0.int_to_mini_roman(90) == "xc"
+    assert module_0.int_to_mini_roman(400) == "cd"
+    assert module_0.int_to_mini_roman(900) == "cm"
 
-# Generated at 2026-10-25 14:57:35.693871
-# Unit test for function int_to_mini_roman
+    # Multi-symbol numbers
+    assert module_0.int_to_mini_roman(2) == "ii"
+    assert module_0.int_to_mini_roman(3) == "iii"
+    assert module_0.int_to_mini_roman(14) == "xiv"
+    assert module_0.int_to_mini_roman(19) == "xix"
+    assert module_0.int_to_mini_roman(38) == "xxxviii"
+    assert module_0.int_to_mini_roman(58) == "lviii"
+    assert module_0.int_to_mini_roman(1994) == "mcmxciv"
+    assert module_0.int_to_mini_roman(2023) == "mmxxiii"
+    assert module_0.int_to_mini_roman(3549) == "mmmdxlix"
+    assert module_0.int_to_mini_roman(3999) == "mmmcmxcix"
 
-# Generated at 2026-10-25 14:57:38.176685
-# Unit test for function int_to_mini_roman
+    # Edge case: smallest valid input
+    assert module_0.int_to_mini_roman(1) == "i"
 
-# Generated at 2026-10-25 14:57:40.656495
-# Unit test for function int_to_mini_roman
+    # Repeated symbols
+    assert module_0.int_to_mini_roman(300) == "ccc"
+    assert module_0.int_to_mini_roman(2000) == "mm"
 
-# Generated at 2026-10-25 14:57:43.144249
-# Unit test for function int_to_mini_roman
+    print("All tests passed!")
 
-# Generated at 2026-10-25 14:57:45.656113
-# Unit test for function int_to_mini_roman
 
-# Generated at 2026-10-25 14:57:48.165596
+test_int_to_mini_roman()
+
+# Generated at 2026-11-02 12:02:52.098716
 # Unit test for function int_to_mini_roman
+def test_int_to_mini_roman():
+    # Basic single symbols
+    assert module_0.int_to_mini_roman(1) == "i"
+    assert module_0.int_to_mini_roman(5) == "v"
+    assert module_0.int_to_mini_roman(10) == "x"
+    assert module_0.int_to_mini_roman(50) == "l"
+    assert module_0.int_to_mini_roman(100) == "c"
+    assert module_0.int_to_mini_roman(500) == "d"
+    assert module_0.int_to_mini_roman(1000) == "m"
+
+    # Subtractive notation cases
+    assert module_0.int_to_mini_roman(4) == "iv"
+    assert module_0.int_to_mini_roman(9) == "ix"
+    assert module_0.int_to_mini_roman(40) == "xl"
+    assert module_0.int_to_mini_roman(90) == "xc"
+    assert module_0.int_to_mini_roman(400) == "cd"
+    assert module_0.int_to_mini_roman(900) == "cm"
+
+    # Composite numbers
+    assert module_0.int_to_mini_roman(3) == "iii"
+    assert module_0.int_to_mini_roman(19) == "xix"
+    assert module_0.int_to_mini_roman(152) == "clii"
+    assert module_0.int_to_mini_roman(426) == "cdxxvi"
+    assert module_0.int_to_mini_roman(1994) == "mcmxciv"
+    assert module_0.int_to_mini_roman(2023) == "mmxxiii"
+    assert module_0.int_to_mini_roman(3999) == "mmmcmxcix"
+    assert module_0.int_to_mini_roman(3549) == "mmmdxlix"
+
+    # Repeated symbol cases
+    assert module_0.int_to_mini_roman(2) == "ii"
+    assert module_0.int_to_mini_roman(20) == "xx"
+    assert module_0.int_to_mini_roman(300) == "ccc"
+    assert module_0.int_to_mini_roman(3000) == "mmm"
+
+    # Edge case: zero yields empty string
+    assert module_0.int_to_mini_roman(0) == ""
+
+    # Result is always lowercase
+    assert module_0.int_to_mini_roman(1994) == module_0.int_to_mini_roman(1994).lower()
+    assert module_0.int_to_mini_roman(1234) == "mccxxxiv"
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_int_to_mini_roman()
+
+# Generated at 2026-11-02 12:04:45.035152
+# Unit test for function int_to_mini_roman
+def test_int_to_mini_roman():
+    # Basic single symbols
+    assert module_0.int_to_mini_roman(1) == 'i'
+    assert module_0.int_to_mini_roman(5) == 'v'
+    assert module_0.int_to_mini_roman(10) == 'x'
+    assert module_0.int_to_mini_roman(50) == 'l'
+    assert module_0.int_to_mini_roman(100) == 'c'
+    assert module_0.int_to_mini_roman(500) == 'd'
+    assert module_0.int_to_mini_roman(1000) == 'm'
+
+    # Subtractive combinations
+    assert module_0.int_to_mini_roman(4) == 'iv'
+    assert module_0.int_to_mini_roman(9) == 'ix'
+    assert module_0.int_to_mini_roman(40) == 'xl'
+    assert module_0.int_to_mini_roman(90) == 'xc'
+    assert module_0.int_to_mini_roman(400) == 'cd'
+    assert module_0.int_to_mini_roman(900) == 'cm'
+
+    # Repeated symbols
+    assert module_0.int_to_mini_roman(3) == 'iii'
+    assert module_0.int_to_mini_roman(20) == 'xx'
+    assert module_0.int_to_mini_roman(300) == 'ccc'
+    assert module_0.int_to_mini_roman(2000) == 'mm'
+
+    # Mixed numbers
+    assert module_0.int_to_mini_roman(19) == 'xix'
+    assert module_0.int_to_mini_roman(152) == 'clii'
+    assert module_0.int_to_mini_roman(426) == 'cdxxvi'
+    assert module_0.int_to_mini_roman(354) == 'cccliv'
+    assert module_0.int_to_mini_roman(421) == 'cdxxi'
+    assert module_0.int_to_mini_roman(1987) == 'mcmlxxxvii'
+    assert module_0.int_to_mini_roman(2023) == 'mmxxiii'
+    assert module_0.int_to_mini_roman(3999) == 'mmmcmxcix'
+
+    # Boundary values
+    assert module_0.int_to_mini_roman(3888) == 'mmmdccclxxxviii'
+    assert module_0.int_to_mini_roman(999) == 'cmxcix'
+
+    print("All tests passed!")
+
+
+test_int_to_mini_roman()
+
+# Generated at 2026-11-02 12:05:30.997783
+# Unit test for function int_to_mini_roman
+def test_int_to_mini_roman():
+    # Basic single symbols
+    assert module_0.int_to_mini_roman(1) == 'i'
+    assert module_0.int_to_mini_roman(5) == 'v'
+    assert module_0.int_to_mini_roman(10) == 'x'
+    assert module_0.int_to_mini_roman(50) == 'l'
+    assert module_0.int_to_mini_roman(100) == 'c'
+    assert module_0.int_to_mini_roman(500) == 'd'
+    assert module_0.int_to_mini_roman(1000) == 'm'
+
+    # Subtractive combinations
+    assert module_0.int_to_mini_roman(4) == 'iv'
+    assert module_0.int_to_mini_roman(9) == 'ix'
+    assert module_0.int_to_mini_roman(40) == 'xl'
+    assert module_0.int_to_mini_roman(90) == 'xc'
+    assert module_0.int_to_mini_roman(400) == 'cd'
+    assert module_0.int_to_mini_roman(900) == 'cm'
+
+    # Repeated symbols
+    assert module_0.int_to_mini_roman(2) == 'ii'
+    assert module_0.int_to_mini_roman(3) == 'iii'
+    assert module_0.int_to_mini_roman(20) == 'xx'
+    assert module_0.int_to_mini_roman(30) == 'xxx'
+
+    # Mixed values
+    assert module_0.int_to_mini_roman(19) == 'xix'
+    assert module_0.int_to_mini_roman(152) == 'clii'
+    assert module_0.int_to_mini_roman(426) == 'cdxxvi'
+    assert module_0.int_to_mini_roman(58) == 'lviii'
+    assert module_0.int_to_mini_roman(1994) == 'mcmxciv'
+    assert module_0.int_to_mini_roman(2023) == 'mmxxiii'
+    assert module_0.int_to_mini_roman(3999) == 'mmmcmxcix'
+    assert module_0.int_to_mini_roman(3549) == 'mmmdxlix'
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_int_to_mini_roman()

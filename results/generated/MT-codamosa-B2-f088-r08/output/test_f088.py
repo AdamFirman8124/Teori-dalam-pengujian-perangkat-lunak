@@ -5,35 +5,50 @@ def test_case_0():
     var_0 = []
     var_1 = module_0.sort_array(var_0)
     assert var_1 == []
-
-def test_case_1():
-    int_0 = 2
-    int_1 = 4
-    int_2 = 3
-    int_3 = 0
-    int_4 = 1
-    int_5 = 5
-    int_6 = [int_0, int_1, int_2, int_3, int_4, int_5]
-    var_0 = module_0.sort_array(int_6)
-    assert var_0 == [0, 1, 2, 3, 4, 5]
-    int_7 = 6
-    int_8 = [int_0, int_1, int_2, int_3, int_4, int_5, int_7]
-    var_1 = module_0.sort_array(int_8)
-    assert var_1 == [6, 5, 4, 3, 2, 1, 0]
-    int_9 = [int_4, int_2, int_5]
-    var_2 = module_0.sort_array(int_9)
-    assert var_2 == [5, 3, 1]
-    int_10 = [int_5]
-    var_3 = module_0.sort_array(int_10)
-    assert var_3 == [5]
-    var_4 = []
-    var_5 = module_0.sort_array(var_4)
-    assert var_5 == []
-    int_11 = [int_2, int_2, int_4, int_0]
+    int_0 = 5
+    int_1 = [int_0]
+    var_2 = module_0.sort_array(int_1)
+    assert var_2 == [5]
+    int_2 = 2
+    int_3 = 4
+    int_4 = 3
+    int_5 = 0
+    int_6 = 1
+    int_7 = [int_2, int_3, int_4, int_5, int_6, int_0]
+    var_3 = module_0.sort_array(int_7)
+    assert var_3 == [0, 1, 2, 3, 4, 5]
+    int_8 = 6
+    int_9 = [int_2, int_3, int_4, int_5, int_6, int_8]
+    var_4 = module_0.sort_array(int_9)
+    assert var_4 == [6, 4, 3, 2, 1, 0]
+    int_10 = [int_6, int_4, int_0]
+    var_5 = module_0.sort_array(int_10)
+    assert var_5 == [5, 3, 1]
+    int_11 = [int_6, int_2, int_4]
     var_6 = module_0.sort_array(int_11)
-    assert var_6 == [1, 2, 3, 3]
-    int_12 = [int_0, int_1, int_2, int_3, int_4, int_5]
+    assert var_6 == [3, 2, 1]
+    int_12 = [int_2, int_6, int_4]
     var_7 = module_0.sort_array(int_12)
-    assert var_7 == [0, 1, 2, 3, 4, 5]
-    str_0 = 'All tests passed!'
-    var_8 = print(str_0)
+    assert var_7 == [1, 2, 3]
+    int_13 = -2
+    int_14 = -1
+    int_15 = [int_13, int_0, int_14, int_3]
+    var_8 = module_0.sort_array(int_15)
+    assert var_8 == [5, 4, -1, -2]
+    int_16 = -2
+    int_17 = -1
+    int_18 = [int_16, int_0, int_17, int_4]
+    var_9 = module_0.sort_array(int_18)
+    assert var_9 == [-2, -1, 3, 5]
+    int_19 = [int_6, int_2, int_3]
+    var_10 = module_0.sort_array(int_19)
+    assert var_10 == [1, 2, 4]
+    int_20 = [int_6, int_2, int_0]
+    var_11 = module_0.sort_array(int_20)
+    assert var_11 == [5, 2, 1]
+    int_21 = [int_4, int_4, int_6, int_6]
+    var_12 = module_0.sort_array(int_21)
+    assert var_12 == [3, 3, 1, 1]
+    int_22 = [int_4, int_4, int_6, int_2]
+    var_13 = module_0.sort_array(int_22)
+    assert var_13 == [1, 2, 3, 3]

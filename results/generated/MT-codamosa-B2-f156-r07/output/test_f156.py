@@ -5,3 +5,66 @@ def test_case_0():
     int_0 = 1
     var_0 = module_0.int_to_mini_roman(int_0)
     assert var_0 == 'i'
+    int_1 = 4
+    var_1 = module_0.int_to_mini_roman(int_1)
+    assert var_1 == 'iv'
+    int_2 = 5
+    var_2 = module_0.int_to_mini_roman(int_2)
+    assert var_2 == 'v'
+    int_3 = 9
+    var_3 = module_0.int_to_mini_roman(int_3)
+    assert var_3 == 'ix'
+    int_4 = 10
+    var_4 = module_0.int_to_mini_roman(int_4)
+    assert var_4 == 'x'
+    int_5 = 40
+    var_5 = module_0.int_to_mini_roman(int_5)
+    assert var_5 == 'xl'
+    int_6 = 50
+    var_6 = module_0.int_to_mini_roman(int_6)
+    assert var_6 == 'l'
+    int_7 = 90
+    var_7 = module_0.int_to_mini_roman(int_7)
+    assert var_7 == 'xc'
+    int_8 = 100
+    var_8 = module_0.int_to_mini_roman(int_8)
+    assert var_8 == 'c'
+    int_9 = 400
+    var_9 = module_0.int_to_mini_roman(int_9)
+    assert var_9 == 'cd'
+    int_10 = 500
+    var_10 = module_0.int_to_mini_roman(int_10)
+    assert var_10 == 'd'
+    int_11 = 900
+    var_11 = module_0.int_to_mini_roman(int_11)
+    assert var_11 == 'cm'
+    int_12 = 1000
+    var_12 = module_0.int_to_mini_roman(int_12)
+    assert var_12 == 'm'
+    int_13 = 19
+    var_13 = module_0.int_to_mini_roman(int_13)
+    assert var_13 == 'xix'
+    int_14 = 152
+    var_14 = module_0.int_to_mini_roman(int_14)
+    assert var_14 == 'clii'
+    int_15 = 426
+    var_15 = module_0.int_to_mini_roman(int_15)
+    assert var_15 == 'cdxxvi'
+    int_16 = 58
+    var_16 = module_0.int_to_mini_roman(int_16)
+    assert var_16 == 'lviii'
+    int_17 = 1994
+    var_17 = module_0.int_to_mini_roman(int_17)
+    assert var_17 == 'mcmxciv'
+    int_18 = 3999
+    var_18 = module_0.int_to_mini_roman(int_18)
+    assert var_18 == 'mmmcmxcix'
+    int_19 = 2023
+    var_19 = module_0.int_to_mini_roman(int_19)
+    assert var_19 == 'mmxxii'
+    assert var_19 == 'mmxxiii'
+    str_0 = 'All tests passed!'
+    var_20 = print(str_0)
+
+def test_case_1():
+    pass

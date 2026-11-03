@@ -1,825 +1,291 @@
 
 
-# Generated at 2026-10-25 04:40:24.514445
+# Generated at 2026-11-02 20:51:09.981574
 # Unit test for constructor of class Schema
-def test_Schema():import pytest
+def test_Schema():
+    class ExampleSchema(Schema):
+        name = String()
+        age = Integer(default=0)
 
+    # Keyword argument construction with validation
+    instance = ExampleSchema(name="tom", age=25)
+    assert instance.name == "tom"
+    assert instance.age == 25
 
-# Generated at 2026-10-25 04:40:25.879393
+    # Default values applied when kwargs are omitted
+    instance = ExampleSchema(name="tom")
+    assert instance.name == "tom"
+    assert instance.age == 0
+    assert not instance.is_sparse
+
+    # Sparse instance when a field without default is omitted
+    sparse = ExampleSchema()
+    assert sparse.is_sparse
+    assert len(sparse) == 1
+    assert dict(sparse) == {"age": 0}
+
+    # Construction from a mapping (values copied without validation)
+    instance = ExampleSchema({"name": "jerry", "age": 30})
+    assert instance.name == "jerry"
+    assert instance.age == 30
+
+    # Construction from an arbitrary object with matching attributes
+    class Item:
+        name = "spike"
+        age = 40
+
+    instance = ExampleSchema(Item())
+    assert instance.name == "spike"
+    assert instance.age == 40
+
+    # Invalid value for a field raises TypeError
+    with pytest.raises(TypeError):
+        ExampleSchema(name=123)
+
+    # Unknown keyword argument raises TypeError
+    with pytest.raises(TypeError):
+        ExampleSchema(name="tom", unknown=True)
+
+    # More than one positional argument is not allowed
+    with pytest.raises(AssertionError):
+        ExampleSchema({"name": "a"}, {"name": "b"})
+
+    # Positional argument cannot be combined with keyword arguments
+    with pytest.raises(AssertionError):
+        ExampleSchema({"name": "a"}, name="b")
+
+# Generated at 2026-11-02 20:52:14.554835
 # Unit test for constructor of class SchemaDefinitions
 def test_SchemaDefinitions():
-    # 1. Init from kwargs
-    defs = SchemaDefinitions(a=1)
-    assert defs["a"] == 1
-    assert len(defs) == 1
+    # Empty construction
+    definitions = SchemaDefinitions()
+    assert len(definitions) == 0
+    assert dict(definitions) == {}
+    assert list(definitions) == []
 
-    # 2. Init from a dict
-    defs = SchemaDefinitions({"a": 1, "b": 2})
-    assert len(defs) == 2
-    assert defs["b"] == 2
+    # Construction from a dict
+    definitions = SchemaDefinitions({"a": 1, "b": 2})
+    assert len(definitions) == 2
+    assert definitions["a"] == 1
+    assert definitions["b"] == 2
 
-    # 3. Iteration yields keys
-    assert sorted(defs) == ["a", "b"]
+    # Construction from keyword arguments
+    definitions = SchemaDefinitions(x=10, y=20)
+    assert definitions["x"] == 10
+    assert definitions["y"] == 20
 
-    # 4. __setitem__ inserts new keys
-    defs["c"] = 3
-    assert defs["c"] == 3
-    assert len(defs) == 3
+    # Construction from an iterable of key/value pairs
+    definitions = SchemaDefinitions([("k1", "v1"), ("k2", "v2")])
+    assert list(definitions) == ["k1", "k2"]
+    assert definitions["k1"] == "v1"
 
-    # 5. __setitem__ rejects duplicate keys
-    with pytest.raises(AssertionError):
-        defs["c"] = 99
+    # Setting items
+    definitions = SchemaDefinitions()
+    definitions["schema1"] = "value1"
+    assert definitions["schema1"] == "value1"
+    assert len(definitions) == 1
 
-    # 6. __delitem__ removes keys
-    del defs["c"]
-    assert "c" not in defs
-    assert len(defs) == 2
+    # Cannot overwrite an existing definition
+    try:
+        definitions["schema1"] = "value2"
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError("Expected AssertionError for duplicate key")
+    assert definitions["schema1"] == "value1"
 
-    # 7. Missing keys raise KeyError
-    with pytest.raises(KeyError):
-        defs["missing"]
+    # Deleting items
+    del definitions["schema1"]
+    assert "schema1" not in definitions
+    assert len(definitions) == 0
 
-    # 8. MutableMapping mixin methods work
-    defs.update({"d": 4})
-    assert defs.pop("d") == 4
-    assert "d" not in defs
+    # Deleting a missing key raises KeyError
+    try:
+        del definitions["schema1"]
+    except KeyError:
+        pass
+    else:
+        raise AssertionError("Expected KeyError when deleting missing key")
 
-# Generated at 2026-10-25 04:40:27.202392
+    # Missing key access raises KeyError
+    try:
+        definitions["missing"]
+    except KeyError:
+        pass
+    else:
+        raise AssertionError("Expected KeyError for missing key")
+
+# Generated at 2026-11-02 20:53:12.505712
 # Unit test for method __iter__ of class SchemaDefinitions
 def test_SchemaDefinitions___iter__():
-    definitions = SchemaDefinitions({"a": 1, "b": 2})
-    assert set(iter(definitions)) == {"a", "b"}
-    assert list(definitions) == list(definitions._definitions)
+    # Iterating over empty definitions yields nothing
+    definitions = SchemaDefinitions()
+    assert list(definitions) == []
+    assert list(iter(definitions)) == []
 
-# Generated at 2026-10-25 04:40:28.542359
+    # Iterating over populated definitions yields the keys
+    definitions = SchemaDefinitions({"a": 1, "b": 2, "c": 3})
+    assert sorted(definitions) == ["a", "b", "c"]
+
+    # Iteration order matches insertion order (dict-backed)
+    definitions = SchemaDefinitions({"z": 1, "m": 2, "a": 3})
+    assert list(definitions) == ["z", "m", "a"]
+
+    # Each call to iter() returns a fresh iterator
+    it1 = iter(definitions)
+    it2 = iter(definitions)
+    assert next(it1) == "z"
+    assert next(it2) == "z"
+    assert list(it1) == ["m", "a"]
+    assert list(it2) == ["m", "a"]
+
+    # Iteration reflects mutations to the underlying definitions
+    definitions = SchemaDefinitions()
+    definitions["one"] = 1
+    definitions["two"] = 2
+    assert list(definitions) == ["one", "two"]
+    del definitions["one"]
+    assert list(definitions) == ["two"]
+
+    # Initialized via kwargs also works
+    definitions = SchemaDefinitions(x=1, y=2)
+    assert sorted(definitions) == ["x", "y"]
+
+# Generated at 2026-11-02 20:54:55.189847
 # Unit test for function set_definitions
 def test_set_definitions():
-    # 1. Plain string reference gets the definitions mapping assigned.
+    from typesystem.fields import String
+
     definitions = SchemaDefinitions()
+
+    # A plain Reference with no definitions gets them set.
     ref = Reference("Example")
     assert ref.definitions is None
     module_0.set_definitions(ref, definitions)
     assert ref.definitions is definitions
 
-    # 2. Array with a list of items recurses into each child.
-    ref_a, ref_b = Reference("A"), Reference("B")
-    module_0.set_definitions(Array(items=[ref_a, ref_b]), definitions)
+    # A Reference that already has definitions is left untouched.
+    other_definitions = SchemaDefinitions()
+    ref_with_defs = Reference("Example", definitions=other_definitions)
+    module_0.set_definitions(ref_with_defs, definitions)
+    assert ref_with_defs.definitions is other_definitions
+
+    # A Reference nested inside an Array (single item) gets them set.
+    array_ref = Reference("Example")
+    array = Array(items=array_ref)
+    module_0.set_definitions(array, definitions)
+    assert array_ref.definitions is definitions
+
+    # References nested inside an Array (tuple of items) get them set.
+    ref_a = Reference("A")
+    ref_b = Reference("B")
+    tuple_array = Array(items=(ref_a, ref_b))
+    module_0.set_definitions(tuple_array, definitions)
     assert ref_a.definitions is definitions
     assert ref_b.definitions is definitions
 
-    # 3. Array with a single item recurses into it.
-    ref_c = Reference("C")
-    module_0.set_definitions(Array(items=ref_c), definitions)
-    assert ref_c.definitions is definitions
+    # A Reference nested inside an Object's properties gets them set.
+    obj_ref = Reference("Example")
+    obj = Object(properties={"nested": obj_ref})
+    module_0.set_definitions(obj, definitions)
+    assert obj_ref.definitions is definitions
 
-    # 4. Object recurses into its properties.
-    ref_d = Reference("D")
-    module_0.set_definitions(Object(properties={"d": ref_d}), definitions)
-    assert ref_d.definitions is definitions
+    # Deeply nested: Object -> Array -> Reference.
+    deep_ref = Reference("Example")
+    deep = Object(properties={"items": Array(items=deep_ref)})
+    module_0.set_definitions(deep, definitions)
+    assert deep_ref.definitions is definitions
 
-    # 5. Nested Array -> Object -> Reference is reached.
-    ref_e = Reference("E")
-    nested = Array(items=Object(properties={"e": ref_e}))
-    module_0.set_definitions(nested, definitions)
-    assert ref_e.definitions is definitions
+    # An Array with no items is handled safely.
+    empty_array = Array()
+    module_0.set_definitions(empty_array, definitions)
 
-    # 6. A Reference that already has definitions is not overwritten.
-    existing = SchemaDefinitions()
-    ref_f = Reference("F", definitions=existing)
-    module_0.set_definitions(ref_f, definitions)
-    assert ref_f.definitions is existing
+    # Non-container, non-reference fields are ignored without error.
+    plain_field = String()
+    module_0.set_definitions(plain_field, definitions)
 
-# Generated at 2026-10-25 04:40:29.872901
+# Generated at 2026-11-02 20:55:34.455641
 # Unit test for method __iter__ of class SchemaDefinitions
 def test_SchemaDefinitions___iter__():
-    definitions = SchemaDefinitions({"a": 1, "b": 2})
-    assert set(iter(definitions)) == {"a", "b"}
-    assert list(definitions) == list(definitions._definitions)
-
-# Generated at 2026-10-25 04:40:40.255056
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:40:49.507780
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:40:58.481447
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:41:10.902963
-# Unit test for method __eq__ of class Schema
-def test_Schema___eq__():
-    class Person(Schema):
-        name = Field()
-        age = Field()
-
-    class OtherPerson(Schema):
-        name = Field()
-        age = Field()
-
-    person = Person({"name": "Alice", "age": 30})
-
-    # Instances of the same class with equal field values are equal.
-    assert person == Person({"name": "Alice", "age": 30})
-
-    # A differing field value makes instances unequal.
-    assert person != Person({"name": "Alice", "age": 31})
-    assert person != Person({"name": "Bob", "age": 30})
-
-    # Equal values on a different Schema class are not equal.
-    assert person != OtherPerson({"name": "Alice", "age": 30})
-
-    # Non-Schema and unrelated values are not equal.
-    assert person != {"name": "Alice", "age": 30}
-    assert person != object()
-    assert person != None
-
-# Generated at 2026-10-25 04:41:21.141388
-# Unit test for method __eq__ of class Schema
-def test_Schema___eq__():
-    class ExampleSchema(Schema):
-        first = Object()
-        second = Object()
-
-    class OtherSchema(Schema):
-        first = Object()
-        second = Object()
-
-    value = {"first": "alpha", "second": 123}
-
-    assert ExampleSchema(value) == ExampleSchema(value)
-    assert ExampleSchema(value) != ExampleSchema(
-        {"first": "alpha", "second": 456}
-    )
-    assert ExampleSchema(value) != OtherSchema(value)
-    assert ExampleSchema(value) != value
-
-# Generated at 2026-10-25 04:41:23.559114
-# Unit test for method __setitem__ of class SchemaDefinitions
-
-# Generated at 2026-10-25 04:41:25.975262
-# Unit test for method __setitem__ of class SchemaDefinitions
-
-# Generated at 2026-10-25 04:41:28.389284
-# Unit test for method __setitem__ of class SchemaDefinitions
-
-# Generated at 2026-10-25 04:41:39.994865
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:41:44.901688
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:41:51.144092
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:42:01.388045
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:42:08.500202
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:42:11.152228
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:42:13.568168
-# Unit test for method __len__ of class Schema
-
-# Generated at 2026-10-25 04:42:15.983050
-# Unit test for method __len__ of class Schema
-
-# Generated at 2026-10-25 04:42:18.398403
-# Unit test for method __len__ of class Schema
-
-# Generated at 2026-10-25 04:42:20.977504
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:42:23.503255
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:42:25.921794
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:42:28.338742
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:42:30.752036
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:42:33.166225
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:42:35.584305
-# Unit test for constructor of class Schema
-
-# Generated at 2026-10-25 04:42:37.997438
-# Unit test for constructor of class Schema
-
-# Generated at 2026-10-25 04:42:50.843550
-# Unit test for constructor of class Schema
-
-# Generated at 2026-10-25 04:42:58.524208
-# Unit test for method __setitem__ of class SchemaDefinitions
-def test_SchemaDefinitions___setitem__():
+    # Iterating over an empty definitions mapping yields nothing
     definitions = SchemaDefinitions()
-    original = object()
-    replacement = object()
+    assert list(iter(definitions)) == []
+    assert len(list(definitions)) == 0
 
-    definitions["example"] = original
-
-    assert definitions["example"] is original
-    assert len(definitions) == 1
-
-    with pytest.raises(AssertionError):
-        definitions["example"] = replacement
-
-    # A duplicate assignment must not overwrite the original definition.
-    assert definitions["example"] is original
-    assert len(definitions) == 1
-
-# Generated at 2026-10-25 04:43:10.302176
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:43:16.128414
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:43:24.943316
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:43:27.653756
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:43:30.177586
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:43:32.702888
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:43:35.121284
-# Unit test for method __setitem__ of class SchemaDefinitions
-
-# Generated at 2026-10-25 04:43:37.536066
-# Unit test for method __setitem__ of class SchemaDefinitions
-
-# Generated at 2026-10-25 04:43:50.839840
-# Unit test for method __setitem__ of class SchemaDefinitions
-def test_SchemaDefinitions___setitem__():definitions = SchemaDefinitions()
-
-# Generated at 2026-10-25 04:43:57.814661
-# Unit test for method __setitem__ of class SchemaDefinitions
-def test_SchemaDefinitions___setitem__():
+    # Iterating yields the keys that have been set
     definitions = SchemaDefinitions()
-    original = object()
+    definitions["Foo"] = String()
+    definitions["Bar"] = String()
+    assert list(iter(definitions)) == ["Foo", "Bar"]
 
-    definitions["Example"] = original
+    # Iterating over definitions initialized from a dict yields its keys
+    definitions = SchemaDefinitions({"A": String(), "B": String()})
+    assert sorted(iter(definitions)) == ["A", "B"]
 
-    assert definitions["Example"] is original
-    assert len(definitions) == 1
+    # Iteration order matches insertion order
+    definitions = SchemaDefinitions()
+    definitions["first"] = String()
+    definitions["second"] = String()
+    definitions["third"] = String()
+    assert list(definitions) == ["first", "second", "third"]
 
-    with pytest.raises(AssertionError):
-        definitions["Example"] = object()
-
-    # A duplicate assignment must not replace the original definition.
-    assert definitions["Example"] is original
-    assert len(definitions) == 1
-
-# Generated at 2026-10-25 04:44:08.976904
-# Unit test for method __eq__ of class Schema
-def test_Schema___eq__():
-    class Person(Schema):
-        name = Field()
-        age = Field()
-
-    class OtherSchema(Schema):
-        name = Field()
-        age = Field()
-
-    person = Person({"name": "Alice", "age": 30})
-
-    # Instances of the same schema with equal field values are equal.
-    assert person == Person({"name": "Alice", "age": 30})
-
-    # A differing field value makes instances unequal.
-    assert person != Person({"name": "Alice", "age": 31})
-    assert person != Person({"name": "Bob", "age": 30})
-
-    # Values from a different schema class are not equal.
-    assert person != OtherSchema({"name": "Alice", "age": 30})
-
-    # Schema instances are not equal to unrelated values.
-    assert person != {"name": "Alice", "age": 30}
-    assert person != None  # noqa: E711
-
-# Generated at 2026-10-25 04:44:18.707529
-# Unit test for constructor of class Reference
-def test_Reference():
-    class UserSchema(Schema):
-        pass
-
-    definitions = SchemaDefinitions({"UserSchema": UserSchema})
-
-    # String-based reference.
-    string_reference = Reference("UserSchema", definitions=definitions)
-
-    assert string_reference.to == "UserSchema"
-    assert string_reference.definitions is definitions
-    assert string_reference.target_string == "UserSchema"
-    assert string_reference.target is UserSchema
-
-    # Direct schema reference.
-    direct_reference = Reference(UserSchema)
-
-    assert direct_reference.to is UserSchema
-    assert direct_reference.definitions is None
-    assert direct_reference.target is UserSchema
-    assert direct_reference.target_string == "UserSchema"
-
-# Generated at 2026-10-25 04:44:35.616797
-# Unit test for method __eq__ of class Schema
-def test_Schema___eq__():
-    class ExampleSchema(Schema):
-        name = Field()
-        age = Field()
-
-    class OtherSchema(Schema):
-        name = Field()
-        age = Field()
-
-    value = ExampleSchema({"name": "Alice", "age": 30})
-    identical = ExampleSchema({"name": "Alice", "age": 30})
-    different_name = ExampleSchema({"name": "Bob", "age": 30})
-    different_age = ExampleSchema({"name": "Alice", "age": 31})
-    other_type = OtherSchema({"name": "Alice", "age": 30})
-
-    assert value == value
-    assert value == identical
-    assert value != different_name
-    assert value != different_age
-    assert value != other_type
-    assert value != {"name": "Alice", "age": 30}
-
-# Generated at 2026-10-25 04:44:38.033321
-# Unit test for method validate of class Reference
-
-# Generated at 2026-10-25 04:44:46.863552
-# Unit test for method validate of class Reference
-
-# Generated at 2026-10-25 04:44:57.924521
-# Unit test for method validate of class Reference
-
-# Generated at 2026-10-25 04:45:07.548386
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:45:13.487755
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:45:19.432136
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:45:30.729053
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:45:33.164355
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:45:35.624105
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:45:38.155977
-# Unit test for constructor of class Reference
-
-# Generated at 2026-10-25 04:45:44.515788
-# Unit test for constructor of class Reference
-def test_Reference():definitions = SchemaDefinitions()
-
-# Generated at 2026-10-25 04:46:09.285650
-# Unit test for constructor of class Schema
-def test_Schema():import pytest
-
-
-# Generated at 2026-10-25 04:46:29.252505
-# Unit test for constructor of class Schema
-def test_Schema():import pytest
-
-# Generated at 2026-10-25 04:46:31.800324
-# Unit test for method __new__ of class SchemaMetaclass
-
-# Generated at 2026-10-25 04:46:34.319113
-# Unit test for method __new__ of class SchemaMetaclass
-
-# Generated at 2026-10-25 04:46:36.858363
-# Unit test for method __new__ of class SchemaMetaclass
-
-# Generated at 2026-10-25 04:46:39.421142
-# Unit test for method validate of class Reference
-
-# Generated at 2026-10-25 04:46:41.841868
-# Unit test for method validate of class Reference
-
-# Generated at 2026-10-25 04:46:44.257641
-# Unit test for method validate of class Reference
-
-# Generated at 2026-10-25 04:46:46.674522
-# Unit test for method serialize of class Reference
-
-# Generated at 2026-10-25 04:46:55.963054
-# Unit test for method serialize of class Reference
-def test_Reference_serialize():reference = Reference("Example")
-assert reference.serialize({"name": "Alice", "age": 30}) == {
-    "name": "Alice",
-    "age": 30,
-}
-
-# Generated at 2026-10-25 04:47:06.849517
-# Unit test for constructor of class Reference
-def test_Reference():
-    class ExampleSchema(Schema):
-        pass
-
-    definitions = {"ExampleSchema": ExampleSchema}
-
-    # String references retain their name and definitions for lazy resolution.
-    string_reference = Reference(
-        "ExampleSchema",
-        definitions=definitions,
-        allow_null=True,
-    )
-    assert string_reference.to == "ExampleSchema"
-    assert string_reference.definitions is definitions
-    assert string_reference._target_string == "ExampleSchema"
-    assert not hasattr(string_reference, "_target")
-    assert string_reference.allow_null is True
-
-    # Schema class references are stored directly.
-    direct_reference = Reference(ExampleSchema)
-    assert direct_reference.to is ExampleSchema
-    assert direct_reference.definitions is None
-    assert direct_reference._target is ExampleSchema
-    assert not hasattr(direct_reference, "_target_string")
-
-    # Non-Schema classes are not valid direct targets.
-    with pytest.raises(AssertionError):
-        Reference(int)
-
-# Generated at 2026-10-25 04:47:16.420488
+# Generated at 2026-11-02 20:56:21.211270
 # Unit test for method __len__ of class Schema
 def test_Schema___len__():
     class ExampleSchema(Schema):
-        first = Field()
-        second = Field()
-
-    empty_schema = ExampleSchema()
-    assert len(empty_schema) == 0
-
-    sparse_schema = ExampleSchema({"first": "value"})
-    assert len(sparse_schema) == 1
-
-    complete_schema = ExampleSchema({"first": "value", "second": 123})
-    assert len(complete_schema) == 2
-
-# Generated at 2026-10-25 04:47:22.718413
-# Unit test for method __setitem__ of class SchemaDefinitions
-def test_SchemaDefinitions___setitem__():
-    definitions = SchemaDefinitions()
-    original = object()
-
-    definitions["example"] = original
-
-    assert definitions["example"] is original
-    assert len(definitions) == 1
-
-    replacement = object()
-    with pytest.raises(AssertionError):
-        definitions["example"] = replacement
-
-    # A duplicate assignment must not replace the existing definition.
-    assert definitions["example"] is original
-
-# Generated at 2026-10-25 04:47:33.572518
-# Unit test for method validate of class Reference
-def test_Reference_validate():
-    target = Mock()
-    target.validate.return_value = "validated"
-    definitions = {"Target": target}
-
-    # Valid values are delegated to the referenced target.
-    reference = Reference("Target", definitions=definitions)
-    value = {"name": "example"}
-
-    assert reference.validate(value, strict=True) == "validated"
-    target.validate.assert_called_once_with(value, strict=True)
-
-    # Null is returned directly when explicitly allowed.
-    target.reset_mock()
-    nullable_reference = Reference(
-        "Target", definitions=definitions, allow_null=True
-    )
-
-    assert nullable_reference.validate(None) is None
-    target.validate.assert_not_called()
-
-    # Null raises a validation error when it is not allowed.
-    with pytest.raises(ValidationError):
-        reference.validate(None)
-
-    target.validate.assert_not_called()
-
-# Generated at 2026-10-25 04:47:36.123873
-# Unit test for method validate of class Reference
-
-# Generated at 2026-10-25 04:47:38.795685
-# Unit test for method validate of class Reference
-
-# Generated at 2026-10-25 04:47:41.209439
-# Unit test for method validate of class Reference
-
-# Generated at 2026-10-25 04:47:43.629972
-# Unit test for method __eq__ of class Schema
-
-# Generated at 2026-10-25 04:47:46.049008
-# Unit test for method __eq__ of class Schema
-
-# Generated at 2026-10-25 04:47:48.463558
-# Unit test for method __eq__ of class Schema
-
-# Generated at 2026-10-25 04:47:50.879495
-# Unit test for method serialize of class Reference
-
-# Generated at 2026-10-25 04:47:53.293283
-# Unit test for method serialize of class Reference
-
-# Generated at 2026-10-25 04:47:55.707999
-# Unit test for method serialize of class Reference
-
-# Generated at 2026-10-25 04:47:58.127242
-# Unit test for method __new__ of class SchemaMetaclass
-
-# Generated at 2026-10-25 04:48:00.544313
-# Unit test for method __new__ of class SchemaMetaclass
-
-# Generated at 2026-10-25 04:48:02.962299
-# Unit test for method __new__ of class SchemaMetaclass
-
-# Generated at 2026-10-25 04:48:05.375201
-# Unit test for constructor of class Reference
-
-# Generated at 2026-10-25 04:48:07.790631
-# Unit test for constructor of class Reference
-
-# Generated at 2026-10-25 04:48:10.222228
-# Unit test for constructor of class Reference
-
-# Generated at 2026-10-25 04:48:12.635203
-# Unit test for method __setitem__ of class SchemaDefinitions
-
-# Generated at 2026-10-25 04:48:15.045374
-# Unit test for method __setitem__ of class SchemaDefinitions
-
-# Generated at 2026-10-25 04:48:17.478544
-# Unit test for method __setitem__ of class SchemaDefinitions
-
-# Generated at 2026-10-25 04:48:19.893499
-# Unit test for constructor of class Schema
-
-# Generated at 2026-10-25 04:48:22.309776
-# Unit test for constructor of class Schema
-
-# Generated at 2026-10-25 04:48:24.722499
-# Unit test for constructor of class Schema
-
-# Generated at 2026-10-25 04:48:27.139408
-# Unit test for constructor of class Reference
-
-# Generated at 2026-10-25 04:48:29.549697
-# Unit test for constructor of class Reference
-
-# Generated at 2026-10-25 04:48:31.965379
-# Unit test for constructor of class Reference
-
-# Generated at 2026-10-25 04:48:34.383271
-# Unit test for method __new__ of class SchemaMetaclass
-
-# Generated at 2026-10-25 04:48:36.798315
-# Unit test for method __new__ of class SchemaMetaclass
-
-# Generated at 2026-10-25 04:48:39.214140
-# Unit test for method __new__ of class SchemaMetaclass
-
-# Generated at 2026-10-25 04:48:42.243979
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:48:44.657689
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:48:47.072725
-# Unit test for method __iter__ of class Schema
-
-# Generated at 2026-10-25 04:48:49.486452
-# Unit test for method __setitem__ of class SchemaDefinitions
-
-# Generated at 2026-10-25 04:48:52.309757
-# Unit test for method __setitem__ of class SchemaDefinitions
-def test_SchemaDefinitions___setitem__():definitions = SchemaDefinitions()
-
-# Generated at 2026-10-25 04:49:02.457005
-# Unit test for method __repr__ of class Schema
-def test_Schema___repr__():
-    class Person(Schema):
         name = Field()
         age = Field()
+        email = Field(default="")
 
-    person = Person({"name": "Alice", "age": 30})
-    assert repr(person) == "Person(name='Alice', age=30)"
+    # All fields populated explicitly.
+    instance = ExampleSchema(name="Alice", age=30, email="alice@example.com")
+    assert len(instance) == 3
 
-    sparse_person = Person({"name": "Alice"})
-    assert repr(sparse_person) == "Person(name='Alice') [sparse]"
+    # Field with a default is set automatically and counts towards len.
+    instance = ExampleSchema(name="Bob", age=25)
+    assert len(instance) == 3
+    assert not instance.is_sparse
 
-    empty_person = Person({})
-    assert repr(empty_person) == "Person() [sparse]"
+    # Sparse instance: 'age' is never set, 'email' falls back to its default.
+    instance = ExampleSchema(name="Charlie")
+    assert len(instance) == 2
+    assert instance.is_sparse
 
-# Generated at 2026-10-25 04:49:11.216187
-# Unit test for method validate of class Reference
-def test_Reference_validate():
-    from unittest.mock import Mock
+    # Constructing from a dict only sets keys present in the dict.
+    instance = ExampleSchema({"name": "Dave"})
+    assert len(instance) == 1
 
-    import pytest
+    # Manually setting an attribute makes it count towards len.
+    instance.age = 42
+    assert len(instance) == 2
 
-    target = Mock()
-    target.validate.return_value = "validated"
-    definitions = {"Target": target}
+    # Schema with no fields at all.
+    class EmptySchema(Schema):
+        pass
 
-    # Non-null values are delegated to the referenced target.
-    reference = Reference("Target", definitions=definitions)
-    value = {"name": "example"}
+    assert len(EmptySchema()) == 0
 
-    assert reference.validate(value, strict=True) == "validated"
-    target.validate.assert_called_once_with(value, strict=True)
-
-    # Null values are rejected by default.
-    with pytest.raises(ValidationError):
-        reference.validate(None)
-
-    # Null values are accepted when allow_null=True and are not delegated.
-    target.reset_mock()
-    nullable_reference = Reference(
-        "Target",
-        definitions=definitions,
-        allow_null=True,
-    )
-
-    assert nullable_reference.validate(None) is None
-    target.validate.assert_not_called()
-
-# Generated at 2026-10-25 04:49:13.633542
+# Generated at 2026-11-02 20:57:02.472585
 # Unit test for method __iter__ of class Schema
+def test_Schema___iter__():
+    from typesystem.fields import String
 
-# Generated at 2026-10-25 04:49:20.322096
-# Unit test for method __iter__ of class Schema
+    class ExampleSchema(Schema):
+        name = String()
+        age = String()
 
-# Generated at 2026-10-25 04:49:30.310169
-# Unit test for method __iter__ of class Schema
+    # A fully populated instance iterates over all of its field names.
+    instance = ExampleSchema(name="Tom", age="25")
+    assert list(instance) == ["name", "age"]
 
-# Generated at 2026-10-25 04:49:41.266377
-# Unit test for method validate of class Reference
-def test_Reference_validate():
-    calls = []
-    validated_value = object()
+    # A sparse instance only iterates over fields that have values set.
+    sparse_instance = ExampleSchema(name="Tom")
+    assert list(sparse_instance) == ["name"]
 
-    class TargetSchema(Schema):
-        @classmethod
-        def module_0.validate(cls, value, *, strict=False):
-            calls.append((value, strict))
-            return validated_value
+    # A schema with no fields iterates to nothing.
+    class EmptySchema(Schema):
+        pass
 
-    reference = Reference(to=TargetSchema)
-
-    value = {"example": "value"}
-    assert reference.validate(value) is validated_value
-    assert calls == [(value, False)]
-
-    calls.clear()
-    assert reference.validate(value, strict=True) is validated_value
-    assert calls == [(value, True)]
-
-    # Null values are rejected by default.
-    with pytest.raises(ValidationError):
-        reference.validate(None)
-
-    # Null values are accepted without delegating when allow_null=True.
-    calls.clear()
-    nullable_reference = Reference(to=TargetSchema, allow_null=True)
-    assert nullable_reference.validate(None) is None
-    assert calls == []
-
-# Generated at 2026-10-25 04:49:42.710478
-# Unit test for method serialize of class Reference
-def test_Reference_serialize():import pytest
-
-from typesystem.schemas import Reference, Schema
-from typesystem import String, Integer
-
-
-class Book(Schema):
-    title = String()
-    year = Integer()
-
-
-class Library(Schema):
-    name = String()
-    book = Reference(to=Book)
-
-
-class SparseBook(Schema):
-    title = String()
-    year = Integer()
-
-
-def test_Reference_serialize_with_none():
-    ref = Reference(to=Book)
-    assert ref.serialize(None) is None
-
-
-def test_Reference_serialize_with_plain_dict():
-    ref = Reference(to=Book)
-    value = {"title": "Dune", "year": 1965}
-    result = ref.serialize(value)
-    assert result == {"title": "Dune", "year": 1965}
-    # Must be a new dict, not the same object
-    assert result is not value
-
-
-def test_Reference_serialize_with_schema_instance():
-    ref = Reference(to=Book)
-    book = Book({"title": "Dune", "year": 1965})
-    result = ref.serialize(book)
-    assert result == {"title": "Dune", "year": 1965}
-    assert isinstance(result, dict)
-
-
-def test_Reference_serialize_with_sparse_schema_instance():
-    # A sparse schema (missing some fields) should only include
-    # the attributes that are actually set.
-    ref = Reference(to=Book)
-    book = Book()
-    book.title = "Dune"  # 'year' left unset
-    result = ref.serialize(book)
-    assert result == {"title": "Dune"}
-
-
-def test_Reference_serialize_with_nested_reference():
-    # Reference inside a schema serializes via Schema.__getitem__,
-    # which calls field.serialize -> dict(obj).
-    library = Library({"name": "City Library", "book": {"title": "Dune", "year": 1965}})
-    result = dict(library)
-    assert result == {
-        "name": "City Library",
-        "book": {"title": "Dune", "year": 1965},
-    }
-
-
-def test_Reference_serialize_with_non_mapping_raises():
-    ref = Reference(to=Book)
-    with pytest.raises(TypeError):
-        ref.serialize(123)
-
-# Generated at 2026-10-25 04:49:50.798983
-# Unit test for method __setitem__ of class SchemaDefinitions
-def test_SchemaDefinitions___setitem__():
-    definitions = SchemaDefinitions()
-    original = object()
-    replacement = object()
-
-    definitions["User"] = original
-
-    assert definitions["User"] is original
-    assert len(definitions) == 1
-
-    with pytest.raises(AssertionError):
-        definitions["User"] = replacement
-
-    # A duplicate assignment must not replace the original definition.
-    assert definitions["User"] is original
-    assert len(definitions) == 1
-
-# Generated at 2026-10-25 04:50:01.645188
-# Unit test for method __eq__ of class Schema
-def test_Schema___eq__():
-    class Person(Schema):
-        name = Field()
-        age = Field()
-
-    class OtherPerson(Schema):
-        name = Field()
-        age = Field()
-
-    person = Person({"name": "Alice", "age": 30})
-
-    # Equal instances of the same schema.
-    assert person == Person({"name": "Alice", "age": 30})
-
-    # A differing field makes instances unequal.
-    assert person != Person({"name": "Alice", "age": 31})
-
-    # Identical values from a different schema class are not equal.
-    assert person != OtherPerson({"name": "Alice", "age": 30})
-
-    # Schema instances are not equal to arbitrary objects.
-    assert person != {"name": "Alice", "age": 30}
+    empty = EmptySchema()
+    assert list(empty) == []
+    assert len(empty) == 0

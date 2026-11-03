@@ -6,19 +6,36 @@ from f145 import order_by_points
 
 
 def test_order_by_points_mixed_signs():
-    nums = [12, -12, 100, -10, 0, 3]
-    # digits_sum: 12->3, -12->-1+2=1, 100->1, -10->-1+0=-1, 0->0, 3->3
+    """Covers both branches of `if n < 0` and the full sort pipeline.
+
+    Digit sums: 1 -> 1, 11 -> 2, -1 -> -1, -11 -> -1+1 = 0, -12 -> -1+2 = 1.
+    sorted() is stable, so 1 (sum 1) stays before -12 (sum 1).
+    """
+    nums = [1, 11, -1, -11, -12]
     result = order_by_points(nums)
-    assert result == [-10, 0, -12, 100, 12, 3]
-    # postcondition: returns new sorted list, input not mutated
-    assert nums == [12, -12, 100, -10, 0, 3]
-    assert result is not nums
+    assert result == [-1, -11, 1, -12, 11]
+    # sorted() must not mutate the input list
+    assert nums == [1, 11, -1, -11, -12]
 
 
-def test_order_by_points_negative_and_positive_branches():
-    # digits_sum: -99->-9+9=0, -10->-1+0=-1, 10->1+0=1, 99->9+9=18
-    assert order_by_points([-99, -10, 10, 99]) == [-10, -99, 10, 99]
-    # minimal both-branch case: 5->5, -5->-5
-    assert order_by_points([5, -5]) == [-5, 5]
-    # stability check: 12->3, 3->3, 21->3 keep original order; 100->1 first
-    assert order_by_points([12, 100, 3, 21]) == [100, 12, 3, 21]
+def test_order_by_points_negative_leading_digit_negated():
+    """For negatives only the leading digit is negated: -123 -> -1+2+3 = 4."""
+    assert order_by_points([123, -123]) == [-123, 123]  # 6 vs 4
+    assert order_by_points([-46, 423, 1234]) == [-46, 423, 1234]  # 2, 9, 10
+
+
+def test_order_by_points_single_negative():
+    assert order_by_points([-5]) == [-5]  # -5
+    assert order_by_points([-19]) == [-19]  # -1 + 9 = 8
+
+
+def test_order_by_points_empty_and_zero():
+    assert order_by_points([]) == []
+    assert order_by_points([0]) == [0]
+    assert order_by_points([0, -0]) == [0, 0]  # -0 == 0, digit sum 0
+
+
+def test_order_by_points_stability_on_ties():
+    """56 and 65 both have digit sum 11; sorted() preserves input order."""
+    assert order_by_points([56, 65]) == [56, 65]
+    assert order_by_points([65, 56]) == [65, 56]

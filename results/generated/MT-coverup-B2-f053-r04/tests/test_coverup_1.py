@@ -2,22 +2,11 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
-import pytest
-
-from f053 import add
+import f053
 
 
-def test_add_returns_sum_of_two_positive_ints():
-    result = add(2, 3)
-    assert result == 5
-    assert isinstance(result, int)
-
-
-def test_add_handles_negative_and_zero_operands():
-    assert add(-4, 4) == 0
-    assert add(0, 0) == 0
-    assert add(-7, -8) == -15
-
-
-def test_add_is_commutative():
-    assert add(11, 17) == add(17, 11) == 28
+def test_add_executes_return_line():
+    """Ensure add() executes its return statement (line 3) and returns the correct sum."""
+    assert f053.add(2, 3) == 5
+    assert f053.add(-1, 1) == 0
+    assert f053.add(0, 0) == 0

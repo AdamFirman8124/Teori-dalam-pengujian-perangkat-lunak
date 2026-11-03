@@ -8,11 +8,13 @@ from f019 import sort_numbers
 
 
 def test_sort_numbers_basic():
+    """Sorting a few number words returns them in ascending numeric order."""
     result = sort_numbers("three one five")
     assert result == "one three five"
 
 
-def test_sort_numbers_all_values():
+def test_sort_numbers_all_words():
+    """All ten number words are sorted correctly."""
     result = sort_numbers(
         "nine eight seven six five four three two one zero"
     )
@@ -20,29 +22,31 @@ def test_sort_numbers_all_values():
 
 
 def test_sort_numbers_single_word():
+    """A single number word is returned unchanged."""
     assert sort_numbers("four") == "four"
 
 
 def test_sort_numbers_empty_string():
-    # The 'if x' branch filters out empty tokens produced by split(' ')
+    """An empty string yields an empty result (exercises the `if x` filter)."""
     assert sort_numbers("") == ""
 
 
 def test_sort_numbers_extra_spaces():
-    # Empty tokens between spaces must be filtered out
-    assert sort_numbers("two  zero   one") == "zero one two"
+    """Extra spaces are filtered out by the `if x` branch."""
+    assert sort_numbers("  two   zero  ") == "zero two"
+
+
+def test_sort_numbers_already_sorted():
+    """An already-sorted input is returned unchanged."""
+    assert sort_numbers("zero one two") == "zero one two"
 
 
 def test_sort_numbers_duplicates():
-    assert sort_numbers("one one zero") == "zero one one"
+    """Duplicate words are preserved and sorted."""
+    assert sort_numbers("three one three") == "one three three"
 
 
-def test_sort_numbers_stability_and_repeated_calls():
-    # Verify deterministic output across calls (no state pollution)
-    assert sort_numbers("five two") == "two five"
-    assert sort_numbers("five two") == "two five"
-
-
-def test_sort_numbers_invalid_word_raises():
+def test_sort_numbers_unknown_word_raises_keyerror():
+    """A word not in the value_map causes a KeyError from the sort key."""
     with pytest.raises(KeyError):
-        sort_numbers("ten")
+        sort_numbers("ten one")

@@ -3,19 +3,41 @@ import f150 as module_0
 
 def test_case_0():
     int_0 = 1
-    str_0 = 'x'
-    str_1 = 'y'
-    var_0 = module_0.x_or_y(int_0, str_0, str_1)
-    assert var_0 == 'y'
-    int_1 = 2
-    var_1 = module_0.x_or_y(int_1, str_0, str_1)
-    assert var_1 == 'x'
-    int_2 = 7
-    var_2 = module_0.x_or_y(int_2, str_0, str_1)
-    assert var_2 == 'x'
-    int_3 = 4
-    var_3 = module_0.x_or_y(int_3, str_0, str_1)
-    assert var_3 == 'y'
-    int_4 = 49
-    var_4 = module_0.x_or_y(int_4, str_0, str_1)
-    assert var_4 == 'y'
+    int_1 = 8
+    int_2 = 5
+    var_0 = module_0.x_or_y(int_0, int_1, int_2)
+    assert var_0 == 5
+    int_3 = 2
+    var_1 = module_0.x_or_y(int_3, int_1, int_2)
+    assert var_1 == 8
+    int_4 = 3
+    int_5 = 33
+    int_6 = 521
+    var_2 = module_0.x_or_y(int_4, int_5, int_6)
+    assert var_2 == 33
+    int_7 = 7
+    int_8 = 34
+    int_9 = 12
+    var_3 = module_0.x_or_y(int_7, int_8, int_9)
+    assert var_3 == 34
+    int_10 = 13
+    int_11 = 100
+    int_12 = 200
+    var_4 = module_0.x_or_y(int_10, int_11, int_12)
+    assert var_4 == 100
+    int_13 = 15
+    var_5 = module_0.x_or_y(int_13, int_1, int_2)
+    assert var_5 == 5
+    int_14 = 4
+    int_15 = 20
+    int_16 = 6
+    var_6 = module_0.x_or_y(int_14, int_15, int_16)
+    assert var_6 == 6
+    int_17 = 9
+    int_18 = 11
+    var_7 = module_0.x_or_y(int_17, int_2, int_18)
+    assert var_7 == 11
+    var_8 = module_0.x_or_y(int_11, int_7, int_17)
+    assert var_8 == 9
+    str_0 = 'All tests passed!'
+    var_9 = print(str_0)

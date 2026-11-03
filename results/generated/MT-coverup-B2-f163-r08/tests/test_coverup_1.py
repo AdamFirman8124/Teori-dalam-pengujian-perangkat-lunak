@@ -2,39 +2,35 @@
 # asked: {"lines": [3, 4, 6], "branches": []}
 # gained: {"lines": [3, 4, 6], "branches": []}
 
+"""Tests for f163.generate_integers covering lines 3-6 and all branches."""
+
 from f163 import generate_integers
 
 
-def test_normal_range_ascending():
+def test_generate_integers_typical_range():
+    # Exercises lines 3, 4 and 6: lower=2, upper=8, both even and odd
+    # candidates are evaluated, covering both outcomes of `i % 2 == 0`.
     assert generate_integers(2, 8) == [2, 4, 6, 8]
 
 
-def test_normal_range_descending():
+def test_generate_integers_reversed_arguments():
+    # min/max handle swapped arguments; same expected result.
     assert generate_integers(8, 2) == [2, 4, 6, 8]
 
 
-def test_clamped_below_and_above():
-    assert generate_integers(0, 10) == [2, 4, 6, 8]
-    assert generate_integers(-5, 20) == [2, 4, 6, 8]
+def test_generate_integers_lower_clamped_to_two():
+    # min(a, b) == 1 forces `lower` to be clamped up to 2 via max(2, ...).
+    # Range 2..5 contains odd numbers, exercising the False branch of the
+    # even-number filter.
+    assert generate_integers(1, 5) == [2, 4]
 
 
-def test_odd_only_range_filters_all():
-    assert generate_integers(3, 3) == []
-    assert generate_integers(3, 5) == [4]
+def test_generate_integers_upper_clamped_to_eight():
+    # max(a, b) == 100 forces `upper` to be clamped down to 8 via min(8, ...).
+    # Range 6..8 contains the odd number 7, exercising the False branch again.
+    assert generate_integers(6, 100) == [6, 8]
 
 
-def test_single_even():
-    assert generate_integers(2, 2) == [2]
-    assert generate_integers(2, 3) == [2]
-    assert generate_integers(7, 8) == [8]
-
-
-def test_empty_when_lower_gt_upper():
+def test_generate_integers_empty_result():
+    # upper < lower yields an empty range, so the comprehension returns [].
     assert generate_integers(1, 1) == []
-    assert generate_integers(10, 10) == []
-    assert generate_integers(9, 9) == []
-
-
-def test_mixed_even_odd_filtering():
-    assert generate_integers(3, 7) == [4, 6]
-    assert generate_integers(4, 6) == [4, 6]

@@ -13,36 +13,36 @@ def test_case_0():
     int_3 = [int_2, int_0]
     var_3 = module_0.sort_even(int_3)
     assert var_3 == [2, 1]
-    int_4 = 5
-    int_5 = 4
-    int_6 = 3
-    int_7 = 0
-    int_8 = [int_4, int_2, int_5, int_0, int_6, int_7]
-    var_4 = module_0.sort_even(int_8)
-    assert var_4 == [3, 2, 4, 1, 5, 0]
-    int_9 = [int_6, int_2, int_0]
-    var_5 = module_0.sort_even(int_9)
-    assert var_5 == [1, 2, 3]
-    int_10 = [int_5, int_0, int_6, int_2, int_4]
+    int_4 = 3
+    int_5 = [int_0, int_2, int_4]
+    var_4 = module_0.sort_even(int_5)
+    assert var_4 == [1, 2, 3]
+    int_6 = 5
+    int_7 = [int_6, int_0, int_4, int_2, int_2]
+    var_5 = module_0.sort_even(int_7)
+    assert var_5 == [2, 1, 3, 2, 5]
+    int_8 = 6
+    int_9 = 4
+    int_10 = [int_6, int_8, int_4, int_9]
     var_6 = module_0.sort_even(int_10)
-    assert var_6 == [3, 1, 4, 2, 5]
-    int_11 = 6
-    int_12 = [int_0, int_2, int_6, int_5, int_4, int_11]
-    var_7 = module_0.sort_even(int_12)
-    assert var_7 == [1, 2, 3, 4, 5, 6]
-    int_13 = 9
-    int_14 = 8
-    int_15 = 7
-    int_16 = [int_13, int_7, int_14, int_0, int_15, int_2]
-    var_8 = module_0.sort_even(int_16)
-    assert var_8 == [7, 0, 8, 1, 9, 2]
-    int_17 = [int_6, int_0, int_6, int_0, int_2, int_0]
-    var_9 = module_0.sort_even(int_17)
-    assert var_9 == [2, 1, 3, 1, 3, 1]
-    int_18 = -1
-    int_19 = -2
-    int_20 = -3
-    int_21 = 10
-    int_22 = [int_7, int_18, int_19, int_20, int_4, int_21]
-    var_10 = module_0.sort_even(int_22)
-    assert var_10 == [-2, -1, 0, -3, 5, 10]
+    assert var_6 == [3, 6, 5, 4]
+    int_11 = 9
+    int_12 = 8
+    int_13 = 7
+    int_14 = [int_0, int_11, int_2, int_12, int_4, int_13]
+    var_7 = module_0.sort_even(int_14)
+    assert var_7 == [1, 9, 2, 8, 3, 7]
+    int_15 = [int_11, int_0, int_12, int_2, int_13, int_4]
+    var_8 = module_0.sort_even(int_15)
+    assert var_8 == [7, 1, 8, 2, 9, 3]
+    int_16 = [int_4, int_0, int_4, int_2, int_0, int_6]
+    var_9 = module_0.sort_even(int_16)
+    assert var_9 == [1, 1, 3, 2, 3, 5]
+    str_0 = 'b'
+    str_1 = 'a'
+    str_2 = [str_0, str_1, str_1, str_0]
+    var_10 = module_0.sort_even(str_2)
+    assert var_10 == ['a', 'a', 'b', 'b']
+    int_17 = [int_6, int_8, int_4, int_9]
+    var_11 = module_0.sort_even(int_17)
+    assert var_11 == [3, 6, 5, 4]

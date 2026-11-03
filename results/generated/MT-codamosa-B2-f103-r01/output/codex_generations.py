@@ -1,159 +1,159 @@
 
 
-# Generated at 2026-10-25 12:48:36.127048
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:48:38.540490
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:48:40.954384
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:48:43.368916
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:48:45.782753
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:48:48.194818
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:48:50.610508
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:48:53.023039
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:48:55.451176
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:48:57.859920
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:00.271086
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:02.685437
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:05.103821
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:07.520276
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:09.964379
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:12.375843
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:14.789990
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:17.204276
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:19.617694
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:22.033851
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:24.447364
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:26.863118
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:29.276379
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:31.691302
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:34.106388
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:36.521834
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:38.938178
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:41.355137
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:43.769298
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:46.182168
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:48.597858
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:51.012097
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:53.426330
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:55.844573
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:49:58.258837
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:50:00.672229
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:50:03.086001
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:50:05.501081
-# Unit test for function rounded_avg
-
-# Generated at 2026-10-25 12:50:14.296596
+# Generated at 2026-11-02 21:41:05.018174
 # Unit test for function rounded_avg
 def test_rounded_avg():
-    assert module_0.rounded_avg(1, 5) == "0b11"        # avg of 1..5 = 3
-    assert module_0.rounded_avg(7, 5) == -1            # m < n
-    assert module_0.rounded_avg(10, 20) == "0b1111"    # avg of 10..20 = 15
-    assert module_0.rounded_avg(4, 4) == "0b100"       # single element = 4
-    assert module_0.rounded_avg(20, 33) == "0b11010"   # avg 26.5 -> round to 26
+    # Basic cases: average of range returned as binary string
+    assert module_0.rounded_avg(1, 5) == "0b11"          # avg = 3
+    assert module_0.rounded_avg(7, 13) == "0b1010"       # avg = 10
+    assert module_0.rounded_avg(1, 1) == "0b1"           # single element -> itself
+    assert module_0.rounded_avg(10, 20) == "0b1111"      # avg = 15
 
-# Generated at 2026-10-25 12:50:39.283206
+    # Rounding behavior
+    assert module_0.rounded_avg(20, 33) == "0b11010"     # avg = 26.5 -> rounds to 26
+    assert module_0.rounded_avg(4, 52) == "0b11100"      # avg = 28
+
+    # Larger ranges
+    assert module_0.rounded_avg(964, 977) == "0b1111001010"
+    assert module_0.rounded_avg(996, 998) == "0b1111110010"
+    assert module_0.rounded_avg(185, 546) == "0b101101101"
+    assert module_0.rounded_avg(55, 955) == "0b101111111"
+
+    # Invalid ranges: m < n returns -1
+    assert module_0.rounded_avg(7, 5) == -1
+    assert module_0.rounded_avg(10, 2) == -1
+    assert module_0.rounded_avg(660, 419) == -1
+
+    # Return type checks
+    result = module_0.rounded_avg(1, 5)
+    assert isinstance(result, str) and result.startswith("0b")
+    assert module_0.rounded_avg(5, 3) == -1
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_rounded_avg()
+
+# Generated at 2026-11-02 21:42:08.942089
 # Unit test for function rounded_avg
 def test_rounded_avg():
-    # n > m â -1
+    # Test when m < n, should return -1
+    assert module_0.rounded_avg(7, 5) == -1
+    assert module_0.rounded_avg(10, 0) == -1
+    assert module_0.rounded_avg(100, 99) == -1
+
+    # Test single element range
+    assert module_0.rounded_avg(5, 5) == "0b101"
+    assert module_0.rounded_avg(0, 0) == "0b0"
+    assert module_0.rounded_avg(7, 7) == "0b111"
+
+    # Test normal ranges
+    assert module_0.rounded_avg(1, 5) == "0b11"       # avg 3
+    assert module_0.rounded_avg(10, 20) == "0b1111"   # avg 15
+    assert module_0.rounded_avg(20, 33) == "0b11010"  # avg 26.5 rounds to 26 (banker's rounding)
+    assert module_0.rounded_avg(2, 3) == "0b10"       # avg 2.5 rounds to 2 (banker's rounding)
+
+    # Test range starting from 0
+    assert module_0.rounded_avg(0, 4) == "0b10"       # avg 2
+
+    # Test larger range
+    assert module_0.rounded_avg(1, 100) == "0b110010" # avg 50.5 rounds to 50
+
+# Run the test
+test_rounded_avg()
+print("All tests passed!")
+
+# Generated at 2026-11-02 21:43:27.830676
+# Unit test for function rounded_avg
+def test_rounded_avg():
+    # Basic case: average of 1..5 is 3 -> binary "0b11"
+    assert module_0.rounded_avg(1, 5) == "0b11"
+
+    # m < n should return -1
     assert module_0.rounded_avg(7, 5) == -1
     assert module_0.rounded_avg(10, 1) == -1
 
-    # Single element
-    assert module_0.rounded_avg(5, 5) == bin(5)          # "0b101"
+    # Average of 10..20 is 15 -> "0b1111"
+    assert module_0.rounded_avg(10, 20) == "0b1111"
 
-    # Clean integer average
-    assert module_0.rounded_avg(1, 5) == "0b11"          # avg = 3
-    assert module_0.rounded_avg(10, 20) == "0b1111"      # avg = 15
+    # Average of 20..33 is 26.5 -> Python banker's rounding gives 26 -> "0b11010"
+    assert module_0.rounded_avg(20, 33) == "0b11010"
 
-    # .5 cases â Python round() uses banker's rounding
-    assert module_0.rounded_avg(1, 2) == bin(2)          # 1.5 â 2
-    assert module_0.rounded_avg(20, 33) == bin(26)       # 26.5 â 26 (ties to even)
-    assert module_0.rounded_avg(1, 4) == bin(2)          # 2.5 â 2 (ties to even)
+    # Single-element range: average is the element itself
+    assert module_0.rounded_avg(5, 5) == "0b101"
+    assert module_0.rounded_avg(0, 0) == "0b0"
 
-    # Negative range
-    assert module_0.rounded_avg(-5, -1) == bin(-3)       # avg = -3 â "-0b11"
+    # Zero included range: average of 0..1 is 0.5 -> rounds to 0 -> "0b0"
+    assert module_0.rounded_avg(0, 1) == "0b0"
 
-    print("All tests passed.")
+    # Negative numbers: average of -3..1 is -1 -> bin(-1) = "-0b1"
+    assert module_0.rounded_avg(-3, 1) == "-0b1"
+
+    # Negative range where m < n
+    assert module_0.rounded_avg(-1, -5) == -1
+
+    print("All tests passed!")
 
 test_rounded_avg()
 
-# Generated at 2026-10-25 12:50:48.708790
+# Generated at 2026-11-02 21:45:37.185670
 # Unit test for function rounded_avg
 def test_rounded_avg():
-    assert module_0.rounded_avg(1, 5) == "0b11"      # Average: 3
-    assert module_0.rounded_avg(10, 20) == "0b1111"  # Average: 15
-    assert module_0.rounded_avg(7, 7) == "0b111"     # Single value
-    assert module_0.rounded_avg(2, 3) == "0b10"      # round(2.5) == 2 in Python
-    assert module_0.rounded_avg(5, 1) == -1           # Invalid range
+    # Test when m < n, should return -1
+    assert module_0.rounded_avg(7, 5) == -1
+    assert module_0.rounded_avg(10, 1) == -1
+
+    # Test basic averaging
+    assert module_0.rounded_avg(1, 5) == "0b11"        # avg of 1..5 = 3
+    assert module_0.rounded_avg(5, 5) == "0b101"       # single element, avg = 5
+    assert module_0.rounded_avg(10, 20) == "0b1111"    # avg of 10..20 = 15
+
+    # Test rounding behavior (banker's rounding)
+    assert module_0.rounded_avg(20, 33) == "0b11010"   # avg = 26.5 -> 26
+    assert module_0.rounded_avg(1, 2) == "0b10"        # avg = 1.5 -> 2
+    assert module_0.rounded_avg(0, 1) == "0b0"         # avg = 0.5 -> 0
+
+    # Test return type is a string for valid ranges
+    assert isinstance(module_0.rounded_avg(1, 5), str)
+
+    # Test zero included in range
+    assert module_0.rounded_avg(-3, 3) == "0b0"        # avg of -3..3 = 0
+
+    print("All tests passed!")
+
+
+test_rounded_avg()
+
+# Generated at 2026-11-02 21:47:22.653090
+# Unit test for function rounded_avg
+def test_rounded_avg():
+    # m < n should return -1
+    assert module_0.rounded_avg(7, 5) == -1
+    assert module_0.rounded_avg(10, 1) == -1
+    assert module_0.rounded_avg(5, 4) == -1
+
+    # Single element range
+    assert module_0.rounded_avg(5, 5) == "0b101"
+    assert module_0.rounded_avg(0, 0) == "0b0"
+    assert module_0.rounded_avg(1, 1) == "0b1"
+
+    # Basic averages
+    assert module_0.rounded_avg(1, 5) == "0b11"        # avg of 1..5 = 3
+    assert module_0.rounded_avg(10, 20) == "0b1111"    # avg of 10..20 = 15
+
+    # Rounding behavior (banker's rounding: 26.5 -> 26)
+    assert module_0.rounded_avg(20, 33) == "0b11010"   # avg = 26.5 -> 26
+    assert module_0.rounded_avg(1, 2) == "0b1"         # avg = 1.5 -> 2? No: round(1.5)=2
+    # Note: round(1.5) == 2 in Python (banker's rounding rounds to even)
+    # so recompute: bin(2) == "0b10"
+    assert module_0.rounded_avg(1, 2) == "0b10"
+
+    # Negative numbers
+    assert module_0.rounded_avg(-5, -1) == "0b-11"     # avg = -3
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_rounded_avg()

@@ -2,27 +2,23 @@
 # asked: {"lines": [50, 51], "branches": []}
 # gained: {"lines": [50, 51], "branches": []}
 
+import pytest
+
 from isort.exceptions import FileSkipped, ISortError
 
 
-def test_fileskipped_init_sets_message_and_file_path():
-    message = "file was skipped"
-    file_path = "/some/path/to/file.py"
-    exc = FileSkipped(message, file_path)
-    assert str(exc) == message
-    assert exc.args == (message,)
-    assert exc.file_path == file_path
-    assert isinstance(exc, ISortError)
-    assert isinstance(exc, Exception)
+def test_file_skipped_initialization():
+    """Ensure FileSkipped.__init__ runs (lines 50-51) and stores its arguments."""
+    message = "Skipped file due to configuration"
+    file_path = "/path/to/skipped_file.py"
 
+    exception = FileSkipped(message, file_path)
 
-def test_fileskipped_raise_and_catch_preserves_attributes():
-    message = "skip reason"
-    file_path = "example.py"
-    try:
-        raise FileSkipped(message, file_path)
-    except FileSkipped as exc:
-        assert str(exc) == message
-        assert exc.file_path == file_path
-    else:
-        assert False, "FileSkipped was not raised"
+    # Line 50: super().__init__(message) -> Exception message is set
+    assert isinstance(exception, ISortError)
+    assert isinstance(exception, Exception)
+    assert str(exception) == message
+    assert exception.args == (message,)
+
+    # Line 51: self.file_path = file_path -> attribute is stored
+    assert exception.file_path == file_path

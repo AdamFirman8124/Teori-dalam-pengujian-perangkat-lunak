@@ -7,52 +7,64 @@ import pytest
 from f081 import numerical_letter_grade
 
 
-def test_all_branches_covered():
-    grades = [
-        4.0,   # == 4.0 -> "A+"
-        3.9,   # > 3.7  -> "A"
-        3.5,   # > 3.3  -> "A-"
-        3.1,   # > 3.0  -> "B+"
-        2.8,   # > 2.7  -> "B"
-        2.5,   # > 2.3  -> "B-"
-        2.1,   # > 2.0  -> "C+"
-        1.8,   # > 1.7  -> "C"
-        1.5,   # > 1.3  -> "C-"
-        1.1,   # > 1.0  -> "D+"
-        0.8,   # > 0.7  -> "D"
-        0.3,   # > 0.0  -> "D-"
-        0.0,   # else   -> "E"
-    ]
-    expected = [
-        "A+", "A", "A-", "B+", "B", "B-",
-        "C+", "C", "C-", "D+", "D", "D-", "E",
-    ]
+@pytest.mark.parametrize(
+    "gpa, expected",
+    [
+        (4.0, "A+"),   # line 8: gpa == 4.0
+        (3.8, "A"),    # line 10: gpa > 3.7
+        (3.5, "A-"),   # line 12: gpa > 3.3
+        (3.1, "B+"),   # line 14: gpa > 3.0
+        (2.9, "B"),    # line 16: gpa > 2.7
+        (2.5, "B-"),   # line 18: gpa > 2.3
+        (2.1, "C+"),   # line 20: gpa > 2.0
+        (1.9, "C"),    # line 22: gpa > 1.7
+        (1.5, "C-"),   # line 24: gpa > 1.3
+        (1.1, "D+"),   # line 26: gpa > 1.0
+        (0.9, "D"),    # line 28: gpa > 0.7
+        (0.3, "D-"),   # line 30: gpa > 0.0
+        (0.0, "E"),    # line 32: else branch
+    ],
+)
+def test_numerical_letter_grade_single_value(gpa, expected):
+    result = numerical_letter_grade([gpa])
+    assert result == [expected]
+
+
+@pytest.mark.parametrize(
+    "gpa, expected",
+    [
+        (3.7, "A-"),   # boundary: not > 3.7, falls to gpa > 3.3
+        (3.3, "B+"),   # boundary: not > 3.3, falls to gpa > 3.0
+        (3.0, "B"),    # boundary: not > 3.0, falls to gpa > 2.7
+        (2.7, "B-"),   # boundary: not > 2.7, falls to gpa > 2.3
+        (2.3, "C+"),   # boundary: not > 2.3, falls to gpa > 2.0
+        (2.0, "C"),    # boundary: not > 2.0, falls to gpa > 1.7
+        (1.7, "C-"),   # boundary: not > 1.7, falls to gpa > 1.3
+        (1.3, "D+"),   # boundary: not > 1.3, falls to gpa > 1.0
+        (1.0, "D"),    # boundary: not > 1.0, falls to gpa > 0.7
+        (0.7, "D-"),   # boundary: not > 0.7, falls to gpa > 0.0
+    ],
+)
+def test_numerical_letter_grade_boundaries(gpa, expected):
+    result = numerical_letter_grade([gpa])
+    assert result == [expected]
+
+
+def test_numerical_letter_grade_empty_input():
+    assert numerical_letter_grade([]) == []
+
+
+def test_numerical_letter_grade_all_branches_in_one_call():
+    grades = [4.0, 3.8, 3.5, 3.1, 2.9, 2.5, 2.1, 1.9, 1.5, 1.1, 0.9, 0.3, 0.0]
+    expected = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "E"]
     result = numerical_letter_grade(grades)
     assert result == expected
     assert len(result) == len(grades)
 
 
-def test_empty_input():
-    assert numerical_letter_grade([]) == []
-
-
-def test_boundary_values():
-    # Exact boundary values fall to the next lower bucket (strict > comparisons)
-    assert numerical_letter_grade([3.7]) == ["A-"]
-    assert numerical_letter_grade([3.3]) == ["B+"]
-    assert numerical_letter_grade([3.0]) == ["B"]
-    assert numerical_letter_grade([2.7]) == ["B-"]
-    assert numerical_letter_grade([2.3]) == ["C+"]
-    assert numerical_letter_grade([2.0]) == ["C"]
-    assert numerical_letter_grade([1.7]) == ["C-"]
-    assert numerical_letter_grade([1.3]) == ["D+"]
-    assert numerical_letter_grade([1.0]) == ["D"]
-    assert numerical_letter_grade([0.7]) == ["D-"]
-
-
-def test_result_is_new_list_not_mutating_input():
-    grades = [4.0, 0.0]
+def test_numerical_letter_grade_preserves_order_and_length():
+    grades = [0.0, 4.0, 2.9]
     result = numerical_letter_grade(grades)
-    assert result == ["A+", "E"]
-    assert result is not grades
-    assert grades == [4.0, 0.0]
+    assert result == ["E", "A+", "B"]
+    assert result is not grades  # returns a new list, input untouched
+    assert grades == [0.0, 4.0, 2.9]  # input list is not mutated

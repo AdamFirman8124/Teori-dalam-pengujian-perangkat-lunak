@@ -8,12 +8,9 @@ def test_case_0():
     int_1 = 1
     var_1 = module_0.fib(int_1)
     assert var_1 == 1
-    int_2 = 2
+    int_2 = 15
     var_2 = module_0.fib(int_2)
-    assert var_2 == 1
-    int_3 = 5
+    assert var_2 == 610
+    int_3 = 20
     var_3 = module_0.fib(int_3)
-    assert var_3 == 5
-    int_4 = 10
-    var_4 = module_0.fib(int_4)
-    assert var_4 == 55
+    assert var_3 == 6765

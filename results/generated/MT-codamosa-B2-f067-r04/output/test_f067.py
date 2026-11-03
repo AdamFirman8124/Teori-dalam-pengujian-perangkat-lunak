@@ -10,15 +10,24 @@ def test_case_0():
     int_1 = 3
     var_1 = module_0.fruit_distribution(str_1, int_1)
     assert var_1 == 2
-    str_2 = '2 apples and 3 oranges'
+    str_2 = '10 apples and 20 oranges'
     int_2 = 100
     var_2 = module_0.fruit_distribution(str_2, int_2)
-    assert var_2 == 95
-    str_3 = '100 apples and 1 oranges'
-    int_3 = 120
+    assert var_2 == 70
+    str_3 = '12 apples'
+    int_3 = 30
     var_3 = module_0.fruit_distribution(str_3, int_3)
-    assert var_3 == 19
-    str_4 = 'no fruit numbers'
+    assert var_3 == 18
+    str_4 = 'no fruits here'
     int_4 = 10
     var_4 = module_0.fruit_distribution(str_4, int_4)
     assert var_4 == 10
+    str_5 = ''
+    int_5 = 5
+    var_5 = module_0.fruit_distribution(str_5, int_5)
+    assert var_5 == 5
+    str_6 = '4 mangoes and 6 bananas'
+    var_6 = module_0.fruit_distribution(str_6, int_4)
+    assert var_6 == 0
+    str_7 = 'All tests passed!'
+    var_7 = print(str_7)

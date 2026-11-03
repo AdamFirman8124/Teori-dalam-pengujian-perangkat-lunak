@@ -8,21 +8,24 @@ from f055 import fib
 
 
 def test_fib_base_case_zero():
-    """Covers lines 3-4: n == 0 returns 0."""
+    """Covers lines 3-4: the n == 0 branch taken, n == 1 branch not taken."""
     assert fib(0) == 0
 
 
 def test_fib_base_case_one():
-    """Covers lines 5-6: n == 1 returns 1."""
+    """Covers lines 5-6: the n == 1 branch taken (n == 0 branch not taken)."""
     assert fib(1) == 1
 
 
 def test_fib_recursive_case():
-    """Covers line 7: recursive branch, and exercises all lines together."""
+    """Covers line 7: the recursive branch, exercising both recursive calls."""
+    assert fib(2) == 1
+    assert fib(3) == 2
     assert fib(5) == 5
     assert fib(10) == 55
 
 
-@pytest.mark.parametrize("n,expected", [(0, 0), (1, 1), (2, 1), (3, 2), (7, 13)])
-def test_fib_known_values(n, expected):
-    assert fib(n) == expected
+def test_fib_first_values_match_sequence():
+    """Sanity check of the full Fibonacci sequence across all branches."""
+    expected = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+    assert [fib(n) for n in range(len(expected))] == expected

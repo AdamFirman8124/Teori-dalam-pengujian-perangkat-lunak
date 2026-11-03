@@ -17,6 +17,8 @@ def test_case_0():
     assert module_0.print_function.optional == (2, 6, 0, 'alpha', 2)
     assert module_0.print_function.mandatory == (3, 0, 0, 'alpha', 0)
     assert module_0.print_function.compiler_flag == 1048576
+    str_0 = 'date_time'
+    var_1 = var_0[str_0]
 
 def test_case_1():
     date_time_fact_collector_0 = module_0.DateTimeFactCollector()
@@ -24,3 +26,4 @@ def test_case_1():
     assert date_time_fact_collector_0.namespace is None
     assert date_time_fact_collector_0.fact_ids == {'date_time'}
     assert module_0.DateTimeFactCollector.name == 'date_time'
+    var_0 = set()

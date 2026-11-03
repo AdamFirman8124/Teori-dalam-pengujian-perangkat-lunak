@@ -2,24 +2,33 @@
 import f125 as module_0
 
 def test_case_0():
-    str_0 = 'hello world'
+    str_0 = 'Hello world!'
     var_0 = module_0.split_words(str_0)
-    assert var_0 == ['hello', 'world']
-    str_1 = 'a b c'
+    assert var_0 == ['Hello', 'world!']
+    str_1 = 'Hello,world!'
     var_1 = module_0.split_words(str_1)
-    assert var_1 == ['a', 'b', 'c']
-    str_2 = 'hello   world'
+    assert var_1 == ['Hello', 'world!']
+    str_2 = 'abcdef'
     var_2 = module_0.split_words(str_2)
-    assert var_2 == ['hello', 'world']
-    str_3 = 'hello, world'
+    assert var_2 == 3
+    str_3 = ''
     var_3 = module_0.split_words(str_3)
-    assert var_3 == ['hello,', 'world']
-    str_4 = 'hello,world'
+    assert var_3 == 0
+    str_4 = 'aaa bbb ccc'
     var_4 = module_0.split_words(str_4)
-    assert var_4 == ['hello', 'world']
-    str_5 = 'a,b,c'
+    assert var_4 == ['aaa', 'bbb', 'ccc']
+    str_5 = 'x,y,z'
     var_5 = module_0.split_words(str_5)
-    assert var_5 == ['a', 'b', 'c']
-    tuple_0 = ()
-    var_6 = module_0.split_words(tuple_0)
+    assert var_5 == ['x', 'y', 'z']
+    str_6 = 'ACEG'
+    var_6 = module_0.split_words(str_6)
     assert var_6 == 0
+    str_7 = 'bdfh'
+    var_7 = module_0.split_words(str_7)
+    assert var_7 == 4
+    str_8 = 'one two,three four'
+    var_8 = module_0.split_words(str_8)
+    assert var_8 == ['one', 'two,three', 'four']
+
+def test_case_1():
+    pass

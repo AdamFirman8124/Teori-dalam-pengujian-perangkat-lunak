@@ -2,15 +2,26 @@
 import f107 as module_0
 
 def test_case_0():
-    int_0 = 0
+    int_0 = 1
     var_0 = module_0.even_odd_palindrome(int_0)
-    assert var_0 == (0, 0)
+    assert var_0 == (0, 1)
     int_1 = 3
     var_1 = module_0.even_odd_palindrome(int_1)
     assert var_1 == (1, 2)
-    int_2 = 12
+    int_2 = 9
     var_2 = module_0.even_odd_palindrome(int_2)
-    assert var_2 == (4, 6)
-    int_3 = 22
+    assert var_2 == (4, 5)
+    int_3 = 12
     var_3 = module_0.even_odd_palindrome(int_3)
-    assert var_3 == (5, 6)
+    assert var_3 == (4, 6)
+    int_4 = 22
+    var_4 = module_0.even_odd_palindrome(int_4)
+    assert var_4 == (5, 6)
+    int_5 = 0
+    var_5 = module_0.even_odd_palindrome(int_5)
+    assert var_5 == (0, 0)
+    int_6 = 100
+    var_6 = module_0.even_odd_palindrome(int_6)
+    assert var_6 == (8, 10)
+    str_0 = 'All tests passed!'
+    var_7 = print(str_0)

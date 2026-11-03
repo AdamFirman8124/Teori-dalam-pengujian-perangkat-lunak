@@ -6,42 +6,39 @@ def test_case_0():
     int_1 = 2
     int_2 = 3
     int_3 = 4
-    int_4 = [int_0, int_1, int_2, int_3]
-    var_0 = module_0.add(int_4)
-    assert var_0 == 6
-    int_5 = [int_0, int_1]
-    var_1 = module_0.add(int_5)
-    assert var_1 == 2
-    int_6 = 5
-    int_7 = 6
-    int_8 = [int_0, int_1, int_2, int_3, int_6, int_7]
-    var_2 = module_0.add(int_8)
-    assert var_2 == 12
-    int_9 = 7
-    int_10 = [int_0, int_2, int_6, int_9]
+    int_4 = 5
+    int_5 = 6
+    int_6 = [int_0, int_1, int_2, int_3, int_4, int_5]
+    var_0 = module_0.add(int_6)
+    assert var_0 == 12
+    int_7 = [int_0, int_3, int_2, int_4]
+    var_1 = module_0.add(int_7)
+    assert var_1 == 4
+    int_8 = 7
+    int_9 = [int_0, int_2, int_4, int_8]
+    var_2 = module_0.add(int_9)
+    assert var_2 == 0
+    int_10 = [int_1, int_2, int_3, int_4]
     var_3 = module_0.add(int_10)
     assert var_3 == 0
-    int_11 = 0
-    int_12 = [int_11, int_0, int_11, int_2]
-    var_4 = module_0.add(int_12)
-    assert var_4 == 0
-    int_13 = 100
-    int_14 = [int_13, int_0]
-    var_5 = module_0.add(int_14)
+    var_4 = []
+    var_5 = module_0.add(var_4)
     assert var_5 == 0
-    int_15 = 8
-    int_16 = [int_1, int_3, int_7, int_15]
-    var_6 = module_0.add(int_16)
-    assert var_6 == 12
-    var_7 = []
-    var_8 = module_0.add(var_7)
-    assert var_8 == 0
-    int_17 = [int_6]
-    var_9 = module_0.add(int_17)
-    assert var_9 == 0
-    int_18 = [int_1]
-    var_10 = module_0.add(int_18)
-    assert var_10 == 0
-    int_19 = [int_11, int_11, int_11, int_11]
-    var_11 = module_0.add(int_19)
-    assert var_11 == 0
+    int_11 = [int_8]
+    var_6 = module_0.add(int_11)
+    assert var_6 == 0
+    int_12 = 0
+    int_13 = [int_12, int_12, int_12, int_12]
+    var_7 = module_0.add(int_13)
+    assert var_7 == 0
+    int_14 = [int_0, int_12, int_0, int_1]
+    var_8 = module_0.add(int_14)
+    assert var_8 == 2
+    int_15 = -1
+    int_16 = -2
+    int_17 = -3
+    int_18 = -4
+    int_19 = [int_15, int_16, int_17, int_18]
+    var_9 = module_0.add(int_19)
+    assert var_9 == 6
+    assert var_9 == -6

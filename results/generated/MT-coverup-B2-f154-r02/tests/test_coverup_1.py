@@ -7,40 +7,41 @@ import pytest
 from f154 import cycpattern_check
 
 
-def test_cycpattern_check_true_rotation():
-    # 'b' rotated ('bcda') appears in 'a' -> executes lines 3-8, returns True
-    assert cycpattern_check("abcd", "dabc") is True
+def test_cycpattern_check_returns_true_when_rotation_is_substring():
+    # Rotations of "baa": "baa", "aab", "aba" — "aba" occurs in "abab".
+    assert cycpattern_check("abab", "baa") is True
 
 
-def test_cycpattern_check_false():
-    # no rotation of 'b' appears in 'a' -> executes lines 3-7 and line 9, returns False
-    assert cycpattern_check("abcd", "abd") is False
-
-
-def test_cycpattern_check_exact_substring():
-    # 'b' itself (no rotation needed) is a substring of 'a'
+def test_cycpattern_check_returns_true_for_exact_substring():
+    # First rotation checked (j == 0) matches directly.
     assert cycpattern_check("hello", "ell") is True
 
 
-def test_cycpattern_check_longer_than_a():
-    # len(b) > len(a): range(len(a) - l + 1) is empty -> falls through to line 9
+def test_cycpattern_check_returns_false_when_no_rotation_matches():
+    # Rotations of "eeff": "eeff", "effe", "ffee", "feef" — none in "efef".
+    # Exercises the full loops and the final `return False` (line 9).
+    assert cycpattern_check("efef", "eeff") is False
+
+
+def test_cycpattern_check_b_longer_than_a():
+    # Outer range is empty; only lines 3, 4, 5 and 9 execute.
     assert cycpattern_check("ab", "abc") is False
 
 
-def test_cycpattern_check_empty_b():
-    # empty pattern: l == 0, inner loop runs once, a[i:i] == pat[0:0] -> True
+def test_cycpattern_check_empty_pattern():
+    # Empty pattern is trivially a substring of any string.
     assert cycpattern_check("abc", "") is True
-
-
-def test_cycpattern_check_empty_a():
-    # empty 'a' with non-empty 'b': outer range is empty -> line 9
-    assert cycpattern_check("", "abc") is False
 
 
 def test_cycpattern_check_both_empty():
     assert cycpattern_check("", "") is True
 
 
-def test_cycpattern_check_rotation_at_end():
-    # rotation matches only at the very end of 'a' -> exercises full outer loop
-    assert cycpattern_check("xyzabc", "cab") is True
+def test_cycpattern_check_empty_string_nonempty_pattern():
+    assert cycpattern_check("", "a") is False
+
+
+def test_cycpattern_check_rotation_at_end_of_string():
+    # Rotations of "cab": "cab", "abc", "bca" — "abc" occurs at the
+    # last possible position of "xabc" (i == len(a) - len(b)).
+    assert cycpattern_check("xabc", "cab") is True

@@ -16,13 +16,26 @@ def test_case_0():
     int_5 = 10
     var_3 = module_0.right_angle_triangle(int_3, int_4, int_5)
     assert var_3 is True
+    var_4 = module_0.right_angle_triangle(int_5, int_3, int_4)
+    assert var_4 is True
     int_6 = 1
     int_7 = 2
-    var_4 = module_0.right_angle_triangle(int_6, int_7, int_0)
-    assert var_4 is False
-    var_5 = module_0.right_angle_triangle(int_0, int_1, int_3)
+    var_5 = module_0.right_angle_triangle(int_6, int_7, int_0)
     assert var_5 is False
-    var_6 = module_0.right_angle_triangle(int_7, int_7, int_7)
+    var_6 = module_0.right_angle_triangle(int_6, int_6, int_6)
     assert var_6 is False
-    str_0 = 'All tests passed'
-    var_7 = print(str_0)
+    var_7 = module_0.right_angle_triangle(int_7, int_7, int_7)
+    assert var_7 is False
+    var_8 = module_0.right_angle_triangle(int_1, int_2, int_3)
+    assert var_8 is False
+    int_8 = 12
+    int_9 = 13
+    var_9 = module_0.right_angle_triangle(int_2, int_8, int_9)
+    assert var_9 is True
+    int_10 = 7
+    int_11 = 24
+    int_12 = 25
+    var_10 = module_0.right_angle_triangle(int_10, int_11, int_12)
+    assert var_10 is True
+    var_11 = module_0.right_angle_triangle(int_0, int_1, int_3)
+    assert var_11 is False

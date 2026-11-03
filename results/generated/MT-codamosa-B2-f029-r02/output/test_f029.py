@@ -2,10 +2,41 @@
 import f029 as module_0
 
 def test_case_0():
-    str_0 = 'apple'
-    str_1 = 'apricot'
-    str_2 = 'banana'
-    str_3 = [str_0, str_1, str_2]
-    str_4 = 'ap'
-    list_0 = module_0.filter_by_prefix(str_3, str_4)
-    assert list_0 == ['apple', 'apricot']
+    str_0 = 'abc'
+    str_1 = 'bcd'
+    str_2 = 'cde'
+    str_3 = 'array'
+    str_4 = [str_0, str_1, str_2, str_3]
+    str_5 = 'a'
+    list_0 = module_0.filter_by_prefix(str_4, str_5)
+    assert list_0 == ['abc', 'array']
+    str_6 = [str_0, str_1, str_2]
+    str_7 = ''
+    list_1 = module_0.filter_by_prefix(str_6, str_7)
+    assert list_1 == ['abc', 'bcd', 'cde']
+    var_0 = []
+    list_2 = module_0.filter_by_prefix(var_0, str_5)
+    assert list_2 == []
+    str_8 = [str_0, str_1]
+    str_9 = 'z'
+    list_3 = module_0.filter_by_prefix(str_8, str_9)
+    assert list_3 == []
+    str_10 = [str_0]
+    list_4 = module_0.filter_by_prefix(str_10, str_0)
+    assert list_4 == ['abc']
+    str_11 = [str_7, str_0]
+    list_5 = module_0.filter_by_prefix(str_11, str_5)
+    assert list_5 == ['abc']
+    str_12 = 'ABC'
+    str_13 = [str_12, str_0]
+    str_14 = 'A'
+    list_6 = module_0.filter_by_prefix(str_13, str_14)
+    assert list_6 == ['ABC']
+    str_15 = 'apple'
+    str_16 = 'banana'
+    str_17 = [str_15, str_15, str_16]
+    str_18 = 'app'
+    list_7 = module_0.filter_by_prefix(str_17, str_18)
+    assert list_7 == ['apple', 'apple']
+    str_19 = 'All tests passed!'
+    var_1 = print(str_19)

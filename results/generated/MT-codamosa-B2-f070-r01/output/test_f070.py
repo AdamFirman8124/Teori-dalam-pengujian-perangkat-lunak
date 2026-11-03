@@ -2,26 +2,40 @@
 import f070 as module_0
 
 def test_case_0():
-    var_0 = []
-    var_1 = module_0.strange_sort_list(var_0)
-    assert var_1 == []
     int_0 = 1
-    int_1 = [int_0]
-    var_2 = module_0.strange_sort_list(int_1)
-    assert var_2 == [1]
-    int_2 = 2
-    int_3 = 3
-    int_4 = 4
+    int_1 = 2
+    int_2 = 3
+    int_3 = 4
+    int_4 = [int_0, int_1, int_2, int_3]
+    var_0 = module_0.strange_sort_list(int_4)
+    assert var_0 == [1, 4, 2, 3]
     int_5 = 5
-    int_6 = [int_0, int_2, int_3, int_4, int_5]
-    var_3 = module_0.strange_sort_list(int_6)
-    assert var_3 == [1, 5, 2, 4, 3]
-    int_7 = [int_5, int_0, int_3, int_0, int_5]
+    int_6 = [int_5, int_5, int_5, int_5]
+    var_1 = module_0.strange_sort_list(int_6)
+    assert var_1 == [5, 5, 5, 5]
+    var_2 = []
+    var_3 = module_0.strange_sort_list(var_2)
+    assert var_3 == []
+    int_7 = [int_0]
     var_4 = module_0.strange_sort_list(int_7)
-    assert var_4 == [1, 5, 1, 5, 3]
-    int_8 = -3
+    assert var_4 == [1]
+    int_8 = [int_1, int_0, int_2]
+    var_5 = module_0.strange_sort_list(int_8)
+    assert var_5 == [1, 3, 2]
     int_9 = -1
     int_10 = -2
-    int_11 = [int_8, int_9, int_10]
-    var_5 = module_0.strange_sort_list(int_11)
-    assert var_5 == [-3, -1, -2]
+    int_11 = 0
+    int_12 = [int_9, int_10, int_11, int_5]
+    var_6 = module_0.strange_sort_list(int_12)
+    assert var_6 == [-2, 5, -1, 0]
+    int_13 = 10
+    int_14 = 11
+    int_15 = 12
+    int_16 = [int_13, int_14, int_15]
+    var_7 = module_0.strange_sort_list(int_16)
+    assert var_7 == [10, 12, 11]
+    str_0 = 'test_strange_sort_list passed'
+    var_8 = print(str_0)
+
+def test_case_1():
+    pass

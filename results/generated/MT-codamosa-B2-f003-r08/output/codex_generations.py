@@ -1,146 +1,175 @@
 
 
-# Generated at 2026-10-24 06:28:21.155837
+# Generated at 2026-11-02 08:46:58.445073
 # Unit test for function below_zero
 def test_below_zero():
-    # Falls below zero mid-sequence
-    assert module_0.below_zero([1, 2, -3]) == True
+    # Balance never goes below zero
+    assert module_0.below_zero([1, 2, 3]) == False
+    # Balance goes below zero
+    assert module_0.below_zero([1, 2, -4, 5]) == True
+    # Empty list, no operations
+    assert module_0.below_zero([]) == False
+    # Single negative operation
+    assert module_0.below_zero([-1]) == True
+    # Balance drops to exactly zero (not below)
+    assert module_0.below_zero([1, -1]) == False
+    # Balance drops below zero after several operations
+    assert module_0.below_zero([10, 5, -8, -10]) == True
+    # Balance goes below and comes back but should still return True
+    assert module_0.below_zero([5, -10, 20]) == True
+    # All positive operations
+    assert module_0.below_zero([100, 200, 300]) == False
+    # Zero operations only
+    assert module_0.below_zero([0, 0, 0]) == False
 
-    # Never goes below zero
+# Generated at 2026-11-02 08:47:07.316653
+# Unit test for function below_zero
+def test_below_zero():
+    # Test with operations that drop balance below zero
+    assert module_0.below_zero([1, 2, -4, 5]) == True
+
+    # Test with operations that never go below zero
     assert module_0.below_zero([1, 2, 3]) == False
 
-    # Exactly zero is NOT below zero
-    assert module_0.below_zero([1, 2, -3, 4]) == False
-
-    # First operation already negative
-    assert module_0.below_zero([-1]) == True
-
-    # Empty list â no operations, balance stays 0
+    # Test with empty list
     assert module_0.below_zero([]) == False
 
-    # Drops below zero only at the end
-    assert module_0.below_zero([5, -10]) == True
+    # Test with a single negative operation
+    assert module_0.below_zero([-1]) == True
 
-    # Recovers to zero but never negative
-    assert module_0.below_zero([3, -3]) == False
+    # Test with balance hitting exactly zero (not below)
+    assert module_0.below_zero([1, -1]) == False
+
+    # Test where balance goes negative then recovers
+    assert module_0.below_zero([5, -10, 20]) == True
+
+    # Test with all positive operations
+    assert module_0.below_zero([10, 20, 30]) == False
+
+    # Test with zero operations included
+    assert module_0.below_zero([0, 0, -1]) == True
+
+    # Test with large numbers
+    assert module_0.below_zero([1000000, -2000000]) == True
+    assert module_0.below_zero([1000000, -999999]) == False
 
     print("All tests passed!")
 
 
-test_below_zero()
+if __name__ == "__main__":
+    test_below_zero()
 
-# Generated at 2026-10-24 06:28:22.473856
+# Generated at 2026-11-02 08:47:12.924867
 # Unit test for function below_zero
 def test_below_zero():
-    # Falls below zero mid-sequence
-    assert module_0.below_zero([1, 2, -3]) == True
+    # Empty list: no operations, balance never drops below zero
+    assert module_0.below_zero([]) is False
 
-    # Never goes below zero
-    assert module_0.below_zero([1, 2, 3]) == False
+    # All positive operations: balance stays positive
+    assert module_0.below_zero([1, 2, 3]) is False
 
-    # Exactly zero is NOT below zero
-    assert module_0.below_zero([1, 2, -3, 4]) == False
+    # Balance drops below zero mid-sequence
+    assert module_0.below_zero([1, 2, -4, 5]) is True
 
-    # First operation already negative
-    assert module_0.below_zero([-1]) == True
+    # Balance reaches exactly zero but never below
+    assert module_0.below_zero([1, 2, -3]) is False
 
-    # Empty list â no operations, balance stays 0
-    assert module_0.below_zero([]) == False
+    # Single negative operation
+    assert module_0.below_zero([-1]) is True
 
-    # Drops below zero only at the end
-    assert module_0.below_zero([5, -10]) == True
+    # Single zero operation
+    assert module_0.below_zero([0]) is False
 
-    # Recovers to zero but never negative
-    assert module_0.below_zero([3, -3]) == False
+    # Balance returns to exactly zero, never negative
+    assert module_0.below_zero([1, -1]) is False
+
+    # Large positive then larger negative
+    assert module_0.below_zero([100, -101]) is True
+
+    # Negative at the very end
+    assert module_0.below_zero([5, 5, -20]) is True
+
+    # Multiple dips below zero
+    assert module_0.below_zero([-2, 3, -4]) is True
+
+    # Long sequence staying non-negative
+    assert module_0.below_zero([1, 1, 1, 1, -2, -2]) is False
+
+    # Early dip then recovery still returns True
+    assert module_0.below_zero([10, -15, 100]) is True
 
     print("All tests passed!")
 
 
-test_below_zero()
+if __name__ == "__main__":
+    test_below_zero()
 
-# Generated at 2026-10-24 06:28:23.771895
+# Generated at 2026-11-02 08:47:18.722024
 # Unit test for function below_zero
 def test_below_zero():
-    # Falls below zero mid-sequence
-    assert module_0.below_zero([1, 2, -3]) == True
-
-    # Never goes below zero
+    # Test case 1: Balance never goes below zero
     assert module_0.below_zero([1, 2, 3]) == False
 
-    # Exactly zero is NOT below zero
-    assert module_0.below_zero([1, 2, -3, 4]) == False
+    # Test case 2: Balance goes below zero
+    assert module_0.below_zero([1, 2, -4, 5]) == True
 
-    # First operation already negative
-    assert module_0.below_zero([-1]) == True
-
-    # Empty list â no operations, balance stays 0
+    # Test case 3: Empty list - no operations, never below zero
     assert module_0.below_zero([]) == False
 
-    # Drops below zero only at the end
-    assert module_0.below_zero([5, -10]) == True
+    # Test case 4: Single positive operation
+    assert module_0.below_zero([5]) == False
 
-    # Recovers to zero but never negative
-    assert module_0.below_zero([3, -3]) == False
+    # Test case 5: Single negative operation
+    assert module_0.below_zero([-1]) == True
+
+    # Test case 6: Balance goes to exactly zero but not below
+    assert module_0.below_zero([1, -1]) == False
+
+    # Test case 7: Balance goes below zero but recovers
+    assert module_0.below_zero([5, -10, 20]) == True
+
+    # Test case 8: Starts with deposit then withdrawal to zero
+    assert module_0.below_zero([10, -10]) == False
+
+    # Test case 9: First operation goes below zero
+    assert module_0.below_zero([-5, 10]) == True
+
+    # Test case 10: Large numbers
+    assert module_0.below_zero([1000000, -2000000]) == True
 
     print("All tests passed!")
 
 
-test_below_zero()
+if __name__ == "__main__":
+    test_below_zero()
 
-# Generated at 2026-10-24 06:28:25.099911
+# Generated at 2026-11-02 08:47:27.532231
 # Unit test for function below_zero
 def test_below_zero():
-    # Falls below zero mid-sequence
-    assert module_0.below_zero([1, 2, -3]) == True
+    # Empty list: balance never changes, stays at 0
+    assert module_0.below_zero([]) is False
 
-    # Never goes below zero
-    assert module_0.below_zero([1, 2, 3]) == False
+    # Balance goes negative on first operation
+    assert module_0.below_zero([-1]) is True
 
-    # Exactly zero is NOT below zero
-    assert module_0.below_zero([1, 2, -3, 4]) == False
+    # Balance stays positive throughout
+    assert module_0.below_zero([1, 2, 3]) is False
 
-    # First operation already negative
-    assert module_0.below_zero([-1]) == True
+    # Balance goes negative partway through
+    assert module_0.below_zero([1, 2, -4, 5]) is True
 
-    # Empty list â no operations, balance stays 0
-    assert module_0.below_zero([]) == False
+    # Balance drops to exactly zero but never below
+    assert module_0.below_zero([1, 2, -3]) is False
 
-    # Drops below zero only at the end
-    assert module_0.below_zero([5, -10]) == True
+    # Balance dips below zero then recovers — still True
+    assert module_0.below_zero([5, -6, 10]) is True
 
-    # Recovers to zero but never negative
-    assert module_0.below_zero([3, -3]) == False
+    # Balance ends negative
+    assert module_0.below_zero([1, -2]) is True
 
-    print("All tests passed!")
+    # Balance touches zero multiple times without going below
+    assert module_0.below_zero([1, -1, 1, -1]) is False
 
-
-test_below_zero()
-
-# Generated at 2026-10-24 06:28:26.415055
-# Unit test for function below_zero
-def test_below_zero():
-    # Falls below zero mid-sequence
-    assert module_0.below_zero([1, 2, -3]) == True
-
-    # Never goes below zero
-    assert module_0.below_zero([1, 2, 3]) == False
-
-    # Exactly zero is NOT below zero
-    assert module_0.below_zero([1, 2, -3, 4]) == False
-
-    # First operation already negative
-    assert module_0.below_zero([-1]) == True
-
-    # Empty list â no operations, balance stays 0
-    assert module_0.below_zero([]) == False
-
-    # Drops below zero only at the end
-    assert module_0.below_zero([5, -10]) == True
-
-    # Recovers to zero but never negative
-    assert module_0.below_zero([3, -3]) == False
-
-    print("All tests passed!")
-
-
-test_below_zero()
+    # Large values
+    assert module_0.below_zero([1000000, -2000000]) is True
+    assert module_0.below_zero([1000000, -1000000, 1]) is False

@@ -7,34 +7,41 @@ import pytest
 from f072 import will_it_fly
 
 
-def test_too_heavy_returns_false():
-    # sum(q) > w -> line 3 branch taken, returns False at line 4
-    assert will_it_fly([3, 2, 3], 1) is False
-    assert will_it_fly([1, 2], 2) is False
+def test_weight_exceeded_returns_false():
+    """sum(q) > w triggers the early False return (lines 3-4)."""
+    assert will_it_fly([3, 2, 3], 5) is False
 
 
-def test_unbalanced_returns_false():
-    # sum <= w but q[i] != q[j] -> returns False at line 9
-    assert will_it_fly([1, 2], 5) is False
-    assert will_it_fly([3, 2, 3, 1], 100) is False
+def test_weight_boundary_returns_true():
+    """sum(q) == w does not trigger the early return; palindrome flies."""
+    assert will_it_fly([1, 2, 1], 4) is True
 
 
-def test_balanced_and_light_returns_true():
-    # palindrome with sum <= w -> loop runs, exits, returns True at line 12
+def test_palindrome_within_weight_returns_true():
+    """Odd-length palindrome exercises loop body and final True (lines 6-12)."""
     assert will_it_fly([3, 2, 3], 9) is True
-    assert will_it_fly([1, 2, 1], 5) is True
 
 
-def test_single_element_within_weight_returns_true():
-    # len(q) == 1 -> i == j, while loop body never runs, returns True
-    assert will_it_fly([2], 5) is True
+def test_even_length_palindrome_returns_true():
+    """Even-length palindrome requires multiple loop iterations (lines 10-11)."""
+    assert will_it_fly([1, 2, 2, 1], 10) is True
+
+
+def test_non_palindrome_returns_false():
+    """Asymmetric list triggers the mid-loop False return (lines 8-9)."""
+    assert will_it_fly([1, 2], 10) is False
+
+
+def test_non_palindrome_longer_returns_false():
+    """Mismatch found after a matching pair; loop body runs then exits False."""
+    assert will_it_fly([1, 2, 3, 2, 4], 100) is False
+
+
+def test_single_element_returns_true():
+    """Loop body never runs when i == j (line 7 condition false)."""
+    assert will_it_fly([5], 5) is True
 
 
 def test_empty_list_returns_true():
-    # len(q) == 0 -> i=0, j=-1, while loop never runs, returns True
-    assert will_it_fly([], 5) is True
-
-
-def test_exact_weight_boundary_returns_true():
-    # sum(q) == w -> not greater, so proceeds to palindrome check
-    assert will_it_fly([1, 2, 1], 4) is True
+    """Empty list: sum is 0, loop is skipped, returns True."""
+    assert will_it_fly([], 0) is True

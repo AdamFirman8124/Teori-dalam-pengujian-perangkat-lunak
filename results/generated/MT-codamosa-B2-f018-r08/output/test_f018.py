@@ -2,27 +2,41 @@
 import f018 as module_0
 
 def test_case_0():
-    str_0 = 'hello hello'
-    str_1 = 'hello'
+    str_0 = ''
+    str_1 = 'a'
     int_0 = module_0.how_many_times(str_0, str_1)
-    assert int_0 == 2
-    str_2 = 'aaaa'
-    str_3 = 'aa'
-    int_1 = module_0.how_many_times(str_2, str_3)
+    assert int_0 == 0
+    str_2 = 'aaa'
+    int_1 = module_0.how_many_times(str_2, str_1)
     assert int_1 == 3
-    str_4 = 'abcabcabc'
-    str_5 = 'abc'
-    int_2 = module_0.how_many_times(str_4, str_5)
+    str_3 = 'aaaa'
+    str_4 = 'aa'
+    int_2 = module_0.how_many_times(str_3, str_4)
     assert int_2 == 3
-    str_6 = 'z'
-    int_3 = module_0.how_many_times(str_1, str_6)
+    str_5 = 'abc'
+    str_6 = 'x'
+    int_3 = module_0.how_many_times(str_5, str_6)
     assert int_3 == 0
-    int_4 = module_0.how_many_times(str_1, str_1)
-    assert int_4 == 1
-    str_7 = ''
-    str_8 = 'a'
-    int_5 = module_0.how_many_times(str_7, str_8)
-    assert int_5 == 0
-    str_9 = 'abcd'
-    int_6 = module_0.how_many_times(str_5, str_9)
-    assert int_6 == 0
+    str_7 = 'abcabc'
+    int_4 = module_0.how_many_times(str_7, str_5)
+    assert int_4 == 2
+    int_5 = module_0.how_many_times(str_3, str_2)
+    assert int_5 == 2
+    str_8 = 'abab'
+    str_9 = 'ab'
+    int_6 = module_0.how_many_times(str_8, str_9)
+    assert int_6 == 2
+    str_10 = 'mississippi'
+    str_11 = 'issi'
+    int_7 = module_0.how_many_times(str_10, str_11)
+    assert int_7 == 2
+    int_8 = module_0.how_many_times(str_9, str_5)
+    assert int_8 == 0
+    int_9 = module_0.how_many_times(str_0, str_0)
+    assert int_9 == 1
+    int_10 = module_0.how_many_times(str_5, str_0)
+    assert int_10 == 4
+    str_12 = 'AbcA'
+    int_11 = module_0.how_many_times(str_12, str_1)
+    assert int_11 == 1
+    assert int_11 == 0

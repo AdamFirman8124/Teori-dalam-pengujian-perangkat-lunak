@@ -3,20 +3,60 @@ import f024 as module_0
 
 def test_case_0():
     try:
-        int_0 = 1892
+        int_0 = 3
         int_1 = module_0.largest_divisor(int_0)
-        assert int_1 == 946
-        int_2 = 2689
-        int_3 = -605
-        int_4 = module_0.largest_divisor(int_3)
-        assert int_4 is None
-        int_5 = module_0.largest_divisor(int_2)
-        assert int_5 == 1
-        int_6 = -2412
+        assert int_1 == 1
+        int_2 = 7
+        int_3 = module_0.largest_divisor(int_2)
+        assert int_3 == 1
+        int_4 = 10
+        int_5 = module_0.largest_divisor(int_4)
+        assert int_5 == 5
+        int_6 = 100
         int_7 = module_0.largest_divisor(int_6)
-        assert int_7 is None
-        int_8 = module_0.largest_divisor(int_6)
-        assert int_8 is None
-        int_9 = module_0.largest_divisor(int_5)
+        assert int_7 == 50
+        int_8 = 49
+        int_9 = module_0.largest_divisor(int_8)
+        assert int_9 == 7
+        int_10 = 2
+        int_11 = module_0.largest_divisor(int_10)
+        assert int_11 == 1
+        int_12 = 4
+        int_13 = module_0.largest_divisor(int_12)
+        assert int_13 == 2
+        int_14 = 12
+        int_15 = module_0.largest_divisor(int_14)
+        assert int_15 == 6
+        int_16 = 15
+        int_17 = module_0.largest_divisor(int_16)
+        assert int_17 == 5
+        int_18 = 28
+        int_19 = module_0.largest_divisor(int_18)
+        assert int_19 == 14
+        int_20 = 36
+        int_21 = module_0.largest_divisor(int_20)
+        assert int_21 == 18
+        int_22 = 81
+        int_23 = module_0.largest_divisor(int_22)
+        assert int_23 == 27
+        int_24 = 97
+        int_25 = module_0.largest_divisor(int_24)
+        assert int_25 == 1
+        int_26 = 7919
+        int_27 = module_0.largest_divisor(int_26)
+        assert int_27 == 1
+        int_28 = 1000000
+        int_29 = module_0.largest_divisor(int_28)
+        assert int_29 == 500000
+        int_30 = module_0.largest_divisor(int_4)
+        assert int_30 == 5
+        int_31 = 0
+        int_32 = module_0.largest_divisor(int_31)
+        assert int_32 is None
+        int_33 = -5
+        int_34 = module_0.largest_divisor(int_33)
+        assert int_34 is None
+        int_35 = 1
+        int_36 = module_0.largest_divisor(int_35)
     except BaseException:
         pass

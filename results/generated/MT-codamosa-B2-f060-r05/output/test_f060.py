@@ -2,11 +2,6 @@
 import f060 as module_0
 
 def test_case_0():
-    int_0 = 814
+    int_0 = 0
     var_0 = module_0.sum_to_n(int_0)
-    assert var_0 == 331705
-    int_1 = -2509
-    var_1 = module_0.sum_to_n(int_0)
-    assert var_1 == 331705
-    var_2 = module_0.sum_to_n(int_1)
-    assert var_2 == 0
+    assert var_0 == 0

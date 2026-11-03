@@ -1,721 +1,219 @@
 
 
-# Generated at 2026-10-25 20:22:36.888247
+# Generated at 2026-11-03 06:10:04.362926
 # Unit test for method set_downloader of class PostProcessor
+def test_PostProcessor_set_downloader():
+    from unittest import mock
 
-# Generated at 2026-10-25 20:22:39.301892
-# Unit test for method set_downloader of class PostProcessor
+    # Create a PostProcessor without an initial downloader
+    pp = PostProcessor()
+    assert pp._downloader is None
 
-# Generated at 2026-10-25 20:22:41.714851
-# Unit test for method set_downloader of class PostProcessor
+    # Set a downloader and verify it is stored
+    downloader = mock.Mock()
+    pp.set_downloader(downloader)
+    assert pp._downloader is downloader
 
-# Generated at 2026-10-25 20:22:44.128827
-# Unit test for method set_downloader of class PostProcessor
+    # Setting a different downloader should replace the previous one
+    new_downloader = mock.Mock()
+    pp.set_downloader(new_downloader)
+    assert pp._downloader is new_downloader
 
-# Generated at 2026-10-25 20:22:46.542604
-# Unit test for method set_downloader of class PostProcessor
+    # A PostProcessor constructed with a downloader keeps it
+    initial_downloader = mock.Mock()
+    pp2 = PostProcessor(downloader=initial_downloader)
+    assert pp2._downloader is initial_downloader
 
-# Generated at 2026-10-25 20:22:48.956452
-# Unit test for method set_downloader of class PostProcessor
+    # set_downloader can also override a constructor-provided downloader
+    replacement = mock.Mock()
+    pp2.set_downloader(replacement)
+    assert pp2._downloader is replacement
 
-# Generated at 2026-10-25 20:22:51.371779
-# Unit test for method run of class PostProcessor
+    print('test_PostProcessor_set_downloader passed')
 
-# Generated at 2026-10-25 20:22:53.787322
-# Unit test for method run of class PostProcessor
 
-# Generated at 2026-10-25 20:22:56.200850
-# Unit test for method run of class PostProcessor
+if __name__ == '__main__':
+    test_PostProcessor_set_downloader()
 
-# Generated at 2026-10-25 20:22:58.618570
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:01.028804
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:03.443048
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:05.858464
+# Generated at 2026-11-03 06:11:44.507556
 # Unit test for constructor of class PostProcessor
+def test_PostProcessor():
+    # Default constructor should have no downloader
+    pp = PostProcessor()
+    assert pp._downloader is None
 
-# Generated at 2026-10-25 20:23:08.271792
-# Unit test for constructor of class PostProcessor
-
-# Generated at 2026-10-25 20:23:10.686729
-# Unit test for constructor of class PostProcessor
-
-# Generated at 2026-10-25 20:23:13.099968
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:15.515322
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:17.929080
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:20.344812
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:22.757746
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:25.172850
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:27.586524
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:30.000395
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:32.416273
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:34.827724
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:37.243670
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:39.661701
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:42.075068
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:44.488296
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:46.903956
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:49.316391
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:51.730665
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:54.145664
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:56.559287
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:23:58.973760
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:01.389921
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:03.805259
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:06.221140
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:08.631056
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:11.045220
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:16.490404
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:18.906379
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:21.317945
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:23.733071
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:26.147691
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:28.561242
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:30.974556
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:33.389322
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:35.805602
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:38.222175
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:40.640317
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:43.051382
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:45.465216
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:47.912372
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:50.294905
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:52.709998
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:55.123190
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:57.536814
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:24:59.954666
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:02.367762
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:04.781519
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:07.196078
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:09.612341
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:12.026086
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:14.442286
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:16.856073
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:19.269483
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:21.688176
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:24.104744
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:26.517004
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:28.931235
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:31.347617
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:33.764926
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:36.179134
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:38.595480
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:41.040777
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:43.422918
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:45.836633
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:48.250811
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:50.665149
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:53.083851
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:55.497930
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:25:57.911712
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:00.325316
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:02.739550
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:05.153685
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:07.568647
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:09.982284
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:12.396575
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:14.814222
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:20.251032
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:22.664728
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:25.079225
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:27.492828
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:29.907155
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:32.321384
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:34.738585
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:37.155316
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:39.569156
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:41.983524
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:44.398935
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:46.812578
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:49.226288
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:51.644852
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:54.056144
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:56.471840
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:26:58.888259
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:01.301614
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:03.714235
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:06.130006
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:08.543839
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:10.958068
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:13.372643
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:15.786369
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:18.200361
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:20.614473
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:23.027001
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:25.440694
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:27.856749
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:30.270275
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:32.684165
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:35.098503
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:37.513009
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:39.929972
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:42.347249
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:44.761680
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:47.175294
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:49.591500
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:52.004432
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:54.418781
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:56.833159
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:27:59.249114
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:01.661848
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:04.080697
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:06.517904
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:09.033368
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:11.414282
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:13.828939
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:16.243630
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:18.658168
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:24.101174
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:26.621996
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:28.940261
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:31.354136
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:33.767753
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:36.183044
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:38.596501
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:41.011064
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:43.427565
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:45.845017
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:48.260581
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:50.674766
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:53.089218
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:55.504136
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:28:57.918315
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:00.336032
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:02.747023
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:05.164223
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:07.578058
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:09.991291
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:12.405222
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:14.821181
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:17.234395
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:19.649056
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:22.063306
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:25.422708
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:27.840897
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:30.258269
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:32.670335
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:35.083680
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:37.499295
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:39.913425
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:42.328338
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:44.743795
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:47.157447
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:49.575423
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:51.992297
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:54.404621
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:56.818453
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:29:59.234664
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:01.650559
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:04.065457
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:06.479099
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:08.895575
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:11.312747
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:13.831915
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:16.206862
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:18.654663
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:21.066295
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:26.569007
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:28.983896
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:31.402153
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:33.820216
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:36.234545
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:38.648343
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:44.510038
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:46.924915
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:49.338608
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:51.752943
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:54.171698
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:56.588450
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:30:59.000719
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:01.414454
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:03.828883
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:06.242980
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:08.657434
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:11.071638
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:13.487328
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:15.904480
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:18.451271
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:20.779201
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:23.322604
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:25.707968
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:28.122611
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:30.536841
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:32.951042
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:35.368095
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:37.816165
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:40.199450
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:42.612987
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:45.029806
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:47.443130
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:49.857477
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:52.271953
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:31:54.686373
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:32:04.244336
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:32:06.659494
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:32:09.073777
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:32:11.488179
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:32:13.901349
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:32:16.316138
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:32:18.734461
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:32:21.151475
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:32:23.564328
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:32:25.978043
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:32:31.416160
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:32:33.830835
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:32:36.246597
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:32:38.660236
-# Unit test for method try_utime of class PostProcessor
-
-# Generated at 2026-10-25 20:32:41.110145
-# Unit test for method try_utime of class PostProcessor
+    # Constructor should store the passed downloader
+    downloader = object()
+    pp = PostProcessor(downloader)
+    assert pp._downloader is downloader
+
+    # set_downloader should update the downloader
+    new_downloader = object()
+    pp.set_downloader(new_downloader)
+    assert pp._downloader is new_downloader
+
+# Generated at 2026-11-03 06:13:17.798043
+# Unit test for method run of class PostProcessor
+def test_PostProcessor_run():
+    from youtube_dl.utils import PostProcessingError
+
+    pp = PostProcessor()
+    information = {'filepath': 'somefile.mp4', 'title': 'test video'}
+    files_to_delete, updated_info = pp.run(information)
+    assert files_to_delete == []
+    assert updated_info == information
+    assert updated_info is information
+
+# Generated at 2026-11-03 06:14:25.174254
+# Unit test for method try_utime of class PostProcessor
+def test_PostProcessor_try_utime():
+    pp = PostProcessor()
+
+    # Create a temporary file
+    tmp_path = 'test_file_utime.tmp'
+    with open(tmp_path, 'w') as f:
+        f.write('test')
+
+    try:
+        atime = 1000000
+        mtime = 2000000
+        pp.try_utime(tmp_path, atime, mtime)
+
+        stat = os.stat(tmp_path)
+        assert stat.st_atime == atime
+        assert stat.st_mtime == mtime
+    finally:
+        os.remove(tmp_path)
+
+
+def test_PostProcessor_try_utime_nonexistent_file():
+    # Test that failure is handled gracefully with a warning
+    mock_downloader = MagicMock()
+    pp = PostProcessor(downloader=mock_downloader)
+    pp._downloader = mock_downloader
+
+    nonexistent = 'nonexistent_file_that_does_not_exist_12345.tmp'
+    errnote = 'Cannot update utime of file'
+
+    pp.try_utime(nonexistent, 1000, 2000, errnote=errnote)
+
+    mock_downloader.report_warning.assert_called_once_with(errnote)
+
+
+def test_PostProcessor_try_utime_default_errnote():
+    mock_downloader = MagicMock()
+    pp = PostProcessor(downloader=mock_downloader)
+    pp._downloader = mock_downloader
+
+    nonexistent = 'nonexistent_file_that_does_not_exist_67890.tmp'
+
+    pp.try_utime(nonexistent, 1000, 2000)
+
+    mock_downloader.report_warning.assert_called_once_with('Cannot update utime of file')
+
+# Generated at 2026-11-03 06:15:50.269030
+# Unit test for method try_utime of class PostProcessor
+def test_PostProcessor_try_utime():
+    import tempfile
+
+    class FakeDownloader(object):
+        def __init__(self):
+            self.warnings = []
+
+        def report_warning(self, msg):
+            self.warnings.append(msg)
+
+    fd, filename = tempfile.mkstemp(suffix='_pp_utime_test')
+    os.close(fd)
+    try:
+        downloader = FakeDownloader()
+        pp = PostProcessor(downloader=downloader)
+
+        # Successful utime update: atime and mtime should be set, no warnings
+        atime = 1000000000
+        mtime = 1234567890
+        pp.try_utime(filename, atime, mtime)
+        st = os.stat(filename)
+        assert int(st.st_atime) == atime, 'atime not updated correctly'
+        assert int(st.st_mtime) == mtime, 'mtime not updated correctly'
+        assert downloader.warnings == [], 'no warning expected on success'
+
+        # Failure case: nonexistent path -> report_warning called, no exception
+        bad_path = os.path.join(filename, 'nonexistent_dir', 'no_such_file')
+        pp.try_utime(bad_path, 1, 2, errnote='utime failed')
+        assert downloader.warnings == ['utime failed'], (
+            'expected custom errnote to be reported: %r' % downloader.warnings)
+
+        # Failure case with default errnote
+        downloader.warnings = []
+        pp.try_utime(bad_path, 1, 2)
+        assert downloader.warnings == ['Cannot update utime of file'], (
+            'expected default errnote to be reported: %r' % downloader.warnings)
+    finally:
+        if os.path.exists(filename):
+            os.remove(filename)
+
+# Generated at 2026-11-03 06:17:50.693207
+# Unit test for method try_utime of class PostProcessor
+def test_PostProcessor_try_utime():
+    try:
+        from youtube_dl.postprocessor.common import PostProcessor
+    except ImportError:
+        from youtube_dl.postprocessor import PostProcessor
+
+    downloader = FakeDownloader()
+    pp = PostProcessor(downloader=downloader)
+
+    tmpdir = tempfile.mkdtemp()
+    try:
+        filepath = os.path.join(tmpdir, 'testfile.mp4')
+        with open(filepath, 'w') as f:
+            f.write('test data')
+
+        # Test successful utime update with integer timestamps
+        atime = 1000000000
+        mtime = 1000000005
+        pp.try_utime(filepath, atime, mtime)
+
+        stat_result = os.stat(filepath)
+        assert int(stat_result.st_atime) == atime, \
+            'Expected atime %d, got %d' % (atime, stat_result.st_atime)
+        assert int(stat_result.st_mtime) == mtime, \
+            'Expected mtime %d, got %d' % (mtime, stat_result.st_mtime)
+        assert len(downloader.warnings) == 0, \
+            'No warnings should be reported for successful utime'
+
+        # Test with a non-existent file - should report a warning
+        nonexistent = os.path.join(tmpdir, 'nonexistent.mp4')
+        pp.try_utime(nonexistent, atime, mtime)
+        assert len(downloader.warnings) == 1, \
+            'Expected one warning for non-existent file'
+        assert 'Cannot update utime of file' in downloader.warnings[0], \
+            'Default errnote message expected, got: %s' % downloader.warnings[0]
+
+        # Test with a custom errnote
+        pp.try_utime(nonexistent, atime, mtime, errnote='Custom errnote message')
+        assert len(downloader.warnings) == 2, \
+            'Expected two warnings total'
+        assert downloader.warnings[1] == 'Custom errnote message', \
+            'Custom errnote expected, got: %s' % downloader.warnings[1]
+
+        # Test with fractional timestamps
+        atime2 = 1500000000.5
+        mtime2 = 1500000000.75
+        pp.try_utime(filepath, atime2, mtime2)
+        stat_result = os.stat(filepath)
+        assert abs(stat_result.st_atime - atime2) < 0.1, \
+            'Expected atime ~%f, got %f' % (atime2, stat_result.st_atime)
+        assert abs(stat_result.st_mtime - mtime2) < 0.1, \
+            'Expected mtime ~%f, got %f' % (mtime2, stat_result.st_mtime)
+        assert len(downloader.warnings) == 2, \
+            'No additional warnings should be reported for fractional timestamps'
+
+    finally:
+        shutil.rmtree(tmpdir, ignore_errors=True)
+
+
+if __name__ == '__main__':
+    test_PostProcessor_try_utime()
+    print('All tests passed!')

@@ -2,37 +2,58 @@
 import f070 as module_0
 
 def test_case_0():
-    var_0 = []
-    var_1 = module_0.strange_sort_list(var_0)
-    assert var_1 == []
     int_0 = 1
-    int_1 = [int_0]
-    var_2 = module_0.strange_sort_list(int_1)
-    assert var_2 == [1]
+    int_1 = 2
     int_2 = 3
-    int_3 = 2
-    int_4 = [int_2, int_0, int_3]
-    var_3 = module_0.strange_sort_list(int_4)
-    assert var_3 == [1, 3, 2]
-    int_5 = 4
-    int_6 = [int_0, int_3, int_2, int_5]
-    var_4 = module_0.strange_sort_list(int_6)
-    assert var_4 == [1, 4, 2, 3]
-    int_7 = 5
-    int_8 = [int_0, int_3, int_2, int_5, int_7]
-    var_5 = module_0.strange_sort_list(int_8)
-    assert var_5 == [1, 5, 2, 4, 3]
-    int_9 = 8
-    int_10 = 9
-    int_11 = [int_7, int_2, int_9, int_0, int_10]
-    var_6 = module_0.strange_sort_list(int_11)
-    assert var_6 == [1, 9, 3, 8, 5]
-    int_12 = [int_3, int_3, int_0, int_0]
-    var_7 = module_0.strange_sort_list(int_12)
-    assert var_7 == [1, 2, 1, 2]
-    int_13 = -3
-    int_14 = 0
+    int_3 = 4
+    int_4 = [int_0, int_1, int_2, int_3]
+    var_0 = module_0.strange_sort_list(int_4)
+    assert var_0 == [1, 4, 2, 3]
+    int_5 = 5
+    int_6 = [int_5, int_5, int_5, int_5]
+    var_1 = module_0.strange_sort_list(int_6)
+    assert var_1 == [5, 5, 5, 5]
+    int_7 = [int_2, int_0, int_1]
+    var_2 = module_0.strange_sort_list(int_7)
+    assert var_2 == [1, 3, 2]
+    int_8 = 7
+    int_9 = 9
+    int_10 = [int_8, int_1, int_9, int_3, int_0]
+    var_3 = module_0.strange_sort_list(int_10)
+    assert var_3 == [1, 9, 2, 7, 4]
+    int_11 = 42
+    int_12 = [int_11]
+    var_4 = module_0.strange_sort_list(int_12)
+    assert var_4 == [42]
+    var_5 = []
+    var_6 = module_0.strange_sort_list(var_5)
+    assert var_6 == []
+    int_13 = [int_1, int_0]
+    var_7 = module_0.strange_sort_list(int_13)
+    assert var_7 == [1, 2]
+    int_14 = -5
     int_15 = -1
-    int_16 = [int_13, int_14, int_7, int_15]
-    var_8 = module_0.strange_sort_list(int_16)
-    assert var_8 == [-3, 5, -1, 0]
+    int_16 = 0
+    int_17 = [int_14, int_2, int_15, int_16]
+    var_8 = module_0.strange_sort_list(int_17)
+    assert var_8 == [-5, 3, -1, 0]
+    int_18 = [int_0, int_1, int_1, int_2]
+    var_9 = module_0.strange_sort_list(int_18)
+    assert var_9 == [1, 3, 2, 2]
+    int_19 = [int_0, int_1, int_2, int_3, int_5]
+    var_10 = module_0.strange_sort_list(int_19)
+    assert var_10 == [1, 5, 2, 4, 3]
+    int_20 = [int_5, int_3, int_2, int_1, int_0]
+    var_11 = module_0.strange_sort_list(int_20)
+    assert var_11 == [1, 5, 2, 4, 3]
+    int_21 = 10
+    int_22 = [int_21, int_2, int_8, int_0, int_9]
+    var_12 = int_22[:]
+    var_13 = module_0.strange_sort_list(var_12)
+    assert var_13 == [1, 10, 3, 9, 7]
+    var_14 = sorted(var_13)
+    var_15 = sorted(int_22)
+    var_16 = len(var_13)
+    var_17 = len(int_22)
+    str_0 = 'All tests passed!'
+    var_18 = print(str_0)

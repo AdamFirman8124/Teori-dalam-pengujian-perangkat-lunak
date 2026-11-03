@@ -1,581 +1,225 @@
 
 
-# Generated at 2026-10-25 07:57:41.902438
+# Generated at 2026-11-03 00:04:17.967729
 # Unit test for function burp
+def test_burp():import os
+import sys
 
-# Generated at 2026-10-25 07:57:44.315902
-# Unit test for function burp
+import pytest
 
-# Generated at 2026-10-25 07:57:46.731398
-# Unit test for function burp
 
-# Generated at 2026-10-25 07:57:49.143808
+def test_burp_writes_contents_to_file(tmp_path):
+    target = tmp_path / "out.txt"
+    module_0.burp(str(target), "hello world")
+    assert target.read_text() == "hello world"
+
+
+def test_burp_overwrites_existing_file(tmp_path):
+    target = tmp_path / "out.txt"
+    target.write_text("old contents")
+    module_0.burp(str(target), "new contents")
+    assert target.read_text() == "new contents"
+
+
+def test_burp_append_mode(tmp_path):
+    target = tmp_path / "out.txt"
+    module_0.burp(str(target), "first\n")
+    module_0.burp(str(target), "second\n", mode="a")
+    assert target.read_text() == "first\nsecond\n"
+
+
+def test_burp_binary_mode(tmp_path):
+    target = tmp_path / "out.bin"
+    module_0.burp(str(target), b"\x00\x01\x02", mode="wb")
+    assert target.read_bytes() == b"\x00\x01\x02"
+
+
+def test_burp_stdout(tmp_path, capsys):
+    module_0.burp("-", "to stdout")
+    captured = capsys.readouterr()
+    assert captured.out == "to stdout"
+
+
+def test_burp_stdout_disabled_writes_literal_dash_file(tmp_path):
+    target = tmp_path / "-"
+    module_0.burp(str(target), "literal dash", allow_stdout=False)
+    assert target.read_text() == "literal dash"
+
+
+def test_burp_allow_stdout_false_with_dash(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    module_0.burp("-", "file not stdout", allow_stdout=False)
+    assert (tmp_path / "-").read_text() == "file not stdout"
+
+
+def test_burp_expanduser(tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    module_0.burp("~/burp_test.txt", "expanded home")
+    assert (tmp_path / "burp_test.txt").read_text() == "expanded home"
+
+
+def test_burp_expandvars(tmp_path, monkeypatch):
+    monkeypatch.setenv("BURP_DIR", str(tmp_path))
+    module_0.burp("$BURP_DIR/vars.txt", "expanded vars")
+    assert (tmp_path / "vars.txt").read_text() == "expanded vars"
+
+
+def test_burp_no_expandvars(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("BURP_VAR", str(tmp_path))
+    filename = "$BURP_VAR/literal.txt"
+    module_0.burp(filename, "no expansion", expandvars=False)
+    assert (tmp_path / "$BURP_VAR" / "literal.txt").read_text() == "no expansion"
+
+
+def test_burp_no_expanduser(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    filename = "~/noexpand.txt"
+    module_0.burp(filename, "no tilde expansion", expanduser=False)
+    assert (tmp_path / "~" / "noexpand.txt").read_text() == "no tilde expansion"
+
+# Generated at 2026-11-03 00:07:22.506585
 # Unit test for function islurp
 
-# Generated at 2026-10-25 07:57:51.559250
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:57:53.980132
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:57:56.393655
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:57:58.807023
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:58:01.223668
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:58:03.639583
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:58:06.053043
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:58:08.471246
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:58:10.880248
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:58:13.295189
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:58:15.709462
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:58:18.124536
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:58:20.542718
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:58:22.959245
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:58:25.373433
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:58:31.174604
-# Unit test for function islurp
-def test_islurp():import os
-
-# Generated at 2026-10-25 07:58:36.392641
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:58:51.956550
+# Generated at 2026-11-03 00:09:28.036058
 # Unit test for function islurp
 def test_islurp():import tempfile
 
-
-# Generated at 2026-10-25 07:59:19.578382
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:59:21.986050
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:59:24.399627
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:59:26.814255
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:59:29.227600
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:59:31.640658
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:59:34.054401
+# Generated at 2026-11-03 00:11:33.783734
 # Unit test for function burp
-
-# Generated at 2026-10-25 07:59:36.468500
-# Unit test for function burp
-
-# Generated at 2026-10-25 07:59:38.881653
-# Unit test for function burp
-
-# Generated at 2026-10-25 07:59:41.295709
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:59:43.712215
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:59:46.129337
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:59:48.541765
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:59:50.954132
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:59:53.367817
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:59:55.782037
-# Unit test for function islurp
-
-# Generated at 2026-10-25 07:59:58.196858
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:00:00.609782
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:00:03.023965
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:00:05.438057
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:00:07.850919
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:00:10.267203
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:00:12.713853
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:00:15.157777
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:00:17.575417
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:00:19.988115
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:00:22.402740
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:00:24.819613
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:00:27.231908
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:00:28.911516
-# Unit test for function burp
-def test_burp():import tempfile
-
-# Generated at 2026-10-25 08:00:52.071497
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:00:53.504651
-# Unit test for function burp
-def test_burp():import tempfile
-
-# Generated at 2026-10-25 08:00:55.921674
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:00:58.340706
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:01:00.762921
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:01:03.359098
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:01:05.895156
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:01:08.310298
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:01:10.727738
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:01:13.140104
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:01:15.554319
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:01:17.968071
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:01:20.573402
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:01:22.986749
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:01:25.400153
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:01:27.814660
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:01:30.227113
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:01:32.641078
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:01:35.054990
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:01:37.469743
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:01:39.909264
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:01:42.326872
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:01:44.738001
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:01:47.151245
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:01:49.566425
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:01:51.979160
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:02:10.717719
-# Unit test for function islurp
-def test_islurp():
-    import io
+def test_burp():
     import tempfile
+    import io
+    from contextlib import redirect_stdout
 
     with tempfile.TemporaryDirectory() as tmpdir:
-        filename = os.path.join(tmpdir, 'example.txt')
+        # Basic write
+        path = os.path.join(tmpdir, 'test.txt')
+        module_0.burp(path, 'hello world')
+        with open(path) as fh:
+            assert fh.read() == 'hello world'
 
-        with open(filename, 'w') as fh:
-            fh.write('alpha\nbeta\n')
+        # Append mode
+        module_0.burp(path, ' more', mode='a')
+        with open(path) as fh:
+            assert fh.read() == 'hello world more'
 
-        # Default: iterate by line.
-        assert list(module_0.islurp(filename)) == ['alpha\n', 'beta\n']
+        # Binary mode
+        binpath = os.path.join(tmpdir, 'test.bin')
+        module_0.burp(binpath, b'\x00\x01\x02', mode='wb')
+        with open(binpath, 'rb') as fh:
+            assert fh.read() == b'\x00\x01\x02'
 
-        # Iterate by fixed-size chunks.
-        assert list(module_0.islurp(filename, iter_by=3)) == [
-            'alp', 'ha\n', 'bet', 'a\n'
-        ]
+        # Write to stdout when filename is '-'
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            module_0.burp('-', 'to stdout')
+        assert buf.getvalue() == 'to stdout'
 
-        # Binary reads must stop on b'' at EOF.
-        binary_filename = os.path.join(tmpdir, 'example.bin')
-        with open(binary_filename, 'wb') as fh:
-            fh.write(b'\x00\x01\x02')
+        # allow_stdout=False means '-' is treated as a literal filename
+        dash_path = os.path.join(tmpdir, 'dash')
+        module_0.burp(dash_path, 'to file', allow_stdout=False)
+        with open(dash_path) as fh:
+            assert fh.read() == 'to file'
 
-        chunks = module_0.islurp(binary_filename, mode='rb', iter_by=2)
-        assert next(chunks) == b'\x00\x01'
-        assert next(chunks) == b'\x02'
-        assert next(chunks, None) is None
+        # expanduser expands ~
+        old_home = os.environ.get('HOME')
+        os.environ['HOME'] = os.path.join(tmpdir, 'fakehome')
+        try:
+            module_0.burp('~/file.txt', 'expanded user')
+            with open(os.path.join(tmpdir, 'fakehome', 'file.txt')) as fh:
+                assert fh.read() == 'expanded user'
+        finally:
+            if old_home is not None:
+                os.environ['HOME'] = old_home
 
-    # Reading from stdin.
-    original_stdin = sys.stdin
-    try:
-        sys.stdin = io.StringIO('one\ntwo\n')
-        assert list(module_0.islurp('-')) == ['one\n', 'two\n']
-    finally:
-        sys.stdin = original_stdin
+        # expandvars expands environment variables
+        os.environ['BURP_TEST_VAR'] = tmpdir
+        try:
+            module_0.burp('$BURP_TEST_VAR/vars.txt', 'vars expanded')
+            with open(os.path.join(tmpdir, 'vars.txt')) as fh:
+                assert fh.read() == 'vars expanded'
 
-# Generated at 2026-10-25 08:02:27.201322
+            # expandvars=False leaves env vars untouched
+            noexpand_dir = os.path.join(tmpdir, 'noexpand')
+            os.makedirs(noexpand_dir, exist_ok=True)
+            module_0.burp(os.path.join(noexpand_dir, '$BURP_TEST_VAR'), 'raw',
+                 expandvars=False)
+            with open(os.path.join(noexpand_dir, '$BURP_TEST_VAR')) as fh:
+                assert fh.read() == 'raw'
+
+            # expanduser=False leaves ~ untouched
+            module_0.burp(os.path.join(tmpdir, '~literal'), 'raw',
+                 expanduser=False)
+            with open(os.path.join(tmpdir, '~literal')) as fh:
+                assert fh.read() == 'raw'
+        finally:
+            del os.environ['BURP_TEST_VAR']
+# nonce:4a615de1
+
+# Generated at 2026-11-03 00:13:51.412863
 # Unit test for function burp
-
-# Generated at 2026-10-25 08:02:29.735356
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:02:32.150509
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:02:34.687618
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:02:37.102514
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:02:39.516748
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:02:41.930620
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:02:44.356400
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:02:46.907934
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:02:49.321215
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:02:51.737772
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:02:54.153668
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:03:09.186397
-# Unit test for function burp
-def test_burp():import tempfile
-
-# Generated at 2026-10-25 08:03:25.606953
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:03:27.011444
-# Unit test for function burp
-def test_burp():import tempfile
-
-# Generated at 2026-10-25 08:03:40.351301
-# Unit test for function islurp
-def test_islurp():import io
-
-
-def test_islurp(tmp_path, monkeypatch):
-    test_file = tmp_path / "example.txt"
-    test_file.write_text("first line\nsecond line\nlast", encoding="utf-8")
-
-    # Default line-by-line iteration
-    assert list(module_0.islurp(str(test_file))) == [
-        "first line\n",
-        "second line\n",
-        "last",
-    ]
-
-    # Explicit line mode
-    assert list(module_0.islurp(str(test_file), iter_by="LINEMODE")) == [
-        "first line\n",
-        "second line\n",
-        "last",
-    ]
-
-    # Fixed-size chunks
-    assert list(module_0.islurp(str(test_file), iter_by=5)) == [
-        "first",
-        " line",
-        "\nseco",
-        "nd li",
-        "ne\nla",
-        "st",
-    ]
-
-    # Environment-variable expansion
-    monkeypatch.setenv("ISLURP_TEST_DIR", str(tmp_path))
-    assert "".join(module_0.islurp("$ISLURP_TEST_DIR/example.txt")) == (
-        "first line\nsecond line\nlast"
-    )
-
-    # stdin support
-    monkeypatch.setattr(sys, "stdin", io.StringIO("stdin line\n"))
-    assert list(module_0.islurp("-")) == ["stdin line\n"]
-
-# Generated at 2026-10-25 08:03:42.961615
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:03:45.374800
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:03:47.791951
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:03:50.323698
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:03:52.872162
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:03:55.212648
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:04:08.436800
-# Unit test for function islurp
-def test_islurp():import io
-
-# Generated at 2026-10-25 08:04:21.687312
-# Unit test for function islurp
-def test_islurp():
+def test_burp():
+    import io
     import tempfile
+    from unittest import mock
 
-    contents = "first line\nsecond line\nlast line"
+    tmpdir = tempfile.mkdtemp()
 
-    fd, filename = tempfile.mkstemp(text=True)
+    # 1. Basic write to a file
+    path = os.path.join(tmpdir, 'out.txt')
+    module_0.burp(path, 'hello world')
+    with open(path) as fh:
+        assert fh.read() == 'hello world'
+
+    # 2. Append mode
+    module_0.burp(path, ' more', mode='a')
+    with open(path) as fh:
+        assert fh.read() == 'hello world more'
+
+    # 3. Writing to stdout when filename is '-' and allow_stdout is True
+    buf = io.StringIO()
+    with mock.patch.object(sys, 'stdout', buf):
+        module_0.burp('-', 'to stdout')
+    assert buf.getvalue() == 'to stdout'
+
+    # 4. allow_stdout=False writes to a literal '-' file
+    module_0.burp('-', 'to file', allow_stdout=False)
     try:
-        with os.fdopen(fd, 'w') as fh:
-            fh.write(contents)
-
-        # Default: iterate by line.
-        assert list(module_0.islurp(filename)) == [
-            "first line\n",
-            "second line\n",
-            "last line",
-        ]
-
-        # Explicit line-mode compatibility value.
-        assert list(module_0.islurp(filename, iter_by='LINEMODE')) == [
-            "first line\n",
-            "second line\n",
-            "last line",
-        ]
-
-        # Iterate in fixed-size chunks.
-        assert list(module_0.islurp(filename, iter_by=5)) == [
-            contents[i:i + 5] for i in range(0, len(contents), 5)
-        ]
-
-        # The alias should behave identically.
-        assert ''.join(slurp(filename)) == contents
+        with open('-') as fh:
+            assert fh.read() == 'to file'
     finally:
-        os.unlink(filename)
+        os.remove('-')
 
-# Generated at 2026-10-25 08:04:24.328840
-# Unit test for function burp
+    # 5. expandvars expands environment variables in the filename
+    with mock.patch.dict(os.environ, {'BURP_TEST_VAR': 'expanded'}):
+        var_path = os.path.join(tmpdir, '$BURP_TEST_VAR.txt')
+        expected = os.path.join(tmpdir, 'expanded.txt')
+        module_0.burp(var_path, 'vars expanded')
+        with open(expected) as fh:
+            assert fh.read() == 'vars expanded'
 
-# Generated at 2026-10-25 08:04:26.747708
-# Unit test for function burp
+    # 6. expanduser is applied to the filename
+    home_file = os.path.join(tmpdir, 'homefile.txt')
+    with mock.patch('os.path.expanduser', return_value=home_file):
+        module_0.burp('~/homefile.txt', 'user expanded')
+    with open(home_file) as fh:
+        assert fh.read() == 'user expanded'
 
-# Generated at 2026-10-25 08:04:29.218488
-# Unit test for function burp
+    # 7. expanduser/expandvars disabled leaves the filename untouched
+    raw = os.path.join(tmpdir, '$NOVAR$.txt')
+    with mock.patch.dict(os.environ, {'NOVAR': 'x'}):
+        module_0.burp(raw, 'raw', expandvars=False, expanduser=False)
+    with open(raw) as fh:
+        assert fh.read() == 'raw'
 
-# Generated at 2026-10-25 08:04:31.634297
-# Unit test for function burp
+    # 8. Binary mode write
+    bin_path = os.path.join(tmpdir, 'out.bin')
+    module_0.burp(bin_path, b'\x00\x01', mode='wb')
+    with open(bin_path, 'rb') as fh:
+        assert fh.read() == b'\x00\x01'
 
-# Generated at 2026-10-25 08:04:34.048774
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:04:36.463227
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:04:38.876772
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:04:41.291982
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:04:43.706594
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:04:46.122022
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:04:48.558793
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:04:50.974933
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:04:53.392753
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:04:55.805242
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:04:58.235895
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:05:00.655017
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:05:03.072285
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:05:10.019844
-# Unit test for function islurp
-def test_islurp():import tempfile
-
-
-# Generated at 2026-10-25 08:05:21.493844
-# Unit test for function islurp
-def test_islurp():
-    import tempfile
-
-    contents = "first line\nsecond line\nlast line"
-
-    fd, filename = tempfile.mkstemp(text=True)
-    try:
-        with os.fdopen(fd, "w") as fh:
-            fh.write(contents)
-
-        # Default line-by-line iteration
-        assert list(module_0.islurp(filename)) == [
-            "first line\n",
-            "second line\n",
-            "last line",
-        ]
-
-        # Fixed-size chunk iteration
-        assert list(module_0.islurp(filename, iter_by=5)) == [
-            contents[i:i + 5] for i in range(0, len(contents), 5)
-        ]
-
-        # String line-mode compatibility
-        assert list(module_0.islurp(filename, iter_by="LINEMODE")) == [
-            "first line\n",
-            "second line\n",
-            "last line",
-        ]
-    finally:
-        os.unlink(filename)
-
-# Generated at 2026-10-25 08:05:42.065426
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:05:48.300261
-# Unit test for function islurp
-def test_islurp():import os
-
-# Generated at 2026-10-25 08:06:09.514224
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:06:16.308094
-# Unit test for function islurp
-def test_islurp():import os
-
-# Generated at 2026-10-25 08:06:41.360033
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:06:42.792484
-# Unit test for function burp
-def test_burp():import tempfile
-
-# Generated at 2026-10-25 08:06:45.212291
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:06:47.628657
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:06:50.157984
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:06:52.573111
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:06:54.988691
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:06:57.405042
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:06:59.808070
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:07:02.221666
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:07:04.636124
-# Unit test for function islurp
-
-# Generated at 2026-10-25 08:07:07.209255
-# Unit test for function burp
-def test_burp():import tempfile
-
-# Generated at 2026-10-25 08:07:23.743236
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:07:25.127927
-# Unit test for function burp
-def test_burp():import tempfile
-
-# Generated at 2026-10-25 08:07:41.572174
-# Unit test for function burp
-
-# Generated at 2026-10-25 08:07:43.103967
-# Unit test for function burp
-def test_burp():import tempfile
+    # cleanup
+    for name in os.listdir(tmpdir):
+        os.remove(os.path.join(tmpdir, name))
+    os.rmdir(tmpdir)

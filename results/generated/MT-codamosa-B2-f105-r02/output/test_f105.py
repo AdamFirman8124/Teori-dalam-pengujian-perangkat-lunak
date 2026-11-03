@@ -19,22 +19,28 @@ def test_case_0():
     int_9 = [int_1, int_7, int_8]
     var_3 = module_0.by_length(int_9)
     assert var_3 == ['One']
-    int_10 = 9
-    int_11 = 7
-    int_12 = 6
-    int_13 = [int_10, int_4, int_11, int_12, int_3, int_2, int_5, int_0, int_1]
+    int_10 = -5
+    int_11 = 0
+    int_12 = 10
+    int_13 = [int_10, int_11, int_12, int_8]
     var_4 = module_0.by_length(int_13)
-    assert var_4 == ['Nine', 'Eight', 'Seven', 'Six', 'Five', 'Four', 'Three', 'Two', 'One']
-    int_14 = [int_1, int_0, int_5, int_2, int_3, int_12, int_11, int_4, int_10]
-    var_5 = module_0.by_length(int_14)
-    assert var_5 == ['Nine', 'Eight', 'Seven', 'Six', 'Five', 'Four', 'Three', 'Two', 'One']
-    int_15 = 0
-    int_16 = 10
-    int_17 = -5
-    int_18 = 100
-    int_19 = [int_15, int_16, int_10, int_17, int_18]
-    var_6 = module_0.by_length(int_19)
-    assert var_6 == ['Nine']
-    int_20 = [int_5, int_5, int_5]
-    var_7 = module_0.by_length(int_20)
-    assert var_7 == ['Three', 'Three', 'Three']
+    assert var_4 == []
+    int_14 = 9
+    int_15 = [int_14]
+    var_5 = module_0.by_length(int_15)
+    assert var_5 == ['Nine']
+    int_16 = [int_5, int_5, int_5]
+    var_6 = module_0.by_length(int_16)
+    assert var_6 == ['Three', 'Three', 'Three']
+    int_17 = 7
+    int_18 = [int_14, int_4, int_17]
+    var_7 = module_0.by_length(int_18)
+    assert var_7 == ['Nine', 'Eight', 'Seven']
+    int_19 = 100
+    int_20 = -3
+    int_21 = [int_2, int_19, int_0, int_20, int_17]
+    var_8 = module_0.by_length(int_21)
+    assert var_8 == ['Seven', 'Four', 'Two']
+    int_22 = [int_5, int_1, int_0]
+    var_9 = module_0.by_length(int_22)
+    assert var_9 == ['Three', 'Two', 'One']

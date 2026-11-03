@@ -5,9 +5,18 @@
 from f014 import all_prefixes
 
 
-def test_all_prefixes_nonempty_string():
-    assert all_prefixes("test") == ["t", "te", "tes", "test"]
+def test_all_prefixes_non_empty_string():
+    result = all_prefixes("abc")
+    assert result == ["a", "ab", "abc"]
+    assert result[0] == "a"
+    assert result[-1] == "abc"
 
 
 def test_all_prefixes_empty_string():
     assert all_prefixes("") == []
+
+
+def test_all_prefixes_single_character():
+    result = all_prefixes("x")
+    assert result == ["x"]
+    assert len(result) == 1

@@ -7,47 +7,37 @@ import pytest
 from f127 import intersection
 
 
-def test_intersection_prime_length_two_returns_yes():
-    assert intersection([0, 2], [0, 10]) == "YES"
+def test_intersection_non_overlapping_intervals_returns_no():
+    """length <= 0 short-circuits the prime check -> 'NO'."""
+    # l = max(1, 3) = 3, r = min(2, 4) = 2, length = -1
+    assert intersection((1, 2), (3, 4)) == "NO"
 
 
-def test_intersection_prime_length_three_returns_yes():
-    assert intersection([0, 3], [0, 10]) == "YES"
-
-
-def test_intersection_prime_length_five_partial_overlap_returns_yes():
-    assert intersection([0, 10], [3, 8]) == "YES"
+def test_intersection_zero_length_returns_no():
+    """is_prime(0) returns False via the num == 0 branch -> 'NO'."""
+    # l = max(2, 5) = 5, r = min(5, 8) = 5, length = 0
+    assert intersection((2, 5), (5, 8)) == "NO"
 
 
 def test_intersection_length_one_returns_no():
-    assert intersection([0, 1], [0, 10]) == "NO"
+    """is_prime(1) returns False via the num == 1 branch -> 'NO'."""
+    # l = max(1, 2) = 2, r = min(3, 4) = 3, length = 1
+    assert intersection((1, 3), (2, 4)) == "NO"
 
 
-def test_intersection_composite_length_four_returns_no():
-    assert intersection([0, 4], [0, 10]) == "NO"
+def test_intersection_length_two_returns_yes():
+    """is_prime(2) returns True via the num == 2 branch -> 'YES'."""
+    # l = 1, r = 3, length = 2
+    assert intersection((1, 3), (1, 3)) == "YES"
 
 
-def test_intersection_composite_length_nine_returns_no():
-    assert intersection([0, 9], [0, 20]) == "NO"
+def test_intersection_length_three_prime_loop_completes_returns_yes():
+    """is_prime(3) completes the for-loop without a divisor -> 'YES'."""
+    # l = 1, r = 4, length = 3
+    assert intersection((1, 4), (1, 4)) == "YES"
 
 
-def test_intersection_no_overlap_returns_no():
-    assert intersection([5, 10], [0, 3]) == "NO"
-
-
-def test_intersection_touching_intervals_returns_no():
-    assert intersection([0, 5], [5, 10]) == "NO"
-
-
-@pytest.mark.parametrize(
-    "interval1, interval2, expected",
-    [
-        ([0, 2], [1, 3], "NO"),
-        ([1, 4], [0, 10], "YES"),
-        ([2, 9], [0, 5], "YES"),
-        ([0, 6], [0, 10], "NO"),
-        ([10, 20], [0, 5], "NO"),
-    ],
-)
-def test_intersection_parametrized(interval1, interval2, expected):
-    assert intersection(interval1, interval2) == expected
+def test_intersection_length_four_composite_loop_returns_no():
+    """is_prime(4) finds a divisor inside the for-loop -> 'NO'."""
+    # l = 1, r = 5, length = 4 (divisible by 2)
+    assert intersection((1, 5), (1, 5)) == "NO"

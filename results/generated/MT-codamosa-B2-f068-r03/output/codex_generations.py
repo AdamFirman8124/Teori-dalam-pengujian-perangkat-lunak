@@ -1,226 +1,158 @@
 
 
-# Generated at 2026-10-25 15:22:50.574541
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:22:52.990157
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:22:55.407271
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:22:57.819802
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:00.233845
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:02.648251
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:05.062417
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:07.476601
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:09.892662
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:12.308886
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:14.788824
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:20.191421
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:22.618447
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:25.042252
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:27.457154
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:29.874103
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:32.291096
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:34.705526
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:37.119337
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:39.533176
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:41.948540
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:44.361383
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:46.775650
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:49.188507
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:51.606746
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:54.020836
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:56.435930
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:23:58.849934
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:01.264316
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:03.678494
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:06.092807
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:08.510266
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:10.930717
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:13.361293
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:15.773804
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:18.186821
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:20.604040
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:23.018249
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:25.432949
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:27.850009
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:30.266558
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:32.680707
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:35.109183
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:37.527386
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:39.941910
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:42.354420
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:44.768079
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:47.182032
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:49.600643
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:52.017774
-# Unit test for function pluck
+# Generated at 2026-11-02 13:56:12.307443
+# Unit test for function pluck
+def test_pluck():
+    # Empty array
+    assert module_0.pluck([]) == []
+    
+    # Array with no even numbers
+    assert module_0.pluck([1, 3, 5, 7]) == []
+    assert module_0.pluck([1]) == []
+    assert module_0.pluck([7, 9, 11]) == []
+    
+    # Single even number
+    assert module_0.pluck([2]) == [2, 0]
+    assert module_0.pluck([1, 2]) == [2, 1]
+    assert module_0.pluck([2, 3]) == [2, 0]
+    
+    # Normal cases
+    assert module_0.pluck([4, 2, 3]) == [2, 1]
+    assert module_0.pluck([1, 2, 3]) == [2, 1]
+    assert module_0.pluck([5, 0, 3, 0, 4, 2]) == [0, 1]
+    
+    # Multiple occurrences of smallest even value - first index returned
+    assert module_0.pluck([2, 2, 2]) == [2, 0]
+    assert module_0.pluck([4, 2, 4, 2]) == [2, 1]
+    
+    # Zero as smallest even
+    assert module_0.pluck([0, 1, 2]) == [0, 0]
+    assert module_0.pluck([3, 0, 5]) == [0, 1]
+    
+    # Negative even numbers
+    assert module_0.pluck([-2, 1, 2]) == [-2, 0]
+    assert module_0.pluck([1, -4, -2]) == [-4, 1]
+    
+    # Larger array
+    assert module_0.pluck([1, 3, 5, 6, 7, 8]) == [6, 3]
+    assert module_0.pluck([10, 21, 32, 43, 54]) == [10, 0]
+
+if __name__ == "__main__":
+    test_pluck()
+    print("All tests passed!")
+
+# Generated at 2026-11-02 13:58:47.049827
+# Unit test for function pluck
+def test_pluck():
+    # Empty array returns empty list
+    assert module_0.pluck([]) == []
+
+    # No even numbers returns empty list
+    assert module_0.pluck([1, 3, 5, 7]) == []
+    assert module_0.pluck([7]) == []
+
+    # Single even element
+    assert module_0.pluck([4]) == [4, 0]
+    assert module_0.pluck([0]) == [0, 0]
+
+    # Basic cases: smallest even value and its index
+    assert module_0.pluck([4, 2, 3]) == [2, 1]
+    assert module_0.pluck([1, 2, 3]) == [2, 1]
+    assert module_0.pluck([5, 0, 3, 0, 4, 2]) == [0, 1]
+
+    # Duplicate smallest even values: first occurrence index is returned
+    assert module_0.pluck([2, 2, 3, 2]) == [2, 0]
+    assert module_0.pluck([6, 5, 4, 4, 2, 2]) == [2, 4]
+
+    # Negative even numbers
+    assert module_0.pluck([-4, -2, 3]) == [-4, 0]
+    assert module_0.pluck([3, -2, -4]) == [-4, 2]
+
+    # All even numbers
+    assert module_0.pluck([2, 4, 6, 8]) == [2, 0]
+
+    # Even number appears only at the end
+    assert module_0.pluck([1, 3, 5, 8]) == [8, 3]
+
+    # Mixed larger values
+    assert module_0.pluck([100, 3, 50, 7]) == [50, 2]
+    assert module_0.pluck([1, 2, 3, 4, 5, 6]) == [2, 1]
+
+# Generated at 2026-11-02 14:00:20.600313
+# Unit test for function pluck
+def test_pluck():
+    # Empty array returns empty list
+    assert module_0.pluck([]) == []
+
+    # No even numbers returns empty list
+    assert module_0.pluck([1, 3, 5]) == []
+    assert module_0.pluck([7]) == []
+
+    # Single element cases
+    assert module_0.pluck([0]) == [0, 0]
+    assert module_0.pluck([2]) == [2, 0]
+
+    # Standard cases: smallest even value and its index
+    assert module_0.pluck([4, 2, 3]) == [2, 1]
+    assert module_0.pluck([1, 2, 3]) == [2, 1]
+    assert module_0.pluck([5, 0, 3, 0, 4, 2]) == [0, 1]
+
+    # Multiple occurrences of minimum even: first index returned
+    assert module_0.pluck([2, 2, 2]) == [2, 0]
+    assert module_0.pluck([4, 2, 8, 2]) == [2, 1]
+
+    # Even number appears after odd numbers
+    assert module_0.pluck([1, 3, 6, 5]) == [6, 2]
 
-# Generated at 2026-10-25 15:24:54.431283
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:56.843958
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:24:59.262366
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:25:01.677311
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:25:04.092849
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:25:06.509330
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:25:08.925723
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:25:11.342197
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:25:13.754636
-# Unit test for function pluck
+    # Negative even numbers
+    assert module_0.pluck([-4, -2, 3]) == [-4, 0]
+    assert module_0.pluck([1, -2, 4]) == [-2, 1]
 
-# Generated at 2026-10-25 15:25:16.168995
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:25:18.584709
-# Unit test for function pluck
-
-# Generated at 2026-10-25 15:25:20.998268
-# Unit test for function pluck
+    # Zero is even and smallest
+    assert module_0.pluck([3, 0, 8]) == [0, 1]
 
-# Generated at 2026-10-25 15:25:26.435373
-# Unit test for function pluck
+    # All even numbers
+    assert module_0.pluck([8, 6, 4, 2]) == [2, 3]
 
-# Generated at 2026-10-25 15:25:28.853411
-# Unit test for function pluck
+    # Large values
+    assert module_0.pluck([1000000, 999998]) == [999998, 1]
 
-# Generated at 2026-10-25 15:25:31.270260
+# Generated at 2026-11-02 14:02:40.576898
 # Unit test for function pluck
+def test_pluck():
+    # Empty array
+    assert module_0.pluck([]) == []
 
-# Generated at 2026-10-25 15:25:33.684824
-# Unit test for function pluck
+    # No even numbers
+    assert module_0.pluck([1, 3, 5]) == []
+    assert module_0.pluck([7]) == []
 
-# Generated at 2026-10-25 15:25:36.098942
-# Unit test for function pluck
+    # Single even number
+    assert module_0.pluck([2]) == [2, 0]
+    assert module_0.pluck([1, 2, 3]) == [2, 1]
 
-# Generated at 2026-10-25 15:25:38.514129
-# Unit test for function pluck
+    # Multiple evens, smallest is unique
+    assert module_0.pluck([4, 2, 3]) == [2, 1]
+    assert module_0.pluck([5, 0, 3, 0, 4, 2]) == [0, 1]
 
-# Generated at 2026-10-25 15:25:40.928026
-# Unit test for function pluck
+    # Duplicate smallest evens -> first occurrence index
+    assert module_0.pluck([2, 2, 4]) == [2, 0]
+    assert module_0.pluck([5, 4, 4, 6]) == [4, 1]
 
-# Generated at 2026-10-25 15:25:43.342416
-# Unit test for function pluck
+    # Even numbers only
+    assert module_0.pluck([8, 6, 4, 2]) == [2, 3]
 
-# Generated at 2026-10-25 15:25:45.756774
-# Unit test for function pluck
+    # Smallest even is zero
+    assert module_0.pluck([1, 0, 5, 2]) == [0, 1]
 
-# Generated at 2026-10-25 15:25:48.175404
-# Unit test for function pluck
+    # Even number at last position
+    assert module_0.pluck([1, 3, 5, 6]) == [6, 3]
 
-# Generated at 2026-10-25 15:25:50.591849
-# Unit test for function pluck
+    # Even number at first position
+    assert module_0.pluck([10, 21, 3, 8]) == [8, 3]
 
-# Generated at 2026-10-25 15:25:53.004943
-# Unit test for function pluck
+    # Larger mixed array
+    assert module_0.pluck([1, 2, 3, 4, 5, 6, 7, 8]) == [2, 1]
 
-# Generated at 2026-10-25 15:25:55.421928
-# Unit test for function pluck
+    # Larger value where smaller odd values exist
+    assert module_0.pluck([9, 9, 9, 12]) == [12, 3]

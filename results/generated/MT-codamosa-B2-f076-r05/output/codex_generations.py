@@ -1,180 +1,154 @@
 
 
-# Generated at 2026-10-24 11:11:10.075719
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:11:12.626790
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:11:15.046633
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:11:17.468655
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:11:19.889185
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:11:22.448501
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:11:24.867056
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:11:27.285976
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:11:29.718186
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:11:32.142481
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:11:34.564950
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:11:36.984521
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:11:54.881928
-# Unit test for function is_simple_power
-def test_is_simple_power():assert module_0.is_simple_power(1, 1) is True
-
-# Generated at 2026-10-24 11:12:09.538689
+# Generated at 2026-11-02 21:01:06.164028
 # Unit test for function is_simple_power
 def test_is_simple_power():
-    # n == 1 branch
-    assert module_0.is_simple_power(1, 1) == True
+    # Basic true cases
+    assert module_0.is_simple_power(1, 4) == True      # 4^0 = 1
+    assert module_0.is_simple_power(2, 2) == True      # 2^1 = 2
+    assert module_0.is_simple_power(8, 2) == True      # 2^3 = 8
+    assert module_0.is_simple_power(16, 2) == True     # 2^4 = 16
+    assert module_0.is_simple_power(4096, 8) == True   # 8^4 = 4096
+    assert module_0.is_simple_power(143214132, 97) == True  # 97^4
 
-# Generated at 2026-10-24 11:12:10.892459
+    # Basic false cases
+    assert module_0.is_simple_power(3, 2) == False
+    assert module_0.is_simple_power(5, 3) == False
+    assert module_0.is_simple_power(16, 12) == False
+
+    # Edge case: n == 1
+    assert module_0.is_simple_power(1, 1) == True      # x must be 1
+    assert module_0.is_simple_power(3, 1) == False
+
+    # Edge case: x == 0 (power starts at 1, never equals 0)
+    assert module_0.is_simple_power(0, 2) == False
+
+    # Large numbers
+    assert module_0.is_simple_power(1024, 4) == True   # 4^5 = 1024
+    assert module_0.is_simple_power(1000, 10) == True  # 10^3 = 1000
+    assert module_0.is_simple_power(999, 10) == False
+
+    # x equal to n itself
+    assert module_0.is_simple_power(7, 7) == True
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_is_simple_power()
+
+# Generated at 2026-11-02 21:01:39.023254
 # Unit test for function is_simple_power
 def test_is_simple_power():
-    # n == 1 branch
-    assert module_0.is_simple_power(1, 1) == True
+    # x is a valid power of n
+    assert module_0.is_simple_power(1, 4) == True
+    assert module_0.is_simple_power(2, 2) == True
+    assert module_0.is_simple_power(8, 2) == True
+    assert module_0.is_simple_power(16, 2) == True
+    assert module_0.is_simple_power(1024, 2) == True
+    assert module_0.is_simple_power(27, 3) == True
+    assert module_0.is_simple_power(125, 5) == True
 
-# Generated at 2026-10-24 11:12:12.259249
+    # x is not a power of n
+    assert module_0.is_simple_power(3, 2) == False
+    assert module_0.is_simple_power(5, 3) == False
+    assert module_0.is_simple_power(10, 2) == False
+    assert module_0.is_simple_power(143214, 132) == False
+
+    # n == 1 special case
+    assert module_0.is_simple_power(1, 1) == True
+    assert module_0.is_simple_power(3, 1) == False
+    assert module_0.is_simple_power(2, 1) == False
+
+# Generated at 2026-11-02 21:02:03.734012
 # Unit test for function is_simple_power
 def test_is_simple_power():
-    # n == 1 branch
+    # Basic true cases
     assert module_0.is_simple_power(1, 1) == True
+    assert module_0.is_simple_power(1, 2) == True
+    assert module_0.is_simple_power(2, 2) == True
+    assert module_0.is_simple_power(8, 2) == True
+    assert module_0.is_simple_power(16, 2) == True
+    assert module_0.is_simple_power(27, 3) == True
+    assert module_0.is_simple_power(4, 2) == True
+    assert module_0.is_simple_power(125, 5) == True
 
-# Generated at 2026-10-24 11:12:14.771676
-# Unit test for function is_simple_power
+    # Basic false cases
+    assert module_0.is_simple_power(3, 1) == False
+    assert module_0.is_simple_power(3, 2) == False
+    assert module_0.is_simple_power(5, 3) == False
+    assert module_0.is_simple_power(10, 2) == False
+    assert module_0.is_simple_power(7, 4) == False
 
-# Generated at 2026-10-24 11:12:17.189265
-# Unit test for function is_simple_power
+    # Edge cases
+    assert module_0.is_simple_power(0, 2) == False
+    assert module_0.is_simple_power(1, 4) == True
+    assert module_0.is_simple_power(2, 1) == False
+    assert module_0.is_simple_power(6, 6) == True
+    assert module_0.is_simple_power(36, 6) == True
+    assert module_0.is_simple_power(1000000, 10) == True
+    assert module_0.is_simple_power(999999, 10) == False
 
-# Generated at 2026-10-24 11:12:19.610040
-# Unit test for function is_simple_power
+    print("All tests passed!")
 
-# Generated at 2026-10-24 11:12:22.029079
-# Unit test for function is_simple_power
 
-# Generated at 2026-10-24 11:12:24.452573
-# Unit test for function is_simple_power
+test_is_simple_power()
 
-# Generated at 2026-10-24 11:12:26.868775
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:12:29.287113
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:12:31.704804
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:12:34.128850
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:12:36.549305
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:12:38.969629
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:12:51.027509
-# Unit test for function is_simple_power
-def test_is_simple_power():assert module_0.is_simple_power(1, 1) is True
-
-# Generated at 2026-10-24 11:12:52.441806
+# Generated at 2026-11-02 21:02:36.764520
 # Unit test for function is_simple_power
 def test_is_simple_power():
-    # n == 1 branch
-    assert module_0.is_simple_power(1, 1) == True
+    # x is a power of n
+    assert module_0.is_simple_power(1, 4) == True   # 4^0 = 1
+    assert module_0.is_simple_power(2, 2) == True   # 2^1 = 2
+    assert module_0.is_simple_power(8, 2) == True   # 2^3 = 8
+    assert module_0.is_simple_power(3, 3) == True   # 3^1 = 3
+    assert module_0.is_simple_power(16, 2) == True  # 2^4 = 16
+    assert module_0.is_simple_power(125, 5) == True # 5^3 = 125
+    assert module_0.is_simple_power(1, 1) == True   # n == 1 and x == 1
 
-# Generated at 2026-10-24 11:12:53.805931
+    # x is not a power of n
+    assert module_0.is_simple_power(3, 2) == False
+    assert module_0.is_simple_power(3, 1) == False  # n == 1 and x != 1
+    assert module_0.is_simple_power(5, 3) == False
+    assert module_0.is_simple_power(6, 2) == False
+    assert module_0.is_simple_power(10, 10) == False  # not a power of 10
+    assert module_0.is_simple_power(0, 2) == False
+
+    # Edge cases
+    assert module_0.is_simple_power(100, 10) == True   # 10^2 = 100
+    assert module_0.is_simple_power(1024, 2) == True   # 2^10 = 1024
+    assert module_0.is_simple_power(7, 7) == True      # 7^1 = 7
+
+    print("All tests passed!")
+
+# Generated at 2026-11-02 21:03:02.713891
 # Unit test for function is_simple_power
 def test_is_simple_power():
-    # n == 1 branch
-    assert module_0.is_simple_power(1, 1) == True
+    # True cases: x is a power of n
+    assert module_0.is_simple_power(1, 1) == True      # 1 == 1^k
+    assert module_0.is_simple_power(2, 2) == True      # 2^1
+    assert module_0.is_simple_power(4, 2) == True      # 2^2
+    assert module_0.is_simple_power(8, 2) == True      # 2^3
+    assert module_0.is_simple_power(16, 2) == True     # 2^4
+    assert module_0.is_simple_power(1024, 2) == True   # 2^10
+    assert module_0.is_simple_power(27, 3) == True     # 3^3
+    assert module_0.is_simple_power(125, 5) == True    # 5^3
+    assert module_0.is_simple_power(64, 4) == True     # 4^3
+    assert module_0.is_simple_power(1, 2) == True      # n^0 == 1
+    assert module_0.is_simple_power(1, 100) == True    # n^0 == 1
 
-# Generated at 2026-10-24 11:12:55.178224
-# Unit test for function is_simple_power
-def test_is_simple_power():
-    # n == 1 branch
-    assert module_0.is_simple_power(1, 1) == True
+    # False cases: x is not a power of n
+    assert module_0.is_simple_power(2, 1) == False     # n == 1, x != 1
+    assert module_0.is_simple_power(3, 1) == False
+    assert module_0.is_simple_power(3, 2) == False
+    assert module_0.is_simple_power(5, 3) == False
+    assert module_0.is_simple_power(12, 2) == False
+    assert module_0.is_simple_power(100, 3) == False
+    assert module_0.is_simple_power(0, 2) == False     # loop skipped, 1 != 0
+    assert module_0.is_simple_power(0, 1) == False
+    assert module_0.is_simple_power(6, 6) == False     # between 6^1 and 6^2
 
-# Generated at 2026-10-24 11:12:56.543913
-# Unit test for function is_simple_power
-def test_is_simple_power():
-    # n == 1 branch
-    assert module_0.is_simple_power(1, 1) == True
+    print("All test_is_simple_power tests passed!")
 
-# Generated at 2026-10-24 11:12:58.058932
-# Unit test for function is_simple_power
-def test_is_simple_power():
-    # n == 1 branch
-    assert module_0.is_simple_power(1, 1) == True
 
-# Generated at 2026-10-24 11:12:59.418755
-# Unit test for function is_simple_power
-def test_is_simple_power():
-    # n == 1 branch
-    assert module_0.is_simple_power(1, 1) == True
-
-# Generated at 2026-10-24 11:13:00.818822
-# Unit test for function is_simple_power
-def test_is_simple_power():
-    # n == 1 branch
-    assert module_0.is_simple_power(1, 1) == True
-
-# Generated at 2026-10-24 11:13:02.200852
-# Unit test for function is_simple_power
-def test_is_simple_power():
-    # n == 1 branch
-    assert module_0.is_simple_power(1, 1) == True
-
-# Generated at 2026-10-24 11:13:03.550992
-# Unit test for function is_simple_power
-def test_is_simple_power():
-    # n == 1 branch
-    assert module_0.is_simple_power(1, 1) == True
-
-# Generated at 2026-10-24 11:13:05.023400
-# Unit test for function is_simple_power
-def test_is_simple_power():
-    # n == 1 branch
-    assert module_0.is_simple_power(1, 1) == True
-
-# Generated at 2026-10-24 11:13:06.377677
-# Unit test for function is_simple_power
-def test_is_simple_power():
-    # n == 1 branch
-    assert module_0.is_simple_power(1, 1) == True
-
-# Generated at 2026-10-24 11:13:08.893244
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:13:11.315202
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:13:13.739824
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:13:16.158263
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:13:18.586057
-# Unit test for function is_simple_power
-
-# Generated at 2026-10-24 11:13:21.006886
-# Unit test for function is_simple_power
+test_is_simple_power()

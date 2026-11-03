@@ -5,24 +5,18 @@
 from f030 import get_positive
 
 
-def test_get_positive_mixed():
-    inp = [1, -2, 3, 0, -5, 4]
-    result = get_positive(inp)
+def test_get_positive_filters_non_positive_elements():
+    """Execute line 3 with both branches of the `e > 0` condition taken:
+    positive elements are kept, zero and negative elements are filtered out."""
+    result = get_positive([1, -2, 3, 0, 4])
     assert result == [1, 3, 4]
-    # verify input not mutated
-    assert inp == [1, -2, 3, 0, -5, 4]
 
 
-def test_get_positive_empty():
-    result = get_positive([])
-    assert result == []
+def test_get_positive_all_negative():
+    """Cover the branch where the comprehension condition is False for every element."""
+    assert get_positive([-1, -5, 0]) == []
 
 
-def test_get_positive_all_non_positive():
-    result = get_positive([-3, -1, 0, -10])
-    assert result == []
-
-
-def test_get_positive_all_positive():
-    result = get_positive([2, 5, 1])
-    assert result == [2, 5, 1]
+def test_get_positive_empty_list():
+    """Cover the branch where the comprehension loop body never executes."""
+    assert get_positive([]) == []

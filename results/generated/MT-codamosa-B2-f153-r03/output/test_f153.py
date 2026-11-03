@@ -9,22 +9,46 @@ def test_case_0():
     str_4 = [str_1, str_2, str_3]
     var_0 = module_0.Strongest_Extension(str_0, str_4)
     assert var_0 == 'Slices.SErviNGSliCes'
-    str_5 = 'Class'
-    str_6 = 'lowercase'
-    str_7 = 'MiXeD'
-    str_8 = 'UPPER'
+    str_5 = 'my_class'
+    str_6 = 'AA'
+    str_7 = 'Be'
+    str_8 = 'CC'
     str_9 = [str_6, str_7, str_8]
     var_1 = module_0.Strongest_Extension(str_5, str_9)
-    assert var_1 == 'Class.UPPER'
-    str_10 = 'Test'
-    str_11 = 'ABcd'
-    str_12 = 'XYzz'
-    str_13 = [str_11, str_12]
-    var_2 = module_0.Strongest_Extension(str_10, str_13)
-    assert var_2 == 'Test.ABcd'
-    str_14 = 'File'
-    str_15 = 'A1!'
-    str_16 = 'bb'
-    str_17 = [str_15, str_16]
-    var_3 = module_0.Strongest_Extension(str_14, str_17)
-    assert var_3 == 'File.A1!'
+    assert var_1 == 'my_class.AA'
+    str_10 = 'fake_class_name'
+    str_11 = [str_6, str_6, str_6]
+    var_2 = module_0.Strongest_Extension(str_10, str_11)
+    assert var_2 == 'fake_class_name.AA'
+    str_12 = 'X'
+    str_13 = 'abc'
+    str_14 = [str_13]
+    var_3 = module_0.Strongest_Extension(str_12, str_14)
+    assert var_3 == 'X.abc'
+    str_15 = 'Cls'
+    str_16 = 'Ab'
+    str_17 = 'ABc'
+    str_18 = 'ABC'
+    str_19 = [str_16, str_17, str_18]
+    var_4 = module_0.Strongest_Extension(str_15, str_19)
+    assert var_4 == 'Cls.ABC'
+    str_20 = 'a1B2c'
+    str_21 = 'AB'
+    str_22 = [str_20, str_21]
+    var_5 = module_0.Strongest_Extension(str_15, str_22)
+    assert var_5 == 'Cls.AB'
+    str_23 = 'xyz'
+    str_24 = [str_23]
+    var_6 = module_0.Strongest_Extension(str_15, str_24)
+    assert var_6 == 'Cls.xyz'
+    str_25 = [str_13, str_18]
+    var_7 = module_0.Strongest_Extension(str_15, str_25)
+    assert var_7 == 'Cls.ABC'
+    str_26 = '123'
+    str_27 = 'aB'
+    str_28 = [str_26, str_27]
+    var_8 = module_0.Strongest_Extension(str_15, str_28)
+    assert var_8 == 'Cls.aB'
+    assert var_8 == 'Cls.123'
+    str_29 = 'All tests passed!'
+    var_9 = print(str_29)

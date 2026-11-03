@@ -7,32 +7,26 @@ import pytest
 from f110 import exchange
 
 
-def test_exchange_yes_when_even_geq_odd():
-    # lst1 has 2 odds, lst2 has 2 evens -> even >= odd -> "YES"
-    assert exchange([1, 3, 2], [2, 4, 5]) == "YES"
+def test_exchange_returns_yes_when_even_count_geq_odd_count():
+    # lst1: 1, 3 are odd -> odd = 2; 2, 4 are even (skip)
+    # lst2: 2, 4 are even -> even = 2; 1, 3 are odd (skip)
+    # even (2) >= odd (2) -> "YES"
+    assert exchange([1, 2, 3, 4], [1, 2, 3, 4]) == "YES"
 
 
-def test_exchange_no_when_even_lt_odd():
-    # lst1 has 3 odds, lst2 has 1 even -> even < odd -> "NO"
-    assert exchange([1, 3, 5], [2, 7]) == "NO"
+def test_exchange_returns_no_when_even_count_lt_odd_count():
+    # lst1: 1, 3 are odd -> odd = 2; 2 is even (skip)
+    # lst2: 4 is even -> even = 1; 1, 5, 3 are odd (skip)
+    # even (1) < odd (2) -> "NO"
+    assert exchange([1, 2, 3], [1, 5, 3, 4]) == "NO"
 
 
-def test_exchange_equal_counts_returns_yes():
-    # odd == even -> branch even >= odd still taken via equality
-    assert exchange([1, 3], [2, 4]) == "YES"
-
-
-def test_exchange_empty_lists():
-    # odd = 0, even = 0 -> even >= odd -> "YES"
+def test_exchange_empty_lists_returns_yes():
+    # No iterations at all: odd = 0, even = 0 -> even >= odd -> "YES"
     assert exchange([], []) == "YES"
 
 
-def test_exchange_no_odds_no_evens():
-    # all evens in lst1 (odd stays 0), all odds in lst2 (even stays 0)
+def test_exchange_all_even_lst1_all_odd_lst2_returns_no():
+    # lst1: no odds -> odd = 0; lst2: no evens -> even = 0
+    # even (0) >= odd (0) -> "YES" (boundary of the >= branch)
     assert exchange([2, 4], [1, 3]) == "YES"
-
-
-def test_exchange_negative_numbers():
-    # -3 % 2 == 1 in Python, so negatives count as odd correctly
-    assert exchange([-3, -1], [-2, -4]) == "YES"
-    assert exchange([-3, -1, -5], [-1]) == "NO"

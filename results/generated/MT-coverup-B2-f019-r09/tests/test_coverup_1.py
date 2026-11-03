@@ -8,41 +8,43 @@ from f019 import sort_numbers
 
 
 def test_sort_numbers_basic():
-    result = sort_numbers("three one five")
-    assert result == "one three five"
+    """Sort a simple sequence of number words."""
+    assert sort_numbers("three one five") == "one three five"
 
 
-def test_sort_numbers_all_values():
-    result = sort_numbers(
-        "nine eight seven six five four three two one zero"
+def test_sort_numbers_all_words():
+    """Sort all ten number words given in reverse order."""
+    assert (
+        sort_numbers("nine eight seven six five four three two one zero")
+        == "zero one two three four five six seven eight nine"
     )
-    assert result == "zero one two three four five six seven eight nine"
 
 
 def test_sort_numbers_single_word():
-    assert sort_numbers("four") == "four"
+    """A single word is returned unchanged."""
+    assert sort_numbers("five") == "five"
+
+
+def test_sort_numbers_already_sorted():
+    """Already sorted input stays sorted."""
+    assert sort_numbers("one two three") == "one two three"
+
+
+def test_sort_numbers_duplicates():
+    """Duplicate words are preserved and sorted."""
+    assert sort_numbers("two two one") == "one two two"
 
 
 def test_sort_numbers_empty_string():
-    # The 'if x' branch filters out empty tokens produced by split(' ')
+    """Empty string yields empty string (exercises the `if x` filter with a falsy item)."""
     assert sort_numbers("") == ""
 
 
 def test_sort_numbers_extra_spaces():
-    # Empty tokens between spaces must be filtered out
-    assert sort_numbers("two  zero   one") == "zero one two"
+    """Consecutive spaces produce empty tokens that are filtered out (falsy branch of `if x`)."""
+    assert sort_numbers("three  one") == "one three"
 
 
-def test_sort_numbers_duplicates():
-    assert sort_numbers("one one zero") == "zero one one"
-
-
-def test_sort_numbers_stability_and_repeated_calls():
-    # Verify deterministic output across calls (no state pollution)
-    assert sort_numbers("five two") == "two five"
-    assert sort_numbers("five two") == "two five"
-
-
-def test_sort_numbers_invalid_word_raises():
-    with pytest.raises(KeyError):
-        sort_numbers("ten")
+def test_sort_numbers_leading_trailing_spaces():
+    """Leading/trailing spaces are filtered out as empty tokens."""
+    assert sort_numbers(" two ") == "two"

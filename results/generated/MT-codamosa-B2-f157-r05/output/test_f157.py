@@ -3,68 +3,35 @@ import f157 as module_0
 
 def test_case_0():
     int_0 = 3
-    int_1 = 12
-    int_2 = 13
+    int_1 = 4
+    int_2 = 5
     var_0 = module_0.right_angle_triangle(int_0, int_1, int_2)
     assert var_0 is True
-    assert var_0 is False
-    int_3 = 8
-    int_4 = 15
-    var_1 = module_0.right_angle_triangle(int_3, int_4, int_0)
+    var_1 = module_0.right_angle_triangle(int_2, int_0, int_1)
     assert var_1 is True
-    assert var_1 is False
-    int_5 = 1
-    int_6 = 2
-    var_2 = module_0.right_angle_triangle(int_5, int_6, int_0)
-    assert var_2 is False
-    var_3 = module_0.right_angle_triangle(int_0, int_4, int_4)
-    assert var_3 is False
-    var_4 = module_0.right_angle_triangle(int_5, int_5, int_5)
-    assert var_4 is False
-    int_7 = 0
-    var_5 = module_0.right_angle_triangle(int_7, int_7, int_7)
-    assert var_5 is False
-    assert var_5 is True
-    int_8 = -3
-    var_6 = module_0.right_angle_triangle(int_8, int_7, int_7)
-    assert var_6 is True
-    assert var_6 is False
-    str_0 = 'S!'
-    var_7 = print(str_0)
-
-def test_case_1():
-    int_0 = 3
-    var_0 = module_0.right_angle_triangle(int_0, int_0, int_0)
-    assert var_0 is True
-    assert var_0 is False
-    int_1 = 12
-    int_2 = 13
-    var_1 = module_0.right_angle_triangle(int_0, int_1, int_2)
-    assert var_1 is True
-    assert var_1 is False
-    int_3 = 8
-    var_2 = module_0.right_angle_triangle(int_3, int_1, int_0)
+    var_2 = module_0.right_angle_triangle(int_1, int_2, int_0)
     assert var_2 is True
-    assert var_2 is False
-    bool_0 = False
-    float_0 = -1904.383
-    var_3 = module_0.right_angle_triangle(bool_0, float_0, float_0)
-    assert var_3 is True
-    int_4 = 1
-    int_5 = 2
-    var_4 = module_0.right_angle_triangle(int_4, int_5, int_0)
-    assert var_4 is False
-    var_5 = module_0.right_angle_triangle(int_0, int_0, int_0)
+    int_3 = 1
+    int_4 = 2
+    var_3 = module_0.right_angle_triangle(int_3, int_4, int_0)
+    assert var_3 is False
+    int_5 = 12
+    int_6 = 13
+    var_4 = module_0.right_angle_triangle(int_2, int_5, int_6)
+    assert var_4 is True
+    var_5 = module_0.right_angle_triangle(int_3, int_3, int_3)
     assert var_5 is False
-    var_6 = module_0.right_angle_triangle(int_4, int_4, int_4)
-    assert var_6 is False
-    int_6 = 0
-    var_7 = module_0.right_angle_triangle(int_6, int_6, int_6)
+    int_7 = 6
+    int_8 = 8
+    int_9 = 10
+    var_6 = module_0.right_angle_triangle(int_7, int_8, int_9)
+    assert var_6 is True
+    var_7 = module_0.right_angle_triangle(int_4, int_4, int_4)
     assert var_7 is False
-    assert var_7 is True
-    int_7 = -3
-    var_8 = module_0.right_angle_triangle(int_7, int_6, int_6)
+    int_10 = 7
+    int_11 = 24
+    int_12 = 25
+    var_8 = module_0.right_angle_triangle(int_10, int_11, int_12)
     assert var_8 is True
-    assert var_8 is False
-    str_0 = 'S!'
-    var_9 = print(str_0)
+    var_9 = module_0.right_angle_triangle(int_9, int_9, int_9)
+    assert var_9 is False

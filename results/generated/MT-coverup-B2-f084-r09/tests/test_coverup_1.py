@@ -6,20 +6,14 @@ from f084 import solve
 
 
 def test_solve_returns_binary_of_digit_sum():
-    assert solve(123) == "110"  # 1+2+3 = 6 -> 0b110
-
-
-def test_solve_single_digit():
-    assert solve(7) == "111"  # 7 -> 0b111
+    # Digit sum of 123 is 6 -> binary '110'
+    assert solve(123) == "110"
+    # Digit sum of 999 is 27 -> binary '11011'
+    assert solve(999) == "11011"
+    # Digit sum of 1000000 is 1 -> binary '1'
+    assert solve(1000000) == "1"
 
 
 def test_solve_zero():
-    assert solve(0) == "0"  # 0 -> 0b0
-
-
-def test_solve_trailing_zero_digit():
-    assert solve(10) == "1"  # 1+0 = 1 -> 0b1
-
-
-def test_solve_large_number():
-    assert solve(9999) == "100100"  # 36 -> 0b100100
+    # Edge case: digit sum of 0 is 0, bin(0)[2:] is '0'
+    assert solve(0) == "0"

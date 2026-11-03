@@ -7,76 +7,47 @@ import pytest
 from ansible.module_utils.compat.version import StrictVersion
 
 
-@pytest.mark.parametrize(
-    "vstring,expected_version,expected_prerelease",
-    [
-        # patch present, prerelease present
-        ("1.0.4a3", (1, 0, 4), ("a", 3)),
-        ("1.0.4b1", (1, 0, 4), ("b", 1)),
-        # patch present, no prerelease
-        ("1.0.4", (1, 0, 4), None),
-        ("0.9.6", (0, 9, 6), None),
-        # no patch, prerelease present
-        ("0.5a1", (0, 5, 0), ("a", 1)),
-        ("0.5b3", (0, 5, 0), ("b", 3)),
-        # no patch, no prerelease
-        ("0.4", (0, 4, 0), None),
-        ("1.0", (1, 0, 0), None),
-    ],
-)
-def test_strict_version_parse_valid(vstring, expected_version, expected_prerelease):
-    """All four combinations of the patch / prerelease branches."""
-    version = StrictVersion(vstring)
-
-    assert version.version == expected_version
-    assert version.prerelease == expected_prerelease
-
-
-def test_strict_version_parse_called_directly():
-    """parse() can be invoked on an instance built without a vstring."""
+def test_parse_with_patch_and_no_prerelease():
+    """Covers lines 141-149 (match, patch truthy) and 156 (prerelease falsy)."""
     version = StrictVersion()
-    assert not hasattr(version, "version")
+    version.parse("1.2.3")
+    assert version.version == (1, 2, 3)
+    assert version.prerelease is None
 
-    version.parse("2.7.18b2")
 
-    assert version.version == (2, 7, 18)
+def test_parse_without_patch_and_no_prerelease():
+    """Covers line 151 (patch falsy) and 156 (prerelease falsy)."""
+    version = StrictVersion()
+    version.parse("2.7")
+    assert version.version == (2, 7, 0)
+    assert version.prerelease is None
+
+
+def test_parse_prerelease_without_patch():
+    """Covers line 151 (patch falsy) and lines 153-154 (prerelease truthy)."""
+    version = StrictVersion()
+    version.parse("1.5a1")
+    assert version.version == (1, 5, 0)
+    assert version.prerelease == ("a", 1)
+
+
+def test_parse_prerelease_with_patch():
+    """Covers lines 148-149 (patch truthy) and lines 153-154 (prerelease truthy)."""
+    version = StrictVersion()
+    version.parse("1.5.2b2")
+    assert version.version == (1, 5, 2)
     assert version.prerelease == ("b", 2)
 
 
-@pytest.mark.parametrize(
-    "vstring",
-    [
-        "1",           # too few components
-        "2.7.2.2",     # too many components
-        "1.3.a4",      # non-numeric patch
-        "1.3pl1",      # unknown suffix
-        "1.3c4",       # invalid prerelease letter
-        "not-a-version",
-    ],
-)
-def test_strict_version_parse_invalid_raises_value_error(vstring):
-    """The no-match branch raises ValueError mentioning the bad string."""
-    with pytest.raises(ValueError) as excinfo:
-        StrictVersion(vstring)
-
-    assert vstring in str(excinfo.value)
-
-
-def test_strict_version_empty_string_is_falsy_and_skips_parse():
-    """__init__ only calls parse() for truthy vstrings, so '' never reaches
-    the regex; the instance is left without parsed attributes."""
-    version = StrictVersion("")
-
-    assert not hasattr(version, "version")
-    assert not hasattr(version, "prerelease")
-
-
-def test_strict_version_parse_invalid_leaves_instance_unparsed():
-    """A failed parse must not leave partial state behind."""
+def test_parse_invalid_version_raises_value_error():
+    """Covers lines 142-143 (no regex match -> ValueError)."""
     version = StrictVersion()
-
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="invalid version number '1\\.3\\.a4'"):
         version.parse("1.3.a4")
 
-    assert not hasattr(version, "version")
-    assert not hasattr(version, "prerelease")
+
+def test_parse_via_constructor():
+    """Version.__init__ delegates to StrictVersion.parse when given a string."""
+    version = StrictVersion("0.4.1")
+    assert version.version == (0, 4, 1)
+    assert version.prerelease is None

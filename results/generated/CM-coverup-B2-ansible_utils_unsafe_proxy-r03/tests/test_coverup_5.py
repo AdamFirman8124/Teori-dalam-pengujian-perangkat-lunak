@@ -2,52 +2,44 @@
 # asked: {"lines": [79], "branches": []}
 # gained: {"lines": [79], "branches": []}
 
-import pytest
-
 from ansible.utils.unsafe_proxy import AnsibleUnsafe, AnsibleUnsafeBytes, AnsibleUnsafeText
 
 
-def test_ansible_unsafe_text_encode_default():
-    text = AnsibleUnsafeText("hello")
-    result = text.encode()
+def test_ansible_unsafe_text_encode_returns_unsafe_bytes():
+    """Calling encode() on an AnsibleUnsafeText must execute line 79 and return
+    an AnsibleUnsafeBytes instance that keeps the unsafe marker."""
+    unsafe_text = AnsibleUnsafeText(u"hello world")
 
+    result = unsafe_text.encode("utf-8")
+
+    # Postconditions of line 79: the result is an unsafe bytes object holding
+    # the expected encoded payload.
     assert isinstance(result, AnsibleUnsafeBytes)
     assert isinstance(result, bytes)
-    assert isinstance(result, AnsibleUnsafe)
-    assert getattr(result, "__UNSAFE__", False) is True
-    assert result == b"hello"
+    assert result == b"hello world"
+    assert result.__UNSAFE__ is True
+    assert AnsibleUnsafe.__UNSAFE__ is True
 
 
-def test_ansible_unsafe_text_encode_with_encoding_arg():
-    text = AnsibleUnsafeText("héllo")
-    result = text.encode("utf-8")
+def test_ansible_unsafe_text_encode_forwards_kwargs():
+    """encode() must forward keyword arguments to the underlying
+    text_type.encode while preserving the unsafe context (line 79)."""
+    unsafe_text = AnsibleUnsafeText(u"caf\u00e9")
 
-    assert isinstance(result, AnsibleUnsafeBytes)
-    assert getattr(result, "__UNSAFE__", False) is True
-    assert result == "héllo".encode("utf-8")
-    assert result.decode("utf-8") == "héllo"
-
-
-def test_ansible_unsafe_text_encode_with_kwargs():
-    text = AnsibleUnsafeText("héllo")
-    result = text.encode(encoding="utf-16", errors="strict")
+    result = unsafe_text.encode(encoding="utf-8", errors="strict")
 
     assert isinstance(result, AnsibleUnsafeBytes)
-    assert getattr(result, "__UNSAFE__", False) is True
-    assert result == "héllo".encode(encoding="utf-16", errors="strict")
+    assert result == b"caf\xc3\xa9"
+    assert result.__UNSAFE__ is True
 
 
-@pytest.mark.parametrize(
-    "value,encoding,expected",
-    [
-        ("", "utf-8", b""),
-        ("abc", "ascii", b"abc"),
-        ("café", "latin-1", "café".encode("latin-1")),
-    ],
-)
-def test_ansible_unsafe_text_encode_parametrized(value, encoding, expected):
-    result = AnsibleUnsafeText(value).encode(encoding)
+def test_ansible_unsafe_text_encode_default_arguments():
+    """encode() with no arguments must still wrap the result in
+    AnsibleUnsafeBytes via line 79."""
+    unsafe_text = AnsibleUnsafeText(u"abc")
+
+    result = unsafe_text.encode()
 
     assert isinstance(result, AnsibleUnsafeBytes)
-    assert getattr(result, "__UNSAFE__", False) is True
-    assert result == expected
+    assert result == b"abc"
+    assert result.__UNSAFE__ is True

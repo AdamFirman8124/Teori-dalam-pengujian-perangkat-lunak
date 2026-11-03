@@ -2,36 +2,52 @@
 # asked: {"lines": [6], "branches": []}
 # gained: {"lines": [6], "branches": []}
 
+import pytest
+
 from f029 import filter_by_prefix
 
 
-def test_filter_by_prefix_returns_matching_strings():
-    strings = ["abc", "bcd", "cde", "abcde"]
-    result = filter_by_prefix(strings, "abc")
-    assert result == ["abc", "abcde"]
-    assert all(x.startswith("abc") for x in result)
+def test_filter_by_prefix_matching_and_non_matching():
+    """Covers both branches of the comprehension condition: items that
+    start with the prefix (True branch) and items that don't (False branch)."""
+    strings = ["abc", "bcd", "cde", "array"]
+    result = filter_by_prefix(strings, "a")
+    assert result == ["abc", "array"]
+    # Original list is untouched (no side effects)
+    assert strings == ["abc", "bcd", "cde", "array"]
 
 
-def test_filter_by_prefix_no_matches_returns_empty_list():
-    strings = ["abc", "bcd", "cde"]
-    result = filter_by_prefix(strings, "xyz")
+def test_filter_by_prefix_no_matches():
+    """Covers the case where the condition is False for every item."""
+    strings = ["bcd", "cde"]
+    result = filter_by_prefix(strings, "a")
     assert result == []
-    assert isinstance(result, list)
 
 
-def test_filter_by_prefix_empty_input_returns_empty_list():
+def test_filter_by_prefix_empty_input():
+    """Covers the case where the iterable is empty (loop body never runs,
+    but line 6 still executes and returns an empty list)."""
     result = filter_by_prefix([], "a")
     assert result == []
 
 
-def test_filter_by_prefix_empty_prefix_returns_all_strings():
-    strings = ["abc", "bcd", ""]
+def test_filter_by_prefix_empty_prefix_matches_all():
+    """Covers the case where every string starts with the empty prefix."""
+    strings = ["abc", "def", ""]
     result = filter_by_prefix(strings, "")
-    assert result == ["abc", "bcd", ""]
+    assert result == ["abc", "def", ""]
 
 
-def test_filter_by_prefix_does_not_mutate_input():
-    strings = ["abc", "bcd", "abcde"]
-    original = list(strings)
-    filter_by_prefix(strings, "abc")
-    assert strings == original
+def test_filter_by_prefix_returns_new_list():
+    """Verifies postcondition: the returned list is a new list object,
+    not an alias of the input."""
+    strings = ["ax", "bx"]
+    result = filter_by_prefix(strings, "a")
+    assert result is not strings
+    assert result == ["ax"]
+
+
+def test_filter_by_prefix_prefix_longer_than_items():
+    """Covers items shorter than the prefix; startswith returns False."""
+    result = filter_by_prefix(["a", "ab", "abc"], "abc")
+    assert result == ["abc"]

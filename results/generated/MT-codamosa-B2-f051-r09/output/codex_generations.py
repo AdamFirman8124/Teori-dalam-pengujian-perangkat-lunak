@@ -1,106 +1,153 @@
 
 
-# Generated at 2026-10-24 22:24:41.944695
+# Generated at 2026-11-02 17:52:02.730967
 # Unit test for function remove_vowels
 def test_remove_vowels():
-    # basic
-    assert module_0.remove_vowels("hello world") == "hll wrld"
-    # all five vowels, lowercase
-    assert module_0.remove_vowels("aeiou") == ""
-    # uppercase vowels removed too
-    assert module_0.remove_vowels("AEIOU") == ""
-    # mixed case preserved on consonants
-    assert module_0.remove_vowels("StackOverflow") == "Stckvrflw"
-    # no vowels -> unchanged
-    assert module_0.remove_vowels("rhythm") == "rhythm"
-    # empty string
+    # Empty string returns empty string
     assert module_0.remove_vowels("") == ""
-    # only non-vowel chars (digits, spaces, punctuation)
-    assert module_0.remove_vowels("123 !?") == "123 !?"
-    # y is NOT a vowel here
-    assert module_0.remove_vowels("my gym") == "my gym"
-    # vowels interleaved with spaces
-    assert module_0.remove_vowels("a e i o u") == "    "
-    # unicode vowels (not in the list) pass through
-    assert module_0.remove_vowels("cafÃ©") == "cfÃ©"
 
-# Generated at 2026-10-24 22:24:44.462038
-# Unit test for function remove_vowels
+    # String with mixed letters and newline
+    assert module_0.remove_vowels("abcdef\nghijklm") == "bcdf\nghjklm"
 
-# Generated at 2026-10-24 22:24:46.878722
-# Unit test for function remove_vowels
+    # Simple lowercase vowels removed
+    assert module_0.remove_vowels("abcdef") == "bcdf"
 
-# Generated at 2026-10-24 22:24:49.297595
-# Unit test for function remove_vowels
+    # String containing only vowels
+    assert module_0.remove_vowels("aaaaa") == ""
 
-# Generated at 2026-10-24 22:24:50.663485
+    # Uppercase vowels are also removed
+    assert module_0.remove_vowels("aaBAA") == "B"
+    assert module_0.remove_vowels("AEIOUaeiou") == ""
+
+    # String with no vowels remains unchanged
+    assert module_0.remove_vowels("zbcd") == "zbcd"
+    assert module_0.remove_vowels("xyz") == "xyz"
+
+    # Numbers, punctuation, and spaces are preserved
+    assert module_0.remove_vowels("hello world! 123") == "hll wrld! 123"
+
+    # Mixed case string
+    assert module_0.remove_vowels("ThIs Is A tEsT") == "Ths s  tst"
+
+# Generated at 2026-11-02 17:53:09.911963
 # Unit test for function remove_vowels
 def test_remove_vowels():
-    # basic
+    # Basic vowel removal
+    assert module_0.remove_vowels("abcdef") == "bcdf"
     assert module_0.remove_vowels("hello world") == "hll wrld"
-    # all five vowels, lowercase
-    assert module_0.remove_vowels("aeiou") == ""
-    # uppercase vowels removed too
-    assert module_0.remove_vowels("AEIOU") == ""
-    # mixed case preserved on consonants
-    assert module_0.remove_vowels("StackOverflow") == "Stckvrflw"
-    # no vowels -> unchanged
-    assert module_0.remove_vowels("rhythm") == "rhythm"
-    # empty string
-    assert module_0.remove_vowels("") == ""
-    # only non-vowel chars (digits, spaces, punctuation)
-    assert module_0.remove_vowels("123 !?") == "123 !?"
-    # y is NOT a vowel here
-    assert module_0.remove_vowels("my gym") == "my gym"
-    # vowels interleaved with spaces
-    assert module_0.remove_vowels("a e i o u") == "    "
-    # unicode vowels (not in the list) pass through
-    assert module_0.remove_vowels("cafÃ©") == "cfÃ©"
 
-# Generated at 2026-10-24 22:24:51.991073
+    # All vowels removed
+    assert module_0.remove_vowels("aeiou") == ""
+    assert module_0.remove_vowels("AEIOU") == ""
+
+    # Empty string
+    assert module_0.remove_vowels("") == ""
+
+    # No vowels present
+    assert module_0.remove_vowels("xyz") == "xyz"
+    assert module_0.remove_vowels("bcdfg") == "bcdfg"
+
+    # Mixed case vowels
+    assert module_0.remove_vowels("AbCdEf") == "bCdF"
+    assert module_0.remove_vowels("aEiOu") == ""
+
+    # Uppercase vowels
+    assert module_0.remove_vowels("APPLE") == "PPL"
+    assert module_0.remove_vowels("Orange") == "rng"
+
+    # Special characters, digits, and whitespace preserved
+    assert module_0.remove_vowels("a1b2c3") == "1b2c3"
+    assert module_0.remove_vowels("hello, world!") == "hll, wrld!"
+    assert module_0.remove_vowels("  a b  ") == "  b  "
+
+    # Repeated vowels
+    assert module_0.remove_vowels("aaaeeeiiiooouuu") == ""
+    assert module_0.remove_vowels("queueing") == "qng"
+
+    # Y is not a vowel
+    assert module_0.remove_vowels("rhythm") == "rhythm"
+    assert module_0.remove_vowels("why") == "why"
+
+    # Long mixed string
+    assert module_0.remove_vowels("The quick brown fox jumps over the lazy dog") == \
+        "Th qck brwn fx jmps vr th lzy dg"
+
+    print("All tests passed!")
+
+
+test_remove_vowels()
+
+# Generated at 2026-11-02 17:54:43.117731
 # Unit test for function remove_vowels
 def test_remove_vowels():
-    # basic
-    assert module_0.remove_vowels("hello world") == "hll wrld"
-    # all five vowels, lowercase
-    assert module_0.remove_vowels("aeiou") == ""
-    # uppercase vowels removed too
-    assert module_0.remove_vowels("AEIOU") == ""
-    # mixed case preserved on consonants
-    assert module_0.remove_vowels("StackOverflow") == "Stckvrflw"
-    # no vowels -> unchanged
-    assert module_0.remove_vowels("rhythm") == "rhythm"
-    # empty string
     assert module_0.remove_vowels("") == ""
-    # only non-vowel chars (digits, spaces, punctuation)
-    assert module_0.remove_vowels("123 !?") == "123 !?"
-    # y is NOT a vowel here
-    assert module_0.remove_vowels("my gym") == "my gym"
-    # vowels interleaved with spaces
-    assert module_0.remove_vowels("a e i o u") == "    "
-    # unicode vowels (not in the list) pass through
-    assert module_0.remove_vowels("cafÃ©") == "cfÃ©"
+    assert module_0.remove_vowels("abcdef") == "bcdf"
+    assert module_0.remove_vowels("aaaaa") == ""
+    assert module_0.remove_vowels("aaBAA") == "B"
+    assert module_0.remove_vowels("zbcd") == "zbcd"
+    assert module_0.remove_vowels("HELLO") == "HLL"
+    assert module_0.remove_vowels("hello world") == "hll wrld"
+    assert module_0.remove_vowels("AEIOUaeiou") == ""
+    assert module_0.remove_vowels("Python!") == "Pythn!"
+    assert module_0.remove_vowels("12345") == "12345"
+    assert module_0.remove_vowels("xyz") == "xyz"
+    assert module_0.remove_vowels("bAnAnA") == "bnn"
+    print("All tests passed!")
 
-# Generated at 2026-10-24 22:24:53.339759
+
+test_remove_vowels()
+
+# Generated at 2026-11-02 17:56:19.333375
 # Unit test for function remove_vowels
 def test_remove_vowels():
-    # basic
-    assert module_0.remove_vowels("hello world") == "hll wrld"
-    # all five vowels, lowercase
-    assert module_0.remove_vowels("aeiou") == ""
-    # uppercase vowels removed too
-    assert module_0.remove_vowels("AEIOU") == ""
-    # mixed case preserved on consonants
-    assert module_0.remove_vowels("StackOverflow") == "Stckvrflw"
-    # no vowels -> unchanged
-    assert module_0.remove_vowels("rhythm") == "rhythm"
-    # empty string
     assert module_0.remove_vowels("") == ""
-    # only non-vowel chars (digits, spaces, punctuation)
-    assert module_0.remove_vowels("123 !?") == "123 !?"
-    # y is NOT a vowel here
-    assert module_0.remove_vowels("my gym") == "my gym"
-    # vowels interleaved with spaces
-    assert module_0.remove_vowels("a e i o u") == "    "
-    # unicode vowels (not in the list) pass through
-    assert module_0.remove_vowels("cafÃ©") == "cfÃ©"
+    assert module_0.remove_vowels("abcdef") == "bcdf"
+    assert module_0.remove_vowels("aaaaa") == ""
+    assert module_0.remove_vowels("aaBAA") == "B"
+    assert module_0.remove_vowels("zbcd") == "zbcd"
+    assert module_0.remove_vowels("HELLO") == "HLL"
+    assert module_0.remove_vowels("Python") == "Pythn"
+    assert module_0.remove_vowels("AEIOUaeiou") == ""
+    assert module_0.remove_vowels("xyz") == "xyz"
+    assert module_0.remove_vowels("Hello, World!") == "Hll, Wrld!"
+
+# Generated at 2026-11-02 17:57:32.203396
+# Unit test for function remove_vowels
+def test_remove_vowels():
+    # Empty string
+    assert module_0.remove_vowels("") == ""
+
+    # Basic cases
+    assert module_0.remove_vowels("abcdef") == "bcdf"
+    assert module_0.remove_vowels("aaaaa") == ""
+    assert module_0.remove_vowels("aaBAA") == "B"
+    assert module_0.remove_vowels("zbcd") == "zbcd"
+
+    # Mixed case vowels should be removed
+    assert module_0.remove_vowels("HELLO") == "HLL"
+    assert module_0.remove_vowels("Hello World") == "Hll Wrld"
+
+    # Newlines and whitespace preserved
+    assert module_0.remove_vowels("abcdef\nghijklm") == "bcdf\nghjklm"
+    assert module_0.remove_vowels("one two three") == "n tw thr"
+
+    # Digits and punctuation preserved
+    assert module_0.remove_vowels("a1b2c3!") == "1b2c3!"
+    assert module_0.remove_vowels("!@#$%^&*()") == "!@#$%^&*()"
+
+    # 'y' is not a vowel
+    assert module_0.remove_vowels("xyzzy") == "xyzzy"
+
+    # Unicode / non-ASCII characters preserved
+    assert module_0.remove_vowels("café") == "cfé"
+
+    # String with only vowels (mixed case)
+    assert module_0.remove_vowels("AEIOUaeiou") == ""
+
+    # Long sentence
+    assert module_0.remove_vowels("The quick brown fox jumps over the lazy dog") == "Th qck brwn fx jmps vr th lzy dg"
+
+    print("All tests passed!")
+
+
+test_remove_vowels()

@@ -2,35 +2,59 @@
 # asked: {"lines": [3, 4], "branches": []}
 # gained: {"lines": [3, 4], "branches": []}
 
+import pytest
+
 from f077 import iscube
 
 
-def test_iscube_perfect_cubes():
-    assert iscube(0) is True
-    assert iscube(1) is True
-    assert iscube(8) is True
-    assert iscube(27) is True
-    assert iscube(64) is True
-    assert iscube(125) is True
-    assert iscube(1000) is True
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        # Zero and positive perfect cubes -> True
+        (0, True),
+        (1, True),
+        (8, True),
+        (27, True),
+        # 64 ** (1/3) evaluates to ~3.9999999999999996, exercising the
+        # rounding branch before cubing.
+        (64, True),
+        (125, True),
+        # Negative perfect cubes -> True (exercises the abs() conversion).
+        (-1, True),
+        (-8, True),
+        (-27, True),
+        (-64, True),
+        # Non-cubes -> False
+        (2, False),
+        (-2, False),
+        (9, False),
+        (63, False),
+        (100, False),
+    ],
+)
+def test_iscube_integers(value, expected):
+    """Execute lines 3-4 for integer inputs and verify the postcondition."""
+    result = iscube(value)
+
+    # Postcondition: result is a proper boolean matching the expectation,
+    # i.e. value is a perfect cube iff int(round(cbrt(|value|)))**3 == |value|.
+    assert isinstance(result, bool)
+    assert result is expected
 
 
-def test_iscube_negative_cubes():
-    assert iscube(-1) is True
-    assert iscube(-8) is True
-    assert iscube(-27) is True
-    assert iscube(-64) is True
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        (8.0, True),
+        (-8.0, True),
+        (27.0, True),
+        (2.5, False),
+        (-3.3, False),
+    ],
+)
+def test_iscube_floats(value, expected):
+    """Execute lines 3-4 for float inputs and verify the postcondition."""
+    result = iscube(value)
 
-
-def test_iscube_non_cubes():
-    assert iscube(2) is False
-    assert iscube(3) is False
-    assert iscube(4) is False
-    assert iscube(7) is False
-    assert iscube(9) is False
-    assert iscube(10) is False
-    assert iscube(26) is False
-    assert iscube(28) is False
-    assert iscube(100) is False
-    assert iscube(-2) is False
-    assert iscube(-9) is False
+    assert isinstance(result, bool)
+    assert result is expected

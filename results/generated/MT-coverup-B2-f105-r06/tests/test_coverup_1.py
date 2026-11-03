@@ -7,33 +7,63 @@ import pytest
 from f105 import by_length
 
 
-def test_by_length_basic_mapping_and_sorting():
-    result = by_length([2, 1, 3])
-    assert result == ["Three", "Two", "One"]
-
-
-def test_by_length_all_digits():
-    result = by_length([9, 8, 7, 6, 5, 4, 3, 2, 1])
+def test_by_length_maps_and_sorts_descending():
+    """Covers lines 3-18 and 21: dict build, sort, loop, successful append, return."""
+    result = by_length([2, 1, 1, 4, 5, 8, 2, 3])
     assert result == [
-        "Nine", "Eight", "Seven", "Six", "Five",
-        "Four", "Three", "Two", "One",
+        "Eight",
+        "Five",
+        "Four",
+        "Three",
+        "Two",
+        "Two",
+        "One",
+        "One",
     ]
 
 
-def test_by_length_empty():
+def test_by_length_empty_list():
+    """Covers the loop-not-taken branch (for loop over empty sorted_arr)."""
     assert by_length([]) == []
 
 
-def test_by_length_out_of_range_triggers_exception_branch():
-    # Values outside 1..9 hit the bare except and are skipped
-    result = by_length([10, 3, 0, -1, 2])
-    assert result == ["Three", "Two"]
+def test_by_length_skips_values_not_in_dict():
+    """Covers the except/pass branch (lines 19-20) via KeyError for values outside 1..9."""
+    result = by_length([1, -1, 55, 9, 10, 3])
+    assert result == ["Nine", "Three", "One"]
 
 
-def test_by_length_duplicates():
-    result = by_length([1, 1, 2])
-    assert result == ["Two", "One", "One"]
+def test_by_length_skips_non_integer_values():
+    """Covers the except/pass branch (lines 19-20) via KeyError for sortable but unmapped values (floats)."""
+    result = by_length([2, 2.5, 7, 9.9])
+    assert result == ["Seven", "Two"]
 
 
-def test_by_length_all_invalid():
-    assert by_length([0, 10, -5]) == []
+def test_by_length_unsortable_input_raises():
+    """Documents that mixed unorderable types fail at the sorted() call, before the loop."""
+    with pytest.raises(TypeError):
+        by_length([2, [1, 2], 7])
+
+
+def test_by_length_does_not_mutate_input():
+    """Verifies the function is side-effect free on its argument."""
+    arr = [3, 1, 2]
+    result = by_length(arr)
+    assert arr == [3, 1, 2]
+    assert result == ["Three", "Two", "One"]
+
+
+def test_by_length_all_nine_digits():
+    """Full mapping check for every key in the dictionary."""
+    result = by_length([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    assert result == [
+        "Nine",
+        "Eight",
+        "Seven",
+        "Six",
+        "Five",
+        "Four",
+        "Three",
+        "Two",
+        "One",
+    ]

@@ -7,21 +7,31 @@ import pytest
 from f077 import iscube
 
 
-def test_iscube_positive_cube():
-    """A positive perfect cube returns True (executes lines 3-4, True branch)."""
-    assert iscube(27) is True
-    assert iscube(1) is True
-    assert iscube(0) is True
-
-
-def test_iscube_negative_cube():
-    """A negative perfect cube returns True via abs() on line 3."""
-    assert iscube(-8) is True
-    assert iscube(-27) is True
-
-
-def test_iscube_not_a_cube():
-    """A non-cube returns False (executes lines 3-4, False branch)."""
-    assert iscube(2) is False
-    assert iscube(26) is False
-    assert iscube(-2) is False
+@pytest.mark.parametrize(
+    "value, expected",
+    [
+        # Perfect cubes, including zero and negatives (exercises abs() on line 3
+        # and the True outcome of the comparison on line 4)
+        (0, True),
+        (1, True),
+        (8, True),
+        (27, True),
+        (64, True),
+        (125, True),
+        (-1, True),
+        (-8, True),
+        (-27, True),
+        # Non-cubes (exercises the False outcome of the comparison on line 4)
+        (2, False),
+        (3, False),
+        (7, False),
+        (9, False),
+        (26, False),
+        (-2, False),
+        (-9, False),
+    ],
+)
+def test_iscube(value, expected):
+    result = iscube(value)
+    assert isinstance(result, bool)
+    assert result is expected

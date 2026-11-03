@@ -4,88 +4,78 @@
 
 import pytest
 
-from isort.exceptions import ISortError, UnsupportedSettings
+from isort.exceptions import UnsupportedSettings
 
 
-def test_format_option_returns_expected_string():
+def test_format_option_static_method():
+    """Cover line 147: the _format_option return statement."""
     formatted = UnsupportedSettings._format_option(
-        "some_option", "some_value", "config file"
+        "my_setting", value="some_value", source="/path/to/config"
     )
-    assert formatted == "\t- some_option = some_value  (source: 'config file')"
+    assert formatted == "\t- my_setting = some_value  (source: '/path/to/config')"
 
-
-def test_format_option_is_static_and_handles_non_string_values():
-    formatted = UnsupportedSettings._format_option("line_length", 79, "cli")
-    assert formatted == "\t- line_length = 79  (source: 'cli')"
-    assert isinstance(UnsupportedSettings.__dict__["_format_option"], staticmethod)
-
-
-def test_unsupported_settings_single_entry():
-    settings = {"bad_option": {"value": "1", "source": "setup.cfg"}}
-    error = UnsupportedSettings(settings)
-
-    assert isinstance(error, ISortError)
-    assert isinstance(error, Exception)
-    assert error.unsupported_settings == settings
-    assert error.unsupported_settings is settings
-
-    message = str(error)
-    assert message.startswith("isort was provided settings that it doesn't support:\n\n")
-    assert "\t- bad_option = 1  (source: 'setup.cfg')" in message
+    # Also verify formatting with non-string values (Any).
     assert (
-        "For a complete and up-to-date listing of supported settings see: "
-        "https://pycqa.github.io/isort/docs/configuration/options/.\n"
-    ) in message
-    assert message.endswith("options/.\n")
+        UnsupportedSettings._format_option("num", value=42, source="cli")
+        == "\t- num = 42  (source: 'cli')"
+    )
 
 
-def test_unsupported_settings_multiple_entries_joined_with_newlines():
-    settings = {
-        "first_option": {"value": "a", "source": "cli"},
-        "second_option": {"value": "b", "source": "pyproject.toml"},
+def test_unsupported_settings_init_attributes_and_message():
+    """Cover lines 150-160: UnsupportedSettings.__init__ builds the message
+    and stores the unsupported_settings attribute."""
+    unsupported = {
+        "my_setting": {"value": "some_value", "source": "/path/to/config"},
+        "other_setting": {"value": 42, "source": "cli"},
     }
-    error = UnsupportedSettings(settings)
+    exc = UnsupportedSettings(unsupported)
 
-    expected_errors = (
-        "\t- first_option = a  (source: 'cli')\n"
-        "\t- second_option = b  (source: 'pyproject.toml')"
+    # Postcondition: the settings are stored unmodified.
+    assert exc.unsupported_settings == unsupported
+    assert exc.unsupported_settings is not None
+
+    # Postcondition: it is a valid Exception subclass.
+    assert isinstance(exc, Exception)
+
+    message = str(exc)
+    assert "isort was provided settings that it doesn't support:" in message
+    # Each unsupported option must be formatted and joined with newlines.
+    assert "\t- my_setting = some_value  (source: '/path/to/config')" in message
+    assert "\t- other_setting = 42  (source: 'cli')" in message
+    assert "https://pycqa.github.io/isort/docs/configuration/options/." in message
+
+
+def test_unsupported_settings_exact_message():
+    """Verify the exact full message for a single setting (dicts preserve
+    insertion order, so a single entry gives a deterministic message)."""
+    exc = UnsupportedSettings(
+        {"bad_option": {"value": True, "source": "environment"}}
     )
-    expected_message = (
+    expected = (
         "isort was provided settings that it doesn't support:\n\n"
-        f"{expected_errors}\n\n"
+        "\t- bad_option = True  (source: 'environment')\n\n"
         "For a complete and up-to-date listing of supported settings see: "
         "https://pycqa.github.io/isort/docs/configuration/options/.\n"
     )
+    assert str(exc) == expected
 
-    assert str(error) == expected_message
-    assert error.unsupported_settings == settings
-    assert list(error.unsupported_settings) == ["first_option", "second_option"]
+
+def test_unsupported_settings_can_be_raised():
+    """The exception works with pytest.raises and keeps its payload."""
+    settings = {"a": {"value": "1", "source": "s"}}
+    with pytest.raises(UnsupportedSettings) as excinfo:
+        raise UnsupportedSettings(settings)
+
+    assert excinfo.value.unsupported_settings == settings
+    assert str(excinfo.value).startswith(
+        "isort was provided settings that it doesn't support:"
+    )
 
 
 def test_unsupported_settings_empty_dict():
-    settings = {}
-    error = UnsupportedSettings(settings)
-
-    assert error.unsupported_settings == {}
-    assert str(error) == (
-        "isort was provided settings that it doesn't support:\n\n"
-        "\n\n"
-        "For a complete and up-to-date listing of supported settings see: "
-        "https://pycqa.github.io/isort/docs/configuration/options/.\n"
-    )
-
-
-def test_unsupported_settings_can_be_raised_and_caught(monkeypatch):
-    settings = {"unknown": {"value": "x", "source": "runtime"}}
-
-    with pytest.raises(UnsupportedSettings) as exc_info:
-        raise UnsupportedSettings(settings)
-
-    assert exc_info.value.unsupported_settings == settings
-    assert "\t- unknown = x  (source: 'runtime')" in str(exc_info.value)
-
-    with pytest.raises(ISortError):
-        raise UnsupportedSettings(settings)
-
-    # No global state is mutated by these tests; nothing to restore.
-    assert "unknown" not in dir(UnsupportedSettings)
+    """Edge case: no unsupported settings still produces a valid message."""
+    exc = UnsupportedSettings({})
+    message = str(exc)
+    assert "isort was provided settings that it doesn't support:" in message
+    assert exc.unsupported_settings == {}
+    assert "\t- " not in message

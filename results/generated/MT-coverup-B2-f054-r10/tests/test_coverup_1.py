@@ -5,25 +5,14 @@
 from f054 import same_chars
 
 
-def test_same_chars_equal_sets():
+def test_same_chars_equal():
+    assert same_chars("eabcdzzzz", "dddzzzzzzzddeddabc") is True
+    assert same_chars("abcd", "dddddddabc") is True
     assert same_chars("abc", "cba") is True
-    assert same_chars("abc", "abc") is True
-
-
-def test_same_chars_different_sets():
-    assert same_chars("abc", "abcd") is False
-    assert same_chars("abc", "abd") is False
-
-
-def test_same_chars_empty_strings():
     assert same_chars("", "") is True
 
 
-def test_same_chars_empty_vs_nonempty():
-    assert same_chars("", "a") is False
-    assert same_chars("a", "") is False
-
-
-def test_same_chars_ignores_multiplicity_and_order():
-    assert same_chars("aab", "ab") is True
-    assert same_chars("aabbcc", "cba") is True
+def test_same_chars_not_equal():
+    assert same_chars("abcd", "dddddddabce") is False
+    assert same_chars("eabcdzzzz", "dddzzzzzzzddddabc") is False
+    assert same_chars("", "abc") is False

@@ -1,136 +1,169 @@
 
 
-# Generated at 2026-10-25 20:10:51.619610
+# Generated at 2026-11-01 23:05:34.549526
 # Unit test for function get_row
+def test_get_row():
+    # Basic case: duplicates within and across rows
+    assert module_0.get_row([[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 1, 6], [1, 2, 3, 4, 5, 1]], 1) == \
+        [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]
 
-# Generated at 2026-10-25 20:10:54.032933
-# Unit test for function get_row
+    # Empty outer list
+    assert module_0.get_row([], 1) == []
 
-# Generated at 2026-10-25 20:10:56.449330
-# Unit test for function get_row
+    # Rows of differing lengths, including an empty row
+    assert module_0.get_row([[], [1], [1, 2, 3]], 1) == [(1, 0), (2, 0)]
 
-# Generated at 2026-10-25 20:10:58.865890
-# Unit test for function get_row
+    # Target value not present anywhere
+    assert module_0.get_row([[1, 2], [3, 4]], 99) == []
 
-# Generated at 2026-10-25 20:11:01.282326
-# Unit test for function get_row
+    # All matches in a single row -> columns must come back in descending order
+    assert module_0.get_row([[7, 7, 7]], 7) == [(0, 2), (0, 1), (0, 0)]
 
-# Generated at 2026-10-25 20:11:03.696287
-# Unit test for function get_row
+    # Single-element grid containing the target
+    assert module_0.get_row([[5]], 5) == [(0, 0)]
 
-# Generated at 2026-10-25 20:11:06.109530
-# Unit test for function get_row
+    # All rows empty
+    assert module_0.get_row([[], [], []], 3) == []
 
-# Generated at 2026-10-25 20:11:08.523399
-# Unit test for function get_row
+    # Matches spread over multiple rows, mixed duplicate placements
+    assert module_0.get_row([[9, 8], [8, 9], [9, 9]], 9) == [(0, 0), (1, 1), (2, 1), (2, 0)]
 
-# Generated at 2026-10-25 20:11:10.938476
-# Unit test for function get_row
+    # Works with non-integer values (strings)
+    assert module_0.get_row([['a', 'b'], ['b', 'a']], 'b') == [(0, 1), (1, 0)]
 
-# Generated at 2026-10-25 20:11:13.352148
-# Unit test for function get_row
+    # Zero as the searched value
+    assert module_0.get_row([[0, 1], [1, 0]], 0) == [(0, 0), (1, 1)]
 
-# Generated at 2026-10-25 20:11:15.765855
-# Unit test for function get_row
+    # Negative numbers
+    assert module_0.get_row([[-1, -2], [-2, -1]], -2) == [(0, 1), (1, 0)]
 
-# Generated at 2026-10-25 20:11:18.180803
+# Generated at 2026-11-01 23:06:07.191882
 # Unit test for function get_row
+def test_get_row():
+    # nonce:9ed25ec0
+    # Classic case: rows ascending, columns descending within each row
+    assert module_0.get_row([
+        [1, 2, 3, 4, 5, 6],
+        [1, 2, 3, 4, 1, 6],
+        [1, 2, 3, 4, 5, 1]
+    ], 1) == [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]
 
-# Generated at 2026-10-25 20:11:20.594659
-# Unit test for function get_row
+    # Empty outer list
+    assert module_0.get_row([], 1) == []
 
-# Generated at 2026-10-25 20:11:23.009282
-# Unit test for function get_row
+    # Target not present
+    assert module_0.get_row([[1, 2], [3, 4]], 5) == []
 
-# Generated at 2026-10-25 20:11:25.422879
-# Unit test for function get_row
+    # Single occurrence
+    assert module_0.get_row([[0, 1], [2, 3]], 3) == [(1, 1)]
 
-# Generated at 2026-10-25 20:11:27.836156
-# Unit test for function get_row
+    # Entire single row matches -> strictly descending columns
+    assert module_0.get_row([[1, 1, 1, 1]], 1) == [(0, 3), (0, 2), (0, 1), (0, 0)]
 
-# Generated at 2026-10-25 20:11:30.251542
-# Unit test for function get_row
+    # Multiple rows fully matching
 
-# Generated at 2026-10-25 20:11:32.664660
+# Generated at 2026-11-01 23:06:47.841872
 # Unit test for function get_row
+def test_get_row():
+# nonce:71014ec3
+    # Single occurrence
+    assert module_0.get_row([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 5) == [(1, 1)]
+    assert module_0.get_row([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 9) == [(2, 2)]
 
-# Generated at 2026-10-25 20:11:35.079347
-# Unit test for function get_row
+    # Multiple occurrences in the same row: columns sorted descending
+    assert module_0.get_row([[1, 2, 1], [1, 1, 1]], 1) == [(0, 2), (0, 0), (1, 2), (1, 1), (1, 0)]
 
-# Generated at 2026-10-25 20:11:37.495106
-# Unit test for function get_row
+    # Occurrences spread across rows: rows sorted ascending
+    assert module_0.get_row([[1, 2], [2, 3], [2]], 2) == [(0, 1), (1, 0), (2, 0)]
 
-# Generated at 2026-10-25 20:11:39.908850
-# Unit test for function get_row
+    # Full grid of matches
+    assert module_0.get_row([[1, 1], [1, 1]], 1) == [(0, 1), (0, 0), (1, 1), (1, 0)]
 
-# Generated at 2026-10-25 20:11:42.325325
-# Unit test for function get_row
+    # Value not present
+    assert module_0.get_row([[1, 2], [3, 4]], 10) == []
 
-# Generated at 2026-10-25 20:11:47.768039
-# Unit test for function get_row
+    # Empty inputs
+    assert module_0.get_row([], 1) == []
+    assert module_0.get_row([[], []], 1) == []
 
-# Generated at 2026-10-25 20:11:50.181722
-# Unit test for function get_row
+    # Non-integer values
+    assert module_0.get_row([['a', 'b'], ['b', 'a']], 'a') == [(0, 0), (1, 1)]
 
-# Generated at 2026-10-25 20:11:52.600215
-# Unit test for function get_row
+    # Single-element rows
+    assert module_0.get_row([[5], [5], [5]], 5) == [(0, 0), (1, 0), (2, 0)]
 
-# Generated at 2026-10-25 20:11:55.011055
-# Unit test for function get_row
+    print("All get_row tests passed!")
 
-# Generated at 2026-10-25 20:11:57.425568
-# Unit test for function get_row
 
-# Generated at 2026-10-25 20:11:59.839841
-# Unit test for function get_row
+if __name__ == "__main__":
+    test_get_row()
 
-# Generated at 2026-10-25 20:12:02.256610
+# Generated at 2026-11-01 23:07:44.675495
 # Unit test for function get_row
+def test_get_row():
+    # Empty list
+    assert module_0.get_row([], 1) == []
 
-# Generated at 2026-10-25 20:12:04.672906
-# Unit test for function get_row
+    # Single element match
+    assert module_0.get_row([[1]], 1) == [(0, 0)]
 
-# Generated at 2026-10-25 20:12:07.087319
-# Unit test for function get_row
+    # Multiple occurrences in same row: columns come in descending order
+    assert module_0.get_row([[1, 2, 1, 3, 1]], 1) == [(0, 4), (0, 2), (0, 0)]
 
-# Generated at 2026-10-25 20:12:09.500104
-# Unit test for function get_row
+    # Classic case: rows ascending, columns descending within each row
+    lst = [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 1, 6], [1, 2, 3, 4, 5, 1]]
+    assert module_0.get_row(lst, 1) == [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]
 
-# Generated at 2026-10-25 20:12:11.915423
-# Unit test for function get_row
+    # Element not present
+    assert module_0.get_row([[1, 2], [3, 4]], 5) == []
 
-# Generated at 2026-10-25 20:12:14.328246
-# Unit test for function get_row
+    # Ragged rows (different lengths)
+    assert module_0.get_row([[1, 2], [2, 3, 2]], 2) == [(0, 1), (1, 2), (1, 0)]
 
-# Generated at 2026-10-25 20:12:16.742835
-# Unit test for function get_row
+    # Element in every row
+    assert module_0.get_row([[9, 9], [9]], 9) == [(0, 1), (0, 0), (1, 0)]
 
-# Generated at 2026-10-25 20:12:19.157071
-# Unit test for function get_row
+    # Empty rows mixed in
+    assert module_0.get_row([[], [1], []], 1) == [(1, 0)]
 
-# Generated at 2026-10-25 20:12:21.571252
-# Unit test for function get_row
+    # No match in a single row
+    assert module_0.get_row([[1, 2, 3]], 10) == []
 
-# Generated at 2026-10-25 20:12:23.989079
-# Unit test for function get_row
+    print("All tests passed!")
 
-# Generated at 2026-10-25 20:12:26.404538
+# Generated at 2026-11-01 23:08:52.363957
 # Unit test for function get_row
+def test_get_row():
+    # Coordinates sorted by row ascending, column descending within each row
+    assert module_0.get_row(
+        [[1, 2, 3, 4, 5, 6],
+         [4, 4, 5, 1, 2, 9],
+         [6, 4, 1, 4, 2, 2]],
+        4
+    ) == [(0, 3), (1, 1), (1, 0), (2, 3), (2, 1)]
 
-# Generated at 2026-10-25 20:12:28.822533
-# Unit test for function get_row
+    # Empty outer list -> no coordinates
+    assert module_0.get_row([], 1) == []
 
-# Generated at 2026-10-25 20:12:31.232602
-# Unit test for function get_row
+    # Inner empty lists handled gracefully
+    assert module_0.get_row([[], [1], []], 1) == [(1, 0)]
 
-# Generated at 2026-10-25 20:12:33.650332
-# Unit test for function get_row
+    # Value not present anywhere -> empty result
+    assert module_0.get_row([[1, 2], [3, 4]], 5) == []
 
-# Generated at 2026-10-25 20:12:36.067783
-# Unit test for function get_row
+    # Single occurrence
+    assert module_0.get_row([[10, 20, 30]], 30) == [(0, 2)]
 
-# Generated at 2026-10-25 20:12:38.482792
-# Unit test for function get_row
+    # Duplicates in the same row come out in descending column order
+    assert module_0.get_row([[7, 7, 7]], 7) == [(0, 2), (0, 1), (0, 0)]
 
-# Generated at 2026-10-25 20:12:40.896653
-# Unit test for function get_row
+    # Ragged rows of differing lengths
+    assert module_0.get_row([[1], [1, 2], [], [2, 1]], 1) == [(0, 0), (1, 0), (3, 1)]
+
+    # Multiple matches across rows preserve row-major ordering
+    assert module_0.get_row([[5, 5], [5], [5, 5, 5]], 5) == [
+        (0, 1), (0, 0), (1, 0), (2, 2), (2, 1), (2, 0)
+    ]
+
+    # Rows with no match are skipped
+    assert module_0.get_row([[1, 2], [3, 9], [2, 2]], 2) == [(0, 1), (2, 1), (2, 0)]

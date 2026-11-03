@@ -1,226 +1,132 @@
 
 
-# Generated at 2026-10-25 17:17:31.851985
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:17:37.264412
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:17:39.678389
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:17:42.091584
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:17:44.506322
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:17:46.920191
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:17:49.336791
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:17:51.751166
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:17:54.166099
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:17:56.581011
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:17:58.993568
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:01.411376
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:03.822500
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:06.236409
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:08.650470
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:11.065179
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:13.478549
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:15.893469
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:18.308342
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:20.723019
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:23.137511
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:25.551793
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:27.964905
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:30.379011
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:32.826082
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:35.207095
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:37.620011
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:40.034526
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:42.448739
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:44.862556
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:47.276448
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:49.689770
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:52.103604
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:54.617787
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:57.030353
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:18:59.443076
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:19:01.857364
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:19:04.272106
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:19:06.686307
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:19:09.100241
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:19:11.513133
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:19:13.927066
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:19:16.343578
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:19:18.755615
-# Unit test for function triangle_area
+# Generated at 2026-11-03 00:07:57.616509
+# Unit test for function triangle_area
+def test_triangle_area():
+    # Valid triangle: 3-4-5 right triangle
+    assert module_0.triangle_area(3, 4, 5) == 6.00
+
+    # Equilateral triangle with side 2: sqrt(3) ≈ 1.73
+    assert module_0.triangle_area(2, 2, 2) == 1.73
 
-# Generated at 2026-10-25 17:19:21.169277
-# Unit test for function triangle_area
-
-# Generated at 2026-10-25 17:19:23.583983
-# Unit test for function triangle_area
+    # Isosceles triangle: area exactly 12
+    assert module_0.triangle_area(5, 5, 6) == 12.00
 
-# Generated at 2026-10-25 17:19:26.001839
-# Unit test for function triangle_area
+    # Invalid triangle: one side too long
+    assert module_0.triangle_area(1, 2, 10) == -1
 
-# Generated at 2026-10-25 17:19:28.413177
-# Unit test for function triangle_area
+    # Degenerate triangle: sides sum equals third side
+    assert module_0.triangle_area(1, 2, 3) == -1
 
-# Generated at 2026-10-25 17:19:30.826256
-# Unit test for function triangle_area
+    # Invalid triangle: another permutation
+    assert module_0.triangle_area(10, 1, 1) == -1
 
-# Generated at 2026-10-25 17:19:33.240002
-# Unit test for function triangle_area
+    # Invalid triangle: zero-length sides
+    assert module_0.triangle_area(0, 0, 0) == -1
 
-# Generated at 2026-10-25 17:19:35.654619
-# Unit test for function triangle_area
+    # Valid triangle with float inputs
+    assert module_0.triangle_area(3.0, 4.0, 5.0) == 6.00
 
-# Generated at 2026-10-25 17:19:41.095740
-# Unit test for function triangle_area
+    # Scalene triangle: sides 7, 8, 9 -> s=12, sqrt(12*5*4*3)=sqrt(720)≈26.83
+    assert module_0.triangle_area(7, 8, 9) == 26.83
 
-# Generated at 2026-10-25 17:19:43.508995
-# Unit test for function triangle_area
+    # Large valid triangle: sides 10, 10, 10 -> sqrt(15*5*5*5)≈64.95
+    assert module_0.triangle_area(10, 10, 10) == 64.95
 
-# Generated at 2026-10-25 17:19:45.923446
-# Unit test for function triangle_area
+    # Invalid: negative side length treated via inequality check
+    assert module_0.triangle_area(-1, 2, 3) == -1
 
-# Generated at 2026-10-25 17:19:48.339521
-# Unit test for function triangle_area
+    print("All tests passed!")
 
-# Generated at 2026-10-25 17:19:50.754744
-# Unit test for function triangle_area
 
-# Generated at 2026-10-25 17:19:53.168942
-# Unit test for function triangle_area
+if __name__ == "__main__":
+    test_triangle_area()
 
-# Generated at 2026-10-25 17:19:55.581592
+# Generated at 2026-11-03 00:10:04.694973
 # Unit test for function triangle_area
+def test_triangle_area():
+    # Valid right triangle
+    assert module_0.triangle_area(3, 4, 5) == 6.0
+    # Valid triangle with reordered sides
+    assert module_0.triangle_area(5, 3, 4) == 6.0
+    # Equilateral triangle
+    assert module_0.triangle_area(3, 3, 3) == 3.9
+    assert module_0.triangle_area(2, 2, 2) == 1.73
+    # Isosceles triangle
+    assert module_0.triangle_area(5, 5, 6) == 12.0
+    # Another valid scalene triangle
+    assert module_0.triangle_area(10, 6, 8) == 24.0
+    # Invalid triangle: one side too long
+    assert module_0.triangle_area(1, 2, 10) == -1
+    # Degenerate triangle: sum equals third side
+    assert module_0.triangle_area(1, 2, 3) == -1
+    assert module_0.triangle_area(5, 1, 1) == -1
+    # Zero-length side
+    assert module_0.triangle_area(0, 4, 4) == -1
 
-# Generated at 2026-10-25 17:19:57.998997
+# Generated at 2026-11-03 00:12:29.185750
 # Unit test for function triangle_area
+def test_triangle_area():
+    # Valid triangles
+    assert module_0.triangle_area(3, 4, 5) == 6.0          # right triangle
+    assert module_0.triangle_area(4, 8, 5) == 8.79         # scalene triangle
+    assert module_0.triangle_area(2, 2, 2) == 1.73         # equilateral triangle
+    assert module_0.triangle_area(5, 5, 6) == 12.0         # isosceles triangle
+    assert module_0.triangle_area(7, 8, 9) == 26.83        # scalene triangle
+    assert module_0.triangle_area(1, 1, 1) == 0.43         # tiny equilateral
 
-# Generated at 2026-10-25 17:20:00.418466
-# Unit test for function triangle_area
+    # Invalid triangles (triangle inequality violated)
+    assert module_0.triangle_area(1, 2, 10) == -1
+    assert module_0.triangle_area(10, 2, 1) == -1
+    assert module_0.triangle_area(2, 10, 1) == -1
 
-# Generated at 2026-10-25 17:20:02.829171
-# Unit test for function triangle_area
+    # Degenerate triangles (sum equals third side)
+    assert module_0.triangle_area(1, 2, 3) == -1
+    assert module_0.triangle_area(5, 5, 10) == -1
 
-# Generated at 2026-10-25 17:20:05.244542
-# Unit test for function triangle_area
+    # Zero / negative side lengths
+    assert module_0.triangle_area(0, 4, 4) == -1
+    assert module_0.triangle_area(-3, 4, 5) == -1
+    assert module_0.triangle_area(0, 0, 0) == -1
 
-# Generated at 2026-10-25 17:20:07.657762
-# Unit test for function triangle_area
+    # Floating point side lengths
+    assert module_0.triangle_area(2.5, 2.5, 3.0) == 3.0
+    assert module_0.triangle_area(1.5, 2.5, 3.5) == 1.85
 
-# Generated at 2026-10-25 17:20:10.071678
-# Unit test for function triangle_area
+    print("All tests passed!")
 
-# Generated at 2026-10-25 17:20:12.485988
+# Generated at 2026-11-03 00:14:56.130452
 # Unit test for function triangle_area
+def test_triangle_area():
+    # Valid right triangle: 3-4-5
+    assert module_0.triangle_area(3, 4, 5) == 6.0
+    assert module_0.triangle_area(5, 3, 4) == 6.0  # order of sides shouldn't matter
 
-# Generated at 2026-10-25 17:20:14.900175
-# Unit test for function triangle_area
+    # Equilateral triangle
+    assert module_0.triangle_area(1, 1, 1) == 0.43
+    assert module_0.triangle_area(2, 2, 2) == 1.73
 
-# Generated at 2026-10-25 17:20:17.313284
-# Unit test for function triangle_area
+    # Isosceles triangle
+    assert module_0.triangle_area(2, 2, 3) == 1.98
 
-# Generated at 2026-10-25 17:20:19.731450
-# Unit test for function triangle_area
+    # Larger equilateral triangle
+    assert module_0.triangle_area(10, 10, 10) == 43.3
 
-# Generated at 2026-10-25 17:20:22.144135
-# Unit test for function triangle_area
+    # Invalid triangle: one side too long
+    assert module_0.triangle_area(1, 2, 10) == -1
 
-# Generated at 2026-10-25 17:20:24.557745
-# Unit test for function triangle_area
+    # Degenerate triangle: sum equals third side
+    assert module_0.triangle_area(1, 2, 3) == -1
+    assert module_0.triangle_area(3, 1, 2) == -1
 
-# Generated at 2026-10-25 17:20:26.972355
-# Unit test for function triangle_area
+    # Invalid triangle with zero side
+    assert module_0.triangle_area(0, 1, 1) == -1
 
-# Generated at 2026-10-25 17:20:29.386852
-# Unit test for function triangle_area
+    # Scalene triangle
+    assert module_0.triangle_area(4, 5, 6) == 9.92
 
-# Generated at 2026-10-25 17:20:31.800919
-# Unit test for function triangle_area
+    print("All tests passed!")
 
-# Generated at 2026-10-25 17:20:34.215231
-# Unit test for function triangle_area
 
-# Generated at 2026-10-25 17:20:36.633277
-# Unit test for function triangle_area
+if __name__ == "__main__":
+    test_triangle_area()

@@ -17,9 +17,9 @@ def test_case_0():
     int_4 = 4
     var_4 = module_0.get_max_triples(int_4)
     assert var_4 == 1
-    int_5 = 6
+    int_5 = 5
     var_5 = module_0.get_max_triples(int_5)
-    assert var_5 == 4
-    int_6 = 8
+    assert var_5 == 1
+    int_6 = 6
     var_6 = module_0.get_max_triples(int_6)
-    assert var_6 == 11
+    assert var_6 == 4

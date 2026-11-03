@@ -7,21 +7,22 @@ import pytest
 from f081 import numerical_letter_grade
 
 
-def test_all_branches():
+def test_all_grade_branches():
+    """Cover every branch of the if/elif chain, in order."""
     grades = [
-        4.0,   # A+
-        3.9,   # A  (> 3.7)
-        3.5,   # A- (> 3.3)
-        3.1,   # B+ (> 3.0)
-        2.8,   # B  (> 2.7)
-        2.5,   # B- (> 2.3)
-        2.1,   # C+ (> 2.0)
-        1.8,   # C  (> 1.7)
-        1.5,   # C- (> 1.3)
-        1.1,   # D+ (> 1.0)
-        0.8,   # D  (> 0.7)
-        0.3,   # D- (> 0.0)
-        0.0,   # E  (else)
+        4.0,   # == 4.0        -> A+
+        3.8,   # > 3.7         -> A
+        3.5,   # > 3.3         -> A-
+        3.2,   # > 3.0         -> B+
+        2.9,   # > 2.7         -> B
+        2.5,   # > 2.3         -> B-
+        2.2,   # > 2.0         -> C+
+        1.9,   # > 1.7         -> C
+        1.5,   # > 1.3         -> C-
+        1.2,   # > 1.0         -> D+
+        0.9,   # > 0.7         -> D
+        0.5,   # > 0.0         -> D-
+        0.0,   # else          -> E
     ]
     expected = [
         "A+", "A", "A-", "B+", "B", "B-",
@@ -29,7 +30,7 @@ def test_all_branches():
     ]
     result = numerical_letter_grade(grades)
     assert result == expected
-    # boundary checks: values exactly at thresholds fall to the next lower grade
+    # Boundary checks: values exactly at a threshold fall to the next lower grade
     assert numerical_letter_grade([3.7]) == ["A-"]
     assert numerical_letter_grade([3.3]) == ["B+"]
     assert numerical_letter_grade([3.0]) == ["B"]
@@ -42,12 +43,28 @@ def test_all_branches():
     assert numerical_letter_grade([0.7]) == ["D-"]
 
 
-def test_empty_input():
+def test_empty_input_returns_empty_list():
     assert numerical_letter_grade([]) == []
 
 
-def test_input_not_mutated():
-    grades = [4.0, 0.0]
-    original = list(grades)
-    numerical_letter_grade(grades)
-    assert grades == original
+@pytest.mark.parametrize(
+    "gpa, expected",
+    [
+        (4.0, "A+"),
+        (3.75, "A"),
+        (3.4, "A-"),
+        (3.1, "B+"),
+        (2.8, "B"),
+        (2.4, "B-"),
+        (2.1, "C+"),
+        (1.8, "C"),
+        (1.4, "C-"),
+        (1.1, "D+"),
+        (0.8, "D"),
+        (0.1, "D-"),
+        (0.0, "E"),
+        (-1.0, "E"),
+    ],
+)
+def test_single_grade_parametrized(gpa, expected):
+    assert numerical_letter_grade([gpa]) == [expected]

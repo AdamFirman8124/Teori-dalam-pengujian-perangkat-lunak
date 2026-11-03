@@ -2,87 +2,60 @@
 import f077 as module_0
 
 def test_case_0():
-    int_0 = 0
+    int_0 = 1
     var_0 = module_0.iscube(int_0)
     assert var_0 is True
-    int_1 = 1
+    int_1 = 8
     var_1 = module_0.iscube(int_1)
     assert var_1 is True
-    int_2 = 8
+    int_2 = 27
     var_2 = module_0.iscube(int_2)
     assert var_2 is True
-    int_3 = 27
+    int_3 = 64
     var_3 = module_0.iscube(int_3)
     assert var_3 is True
-    int_4 = 64
+    int_4 = 125
     var_4 = module_0.iscube(int_4)
     assert var_4 is True
-    int_5 = 125
+    int_5 = 1000000
     var_5 = module_0.iscube(int_5)
     assert var_5 is True
-    int_6 = 1000
+    int_6 = -1
     var_6 = module_0.iscube(int_6)
     assert var_6 is True
-    int_7 = 1728
+    int_7 = -8
     var_7 = module_0.iscube(int_7)
     assert var_7 is True
-    int_8 = -1
+    int_8 = -27
     var_8 = module_0.iscube(int_8)
     assert var_8 is True
-    int_9 = -8
+    int_9 = -64
     var_9 = module_0.iscube(int_9)
     assert var_9 is True
-    int_10 = -27
+    int_10 = -125
     var_10 = module_0.iscube(int_10)
     assert var_10 is True
-    int_11 = 2
+    int_11 = 0
     var_11 = module_0.iscube(int_11)
-    assert var_11 is False
-    int_12 = 3
+    assert var_11 is True
+    int_12 = 2
     var_12 = module_0.iscube(int_12)
     assert var_12 is False
-    int_13 = 4
+    int_13 = 3
     var_13 = module_0.iscube(int_13)
     assert var_13 is False
-    int_14 = 7
+    int_14 = 10
     var_14 = module_0.iscube(int_14)
     assert var_14 is False
-    int_15 = 9
+    int_15 = 100
     var_15 = module_0.iscube(int_15)
     assert var_15 is False
-    int_16 = 26
+    int_16 = 180
     var_16 = module_0.iscube(int_16)
     assert var_16 is False
-    int_17 = 28
+    int_17 = -2
     var_17 = module_0.iscube(int_17)
     assert var_17 is False
-    int_18 = 63
+    int_18 = 999999
     var_18 = module_0.iscube(int_18)
     assert var_18 is False
-    int_19 = 65
-    var_19 = module_0.iscube(int_19)
-    assert var_19 is False
-    int_20 = 124
-    var_20 = module_0.iscube(int_20)
-    assert var_20 is False
-    int_21 = 126
-    var_21 = module_0.iscube(int_21)
-    assert var_21 is False
-    int_22 = -2
-    var_22 = module_0.iscube(int_22)
-    assert var_22 is False
-    int_23 = -9
-    var_23 = module_0.iscube(int_23)
-    assert var_23 is False
-    int_24 = 100
-    var_24 = int_24 ** int_12
-    var_25 = module_0.iscube(var_24)
-    assert var_25 is True
-    var_26 = int_24 ** int_12
-    var_27 = var_26 + int_1
-    var_28 = module_0.iscube(var_27)
-    assert var_28 is False
-    var_29 = int_24 ** int_12
-    var_30 = var_29 - int_1
-    var_31 = module_0.iscube(var_30)
-    assert var_31 is False

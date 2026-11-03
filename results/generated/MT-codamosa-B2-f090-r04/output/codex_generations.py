@@ -1,46 +1,181 @@
 
 
-# Generated at 2026-10-25 16:04:19.441969
+# Generated at 2026-11-02 19:55:34.720689
 # Unit test for function next_smallest
+def test_next_smallest():
+    # Basic cases
+    assert module_0.next_smallest([1, 2, 3, 4, 5]) == 2
+    assert module_0.next_smallest([5, 4, 3, 2, 1]) == 2
+    assert module_0.next_smallest([3, 1, 4, 1, 5, 9, 2, 6]) == 2
 
-# Generated at 2026-10-25 16:04:21.855585
-# Unit test for function next_smallest
+    # Duplicates in the list
+    assert module_0.next_smallest([1, 1, 2, 2, 3]) == 2
+    assert module_0.next_smallest([2, 2, 2, 2]) is None
+    assert module_0.next_smallest([1, 1, 1, 2]) == 2
 
-# Generated at 2026-10-25 16:04:24.273296
-# Unit test for function next_smallest
+    # Fewer than 2 unique elements -> None
+    assert module_0.next_smallest([]) is None
+    assert module_0.next_smallest([7]) is None
+    assert module_0.next_smallest([7, 7, 7]) is None
 
-# Generated at 2026-10-25 16:04:26.687519
-# Unit test for function next_smallest
+    # Negative numbers and mixed values
+    assert module_0.next_smallest([-5, -1, -3, 0]) == -3
+    assert module_0.next_smallest([-10, 0, 10, -10]) == 0
 
-# Generated at 2026-10-25 16:04:29.102082
-# Unit test for function next_smallest
+    # Floats and mixed ints/floats
+    assert module_0.next_smallest([1.5, 0.5, 2.5]) == 1.5
+    assert module_0.next_smallest([2, 1.5, 3]) == 2
 
-# Generated at 2026-10-25 16:04:31.515290
-# Unit test for function next_smallest
+    # Two unique elements
+    assert module_0.next_smallest([10, 20]) == 20
+    assert module_0.next_smallest([20, 10]) == 10
 
-# Generated at 2026-10-25 16:04:33.928979
-# Unit test for function next_smallest
+    # Large values
+    assert module_0.next_smallest([1000000, 999999, 1000001]) == 1000000
 
-# Generated at 2026-10-25 16:04:36.346762
-# Unit test for function next_smallest
+    print("All tests passed!")
 
-# Generated at 2026-10-25 16:04:38.757551
-# Unit test for function next_smallest
 
-# Generated at 2026-10-25 16:04:41.172201
-# Unit test for function next_smallest
+test_next_smallest()
 
-# Generated at 2026-10-25 16:04:43.589943
+# Generated at 2026-11-02 19:57:14.174108
 # Unit test for function next_smallest
+def test_next_smallest():
+    # Typical case: sorted list
+    assert module_0.next_smallest([1, 2, 3, 4, 5]) == 2
 
-# Generated at 2026-10-25 16:04:46.006221
-# Unit test for function next_smallest
+    # Unsorted list
+    assert module_0.next_smallest([5, 1, 4, 3, 2]) == 2
 
-# Generated at 2026-10-25 16:04:51.448179
-# Unit test for function next_smallest
+    # List with duplicates
+    assert module_0.next_smallest([1, 1, 2, 2, 3]) == 2
 
-# Generated at 2026-10-25 16:04:53.862680
-# Unit test for function next_smallest
+    # Duplicated smallest, unique second smallest
+    assert module_0.next_smallest([1, 1, 1, 2, 3]) == 2
 
-# Generated at 2026-10-25 16:04:56.277200
+    # Empty list -> None
+    assert module_0.next_smallest([]) is None
+
+    # Single element -> None
+    assert module_0.next_smallest([7]) is None
+
+    # All identical elements -> None
+    assert module_0.next_smallest([4, 4, 4, 4]) is None
+
+    # Exactly two unique elements
+    assert module_0.next_smallest([3, 1]) == 3
+    assert module_0.next_smallest([10, 2]) == 10
+
+    # Negative numbers
+    assert module_0.next_smallest([-5, -1, -3]) == -3
+    assert module_0.next_smallest([-1, -1, -2]) == -1
+
+    # Mixed negative and positive
+    assert module_0.next_smallest([0, -2, 5, 3]) == 0
+
+    # Floats mixed with ints
+    assert module_0.next_smallest([1.5, 1, 2]) == 1.5
+
+    # Second smallest is a duplicate of nothing but close values
+    assert module_0.next_smallest([2, 2, 3, 3]) == 3
+
+    # Larger list
+    assert module_0.next_smallest(list(range(100, 0, -1))) == 2
+
+    print("All test_next_smallest tests passed!")
+
+
+if __name__ == "__main__":
+    test_next_smallest()
+
+# Generated at 2026-11-02 19:58:39.284951
 # Unit test for function next_smallest
+def test_next_smallest():
+    # Basic cases
+    assert module_0.next_smallest([1, 2, 3, 4, 5]) == 2
+    assert module_0.next_smallest([5, 1, 4, 3, 2]) == 2
+    assert module_0.next_smallest([]) is None
+    assert module_0.next_smallest([1, 1]) is None
+    assert module_0.next_smallest([1, 2]) == 2
+    assert module_0.next_smallest([10, 20, 30]) == 20
+    assert module_0.next_smallest([5, 5, 5, 5]) is None  # duplicates, only one unique value
+    assert module_0.next_smallest([3, 3, 1, 1, 2, 2]) == 2  # duplicates with multiple unique values
+    assert module_0.next_smallest([2, 1]) == 2
+    assert module_0.next_smallest([1]) is None  # single element
+    assert module_0.next_smallest([-5, -3, -1]) == -3  # negative numbers
+    assert module_0.next_smallest([0, -1, 1]) == 0
+    assert module_0.next_smallest([1.5, 2.5, 3.5]) == 2.5  # floats
+
+    print("All tests passed!")
+
+test_next_smallest()
+
+# Generated at 2026-11-02 20:00:42.679330
+# Unit test for function next_smallest
+def test_next_smallest():
+    # Standard case with distinct elements
+    assert module_0.next_smallest([1, 2, 3, 4, 5]) == 2
+    # Unsorted input
+    assert module_0.next_smallest([5, 1, 4, 3, 2]) == 2
+    # List with duplicates
+    assert module_0.next_smallest([1, 1, 2, 2, 3]) == 2
+    assert module_0.next_smallest([3, 3, 3, 1, 1, 4]) == 3
+    # Duplicates of the smallest value
+    assert module_0.next_smallest([1, 1, 1, 2]) == 2
+    # Negative numbers
+    assert module_0.next_smallest([-5, -1, -3, 0]) == -3
+    assert module_0.next_smallest([-10, -20, -30]) == -20
+    # Two elements
+    assert module_0.next_smallest([2, 1]) == 2
+    assert module_0.next_smallest([7, 7]) is None
+    # All identical elements -> None
+    assert module_0.next_smallest([4, 4, 4]) is None
+    # Single element -> None
+    assert module_0.next_smallest([42]) is None
+    # Empty list -> None
+    assert module_0.next_smallest([]) is None
+    # Mixed positive/negative with duplicates
+    assert module_0.next_smallest([0, -1, 0, 1, -1]) == 0
+    # Floats
+    assert module_0.next_smallest([1.5, 0.5, 2.5]) == 1.5
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_next_smallest()
+
+# Generated at 2026-11-02 20:03:27.284039
+# Unit test for function next_smallest
+def test_next_smallest():
+# nonce:92925c32
+    # Typical case: distinct sorted elements
+    assert module_0.next_smallest([1, 2, 3, 4, 5]) == 2
+    # Unsorted input
+    assert module_0.next_smallest([5, 1, 4, 3, 2]) == 2
+    # Duplicates of the smallest value
+    assert module_0.next_smallest([1, 1, 2, 3]) == 2
+    # Duplicates throughout, second unique smallest
+    assert module_0.next_smallest([2, 2, 1, 1, 3]) == 2
+    # Negative numbers
+    assert module_0.next_smallest([-1, -2, -3, 0]) == -2
+    assert module_0.next_smallest([-5, -5, -10]) == -5
+    # Only one unique element -> None
+    assert module_0.next_smallest([1]) is None
+    assert module_0.next_smallest([3, 3, 3]) is None
+    # All identical duplicates
+    assert module_0.next_smallest([7, 7, 7, 7]) is None
+    # Empty list -> None
+    assert module_0.next_smallest([]) is None
+    # Two unique elements
+    assert module_0.next_smallest([10, 20]) == 20
+    assert module_0.next_smallest([20, 10]) == 20
+    # Mixed positives, negatives, and duplicates
+    assert module_0.next_smallest([0, -3, 5, -3, 2]) == -3
+    # Floats included
+    assert module_0.next_smallest([1.5, 0.5, 2.5]) == 1.5
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_next_smallest()

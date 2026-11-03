@@ -8,29 +8,26 @@ from f012 import longest
 
 
 def test_longest_empty_list_returns_none():
+    """Covers lines 6-7: the empty-list branch returns None."""
     assert longest([]) is None
 
 
-def test_longest_single_element():
-    assert longest(["abc"]) == "abc"
+def test_longest_single_string_returns_it():
+    """Covers lines 9-12 with a single-element list."""
+    assert longest(["hello"]) == "hello"
 
 
-def test_longest_returns_first_of_equal_lengths():
-    assert longest(["aa", "bb", "c"]) == "aa"
+def test_longest_returns_longest_string():
+    """Covers lines 9-12: maxlen computed and matching string returned."""
+    assert longest(["a", "abc", "ab"]) == "abc"
 
 
-def test_longest_skips_shorter_strings_before_match():
-    # exercises the False branch of `if len(s) == maxlen` before the True branch
-    assert longest(["a", "bb", "ccc", "dd"]) == "ccc"
+def test_longest_returns_first_on_tie():
+    """Covers lines 10-12: the first string of maximal length is returned."""
+    assert longest(["ab", "cd", "e"]) == "ab"
 
 
-def test_longest_with_empty_strings():
-    assert longest(["", ""]) == ""
-    assert longest(["", "x"]) == "x"
-
-
-def test_longest_does_not_mutate_input(monkeypatch):
-    data = ["a", "bbb", "cc"]
-    snapshot = list(data)
-    assert longest(data) == "bbb"
-    assert data == snapshot
+def test_longest_returns_none_for_empty_and_value_for_nonempty():
+    """Both branches of line 6 exercised in one flow."""
+    assert longest([]) is None
+    assert longest(["x", "yy"]) == "yy"

@@ -2,41 +2,46 @@
 import f037 as module_0
 
 def test_case_0():
-    str_0 = '4a:8XNz{iW&oS8CiS@p'
-    list_0 = []
-    var_0 = module_0.sort_even(list_0)
-    assert var_0 == []
-    var_1 = module_0.sort_even(list_0)
-    assert var_1 == []
-    list_1 = [str_0, str_0, str_0]
-    var_2 = module_0.sort_even(list_0)
-    assert var_2 == []
-    list_2 = [str_0, list_1]
-    var_3 = module_0.sort_even(list_2)
-    assert var_3 == ['4a:8XNz{iW&oS8CiS@p', ['4a:8XNz{iW&oS8CiS@p', '4a:8XNz{iW&oS8CiS@p', '4a:8XNz{iW&oS8CiS@p']]
-    var_4 = module_0.sort_even(list_2)
-    assert var_4 == ['4a:8XNz{iW&oS8CiS@p', ['4a:8XNz{iW&oS8CiS@p', '4a:8XNz{iW&oS8CiS@p', '4a:8XNz{iW&oS8CiS@p']]
-    var_5 = module_0.sort_even(list_1)
-    assert var_5 == ['4a:8XNz{iW&oS8CiS@p', '4a:8XNz{iW&oS8CiS@p', '4a:8XNz{iW&oS8CiS@p']
-    var_6 = module_0.sort_even(list_1)
-    assert var_6 == ['4a:8XNz{iW&oS8CiS@p', '4a:8XNz{iW&oS8CiS@p', '4a:8XNz{iW&oS8CiS@p']
-    list_3 = [str_0]
-    var_7 = module_0.sort_even(list_3)
-    assert var_7 == ['4a:8XNz{iW&oS8CiS@p']
-    var_8 = module_0.sort_even(list_3)
-    assert var_8 == ['4a:8XNz{iW&oS8CiS@p']
-    var_9 = module_0.sort_even(list_3)
-    assert var_9 == ['4a:8XNz{iW&oS8CiS@p']
-
-def test_case_1():
-    list_0 = []
-    var_0 = module_0.sort_even(list_0)
-    assert var_0 == []
-    var_1 = module_0.sort_even(list_0)
-    assert var_1 == []
-    var_2 = module_0.sort_even(list_0)
-    assert var_2 == []
-    var_3 = module_0.sort_even(list_0)
-    assert var_3 == []
-    var_4 = module_0.sort_even(list_0)
-    assert var_4 == []
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = [int_0, int_1, int_2]
+    var_0 = module_0.sort_even(int_3)
+    assert var_0 == [1, 2, 3]
+    int_4 = 5
+    int_5 = -5
+    int_6 = 9
+    int_7 = 0
+    int_8 = 123
+    int_9 = -10
+    int_10 = [int_4, int_2, int_5, int_1, int_2, int_2, int_6, int_7, int_8, int_0, int_9]
+    var_1 = module_0.sort_even(int_10)
+    assert var_1 == [-10, 3, -5, 2, 3, 3, 5, 0, 9, 1, 123]
+    int_11 = 8
+    int_12 = -5
+    int_13 = 4
+    int_14 = -1
+    int_15 = [int_4, int_11, int_12, int_13, int_0, int_14]
+    var_2 = module_0.sort_even(int_15)
+    assert var_2 == [-5, 8, 1, 4, 5, -1]
+    int_16 = [int_13, int_0, int_2, int_1, int_1, int_4]
+    var_3 = module_0.sort_even(int_16)
+    assert var_3 == [2, 1, 3, 2, 4, 5]
+    var_4 = []
+    var_5 = module_0.sort_even(var_4)
+    assert var_5 == []
+    int_17 = [int_4]
+    var_6 = module_0.sort_even(int_17)
+    assert var_6 == [5]
+    int_18 = [int_2, int_0, int_1]
+    var_7 = module_0.sort_even(int_18)
+    assert var_7 == [2, 1, 3]
+    int_19 = [int_1, int_0, int_1, int_0]
+    var_8 = module_0.sort_even(int_19)
+    assert var_8 == [2, 1, 2, 1]
+    int_20 = 100
+    int_21 = 200
+    int_22 = 300
+    int_23 = [int_2, int_20, int_0, int_21, int_1, int_22]
+    var_9 = module_0.sort_even(int_23)
+    assert var_9 == [1, 100, 2, 200, 3, 300]

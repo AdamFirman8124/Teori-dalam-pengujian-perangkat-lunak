@@ -2,47 +2,71 @@
 import f099 as module_0
 
 def test_case_0():
-    str_0 = '0'
+    str_0 = '10'
     var_0 = module_0.closest_integer(str_0)
-    assert var_0 == 0
-    str_1 = '.51'
+    assert var_0 == 10
+    str_1 = '15.3'
     var_1 = module_0.closest_integer(str_1)
-    assert var_1 == 5
-    assert var_1 == 1
-    str_2 = '-4.49'
+    assert var_1 == 15
+    str_2 = '15.7'
     var_2 = module_0.closest_integer(str_2)
-    assert var_2 == 5
-    assert var_2 == -4
-    str_3 = '2.5000'
+    assert var_2 == 16
+    str_3 = '14.5'
     var_3 = module_0.closest_integer(str_3)
-    assert var_3 == 3
-
-def test_case_1():
-    str_0 = '2.5'
-    var_0 = module_0.closest_integer(str_0)
-    assert var_0 == 3
-
-def test_case_2():
-    str_0 = '0'
-    var_0 = module_0.closest_integer(str_0)
-    assert var_0 == 0
-    str_1 = '.51'
-    var_1 = module_0.closest_integer(str_1)
-    assert var_1 == 5
-    assert var_1 == 1
-    str_2 = '-4.49'
-    var_2 = module_0.closest_integer(str_2)
-    assert var_2 == 5
-    assert var_2 == -4
-    var_3 = module_0.closest_integer(str_1)
-    assert var_3 == 5
-    assert var_3 == 1
-    str_3 = '-2.5000'
-    var_4 = module_0.closest_integer(str_3)
+    assert var_3 == 15
+    str_4 = '2.5'
+    var_4 = module_0.closest_integer(str_4)
     assert var_4 == 3
-    assert var_4 == -3
-
-def test_case_3():
-    str_0 = '0'
-    var_0 = module_0.closest_integer(str_0)
-    assert var_0 == 0
+    str_5 = '0.5'
+    var_5 = module_0.closest_integer(str_5)
+    assert var_5 == 1
+    str_6 = '-14.5'
+    var_6 = module_0.closest_integer(str_6)
+    assert var_6 == 15
+    assert var_6 == -15
+    str_7 = '-2.5'
+    var_7 = module_0.closest_integer(str_7)
+    assert var_7 == 3
+    assert var_7 == -3
+    str_8 = '-0.5'
+    var_8 = module_0.closest_integer(str_8)
+    assert var_8 == 1
+    assert var_8 == -1
+    str_9 = '-15.7'
+    var_9 = module_0.closest_integer(str_9)
+    assert var_9 == 16
+    assert var_9 == -16
+    str_10 = '-15.3'
+    var_10 = module_0.closest_integer(str_10)
+    assert var_10 == 15
+    assert var_10 == -15
+    str_11 = '10.50'
+    var_11 = module_0.closest_integer(str_11)
+    assert var_11 == 11
+    str_12 = '10.500'
+    var_12 = module_0.closest_integer(str_12)
+    assert var_12 == 11
+    str_13 = '-10.50'
+    var_13 = module_0.closest_integer(str_13)
+    assert var_13 == 11
+    assert var_13 == -11
+    str_14 = '10.0'
+    var_14 = module_0.closest_integer(str_14)
+    assert var_14 == 10
+    str_15 = '-10.0'
+    var_15 = module_0.closest_integer(str_15)
+    assert var_15 == 10
+    assert var_15 == -10
+    str_16 = '0.4'
+    var_16 = module_0.closest_integer(str_16)
+    assert var_16 == 0
+    str_17 = '-0.4'
+    var_17 = module_0.closest_integer(str_17)
+    assert var_17 == 0
+    str_18 = '1.5'
+    var_18 = module_0.closest_integer(str_18)
+    assert var_18 == 2
+    str_19 = '-1.5'
+    var_19 = module_0.closest_integer(str_19)
+    assert var_19 == 2
+    assert var_19 == -2

@@ -1,118 +1,120 @@
 
 
-# Generated at 2026-10-24 21:20:22.500199
-# Unit test for function is_nested
-
-# Generated at 2026-10-24 21:20:24.921066
-# Unit test for function is_nested
-
-# Generated at 2026-10-24 21:20:27.336562
-# Unit test for function is_nested
-
-# Generated at 2026-10-24 21:20:28.653517
+# Generated at 2026-11-03 03:28:09.860009
 # Unit test for function is_nested
 def test_is_nested():
-    # Valid nested subsequences -> True
+    # A nested pattern like [[]] requires at least two matched pairs
+    assert module_0.is_nested('[[]]') == True
+    assert module_0.is_nested('[]]]]]]][[[[[]') == False
+    assert module_0.is_nested('[][]') == False
+    assert module_0.is_nested('[]') == False
+    assert module_0.is_nested('[][][[]') == True
+    assert module_0.is_nested('[[][]') == True
+    assert module_0.is_nested('[[[[') == False
+    assert module_0.is_nested(']]][[[') == False
+    assert module_0.is_nested('[]][[]') == True
+    assert module_0.is_nested('[[]][[') == True
+    assert module_0.is_nested('') == False
+    assert module_0.is_nested('][') == False
+
+# Generated at 2026-11-03 03:30:05.984070
+# Unit test for function is_nested
+def test_is_nested():
+    # Nested bracket patterns
     assert module_0.is_nested('[[]]') == True
     assert module_0.is_nested('[[][]]') == True
     assert module_0.is_nested('[[]][[') == True
+    assert module_0.is_nested('[[][][') == True
+    assert module_0.is_nested('][[]]') == True
 
-    # Flat / unmatched -> False
+    # Non-nested patterns
     assert module_0.is_nested('[]') == False
     assert module_0.is_nested('[][]') == False
+    assert module_0.is_nested('[]]') == False
+    assert module_0.is_nested('[[') == False
+    assert module_0.is_nested('') == False
+
+    # Longer mixed sequences
     assert module_0.is_nested('[]]]]]]][[[[[]') == False
-    assert module_0.is_nested('[[[]])') == False if False else True  # placeholder removed below
+    assert module_0.is_nested('[[[[[[[[[') == False
+    assert module_0.is_nested(']]]]]]]]]]') == False
 
-    # Edge cases
-    assert module_0.is_nested('') == False          # empty string
-    assert module_0.is_nested('[') == False         # no closing bracket
-    assert module_0.is_nested(']') == False         # no opening bracket
-    assert module_0.is_nested('[[[') == False       # closings missing
-    assert module_0.is_nested(']]]') == False       # openings missing
-    assert module_0.is_nested('[[[[') == False      # no pairs at all
-    assert module_0.is_nested('[[') == False        # only one possible pair, no nesting
-
-    print("All tests passed.")
-
-test_is_nested()
-
-# Generated at 2026-10-24 21:20:29.973531
+# Generated at 2026-11-03 03:32:06.212958
 # Unit test for function is_nested
 def test_is_nested():
-    # Valid nested subsequences -> True
+    # Nested brackets -> True
     assert module_0.is_nested('[[]]') == True
     assert module_0.is_nested('[[][]]') == True
     assert module_0.is_nested('[[]][[') == True
+    assert module_0.is_nested('[[[]]]') == True
+    assert module_0.is_nested('[[[]]][[]]') == True
 
-    # Flat / unmatched -> False
+    # No nesting -> False
     assert module_0.is_nested('[]') == False
     assert module_0.is_nested('[][]') == False
     assert module_0.is_nested('[]]]]]]][[[[[]') == False
-    assert module_0.is_nested('[[[]])') == False if False else True  # placeholder removed below
+    assert module_0.is_nested('[]][[') == False
 
     # Edge cases
-    assert module_0.is_nested('') == False          # empty string
-    assert module_0.is_nested('[') == False         # no closing bracket
-    assert module_0.is_nested(']') == False         # no opening bracket
-    assert module_0.is_nested('[[[') == False       # closings missing
-    assert module_0.is_nested(']]]') == False       # openings missing
-    assert module_0.is_nested('[[[[') == False      # no pairs at all
-    assert module_0.is_nested('[[') == False        # only one possible pair, no nesting
+    assert module_0.is_nested('') == False
+    assert module_0.is_nested('[') == False
+    assert module_0.is_nested(']') == False
+    assert module_0.is_nested('[[[') == False
+    assert module_0.is_nested(']]]') == False
 
-    print("All tests passed.")
-
-test_is_nested()
-
-# Generated at 2026-10-24 21:20:31.409501
+# Generated at 2026-11-03 03:34:02.635822
 # Unit test for function is_nested
 def test_is_nested():
-    # Valid nested subsequences -> True
+    # A simple nested pair
     assert module_0.is_nested('[[]]') == True
-    assert module_0.is_nested('[[][]]') == True
-    assert module_0.is_nested('[[]][[') == True
-
-    # Flat / unmatched -> False
-    assert module_0.is_nested('[]') == False
+    # No nesting: two separate pairs
     assert module_0.is_nested('[][]') == False
+    # Single pair, no nesting
+    assert module_0.is_nested('[]') == False
+    # Empty string
+    assert module_0.is_nested('') == False
+    # Nested inside larger brackets
+    assert module_0.is_nested('[[][]]') == True
+    # Deeply nested
+    assert module_0.is_nested('[[[[]]]]') == True
+    # Nested plus unclosed opening brackets
+    assert module_0.is_nested('[[]][[') == True
+    # Only one match possible
+    assert module_0.is_nested('[[]') == False
+    # Extra closings on the left, no nesting overall
     assert module_0.is_nested('[]]]]]]][[[[[]') == False
-    assert module_0.is_nested('[[[]])') == False if False else True  # placeholder removed below
+    # Trailing closings with a nested section
+    assert module_0.is_nested('[]]]]]]]]]]') == False
+    # Nested section after a simple pair
+    assert module_0.is_nested('[][][[]]') == True
+    # Only closing brackets
+    assert module_0.is_nested(']]]]') == False
+    # Only opening brackets
+    assert module_0.is_nested('[[[[') == False
 
-    # Edge cases
-    assert module_0.is_nested('') == False          # empty string
-    assert module_0.is_nested('[') == False         # no closing bracket
-    assert module_0.is_nested(']') == False         # no opening bracket
-    assert module_0.is_nested('[[[') == False       # closings missing
-    assert module_0.is_nested(']]]') == False       # openings missing
-    assert module_0.is_nested('[[[[') == False      # no pairs at all
-    assert module_0.is_nested('[[') == False        # only one possible pair, no nesting
-
-    print("All tests passed.")
-
-test_is_nested()
-
-# Generated at 2026-10-24 21:20:32.744072
+# Generated at 2026-11-03 03:36:20.976161
 # Unit test for function is_nested
 def test_is_nested():
-    # Valid nested subsequences -> True
+    # Nested patterns should return True
     assert module_0.is_nested('[[]]') == True
+    assert module_0.is_nested('[]]]]]]][[[[[]') == False
+    assert module_0.is_nested('[][]') == False
+    assert module_0.is_nested('[]') == False
     assert module_0.is_nested('[[][]]') == True
     assert module_0.is_nested('[[]][[') == True
+    assert module_0.is_nested('[][') == False
+    assert module_0.is_nested('[[[]]') == True
+    assert module_0.is_nested('[]][[]') == False
+    assert module_0.is_nested('[[[]]]') == True
+    assert module_0.is_nested('[[]') == True
+    assert module_0.is_nested('[[') == False
+    assert module_0.is_nested(']]') == False
+    assert module_0.is_nested('') == False
+    assert module_0.is_nested('[[[[]]]]') == True
+    assert module_0.is_nested('][') == False
 
-    # Flat / unmatched -> False
-    assert module_0.is_nested('[]') == False
-    assert module_0.is_nested('[][]') == False
-    assert module_0.is_nested('[]]]]]]][[[[[]') == False
-    assert module_0.is_nested('[[[]])') == False if False else True  # placeholder removed below
+    print("All test cases passed!")
 
-    # Edge cases
-    assert module_0.is_nested('') == False          # empty string
-    assert module_0.is_nested('[') == False         # no closing bracket
-    assert module_0.is_nested(']') == False         # no opening bracket
-    assert module_0.is_nested('[[[') == False       # closings missing
-    assert module_0.is_nested(']]]') == False       # openings missing
-    assert module_0.is_nested('[[[[') == False      # no pairs at all
-    assert module_0.is_nested('[[') == False        # only one possible pair, no nesting
 
-    print("All tests passed.")
-
-test_is_nested()
+if __name__ == "__main__":
+    test_is_nested()

@@ -23,9 +23,9 @@ def test_case_0():
     int_6 = 6
     var_6 = module_0.fibfib(int_6)
     assert var_6 == 7
-    int_7 = 10
+    int_7 = 7
     var_7 = module_0.fibfib(int_7)
-    assert var_7 == 81
-
-def test_case_1():
-    pass
+    assert var_7 == 13
+    int_8 = 8
+    var_8 = module_0.fibfib(int_8)
+    assert var_8 == 24

@@ -2,16 +2,50 @@
 import f151 as module_0
 
 def test_case_0():
-    int_0 = 1
-    int_1 = [int_0, int_0, int_0, int_0, int_0, int_0]
-    var_0 = module_0.double_the_difference(int_1)
-    assert var_0 == 10
-    assert var_0 == 6
-
-def test_case_1():
-    int_0 = 1
-    int_1 = 2
-    int_2 = [int_0, int_1, int_1, int_1]
-    var_0 = module_0.double_the_difference(int_2)
-    assert var_0 == 10
-    assert var_0 == 1
+    var_0 = []
+    var_1 = module_0.double_the_difference(var_0)
+    assert var_1 == 0
+    int_0 = 5
+    int_1 = 4
+    int_2 = [int_0, int_1]
+    var_2 = module_0.double_the_difference(int_2)
+    assert var_2 == 25
+    float_0 = 0.1
+    float_1 = 0.2
+    float_2 = 0.3
+    float_3 = [float_0, float_1, float_2]
+    var_3 = module_0.double_the_difference(float_3)
+    assert var_3 == 0
+    int_3 = -10
+    int_4 = -20
+    int_5 = -30
+    int_6 = [int_3, int_4, int_5]
+    var_4 = module_0.double_the_difference(int_6)
+    assert var_4 == 0
+    int_7 = -1
+    int_8 = -2
+    int_9 = 8
+    int_10 = [int_7, int_8, int_9]
+    var_5 = module_0.double_the_difference(int_10)
+    assert var_5 == 0
+    int_11 = 3
+    var_6 = [float_1, int_11, int_0]
+    var_7 = module_0.double_the_difference(var_6)
+    assert var_7 == 34
+    int_12 = 1
+    int_13 = 7
+    int_14 = [int_12, int_11, int_0, int_13]
+    var_8 = module_0.double_the_difference(int_14)
+    assert var_8 == 84
+    int_15 = 2
+    int_16 = 6
+    int_17 = [int_15, int_1, int_16]
+    var_9 = module_0.double_the_difference(int_17)
+    assert var_9 == 0
+    float_4 = 1.5
+    float_5 = 2.5
+    var_10 = [float_4, int_11, float_5]
+    var_11 = module_0.double_the_difference(var_10)
+    assert var_11 == 9
+    str_0 = 'All tests passed!'
+    var_12 = print(str_0)

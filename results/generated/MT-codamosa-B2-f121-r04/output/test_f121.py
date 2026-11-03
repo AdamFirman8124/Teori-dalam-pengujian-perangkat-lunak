@@ -2,54 +2,53 @@
 import f121 as module_0
 
 def test_case_0():
-    var_0 = []
-    var_1 = module_0.solution(var_0)
-    assert var_1 == 0
-    int_0 = 5
-    int_1 = 8
-    int_2 = 7
-    int_3 = 1
-    int_4 = [int_0, int_1, int_2, int_3]
-    var_2 = module_0.solution(int_4)
-    assert var_2 == 12
-    int_5 = 2
-    int_6 = 3
-    int_7 = 4
-    int_8 = [int_3, int_5, int_6, int_7, int_0]
-    var_3 = module_0.solution(int_8)
-    assert var_3 == 9
-    int_9 = [int_3, int_5, int_6]
-    var_4 = module_0.solution(int_9)
-    assert var_4 == 4
-    int_10 = [int_5, int_3]
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = [int_0, int_1, int_2]
+    var_0 = module_0.solution(int_3)
+    assert var_0 == 4
+    int_4 = [int_2, int_2, int_2, int_2, int_2]
+    var_1 = module_0.solution(int_4)
+    assert var_1 == 9
+    int_5 = 30
+    int_6 = 13
+    int_7 = 24
+    int_8 = 321
+    int_9 = [int_5, int_6, int_7, int_8]
+    var_2 = module_0.solution(int_9)
+    assert var_2 == 0
+    var_3 = []
+    var_4 = module_0.solution(var_3)
+    assert var_4 == 0
+    int_10 = [int_0]
     var_5 = module_0.solution(int_10)
-    assert var_5 == 0
-    int_11 = [int_5, int_6, int_7]
+    assert var_5 == 1
+    int_11 = [int_1]
     var_6 = module_0.solution(int_11)
     assert var_6 == 0
-    int_12 = 6
-    int_13 = [int_5, int_7, int_12]
-    var_7 = module_0.solution(int_13)
-    assert var_7 == 0
-    int_14 = [int_5, int_3, int_7, int_6, int_12, int_0]
-    var_8 = module_0.solution(int_14)
+    int_12 = 5
+    int_13 = 0
+    int_14 = -4
+    int_15 = [int_12, int_13, int_14, int_0, int_2]
+    var_7 = module_0.solution(int_15)
+    assert var_7 == 8
+    int_16 = [int_1, int_1, int_1, int_1]
+    var_8 = module_0.solution(int_16)
     assert var_8 == 0
-    int_15 = [int_3]
-    var_9 = module_0.solution(int_15)
-    assert var_9 == 1
-    int_16 = [int_5]
-    var_10 = module_0.solution(int_16)
-    assert var_10 == 0
-    int_17 = 0
-    int_18 = [int_17, int_3, int_17, int_3, int_17]
-    var_11 = module_0.solution(int_18)
-    assert var_11 == 0
-    int_19 = -1
-    int_20 = -2
+    int_17 = [int_13, int_0, int_13, int_0, int_13]
+    var_9 = module_0.solution(int_17)
+    assert var_9 == 0
+    int_18 = [int_0, int_0, int_0, int_0, int_0]
+    var_10 = module_0.solution(int_18)
+    assert var_10 == 3
+    int_19 = -3
+    int_20 = -3
     int_21 = -3
-    int_22 = -4
-    int_23 = -5
-    int_24 = [int_19, int_20, int_21, int_22, int_23]
-    var_12 = module_0.solution(int_24)
-    assert var_12 == 9
-    assert var_12 == -9
+    int_22 = [int_19, int_20, int_21]
+    var_11 = module_0.solution(int_22)
+    assert var_11 == 6
+    assert var_11 == -6
+
+def test_case_1():
+    pass

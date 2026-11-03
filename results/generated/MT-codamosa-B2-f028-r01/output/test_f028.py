@@ -2,9 +2,33 @@
 import f028 as module_0
 
 def test_case_0():
-    str_0 = 'Hello'
-    str_1 = ' '
-    str_2 = 'world'
-    str_3 = [str_0, str_1, str_2]
-    str_4 = module_0.concatenate(str_3)
-    assert str_4 == 'Hello world'
+    var_0 = []
+    str_0 = module_0.concatenate(var_0)
+    assert str_0 == ''
+    str_1 = 'a'
+    str_2 = [str_1]
+    str_3 = module_0.concatenate(str_2)
+    assert str_3 == 'a'
+    str_4 = 'b'
+    str_5 = 'c'
+    str_6 = [str_1, str_4, str_5]
+    str_7 = module_0.concatenate(str_6)
+    assert str_7 == 'abc'
+    str_8 = 'hello'
+    str_9 = ' '
+    str_10 = 'world'
+    str_11 = [str_8, str_9, str_10]
+    str_12 = module_0.concatenate(str_11)
+    assert str_12 == 'hello world'
+    str_13 = ''
+    str_14 = 'abc'
+    str_15 = [str_13, str_14, str_13]
+    str_16 = module_0.concatenate(str_15)
+    assert str_16 == 'abc'
+    str_17 = 'x'
+    str_18 = 'y'
+    str_19 = 'z'
+    str_20 = 'w'
+    str_21 = [str_17, str_18, str_19, str_20]
+    str_22 = module_0.concatenate(str_21)
+    assert str_22 == 'xyzw'

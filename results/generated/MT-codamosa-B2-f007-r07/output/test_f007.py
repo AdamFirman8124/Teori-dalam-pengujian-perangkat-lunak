@@ -2,20 +2,51 @@
 import f007 as module_0
 
 def test_case_0():
-    str_0 = '+(\x0b2'
-    str_1 = '&&y{O.U dFOCX*yf~jI'
-    list_0 = [str_0, str_1]
-    list_1 = module_0.filter_by_substring(list_0, str_0)
-    assert list_1 == ['+(\x0b2']
-    list_2 = []
-    str_2 = '$@Jp\\aNmv>'
-    list_3 = module_0.filter_by_substring(list_2, str_2)
+    str_0 = 'apple'
+    str_1 = 'banana'
+    str_2 = 'grape'
+    str_3 = [str_0, str_1, str_2]
+    str_4 = 'an'
+    list_0 = module_0.filter_by_substring(str_3, str_4)
+    assert list_0 == ['banana']
+    str_5 = 'apricot'
+    str_6 = [str_0, str_1, str_5]
+    str_7 = 'ap'
+    list_1 = module_0.filter_by_substring(str_6, str_7)
+    assert list_1 == ['apple', 'apricot']
+    str_8 = [str_0, str_1, str_2]
+    str_9 = 'zzz'
+    list_2 = module_0.filter_by_substring(str_8, str_9)
+    assert list_2 == []
+    var_0 = []
+    str_10 = 'abc'
+    list_3 = module_0.filter_by_substring(var_0, str_10)
     assert list_3 == []
-    list_4 = module_0.filter_by_substring(list_2, str_2)
-    assert list_4 == []
-    str_3 = ''
-    list_5 = module_0.filter_by_substring(list_2, str_3)
-    assert list_5 == []
-    str_4 = 'ofWqdZ7dDC;:'
-    list_6 = module_0.filter_by_substring(list_3, str_4)
-    assert list_6 == []
+    str_11 = [str_0, str_1]
+    str_12 = ''
+    list_4 = module_0.filter_by_substring(str_11, str_12)
+    assert list_4 == ['apple', 'banana']
+    str_13 = [str_0, str_1]
+    list_5 = module_0.filter_by_substring(str_13, str_0)
+    assert list_5 == ['apple']
+    str_14 = 'Apple'
+    str_15 = [str_14, str_0]
+    list_6 = module_0.filter_by_substring(str_15, str_0)
+    assert list_6 == ['apple']
+    str_16 = 'a'
+    str_17 = 'b'
+    str_18 = [str_16, str_17]
+    list_7 = module_0.filter_by_substring(str_18, str_10)
+    assert list_7 == []
+    str_19 = 'xxaxx'
+    str_20 = 'xxbxx'
+    str_21 = [str_19, str_20, str_19]
+    list_8 = module_0.filter_by_substring(str_21, str_16)
+    assert list_8 == ['xxaxx', 'xxaxx']
+    str_22 = 'abcd'
+    str_23 = 'abcde'
+    str_24 = [str_10, str_22, str_23]
+    list_9 = module_0.filter_by_substring(str_24, str_10)
+    assert list_9 == ['abc', 'abcd', 'abcde']
+    str_25 = 'All tests passed!'
+    var_1 = print(str_25)

@@ -2,89 +2,178 @@
 import f092 as module_0
 
 def test_case_0():
-    int_0 = 2
-    int_1 = 3
-    int_2 = 5
+    int_0 = 5
+    int_1 = 2
+    int_2 = 7
     var_0 = module_0.any_int(int_0, int_1, int_2)
     assert var_0 is True
     var_1 = module_0.any_int(int_2, int_0, int_1)
     assert var_1 is True
-    var_2 = module_0.any_int(int_0, int_2, int_1)
-    assert var_2 is True
-    int_3 = -2
-    int_4 = 0
-    var_3 = module_0.any_int(int_3, int_0, int_4)
-    assert var_3 is True
+    int_3 = 3
+    int_4 = -2
     int_5 = 1
-    int_6 = 4
-    var_4 = module_0.any_int(int_5, int_0, int_6)
-    assert var_4 is False
-    var_5 = module_0.any_int(int_4, int_4, int_5)
+    var_2 = module_0.any_int(int_3, int_4, int_5)
+    assert var_2 is True
+    int_6 = -1
+    int_7 = -2
+    int_8 = -3
+    var_3 = module_0.any_int(int_6, int_7, int_8)
+    assert var_3 is True
+    int_9 = 0
+    var_4 = module_0.any_int(int_9, int_9, int_9)
+    assert var_4 is True
+    var_5 = module_0.any_int(int_3, int_1, int_1)
     assert var_5 is False
-    var_6 = module_0.any_int(int_0, int_1, int_2)
+    var_6 = module_0.any_int(int_5, int_5, int_5)
     assert var_6 is False
-    assert var_6 is True
-    str_0 = '2'
-    var_7 = module_0.any_int(str_0, int_1, int_2)
+    int_10 = 10
+    int_11 = 4
+    var_7 = module_0.any_int(int_10, int_11, int_0)
     assert var_7 is False
+    float_0 = 3.6
+    int_12 = -2
+    var_8 = module_0.any_int(float_0, int_12, int_1)
+    assert var_8 is False
+    var_9 = module_0.any_int(int_1, float_0, int_0)
+    assert var_9 is False
+    str_0 = '3'
+    var_10 = module_0.any_int(str_0, int_1, int_5)
+    assert var_10 is False
+    var_11 = None
+    var_12 = module_0.any_int(int_3, var_11, int_5)
+    assert var_12 is False
+    int_13 = [int_5]
+    var_13 = module_0.any_int(int_13, int_1, int_3)
+    assert var_13 is False
+    bool_0 = True
+    var_14 = module_0.any_int(bool_0, bool_0, int_1)
+    assert var_14 is True
+    bool_1 = True
+    bool_2 = True
+    var_15 = module_0.any_int(bool_1, bool_2, int_3)
+    assert var_15 is False
 
 def test_case_1():
-    int_0 = 1
+    int_0 = 5
     int_1 = 2
-    int_2 = 3
+    int_2 = 7
     var_0 = module_0.any_int(int_0, int_1, int_2)
     assert var_0 is True
-    var_1 = module_0.any_int(int_0, int_2, int_1)
+    int_3 = 3
+    int_4 = 1
+    var_1 = module_0.any_int(int_3, int_1, int_4)
     assert var_1 is True
-    var_2 = module_0.any_int(int_2, int_0, int_1)
+    int_5 = 10
+    var_2 = module_0.any_int(int_5, int_0, int_0)
     assert var_2 is True
-    int_3 = 4
-    var_3 = module_0.any_int(int_0, int_1, int_3)
-    assert var_3 is False
-    var_4 = module_0.any_int(int_0, int_1, int_2)
-    assert var_4 is False
-    assert var_4 is True
-    str_0 = '2'
-    var_5 = module_0.any_int(int_0, str_0, int_2)
-    assert var_5 is False
-    var_6 = None
-    var_7 = module_0.any_int(int_0, int_1, var_6)
-    assert var_7 is False
-    int_4 = 0
-    var_8 = module_0.any_int(int_4, int_4, int_4)
-    assert var_8 is True
-    int_5 = -1
     int_6 = -2
-    int_7 = -3
-    var_9 = module_0.any_int(int_5, int_6, int_7)
-    assert var_9 is True
+    var_3 = module_0.any_int(int_3, int_6, int_4)
+    assert var_3 is True
+    int_7 = 0
+    var_4 = module_0.any_int(int_7, int_7, int_7)
+    assert var_4 is True
+    int_8 = -1
+    int_9 = -1
+    var_5 = module_0.any_int(int_8, int_7, int_9)
+    assert var_5 is True
+    var_6 = module_0.any_int(int_3, int_1, int_1)
+    assert var_6 is False
+    var_7 = module_0.any_int(int_1, int_1, int_1)
+    assert var_7 is False
+    var_8 = module_0.any_int(int_4, int_0, int_5)
+    assert var_8 is False
+    float_0 = 1.5
+    var_9 = module_0.any_int(float_0, int_1, int_3)
+    assert var_9 is False
+    float_1 = 2.5
+    var_10 = module_0.any_int(int_4, float_1, int_3)
+    assert var_10 is False
+    float_2 = 3.5
+    var_11 = module_0.any_int(int_4, int_1, float_2)
+    assert var_11 is False
+    float_3 = 4.0
+    var_12 = module_0.any_int(float_0, float_1, float_3)
+    assert var_12 is False
+    str_0 = '3'
+    var_13 = module_0.any_int(str_0, int_1, int_4)
+    assert var_13 is False
+    str_1 = '2'
+    var_14 = module_0.any_int(int_4, str_1, int_3)
+    assert var_14 is False
+    var_15 = module_0.any_int(int_4, int_1, str_0)
+    assert var_15 is False
+    var_16 = None
+    var_17 = module_0.any_int(var_16, int_1, int_3)
+    assert var_17 is False
+    int_10 = [int_4]
+    var_18 = module_0.any_int(int_10, int_1, int_3)
+    assert var_18 is False
+    str_2 = 'All tests passed!'
+    var_19 = print(str_2)
 
 def test_case_2():
-    int_0 = 2
-    int_1 = 3
-    int_2 = 5
+    int_0 = 5
+    int_1 = 2
+    int_2 = 7
     var_0 = module_0.any_int(int_0, int_1, int_2)
     assert var_0 is True
-    var_1 = module_0.any_int(int_2, int_0, int_1)
-    assert var_1 is True
-    var_2 = module_0.any_int(int_0, int_2, int_1)
+    int_3 = 3
+    var_1 = module_0.any_int(int_3, int_1, int_1)
+    assert var_1 is False
+    int_4 = 1
+    var_2 = module_0.any_int(int_1, int_3, int_4)
     assert var_2 is True
-    int_3 = 1
-    int_4 = 4
-    var_3 = module_0.any_int(int_3, int_0, int_4)
-    assert var_3 is False
-    int_5 = -2
-    var_4 = module_0.any_int(int_5, int_2, int_1)
+    var_3 = module_0.any_int(int_4, int_4, int_1)
+    assert var_3 is True
+    int_5 = 10
+    int_6 = 4
+    int_7 = 6
+    var_4 = module_0.any_int(int_5, int_6, int_7)
     assert var_4 is True
-    int_6 = 0
-    var_5 = module_0.any_int(int_6, int_6, int_6)
+    int_8 = 15
+    int_9 = 30
+    var_5 = module_0.any_int(int_8, int_8, int_9)
     assert var_5 is True
-    var_6 = module_0.any_int(int_0, int_1, int_2)
-    assert var_6 is False
+    int_10 = 0
+    var_6 = module_0.any_int(int_10, int_10, int_10)
     assert var_6 is True
+    var_7 = module_0.any_int(int_10, int_0, int_0)
+    assert var_7 is True
+    int_11 = -1
+    int_12 = -2
+    int_13 = -3
+    var_8 = module_0.any_int(int_11, int_12, int_13)
+    assert var_8 is True
+    int_14 = -1
+    var_9 = module_0.any_int(int_14, int_0, int_6)
+    assert var_9 is True
+    int_15 = -1
+    int_16 = -2
+    var_10 = module_0.any_int(int_15, int_16, int_10)
+    assert var_10 is False
+    float_0 = 3.5
+    var_11 = module_0.any_int(float_0, int_1, int_0)
+    assert var_11 is False
+    var_12 = module_0.any_int(int_1, float_0, int_0)
+    assert var_12 is False
+    var_13 = module_0.any_int(int_1, int_3, int_0)
+    assert var_13 is False
+    assert var_13 is True
     str_0 = '2'
-    var_7 = module_0.any_int(str_0, int_1, int_2)
-    assert var_7 is False
-    var_8 = None
-    var_9 = module_0.any_int(int_0, var_8, int_2)
-    assert var_9 is False
+    var_14 = module_0.any_int(str_0, int_3, int_0)
+    assert var_14 is False
+    str_1 = '3'
+    var_15 = module_0.any_int(int_1, str_1, int_0)
+    assert var_15 is False
+    str_2 = '5'
+    var_16 = module_0.any_int(int_1, int_3, str_2)
+    assert var_16 is False
+    var_17 = None
+    var_18 = module_0.any_int(var_17, int_4, int_4)
+    assert var_18 is False
+    int_17 = [int_4]
+    var_19 = module_0.any_int(int_17, int_1, int_3)
+    assert var_19 is False
+    bool_0 = True
+    var_20 = module_0.any_int(bool_0, bool_0, int_1)
+    assert var_20 is True

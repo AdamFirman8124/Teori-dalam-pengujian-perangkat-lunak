@@ -6,48 +6,65 @@ def test_case_0():
     var_1 = module_0.move_one_ball(var_0)
     assert var_1 is True
     int_0 = 1
-    int_1 = [int_0]
-    var_2 = module_0.move_one_ball(int_1)
+    int_1 = 2
+    int_2 = 3
+    int_3 = 4
+    int_4 = 5
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    var_2 = module_0.move_one_ball(int_5)
     assert var_2 is True
-    int_2 = 5
-    int_3 = [int_2]
-    var_3 = module_0.move_one_ball(int_3)
+    int_6 = 7
+    int_7 = [int_6]
+    var_3 = module_0.move_one_ball(int_7)
     assert var_3 is True
-    int_4 = 2
-    int_5 = 3
-    int_6 = 4
-    int_7 = [int_0, int_4, int_5, int_6]
-    var_4 = module_0.move_one_ball(int_7)
+    int_8 = [int_2, int_3, int_4, int_0, int_1]
+    var_4 = module_0.move_one_ball(int_8)
     assert var_4 is True
-    int_8 = [int_0, int_0, int_0]
-    var_5 = module_0.move_one_ball(int_8)
+    int_9 = [int_4, int_0, int_1, int_2, int_3]
+    var_5 = module_0.move_one_ball(int_9)
     assert var_5 is True
-    int_9 = [int_6, int_0, int_4, int_5]
-    var_6 = module_0.move_one_ball(int_9)
-    assert var_6 is True
-    int_10 = [int_5, int_6, int_2, int_0, int_4]
-    var_7 = module_0.move_one_ball(int_10)
+    int_10 = [int_1, int_0, int_2, int_4, int_3]
+    var_6 = module_0.move_one_ball(int_10)
+    assert var_6 is False
+    int_11 = [int_2, int_3, int_0, int_0, int_1]
+    var_7 = module_0.move_one_ball(int_11)
+    assert var_7 is False
     assert var_7 is True
-    int_11 = [int_4, int_0]
-    var_8 = module_0.move_one_ball(int_11)
+    int_12 = [int_0, int_0, int_1, int_2]
+    var_8 = module_0.move_one_ball(int_12)
     assert var_8 is True
-    int_12 = [int_4, int_0, int_4]
-    var_9 = module_0.move_one_ball(int_12)
-    assert var_9 is True
-    int_13 = [int_0, int_5, int_4]
-    var_10 = module_0.move_one_ball(int_13)
-    assert var_10 is False
-    int_14 = [int_5, int_4, int_0]
-    var_11 = module_0.move_one_ball(int_14)
-    assert var_11 is False
-    int_15 = [int_6, int_5, int_4, int_0]
-    var_12 = module_0.move_one_ball(int_15)
-    assert var_12 is False
-    int_16 = [int_5, int_2, int_6, int_0, int_4]
-    var_13 = module_0.move_one_ball(int_16)
+    int_13 = [int_4, int_3, int_2, int_1, int_0]
+    var_9 = module_0.move_one_ball(int_13)
+    assert var_9 is False
+    int_14 = [int_1, int_0]
+    var_10 = module_0.move_one_ball(int_14)
+    assert var_10 is True
+    int_15 = [int_0, int_1]
+    var_11 = module_0.move_one_ball(int_15)
+    assert var_11 is True
+    int_16 = -3
+    int_17 = -2
+    int_18 = -1
+    int_19 = -5
+    int_20 = -4
+    int_21 = [int_16, int_17, int_18, int_19, int_20]
+    var_12 = module_0.move_one_ball(int_21)
+    assert var_12 is True
+    int_22 = -1
+    int_23 = -3
+    int_24 = -2
+    int_25 = [int_22, int_23, int_24]
+    var_13 = module_0.move_one_ball(int_25)
     assert var_13 is False
+    assert var_13 is True
+    int_26 = [int_1, int_2, int_3, int_4, int_0]
+    var_14 = module_0.move_one_ball(int_26)
+    assert var_14 is True
+    int_27 = [int_6, int_6, int_6, int_6]
+    var_15 = module_0.move_one_ball(int_27)
+    assert var_15 is True
+    str_0 = 'All test cases passed!'
+    var_16 = print(str_0)
 
 def test_case_1():
-    var_0 = []
-    var_1 = module_0.move_one_ball(var_0)
-    assert var_1 is True
+    pass

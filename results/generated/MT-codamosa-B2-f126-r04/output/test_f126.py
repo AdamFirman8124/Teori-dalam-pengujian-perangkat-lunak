@@ -2,55 +2,57 @@
 import f126 as module_0
 
 def test_case_0():
-    int_0 = 5
-    int_1 = [int_0]
-    var_0 = module_0.is_sorted(int_1)
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = 4
+    int_4 = 5
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    var_0 = module_0.is_sorted(int_5)
     assert var_0 is True
-    int_2 = 1
-    int_3 = 2
-    int_4 = 3
-    int_5 = 4
-    int_6 = [int_2, int_3, int_4, int_5, int_0]
+    int_6 = [int_0, int_1, int_1, int_2]
     var_1 = module_0.is_sorted(int_6)
     assert var_1 is True
-    int_7 = 6
-    int_8 = [int_2, int_3, int_4, int_5, int_0, int_7]
-    var_2 = module_0.is_sorted(int_8)
+    int_7 = [int_0, int_0, int_1, int_1, int_2]
+    var_2 = module_0.is_sorted(int_7)
     assert var_2 is True
-    int_9 = 7
-    int_10 = [int_2, int_3, int_4, int_5, int_0, int_7, int_9]
-    var_3 = module_0.is_sorted(int_10)
+    int_8 = [int_0, int_0]
+    var_3 = module_0.is_sorted(int_8)
     assert var_3 is True
-    var_4 = []
-    var_5 = module_0.is_sorted(var_4)
-    assert var_5 is True
-    int_11 = [int_2]
-    var_6 = module_0.is_sorted(int_11)
+    int_9 = [int_0]
+    var_4 = module_0.is_sorted(int_9)
+    assert var_4 is True
+    var_5 = []
+    var_6 = module_0.is_sorted(var_5)
     assert var_6 is True
-    int_12 = [int_2, int_2]
-    var_7 = module_0.is_sorted(int_12)
-    assert var_7 is True
-    int_13 = [int_2, int_3, int_3, int_4, int_4, int_5]
-    var_8 = module_0.is_sorted(int_13)
-    assert var_8 is True
-    int_14 = [int_2, int_4, int_3, int_5, int_0]
-    var_9 = module_0.is_sorted(int_14)
+    int_10 = [int_4, int_3, int_2, int_1, int_0]
+    var_7 = module_0.is_sorted(int_10)
+    assert var_7 is False
+    int_11 = [int_0, int_2, int_1]
+    var_8 = module_0.is_sorted(int_11)
+    assert var_8 is False
+    int_12 = [int_1, int_1, int_0]
+    var_9 = module_0.is_sorted(int_12)
     assert var_9 is False
-    int_15 = [int_2, int_4, int_3, int_5, int_0, int_7, int_9]
-    var_10 = module_0.is_sorted(int_15)
+    int_13 = [int_0, int_0, int_0]
+    var_10 = module_0.is_sorted(int_13)
     assert var_10 is False
-    int_16 = [int_4, int_3, int_2]
-    var_11 = module_0.is_sorted(int_16)
+    int_14 = [int_0, int_1, int_1, int_1, int_2]
+    var_11 = module_0.is_sorted(int_14)
     assert var_11 is False
-    int_17 = [int_3, int_2]
-    var_12 = module_0.is_sorted(int_17)
+    int_15 = [int_0, int_1, int_2, int_2, int_2, int_3]
+    var_12 = module_0.is_sorted(int_15)
     assert var_12 is False
-    int_18 = [int_2, int_3, int_3, int_3, int_4, int_5]
-    var_13 = module_0.is_sorted(int_18)
+    int_16 = [int_0, int_1, int_1, int_0]
+    var_13 = module_0.is_sorted(int_16)
     assert var_13 is False
-    int_19 = [int_2, int_2, int_2]
-    var_14 = module_0.is_sorted(int_19)
-    assert var_14 is False
-    int_20 = [int_2, int_3, int_4, int_4, int_4, int_4]
-    var_15 = module_0.is_sorted(int_20)
+    int_17 = 10
+    int_18 = 20
+    int_19 = 30
+    int_20 = [int_17, int_18, int_18, int_19]
+    var_14 = module_0.is_sorted(int_20)
+    assert var_14 is True
+    int_21 = 0
+    int_22 = [int_21, int_21, int_21, int_0]
+    var_15 = module_0.is_sorted(int_22)
     assert var_15 is False

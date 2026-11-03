@@ -8,23 +8,42 @@ def test_case_0():
     int_2 = 5
     var_0 = module_0.triangle_area(int_0, int_1, int_2)
     assert var_0 == pytest.approx(6.0, abs=0.01, rel=0.01)
-
-def test_case_1():
-    int_0 = 3
-    int_1 = 4
-    int_2 = 5
-    var_0 = module_0.triangle_area(int_0, int_1, int_2)
-    assert var_0 == pytest.approx(6.0, abs=0.01, rel=0.01)
-    int_3 = 6
-    var_1 = module_0.triangle_area(int_3, int_3, int_3)
-    assert var_1 == pytest.approx(15.59, abs=0.01, rel=0.01)
-    var_2 = module_0.triangle_area(int_1, int_0, int_1)
-    assert var_2 == pytest.approx(5.56, abs=0.01, rel=0.01)
-    int_4 = 1
-    var_3 = module_0.triangle_area(int_4, int_0, int_0)
-    assert var_3 == 1
-    assert var_3 == pytest.approx(1.48, abs=0.01, rel=0.01)
-    int_5 = 7
-    var_4 = module_0.triangle_area(int_0, int_1, int_5)
-    assert var_4 == 1
-    assert var_4 == -1
+    var_1 = module_0.triangle_area(int_2, int_0, int_1)
+    assert var_1 == pytest.approx(6.0, abs=0.01, rel=0.01)
+    int_3 = 2
+    var_2 = module_0.triangle_area(int_3, int_3, int_3)
+    assert var_2 == pytest.approx(1.73, abs=0.01, rel=0.01)
+    int_4 = 6
+    var_3 = module_0.triangle_area(int_2, int_2, int_4)
+    assert var_3 == pytest.approx(12.0, abs=0.01, rel=0.01)
+    int_5 = 8
+    var_4 = module_0.triangle_area(int_1, int_5, int_2)
+    assert var_4 == pytest.approx(8.18, abs=0.01, rel=0.01)
+    float_0 = 1.5
+    float_1 = 2.5
+    var_5 = module_0.triangle_area(float_0, float_1, int_3)
+    assert var_5 == pytest.approx(1.5, abs=0.01, rel=0.01)
+    int_6 = 1
+    int_7 = 10
+    var_6 = module_0.triangle_area(int_6, int_3, int_7)
+    assert var_6 == 1
+    assert var_6 == -1
+    var_7 = module_0.triangle_area(int_6, int_6, int_3)
+    assert var_7 == 1
+    assert var_7 == -1
+    var_8 = module_0.triangle_area(int_7, int_6, int_3)
+    assert var_8 == 1
+    assert var_8 == -1
+    var_9 = module_0.triangle_area(int_3, int_7, int_6)
+    assert var_9 == 1
+    assert var_9 == -1
+    int_8 = 0
+    var_10 = module_0.triangle_area(int_8, int_1, int_2)
+    assert var_10 == 1
+    assert var_10 == -1
+    var_11 = module_0.triangle_area(int_0, int_8, int_2)
+    assert var_11 == 1
+    assert var_11 == -1
+    var_12 = module_0.triangle_area(int_0, int_1, int_8)
+    assert var_12 == 1
+    assert var_12 == -1

@@ -5,39 +5,37 @@ def test_case_0():
     int_0 = 1
     int_1 = 2
     int_2 = 3
-    int_3 = [int_0, int_1, int_2]
-    int_4 = [int_0, int_1, int_2]
-    var_0 = module_0.compare(int_3, int_4)
-    assert var_0 == [0, 0, 0]
-    int_5 = [int_0, int_1, int_2]
-    int_6 = 4
-    int_7 = 5
-    int_8 = 6
-    int_9 = [int_6, int_7, int_8]
-    var_1 = module_0.compare(int_5, int_9)
-    assert var_1 == [3, 3, 3]
-    int_10 = [int_0, int_1, int_2, int_6]
-    int_11 = -4
-    int_12 = [int_0, int_1, int_2, int_11]
-    var_2 = module_0.compare(int_10, int_12)
-    assert var_2 == [0, 0, 0, 8]
-    int_13 = -1
-    int_14 = -2
-    int_15 = -3
-    int_16 = [int_13, int_14, int_15]
-    int_17 = -1
-    int_18 = -2
-    int_19 = -4
-    int_20 = [int_17, int_18, int_19]
-    var_3 = module_0.compare(int_16, int_20)
-    assert var_3 == [0, 0, 1]
-    var_4 = []
-    var_5 = []
-    var_6 = module_0.compare(var_4, var_5)
-    assert var_6 == []
-    int_21 = [int_0, int_1]
-    int_22 = [int_0]
-    var_7 = module_0.compare(int_21, int_22)
-    assert var_7 == [0]
-    str_0 = 'All tests passed!'
-    var_8 = print(str_0)
+    int_3 = 4
+    int_4 = 5
+    int_5 = [int_0, int_1, int_2, int_3, int_4, int_0]
+    int_6 = -2
+    int_7 = [int_0, int_1, int_2, int_3, int_1, int_6]
+    var_0 = module_0.compare(int_5, int_7)
+    assert var_0 == [0, 0, 0, 0, 3, 3]
+    int_8 = 0
+    int_9 = [int_8, int_4, int_8, int_4, int_8, int_4]
+    int_10 = [int_8, int_4, int_8, int_4, int_8, int_4]
+    var_1 = module_0.compare(int_9, int_10)
+    assert var_1 == [0, 0, 0, 0, 0, 0]
+    int_11 = [int_0, int_1, int_2]
+    int_12 = 6
+    int_13 = [int_3, int_4, int_12]
+    var_2 = module_0.compare(int_11, int_13)
+    assert var_2 == [3, 3, 3]
+    int_14 = [int_8, int_8, int_8]
+    int_15 = [int_8, int_8, int_8]
+    var_3 = module_0.compare(int_14, int_15)
+    assert var_3 == [0, 0, 0]
+    int_16 = 10
+    int_17 = [int_16]
+    int_18 = [int_2]
+    var_4 = module_0.compare(int_17, int_18)
+    assert var_4 == [7]
+    int_19 = -1
+    int_20 = -2
+    int_21 = [int_19, int_20]
+    int_22 = -4
+    int_23 = -5
+    int_24 = [int_22, int_23]
+    var_5 = module_0.compare(int_21, int_24)
+    assert var_5 == [3, 3]

@@ -2,100 +2,91 @@
 # asked: {"lines": [150, 153, 154, 155, 156], "branches": [[153, 0], [153, 154], [155, 153], [155, 156]]}
 # gained: {"lines": [150, 153, 154, 155, 156], "branches": [[153, 0], [153, 154], [155, 153], [155, 156]]}
 
-import pytest
+"""Tests covering Register.set_renderfunc in sty/primitive.py (lines 150-156).
 
-from sty import Style
-from sty.primitive import Register
+Note: Register.__setattr__ renders Style attributes via _render_rules, which
+looks up renderfuncs[type(rule)] and invokes it as f1(*rule.args). Therefore
+the fake render functions must accept the rule's unpacked args.
+
+All state mutated by set_renderfunc lives on the instance (renderfuncs is
+created in Register.__init__), so using fresh Register instances per test
+keeps the global sty registers (fg/bg/ef/rs) untouched and no monkeypatching
+or extra cleanup is required.
+"""
+
+from sty.primitive import Register, Style
 from sty.rendertype import RenderType
 
 
+class _DummyRenderType(RenderType):
+    """Custom render type used as a renderfuncs key."""
+
+    def __init__(self, *args):
+        # Shadow the shared class-level 'args' list with per-instance args.
+        self.args = args
+
+
+class _OtherRenderType(RenderType):
+    """A second custom render type."""
+
+    def __init__(self, *args):
+        self.args = args
+
+
+def _render_one(*args):
+    return "<rendered-one>"
+
+
+def _render_two(*args):
+    return "<rendered-two>"
+
+
+def test_set_renderfunc_registers_func_and_rerenders_style_attributes():
+    # Phase 1: register renderfuncs while no Style attribute exists yet.
+    # The update loop runs, but isinstance(val, Style) is False for every
+    # attribute, so only lines 150-155 (False branch) execute here.
+    reg = Register()
+    reg.set_renderfunc(_DummyRenderType, _render_one)
+    reg.set_renderfunc(_OtherRenderType, _render_one)
+    assert reg.renderfuncs == {
+        _DummyRenderType: _render_one,
+        _OtherRenderType: _render_one,
+    }
+
+    # Phase 2: attach a Style attribute; Register.__setattr__ renders it
+    # with the currently registered renderfunc (_render_one).
+    rule = _DummyRenderType(1, 2)
+    reg.mystyle = Style(rule)
+    assert isinstance(reg.mystyle, Style)
+    assert str(reg.mystyle) == "<rendered-one>"
+    assert rule in reg.mystyle.rules
+
+    # A non-Style attribute that must survive the update loop untouched.
+    reg.plain = "untouched"
+    assert reg.plain == "untouched"
+
+    # Phase 3: replace the renderfunc for _DummyRenderType. The already
+    # existing Style attribute must now be re-rendered with the new
+    # function (this executes the isinstance-True branch, line 156).
+    style_before = reg.mystyle
+    reg.set_renderfunc(_DummyRenderType, _render_two)
+
+    assert reg.renderfuncs == {
+        _DummyRenderType: _render_two,
+        _OtherRenderType: _render_one,
+    }
+    assert reg.mystyle is not style_before  # setattr re-created the Style.
+    assert isinstance(reg.mystyle, Style)
+    assert str(reg.mystyle) == "<rendered-two>"
+    assert rule in reg.mystyle.rules
+    assert reg.plain == "untouched"
+
+
 def test_set_renderfunc_without_style_attributes():
-    register = Register()
-    func = lambda *args, **kwargs: "rendered"
+    """set_renderfunc also works when the register holds no Style attrs."""
+    reg = Register()
+    reg.set_renderfunc(_DummyRenderType, _render_one)
 
-    register.set_renderfunc(RenderType, func)
-
-    assert register.renderfuncs == {RenderType: func}
-    assert register.renderfuncs[RenderType] is func
-    assert not any(
-        isinstance(getattr(register, name), Style) for name in dir(register)
-    )
-    assert register.is_muted is False
-
-
-def test_set_renderfunc_rerenders_existing_style_attributes():
-    class DummyRule(RenderType):
-        def __init__(self, *args):
-            self.args = args
-
-        def __iter__(self):
-            return iter(self.args)
-
-    def old_func(*args, **kwargs):
-        return "OLD"
-
-    def new_func(*args, **kwargs):
-        return "NEW"
-
-    register = Register()
-    register.set_renderfunc(DummyRule, old_func)
-    register.custom_style = Style(DummyRule(7), value="placeholder")
-    register.plain_value = "keep-me"
-
-    assert str(register.custom_style) == "OLD"
-    assert isinstance(register.custom_style, Style)
-
-    register.set_renderfunc(DummyRule, new_func)
-
-    assert register.renderfuncs == {DummyRule: new_func}
-    assert register.renderfuncs[DummyRule] is new_func
-    assert isinstance(register.custom_style, Style)
-    assert str(register.custom_style) == "NEW"
-    assert len(register.custom_style.rules) == 1
-    assert isinstance(register.custom_style.rules[0], DummyRule)
-    assert register.custom_style.rules[0].args == (7,)
-    assert register.plain_value == "keep-me"
-    assert register.is_muted is False
-
-
-def test_set_renderfunc_resets_only_style_attributes(monkeypatch):
-    register = Register()
-    register.custom_style = Style(value="placeholder")
-    register.plain_value = 123
-
-    original_setattr = Register.__setattr__
-    calls = []
-
-    def counting_setattr(self, name, value):
-        calls.append((name, value))
-        return original_setattr(self, name, value)
-
-    monkeypatch.setattr(Register, "__setattr__", counting_setattr)
-
-    func = lambda *args, **kwargs: "unused"
-    register.set_renderfunc(RenderType, func)
-
-    assert register.renderfuncs[RenderType] is func
-    assert [name for name, value in calls if isinstance(value, Style)] == [
-        "custom_style"
-    ]
-    assert all(name != "plain_value" for name, _ in calls)
-    assert isinstance(register.custom_style, Style)
-    assert register.custom_style.rules == ()
-    assert str(register.custom_style) == ""
-    assert register.plain_value == 123
-
-
-def test_set_renderfunc_on_muted_register_keeps_style_empty():
-    register = Register()
-    register.custom_style = Style(value="placeholder")
-    register.mute()
-
-    func = lambda *args, **kwargs: "unused"
-    register.set_renderfunc(RenderType, func)
-
-    assert register.renderfuncs == {RenderType: func}
-    assert register.is_muted is True
-    assert isinstance(register.custom_style, Style)
-    assert str(register.custom_style) == ""
-    assert register.custom_style.rules == ()
+    assert reg.renderfuncs == {_DummyRenderType: _render_one}
+    # Nothing else on the register was modified by the update loop.
+    assert reg.is_muted is False

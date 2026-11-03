@@ -2,14 +2,29 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
+import pytest
+
 from f054 import same_chars
 
 
-def test_same_chars_returns_true_for_matching_character_sets():
-    assert same_chars("abc", "cba") is True
-    assert same_chars("aabbcc", "abc") is True
-
-
-def test_same_chars_returns_false_for_different_character_sets():
-    assert same_chars("abc", "abd") is False
-    assert same_chars("", "a") is False
+@pytest.mark.parametrize(
+    "s0, s1, expected",
+    [
+        # Same set of characters in different order -> True
+        ("eabcdzzzz", "dddzzzzzzzddeddabc", True),
+        ("abcd", "abcd", True),
+        ("aabb", "ab", True),          # duplicates collapse to same set
+        # Different sets of characters -> False
+        ("abcd", "d2cbad", False),
+        ("abc", "abd", False),
+        # Empty string edge cases
+        ("", "", True),
+        ("", "a", False),
+        ("a", "", False),
+        # Unicode characters
+        ("héllo", "olléh", True),
+        ("héllo", "hello", False),
+    ],
+)
+def test_same_chars(s0, s1, expected):
+    assert same_chars(s0, s1) is expected

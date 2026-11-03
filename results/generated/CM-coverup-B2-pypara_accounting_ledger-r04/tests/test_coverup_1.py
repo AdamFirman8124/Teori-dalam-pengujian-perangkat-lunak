@@ -2,29 +2,36 @@
 # asked: {"lines": [174, 177, 179, 180, 183, 186], "branches": [[177, 179], [177, 186], [179, 180], [179, 183]]}
 # gained: {"lines": [174, 177, 179, 180, 183, 186], "branches": [[177, 179], [177, 186], [179, 180], [179, 183]]}
 
-import datetime
+from datetime import date
 from decimal import Decimal
 
-from pypara.accounting.ledger import build_general_ledger
 from pypara.accounting.generic import Balance
-from pypara.accounting.journaling import JournalEntry, Posting
+from pypara.accounting.journaling import JournalEntry
+from pypara.accounting.ledger import GeneralLedger, Ledger, build_general_ledger
 from pypara.commons.numbers import Quantity
 from pypara.commons.zeitgeist import DateRange
 
 
-class AccountStub:
-    """Minimal duck-typed implementation of the Account protocol."""
+class MockAccount:
+    """
+    Minimal concrete account satisfying the ``Account`` protocol.
 
-    def __init__(self, code: str, name: str):
+    The code under test only uses accounts as dictionary keys, so default
+    identity-based hashing/equality is sufficient. The test creates no global
+    state (no files, no patches, no singletons), hence no teardown/monkeypatching
+    is required; everything is garbage-collected with the test objects.
+    """
+
+    def __init__(self, code: str, name: str) -> None:
         self._code = code
         self._name = name
 
     @property
-    def code(self):
+    def code(self) -> str:
         return self._code
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name
 
     @property
@@ -40,169 +47,99 @@ class AccountStub:
         return None
 
 
-class _DirectionStub:
-    """Fallback direction object exposing the numeric ``value`` used by Ledger.add."""
-
-    def __init__(self, value: int):
-        self.value = value
-
-    def __repr__(self):
-        return f"_DirectionStub({self.value})"
-
-
-def _direction(value: int):
+def test_build_general_ledger_seeds_initial_balances_and_accumulates_in_period_postings():
     """
-    Returns the library's Direction member with the given numeric value when
-    available, otherwise a stub exposing the same ``value`` attribute.
+    Covers lines 174-186: ledgers are seeded from initial balances, in-period
+    postings are accumulated (creating ledgers on the fly when an account has
+    no opening balance), and out-of-period journal entries are ignored.
     """
-    try:
-        from pypara.accounting.journaling import Direction
-    except ImportError:  # pragma: no cover - defensive
-        Direction = None
+    period = DateRange(date(2024, 1, 1), date(2024, 12, 31))
+    cash = MockAccount("1000", "Cash")
+    sales = MockAccount("4000", "Sales")
+    capital = MockAccount("3000", "Capital")
+    future = MockAccount("9000", "Future")
 
-    if Direction is not None:
-        for member in Direction:
-            if getattr(member, "value", None) == value:
-                return member
+    ## Line 174: seed ledgers from initial balances (only `cash` has one).
+    initial = {cash: Balance(period.since, Quantity(Decimal("100")))}
 
-    return _DirectionStub(value)
+    ## Line 177 (true branch) and line 183: an in-period entry.
+    entry_in_period = JournalEntry(date(2024, 6, 15), "Sale", None)
+    entry_in_period.post(date(2024, 6, 15), cash, Quantity(Decimal("100")))
+    entry_in_period.post(date(2024, 6, 15), sales, Quantity(Decimal("-100")))
 
+    ## Boundary: an entry dated exactly on `period.until` is still included, and
+    ## lines 179-180 create ledgers for accounts without initial balances.
+    entry_on_last_day = JournalEntry(date(2024, 12, 31), "Year-end adjustment", None)
+    entry_on_last_day.post(date(2024, 12, 31), capital, Quantity(Decimal("500")))
+    entry_on_last_day.post(date(2024, 12, 31), cash, Quantity(Decimal("-500")))
 
-DEBIT = _direction(1)
-CREDIT = _direction(-1)
+    ## Line 177 (false branch): an entry outside the period must be filtered out.
+    entry_out_of_period = JournalEntry(date(2025, 1, 15), "Future sale", None)
+    entry_out_of_period.post(date(2025, 1, 15), cash, Quantity(Decimal("50")))
+    entry_out_of_period.post(date(2025, 1, 15), future, Quantity(Decimal("-50")))
 
+    ## Line 186: the general ledger is built and returned.
+    result = build_general_ledger(
+        period, [entry_in_period, entry_on_last_day, entry_out_of_period], initial
+    )
 
-def _make_journal_entry(date: datetime.date, description: str = "test entry") -> JournalEntry:
-    return JournalEntry(date=date, description=description, source=None)
+    ## Postconditions:
+    assert isinstance(result, GeneralLedger)
+    assert result.period == period
 
+    ## Only accounts touched by in-period postings (plus the seeded one) appear;
+    ## the out-of-period entry left no trace whatsoever.
+    assert set(result.ledgers.keys()) == {cash, sales, capital}
+    assert future not in result.ledgers
 
-def _make_posting(journal: JournalEntry, date: datetime.date, account: AccountStub,
-                  direction, amount: Decimal) -> Posting:
-    posting = Posting(journal=journal, date=date, account=account,
-                      direction=direction, amount=amount)
-    journal.postings.append(posting)
-    return posting
-
-
-def test_build_general_ledger_with_initial_balances_and_new_accounts():
-    """
-    Covers all target lines: initial ledger creation (174), journal iteration with
-    period filtering (177), creation of ledgers for unseen accounts (179-180),
-    adding postings (183), and returning the general ledger (186).
-    """
-    since = datetime.date(2023, 1, 1)
-    until = datetime.date(2023, 12, 31)
-    period = DateRange(since=since, until=until)
-
-    cash = AccountStub("100", "Cash")
-    sales = AccountStub("400", "Sales")
-    rent = AccountStub("500", "Rent")
-
-    ## Journal entries: two inside the period, two outside (one before, one after):
-    entry_in_1 = _make_journal_entry(datetime.date(2023, 3, 15))
-    posting_cash_in = _make_posting(entry_in_1, datetime.date(2023, 3, 15), cash,
-                                    DEBIT, Decimal("1000"))
-    posting_sales_in = _make_posting(entry_in_1, datetime.date(2023, 3, 15), sales,
-                                     CREDIT, Decimal("1000"))
-
-    entry_in_2 = _make_journal_entry(datetime.date(2023, 6, 1))
-    posting_rent_in = _make_posting(entry_in_2, datetime.date(2023, 6, 1), rent,
-                                    DEBIT, Decimal("250"))
-
-    entry_before = _make_journal_entry(datetime.date(2022, 12, 31))
-    posting_before = _make_posting(entry_before, datetime.date(2022, 12, 31), cash,
-                                   DEBIT, Decimal("99999"))
-
-    entry_after = _make_journal_entry(datetime.date(2024, 1, 1))
-    posting_after = _make_posting(entry_after, datetime.date(2024, 1, 1), cash,
-                                  DEBIT, Decimal("88888"))
-
-    journal = [entry_before, entry_in_1, entry_in_2, entry_after]
-
-    initial = {cash: Balance(date=since, value=Quantity(Decimal("500")))}
-
-    ledger = build_general_ledger(period, journal, initial)
-
-    ## Postcondition: the returned general ledger carries the requested period:
-    assert ledger.period == period
-
-    ## Postcondition: ledgers exist for the initially-balanced account and for
-    ## accounts seen in in-period postings only:
-    assert set(ledger.ledgers.keys()) == {cash, sales, rent}
-
-    ## Postcondition: the initially-balanced account keeps its opening balance
-    ## and only the in-period posting was added:
-    cash_ledger = ledger.ledgers[cash]
+    ## `cash` ledger was pre-created from the initial balance (line 174)...
+    cash_ledger = result.ledgers[cash]
+    assert isinstance(cash_ledger, Ledger)
     assert cash_ledger.account is cash
-    assert cash_ledger.initial == Balance(date=since, value=Quantity(Decimal("500")))
-    assert [e.posting for e in cash_ledger.entries] == [posting_cash_in]
-    assert cash_ledger.entries[-1].balance == Quantity(Decimal("1500"))
+    assert cash_ledger.initial == Balance(period.since, Quantity(Decimal("100")))
 
-    ## Postcondition: a ledger was created on the fly for the unseen account,
-    ## with a zero opening balance dated at the period start:
-    sales_ledger = ledger.ledgers[sales]
+    ## ...and received both in-period postings (line 183), with debits adding to
+    ## and credits subtracting from the running balance.
+    assert len(cash_ledger.entries) == 2
+    assert cash_ledger.entries[0].posting is entry_in_period.postings[0]
+    assert cash_ledger.entries[0].balance == Quantity(Decimal("200"))
+    assert cash_ledger.entries[1].posting is entry_on_last_day.postings[1]
+    assert cash_ledger.entries[1].balance == Quantity(Decimal("-300"))
+
+    ## `sales` ledger was created on the fly with a zero opening balance (lines 179-180).
+    sales_ledger = result.ledgers[sales]
+    assert isinstance(sales_ledger, Ledger)
     assert sales_ledger.account is sales
-    assert sales_ledger.initial == Balance(date=since, value=Quantity(Decimal("0")))
-    assert [e.posting for e in sales_ledger.entries] == [posting_sales_in]
-    assert sales_ledger.entries[-1].balance == Quantity(Decimal("-1000"))
+    assert sales_ledger.initial == Balance(period.since, Quantity(Decimal(0)))
+    assert len(sales_ledger.entries) == 1
+    assert sales_ledger.entries[0].posting is entry_in_period.postings[1]
+    assert sales_ledger.entries[0].balance == Quantity(Decimal("-100"))
 
-    ## Postcondition: the second in-period entry produced its own ledger:
-    rent_ledger = ledger.ledgers[rent]
-    assert rent_ledger.account is rent
-    assert rent_ledger.initial == Balance(date=since, value=Quantity(Decimal("0")))
-    assert [e.posting for e in rent_ledger.entries] == [posting_rent_in]
-    assert rent_ledger.entries[-1].balance == Quantity(Decimal("250"))
+    ## `capital` ledger was also created on the fly (lines 179-180).
+    capital_ledger = result.ledgers[capital]
+    assert capital_ledger.account is capital
+    assert capital_ledger.initial == Balance(period.since, Quantity(Decimal(0)))
+    assert len(capital_ledger.entries) == 1
+    assert capital_ledger.entries[0].posting is entry_on_last_day.postings[0]
+    assert capital_ledger.entries[0].balance == Quantity(Decimal("500"))
 
-    ## Postcondition: out-of-period postings were filtered out entirely:
-    all_postings = [e.posting for lgr in ledger.ledgers.values() for e in lgr.entries]
-    assert posting_before not in all_postings
-    assert posting_after not in all_postings
-    assert len(all_postings) == 3
+    ## No ledger entry originates from the out-of-period journal entry.
+    assert all(
+        entry.posting.journal is not entry_out_of_period
+        for ledger in result.ledgers.values()
+        for entry in ledger.entries
+    )
 
 
-def test_build_general_ledger_with_initial_balances_only():
+def test_build_general_ledger_with_empty_journal_and_no_initial_balances():
     """
-    Covers the initial-ledger dict comprehension (174) and the return (186) when
-    the journal contributes no in-period postings.
+    Covers lines 174, 177 and 186 with empty inputs: the resulting general
+    ledger must simply be empty.
     """
-    since = datetime.date(2023, 1, 1)
-    until = datetime.date(2023, 12, 31)
-    period = DateRange(since=since, until=until)
+    period = DateRange(date(2024, 1, 1), date(2024, 12, 31))
 
-    cash = AccountStub("100", "Cash")
-    bank = AccountStub("101", "Bank")
+    result = build_general_ledger(period, [], {})
 
-    ## A journal entry entirely outside the period must be ignored:
-    entry_outside = _make_journal_entry(datetime.date(2022, 6, 1))
-    _make_posting(entry_outside, datetime.date(2022, 6, 1), cash,
-                  DEBIT, Decimal("777"))
-
-    initial = {
-        cash: Balance(date=since, value=Quantity(Decimal("100"))),
-        bank: Balance(date=since, value=Quantity(Decimal("200"))),
-    }
-
-    ledger = build_general_ledger(period, [entry_outside], initial)
-
-    assert ledger.period == period
-    assert set(ledger.ledgers.keys()) == {cash, bank}
-    assert ledger.ledgers[cash].initial == Balance(date=since, value=Quantity(Decimal("100")))
-    assert ledger.ledgers[bank].initial == Balance(date=since, value=Quantity(Decimal("200")))
-    ## No in-period postings, so no ledger entries anywhere:
-    assert all(len(lgr.entries) == 0 for lgr in ledger.ledgers.values())
-
-
-def test_build_general_ledger_empty_inputs():
-    """
-    Covers the degenerate case: no initial balances and no journal entries,
-    exercising the generator expression over an empty journal (177) and the
-    return (186).
-    """
-    since = datetime.date(2023, 1, 1)
-    until = datetime.date(2023, 1, 31)
-    period = DateRange(since=since, until=until)
-
-    ledger = build_general_ledger(period, [], {})
-
-    assert ledger.period == period
-    assert ledger.ledgers == {}
+    assert isinstance(result, GeneralLedger)
+    assert result.period == period
+    assert result.ledgers == {}

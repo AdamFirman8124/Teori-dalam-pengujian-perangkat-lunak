@@ -2,64 +2,49 @@
 import f141 as module_0
 
 def test_case_0():
-    str_0 = 'a.dll'
-    var_0 = module_0.file_name_check(str_0)
-    assert var_0 == 'Yes'
-    str_1 = 'abc123.txt'
-    str_2 = 'a.'
-    var_1 = module_0.file_name_check(str_2)
-    assert var_1 == 'No'
-    var_2 = module_0.file_name_check(str_1)
-    assert var_2 == 'No'
-    assert var_2 == 'Yes'
-
-def test_case_1():
-    str_0 = 'abc123.txt'
-    var_0 = module_0.file_name_check(str_0)
-    assert var_0 == 'No'
-    assert var_0 == 'Yes'
-
-def test_case_2():
     str_0 = 'example.txt'
     var_0 = module_0.file_name_check(str_0)
     assert var_0 == 'Yes'
-    str_1 = 'example.exe'
+    str_1 = '1example.dll'
     var_1 = module_0.file_name_check(str_1)
-    assert var_1 == 'Yes'
-    str_2 = 'example.dll'
+    assert var_1 == 'No'
+    str_2 = 's1s2s3s4.dll'
     var_2 = module_0.file_name_check(str_2)
-    assert var_2 == 'Yes'
-    str_3 = 'A.txt'
+    assert var_2 == 'No'
+    str_3 = 'valid.dll'
     var_3 = module_0.file_name_check(str_3)
     assert var_3 == 'Yes'
-    str_4 = 'a123.txt'
+    str_4 = 'valid.exe'
     var_4 = module_0.file_name_check(str_4)
     assert var_4 == 'Yes'
-    str_5 = 'ExAmple123.dll'
+    str_5 = 'this is a valid name.txt'
     var_5 = module_0.file_name_check(str_5)
     assert var_5 == 'Yes'
-    str_6 = 'my-file123.txt'
+    str_6 = 'this is an invalid name.txt'
     var_6 = module_0.file_name_check(str_6)
+    assert var_6 == 'No'
     assert var_6 == 'Yes'
-    str_7 = '1example.dll'
+    str_7 = 'a1b2c3.txt'
     var_7 = module_0.file_name_check(str_7)
-    assert var_7 == 'No'
-
-def test_case_3():
-    str_0 = 'abc123.txt'
-    str_1 = '7Ha'
-    var_0 = module_0.file_name_check(str_1)
-    assert var_0 == 'No'
-    var_1 = module_0.file_name_check(str_1)
-    assert var_1 == 'No'
-    var_2 = module_0.file_name_check(str_0)
-    assert var_2 == 'No'
-    assert var_2 == 'Yes'
-
-def test_case_4():
-    str_0 = 'a.dll'
-    var_0 = module_0.file_name_check(str_0)
-    assert var_0 == 'Yes'
-    str_1 = 'abc1123.txt'
-    var_1 = module_0.file_name_check(str_1)
-    assert var_1 == 'No'
+    assert var_7 == 'Yes'
+    str_8 = 'a1b2c3d4.txt'
+    var_8 = module_0.file_name_check(str_8)
+    assert var_8 == 'No'
+    str_9 = '.txt'
+    var_9 = module_0.file_name_check(str_9)
+    assert var_9 == 'No'
+    str_10 = 'file.pdf'
+    var_10 = module_0.file_name_check(str_10)
+    assert var_10 == 'No'
+    str_11 = 'file.txt.exe'
+    var_11 = module_0.file_name_check(str_11)
+    assert var_11 == 'No'
+    str_12 = '12345.exe'
+    var_12 = module_0.file_name_check(str_12)
+    assert var_12 == 'No'
+    str_13 = 'A.txt'
+    var_13 = module_0.file_name_check(str_13)
+    assert var_13 == 'Yes'
+    str_14 = 'no_extension'
+    var_14 = module_0.file_name_check(str_14)
+    assert var_14 == 'No'

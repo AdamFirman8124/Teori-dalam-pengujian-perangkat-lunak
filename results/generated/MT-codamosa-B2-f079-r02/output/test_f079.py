@@ -14,9 +14,15 @@ def test_case_0():
     int_3 = 5
     var_3 = module_0.decimal_to_binary(int_3)
     assert var_3 == 'db101db'
-    int_4 = 10
+    int_4 = 15
     var_4 = module_0.decimal_to_binary(int_4)
-    assert var_4 == 'db1010db'
-    int_5 = 255
+    assert var_4 == 'db1111db'
+    int_5 = 32
     var_5 = module_0.decimal_to_binary(int_5)
-    assert var_5 == 'db11111111db'
+    assert var_5 == 'db100000db'
+    int_6 = 255
+    var_6 = module_0.decimal_to_binary(int_6)
+    assert var_6 == 'db11111111db'
+    int_7 = 1024
+    var_7 = module_0.decimal_to_binary(int_7)
+    assert var_7 == 'db10000000000db'

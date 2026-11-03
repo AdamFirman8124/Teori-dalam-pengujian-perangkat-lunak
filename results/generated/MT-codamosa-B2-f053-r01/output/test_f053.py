@@ -2,7 +2,23 @@
 import f053 as module_0
 
 def test_case_0():
-    int_0 = 2
-    int_1 = 3
+    int_0 = 1
+    int_1 = 2
     var_0 = module_0.add(int_0, int_1)
-    assert var_0 == 5
+    assert var_0 == 3
+    int_2 = -1
+    int_3 = -2
+    var_1 = module_0.add(int_2, int_3)
+    assert var_1 == 3
+    assert var_1 == -3
+    int_4 = 0
+    var_2 = module_0.add(int_4, int_4)
+    assert var_2 == 0
+    int_5 = -5
+    int_6 = 5
+    var_3 = module_0.add(int_5, int_6)
+    assert var_3 == 0
+    int_7 = 100
+    int_8 = 200
+    var_4 = module_0.add(int_7, int_8)
+    assert var_4 == 300

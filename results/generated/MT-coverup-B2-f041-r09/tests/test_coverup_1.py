@@ -2,9 +2,30 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
-def test_car_race_collision():
-    from f041 import car_race_collision
+import pytest
 
-    assert car_race_collision(3) == 9
-    assert car_race_collision(0) == 0
-    assert car_race_collision(-2) == 4
+from f041 import car_race_collision
+
+
+@pytest.mark.parametrize(
+    "n, expected",
+    [
+        (0, 0),
+        (1, 1),
+        (2, 4),
+        (5, 25),
+        (-3, 9),
+        (10, 100),
+    ],
+)
+def test_car_race_collision_returns_square(n, expected):
+    """car_race_collision must return n squared (line 3 executes on call)."""
+    result = car_race_collision(n)
+    assert result == expected
+    assert result == n ** 2
+
+
+def test_car_race_collision_large_value():
+    """Verify correctness for a larger input as well."""
+    n = 1234
+    assert car_race_collision(n) == n * n

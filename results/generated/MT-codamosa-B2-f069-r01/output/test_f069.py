@@ -20,37 +20,43 @@ def test_case_0():
     int_8 = [int_1]
     var_3 = module_0.search(int_8)
     assert var_3 == 1
-    int_9 = [int_2, int_2]
+    int_9 = [int_2]
     var_4 = module_0.search(int_9)
-    assert var_4 == 2
+    assert var_4 == 1
+    assert var_4 == -1
     int_10 = [int_3, int_3, int_3]
     var_5 = module_0.search(int_10)
     assert var_5 == 3
-    int_11 = [int_0, int_0, int_0, int_0]
+    int_11 = [int_6, int_6, int_6, int_6]
     var_6 = module_0.search(int_11)
-    assert var_6 == 4
-    int_12 = [int_6, int_6, int_6, int_6, int_6]
+    assert var_6 == 1
+    assert var_6 == -1
+    int_12 = [int_2, int_2, int_2, int_2, int_2]
     var_7 = module_0.search(int_12)
-    assert var_7 == 5
-    int_13 = [int_2]
+    assert var_7 == 2
+    int_13 = [int_1, int_1, int_2, int_2, int_2, int_3, int_3, int_3, int_3]
     var_8 = module_0.search(int_13)
-    assert var_8 == 1
-    assert var_8 == -1
-    int_14 = [int_3, int_3]
-    var_9 = module_0.search(int_14)
+    assert var_8 == 3
+    int_14 = 10
+    int_15 = 20
+    int_16 = 30
+    int_17 = [int_14, int_15, int_16]
+    var_9 = module_0.search(int_17)
     assert var_9 == 1
     assert var_9 == -1
-    int_15 = 10
-    int_16 = [int_15]
-    var_10 = module_0.search(int_16)
-    assert var_10 == 1
-    assert var_10 == -1
-    int_17 = [int_1, int_2, int_2]
-    var_11 = module_0.search(int_17)
-    assert var_11 == 2
-    int_18 = [int_1, int_1]
-    var_12 = module_0.search(int_18)
+    int_18 = 100
+    int_19 = [int_18]
+    var_10 = int_19 * int_18
+    var_11 = module_0.search(var_10)
+    assert var_11 == 100
+    int_20 = 7
+    int_21 = 8
+    int_22 = 9
+    int_23 = [int_1, int_20, int_21, int_22]
+    var_12 = module_0.search(int_23)
     assert var_12 == 1
-    int_19 = [int_1, int_1, int_1]
-    var_13 = module_0.search(int_19)
-    assert var_13 == 1
+    str_0 = 'All test cases passed!'
+    var_13 = print(str_0)
+
+def test_case_1():
+    pass

@@ -2,36 +2,59 @@
 import f146 as module_0
 
 def test_case_0():
-    int_0 = 15
-    int_1 = -73
-    int_2 = 14
-    int_3 = -15
+    int_0 = 5
+    int_1 = -2
+    int_2 = 1
+    int_3 = -5
     int_4 = [int_0, int_1, int_2, int_3]
     var_0 = module_0.specialFilter(int_4)
-    assert var_0 == 1
-    int_5 = 33
-    int_6 = -2
-    int_7 = -3
-    int_8 = 45
-    int_9 = 21
-    int_10 = 109
-    int_11 = [int_5, int_6, int_7, int_8, int_9, int_10]
-    var_1 = module_0.specialFilter(int_11)
-    assert var_1 == 2
-    var_2 = []
-    var_3 = module_0.specialFilter(var_2)
-    assert var_3 == 0
-    int_12 = 11
-    int_13 = [int_12]
-    var_4 = module_0.specialFilter(int_13)
-    assert var_4 == 1
-    int_14 = 10
-    int_15 = [int_14]
-    var_5 = module_0.specialFilter(int_15)
+    assert var_0 == 0
+    int_5 = 15
+    int_6 = -73
+    int_7 = 14
+    int_8 = -15
+    int_9 = [int_5, int_6, int_7, int_8]
+    var_1 = module_0.specialFilter(int_9)
+    assert var_1 == 1
+    int_10 = 33
+    int_11 = -2
+    int_12 = -3
+    int_13 = 45
+    int_14 = 21
+    int_15 = 109
+    int_16 = [int_10, int_11, int_12, int_13, int_14, int_15]
+    var_2 = module_0.specialFilter(int_16)
+    assert var_2 == 2
+    int_17 = 43
+    int_18 = -12
+    int_19 = 93
+    int_20 = 125
+    int_21 = 121
+    int_22 = [int_17, int_18, int_19, int_20, int_21, int_15]
+    var_3 = module_0.specialFilter(int_22)
+    assert var_3 == 4
+    int_23 = 71
+    int_24 = -2
+    int_25 = -33
+    int_26 = 75
+    int_27 = 19
+    int_28 = [int_23, int_24, int_25, int_26, int_14, int_27]
+    var_4 = module_0.specialFilter(int_28)
+    assert var_4 == 3
+    int_29 = [int_2]
+    var_5 = module_0.specialFilter(int_29)
     assert var_5 == 0
-    int_16 = 101
-    int_17 = 303
-    int_18 = 505
-    int_19 = [int_16, int_17, int_18]
-    var_6 = module_0.specialFilter(int_19)
-    assert var_6 == 3
+    var_6 = []
+    var_7 = module_0.specialFilter(var_6)
+    assert var_7 == 0
+    int_30 = 10
+    int_31 = [int_30]
+    var_8 = module_0.specialFilter(int_31)
+    assert var_8 == 0
+    int_32 = 13
+    int_33 = 17
+    int_34 = 31
+    int_35 = 39
+    int_36 = [int_32, int_33, int_27, int_34, int_35]
+    var_9 = module_0.specialFilter(int_36)
+    assert var_9 == 5

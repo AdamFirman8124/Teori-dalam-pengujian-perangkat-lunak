@@ -2,103 +2,108 @@
 # asked: {"lines": [68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78], "branches": [[74, 75], [74, 76], [76, 77], [76, 78]]}
 # gained: {"lines": [68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78], "branches": [[74, 75], [74, 76], [76, 77], [76, 78]]}
 
-from pysnooper.utils import get_shortish_repr, normalize_repr, truncate
+"""Tests for pysnooper.utils.get_shortish_repr (lines 68-78).
+
+These tests are pure (no files, no global state, no monkeypatching needed),
+so there is no state to clean up between tests.
+"""
+
+from pysnooper import utils
+
+
+class Unrepresentable(object):
+    def __repr__(self):
+        raise ValueError('nope')
+
+
+class Custom(object):
+    pass
+
+
+class MultiLine(object):
+    def __repr__(self):
+        return 'line1\rline2\nline3\r\n'
 
 
 def test_get_shortish_repr_basic():
-    assert get_shortish_repr(123) == "123"
-    assert get_shortish_repr("hi") == "'hi'"
-    assert get_shortish_repr(None) == "None"
+    """Lines 68, 70, 73, 78: plain repr, no normalization, no truncation."""
+    assert utils.get_shortish_repr('foo') == "'foo'"
 
 
-def test_get_shortish_repr_custom_repr():
-    assert get_shortish_repr(123, custom_repr=[(int, lambda x: "INT!")]) == "INT!"
-    assert get_shortish_repr("hi", custom_repr=[(str, lambda x: "STR!")]) == "STR!"
-    # callable condition
-    assert get_shortish_repr(5, custom_repr=[(lambda x: True, lambda x: "ANY")]) == "ANY"
-    # non-matching condition falls back to repr
-    assert get_shortish_repr(5, custom_repr=[(str, lambda x: "STR!")]) == "5"
+def test_get_shortish_repr_removes_newlines():
+    """Line 73: carriage returns and newlines are stripped from the repr."""
+    result = utils.get_shortish_repr(MultiLine())
+    assert result == 'line1line2line3'
 
 
-def test_get_shortish_repr_repr_failed():
-    class BadRepr:
-        def __repr__(self):
-            raise RuntimeError("boom")
-
-    assert get_shortish_repr(BadRepr()) == "REPR FAILED"
-
-    def boom(item):
-        raise ValueError("boom")
-
-    assert get_shortish_repr(1, custom_repr=[(lambda x: True, boom)]) == "REPR FAILED"
-    assert get_shortish_repr(1, custom_repr=[(int, boom)]) == "REPR FAILED"
+def test_get_shortish_repr_custom_repr_type_condition():
+    """Line 68: get_repr_function picks the custom repr for a matching type."""
+    result = utils.get_shortish_repr(
+        Custom(), custom_repr=((Custom, lambda x: 'CUSTOM!'),))
+    assert result == 'CUSTOM!'
 
 
-def test_get_shortish_repr_strips_newlines():
-    def with_newlines(item):
-        return "a\nb\rc\nd\re"
-
-    assert get_shortish_repr(1, custom_repr=[(lambda x: True, with_newlines)]) == "abcde"
-
-    def with_crlf(item):
-        return "hello\r\nworld"
-
-    assert get_shortish_repr(1, custom_repr=[(lambda x: True, with_crlf)]) == "helloworld"
+def test_get_shortish_repr_custom_repr_callable_condition():
+    """Line 68: custom repr with a plain callable condition."""
+    result = utils.get_shortish_repr(
+        42, custom_repr=((lambda x: x == 42, lambda x: 'FORTY-TWO'),))
+    assert result == 'FORTY-TWO'
 
 
-def test_get_shortish_repr_normalize_false_preserves_address():
-    obj = object()
-    raw = repr(obj).replace("\r", "").replace("\n", "")
-    assert "0x" in raw
-    result = get_shortish_repr(obj)
-    assert result == raw
-    assert "0x" in result
+def test_get_shortish_repr_custom_repr_not_matching():
+    """Line 68: falls back to the builtin repr when no condition matches."""
+    result = utils.get_shortish_repr(
+        'hello', custom_repr=((Custom, lambda x: 'CUSTOM!'),))
+    assert result == "'hello'"
 
 
-def test_get_shortish_repr_normalize_true():
-    obj = object()
-    result = get_shortish_repr(obj, normalize=True)
-    expected = normalize_repr(repr(obj).replace("\r", "").replace("\n", ""))
-    assert result == expected
-    assert "0x" not in result
+def test_get_shortish_repr_failed_repr():
+    """Lines 71-72: a raising repr yields the REPR FAILED placeholder."""
+    assert utils.get_shortish_repr(Unrepresentable()) == 'REPR FAILED'
 
-    def addr_repr(item):
-        return "<MyClass object at 0x12345678>"
 
-    result2 = get_shortish_repr(1, custom_repr=[(lambda x: True, addr_repr)], normalize=True)
-    assert result2 == normalize_repr("<MyClass object at 0x12345678>")
-    assert "0x" not in result2
+def test_get_shortish_repr_failed_repr_with_options():
+    """Lines 71-72 combined with 74-77: failure path is still processed."""
+    result = utils.get_shortish_repr(Unrepresentable(),
+                                     max_length=5, normalize=True)
+    assert result == 'R...D'
+
+
+def test_get_shortish_repr_normalize():
+    """Lines 74-75: memory addresses are removed when normalize is True."""
+    result = utils.get_shortish_repr(Custom(), normalize=True)
+    assert '0x' not in result
+    assert ' at ' not in result
+    assert result.endswith('Custom object>')
+
+
+def test_get_shortish_repr_no_normalize():
+    """Line 74 (False branch): address is kept when normalize is False."""
+    result = utils.get_shortish_repr(Custom())
+    assert '0x' in result
 
 
 def test_get_shortish_repr_max_length():
-    # falsy max_length: no truncation
-    assert get_shortish_repr("hi", max_length=None) == "'hi'"
-    assert get_shortish_repr("hi", max_length=100) == "'hi'"
-    assert get_shortish_repr(123, max_length=0) == "123"
-    # truthy max_length that does not truncate because short enough
-    assert get_shortish_repr("hi", max_length=10) == truncate("'hi'", 10)
-    # truthy max_length that truncates
-    result = get_shortish_repr("1234567890", max_length=7)
-    assert result == truncate("'1234567890'", 7)
-    assert result == "'1...0'"
-    assert len(result) == 7
-    assert "..." in result
+    """Lines 76-77: long reprs are truncated to exactly max_length.
+
+    Note: for a string item, the repr (including the surrounding quotes)
+    is what gets truncated, so the expectation is computed from repr(s).
+    """
+    s = 'abcdefghij' * 10
+    result = utils.get_shortish_repr(s, max_length=25)
+    r = repr(s)
+    assert result == r[:11] + '...' + r[-11:]
+    assert len(result) == 25
 
 
-def test_get_shortish_repr_combined_normalize_and_truncate_and_newlines():
-    def messy(item):
-        return "ab\ncd\r<Obj object at 0xABCDEF1234567890>efghijklmnop"
+def test_get_shortish_repr_max_length_not_needed():
+    """Line 76: max_length set but the repr is already short enough."""
+    assert utils.get_shortish_repr('short', max_length=100) == "'short'"
 
-    raw_stripped = "abcd<Obj object at 0xABCDEF1234567890>efghijklmnop"
-    normalized = normalize_repr(raw_stripped)
-    assert "0x" not in normalized
-    result = get_shortish_repr(
-        1,
-        custom_repr=[(lambda x: True, messy)],
-        normalize=True,
-        max_length=10,
-    )
-    assert result == truncate(normalized, 10)
-    assert len(result) == 10
-    assert "\n" not in result
-    assert "\r" not in result
+
+def test_get_shortish_repr_normalize_and_max_length():
+    """Lines 74-77 combined: repr is normalized first, then truncated."""
+    result = utils.get_shortish_repr(Custom(), normalize=True, max_length=20)
+    assert '0x' not in result
+    assert len(result) <= 20
+    assert result == utils.truncate(utils.normalize_repr(repr(Custom())), 20)

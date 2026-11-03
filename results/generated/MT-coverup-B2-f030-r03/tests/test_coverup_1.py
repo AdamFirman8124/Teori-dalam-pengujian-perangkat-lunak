@@ -2,27 +2,44 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
+"""Tests for f030.get_positive.
+
+These tests execute line 3 (the list comprehension) and cover both
+branches of the `if e > 0` filter, as well as the empty-iteration path.
+The function under test is pure, so no state cleanup/monkeypatching is
+required.
+"""
+
 from f030 import get_positive
 
 
 def test_get_positive_mixed():
-    inp = [1, -2, 3, 0, -5, 4]
-    result = get_positive(inp)
+    """Mixed input exercises the comprehension loop with both branch outcomes
+    of the `e > 0` condition (True for positives, False for negatives/zero)."""
+    result = get_positive([1, -2, 3, 0, 4])
     assert result == [1, 3, 4]
-    # verify input not mutated
-    assert inp == [1, -2, 3, 0, -5, 4]
 
 
-def test_get_positive_empty():
-    result = get_positive([])
-    assert result == []
+def test_get_positive_empty_list():
+    """Empty input covers the path where the comprehension loop body never runs."""
+    assert get_positive([]) == []
 
 
 def test_get_positive_all_non_positive():
-    result = get_positive([-3, -1, 0, -10])
-    assert result == []
+    """All elements fail the `e > 0` condition (only the False branch taken)."""
+    assert get_positive([-1, -5, 0]) == []
 
 
 def test_get_positive_all_positive():
-    result = get_positive([2, 5, 1])
-    assert result == [2, 5, 1]
+    """All elements pass the `e > 0` condition (only the True branch taken)."""
+    assert get_positive([7, 8]) == [7, 8]
+
+
+def test_get_positive_does_not_mutate_input():
+    """Verifies the postcondition that the input list is left unmodified."""
+    original = [1, -2, 3]
+    snapshot = list(original)
+    result = get_positive(original)
+    assert original == snapshot
+    assert result == [1, 3]
+    assert result is not original

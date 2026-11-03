@@ -2,27 +2,41 @@
 import f009 as module_0
 
 def test_case_0():
-    var_0 = []
-    list_0 = module_0.rolling_max(var_0)
-    assert list_0 == []
-    int_0 = 5
-    int_1 = [int_0]
-    list_1 = module_0.rolling_max(int_1)
-    assert list_1 == [5]
-    int_2 = 1
-    int_3 = 3
-    int_4 = 2
-    int_5 = 4
-    int_6 = [int_2, int_3, int_4, int_0, int_5]
-    list_2 = module_0.rolling_max(int_6)
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = 4
+    int_4 = 5
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    list_0 = module_0.rolling_max(int_5)
+    assert list_0 == [1, 2, 3, 4, 5]
+    int_6 = [int_4, int_3, int_2, int_1, int_0]
+    list_1 = module_0.rolling_max(int_6)
+    assert list_1 == [5, 5, 5, 5, 5]
+    int_7 = [int_0, int_2, int_1, int_4, int_3]
+    list_2 = module_0.rolling_max(int_7)
     assert list_2 == [1, 3, 3, 5, 5]
-    int_7 = [int_0, int_5, int_3, int_4, int_2]
-    list_3 = module_0.rolling_max(int_7)
-    assert list_3 == [5, 5, 5, 5, 5]
-    int_8 = -3
-    int_9 = -1
-    int_10 = -4
-    int_11 = 0
-    int_12 = [int_8, int_9, int_10, int_11]
-    list_4 = module_0.rolling_max(int_12)
-    assert list_4 == [-3, -1, -1, 0]
+    var_0 = []
+    list_3 = module_0.rolling_max(var_0)
+    assert list_3 == []
+    int_8 = 7
+    int_9 = [int_8]
+    list_4 = module_0.rolling_max(int_9)
+    assert list_4 == [7]
+    int_10 = [int_1, int_1, int_1]
+    list_5 = module_0.rolling_max(int_10)
+    assert list_5 == [2, 2, 2]
+    int_11 = -3
+    int_12 = -1
+    int_13 = -2
+    int_14 = -5
+    int_15 = [int_11, int_12, int_13, int_14]
+    list_6 = module_0.rolling_max(int_15)
+    assert list_6 == [-3, -1, -1, -1]
+    int_16 = 0
+    int_17 = -1
+    int_18 = [int_16, int_17, int_0, int_16]
+    list_7 = module_0.rolling_max(int_18)
+    assert list_7 == [0, 0, 1, 1]
+    str_0 = 'All tests passed!'
+    var_1 = print(str_0)

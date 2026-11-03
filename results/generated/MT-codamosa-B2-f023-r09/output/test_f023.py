@@ -17,15 +17,20 @@ def test_case_0():
     str_4 = '  '
     int_4 = module_0.strlen(str_4)
     assert int_4 == 2
-    str_5 = 'hÃ©llo'
+    str_5 = 'with\tnewline\n'
     int_5 = module_0.strlen(str_5)
-    assert int_5 == 5
-    assert int_5 == 6
-    str_6 = 'ð\x9f\x99\x82'
+    assert int_5 == 13
+    str_6 = 'unicode: é日本'
     int_6 = module_0.strlen(str_6)
-    assert int_6 == 1
-    assert int_6 == 4
-    int_7 = 1000
-    var_0 = str_1 * int_7
-    int_8 = module_0.strlen(var_0)
-    assert int_8 == 1000
+    assert int_6 == 9
+    assert int_6 == 12
+    str_7 = '1234567890'
+    int_7 = module_0.strlen(str_7)
+    assert int_7 == 10
+    int_8 = 1000
+    var_0 = str_1 * int_8
+    int_9 = module_0.strlen(var_0)
+    assert int_9 == 1000
+    str_8 = 'test'
+    int_10 = module_0.strlen(str_8)
+    assert int_10 == 4

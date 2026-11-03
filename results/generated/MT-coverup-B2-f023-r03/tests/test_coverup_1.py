@@ -2,16 +2,13 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
+import pytest
+
 from f023 import strlen
 
 
-def test_strlen_empty():
-    assert strlen("") == 0
-
-
-def test_strlen_ascii():
+def test_strlen_returns_length_of_string():
     assert strlen("hello") == 5
-
-
-def test_strlen_unicode():
-    assert strlen("héllo 🌍") == 7
+    assert strlen("") == 0
+    assert strlen("a b c") == 5
+    assert strlen("héllo") == 5

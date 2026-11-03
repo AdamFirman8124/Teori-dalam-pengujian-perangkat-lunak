@@ -2,7 +2,61 @@
 import f033 as module_0
 
 def test_case_0():
-    str_0 = '~%\r'
-    list_0 = [str_0, str_0]
-    var_0 = module_0.sort_third(list_0)
-    assert var_0 == ['~%\r', '~%\r']
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = [int_0, int_1, int_2]
+    var_0 = module_0.sort_third(int_3)
+    assert var_0 == [1, 2, 3]
+    int_4 = 5
+    int_5 = 6
+    int_6 = 4
+    int_7 = 8
+    int_8 = 9
+    int_9 = [int_4, int_5, int_2, int_6, int_7, int_8, int_1]
+    var_1 = module_0.sort_third(int_9)
+    assert var_1 == [2, 6, 3, 4, 8, 9, 5]
+    int_10 = [int_4, int_5, int_2, int_6, int_7, int_8, int_1, int_0]
+    var_2 = module_0.sort_third(int_10)
+    assert var_2 == [2, 6, 3, 4, 8, 9, 5, 1]
+    int_11 = 0
+    int_12 = [int_4, int_5, int_2, int_6, int_7, int_8, int_1, int_0, int_11]
+    var_3 = module_0.sort_third(int_12)
+    assert var_3 == [2, 6, 3, 4, 8, 9, 5, 1, 0]
+    var_4 = []
+    var_5 = module_0.sort_third(var_4)
+    assert var_5 == []
+    int_13 = 10
+    int_14 = [int_13]
+    var_6 = module_0.sort_third(int_14)
+    assert var_6 == [10]
+    int_15 = [int_2, int_0]
+    var_7 = module_0.sort_third(int_15)
+    assert var_7 == [3, 1]
+    int_16 = -5
+    int_17 = -3
+    int_18 = [int_16, int_0, int_1, int_17, int_6]
+    var_8 = module_0.sort_third(int_18)
+    assert var_8 == [-5, 1, 2, -3, 4]
+    int_19 = [int_2, int_11, int_11, int_0, int_11, int_11, int_1, int_11, int_11]
+    var_9 = module_0.sort_third(int_19)
+    assert var_9 == [1, 0, 0, 2, 0, 0, 3, 0, 0]
+    int_20 = [int_1, int_1, int_1, int_0, int_0, int_0]
+    var_10 = module_0.sort_third(int_20)
+    assert var_10 == [1, 2, 2, 2, 1, 1]
+    int_21 = [int_4, int_5, int_2, int_6, int_7, int_8, int_1]
+    var_11 = list(int_21)
+    var_12 = module_0.sort_third(int_21)
+    assert var_12 == [2, 6, 3, 4, 8, 9, 5]
+    int_22 = (int_2, int_1, int_0, int_1, int_0, int_2)
+    var_13 = module_0.sort_third(int_22)
+    assert var_13 == [2, 2, 1, 3, 1, 3]
+    int_23 = (int_0, int_1, int_2)
+    var_14 = module_0.sort_third(int_23)
+    assert var_14 == [1, 2, 3]
+    int_24 = 7
+    int_25 = [int_8, int_7, int_24, int_5, int_4, int_6, int_2, int_1, int_0, int_11]
+    var_15 = module_0.sort_third(int_25)
+    assert var_15 == [0, 8, 7, 3, 5, 4, 6, 2, 1, 9]
+    str_0 = 'All tests passed!'
+    var_16 = print(str_0)

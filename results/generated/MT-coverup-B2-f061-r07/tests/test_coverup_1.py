@@ -7,55 +7,41 @@ import pytest
 from f061 import correct_bracketing
 
 
-def test_correct_bracketing_empty_string_returns_true():
+def test_empty_string_returns_true():
+    """Covers lines 3-4 and 11 (loop never runs, depth == 0)."""
     assert correct_bracketing("") is True
 
 
-def test_correct_bracketing_single_pair_returns_true():
+def test_single_open_returns_false():
+    """Covers lines 5-6 (the '(' branch); unclosed '(' leaves depth > 0."""
+    assert correct_bracketing("(") is False
+
+
+def test_single_close_returns_false_early():
+    """Covers lines 8-10 (the else branch and early return False)."""
+    assert correct_bracketing(")") is False
+
+
+def test_balanced_pair_returns_true():
+    """Covers both branches of the if/else and line 11 with depth == 0."""
     assert correct_bracketing("()") is True
 
 
-def test_correct_bracketing_nested_pairs_returns_true():
-    assert correct_bracketing("(()())") is True
-
-
-def test_correct_bracketing_unclosed_open_returns_false():
-    # loop completes with depth > 0 -> final `return depth == 0` is False
-    assert correct_bracketing("(()") is False
-
-
-def test_correct_bracketing_extra_closing_returns_false_early():
-    # depth goes negative on the first char -> early `return False`
+def test_close_before_open_returns_false_early():
+    """Covers the early return False after depth goes negative mid-string."""
     assert correct_bracketing(")(") is False
 
 
-def test_correct_bracketing_negative_depth_short_circuits(monkeypatch):
-    # Verify the early return happens before the rest of the string is consumed.
-    seen = []
-
-    class SpyStr(str):
-        def __iter__(self):
-            for ch in str(self):
-                seen.append(ch)
-                yield ch
-
-    assert correct_bracketing(SpyStr(")abc")) is False
-    assert seen == [")"]
+def test_unclosed_brackets_returns_false_at_end():
+    """Covers line 11 with depth != 0 (loop completes but depth > 0)."""
+    assert correct_bracketing("((") is False
 
 
-def test_correct_bracketing_balanced_with_extra_closing_at_end_returns_false():
-    assert correct_bracketing("())(()") is False
+def test_nested_balanced_returns_true():
+    """Covers repeated execution of both branches with a balanced result."""
+    assert correct_bracketing("(()())") is True
 
 
-@pytest.mark.parametrize(
-    "brackets, expected",
-    [
-        ("(", False),
-        (")", False),
-        ("()()()", True),
-        ("((()))", True),
-        ("(()))", False),
-    ],
-)
-def test_correct_bracketing_parametrized(brackets, expected):
-    assert correct_bracketing(brackets) is expected
+def test_negative_only_at_end_returns_false():
+    """Depth stays non-negative until the final character."""
+    assert correct_bracketing("(()") is False

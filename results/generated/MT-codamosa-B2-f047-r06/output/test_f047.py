@@ -9,52 +9,85 @@ def test_case_0():
     int_3 = [int_0, int_1, int_2]
     var_0 = module_0.median(int_3)
     assert var_0 == 2
-    int_4 = 10
+    int_4 = 5
     int_5 = [int_4]
     var_1 = module_0.median(int_5)
-    assert var_1 == 10
-    int_6 = 5
-    int_7 = 8
-    int_8 = 9
-    int_9 = [int_6, int_0, int_7, int_1, int_8]
-    var_2 = module_0.median(int_9)
-    assert var_2 == 5
-    int_10 = 4
-    int_11 = [int_1, int_2, int_0, int_10]
-    var_3 = module_0.median(int_11)
+    assert var_1 == 5
+    int_6 = 10
+    int_7 = 20
+    int_8 = 30
+    int_9 = 40
+    int_10 = 50
+    int_11 = [int_6, int_7, int_8, int_9, int_10]
+    var_2 = module_0.median(int_11)
+    assert var_2 == 30
+    int_12 = 4
+    int_13 = [int_1, int_2, int_0, int_12]
+    var_3 = module_0.median(int_13)
     assert var_3 == pytest.approx(2.5, abs=0.01, rel=0.01)
-    int_12 = [int_10, int_1, int_0, int_2]
-    var_4 = module_0.median(int_12)
-    assert var_4 == pytest.approx(2.5, abs=0.01, rel=0.01)
-    int_13 = [int_1, int_2, int_0]
-    var_5 = module_0.median(int_13)
-    assert var_5 == 2
-    int_14 = [int_0, int_2, int_1]
-    var_6 = module_0.median(int_14)
-    assert var_6 == 2
-    int_15 = -5
-    int_16 = -1
-    int_17 = -3
-    int_18 = [int_15, int_16, int_17]
-    var_7 = module_0.median(int_18)
-    assert var_7 == 3
-    assert var_7 == -3
-    float_0 = -1.5
-    float_1 = 0.5
-    float_2 = -0.5
-    float_3 = 1.5
-    float_4 = [float_0, float_1, float_2, float_3]
-    var_8 = module_0.median(float_4)
-    assert var_8 == pytest.approx(0.0, abs=0.01, rel=0.01)
-    int_19 = [int_2, int_2, int_2, int_2]
-    var_9 = module_0.median(int_19)
-    assert var_9 == pytest.approx(2.0, abs=0.01, rel=0.01)
-    int_20 = [int_1, int_2, int_2, int_0]
-    var_10 = module_0.median(int_20)
-    assert var_10 == pytest.approx(2.0, abs=0.01, rel=0.01)
-    float_5 = 2.5
-    float_6 = [float_3, float_5]
-    var_11 = module_0.median(float_6)
+    int_14 = [int_1, int_2]
+    var_4 = module_0.median(int_14)
+    assert var_4 == pytest.approx(1.5, abs=0.01, rel=0.01)
+    int_15 = 8
+    int_16 = [int_6, int_2, int_15, int_12]
+    var_5 = module_0.median(int_16)
+    assert var_5 == pytest.approx(6.0, abs=0.01, rel=0.01)
+    int_17 = 9
+    int_18 = 7
+    int_19 = [int_17, int_1, int_4, int_0, int_18]
+    var_6 = module_0.median(int_19)
+    assert var_6 == 5
+    int_20 = [int_12, int_1, int_0, int_2]
+    var_7 = module_0.median(int_20)
+    assert var_7 == pytest.approx(2.5, abs=0.01, rel=0.01)
+    int_21 = -5
+    int_22 = -1
+    int_23 = -3
+    int_24 = [int_21, int_22, int_23]
+    var_8 = module_0.median(int_24)
+    assert var_8 == 3
+    assert var_8 == -3
+    int_25 = -10
+    int_26 = [int_25, int_6]
+    var_9 = module_0.median(int_26)
+    assert var_9 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    int_27 = -1
+    int_28 = -2
+    int_29 = -3
+    int_30 = -4
+    int_31 = [int_27, int_28, int_29, int_30]
+    var_10 = module_0.median(int_31)
+    assert var_10 == pytest.approx(-2.5, abs=0.01, rel=0.01)
+    int_32 = [int_2, int_2, int_2, int_2]
+    var_11 = module_0.median(int_32)
     assert var_11 == pytest.approx(2.0, abs=0.01, rel=0.01)
-    str_0 = 'All median tests passed.'
-    var_12 = print(str_0)
+    int_33 = [int_1, int_2, int_2, int_0]
+    var_12 = module_0.median(int_33)
+    assert var_12 == pytest.approx(2.0, abs=0.01, rel=0.01)
+    int_34 = [int_18, int_18, int_18]
+    var_13 = module_0.median(int_34)
+    assert var_13 == 7
+    float_0 = 1.5
+    float_1 = 2.5
+    float_2 = 3.5
+    float_3 = [float_0, float_1, float_2]
+    var_14 = module_0.median(float_3)
+    assert var_14 == pytest.approx(2.5, abs=0.01, rel=0.01)
+    float_4 = 1.1
+    float_5 = 2.2
+    float_6 = [float_4, float_5]
+    var_15 = module_0.median(float_6)
+    assert var_15 == pytest.approx(1.6500000000000001, abs=0.01, rel=0.01)
+    int_35 = [int_1, int_2, int_0, int_12, int_4]
+    var_16 = module_0.median(int_35)
+    assert var_16 == 3
+    float_7 = -1.5
+    float_8 = 0.5
+    float_9 = [float_7, float_8, float_1]
+    var_17 = module_0.median(float_9)
+    assert var_17 == pytest.approx(0.5, abs=0.01, rel=0.01)
+    var_18 = var_17 - float_8
+    var_19 = abs(var_18)
+
+def test_case_1():
+    pass

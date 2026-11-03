@@ -1,229 +1,130 @@
 
 
-# Generated at 2026-10-24 06:05:47.306207
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:05:49.718699
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:05:52.136586
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:05:54.555097
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:05:56.965903
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:05:59.385323
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:01.801976
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:04.255085
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:06.629351
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:09.045660
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:11.458269
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:13.871512
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:16.288123
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:18.703009
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:21.116810
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:23.532773
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:25.947828
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:28.362227
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:30.776215
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:33.191294
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:35.606626
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:38.023003
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:40.445321
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:42.860953
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:45.276281
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:47.690538
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:50.108531
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:52.522563
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:54.935683
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:57.349977
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:06:59.762964
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:02.177064
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:04.593332
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:07.017713
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:09.423292
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:11.836857
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:14.255029
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:16.669898
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:19.083286
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:21.499295
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:23.915385
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:26.332364
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:28.747242
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:31.163624
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:33.577979
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:35.994560
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:38.409680
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:40.825226
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:07:50.263480
+# Generated at 2026-11-02 16:44:22.097585
 # Unit test for function add_elements
 def test_add_elements():
-    assert module_0.add_elements([1, 2, 3, 4, 5], 3) == 6
-    assert module_0.add_elements([111, 21, 3, 4000, 5, 6], 4) == 24
-    assert module_0.add_elements([10, 99, 100, 7], 4) == 116
+    # Basic case: mix of qualifying and non-qualifying elements
+    assert module_0.add_elements([111, 21, 3, 4000, 5, 6, 7, 8, 9], 4) == 24  # 21 + 3
+    assert module_0.add_elements([1, -2, -3, 11, 12, -13], 3) == -4  # 1 - 2 - 3
+
+    # All elements qualify
+    assert module_0.add_elements([10, 20, 30], 2) == 30
+    assert module_0.add_elements([5, 5, 5], 3) == 15
+
+    # No elements qualify (multi-digit only)
+    assert module_0.add_elements([100, 200, 300], 3) == 0
+
+    # Negative numbers with two digits or fewer
+    assert module_0.add_elements([-99, 100, 50], 3) == -49  # -99 + 50
+    assert module_0.add_elements([-1, -20, -300], 2) == -21
+
+    # k = 0 yields zero
+    assert module_0.add_elements([1, 2, 3], 0) == 0
+
+    # Empty array
+    assert module_0.add_elements([], 5) == 0
+
+    # k larger than array length
+    assert module_0.add_elements([1, 2], 10) == 3
+
+    # Single element cases
+    assert module_0.add_elements([5], 1) == 5
+    assert module_0.add_elements([123], 1) == 0
+
+    # Boundary: exactly two digits (including negatives)
+    assert module_0.add_elements([99, 100, -99, -100], 4) == 0  # 99 - 99 = 0
+
+    print("All tests passed!")
+
+if __name__ == "__main__":
+    test_add_elements()
+
+# Generated at 2026-11-02 16:46:55.719899
+# Unit test for function add_elements
+def test_add_elements():
+    # Example: only first k elements considered, only len(str) <= 2 counted
+    assert module_0.add_elements([111, 21, 3, 4000, 5, 6, 7, 8, 9], 4) == 24  # 21 + 3
+
+    # All elements qualify
+    assert module_0.add_elements([1, 2, 3, 4], 4) == 10
+
+    # k larger than array length: uses all elements
+    assert module_0.add_elements([10, 20, 30], 10) == 60
+
+    # No elements qualify
     assert module_0.add_elements([100, 200, 300], 2) == 0
-    assert module_0.add_elements([], 0) == 0
 
-# Generated at 2026-10-24 06:07:56.272003
+    # k = 0 yields empty sum
+    assert module_0.add_elements([1, 22, 333], 0) == 0
+
+    # Negative single-digit numbers count (len("-5") == 2)
+    assert module_0.add_elements([-5, -2, 111], 2) == -7
+
+    # Negative two-digit numbers do NOT count (len("-12") == 3)
+    assert module_0.add_elements([-12, 12, 5], 3) == 17  # 12 + 5
+
+    # Boundary: exactly two digits counts, three does not
+    assert module_0.add_elements([10, 99, 100], 3) == 109
+
+    # Mixed signs and magnitudes
+    assert module_0.add_elements([99, 100, -9, 55], 4) == 145  # 99 - 9 + 55
+
+    # Duplicates and zeros
+    assert module_0.add_elements([0, 0, 7, 77], 4) == 84
+
+    print("test_add_elements passed")
+
+
+test_add_elements()
+
+# Generated at 2026-11-02 16:48:24.736710
 # Unit test for function add_elements
 def test_add_elements():
-    assert module_0.add_elements([111, 21, 3, 4000, 5, 6], 2) == 21
-    assert module_0.add_elements([111, 21, 3, 4000, 5, 6], 4) == 24
-    assert module_0.add_elements([1, 2, 3], 3) == 6
-    assert module_0.add_elements([100, 999], 2) == 0
+    # Basic case: first k elements with <= 2 digits
+    assert module_0.add_elements([1, -2, -3, 4, 5], 3) == -4  # 1 + (-2) + (-3)
+    
+    # Elements with more than 2 digits are excluded
+    assert module_0.add_elements([111, 121, 100, 5], 4) == 5
+    
+    # All elements within k qualify
+    assert module_0.add_elements([10, 20, 30, 40], 2) == 30
+    
+    # Empty array
     assert module_0.add_elements([], 0) == 0
-
-# Generated at 2026-10-24 06:08:03.075043
-# Unit test for function add_elements
-def test_add_elements():
-    assert module_0.add_elements([1, 2, 3, 4, 5], 3) == 6
-    assert module_0.add_elements([10, 20, 30], 2) == 30
-    assert module_0.add_elements([100, 20, 3, 400], 4) == 23
-    assert module_0.add_elements([], 5) == 0
+    
+    # Negative two-digit numbers: len(str(-99)) == 3, so excluded
+    assert module_0.add_elements([99, -99, 100], 2) == 99
+    
+    # k larger than array length (slicing handles gracefully)
+    assert module_0.add_elements([5, 6], 5) == 11
+    
+    # Single digit negatives qualify (len(str(-7)) == 2)
+    assert module_0.add_elements([-7, -70, 3], 3) == -4
+    
+    # k = 0 yields no elements
     assert module_0.add_elements([1, 2, 3], 0) == 0
-    assert module_0.add_elements([5, 10], 10) == 15
+    
+    # Boundary values: 99 qualifies, 100 does not
+    assert module_0.add_elements([99, 100, -98, -100], 4) == 1  # 99 + (-98)
 
-# Generated at 2026-10-24 06:08:19.960038
+# Generated at 2026-11-02 16:51:37.070855
 # Unit test for function add_elements
 def test_add_elements():
-    assert module_0.add_elements([111, 21, 3, 4000, 5, 6], 2) == 21
-    assert module_0.add_elements([111, 21, 3, 4000, 5, 6], 4) == 24
-    assert module_0.add_elements([1, -2, -3, 41, 57], 3) == -4
-    assert module_0.add_elements([99, -99, 100, -100], 4) == 0
-    assert module_0.add_elements([], 0) == 0
-    assert module_0.add_elements([1, 2, 3], 0) == 0
-
-# Generated at 2026-10-24 06:08:26.718069
-# Unit test for function add_elements
-def test_add_elements():
-    assert module_0.add_elements([1, 2, 3, 4, 5], 3) == 6
-    assert module_0.add_elements([10, 20, 100, 5], 4) == 35
-    assert module_0.add_elements([100, 200, 300], 3) == 0
-    assert module_0.add_elements([1, 2, 3], 0) == 0
-    assert module_0.add_elements([], 5) == 0
-    assert module_0.add_elements([5, 10], 10) == 15
-
-# Generated at 2026-10-24 06:08:35.972417
-# Unit test for function add_elements
-def test_add_elements():
-    assert module_0.add_elements([111, 21, 3, 4000, 5, 6], 4) == 24
-    assert module_0.add_elements([1, 2, 3, 100], 3) == 6
-    assert module_0.add_elements([100, 200, 300], 3) == 0
-    assert module_0.add_elements([10, 20, 30], 2) == 30
-    assert module_0.add_elements([], 0) == 0
-
-# Generated at 2026-10-24 06:08:45.149679
-# Unit test for function add_elements
-def test_add_elements():
-    assert module_0.add_elements([111, 21, 3, 4000, 5], 3) == 24
-    assert module_0.add_elements([1, 2, 3, 4, 5], 4) == 10
-    assert module_0.add_elements([100, 99, 10, 1000], 4) == 109
-    assert module_0.add_elements([], 3) == 0
-    assert module_0.add_elements([1, 20, 300], 0) == 0
-
-# Generated at 2026-10-24 06:08:47.570156
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:08:49.983769
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:08:52.554419
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:08:55.121844
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:08:57.535148
-# Unit test for function add_elements
-
-# Generated at 2026-10-24 06:08:59.951013
-# Unit test for function add_elements
+    # First k elements only; single-digit and positive two-digit count
+    assert module_0.add_elements([1, -2, -3, 41, 57, 76, 87, 88, 99], 3) == -4
+    # Elements with more than two digits are excluded
+    assert module_0.add_elements([111, 121, 3, 4000, 5, 6], 2) == 0
+    # Two-digit positives within first k elements are summed
+    assert module_0.add_elements([11, 21, 3, 90, 5, 6, 7, 8, 9], 4) == 125
+    # Larger k skips big numbers but includes small ones
+    assert module_0.add_elements([111, 121, 3, 4000, 5, 6, 7, 8, 9], 9) == 38
+    # Single element array
+    assert module_0.add_elements([87], 1) == 87
+    # Negative single-digit included, negative two-digit excluded (len("-10") == 3)
+    assert module_0.add_elements([-10, 5], 2) == 5
+    # k larger than array length is safe due to slicing
+    assert module_0.add_elements([1, 2], 5) == 3
+    # k = 0 yields empty slice
+    assert module_0.add_elements([1, 22, 333], 0) == 0
+    # Zero has one digit
+    assert module_0.add_elements([0, 999], 2) == 0

@@ -1,40 +1,43 @@
 
 
-# Generated at 2026-10-25 10:19:47.166018
+# Generated at 2026-11-02 00:24:47.777549
 # Unit test for function get_input_output_paths
+def test_get_input_output_paths():
+    import os
+    import shutil
+    import tempfile
+    from pathlib import Path
 
-# Generated at 2026-10-25 10:19:49.582223
-# Unit test for function get_input_output_paths
+    tmpdir = tempfile.mkdtemp()
 
-# Generated at 2026-10-25 10:19:51.996442
-# Unit test for function get_input_output_paths
-
-# Generated at 2026-10-25 10:19:54.411761
-# Unit test for function get_input_output_paths
-
-# Generated at 2026-10-25 10:20:27.926611
+# Generated at 2026-11-02 00:27:17.382223
 # Unit test for function get_input_output_paths
 def test_get_input_output_paths():import tempfile
 
-# Generated at 2026-10-25 10:20:45.635907
+# Generated at 2026-11-02 00:29:22.839122
+# Unit test for function get_input_output_paths
+def test_get_input_output_paths():import pytest
+
+# Generated at 2026-11-02 00:29:53.752554
+# Unit test for function get_input_output_paths
+def test_get_input_output_paths():
+    import shutil
+    import tempfile
+
+    def pairs(results):
+        out = set()
+        for r in results:
+            try:
+                out.add((r.input, r.output))
+            except AttributeError:
+                out.add((r[0], r[1]))
+        return out
+
+    tmpdir = tempfile.mkdtemp()
+
+# Generated at 2026-11-02 00:36:09.061728
 # Unit test for function get_input_output_paths
 
-# Generated at 2026-10-25 10:21:24.446369
+# Generated at 2026-11-02 00:39:53.822808
 # Unit test for function get_input_output_paths
 def test_get_input_output_paths():import tempfile
-
-# Generated at 2026-10-25 10:21:27.415253
-# Unit test for function get_input_output_paths
-
-# Generated at 2026-10-25 10:21:45.208912
-# Unit test for function get_input_output_paths
-def test_get_input_output_paths():import tempfile
-
-# Generated at 2026-10-25 10:21:47.625301
-# Unit test for function get_input_output_paths
-
-# Generated at 2026-10-25 10:21:50.147266
-# Unit test for function get_input_output_paths
-
-# Generated at 2026-10-25 10:21:52.561614
-# Unit test for function get_input_output_paths

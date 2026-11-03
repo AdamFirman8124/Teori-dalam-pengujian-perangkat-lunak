@@ -2,19 +2,34 @@
 import f098 as module_0
 
 def test_case_0():
-    str_0 = ''
+    str_0 = 'aBCdEf'
     var_0 = module_0.count_upper(str_0)
-    assert var_0 == 0
-    str_1 = 'BCDEF'
+    assert var_0 == 1
+    str_1 = 'abcdefg'
     var_1 = module_0.count_upper(str_1)
     assert var_1 == 0
-    str_2 = 'AEIOU'
+    str_2 = 'dBBE'
     var_2 = module_0.count_upper(str_2)
-    assert var_2 == 3
-    str_3 = 'aeiou'
+    assert var_2 == 0
+    str_3 = 'AEIOU'
     var_3 = module_0.count_upper(str_3)
-    assert var_3 == 0
-    str_4 = 'aEiOu'
+    assert var_3 == 3
+    str_4 = ''
     var_4 = module_0.count_upper(str_4)
-    assert var_4 == 1
     assert var_4 == 0
+    str_5 = 'B'
+    var_5 = module_0.count_upper(str_5)
+    assert var_5 == 0
+    str_6 = 'xX'
+    var_6 = module_0.count_upper(str_6)
+    assert var_6 == 0
+    str_7 = 'AbCdE'
+    var_7 = module_0.count_upper(str_7)
+    assert var_7 == 2
+    str_8 = 'UuUuU'
+    var_8 = module_0.count_upper(str_8)
+    assert var_8 == 2
+    assert var_8 == 3
+    str_9 = 'O'
+    var_9 = module_0.count_upper(str_9)
+    assert var_9 == 1

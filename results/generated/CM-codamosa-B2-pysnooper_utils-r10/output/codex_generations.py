@@ -1,848 +1,300 @@
 
 
-# Generated at 2026-10-24 11:07:14.757767
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:07:17.175336
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:07:19.684405
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:07:22.102496
-# Unit test for function truncate
-
-# Generated at 2026-10-24 11:07:24.708332
-# Unit test for function truncate
-
-# Generated at 2026-10-24 11:07:27.128308
-# Unit test for function truncate
-
-# Generated at 2026-10-24 11:07:29.548835
-# Unit test for function normalize_repr
-
-# Generated at 2026-10-24 11:07:31.983328
-# Unit test for function normalize_repr
-
-# Generated at 2026-10-24 11:07:34.400372
-# Unit test for function normalize_repr
-
-# Generated at 2026-10-24 11:07:36.821401
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:07:39.242328
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:07:41.666701
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:07:44.088846
-# Unit test for function ensure_tuple
-
-# Generated at 2026-10-24 11:07:46.510879
-# Unit test for function ensure_tuple
-
-# Generated at 2026-10-24 11:07:48.933412
-# Unit test for function ensure_tuple
-
-# Generated at 2026-10-24 11:07:51.354333
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:07:53.775511
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:07:56.202886
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:07:58.618406
-# Unit test for function truncate
-
-# Generated at 2026-10-24 11:08:01.035784
-# Unit test for function truncate
-
-# Generated at 2026-10-24 11:08:03.449687
-# Unit test for function truncate
-
-# Generated at 2026-10-24 11:08:05.869743
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:08:08.292977
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:08:10.708075
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:08:13.127523
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:08:15.545431
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:08:17.963786
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:08:20.382399
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:08:22.801321
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:08:25.218309
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:08:37.322235
-# Unit test for function truncate
-def test_truncate():assert module_0.truncate('hello', None) == 'hello'
-
-# Generated at 2026-10-24 11:08:47.777899
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:09:00.412612
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:09:02.837620
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:09:05.258079
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:09:07.680637
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:09:10.106208
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:09:12.523088
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:09:14.940206
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:09:17.362185
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:09:19.777588
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:09:22.198200
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:09:24.619020
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:09:27.048385
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:09:29.467085
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:09:31.889631
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:09:34.309910
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:09:36.727137
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:09:39.146757
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:09:41.572738
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:09:43.992626
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:09:46.412787
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:09:48.831753
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:09:51.246113
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:09:53.661362
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:09:56.077914
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:09:58.492902
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:10:00.910743
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:10:03.327833
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:10:05.745173
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:10:08.160515
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:10:10.577107
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:10:13.006135
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:10:15.421237
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:10:17.840280
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:10:20.261803
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:10:22.689495
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:10:25.109866
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:10:27.528925
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:10:29.949747
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:10:45.655827
-# Unit test for function shitcode
-def test_shitcode():
-    assert module_0.shitcode('') == ''
-    assert module_0.shitcode('abc XYZ 123 !@#') == 'abc XYZ 123 !@#'
-    assert module_0.shitcode('\x01\xff') == '\x01\xff'  # 1 and 255: kept
-    assert module_0.shitcode('Ã©Ã¿') == 'Ã©Ã¿'              # 233 and 255: kept
-    assert module_0.shitcode('\x00') == '?'             # 0: replaced
-    assert module_0.shitcode('Äâð') == '???'           # 256, 9731, 128512: replaced
-    assert module_0.shitcode('a\x00bÄc') == 'a?b?c'
-    assert isinstance(module_0.shitcode('abc'), str)
-
-# Generated at 2026-10-24 11:11:06.808746
+# Generated at 2026-11-02 21:48:23.879949
 # Unit test for method write of class WritableStream
 def test_WritableStream_write():
-    class WithWrite(object):
+    from io import StringIO
+
+    # A concrete subclass implementing write should work
+    class MyWritable(WritableStream):
         def module_0.write(self, s):
+            self.written = s
             return len(s)
 
-    class WithoutWrite(object):
+    my_stream = MyWritable()
+    result = my_stream.write('hello')
+    assert result == 5
+    assert my_stream.written == 'hello'
+
+    # StringIO should be recognized as a virtual subclass
+    # because it has a `write` method
+    assert issubclass(StringIO, WritableStream)
+    assert isinstance(StringIO(), WritableStream)
+
+    # A class without a `write` method should not be a subclass
+    class NotWritable:
         pass
 
-    class WithNoneWrite(object):
+    assert not issubclass(NotWritable, WritableStream)
+
+    # A class with write explicitly set to None should not be a subclass
+    class NoneWrite:
         write = None
 
-    # Duck-typed subclasshook: having `write` is enough.
-    assert issubclass(WithWrite, WritableStream)
-    assert isinstance(WithWrite(), WritableStream)
+    assert not issubclass(NoneWrite, WritableStream)
 
-    # Missing or None `write` must not qualify.
-    assert not issubclass(WithoutWrite, WritableStream)
-    assert not issubclass(WithNoneWrite, WritableStream)
+    # Subclasshook only applies to WritableStream itself
+    class OtherABC(ABC):
+        pass
 
-    # Abstract base itself cannot be instantiated.
+    assert OtherABC.__subclasshook__(NotWritable) is NotImplemented
+
+    # WritableStream itself cannot be instantiated (abstract)
     try:
         WritableStream()
     except TypeError:
         pass
     else:
-        raise AssertionError('WritableStream should not be instantiable')
+        raise AssertionError("WritableStream should be abstract")
 
-    # The method is actually callable on a concrete implementation.
-    assert WithWrite().write('abc') == 3
+# Generated at 2026-11-02 21:49:35.778214
+# Unit test for function ensure_tuple
+def test_ensure_tuple():
+    # Non-iterable values get wrapped in a single-element tuple
+    assert module_0.ensure_tuple(1) == (1,)
+    assert module_0.ensure_tuple(1.5) == (1.5,)
+    assert module_0.ensure_tuple(None) == (None,)
+    assert module_0.ensure_tuple(object) == (object,)
 
-# Generated at 2026-10-24 11:11:09.231085
-# Unit test for method write of class WritableStream
+    # Strings are iterable but should be treated as single items
+    assert module_0.ensure_tuple('abc') == ('abc',)
+    assert module_0.ensure_tuple('') == ('',)
+    assert module_0.ensure_tuple(u'hello') == (u'hello',)
 
-# Generated at 2026-10-24 11:11:11.650570
-# Unit test for method write of class WritableStream
+    # Bytes are also string-like
+    assert module_0.ensure_tuple(b'abc') == (b'abc',)
 
-# Generated at 2026-10-24 11:11:14.185725
-# Unit test for function get_repr_function
+    # Iterables get converted to tuples
+    assert module_0.ensure_tuple([1, 2, 3]) == (1, 2, 3)
+    assert module_0.ensure_tuple((1, 2, 3)) == (1, 2, 3)
+    assert module_0.ensure_tuple([]) == ()
+    assert module_0.ensure_tuple(()) == ()
+    assert module_0.ensure_tuple({1, 2}) in ((1, 2), (2, 1))
+    assert module_0.ensure_tuple({'a': 1, 'b': 2}) in (('a', 'b'), ('b', 'a'))
+    assert module_0.ensure_tuple(range(3)) == (0, 1, 2)
 
-# Generated at 2026-10-24 11:11:16.607154
-# Unit test for function get_repr_function
+    # Generators are consumed into a tuple
+    assert module_0.ensure_tuple(x for x in range(3)) == (0, 1, 2)
 
-# Generated at 2026-10-24 11:11:19.025506
-# Unit test for function get_repr_function
+    # Result is always a tuple
+    assert isinstance(module_0.ensure_tuple(1), tuple)
+    assert isinstance(module_0.ensure_tuple('abc'), tuple)
+    assert isinstance(module_0.ensure_tuple([1, 2]), tuple)
 
-# Generated at 2026-10-24 11:11:21.445271
-# Unit test for method write of class WritableStream
+# Generated at 2026-11-02 21:51:11.475905
+# Unit test for constructor of class WritableStream
+def test_WritableStream():
+    # A class with a `write` method is considered a subclass via the
+    # __subclasshook__ mechanism
+    class WithWrite:
+        def write(self, s):
+            pass
 
-# Generated at 2026-10-24 11:11:23.864495
-# Unit test for method write of class WritableStream
+    assert issubclass(WithWrite, WritableStream)
+    assert isinstance(WithWrite(), WritableStream)
 
-# Generated at 2026-10-24 11:11:26.283351
-# Unit test for method write of class WritableStream
+    # Inherited `write` methods are detected through the MRO
+    class SubWithWrite(WithWrite):
+        pass
 
-# Generated at 2026-10-24 11:11:28.700669
-# Unit test for function truncate
+    assert issubclass(SubWithWrite, WritableStream)
+    assert isinstance(SubWithWrite(), WritableStream)
 
-# Generated at 2026-10-24 11:11:31.133393
-# Unit test for function truncate
+    # A class without a `write` method is not considered a subclass
+    class WithoutWrite:
+        pass
 
-# Generated at 2026-10-24 11:11:33.553565
-# Unit test for function truncate
+    assert not issubclass(WithoutWrite, WritableStream)
+    assert not isinstance(WithoutWrite(), WritableStream)
 
-# Generated at 2026-10-24 11:11:35.974049
-# Unit test for function get_shortish_repr
+    # A class whose `write` attribute is None is not considered a subclass
+    class WriteIsNone:
+        write = None
 
-# Generated at 2026-10-24 11:11:38.389533
-# Unit test for function get_shortish_repr
+    assert not issubclass(WriteIsNone, WritableStream)
 
-# Generated at 2026-10-24 11:12:36.759796
-# Unit test for function get_shortish_repr
-def test_get_shortish_repr():assert module_0.get_shortish_repr('foo') == "'foo'"
+    # A real subclass implementing the abstract `write` method can be
+    # instantiated and used
+    class MyWritableStream(WritableStream):
+        def write(self, s):
+            return s
 
+    stream = MyWritableStream()
+    assert stream.write('foo') == 'foo'
+    assert isinstance(stream, WritableStream)
 
-# Generated at 2026-10-24 11:12:39.182274
-# Unit test for method write of class WritableStream
+    # The abstract base class itself cannot be instantiated
+    try:
+        WritableStream()
+    except TypeError:
+        pass
+    else:
+        raise AssertionError('WritableStream should be abstract and not '
+                             'instantiable')
 
-# Generated at 2026-10-24 11:12:40.545981
-# Unit test for method write of class WritableStream
+# Generated at 2026-11-02 21:52:23.397508
+# Unit test for function ensure_tuple
+def test_ensure_tuple():
+    # nonce:08325069
+    # Strings are not treated as iterables, so they get wrapped in a tuple.
+    assert module_0.ensure_tuple('foo') == ('foo',)
+    # Lists and tuples are converted to tuples.
+    assert module_0.ensure_tuple(['foo', 'bar']) == ('foo', 'bar')
+    assert module_0.ensure_tuple(('foo', 'bar')) == ('foo', 'bar')
+    # Generators (and other one-shot iterables) are exhausted into a tuple.
+    assert module_0.ensure_tuple(x for x in range(3)) == (0, 1, 2)
+    # Non-iterable objects are wrapped in a single-element tuple.
+    assert module_0.ensure_tuple(3) == (3,)
+    assert module_0.ensure_tuple(None) == (None,)
 
-# Generated at 2026-10-24 11:12:41.904609
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:12:59.994034
-# Unit test for function truncate
-def test_truncate():
-    # max_length None -> no truncation
-    assert module_0.truncate('abcdefghij', None) == 'abcdefghij'
-
-    # string fits -> unchanged
-    assert module_0.truncate('abc', 5) == 'abc'
-    assert module_0.truncate('abcde', 5) == 'abcde'
-
-    # string too long -> exactly max_length, both ends kept
-    assert module_0.truncate('abcdefghij', 5) == 'a...j'
-    assert module_0.truncate('abcdefghijklmnopqrst', 8) == 'ab...rst'
-    assert module_0.truncate('abcdefghij', 4) == '...j'
-
-    # truncated output length is always max_length
-    for max_length in range(4, 20):
-        assert len(module_0.truncate('abcdefghijklmnopqrst', max_length)) == max_length
-
-    # empty string is safe
-    assert module_0.truncate('', 5) == ''
-
-    print('test_truncate passed')
-
-
-if __name__ == '__main__':
-    test_truncate()
-
-# Generated at 2026-10-24 11:13:16.701483
+# Generated at 2026-11-02 21:54:00.463768
 # Unit test for function get_shortish_repr
 def test_get_shortish_repr():
-    # Basic: default repr of an object
+    # Basic repr behavior
     assert module_0.get_shortish_repr(1) == '1'
+    assert module_0.get_shortish_repr(None) == 'None'
     assert module_0.get_shortish_repr([1, 2, 3]) == '[1, 2, 3]'
 
-    # Newlines and carriage returns are stripped
-    class MultiLine:
+    # Newlines and carriage returns are removed
+    assert module_0.get_shortish_repr('foo\r\nbar') == 'foobar'
+    assert module_0.get_shortish_repr('a\nb\rc') == 'abc'
+
+    class Foo:
+        pass
+
+    foo_repr = repr(Foo())
+
+    # Normalization removes memory addresses
+    normalized = module_0.get_shortish_repr(Foo(), normalize=True)
+    assert normalized == re.sub(r' at 0x[a-f0-9A-F]{4,}', '', foo_repr)
+    assert ' at 0x' not in normalized
+    # Without normalization, the memory address is kept
+    assert module_0.get_shortish_repr(Foo()) == foo_repr
+
+    # max_length truncation keeps both head and tail
+    assert module_0.get_shortish_repr('abcdefghijklmnopqrstuvwxyz',
+                             max_length=10) == 'abc...wxyz'
+    # No truncation when the string is short enough or max_length is None
+    assert module_0.get_shortish_repr('abc', max_length=10) == 'abc'
+    assert module_0.get_shortish_repr('abc') == 'abc'
+
+    # Custom repr functions (type as condition)
+    custom_repr = ((int, lambda x: 'int: {}'.format(x)),)
+    assert module_0.get_shortish_repr(3, custom_repr=custom_repr) == 'int: 3'
+    assert module_0.get_shortish_repr('3', custom_repr=custom_repr) == "'3'"
+
+    # Custom repr functions (callable as condition)
+    custom_repr = ((lambda x: isinstance(x, str), lambda x: 'a string!'),)
+    assert module_0.get_shortish_repr('hello', custom_repr=custom_repr) == 'a string!'
+
+    # The first matching custom repr wins
+    custom_repr = ((int, lambda x: 'first'),
+                   (object, lambda x: 'second'))
+    assert module_0.get_shortish_repr(1, custom_repr=custom_repr) == 'first'
+    assert module_0.get_shortish_repr(1.0, custom_repr=custom_repr) == 'second'
+
+    # Broken reprs produce 'REPR FAILED'
+    class Bad:
         def __repr__(self):
-            return 'line1\r\nline2\nline3'
-    assert module_0.get_shortish_repr(MultiLine()) == 'line1line2line3'
+            raise ValueError('no')
+    assert module_0.get_shortish_repr(Bad()) == 'REPR FAILED'
+    assert module_0.get_shortish_repr(Bad(), max_length=5) == 'R...D'
+    assert module_0.get_shortish_repr(Bad(), normalize=True) == 'REPR FAILED'
 
-    # Repr that raises -> 'REPR FAILED'
-    class BadRepr:
-        def __repr__(self):
-            raise RuntimeError('nope')
-    assert module_0.get_shortish_repr(BadRepr()) == 'REPR FAILED'
+    # Newlines are stripped from custom repr output as well
+    custom_repr = ((int, lambda x: 'line1\nline2\r\nline3'),)
+    assert module_0.get_shortish_repr(7, custom_repr=custom_repr) == 'line1line2line3'
 
-    # max_length truncation (middle truncated with '...')
-    long_string = 'abcdefghijklmnopqrstuvwxyz' # 26 chars
-    result = module_0.get_shortish_repr(long_string, max_length=10)
-    assert result == 'abcdef...wxyz'
-    assert len(result) == 10
-
-    # max_length larger than string -> unchanged
-    assert module_0.get_shortish_repr('abc', max_length=100) == 'abc'
-
-    # custom_repr with a type condition
-    class MyType:
-        def __repr__(self):
-            return 'default'
-    assert module_0.get_shortish_repr(
-        MyType(), custom_repr=((MyType, lambda x: 'custom'),)
-    ) == 'custom'
-    # Non-matching items fall back to default repr
-    assert module_0.get_shortish_repr(
-        1, custom_repr=((MyType, lambda x: 'custom'),)
-    ) == '1'
-
-    # custom_repr with a callable condition
-    assert module_0.get_shortish_repr(
-        1, custom_repr=((lambda x: x == 1, lambda x: 'one'),)
-    ) == 'one'
-
-    # First matching custom_repr entry wins
-    assert module_0.get_shortish_repr(
-        MyType(),
-        custom_repr=(
-            (MyType, lambda x: 'first'),
-            (MyType, lambda x: 'second'),
-        )
-    ) == 'first'
-
-    # normalize: strips memory addresses from default repr
-    class WithAddress:
-        def __repr__(self):
-            return '<WithAddress object at 0x7f8b2c3d4e5f>'
-    assert module_0.get_shortish_repr(WithAddress(), normalize=True) == \
-        '<WithAddress object>'
-    # Without normalize, address stays
-    assert module_0.get_shortish_repr(WithAddress()) == \
-        '<WithAddress object at 0x7f8b2c3d4e5f>'
-
-    # normalize + max_length combined
-    result = module_0.get_shortish_repr(WithAddress(), max_length=20, normalize=True)
-    assert '0x' not in result
-    assert len(result) == 20
-
-# Generated at 2026-10-24 11:13:19.376052
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:13:21.794308
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:13:24.212365
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:13:26.630956
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:13:29.052717
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:13:31.475323
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:13:33.893829
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:13:36.311022
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:13:38.731706
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:13:41.156008
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:13:43.577510
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:13:45.996957
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:13:48.414532
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:13:50.832287
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:13:53.256120
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:13:55.680893
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:13:57.306874
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:13:58.682359
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:14:00.105405
-# Unit test for function get_shortish_repr
-def test_get_shortish_repr():
-    # Basic: default repr of an object
-    assert module_0.get_shortish_repr(1) == '1'
-    assert module_0.get_shortish_repr([1, 2, 3]) == '[1, 2, 3]'
-
-    # Newlines and carriage returns are stripped
-    class MultiLine:
-        def __repr__(self):
-            return 'line1\r\nline2\nline3'
-    assert module_0.get_shortish_repr(MultiLine()) == 'line1line2line3'
-
-    # Repr that raises -> 'REPR FAILED'
-    class BadRepr:
-        def __repr__(self):
-            raise RuntimeError('nope')
-    assert module_0.get_shortish_repr(BadRepr()) == 'REPR FAILED'
-
-    # max_length truncation (middle truncated with '...')
-    long_string = 'abcdefghijklmnopqrstuvwxyz' # 26 chars
-    result = module_0.get_shortish_repr(long_string, max_length=10)
-    assert result == 'abcdef...wxyz'
-    assert len(result) == 10
-
-    # max_length larger than string -> unchanged
-    assert module_0.get_shortish_repr('abc', max_length=100) == 'abc'
-
-    # custom_repr with a type condition
-    class MyType:
-        def __repr__(self):
-            return 'default'
-    assert module_0.get_shortish_repr(
-        MyType(), custom_repr=((MyType, lambda x: 'custom'),)
-    ) == 'custom'
-    # Non-matching items fall back to default repr
-    assert module_0.get_shortish_repr(
-        1, custom_repr=((MyType, lambda x: 'custom'),)
-    ) == '1'
-
-    # custom_repr with a callable condition
-    assert module_0.get_shortish_repr(
-        1, custom_repr=((lambda x: x == 1, lambda x: 'one'),)
-    ) == 'one'
-
-    # First matching custom_repr entry wins
-    assert module_0.get_shortish_repr(
-        MyType(),
-        custom_repr=(
-            (MyType, lambda x: 'first'),
-            (MyType, lambda x: 'second'),
-        )
-    ) == 'first'
-
-    # normalize: strips memory addresses from default repr
-    class WithAddress:
-        def __repr__(self):
-            return '<WithAddress object at 0x7f8b2c3d4e5f>'
-    assert module_0.get_shortish_repr(WithAddress(), normalize=True) == \
-        '<WithAddress object>'
-    # Without normalize, address stays
-    assert module_0.get_shortish_repr(WithAddress()) == \
-        '<WithAddress object at 0x7f8b2c3d4e5f>'
-
-    # normalize + max_length combined
-    result = module_0.get_shortish_repr(WithAddress(), max_length=20, normalize=True)
-    assert '0x' not in result
-    assert len(result) == 20
-
-# Generated at 2026-10-24 11:14:25.000450
+# Generated at 2026-11-02 21:55:31.556711
 # Unit test for function get_repr_function
 def test_get_repr_function():
-    # 1. No custom_repr -> falls back to builtin repr
-    assert module_0.get_repr_function(1, ()) is repr
-    assert module_0.get_repr_function('a', []) is repr
+    # No custom repr: falls back to built-in repr
+    item = 123
+    assert module_0.get_repr_function(item, ()) is repr
 
-    # 2. Type condition that matches -> returns that action
-    action = lambda x: 'INT!'
-    assert module_0.get_repr_function(1, [(int, action)]) is action
+    # Condition is a type: uses isinstance check
+    custom_repr = [(int, lambda x: 'INT')]
+    assert module_0.get_repr_function(123, custom_repr)(123) == 'INT'
 
-    # 3. Type condition that doesn't match -> falls through to repr
-    assert module_0.get_repr_function('a', [(int, action)]) is repr
+    # Condition is a callable
+    custom_repr = [(lambda x: x > 100, lambda x: 'BIG')]
+    assert module_0.get_repr_function(150, custom_repr)(150) == 'BIG'
+    assert module_0.get_repr_function(5, custom_repr) is repr
 
-    # 4. Callable (non-type) condition
-    is_even = lambda x: isinstance(x, int) and x % 2 == 0
-    assert module_0.get_repr_function(2, [(is_even, action)]) is action
-    assert module_0.get_repr_function(3, [(is_even, action)]) is repr
+    # First matching condition wins
+    custom_repr = [
+        (int, lambda x: 'INT'),
+        (lambda x: True, lambda x: 'ALWAYS'),
+    ]
+    assert module_0.get_repr_function(123, custom_repr)(123) == 'INT'
 
-    # 5. First matching condition wins
-    first = lambda x: 'first'
-    second = lambda x: 'second'
-    assert module_0.get_repr_function(0, [(int, first), (int, second)]) is first
-    assert module_0.get_repr_function(0, [(str, first), (int, second)]) is second
+    # Later entry matches when earlier doesn't
+    custom_repr = [
+        (str, lambda x: 'STR'),
+        (int, lambda x: 'INT'),
+    ]
+    assert module_0.get_repr_function(123, custom_repr)(123) == 'INT'
 
-    # 6. End-to-end: the returned function is the one that gets called
-    fn = module_0.get_repr_function([1, 2], [(list, lambda x: 'a list')])
-    assert fn([1, 2]) == 'a list'
+    # Type condition does not match subclass check incorrectly
+    class Foo(object):
+        pass
 
-# Generated at 2026-10-24 11:14:26.315642
+    class Bar(Foo):
+        pass
+
+    custom_repr = [(Foo, lambda x: 'FOO')]
+    assert module_0.get_repr_function(Bar(), custom_repr)(Bar()) == 'FOO'
+    assert module_0.get_repr_function('not foo', custom_repr) is repr
+
+    # Multiple entries with mixed condition types
+    custom_repr = [
+        (str, lambda x: 'STRING: %s' % x),
+        (dict, repr),
+    ]
+    assert module_0.get_repr_function('abc', custom_repr)('abc') == 'STRING: abc'
+    assert module_0.get_repr_function({'a': 1}, custom_repr)({'a': 1}) == repr({'a': 1})
+
+    # None action is returned as-is (caller decides how to handle)
+    custom_repr = [(int, None)]
+    assert module_0.get_repr_function(1, custom_repr) is None
+
+# Generated at 2026-11-02 21:57:17.398871
 # Unit test for function get_repr_function
 def test_get_repr_function():
-    # 1. No custom_repr -> falls back to builtin repr
-    assert module_0.get_repr_function(1, ()) is repr
-    assert module_0.get_repr_function('a', []) is repr
+    # With no custom repr entries, the built-in repr is returned
+    item = object()
+    assert module_0.get_repr_function(item, ()) is repr
 
-    # 2. Type condition that matches -> returns that action
-    action = lambda x: 'INT!'
-    assert module_0.get_repr_function(1, [(int, action)]) is action
+    # When the condition is a type and the item is an instance of it,
+    # the associated action is returned
+    def custom_action(x):
+        return 'CUSTOM'
 
-    # 3. Type condition that doesn't match -> falls through to repr
-    assert module_0.get_repr_function('a', [(int, action)]) is repr
+    assert module_0.get_repr_function(3, ((int, custom_action),)) is custom_action
 
-    # 4. Callable (non-type) condition
-    is_even = lambda x: isinstance(x, int) and x % 2 == 0
-    assert module_0.get_repr_function(2, [(is_even, action)]) is action
-    assert module_0.get_repr_function(3, [(is_even, action)]) is repr
+    # When the condition is a type but the item is not an instance,
+    # fall through to the built-in repr
+    assert module_0.get_repr_function('foo', ((int, custom_action),)) is repr
 
-    # 5. First matching condition wins
-    first = lambda x: 'first'
-    second = lambda x: 'second'
-    assert module_0.get_repr_function(0, [(int, first), (int, second)]) is first
-    assert module_0.get_repr_function(0, [(str, first), (int, second)]) is second
+    # When the condition is a callable, it is called with the item
+    condition = lambda x: x > 10
+    assert module_0.get_repr_function(20, ((condition, custom_action),)) is custom_action
+    assert module_0.get_repr_function(5, ((condition, custom_action),)) is repr
 
-    # 6. End-to-end: the returned function is the one that gets called
-    fn = module_0.get_repr_function([1, 2], [(list, lambda x: 'a list')])
-    assert fn([1, 2]) == 'a list'
+    # The first matching entry wins
+    def another_action(x):
+        return 'ANOTHER'
 
-# Generated at 2026-10-24 11:14:27.623949
-# Unit test for function get_repr_function
-def test_get_repr_function():
-    # 1. No custom_repr -> falls back to builtin repr
-    assert module_0.get_repr_function(1, ()) is repr
-    assert module_0.get_repr_function('a', []) is repr
+    assert module_0.get_repr_function(
+        3, ((int, custom_action), (int, another_action))
+    ) is custom_action
 
-    # 2. Type condition that matches -> returns that action
-    action = lambda x: 'INT!'
-    assert module_0.get_repr_function(1, [(int, action)]) is action
-
-    # 3. Type condition that doesn't match -> falls through to repr
-    assert module_0.get_repr_function('a', [(int, action)]) is repr
-
-    # 4. Callable (non-type) condition
-    is_even = lambda x: isinstance(x, int) and x % 2 == 0
-    assert module_0.get_repr_function(2, [(is_even, action)]) is action
-    assert module_0.get_repr_function(3, [(is_even, action)]) is repr
-
-    # 5. First matching condition wins
-    first = lambda x: 'first'
-    second = lambda x: 'second'
-    assert module_0.get_repr_function(0, [(int, first), (int, second)]) is first
-    assert module_0.get_repr_function(0, [(str, first), (int, second)]) is second
-
-    # 6. End-to-end: the returned function is the one that gets called
-    fn = module_0.get_repr_function([1, 2], [(list, lambda x: 'a list')])
-    assert fn([1, 2]) == 'a list'
-
-# Generated at 2026-10-24 11:14:29.576960
-# Unit test for function shitcode
-def test_shitcode():
-    assert module_0.shitcode('') == ''
-    assert module_0.shitcode('abc XYZ 123 !@#') == 'abc XYZ 123 !@#'
-    assert module_0.shitcode('\x01\xff') == '\x01\xff'  # 1 and 255: kept
-    assert module_0.shitcode('Ã©Ã¿') == 'Ã©Ã¿'              # 233 and 255: kept
-    assert module_0.shitcode('\x00') == '?'             # 0: replaced
-    assert module_0.shitcode('Äâð') == '???'           # 256, 9731, 128512: replaced
-    assert module_0.shitcode('a\x00bÄc') == 'a?b?c'
-    assert isinstance(module_0.shitcode('abc'), str)
-
-# Generated at 2026-10-24 11:14:45.981789
-# Unit test for method write of class WritableStream
-def test_WritableStream_write():
-    class WithWrite(object):
-        def module_0.write(self, s):
-            return len(s)
-
-    class WithoutWrite(object):
+    # Type conditions use isinstance, so subclasses match
+    class Base(object):
         pass
 
-    class WithNoneWrite(object):
-        write = None
-
-    # Duck-typed subclasshook: having `write` is enough.
-    assert issubclass(WithWrite, WritableStream)
-    assert isinstance(WithWrite(), WritableStream)
-
-    # Missing or None `write` must not qualify.
-    assert not issubclass(WithoutWrite, WritableStream)
-    assert not issubclass(WithNoneWrite, WritableStream)
-
-    # Abstract base itself cannot be instantiated.
-    try:
-        WritableStream()
-    except TypeError:
-        pass
-    else:
-        raise AssertionError('WritableStream should not be instantiable')
-
-    # The method is actually callable on a concrete implementation.
-    assert WithWrite().write('abc') == 3
-
-# Generated at 2026-10-24 11:14:47.356667
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:14:48.753171
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:14:59.698785
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:15:01.071632
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:15:02.560750
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:15:03.973441
-# Unit test for method write of class WritableStream
-def test_WritableStream_write():
-    class WithWrite(object):
-        def module_0.write(self, s):
-            return len(s)
-
-    class WithoutWrite(object):
+    class Derived(Base):
         pass
 
-    class WithNoneWrite(object):
-        write = None
-
-    # Duck-typed subclasshook: having `write` is enough.
-    assert issubclass(WithWrite, WritableStream)
-    assert isinstance(WithWrite(), WritableStream)
-
-    # Missing or None `write` must not qualify.
-    assert not issubclass(WithoutWrite, WritableStream)
-    assert not issubclass(WithNoneWrite, WritableStream)
-
-    # Abstract base itself cannot be instantiated.
-    try:
-        WritableStream()
-    except TypeError:
-        pass
-    else:
-        raise AssertionError('WritableStream should not be instantiable')
-
-    # The method is actually callable on a concrete implementation.
-    assert WithWrite().write('abc') == 3
-
-# Generated at 2026-10-24 11:15:05.348574
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:15:07.773800
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:15:10.195959
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:15:12.790727
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:15:15.369286
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:15:17.931031
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:15:20.349729
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:15:22.769649
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:15:25.355540
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:15:27.777374
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:15:30.198905
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:15:32.621529
-# Unit test for function shitcode
-
-# Generated at 2026-10-24 11:15:35.040009
-# Unit test for function shitcode
-
-# Generated at 2026-10-24 11:15:37.461783
-# Unit test for function shitcode
-
-# Generated at 2026-10-24 11:15:39.880291
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:15:42.296934
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:15:44.717473
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:15:47.136991
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:15:49.558783
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:15:51.980691
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:15:54.395551
-# Unit test for function shitcode
-
-# Generated at 2026-10-24 11:15:56.814163
-# Unit test for function shitcode
-
-# Generated at 2026-10-24 11:15:59.231151
-# Unit test for function shitcode
-
-# Generated at 2026-10-24 11:16:01.652721
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:16:04.067415
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:16:06.484536
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:16:08.904210
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:16:11.322340
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:16:13.740104
-# Unit test for function get_shortish_repr
-
-# Generated at 2026-10-24 11:16:16.156980
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:16:18.574777
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:16:20.995866
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:16:23.415490
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:16:25.834444
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:16:28.255132
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:16:30.673411
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:16:33.097088
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:16:35.511139
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:16:37.927153
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:16:40.342028
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:16:42.760182
-# Unit test for function get_repr_function
-
-# Generated at 2026-10-24 11:16:45.180562
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:16:46.597180
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:16:48.051831
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:17:22.234810
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:17:24.656373
-# Unit test for method write of class WritableStream
-
-# Generated at 2026-10-24 11:17:27.076728
-# Unit test for method write of class WritableStream
+    assert module_0.get_repr_function(Derived(), ((Base, custom_action),)) is custom_action
+    assert module_0.get_repr_function(object(), ((Base, custom_action),)) is repr

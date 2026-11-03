@@ -5,15 +5,24 @@ def test_case_0():
     str_0 = ''
     var_0 = module_0.encode(str_0)
     assert var_0 == ''
-    str_1 = 'Hello World!'
+    str_1 = 'test'
     var_1 = module_0.encode(str_1)
-    assert var_1 == 'hGLLQ wQRLD!'
-    str_2 = 'aeiouAEIOU'
+    assert var_1 == 'TGST'
+    str_2 = 'This is a message'
     var_2 = module_0.encode(str_2)
-    assert var_2 == 'CGKQWcgkqw'
-    str_3 = 'Python 123'
+    assert var_2 == 'tHKS KS C MGSSCGG'
+    str_3 = 'hello world'
     var_3 = module_0.encode(str_3)
-    assert var_3 == 'pYTHQN 123'
-    str_4 = 'This is a message!'
+    assert var_3 == 'HGLLQ WQRLD'
+    str_4 = 'aeiouAEIOU'
     var_4 = module_0.encode(str_4)
-    assert var_4 == 'tHKS KS C MGSSCGG!'
+    assert var_4 == 'CGKQWcgkqw'
+    str_5 = 'PYTHON'
+    var_5 = module_0.encode(str_5)
+    assert var_5 == 'pythqn'
+    str_6 = 'AbC'
+    var_6 = module_0.encode(str_6)
+    assert var_6 == 'cBc'
+    str_7 = '1234!'
+    var_7 = module_0.encode(str_7)
+    assert var_7 == '1234!'

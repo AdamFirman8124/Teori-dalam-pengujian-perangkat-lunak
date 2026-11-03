@@ -14,20 +14,23 @@ def test_case_0():
     str_5 = 'ab'
     var_2 = module_0.reverse_delete(str_4, str_5)
     assert var_2 == ('cdedc', True)
-    str_6 = 'racecar'
-    var_3 = module_0.reverse_delete(str_6, str_3)
-    assert var_3 == ('racecar', True)
-    str_7 = 'a'
-    var_4 = module_0.reverse_delete(str_7, str_3)
-    assert var_4 == ('a', True)
-    var_5 = module_0.reverse_delete(str_7, str_7)
-    assert var_5 == ('', True)
+    str_6 = 'x'
+    var_3 = module_0.reverse_delete(str_0, str_6)
+    assert var_3 == ('abcde', False)
+    str_7 = 'abc'
+    var_4 = module_0.reverse_delete(str_7, str_7)
+    assert var_4 == ('', True)
     str_8 = ''
-    str_9 = 'abc'
-    var_6 = module_0.reverse_delete(str_8, str_9)
-    assert var_6 == ('', True)
-    var_7 = module_0.reverse_delete(str_9, str_8)
-    assert var_7 == ('abc', False)
-    str_10 = 'aaa'
-    var_8 = module_0.reverse_delete(str_10, str_7)
-    assert var_8 == ('', True)
+    str_9 = 'a'
+    var_5 = module_0.reverse_delete(str_8, str_9)
+    assert var_5 == ('', True)
+    var_6 = module_0.reverse_delete(str_7, str_8)
+    assert var_6 == ('abc', False)
+    var_7 = module_0.reverse_delete(str_9, str_3)
+    assert var_7 == ('a', True)
+    str_10 = 'abccba'
+    var_8 = module_0.reverse_delete(str_10, str_9)
+    assert var_8 == ('bccb', True)
+    str_11 = 'aA'
+    var_9 = module_0.reverse_delete(str_11, str_9)
+    assert var_9 == ('A', True)

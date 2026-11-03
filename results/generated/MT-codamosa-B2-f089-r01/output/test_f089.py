@@ -2,24 +2,41 @@
 import f089 as module_0
 
 def test_case_0():
-    str_0 = ''
+    str_0 = 'hi'
     var_0 = module_0.encrypt(str_0)
-    assert var_0 == ''
-    str_1 = 'abc'
+    assert var_0 == 'lm'
+    str_1 = 'asdf'
     var_1 = module_0.encrypt(str_1)
-    assert var_1 == 'efg'
-    str_2 = 'hello'
+    assert var_1 == 'ewhi'
+    assert var_1 == 'ewhj'
+    str_2 = 'xyz'
     var_2 = module_0.encrypt(str_2)
-    assert var_2 == 'lipps'
-    str_3 = 'xyz'
+    assert var_2 == 'bcd'
+    str_3 = 'wxyz'
     var_3 = module_0.encrypt(str_3)
-    assert var_3 == 'bcd'
-    str_4 = 'wxyz'
+    assert var_3 == 'abcd'
+    str_4 = '1234'
     var_4 = module_0.encrypt(str_4)
-    assert var_4 == 'abcd'
-    str_5 = 'abcdefghijklmnopqrstuvwxyz'
+    assert var_4 == '1234'
+    str_5 = 'asdf jkl;'
     var_5 = module_0.encrypt(str_5)
-    assert var_5 == 'efghijklmnopqrstuvwxyzabcd'
-    str_6 = 'ABC123! Hello, World!'
+    assert var_5 == 'ewhi op t;'
+    assert var_5 == 'ewhj nop;'
+    str_6 = '!@#$%^&*()'
     var_6 = module_0.encrypt(str_6)
-    assert var_6 == 'ABC123! Hipps, Wsvph!'
+    assert var_6 == '!@#$%^&*()'
+    str_7 = 'HI'
+    var_7 = module_0.encrypt(str_7)
+    assert var_7 == 'HI'
+    str_8 = 'Hi'
+    var_8 = module_0.encrypt(str_8)
+    assert var_8 == 'Lm'
+    assert var_8 == 'Hm'
+    str_9 = ''
+    var_9 = module_0.encrypt(str_9)
+    assert var_9 == ''
+    str_10 = 'the quick brown fox jumps over the lazy dog!'
+    var_10 = module_0.encrypt(str_10)
+    assert var_10 == 'xli uymgo fvsar jsb nyqtw sziv xli pedc hsk!'
+    str_11 = 'All test_encrypt tests passed!'
+    var_11 = print(str_11)

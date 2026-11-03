@@ -7,18 +7,14 @@ import pytest
 from f030 import get_positive
 
 
-def test_get_positive_filters_and_preserves_order():
-    result = get_positive([-1, 2, -4, 5, 6])
-    assert result == [2, 5, 6]
-
-
-def test_get_positive_empty_list():
+def test_get_positive_filters_positive_numbers():
+    # Mixed input exercises both branches of the `e > 0` condition on line 3
+    assert get_positive([-1, 0, 2, -3, 5]) == [2, 5]
+    # All positive: condition always true
+    assert get_positive([1, 2, 3]) == [1, 2, 3]
+    # All non-positive: condition always false
+    assert get_positive([-1, -2, 0]) == []
+    # Empty list: comprehension body never executes
     assert get_positive([]) == []
-
-
-def test_get_positive_all_negative():
-    assert get_positive([-1, -2, -3]) == []
-
-
-def test_get_positive_zero_excluded():
-    assert get_positive([0, 1, -0.0, 0.5]) == [1, 0.5]
+    # Order and duplicates are preserved
+    assert get_positive([4, -4, 4]) == [4, 4]

@@ -2,35 +2,48 @@
 import f153 as module_0
 
 def test_case_0():
-    str_0 = 'Class'
-    str_1 = 'AAaa'
-    str_2 = 'Bcd'
-    str_3 = 'XYZ'
+    str_0 = 'Slices'
+    str_1 = 'SErviNGSliCes'
+    str_2 = 'Cheese'
+    str_3 = 'StuFfed'
     str_4 = [str_1, str_2, str_3]
     var_0 = module_0.Strongest_Extension(str_0, str_4)
-    assert var_0 == 'Class.XYZ'
-
-def test_case_1():
-    str_0 = 'MyClass'
-    str_1 = 'abc'
-    str_2 = 'aBC'
-    str_3 = 'XYZ'
-    str_4 = [str_1, str_2, str_3]
-    var_0 = module_0.Strongest_Extension(str_0, str_4)
-    assert var_0 == 'MyClass.XYZ'
-    str_5 = 'ABC'
-    str_6 = [str_5, str_3]
-    var_1 = module_0.Strongest_Extension(str_0, str_6)
-    assert var_1 == 'MyClass.ABC'
-    str_7 = 'File'
-    str_8 = 'A1!'
-    str_9 = 'ab'
-    str_10 = 'BC'
-    str_11 = [str_8, str_9, str_10]
-    var_2 = module_0.Strongest_Extension(str_7, str_11)
-    assert var_2 == 'File.BC'
-    str_12 = 'Test'
-    str_13 = 'Py'
-    str_14 = [str_13]
-    var_3 = module_0.Strongest_Extension(str_12, str_14)
-    assert var_3 == 'Test.Py'
+    assert var_0 == 'Slices.SErviNGSliCes'
+    str_5 = 'my_class'
+    str_6 = 'AA'
+    str_7 = 'Be'
+    str_8 = 'CC'
+    str_9 = [str_6, str_7, str_8]
+    var_1 = module_0.Strongest_Extension(str_5, str_9)
+    assert var_1 == 'my_class.AA'
+    str_10 = 'X'
+    str_11 = 'abc'
+    str_12 = [str_11]
+    var_2 = module_0.Strongest_Extension(str_10, str_12)
+    assert var_2 == 'X.abc'
+    str_13 = 'Foo'
+    str_14 = 'def'
+    str_15 = [str_11, str_14]
+    var_3 = module_0.Strongest_Extension(str_13, str_15)
+    assert var_3 == 'Foo.abc'
+    str_16 = 'Bar'
+    str_17 = 'a1B!'
+    str_18 = 'xy'
+    str_19 = [str_17, str_18]
+    var_4 = module_0.Strongest_Extension(str_16, str_19)
+    assert var_4 == 'Bar.a1B!'
+    str_20 = ''
+    str_21 = [str_20]
+    var_5 = module_0.Strongest_Extension(str_13, str_21)
+    assert var_5 == 'Foo.'
+    str_22 = 'Cls'
+    str_23 = 'aa'
+    str_24 = 'BB'
+    str_25 = [str_23, str_24]
+    var_6 = module_0.Strongest_Extension(str_22, str_25)
+    assert var_6 == 'Cls.BB'
+    str_26 = 'MyClass'
+    str_27 = 'x'
+    str_28 = [str_27]
+    var_7 = module_0.Strongest_Extension(str_26, str_28)
+    assert var_7 == 'MyClass.x'

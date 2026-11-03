@@ -2,37 +2,57 @@
 import f140 as module_0
 
 def test_case_0():
-    str_0 = ''
+    str_0 = 'Example'
     var_0 = module_0.fix_spaces(str_0)
-    assert var_0 == ''
-    str_1 = 'Example'
+    assert var_0 == 'Example'
+    str_1 = 'Example 1'
     var_1 = module_0.fix_spaces(str_1)
-    assert var_1 == 'Example'
-    str_2 = 'Example 1'
+    assert var_1 == 'Example_1'
+    str_2 = ' Example 2'
     var_2 = module_0.fix_spaces(str_2)
-    assert var_2 == 'Example_1'
-    str_3 = ' Example 2'
+    assert var_2 == '_Example_2'
+    str_3 = ' Example   3'
     var_3 = module_0.fix_spaces(str_3)
-    assert var_3 == '_Example_2'
-    str_4 = 'Example  3'
+    assert var_3 == '_Example-3'
+    str_4 = 'Hello  World'
     var_4 = module_0.fix_spaces(str_4)
-    assert var_4 == 'Example__3'
-    str_5 = 'Example   4'
+    assert var_4 == 'Hello__World'
+    str_5 = 'Hello   World'
     var_5 = module_0.fix_spaces(str_5)
-    assert var_5 == 'Example-4'
-    str_6 = '  Example'
+    assert var_5 == 'Hello-World'
+    str_6 = 'a    b'
     var_6 = module_0.fix_spaces(str_6)
-    assert var_6 == '__Example'
-    str_7 = '   Example'
+    assert var_6 == 'a-b'
+    str_7 = 'abc '
     var_7 = module_0.fix_spaces(str_7)
-    assert var_7 == '-Example'
-    str_8 = 'Example  '
+    assert var_7 == 'abc_'
+    str_8 = 'abc  '
     var_8 = module_0.fix_spaces(str_8)
-    assert var_8 == 'Example__'
-    assert var_8 == 'Example_'
-    str_9 = 'Example   '
+    assert var_8 == 'abc_'
+    str_9 = 'abc   '
     var_9 = module_0.fix_spaces(str_9)
-    assert var_9 == 'Example-'
-    str_10 = '   '
+    assert var_9 == 'abc-'
+    str_10 = '  ab'
     var_10 = module_0.fix_spaces(str_10)
-    assert var_10 == '-'
+    assert var_10 == '__ab'
+    str_11 = '   ab'
+    var_11 = module_0.fix_spaces(str_11)
+    assert var_11 == '-ab'
+    str_12 = ''
+    var_12 = module_0.fix_spaces(str_12)
+    assert var_12 == ''
+    str_13 = ' '
+    var_13 = module_0.fix_spaces(str_13)
+    assert var_13 == '_'
+    str_14 = '  '
+    var_14 = module_0.fix_spaces(str_14)
+    assert var_14 == '_'
+    str_15 = '   '
+    var_15 = module_0.fix_spaces(str_15)
+    assert var_15 == '-'
+    str_16 = 'a b  c   d'
+    var_16 = module_0.fix_spaces(str_16)
+    assert var_16 == 'a_b__c-d'
+    str_17 = 'x'
+    var_17 = module_0.fix_spaces(str_17)
+    assert var_17 == 'x'

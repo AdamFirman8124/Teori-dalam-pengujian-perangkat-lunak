@@ -5,14 +5,10 @@
 from f023 import strlen
 
 
-def test_strlen_empty():
-    assert strlen("") == 0
-
-
-def test_strlen_basic():
+def test_strlen_returns_length_of_string():
+    """Calling strlen must execute the return statement (line 3)."""
     assert strlen("hello") == 5
-
-
-def test_strlen_unicode_and_spaces():
-    assert strlen("a b") == 3
-    assert strlen("héllo") == 5
+    assert strlen("") == 0
+    assert strlen("a b c") == 5
+    assert strlen("héllo") == 5  # unicode characters count as one each
+    assert strlen("x") == 1

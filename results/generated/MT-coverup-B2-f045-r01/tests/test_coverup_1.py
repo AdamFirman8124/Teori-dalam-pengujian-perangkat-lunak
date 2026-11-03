@@ -8,16 +8,25 @@ from f045 import triangle_area
 
 
 def test_triangle_area_executes_return_line():
+    """Calling triangle_area executes line 3 (the return statement).
+
+    The function is pure (no I/O, no global state), so no cleanup or
+    monkeypatching is required; nothing is mutated by the call.
+    """
+    # Basic case: base 3, height 4 -> area 6.0
     result = triangle_area(3, 4)
     assert result == 6.0
     assert isinstance(result, float)
 
+    # Zero base yields zero area
+    assert triangle_area(0, 5) == 0.0
 
-def test_triangle_area_float_values():
-    result = triangle_area(2.5, 4.0)
-    assert result == 5.0
+    # Float inputs
+    assert triangle_area(2.5, 4.0) == 5.0
 
+    # Fractional result: (1 * 1) / 2.0 == 0.5
+    assert triangle_area(1, 1) == 0.5
 
-def test_triangle_area_zero_base():
-    result = triangle_area(0, 10)
-    assert result == 0.0
+    # Property check: area is exactly half of a * h
+    a, h = 7, 13
+    assert triangle_area(a, h) == pytest.approx(a * h / 2.0)

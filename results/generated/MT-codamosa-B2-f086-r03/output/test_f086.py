@@ -2,6 +2,36 @@
 import f086 as module_0
 
 def test_case_0():
-    str_0 = 'hello'
+    str_0 = 'Hi'
     var_0 = module_0.anti_shuffle(str_0)
-    assert var_0 == 'ehllo'
+    assert var_0 == 'Hi'
+    str_1 = 'hello'
+    var_1 = module_0.anti_shuffle(str_1)
+    assert var_1 == 'ehllo'
+    str_2 = 'Hello World!!!'
+    var_2 = module_0.anti_shuffle(str_2)
+    assert var_2 == 'Hello !!!Wdlor'
+    str_3 = 'number'
+    var_3 = module_0.anti_shuffle(str_3)
+    assert var_3 == 'bemnru'
+    str_4 = '12 33 4'
+    var_4 = module_0.anti_shuffle(str_4)
+    assert var_4 == '12 33 4'
+    str_5 = ''
+    var_5 = module_0.anti_shuffle(str_5)
+    assert var_5 == ''
+    str_6 = 'a b  c'
+    var_6 = module_0.anti_shuffle(str_6)
+    assert var_6 == 'a b  c'
+    str_7 = 'dcba'
+    var_7 = module_0.anti_shuffle(str_7)
+    assert var_7 == 'abcd'
+    str_8 = 'ba Aa'
+    var_8 = module_0.anti_shuffle(str_8)
+    assert var_8 == 'Aa ab'
+    assert var_8 == 'ab Aa'
+    str_9 = 'All tests passed!'
+    var_9 = print(str_9)
+
+def test_case_1():
+    pass

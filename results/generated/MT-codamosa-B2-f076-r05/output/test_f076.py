@@ -2,28 +2,44 @@
 import f076 as module_0
 
 def test_case_0():
-    int_0 = 6
-    var_0 = module_0.is_simple_power(int_0, int_0)
-    assert var_0 is True
-    bool_0 = False
-    bool_1 = False
-    var_1 = module_0.is_simple_power(bool_0, bool_1)
-    assert var_1 is False
-
-def test_case_1():
     int_0 = 1
-    var_0 = module_0.is_simple_power(int_0, int_0)
+    int_1 = 4
+    var_0 = module_0.is_simple_power(int_0, int_1)
     assert var_0 is True
-
-def test_case_2():
-    int_0 = 6
-    var_0 = module_0.is_simple_power(int_0, int_0)
-    assert var_0 is True
-
-def test_case_3():
-    int_0 = 6
-    var_0 = module_0.is_simple_power(int_0, int_0)
-    assert var_0 is True
-    float_0 = 502.61
-    bool_0 = False
-    var_1 = module_0.is_simple_power(float_0, bool_0)
+    int_2 = 2
+    var_1 = module_0.is_simple_power(int_2, int_2)
+    assert var_1 is True
+    int_3 = 8
+    var_2 = module_0.is_simple_power(int_3, int_2)
+    assert var_2 is True
+    int_4 = 16
+    var_3 = module_0.is_simple_power(int_4, int_2)
+    assert var_3 is True
+    int_5 = 1024
+    var_4 = module_0.is_simple_power(int_5, int_2)
+    assert var_4 is True
+    int_6 = 27
+    int_7 = 3
+    var_5 = module_0.is_simple_power(int_6, int_7)
+    assert var_5 is True
+    int_8 = 125
+    int_9 = 5
+    var_6 = module_0.is_simple_power(int_8, int_9)
+    assert var_6 is True
+    var_7 = module_0.is_simple_power(int_7, int_2)
+    assert var_7 is False
+    var_8 = module_0.is_simple_power(int_9, int_7)
+    assert var_8 is False
+    int_10 = 10
+    var_9 = module_0.is_simple_power(int_10, int_2)
+    assert var_9 is False
+    int_11 = 143214
+    int_12 = 132
+    var_10 = module_0.is_simple_power(int_11, int_12)
+    assert var_10 is False
+    var_11 = module_0.is_simple_power(int_0, int_0)
+    assert var_11 is True
+    var_12 = module_0.is_simple_power(int_7, int_0)
+    assert var_12 is False
+    var_13 = module_0.is_simple_power(int_2, int_0)
+    assert var_13 is False

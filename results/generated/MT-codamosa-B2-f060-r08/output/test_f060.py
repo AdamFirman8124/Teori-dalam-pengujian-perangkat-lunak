@@ -2,9 +2,29 @@
 import f060 as module_0
 
 def test_case_0():
-    int_0 = 2981
+    int_0 = 0
     var_0 = module_0.sum_to_n(int_0)
-    assert var_0 == 4444671
-    int_1 = -65
+    assert var_0 == 0
+    int_1 = 1
     var_1 = module_0.sum_to_n(int_1)
-    assert var_1 == 0
+    assert var_1 == 1
+    int_2 = 2
+    var_2 = module_0.sum_to_n(int_2)
+    assert var_2 == 3
+    int_3 = 5
+    var_3 = module_0.sum_to_n(int_3)
+    assert var_3 == 15
+    int_4 = 10
+    var_4 = module_0.sum_to_n(int_4)
+    assert var_4 == 55
+    int_5 = 100
+    var_5 = module_0.sum_to_n(int_5)
+    assert var_5 == 5050
+    int_6 = -1
+    var_6 = module_0.sum_to_n(int_6)
+    assert var_6 == 0
+    int_7 = -10
+    var_7 = module_0.sum_to_n(int_7)
+    assert var_7 == 0
+    str_0 = 'All tests passed!'
+    var_8 = print(str_0)

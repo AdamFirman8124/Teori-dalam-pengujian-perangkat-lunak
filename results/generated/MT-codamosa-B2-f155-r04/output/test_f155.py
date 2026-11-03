@@ -2,32 +2,35 @@
 import f155 as module_0
 
 def test_case_0():
-    int_0 = 123
+    int_0 = -12
     var_0 = module_0.even_odd_count(int_0)
-    assert var_0 == (1, 2)
-    int_1 = -12
+    assert var_0 == (1, 1)
+    int_1 = 123
     var_1 = module_0.even_odd_count(int_1)
-    assert var_1 == (1, 1)
-    int_2 = 0
+    assert var_1 == (1, 2)
+    int_2 = -123
     var_2 = module_0.even_odd_count(int_2)
-    assert var_2 == (1, 0)
-    int_3 = -123
+    assert var_2 == (1, 2)
+    int_3 = -2468
     var_3 = module_0.even_odd_count(int_3)
-    assert var_3 == (1, 2)
-    int_4 = -1000
+    assert var_3 == (4, 0)
+    int_4 = 2468
     var_4 = module_0.even_odd_count(int_4)
-    assert var_4 == (3, 1)
-    int_5 = 2468
+    assert var_4 == (4, 0)
+    int_5 = 0
     var_5 = module_0.even_odd_count(int_5)
-    assert var_5 == (4, 0)
+    assert var_5 == (1, 0)
     int_6 = 1357
     var_6 = module_0.even_odd_count(int_6)
     assert var_6 == (0, 4)
-    int_7 = 7
+    int_7 = -13579
     var_7 = module_0.even_odd_count(int_7)
-    assert var_7 == (0, 1)
-    int_8 = 4
+    assert var_7 == (0, 5)
+    int_8 = 2
     var_8 = module_0.even_odd_count(int_8)
     assert var_8 == (1, 0)
-    str_0 = 'All tests passed!'
-    var_9 = print(str_0)
+    int_9 = 7
+    var_9 = module_0.even_odd_count(int_9)
+    assert var_9 == (0, 1)
+    str_0 = 'All test cases passed!'
+    var_10 = print(str_0)

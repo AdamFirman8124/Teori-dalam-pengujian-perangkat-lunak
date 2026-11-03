@@ -3,24 +3,30 @@ import f021 as module_0
 
 def test_case_0():
     try:
-        float_0 = 3971.3
-        list_0 = [float_0]
-        list_1 = module_0.rescale_to_unit(list_0)
-    except BaseException:
-        pass
-
-def test_case_1():
-    try:
         float_0 = 1.0
         float_1 = 2.0
         float_2 = 3.0
-        float_3 = [float_0, float_1, float_2]
-        list_0 = module_0.rescale_to_unit(float_3)
-        assert len(list_0) == 3
-        var_0 = len(list_0)
-        assert var_0 == 3
-        int_0 = 0
-        var_1 = list_0[int_0]
-        var_2 = list_0[float_0]
+        float_3 = 4.0
+        float_4 = 5.0
+        float_5 = [float_0, float_1, float_2, float_3, float_4]
+        list_0 = module_0.rescale_to_unit(float_5)
+        assert len(list_0) == 5
+        float_6 = 0.0
+        float_7 = [float_6, float_0]
+        list_1 = module_0.rescale_to_unit(float_7)
+        assert len(list_1) == 2
+        float_8 = [float_2, float_0, float_1]
+        list_2 = module_0.rescale_to_unit(float_8)
+        assert len(list_2) == 3
+        float_9 = -2.0
+        float_10 = [float_9, float_6, float_1]
+        list_3 = module_0.rescale_to_unit(float_10)
+        assert len(list_3) == 3
+        float_11 = 5.5
+        float_12 = 7.0
+        float_13 = [float_0, float_2, float_11, float_12]
+        list_4 = module_0.rescale_to_unit(float_13)
+        assert len(list_4) == 4
+        var_0 = list_4[float_0]
     except BaseException:
         pass

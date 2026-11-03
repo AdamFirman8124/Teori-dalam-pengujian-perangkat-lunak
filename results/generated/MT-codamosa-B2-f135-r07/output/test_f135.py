@@ -2,28 +2,37 @@
 import f135 as module_0
 
 def test_case_0():
-    var_0 = []
-    var_1 = module_0.can_arrange(var_0)
+    int_0 = 1
+    int_1 = 2
+    int_2 = 4
+    int_3 = 3
+    int_4 = 5
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    var_0 = module_0.can_arrange(int_5)
+    assert var_0 == 3
+    int_6 = [int_0, int_1, int_3]
+    var_1 = module_0.can_arrange(int_6)
     assert var_1 == 1
     assert var_1 == -1
-    int_0 = 1
-    int_1 = [int_0]
-    var_2 = module_0.can_arrange(int_1)
-    assert var_2 == 1
-    assert var_2 == -1
-    int_2 = 2
-    int_3 = 3
-    int_4 = 4
-    int_5 = [int_0, int_2, int_3, int_4]
-    var_3 = module_0.can_arrange(int_5)
-    assert var_3 == 1
-    assert var_3 == -1
-    int_6 = [int_0, int_3, int_2, int_4]
-    var_4 = module_0.can_arrange(int_6)
-    assert var_4 == 2
-    int_7 = [int_3, int_2, int_0]
-    var_5 = module_0.can_arrange(int_7)
-    assert var_5 == 2
-    int_8 = [int_0, int_4, int_3, int_2]
-    var_6 = module_0.can_arrange(int_8)
-    assert var_6 == 3
+    int_7 = 7
+    int_8 = [int_0, int_1, int_2, int_3, int_4, int_3, int_7]
+    var_2 = module_0.can_arrange(int_8)
+    assert var_2 == 5
+    var_3 = []
+    var_4 = module_0.can_arrange(var_3)
+    assert var_4 == 1
+    assert var_4 == -1
+    int_9 = [int_4]
+    var_5 = module_0.can_arrange(int_9)
+    assert var_5 == 1
+    assert var_5 == -1
+    int_10 = [int_3, int_1, int_0]
+    var_6 = module_0.can_arrange(int_10)
+    assert var_6 == 2
+    int_11 = [int_0, int_0, int_0]
+    var_7 = module_0.can_arrange(int_11)
+    assert var_7 == 1
+    assert var_7 == -1
+    int_12 = [int_1, int_0, int_3, int_1, int_4, int_2]
+    var_8 = module_0.can_arrange(int_12)
+    assert var_8 == 5

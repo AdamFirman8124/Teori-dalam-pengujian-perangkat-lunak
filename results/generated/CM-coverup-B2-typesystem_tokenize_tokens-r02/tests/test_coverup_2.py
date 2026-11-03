@@ -2,76 +2,78 @@
 # asked: {"lines": [44, 45, 46, 47], "branches": [[45, 46], [45, 47]]}
 # gained: {"lines": [44, 45, 46, 47], "branches": [[45, 46], [45, 47]]}
 
-import pytest
-
 from typesystem.tokenize.tokens import Token
 
 
-class _StubToken(Token):
-    """Token whose children are supplied explicitly, recording lookups."""
+class _ContainerToken(Token):
+    """Minimal Token subclass that supports child token lookups by key."""
 
-    def __init__(self, value, children=None):
-        super().__init__(value, 0, 0)
-        self._children = children if children is not None else {}
-        self.requested_keys = []
+    def __init__(self, value, start_index, end_index, content="", children=None):
+        super().__init__(value, start_index, end_index, content)
+        self._children = dict(children or {})
+
+    def _get_value(self):
+        return self._value
 
     def _get_child_token(self, key):
-        self.requested_keys.append(key)
         return self._children[key]
 
 
-def test_lookup_empty_index_returns_self():
-    token = _StubToken("root")
+def test_lookup_with_empty_index_returns_self():
+    # Covers 'token = self' and 'return token' with the loop body skipped.
+    # Note: base Token.value raises NotImplementedError, so inspect _value.
+    token = Token(value="scalar", start_index=0, end_index=6, content="scalar")
+
     result = token.lookup([])
+
     assert result is token
-    assert token.requested_keys == []
+    assert result._value == "scalar"
 
 
-def test_lookup_single_key_returns_child():
-    child = _StubToken("child")
-    root = _StubToken("root", {"a": child})
+def test_lookup_with_single_key_returns_child_token():
+    # Covers the loop body 'token = token._get_child_token(key)' once.
+    content = '{"a": 1}'
+    child = _ContainerToken(1, 6, 7, content=content)
+    root = _ContainerToken({"a": 1}, 0, 8, content=content, children={"a": child})
 
     result = root.lookup(["a"])
 
     assert result is child
-    assert root.requested_keys == ["a"]
-    assert child.requested_keys == []
+    assert result.value == 1
 
 
-def test_lookup_multiple_keys_walks_chain_in_order():
-    leaf = _StubToken("leaf")
-    mid = _StubToken("mid", {"b": leaf})
-    root = _StubToken("root", {"a": mid})
+def test_lookup_with_nested_index_traverses_structure():
+    # Covers repeated iterations of the loop body across nesting levels.
+    content = '{"a": {"b": 2}}'
+    grandchild = _ContainerToken(2, 11, 12, content=content)
+    child = _ContainerToken(
+        {"b": 2}, 6, 13, content=content, children={"b": grandchild}
+    )
+    root = _ContainerToken(
+        {"a": {"b": 2}}, 0, 14, content=content, children={"a": child}
+    )
 
-    result = root.lookup(["a", "b"])
-
-    assert result is leaf
-    assert root.requested_keys == ["a"]
-    assert mid.requested_keys == ["b"]
-    assert leaf.requested_keys == []
-
-
-def test_lookup_does_not_mutate_self():
-    child = _StubToken("child")
-    root = _StubToken("root", {"a": child})
-    before = (root._value, root._start_index, root._end_index, root._content)
-
-    root.lookup(["a"])
-
-    assert (root._value, root._start_index, root._end_index, root._content) == before
+    assert root.lookup(["a"]) is child
+    assert root.lookup(["a", "b"]) is grandchild
+    assert root.lookup(["a", "b"]).value == 2
 
 
-def test_lookup_propagates_missing_key_error():
-    root = _StubToken("root", {})
+def test_lookup_passes_each_key_to_get_child_token(monkeypatch):
+    # Verifies lookup delegates to _get_child_token with the index keys,
+    # patching only the test-local instance so no global state is touched.
+    root = Token("root", 0, 10)
+    child = Token("child", 5, 10)
+    received_keys = []
 
-    with pytest.raises(KeyError):
-        root.lookup(["missing"])
+    def fake_get_child_token(key):
+        received_keys.append(key)
+        return child
 
-    assert root.requested_keys == ["missing"]
+    monkeypatch.setattr(
+        root, "_get_child_token", fake_get_child_token, raising=False
+    )
 
+    result = root.lookup(["k"])
 
-def test_base_token_get_child_token_not_implemented():
-    token = Token("root", 0, 0)
-
-    with pytest.raises(NotImplementedError):
-        token.lookup(["a"])
+    assert result is child
+    assert received_keys == ["k"]

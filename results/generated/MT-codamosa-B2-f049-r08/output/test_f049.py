@@ -2,18 +2,31 @@
 import f049 as module_0
 
 def test_case_0():
-    int_0 = 1723
-    int_1 = 592
+    int_0 = 0
+    int_1 = 101
     var_0 = module_0.modp(int_0, int_1)
-    assert var_0 == 96
-    int_2 = -2592
-    int_3 = 1780
+    assert var_0 == 1
+    int_2 = 3
+    int_3 = 5
     var_1 = module_0.modp(int_2, int_3)
-    assert var_1 == 1
-    int_4 = 611
-    int_5 = -626
-    var_2 = module_0.modp(int_4, int_5)
-    assert var_2 == -284
-    int_6 = -854
-    var_3 = module_0.modp(int_4, int_6)
-    assert var_3 == -514
+    assert var_1 == 3
+    int_4 = 11
+    var_2 = module_0.modp(int_2, int_4)
+    assert var_2 == 8
+    int_5 = 10
+    var_3 = module_0.modp(int_5, int_4)
+    assert var_3 == 1
+    int_6 = 100
+    var_4 = module_0.modp(int_6, int_1)
+    assert var_4 == 1
+    int_7 = 1101
+    var_5 = module_0.modp(int_7, int_1)
+    assert var_5 == 2
+    var_6 = module_0.modp(int_3, int_6)
+    assert var_6 == 32
+    var_7 = int_5 ** int_3
+    var_8 = int_2 * var_7
+    var_9 = module_0.modp(var_8, int_5)
+    assert var_9 == 6
+    str_0 = 'All tests passed!'
+    var_10 = print(str_0)

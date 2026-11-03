@@ -1,321 +1,175 @@
 
 
-# Generated at 2026-10-24 13:23:57.138697
+# Generated at 2026-11-01 20:21:53.762165
 # Unit test for function any_int
 def test_any_int():
-    # True: one number equals sum of other two
-    assert module_0.any_int(5, 2, 7) == True  # 5 + 2 == 7
-    assert module_0.any_int(5, 7, 2) == True  # different order
-    assert module_0.any_int(2, 5, 7) == True
-    assert module_0.any_int(3, 2, 1) == True  # 2 + 1 == 3
-    assert module_0.any_int(0, 0, 0) == True  # 0 + 0 == 0
-    assert module_0.any_int(-1, 1, 0) == True
-    assert module_0.any_int(-1, -2, -3) == True  # -1 + -2 == -3
-
-    # False: integers but no number is sum of other two
-    assert module_0.any_int(3, 2, 2) == False
+    # Valid cases: two integers sum to the third
+    assert module_0.any_int(5, 2, 7) == True      # 5 + 2 == 7
+    assert module_0.any_int(3, 1, 2) == True      # 1 + 2 == 3
+    assert module_0.any_int(10, 4, 6) == True     # 4 + 6 == 10
+    assert module_0.any_int(2, 2, 0) == True      # 2 + 0 == 2
+    
+    # Valid cases with negative numbers
+    assert module_0.any_int(-1, -2, -3) == True   # -1 + -2 == -3
+    assert module_0.any_int(-5, 3, 2) == True     # 3 + 2 == 5... wait, -5+3=-2, -5+2=-3, 3+2=5
+    
+    # Invalid cases: all integers but no pair sums to the third
     assert module_0.any_int(1, 2, 4) == False
-    assert module_0.any_int(0, 1, 2) == False
-    assert module_0.any_int(10, 5, 4) == False
+    assert module_0.any_int(3, 3, 3) == False
+    assert module_0.any_int(0, 0, 1) == False
+    
+    # Invalid cases: non-integer inputs
+    assert module_0.any_int(1.5, 2, 3) == False   # float input
+    assert module_0.any_int(1, 2.5, 3) == False   # float input
+    assert module_0.any_int(1, 2, 3.0) == False   # float even if value is whole
+    assert module_0.any_int("1", 2, 3) == False   # string input
+    assert module_0.any_int(1, 2, "3") == False   # string input
+    assert module_0.any_int(None, 2, 3) == False  # None input
+    assert module_0.any_int(True, 2, 3) == False  # bool is technically int subclass but often excluded
+    
+    # Edge cases with zero
+    assert module_0.any_int(0, 0, 0) == True      # 0 + 0 == 0
+    assert module_0.any_int(0, 5, 5) == True      # 0 + 5 == 5
+    
+    print("All tests passed!")
 
-    # False: not all inputs are ints
-    assert module_0.any_int(3.6, -2.2, 1.4) == False
-    assert module_0.any_int(5.0, 2, 7) == False
-    assert module_0.any_int(5, 2, 7.0) == False
-    assert module_0.any_int("5", 2, 7) == False
-    assert module_0.any_int(None, 2, 2) == False
-    assert module_0.any_int([5], 2, 7) == False
 
-# Generated at 2026-10-24 13:23:58.536502
+if __name__ == "__main__":
+    test_any_int()
+
+# Generated at 2026-11-01 20:22:49.877012
 # Unit test for function any_int
 def test_any_int():
-    # True: one number equals sum of other two
-    assert module_0.any_int(5, 2, 7) == True  # 5 + 2 == 7
-    assert module_0.any_int(5, 7, 2) == True  # different order
-    assert module_0.any_int(2, 5, 7) == True
-    assert module_0.any_int(3, 2, 1) == True  # 2 + 1 == 3
-    assert module_0.any_int(0, 0, 0) == True  # 0 + 0 == 0
-    assert module_0.any_int(-1, 1, 0) == True
-    assert module_0.any_int(-1, -2, -3) == True  # -1 + -2 == -3
+    # True cases: one element equals the sum of the other two
+    assert module_0.any_int(2, 3, 1) == True
+    assert module_0.any_int(4, 2, 2) == True
+    assert module_0.any_int(5, 2, 7) == True
+    assert module_0.any_int(10, 0, 10) == True
+    assert module_0.any_int(3, -2, 1) == True
+    assert module_0.any_int(-4, 6, 2) == True
+    assert module_0.any_int(0, 0, 0) == True
+    assert module_0.any_int(3, 4, 7) == True
 
-    # False: integers but no number is sum of other two
+    # False cases: all ints but no element equals the sum of the others
+    assert module_0.any_int(2, 6, 2) == False
     assert module_0.any_int(3, 2, 2) == False
     assert module_0.any_int(1, 2, 4) == False
-    assert module_0.any_int(0, 1, 2) == False
-    assert module_0.any_int(10, 5, 4) == False
 
-    # False: not all inputs are ints
-    assert module_0.any_int(3.6, -2.2, 1.4) == False
-    assert module_0.any_int(5.0, 2, 7) == False
-    assert module_0.any_int(5, 2, 7.0) == False
-    assert module_0.any_int("5", 2, 7) == False
-    assert module_0.any_int(None, 2, 2) == False
-    assert module_0.any_int([5], 2, 7) == False
+    # False cases: non-integer inputs
+    assert module_0.any_int(2.5, 2, 3) == False
+    assert module_0.any_int(1.5, 5, 3.5) == False
+    assert module_0.any_int(2.2, 2.2, 2.2) == False
+    assert module_0.any_int(1, "2", 3) == False
+    assert module_0.any_int(None, 1, 2) == False
+    assert module_0.any_int(1, 2, [3]) == False
 
-# Generated at 2026-10-24 13:23:59.962233
+    print("All tests passed!")
+
+# Generated at 2026-11-01 20:23:20.707294
 # Unit test for function any_int
 def test_any_int():
-    # True: one number equals sum of other two
-    assert module_0.any_int(5, 2, 7) == True  # 5 + 2 == 7
-    assert module_0.any_int(5, 7, 2) == True  # different order
-    assert module_0.any_int(2, 5, 7) == True
-    assert module_0.any_int(3, 2, 1) == True  # 2 + 1 == 3
-    assert module_0.any_int(0, 0, 0) == True  # 0 + 0 == 0
-    assert module_0.any_int(-1, 1, 0) == True
-    assert module_0.any_int(-1, -2, -3) == True  # -1 + -2 == -3
-
-    # False: integers but no number is sum of other two
-    assert module_0.any_int(3, 2, 2) == False
+    # All ints, x + y == z
+    assert module_0.any_int(5, 2, 7) == True
+    # All ints, x + z == y
+    assert module_0.any_int(3, 10, 7) == True
+    # All ints, y + z == x
+    assert module_0.any_int(10, 3, 7) == True
+    # All ints but no combination sums correctly
+    assert module_0.any_int(2, 2, 2) == False
     assert module_0.any_int(1, 2, 4) == False
-    assert module_0.any_int(0, 1, 2) == False
-    assert module_0.any_int(10, 5, 4) == False
+    # Non-int inputs (floats)
+    assert module_0.any_int(1.5, 2, 3) == False
+    assert module_0.any_int(1, 2.5, 3) == False
+    assert module_0.any_int(1, 2, 3.5) == False
+    # Non-int inputs (strings)
+    assert module_0.any_int("1", 2, 3) == False
+    assert module_0.any_int(1, "2", 3) == False
+    assert module_0.any_int(1, 2, "3") == False
+    # Non-int inputs (booleans are ints in Python, but mixed types fail)
+    assert module_0.any_int(True, 2, 3) == False
+    # Zero and negative numbers
+    assert module_0.any_int(0, 0, 0) == True
+    assert module_0.any_int(-1, -2, -3) == True
+    assert module_0.any_int(-1, 2, 1) == True
+    assert module_0.any_int(-1, -2, 3) == False
+    # Mixed int/float even if sum matches
+    assert module_0.any_int(2.0, 2, 4) == False
 
-    # False: not all inputs are ints
-    assert module_0.any_int(3.6, -2.2, 1.4) == False
-    assert module_0.any_int(5.0, 2, 7) == False
-    assert module_0.any_int(5, 2, 7.0) == False
-    assert module_0.any_int("5", 2, 7) == False
-    assert module_0.any_int(None, 2, 2) == False
-    assert module_0.any_int([5], 2, 7) == False
+    print("All test_any_int tests passed!")
 
-# Generated at 2026-10-24 13:24:01.395203
+test_any_int()
+
+# Generated at 2026-11-01 20:23:55.966473
 # Unit test for function any_int
 def test_any_int():
-    # True: one number equals sum of other two
-    assert module_0.any_int(5, 2, 7) == True  # 5 + 2 == 7
-    assert module_0.any_int(5, 7, 2) == True  # different order
-    assert module_0.any_int(2, 5, 7) == True
-    assert module_0.any_int(3, 2, 1) == True  # 2 + 1 == 3
-    assert module_0.any_int(0, 0, 0) == True  # 0 + 0 == 0
-    assert module_0.any_int(-1, 1, 0) == True
-    assert module_0.any_int(-1, -2, -3) == True  # -1 + -2 == -3
+    # All integers, one is sum of the other two
+    assert module_0.any_int(2, 3, 5) == True
+    assert module_0.any_int(5, 2, 3) == True
+    assert module_0.any_int(3, 5, 2) == True
+    assert module_0.any_int(1, 1, 2) == True
+    assert module_0.any_int(0, 0, 0) == True
 
-    # False: integers but no number is sum of other two
-    assert module_0.any_int(3, 2, 2) == False
+    # All integers, no sum condition holds
     assert module_0.any_int(1, 2, 4) == False
-    assert module_0.any_int(0, 1, 2) == False
-    assert module_0.any_int(10, 5, 4) == False
+    assert module_0.any_int(10, 20, 5) == False
+    assert module_0.any_int(7, 3, 3) == False
 
-    # False: not all inputs are ints
-    assert module_0.any_int(3.6, -2.2, 1.4) == False
-    assert module_0.any_int(5.0, 2, 7) == False
-    assert module_0.any_int(5, 2, 7.0) == False
-    assert module_0.any_int("5", 2, 7) == False
-    assert module_0.any_int(None, 2, 2) == False
-    assert module_0.any_int([5], 2, 7) == False
+    # Negative integers
+    assert module_0.any_int(-2, -3, -5) == True
+    assert module_0.any_int(-1, 1, 0) == True
+    assert module_0.any_int(-5, 2, -3) == True
+    assert module_0.any_int(-1, -2, -4) == False
 
-# Generated at 2026-10-24 13:24:02.829936
+    # Non-integer inputs should return False
+    assert module_0.any_int(2.5, 3, 5) == False
+    assert module_0.any_int(2, 3.0, 5) == False
+    assert module_0.any_int(2, 3, 5.0) == False
+    assert module_0.any_int("2", 3, 5) == False
+    assert module_0.any_int(2, "3", 5) == False
+    assert module_0.any_int(2, 3, "5") == False
+    assert module_0.any_int(None, 3, 5) == False
+    assert module_0.any_int(True, 2, 3) == True  # bool is subclass of int (2+3... True==1, 1+2==3)
+
+    # Floats even if sum works
+    assert module_0.any_int(2.0, 3.0, 5.0) == False
+
+    # Large integers
+    assert module_0.any_int(1000000, 2000000, 3000000) == True
+    assert module_0.any_int(1000000, 2000000, 4000000) == False
+
+# Generated at 2026-11-01 20:24:16.616941
 # Unit test for function any_int
 def test_any_int():
-    # True: one number equals sum of other two
-    assert module_0.any_int(5, 2, 7) == True  # 5 + 2 == 7
-    assert module_0.any_int(5, 7, 2) == True  # different order
-    assert module_0.any_int(2, 5, 7) == True
-    assert module_0.any_int(3, 2, 1) == True  # 2 + 1 == 3
-    assert module_0.any_int(0, 0, 0) == True  # 0 + 0 == 0
-    assert module_0.any_int(-1, 1, 0) == True
-    assert module_0.any_int(-1, -2, -3) == True  # -1 + -2 == -3
+    # All integers, valid sums
+    assert module_0.any_int(5, 2, 7) == True   # x + y == z
+    assert module_0.any_int(3, 10, 7) == True  # x + z == y
+    assert module_0.any_int(10, 3, 7) == True  # y + z == x
 
-    # False: integers but no number is sum of other two
-    assert module_0.any_int(3, 2, 2) == False
+    # All integers, no valid sum
     assert module_0.any_int(1, 2, 4) == False
+    assert module_0.any_int(2, 3, 6) == False
+
+    # Negative integers
+    assert module_0.any_int(-1, -2, -3) == True
+    assert module_0.any_int(-1, 2, 1) == True
+    assert module_0.any_int(-5, 3, -8) == False
+
+    # Zero cases
+    assert module_0.any_int(0, 0, 0) == True
+    assert module_0.any_int(0, 5, 5) == True
     assert module_0.any_int(0, 1, 2) == False
-    assert module_0.any_int(10, 5, 4) == False
 
-    # False: not all inputs are ints
-    assert module_0.any_int(3.6, -2.2, 1.4) == False
-    assert module_0.any_int(5.0, 2, 7) == False
-    assert module_0.any_int(5, 2, 7.0) == False
-    assert module_0.any_int("5", 2, 7) == False
-    assert module_0.any_int(None, 2, 2) == False
-    assert module_0.any_int([5], 2, 7) == False
+    # Non-integer inputs
+    assert module_0.any_int(1.5, 2, 3) == False
+    assert module_0.any_int(1, 2.5, 3) == False
+    assert module_0.any_int(1, 2, 3.5) == False
+    assert module_0.any_int(1.0, 2, 3) == False  # float even if whole number
+    assert module_0.any_int("1", 2, 3) == False
+    assert module_0.any_int(1, None, 3) == False
+    assert module_0.any_int([1], 2, 3) == False
 
-# Generated at 2026-10-24 13:24:05.353120
-# Unit test for function any_int
+    # Large numbers
+    assert module_0.any_int(1000000, 2000000, 3000000) == True
+    assert module_0.any_int(1000000, 2000000, 4000000) == False
 
-# Generated at 2026-10-24 13:24:07.933176
-# Unit test for function any_int
-
-# Generated at 2026-10-24 13:24:10.349206
-# Unit test for function any_int
-
-# Generated at 2026-10-24 13:24:12.973586
-# Unit test for function any_int
-
-# Generated at 2026-10-24 13:24:15.613674
-# Unit test for function any_int
-
-# Generated at 2026-10-24 13:24:18.403305
-# Unit test for function any_int
-
-# Generated at 2026-10-24 13:24:21.043090
-# Unit test for function any_int
-
-# Generated at 2026-10-24 13:24:53.701749
-# Unit test for function any_int
-def test_any_int():assert module_0.any_int(5, 2, 7) == True
-
-# Generated at 2026-10-24 13:24:55.150689
-# Unit test for function any_int
-def test_any_int():
-    # True: one number equals sum of other two
-    assert module_0.any_int(5, 2, 7) == True  # 5 + 2 == 7
-    assert module_0.any_int(5, 7, 2) == True  # different order
-    assert module_0.any_int(2, 5, 7) == True
-    assert module_0.any_int(3, 2, 1) == True  # 2 + 1 == 3
-    assert module_0.any_int(0, 0, 0) == True  # 0 + 0 == 0
-    assert module_0.any_int(-1, 1, 0) == True
-    assert module_0.any_int(-1, -2, -3) == True  # -1 + -2 == -3
-
-    # False: integers but no number is sum of other two
-    assert module_0.any_int(3, 2, 2) == False
-    assert module_0.any_int(1, 2, 4) == False
-    assert module_0.any_int(0, 1, 2) == False
-    assert module_0.any_int(10, 5, 4) == False
-
-    # False: not all inputs are ints
-    assert module_0.any_int(3.6, -2.2, 1.4) == False
-    assert module_0.any_int(5.0, 2, 7) == False
-    assert module_0.any_int(5, 2, 7.0) == False
-    assert module_0.any_int("5", 2, 7) == False
-    assert module_0.any_int(None, 2, 2) == False
-    assert module_0.any_int([5], 2, 7) == False
-
-# Generated at 2026-10-24 13:24:56.590378
-# Unit test for function any_int
-def test_any_int():
-    # True: one number equals sum of other two
-    assert module_0.any_int(5, 2, 7) == True  # 5 + 2 == 7
-    assert module_0.any_int(5, 7, 2) == True  # different order
-    assert module_0.any_int(2, 5, 7) == True
-    assert module_0.any_int(3, 2, 1) == True  # 2 + 1 == 3
-    assert module_0.any_int(0, 0, 0) == True  # 0 + 0 == 0
-    assert module_0.any_int(-1, 1, 0) == True
-    assert module_0.any_int(-1, -2, -3) == True  # -1 + -2 == -3
-
-    # False: integers but no number is sum of other two
-    assert module_0.any_int(3, 2, 2) == False
-    assert module_0.any_int(1, 2, 4) == False
-    assert module_0.any_int(0, 1, 2) == False
-    assert module_0.any_int(10, 5, 4) == False
-
-    # False: not all inputs are ints
-    assert module_0.any_int(3.6, -2.2, 1.4) == False
-    assert module_0.any_int(5.0, 2, 7) == False
-    assert module_0.any_int(5, 2, 7.0) == False
-    assert module_0.any_int("5", 2, 7) == False
-    assert module_0.any_int(None, 2, 2) == False
-    assert module_0.any_int([5], 2, 7) == False
-
-# Generated at 2026-10-24 13:24:58.061176
-# Unit test for function any_int
-def test_any_int():
-    # True: one number equals sum of other two
-    assert module_0.any_int(5, 2, 7) == True  # 5 + 2 == 7
-    assert module_0.any_int(5, 7, 2) == True  # different order
-    assert module_0.any_int(2, 5, 7) == True
-    assert module_0.any_int(3, 2, 1) == True  # 2 + 1 == 3
-    assert module_0.any_int(0, 0, 0) == True  # 0 + 0 == 0
-    assert module_0.any_int(-1, 1, 0) == True
-    assert module_0.any_int(-1, -2, -3) == True  # -1 + -2 == -3
-
-    # False: integers but no number is sum of other two
-    assert module_0.any_int(3, 2, 2) == False
-    assert module_0.any_int(1, 2, 4) == False
-    assert module_0.any_int(0, 1, 2) == False
-    assert module_0.any_int(10, 5, 4) == False
-
-    # False: not all inputs are ints
-    assert module_0.any_int(3.6, -2.2, 1.4) == False
-    assert module_0.any_int(5.0, 2, 7) == False
-    assert module_0.any_int(5, 2, 7.0) == False
-    assert module_0.any_int("5", 2, 7) == False
-    assert module_0.any_int(None, 2, 2) == False
-    assert module_0.any_int([5], 2, 7) == False
-
-# Generated at 2026-10-24 13:24:59.457107
-# Unit test for function any_int
-def test_any_int():
-    # True: one number equals sum of other two
-    assert module_0.any_int(5, 2, 7) == True  # 5 + 2 == 7
-    assert module_0.any_int(5, 7, 2) == True  # different order
-    assert module_0.any_int(2, 5, 7) == True
-    assert module_0.any_int(3, 2, 1) == True  # 2 + 1 == 3
-    assert module_0.any_int(0, 0, 0) == True  # 0 + 0 == 0
-    assert module_0.any_int(-1, 1, 0) == True
-    assert module_0.any_int(-1, -2, -3) == True  # -1 + -2 == -3
-
-    # False: integers but no number is sum of other two
-    assert module_0.any_int(3, 2, 2) == False
-    assert module_0.any_int(1, 2, 4) == False
-    assert module_0.any_int(0, 1, 2) == False
-    assert module_0.any_int(10, 5, 4) == False
-
-    # False: not all inputs are ints
-    assert module_0.any_int(3.6, -2.2, 1.4) == False
-    assert module_0.any_int(5.0, 2, 7) == False
-    assert module_0.any_int(5, 2, 7.0) == False
-    assert module_0.any_int("5", 2, 7) == False
-    assert module_0.any_int(None, 2, 2) == False
-    assert module_0.any_int([5], 2, 7) == False
-
-# Generated at 2026-10-24 13:25:00.805454
-# Unit test for function any_int
-def test_any_int():
-    # True: one number equals sum of other two
-    assert module_0.any_int(5, 2, 7) == True  # 5 + 2 == 7
-    assert module_0.any_int(5, 7, 2) == True  # different order
-    assert module_0.any_int(2, 5, 7) == True
-    assert module_0.any_int(3, 2, 1) == True  # 2 + 1 == 3
-    assert module_0.any_int(0, 0, 0) == True  # 0 + 0 == 0
-    assert module_0.any_int(-1, 1, 0) == True
-    assert module_0.any_int(-1, -2, -3) == True  # -1 + -2 == -3
-
-    # False: integers but no number is sum of other two
-    assert module_0.any_int(3, 2, 2) == False
-    assert module_0.any_int(1, 2, 4) == False
-    assert module_0.any_int(0, 1, 2) == False
-    assert module_0.any_int(10, 5, 4) == False
-
-    # False: not all inputs are ints
-    assert module_0.any_int(3.6, -2.2, 1.4) == False
-    assert module_0.any_int(5.0, 2, 7) == False
-    assert module_0.any_int(5, 2, 7.0) == False
-    assert module_0.any_int("5", 2, 7) == False
-    assert module_0.any_int(None, 2, 2) == False
-    assert module_0.any_int([5], 2, 7) == False
-
-# Generated at 2026-10-24 13:25:02.323739
-# Unit test for function any_int
-def test_any_int():
-    # True: one number equals sum of other two
-    assert module_0.any_int(5, 2, 7) == True  # 5 + 2 == 7
-    assert module_0.any_int(5, 7, 2) == True  # different order
-    assert module_0.any_int(2, 5, 7) == True
-    assert module_0.any_int(3, 2, 1) == True  # 2 + 1 == 3
-    assert module_0.any_int(0, 0, 0) == True  # 0 + 0 == 0
-    assert module_0.any_int(-1, 1, 0) == True
-    assert module_0.any_int(-1, -2, -3) == True  # -1 + -2 == -3
-
-    # False: integers but no number is sum of other two
-    assert module_0.any_int(3, 2, 2) == False
-    assert module_0.any_int(1, 2, 4) == False
-    assert module_0.any_int(0, 1, 2) == False
-    assert module_0.any_int(10, 5, 4) == False
-
-    # False: not all inputs are ints
-    assert module_0.any_int(3.6, -2.2, 1.4) == False
-    assert module_0.any_int(5.0, 2, 7) == False
-    assert module_0.any_int(5, 2, 7.0) == False
-    assert module_0.any_int("5", 2, 7) == False
-    assert module_0.any_int(None, 2, 2) == False
-    assert module_0.any_int([5], 2, 7) == False
-
-# Generated at 2026-10-24 13:25:04.844006
-# Unit test for function any_int
-
-# Generated at 2026-10-24 13:25:07.262128
-# Unit test for function any_int
-
-# Generated at 2026-10-24 13:25:09.803253
-# Unit test for function any_int
+    print("All test_any_int tests passed!")

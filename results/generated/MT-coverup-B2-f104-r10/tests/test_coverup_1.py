@@ -5,44 +5,41 @@
 from f104 import unique_digits
 
 
+def test_unique_digits_mixed_elements_covers_all_lines_and_branches():
+    # Covers line 3 (list init), line 4 (loop), line 5 (both True and False
+    # outcomes of the all(...) check), line 6 (append), and line 7 (return).
+    assert unique_digits([15, 33, 1422, 1]) == [1, 15, 33]
+
+
+def test_unique_digits_no_element_matches():
+    # Loop body runs, all(...) is False for every element, append never runs.
+    assert unique_digits([152, 323, 1423, 10]) == []
+
+
 def test_unique_digits_empty_input():
-    x = []
-    result = unique_digits(x)
-    assert result == []
-    assert x == []
+    # Zero loop iterations; still exercises init (line 3) and return (line 7).
+    assert unique_digits([]) == []
 
 
-def test_unique_digits_all_odd_digits_sorted():
-    x = [135, 31, 9, 111, 5]
-    original = list(x)
-    result = unique_digits(x)
-    assert result == [5, 9, 31, 111, 135]
-    assert result == sorted(result)
-    assert all(int(c) % 2 == 1 for value in result for c in str(value))
-    assert x == original
+def test_unique_digits_sorts_ascending():
+    # Matching elements supplied out of order must come back sorted (line 7).
+    assert unique_digits([135, 7, 979, 31]) == [7, 31, 135, 979]
 
 
-def test_unique_digits_no_odd_digit_elements():
-    x = [20, 42, 8, 246]
-    original = list(x)
-    result = unique_digits(x)
-    assert result == []
-    assert x == original
+def test_unique_digits_single_even_digits():
+    # Single-digit even numbers never satisfy the all(...) condition.
+    assert unique_digits([0, 2, 4, 6, 8]) == []
 
 
-def test_unique_digits_mixed_elements_and_digit_positions():
-    x = [135, 12, 21, 31, 9, 20, 111, 2, 7]
-    original = list(x)
-    result = unique_digits(x)
-    assert result == [7, 9, 31, 111, 135]
-    assert result == sorted(result)
-    assert all(int(c) % 2 == 1 for value in result for c in str(value))
-    assert x == original
+def test_unique_digits_all_match():
+    # Every element takes the True branch of the all(...) check (line 6).
+    assert unique_digits([11, 3, 555]) == [3, 11, 555]
 
 
-def test_unique_digits_single_digit_odd_and_even():
-    x = [5, 4, 3, 2, 1, 0]
-    original = list(x)
-    result = unique_digits(x)
-    assert result == [1, 3, 5]
-    assert x == original
+def test_unique_digits_does_not_mutate_input():
+    # Postcondition: the input list is left untouched (no state pollution).
+    original = [11, 20, 13]
+    snapshot = list(original)
+    result = unique_digits(original)
+    assert original == snapshot
+    assert result == [11, 13]

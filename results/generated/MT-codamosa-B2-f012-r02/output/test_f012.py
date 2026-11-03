@@ -2,35 +2,53 @@
 import f012 as module_0
 
 def test_case_0():
-    str_0 = 'two'
-    optional_0 = module_0.longest(str_0)
-    assert optional_0 == 'abcd'
-    assert optional_0 == 't'
-
-def test_case_1():
-    str_0 = 'two'
-    str_1 = 'x'
-    str_2 = [str_1, str_0, str_0]
-    optional_0 = module_0.longest(str_2)
-    assert optional_0 == 'abcd'
-    assert optional_0 == 'two'
-
-def test_case_2():
     var_0 = []
     optional_0 = module_0.longest(var_0)
     assert optional_0 is None
-    str_0 = 'two'
-    str_1 = 'abcd'
-    str_2 = 'x'
-    str_3 = 'y'
-    optional_1 = module_0.longest(str_0)
-    assert optional_1 == 'abcd'
-    assert optional_1 == 't'
-    str_4 = [str_2, str_1, str_3]
-    optional_2 = module_0.longest(str_4)
-    assert optional_2 == 'abcd'
-    str_5 = [str_2, str_3, str_1]
+    str_0 = 'a'
+    str_1 = [str_0]
+    optional_1 = module_0.longest(str_1)
+    assert optional_1 == 'a'
+    str_2 = 'hello'
+    str_3 = [str_2]
+    optional_2 = module_0.longest(str_3)
+    assert optional_2 == 'hello'
+    str_4 = 'bb'
+    str_5 = [str_0, str_4, str_1]
     optional_3 = module_0.longest(str_5)
-    assert optional_3 == 'abcd'
-    str_6 = 'All tes4s passed.'
-    var_1 = print(str_6)
+    assert optional_3 == 'bb'
+    str_6 = 'abc'
+    str_7 = 'ab'
+    str_8 = [str_6, str_7, str_0]
+    optional_4 = module_0.longest(str_8)
+    assert optional_4 == 'abc'
+    str_9 = 'yy'
+    str_10 = 'cd'
+    optional_5 = module_0.longest(str_10)
+    assert optional_5 == 'ab'
+    assert optional_5 == 'c'
+    str_11 = 'cc'
+    str_12 = [str_0, str_4, str_11]
+    optional_6 = module_0.longest(str_12)
+    assert optional_6 == 'bb'
+    str_13 = 'b'
+    str_14 = [str_0, str_13, str_2]
+    optional_7 = module_0.longest(str_14)
+    assert optional_7 == 'a'
+    assert optional_7 == 'hello'
+    str_15 = [str_1, str_9]
+    optional_8 = module_0.longest(str_15)
+    assert optional_8 == 'xx'
+    assert optional_8 == 'yy'
+    str_16 = ''
+    str_17 = [str_16, str_0]
+    optional_9 = module_0.longest(str_17)
+    assert optional_9 == 'a'
+    str_18 = [str_16]
+    optional_10 = module_0.longest(str_18)
+    assert optional_10 == ''
+    str_19 = 'short'
+    str_20 = 'a much longer string here'
+    str_21 = [str_19, str_20]
+    optional_11 = module_0.longest(str_21)
+    assert optional_11 == 'a much longer string here'

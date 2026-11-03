@@ -4,73 +4,78 @@ import f040 as module_0
 def test_case_0():
     int_0 = 1
     int_1 = 3
-    int_2 = 5
-    int_3 = 0
-    int_4 = [int_0, int_1, int_2, int_3]
-    var_0 = module_0.triples_sum_to_zero(int_4)
-    assert var_0 is False
-    int_5 = -2
-    int_6 = [int_0, int_1, int_5, int_0]
-    var_1 = module_0.triples_sum_to_zero(int_6)
-    assert var_1 is True
-    int_7 = 2
+    int_2 = -2
+    int_3 = [int_0, int_1, int_2, int_0]
+    var_0 = module_0.triples_sum_to_zero(int_3)
+    assert var_0 is True
+    int_4 = 2
+    int_5 = 4
+    int_6 = -5
+    int_7 = 9
     int_8 = 7
-    int_9 = [int_0, int_7, int_1, int_8]
-    var_2 = module_0.triples_sum_to_zero(int_9)
-    assert var_2 is False
-    int_10 = 4
-    int_11 = -5
-    int_12 = 9
-    int_13 = [int_7, int_10, int_11, int_1, int_12, int_8]
+    int_9 = [int_4, int_5, int_6, int_1, int_7, int_8]
+    var_1 = module_0.triples_sum_to_zero(int_9)
+    assert var_1 is True
+    int_10 = -1
+    int_11 = 0
+    int_12 = [int_0, int_10, int_11]
+    var_2 = module_0.triples_sum_to_zero(int_12)
+    assert var_2 is True
+    int_13 = [int_11, int_11, int_11]
     var_3 = module_0.triples_sum_to_zero(int_13)
     assert var_3 is True
-    int_14 = [int_0]
-    var_4 = module_0.triples_sum_to_zero(int_14)
-    assert var_4 is False
-    var_5 = []
-    var_6 = module_0.triples_sum_to_zero(var_5)
+    int_14 = -1
+    int_15 = -2
+    int_16 = [int_14, int_15, int_1]
+    var_4 = module_0.triples_sum_to_zero(int_16)
+    assert var_4 is True
+    int_17 = 5
+    int_18 = [int_0, int_1, int_17, int_11]
+    var_5 = module_0.triples_sum_to_zero(int_18)
+    assert var_5 is False
+    int_19 = [int_0, int_4, int_1, int_8]
+    var_6 = module_0.triples_sum_to_zero(int_19)
     assert var_6 is False
-    int_15 = [int_3]
-    var_7 = module_0.triples_sum_to_zero(int_15)
+    int_20 = [int_0, int_4, int_1]
+    var_7 = module_0.triples_sum_to_zero(int_20)
     assert var_7 is False
-    int_16 = [int_3, int_3]
-    var_8 = module_0.triples_sum_to_zero(int_16)
+    int_21 = -1
+    int_22 = -2
+    int_23 = -3
+    int_24 = [int_21, int_22, int_23]
+    var_8 = module_0.triples_sum_to_zero(int_24)
     assert var_8 is False
-    int_17 = -1
-    int_18 = [int_0, int_17]
-    var_9 = module_0.triples_sum_to_zero(int_18)
-    assert var_9 is False
-    int_19 = -3
-    int_20 = [int_0, int_7, int_19]
-    var_10 = module_0.triples_sum_to_zero(int_20)
-    assert var_10 is True
-    int_21 = [int_0, int_7, int_1]
-    var_11 = module_0.triples_sum_to_zero(int_21)
+    var_9 = []
+    var_10 = module_0.triples_sum_to_zero(var_9)
+    assert var_10 is False
+    int_25 = [int_0]
+    var_11 = module_0.triples_sum_to_zero(int_25)
     assert var_11 is False
-    int_22 = [int_3, int_3, int_3]
-    var_12 = module_0.triples_sum_to_zero(int_22)
-    assert var_12 is True
-    int_23 = -1
-    int_24 = [int_23, int_3, int_0]
-    var_13 = module_0.triples_sum_to_zero(int_24)
-    assert var_13 is True
-    int_25 = -1
-    int_26 = [int_0, int_25, int_2]
-    var_14 = module_0.triples_sum_to_zero(int_26)
-    assert var_14 is False
-    int_27 = -3
-    int_28 = [int_2, int_0, int_7, int_27, int_8]
-    var_15 = module_0.triples_sum_to_zero(int_28)
-    assert var_15 is True
-    int_29 = -5
-    int_30 = -1
-    int_31 = -2
-    int_32 = 8
-    int_33 = [int_29, int_30, int_31, int_32, int_0]
-    var_16 = module_0.triples_sum_to_zero(int_33)
-    assert var_16 is False
-    int_34 = -1
-    int_35 = -2
-    int_36 = [int_34, int_35, int_1, int_2]
-    var_17 = module_0.triples_sum_to_zero(int_36)
+    int_26 = -1
+    int_27 = [int_0, int_26]
+    var_12 = module_0.triples_sum_to_zero(int_27)
+    assert var_12 is False
+    int_28 = [int_11, int_11]
+    var_13 = module_0.triples_sum_to_zero(int_28)
+    assert var_13 is False
+    int_29 = -4
+    int_30 = [int_4, int_4, int_29]
+    var_14 = module_0.triples_sum_to_zero(int_30)
+    assert var_14 is True
+    int_31 = [int_17, int_17, int_17]
+    var_15 = module_0.triples_sum_to_zero(int_31)
+    assert var_15 is False
+    int_32 = -5
+    int_33 = 10
+    int_34 = [int_32, int_4, int_1, int_33]
+    var_16 = module_0.triples_sum_to_zero(int_34)
+    assert var_16 is True
+    int_35 = -10
+    int_36 = -5
+    int_37 = [int_33, int_35, int_17, int_36]
+    var_17 = module_0.triples_sum_to_zero(int_37)
     assert var_17 is True
+    assert var_17 is False
+
+def test_case_1():
+    pass

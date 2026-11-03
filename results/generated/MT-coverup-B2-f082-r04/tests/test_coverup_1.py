@@ -8,24 +8,35 @@ from f082 import prime_length
 
 
 def test_prime_length_empty_string():
+    """Covers lines 3-5 via the l == 0 branch."""
     assert prime_length("") is False
 
 
 def test_prime_length_single_char():
+    """Covers lines 3-5 via the l == 1 branch."""
     assert prime_length("a") is False
 
 
-def test_prime_length_two_chars_is_prime():
+def test_prime_length_two_chars():
+    """l == 2: loop body (range(2, 2)) never executes, covers line 9."""
     assert prime_length("ab") is True
 
 
-def test_prime_length_composite_even():
+def test_prime_length_composite():
+    """l == 4: loop finds divisor 2, covers lines 6-8."""
     assert prime_length("abcd") is False
 
 
-def test_prime_length_composite_odd():
-    assert prime_length("abcdefghi") is False
+def test_prime_length_prime():
+    """l == 3: loop runs, no divisor found, covers lines 6, 7 and 9."""
+    assert prime_length("abc") is True
 
 
-def test_prime_length_prime_odd():
-    assert prime_length("abcdefg") is True
+def test_prime_length_larger_prime():
+    """l == 7: exercises multiple loop iterations before returning True."""
+    assert prime_length("1234567") is True
+
+
+def test_prime_length_larger_composite():
+    """l == 9: divisor found on a later iteration, covers lines 6-8 again."""
+    assert prime_length("123456789") is False

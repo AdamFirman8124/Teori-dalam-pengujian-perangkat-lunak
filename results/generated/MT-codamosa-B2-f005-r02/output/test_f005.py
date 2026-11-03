@@ -2,14 +2,41 @@
 import f005 as module_0
 
 def test_case_0():
-    int_0 = 2612
-    int_1 = -1982
-    list_0 = [int_0, int_1]
-    list_1 = module_0.intersperse(list_0, int_1)
-    assert list_1 == [2612, -1982, -1982]
-
-def test_case_1():
     var_0 = []
-    int_0 = 0
+    int_0 = 4
     list_0 = module_0.intersperse(var_0, int_0)
     assert list_0 == []
+    int_1 = 1
+    int_2 = [int_1]
+    list_1 = module_0.intersperse(int_2, int_0)
+    assert list_1 == [1]
+    int_3 = 2
+    int_4 = [int_1, int_3]
+    list_2 = module_0.intersperse(int_4, int_0)
+    assert list_2 == [1, 4, 2]
+    int_5 = 3
+    int_6 = [int_1, int_3, int_5]
+    list_3 = module_0.intersperse(int_6, int_0)
+    assert list_3 == [1, 4, 2, 4, 3]
+    int_7 = -1
+    int_8 = -2
+    int_9 = -3
+    int_10 = [int_7, int_8, int_9]
+    int_11 = 0
+    list_4 = module_0.intersperse(int_10, int_11)
+    assert list_4 == [-1, 0, -2, 0, -3]
+    int_12 = 5
+    int_13 = 6
+    int_14 = 7
+    int_15 = [int_12, int_13, int_14]
+    list_5 = module_0.intersperse(int_15, int_11)
+    assert list_5 == [5, 0, 6, 0, 7]
+    int_16 = [int_1, int_3, int_5]
+    int_17 = -1
+    list_6 = module_0.intersperse(int_16, int_17)
+    assert list_6 == [1, -1, 2, -1, 3]
+    int_18 = [int_14, int_14, int_14]
+    list_7 = module_0.intersperse(int_18, int_1)
+    assert list_7 == [7, 1, 7, 1, 7]
+    str_0 = 'All tests passed!'
+    var_1 = print(str_0)

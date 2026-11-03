@@ -2,12 +2,22 @@
 # asked: {"lines": [3, 4, 5], "branches": [[3, 4], [3, 5]]}
 # gained: {"lines": [3, 4, 5], "branches": [[3, 4], [3, 5]]}
 
+import pytest
+
 from f083 import starts_one_ends
 
 
-def test_starts_one_ends_returns_one_for_n_equal_to_one():
-    assert starts_one_ends(1) == 1
-
-
-def test_starts_one_ends_returns_formula_for_n_greater_than_one():
-    assert starts_one_ends(2) == 18
+@pytest.mark.parametrize(
+    ("n", "expected"),
+    [
+        # Covers lines 3-4: the `n == 1` branch.
+        (1, 1),
+        # Covers line 5: the general branch `18 * 10 ** (n - 2)`.
+        (2, 18),
+        (3, 180),
+        (5, 18000),
+    ],
+)
+def test_starts_one_ends(n, expected):
+    """starts_one_ends returns 1 for n == 1 and 18 * 10**(n-2) otherwise."""
+    assert starts_one_ends(n) == expected

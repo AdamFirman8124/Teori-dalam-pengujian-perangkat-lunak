@@ -8,9 +8,24 @@ def test_case_0():
     str_1 = 'a'
     list_1 = module_0.all_prefixes(str_1)
     assert list_1 == ['a']
-    str_2 = 'abc'
+    str_2 = 'ab'
     list_2 = module_0.all_prefixes(str_2)
-    assert list_2 == ['a', 'ab', 'abc']
-    str_3 = 'hello'
+    assert list_2 == ['a', 'ab']
+    str_3 = 'abc'
     list_3 = module_0.all_prefixes(str_3)
-    assert list_3 == ['h', 'he', 'hel', 'hell', 'hello']
+    assert list_3 == ['a', 'ab', 'abc']
+    str_4 = 'xyz'
+    list_4 = module_0.all_prefixes(str_4)
+    assert list_4 == ['x', 'xy', 'xyz']
+    str_5 = 'hello'
+    list_5 = module_0.all_prefixes(str_5)
+    assert list_5 == ['h', 'he', 'hel', 'hell', 'hello']
+    str_6 = 'aAbB'
+    list_6 = module_0.all_prefixes(str_6)
+    assert list_6 == ['a', 'aA', 'aAb', 'aAbB']
+    str_7 = ' '
+    list_7 = module_0.all_prefixes(str_7)
+    assert list_7 == [' ']
+    str_8 = '123'
+    list_8 = module_0.all_prefixes(str_8)
+    assert list_8 == ['1', '12', '123']

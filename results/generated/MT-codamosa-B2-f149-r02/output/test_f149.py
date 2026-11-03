@@ -2,11 +2,51 @@
 import f149 as module_0
 
 def test_case_0():
-    str_0 = 'aaaa'
-    str_1 = 'b'
-    str_2 = 'cc'
-    str_3 = 'ddd'
-    str_4 = 'bb'
-    str_5 = [str_0, str_1, str_2, str_3, str_4]
-    var_0 = module_0.sorted_list_sum(str_5)
-    assert var_0 == ['bb', 'cc', 'aaaa']
+    str_0 = 'aa'
+    str_1 = 'a'
+    str_2 = 'aaa'
+    str_3 = [str_0, str_1, str_2]
+    var_0 = module_0.sorted_list_sum(str_3)
+    assert var_0 == ['aa']
+    str_4 = 'school'
+    str_5 = 'AI'
+    str_6 = 'asdf'
+    str_7 = 'b'
+    str_8 = [str_4, str_5, str_6, str_7]
+    var_1 = module_0.sorted_list_sum(str_8)
+    assert var_1 == ['AI', 'asdf', 'school']
+    str_9 = 'ab'
+    str_10 = 'cd'
+    str_11 = [str_9, str_1, str_2, str_10]
+    var_2 = module_0.sorted_list_sum(str_11)
+    assert var_2 == ['ab', 'cd']
+    str_12 = 'abc'
+    str_13 = 'defg'
+    str_14 = 'hi'
+    str_15 = 'jklm'
+    str_16 = [str_12, str_13, str_14, str_15]
+    var_3 = module_0.sorted_list_sum(str_16)
+    assert var_3 == ['hi', 'defg', 'jklm']
+    str_17 = [str_1]
+    var_4 = module_0.sorted_list_sum(str_17)
+    assert var_4 == []
+    var_5 = []
+    var_6 = module_0.sorted_list_sum(var_5)
+    assert var_6 == []
+    str_18 = 'bb'
+    str_19 = 'cc'
+    str_20 = [str_18, str_19, str_0]
+    var_7 = module_0.sorted_list_sum(str_20)
+    assert var_7 == ['aa', 'bb', 'cc']
+    str_21 = 'dddd'
+    str_22 = 'ee'
+    str_23 = 'ff'
+    str_24 = 'ggg'
+    str_25 = [str_21, str_22, str_23, str_24]
+    var_8 = module_0.sorted_list_sum(str_25)
+    assert var_8 == ['ee', 'ff', 'dddd']
+    str_26 = 'abcd'
+    str_27 = 'abcde'
+    str_28 = [str_9, str_26, str_27]
+    var_9 = module_0.sorted_list_sum(str_28)
+    assert var_9 == ['ab', 'abcd']

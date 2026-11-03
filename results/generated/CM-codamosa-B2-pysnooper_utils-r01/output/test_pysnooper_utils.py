@@ -2,88 +2,68 @@
 import pysnooper.utils as module_0
 
 def test_case_0():
-    bool_0 = True
-    var_0 = module_0.get_shortish_repr(bool_0)
-    assert var_0 == 'True'
-    assert len(module_0.string_types) == 1
-    assert len(module_0.file_reading_errors) == 3
+    str_0 = 'G`m\rJ\r88}\x0bT{U+3!'
+    var_0 = module_0.ensure_tuple(str_0)
+    assert var_0 == ('G`m\rJ\r88}\x0bT{U+3!',)
+    str_1 = 'foo'
+    var_1 = module_0.shitcode(str_1)
+    assert var_1 == 'foo'
 
 def test_case_1():
-    pass
+    str_0 = 'foo'
+    var_0 = module_0.shitcode(str_0)
+    assert var_0 == 'foo'
+    str_1 = ''
+    var_1 = module_0.shitcode(str_1)
+    assert var_1 == ''
+    assert len(module_0.string_types) == 1
+    assert len(module_0.file_reading_errors) == 3
+    str_2 = 'א'
+    var_2 = module_0.shitcode(str_2)
+    assert var_2 == '?'
+    str_3 = 'aאb'
+    var_3 = module_0.shitcode(str_3)
+    assert var_3 == 'a?b'
+    str_4 = '€'
+    var_4 = module_0.shitcode(str_4)
+    assert var_4 == '?'
+    str_5 = 'café'
+    var_5 = module_0.shitcode(str_5)
+    assert var_5 == 'café'
+    int_0 = 0
+    var_6 = chr(int_0)
+    var_7 = module_0.shitcode(var_6)
+    assert var_7 == '?'
+    int_1 = 255
+    var_8 = chr(int_1)
+    var_9 = module_0.shitcode(var_8)
+    assert var_9 == 'ÿ'
+    var_10 = chr(int_1)
+    int_2 = 256
+    var_11 = chr(int_2)
+    var_12 = module_0.shitcode(var_11)
+    assert var_12 == '?'
+    str_6 = '中文'
+    var_13 = module_0.shitcode(str_6)
+    assert var_13 == '??'
+    str_7 = 'mixedሴtext☃'
+    var_14 = module_0.shitcode(str_7)
+    assert var_14 == 'mixed?text?'
 
 def test_case_2():
-    str_0 = '*5owIY7\'?7b*}ASz6"'
-    var_0 = module_0.shitcode(str_0)
-    assert var_0 == '*5owIY7\'?7b*}ASz6"'
+    bytes_0 = b'\xda\x94\x96\xe3\xc3\x8e'
+    str_0 = 'a9mw7\n/'
+    dict_0 = {str_0: str_0, str_0: str_0, str_0: bytes_0, str_0: str_0}
+    var_0 = module_0.get_shortish_repr(dict_0)
+    assert var_0 == "{'a9mw7\\n/': 'a9mw7\\n/'}"
+    assert len(module_0.string_types) == 1
+    assert len(module_0.file_reading_errors) == 3
 
 def test_case_3():
-    str_0 = 'siÿ'
-    var_0 = module_0.shitcode(str_0)
-    assert var_0 == 'siÿ'
-    str_1 = '({}).x'
-    float_0 = None
-    var_1 = module_0.truncate(str_1, float_0)
-    assert var_1 == '({}).x'
-    assert len(module_0.string_types) == 1
-    assert len(module_0.file_reading_errors) == 3
-
-def test_case_4():
-    str_0 = 'siÿ'
-    tuple_0 = None
-    var_0 = module_0.ensure_tuple(tuple_0)
-    assert var_0 == (None,)
-    assert len(module_0.string_types) == 1
-    assert len(module_0.file_reading_errors) == 3
-    var_1 = module_0.shitcode(str_0)
-    assert var_1 == 'siÿ'
-
-def test_case_5():
-    str_0 = 'sÿ'
-    list_0 = []
-    var_0 = module_0.ensure_tuple(list_0)
-    assert var_0 == ()
-    bool_0 = False
-    var_1 = module_0.get_shortish_repr(bool_0)
-    var_2 = module_0.shitcode(str_0)
-    assert var_2 == 'sÿ'
-
-def test_case_6():
-    str_0 = 'abc XYZ 123 !@#'
-    var_0 = module_0.shitcode(str_0)
-    assert var_0 == 'abc XYZ 123 !@#'
-    str_1 = '\x01ÿ'
-    var_1 = module_0.shitcode(str_1)
-    assert var_1 == '\x01ÿ'
-    var_2 = module_0.shitcode(str_1)
-    assert var_2 == 'Ã©Ã¿'
-    assert var_2 == '\x01ÿ'
-    str_2 = '\x00'
-    var_3 = module_0.shitcode(str_2)
-    assert var_3 == '?'
-
-def test_case_7():
-    str_0 = 'custoR!'
-    var_0 = lambda item: str_0
-    str_1 = 'typed!'
-    var_1 = lambda item: str_1
-    str_2 = 'Object at 0xdeadbeef and more text'
-    var_2 = lambda item: str_2
-    int_0 = 10
-    str_3 = 'Oyject and more text'
-    var_3 = module_0.truncate(str_3, int_0)
-    assert var_3 == 'Oyj...text'
-    assert len(module_0.string_types) == 1
-    assert len(module_0.file_reading_errors) == 3
-
-def test_case_8():
-    bool_0 = True
-    str_0 = '*c\nstoR!'
-    var_0 = lambda item: str_0
-    str_1 = "typed'!"
-    var_1 = lambda item: str_1
-    var_2 = lambda item: str_0
-    dict_0 = {}
-    var_3 = module_0.truncate(dict_0, bool_0)
-    assert var_3 == {}
-    assert len(module_0.string_types) == 1
-    assert len(module_0.file_reading_errors) == 3
+    bytes_0 = b'\xda\x94\x96\xe3\xc3\x8e'
+    str_0 = '<&i\\@)olFi0'
+    var_0 = module_0.ensure_tuple(bytes_0)
+    assert var_0 == (218, 148, 150, 227, 195, 142)
+    str_1 = '&'
+    dict_0 = {str_1: str_1, str_0: str_0, str_1: bytes_0, str_1: str_1}
+    var_1 = module_0.get_shortish_repr(dict_0)

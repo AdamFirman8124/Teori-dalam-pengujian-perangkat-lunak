@@ -5,13 +5,36 @@
 from f117 import select_words
 
 
-def test_select_words_returns_matching_words():
-    assert select_words("AEIOU bCd Mary had a little lamb", 3) == [
-        "bCd",
-        "Mary",
-        "lamb",
-    ]
+def test_select_words_empty_string():
+    """Empty input: the loops never execute and an empty list is returned."""
+    assert select_words("", 3) == []
 
 
-def test_select_words_with_empty_input():
-    assert select_words("", 0) == []
+def test_select_words_selects_matching_words():
+    """Only words whose consonant count equals n are selected."""
+    assert select_words("hello world", 4) == ["world"]
+
+
+def test_select_words_no_match_returns_empty():
+    """When no word has exactly n consonants, an empty list is returned."""
+    assert select_words("hello world", 5) == []
+
+
+def test_select_words_multiple_matches_preserve_order():
+    """Several matching words are all returned in their original order."""
+    assert select_words("simple little test", 4) == ["simple", "little"]
+
+
+def test_select_words_is_case_insensitive():
+    """Uppercase consonants are counted via the .lower() branch."""
+    assert select_words("HELLO World", 4) == ["World"]
+
+
+def test_select_words_zero_consonants():
+    """A word made only of vowels matches n == 0; 'y' counts as a consonant."""
+    assert select_words("aeiou aeiouy", 0) == ["aeiou"]
+
+
+def test_select_words_non_letter_characters_count():
+    """Non-vowel characters such as digits count as consonants."""
+    assert select_words("a1b xy", 2) == ["a1b", "xy"]

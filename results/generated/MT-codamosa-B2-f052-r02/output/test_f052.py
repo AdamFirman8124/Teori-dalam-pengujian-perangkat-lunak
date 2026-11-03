@@ -9,20 +9,45 @@ def test_case_0():
     int_4 = 4
     var_0 = module_0.below_threshold(int_3, int_4)
     assert var_0 is True
-    int_5 = [int_0, int_1, int_2]
-    var_1 = module_0.below_threshold(int_5, int_2)
+    int_5 = [int_0, int_1, int_4]
+    var_1 = module_0.below_threshold(int_5, int_4)
     assert var_1 is False
     int_6 = 5
-    int_7 = [int_0, int_6, int_1]
+    int_7 = [int_0, int_6, int_2]
     var_2 = module_0.below_threshold(int_7, int_4)
     assert var_2 is False
     var_3 = []
-    var_4 = module_0.below_threshold(var_3, int_4)
+    int_8 = 10
+    var_4 = module_0.below_threshold(var_3, int_8)
     assert var_4 is True
-    int_8 = -3
-    int_9 = -2
-    int_10 = -1
-    int_11 = [int_8, int_9, int_10]
-    int_12 = 0
-    var_5 = module_0.below_threshold(int_11, int_12)
+    int_9 = [int_2]
+    var_5 = module_0.below_threshold(int_9, int_4)
     assert var_5 is True
+    int_10 = [int_4]
+    var_6 = module_0.below_threshold(int_10, int_4)
+    assert var_6 is False
+    int_11 = -5
+    int_12 = -1
+    int_13 = -3
+    int_14 = [int_11, int_12, int_13]
+    int_15 = 0
+    var_7 = module_0.below_threshold(int_14, int_15)
+    assert var_7 is True
+    int_16 = [int_0, int_1]
+    var_8 = module_0.below_threshold(int_16, int_15)
+    assert var_8 is False
+    int_17 = [int_4, int_4, int_4]
+    var_9 = module_0.below_threshold(int_17, int_4)
+    assert var_9 is False
+    int_18 = 100
+    int_19 = 999
+    int_20 = [int_15, int_18, int_19]
+    int_21 = 1000
+    var_10 = module_0.below_threshold(int_20, int_21)
+    assert var_10 is True
+    int_22 = [int_2, int_1, int_0]
+    var_11 = module_0.below_threshold(int_22, int_4)
+    assert var_11 is True
+    int_23 = [int_4, int_1, int_0]
+    var_12 = module_0.below_threshold(int_23, int_4)
+    assert var_12 is False

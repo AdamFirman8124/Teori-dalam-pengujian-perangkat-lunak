@@ -2,24 +2,32 @@
 # asked: {"lines": [3, 4], "branches": []}
 # gained: {"lines": [3, 4], "branches": []}
 
-import pytest
-
 from f112 import reverse_delete
 
 
-@pytest.mark.parametrize(
-    ("value", "characters", "expected"),
-    [
-        ("abcba", "x", ("abcba", True)),
-        ("abc", "b", ("ac", False)),
-        ("abca", "bc", ("aa", True)),
-    ],
-)
-def test_reverse_delete_filters_characters_and_checks_palindrome(
-    value, characters, expected
-):
-    result = reverse_delete(value, characters)
+def test_reverse_delete_removes_chars_non_palindrome():
+    """Characters listed in c are deleted; result string and palindrome flag returned."""
+    result, is_palindrome = reverse_delete("abcde", "ae")
+    assert result == "bcd"
+    assert is_palindrome is False
 
-    assert result == expected
-    assert result[0] == "".join(char for char in value if char not in characters)
-    assert result[1] is (result[0] == result[0][::-1])
+
+def test_reverse_delete_result_is_palindrome():
+    """When the filtered string reads the same forwards and backwards, flag is True."""
+    result, is_palindrome = reverse_delete("abcdedcba", "ab")
+    assert result == "cdedc"
+    assert is_palindrome is True
+
+
+def test_reverse_delete_all_chars_removed_empty_palindrome():
+    """Removing every character yields the empty string, which is a palindrome."""
+    result, is_palindrome = reverse_delete("abc", "abc")
+    assert result == ""
+    assert is_palindrome is True
+
+
+def test_reverse_delete_no_chars_to_remove():
+    """When c shares no characters with s, s is unchanged and flagged non-palindrome."""
+    result, is_palindrome = reverse_delete("abba", "xyz")
+    assert result == "abba"
+    assert is_palindrome is True

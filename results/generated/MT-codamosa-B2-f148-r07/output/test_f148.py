@@ -8,29 +8,37 @@ def test_case_0():
     assert var_0 == ('Saturn', 'Uranus')
     var_1 = module_0.bf(str_1, str_0)
     assert var_1 == ('Saturn', 'Uranus')
-    str_2 = 'Earth'
-    str_3 = 'Mercury'
+    str_2 = 'Mercury'
+    str_3 = 'Mars'
     var_2 = module_0.bf(str_2, str_3)
-    assert var_2 == ('Venus',)
-    str_4 = 'Mars'
-    var_3 = module_0.bf(str_2, str_4)
-    assert var_3 == ()
-    var_4 = module_0.bf(str_4, str_2)
+    assert var_2 == ('Venus', 'Earth')
+    var_3 = module_0.bf(str_3, str_2)
+    assert var_3 == ('Venus', 'Earth')
+    str_4 = 'Earth'
+    var_4 = module_0.bf(str_4, str_3)
     assert var_4 == ()
-    str_5 = 'Pluto'
-    var_5 = module_0.bf(str_2, str_5)
+    var_5 = module_0.bf(str_4, str_4)
     assert var_5 == ()
-    str_6 = 'ASDF'
-    var_6 = module_0.bf(str_6, str_2)
+    str_5 = 'Pluto'
+    var_6 = module_0.bf(str_4, str_5)
     assert var_6 == ()
-    str_7 = 'earth'
-    var_7 = module_0.bf(str_7, str_4)
+    str_6 = 'Xena'
+    var_7 = module_0.bf(str_6, str_3)
     assert var_7 == ()
-    var_8 = module_0.bf(str_2, str_2)
+    str_7 = ''
+    var_8 = module_0.bf(str_7, str_7)
     assert var_8 == ()
-    var_9 = module_0.bf(str_3, str_1)
-    assert var_9 == ('Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus')
-    var_10 = module_0.bf(str_2, str_0)
-    assert var_10 == ('Mars',)
-    str_8 = 'All tests passed.'
-    var_11 = print(str_8)
+    str_8 = 'earth'
+    var_9 = module_0.bf(str_8, str_3)
+    assert var_9 == ()
+    str_9 = 'mars'
+    var_10 = module_0.bf(str_4, str_9)
+    assert var_10 == ()
+    var_11 = module_0.bf(str_2, str_1)
+    assert var_11 == ('Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus')
+    str_10 = 'Venus'
+    str_11 = 'Saturn'
+    var_12 = module_0.bf(str_10, str_11)
+    assert var_12 == ('Earth', 'Mars', 'Jupiter')
+    str_12 = 'All tests passed!'
+    var_13 = print(str_12)

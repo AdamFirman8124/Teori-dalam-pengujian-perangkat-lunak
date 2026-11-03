@@ -7,33 +7,70 @@ import pytest
 from f137 import compare_one
 
 
-def test_compare_one_equal_strings_returns_none():
-    assert compare_one("1,5", "1.5") is None
+def test_compare_one_returns_b_when_b_is_larger():
+    # Covers lines 3, 8 (False branch), 10 (else branch)
+    assert compare_one(1, 2) == 2
 
 
-def test_compare_one_string_greater_than_string():
-    assert compare_one("2,5", "1.5") == "2,5"
+def test_compare_one_returns_a_when_a_is_larger():
+    # Covers line 10 (if branch): original a is returned
+    assert compare_one(2, 1) == 2
 
 
-def test_compare_one_string_less_than_string():
-    assert compare_one("1,5", "2.5") == "2.5"
+def test_compare_one_equal_ints_returns_none():
+    # Covers lines 8-9 (True branch)
+    assert compare_one(1, 1) is None
 
 
-def test_compare_one_number_greater_than_string():
-    assert compare_one(3.0, "1,5") == 3.0
+def test_compare_one_equal_floats_returns_none():
+    assert compare_one(1.5, 1.5) is None
 
 
-def test_compare_one_string_less_than_number():
-    assert compare_one("1,5", 2) == 2
+def test_compare_one_string_a_comma_replaced():
+    # Covers lines 4-5 (isinstance(temp_a, str) True branch)
+    assert compare_one("2,5", 1) == "2,5"
 
 
-def test_compare_one_numbers_equal_returns_none():
-    assert compare_one(5, 5.0) is None
+def test_compare_one_string_b_comma_replaced():
+    # Covers lines 6-7 (isinstance(temp_b, str) True branch)
+    assert compare_one(1, "2,5") == "2,5"
 
 
-def test_compare_one_number_greater_than_number():
-    assert compare_one(10, 3) == 10
+def test_compare_one_both_strings_comma_replaced():
+    # Covers lines 4-5 and 6-7 together; original string a returned
+    assert compare_one("2,5", "1,5") == "2,5"
 
 
-def test_compare_one_number_less_than_number():
-    assert compare_one(3, 10) == 10
+def test_compare_one_both_strings_b_larger():
+    # Covers lines 4-5, 6-7 and line 10 (else branch) with strings
+    assert compare_one("1,5", "2,5") == "2,5"
+
+
+def test_compare_one_both_strings_equal_returns_none():
+    # Covers lines 4-5, 6-7 and lines 8-9 (True branch) with strings
+    assert compare_one("1,5", "1,5") is None
+
+
+def test_compare_one_mixed_string_number_equal_returns_none():
+    # "1,5" becomes 1.5 which equals 1.5 -> None
+    assert compare_one("1,5", 1.5) is None
+
+
+def test_compare_one_mixed_number_string_equal_returns_none():
+    assert compare_one(1.5, "1,5") is None
+
+
+def test_compare_one_mixed_string_larger_than_number():
+    # float("5.5") > 4 -> original string a returned
+    assert compare_one("5,5", 4) == "5,5"
+
+
+def test_compare_one_mixed_number_smaller_than_string():
+    # 4 < float("5.5") -> original string b returned
+    assert compare_one(4, "5,5") == "5,5"
+
+
+def test_compare_one_negative_numbers():
+    assert compare_one(-1, -2) == -1
+    assert compare_one(-2, -1) == -1
+    assert compare_one(-1, -1) is None

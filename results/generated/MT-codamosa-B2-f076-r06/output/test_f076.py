@@ -6,20 +6,39 @@ def test_case_0():
     var_0 = module_0.is_simple_power(int_0, int_0)
     assert var_0 is True
     int_1 = 2
-    var_1 = module_0.is_simple_power(int_0, int_1)
-    assert var_1 is True
-    int_2 = 10
-    var_2 = module_0.is_simple_power(int_0, int_2)
+    var_1 = module_0.is_simple_power(int_1, int_0)
+    assert var_1 is False
+    var_2 = module_0.is_simple_power(int_0, int_1)
     assert var_2 is True
-    int_3 = 5
-    var_3 = module_0.is_simple_power(int_3, int_0)
-    assert var_3 is False
-    var_4 = module_0.is_simple_power(int_1, int_0)
-    assert var_4 is False
-    int_4 = 8
-    var_5 = module_0.is_simple_power(int_4, int_1)
+    var_3 = module_0.is_simple_power(int_1, int_1)
+    assert var_3 is True
+    int_2 = 8
+    var_4 = module_0.is_simple_power(int_2, int_1)
+    assert var_4 is True
+    int_3 = 16
+    var_5 = module_0.is_simple_power(int_3, int_1)
     assert var_5 is True
+    int_4 = 9
     int_5 = 3
-    var_6 = module_0.is_simple_power(int_5, int_1)
+    var_6 = module_0.is_simple_power(int_4, int_5)
     assert var_6 is True
-    assert var_6 is False
+    int_6 = 27
+    var_7 = module_0.is_simple_power(int_6, int_5)
+    assert var_7 is True
+    int_7 = 625
+    int_8 = 5
+    var_8 = module_0.is_simple_power(int_7, int_8)
+    assert var_8 is True
+    var_9 = module_0.is_simple_power(int_5, int_1)
+    assert var_9 is False
+    int_9 = 10
+    var_10 = module_0.is_simple_power(int_9, int_5)
+    assert var_10 is False
+    int_10 = 100
+    var_11 = module_0.is_simple_power(int_10, int_8)
+    assert var_11 is False
+    int_11 = 0
+    var_12 = module_0.is_simple_power(int_11, int_1)
+    assert var_12 is False
+    var_13 = module_0.is_simple_power(int_8, int_9)
+    assert var_13 is False

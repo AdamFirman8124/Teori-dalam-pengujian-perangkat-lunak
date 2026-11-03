@@ -2,16 +2,21 @@
 # asked: {"lines": [39, 40, 41, 43], "branches": []}
 # gained: {"lines": [39, 40, 41, 43], "branches": []}
 
+import pytest
+
 from isort.exceptions import IntroducedSyntaxErrors
 
 
-def test_introduced_syntax_errors_message_and_attribute():
+def test_introduced_syntax_errors_message_and_attributes():
     file_path = "/tmp/some_file.py"
-    exc = IntroducedSyntaxErrors(file_path)
+    error = IntroducedSyntaxErrors(file_path)
 
-    assert exc.file_path == file_path
-    assert str(exc) == (
+    # The exception message must mention the file path.
+    assert str(error) == (
         "isort introduced syntax errors when attempting to sort the imports "
-        "contained within /tmp/some_file.py."
+        f"contained within {file_path}."
     )
-    assert isinstance(exc, Exception)
+    # The file_path attribute must be stored on the instance.
+    assert error.file_path == file_path
+    # It must be an instance of the base isort exception and Exception.
+    assert isinstance(error, Exception)

@@ -11,9 +11,15 @@ def test_case_0():
     int_2 = 3
     var_2 = module_0.make_a_pile(int_2)
     assert var_2 == [3, 5, 7]
-    int_3 = 5
+    int_3 = 4
     var_3 = module_0.make_a_pile(int_3)
-    assert var_3 == [5, 7, 9, 11, 13]
-    int_4 = 10
+    assert var_3 == [4, 6, 8, 10]
+    int_4 = 5
     var_4 = module_0.make_a_pile(int_4)
-    assert var_4 == [10, 12, 14, 16, 18, 20, 22, 24, 26, 28]
+    assert var_4 == [5, 7, 9, 11, 13]
+    int_5 = 0
+    var_5 = module_0.make_a_pile(int_5)
+    assert var_5 == []
+
+def test_case_1():
+    pass

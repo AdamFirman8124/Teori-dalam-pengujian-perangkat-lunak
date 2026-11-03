@@ -7,33 +7,58 @@ import pytest
 from f105 import by_length
 
 
-def test_by_length_sorts_descending_and_maps_to_words():
-    arr = [2, 1, 3]
-    result = by_length(arr)
-    assert result == ["Three", "Two", "One"]
-    assert arr == [2, 1, 3], "input list must not be mutated"
+def test_by_length_basic():
+    """Numbers 1-9 are replaced by their names, in descending order."""
+    result = by_length([2, 1, 1, 4, 5, 8, 2, 3])
+    assert result == [
+        "Eight",
+        "Five",
+        "Four",
+        "Three",
+        "Two",
+        "Two",
+        "One",
+        "One",
+    ]
 
 
-def test_by_length_empty_list_returns_empty_list():
+def test_by_length_all_digits_descending():
+    """Every key of the dictionary is exercised."""
+    result = by_length([9, 8, 7, 6, 5, 4, 3, 2, 1])
+    assert result == [
+        "Nine",
+        "Eight",
+        "Seven",
+        "Six",
+        "Five",
+        "Four",
+        "Three",
+        "Two",
+        "One",
+    ]
+
+
+def test_by_length_empty_input():
+    """An empty input yields an empty output (loop body never runs)."""
     assert by_length([]) == []
 
 
-def test_by_length_ignores_out_of_range_values():
-    assert by_length([0, 10, -1, 5]) == ["Five"]
+def test_by_length_values_outside_dictionary():
+    """Values not present in the dictionary hit the except/pass branch."""
+    result = by_length([10, 3, 0, -1])
+    # Sorted descending: [10, 3, 0, -1]; only 3 has a mapping.
+    assert result == ["Three"]
+    # Postcondition: every returned element is one of the dictionary values.
+    allowed = {
+        "One", "Two", "Three", "Four",
+        "Five", "Six", "Seven", "Eight", "Nine",
+    }
+    assert set(result) <= allowed
 
 
-def test_by_length_keeps_duplicates():
-    assert by_length([1, 1, 9]) == ["Nine", "One", "One"]
-
-
-def test_by_length_ignores_unmapped_hashable_keys():
-    # all strings: sorting succeeds, every lookup raises KeyError -> swallowed
-    assert by_length(["2", "1"]) == []
-
-
-def test_by_length_all_nine_values():
-    expected = [
-        "Nine", "Eight", "Seven", "Six", "Five",
-        "Four", "Three", "Two", "One",
-    ]
-    assert by_length(list(range(1, 10))) == expected
+def test_by_length_does_not_mutate_input():
+    """The original list must remain untouched (sorted() copies)."""
+    arr = [3, 1, 2]
+    snapshot = list(arr)
+    by_length(arr)
+    assert arr == snapshot

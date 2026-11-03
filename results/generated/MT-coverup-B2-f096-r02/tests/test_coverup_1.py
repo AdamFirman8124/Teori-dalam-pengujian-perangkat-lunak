@@ -7,46 +7,39 @@ import pytest
 from f096 import count_up_to
 
 
-def test_count_up_to_empty_when_n_below_first_prime():
-    # n <= 2: outer loop body never runs (lines 3 and 12 only)
+def test_count_up_to_basic_covers_all_lines():
+    """Exercises every line: prime appends, composite detection with break."""
+    assert count_up_to(10) == [2, 3, 5, 7]
+
+
+def test_count_up_to_empty_range():
+    """n <= 2: outer loop body never executes."""
     assert count_up_to(2) == []
     assert count_up_to(0) == []
-    assert count_up_to(-5) == []
+    assert count_up_to(-3) == []
 
 
-def test_count_up_to_returns_primes_below_n():
-    result = count_up_to(10)
-    assert result == [2, 3, 5, 7]
-    assert isinstance(result, list)
-    assert result == sorted(result)
-    assert all(
-        all(p % d != 0 for d in range(2, p)) for p in result
-    )
-
-
-def test_count_up_to_hits_composite_break_branch():
-    # 4, 6, 8, 9 are composite -> is_prime = False and break (lines 8-9)
-    result = count_up_to(12)
-    assert result == [2, 3, 5, 7, 11]
-    assert 4 not in result
-    assert 9 not in result
-
-
-def test_count_up_to_single_prime():
+def test_count_up_to_inner_loop_skipped():
+    """n = 3: for i=2 the inner range(2, 2) is empty, is_prime stays True."""
     assert count_up_to(3) == [2]
 
 
-@pytest.mark.parametrize(
-    "n, expected",
-    [
-        (2, []),
-        (3, [2]),
-        (5, [2, 3]),
-        (11, [2, 3, 5, 7]),
-        (20, [2, 3, 5, 7, 11, 13, 17, 19]),
-    ],
-)
-def test_count_up_to_parametrized(n, expected):
-    result = count_up_to(n)
-    assert result == expected
-    assert all(p < n for p in result)
+def test_count_up_to_composite_branch():
+    """Ensures i % j == 0 branch, is_prime = False, and break all execute."""
+    assert count_up_to(5) == [2, 3]
+    assert count_up_to(20) == [2, 3, 5, 7, 11, 13, 17, 19]
+
+
+def test_count_up_to_upper_bound_exclusive():
+    """n itself is excluded even when prime; both branches of 'if is_prime' hit."""
+    assert count_up_to(7) == [2, 3, 5]
+    assert count_up_to(8) == [2, 3, 5, 7]
+
+
+def test_count_up_to_returns_new_list_each_call():
+    """Verifies no shared state leaks between calls (function is pure)."""
+    first = count_up_to(6)
+    second = count_up_to(6)
+    assert first == [2, 3, 5]
+    assert second == [2, 3, 5]
+    assert first is not second

@@ -2,7 +2,36 @@
 import f011 as module_0
 
 def test_case_0():
-    str_0 = '0101'
-    str_1 = '1100'
+    str_0 = '010'
+    str_1 = '110'
     str_2 = module_0.string_xor(str_0, str_1)
-    assert str_2 == '1001'
+    assert str_2 == '100'
+    str_3 = '111'
+    str_4 = '000'
+    str_5 = module_0.string_xor(str_3, str_4)
+    assert str_5 == '111'
+    str_6 = '1010'
+    str_7 = module_0.string_xor(str_6, str_6)
+    assert str_7 == '0000'
+    str_8 = '1'
+    str_9 = '0'
+    str_10 = module_0.string_xor(str_8, str_9)
+    assert str_10 == '1'
+    str_11 = module_0.string_xor(str_9, str_8)
+    assert str_11 == '1'
+    str_12 = module_0.string_xor(str_9, str_9)
+    assert str_12 == '0'
+    str_13 = module_0.string_xor(str_8, str_8)
+    assert str_13 == '0'
+    str_14 = '1101'
+    str_15 = '0110'
+    str_16 = module_0.string_xor(str_14, str_15)
+    assert str_16 == '1011'
+    str_17 = '0000'
+    str_18 = '1111'
+    str_19 = module_0.string_xor(str_17, str_18)
+    assert str_19 == '1111'
+    str_20 = '10101010'
+    str_21 = '01010101'
+    str_22 = module_0.string_xor(str_20, str_21)
+    assert str_22 == '11111111'

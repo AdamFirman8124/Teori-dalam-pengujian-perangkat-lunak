@@ -7,50 +7,47 @@ import pytest
 from f130 import tri
 
 
-def test_tri_zero_returns_single_one():
-    result = tri(0)
-    assert result == [1]
-    assert isinstance(result, list)
+def test_tri_zero():
+    """n == 0 hits the early return on lines 3-4."""
+    assert tri(0) == [1]
 
 
-def test_tri_one_returns_base_pair():
-    result = tri(1)
-    assert result == [1, 3]
+def test_tri_one_loop_not_entered():
+    """n == 1 hits line 5 but the loop body never runs (range(2, 2) is empty)."""
+    assert tri(1) == [1, 3]
 
 
-def test_tri_two_exercises_even_branch():
-    result = tri(2)
-    assert result == [1, 3, 2.0]
-    assert len(result) == 3
+def test_tri_even_branch():
+    """n == 2 exercises the even branch (lines 7-8)."""
+    # i = 2 is even -> append 2 / 2 + 1 == 2.0
+    assert tri(2) == [1, 3, 2.0]
 
 
-def test_tri_three_exercises_even_and_odd_branches():
-    result = tri(3)
-    # i=2 (even): 2/2 + 1 = 2.0
-    # i=3 (odd): 2.0 + 3 + (3+3)/2 = 8.0
-    assert result == [1, 3, 2.0, 8.0]
-    assert len(result) == 4
+def test_tri_odd_branch():
+    """n == 3 exercises the odd branch (lines 9-10)."""
+    # i = 2 even -> 2.0; i = 3 odd -> my_tri[2] + my_tri[1] + (3 + 3) / 2 == 2.0 + 3 + 3.0
+    assert tri(3) == [1, 3, 2.0, 8.0]
 
 
-def test_tri_five_full_sequence():
+def test_tri_mixed_sequence():
+    """Larger n alternates both branches, covering lines 6-11 fully."""
     result = tri(5)
-    # i=2 even -> 2.0
-    # i=3 odd  -> 2.0 + 3 + 3.0 = 8.0
-    # i=4 even -> 4/2 + 1 = 3.0
-    # i=5 odd  -> 3.0 + 8.0 + 4.0 = 15.0
+    # i=2 (even): 2/2 + 1 = 2.0
+    # i=3 (odd):  2.0 + 3 + (3+3)/2 = 8.0
+    # i=4 (even): 4/2 + 1 = 3.0
+    # i=5 (odd):  3.0 + 8.0 + (5+3)/2 = 15.0
     assert result == [1, 3, 2.0, 8.0, 3.0, 15.0]
     assert len(result) == 6
 
 
-def test_tri_returns_new_list_each_call():
-    first = tri(3)
-    second = tri(3)
-    assert first == second
-    assert first is not second
-    first.append(999)
-    assert tri(3) == [1, 3, 2.0, 8.0]
+def test_tri_length_matches_n():
+    """Postcondition: result length is n + 1 for n >= 1."""
+    for n in (1, 2, 3, 4, 5, 6, 7):
+        assert len(tri(n)) == n + 1
 
 
-def test_tri_negative_n_returns_base_pair():
-    # range(2, n + 1) is empty for n < 2, so the base pair is returned
-    assert tri(-1) == [1, 3]
+def test_tri_is_pure_no_state_pollution():
+    """Calling twice yields identical results (no shared mutable state)."""
+    first = tri(4)
+    second = tri(4)
+    assert first == second == [1, 3, 2.0, 8.0, 3.0]

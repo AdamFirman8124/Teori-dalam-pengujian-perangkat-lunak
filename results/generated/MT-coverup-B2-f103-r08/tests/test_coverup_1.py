@@ -2,41 +2,55 @@
 # asked: {"lines": [3, 4, 5, 6, 7, 8], "branches": [[3, 4], [3, 5], [6, 7], [6, 8]]}
 # gained: {"lines": [3, 4, 5, 6, 7, 8], "branches": [[3, 4], [3, 5], [6, 7], [6, 8]]}
 
+import pytest
+
 from f103 import rounded_avg
 
 
-def test_rounded_avg_m_less_than_n_returns_minus_one():
-    assert rounded_avg(5, 3) == -1
-    assert rounded_avg(10, 0) == -1
-    assert rounded_avg(1, -1) == -1
+class TestRoundedAvg:
+    """Tests for f103.rounded_avg covering all lines and branches."""
 
+    @pytest.mark.parametrize(
+        "n, m",
+        [
+            (1, 5),    # normal range
+            (3, 3),    # single-element range (n == m)
+            (0, 0),    # single element at zero
+            (-5, 5),   # range including negatives
+            (10, 20),  # larger range
+        ],
+    )
+    def test_valid_range_returns_binary_string(self, n, m):
+        """Lines 5-8 execute: summation loop and average return."""
+        result = rounded_avg(n, m)
 
-def test_rounded_avg_normal_range():
-    # sum(1..5) = 15, avg = 3.0, round = 3, bin = '0b11'
-    assert rounded_avg(1, 5) == "0b11"
-    # sum(1..3) = 6, avg = 2.0, round = 2, bin = '0b10'
-    assert rounded_avg(1, 3) == "0b10"
-    assert isinstance(rounded_avg(1, 5), str)
+        # Compute expected value independently.
+        summation = sum(range(n, m + 1))
+        expected = bin(round(summation / (m - n + 1)))
 
+        assert result == expected
+        # Postcondition: result is a binary literal string.
+        assert isinstance(result, str)
+        assert result.startswith("0b")
 
-def test_rounded_avg_single_element():
-    # n == m: loop executes exactly once
-    assert rounded_avg(1, 1) == "0b1"
-    assert rounded_avg(0, 0) == "0b0"
-    assert rounded_avg(7, 7) == "0b111"
+    def test_single_element_range(self):
+        """When n == m the average is simply n itself."""
+        assert rounded_avg(3, 3) == bin(3) == "0b11"
 
+    def test_known_value(self):
+        """rounded_avg(1, 5): average of 1..5 is 3 -> binary 0b11."""
+        assert rounded_avg(1, 5) == "0b11"
 
-def test_rounded_avg_rounding():
-    # sum(1..4) = 10, avg = 2.5, round = 2 (banker's rounding)
-    assert rounded_avg(1, 4) == "0b10"
-    # sum(1..6) = 21, avg = 3.5, round = 4
-    assert rounded_avg(1, 6) == "0b100"
-    # sum(1..2) = 3, avg = 1.5, round = 2
-    assert rounded_avg(1, 2) == "0b10"
+    def test_m_less_than_n_returns_minus_one(self):
+        """Line 3 evaluates True (m < n branch): returns -1 early (line 4)."""
+        assert rounded_avg(5, 1) == -1
+        assert rounded_avg(10, 9) == -1
+        assert rounded_avg(0, -1) == -1
 
-
-def test_rounded_avg_negative_range():
-    # sum(-5..-1) = -15, avg = -3.0, round = -3, bin = '-0b11'
-    assert rounded_avg(-5, -1) == "-0b11"
-    # sum(-2..2) = 0, avg = 0.0
-    assert rounded_avg(-2, 2) == "0b0"
+    def test_m_not_less_than_n_takes_else_branch(self):
+        """Line 3 evaluates False (n <= m branch): proceeds past the guard."""
+        # n == m boundary of the false branch already covered, but assert
+        # explicitly that a valid call does NOT yield the sentinel -1.
+        result = rounded_avg(2, 4)
+        assert result != -1
+        assert result == bin(round((2 + 3 + 4) / 3)) == "0b11"

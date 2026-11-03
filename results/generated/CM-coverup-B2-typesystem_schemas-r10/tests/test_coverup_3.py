@@ -1,81 +1,148 @@
-# file: project/typesystem/schemas.py:51-89
-# asked: {"lines": [63, 64, 70, 71, 75, 76, 88], "branches": [[62, 63], [69, 70], [70, 69], [70, 71], [74, 75], [75, 76], [75, 80], [87, 88]]}
-# gained: {"lines": [63, 64, 70, 71, 75, 76, 88], "branches": [[62, 63], [69, 70], [70, 69], [70, 71], [74, 75], [75, 76], [75, 80], [87, 88]]}
+# file: project/typesystem/schemas.py:32-48
+# asked: {"lines": [37, 38, 39, 40, 41, 42, 43, 45, 46, 47, 48], "branches": [[37, 38], [37, 39], [39, 40], [39, 46], [40, 0], [40, 41], [41, 42], [41, 45], [42, 0], [42, 43], [46, 0], [46, 47], [47, 0], [47, 48]]}
+# gained: {"lines": [37, 38, 39, 40, 41, 42, 43, 45, 46, 47, 48], "branches": [[37, 38], [37, 39], [39, 40], [39, 46], [40, 0], [40, 41], [41, 42], [41, 45], [42, 0], [42, 43], [46, 0], [46, 47], [47, 0], [47, 48]]}
 
-import pytest
+"""Tests for typesystem.schemas.set_definitions (lines 37-48).
 
-from typesystem.fields import Array, Object, String
-from typesystem.schemas import Reference, Schema, SchemaDefinitions, SchemaMetaclass
+These tests are self-contained: ``set_definitions`` only mutates the field
+objects passed to it, and every field used here is created locally inside a
+test, so no global or shared state is touched and no cleanup/monkeypatching
+is required.
+"""
 
+from typesystem.fields import Array, Field, Object
+from typesystem.schemas import SchemaDefinitions, set_definitions
 
-def test_field_attributes_are_popped_and_collected():
-    class Example(metaclass=SchemaMetaclass):
-        name = String()
-
-    # Lines 63-64: the Field attribute is removed from attrs and collected.
-    assert not hasattr(Example, "name")
-    assert "name" in Example.fields
-    assert isinstance(Example.fields["name"], String)
-
-
-def test_inherited_fields_from_base_schemas():
-    class Base(metaclass=SchemaMetaclass):
-        name = String()
-
-    class Child(Base):
-        age = String()
-
-    class Override(Child):
-        name = String(default="x")
-
-    # Lines 70-71 (true branch): inherited field added when not shadowed.
-    assert "name" in Child.fields
-    assert "age" in Child.fields
-    assert Child.fields["name"] is Base.fields["name"]
-
-    # Line 70 (false branch): shadowed field is not overwritten.
-    assert Override.fields["name"] is not Base.fields["name"]
-    assert Override.fields["name"].default == "x"
+try:
+    # Import `Reference` from the same namespace that `set_definitions`
+    # resolves it from, so the isinstance() checks are guaranteed to match.
+    from typesystem.schemas import Reference
+except ImportError:  # pragma: no cover - depends on package layout
+    from typesystem.fields import Reference
 
 
-def test_definitions_are_propagated_and_class_registered():
+def test_reference_without_definitions_gets_them_set():
+    """Lines 37-38: a string-referenced Reference adopts the definitions."""
     definitions = SchemaDefinitions()
+    field = Reference(to="Pet")
+    assert field.definitions is None
 
-    class Person(metaclass=SchemaMetaclass, definitions=definitions):
-        name = String()
-        friend = Reference("Person")
+    result = set_definitions(field, definitions)
 
-    # Lines 75-76: set_definitions applied to Reference fields.
-    assert Person.fields["friend"].definitions is definitions
-    # Non-reference fields are untouched but must not raise.
-    assert isinstance(Person.fields["name"], String)
-
-    # Line 88: the new type is registered under its name.
-    assert definitions["Person"] is Person
+    assert result is None
+    assert field.definitions is definitions
 
 
-def test_definitions_propagated_through_nested_fields():
+def test_reference_with_existing_definitions_is_left_alone():
+    """Line 37 (false branch): already-populated definitions are preserved."""
+    existing = SchemaDefinitions()
+    replacement = SchemaDefinitions()
+    field = Reference(to="Pet", definitions=existing)
+
+    set_definitions(field, replacement)
+
+    assert field.definitions is existing
+
+
+def test_array_without_items_is_left_alone():
+    """Line 40 (false branch): an Array without items is a no-op."""
     definitions = SchemaDefinitions()
+    field = Array()
+    assert field.items is None
 
-    class Nested(metaclass=SchemaMetaclass, definitions=definitions):
-        tags = Array(Reference("Nested"))
-        profile = Object(properties={"avatar": Reference("Nested")})
+    set_definitions(field, definitions)
 
-    # Lines 75-76 via recursion into Array and Object children.
-    assert Nested.fields["tags"].items.definitions is definitions
-    assert Nested.fields["profile"].properties["avatar"].definitions is definitions
-    assert definitions["Nested"] is Nested
+    assert field.items is None
 
 
-def test_schema_subclassing_with_definitions_kwarg():
+def test_array_with_empty_items_list():
+    """Lines 40-41 with a zero-iteration loop over the items."""
     definitions = SchemaDefinitions()
+    field = Array(items=[])
 
-    class Base(Schema):
-        name = String()
+    set_definitions(field, definitions)
 
-    class Child(Base, definitions=definitions):
-        age = String()
+    assert field.items == []
 
-    # Inherited fields plus own field, with registration on definitions.
-    assert set(Child.fields) == {"name", "age"}
-    assert definitions["Child"] is Child
+
+def test_array_with_list_of_items_recurses_into_each_child():
+    """Lines 41-43: every field in a list of items is visited."""
+    definitions = SchemaDefinitions()
+    first = Reference(to="A")
+    second = Reference(to="B")
+    plain = Field()
+    field = Array(items=[first, second, plain])
+
+    set_definitions(field, definitions)
+
+    assert first.definitions is definitions
+    assert second.definitions is definitions
+    # A plain Field matches no branch and must stay untouched.
+    assert getattr(plain, "definitions", None) is None
+
+
+def test_array_with_single_item_field_recurses_into_it():
+    """Line 45: a single (non-sequence) item field is visited."""
+    definitions = SchemaDefinitions()
+    child = Reference(to="A")
+    field = Array(items=child)
+
+    set_definitions(field, definitions)
+
+    assert child.definitions is definitions
+
+
+def test_object_recurses_into_each_property():
+    """Lines 46-48: every property of an Object is visited."""
+    definitions = SchemaDefinitions()
+    first = Reference(to="A")
+    second = Reference(to="B")
+    plain = Field()
+    field = Object(properties={"first": first, "second": second, "plain": plain})
+
+    set_definitions(field, definitions)
+
+    assert first.definitions is definitions
+    assert second.definitions is definitions
+    assert getattr(plain, "definitions", None) is None
+
+
+def test_object_without_properties():
+    """Lines 46-47 with a zero-iteration loop over the properties."""
+    definitions = SchemaDefinitions()
+    field = Object()
+
+    set_definitions(field, definitions)
+
+    assert field.properties == {}
+
+
+def test_plain_field_is_left_alone():
+    """A bare Field matches neither Reference, Array nor Object."""
+    definitions = SchemaDefinitions()
+    field = Field()
+
+    set_definitions(field, definitions)
+
+    assert getattr(field, "definitions", None) is None
+
+
+def test_nested_structures_are_handled_recursively():
+    """Recursion descends through nested Objects and Arrays."""
+    definitions = SchemaDefinitions()
+    list_child = Reference(to="Leaf")
+    single_child = Reference(to="Single")
+    nested_child = Reference(to="Nested")
+    schema = Object(
+        properties={
+            "list": Array(items=[list_child]),
+            "single": Array(items=single_child),
+            "nested": Object(properties={"leaf": nested_child}),
+        }
+    )
+
+    set_definitions(schema, definitions)
+
+    assert list_child.definitions is definitions
+    assert single_child.definitions is definitions
+    assert nested_child.definitions is definitions

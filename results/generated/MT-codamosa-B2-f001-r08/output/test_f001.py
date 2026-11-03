@@ -5,30 +5,29 @@ def test_case_0():
     str_0 = '()'
     list_0 = module_0.separate_paren_groups(str_0)
     assert list_0 == ['()']
-    str_1 = '(())'
+    str_1 = '()()'
     list_1 = module_0.separate_paren_groups(str_1)
-    assert list_1 == ['(())']
-    str_2 = '(()())'
+    assert list_1 == ['()', '()']
+    str_2 = '(())'
     list_2 = module_0.separate_paren_groups(str_2)
-    assert list_2 == ['(()())']
-    str_3 = '()()'
+    assert list_2 == ['(())']
+    str_3 = '()(())'
     list_3 = module_0.separate_paren_groups(str_3)
-    assert list_3 == ['()', '()']
-    str_4 = '(())(())'
+    assert list_3 == ['()', '(())']
+    str_4 = '((()))'
     list_4 = module_0.separate_paren_groups(str_4)
-    assert list_4 == ['(())', '(())']
-    str_5 = '()(())(()())'
+    assert list_4 == ['((()))']
+    str_5 = '( ) (( )) (( )( ))'
     list_5 = module_0.separate_paren_groups(str_5)
     assert list_5 == ['()', '(())', '(()())']
-    str_6 = '( ) (( )) (( )( ))'
+    str_6 = '(()())((()))'
     list_6 = module_0.separate_paren_groups(str_6)
-    assert list_6 == ['()', '(())', '(()())']
+    assert list_6 == ['(()())', '((()))']
     str_7 = ''
     list_7 = module_0.separate_paren_groups(str_7)
     assert list_7 == []
     str_8 = '   '
     list_8 = module_0.separate_paren_groups(str_8)
     assert list_8 == []
-    str_9 = '  ()  (())  '
-    list_9 = module_0.separate_paren_groups(str_9)
-    assert list_9 == ['()', '(())']
+    str_9 = 'All tests for separate_paren_groups passed!'
+    var_0 = print(str_9)

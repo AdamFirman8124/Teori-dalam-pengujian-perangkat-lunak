@@ -1,2500 +1,650 @@
 
 
-# Generated at 2026-10-24 20:42:04.786285
+# Generated at 2026-11-01 22:32:06.850712
 # Unit test for method add_locals of class AnsibleJ2Vars
 def test_AnsibleJ2Vars_add_locals():
-    class DummyTemplar(object):
-        available_variables = {'templar_var': 'templar value'}
+    from unittest.mock import MagicMock
 
-        def template(self, value):
-            return value
-
-    templar = DummyTemplar()
-    variables = AnsibleJ2Vars(
-        templar,
-        {'global_var': 'global value'},
-        locals={'existing': 'original value'},
-    )
-
-    # No locals returns the same variable proxy.
-    assert variables.add_locals(None) is variables
-
-    updated = variables.add_locals({
-        'existing': 'updated value',
-        'new_local': 'new value',
-    })
-
-    # A new proxy is returned and the original remains unchanged.
-    assert updated is not variables
-    assert variables['existing'] == 'original value'
-    assert 'new_local' not in variables
-
-    # Existing locals are overridden and new locals are added.
-    assert updated['existing'] == 'updated value'
-    assert updated['new_local'] == 'new value'
-
-    # Templar variables and globals remain available.
-    assert updated['templar_var'] == 'templar value'
-    assert updated['global_var'] == 'global value'
-
-# Generated at 2026-10-24 20:42:06.170864
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:42:21.379395
-# Unit test for method __contains__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___contains__():templar = type(
-        "Templar",
-        (),
-        {"available_variables": {"host_var": "value"}},
-    )()
-
-# Generated at 2026-10-24 20:42:36.480639
-# Unit test for method __len__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___len__():
     templar = MagicMock()
-
-    # Empty: 0 distinct keys
-    templar.available_variables = {}
-    assert len(AnsibleJ2Vars(templar, globals={})) == 0
-
-    # Overlapping keys counted once:
-    # available={host, shared, only_var}, globals={shared, global_only},
-    # locals={shared, local_only} -> 5 distinct keys
-    templar.available_variables = {'host': 'web1', 'shared': 1, 'only_var': 2}
-    j2vars = AnsibleJ2Vars(
-        templar,
-        globals={'shared': 3, 'global_only': 4},
-        locals={'shared': 5, 'local_only': 6},
-    )
-    assert len(j2vars) == 5
-
-    # Locals normalization affects length: 'l_foo' -> 'foo', 'context' excluded
-    templar.available_variables = {'host': 'web1'}
-    j2vars = AnsibleJ2Vars(
-        templar,
-        globals={},
-        locals={'l_foo': 1, 'context': 2},
-    )
-    assert len(j2vars) == 2
-
-# Generated at 2026-10-24 20:42:38.992981
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:42:41.409776
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:42:43.828670
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:42:46.346554
-# Unit test for method __iter__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:42:48.763952
-# Unit test for method __iter__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:42:51.183212
-# Unit test for method __iter__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:43:00.140357
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:43:06.782027
-# Unit test for constructor of class AnsibleJ2Vars
-def test_AnsibleJ2Vars():templar = type("TemplarStub", (), {"available_variables": {"name": "value"}})()
-
-# Generated at 2026-10-24 20:43:08.101747
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:43:19.372926
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:43:29.808622
-# Unit test for method __contains__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___contains__():obj = object.__new__(AnsibleJ2Vars)
-
-# Generated at 2026-10-24 20:43:41.287327
-# Unit test for method add_locals of class AnsibleJ2Vars
-def test_AnsibleJ2Vars_add_locals():
-    class DummyTemplar(object):
-        def __init__(self):
-            self.available_variables = {'templar_var': 'templar value'}
-
-        def template(self, value):
-            return value
-
-    templar = DummyTemplar()
-    variables = AnsibleJ2Vars(
-        templar,
-        {'global_var': 'global value'},
-        locals={'existing': 'original value'},
-    )
-
-    # No locals should return the existing proxy unchanged.
-    assert variables.add_locals(None) is variables
-
-    updated = variables.add_locals({
-        'existing': 'updated value',
-        'new_var': 'new value',
-    })
-
-    # A new proxy is returned and existing locals can be overridden.
-    assert updated is not variables
-    assert updated['existing'] == 'updated value'
-    assert updated['new_var'] == 'new value'
-
-    # The original proxy is not modified.
-    assert variables['existing'] == 'original value'
-    assert 'new_var' not in variables
-
-    # Templar variables and globals remain available in the new proxy.
-    assert updated['templar_var'] == 'templar value'
-    assert updated['global_var'] == 'global value'
-
-# Generated at 2026-10-24 20:44:10.106844
-# Unit test for constructor of class AnsibleJ2Vars
-def test_AnsibleJ2Vars():
-    from unittest.mock import MagicMock
-
-    mock_templar = MagicMock()
-    mock_templar.available_variables = {}
-    test_globals = {'range': range, 'global_var': 'global_value'}
-
-    # 1. locals=None -> empty _locals, stores templar/globals
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=None)
-    assert obj._templar is mock_templar
-    assert obj._globals is test_globals
-    assert obj._locals == {}
-
-    # 2. locals not a dict -> ignored
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals="not-a-dict")
-    assert obj._locals == {}
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=['a', 'b'])
-    assert obj._locals == {}
-
-    # 3. normal locals are copied
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals={'foo': 'bar', 'num': 42})
-    assert obj._locals == {'foo': 'bar', 'num': 42}
-
-    # 4. 'l_' prefix is stripped (jinja2 loop locals)
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'l_foo': 'stripped', 'bar': 'kept'}
-    )
-    assert obj._locals == {'foo': 'stripped', 'bar': 'kept'}
-
-    # 5. jinja2 internal keys are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'context': 'c',
-            'environment': 'e',
-            'template': 't',
-            'ok': 'kept',
-        }
-    )
-    assert obj._locals == {'ok': 'kept'}
-
-    # 6. jinja2.utils.missing values are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'present': 1, 'absent': missing, 'l_skipped': missing}
-    )
-    assert obj._locals == {'present': 1}
-
-    # 7. combined case
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'l_x': 1,
-            'y': 2,
-            'context': 3,
-            'z': missing,
-        }
-    )
-    assert obj._locals == {'x': 1, 'y': 2}
-
-# Generated at 2026-10-24 20:44:11.433587
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:44:21.311003
-# Unit test for method __contains__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___contains__():obj = AnsibleJ2Vars.__new__(AnsibleJ2Vars)
-
-# Generated at 2026-10-24 20:44:33.743889
-# Unit test for method __contains__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___contains__():from types import SimpleNamespace
-
-
-# Generated at 2026-10-24 20:44:35.165096
-# Unit test for constructor of class AnsibleJ2Vars
-def test_AnsibleJ2Vars():
-    from unittest.mock import MagicMock
-
-    mock_templar = MagicMock()
-    mock_templar.available_variables = {}
-    test_globals = {'range': range, 'global_var': 'global_value'}
-
-    # 1. locals=None -> empty _locals, stores templar/globals
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=None)
-    assert obj._templar is mock_templar
-    assert obj._globals is test_globals
-    assert obj._locals == {}
-
-    # 2. locals not a dict -> ignored
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals="not-a-dict")
-    assert obj._locals == {}
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=['a', 'b'])
-    assert obj._locals == {}
-
-    # 3. normal locals are copied
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals={'foo': 'bar', 'num': 42})
-    assert obj._locals == {'foo': 'bar', 'num': 42}
-
-    # 4. 'l_' prefix is stripped (jinja2 loop locals)
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'l_foo': 'stripped', 'bar': 'kept'}
-    )
-    assert obj._locals == {'foo': 'stripped', 'bar': 'kept'}
-
-    # 5. jinja2 internal keys are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'context': 'c',
-            'environment': 'e',
-            'template': 't',
-            'ok': 'kept',
-        }
-    )
-    assert obj._locals == {'ok': 'kept'}
-
-    # 6. jinja2.utils.missing values are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'present': 1, 'absent': missing, 'l_skipped': missing}
-    )
-    assert obj._locals == {'present': 1}
-
-    # 7. combined case
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'l_x': 1,
-            'y': 2,
-            'context': 3,
-            'z': missing,
-        }
-    )
-    assert obj._locals == {'x': 1, 'y': 2}
-
-# Generated at 2026-10-24 20:44:36.540108
-# Unit test for constructor of class AnsibleJ2Vars
-def test_AnsibleJ2Vars():
-    from unittest.mock import MagicMock
-
-    mock_templar = MagicMock()
-    mock_templar.available_variables = {}
-    test_globals = {'range': range, 'global_var': 'global_value'}
-
-    # 1. locals=None -> empty _locals, stores templar/globals
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=None)
-    assert obj._templar is mock_templar
-    assert obj._globals is test_globals
-    assert obj._locals == {}
-
-    # 2. locals not a dict -> ignored
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals="not-a-dict")
-    assert obj._locals == {}
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=['a', 'b'])
-    assert obj._locals == {}
-
-    # 3. normal locals are copied
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals={'foo': 'bar', 'num': 42})
-    assert obj._locals == {'foo': 'bar', 'num': 42}
-
-    # 4. 'l_' prefix is stripped (jinja2 loop locals)
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'l_foo': 'stripped', 'bar': 'kept'}
-    )
-    assert obj._locals == {'foo': 'stripped', 'bar': 'kept'}
-
-    # 5. jinja2 internal keys are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'context': 'c',
-            'environment': 'e',
-            'template': 't',
-            'ok': 'kept',
-        }
-    )
-    assert obj._locals == {'ok': 'kept'}
-
-    # 6. jinja2.utils.missing values are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'present': 1, 'absent': missing, 'l_skipped': missing}
-    )
-    assert obj._locals == {'present': 1}
-
-    # 7. combined case
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'l_x': 1,
-            'y': 2,
-            'context': 3,
-            'z': missing,
-        }
-    )
-    assert obj._locals == {'x': 1, 'y': 2}
-
-# Generated at 2026-10-24 20:45:16.230297
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
-
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
-
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
-    locals_dict = {'local_var': 'local_value'}
-
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
-
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
-
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
-
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
-
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:45:17.659973
-# Unit test for constructor of class AnsibleJ2Vars
-def test_AnsibleJ2Vars():
-    from unittest.mock import MagicMock
-
-    mock_templar = MagicMock()
-    mock_templar.available_variables = {}
-    test_globals = {'range': range, 'global_var': 'global_value'}
-
-    # 1. locals=None -> empty _locals, stores templar/globals
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=None)
-    assert obj._templar is mock_templar
-    assert obj._globals is test_globals
-    assert obj._locals == {}
-
-    # 2. locals not a dict -> ignored
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals="not-a-dict")
-    assert obj._locals == {}
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=['a', 'b'])
-    assert obj._locals == {}
-
-    # 3. normal locals are copied
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals={'foo': 'bar', 'num': 42})
-    assert obj._locals == {'foo': 'bar', 'num': 42}
-
-    # 4. 'l_' prefix is stripped (jinja2 loop locals)
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'l_foo': 'stripped', 'bar': 'kept'}
-    )
-    assert obj._locals == {'foo': 'stripped', 'bar': 'kept'}
-
-    # 5. jinja2 internal keys are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'context': 'c',
-            'environment': 'e',
-            'template': 't',
-            'ok': 'kept',
-        }
-    )
-    assert obj._locals == {'ok': 'kept'}
-
-    # 6. jinja2.utils.missing values are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'present': 1, 'absent': missing, 'l_skipped': missing}
-    )
-    assert obj._locals == {'present': 1}
-
-    # 7. combined case
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'l_x': 1,
-            'y': 2,
-            'context': 3,
-            'z': missing,
-        }
-    )
-    assert obj._locals == {'x': 1, 'y': 2}
-
-# Generated at 2026-10-24 20:45:19.094094
-# Unit test for constructor of class AnsibleJ2Vars
-def test_AnsibleJ2Vars():
-    from unittest.mock import MagicMock
-
-    mock_templar = MagicMock()
-    mock_templar.available_variables = {}
-    test_globals = {'range': range, 'global_var': 'global_value'}
-
-    # 1. locals=None -> empty _locals, stores templar/globals
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=None)
-    assert obj._templar is mock_templar
-    assert obj._globals is test_globals
-    assert obj._locals == {}
-
-    # 2. locals not a dict -> ignored
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals="not-a-dict")
-    assert obj._locals == {}
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=['a', 'b'])
-    assert obj._locals == {}
-
-    # 3. normal locals are copied
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals={'foo': 'bar', 'num': 42})
-    assert obj._locals == {'foo': 'bar', 'num': 42}
-
-    # 4. 'l_' prefix is stripped (jinja2 loop locals)
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'l_foo': 'stripped', 'bar': 'kept'}
-    )
-    assert obj._locals == {'foo': 'stripped', 'bar': 'kept'}
-
-    # 5. jinja2 internal keys are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'context': 'c',
-            'environment': 'e',
-            'template': 't',
-            'ok': 'kept',
-        }
-    )
-    assert obj._locals == {'ok': 'kept'}
-
-    # 6. jinja2.utils.missing values are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'present': 1, 'absent': missing, 'l_skipped': missing}
-    )
-    assert obj._locals == {'present': 1}
-
-    # 7. combined case
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'l_x': 1,
-            'y': 2,
-            'context': 3,
-            'z': missing,
-        }
-    )
-    assert obj._locals == {'x': 1, 'y': 2}
-
-# Generated at 2026-10-24 20:45:20.529377
-# Unit test for constructor of class AnsibleJ2Vars
-def test_AnsibleJ2Vars():
-    from unittest.mock import MagicMock
-
-    mock_templar = MagicMock()
-    mock_templar.available_variables = {}
-    test_globals = {'range': range, 'global_var': 'global_value'}
-
-    # 1. locals=None -> empty _locals, stores templar/globals
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=None)
-    assert obj._templar is mock_templar
-    assert obj._globals is test_globals
-    assert obj._locals == {}
-
-    # 2. locals not a dict -> ignored
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals="not-a-dict")
-    assert obj._locals == {}
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=['a', 'b'])
-    assert obj._locals == {}
-
-    # 3. normal locals are copied
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals={'foo': 'bar', 'num': 42})
-    assert obj._locals == {'foo': 'bar', 'num': 42}
-
-    # 4. 'l_' prefix is stripped (jinja2 loop locals)
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'l_foo': 'stripped', 'bar': 'kept'}
-    )
-    assert obj._locals == {'foo': 'stripped', 'bar': 'kept'}
-
-    # 5. jinja2 internal keys are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'context': 'c',
-            'environment': 'e',
-            'template': 't',
-            'ok': 'kept',
-        }
-    )
-    assert obj._locals == {'ok': 'kept'}
-
-    # 6. jinja2.utils.missing values are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'present': 1, 'absent': missing, 'l_skipped': missing}
-    )
-    assert obj._locals == {'present': 1}
-
-    # 7. combined case
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'l_x': 1,
-            'y': 2,
-            'context': 3,
-            'z': missing,
-        }
-    )
-    assert obj._locals == {'x': 1, 'y': 2}
-
-# Generated at 2026-10-24 20:45:33.043134
-# Unit test for method add_locals of class AnsibleJ2Vars
-def test_AnsibleJ2Vars_add_locals():
-    class DummyTemplar(object):
-        available_variables = {}
-
-        def template(self, value):
-            return value
-
-    templar = DummyTemplar()
-    globals_ = {'global_var': 'global value'}
-
-    original = AnsibleJ2Vars(
-        templar,
-        globals_,
-        locals={'existing': 'original value'}
-    )
-
-    # No locals should return the existing instance.
-    assert original.add_locals(None) is original
-
-    updated = original.add_locals({
-        'existing': 'updated value',
-        'new_var': 'new value',
-        'l_scoped_var': 'scoped value',
-        'context': 'ignored',
-        'undefined_var': missing,
-    })
-
-    # A new proxy is returned and the original remains unchanged.
-    assert updated is not original
-    assert original['existing'] == 'original value'
-    assert 'new_var' not in original
-
-    # New locals are merged, with newer values taking precedence.
-    assert updated['existing'] == 'updated value'
-    assert updated['new_var'] == 'new value'
-
-    # Jinja's local prefix is removed.
-    assert updated['scoped_var'] == 'scoped value'
-    assert 'l_scoped_var' not in updated
-
-    # Internal and missing Jinja values are excluded.
-    assert 'context' not in updated
-    assert 'undefined_var' not in updated
-
-    # Existing globals and dependencies are retained.
-    assert updated['global_var'] == 'global value'
-    assert updated._templar is templar
-    assert updated._globals is globals_
-
-# Generated at 2026-10-24 20:45:35.724241
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
-
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
-
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
-    locals_dict = {'local_var': 'local_value'}
-
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
-
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
-
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
-
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
-
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:45:38.422188
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
-
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
-
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
-    locals_dict = {'local_var': 'local_value'}
-
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
-
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
-
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
-
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
-
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:45:50.324252
-# Unit test for method add_locals of class AnsibleJ2Vars
-def test_AnsibleJ2Vars_add_locals():
-    class DummyTemplar(object):
-        available_variables = {}
-
-    templar = DummyTemplar()
-    globals_vars = {'global_var': 'global'}
-    variables = AnsibleJ2Vars(
-        templar,
-        globals_vars,
-        locals={'existing': 'original'}
-    )
-
-    # No additional locals should return the original proxy.
-    assert variables.add_locals(None) is variables
-
-    updated = variables.add_locals({
-        'existing': 'overridden',
-        'added': 'new',
-    })
-
-    # A new proxy is returned with merged locals.
-    assert updated is not variables
-    assert updated._templar is templar
-    assert updated._globals is globals_vars
-    assert updated._locals == {
-        'existing': 'overridden',
-        'added': 'new',
+    templar.available_variables = {'foo': 'bar'}
+
+    globals_dict = {'range': range, 'lookup': lambda *a, **kw: []}
+
+    # 'l_' prefixed keys are stripped, reserved names excluded, missing values dropped
+    locals_dict = {
+        'l_local_var': 'local_value',
+        'plain_var': 'plain_value',
+        'l_missing_var': missing,
+        'context': 'should_be_skipped',
     }
 
-    # The original proxy must remain unchanged.
-    assert variables._locals == {'existing': 'original'}
+    ajv = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
+    assert ajv._locals == {'local_var': 'local_value', 'plain_var': 'plain_value'}
 
-# Generated at 2026-10-24 20:45:52.867149
-# Unit test for method __getitem__ of class AnsibleJ2Vars
+    # Passing None returns the same object
+    assert ajv.add_locals(None) is ajv
 
-# Generated at 2026-10-24 20:45:55.391425
-# Unit test for method __getitem__ of class AnsibleJ2Vars
+    # Passing a dict returns a NEW instance with merged locals
+    new_ajv = ajv.add_locals({'extra_var': 'extra_value'})
+    assert isinstance(new_ajv, AnsibleJ2Vars)
+    assert new_ajv is not ajv
+    assert new_ajv._locals == {
+        'local_var': 'local_value',
+        'plain_var': 'plain_value',
+        'extra_var': 'extra_value',
+    }
 
-# Generated at 2026-10-24 20:46:06.197400
-# Unit test for method __getitem__ of class AnsibleJ2Vars
+    # Original object remains unchanged
+    assert ajv._locals == {'local_var': 'local_value', 'plain_var': 'plain_value'}
+    assert 'extra_var' not in ajv._locals
 
-# Generated at 2026-10-24 20:46:09.070029
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
+    # Templar and globals are carried over to the new instance
+    assert new_ajv._templar is templar
+    assert new_ajv._globals is globals_dict
 
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
+    # Chained add_locals accumulates locals across copies
+    third_ajv = new_ajv.add_locals({'another': 123})
+    assert third_ajv._locals == {
+        'local_var': 'local_value',
+        'plain_var': 'plain_value',
+        'extra_var': 'extra_value',
+        'another': 123,
+    }
 
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
-    locals_dict = {'local_var': 'local_value'}
-
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
-
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
-
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
-
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
-
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:46:11.830623
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
-
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
-
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
-    locals_dict = {'local_var': 'local_value'}
-
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
-
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
-
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
-
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
-
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:46:14.514649
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
-
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
-
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
-    locals_dict = {'local_var': 'local_value'}
-
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
-
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
-
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
-
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
-
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:46:15.849345
+# Generated at 2026-11-01 22:32:20.472679
 # Unit test for method __contains__ of class AnsibleJ2Vars
+def test_AnsibleJ2Vars___contains__():
+    from units.mock.loader import DictDataLoader
 
-# Generated at 2026-10-24 20:46:38.454411
-# Unit test for method __contains__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___contains__():templar = type('Templar', (), {'available_variables': {'templar_var': 1}})()
-
-# Generated at 2026-10-24 20:46:39.993178
-# Unit test for constructor of class AnsibleJ2Vars
-def test_AnsibleJ2Vars():
-    from unittest.mock import MagicMock
+    fake_loader = DictDataLoader({})
+    variable_manager = VariableManager()
+    variable_manager.set_loader(fake_loader)
 
     mock_templar = MagicMock()
-    mock_templar.available_variables = {}
-    test_globals = {'range': range, 'global_var': 'global_value'}
+    mock_templar.available_variables = {'foo': 'bar', 'num': 1}
 
-    # 1. locals=None -> empty _locals, stores templar/globals
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=None)
-    assert obj._templar is mock_templar
-    assert obj._globals is test_globals
-    assert obj._locals == {}
+    globals_dict = {'range': range, 'lookup': MagicMock()}
+    locals_dict = {'local_var': 'local_value'}
 
-    # 2. locals not a dict -> ignored
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals="not-a-dict")
-    assert obj._locals == {}
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=['a', 'b'])
-    assert obj._locals == {}
+    j2vars = AnsibleJ2Vars(mock_templar, globals_dict, locals=locals_dict)
 
-    # 3. normal locals are copied
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals={'foo': 'bar', 'num': 42})
-    assert obj._locals == {'foo': 'bar', 'num': 42}
+    # variable in locals
+    assert 'local_var' in j2vars
+    # variable in templar available_variables
+    assert 'foo' in j2vars
+    assert 'num' in j2vars
+    # variable in globals
+    assert 'range' in j2vars
+    assert 'lookup' in j2vars
+    # variable not defined anywhere
+    assert 'missing_var' not in j2vars
+    # locals should take precedence over available_variables
+    j2vars2 = AnsibleJ2Vars(mock_templar, globals_dict, locals={'foo': 'local_bar'})
+    assert 'foo' in j2vars2
 
-    # 4. 'l_' prefix is stripped (jinja2 loop locals)
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'l_foo': 'stripped', 'bar': 'kept'}
-    )
-    assert obj._locals == {'foo': 'stripped', 'bar': 'kept'}
+# Generated at 2026-11-01 22:32:44.534600
+# Unit test for method __len__ of class AnsibleJ2Vars
+def test_AnsibleJ2Vars___len__():
+    class MockTemplar(object):
+        def __init__(self, available_variables):
+            self.available_variables = available_variables
 
-    # 5. jinja2 internal keys are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'context': 'c',
-            'environment': 'e',
-            'template': 't',
-            'ok': 'kept',
-        }
-    )
-    assert obj._locals == {'ok': 'kept'}
+    # Test with no overlapping keys across scopes
+    templar = MockTemplar({'var1': 'value1', 'var2': 'value2'})
+    j2vars = AnsibleJ2Vars(templar, {'global1': 'gvalue1'}, locals={'local1': 'lvalue1'})
+    assert len(j2vars) == 4
 
-    # 6. jinja2.utils.missing values are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'present': 1, 'absent': missing, 'l_skipped': missing}
-    )
-    assert obj._locals == {'present': 1}
+    # Test with overlapping keys: union should count each key only once
+    templar = MockTemplar({'var1': 'value1'})
+    j2vars = AnsibleJ2Vars(templar, {'var1': 'gvalue1', 'var2': 'gvalue2'}, locals={'var1': 'lvalue1'})
+    assert len(j2vars) == 2
 
-    # 7. combined case
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'l_x': 1,
-            'y': 2,
-            'context': 3,
-            'z': missing,
-        }
-    )
-    assert obj._locals == {'x': 1, 'y': 2}
+    # Test with empty variables
+    templar = MockTemplar({})
+    j2vars = AnsibleJ2Vars(templar, {}, locals=None)
+    assert len(j2vars) == 0
 
-# Generated at 2026-10-24 20:46:41.428265
-# Unit test for constructor of class AnsibleJ2Vars
-def test_AnsibleJ2Vars():
+    # Test constructor locals processing: 'l_' prefix stripped, 'context' excluded
+    templar = MockTemplar({'a': 1})
+    j2vars = AnsibleJ2Vars(templar, {}, locals={'l_a': 10, 'context': 'x', 'b': 2})
+    # locals become {'a': 10, 'b': 2}; 'a' overlaps with templar vars, 'context' excluded
+    assert len(j2vars) == 2
+
+    # Test locals with 'missing' sentinel values are skipped
+    templar = MockTemplar({'a': 1})
+    j2vars = AnsibleJ2Vars(templar, {'g': 3}, locals={'l_a': missing, 'b': 2})
+    # 'l_a' skipped (missing value), locals = {'b': 2}; union = {'a', 'g', 'b'}
+    assert len(j2vars) == 3
+
+# Generated at 2026-11-01 22:34:03.701247
+# Unit test for method __getitem__ of class AnsibleJ2Vars
+
+# Generated at 2026-11-01 22:34:28.162299
+# Unit test for method __getitem__ of class AnsibleJ2Vars
+def test_AnsibleJ2Vars___getitem__():
+    import pytest
+    from ansible.template import AnsibleJ2Vars
+
+    class FakeTemplar:
+        def __init__(self, variables):
+            self.available_variables = variables
+
+        def template(self, value):
+            return 'templated:%s' % value
+
+    available = {'foo': 'bar', 'num': 3, 'vars': {'a': 1}}
+    templar = FakeTemplar(available)
+    globals_ = {'global_var': 42, 'range': range}
+    locals_ = {'l_local_one': 1, 'plain': 'p', 'context': 'ctx', 'environment': 'env', 'template': 'tpl'}
+
+    j2vars = AnsibleJ2Vars(templar, globals_, locals=locals_)
+
+    # locals are returned first, with the 'l_' prefix stripped
+    assert j2vars['local_one'] == 1
+    assert j2vars['plain'] == 'p'
+    # context/environment/template keys are dropped from locals
+    assert 'context' not in j2vars._locals
+    assert 'environment' not in j2vars._locals
+    assert 'template' not in j2vars._locals
+
+    # globals are returned as-is, without templating
+    assert j2vars['global_var'] == 42
+    assert j2vars['range'] is range
+
+    # regular variables from the templar get templated
+    assert j2vars['foo'] == 'templated:bar'
+    assert j2vars['num'] == 'templated:3'
+
+    # the special 'vars' dict is returned as-is, not templated
+    assert j2vars['vars'] is available['vars']
+    assert j2vars['vars'] == {'a': 1}
+
+    # unknown variables raise KeyError
+    with pytest.raises(KeyError):
+        j2vars['does_not_exist']
+
+# Generated at 2026-11-01 22:35:01.376235
+# Unit test for method __contains__ of class AnsibleJ2Vars
+def test_AnsibleJ2Vars___contains__():
     from unittest.mock import MagicMock
 
+    # Mock templar with available variables
+    templar = MagicMock()
+    templar.available_variables = {'available_var': 'value', 'host_var': 'hvalue'}
+
+    globals_dict = {'global_var': 'gvalue', 'range': range}
+
+    locals_dict = {
+        'l_local_var': 'lvalue',       # jinja2-style local with l_ prefix
+        'plain_local': 'pvalue',       # plain local without prefix
+        'context': 'ctx',              # excluded special key
+        'environment': 'env',          # excluded special key
+        'template': 'tmpl',            # excluded special key
+        'missing_local': missing,      # value is jinja2 missing sentinel, should be skipped
+    }
+
+    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
+
+    # Variables stored in locals (l_ prefix stripped) should be found
+    assert 'local_var' in j2vars
+    assert 'plain_local' in j2vars
+
+    # Special jinja2 keys should not have been stored in locals
+    assert 'context' not in j2vars
+    assert 'environment' not in j2vars
+    assert 'template' not in j2vars
+
+    # Locals whose value is the jinja2 `missing` sentinel are skipped
+    assert 'missing_local' not in j2vars
+
+    # Variables from templar.available_variables should be found
+    assert 'available_var' in j2vars
+    assert 'host_var' in j2vars
+
+    # Variables from globals should be found
+    assert 'global_var' in j2vars
+    assert 'range' in j2vars
+
+    # Undefined variables should not be found
+    assert 'undefined_var' not in j2vars
+    assert '' not in j2vars
+
+    # Verify precedence: local shadows available variable and global
+    templar2 = MagicMock()
+    templar2.available_variables = {'shared': 'from_available'}
+    globals2 = {'shared': 'from_globals'}
+    j2vars2 = AnsibleJ2Vars(templar2, globals2, locals={'l_shared': 'from_locals'})
+    assert 'shared' in j2vars2
+    assert j2vars2['shared'] == 'from_locals'
+
+# Generated at 2026-11-01 22:36:00.695401
+# Unit test for method __getitem__ of class AnsibleJ2Vars
+def test_AnsibleJ2Vars___getitem__():
+    import pytest
+    from unittest.mock import MagicMock, Mock
+    from ansible.template import AnsibleJ2Vars
+    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
+    from ansible.vars.hostvars import HostVars
+
+    class UnsafeValue(object):
+        __UNSAFE__ = True
+
+    templar = MagicMock()
+    templar.available_variables = {
+        'simple': 'value',
+        'vars': {'inner': 'var'},
+        'unsafe_var': UnsafeValue(),
+        'hostvars': Mock(spec=HostVars),
+    }
+    templar.template.side_effect = lambda v: 'templated:%s' % v
+
+    globals_dict = {'range': range, 'global_var': 'global_value'}
+    locals_dict = {
+        'l_local_var': 'local_value',
+        'l_context': 'ctx',
+        'l_environment': 'env',
+        'l_template': 'tmpl',
+        'plain': 'kept',
+    }
+
+    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
+
+    # locals are checked first and have the 'l_' prefix stripped
+    assert j2vars['local_var'] == 'local_value'
+
+    # non 'l_' prefixed local keys are preserved as-is
+    assert j2vars['plain'] == 'kept'
+
+    # special local keys (context, environment, template) are filtered out
+    with pytest.raises(KeyError):
+        j2vars['context']
+
+    # templar variables are templated before being returned
+    assert j2vars['simple'] == 'templated:value'
+
+    # the special 'vars' variable is returned as-is without templating
+    assert j2vars['vars'] == {'inner': 'var'}
+
+    # unsafe values are returned as-is without templating
+    unsafe_value = j2vars['unsafe_var']
+    assert hasattr(unsafe_value, '__UNSAFE__')
+
+    # HostVars instances are returned as-is without templating
+    assert isinstance(j2vars['hostvars'], HostVars)
+
+    # globals are returned directly, without templating
+    assert j2vars['global_var'] == 'global_value'
+    assert j2vars['range'] is range
+
+    # a variable found nowhere raises KeyError
+    with pytest.raises(KeyError):
+        j2vars['does_not_exist']
+
+    # an AnsibleUndefinedVariable during templating is re-raised with context
+    templar.template.side_effect = AnsibleUndefinedVariable('inner boom')
+    with pytest.raises(AnsibleUndefinedVariable):
+        j2vars['simple']
+
+    # any other error during templating is wrapped in an AnsibleError
+    templar.template.side_effect = Exception('kaboom')
+    with pytest.raises(AnsibleError):
+        j2vars['simple']
+
+# Generated at 2026-11-01 22:36:44.964071
+# Unit test for method add_locals of class AnsibleJ2Vars
+def test_AnsibleJ2Vars_add_locals():
+    # Mock templar with available variables
     mock_templar = MagicMock()
-    mock_templar.available_variables = {}
-    test_globals = {'range': range, 'global_var': 'global_value'}
+    mock_templar.available_variables = {'some_var': 'some_value'}
 
-    # 1. locals=None -> empty _locals, stores templar/globals
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=None)
-    assert obj._templar is mock_templar
-    assert obj._globals is test_globals
-    assert obj._locals == {}
+    globals_dict = {'range': range, 'lookup': MagicMock()}
 
-    # 2. locals not a dict -> ignored
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals="not-a-dict")
-    assert obj._locals == {}
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=['a', 'b'])
-    assert obj._locals == {}
+    # Build an instance carrying some pre-existing locals
+    ajv = AnsibleJ2Vars(mock_templar, globals_dict, locals={'existing': 'local_value'})
 
-    # 3. normal locals are copied
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals={'foo': 'bar', 'num': 42})
-    assert obj._locals == {'foo': 'bar', 'num': 42}
+    # module_0.add_locals(None) must return the very same object
+    assert ajv.add_locals(None) is ajv
 
-    # 4. 'l_' prefix is stripped (jinja2 loop locals)
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'l_foo': 'stripped', 'bar': 'kept'}
-    )
-    assert obj._locals == {'foo': 'stripped', 'bar': 'kept'}
+    # Adding locals returns a NEW AnsibleJ2Vars instance
+    new_ajv = ajv.add_locals({'added': 'new_value'})
+    assert isinstance(new_ajv, AnsibleJ2Vars)
+    assert new_ajv is not ajv
 
-    # 5. jinja2 internal keys are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'context': 'c',
-            'environment': 'e',
-            'template': 't',
-            'ok': 'kept',
-        }
-    )
-    assert obj._locals == {'ok': 'kept'}
+    # New instance combines pre-existing locals with the newly supplied ones
+    assert new_ajv._locals['existing'] == 'local_value'
+    assert new_ajv._locals['added'] == 'new_value'
 
-    # 6. jinja2.utils.missing values are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'present': 1, 'absent': missing, 'l_skipped': missing}
-    )
-    assert obj._locals == {'present': 1}
+    # Newly supplied locals override conflicting older ones
+    overridden = ajv.add_locals({'existing': 'updated'})
+    assert overridden._locals['existing'] == 'updated'
 
-    # 7. combined case
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'l_x': 1,
-            'y': 2,
-            'context': 3,
-            'z': missing,
-        }
-    )
-    assert obj._locals == {'x': 1, 'y': 2}
+    # The original instance remains untouched
+    assert ajv._locals == {'existing': 'local_value'}
 
-# Generated at 2026-10-24 20:46:42.856454
+    # Templar and globals are carried over to the new instance
+    assert new_ajv._templar is mock_templar
+    assert new_ajv._globals is globals_dict
+
+    # Constructor filtering applies to locals flowing through add_locals:
+    # 'l_'-prefixed keys are stripped, missing values dropped, and
+    # context/environment/template keys excluded
+    filtered = ajv.add_locals({
+        'l_stripped': 'yes',
+        'dropped': missing,
+        'context': 'nope',
+        'environment': 'nope',
+        'template': 'nope',
+        'kept': 'yes',
+    })
+    assert filtered._locals.get('stripped') == 'yes'
+    assert 'dropped' not in filtered._locals
+    assert 'context' not in filtered._locals
+    assert 'environment' not in filtered._locals
+    assert 'template' not in filtered._locals
+    assert filtered._locals.get('kept') == 'yes'
+    assert filtered._locals.get('existing') == 'local_value'
+
+
+if __name__ == '__main__':
+    test_AnsibleJ2Vars_add_locals()
+    print("test_AnsibleJ2Vars_add_locals passed")
+
+# Generated at 2026-11-01 22:37:16.002536
+# Unit test for method add_locals of class AnsibleJ2Vars
+def test_AnsibleJ2Vars_add_locals():
+    from unittest import mock
+
+    # Mock templar with available variables; make template() an identity op
+    mock_templar = mock.MagicMock()
+    mock_templar.available_variables = {'foo': 'bar', 'num': 123}
+    mock_templar.template.side_effect = lambda v: v
+
+    globals_dict = {'range': range, 'lookup': mock.Mock()}
+    locals_dict = {'host': 'localhost'}
+
+    ajv = AnsibleJ2Vars(mock_templar, globals_dict, locals=locals_dict)
+
+    # Passing None returns the exact same object
+    assert ajv.add_locals(None) is ajv
+
+    # Passing new locals returns a NEW AnsibleJ2Vars instance
+    new_ajv = ajv.add_locals({'port': 22})
+    assert isinstance(new_ajv, AnsibleJ2Vars)
+    assert new_ajv is not ajv
+
+    # Old locals preserved, new locals added, original object untouched
+    assert new_ajv['host'] == 'localhost'
+    assert new_ajv['port'] == 22
+    assert 'port' not in ajv._locals
+    assert 'port' not in ajv
+
+    # Templar variables and globals remain reachable through the new object
+    assert new_ajv['foo'] == 'bar'
+    assert new_ajv['range'] is range
+    assert 'num' in new_ajv
+
+    # Subsequent calls merge over previously accumulated locals
+    updated = new_ajv.add_locals({'host': 'otherhost'})
+    assert isinstance(updated, AnsibleJ2Vars)
+    assert updated['host'] == 'otherhost'
+    assert updated['port'] == 22
+    assert updated['foo'] == 'bar'
+
+    # An empty dict still produces a fresh copy carrying existing locals
+    copied = ajv.add_locals({})
+    assert copied is not ajv
+    assert copied['host'] == 'localhost'
+    assert dict(copied._locals) == {'host': 'localhost'}
+
+# Generated at 2026-11-01 22:37:48.167234
 # Unit test for constructor of class AnsibleJ2Vars
 def test_AnsibleJ2Vars():
+    '''Verify the AnsibleJ2Vars constructor stores the templar/globals and
+    preprocesses jinja2 locals correctly.'''
+
+    templar = MagicMock()
+    templar.available_variables = {'foo': 'bar', 'num': 42}
+    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: None}
+
+    locals_dict = {
+        'l_localvar': 'local_value',   # 'l_' prefix should be stripped
+        'plainvar': 'plain_value',     # plain keys kept as-is
+        'l_skipme': missing,           # values equal to the missing sentinel are dropped
+        'skipme_too': missing,
+        'context': 'dropped',          # reserved jinja2 names are dropped
+        'environment': 'dropped',
+        'template': 'dropped',
+    }
+
+    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
+
+    # attributes are stored correctly
+    assert j2vars._templar is templar
+    assert j2vars._globals == globals_dict
+
+    # l_ prefixes stripped, missing values skipped,
+    # context/environment/template keys excluded
+    assert j2vars._locals == {'localvar': 'local_value', 'plainvar': 'plain_value'}
+
+    # locals=None results in an empty locals mapping
+    no_locals = AnsibleJ2Vars(templar, globals_dict, locals=None)
+    assert no_locals._locals == {}
+    assert no_locals._templar is templar
+    assert no_locals._globals == globals_dict
+
+# Generated at 2026-11-01 22:38:08.737583
+# Unit test for method __getitem__ of class AnsibleJ2Vars
+def test_AnsibleJ2Vars___getitem__():
+    from unittest.mock import Mock, MagicMock
+    from ansible.template import Templar
+    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
+
+    # --- variable found in locals ---
+    templar = Mock()
+    templar.available_variables = {}
+    j2vars = AnsibleJ2Vars(templar, {}, locals={'l_localvar': 'local_value'})
+    assert j2vars['localvar'] == 'local_value'
+
+    # --- variable found in templar.available_variables, gets templated ---
+    templar.available_variables = {'myvar': 'value'}
+    templar.template = Mock(return_value='templated_value')
+    j2vars = AnsibleJ2Vars(templar, {})
+    assert j2vars['myvar'] == 'templated_value'
+    templar.template.assert_called_once_with('value')
+
+    # --- variable found in globals, returned as-is without templating ---
+    templar.available_variables = {}
+    templar.template = Mock()
+    j2vars = AnsibleJ2Vars(templar, {'globalvar': 'global_value'})
+    assert j2vars['globalvar'] == 'global_value'
+    assert templar.template.called is False
+
+    # --- undefined variable raises KeyError ---
+    templar.available_variables = {}
+    j2vars = AnsibleJ2Vars(templar, {})
+    try:
+        j2vars['nonexistent']
+        assert False, "Expected KeyError"
+    except KeyError as e:
+        assert 'undefined variable: nonexistent' in str(e)
+
+    # --- 'vars' special variable returned as-is (not templated) ---
+    templar.available_variables = {'vars': {'a': 1, 'b': 2}}
+    templar.template = Mock()
+    j2vars = AnsibleJ2Vars(templar, {})
+    result = j2vars['vars']
+    assert result == {'a': 1, 'b': 2}
+    assert templar.template.called is False
+
+    # --- HostVars instance returned as-is ---
+    from ansible.vars.hostvars import HostVars
+    hostvars = Mock(spec=HostVars)
+    templar.available_variables = {'hostvars': hostvars}
+    templar.template = Mock()
+    j2vars = AnsibleJ2Vars(templar, {})
+    assert j2vars['hostvars'] is hostvars
+    assert templar.template.called is False
+
+    # --- unsafe variable (has __UNSAFE__ attr) returned as-is ---
+    class UnsafeVar(str):
+        __UNSAFE__ = True
+    unsafe = UnsafeVar('unsafe_value')
+    templar.available_variables = {'unsafevar': unsafe}
+    templar.template = Mock()
+    j2vars = AnsibleJ2Vars(templar, {})
+    assert j2vars['unsafevar'] is unsafe
+    assert templar.template.called is False
+
+    # --- AnsibleUndefinedVariable during templating is wrapped ---
+    templar.available_variables = {'badvar': 'bad_value'}
+    templar.template = Mock(side_effect=AnsibleUndefinedVariable("undefined"))
+    j2vars = AnsibleJ2Vars(templar, {})
+    try:
+        j2vars['badvar']
+        assert False, "Expected AnsibleUndefinedVariable"
+    except AnsibleUndefinedVariable as e:
+        assert 'bad_value' in str(e)
+
+    # --- generic exception during templating wrapped in AnsibleError ---
+    templar.available_variables = {'errvar': 'err_value'}
+    templar.template = Mock(side_effect=Exception("boom"))
+    j2vars = AnsibleJ2Vars(templar, {})
+    try:
+        j2vars['errvar']
+        assert False, "Expected AnsibleError"
+    except AnsibleError as e:
+        assert 'unhandled exception' in str(e)
+        assert 'boom' in str(e)
+
+    # --- locals take precedence over available_variables ---
+    templar.available_variables = {'x': 'from_available'}
+    templar.template = Mock(return_value='templated')
+    j2vars = AnsibleJ2Vars(templar, {}, locals={'l_x': 'from_locals'})
+    assert j2vars['x'] == 'from_locals'
+    assert templar.template.called is False
+
+    # --- available_variables take precedence over globals ---
+    templar.available_variables = {'y': 'from_available'}
+    templar.template = Mock(return_value='templated_y')
+    j2vars = AnsibleJ2Vars(templar, {'y': 'from_globals'})
+    assert j2vars['y'] == 'templated_y'
+
+    # --- locals filtering: 'context', 'environment', 'template' keys skipped ---
+    templar.available_variables = {}
+    j2vars = AnsibleJ2Vars(templar, {}, locals={'context': 'ctx', 'environment': 'env', 'template': 'tmpl', 'ok': 'kept'})
+    assert 'context' not in j2vars._locals
+    assert 'environment' not in j2vars._locals
+    assert 'template' not in j2vars._locals
+    assert j2vars['ok'] == 'kept'
+
+    # --- locals filtering: keys without 'l_' prefix kept, missing values skipped ---
+    from jinja2.utils import missing
+    templar.available_variables = {}
+    j2vars = AnsibleJ2Vars(templar, {}, locals={'plain': 'v1', 'noprefix': missing})
+    assert j2vars['plain'] == 'v1'
+    assert 'noprefix' not in j2vars._locals
+
+# Generated at 2026-11-01 22:38:25.058865
+# Unit test for method __contains__ of class AnsibleJ2Vars
+def test_AnsibleJ2Vars___contains__():
+    from unittest import TestCase
     from unittest.mock import MagicMock
 
-    mock_templar = MagicMock()
-    mock_templar.available_variables = {}
-    test_globals = {'range': range, 'global_var': 'global_value'}
+    class TestAnsibleJ2VarsContains(TestCase):
 
-    # 1. locals=None -> empty _locals, stores templar/globals
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=None)
-    assert obj._templar is mock_templar
-    assert obj._globals is test_globals
-    assert obj._locals == {}
+        def _make_templar(self, available_variables=None):
+            templar = MagicMock()
+            templar.available_variables = available_variables if available_variables is not None else {}
+            return templar
 
-    # 2. locals not a dict -> ignored
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals="not-a-dict")
-    assert obj._locals == {}
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=['a', 'b'])
-    assert obj._locals == {}
+        def test_in_locals(self):
+            templar = self._make_templar({'foo': 'bar'})
+            ajv = AnsibleJ2Vars(templar, globals={})
+            ajv._locals['localvar'] = 'value'
+            assert 'localvar' in ajv
+            assert 'foo' in ajv
 
-    # 3. normal locals are copied
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals={'foo': 'bar', 'num': 42})
-    assert obj._locals == {'foo': 'bar', 'num': 42}
+        def test_in_available_variables(self):
+            templar = self._make_templar({'host_var': 'value'})
+            ajv = AnsibleJ2Vars(templar, globals={})
+            assert 'host_var' in ajv
 
-    # 4. 'l_' prefix is stripped (jinja2 loop locals)
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'l_foo': 'stripped', 'bar': 'kept'}
-    )
-    assert obj._locals == {'foo': 'stripped', 'bar': 'kept'}
+        def test_in_globals(self):
+            templar = self._make_templar({})
+            ajv = AnsibleJ2Vars(templar, globals={'range': range, 'lookup': lambda *a, **kw: None})
+            assert 'range' in ajv
+            assert 'lookup' in ajv
 
-    # 5. jinja2 internal keys are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'context': 'c',
-            'environment': 'e',
-            'template': 't',
-            'ok': 'kept',
-        }
-    )
-    assert obj._locals == {'ok': 'kept'}
+        def test_not_present(self):
+            templar = self._make_templar({})
+            ajv = AnsibleJ2Vars(templar, globals={})
+            assert 'nonexistent' not in ajv
 
-    # 6. jinja2.utils.missing values are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'present': 1, 'absent': missing, 'l_skipped': missing}
-    )
-    assert obj._locals == {'present': 1}
+        def test_locals_take_precedence(self):
+            templar = self._make_templar({'var': 'from_available'})
+            ajv = AnsibleJ2Vars(templar, globals={})
+            ajv._locals['var'] = 'from_locals'
+            assert 'var' in ajv
+            assert ajv['var'] == 'from_locals'
 
-    # 7. combined case
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'l_x': 1,
-            'y': 2,
-            'context': 3,
-            'z': missing,
-        }
-    )
-    assert obj._locals == {'x': 1, 'y': 2}
+        def test_locals_from_constructor(self):
+            templar = self._make_templar({})
+            ajv = AnsibleJ2Vars(templar, globals={}, locals={'l_myvar': 'myvalue', 'other': 42})
+            assert 'myvar' in ajv
+            assert 'other' in ajv
+            assert ajv['myvar'] == 'myvalue'
+            assert ajv['other'] == 42
 
-# Generated at 2026-10-24 20:46:44.291611
-# Unit test for constructor of class AnsibleJ2Vars
-def test_AnsibleJ2Vars():
+        def test_missing_sentinel_filtered_from_locals(self):
+            templar = self._make_templar({})
+            ajv = AnsibleJ2Vars(templar, globals={}, locals={'l_undefined': missing})
+            assert 'undefined' not in ajv
+
+        def test_special_keys_filtered_from_locals(self):
+            templar = self._make_templar({})
+            ajv = AnsibleJ2Vars(templar, globals={}, locals={'context': 1, 'environment': 2, 'template': 3})
+            assert 'context' not in ajv
+            assert 'environment' not in ajv
+            assert 'template' not in ajv
+
+    suite = unittest.TestSuite(unittest.TestLoader().loadTestsFromTestCase(TestAnsibleJ2VarsContains))
+    unittest.TextTestRunner(verbosity=2).run(suite)
+
+# Generated at 2026-11-01 22:38:54.201714
+# Unit test for method __contains__ of class AnsibleJ2Vars
+def test_AnsibleJ2Vars___contains__():
     from unittest.mock import MagicMock
 
-    mock_templar = MagicMock()
-    mock_templar.available_variables = {}
-    test_globals = {'range': range, 'global_var': 'global_value'}
+    # Set up a mock templar with available variables
+    templar = MagicMock()
+    templar.available_variables = {'available_var': 'value', 'hostvars': MagicMock()}
 
-    # 1. locals=None -> empty _locals, stores templar/globals
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=None)
-    assert obj._templar is mock_templar
-    assert obj._globals is test_globals
-    assert obj._locals == {}
-
-    # 2. locals not a dict -> ignored
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals="not-a-dict")
-    assert obj._locals == {}
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=['a', 'b'])
-    assert obj._locals == {}
-
-    # 3. normal locals are copied
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals={'foo': 'bar', 'num': 42})
-    assert obj._locals == {'foo': 'bar', 'num': 42}
-
-    # 4. 'l_' prefix is stripped (jinja2 loop locals)
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'l_foo': 'stripped', 'bar': 'kept'}
-    )
-    assert obj._locals == {'foo': 'stripped', 'bar': 'kept'}
-
-    # 5. jinja2 internal keys are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'context': 'c',
-            'environment': 'e',
-            'template': 't',
-            'ok': 'kept',
-        }
-    )
-    assert obj._locals == {'ok': 'kept'}
-
-    # 6. jinja2.utils.missing values are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'present': 1, 'absent': missing, 'l_skipped': missing}
-    )
-    assert obj._locals == {'present': 1}
-
-    # 7. combined case
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'l_x': 1,
-            'y': 2,
-            'context': 3,
-            'z': missing,
-        }
-    )
-    assert obj._locals == {'x': 1, 'y': 2}
-
-# Generated at 2026-10-24 20:46:45.715880
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:47:06.408333
-# Unit test for method __contains__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___contains__():templar = type("Templar", (), {"available_variables": {"available_var": 1}})()
-
-# Generated at 2026-10-24 20:47:07.742724
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:47:24.225597
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:47:39.073972
-# Unit test for method __contains__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___contains__():from types import SimpleNamespace
-
-
-# Generated at 2026-10-24 20:47:41.829800
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
-
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
-
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
+    globals_dict = {'global_var': 'global_value', 'range': range}
     locals_dict = {'local_var': 'local_value'}
 
     j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
 
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
+    # Variable in locals should be found
+    assert 'local_var' in j2vars
 
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
+    # Variable in templar.available_variables should be found
+    assert 'available_var' in j2vars
 
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
+    # Variable in globals should be found
+    assert 'global_var' in j2vars
 
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
+    # Nonexistent variable should not be found
+    assert 'nonexistent_var' not in j2vars
 
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
+    # Test without locals
+    j2vars_no_locals = AnsibleJ2Vars(templar, globals_dict)
+    assert 'local_var' not in j2vars_no_locals
+    assert 'available_var' in j2vars_no_locals
+    assert 'global_var' in j2vars_no_locals
 
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:47:44.605362
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
-
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
-
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
-    locals_dict = {'local_var': 'local_value'}
-
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
-
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
-
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
-
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
-
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:47:47.421130
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
-
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
-
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
-    locals_dict = {'local_var': 'local_value'}
-
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
-
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
-
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
-
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
-
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:47:50.138292
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
-
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
-
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
-    locals_dict = {'local_var': 'local_value'}
-
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
-
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
-
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
-
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
-
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:47:52.897865
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:47:55.535226
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:48:02.120757
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:48:05.013807
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
-
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
-
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
-    locals_dict = {'local_var': 'local_value'}
-
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
-
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
-
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
-
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
-
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:48:07.849383
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
-
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
-
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
-    locals_dict = {'local_var': 'local_value'}
-
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
-
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
-
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
-
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
-
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:48:09.248013
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:48:23.108549
-# Unit test for method __contains__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___contains__():obj = object.__new__(AnsibleJ2Vars)
-
-# Generated at 2026-10-24 20:48:38.056588
-# Unit test for method __contains__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___contains__():from types import SimpleNamespace
-from ansible.template.vars import AnsibleJ2Vars
-
-templar = SimpleNamespace(available_variables={"host_name": "web01"})
-variables = AnsibleJ2Vars(
-    templar,
-    {"global_name": "all_hosts"},
-    {"l_local_name": "local_value"},
-)
-
-assert variables.__contains__("local_name") is True
-assert variables.__contains__("host_name") is True
-assert variables.__contains__("global_name") is True
-assert variables.__contains__("missing_name") is False
-
-# Generated at 2026-10-24 20:48:40.815221
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
-
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
-
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
-    locals_dict = {'local_var': 'local_value'}
-
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
-
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
-
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
-
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
-
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:48:42.153658
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:49:03.962252
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:49:20.484797
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:49:23.221508
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
-
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
-
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
-    locals_dict = {'local_var': 'local_value'}
-
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
-
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
-
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
-
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
-
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:49:24.651046
-# Unit test for constructor of class AnsibleJ2Vars
-def test_AnsibleJ2Vars():
-    from unittest.mock import MagicMock
-
-    mock_templar = MagicMock()
-    mock_templar.available_variables = {}
-    test_globals = {'range': range, 'global_var': 'global_value'}
-
-    # 1. locals=None -> empty _locals, stores templar/globals
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=None)
-    assert obj._templar is mock_templar
-    assert obj._globals is test_globals
-    assert obj._locals == {}
-
-    # 2. locals not a dict -> ignored
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals="not-a-dict")
-    assert obj._locals == {}
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=['a', 'b'])
-    assert obj._locals == {}
-
-    # 3. normal locals are copied
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals={'foo': 'bar', 'num': 42})
-    assert obj._locals == {'foo': 'bar', 'num': 42}
-
-    # 4. 'l_' prefix is stripped (jinja2 loop locals)
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'l_foo': 'stripped', 'bar': 'kept'}
-    )
-    assert obj._locals == {'foo': 'stripped', 'bar': 'kept'}
-
-    # 5. jinja2 internal keys are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'context': 'c',
-            'environment': 'e',
-            'template': 't',
-            'ok': 'kept',
-        }
-    )
-    assert obj._locals == {'ok': 'kept'}
-
-    # 6. jinja2.utils.missing values are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'present': 1, 'absent': missing, 'l_skipped': missing}
-    )
-    assert obj._locals == {'present': 1}
-
-    # 7. combined case
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'l_x': 1,
-            'y': 2,
-            'context': 3,
-            'z': missing,
-        }
-    )
-    assert obj._locals == {'x': 1, 'y': 2}
-
-# Generated at 2026-10-24 20:49:26.031973
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:49:47.278970
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:49:49.800768
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:49:52.326247
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:49:54.739894
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:49:57.155696
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:00.295439
+# Generated at 2026-11-01 22:40:13.048878
 # Unit test for method __getitem__ of class AnsibleJ2Vars
 
-# Generated at 2026-10-24 20:50:02.713032
+# Generated at 2026-11-01 22:41:33.982776
 # Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:05.129783
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:07.550173
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:09.966345
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:12.381555
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:14.799995
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:17.213125
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:19.631192
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:22.049313
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:24.465251
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:26.882714
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:29.298576
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:31.714486
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:34.130980
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:36.548205
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:38.964573
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:41.381308
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:43.800707
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:46.216349
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:48.635236
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:51.051816
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:50:53.469884
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:51:00.802378
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:51:02.237509
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:51:16.644385
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:51:28.450817
-# Unit test for method __contains__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___contains__():from types import SimpleNamespace
-
-
-# Generated at 2026-10-24 20:51:31.205487
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
-
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
-
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
-    locals_dict = {'local_var': 'local_value'}
-
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
-
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
-
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
-
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
-
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:51:35.311513
-# Unit test for constructor of class AnsibleJ2Vars
-def test_AnsibleJ2Vars():
-    from unittest.mock import MagicMock
-
-    mock_templar = MagicMock()
-    mock_templar.available_variables = {}
-    test_globals = {'range': range, 'global_var': 'global_value'}
-
-    # 1. locals=None -> empty _locals, stores templar/globals
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=None)
-    assert obj._templar is mock_templar
-    assert obj._globals is test_globals
-    assert obj._locals == {}
-
-    # 2. locals not a dict -> ignored
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals="not-a-dict")
-    assert obj._locals == {}
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals=['a', 'b'])
-    assert obj._locals == {}
-
-    # 3. normal locals are copied
-    obj = AnsibleJ2Vars(mock_templar, test_globals, locals={'foo': 'bar', 'num': 42})
-    assert obj._locals == {'foo': 'bar', 'num': 42}
-
-    # 4. 'l_' prefix is stripped (jinja2 loop locals)
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'l_foo': 'stripped', 'bar': 'kept'}
-    )
-    assert obj._locals == {'foo': 'stripped', 'bar': 'kept'}
-
-    # 5. jinja2 internal keys are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'context': 'c',
-            'environment': 'e',
-            'template': 't',
-            'ok': 'kept',
-        }
-    )
-    assert obj._locals == {'ok': 'kept'}
-
-    # 6. jinja2.utils.missing values are filtered out
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={'present': 1, 'absent': missing, 'l_skipped': missing}
-    )
-    assert obj._locals == {'present': 1}
-
-    # 7. combined case
-    obj = AnsibleJ2Vars(
-        mock_templar, test_globals,
-        locals={
-            'l_x': 1,
-            'y': 2,
-            'context': 3,
-            'z': missing,
-        }
-    )
-    assert obj._locals == {'x': 1, 'y': 2}
-
-# Generated at 2026-10-24 20:51:38.060618
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():
-    from ansible.errors import AnsibleError, AnsibleUndefinedVariable
-    from ansible.vars.hostvars import HostVars
-
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables or {}
-            self.template_calls = []
-
-        def template(self, value):
-            self.template_calls.append(value)
-            if value == '{{ fail_undefined }}':
-                raise AnsibleUndefinedVariable("'fail_undefined' is undefined")
-            if value == '{{ fail_other }}':
-                raise Exception("boom")
-            return "templated:%s" % value
-
-    class FakeHostVars(object):
-        pass
-
-    # Setup templar with a mix of variables
-    templar = FakeTemplar({
-        'plain': 'hello',
-        'needs_templating': '{{ some_var }}',
-        'vars': {'a': 1},
-        'hostvars': FakeHostVars(),
-    })
-
-    globals_dict = {'range': range, 'lookup': lambda *args, **kwargs: 'global_lookup_result'}
-    locals_dict = {'local_var': 'local_value'}
-
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
-
-    # 1. Local variable is returned as-is
-    assert j2vars['local_var'] == 'local_value'
-
-    # 2. Global variable is returned as-is
-    assert j2vars['range'] is range
-
-    # 3. Available variable that needs templating gets templated
-    assert j2vars['needs_templating'] == 'templated:{{ some_var }}'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 4. Special 'vars' dict is returned as-is without templating
-    special_vars = j2vars['vars']
-    assert special_vars == {'a': 1}
-    # templating should not have been invoked again for 'vars'
-    assert templar.template_calls == ['{{ some_var }}']
-
-    # 5. HostVars-like object is returned as-is
-    hv = j2vars['hostvars']
-    assert isinstance(hv, FakeHostVars)
-
-    # 6. Missing variable raises KeyError
-    try:
-        j2vars['nonexistent']
-    except KeyError as e:
-        assert 'undefined variable: nonexistent' in str(e)
-    else:
-        raise AssertionError("Expected KeyError for 'nonexistent'")
-
-    # 7. AnsibleUndefinedVariable during templating is re-raised with context
-    templar.available_variables['fail_undefined'] = '{{ fail_undefined }}'
-    try:
-        j2vars['fail_undefined']
-    except AnsibleUndefinedVariable as e:
-        assert 'fail_undefined' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleUndefinedVariable for 'fail_undefined'")
-
-    # 8. Generic exception during templating is wrapped in AnsibleError
-    templar.available_variables['fail_other'] = '{{ fail_other }}'
-    try:
-        j2vars['fail_other']
-    except AnsibleError as e:
-        assert 'unhandled exception' in str(e)
-        assert 'boom' in str(e)
-    else:
-        raise AssertionError("Expected AnsibleError for 'fail_other'")
-
-# Generated at 2026-10-24 20:51:39.390766
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 20:51:55.806680
-# Unit test for method __contains__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___contains__():from ansible.template.vars import AnsibleJ2Vars
+def test_AnsibleJ2Vars___getitem__():from ansible.template import AnsibleJ2Vars

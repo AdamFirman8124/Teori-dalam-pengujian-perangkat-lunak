@@ -2,19 +2,39 @@
 import f118 as module_0
 
 def test_case_0():
-    str_0 = '3<&Q!;w#,al[Ba-~'
+    str_0 = 'yogurt'
     var_0 = module_0.get_closest_vowel(str_0)
-    assert var_0 == 'a'
-
-def test_case_1():
-    str_0 = 'i)1YD8?ry'
-    var_0 = module_0.get_closest_vowel(str_0)
-    assert var_0 == ''
-    str_1 = '3<&Q!;w#,al[Ba-~'
+    assert var_0 == 'u'
+    str_1 = 'FULL'
     var_1 = module_0.get_closest_vowel(str_1)
-    assert var_1 == 'a'
-    str_2 = '7n~EECRH]]#3!t?\rT'
+    assert var_1 == 'U'
+    str_2 = 'quick'
     var_2 = module_0.get_closest_vowel(str_2)
     assert var_2 == ''
-    var_3 = module_0.get_closest_vowel(str_2)
+    str_3 = 'ab'
+    var_3 = module_0.get_closest_vowel(str_3)
     assert var_3 == ''
+    str_4 = ''
+    var_4 = module_0.get_closest_vowel(str_4)
+    assert var_4 == ''
+    str_5 = 'a'
+    var_5 = module_0.get_closest_vowel(str_5)
+    assert var_5 == ''
+    str_6 = 'cat'
+    var_6 = module_0.get_closest_vowel(str_6)
+    assert var_6 == 'a'
+    str_7 = 'bAt'
+    var_7 = module_0.get_closest_vowel(str_7)
+    assert var_7 == 'A'
+    str_8 = 'beautiful'
+    var_8 = module_0.get_closest_vowel(str_8)
+    assert var_8 == 'u'
+    str_9 = 'bcdfghjkl'
+    var_9 = module_0.get_closest_vowel(str_9)
+    assert var_9 == ''
+    str_10 = 'aeiou'
+    var_10 = module_0.get_closest_vowel(str_10)
+    assert var_10 == ''
+    str_11 = 'Apple'
+    var_11 = module_0.get_closest_vowel(str_11)
+    assert var_11 == ''

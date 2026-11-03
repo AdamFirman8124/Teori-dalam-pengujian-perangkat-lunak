@@ -2,24 +2,33 @@
 # asked: {"lines": [3, 4, 5, 6, 7], "branches": [[4, 5], [4, 7], [5, 4], [5, 6]]}
 # gained: {"lines": [3, 4, 5, 6, 7], "branches": [[4, 5], [4, 7], [5, 4], [5, 6]]}
 
+import pytest
+
 from f035 import max_element
 
 
-def test_max_element_returns_largest_value():
-    values = [2, 5, 3]
-    original_values = values.copy()
-
-    result = max_element(values)
-
-    assert result == 5
-    assert values == original_values
+def test_max_element_max_at_end():
+    """Covers lines 3-7 including the True branch of `if e > m` (line 6)."""
+    result = max_element([1, 5, 3, 9, 2])
+    assert result == 9
 
 
-def test_max_element_returns_first_value_when_all_others_are_smaller():
-    values = [7, 4, 1]
-    original_values = values.copy()
+def test_max_element_max_at_start():
+    """Covers the False branch of `if e > m` (line 5) when max is the first element."""
+    result = max_element([10, 3, 7, 1])
+    assert result == 10
 
-    result = max_element(values)
 
-    assert result == 7
-    assert values == original_values
+def test_max_element_single_element():
+    """Covers loop with a single iteration (both branches of the comparison)."""
+    assert max_element([42]) == 42
+
+
+def test_max_element_with_duplicates():
+    """Duplicates exercise the `e > m` False branch (e == m)."""
+    assert max_element([4, 4, 4]) == 4
+
+
+def test_max_element_negative_numbers():
+    """Works correctly with all-negative values."""
+    assert max_element([-5, -1, -9]) == -1

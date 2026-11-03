@@ -2,41 +2,42 @@
 import f140 as module_0
 
 def test_case_0():
-    str_0 = ''
+    str_0 = 'Example'
     var_0 = module_0.fix_spaces(str_0)
-    assert var_0 == ''
-    str_1 = 'abc'
+    assert var_0 == 'Example'
+    str_1 = 'Example 1'
     var_1 = module_0.fix_spaces(str_1)
-    assert var_1 == 'abc'
-    str_2 = 'a b'
+    assert var_1 == 'Example_1'
+    str_2 = 'Example  1'
     var_2 = module_0.fix_spaces(str_2)
-    assert var_2 == 'a_b'
-    str_3 = 'a  b'
+    assert var_2 == 'Example__1'
+    str_3 = 'Example   1'
     var_3 = module_0.fix_spaces(str_3)
-    assert var_3 == 'a__b'
-    str_4 = 'a   b'
+    assert var_3 == 'Example-1'
+    str_4 = ' Example 2'
     var_4 = module_0.fix_spaces(str_4)
-    assert var_4 == 'a-b'
-    str_5 = 'a     b'
+    assert var_4 == '_Example_2'
+    str_5 = ' Example   3'
     var_5 = module_0.fix_spaces(str_5)
-    assert var_5 == 'a-b'
-    str_6 = '  a'
+    assert var_5 == '_Example-3'
+    str_6 = 'abc '
     var_6 = module_0.fix_spaces(str_6)
-    assert var_6 == '__a'
-    str_7 = 'a  '
+    assert var_6 == 'abc_'
+    str_7 = 'ab   '
     var_7 = module_0.fix_spaces(str_7)
-    assert var_7 == 'a__'
-    assert var_7 == 'a_'
-    str_8 = 'a   '
+    assert var_7 == 'ab-'
+    str_8 = ''
     var_8 = module_0.fix_spaces(str_8)
-    assert var_8 == 'a-'
-    str_9 = '   '
+    assert var_8 == ''
+    str_9 = ' '
     var_9 = module_0.fix_spaces(str_9)
-    assert var_9 == '-'
-    str_10 = 'a  b   c'
+    assert var_9 == '_'
+    str_10 = '  '
     var_10 = module_0.fix_spaces(str_10)
-    assert var_10 == 'a__b-c'
-    str_11 = '  hello  world  '
+    assert var_10 == '_'
+    str_11 = '   '
     var_11 = module_0.fix_spaces(str_11)
-    assert var_11 == '__hello__world__'
-    assert var_11 == '__hello__world_'
+    assert var_11 == '-'
+    str_12 = 'a b  c   d'
+    var_12 = module_0.fix_spaces(str_12)
+    assert var_12 == 'a_b__c-d'

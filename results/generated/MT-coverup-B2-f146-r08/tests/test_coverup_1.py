@@ -2,32 +2,36 @@
 # asked: {"lines": [4, 5, 6, 7, 8, 9, 10, 12], "branches": [[5, 6], [5, 12], [6, 5], [6, 7], [9, 5], [9, 10]]}
 # gained: {"lines": [4, 5, 6, 7, 8, 9, 10, 12], "branches": [[5, 6], [5, 12], [6, 5], [6, 7], [9, 5], [9, 10]]}
 
+"""Tests for f146.specialFilter covering all lines and branches (lines 4-12)."""
+
 from f146 import specialFilter
 
 
-def test_empty_list():
+def test_specialFilter_empty_list():
+    """Executes lines 4, 5 and 12: count initialized, loop body skipped, return 0."""
     assert specialFilter([]) == 0
 
 
-def test_all_numbers_le_10_ignored():
-    assert specialFilter([0, 1, 5, 10, -3, 10, 9]) == 0
+def test_specialFilter_no_numbers_above_ten():
+    """Executes line 6 with the False branch: loop runs but body never executes."""
+    assert specialFilter([10, 9, -73, 0]) == 0
 
 
-def test_first_digit_even_not_counted():
-    # 22, 20, 42, 68: num > 10 True, first digit even -> inner if False
-    assert specialFilter([22, 20, 42, 68, 200]) == 0
+def test_specialFilter_above_ten_but_not_both_digits_odd():
+    """Executes lines 6-9; the inner condition fails so line 10 is never reached.
+
+    Covers both short-circuit paths of the 'and' on line 9:
+    - 21/45: first digit even (second check skipped)
+    - 12/100: first digit odd but last digit even
+    """
+    assert specialFilter([12, 21, 100, 45]) == 0
 
 
-def test_first_odd_last_even_not_counted():
-    # first digit odd True, last digit even False -> inner if False
-    assert specialFilter([12, 14, 16, 32, 38, 50, 100]) == 0
+def test_specialFilter_counts_numbers_with_odd_first_and_last_digits():
+    """Executes all lines including line 10 (count increment) and line 12."""
+    assert specialFilter([15, 33, 97, 11]) == 4
 
 
-def test_both_ends_odd_counted():
-    assert specialFilter([11, 13, 15, 31, 33, 55, 77, 99, 111, 135]) == 10
-
-
-def test_mixed_only_counts_gt10_with_odd_first_and_last():
-    # 5 (<=10 ignored), 11 (count), 22 (first even, no count),
-    # 12 (last even, no count), 15 (count), 10 (ignored), 33 (count), 42 (no count)
-    assert specialFilter([5, 11, 22, 12, 15, 10, 33, 42]) == 3
+def test_specialFilter_mixed_input():
+    """Full behaviour check mixing all branches in a single call."""
+    assert specialFilter([15, -73, 14, -15, 33, 10, 12, 109]) == 3

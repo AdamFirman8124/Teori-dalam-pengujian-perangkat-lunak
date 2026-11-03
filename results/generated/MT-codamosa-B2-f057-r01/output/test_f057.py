@@ -4,37 +4,70 @@ import f057 as module_0
 def test_case_0():
     int_0 = 1
     int_1 = 2
-    int_2 = 3
-    int_3 = 4
-    int_4 = 5
-    int_5 = [int_0, int_1, int_2, int_3, int_4]
-    var_0 = module_0.monotonic(int_5)
+    int_2 = 4
+    int_3 = 20
+    int_4 = [int_0, int_1, int_2, int_3]
+    var_0 = module_0.monotonic(int_4)
     assert var_0 is True
-    int_6 = [int_4, int_3, int_2, int_1, int_0]
-    var_1 = module_0.monotonic(int_6)
+    int_5 = 0
+    int_6 = -10
+    int_7 = [int_2, int_0, int_0, int_5, int_6]
+    var_1 = module_0.monotonic(int_7)
     assert var_1 is True
-    int_7 = [int_0, int_1, int_1, int_2]
-    var_2 = module_0.monotonic(int_7)
+    int_8 = [int_0, int_0, int_0, int_0]
+    var_2 = module_0.monotonic(int_8)
     assert var_2 is True
-    int_8 = [int_2, int_1, int_1, int_0]
-    var_3 = module_0.monotonic(int_8)
+    int_9 = 3
+    int_10 = [int_0, int_1, int_1, int_9]
+    var_3 = module_0.monotonic(int_10)
     assert var_3 is True
-    int_9 = [int_0, int_0, int_0]
-    var_4 = module_0.monotonic(int_9)
+    int_11 = [int_9, int_1, int_1, int_0]
+    var_4 = module_0.monotonic(int_11)
     assert var_4 is True
-    var_5 = []
-    var_6 = module_0.monotonic(var_5)
-    assert var_6 is True
-    int_10 = 42
-    int_11 = [int_10]
-    var_7 = module_0.monotonic(int_11)
+    int_12 = [int_0, int_9, int_1]
+    var_5 = module_0.monotonic(int_12)
+    assert var_5 is False
+    int_13 = [int_1, int_0, int_9]
+    var_6 = module_0.monotonic(int_13)
+    assert var_6 is False
+    int_14 = 5
+    int_15 = [int_14]
+    var_7 = module_0.monotonic(int_15)
     assert var_7 is True
-    int_12 = [int_0, int_2, int_1]
-    var_8 = module_0.monotonic(int_12)
-    assert var_8 is False
-    int_13 = [int_4, int_0, int_3]
-    var_9 = module_0.monotonic(int_13)
-    assert var_9 is False
-    int_14 = [int_0, int_1, int_2, int_1, int_4]
-    var_10 = module_0.monotonic(int_14)
-    assert var_10 is False
+    var_8 = []
+    var_9 = module_0.monotonic(var_8)
+    assert var_9 is True
+    int_16 = [int_0, int_1]
+    var_10 = module_0.monotonic(int_16)
+    assert var_10 is True
+    int_17 = [int_1, int_0]
+    var_11 = module_0.monotonic(int_17)
+    assert var_11 is True
+    int_18 = 7
+    int_19 = [int_18, int_18, int_18]
+    var_12 = module_0.monotonic(int_19)
+    assert var_12 is True
+    int_20 = -5
+    int_21 = -3
+    int_22 = -1
+    int_23 = [int_20, int_21, int_22]
+    var_13 = module_0.monotonic(int_23)
+    assert var_13 is True
+    int_24 = -1
+    int_25 = -3
+    int_26 = -2
+    int_27 = [int_24, int_25, int_26]
+    var_14 = module_0.monotonic(int_27)
+    assert var_14 is False
+    float_0 = 1.1
+    float_1 = 2.2
+    float_2 = 3.3
+    float_3 = [float_0, float_1, float_2]
+    var_15 = module_0.monotonic(float_3)
+    assert var_15 is True
+    float_4 = [float_2, float_1, float_0]
+    var_16 = module_0.monotonic(float_4)
+    assert var_16 is True
+    float_5 = [float_0, float_2, float_1]
+    var_17 = module_0.monotonic(float_5)
+    assert var_17 is False

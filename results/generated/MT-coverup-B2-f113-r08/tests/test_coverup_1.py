@@ -2,31 +2,26 @@
 # asked: {"lines": [3, 4, 5, 6, 7], "branches": [[4, 5], [4, 7]]}
 # gained: {"lines": [3, 4, 5, 6, 7], "branches": [[4, 5], [4, 7]]}
 
+import pytest
+
 from f113 import odd_count
 
 
-def test_odd_count_empty_list():
+def test_odd_count_returns_empty_list_for_empty_input():
     assert odd_count([]) == []
 
 
-def test_odd_count_single_mixed_string():
-    # '1','3','5' are odd (True branch), '2','4' are even (False branch)
-    assert odd_count(["12345"]) == [
-        "the number of odd elements 3n the str3ng 3 of the 3nput."
-    ]
+def test_odd_count_counts_odd_digits_correctly():
+    lst = ["1234567"]
+    expected = ["the number of odd elements 4n the str4ng 4 of the 4nput."]
+    assert odd_count(lst) == expected
 
 
-def test_odd_count_multiple_cases():
-    # all even -> n=0, all odd -> n=5, empty string -> n=0 (empty generator)
-    assert odd_count(["2468", "13579", ""]) == [
+def test_odd_count_multiple_items():
+    lst = ["3", "11111111", "2468"]
+    expected = [
+        "the number of odd elements 1n the str1ng 1 of the 1nput.",
+        "the number of odd elements 8n the str8ng 8 of the 8nput.",
         "the number of odd elements 0n the str0ng 0 of the 0nput.",
-        "the number of odd elements 5n the str5ng 5 of the 5nput.",
-        "the number of odd elements 0n the str0ng 0 of the 0nput.",
     ]
-
-
-def test_odd_count_list_of_ints():
-    # covers arr as list of ints: 1 odd, 2 even
-    assert odd_count([[1, 2, 3]]) == [
-        "the number of odd elements 2n the str2ng 2 of the 2nput."
-    ]
+    assert odd_count(lst) == expected

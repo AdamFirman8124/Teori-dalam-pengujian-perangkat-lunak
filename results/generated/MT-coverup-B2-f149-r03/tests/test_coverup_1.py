@@ -5,43 +5,43 @@
 from f149 import sorted_list_sum
 
 
-def test_sorted_list_sum_empty_list():
+def test_filters_odd_length_strings_and_sorts_in_place():
+    lst = ["aa", "a", "aaa"]
+    result = sorted_list_sum(lst)
+    # "a" (len 1) and "aaa" (len 3) are odd -> filtered out
+    assert result == ["aa"]
+    # line 3 sorts the caller's list in place
+    assert lst == ["a", "aa", "aaa"]
+
+
+def test_mixed_lengths_filter_and_length_sorting():
+    lst = ["ab", "a", "aaa", "cd"]
+    result = sorted_list_sum(lst)
+    # odd-length "a" and "aaa" dropped; even-length kept, sorted by len
+    assert result == ["ab", "cd"]
+
+
+def test_length_key_reorders_beyond_lexicographic_sort():
+    lst = ["aaaa", "bb"]
+    result = sorted_list_sum(lst)
+    # lexicographic sort gives ["aaaa", "bb"], but key=len gives ["bb", "aaaa"]
+    assert result == ["bb", "aaaa"]
+
+
+def test_equal_lengths_keep_lexicographic_order():
+    lst = ["bb", "aa", "cc"]
+    result = sorted_list_sum(lst)
+    assert result == ["aa", "bb", "cc"]
+
+
+def test_all_odd_length_strings_are_filtered_out():
+    lst = ["a", "abc", "abcde"]
+    result = sorted_list_sum(lst)
+    assert result == []
+
+
+def test_empty_list_skips_loop_body():
     lst = []
     result = sorted_list_sum(lst)
     assert result == []
     assert lst == []
-
-
-def test_sorted_list_sum_all_even_lengths_sorted_by_length():
-    lst = ["abcd", "ab", "abcdef", "xy"]
-    result = sorted_list_sum(lst)
-    assert result == ["ab", "xy", "abcd", "abcdef"]
-    assert lst == ["ab", "abcd", "abcdef", "xy"]
-    assert all(len(item) % 2 == 0 for item in result)
-    assert [len(item) for item in result] == sorted(len(item) for item in result)
-
-
-def test_sorted_list_sum_all_odd_lengths():
-    lst = ["abcde", "a", "abc"]
-    result = sorted_list_sum(lst)
-    assert result == []
-    assert lst == ["a", "abc", "abcde"]
-
-
-def test_sorted_list_sum_mixed_even_and_odd_lengths():
-    lst = ["hello", "hi", "to", "world", "a"]
-    result = sorted_list_sum(lst)
-    assert result == ["hi", "to"]
-    assert lst == ["a", "hello", "hi", "to", "world"]
-    assert all(len(item) % 2 == 0 for item in result)
-    assert [len(item) for item in result] == sorted(len(item) for item in result)
-
-
-def test_sorted_list_sum_single_even_and_single_odd():
-    even_lst = ["ab"]
-    assert sorted_list_sum(even_lst) == ["ab"]
-    assert even_lst == ["ab"]
-
-    odd_lst = ["a"]
-    assert sorted_list_sum(odd_lst) == []
-    assert odd_lst == ["a"]

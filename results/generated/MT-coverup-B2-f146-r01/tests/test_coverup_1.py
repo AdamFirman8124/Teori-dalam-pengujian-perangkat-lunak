@@ -8,34 +8,35 @@ from f146 import specialFilter
 
 
 def test_empty_list_returns_zero():
+    """Covers line 4 (count = 0) and line 12 (return count) with an empty loop body."""
     assert specialFilter([]) == 0
 
 
-def test_numbers_not_greater_than_ten_are_ignored():
-    # Covers the False branch of `num > 10` (line 6)
-    assert specialFilter([10, -13, 9, 0, -5]) == 0
-
-
-def test_numbers_greater_than_ten_with_odd_first_and_last_digit():
-    # Covers lines 7-9 and the True branch of line 9, and line 10 (count += 1)
-    assert specialFilter([15, 33, 73, 91, 111]) == 5
+def test_numbers_not_greater_than_ten_are_skipped():
+    """Covers the False branch of 'num > 10' (line 6), including negatives and 10 itself."""
+    assert specialFilter([1, 2, 3, 10, 0, -5, -73, -15]) == 0
 
 
 def test_numbers_greater_than_ten_with_even_first_or_last_digit():
-    # Covers the False branch of line 9
-    assert specialFilter([12, 20, 44, 98, 100]) == 0
+    """Covers the False branch of the odd-digit check (line 9).
+
+    21: first digit even (short-circuits the 'and' before checking the last digit)
+    12: first digit odd, last digit even
+    20: first digit even, last digit even
+    100: first digit odd, last digit even
+    """
+    assert specialFilter([21, 12, 20, 100]) == 0
 
 
-def test_mixed_input_counts_only_matching_numbers():
-    # Exercises both branches of line 9 in a single call:
-    # 11, 35, 57, 79, 99 match (5); 22, 46, 68, 88, 10 do not
-    assert specialFilter([11, 22, 35, 46, 57, 68, 79, 88, 99, 10]) == 5
+def test_numbers_greater_than_ten_with_odd_first_and_last_digit():
+    """Covers the True branch of the odd-digit check (line 9) and the increment (line 10)."""
+    assert specialFilter([11, 13, 35, 97, 101, 12345]) == 6
 
 
-def test_negative_numbers_are_ignored_even_if_abs_matches():
-    # str(-15) is '-15', so first digit '-' is not an odd digit
-    assert specialFilter([-15, -33]) == 0
-
-
-def test_large_numbers():
-    assert specialFilter([13579, 97531, 135780]) == 2
+def test_mixed_input_covers_all_branches():
+    """A single call exercising every branch: loop, 'num > 10' both ways,
+    odd-digit check both ways, and the increment."""
+    # 15 -> counted, -73 -> skipped (not > 10), 14 -> last digit even,
+    # -15 -> skipped, 33 -> counted, 12 -> last digit even,
+    # 101 -> counted, 10 -> skipped (not > 10), 88 -> first digit even
+    assert specialFilter([15, -73, 14, -15, 33, 12, 101, 10, 88]) == 3

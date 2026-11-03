@@ -2,21 +2,51 @@
 import f050 as module_0
 
 def test_case_0():
-    str_0 = 'sG4.*P8&pBu0zZIK*'
-    str_1 = '0YA'
-    var_0 = module_0.decode_shift(str_1)
-    assert var_0 == 'ynp'
-    var_1 = module_0.encode_shift(str_0)
-    assert var_1 == 'xfmgcoqyuazieyhjc'
-    var_2 = module_0.decode_shift(str_0)
-    assert var_2 == 'nvcwsegokqpyuoxzs'
+    str_0 = 'abc'
+    var_0 = module_0.encode_shift(str_0)
+    assert var_0 == 'fgh'
+    str_1 = 'hello'
+    var_1 = module_0.encode_shift(str_1)
+    assert var_1 == 'mjqqt'
+    str_2 = 'xyz'
+    var_2 = module_0.encode_shift(str_2)
+    assert var_2 == 'cde'
+    str_3 = 'vwxyz'
+    var_3 = module_0.encode_shift(str_3)
+    assert var_3 == 'abcde'
+    str_4 = 'a'
+    var_4 = module_0.encode_shift(str_4)
+    assert var_4 == 'f'
+    str_5 = 'z'
+    var_5 = module_0.encode_shift(str_5)
+    assert var_5 == 'e'
+    str_6 = ''
+    var_6 = module_0.encode_shift(str_6)
+    assert var_6 == ''
+    var_7 = module_0.decode_shift(str_0)
+    assert var_7 == 'vwx'
 
 def test_case_1():
-    str_0 = '&X/O'
+    str_0 = 'a'
     var_0 = module_0.decode_shift(str_0)
-    assert var_0 == 'omxd'
-    str_1 = '+bwl$z'
+    assert var_0 == 'v'
+    str_1 = 'e'
     var_1 = module_0.decode_shift(str_1)
-    assert var_1 == 'twrgmu'
-    var_2 = module_0.decode_shift(str_0)
-    assert var_2 == 'omxd'
+    assert var_1 == 'z'
+    str_2 = 'f'
+    var_2 = module_0.decode_shift(str_2)
+    assert var_2 == 'a'
+    str_3 = 'mjqqt'
+    var_3 = module_0.decode_shift(str_3)
+    assert var_3 == 'hello'
+    str_4 = 'btwqi'
+    var_4 = module_0.decode_shift(str_4)
+    assert var_4 == 'world'
+    str_5 = 'fghijklmnopqrstuvwxyzabcde'
+    var_5 = module_0.decode_shift(str_5)
+    assert var_5 == 'abcdefghijklmnopqrstuvwxyz'
+    var_6 = module_0.decode_shift(str_0)
+    assert var_6 == 'v'
+
+def test_case_2():
+    pass

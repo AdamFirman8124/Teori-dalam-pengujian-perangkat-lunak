@@ -5,33 +5,22 @@
 from f097 import multiply
 
 
-def test_multiply_basic_positive():
-    assert multiply(148, 412) == 16
-
-
-def test_multiply_single_digits():
-    assert multiply(2, 3) == 6
-    assert multiply(5, 5) == 25
-    assert multiply(9, 9) == 81
-
-
-def test_multiply_zero_unit():
-    assert multiply(10, 20) == 0
+def test_multiply_positive_single_digits():
+    # Executes line 3 with simple positive operands.
+    assert multiply(3, 4) == 12
     assert multiply(0, 5) == 0
-    assert multiply(0, 0) == 0
-    assert multiply(100, 7) == 0
 
 
-def test_multiply_negative_numbers():
-    # Python semantics: -15 % 10 == 5, -14 % 10 == 6
-    assert multiply(14, -15) == 4 * 5
-    assert multiply(-14, 15) == 6 * 5
-    assert multiply(-14, -15) == 6 * 5
-    assert multiply(-148, -412) == 2 * 8
+def test_multiply_negative_operands():
+    # Python's % with a positive modulus already yields non-negative
+    # results (e.g. -3 % 10 == 7), so abs() is applied to values >= 0.
+    assert multiply(-3, 4) == 28       # abs(-3 % 10) * abs(4 % 10)  = 7 * 4
+    assert multiply(4, -3) == 28       # abs(4 % 10) * abs(-3 % 10)  = 4 * 7
+    assert multiply(-13, -24) == 42    # abs(7) * abs(6)             = 42
 
 
-def test_multiply_general_postcondition():
-    cases = [(148, 412), (19, 28), (-19, 28), (19, -28), (-19, -28), (0, 0), (10, 10), (7, 13)]
-    for a, b in cases:
-        expected = abs(a % 10) * abs(b % 10)
-        assert multiply(a, b) == expected
+def test_multiply_multi_digit_operands():
+    # Operands >= 10 exercise the modulo reduction.
+    assert multiply(13, 24) == 12      # 3 * 4
+    assert multiply(19, 29) == 81      # 9 * 9
+    assert multiply(10, 10) == 0       # 0 * 0

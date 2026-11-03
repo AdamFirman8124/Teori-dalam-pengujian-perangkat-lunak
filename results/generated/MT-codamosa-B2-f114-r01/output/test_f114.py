@@ -2,16 +2,63 @@
 import f114 as module_0
 
 def test_case_0():
-    int_0 = 3
-    int_1 = -1
-    int_2 = -2
-    int_3 = 5
-    int_4 = [int_0, int_1, int_2, int_3]
+    int_0 = 2
+    int_1 = 3
+    int_2 = 4
+    int_3 = 1
+    int_4 = [int_0, int_1, int_2, int_3, int_0, int_2]
     var_0 = module_0.minSubArraySum(int_4)
-    assert var_0 == 3
-    assert var_0 == -3
-
-def test_case_1():
-    bytes_0 = b'\xae\x1bbI\t\x05\tV\xc2'
-    var_0 = module_0.minSubArraySum(bytes_0)
-    assert var_0 == 5
+    assert var_0 == 1
+    int_5 = -1
+    int_6 = -2
+    int_7 = -3
+    int_8 = [int_5, int_6, int_7]
+    var_1 = module_0.minSubArraySum(int_8)
+    assert var_1 == 6
+    assert var_1 == -6
+    int_9 = 5
+    int_10 = -3
+    int_11 = [int_9, int_10, int_9]
+    var_2 = module_0.minSubArraySum(int_11)
+    assert var_2 == 3
+    assert var_2 == -3
+    int_12 = -5
+    int_13 = -1
+    int_14 = [int_0, int_12, int_1, int_13, int_0]
+    var_3 = module_0.minSubArraySum(int_14)
+    assert var_3 == 5
+    assert var_3 == -5
+    int_15 = -1
+    int_16 = [int_15]
+    var_4 = module_0.minSubArraySum(int_16)
+    assert var_4 == 1
+    assert var_4 == -1
+    int_17 = 10
+    int_18 = [int_17]
+    var_5 = module_0.minSubArraySum(int_18)
+    assert var_5 == 10
+    int_19 = 0
+    int_20 = -1
+    int_21 = -1
+    int_22 = -5
+    int_23 = [int_19, int_20, int_0, int_21, int_22]
+    var_6 = module_0.minSubArraySum(int_23)
+    assert var_6 == 6
+    assert var_6 == -6
+    int_24 = -10
+    int_25 = [int_3, int_0, int_24, int_2]
+    var_7 = module_0.minSubArraySum(int_25)
+    assert var_7 == 10
+    assert var_7 == -10
+    int_26 = -2
+    int_27 = -3
+    int_28 = [int_3, int_26, int_27, int_2]
+    var_8 = module_0.minSubArraySum(int_28)
+    assert var_8 == 5
+    assert var_8 == -5
+    int_29 = -1
+    int_30 = -1
+    int_31 = [int_29, int_30]
+    var_9 = module_0.minSubArraySum(int_31)
+    assert var_9 == 2
+    assert var_9 == -2

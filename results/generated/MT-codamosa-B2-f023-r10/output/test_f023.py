@@ -2,9 +2,29 @@
 import f023 as module_0
 
 def test_case_0():
-    str_0 = 'D5Gv6:9AAy3}sH%OL"'
+    str_0 = ''
     int_0 = module_0.strlen(str_0)
-    assert int_0 == 18
-    str_1 = ')|T3Kn;@iH"'
+    assert int_0 == 0
+    str_1 = 'a'
     int_1 = module_0.strlen(str_1)
-    assert int_1 == 11
+    assert int_1 == 1
+    str_2 = 'hello'
+    int_2 = module_0.strlen(str_2)
+    assert int_2 == 5
+    str_3 = ' '
+    int_3 = module_0.strlen(str_3)
+    assert int_3 == 1
+    str_4 = 'multi word string'
+    int_4 = module_0.strlen(str_4)
+    assert int_4 == 17
+    str_5 = 'abc123!@#'
+    int_5 = module_0.strlen(str_5)
+    assert int_5 == 9
+    str_6 = 'héllo'
+    int_6 = module_0.strlen(str_6)
+    assert int_6 == 5
+    str_7 = 'x'
+    int_7 = 1000
+    var_0 = str_7 * int_7
+    int_8 = module_0.strlen(var_0)
+    assert int_8 == 1000

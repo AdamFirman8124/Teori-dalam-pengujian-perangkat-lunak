@@ -3,36 +3,46 @@ import f022 as module_0
 
 def test_case_0():
     int_0 = 1
-    str_0 = '2'
-    float_0 = 3.0
-    int_1 = 4
-    var_0 = None
-    int_2 = 5
-    int_3 = [int_2]
-    var_1 = [int_0, str_0, float_0, int_1, var_0, int_3]
-    list_0 = module_0.filter_integers(var_1)
-    assert list_0 == [1, 4]
-    var_2 = []
-    list_1 = module_0.filter_integers(var_2)
+    int_1 = 2
+    str_0 = 'a'
+    str_1 = 'b'
+    float_0 = 3.5
+    int_2 = 4
+    var_0 = [int_0, int_1, str_0, str_1, float_0, int_2]
+    list_0 = module_0.filter_integers(var_0)
+    assert list_0 == [1, 2, 4]
+    var_1 = []
+    list_1 = module_0.filter_integers(var_1)
     assert list_1 == []
-    str_1 = 'a'
-    float_1 = 1.5
-    var_3 = [str_1, float_1, var_0]
+    var_2 = None
+    int_3 = [int_0]
+    str_2 = 'k'
+    int_4 = {str_2: int_0}
+    var_3 = [str_0, float_0, var_2, int_3, int_4]
     list_2 = module_0.filter_integers(var_3)
     assert list_2 == []
-    int_4 = 0
-    int_5 = -7
-    int_6 = 42
-    int_7 = [int_4, int_5, int_6]
-    list_3 = module_0.filter_integers(int_7)
-    assert list_3 == [0, -7, 42]
+    int_5 = 3
+    int_6 = [int_0, int_1, int_5]
+    list_3 = module_0.filter_integers(int_6)
+    assert list_3 == [1, 2, 3]
+    int_7 = -1
+    int_8 = 0
+    str_3 = 'x'
+    int_9 = 7
+    var_4 = [int_7, int_8, str_3, int_9]
+    list_4 = module_0.filter_integers(var_4)
+    assert list_4 == [-1, 0, 7]
     bool_0 = True
     bool_1 = False
     bool_2 = [bool_0, bool_1, bool_0]
-    list_4 = module_0.filter_integers(bool_2)
-    assert list_4 == [True, False, True]
-
-def test_case_1():
-    list_0 = []
-    list_1 = module_0.filter_integers(list_0)
-    assert list_1 == []
+    list_5 = module_0.filter_integers(bool_2)
+    assert list_5 == [True, False, True]
+    int_10 = 5
+    var_5 = [int_10, str_0, int_10, int_1, int_10]
+    list_6 = module_0.filter_integers(var_5)
+    assert list_6 == [5, 5, 2, 5]
+    int_11 = [int_1, int_5, int_5]
+    list_7 = module_0.filter_integers(int_11)
+    assert list_7 == [2, 3, 3]
+    str_4 = 'All tests passed!'
+    var_6 = print(str_4)

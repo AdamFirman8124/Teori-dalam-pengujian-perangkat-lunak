@@ -6,29 +6,41 @@ def test_case_0():
     str_1 = '2/1'
     var_0 = module_0.simplify(str_0, str_1)
     assert var_0 is True
-    str_2 = '2/3'
-    str_3 = '3/2'
+    str_2 = '1/3'
+    str_3 = '3/1'
     var_1 = module_0.simplify(str_2, str_3)
     assert var_1 is True
-    str_4 = '4/8'
-    var_2 = module_0.simplify(str_4, str_1)
+    str_4 = '2/4'
+    str_5 = '2/2'
+    var_2 = module_0.simplify(str_4, str_5)
     assert var_2 is True
+    assert var_2 is False
     var_3 = module_0.simplify(str_0, str_0)
     assert var_3 is False
-    str_5 = '1/3'
-    var_4 = module_0.simplify(str_5, str_2)
+    str_6 = '7/26'
+    str_7 = '11/26'
+    var_4 = module_0.simplify(str_6, str_7)
     assert var_4 is False
-    str_6 = '2/5'
-    str_7 = '3/7'
-    var_5 = module_0.simplify(str_6, str_7)
+    str_8 = '3/4'
+    str_9 = '5/6'
+    var_5 = module_0.simplify(str_8, str_9)
     assert var_5 is False
-    str_8 = '0/5'
-    str_9 = '7/3'
-    var_6 = module_0.simplify(str_8, str_9)
+    str_10 = '0/5'
+    str_11 = '3/7'
+    var_6 = module_0.simplify(str_10, str_11)
     assert var_6 is True
-    str_10 = '-1/2'
-    var_7 = module_0.simplify(str_10, str_1)
+    str_12 = '100/3'
+    str_13 = '3/100'
+    var_7 = module_0.simplify(str_12, str_13)
     assert var_7 is True
-    str_11 = '-2/1'
-    var_8 = module_0.simplify(str_10, str_11)
-    assert var_8 is True
+    str_14 = '3/101'
+    var_8 = module_0.simplify(str_12, str_14)
+    assert var_8 is False
+    str_15 = '-1/2'
+    str_16 = '4/1'
+    var_9 = module_0.simplify(str_15, str_16)
+    assert var_9 is True
+    var_10 = module_0.simplify(str_15, str_3)
+    assert var_10 is False
+    str_17 = 'All test_simplify tests passed!'
+    var_11 = print(str_17)

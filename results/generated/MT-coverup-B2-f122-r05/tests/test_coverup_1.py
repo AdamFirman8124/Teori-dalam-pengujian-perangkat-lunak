@@ -7,26 +7,32 @@ import pytest
 from f122 import add_elements
 
 
-def test_add_elements_includes_only_short_elements():
-    # Elements whose string length <= 2 are summed; longer ones are skipped.
-    assert add_elements([1, -2, 22, 100, 999], 5) == 21  # 1 + (-2) + 22
-
-
-def test_add_elements_respects_k():
-    # Only the first k elements are considered.
-    assert add_elements([1, 2, 3, 4, 5], 3) == 6
-    assert add_elements([1, 2, 3, 4, 5], 0) == 0
-
-
-def test_add_elements_empty():
-    assert add_elements([], 3) == 0
+def test_add_elements_basic():
+    """Elements whose string form has at most 2 chars are summed; longer ones skipped."""
+    # arr[:4] = [1, -2, 12, 123]; str lengths: 1, 2, 2, 3 -> only first three qualify.
+    assert add_elements([1, -2, 12, 123, 5], 4) == 1 + (-2) + 12
 
 
 def test_add_elements_k_exceeds_length():
-    # Slicing beyond the list length is safe.
-    assert add_elements([10, 20], 10) == 30
+    """k larger than len(arr): slicing handles it gracefully, all elements considered."""
+    assert add_elements([7, 8], 10) == 15
 
 
-def test_add_elements_all_filtered_out():
-    # Every element is filtered out by the length condition.
-    assert add_elements([111, 222, 333], 3) == 0
+def test_add_elements_no_qualifying_elements():
+    """No element qualifies -> sum over an empty generator is 0."""
+    assert add_elements([100, 200, -300], 3) == 0
+
+
+def test_add_elements_k_zero():
+    """k == 0 -> empty slice -> sum is 0."""
+    assert add_elements([1, 2, 3], 0) == 0
+
+
+def test_add_elements_negative_numbers():
+    """str(-5) == '-5' (len 2) qualifies; str(-10) == '-10' (len 3) does not."""
+    assert add_elements([-5, -10, 99], 3) == -5 + 99
+
+
+def test_add_elements_k_equals_length():
+    """k exactly equal to len(arr): every element is considered."""
+    assert add_elements([11, 222, 3], 3) == 11 + 3

@@ -1,46 +1,57 @@
 
 
-# Generated at 2026-10-25 15:48:52.263693
+# Generated at 2026-11-03 02:16:01.677451
 # Unit test for function get_odd_collatz
+def test_get_odd_collatz():assert module_0.get_odd_collatz(1) == [1]
 
-# Generated at 2026-10-25 15:48:54.680234
+# Generated at 2026-11-03 02:17:14.178320
 # Unit test for function get_odd_collatz
+def test_get_odd_collatz():
+    # Odd starting value: n itself is included
+    assert module_0.get_odd_collatz(5) == [1, 5]
 
-# Generated at 2026-10-25 15:48:57.096236
-# Unit test for function get_odd_collatz
+    # Even starting value: n itself is not included
+    assert module_0.get_odd_collatz(6) == [1, 3, 5]
 
-# Generated at 2026-10-25 15:48:59.509067
-# Unit test for function get_odd_collatz
+    # Edge case: n == 1
+    assert module_0.get_odd_collatz(1) == [1]
 
-# Generated at 2026-10-25 15:49:01.922794
-# Unit test for function get_odd_collatz
+    # Power of two: only reaches 1
+    assert module_0.get_odd_collatz(8) == [1]
 
-# Generated at 2026-10-25 15:49:04.338351
-# Unit test for function get_odd_collatz
+    # Even input with a longer sequence
+    assert module_0.get_odd_collatz(14) == [1, 5, 7, 11, 13, 17]
 
-# Generated at 2026-10-25 15:49:06.752602
-# Unit test for function get_odd_collatz
+    # Odd input with the same trajectory
+    assert module_0.get_odd_collatz(7) == [1, 5, 7, 11, 13, 17]
 
-# Generated at 2026-10-25 15:49:09.167288
-# Unit test for function get_odd_collatz
+    # Another odd input
+    assert module_0.get_odd_collatz(9) == [1, 5, 7, 9, 11, 13, 17]
 
-# Generated at 2026-10-25 15:49:11.584218
-# Unit test for function get_odd_collatz
+    # Property checks over a range of inputs:
+    # result is sorted, contains only odd numbers,
+    # and includes n itself when n is odd.
+    for start in range(1, 30):
+        result = module_0.get_odd_collatz(start)
+        assert result == sorted(result), f"not sorted for n={start}: {result}"
+        assert all(x % 2 == 1 for x in result), f"even value in result for n={start}"
+        assert result[-1] == 1, f"must always contain 1 for n={start}"
+        if start % 2 == 1:
+            assert start in result, f"odd start {start} missing from result"
 
-# Generated at 2026-10-25 15:49:14.001231
-# Unit test for function get_odd_collatz
+    print("test_get_odd_collatz passed")
 
-# Generated at 2026-10-25 15:49:16.528326
-# Unit test for function get_odd_collatz
 
-# Generated at 2026-10-25 15:49:18.838228
-# Unit test for function get_odd_collatz
+test_get_odd_collatz()
 
-# Generated at 2026-10-25 15:49:21.252623
+# Generated at 2026-11-03 02:18:26.471060
 # Unit test for function get_odd_collatz
-
-# Generated at 2026-10-25 15:49:23.667294
-# Unit test for function get_odd_collatz
-
-# Generated at 2026-10-25 15:49:26.081474
-# Unit test for function get_odd_collatz
+def test_get_odd_collatz():
+    assert module_0.get_odd_collatz(1) == [1]
+    assert module_0.get_odd_collatz(2) == [1]
+    assert module_0.get_odd_collatz(5) == [1, 5]
+    assert module_0.get_odd_collatz(3) == [1, 3, 5]
+    assert module_0.get_odd_collatz(6) == [1, 3, 5]
+    assert module_0.get_odd_collatz(7) == [1, 5, 7, 11, 13, 17]
+    assert module_0.get_odd_collatz(14) == [1, 5, 7, 11, 13, 17]
+    assert module_0.get_odd_collatz(9) == [1, 5, 7, 9, 11, 13, 17]

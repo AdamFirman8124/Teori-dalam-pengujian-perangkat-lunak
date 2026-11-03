@@ -93,16 +93,16 @@ B1 dilaporkan sebagai `gpt-5.6-sol`; model terverifikasi dari respons endpoint (
 
 | Suite | Tool | Backbone | Run tercatat | OK | Gagal | Biaya USD |
 |---|---|---|---|---|---|---|
-| CM | CodaMOSA | B1 | 6 | 6 | 0 | 2.913744 |
-| CM | CodaMOSA | B2 | 6 | 6 | 0 | 3.129988 |
-| CM | CoverUp | B1 | 6 | 6 | 0 | 0.402708 |
-| CM | CoverUp | B2 | 6 | 6 | 0 | 0.331296 |
+| CM | CodaMOSA | B1 | 400 | 302 | 98 | 730.245664 |
+| CM | CodaMOSA | B2 | 400 | 306 | 94 | 779.872540 |
+| CM | CoverUp | B1 | 400 | 261 | 139 | 185.821952 |
+| CM | CoverUp | B2 | 399 | 264 | 135 | 188.467432 |
 | CM | Pynguin |  | 400 | 242 | 158 | 0.000000 |
-| MT | CodaMOSA | B1 | 10 | 10 | 0 | 0.452280 |
-| MT | CodaMOSA | B2 | 10 | 10 | 0 | 0.685280 |
-| MT | CoverUp | B1 | 10 | 10 | 0 | 0.428944 |
-| MT | CoverUp | B2 | 10 | 10 | 0 | 0.430608 |
-| MT | MuTAP | B1 | 1533 | 1191 | 342 | 43.557836 |
+| MT | CodaMOSA | B1 | 1630 | 1444 | 186 | 284.064988 |
+| MT | CodaMOSA | B2 | 1630 | 1427 | 203 | 274.602424 |
+| MT | CoverUp | B1 | 1630 | 1605 | 25 | 75.783284 |
+| MT | CoverUp | B2 | 1630 | 1601 | 29 | 73.375312 |
+| MT | MuTAP | B1 | 1533 | 1200 | 333 | 43.710728 |
 | MT | Pynguin |  | 1630 | 1589 | 41 | 0.000000 |
 
 Analisis akhir menggunakan mean, median, dan standard deviation; Wilcoxon signed-rank berpasangan; koreksi Holm; Vargha–Delaney A12; dan bootstrap CI 95% untuk selisih mean.

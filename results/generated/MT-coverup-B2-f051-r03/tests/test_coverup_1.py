@@ -2,18 +2,36 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
-import f051
+import pytest
+
+from f051 import remove_vowels
 
 
-def test_remove_vowels_removes_all_vowel_cases():
-    result = f051.remove_vowels("AbEcIdOfUg")
-    assert result == "bcdfg"
+def test_remove_vowels_removes_lowercase_vowels():
+    assert remove_vowels("banana") == "bnn"
 
 
-def test_remove_vowels_keeps_consonants_and_non_letters():
-    result = f051.remove_vowels("xyz 123! Y")
-    assert result == "xyz 123! Y"
+def test_remove_vowels_removes_uppercase_vowels():
+    assert remove_vowels("ApPlE") == "pPl"
+
+
+def test_remove_vowels_keeps_non_vowel_characters():
+    assert remove_vowels("rhythm! 123") == "rhythm! 123"
 
 
 def test_remove_vowels_empty_string():
-    assert f051.remove_vowels("") == ""
+    assert remove_vowels("") == ""
+
+
+def test_remove_vowels_only_vowels():
+    assert remove_vowels("aeiouAEIOU") == ""
+
+
+def test_remove_vowels_mixed_case_and_symbols():
+    result = remove_vowels("Héllo, WOrld!")
+    assert result == "Héll, Wrld!"
+    assert "a" not in result.lower()
+    assert "e" not in result.lower()
+    assert "i" not in result.lower()
+    assert "o" not in result.lower()
+    assert "u" not in result.lower()

@@ -1,8 +1,8 @@
----- 2026-10-24T16:03:49 startup ----
-Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/__main__.py --tests-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f006-r10/tests /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f006-r10/project/f006/__init__.py --model openai/entah/auto --checkpoint /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f006-r10/coverup.checkpoint --package-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f006-r10/project/f006 --log-file /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f006-r10/coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3 --max-concurrency 1 --model-temperature 0
----- 2026-10-24T16:03:49 project/f006/__init__.py:4-18 ----
+---- 2026-11-02T19:05:18 startup ----
+Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/__main__.py --tests-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f006-r10/tests /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f006-r10/project/f006/__init__.py --model openai/glm-5.3-flash --checkpoint /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f006-r10/coverup.checkpoint --package-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f006-r10/project/f006 --log-file /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f006-r10/coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3 --max-concurrency 1 --model-temperature 0
+---- 2026-11-02T19:05:19 project/f006/__init__.py:4-18 ----
 {
-  "model": "openai/entah/auto",
+  "model": "openai/glm-5.3-flash",
   "temperature": 0.0,
   "messages": [
     {
@@ -10,6 +10,7 @@ Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/
       "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from f006/__init__.py, does not achieve full coverage:\nwhen tested, lines 6-18 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            from typing import List\n            def parse_nested_parens(paren_string: str) -> List[int]:\n                \n         6:     def parse_paren_group(s):\n         7:         depth = 0\n         8:         max_depth = 0\n         9:         for c in s:\n        10:             if c == '(':\n        11:                 depth += 1\n        12:                 max_depth = max(depth, max_depth)\n                        else:\n        14:                 depth -= 1\n            \n        16:         return max_depth\n            \n        18:     return [parse_paren_group(x) for x in paren_string.split(' ') if x]\n\n```\n"
     }
   ],
+  "user": "cu-6141819d",
   "tools": [
     {
       "type": "function",
@@ -32,52 +33,66 @@ Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/
     }
   ]
 }
----- 2026-10-24T16:04:06 project/f006/__init__.py:4-18 ----
+---- 2026-11-02T19:06:32 project/f006/__init__.py:4-18 ----
+RPM gate: waited 73.5s
+---- 2026-11-02T19:08:19 project/f006/__init__.py:4-18 ----
 {
-  "id": "chatcmpl_req_a1b86f49a012999b350ac40d",
-  "created": 1792832646,
-  "model": "auto",
+  "id": "a4758e21-76ff-4bb3-9e73-d70417df632e",
+  "created": 1793621298,
+  "model": "glm-5.3-flash",
   "object": "chat.completion",
   "system_fingerprint": null,
   "choices": [
     {
-      "finish_reason": "stop",
+      "finish_reason": "tool_calls",
       "index": 0,
       "message": {
-        "content": "```python\nimport pytest\n\nfrom f006 import parse_nested_parens\n\n\ndef test_single_group():\n    result = parse_nested_parens(\"(()())\")\n    assert result == [3]\n\n\ndef test_multiple_groups():\n    result = parse_nested_parens(\"(()()) ((())) () ((())()())\")\n    assert result == [3, 3, 1, 3]\n\n\ndef test_empty_string_returns_empty_list():\n    assert parse_nested_parens(\"\") == []\n\n\ndef test_extra_spaces_are_ignored():\n    # split(' ') can yield empty strings; they must be filtered out\n    assert parse_nested_parens(\"  (())  ()  \") == [2, 1]\n\n\ndef test_shallowest_group():\n    assert parse_nested_parens(\"() (()) ((()))\") == [1, 2, 3]\n\n\ndef test_deeply_nested_single_group():\n    assert parse_nested_parens(\"(((())))\") == [4]\n\n\ndef test_result_is_list_of_ints():\n    result = parse_nested_parens(\"(()) ()\")\n    assert isinstance(result, list)\n    assert all(isinstance(x, int) for x in result)\n```",
+        "content": null,
         "role": "assistant",
-        "tool_calls": null,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"name\":\"f006.parse_nested_parens\"}",
+              "name": "get_info"
+            },
+            "id": "call_1876d88ba46b4be7abf72b31",
+            "type": "function"
+          },
+          {
+            "function": {
+              "arguments": "{\"name\":\"parse_nested_parens\"}",
+              "name": "get_info"
+            },
+            "id": "call_d330331b48a34a308ece5eaa",
+            "type": "function"
+          }
+        ],
         "function_call": null,
         "provider_specific_fields": {
           "refusal": null
         }
       },
-      "provider_specific_fields": {
-        "matched_stop": null
-      }
+      "provider_specific_fields": {}
     }
   ],
   "usage": {
-    "completion_tokens": 279,
-    "prompt_tokens": 3328,
-    "total_tokens": 3607,
+    "completion_tokens": 2392,
+    "prompt_tokens": 526,
+    "total_tokens": 2918,
     "completion_tokens_details": {
       "accepted_prediction_tokens": null,
       "audio_tokens": null,
-      "reasoning_tokens": 35,
+      "reasoning_tokens": 2359,
       "rejected_prediction_tokens": null
     },
-    "prompt_tokens_details": {
-      "audio_tokens": null,
-      "cached_tokens": 0
-    }
+    "prompt_tokens_details": null
   },
   "moderation": null,
   "service_tier": null
 }
----- 2026-10-24T16:04:06 project/f006/__init__.py:4-18 ----
+---- 2026-11-02T19:08:19 project/f006/__init__.py:4-18 ----
 {
-  "model": "openai/entah/auto",
+  "model": "openai/glm-5.3-flash",
   "temperature": 0.0,
   "messages": [
     {
@@ -85,19 +100,45 @@ Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/
       "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from f006/__init__.py, does not achieve full coverage:\nwhen tested, lines 6-18 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            from typing import List\n            def parse_nested_parens(paren_string: str) -> List[int]:\n                \n         6:     def parse_paren_group(s):\n         7:         depth = 0\n         8:         max_depth = 0\n         9:         for c in s:\n        10:             if c == '(':\n        11:                 depth += 1\n        12:                 max_depth = max(depth, max_depth)\n                        else:\n        14:                 depth -= 1\n            \n        16:         return max_depth\n            \n        18:     return [parse_paren_group(x) for x in paren_string.split(' ') if x]\n\n```\n"
     },
     {
-      "content": "```python\nimport pytest\n\nfrom f006 import parse_nested_parens\n\n\ndef test_single_group():\n    result = parse_nested_parens(\"(()())\")\n    assert result == [3]\n\n\ndef test_multiple_groups():\n    result = parse_nested_parens(\"(()()) ((())) () ((())()())\")\n    assert result == [3, 3, 1, 3]\n\n\ndef test_empty_string_returns_empty_list():\n    assert parse_nested_parens(\"\") == []\n\n\ndef test_extra_spaces_are_ignored():\n    # split(' ') can yield empty strings; they must be filtered out\n    assert parse_nested_parens(\"  (())  ()  \") == [2, 1]\n\n\ndef test_shallowest_group():\n    assert parse_nested_parens(\"() (()) ((()))\") == [1, 2, 3]\n\n\ndef test_deeply_nested_single_group():\n    assert parse_nested_parens(\"(((())))\") == [4]\n\n\ndef test_result_is_list_of_ints():\n    result = parse_nested_parens(\"(()) ()\")\n    assert isinstance(result, list)\n    assert all(isinstance(x, int) for x in result)\n```",
+      "content": "",
       "role": "assistant",
-      "tool_calls": null,
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"name\":\"f006.parse_nested_parens\"}",
+            "name": "get_info"
+          },
+          "id": "call_1876d88ba46b4be7abf72b31",
+          "type": "function"
+        },
+        {
+          "function": {
+            "arguments": "{\"name\":\"parse_nested_parens\"}",
+            "name": "get_info"
+          },
+          "id": "call_d330331b48a34a308ece5eaa",
+          "type": "function"
+        }
+      ],
       "function_call": null,
       "provider_specific_fields": {
         "refusal": null
       }
     },
     {
-      "role": "user",
-      "content": "Executing the test yields an error, shown below.\nModify or rewrite the test to correct it; respond only with the complete Python code in backticks.\nUse the get_info tool function as necessary.\n\n    def test_single_group():\n        result = parse_nested_parens(\"(()())\")\n>       assert result == [3]\nE       assert [2] == [3]\nE         \nE         At index 0 diff: 2 != 3\nE         Use -v to get more diff\n\ntests/tmp_test_oku2rz_a.py:8: AssertionError\n"
+      "tool_call_id": "call_1876d88ba46b4be7abf72b31",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\n```python\nfrom typing import List\n\ndef parse_nested_parens(paren_string: str) -> List[int]:\n\n    def parse_paren_group(s):\n        depth = 0\n        max_depth = 0\n        for c in s:\n            if c == '(':\n                depth += 1\n                max_depth = max(depth, max_depth)\n            else:\n                depth -= 1\n        return max_depth\n    return [parse_paren_group(x) for x in paren_string.split(' ') if x]\n```"
+    },
+    {
+      "tool_call_id": "call_d330331b48a34a308ece5eaa",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\n```python\nfrom typing import List\n\ndef parse_nested_parens(paren_string: str) -> List[int]:\n\n    def parse_paren_group(s):\n        depth = 0\n        max_depth = 0\n        for c in s:\n            if c == '(':\n                depth += 1\n                max_depth = max(depth, max_depth)\n            else:\n                depth -= 1\n        return max_depth\n    return [parse_paren_group(x) for x in paren_string.split(' ') if x]\n```"
     }
   ],
+  "user": "cu-2c0043e8",
   "tools": [
     {
       "type": "function",
@@ -120,11 +161,13 @@ Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/
     }
   ]
 }
----- 2026-10-24T16:04:44 project/f006/__init__.py:4-18 ----
+---- 2026-11-02T19:09:21 project/f006/__init__.py:4-18 ----
+RPM gate: waited 62.5s
+---- 2026-11-02T19:09:41 project/f006/__init__.py:4-18 ----
 {
-  "id": "chatcmpl_req_be2f594a590f860857d7a1db",
-  "created": 1792832684,
-  "model": "auto",
+  "id": "chatcmpl-6ae87d843eea",
+  "created": 1793621380,
+  "model": "zai-org/GLM-5.3-Flash",
   "object": "chat.completion",
   "system_fingerprint": null,
   "choices": [
@@ -132,10 +175,11 @@ Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/
       "finish_reason": "stop",
       "index": 0,
       "message": {
-        "content": "```python\nimport pytest\n\nfrom f006 import parse_nested_parens\n\n\ndef test_single_group():\n    # Note: the implementation decrements depth on ANY non-'(' char,\n    # so \"(()())\" reaches max depth 2, not 3.\n    result = parse_nested_parens(\"(()())\")\n    assert result == [2]\n\n\ndef test_multiple_groups():\n    result = parse_nested_parens(\"(()()) ((())) () ((())()())\")\n    assert result == [2, 3, 1, 3]\n\n\ndef test_empty_string_returns_empty_list():\n    assert parse_nested_parens(\"\") == []\n\n\ndef test_extra_spaces_are_ignored():\n    # split(' ') can yield empty strings; they must be filtered out\n    assert parse_nested_parens(\"  (())  ()  \") == [2, 1]\n\n\ndef test_shallowest_group():\n    assert parse_nested_parens(\"() (()) ((()))\") == [1, 2, 3]\n\n\ndef test_deeply_nested_single_group():\n    assert parse_nested_parens(\"(((())))\") == [4]\n\n\ndef test_result_is_list_of_ints():\n    result = parse_nested_parens(\"(()) ()\")\n    assert isinstance(result, list)\n    assert all(isinstance(x, int) for x in result)\n```",
+        "content": "```python\nfrom f006 import parse_nested_parens\n\n\ndef test_parse_nested_parens_multiple_groups():\n    \"\"\"Covers the full happy path: the '(' branch, the max-depth update,\n    the ')' (else) branch, the return of max_depth, and the list\n    comprehension over split tokens.\"\"\"\n    result = parse_nested_parens(\"(()()) ((())) () ((())()())\")\n    assert result == [2, 3, 1, 3]\n\n\ndef test_parse_nested_parens_single_group():\n    \"\"\"Single groups, including a group whose maximum is reached and\n    then unwound.\"\"\"\n    assert parse_nested_parens(\"((()))\") == [3]\n    assert parse_nested_parens(\"()\") == [1]\n    assert parse_nested_parens(\"(()\") == [2]\n\n\ndef test_parse_nested_parens_filters_empty_tokens():\n    \"\"\"Leading/trailing/duplicate spaces produce empty tokens that the\n    comprehension's `if x` filter must drop (covers the filter branch).\"\"\"\n    assert parse_nested_parens(\"  (()())  \") == [2]\n    assert parse_nested_parens(\"(() ) (())\") == [2, 0, 2]\n\n\ndef test_parse_nested_parens_empty_input():\n    \"\"\"An empty or all-space string yields an empty result list.\"\"\"\n    assert parse_nested_parens(\"\") == []\n    assert parse_nested_parens(\"   \") == []\n\n\ndef test_parse_nested_parens_closing_paren_first():\n    \"\"\"A group starting with ')' exercises the else branch before any\n    '(' is ever seen.\"\"\"\n    assert parse_nested_parens(\")(\") == [0]\n```",
         "role": "assistant",
         "tool_calls": null,
         "function_call": null,
+        "reasoning_content": "The function is `parse_nested_parens` from `f006`. It's a pure function with no side effects, so no cleanup is needed. I need to write tests that cover lines 6-18, which is the entire function body.\n\nTest cases:\n1. Basic case: \"(()()) ((())) () ((())()())\" \u2192 [2, 3, 0, 3]\n2. Single group: \"((()))\" \u2192 [3]\n3. Empty string handling: the `if x` filter \u2014 e.g., \"  \" or trailing spaces \"(() ) \" \u2192 [2]\n4. Multiple spaces between groups.\n\nLet me write the tests:\n\n```python\nimport pytest\n\nfrom f006 import parse_nested_parens\n\n\ndef test_parse_nested_parens_basic():\n    result = parse_nested_parens(\"(()()) ((())) () ((())()())\")\n    assert result == [2, 3, 0, 3]\n\n\ndef test_parse_nested_parens_single_group():\n    assert parse_nested_parens(\"((()))\") == [3]\n\n\ndef test_parse_nested_parens_filters_empty_groups():\n    # Trailing/leading/duplicate spaces produce empty strings that must be filtered out\n    assert parse_nested_parens(\"  (()())  \") == [2]\n    assert parse_nested_parens(\"() ()\") == [0, 0]\n\n\ndef test_parse_nested_parens_empty_string():\n    assert parse_nested_parens(\"\") == []\n    assert parse_nested_parens(\"   \") == []\n```\n\nWait \u2014 for the empty string case: `\"\".split(' ')` returns `['']`, and `if x` filters it out, so result is `[]`. Good.\n\nFor \"   \".split(' ') \u2192 ['', '', '', ''] \u2192 filtered \u2192 []. Good.\n\nThese tests cover:\n- Line 6-8: function definition and initialization\n- Line 9-10: loop and if branch (c == '(')\n- Line 11-12: depth increment and max update\n- Line 13-14: else branch (depth decrement)\n- Line 16: return max_depth\n- Line 18: list comprehension with filter\n\nThe function is pure, no state pollution. No monkeypatch needed. But the instructions say to make sure to clean up \u2014 since there's no state, nothing to clean up. I'll note that implicitly by not having any side effects.\n\nLet me double check \"(()()) ((())) () ((())()())\":\n- \"(()())\": depth goes 1,2,1,2,1,0 \u2192 max 2 \u2713\n- \"((()))\": 1,2,3,2,1,0 \u2192 max 3 \u2713\n- \"()\": 1,0 \u2192 max 1? Wait: \"()\" \u2192 c='(' depth=1, max=1; c=')' depth=0. max_depth = 1, not 0!\n\nHmm, the classic HumanEval problem expects \"()\" \u2192 0? Let me check the original HumanEval #6: `parse_nested_parens('(()()) ((())) () ((())()())')` \u2192 `[2, 3, 1, 3]`. Yes, the canonical answer is [2, 3, 1, 3]. \"()\" gives 1 because max_depth is updated when '(' is seen.\n\nSo:\n- \"(()())\" \u2192 2\n- \"((()))\" \u2192 3\n- \"()\" \u2192 1\n- \"((())()())\" \u2192 let's trace: ( ( ( ) ( ) ( ) ) \u2192 depths: 1,2,3,2,3,2,3,2,1 \u2192 max 3 \u2713\n\nSo expected [2, 3, 1, 3].\n\nLet me verify \"(()())\": chars: ( ( ) ( ) ) \u2192 depths 1,2,1,2,1,0 \u2192 max 2 \u2713.\n\n\"((()))\": ( ( ( ) ) ) \u2192 1,2,3,2,1,0 \u2192 max 3 \u2713.\n\n\"()\": ( ) \u2192 1,0 \u2192 max 1 \u2713.\n\n\"((())()())\": ( ( ( ) ( ) ( ) ) ) \u2192 1,2,3,2,3,2,3,2,1,0 \u2192 max 3 \u2713.\n\nGood. So test_basic expects [2, 3, 1, 3].\n\nAlso test the else branch explicitly \u2014 any group with ')' covers it.\n\nAlso test a group where max is not at the end, e.g. \"(()\" \u2192 depths 1,2,1 \u2192 max 2. That covers max update when depth doesn't exceed... actually max(depth, max_depth) always executes on '('. Fine.\n\nAlso test that a group like \")(\" \u2014 depth goes -1, 0 \u2192 max 0. That covers else branch first. Maybe include for branch coverage of else. Not strictly needed but fine.\n\nLet me write the final test file. The import: `from f006 import parse_nested_parens`.\n\nFinal code:\n\n```python\nimport pytest\n\nfrom f006 import parse_nested_parens\n\n\ndef test_parse_nested_parens_multiple_groups():\n    \"\"\"Covers the full happy path: nested groups, the '(' branch, the\n    max-depth update, the ')' (else) branch, and the list comprehension.\"\"\"\n    result = parse_nested_parens(\"(()()) ((())) () ((())()())\")\n    assert result == [2, 3, 1, 3]\n\n\ndef test_parse_nested_parens_single_group():\n    assert parse_nested_parens(\"((()))\") == [3]\n    assert parse_nested_parens(\"()\") == [1]\n\n\ndef test_parse_nested_parens_filters_empty_tokens():\n    \"\"\"Extra/leading/trailing spaces yield empty tokens that the\n    comprehension's `if x` filter must drop.\"\"\"\n    assert parse_nested_parens(\"  (()())  \") == [2]\n    assert parse_nested_parens(\"(() ) (())\") == [2, 2]\n\n\ndef test_parse_nested_parens_empty_input():\n    \"\"\"An empty (or all-space) string produces an empty result list.\"\"\"\n    assert parse_nested_parens(\"\") == []\n    assert parse_nested_parens(\"   \") == []\n\n\ndef test_parse_nested_parens_closing_paren_first():\n    \"\"\"A group starting with ')' exercises the else branch before any '('.\"\"\"\n    assert parse_nested_parens(\")(\") == [0]\n```\n\nCheck \")(\": c=')' \u2192 depth=-1; c='(' \u2192 depth=0, max=0. Returns 0. \u2713\n\n\"(() ) (())\": tokens \"(()\", \")\", \"(())\". \"(()\" \u2192 1,2,1 \u2192 max 2. \")\" \u2192 depth -1 \u2192 max 0. \"(())\" \u2192 1,2,1,0 \u2192 max 2. So result [2, 0, 2], not [2, 2]! Let me fix: use \"(() ) (())\" \u2192 [2, 0, 2]. Hmm, that's a weird test. Better: \"(() )  (())\" \u2192 tokens \"(()\", \")\", \"(())\" \u2192 [2, 0, 2]. Let me just assert that: `parse_nested_parens(\"(() ) (())\") == [2, 0, 2]`. That's correct per the implementation. Or simpler: \"(() ) (())\" \u2014 I'll assert [2, 0, 2].\n\nActually to keep it clean, use \"(() ) (())\" \u2192 [2, 0, 2]. That's fine and correct.\n\nNo state pollution since the function is pure \u2014 no monkeypatch needed. The instructions say \"use 'monkeypatch' or 'pytest-mock' if appropriate\" \u2014 it's not appropriate here since there's no state.\n\nRemove unused pytest import? It's fine to keep or remove. I'll remove it since not used. Actually keeping it is harmless but flake8 would complain. I'll remove.",
         "provider_specific_fields": {
           "refusal": null
         }
@@ -146,13 +190,13 @@ Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/
     }
   ],
   "usage": {
-    "completion_tokens": 348,
-    "prompt_tokens": 3588,
-    "total_tokens": 3936,
+    "completion_tokens": 2052,
+    "prompt_tokens": 796,
+    "total_tokens": 2848,
     "completion_tokens_details": {
       "accepted_prediction_tokens": null,
       "audio_tokens": null,
-      "reasoning_tokens": 71,
+      "reasoning_tokens": 1701,
       "rejected_prediction_tokens": null
     },
     "prompt_tokens_details": {
@@ -163,9 +207,9 @@ Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/
   "moderation": null,
   "service_tier": null
 }
----- 2026-10-24T16:04:45 project/f006/__init__.py:4-18 ----
-.......                                                                  [100%]
+---- 2026-11-02T19:09:41 project/f006/__init__.py:4-18 ----
+.....                                                                    [100%]
 
----- 2026-10-24T16:04:45 project/f006/__init__.py:4-18 ----
+---- 2026-11-02T19:09:41 project/f006/__init__.py:4-18 ----
 Saved as /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f006-r10/tests/test_coverup_1.py
 

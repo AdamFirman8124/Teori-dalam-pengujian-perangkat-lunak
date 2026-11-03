@@ -2,32 +2,39 @@
 import f125 as module_0
 
 def test_case_0():
-    str_0 = 'Hello world!'
+    str_0 = 'hello world'
     var_0 = module_0.split_words(str_0)
-    assert var_0 == ['Hello', 'world!']
-    str_1 = 'one two three'
+    assert var_0 == ['hello', 'world']
+    str_1 = 'a b c'
     var_1 = module_0.split_words(str_1)
-    assert var_1 == ['one', 'two', 'three']
-    str_2 = 'Hello,world!'
+    assert var_1 == ['a', 'b', 'c']
+    str_2 = 'one two  three'
     var_2 = module_0.split_words(str_2)
-    assert var_2 == ['Hello', 'world!']
-    str_3 = 'a,b,c'
+    assert var_2 == ['one', 'two', 'three']
+    str_3 = 'hello,world'
     var_3 = module_0.split_words(str_3)
-    assert var_3 == ['a', 'b', 'c']
-    str_4 = 'abcdef'
+    assert var_3 == ['hello', 'world']
+    str_4 = 'a,b,c'
     var_4 = module_0.split_words(str_4)
-    assert var_4 == 3
-    str_5 = 'aaabb'
+    assert var_4 == ['a', 'b', 'c']
+    str_5 = 'one,two,,three'
     var_5 = module_0.split_words(str_5)
-    assert var_5 == 4
-    assert var_5 == 2
-    str_6 = ''
+    assert var_5 == ['one', 'two', 'three']
+    str_6 = 'abcdef'
     var_6 = module_0.split_words(str_6)
-    assert var_6 == 0
-    str_7 = 'ABC'
+    assert var_6 == 3
+    str_7 = 'ghij'
     var_7 = module_0.split_words(str_7)
-    assert var_7 == 0
-    str_8 = '1234'
+    assert var_7 == 2
+    str_8 = 'AAAA'
     var_8 = module_0.split_words(str_8)
-    assert var_8 == 2
     assert var_8 == 0
+    str_9 = '1234!@#'
+    var_9 = module_0.split_words(str_9)
+    assert var_9 == 0
+    str_10 = ''
+    var_10 = module_0.split_words(str_10)
+    assert var_10 == 0
+    str_11 = 'bdfhj'
+    var_11 = module_0.split_words(str_11)
+    assert var_11 == 5

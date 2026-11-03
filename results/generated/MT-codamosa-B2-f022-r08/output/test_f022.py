@@ -2,27 +2,33 @@
 import f022 as module_0
 
 def test_case_0():
-    int_0 = 1
-    int_1 = 2
-    int_2 = 3
-    int_3 = [int_0, int_1, int_2]
-    list_0 = module_0.filter_integers(int_3)
-    assert list_0 == [1, 2, 3]
     str_0 = 'a'
-    float_0 = 2.5
-    var_0 = None
-    var_1 = [int_0, str_0, float_0, var_0, int_2]
-    list_1 = module_0.filter_integers(var_1)
-    assert list_1 == [1, 3]
+    float_0 = 3.14
+    int_0 = 5
+    var_0 = [str_0, float_0, int_0]
+    list_0 = module_0.filter_integers(var_0)
+    assert list_0 == [5]
+    int_1 = 1
+    int_2 = 2
+    int_3 = 3
+    str_1 = 'abc'
+    var_1 = {}
     var_2 = []
-    list_2 = module_0.filter_integers(var_2)
+    var_3 = [int_1, int_2, int_3, str_1, var_1, var_2]
+    list_1 = module_0.filter_integers(var_3)
+    assert list_1 == [1, 2, 3]
+    var_4 = []
+    list_2 = module_0.filter_integers(var_4)
     assert list_2 == []
-    var_3 = [str_0, var_0, int_0]
-    list_3 = module_0.filter_integers(var_3)
-    assert list_3 == [1]
-    int_4 = [int_0]
-    int_5 = {str_0: int_0}
-    int_6 = 7
-    int_7 = [int_4, int_5, int_6]
-    list_4 = module_0.filter_integers(int_7)
-    assert list_4 == [7]
+    float_1 = 4.5
+    str_2 = 'hello'
+    var_5 = None
+    int_4 = 42
+    var_6 = [float_1, str_2, var_5, int_4]
+    list_3 = module_0.filter_integers(var_6)
+    assert list_3 == [42]
+    str_3 = '1'
+    bool_0 = True
+    var_7 = [str_3, int_2, int_3, bool_0]
+    list_4 = module_0.filter_integers(var_7)
+    assert list_4 == [2, 3, True]

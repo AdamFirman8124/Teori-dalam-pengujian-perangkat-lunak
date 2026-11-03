@@ -5,24 +5,54 @@ def test_case_0():
     int_0 = 1
     int_1 = 2
     int_2 = 3
-    int_3 = [int_0, int_1, int_2]
-    int_4 = 4
-    var_0 = module_0.below_threshold(int_3, int_4)
+    int_3 = 4
+    int_4 = [int_0, int_1, int_2, int_3]
+    int_5 = 5
+    var_0 = module_0.below_threshold(int_4, int_5)
     assert var_0 is True
-    int_5 = [int_0, int_1, int_4]
-    var_1 = module_0.below_threshold(int_5, int_4)
+    int_6 = [int_0, int_1, int_2, int_5]
+    var_1 = module_0.below_threshold(int_6, int_5)
     assert var_1 is False
-    int_6 = 5
-    int_7 = [int_6, int_1, int_2]
-    var_2 = module_0.below_threshold(int_7, int_4)
+    int_7 = 10
+    int_8 = [int_0, int_1, int_7, int_3]
+    var_2 = module_0.below_threshold(int_8, int_5)
     assert var_2 is False
-    int_8 = -3
-    int_9 = -2
-    int_10 = -1
-    int_11 = [int_8, int_9, int_10]
-    int_12 = 0
-    var_3 = module_0.below_threshold(int_11, int_12)
-    assert var_3 is True
-    var_4 = []
-    var_5 = module_0.below_threshold(var_4, int_4)
+    var_3 = []
+    var_4 = module_0.below_threshold(var_3, int_5)
+    assert var_4 is True
+    int_9 = [int_3]
+    var_5 = module_0.below_threshold(int_9, int_5)
     assert var_5 is True
+    int_10 = [int_5]
+    var_6 = module_0.below_threshold(int_10, int_5)
+    assert var_6 is False
+    int_11 = -3
+    int_12 = -1
+    int_13 = 0
+    int_14 = [int_11, int_12, int_13]
+    var_7 = module_0.below_threshold(int_14, int_0)
+    assert var_7 is True
+    int_15 = -3
+    int_16 = [int_15, int_1, int_13]
+    var_8 = module_0.below_threshold(int_16, int_0)
+    assert var_8 is False
+    int_17 = -5
+    int_18 = -4
+    int_19 = [int_17, int_18]
+    int_20 = -3
+    var_9 = module_0.below_threshold(int_19, int_20)
+    assert var_9 is True
+    int_21 = -5
+    int_22 = -3
+    int_23 = [int_21, int_22]
+    int_24 = -3
+    var_10 = module_0.below_threshold(int_23, int_24)
+    assert var_10 is False
+    int_25 = 1000000
+    int_26 = [int_25]
+    int_27 = 2000000
+    var_11 = module_0.below_threshold(int_26, int_27)
+    assert var_11 is True
+    int_28 = [int_27]
+    var_12 = module_0.below_threshold(int_28, int_25)
+    assert var_12 is False

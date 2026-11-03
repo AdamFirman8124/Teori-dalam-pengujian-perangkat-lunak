@@ -7,25 +7,18 @@ import pytest
 from f045 import triangle_area
 
 
-def test_triangle_area_basic():
-    assert triangle_area(4, 6) == 12.0
-
-
-def test_triangle_area_returns_float():
-    result = triangle_area(3, 5)
-    assert result == 7.5
+def test_triangle_area_executes_return_line():
+    """Calling triangle_area executes line 3 (the return statement)."""
+    # Integer inputs: area of a 3x4 triangle is 6.0
+    result = triangle_area(3, 4)
+    assert result == 6.0
     assert isinstance(result, float)
 
+    # Zero base yields zero area
+    assert triangle_area(0, 5) == 0.0
 
-@pytest.mark.parametrize(
-    "a, h, expected",
-    [
-        (0, 10, 0.0),
-        (10, 0, 0.0),
-        (1, 1, 0.5),
-        (2.5, 4, 5.0),
-        (-3, 4, -6.0),
-    ],
-)
-def test_triangle_area_parametrized(a, h, expected):
-    assert triangle_area(a, h) == expected
+    # Float inputs: 2.5 * 2 / 2.0 == 2.5
+    assert triangle_area(2.5, 2) == 2.5
+
+    # Fractional result: 1 * 1 / 2.0 == 0.5
+    assert triangle_area(1, 1) == 0.5

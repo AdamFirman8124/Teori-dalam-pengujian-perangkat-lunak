@@ -7,65 +7,83 @@ import pytest
 from typesystem.tokenize.tokens import DictToken, ScalarToken
 
 
-def _make_dict_token():
-    key_a = ScalarToken("a", 1, 4)
-    key_b = ScalarToken("b", 6, 9)
-    value_1 = ScalarToken(1, 5, 6)
-    value_2 = ScalarToken(2, 10, 11)
-    token = DictToken({key_a: value_1, key_b: value_2}, 0, 12, content='{"a": 1, "b": 2}')
-    return token, key_a, key_b, value_1, value_2
+def test_dict_token_init_builds_child_maps():
+    """Lines 84-86: __init__ stores the value and builds the lookup maps."""
+    key_a = ScalarToken("a", 0, 3, '"a"')
+    key_b = ScalarToken("b", 10, 13, '"b"')
+    val_one = ScalarToken(1, 5, 6, "1")
+    val_two = ScalarToken(2, 15, 16, "2")
+    value = {key_a: val_one, key_b: val_two}
 
+    token = DictToken(value, 0, 16, '{"a": 1, "b": 2}')
 
-def test_dict_token_init_populates_child_maps():
-    token, key_a, key_b, value_1, value_2 = _make_dict_token()
-
-    assert token._child_keys == {"a": key_a, "b": key_b}
+    assert token._value is value
+    assert token._start_index == 0
+    assert token._end_index == 16
+    assert token._content == '{"a": 1, "b": 2}'
+    # _child_keys maps each key token's raw value to the key token itself.
     assert token._child_keys["a"] is key_a
     assert token._child_keys["b"] is key_b
-    assert token._child_tokens == {"a": value_1, "b": value_2}
-    assert token._child_tokens["a"] is value_1
-    assert token._child_tokens["b"] is value_2
+    # _child_tokens maps each key token's raw value to the value token.
+    assert token._child_tokens["a"] is val_one
+    assert token._child_tokens["b"] is val_two
 
 
-def test_dict_token_init_empty_dict():
-    token = DictToken({}, 0, 2, content="{}")
+def test_dict_token_init_with_keyword_args():
+    """Exercise the **kwargs branch of DictToken.__init__ (line 84)."""
+    key = ScalarToken("k", 0, 3, '"k"')
+    val = ScalarToken("v", 5, 8, '"v"')
 
-    assert token._child_keys == {}
-    assert token._child_tokens == {}
-    assert token._get_value() == {}
+    token = DictToken(
+        value={key: val}, start_index=0, end_index=8, content='{"k": "v"}'
+    )
+
+    assert token._value == {key: val}
+    assert token._child_keys["k"] is key
+    assert token._child_tokens["k"] is val
 
 
-def test_dict_token_get_value():
-    token, _, _, _, _ = _make_dict_token()
+def test_dict_token_get_value_resolves_child_tokens():
+    """Lines 89-91: _get_value resolves every child token to its raw value."""
+    key_a = ScalarToken("a", 0, 3, '"a"')
+    key_b = ScalarToken("b", 10, 13, '"b"')
+    val_one = ScalarToken(1, 5, 6, "1")
+    val_two = ScalarToken(2, 15, 16, "2")
+    token = DictToken({key_a: val_one, key_b: val_two}, 0, 16, '{"a": 1, "b": 2}')
 
     assert token._get_value() == {"a": 1, "b": 2}
 
 
-def test_dict_token_get_value_nested_dict():
-    inner_key = ScalarToken("x", 6, 9)
-    inner_value = ScalarToken(42, 10, 12)
-    inner = DictToken({inner_key: inner_value}, 5, 13)
-    outer_key = ScalarToken("nested", 1, 9)
-    outer = DictToken({outer_key: inner}, 0, 14)
+def test_dict_token_get_value_with_nested_dict_token():
+    """Lines 89-91 with a DictToken as a value (recursive resolution)."""
+    inner_key = ScalarToken("x", 0, 3, '"x"')
+    inner_val = ScalarToken(True, 5, 9, "true")
+    inner = DictToken({inner_key: inner_val}, 0, 9, '{"x": true}')
 
-    assert outer._get_value() == {"nested": {"x": 42}}
-    assert outer._get_child_token("nested") is inner
-    assert outer._get_key_token("nested") is outer_key
+    outer_key = ScalarToken("nested", 0, 8, '"nested"')
+    outer = DictToken({outer_key: inner}, 0, 9, '{"nested": {"x": true}}')
 
-
-def test_dict_token_get_child_token():
-    token, _, _, value_1, value_2 = _make_dict_token()
-
-    assert token._get_child_token("a") is value_1
-    assert token._get_child_token("b") is value_2
-    with pytest.raises(KeyError):
-        token._get_child_token("missing")
+    assert outer._get_value() == {"nested": {"x": True}}
 
 
-def test_dict_token_get_key_token():
-    token, key_a, key_b, _, _ = _make_dict_token()
+def test_dict_token_get_child_token_and_key_token():
+    """Lines 95 and 98: lookups return the exact stored tokens."""
+    key_a = ScalarToken("a", 0, 3, '"a"')
+    key_b = ScalarToken("b", 10, 13, '"b"')
+    val_one = ScalarToken(1, 5, 6, "1")
+    val_two = ScalarToken(2, 15, 16, "2")
+    token = DictToken({key_a: val_one, key_b: val_two}, 0, 16, '{"a": 1, "b": 2}')
 
+    # Line 95: _get_child_token returns the value token for a given key.
+    assert token._get_child_token("a") is val_one
+    assert token._get_child_token("b") is val_two
+
+    # Line 98: _get_key_token returns the key token for a given key.
     assert token._get_key_token("a") is key_a
     assert token._get_key_token("b") is key_b
+
+    # Missing keys propagate KeyError from the dict subscript.
+    with pytest.raises(KeyError):
+        token._get_child_token("missing")
     with pytest.raises(KeyError):
         token._get_key_token("missing")

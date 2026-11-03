@@ -5,3 +5,19 @@ def test_case_0():
     int_0 = 1
     var_0 = module_0.get_odd_collatz(int_0)
     assert var_0 == [1]
+    int_1 = 5
+    var_1 = module_0.get_odd_collatz(int_1)
+    assert var_1 == [1, 5]
+    int_2 = 6
+    var_2 = module_0.get_odd_collatz(int_2)
+    assert var_2 == [1, 3, 5]
+    int_3 = 14
+    var_3 = module_0.get_odd_collatz(int_3)
+    assert var_3 == [1, 5, 7, 11, 13, 17]
+    int_4 = 7
+    var_4 = module_0.get_odd_collatz(int_4)
+    assert var_4 == [1, 5, 7, 11, 13, 17]
+    int_5 = 27
+    var_5 = module_0.get_odd_collatz(int_5)
+    assert var_5 == [1, 5, 23, 27, 31, 35, 41, 47, 53, 61, 71, 91, 103, 107, 121, 137, 155, 161, 167, 175, 233, 251, 263, 283, 319, 325, 377, 395, 425, 433, 445, 479, 577, 593, 719, 911, 1079, 1367, 1619, 2051, 2429, 3077]
+    var_6 = sorted(var_5)

@@ -16,29 +16,22 @@ def test_case_0():
     int_5 = 7
     var_3 = module_0.generate_integers(int_4, int_5)
     assert var_3 == [4, 6]
-    int_6 = -3
-    int_7 = 100
+    int_6 = 10
+    int_7 = 14
     var_4 = module_0.generate_integers(int_6, int_7)
-    assert var_4 == [2, 4, 6, 8]
+    assert var_4 == []
+    var_5 = module_0.generate_integers(int_3, int_3)
+    assert var_5 == []
+    var_6 = module_0.generate_integers(int_0, int_0)
+    assert var_6 == [2]
     int_8 = 0
-    var_5 = module_0.generate_integers(int_8, int_0)
-    assert var_5 == [2]
-    int_9 = 9
-    int_10 = 11
-    var_6 = module_0.generate_integers(int_9, int_10)
-    assert var_6 == []
-    int_11 = 10
-    int_12 = 20
-    var_7 = module_0.generate_integers(int_11, int_12)
-    assert var_7 == []
-    int_13 = 4
-    var_8 = module_0.generate_integers(int_13, int_13)
-    assert var_8 == [4]
-    var_9 = module_0.generate_integers(int_3, int_3)
-    assert var_9 == []
-    int_14 = -10
-    int_15 = -5
-    var_10 = module_0.generate_integers(int_14, int_15)
-    assert var_10 == []
-    str_0 = 'All tests passed!'
-    var_11 = print(str_0)
+    var_7 = module_0.generate_integers(int_8, int_0)
+    assert var_7 == [2]
+    int_9 = -2
+    int_10 = 9
+    var_8 = module_0.generate_integers(int_9, int_10)
+    assert var_8 == [2, 4, 6, 8]
+    int_11 = 4
+    int_12 = 100
+    var_9 = module_0.generate_integers(int_11, int_12)
+    assert var_9 == [4, 6, 8]

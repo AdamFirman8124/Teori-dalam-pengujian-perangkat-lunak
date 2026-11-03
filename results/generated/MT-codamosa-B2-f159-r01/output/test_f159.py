@@ -2,19 +2,30 @@
 import f159 as module_0
 
 def test_case_0():
-    int_0 = 10
-    int_1 = 5
-    var_0 = module_0.eat(int_0, int_1, int_0)
-    assert var_0 == [15, 5]
-    var_1 = module_0.eat(int_0, int_0, int_0)
-    assert var_1 == [20, 0]
-    var_2 = module_0.eat(int_0, int_0, int_1)
-    assert var_2 == [15, 0]
-    int_2 = 7
-    int_3 = 0
-    var_3 = module_0.eat(int_2, int_3, int_1)
-    assert var_3 == [7, 5]
-    var_4 = module_0.eat(int_2, int_1, int_3)
-    assert var_4 == [7, 0]
-    var_5 = module_0.eat(int_3, int_3, int_3)
-    assert var_5 == [0, 0]
+    int_0 = 5
+    int_1 = 2
+    int_2 = 10
+    var_0 = module_0.eat(int_0, int_1, int_2)
+    assert var_0 == [7, 8]
+    int_3 = 3
+    int_4 = 20
+    var_1 = module_0.eat(int_2, int_3, int_4)
+    assert var_1 == [13, 17]
+    var_2 = module_0.eat(int_0, int_0, int_0)
+    assert var_2 == [10, 0]
+    var_3 = module_0.eat(int_0, int_2, int_3)
+    assert var_3 == [8, 0]
+    int_5 = 0
+    var_4 = module_0.eat(int_0, int_1, int_5)
+    assert var_4 == [5, 0]
+    var_5 = module_0.eat(int_0, int_5, int_2)
+    assert var_5 == [5, 10]
+    var_6 = module_0.eat(int_5, int_5, int_5)
+    assert var_6 == [0, 0]
+    int_6 = 1000
+    int_7 = 500
+    int_8 = 2000
+    var_7 = module_0.eat(int_6, int_7, int_8)
+    assert var_7 == [1500, 1500]
+    var_8 = module_0.eat(int_6, int_8, int_7)
+    assert var_8 == [1500, 0]

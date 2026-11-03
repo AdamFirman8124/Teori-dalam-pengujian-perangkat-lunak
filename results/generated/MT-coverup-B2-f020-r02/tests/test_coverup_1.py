@@ -7,41 +7,56 @@ import pytest
 from f020 import find_closest_elements
 
 
-def test_find_closest_elements_basic_pair():
-    result = find_closest_elements([1.0, 2.0, 3.0])
+def test_find_closest_elements_covers_initial_pair_and_updates():
+    # Covers: lines 6-7 (init), 9-14 (first distinct pair sets distance/pair),
+    # 16-17 (comparison that does NOT update), 18-19 (strictly smaller
+    # distance triggers update).
+    # Trace for [10.0, 1.0, 2.0]:
+    #   (10,1) -> distance 9.0, pair (1.0, 10.0)
+    #   (10,2) -> 8.0 < 9.0  -> pair (2.0, 10.0)
+    #   (1,2)  -> 1.0 < 8.0  -> pair (1.0, 2.0)  [update branch taken]
+    #   remaining comparisons are not strictly smaller -> no more updates
+    numbers = [10.0, 1.0, 2.0]
+    result = find_closest_elements(numbers)
+    # closest pair is 1.0 and 2.0 (distance 1.0)
     assert result == (1.0, 2.0)
     assert isinstance(result, tuple)
-    assert result[0] <= result[1]
 
 
-def test_find_closest_elements_improves_then_stops_improving():
-    # First pair sets distance=9, later pair improves it to 1, then no further
-    # improvement is found (covers the "new_distance < distance" false branch).
-    result = find_closest_elements([1.0, 10.0, 2.0])
+def test_find_closest_elements_no_update_on_equal_distance():
+    # Covers the else-branch (lines 16-17) where new_distance >= distance,
+    # so no update happens for those pairs; the closest pair found earlier
+    # is kept.
+    numbers = [5.0, 1.0, 2.0, 10.0]
+    result = find_closest_elements(numbers)
     assert result == (1.0, 2.0)
+
+
+def test_find_closest_elements_skips_same_index():
+    # Ensures the idx != idx2 check (line 11) is exercised and
+    # self-comparisons do not produce distance 0
+    numbers = [7.0, 4.0]
+    result = find_closest_elements(numbers)
+    assert result == (4.0, 7.0)
+
+
+def test_find_closest_elements_sorted_pair_output():
+    # Verifies tuple(sorted([...])) behavior: result is ascending order
+    numbers = [10.0, 9.5, 0.1]
+    result = find_closest_elements(numbers)
+    assert result == (9.5, 10.0)
     assert result[0] <= result[1]
-
-
-def test_find_closest_elements_equal_distance_keeps_first_pair():
-    # Equal distances must not replace the stored pair (strict < comparison).
-    result = find_closest_elements([0.0, 1.0, 2.0])
-    assert result == (0.0, 1.0)
 
 
 def test_find_closest_elements_duplicates():
-    result = find_closest_elements([5.0, 5.0])
-    assert result == (5.0, 5.0)
+    # Duplicate values: distance 0 is allowed once a pair has been found;
+    # covers update branch with smaller (zero) distance
+    numbers = [2.0, 3.0, 2.0]
+    result = find_closest_elements(numbers)
+    assert result == (2.0, 2.0)
 
 
-def test_find_closest_elements_unsorted_input_returns_sorted_pair():
-    result = find_closest_elements([9.0, 4.0, 4.5, 100.0])
-    assert result == (4.0, 4.5)
-    assert result[0] <= result[1]
-
-
-def test_find_closest_elements_single_element_returns_none():
-    assert find_closest_elements([42.0]) is None
-
-
-def test_find_closest_elements_empty_list_returns_none():
+def test_find_closest_elements_returns_none_for_fewer_than_two():
+    # Lines 6-7 and 21 executed but loop body never taken -> None returned
     assert find_closest_elements([]) is None
+    assert find_closest_elements([1.5]) is None

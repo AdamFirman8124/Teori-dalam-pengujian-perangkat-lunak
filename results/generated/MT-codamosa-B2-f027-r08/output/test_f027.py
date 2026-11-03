@@ -2,35 +2,33 @@
 import f027 as module_0
 
 def test_case_0():
-    str_0 = 'Hello, World!'
+    str_0 = 'HELLO'
     str_1 = module_0.flip_case(str_0)
-    assert str_1 == 'hELLO, wORLD!'
-    str_2 = 'python'
+    assert str_1 == 'hello'
+    str_2 = 'world'
     str_3 = module_0.flip_case(str_2)
-    assert str_3 == 'PYTHON'
-    str_4 = 'PYTHON'
+    assert str_3 == 'WORLD'
+    str_4 = 'Hello World'
     str_5 = module_0.flip_case(str_4)
-    assert str_5 == 'python'
+    assert str_5 == 'hELLO wORLD'
     str_6 = ''
     str_7 = module_0.flip_case(str_6)
     assert str_7 == ''
-    str_8 = 'a'
+    str_8 = 'PyThOn 3.9!'
     str_9 = module_0.flip_case(str_8)
-    assert str_9 == 'A'
-    str_10 = 'A'
+    assert str_9 == 'pYtHoN 3.9!'
+    str_10 = 'a'
     str_11 = module_0.flip_case(str_10)
-    assert str_11 == 'a'
-    str_12 = 'abc123!@#'
+    assert str_11 == 'A'
+    str_12 = 'A'
     str_13 = module_0.flip_case(str_12)
-    assert str_13 == 'ABC123!@#'
-    str_14 = 'Test123'
+    assert str_13 == 'a'
+    str_14 = 'AbCdEf'
     str_15 = module_0.flip_case(str_14)
-    assert str_15 == 'tEST123'
+    assert str_15 == 'aBcDeF'
     str_16 = module_0.flip_case(str_15)
-    assert str_16 == 'Test123'
-    str_17 = 'Ã±Ã\x84Ã¶'
+    assert str_16 == 'AbCdEf'
+    str_17 = 'ñÑçÇ'
     str_18 = module_0.flip_case(str_17)
-    assert str_18 == 'Ã\x91Ã¤Ã\x96'
-    assert str_18 == 'ã±ã\x84ã¶'
-    str_19 = 'All tests passed!'
-    var_0 = print(str_19)
+    assert str_18 == 'ÑñÇÇ'
+    assert str_18 == 'ÑñÇç'

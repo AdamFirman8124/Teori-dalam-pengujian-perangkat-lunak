@@ -2,35 +2,38 @@
 import f078 as module_0
 
 def test_case_0():
-    bytes_0 = b'D'
-    list_0 = [bytes_0, bytes_0]
-    var_0 = module_0.hex_key(list_0)
-    assert var_0 == 0
-    str_0 = 'lg%9jlMp({|t'
-    var_1 = module_0.hex_key(str_0)
-    assert var_1 == 0
-    str_1 = '@Vn'
-    var_2 = module_0.hex_key(str_1)
-    assert var_2 == 0
-    bytes_1 = b'\xa0\x0c;\xd0\x8f-\xdb\x0c\xad'
-    var_3 = module_0.hex_key(bytes_1)
-    assert var_3 == 0
-    bytes_2 = b'm\x8cxO?\xd6'
-    str_2 = '*+]pO%n\\1UuVd@D,mXDq'
-    float_0 = -708.0
-    tuple_0 = (bytes_2, str_2, float_0)
-    var_4 = module_0.hex_key(tuple_0)
-    assert var_4 == 0
-    var_5 = module_0.hex_key(bytes_0)
+    str_0 = 'AB'
+    var_0 = module_0.hex_key(str_0)
+    assert var_0 == 1
+    str_1 = '1077E'
+    var_1 = module_0.hex_key(str_1)
+    assert var_1 == 2
+    str_2 = 'ABED1A33'
+    var_2 = module_0.hex_key(str_2)
+    assert var_2 == 4
+    str_3 = '123456789ABCDEF0'
+    var_3 = module_0.hex_key(str_3)
+    assert var_3 == 6
+    str_4 = '2020'
+    var_4 = module_0.hex_key(str_4)
+    assert var_4 == 2
+    str_5 = '111'
+    var_5 = module_0.hex_key(str_5)
     assert var_5 == 0
-    bytes_3 = b"\x9b'"
-    var_6 = module_0.hex_key(bytes_3)
+    str_6 = '0'
+    var_6 = module_0.hex_key(str_6)
     assert var_6 == 0
-    var_7 = module_0.hex_key(bytes_0)
+    str_7 = ''
+    var_7 = module_0.hex_key(str_7)
     assert var_7 == 0
-    bytes_4 = b"\xbfrQ\xe7\xf9\x1c&[\x11\xa9\x12\x80'\xc0\x07\x8f\x99\xbef"
-    var_8 = module_0.hex_key(bytes_4)
-    assert var_8 == 0
-    str_3 = '9]B{,r"aZU6Q|'
-    var_9 = module_0.hex_key(str_3)
-    assert var_9 == 1
+    str_8 = '2357BD'
+    var_8 = module_0.hex_key(str_8)
+    assert var_8 == 6
+    str_9 = 'bd'
+    var_9 = module_0.hex_key(str_9)
+    assert var_9 == 0
+    str_10 = 'BD'
+    var_10 = module_0.hex_key(str_10)
+    assert var_10 == 2
+    str_11 = 'All tests passed!'
+    var_11 = print(str_11)

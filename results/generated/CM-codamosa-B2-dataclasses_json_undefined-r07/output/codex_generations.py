@@ -1,792 +1,395 @@
 
 
-# Generated at 2026-10-25 09:03:18.615254
+# Generated at 2026-11-01 23:58:22.731437
 # Unit test for method handle_from_dict of class _IgnoreUndefinedParameters
 def test__IgnoreUndefinedParameters_handle_from_dict():
-    from dataclasses import dataclass
 
-    @dataclass
-    class Sample:
-        name: str
-        age: int
+    @dataclasses.dataclass
+    class ExampleDataClass:
+        field_a: str
+        field_b: int
 
-    # 1. only known parameters -> returned unchanged
-    kvs = {"name": "Alice", "age": 30}
-    assert _IgnoreUndefinedParameters.handle_from_dict(Sample, kvs) == kvs
+    # Unknown parameters should be ignored (dropped from the result)
+    kvs = {"field_a": "value_a", "field_b": 42, "field_c": "unknown_value"}
+    result = _IgnoreUndefinedParameters.handle_from_dict(ExampleDataClass, kvs)
+    assert result == {"field_a": "value_a", "field_b": 42}
 
-    # 2. mix of known + unknown -> unknown are excluded
-    assert _IgnoreUndefinedParameters.handle_from_dict(
-        Sample,
-        {"name": "Alice", "age": 30, "extra": "ignored", "other": 123}
-    ) == {"name": "Alice", "age": 30}
+    # All defined parameters should be kept
+    kvs = {"field_a": "value_a", "field_b": 42}
+    result = _IgnoreUndefinedParameters.handle_from_dict(ExampleDataClass, kvs)
+    assert result == {"field_a": "value_a", "field_b": 42}
 
-    # 3. only unknown parameters -> empty dict
-    assert _IgnoreUndefinedParameters.handle_from_dict(
-        Sample, {"foo": 1, "bar": 2}
-    ) == {}
-
-    # 4. empty input -> empty output
-    assert _IgnoreUndefinedParameters.handle_from_dict(Sample, {}) == {}
-
-    # 5. partial known parameters -> returned as-is, no error
-    assert _IgnoreUndefinedParameters.handle_from_dict(
-        Sample, {"name": "Bob", "unknown": "x"}
-    ) == {"name": "Bob"}
-
-    # 6. values preserved, input not mutated
-    @dataclass
-    class Complex:
-        a: int
-        b: str = "default"
-
-    input_kvs = {"a": 1, "b": None, "c": [1, 2], "d": {"k": "v"}}
-    result = _IgnoreUndefinedParameters.handle_from_dict(Complex, input_kvs)
-    assert result == {"a": 1, "b": None}
-    assert input_kvs == {"a": 1, "b": None, "c": [1, 2], "d": {"k": "v"}}
-
-# Generated at 2026-10-25 09:03:36.008492
-# Unit test for method handle_dump of class _UndefinedParameterAction
-def test__UndefinedParameterAction_handle_dump():
-    obj = object()
-
-    result = _UndefinedParameterAction.handle_dump(obj)
-
+    # Empty input dict should yield an empty result
+    result = _IgnoreUndefinedParameters.handle_from_dict(ExampleDataClass, {})
     assert result == {}
 
-# Generated at 2026-10-25 09:03:38.446396
-# Unit test for method create_init of class _CatchAllUndefinedParameters
+# Generated at 2026-11-01 23:58:38.378085
+# Unit test for method handle_dump of class _UndefinedParameterAction
+def test__UndefinedParameterAction_handle_dump():
+    class _Dummy:
+        pass
 
-# Generated at 2026-10-25 09:03:40.863106
-# Unit test for method create_init of class _CatchAllUndefinedParameters
+    obj = _Dummy()
 
-# Generated at 2026-10-25 09:03:43.277339
-# Unit test for method create_init of class _CatchAllUndefinedParameters
+    # handle_dump is a static method and should return an empty dict
+    result = _UndefinedParameterAction.handle_dump(obj)
+    assert result == {}
+    assert isinstance(result, dict)
 
-# Generated at 2026-10-25 09:03:56.291447
+# Generated at 2026-11-01 23:58:54.555346
+# Unit test for method handle_dump of class _UndefinedParameterAction
+
+# Generated at 2026-11-01 23:59:03.648835
+# Unit test for method handle_dump of class _UndefinedParameterAction
+
+# Generated at 2026-11-01 23:59:09.596746
 # Unit test for method create_init of class _UndefinedParameterAction
 def test__UndefinedParameterAction_create_init():
-    class Sample:
-        def __init__(self, val):
-            self.val = val
-    result = _UndefinedParameterAction.create_init(Sample)
-    assert result is Sample.__init__
-    assert callable(result)
-    inst = Sample.__new__(Sample)
-    result(inst, 123)
-    assert inst.val == 123
-    class Plain:
+    class Dummy:
+        def __init__(self, value=0):
+            self.value = value
+
+    # create_init should return the original __init__ of the object
+    returned_init = _UndefinedParameterAction.create_init(Dummy)
+    assert returned_init == Dummy.__init__
+
+    # The returned init should be callable and behave like the original
+    instance = Dummy.__new__(Dummy)
+    returned_init(instance, value=42)
+    assert instance.value == 42
+
+# Generated at 2026-11-01 23:59:17.908394
+# Unit test for method handle_to_dict of class _UndefinedParameterAction
+def test__UndefinedParameterAction_handle_to_dict():
+    # handle_to_dict is a pass-through: it must return the kvs unchanged
+    class _Dummy:
         pass
-    assert _UndefinedParameterAction.create_init(Plain) is Plain.__init__
-    assert not hasattr(_UndefinedParameterAction.create_init(Sample), "__wrapped__")
 
-# Generated at 2026-10-25 09:04:22.987525
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:04:25.412338
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:04:27.830836
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:04:30.282624
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:04:32.699648
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:04:35.318540
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:04:37.735250
-# Unit test for method create_init of class _IgnoreUndefinedParameters
-
-# Generated at 2026-10-25 09:04:40.151328
-# Unit test for method create_init of class _IgnoreUndefinedParameters
-
-# Generated at 2026-10-25 09:04:42.567334
-# Unit test for method create_init of class _IgnoreUndefinedParameters
-
-# Generated at 2026-10-25 09:04:44.984941
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:04:47.405444
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:04:49.821720
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:04:52.237378
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:04:54.655707
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:04:57.076077
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:04:59.493523
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:05:01.908920
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:05:04.325870
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:05:06.744573
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:05:09.162864
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:05:11.579422
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:05:13.994988
-# Unit test for method create_init of class _IgnoreUndefinedParameters
-
-# Generated at 2026-10-25 09:05:16.412499
-# Unit test for method create_init of class _IgnoreUndefinedParameters
-
-# Generated at 2026-10-25 09:05:18.831464
-# Unit test for method create_init of class _IgnoreUndefinedParameters
-
-# Generated at 2026-10-25 09:05:21.247922
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:05:23.664383
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:05:26.080228
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:05:28.496119
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:05:30.918583
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:05:33.339935
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:05:35.756824
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:05:38.174944
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:05:40.593867
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:05:43.009617
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:05:45.426026
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:05:47.843956
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:05:50.262158
-# Unit test for constructor of class UndefinedParameterError
-
-# Generated at 2026-10-25 09:05:52.680015
-# Unit test for constructor of class UndefinedParameterError
-
-# Generated at 2026-10-25 09:05:55.095557
-# Unit test for constructor of class UndefinedParameterError
-
-# Generated at 2026-10-25 09:05:57.511415
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:05:59.931341
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:06:02.346676
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:06:04.765655
-# Unit test for method create_init of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:06:07.269492
-# Unit test for method create_init of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:06:09.686940
-# Unit test for method create_init of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:06:12.102231
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:06:14.520867
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:06:16.937329
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:06:19.354024
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:06:21.773424
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:06:24.188700
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:06:26.606582
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:06:29.021743
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:06:31.439395
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:06:33.856705
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:06:36.273322
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:06:38.694986
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:06:41.107596
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:06:43.527568
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:06:45.947249
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:06:48.363694
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:06:50.783167
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:06:53.201458
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:06:56.573979
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:06:58.994323
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:07:01.411928
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:07:03.828279
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:07:06.296647
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:07:08.809350
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:07:11.206547
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:07:13.622532
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:07:16.039391
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:07:18.569099
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:07:20.918885
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:07:23.385073
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:07:25.800854
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:07:28.218327
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:07:30.638495
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:07:33.054988
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:07:35.474863
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:07:37.892396
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:07:40.307612
-# Unit test for method create_init of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:07:42.797161
-# Unit test for method create_init of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:07:56.003454
-# Unit test for method create_init of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:08:17.207180
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-def test__CatchAllUndefinedParameters_handle_from_dict():
-    # --- Fixtures -----------------------------------------------------------
+    obj = _Dummy()
+
+    # Non-empty dict of key-values
+    kvs = {"a": 1, "b": "two", "c": [3, 4]}
+    result = _UndefinedParameterAction.handle_to_dict(obj, kvs)
+    assert result == kvs
+    assert result is kvs  # returns the same dict object, not a copy
+
+    # Empty dict
+    empty_kvs: Dict[Any, Any] = {}
+    result_empty = _UndefinedParameterAction.handle_to_dict(obj, empty_kvs)
+    assert result_empty == {}
+
+    # Nested structures are preserved as-is
+    nested_kvs = {"outer": {"inner": 1}, "list": [{"x": 2}]}
+    result_nested = _UndefinedParameterAction.handle_to_dict(obj, nested_kvs)
+    assert result_nested == nested_kvs
+
+# Generated at 2026-11-01 23:59:30.089192
+# Unit test for constructor of class _RaiseUndefinedParameters
+def test__RaiseUndefinedParameters():
+    # The class implements all abstract methods, so it can be instantiated
+    instance = _RaiseUndefinedParameters()
+    assert isinstance(instance, _UndefinedParameterAction)
+    assert isinstance(instance, _RaiseUndefinedParameters)
+
+    # Verify static method behavior via the class
     @dataclasses.dataclass
     class Person:
         name: str
         age: int
-        extra: CatchAll = None
 
-    @dataclasses.dataclass
-    class WithFactory:
-        name: str
-        extra: CatchAll = dataclasses.field(default_factory=dict)
+    # Only known parameters: they are returned unchanged
+    known_only = _RaiseUndefinedParameters.handle_from_dict(
+        Person, {"name": "Alice", "age": 30})
+    assert known_only == {"name": "Alice", "age": 30}
 
-    @dataclasses.dataclass
-    class NoCatchAll:
-        name: str
+    # Unknown parameters present: UndefinedParameterError is raised
+    try:
+        _RaiseUndefinedParameters.handle_from_dict(
+            Person, {"name": "Bob", "age": 40, "undefined_param": "oops"})
+        raised = False
+    except UndefinedParameterError as e:
+        raised = True
+        assert "undefined_param" in str(e)
+    assert raised
 
-
-# Generated at 2026-10-25 09:08:26.931024
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-def test__CatchAllUndefinedParameters_handle_to_dict():
-    from dataclasses import dataclass, field
-    from typing import Optional
-
-    @dataclasses.dataclass
-    class Example:
-        defined: int
-        extra: CatchAll = None
-
-    obj = Example(defined=1, extra={"a": 1, "b": 2})
-
-    # Case 1: catch-all value is a dict -> merged into kvs, key removed
-    kvs = {"defined": 1, "extra": {"a": 1, "b": 2}}
-    result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-    assert result == {"defined": 1, "a": 1, "b": 2}, result
-
-    # Case 2: catch-all value is not a dict -> key removed, nothing merged
-    kvs = {"defined": 1, "extra": None}
-    result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-    assert result == {"defined": 1}, result
-
-    # Case 3: catch-all value is an empty dict -> key removed, kvs unchanged
-    kvs = {"defined": 1, "extra": {}}
-    result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-    assert result == {"defined": 1}, result
-
-    # Case 4: original kvs dict is mutated in place (pop semantics)
-    kvs = {"defined": 1, "extra": {"x": 9}}
-    _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-    assert "extra" not in kvs
-    assert kvs == {"defined": 1, "x": 9}
-
-
-test__CatchAllUndefinedParameters_handle_to_dict()
-print("All handle_to_dict tests passed")
-
-# Generated at 2026-10-25 09:08:29.465616
+# Generated at 2026-11-01 23:59:59.181763
 # Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:08:31.886205
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:08:34.510388
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:08:36.928793
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:08:39.346624
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:08:41.760274
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:08:44.180497
-# Unit test for method create_init of class _IgnoreUndefinedParameters
-
-# Generated at 2026-10-25 09:08:46.599352
-# Unit test for method create_init of class _IgnoreUndefinedParameters
-
-# Generated at 2026-10-25 09:08:49.016354
-# Unit test for method create_init of class _IgnoreUndefinedParameters
-
-# Generated at 2026-10-25 09:08:51.434074
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:08:53.870846
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:08:56.284116
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:08:58.709134
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:09:01.119421
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:09:03.536259
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:09:05.954991
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:09:08.370881
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:09:10.787794
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:09:13.204639
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:09:30.832453
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:10:01.343686
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:10:17.167211
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-def test__UndefinedParameterAction_handle_from_dict():import dataclasses
-
-import pytest
-
-from dataclasses_json.undefined import _UndefinedParameterAction
-
-
-@dataclasses.dataclass
-class Sample:
-    a: int
-    b: int = 0
-
-
-class DummyAction(_UndefinedParameterAction):
-    @staticmethod
-    def module_0.handle_from_dict(cls, kvs):
-        known, _ = _UndefinedParameterAction._separate_defined_undefined_kvs(
-            cls=cls, kvs=kvs
-        )
-        return known
-
-
-def test_cannot_instantiate_abstract_base():
-    with pytest.raises(TypeError, match="abstract"):
-        _UndefinedParameterAction()
-
-
-def test_subclass_without_handle_from_dict_cannot_instantiate():
-    class Incomplete(_UndefinedParameterAction):
+def test__UndefinedParameterAction_handle_to_dict():
+    class _Dummy:
         pass
 
-    with pytest.raises(TypeError, match="abstract"):
-        Incomplete()
+    obj = _Dummy()
+    kvs = {"a": 1, "b": "two", "c": [1, 2, 3]}
+    result = _UndefinedParameterAction.handle_to_dict(obj, kvs)
+    assert result == kvs
+    assert result is kvs
 
+    # Also works with an empty dict
+    empty_result = _UndefinedParameterAction.handle_to_dict(obj, {})
+    assert empty_result == {}
 
-@pytest.mark.parametrize(
-    "kvs,expected",
-    [
-        ({"a": 1, "b": 2}, {"a": 1, "b": 2}),
-        ({"a": 1}, {"a": 1}),
-        ({"a": 1, "extra": 9, "other": "x"}, {"a": 1}),
-        ({"extra": 9}, {}),
-        ({}, {}),
-    ],
-)
-def test_handle_from_dict_returns_only_known_parameters(kvs, expected):
-    assert DummyAction.handle_from_dict(Sample, kvs) == expected
-
-
-def test_handle_from_dict_does_not_mutate_input():
-    kvs = {"a": 1, "extra": 9}
-
-    DummyAction.handle_from_dict(Sample, kvs)
-
-    assert kvs == {"a": 1, "extra": 9}
-
-# Generated at 2026-10-25 09:10:18.649297
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-def test__CatchAllUndefinedParameters_handle_to_dict():
-    from dataclasses import dataclass, field
-    from typing import Optional
-
+# Generated at 2026-11-02 00:00:22.626470
+# Unit test for method create_init of class _IgnoreUndefinedParameters
+def test__IgnoreUndefinedParameters_create_init():
     @dataclasses.dataclass
     class Example:
-        defined: int
-        extra: CatchAll = None
+        a: int
+        b: str = "default"
 
-    obj = Example(defined=1, extra={"a": 1, "b": 2})
+    # A callable wrapping the original __init__ is returned
+    new_init = _IgnoreUndefinedParameters.create_init(Example)
+    assert callable(new_init)
+    assert new_init.__name__ == "__init__"
 
-    # Case 1: catch-all value is a dict -> merged into kvs, key removed
-    kvs = {"defined": 1, "extra": {"a": 1, "b": 2}}
-    result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-    assert result == {"defined": 1, "a": 1, "b": 2}, result
+    # Undefined keyword arguments are ignored, defaults are applied
+    instance = object.__new__(Example)
+    new_init(instance, a=1, undefined_kwarg="should be ignored")
+    assert instance.a == 1
+    assert instance.b == "default"
 
-    # Case 2: catch-all value is not a dict -> key removed, nothing merged
-    kvs = {"defined": 1, "extra": None}
-    result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-    assert result == {"defined": 1}, result
+    # Positional arguments still work alongside undefined kwargs
+    instance2 = object.__new__(Example)
+    new_init(instance2, 42, b="custom", another_unknown=True)
+    assert instance2.a == 42
+    assert instance2.b == "custom"
 
-    # Case 3: catch-all value is an empty dict -> key removed, kvs unchanged
-    kvs = {"defined": 1, "extra": {}}
-    result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-    assert result == {"defined": 1}, result
+    # Behaviour matches the normal init when nothing is undefined
+    instance3 = object.__new__(Example)
+    new_init(instance3, a=7, b="explicit")
+    assert instance3.a == 7
+    assert instance3.b == "explicit"
 
-    # Case 4: original kvs dict is mutated in place (pop semantics)
-    kvs = {"defined": 1, "extra": {"x": 9}}
-    _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-    assert "extra" not in kvs
-    assert kvs == {"defined": 1, "x": 9}
+# Generated at 2026-11-02 00:00:47.864556
+# Unit test for method handle_to_dict of class _UndefinedParameterAction
+def test__UndefinedParameterAction_handle_to_dict():
+    # handle_to_dict is a static method that simply returns the given kvs
+    obj = object()
+    kvs = {"name": "Alice", "age": 30}
+    result = _UndefinedParameterAction.handle_to_dict(obj, kvs)
+    assert result == kvs
+    assert result is kvs
 
+    # Test with an empty dict
+    empty_kvs: Dict[Any, Any] = {}
+    result_empty = _UndefinedParameterAction.handle_to_dict(obj, empty_kvs)
+    assert result_empty == {}
 
-test__CatchAllUndefinedParameters_handle_to_dict()
-print("All handle_to_dict tests passed")
-
-# Generated at 2026-10-25 09:10:46.168993
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-def test__RaiseUndefinedParameters_handle_from_dict():
-    @dataclass
-    class Sample:
+# Generated at 2026-11-02 00:01:24.574998
+# Unit test for method handle_dump of class _UndefinedParameterAction
+def test__UndefinedParameterAction_handle_dump():
+    @dataclasses.dataclass
+    class Person:
         name: str
         age: int
 
-    # 1. all keys known -> returned as-is
+    person = Person(name="Alice", age=30)
+    result = _UndefinedParameterAction.handle_dump(person)
+    assert result == {}
+    assert isinstance(result, dict)
+
+    # Should also return an empty dict for arbitrary objects
+    assert _UndefinedParameterAction.handle_dump(None) == {}
+    assert _UndefinedParameterAction.handle_dump(object()) == {}
+
+# Generated at 2026-11-02 00:01:47.615456
+# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
+def test__RaiseUndefinedParameters_handle_from_dict():
+    @dataclasses.dataclass
+    class Example:
+        name: str
+        age: int
+
+    # All parameters are known -> returns known parameters unchanged
     kvs = {"name": "Alice", "age": 30}
-    result = _RaiseUndefinedParameters.handle_from_dict(Sample, kvs)
+    result = _RaiseUndefinedParameters.handle_from_dict(Example, kvs)
     assert result == {"name": "Alice", "age": 30}
 
-    # 2. empty input -> empty output, no error
-    assert _RaiseUndefinedParameters.handle_from_dict(Sample, {}) == {}
+    # Empty input -> returns empty dict
+    assert _RaiseUndefinedParameters.handle_from_dict(Example, {}) == {}
 
-    # 3. subset of known fields -> returned, no error
-    assert _RaiseUndefinedParameters.handle_from_dict(
-        Sample, {"name": "Bob"}) == {"name": "Bob"}
+    # Unknown parameters -> raises UndefinedParameterError
+    kvs_with_unknown = {"name": "Bob", "age": 25, "extra": "value"}
+    try:
+        _RaiseUndefinedParameters.handle_from_dict(Example, kvs_with_unknown)
+        assert False, "Expected UndefinedParameterError to be raised"
+    except UndefinedParameterError as e:
+        assert "extra" in str(e)
+        assert "undefined initialization arguments" in str(e)
 
-    # 4. only unknown keys -> raises
-    with pytest.raises(UndefinedParameterError):
-        _RaiseUndefinedParameters.handle_from_dict(
-            Sample, {"unknown": 123})
+# Generated at 2026-11-02 00:02:24.580455
+# Unit test for method handle_from_dict of class _IgnoreUndefinedParameters
+def test__IgnoreUndefinedParameters_handle_from_dict():
+    # Arrange
+    @dataclasses.dataclass
+    class TestClass:
+        a: int
+        b: str
 
-    # 5. mix of known + unknown -> raises, does not return known part
-    with pytest.raises(UndefinedParameterError) as exc_info:
-        _RaiseUndefinedParameters.handle_from_dict(
-            Sample, {"name": "Alice", "age": 30, "extra": "boom"})
-    assert "extra" in str(exc_info.value)
-    assert "boom" in str(exc_info.value)
+    # Act: known and unknown parameters mixed
+    result = _IgnoreUndefinedParameters.handle_from_dict(
+        cls=TestClass, kvs={"a": 1, "b": "hello", "c": 42, "d": None})
 
-    # 6. it is a ValidationError (marshmallow) subclass
-    with pytest.raises(ValidationError):
-        _RaiseUndefinedParameters.handle_from_dict(Sample, {"bad": True})
+    # Assert: only defined parameters are kept, undefined are ignored
+    assert result == {"a": 1, "b": "hello"}
 
-    # 7. input dict is not mutated
-    original = {"name": "Alice", "age": 30}
-    _RaiseUndefinedParameters.handle_from_dict(Sample, original)
-    assert original == {"name": "Alice", "age": 30}
+    # Act: only unknown parameters
+    result = _IgnoreUndefinedParameters.handle_from_dict(
+        cls=TestClass, kvs={"x": 1, "y": 2})
 
-# Generated at 2026-10-25 09:10:55.106825
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-def test__RaiseUndefinedParameters_handle_from_dict():
-    # 1. All parameters defined -> returned as-is
-    result = _RaiseUndefinedParameters.handle_from_dict(
-        cls=_Example, kvs={"a": 1, "b": "x"})
-    assert result == {"a": 1, "b": "x"}
-
-    # 2. Unknown parameter -> raises UndefinedParameterError
-    with pytest.raises(UndefinedParameterError) as exc_info:
-        _RaiseUndefinedParameters.handle_from_dict(
-            cls=_Example, kvs={"a": 1, "unknown_param": 2})
-    assert "unknown_param" in str(exc_info.value)
-
-    # 3. Only defined subset is fine (missing optional field uses default)
-    result = _RaiseUndefinedParameters.handle_from_dict(
-        cls=_Example, kvs={"a": 5})
-    assert result == {"a": 5}
-
-# Generated at 2026-10-25 09:11:01.758227
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-def test__UndefinedParameterAction_handle_to_dict():
-    # base implementation is a pass-through: returns kvs unchanged
-    obj = object()
-    kvs = {"a": 1, "b": 2, "c": None}
-
-    result = _UndefinedParameterAction.handle_to_dict(obj, kvs)
-
-    assert result == {"a": 1, "b": 2, "c": None}
-    assert result is kvs  # same object, not a copy
-
-
-def test__UndefinedParameterAction_handle_to_dict_empty():
-    obj = object()
-    kvs = {}
-
-    result = _UndefinedParameterAction.handle_to_dict(obj, kvs)
-
+    # Assert: everything is dropped
     assert result == {}
-    assert result is kvs
 
-# Generated at 2026-10-25 09:11:49.768602
-# Unit test for method handle_dump of class _UndefinedParameterAction
-def test__UndefinedParameterAction_handle_dump():
-    # base implementation always returns empty dict, regardless of obj
-    for obj in [object(), None, "string", 123, {"a": 1}]:
-        result = _UndefinedParameterAction.handle_dump(obj)
-        assert result == {}
-        assert isinstance(result, dict)
+    # Act: empty input
+    result = _IgnoreUndefinedParameters.handle_from_dict(cls=TestClass, kvs={})
 
-    # each call returns a new dict instance
-    assert _UndefinedParameterAction.handle_dump(object()) is not \
-           _UndefinedParameterAction.handle_dump(object())
+    # Assert: empty result
+    assert result == {}
 
-    # subclasses that don't override must inherit same behaviour
-    assert _RaiseUndefinedParameters.handle_dump(object()) == {}
-    assert _IgnoreUndefinedParameters.handle_dump(object()) == {}
+    # Act: only known parameters
+    result = _IgnoreUndefinedParameters.handle_from_dict(
+        cls=TestClass, kvs={"a": 5, "b": "world"})
 
-# Generated at 2026-10-25 09:11:51.141953
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-def test__RaiseUndefinedParameters_handle_from_dict():
-    # 1. All parameters defined -> returned as-is
-    result = _RaiseUndefinedParameters.handle_from_dict(
-        cls=_Example, kvs={"a": 1, "b": "x"})
-    assert result == {"a": 1, "b": "x"}
+    # Assert: all known parameters are preserved
+    assert result == {"a": 5, "b": "world"}
 
-    # 2. Unknown parameter -> raises UndefinedParameterError
-    with pytest.raises(UndefinedParameterError) as exc_info:
-        _RaiseUndefinedParameters.handle_from_dict(
-            cls=_Example, kvs={"a": 1, "unknown_param": 2})
-    assert "unknown_param" in str(exc_info.value)
+# Generated at 2026-11-02 00:03:39.615449
+# Unit test for method create_init of class _IgnoreUndefinedParameters
+def test__IgnoreUndefinedParameters_create_init():
+    @dataclass
+    class Person:
+        name: str
+        age: int = 42
+        city: str = "Unknown"
 
-    # 3. Only defined subset is fine (missing optional field uses default)
-    result = _RaiseUndefinedParameters.handle_from_dict(
-        cls=_Example, kvs={"a": 5})
-    assert result == {"a": 5}
+    original_init = Person.__init__
+    new_init = _IgnoreUndefinedParameters.create_init(Person)
 
-# Generated at 2026-10-25 09:11:53.760178
-# Unit test for method create_init of class _UndefinedParameterAction
+    # Returns a callable that wraps the original __init__
+    assert callable(new_init)
+    assert new_init.__name__ == "__init__"
+    assert new_init.__wrapped__ is original_init
 
-# Generated at 2026-10-25 09:11:56.440048
-# Unit test for method create_init of class _UndefinedParameterAction
+    # Install the new init
+    Person.__init__ = new_init
 
-# Generated at 2026-10-25 09:12:02.277931
-# Unit test for method create_init of class _UndefinedParameterAction
+    # Defined parameters are passed through to the original init
+    person = Person(name="Alice", age=30, city="Berlin")
+    assert person.name == "Alice"
+    assert person.age == 30
+    assert person.city == "Berlin"
 
-# Generated at 2026-10-25 09:12:03.813369
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-def test__RaiseUndefinedParameters_handle_from_dict():
-    # 1. All parameters defined -> returned as-is
-    result = _RaiseUndefinedParameters.handle_from_dict(
-        cls=_Example, kvs={"a": 1, "b": "x"})
-    assert result == {"a": 1, "b": "x"}
+    # Undefined keyword parameters are silently ignored
+    person = Person(name="Bob", age=25, undefined_param="oops", another=1)
+    assert person.name == "Bob"
+    assert person.age == 25
+    assert not hasattr(person, "undefined_param")
+    assert not hasattr(person, "another")
 
-    # 2. Unknown parameter -> raises UndefinedParameterError
-    with pytest.raises(UndefinedParameterError) as exc_info:
-        _RaiseUndefinedParameters.handle_from_dict(
-            cls=_Example, kvs={"a": 1, "unknown_param": 2})
-    assert "unknown_param" in str(exc_info.value)
+    # Defaults are applied for parameters that were not provided
+    person = Person(name="Charlie")
+    assert person.age == 42
+    assert person.city == "Unknown"
 
-    # 3. Only defined subset is fine (missing optional field uses default)
-    result = _RaiseUndefinedParameters.handle_from_dict(
-        cls=_Example, kvs={"a": 5})
-    assert result == {"a": 5}
+    # Positional arguments are supported and surplus ones are dropped
+    person = Person("Dave", 30, "Berlin", "surplus")
+    assert person.name == "Dave"
+    assert person.age == 30
+    assert person.city == "Berlin"
 
-# Generated at 2026-10-25 09:12:05.247608
+# Generated at 2026-11-02 00:04:12.654253
+# Unit test for method create_init of class _IgnoreUndefinedParameters
+def test__IgnoreUndefinedParameters_create_init():
+    @dataclasses.dataclass
+    class Person:
+        name: str
+        age: int
+        city: str = "Unknown"
+
+    # Replace the class __init__ with the wrapped init produced by create_init
+    Person.__init__ = _IgnoreUndefinedParameters.create_init(Person)
+
+    # Known parameters initialize the instance normally
+    person = Person(name="Alice", age=30, city="Berlin")
+    assert person.name == "Alice"
+    assert person.age == 30
+    assert person.city == "Berlin"
+
+    # Undefined keyword parameters are silently ignored
+    person_with_unknown = Person(name="Bob", age=25, undefined_param="ignored")
+    assert person_with_unknown.name == "Bob"
+    assert person_with_unknown.age == 25
+    assert person_with_unknown.city == "Unknown"
+
+    # Positional arguments still work
+    person_positional = Person("Charlie", 40)
+    assert person_positional.name == "Charlie"
+    assert person_positional.age == 40
+    assert person_positional.city == "Unknown"
+
+    # Excess positional arguments are dropped
+    person_extra = Person("Dave", 50, "ExtraCity", "dropped")
+    assert person_extra.name == "Dave"
+    assert person_extra.age == 50
+    assert person_extra.city == "ExtraCity"
+
+    # Mixing positional and keyword arguments with unknown kwargs
+    person_mixed = Person("Eve", age=35, unknown="x")
+    assert person_mixed.name == "Eve"
+    assert person_mixed.age == 35
+    assert person_mixed.city == "Unknown"
+
+# Generated at 2026-11-02 00:04:40.772252
 # Unit test for method create_init of class _UndefinedParameterAction
 def test__UndefinedParameterAction_create_init():
-    class Dummy:
-        def __init__(self, x=1):
+    class DummyClass:
+        def __init__(self, x, y=0):
             self.x = x
+            self.y = y
 
-    # base implementation must return original __init__ unwrapped
-    assert _UndefinedParameterAction.create_init(Dummy) == Dummy.__init__
+    # create_init should simply return the original __init__ of the class
+    result = _UndefinedParameterAction.create_init(DummyClass)
+    assert result == DummyClass.__init__
 
-    # returned callable must still work as init
-    obj = Dummy.__new__(Dummy)
-    init = _UndefinedParameterAction.create_init(Dummy)
-    assert callable(init)
-    init(obj, x=42)
-    assert obj.x == 42
+    # The returned callable should behave exactly like the original __init__
+    instance = DummyClass.__new__(DummyClass)
+    result(instance, 42, y=7)
+    assert instance.x == 42
+    assert instance.y == 7
 
-# Generated at 2026-10-25 09:12:12.005256
+    # Default values should still apply when called through create_init
+    instance2 = DummyClass.__new__(DummyClass)
+    result(instance2, 1)
+    assert instance2.x == 1
+    assert instance2.y == 0
+
+# Generated at 2026-11-02 00:05:32.181824
 # Unit test for constructor of class UndefinedParameterError
 def test_UndefinedParameterError():
-    # It should be a subclass of marshmallow's ValidationError
-    assert issubclass(UndefinedParameterError, ValidationError)
+    message = "Received undefined initialization arguments {'foo': 1}"
 
-    # Constructor must accept a message and store it
-    exc = UndefinedParameterError("Received undefined initialization arguments {'foo': 1}")
-    assert str(exc) == "Received undefined initialization arguments {'foo': 1}"
+    # Constructor accepts a message and stores it
+    error = UndefinedParameterError(message)
+    assert isinstance(error, UndefinedParameterError)
+    assert isinstance(error, ValidationError)
+    assert error.args[0] == message
+    assert str(error) == message
 
-    # Constructor must work with no arguments
-    exc_default = UndefinedParameterError()
-    assert str(exc_default) == ""
+    # Constructor with no arguments
+    error_no_args = UndefinedParameterError()
+    assert isinstance(error_no_args, UndefinedParameterError)
+    assert isinstance(error_no_args, ValidationError)
 
-    # Must be raisable and catchable as itself
+    # Error can be raised and caught as UndefinedParameterError
     try:
-        raise UndefinedParameterError("bad param")
-    except UndefinedParameterError as e:
-        assert "bad param" in str(e)
+        raise UndefinedParameterError(message)
+    except UndefinedParameterError as caught:
+        assert str(caught) == message
 
-    # Must also be catchable as a ValidationError (parent class)
+    # Error can also be caught as ValidationError (parent class)
     try:
-        raise UndefinedParameterError("bad param")
-    except ValidationError as e:
-        assert "bad param" in str(e)
+        raise UndefinedParameterError(message)
+    except ValidationError as caught:
+        assert str(caught) == message
 
-# Generated at 2026-10-25 09:12:32.653878
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:12:35.064057
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:12:37.487330
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:12:39.901733
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:12:42.318583
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:12:44.735808
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-25 09:12:47.153406
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:12:49.734264
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:12:52.149561
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-25 09:12:56.166394
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:12:58.583335
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:13:01.000168
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:13:03.419274
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:13:05.834675
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:13:08.251584
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:13:10.745782
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:13:13.162978
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-25 09:13:15.579758
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
+# Generated at 2026-11-02 00:07:38.285091
+# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters

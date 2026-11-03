@@ -5,48 +5,26 @@
 from f143 import words_in_sentence
 
 
-def test_empty_sentence():
+def test_words_in_sentence_prime_length_words():
+    # Words with prime lengths (2, 3, 5) are kept; words with length 1
+    # (flg set immediately) or composite length (flg set in the loop,
+    # and len != 2) are filtered out.
+    sentence = "a is fun time again world"
+    # lengths: a=1, is=2, fun=3, time=4, again=5, world=5
+    result = words_in_sentence(sentence)
+    assert result == "is fun again world"
+    # Verify filtered-out words are truly absent
+    assert "a" not in result.split()
+    assert "time" not in result.split()
+
+
+def test_words_in_sentence_single_prime_length_word():
+    # A word of length 2 makes range(2, 2) empty (loop never entered)
+    # but is still appended due to the len(word) == 2 branch.
+    assert words_in_sentence("go") == "go"
+
+
+def test_words_in_sentence_empty_sentence():
+    # Sentence splitting yields no words: the for loop body never runs.
     assert words_in_sentence("") == ""
-
-
-def test_single_char_word_filtered():
-    # len == 1 -> flg = 1, inner loop empty, outer condition False
-    assert words_in_sentence("a") == ""
-    assert words_in_sentence("a b c") == ""
-
-
-def test_two_letter_word_kept():
-    # len == 2 -> inner loop range(2, 2) empty, flg stays 0, kept
-    assert words_in_sentence("ab") == "ab"
-    assert words_in_sentence("ab cd") == "ab cd"
-
-
-def test_prime_length_word_kept():
-    # len == 3 prime -> inner loop runs once, len % i != 0, flg stays 0
-    assert words_in_sentence("abc") == "abc"
-    # len == 5 prime -> inner loop runs, never divisible
-    assert words_in_sentence("abcde") == "abcde"
-    # len == 7 prime
-    assert words_in_sentence("abcdefg") == "abcdefg"
-
-
-def test_composite_even_length_filtered():
-    # len == 4 composite -> 4 % 2 == 0 sets flg = 1, filtered
-    assert words_in_sentence("abcd") == ""
-    # len == 6 composite -> 6 % 2 == 0 sets flg = 1, filtered
-    assert words_in_sentence("abcdef") == ""
-    # len == 8 composite
-    assert words_in_sentence("abcdefgh") == ""
-
-
-def test_composite_odd_length_filtered():
-    # len == 9 composite -> 9 % 2 != 0 (False branch) then 9 % 3 == 0 (True branch)
-    assert words_in_sentence("abcdefghi") == ""
-
-
-def test_mixed_sentence_prime_filtering():
-    # 1 filtered, 2 kept, 3 kept, 4 filtered, 5 kept
-    assert words_in_sentence("a ab abc abcd abcde") == "ab abc abcde"
-    # multiple spaces handling via split/join
-    assert words_in_sentence("hello world") == "hello world"
-    assert words_in_sentence("a abc abcd") == "abc"
+    assert words_in_sentence("   ") == ""

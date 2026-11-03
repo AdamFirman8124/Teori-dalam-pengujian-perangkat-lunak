@@ -8,15 +8,18 @@ def test_case_0():
     int_1 = 1
     var_1 = module_0.decimal_to_binary(int_1)
     assert var_1 == 'db1db'
-    int_2 = 2
+    int_2 = 5
     var_2 = module_0.decimal_to_binary(int_2)
-    assert var_2 == 'db10db'
-    int_3 = 5
+    assert var_2 == 'db101db'
+    int_3 = 15
     var_3 = module_0.decimal_to_binary(int_3)
-    assert var_3 == 'db101db'
-    int_4 = 10
+    assert var_3 == 'db1111db'
+    int_4 = 32
     var_4 = module_0.decimal_to_binary(int_4)
-    assert var_4 == 'db1010db'
+    assert var_4 == 'db100000db'
     int_5 = 255
     var_5 = module_0.decimal_to_binary(int_5)
     assert var_5 == 'db11111111db'
+    int_6 = 1023
+    var_6 = module_0.decimal_to_binary(int_6)
+    assert var_6 == 'db1111111111db'

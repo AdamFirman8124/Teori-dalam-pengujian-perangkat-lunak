@@ -2,38 +2,43 @@
 import f150 as module_0
 
 def test_case_0():
-    int_0 = 2
-    str_0 = 'prime'
-    str_1 = 'not'
-    var_0 = module_0.x_or_y(int_0, str_0, str_1)
-    assert var_0 == 'prime'
-    int_1 = 3
-    var_1 = module_0.x_or_y(int_1, str_0, str_1)
-    assert var_1 == 'prime'
-    int_2 = 7
-    var_2 = module_0.x_or_y(int_2, str_0, str_1)
-    assert var_2 == 'prime'
-    int_3 = 13
-    var_3 = module_0.x_or_y(int_3, str_0, str_1)
-    assert var_3 == 'prime'
-    int_4 = 4
-    var_4 = module_0.x_or_y(int_4, str_0, str_1)
-    assert var_4 == 'not'
-    int_5 = 9
-    var_5 = module_0.x_or_y(int_5, str_0, str_1)
-    assert var_5 == 'not'
-    int_6 = 15
-    var_6 = module_0.x_or_y(int_6, str_0, str_1)
-    assert var_6 == 'not'
-    int_7 = 1
-    var_7 = module_0.x_or_y(int_7, str_0, str_1)
-    assert var_7 == 'not'
-    str_2 = 'All tests passed.'
-    var_8 = print(str_2)
-
-def test_case_1():
-    int_0 = 1
-    int_1 = 10
-    int_2 = 20
+    int_0 = 7
+    int_1 = 34
+    int_2 = 12
     var_0 = module_0.x_or_y(int_0, int_1, int_2)
-    assert var_0 == 20
+    assert var_0 == 34
+    int_3 = 2
+    int_4 = 10
+    int_5 = 20
+    var_1 = module_0.x_or_y(int_3, int_4, int_5)
+    assert var_1 == 10
+    int_6 = 3
+    int_7 = 5
+    int_8 = 6
+    var_2 = module_0.x_or_y(int_6, int_7, int_8)
+    assert var_2 == 5
+    int_9 = 13
+    int_10 = 100
+    int_11 = 200
+    var_3 = module_0.x_or_y(int_9, int_10, int_11)
+    assert var_3 == 100
+    int_12 = 15
+    int_13 = 8
+    var_4 = module_0.x_or_y(int_12, int_13, int_7)
+    assert var_4 == 5
+    int_14 = 4
+    var_5 = module_0.x_or_y(int_14, int_4, int_5)
+    assert var_5 == 20
+    int_15 = 9
+    int_16 = 1
+    var_6 = module_0.x_or_y(int_15, int_16, int_3)
+    assert var_6 == 2
+    var_7 = module_0.x_or_y(int_10, int_0, int_15)
+    assert var_7 == 9
+    var_8 = module_0.x_or_y(int_16, int_6, int_14)
+    assert var_8 == 4
+    int_17 = 99
+    var_9 = module_0.x_or_y(int_16, int_4, int_17)
+    assert var_9 == 99
+    str_0 = 'All tests passed!'
+    var_10 = print(str_0)

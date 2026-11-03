@@ -3,16 +3,44 @@ import f076 as module_0
 
 def test_case_0():
     int_0 = 1
-    var_0 = module_0.is_simple_power(int_0, int_0)
+    int_1 = 4
+    var_0 = module_0.is_simple_power(int_0, int_1)
     assert var_0 is True
-
-def test_case_1():
-    float_0 = -3742.900323
-    str_0 = "#rHL;nw',6p"
-    var_0 = module_0.is_simple_power(float_0, str_0)
-    assert var_0 is False
-
-def test_case_2():
-    int_0 = 3035
-    var_0 = module_0.is_simple_power(int_0, int_0)
-    assert var_0 is True
+    int_2 = 2
+    var_1 = module_0.is_simple_power(int_2, int_2)
+    assert var_1 is True
+    int_3 = 8
+    var_2 = module_0.is_simple_power(int_3, int_2)
+    assert var_2 is True
+    int_4 = 16
+    var_3 = module_0.is_simple_power(int_4, int_2)
+    assert var_3 is True
+    var_4 = module_0.is_simple_power(int_1, int_2)
+    assert var_4 is True
+    int_5 = 1024
+    var_5 = module_0.is_simple_power(int_5, int_1)
+    assert var_5 is True
+    int_6 = 27
+    int_7 = 3
+    var_6 = module_0.is_simple_power(int_6, int_7)
+    assert var_6 is True
+    var_7 = module_0.is_simple_power(int_7, int_2)
+    assert var_7 is False
+    int_8 = 5
+    var_8 = module_0.is_simple_power(int_8, int_7)
+    assert var_8 is False
+    int_9 = 1432141323
+    var_9 = module_0.is_simple_power(int_9, int_1)
+    assert var_9 is False
+    var_10 = module_0.is_simple_power(int_0, int_0)
+    assert var_10 is True
+    var_11 = module_0.is_simple_power(int_7, int_0)
+    assert var_11 is False
+    var_12 = module_0.is_simple_power(int_0, int_2)
+    assert var_12 is True
+    int_10 = 10
+    var_13 = module_0.is_simple_power(int_0, int_10)
+    assert var_13 is True
+    int_11 = 0
+    var_14 = module_0.is_simple_power(int_11, int_0)
+    assert var_14 is False

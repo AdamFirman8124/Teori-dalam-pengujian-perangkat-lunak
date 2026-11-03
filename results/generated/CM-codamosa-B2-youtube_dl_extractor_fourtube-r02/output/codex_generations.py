@@ -1,1049 +1,434 @@
 
 
-# Generated at 2026-10-24 06:15:34.715599
+# Generated at 2026-11-02 07:37:13.556327
 # Unit test for constructor of class FuxIE
 def test_FuxIE():
-    extractor = FuxIE()
+    ie = FuxIE()
 
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is None
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-    assert extractor._TKN_HOST == 'token.fux.com'
-    assert extractor.suitable(
-        'https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
-    assert extractor.suitable('https://www.fux.com/embed/195359')
-    assert not extractor.suitable('https://www.example.com/video/195359')
+    # Constructor: inherits from FourTubeBaseIE / InfoExtractor
+    assert isinstance(ie, FourTubeBaseIE)
+    assert isinstance(ie, InfoExtractor)
+    assert ie._downloader is None
 
-# Generated at 2026-10-24 06:15:43.765444
+    # Class attributes
+    assert ie.IE_NAME is None
+    assert ie.ie_key() == 'Fux'
+    assert ie._TKN_HOST == 'token.fux.com'
+    assert ie._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
+    assert ie._VALID_URL == (
+        r'https?://(?:(?P<kind>www|m)\.)?fux\.com/'
+        r'(?:video|embed)/(?P<id>\d+)(?:/(?P<display_id>[^/?#&]+))?'
+    )
+
+    # URL matching
+    assert ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert ie.suitable('https://fux.com/embed/195359')
+    assert ie.suitable('https://m.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert not ie.suitable('https://www.4tube.com/videos/209733/hot-babe')
+    assert not ie.suitable('https://www.fux.com/video/')
+
+    m = re.match(ie._VALID_URL, 'https://m.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert m.group('kind') == 'm'
+    assert m.group('id') == '195359'
+    assert m.group('display_id') == 'awesome-fucking-kitchen-ends-cum-swallow'
+
+    # Test definitions
+    assert isinstance(ie._TESTS, list) and len(ie._TESTS) == 3
+    assert ie._TESTS[0]['info_dict']['id'] == '195359'
+    assert ie._TESTS[0]['info_dict']['age_limit'] == 18
+    assert ie._TESTS[1]['url'] == 'https://www.fux.com/embed/195359'
+    assert ie._TESTS[1]['only_matching'] is True
+
+# Generated at 2026-11-02 07:37:34.832609
 # Unit test for constructor of class FourTubeIE
 def test_FourTubeIE():
-    downloader = object()
-    extractor = FourTubeIE(downloader)
+    ie = FourTubeIE()
 
-    assert isinstance(extractor, FourTubeIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor.IE_NAME == '4tube'
-    assert extractor._URL_TEMPLATE == 'https://www.4tube.com/videos/%s/video'
-    assert extractor._TKN_HOST == 'token.4tube.com'
+    # Verify class attributes set at definition
+    assert ie.IE_NAME == '4tube'
+    assert ie._TKN_HOST == 'token.4tube.com'
+    assert ie._URL_TEMPLATE == 'https://www.4tube.com/videos/%s/video'
+    assert ie._VALID_URL == (
+        r'https?://(?:(?P<kind>www|m)\.)?4tube\.com/(?:videos|embed)/'
+        r'(?P<id>\d+)(?:/(?P<display_id>[^/?#&]+))?')
 
-# Generated at 2026-10-24 06:15:46.392316
+    # Base class initialization
+    assert ie._downloader is None
+    assert ie.gecko_proxy is None
+
+    # URL matching based on _VALID_URL
+    assert ie.suitable('http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert ie.suitable('http://www.4tube.com/embed/209733')
+    assert ie.suitable('http://m.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert ie.suitable('https://www.4tube.com/videos/209733')
+    assert not ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert not ie.suitable('https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert not ie.suitable('https://www.pornerbros.com/embed/181369')
+
+    # Group extraction
+    mobj = ie._match_id('http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert mobj == '209733'
+    mobj = ie._match_id('http://www.4tube.com/embed/209733')
+    assert mobj == '209733'
+
+# Generated at 2026-11-02 07:37:54.180397
 # Unit test for constructor of class FourTubeIE
+def test_FourTubeIE():
+    ie = FourTubeIE()
+    assert ie.IE_NAME == '4tube'
+    assert ie._TKN_HOST == 'token.4tube.com'
+    assert ie._URL_TEMPLATE == 'https://www.4tube.com/videos/%s/video'
+    assert ie.suitable('http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert ie.suitable('http://www.4tube.com/embed/209733')
+    assert ie.suitable('http://m.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert not ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert not ie.suitable('https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert not ie.suitable('https://www.pornerbros.com/embed/181369')
 
-# Generated at 2026-10-24 06:15:48.808634
+# Generated at 2026-11-02 07:38:58.585174
 # Unit test for constructor of class FourTubeIE
+def test_FourTubeIE():
+    ie = FourTubeIE()
+    assert ie.IE_NAME == '4tube'
+    assert ie._TKN_HOST == 'token.4tube.com'
+    assert ie._URL_TEMPLATE == 'https://www.4tube.com/videos/%s/video'
+    assert ie.suitable('http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert ie.suitable('http://www.4tube.com/embed/209733')
+    assert ie.suitable('http://m.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert not ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert not ie.suitable('https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert not ie.suitable('https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    m = re.match(ie._VALID_URL, 'http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert m.group('id') == '209733'
+    assert m.group('display_id') == 'hot-babe-holly-michaels-gets-her-ass-stuffed-by-black'
+    m = re.match(ie._VALID_URL, 'http://www.4tube.com/embed/209733')
+    assert m.group('id') == '209733'
+    assert m.group('display_id') is None
 
-# Generated at 2026-10-24 06:15:51.230106
-# Unit test for constructor of class FourTubeIE
+# Generated at 2026-11-02 07:40:09.617094
+# Unit test for constructor of class PornerBrosIE
+def test_PornerBrosIE():
+    # nonce:50c0280e
+    ie = PornerBrosIE()
 
-# Generated at 2026-10-24 06:15:53.816277
-# Unit test for constructor of class FourTubeBaseIE
+    # Constructor should initialize the downloader reference to None
+    assert ie._downloader is None
 
-# Generated at 2026-10-24 06:15:56.231167
-# Unit test for constructor of class FourTubeBaseIE
+    # The extractor should inherit from the 4tube family base class
+    assert isinstance(ie, FourTubeBaseIE)
 
-# Generated at 2026-10-24 06:15:58.646829
-# Unit test for constructor of class FourTubeBaseIE
+    # Class configuration attributes
+    assert ie._VALID_URL == r'https?://(?:(?P<kind>www|m)\.)?pornerbros\.com/(?:videos/(?P<display_id>[^/]+)_|embed/)(?P<id>\d+)'
+    assert ie._URL_TEMPLATE == 'https://www.pornerbros.com/videos/video_%s'
+    assert ie._TKN_HOST == 'token.pornerbros.com'
 
-# Generated at 2026-10-24 06:16:01.063549
-# Unit test for constructor of class FourTubeIE
+    # URL matching: standard video page
+    mobj = re.match(ie._VALID_URL, 'https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert mobj is not None
+    assert mobj.group('kind') == 'www'
+    assert mobj.group('id') == '181369'
+    assert mobj.group('display_id') == 'skinny-brunette-takes-big-cock-down-her-anal-hole'
 
-# Generated at 2026-10-24 06:16:12.127388
-# Unit test for constructor of class FourTubeIE
-def test_FourTubeIE():ie = FourTubeIE()
+    # URL matching: embed page
+    mobj = re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369')
+    assert mobj is not None
+    assert mobj.group('kind') is None
+    assert mobj.group('id') == '181369'
+    assert mobj.group('display_id') is None
 
-# Generated at 2026-10-24 06:16:21.878393
+    # URL matching: mobile page
+    mobj = re.match(ie._VALID_URL, 'https://m.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert mobj is not None
+    assert mobj.group('kind') == 'm'
+    assert mobj.group('id') == '181369'
+
+    # suitable() delegates to _VALID_URL
+    assert ie.suitable('https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert ie.suitable('https://www.pornerbros.com/embed/181369')
+    assert not ie.suitable('https://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert not ie.suitable('https://www.pornerbros.com/videos/181369')
+
+# Generated at 2026-11-02 07:40:32.040835
+# Unit test for constructor of class PornTubeIE
+def test_PornTubeIE():
+    ie = PornTubeIE()
+
+    # Instance is created successfully and inherits from the base extractor
+    assert isinstance(ie, PornTubeIE)
+    assert isinstance(ie, FourTubeBaseIE)
+    assert isinstance(ie, InfoExtractor)
+
+    # Default IE_NAME is derived from the class name
+    assert ie.IE_NAME == 'PornTube'
+
+    # Class-specific configuration attributes
+    assert ie._TKN_HOST == 'tkn.porntube.com'
+    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
+    assert ie._VALID_URL == (
+        r'https?://(?:(?P<kind>www|m)\.)?porntube\.com/'
+        r'(?:videos/(?P<display_id>[^/]+)_|embed/)(?P<id>\d+)'
+    )
+
+    # The extractor recognizes its supported URL forms
+    assert ie.suitable('https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert ie.suitable('https://www.porntube.com/embed/7089759')
+    assert ie.suitable('https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
+
+    # URL groups are extracted correctly
+    m = re.match(
+        ie._VALID_URL,
+        'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert m.group('id') == '7089759'
+    assert m.group('display_id') == 'teen-couple-doing-anal'
+    assert m.group('kind') == 'www'
+
+    m_embed = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
+    assert m_embed.group('id') == '7089759'
+    assert m_embed.group('display_id') is None
+
+    # Non-matching URLs are rejected
+    assert not ie.suitable('https://www.4tube.com/videos/209733/hot-babe')
+    assert not ie.suitable('https://www.porntube.com/videos/invalid_id')
+
+# Generated at 2026-11-02 07:41:57.074714
+# Unit test for constructor of class PornerBrosIE
+
+# Generated at 2026-11-02 07:42:49.810062
+# Unit test for constructor of class PornerBrosIE
+def test_PornerBrosIE():import re
+
+    # Constructor should work without network access
+
+# Generated at 2026-11-02 07:43:08.657226
+# Unit test for constructor of class PornerBrosIE
+def test_PornerBrosIE():
+    instance = PornerBrosIE()
+
+    assert isinstance(instance, FourTubeBaseIE)
+
+    assert instance._VALID_URL == (
+        r'https?://(?:(?P<kind>www|m)\.)?pornerbros\.com'
+        r'/(?:videos/(?P<display_id>[^/]+)_|embed/)(?P<id>\d+)')
+    assert instance._URL_TEMPLATE == 'https://www.pornerbros.com/videos/video_%s'
+    assert instance._TKN_HOST == 'token.pornerbros.com'
+
+    # URL matching
+    assert instance.suitable(
+        'https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert instance.suitable('https://www.pornerbros.com/embed/181369')
+    assert instance.suitable(
+        'https://m.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert not instance.suitable(
+        'https://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+
+    # Group extraction
+    mobj = re.match(
+        instance._VALID_URL,
+        'https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert mobj.group('kind') == 'www'
+    assert mobj.group('id') == '181369'
+    assert mobj.group('display_id') == 'skinny-brunette-takes-big-cock-down-her-anal-hole'
+
+    mobj = re.match(instance._VALID_URL, 'https://www.pornerbros.com/embed/181369')
+    assert mobj.group('id') == '181369'
+    assert mobj.group('display_id') is None
+
+# Generated at 2026-11-02 07:44:01.185326
 # Unit test for constructor of class FourTubeBaseIE
 def test_FourTubeBaseIE():
-    downloader = object()
+    ie = FourTubeBaseIE()
+    assert isinstance(ie, FourTubeBaseIE)
+    assert isinstance(ie, InfoExtractor)
 
-    extractor = FourTubeBaseIE(downloader)
+    # The base class defines no extractor-specific attributes itself
+    assert ie.IE_NAME is None
+    assert ie._VALID_URL is None
+    assert ie.ie_key() == 'FourTubeBaseIE'
 
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
+    # Downloader wiring inherited from InfoExtractor
+    assert getattr(ie, '_downloader', None) is None
+    ie.set_downloader(None)
+    assert getattr(ie, '_downloader', None) is None
 
-# Generated at 2026-10-24 06:16:39.164685
+    # Subclasses must supply their own configuration
+    assert FourTubeIE.IE_NAME == '4tube'
+    assert FourTubeIE._TKN_HOST == 'token.4tube.com'
+    assert FourTubeIE._URL_TEMPLATE == 'https://www.4tube.com/videos/%s/video'
+    assert FourTubeIE.ie_key() == '4tube'
+
+    assert FuxIE._TKN_HOST == 'token.fux.com'
+    assert FuxIE._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
+
+    assert PornTubeIE._TKN_HOST == 'tkn.porntube.com'
+    assert PornTubeIE._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
+
+    assert PornerBrosIE._TKN_HOST == 'token.pornerbros.com'
+    assert PornerBrosIE._URL_TEMPLATE == 'https://www.pornerbros.com/videos/video_%s'
+
+    # Inherited helper methods are available on instances
+    assert callable(ie._extract_formats)
+    assert callable(ie._real_extract)
+    assert callable(ie._sort_formats)
+    assert callable(ie._download_webpage)
+    assert callable(ie._download_json)
+    assert callable(ie._search_regex)
+    assert callable(ie._html_search_meta)
+
+# Generated at 2026-11-02 07:44:11.209092
+# Unit test for constructor of class PornTubeIE
+def test_PornTubeIE():
+    ie = PornTubeIE()
+
+    # Constructor creates a valid extractor instance
+    assert isinstance(ie, InfoExtractor)
+    assert isinstance(ie, FourTubeBaseIE)
+
+    # Class-level attributes
+    assert ie.IE_NAME == 'PornTube'
+    assert ie._TKN_HOST == 'tkn.porntube.com'
+    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
+
+    # _VALID_URL matches standard video URL
+    mobj = re.match(
+        ie._VALID_URL,
+        'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert mobj is not None
+    assert mobj.group('id') == '7089759'
+    assert mobj.group('display_id') == 'teen-couple-doing-anal'
+    assert mobj.group('kind') is None
+
+    # _VALID_URL matches embed URL
+    mobj = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
+    assert mobj is not None
+    assert mobj.group('id') == '7089759'
+    assert mobj.group('display_id') is None
+    assert mobj.group('kind') is None
+
+    # _VALID_URL matches mobile URL
+    mobj = re.match(
+        ie._VALID_URL,
+        'https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert mobj is not None
+    assert mobj.group('id') == '7089759'
+    assert mobj.group('kind') == 'm'
+
+    # suitable() accepts valid URLs and rejects unrelated ones
+    assert ie.suitable('https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert ie.suitable('https://www.porntube.com/embed/7089759')
+    assert not ie.suitable('https://www.porntube.com/videos/invalid')
+    assert not ie.suitable('https://www.4tube.com/videos/209733/foo')
+    assert not ie.suitable('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+
+# Generated at 2026-11-02 07:44:45.127304
+# Unit test for constructor of class FourTubeBaseIE
+def test_FourTubeBaseIE():
+    ie = FourTubeBaseIE()
+
+    # Constructor should produce a usable instance of the base extractor
+    assert isinstance(ie, FourTubeBaseIE)
+
+    # Shared helper methods must be present and callable
+    assert hasattr(ie, '_extract_formats')
+    assert callable(ie._extract_formats)
+    assert hasattr(ie, '_real_extract')
+    assert callable(ie._real_extract)
+
+    # Site-specific configuration belongs to subclasses, not the base class
+    assert not hasattr(ie, '_TKN_HOST')
+    assert not hasattr(ie, '_URL_TEMPLATE')
+    assert not hasattr(ie, '_VALID_URL')
+
+    # The constructor accepts the optional downloader argument like InfoExtractor
+    ie2 = FourTubeBaseIE(downloader=None)
+    assert isinstance(ie2, FourTubeBaseIE)
+
+# Generated at 2026-11-02 07:45:09.180731
 # Unit test for constructor of class PornerBrosIE
 def test_PornerBrosIE():
     ie = PornerBrosIE()
 
-    assert isinstance(ie, PornerBrosIE)
-    assert isinstance(ie, FourTubeBaseIE)
-    assert ie._downloader is None
+    # Check class attributes set by the constructor/class definition
+    assert ie._VALID_URL == r'https?://(?:(?P<kind>www|m)\.)?pornerbros\.com/(?:videos/(?P<display_id>[^/]+)_|embed/)(?P<id>\d+)'
     assert ie._URL_TEMPLATE == 'https://www.pornerbros.com/videos/video_%s'
     assert ie._TKN_HOST == 'token.pornerbros.com'
+    assert ie.IE_NAME == 'PornerBros'
+    assert ie.ie_key() == 'PornerBros'
 
-    assert ie.suitable(
-        'https://www.pornerbros.com/videos/example-video_181369')
+    # Check URL matching behavior
+    assert ie.suitable('https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
     assert ie.suitable('https://www.pornerbros.com/embed/181369')
-    assert ie.suitable(
-        'https://m.pornerbros.com/videos/example-video_181369')
-    assert not ie.suitable('https://www.4tube.com/videos/181369/example-video')
+    assert ie.suitable('https://m.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert not ie.suitable('https://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
 
-# Generated at 2026-10-24 06:16:48.117999
-# Unit test for constructor of class FourTubeBaseIE
-def test_FourTubeBaseIE():
-    extractor = FourTubeBaseIE()
+    # Check that video id and display id are extracted correctly
+    mobj = re.match(PornerBrosIE._VALID_URL,
+                    'https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert mobj.group('id') == '181369'
+    assert mobj.group('display_id') == 'skinny-brunette-takes-big-cock-down-her-anal-hole'
+    assert mobj.group('kind') == 'www'
 
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is None
-    assert extractor._ready is False
-
-# Generated at 2026-10-24 06:17:02.918313
+# Generated at 2026-11-02 07:45:37.750730
 # Unit test for constructor of class PornTubeIE
 def test_PornTubeIE():
-    # constructor should work with and without downloader
     ie = PornTubeIE()
-    assert isinstance(ie, PornTubeIE)
+
+    # The extractor should be an instance of the base class
     assert isinstance(ie, FourTubeBaseIE)
+    assert isinstance(ie, InfoExtractor)
 
-    ie_with_none = PornTubeIE(downloader=None)
-    assert isinstance(ie_with_none, PornTubeIE)
-
-    # class configuration
+    # Class attributes should be properly set
+    assert ie._VALID_URL == (
+        r'https?://(?:(?P<kind>www|m)\.)?porntube\.com/'
+        r'(?:videos/(?P<display_id>[^/]+)_|embed/)(?P<id>\d+)'
+    )
     assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
     assert ie._TKN_HOST == 'tkn.porntube.com'
-    assert isinstance(ie._VALID_URL, str)
 
-    # _VALID_URL matching
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('display_id') == 'teen-couple-doing-anal'
+    # URL suitability checks
+    assert ie.suitable('https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert ie.suitable('https://www.porntube.com/embed/7089759')
+    assert ie.suitable('https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert not ie.suitable('https://www.4tube.com/videos/209733/hot-babe')
+    assert not ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert not ie.suitable('https://www.porntube.com/videos/invalid')
 
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
+    # Matching should extract the video id correctly
+    assert ie._match_id('https://www.porntube.com/videos/teen-couple-doing-anal_7089759') == '7089759'
+    assert ie._match_id('https://www.porntube.com/embed/7089759') == '7089759'
 
-    m = re.match(ie._VALID_URL, 'https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('kind') == 'm'
+    # Regex group extraction (display_id)
+    mobj = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert mobj.group('id') == '7089759'
+    assert mobj.group('display_id') == 'teen-couple-doing-anal'
 
-    # should not match other sites
-    assert re.match(ie._VALID_URL, 'https://www.4tube.com/videos/209733/video') is None
-    assert re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369') is None
+    # _real_extract must be overridden (not the base implementation)
+    assert PornTubeIE._real_extract is not FourTubeBaseIE._real_extract
 
-# Generated at 2026-10-24 06:17:13.056632
-# Unit test for constructor of class FourTubeIE
-def test_FourTubeIE():
-    downloader = object()
-    extractor = FourTubeIE(downloader)
-
-    assert isinstance(extractor, FourTubeIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor.IE_NAME == '4tube'
-    assert extractor._TKN_HOST == 'token.4tube.com'
-    assert extractor._URL_TEMPLATE == 'https://www.4tube.com/videos/%s/video'
-
-# Generated at 2026-10-24 06:17:14.489749
-# Unit test for constructor of class PornTubeIE
-def test_PornTubeIE():
-    # constructor should work with and without downloader
-    ie = PornTubeIE()
-    assert isinstance(ie, PornTubeIE)
-    assert isinstance(ie, FourTubeBaseIE)
-
-    ie_with_none = PornTubeIE(downloader=None)
-    assert isinstance(ie_with_none, PornTubeIE)
-
-    # class configuration
-    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
-    assert ie._TKN_HOST == 'tkn.porntube.com'
-    assert isinstance(ie._VALID_URL, str)
-
-    # _VALID_URL matching
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('display_id') == 'teen-couple-doing-anal'
-
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-
-    m = re.match(ie._VALID_URL, 'https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('kind') == 'm'
-
-    # should not match other sites
-    assert re.match(ie._VALID_URL, 'https://www.4tube.com/videos/209733/video') is None
-    assert re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369') is None
-
-# Generated at 2026-10-24 06:17:22.957825
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    extractor = FuxIE()
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._TKN_HOST == 'token.fux.com'
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-    assert extractor.suitable(
-        'https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
-
-# Generated at 2026-10-24 06:17:32.923701
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    downloader = object()
-    extractor = FuxIE(downloader)
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor._TKN_HOST == 'token.fux.com'
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-
-# Generated at 2026-10-24 06:17:34.354527
-# Unit test for constructor of class PornTubeIE
-def test_PornTubeIE():
-    # constructor should work with and without downloader
-    ie = PornTubeIE()
-    assert isinstance(ie, PornTubeIE)
-    assert isinstance(ie, FourTubeBaseIE)
-
-    ie_with_none = PornTubeIE(downloader=None)
-    assert isinstance(ie_with_none, PornTubeIE)
-
-    # class configuration
-    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
-    assert ie._TKN_HOST == 'tkn.porntube.com'
-    assert isinstance(ie._VALID_URL, str)
-
-    # _VALID_URL matching
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('display_id') == 'teen-couple-doing-anal'
-
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-
-    m = re.match(ie._VALID_URL, 'https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('kind') == 'm'
-
-    # should not match other sites
-    assert re.match(ie._VALID_URL, 'https://www.4tube.com/videos/209733/video') is None
-    assert re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369') is None
-
-# Generated at 2026-10-24 06:17:43.166670
-# Unit test for constructor of class FourTubeIE
-def test_FourTubeIE():
-    downloader = object()
-    extractor = FourTubeIE(downloader)
-
-    assert isinstance(extractor, FourTubeIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor.IE_NAME == '4tube'
-    assert extractor._TKN_HOST == 'token.4tube.com'
-    assert extractor._URL_TEMPLATE == 'https://www.4tube.com/videos/%s/video'
-
-# Generated at 2026-10-24 06:17:52.486842
-# Unit test for constructor of class FourTubeBaseIE
-def test_FourTubeBaseIE():
-    extractor = FourTubeBaseIE()
-
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is None
-
-# Generated at 2026-10-24 06:18:13.180021
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    extractor = FuxIE()
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is None
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-    assert extractor._TKN_HOST == 'token.fux.com'
-
-# Generated at 2026-10-24 06:18:31.599579
-# Unit test for constructor of class PornerBrosIE
-def test_PornerBrosIE():
-    downloader = object()
-
-    extractor = PornerBrosIE(downloader)
-
-    assert isinstance(extractor, PornerBrosIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor.ie_key() == 'PornerBros'
-    assert extractor._TKN_HOST == 'token.pornerbros.com'
-
-# Generated at 2026-10-24 06:18:41.633118
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-24 06:18:47.021164
-# Unit test for constructor of class PornerBrosIE
-def test_PornerBrosIE():extractor = PornerBrosIE()
-
-# Generated at 2026-10-24 06:18:56.686649
+# Generated at 2026-11-02 07:45:45.848565
 # Unit test for constructor of class PornerBrosIE
 def test_PornerBrosIE():
     ie = PornerBrosIE()
-
-    assert isinstance(ie, PornerBrosIE)
     assert isinstance(ie, FourTubeBaseIE)
-    assert ie._downloader is None
-    assert ie._TKN_HOST == 'token.pornerbros.com'
+    assert ie.IE_NAME == 'PornerBros'
+    assert ie._VALID_URL == r'https?://(?:(?P<kind>www|m)\.)?pornerbros\.com/(?:videos/(?P<display_id>[^/]+)_|embed/)(?P<id>\d+)'
     assert ie._URL_TEMPLATE == 'https://www.pornerbros.com/videos/video_%s'
-    assert ie.suitable(
-        'https://www.pornerbros.com/videos/example-video_181369')
+    assert ie._TKN_HOST == 'token.pornerbros.com'
+    assert ie.suitable('https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
     assert ie.suitable('https://www.pornerbros.com/embed/181369')
+    assert ie.suitable('https://m.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert not ie.suitable('https://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
 
-# Generated at 2026-10-24 06:19:04.392101
-# Unit test for constructor of class FourTubeBaseIE
-def test_FourTubeBaseIE():
-    downloader = object()
-    extractor = FourTubeBaseIE(downloader)
-
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
-    assert extractor._ready is False
-
-# Generated at 2026-10-24 06:19:14.373295
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    extractor = FuxIE()
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._TKN_HOST == 'token.fux.com'
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-    assert extractor.suitable(
-        'https://www.fux.com/video/195359/'
-        'awesome-fucking-kitchen-ends-cum-swallow')
-
-# Generated at 2026-10-24 06:19:24.325315
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    downloader = object()
-    extractor = FuxIE(downloader)
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor._TKN_HOST == 'token.fux.com'
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-
-# Generated at 2026-10-24 06:19:25.848602
-# Unit test for constructor of class PornTubeIE
-def test_PornTubeIE():
-    # constructor should work with and without downloader
-    ie = PornTubeIE()
-    assert isinstance(ie, PornTubeIE)
-    assert isinstance(ie, FourTubeBaseIE)
-
-    ie_with_none = PornTubeIE(downloader=None)
-    assert isinstance(ie_with_none, PornTubeIE)
-
-    # class configuration
-    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
-    assert ie._TKN_HOST == 'tkn.porntube.com'
-    assert isinstance(ie._VALID_URL, str)
-
-    # _VALID_URL matching
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('display_id') == 'teen-couple-doing-anal'
-
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-
-    m = re.match(ie._VALID_URL, 'https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('kind') == 'm'
-
-    # should not match other sites
-    assert re.match(ie._VALID_URL, 'https://www.4tube.com/videos/209733/video') is None
-    assert re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369') is None
-
-# Generated at 2026-10-24 06:19:27.419393
-# Unit test for constructor of class PornTubeIE
-def test_PornTubeIE():
-    # constructor should work with and without downloader
-    ie = PornTubeIE()
-    assert isinstance(ie, PornTubeIE)
-    assert isinstance(ie, FourTubeBaseIE)
-
-    ie_with_none = PornTubeIE(downloader=None)
-    assert isinstance(ie_with_none, PornTubeIE)
-
-    # class configuration
-    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
-    assert ie._TKN_HOST == 'tkn.porntube.com'
-    assert isinstance(ie._VALID_URL, str)
-
-    # _VALID_URL matching
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('display_id') == 'teen-couple-doing-anal'
-
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-
-    m = re.match(ie._VALID_URL, 'https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('kind') == 'm'
-
-    # should not match other sites
-    assert re.match(ie._VALID_URL, 'https://www.4tube.com/videos/209733/video') is None
-    assert re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369') is None
-
-# Generated at 2026-10-24 06:19:34.985496
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    downloader = object()
-    extractor = FuxIE(downloader)
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor._VALID_URL
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-    assert extractor._TKN_HOST == 'token.fux.com'
-
-# Generated at 2026-10-24 06:19:36.521301
-# Unit test for constructor of class PornTubeIE
-def test_PornTubeIE():
-    # constructor should work with and without downloader
-    ie = PornTubeIE()
-    assert isinstance(ie, PornTubeIE)
-    assert isinstance(ie, FourTubeBaseIE)
-
-    ie_with_none = PornTubeIE(downloader=None)
-    assert isinstance(ie_with_none, PornTubeIE)
-
-    # class configuration
-    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
-    assert ie._TKN_HOST == 'tkn.porntube.com'
-    assert isinstance(ie._VALID_URL, str)
-
-    # _VALID_URL matching
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('display_id') == 'teen-couple-doing-anal'
-
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-
-    m = re.match(ie._VALID_URL, 'https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('kind') == 'm'
-
-    # should not match other sites
-    assert re.match(ie._VALID_URL, 'https://www.4tube.com/videos/209733/video') is None
-    assert re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369') is None
-
-# Generated at 2026-10-24 06:19:57.105105
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    downloader = object()
-
-    extractor = FuxIE(downloader)
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor._TKN_HOST == 'token.fux.com'
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-
-# Generated at 2026-10-24 06:20:07.037126
-# Unit test for constructor of class PornerBrosIE
-def test_PornerBrosIE():
-    downloader = object()
-
-    extractor = PornerBrosIE(downloader)
-
-    assert isinstance(extractor, PornerBrosIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor._ready is False
-
-# Generated at 2026-10-24 06:20:17.302099
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    downloader = object()
-    extractor = FuxIE(downloader)
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor._ready is False
-
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-    assert extractor._TKN_HOST == 'token.fux.com'
-    assert extractor.suitable(
-        'https://www.fux.com/video/195359/'
-        'awesome-fucking-kitchen-ends-cum-swallow')
-
-# Generated at 2026-10-24 06:20:18.811721
-# Unit test for constructor of class PornTubeIE
-def test_PornTubeIE():
-    # constructor should work with and without downloader
-    ie = PornTubeIE()
-    assert isinstance(ie, PornTubeIE)
-    assert isinstance(ie, FourTubeBaseIE)
-
-    ie_with_none = PornTubeIE(downloader=None)
-    assert isinstance(ie_with_none, PornTubeIE)
-
-    # class configuration
-    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
-    assert ie._TKN_HOST == 'tkn.porntube.com'
-    assert isinstance(ie._VALID_URL, str)
-
-    # _VALID_URL matching
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('display_id') == 'teen-couple-doing-anal'
-
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-
-    m = re.match(ie._VALID_URL, 'https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('kind') == 'm'
-
-    # should not match other sites
-    assert re.match(ie._VALID_URL, 'https://www.4tube.com/videos/209733/video') is None
-    assert re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369') is None
-
-# Generated at 2026-10-24 06:20:25.663135
-# Unit test for constructor of class FourTubeBaseIE
-def test_FourTubeBaseIE():
-    downloader = object()
-    extractor = FourTubeBaseIE(downloader)
-
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
-
-# Generated at 2026-10-24 06:20:33.867631
-# Unit test for constructor of class FourTubeBaseIE
-def test_FourTubeBaseIE():
-    downloader = object()
-    extractor = FourTubeBaseIE(downloader)
-
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
-
-# Generated at 2026-10-24 06:20:42.261173
-# Unit test for constructor of class PornerBrosIE
-def test_PornerBrosIE():
-    downloader = object()
-    extractor = PornerBrosIE(downloader)
-
-    assert isinstance(extractor, PornerBrosIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor._ready is False
-    assert extractor._URL_TEMPLATE == (
-        'https://www.pornerbros.com/videos/video_%s')
-    assert extractor._TKN_HOST == 'token.pornerbros.com'
-
-# Generated at 2026-10-24 06:20:57.928036
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    downloader = object()
-    extractor = FuxIE(downloader)
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-    assert extractor._TKN_HOST == 'token.fux.com'
-
-# Generated at 2026-10-24 06:21:11.971151
-# Unit test for constructor of class FourTubeBaseIE
-def test_FourTubeBaseIE():
-    downloader = object()
-
-    extractor = FourTubeBaseIE(downloader)
-
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
-    assert extractor._ready is False
-    assert extractor._x_forwarded_for_ip is None
-
-# Generated at 2026-10-24 06:21:21.317728
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    extractor = FuxIE()
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is None
-    assert extractor._ready is False
-    assert extractor._TKN_HOST == 'token.fux.com'
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-
-# Generated at 2026-10-24 06:21:22.914901
-# Unit test for constructor of class PornTubeIE
-def test_PornTubeIE():
-    # constructor should work with and without downloader
-    ie = PornTubeIE()
-    assert isinstance(ie, PornTubeIE)
-    assert isinstance(ie, FourTubeBaseIE)
-
-    ie_with_none = PornTubeIE(downloader=None)
-    assert isinstance(ie_with_none, PornTubeIE)
-
-    # class configuration
-    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
-    assert ie._TKN_HOST == 'tkn.porntube.com'
-    assert isinstance(ie._VALID_URL, str)
-
-    # _VALID_URL matching
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('display_id') == 'teen-couple-doing-anal'
-
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-
-    m = re.match(ie._VALID_URL, 'https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('kind') == 'm'
-
-    # should not match other sites
-    assert re.match(ie._VALID_URL, 'https://www.4tube.com/videos/209733/video') is None
-    assert re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369') is None
-
-# Generated at 2026-10-24 06:21:34.250069
-# Unit test for constructor of class FourTubeBaseIE
-def test_FourTubeBaseIE():
-    downloader = object()
-    extractor = FourTubeBaseIE(downloader)
-
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
-
-# Generated at 2026-10-24 06:21:35.786465
-# Unit test for constructor of class PornTubeIE
-def test_PornTubeIE():
-    # constructor should work with and without downloader
-    ie = PornTubeIE()
-    assert isinstance(ie, PornTubeIE)
-    assert isinstance(ie, FourTubeBaseIE)
-
-    ie_with_none = PornTubeIE(downloader=None)
-    assert isinstance(ie_with_none, PornTubeIE)
-
-    # class configuration
-    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
-    assert ie._TKN_HOST == 'tkn.porntube.com'
-    assert isinstance(ie._VALID_URL, str)
-
-    # _VALID_URL matching
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('display_id') == 'teen-couple-doing-anal'
-
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-
-    m = re.match(ie._VALID_URL, 'https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('kind') == 'm'
-
-    # should not match other sites
-    assert re.match(ie._VALID_URL, 'https://www.4tube.com/videos/209733/video') is None
-    assert re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369') is None
-
-# Generated at 2026-10-24 06:21:37.456653
-# Unit test for constructor of class PornTubeIE
-def test_PornTubeIE():
-    # constructor should work with and without downloader
-    ie = PornTubeIE()
-    assert isinstance(ie, PornTubeIE)
-    assert isinstance(ie, FourTubeBaseIE)
-
-    ie_with_none = PornTubeIE(downloader=None)
-    assert isinstance(ie_with_none, PornTubeIE)
-
-    # class configuration
-    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
-    assert ie._TKN_HOST == 'tkn.porntube.com'
-    assert isinstance(ie._VALID_URL, str)
-
-    # _VALID_URL matching
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('display_id') == 'teen-couple-doing-anal'
-
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-
-    m = re.match(ie._VALID_URL, 'https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('kind') == 'm'
-
-    # should not match other sites
-    assert re.match(ie._VALID_URL, 'https://www.4tube.com/videos/209733/video') is None
-    assert re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369') is None
-
-# Generated at 2026-10-24 06:21:48.719158
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-24 06:21:53.548720
-# Unit test for constructor of class PornerBrosIE
-def test_PornerBrosIE():extractor = PornerBrosIE()
-
-# Generated at 2026-10-24 06:21:55.967746
+# Generated at 2026-11-02 07:46:02.837410
 # Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-24 06:21:58.464922
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-24 06:22:00.877862
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-24 06:22:03.293823
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-24 06:22:10.431181
-# Unit test for constructor of class PornerBrosIE
-def test_PornerBrosIE():extractor = PornerBrosIE()
-
-# Generated at 2026-10-24 06:22:11.813539
-# Unit test for constructor of class PornTubeIE
-def test_PornTubeIE():
-    # constructor should work with and without downloader
-    ie = PornTubeIE()
-    assert isinstance(ie, PornTubeIE)
-    assert isinstance(ie, FourTubeBaseIE)
-
-    ie_with_none = PornTubeIE(downloader=None)
-    assert isinstance(ie_with_none, PornTubeIE)
-
-    # class configuration
-    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
-    assert ie._TKN_HOST == 'tkn.porntube.com'
-    assert isinstance(ie._VALID_URL, str)
-
-    # _VALID_URL matching
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('display_id') == 'teen-couple-doing-anal'
-
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-
-    m = re.match(ie._VALID_URL, 'https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('kind') == 'm'
-
-    # should not match other sites
-    assert re.match(ie._VALID_URL, 'https://www.4tube.com/videos/209733/video') is None
-    assert re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369') is None
-
-# Generated at 2026-10-24 06:22:13.209401
-# Unit test for constructor of class PornTubeIE
-def test_PornTubeIE():
-    # constructor should work with and without downloader
-    ie = PornTubeIE()
-    assert isinstance(ie, PornTubeIE)
-    assert isinstance(ie, FourTubeBaseIE)
-
-    ie_with_none = PornTubeIE(downloader=None)
-    assert isinstance(ie_with_none, PornTubeIE)
-
-    # class configuration
-    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
-    assert ie._TKN_HOST == 'tkn.porntube.com'
-    assert isinstance(ie._VALID_URL, str)
-
-    # _VALID_URL matching
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('display_id') == 'teen-couple-doing-anal'
-
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-
-    m = re.match(ie._VALID_URL, 'https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('kind') == 'm'
-
-    # should not match other sites
-    assert re.match(ie._VALID_URL, 'https://www.4tube.com/videos/209733/video') is None
-    assert re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369') is None
-
-# Generated at 2026-10-24 06:22:23.340895
-# Unit test for constructor of class PornerBrosIE
-def test_PornerBrosIE():
-    extractor = PornerBrosIE()
-
-    assert isinstance(extractor, PornerBrosIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._TKN_HOST == 'token.pornerbros.com'
-    assert extractor._URL_TEMPLATE == (
-        'https://www.pornerbros.com/videos/video_%s'
-    )
-    assert extractor.suitable(
-        'https://www.pornerbros.com/videos/example-video_181369'
-    )
-
-# Generated at 2026-10-24 06:22:42.274153
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    class DummyDownloader:
-        params = {}
-
-    downloader = DummyDownloader()
-    extractor = FuxIE(downloader)
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor._ready is False
-
-    assert extractor._TKN_HOST == 'token.fux.com'
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-    assert extractor.suitable(
-        'https://www.fux.com/video/195359/'
-        'awesome-fucking-kitchen-ends-cum-swallow'
-    )
-
-# Generated at 2026-10-24 06:22:52.956288
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-24 06:22:55.373627
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-24 06:22:57.876565
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-24 06:23:00.291206
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-24 06:23:02.716346
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-24 06:23:05.120466
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-24 06:23:07.534768
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-24 06:23:09.949026
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-24 06:23:12.368412
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-24 06:23:14.784221
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-24 06:23:28.377478
-# Unit test for constructor of class PornerBrosIE
-def test_PornerBrosIE():extractor = PornerBrosIE(None)
-
-# Generated at 2026-10-24 06:23:36.546646
-# Unit test for constructor of class FourTubeBaseIE
-def test_FourTubeBaseIE():
-    downloader = object()
-
-    extractor = FourTubeBaseIE(downloader)
-
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert isinstance(extractor, InfoExtractor)
-    assert extractor._downloader is downloader
-    assert extractor._ready is False
-
-# Generated at 2026-10-24 06:23:45.865023
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    downloader = object()
-    extractor = FuxIE(downloader)
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor._TKN_HOST == 'token.fux.com'
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-
-# Generated at 2026-10-24 06:23:55.244367
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    downloader = object()
-    extractor = FuxIE(downloader)
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor._TKN_HOST == 'token.fux.com'
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-    assert extractor.suitable(
-        'https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
-    assert extractor.suitable('https://www.fux.com/embed/195359')
-    assert not extractor.suitable('https://www.4tube.com/videos/209733/video')
-
-# Generated at 2026-10-24 06:23:56.728422
-# Unit test for constructor of class PornTubeIE
-def test_PornTubeIE():
-    # constructor should work with and without downloader
-    ie = PornTubeIE()
-    assert isinstance(ie, PornTubeIE)
-    assert isinstance(ie, FourTubeBaseIE)
-
-    ie_with_none = PornTubeIE(downloader=None)
-    assert isinstance(ie_with_none, PornTubeIE)
-
-    # class configuration
-    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
-    assert ie._TKN_HOST == 'tkn.porntube.com'
-    assert isinstance(ie._VALID_URL, str)
-
-    # _VALID_URL matching
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('display_id') == 'teen-couple-doing-anal'
-
-    m = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-
-    m = re.match(ie._VALID_URL, 'https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
-    assert m is not None
-    assert m.group('id') == '7089759'
-    assert m.group('kind') == 'm'
-
-    # should not match other sites
-    assert re.match(ie._VALID_URL, 'https://www.4tube.com/videos/209733/video') is None
-    assert re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369') is None
-
-# Generated at 2026-10-24 06:24:05.489494
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    extractor = FuxIE()
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._VALID_URL
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-    assert extractor._TKN_HOST == 'token.fux.com'
-
-# Generated at 2026-10-24 06:24:08.010777
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-24 06:24:10.512719
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-24 06:24:12.925931
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-24 06:24:15.343061
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-24 06:24:17.758202
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-24 06:24:41.729596
-# Unit test for constructor of class PornTubeIE
-def test_PornTubeIE():extractor = PornTubeIE()
-
-# Generated at 2026-10-24 06:24:51.840911
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    downloader = object()
-    extractor = FuxIE(downloader)
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor._TKN_HOST == 'token.fux.com'
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-
-# Generated at 2026-10-24 06:25:01.744275
-# Unit test for constructor of class FuxIE
-def test_FuxIE():
-    downloader = object()
-    extractor = FuxIE(downloader)
-
-    assert isinstance(extractor, FuxIE)
-    assert isinstance(extractor, FourTubeBaseIE)
-    assert extractor._downloader is downloader
-    assert extractor._ready is False
-    assert extractor._TKN_HOST == 'token.fux.com'
-    assert extractor._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
-
-# Generated at 2026-10-24 06:25:04.160106
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-24 06:25:06.578012
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-24 06:25:09.085930
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-24 06:25:11.499646
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-24 06:25:13.914166
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-24 06:25:16.329851
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-24 06:25:18.743264
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-24 06:25:21.161017
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-24 06:25:23.572787
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-24 06:25:25.987480
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-24 06:25:28.400943
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-24 06:25:36.150113
-# Unit test for constructor of class PornerBrosIE
-def test_PornerBrosIE():extractor = PornerBrosIE()
+def test_FourTubeIE():
+    ie = FourTubeIE()
+    assert ie.IE_NAME == '4tube'
+    assert ie._TKN_HOST == 'token.4tube.com'
+    assert ie._URL_TEMPLATE == 'https://www.4tube.com/videos/%s/video'
+    assert ie.suitable('http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert ie.suitable('http://www.4tube.com/embed/209733')
+    assert ie.suitable('http://m.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert not ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert ie._match_id('http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black') == '209733'
+    assert ie._match_id('http://www.4tube.com/embed/209733') == '209733'
+    assert ie._match_id('http://m.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black') == '209733'

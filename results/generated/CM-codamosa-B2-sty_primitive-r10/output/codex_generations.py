@@ -1,862 +1,162 @@
 
 
-# Generated at 2026-10-24 07:47:52.171474
+# Generated at 2026-11-03 05:58:05.000080
 # Unit test for method mute of class Register
+def test_Register_mute():
+    from sty import Register, Style
+    from sty.rendertype import Sgr
 
-# Generated at 2026-10-24 07:47:54.673763
-# Unit test for method mute of class Register
-
-# Generated at 2026-10-24 07:47:57.089944
-# Unit test for method mute of class Register
-
-# Generated at 2026-10-24 07:48:14.431246
-# Unit test for method __call__ of class Register
-def test_Register___call__():
-    class Dummy(RenderType):
-        pass
-
-    def render_dummy(*args):
-        return "<dummy{!r}>".format(tuple(args))
-
-    # Setup a register with a dummy render function.
+    # Create a register with a render-function and a custom style-attribute.
     r = Register()
-    r.renderfuncs[Dummy] = render_dummy
-    r.set_eightbit_call(Dummy)
-    r.set_rgb_call(Dummy)
+    r.set_renderfunc(Sgr, lambda code: "\x1b[%sm" % code)
 
-    # Attach a named style attribute (gets rendered on assignment).
-    r.orange = Style(Dummy(1, 2, 3))
-    assert str(r.orange) == "<dummy(1, 2, 3)>"
+    rule = Sgr(34)
+    r.blue = Style(rule, value="\x1b[34m")
 
-    # 8bit-call: single int arg -> eightbit_call is used.
-    assert r(42) == "<dummy(42,)>"
+    # Sanity check: before muting, the style renders normally.
+    assert str(r.blue) == "\x1b[34m"
 
-    # 24bit-call: three int args -> rgb_call is used.
-    assert r(1, 2, 3) == "<dummy(1, 2, 3)>"
-
-    # String call: returns the attribute with the matching name.
-    assert r("orange") == "<dummy(1, 2, 3)>"
-
-    # String call with a non-existing name raises AttributeError.
-    try:
-        r("does_not_exist")  # type: ignore
-        raised = False
-    except AttributeError:
-        raised = True
-    assert raised is True
-
-    # Wrong number of args -> empty string.
-    assert r() == ""
-    assert r(1, 2) == ""
-    assert r(1, 2, 3, 4) == ""
-
-    # Muted register: every call returns an empty string.
+    # Mute the register.
     r.mute()
+
+    # The mute flag must be set.
     assert r.is_muted is True
-    assert r(42) == ""
-    assert r(1, 2, 3) == ""
-    assert r("orange") == ""
 
-    # Muting also blanks already-rendered style attributes.
-    assert str(r.orange) == ""
+    # All existing style-attributes should render as empty strings now...
+    assert str(r.blue) == ""
+    # ...but their styling rules should be preserved.
+    assert r.blue.rules == (rule,)
 
-    # Unmuting re-renders the styles and restores normal calls.
-    r.unmute()
-    assert r.is_muted is False
-    assert str(r.orange) == "<dummy(1, 2, 3)>"
-    assert r(42) == "<dummy(42,)>"
-    assert r(1, 2, 3) == "<dummy(1, 2, 3)>"
-    assert r("orange") == "<dummy(1, 2, 3)>"
+    # New styles assigned while muted are rendered as empty strings as well.
+    r.red = Style(Sgr(31))
+    assert str(r.red) == ""
 
-    # Copying a register preserves call behavior.
-    r2 = r.copy()
-    assert r2(42) == "<dummy(42,)>"
-    assert r2(1, 2, 3) == "<dummy(1, 2, 3)>"
-    assert r2("orange") == "<dummy(1, 2, 3)>"
+    # Direct calls on a muted register return an empty string.
+    assert r(42) == ""          # 8bit call
+    assert r(10, 20, 30) == ""  # rgb call
+    assert r("blue") == ""      # attribute call
 
-# Generated at 2026-10-24 07:48:24.020922
-# Unit test for method set_eightbit_call of class Register
-def test_Register_set_eightbit_call():
-    register = Register()
-    calls = []
+# Generated at 2026-11-03 06:00:33.611436
+# Unit test for method copy of class Register
 
-    def render_eightbit(value: int) -> str:
-        calls.append(value)
-        return f"eightbit:{value}"
+# Generated at 2026-11-03 06:01:35.429088
+# Unit test for method copy of class Register
+def test_Register_copy():reg = Register()
 
-    register.renderfuncs[RenderType] = render_eightbit
-    register.set_eightbit_call(RenderType)
-
-    assert register.eightbit_call is render_eightbit
-    assert register(42) == "eightbit:42"
-    assert calls == [42]
-
-# Generated at 2026-10-24 07:48:40.589525
+# Generated at 2026-11-03 06:02:58.779910
 # Unit test for constructor of class Style
 def test_Style():
-    rule_one = Style(value="rule-one")
-    rule_two = Style(value="rule-two")
-
-    style = Style(rule_one, rule_two, value="\x1b[1m")
-
+    """
+    Test the constructor of the Style class.
+    """
+    # Test with no rules and no value
+    style = Style()
     assert isinstance(style, Style)
     assert isinstance(style, str)
-    assert str(style) == "\x1b[1m"
-    assert style.rules == (rule_one, rule_two)
+    assert str(style) == ""
+    assert style.rules == ()
 
-    empty_style = Style()
+    # Test with a single rule and no value
+    rule = "Sgr(1)"
+    style = Style(rule)
+    assert style.rules == (rule,)
+    assert str(style) == ""
 
-    assert str(empty_style) == ""
-    assert empty_style.rules == ()
+    # Test with multiple rules and no value
+    rule1, rule2 = "RgbFg(1, 5, 10)", "Sgr(1)"
+    style = Style(rule1, rule2)
+    assert style.rules == (rule1, rule2)
+    assert str(style) == ""
 
-# Generated at 2026-10-24 07:48:43.091543
-# Unit test for method set_rgb_call of class Register
+    # Test with a value only
+    style = Style(value="\x1b[38;2;1;5;10m")
+    assert str(style) == "\x1b[38;2;1;5;10m"
+    assert style.rules == ()
 
-# Generated at 2026-10-24 07:48:45.507214
-# Unit test for method set_rgb_call of class Register
+    # Test with rules and a value
+    style = Style(rule1, rule2, value="\x1b[38;2;1;5;10m\x1b[1m")
+    assert style.rules == (rule1, rule2)
+    assert str(style) == "\x1b[38;2;1;5;10m\x1b[1m"
 
-# Generated at 2026-10-24 07:48:47.922327
-# Unit test for method set_rgb_call of class Register
+    # Test that Style instances are independent (rules are not shared)
+    style1 = Style(rule1)
+    style2 = Style(rule2)
+    assert style1.rules == (rule1,)
+    assert style2.rules == (rule2,)
 
-# Generated at 2026-10-24 07:48:50.335345
-# Unit test for method __call__ of class Register
+    # Test that Style behaves like a str
+    style = Style(rule1, value="orange")
+    assert style == "orange"
+    assert style.upper() == "ORANGE"
+    assert len(style) == 6
 
-# Generated at 2026-10-24 07:48:52.751312
-# Unit test for method __call__ of class Register
+# Generated at 2026-11-03 06:04:19.271429
+# Unit test for method __new__ of class Style
+def test_Style___new__():
+    from sty.register import Style
 
-# Generated at 2026-10-24 07:48:55.166299
-# Unit test for method __call__ of class Register
+    # Test creating a Style instance with a value and no rules
+    style = Style(value="hello")
+    assert isinstance(style, Style)
+    assert isinstance(style, str)
+    assert str(style) == "hello"
+    assert style.rules == ()
 
-# Generated at 2026-10-24 07:48:57.580363
-# Unit test for constructor of class Register
+    # Test creating a Style instance with rules and a value
+    rule1 = "rule1"
+    rule2 = "rule2"
+    style2 = Style(rule1, rule2, value="world")
+    assert isinstance(style2, Style)
+    assert isinstance(style2, str)
+    assert str(style2) == "world"
+    assert style2.rules == (rule1, rule2)
 
-# Generated at 2026-10-24 07:48:59.994644
-# Unit test for constructor of class Register
+    # Test creating a Style instance with rules but no value
+    style3 = Style(rule1)
+    assert str(style3) == ""
+    assert style3.rules == (rule1,)
 
-# Generated at 2026-10-24 07:49:02.408881
-# Unit test for constructor of class Register
+    # Test creating a Style instance with no arguments
+    style4 = Style()
+    assert str(style4) == ""
+    assert style4.rules == ()
 
-# Generated at 2026-10-24 07:49:23.408276
-# Unit test for constructor of class Register
-def test_Register():
+# Generated at 2026-11-03 06:05:48.562705
+# Unit test for method mute of class Register
+def test_Register_mute():
+    from sty.register import Register, Style
+    from sty.rendertype import RgbFg, Sgr
+
     register = Register()
 
-    assert register.renderfuncs == {}
-    assert register.is_muted is False
-    assert register.eightbit_call(42) == 42
-    assert register.rgb_call(1, 2, 3) == (1, 2, 3)
-
-# Generated at 2026-10-24 07:49:25.826986
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:49:28.241780
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:49:30.661895
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:49:33.073672
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:49:35.488875
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:49:37.904697
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:49:40.319426
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:49:42.731885
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:49:45.144698
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:49:47.558385
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:49:49.972721
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:49:52.388548
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:49:54.804402
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:49:57.217997
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:49:59.632233
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:50:02.046979
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:50:04.462999
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:50:06.878839
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:50:09.294770
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:50:11.708535
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:50:14.123532
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:50:16.537231
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:50:18.953773
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:50:25.569651
-# Unit test for constructor of class Register
-def test_Register():register = Register()
-
-# Generated at 2026-10-24 07:51:00.657064
-# Unit test for constructor of class Register
-def test_Register():
-    reg = Register()
-
-    # instance created correctly
-    assert isinstance(reg, Register)
-
-    # __init__ defaults
-    assert reg.renderfuncs == {}
-    assert isinstance(reg.renderfuncs, dict)
-    assert reg.is_muted is False
-
-    # default calls defined in __init__
-    assert callable(reg.eightbit_call)
-    assert callable(reg.rgb_call)
-    assert reg.eightbit_call(42) == 42
-    assert reg.rgb_call(1, 5, 10) == (1, 5, 10)
-
-    # each instance gets its own state - no shared mutable
-    reg2 = Register()
-    assert reg.renderfuncs is not reg2.renderfuncs
-    assert reg.eightbit_call is not reg2.eightbit_call
-    assert reg.rgb_call is not reg2.rgb_call
-
-    # __setattr__ non-Style path used by __init__
-    reg.custom_attr = "value"
-    assert reg.custom_attr == "value"
-
-# Generated at 2026-10-24 07:51:03.174532
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:51:05.690274
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:51:08.102741
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:51:10.521487
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:51:12.938150
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:51:15.353342
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:51:17.781182
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:51:20.186187
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:51:48.817239
-# Unit test for method __call__ of class Register
-def test_Register___call__():reg = Register()
-
-    # Single int arg -> 8bit call (default render is identity)
-
-# Generated at 2026-10-24 07:52:00.173967
-# Unit test for method __call__ of class Register
-def test_Register___call__():
-    r = Register()
-
-    # --- Case: 1 int arg -> eightbit_call ---
-    r.eightbit_call = lambda x: f"eightbit:{x}"
-    assert r(42) == "eightbit:42"
-    assert r(42, foo="bar") == "eightbit:42"  # kwargs forwarded
-
-    # --- Case: 1 str arg -> attribute lookup ---
-    r.red = Style(value="RED")
-    assert r("red") == "RED"
-
-    # --- Case: 3 args -> rgb_call ---
-    r.rgb_call = lambda x, y, z: f"rgb:{x},{y},{z}"
-    assert r(10, 42, 255) == "rgb:10,42,255"
-    assert r(10, 42, 255, foo="bar") == "rgb:10,42,255"  # kwargs forwarded
-
-    # --- Case: wrong arg count -> empty string ---
-    assert r() == ""
-    assert r(1, 2) == ""
-    assert r(1, 2, 3, 4) == ""
-
-    # --- Case: muted register -> empty string for every call type ---
-    r.mute()
-    assert r(42) == ""
-    assert r("red") == ""
-    assert r(10, 42, 255) == ""
-
-# Generated at 2026-10-24 07:52:02.704754
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:52:05.124375
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:52:07.534976
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:52:09.952094
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:52:12.383465
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:52:14.782799
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:52:17.200067
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:52:19.609771
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:52:22.023301
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:52:24.443382
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:52:26.857424
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:52:29.275164
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:52:31.689222
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:52:34.103419
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:52:36.516251
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:52:38.931030
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:52:41.351807
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:52:43.763046
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:52:46.177819
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:52:48.591488
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:52:51.008262
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:52:52.372350
-# Unit test for method __call__ of class Register
-def test_Register___call__():reg = Register()
-
-    # Single int arg -> 8bit call (default render is identity)
-
-# Generated at 2026-10-24 07:52:53.684864
-# Unit test for method __call__ of class Register
-def test_Register___call__():
-    r = Register()
-
-    # --- Case: 1 int arg -> eightbit_call ---
-    r.eightbit_call = lambda x: f"eightbit:{x}"
-    assert r(42) == "eightbit:42"
-    assert r(42, foo="bar") == "eightbit:42"  # kwargs forwarded
-
-    # --- Case: 1 str arg -> attribute lookup ---
-    r.red = Style(value="RED")
-    assert r("red") == "RED"
-
-    # --- Case: 3 args -> rgb_call ---
-    r.rgb_call = lambda x, y, z: f"rgb:{x},{y},{z}"
-    assert r(10, 42, 255) == "rgb:10,42,255"
-    assert r(10, 42, 255, foo="bar") == "rgb:10,42,255"  # kwargs forwarded
-
-    # --- Case: wrong arg count -> empty string ---
-    assert r() == ""
-    assert r(1, 2) == ""
-    assert r(1, 2, 3, 4) == ""
-
-    # --- Case: muted register -> empty string for every call type ---
-    r.mute()
-    assert r(42) == ""
-    assert r("red") == ""
-    assert r(10, 42, 255) == ""
-
-# Generated at 2026-10-24 07:52:54.995519
-# Unit test for method __call__ of class Register
-def test_Register___call__():reg = Register()
-
-    # Single int arg -> 8bit call (default render is identity)
-
-# Generated at 2026-10-24 07:53:15.458846
-# Unit test for constructor of class Register
-def test_Register():
-    register = Register()
-
-    assert register.renderfuncs == {}
-    assert register.is_muted is False
-
-    assert callable(register.eightbit_call)
-    assert register.eightbit_call(42) == 42
-
-    assert callable(register.rgb_call)
-    assert register.rgb_call(10, 20, 30) == (10, 20, 30)
-
-# Generated at 2026-10-24 07:53:16.766336
-# Unit test for method __call__ of class Register
-def test_Register___call__():
-    r = Register()
-
-    # --- Case: 1 int arg -> eightbit_call ---
-    r.eightbit_call = lambda x: f"eightbit:{x}"
-    assert r(42) == "eightbit:42"
-    assert r(42, foo="bar") == "eightbit:42"  # kwargs forwarded
-
-    # --- Case: 1 str arg -> attribute lookup ---
-    r.red = Style(value="RED")
-    assert r("red") == "RED"
-
-    # --- Case: 3 args -> rgb_call ---
-    r.rgb_call = lambda x, y, z: f"rgb:{x},{y},{z}"
-    assert r(10, 42, 255) == "rgb:10,42,255"
-    assert r(10, 42, 255, foo="bar") == "rgb:10,42,255"  # kwargs forwarded
-
-    # --- Case: wrong arg count -> empty string ---
-    assert r() == ""
-    assert r(1, 2) == ""
-    assert r(1, 2, 3, 4) == ""
-
-    # --- Case: muted register -> empty string for every call type ---
-    r.mute()
-    assert r(42) == ""
-    assert r("red") == ""
-    assert r(10, 42, 255) == ""
-
-# Generated at 2026-10-24 07:53:18.081810
-# Unit test for method __call__ of class Register
-def test_Register___call__():reg = Register()
-
-    # Single int arg -> 8bit call (default render is identity)
-
-# Generated at 2026-10-24 07:53:39.819716
-# Unit test for constructor of class Register
-def test_Register():
-    register = Register()
-
-    assert register.renderfuncs == {}
-    assert register.is_muted is False
-
-    assert callable(register.eightbit_call)
-    assert register.eightbit_call(42) == 42
-
-    assert callable(register.rgb_call)
-    assert register.rgb_call(10, 42, 255) == (10, 42, 255)
-
-# Generated at 2026-10-24 07:53:42.234368
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:53:44.649529
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:53:47.063190
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:53:49.479653
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:53:51.893715
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:53:54.308784
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:53:56.720127
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:53:59.133369
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:54:01.550213
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:54:09.924914
-# Unit test for constructor of class Register
-def test_Register():register = Register()
-
-
-# Generated at 2026-10-24 07:54:11.249414
-# Unit test for method __call__ of class Register
-def test_Register___call__():
-    r = Register()
-
-    # --- Case: 1 int arg -> eightbit_call ---
-    r.eightbit_call = lambda x: f"eightbit:{x}"
-    assert r(42) == "eightbit:42"
-    assert r(42, foo="bar") == "eightbit:42"  # kwargs forwarded
-
-    # --- Case: 1 str arg -> attribute lookup ---
-    r.red = Style(value="RED")
-    assert r("red") == "RED"
-
-    # --- Case: 3 args -> rgb_call ---
-    r.rgb_call = lambda x, y, z: f"rgb:{x},{y},{z}"
-    assert r(10, 42, 255) == "rgb:10,42,255"
-    assert r(10, 42, 255, foo="bar") == "rgb:10,42,255"  # kwargs forwarded
-
-    # --- Case: wrong arg count -> empty string ---
-    assert r() == ""
-    assert r(1, 2) == ""
-    assert r(1, 2, 3, 4) == ""
-
-    # --- Case: muted register -> empty string for every call type ---
-    r.mute()
-    assert r(42) == ""
-    assert r("red") == ""
-    assert r(10, 42, 255) == ""
-
-# Generated at 2026-10-24 07:54:12.567132
-# Unit test for method __call__ of class Register
-def test_Register___call__():reg = Register()
-
-    # Single int arg -> 8bit call (default render is identity)
-
-# Generated at 2026-10-24 07:54:33.785074
-# Unit test for constructor of class Register
-def test_Register():
-    register = Register()
-
-    assert register.renderfuncs == {}
-    assert register.is_muted is False
-
-    assert callable(register.eightbit_call)
-    assert register.eightbit_call(42) == 42
-
-    assert callable(register.rgb_call)
-    assert register.rgb_call(10, 42, 255) == (10, 42, 255)
-
-# Generated at 2026-10-24 07:54:54.135438
-# Unit test for constructor of class Register
-def test_Register():
-    register = Register()
-
-    assert register.renderfuncs == {}
-    assert register.is_muted is False
-
-    assert callable(register.eightbit_call)
-    assert register.eightbit_call(42) == 42
-
-    assert callable(register.rgb_call)
-    assert register.rgb_call(10, 20, 30) == (10, 20, 30)
-
-# Generated at 2026-10-24 07:54:56.564192
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:54:57.907520
-# Unit test for method __call__ of class Register
-def test_Register___call__():reg = Register()
-
-    # Single int arg -> 8bit call (default render is identity)
-
-# Generated at 2026-10-24 07:54:59.224095
-# Unit test for method __call__ of class Register
-def test_Register___call__():
-    r = Register()
-
-    # --- Case: 1 int arg -> eightbit_call ---
-    r.eightbit_call = lambda x: f"eightbit:{x}"
-    assert r(42) == "eightbit:42"
-    assert r(42, foo="bar") == "eightbit:42"  # kwargs forwarded
-
-    # --- Case: 1 str arg -> attribute lookup ---
-    r.red = Style(value="RED")
-    assert r("red") == "RED"
-
-    # --- Case: 3 args -> rgb_call ---
-    r.rgb_call = lambda x, y, z: f"rgb:{x},{y},{z}"
-    assert r(10, 42, 255) == "rgb:10,42,255"
-    assert r(10, 42, 255, foo="bar") == "rgb:10,42,255"  # kwargs forwarded
-
-    # --- Case: wrong arg count -> empty string ---
-    assert r() == ""
-    assert r(1, 2) == ""
-    assert r(1, 2, 3, 4) == ""
-
-    # --- Case: muted register -> empty string for every call type ---
-    r.mute()
-    assert r(42) == ""
-    assert r("red") == ""
-    assert r(10, 42, 255) == ""
-
-# Generated at 2026-10-24 07:55:00.562590
-# Unit test for method __call__ of class Register
-def test_Register___call__():reg = Register()
-
-    # Single int arg -> 8bit call (default render is identity)
-
-# Generated at 2026-10-24 07:55:01.888081
-# Unit test for method __call__ of class Register
-def test_Register___call__():
-    r = Register()
-
-    # --- Case: 1 int arg -> eightbit_call ---
-    r.eightbit_call = lambda x: f"eightbit:{x}"
-    assert r(42) == "eightbit:42"
-    assert r(42, foo="bar") == "eightbit:42"  # kwargs forwarded
-
-    # --- Case: 1 str arg -> attribute lookup ---
-    r.red = Style(value="RED")
-    assert r("red") == "RED"
-
-    # --- Case: 3 args -> rgb_call ---
-    r.rgb_call = lambda x, y, z: f"rgb:{x},{y},{z}"
-    assert r(10, 42, 255) == "rgb:10,42,255"
-    assert r(10, 42, 255, foo="bar") == "rgb:10,42,255"  # kwargs forwarded
-
-    # --- Case: wrong arg count -> empty string ---
-    assert r() == ""
-    assert r(1, 2) == ""
-    assert r(1, 2, 3, 4) == ""
-
-    # --- Case: muted register -> empty string for every call type ---
-    r.mute()
-    assert r(42) == ""
-    assert r("red") == ""
-    assert r(10, 42, 255) == ""
-
-# Generated at 2026-10-24 07:55:03.212694
-# Unit test for method __call__ of class Register
-def test_Register___call__():reg = Register()
-
-    # Single int arg -> 8bit call (default render is identity)
-
-# Generated at 2026-10-24 07:55:23.735498
-# Unit test for constructor of class Register
-def test_Register():
-    register = Register()
-
-    assert register.renderfuncs == {}
-    assert register.is_muted is False
-
-    assert callable(register.eightbit_call)
-    assert register.eightbit_call(42) == 42
-
-    assert callable(register.rgb_call)
-    assert register.rgb_call(1, 2, 3) == (1, 2, 3)
-
-# Generated at 2026-10-24 07:55:40.242566
-# Unit test for constructor of class Register
-def test_Register():
-    reg = Register()
-
-    # instance created correctly
-    assert isinstance(reg, Register)
-
-    # __init__ defaults
-    assert reg.renderfuncs == {}
-    assert isinstance(reg.renderfuncs, dict)
-    assert reg.is_muted is False
-
-    # default calls defined in __init__
-    assert callable(reg.eightbit_call)
-    assert callable(reg.rgb_call)
-    assert reg.eightbit_call(42) == 42
-    assert reg.rgb_call(1, 5, 10) == (1, 5, 10)
-
-    # each instance gets its own state - no shared mutable
-    reg2 = Register()
-    assert reg.renderfuncs is not reg2.renderfuncs
-    assert reg.eightbit_call is not reg2.eightbit_call
-    assert reg.rgb_call is not reg2.rgb_call
-
-    # __setattr__ non-Style path used by __init__
-    reg.custom_attr = "value"
-    assert reg.custom_attr == "value"
-
-# Generated at 2026-10-24 07:55:42.661039
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:55:45.186953
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:55:47.603386
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:55:50.186688
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:55:52.600924
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:55:55.018034
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:55:57.437246
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:55:59.855182
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:02.269467
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:04.684342
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:07.094286
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:09.510839
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:11.934515
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:14.351491
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:16.766907
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:19.189070
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:21.596385
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:24.010936
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:26.429519
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:56:28.848178
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:56:31.263335
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:56:33.697537
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:36.112262
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:38.529780
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:40.945505
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:43.362872
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:45.774394
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:48.188750
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:50.603613
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:53.018498
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:55.435735
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:56:57.856565
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:57:00.268451
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:57:03.779224
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:57:06.191556
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:57:08.610643
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:57:11.030556
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:57:13.444745
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:57:15.864934
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:57:18.282997
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:57:20.701805
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:57:23.116967
-# Unit test for constructor of class Register
-
-# Generated at 2026-10-24 07:57:25.531177
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:57:27.945696
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:57:30.362068
-# Unit test for method __call__ of class Register
-
-# Generated at 2026-10-24 07:57:47.015201
-# Unit test for constructor of class Register
-def test_Register():
-    reg = Register()
-
-    # instance created correctly
-    assert isinstance(reg, Register)
-
-    # __init__ defaults
-    assert reg.renderfuncs == {}
-    assert isinstance(reg.renderfuncs, dict)
-    assert reg.is_muted is False
-
-    # default calls defined in __init__
-    assert callable(reg.eightbit_call)
-    assert callable(reg.rgb_call)
-    assert reg.eightbit_call(42) == 42
-    assert reg.rgb_call(1, 5, 10) == (1, 5, 10)
-
-    # each instance gets its own state - no shared mutable
-    reg2 = Register()
-    assert reg.renderfuncs is not reg2.renderfuncs
-    assert reg.eightbit_call is not reg2.eightbit_call
-    assert reg.rgb_call is not reg2.rgb_call
-
-    # __setattr__ non-Style path used by __init__
-    reg.custom_attr = "value"
-    assert reg.custom_attr == "value"
+    # Setup render functions
+    register.set_renderfunc(RgbFg, lambda r, g, b: f"\x1b[38;2;{r};{g};{b}m")
+    register.set_renderfunc(Sgr, lambda *codes: f"\x1b[{';'.join(map(str, codes))}m")
+
+    # Assign a style; it should be rendered normally before muting
+    register.orange = Style(RgbFg(1, 2, 3), Sgr(1))
+    assert isinstance(register.orange, Style)
+    assert str(register.orange) == "\x1b[38;2;1;2;3m\x1b[1m"
+
+    # Mute the register
+    register.mute()
+
+    # The mute flag is set
+    assert register.is_muted is True
+
+    # Existing styles are re-rendered as empty strings, but rules are preserved
+    assert str(register.orange) == ""
+    assert register.orange.rules == (RgbFg(1, 2, 3), Sgr(1))
+
+    # New styles assigned while muted are also rendered as empty strings
+    register.blue = Style(RgbFg(4, 5, 6))
+    assert isinstance(register.blue, Style)
+    assert str(register.blue) == ""
+
+    # Direct calls on a muted register return an empty string
+    assert register(42) == ""
+    assert register(1, 2, 3) == ""
+    assert register("orange") == ""
+
+    # Non-style attributes are unaffected by muting
+    assert register.is_muted is True

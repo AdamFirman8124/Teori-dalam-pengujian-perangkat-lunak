@@ -2,13 +2,37 @@
 import f044 as module_0
 
 def test_case_0():
-    int_0 = 1041
-    var_0 = module_0.change_base(int_0, int_0)
-    assert var_0 == '10'
-    int_1 = -3728
-    int_2 = 3541
-    var_1 = module_0.change_base(int_1, int_2)
-    assert var_1 == ''
-    int_3 = -969
+    int_0 = 8
+    int_1 = 3
+    var_0 = module_0.change_base(int_0, int_1)
+    assert var_0 == '22'
+    int_2 = 2
+    var_1 = module_0.change_base(int_0, int_2)
+    assert var_1 == '1000'
+    int_3 = 7
     var_2 = module_0.change_base(int_3, int_2)
-    assert var_2 == ''
+    assert var_2 == '111'
+    int_4 = 10
+    var_3 = module_0.change_base(int_4, int_4)
+    assert var_3 == '10'
+    int_5 = 1
+    var_4 = module_0.change_base(int_5, int_2)
+    assert var_4 == '1'
+    int_6 = 9
+    int_7 = 5
+    var_5 = module_0.change_base(int_6, int_7)
+    assert var_5 == '14'
+    int_8 = 100
+    var_6 = module_0.change_base(int_8, int_7)
+    assert var_6 == '400'
+    int_9 = 255
+    int_10 = 16
+    var_7 = module_0.change_base(int_9, int_10)
+    assert var_7 == '1515'
+    int_11 = 0
+    var_8 = module_0.change_base(int_11, int_2)
+    assert var_8 == ''
+    var_9 = module_0.change_base(int_11, int_4)
+    assert var_9 == ''
+    str_0 = 'All tests passed!'
+    var_10 = print(str_0)

@@ -3,48 +3,40 @@ import dataclasses_json.undefined as module_0
 
 def test_case_0():
     try:
-        ignore_undefined_parameters_0 = module_0._IgnoreUndefinedParameters()
-        assert ignore_undefined_parameters_0 is not None
+        str_0 = 'd'
+        set_0 = {str_0}
+        catch_all_undefined_parameters_0 = module_0._CatchAllUndefinedParameters()
+        assert catch_all_undefined_parameters_0 is not None
         assert module_0.CatchAllVar is not None
-        int_0 = 25
-        int_1 = 40
-        bytes_0 = b'\xfbC'
-        dict_0 = {int_1: int_0}
-        dict_1 = ignore_undefined_parameters_0.handle_from_dict(bytes_0, dict_0)
+        dict_0 = catch_all_undefined_parameters_0.handle_dump(set_0)
     except BaseException:
         pass
 
 def test_case_1():
     try:
-        ignore_undefined_parameters_0 = module_0._IgnoreUndefinedParameters()
-        assert ignore_undefined_parameters_0 is not None
-        assert module_0.CatchAllVar is not None
-        str_0 = 'a'
-        str_1 = 'b'
-        undefined_parameter_error_0 = module_0.UndefinedParameterError(str_0)
-        assert undefined_parameter_error_0.messages == ['a']
-        assert undefined_parameter_error_0.field_name == '_schema'
-        assert undefined_parameter_error_0.data is None
-        assert undefined_parameter_error_0.valid_data is None
-        assert undefined_parameter_error_0.kwargs == {}
+        bytes_0 = b'u\xa9\xeb$\xd2['
+        str_0 = '"3y2Q?on'
+        dict_0 = {str_0: bytes_0}
+        list_0 = [dict_0]
+        dict_1 = None
         catch_all_undefined_parameters_0 = module_0._CatchAllUndefinedParameters()
         assert catch_all_undefined_parameters_0 is not None
-        callable_0 = catch_all_undefined_parameters_0.create_init(undefined_parameter_error_0)
-        assert callable_0 is not None
-        dict_0 = {ignore_undefined_parameters_0: str_0, str_1: str_0, str_1: ignore_undefined_parameters_0}
-        dict_1 = {}
-        catch_all_undefined_parameters_1 = module_0._CatchAllUndefinedParameters(**dict_1)
-        assert catch_all_undefined_parameters_1 is not None
-        dict_2 = catch_all_undefined_parameters_1.handle_from_dict(callable_0, dict_0)
+        assert module_0.CatchAllVar is not None
+        dict_2 = catch_all_undefined_parameters_0.handle_from_dict(list_0, dict_1)
     except BaseException:
         pass
 
 def test_case_2():
     try:
-        list_0 = []
+        int_0 = 5
+        dict_0 = {int_0: int_0}
         catch_all_undefined_parameters_0 = module_0._CatchAllUndefinedParameters()
         assert catch_all_undefined_parameters_0 is not None
         assert module_0.CatchAllVar is not None
-        dict_0 = catch_all_undefined_parameters_0.handle_dump(list_0)
+        callable_0 = catch_all_undefined_parameters_0.create_init(dict_0)
+        assert callable_0 is not None
+        catch_all_undefined_parameters_1 = module_0._CatchAllUndefinedParameters()
+        assert catch_all_undefined_parameters_1 is not None
+        dict_1 = catch_all_undefined_parameters_1.handle_to_dict(callable_0, dict_0)
     except BaseException:
         pass

@@ -1,700 +1,353 @@
 
 
-# Generated at 2026-10-25 18:01:36.254314
+# Generated at 2026-11-01 23:21:13.540517
 # Unit test for constructor of class LiteralParsingFailure
+def test_LiteralParsingFailure():
+    from isort.exceptions import ISortError, LiteralParsingFailure
 
-# Generated at 2026-10-25 18:01:38.670567
-# Unit test for constructor of class LiteralParsingFailure
+    code = "{'key': 'value'"
+    original_error = SyntaxError("unexpected EOF while parsing")
 
-# Generated at 2026-10-25 18:01:41.082566
-# Unit test for constructor of class LiteralParsingFailure
+    exception = LiteralParsingFailure(code=code, original_error=original_error)
 
-# Generated at 2026-10-25 18:01:43.496983
-# Unit test for constructor of class FileSkipComment
+    # Attributes should be stored on the exception instance
+    assert exception.code == code
+    assert exception.original_error is original_error
 
-# Generated at 2026-10-25 18:01:45.911913
-# Unit test for constructor of class FileSkipComment
+    # The exception message should mention both the code and the original error
+    message = str(exception)
+    assert code in message
+    assert str(original_error) in message
+    assert "isort failed to parse the given literal" in message
+    assert "ast.literal_eval" in message
 
-# Generated at 2026-10-25 18:01:48.325888
-# Unit test for constructor of class FileSkipComment
+    # Should be an instance of the base isort exception and Exception
+    assert isinstance(exception, ISortError)
+    assert isinstance(exception, Exception)
 
-# Generated at 2026-10-25 18:01:50.740773
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:01:53.156082
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:01:55.572136
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:01:57.989256
+# Generated at 2026-11-01 23:21:47.947011
 # Unit test for constructor of class FileSkipped
+def test_FileSkipped():
+    message = "This file was skipped for testing purposes"
+    file_path = "path/to/skipped_file.py"
 
-# Generated at 2026-10-25 18:02:00.406231
-# Unit test for constructor of class FileSkipped
+    exception = FileSkipped(message, file_path)
 
-# Generated at 2026-10-25 18:02:02.819999
-# Unit test for constructor of class FileSkipped
+    # Constructor should set the file_path attribute
+    assert exception.file_path == file_path
 
-# Generated at 2026-10-25 18:02:05.233064
-# Unit test for constructor of class IntroducedSyntaxErrors
+    # Constructor should pass the message to the base Exception
+    assert str(exception) == message
 
-# Generated at 2026-10-25 18:02:07.647120
-# Unit test for constructor of class IntroducedSyntaxErrors
+    # FileSkipped should inherit from ISortError (and Exception)
+    assert isinstance(exception, ISortError)
+    assert isinstance(exception, Exception)
 
-# Generated at 2026-10-25 18:02:10.062667
-# Unit test for constructor of class IntroducedSyntaxErrors
 
-# Generated at 2026-10-25 18:02:12.476705
+def test_FileSkipped_can_be_raised_and_caught():
+    message = "Skipped due to test"
+    file_path = "another_file.py"
+
+    with pytest.raises(FileSkipped) as exc_info:
+        raise FileSkipped(message, file_path)
+
+    assert exc_info.value.file_path == file_path
+    assert str(exc_info.value) == message
+
+# Generated at 2026-11-01 23:22:15.090881
 # Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:14.891416
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:17.306599
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:19.723672
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:22.140095
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:24.551990
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:26.966428
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:29.413459
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:31.795294
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:34.211052
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:36.625114
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:39.042872
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:41.460239
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:43.874544
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:46.288340
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:48.707440
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:51.121942
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:53.535997
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:55.951420
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:02:58.364368
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:00.782885
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:03.197053
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:05.611549
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:11.057394
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:13.471761
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:15.885696
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:18.302511
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:20.719252
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:23.136559
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:25.549169
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:27.965017
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:30.380826
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:32.797957
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:35.210242
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:37.624823
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:40.038966
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:42.452375
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:44.866260
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:47.356525
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:49.767725
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:52.192719
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:54.614037
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:57.023761
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:03:59.437891
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:01.855228
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:04.268529
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:06.710497
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:09.120185
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:11.530628
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:13.944445
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:16.358554
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:18.774063
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:21.187392
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:23.605759
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:26.021746
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:28.434253
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:30.848073
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:33.286005
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:35.700906
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:38.115355
-# Unit test for constructor of class UnsupportedSettings
-
-# Generated at 2026-10-25 18:04:40.530208
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:04:42.946078
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:04:45.363038
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:04:47.891819
-# Unit test for constructor of class IntroducedSyntaxErrors
-
-# Generated at 2026-10-25 18:04:50.301210
-# Unit test for constructor of class IntroducedSyntaxErrors
-
-# Generated at 2026-10-25 18:04:52.715521
-# Unit test for constructor of class IntroducedSyntaxErrors
-
-# Generated at 2026-10-25 18:04:55.129446
-# Unit test for constructor of class FileSkipComment
-
-# Generated at 2026-10-25 18:04:57.543426
-# Unit test for constructor of class FileSkipComment
-
-# Generated at 2026-10-25 18:04:59.958147
-# Unit test for constructor of class FileSkipComment
-
-# Generated at 2026-10-25 18:05:02.373521
+def test_UnsupportedSettings():
+# nonce:2c2092d4
+    from isort.exceptions import ISortError, UnsupportedSettings
+
+    unsupported_settings = {
+        "profile": {"value": "nonexistent_profile", "source": "/mock/path/pyproject.toml"},
+        "known_first_party": {"value": "10", "source": "cli"},
+    }
+    exception = UnsupportedSettings(unsupported_settings)
+
+    # It should be an instance of both UnsupportedSettings and the base ISortError
+    assert isinstance(exception, UnsupportedSettings)
+    assert isinstance(exception, ISortError)
+
+    # The unsupported settings should be stored on the exception instance
+    assert exception.unsupported_settings == unsupported_settings
+
+    # The formatted message should include each unsupported option with its value and source
+    message = str(exception)
+    assert message.startswith("isort was provided settings that it doesn't support:\n\n")
+    assert "\t- profile = nonexistent_profile  (source: '/mock/path/pyproject.toml')" in message
+    assert "\t- known_first_party = 10  (source: 'cli')" in message
+    assert (
+        "For a complete and up-to-date listing of supported settings see: "
+        "https://pycqa.github.io/isort/docs/configuration/options/.\n" in message
+    )
+
+# Generated at 2026-11-01 23:22:20.916594
+# Unit test for constructor of class AssignmentsFormatMismatch
+def test_AssignmentsFormatMismatch():
+    code = "from isort import Config\n" "import os\n"
+    assignments_format_mismatch = AssignmentsFormatMismatch(code=code)
+    assert assignments_format_mismatch.code == code
+    assert isinstance(assignments_format_mismatch, ISortError)
+    assert "isort was told to sort a section of assignments" in str(assignments_format_mismatch)
+    assert code in str(assignments_format_mismatch)
+
+# Generated at 2026-11-01 23:22:30.039854
 # Unit test for constructor of class UnsupportedEncoding
-
-# Generated at 2026-10-25 18:05:04.786599
-# Unit test for constructor of class UnsupportedEncoding
-
-# Generated at 2026-10-25 18:05:07.199286
-# Unit test for constructor of class UnsupportedEncoding
-
-# Generated at 2026-10-25 18:05:09.612891
-# Unit test for constructor of class InvalidSettingsPath
-
-# Generated at 2026-10-25 18:05:15.055018
-# Unit test for constructor of class InvalidSettingsPath
-
-# Generated at 2026-10-25 18:05:17.468520
-# Unit test for constructor of class InvalidSettingsPath
-
-# Generated at 2026-10-25 18:05:19.883541
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:05:22.297184
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:05:24.712632
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:05:27.128363
-# Unit test for constructor of class FileSkipSetting
-
-# Generated at 2026-10-25 18:05:29.538961
-# Unit test for constructor of class FileSkipSetting
-
-# Generated at 2026-10-25 18:05:31.953917
-# Unit test for constructor of class FileSkipSetting
-
-# Generated at 2026-10-25 18:05:34.367173
-# Unit test for constructor of class IntroducedSyntaxErrors
-
-# Generated at 2026-10-25 18:05:36.827304
-# Unit test for constructor of class IntroducedSyntaxErrors
-
-# Generated at 2026-10-25 18:05:39.215234
-# Unit test for constructor of class IntroducedSyntaxErrors
-
-# Generated at 2026-10-25 18:05:41.629642
-# Unit test for constructor of class AssignmentsFormatMismatch
-
-# Generated at 2026-10-25 18:05:44.044126
-# Unit test for constructor of class AssignmentsFormatMismatch
-
-# Generated at 2026-10-25 18:05:46.459000
-# Unit test for constructor of class AssignmentsFormatMismatch
-
-# Generated at 2026-10-25 18:05:48.873102
-# Unit test for constructor of class ISortError
-
-# Generated at 2026-10-25 18:05:51.288374
-# Unit test for constructor of class ISortError
-
-# Generated at 2026-10-25 18:05:53.705533
-# Unit test for constructor of class ISortError
-
-# Generated at 2026-10-25 18:05:56.214931
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:05:58.628043
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:06:01.042597
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:06:03.456763
-# Unit test for constructor of class MissingSection
-
-# Generated at 2026-10-25 18:06:05.871586
-# Unit test for constructor of class MissingSection
-
-# Generated at 2026-10-25 18:06:08.285682
-# Unit test for constructor of class MissingSection
-
-# Generated at 2026-10-25 18:06:10.702726
-# Unit test for constructor of class AssignmentsFormatMismatch
-
-# Generated at 2026-10-25 18:06:13.118798
-# Unit test for constructor of class AssignmentsFormatMismatch
-
-# Generated at 2026-10-25 18:06:15.532054
-# Unit test for constructor of class AssignmentsFormatMismatch
-
-# Generated at 2026-10-25 18:06:17.945935
-# Unit test for constructor of class FileSkipComment
-
-# Generated at 2026-10-25 18:06:20.359897
-# Unit test for constructor of class FileSkipComment
-
-# Generated at 2026-10-25 18:06:22.773230
-# Unit test for constructor of class FileSkipComment
-
-# Generated at 2026-10-25 18:06:25.189632
-# Unit test for constructor of class LiteralSortTypeMismatch
-
-# Generated at 2026-10-25 18:06:27.602894
-# Unit test for constructor of class LiteralSortTypeMismatch
-
-# Generated at 2026-10-25 18:06:30.016876
-# Unit test for constructor of class LiteralSortTypeMismatch
-
-# Generated at 2026-10-25 18:06:32.434126
-# Unit test for constructor of class LiteralSortTypeMismatch
-
-# Generated at 2026-10-25 18:06:34.852071
-# Unit test for constructor of class LiteralSortTypeMismatch
-
-# Generated at 2026-10-25 18:06:37.265354
-# Unit test for constructor of class LiteralSortTypeMismatch
-
-# Generated at 2026-10-25 18:06:39.679403
-# Unit test for constructor of class FormattingPluginDoesNotExist
-
-# Generated at 2026-10-25 18:06:42.093074
-# Unit test for constructor of class FormattingPluginDoesNotExist
-
-# Generated at 2026-10-25 18:06:44.506105
-# Unit test for constructor of class FormattingPluginDoesNotExist
-
-# Generated at 2026-10-25 18:06:46.920266
-# Unit test for constructor of class LiteralSortTypeMismatch
-
-# Generated at 2026-10-25 18:06:49.333583
-# Unit test for constructor of class LiteralSortTypeMismatch
-
-# Generated at 2026-10-25 18:06:51.750363
-# Unit test for constructor of class LiteralSortTypeMismatch
-
-# Generated at 2026-10-25 18:06:54.167289
-# Unit test for constructor of class MissingSection
-
-# Generated at 2026-10-25 18:06:56.580663
-# Unit test for constructor of class MissingSection
-
-# Generated at 2026-10-25 18:06:59.007841
-# Unit test for constructor of class MissingSection
-
-# Generated at 2026-10-25 18:07:01.422584
-# Unit test for constructor of class FileSkipSetting
-
-# Generated at 2026-10-25 18:07:03.837819
-# Unit test for constructor of class FileSkipSetting
-
-# Generated at 2026-10-25 18:07:06.254419
-# Unit test for constructor of class FileSkipSetting
-
-# Generated at 2026-10-25 18:07:10.027471
-# Unit test for constructor of class FileSkipComment
-
-# Generated at 2026-10-25 18:07:12.441278
-# Unit test for constructor of class FileSkipComment
-
-# Generated at 2026-10-25 18:07:14.857519
-# Unit test for constructor of class FileSkipComment
-
-# Generated at 2026-10-25 18:07:20.298846
-# Unit test for constructor of class ISortError
-
-# Generated at 2026-10-25 18:07:22.713495
-# Unit test for constructor of class ISortError
-
-# Generated at 2026-10-25 18:07:25.127222
-# Unit test for constructor of class ISortError
-
-# Generated at 2026-10-25 18:07:27.540968
-# Unit test for constructor of class FileSkipSetting
-
-# Generated at 2026-10-25 18:07:29.955248
-# Unit test for constructor of class FileSkipSetting
-
-# Generated at 2026-10-25 18:07:32.370272
-# Unit test for constructor of class FileSkipSetting
-
-# Generated at 2026-10-25 18:07:34.786189
-# Unit test for constructor of class InvalidSettingsPath
-
-# Generated at 2026-10-25 18:07:37.201250
-# Unit test for constructor of class InvalidSettingsPath
-
-# Generated at 2026-10-25 18:07:39.631412
-# Unit test for constructor of class InvalidSettingsPath
-
-# Generated at 2026-10-25 18:07:42.056477
-# Unit test for constructor of class FileSkipComment
-
-# Generated at 2026-10-25 18:07:44.498864
-# Unit test for constructor of class FileSkipComment
-
-# Generated at 2026-10-25 18:07:46.914370
-# Unit test for constructor of class FileSkipComment
-
-# Generated at 2026-10-25 18:07:49.328182
-# Unit test for constructor of class FileSkipSetting
-
-# Generated at 2026-10-25 18:07:51.742116
-# Unit test for constructor of class FileSkipSetting
-
-# Generated at 2026-10-25 18:07:54.159759
-# Unit test for constructor of class FileSkipSetting
-
-# Generated at 2026-10-25 18:07:56.576576
-# Unit test for constructor of class MissingSection
-
-# Generated at 2026-10-25 18:07:58.991591
-# Unit test for constructor of class MissingSection
-
-# Generated at 2026-10-25 18:08:01.405734
-# Unit test for constructor of class MissingSection
-
-# Generated at 2026-10-25 18:08:03.822738
-# Unit test for constructor of class MissingSection
-
-# Generated at 2026-10-25 18:08:06.235502
-# Unit test for constructor of class MissingSection
-
-# Generated at 2026-10-25 18:08:08.650807
-# Unit test for constructor of class MissingSection
-
-# Generated at 2026-10-25 18:08:11.065125
-# Unit test for constructor of class UnsupportedEncoding
-
-# Generated at 2026-10-25 18:08:13.478508
-# Unit test for constructor of class UnsupportedEncoding
-
-# Generated at 2026-10-25 18:08:15.925789
-# Unit test for constructor of class UnsupportedEncoding
-
-# Generated at 2026-10-25 18:08:18.306777
-# Unit test for constructor of class LiteralParsingFailure
-
-# Generated at 2026-10-25 18:08:20.722003
-# Unit test for constructor of class LiteralParsingFailure
-
-# Generated at 2026-10-25 18:08:23.134376
-# Unit test for constructor of class LiteralParsingFailure
-
-# Generated at 2026-10-25 18:08:29.252272
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:08:31.666562
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:08:34.081003
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:08:36.495133
-# Unit test for constructor of class LiteralParsingFailure
-
-# Generated at 2026-10-25 18:08:38.911995
-# Unit test for constructor of class LiteralParsingFailure
-
-# Generated at 2026-10-25 18:08:41.328793
-# Unit test for constructor of class LiteralParsingFailure
-
-# Generated at 2026-10-25 18:08:43.740965
-# Unit test for constructor of class InvalidSettingsPath
-
-# Generated at 2026-10-25 18:08:46.154625
-# Unit test for constructor of class InvalidSettingsPath
-
-# Generated at 2026-10-25 18:08:48.569466
-# Unit test for constructor of class InvalidSettingsPath
-
-# Generated at 2026-10-25 18:08:50.983647
-# Unit test for constructor of class FileSkipped
-
-# Generated at 2026-10-25 18:08:53.397802
-# Unit test for constructor of class FileSkipped
-
-# Generated at 2026-10-25 18:08:55.812830
-# Unit test for constructor of class FileSkipped
-
-# Generated at 2026-10-25 18:08:58.229200
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:09:00.644614
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:09:03.057746
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:09:05.471775
-# Unit test for constructor of class AssignmentsFormatMismatch
-
-# Generated at 2026-10-25 18:09:07.886219
-# Unit test for constructor of class AssignmentsFormatMismatch
-
-# Generated at 2026-10-25 18:09:10.299722
-# Unit test for constructor of class AssignmentsFormatMismatch
-
-# Generated at 2026-10-25 18:09:12.713628
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:09:15.128298
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:09:17.544542
-# Unit test for constructor of class ExistingSyntaxErrors
-
-# Generated at 2026-10-25 18:09:22.985842
+def test_UnsupportedEncoding():
+    from pathlib import Path
+    from isort.exceptions import UnsupportedEncoding
+
+    # Test construction with a string filename
+    filename_str = "example.py"
+    exc = UnsupportedEncoding(filename_str)
+    assert exc.filename == filename_str
+    assert str(exc) == f"Unknown or unsupported encoding in {filename_str}"
+
+    # Test construction with a Path filename
+    filename_path = Path("example.py")
+    exc = UnsupportedEncoding(filename_path)
+    assert exc.filename == filename_path
+    assert str(exc) == f"Unknown or unsupported encoding in {filename_path}"
+# nonce:f367099a
+
+# Generated at 2026-11-01 23:22:40.886348
 # Unit test for constructor of class ProfileDoesNotExist
+def test_ProfileDoesNotExist():
+    from isort.exceptions import ProfileDoesNotExist, ISortError
+    from isort.profiles import profiles
 
-# Generated at 2026-10-25 18:09:25.398829
+    profile = "nonexistent_profile"
+    exception = ProfileDoesNotExist(profile)
+
+    # Should be an instance of the base isort exception and Exception
+    assert isinstance(exception, ISortError)
+    assert isinstance(exception, Exception)
+
+    # The profile attribute should be stored exactly as passed in
+    assert exception.profile == profile
+
+    # The error message should mention the profile and that it doesn't exist
+    assert profile in str(exception)
+    assert "does not exist" in str(exception)
+
+    # The error message should list all available profiles, comma separated
+    assert ",".join(profiles) in str(exception)
+
+# Generated at 2026-11-01 23:22:57.373218
 # Unit test for constructor of class ProfileDoesNotExist
+def test_ProfileDoesNotExist():
+    profile = "nonexistent_profile"
+    exception = ProfileDoesNotExist(profile)
 
-# Generated at 2026-10-25 18:09:27.846206
+    # The profile attribute should be stored exactly as passed in
+    assert exception.profile == profile
+
+    # Should inherit from ISortError and Exception
+    assert isinstance(exception, ISortError)
+    assert isinstance(exception, Exception)
+
+    # The error message should mention the profile and list available profiles
+    expected_message = (
+        f"Specified profile of {profile} does not exist. "
+        f"Available profiles: {','.join(profiles)}."
+    )
+    assert str(exception) == expected_message
+    assert profile in str(exception)
+    assert ",".join(profiles) in str(exception)
+
+# Generated at 2026-11-01 23:23:08.329615
 # Unit test for constructor of class ProfileDoesNotExist
+def test_ProfileDoesNotExist():from isort.exceptions import ProfileDoesNotExist, ISortError
 
-# Generated at 2026-10-25 18:09:30.227168
-# Unit test for constructor of class IntroducedSyntaxErrors
+# Generated at 2026-11-01 23:23:24.699553
+# Unit test for constructor of class ProfileDoesNotExist
+def test_ProfileDoesNotExist():
+    from isort.exceptions import ProfileDoesNotExist
+    from isort.profiles import profiles
 
-# Generated at 2026-10-25 18:09:32.651871
-# Unit test for constructor of class IntroducedSyntaxErrors
+    profile = "nonexistent_profile"
 
-# Generated at 2026-10-25 18:09:35.066536
-# Unit test for constructor of class IntroducedSyntaxErrors
+    error = ProfileDoesNotExist(profile)
 
-# Generated at 2026-10-25 18:09:37.479599
-# Unit test for constructor of class LiteralSortTypeMismatch
+    assert error.profile == profile
+    assert str(error) == (
+        f"Specified profile of {profile} does not exist. "
+        f"Available profiles: {','.join(sorted(profiles))}."
+    ) if False else str(error) == (
+        f"Specified profile of {profile} does not exist. "
+        f"Available profiles: {','.join(profiles)}."
+    )
+    assert isinstance(error, Exception)
 
-# Generated at 2026-10-25 18:09:39.893630
-# Unit test for constructor of class LiteralSortTypeMismatch
+# Generated at 2026-11-01 23:23:50.007382
+# Unit test for constructor of class ProfileDoesNotExist
+def test_ProfileDoesNotExist():from isort.exceptions import ISortError, ProfileDoesNotExist
 
-# Generated at 2026-10-25 18:09:42.307311
-# Unit test for constructor of class LiteralSortTypeMismatch
 
-# Generated at 2026-10-25 18:09:50.422669
-# Unit test for constructor of class AssignmentsFormatMismatch
+# Generated at 2026-11-01 23:24:00.924184
+# Unit test for constructor of class ProfileDoesNotExist
+def test_ProfileDoesNotExist():
+    profile = "nonexistent_profile"
+    error = ProfileDoesNotExist(profile)
 
-# Generated at 2026-10-25 18:09:52.836953
-# Unit test for constructor of class AssignmentsFormatMismatch
+    # Verify the profile attribute is set correctly
+    assert error.profile == profile
 
-# Generated at 2026-10-25 18:09:55.249957
-# Unit test for constructor of class AssignmentsFormatMismatch
+    # Verify the exception message contains expected content
+    assert "Specified profile of nonexistent_profile does not exist." in str(error)
+    assert "Available profiles:" in str(error)
 
-# Generated at 2026-10-25 18:09:57.663955
-# Unit test for constructor of class LiteralSortTypeMismatch
+    # Verify it is an instance of ISortError
+    assert isinstance(error, Exception)
 
-# Generated at 2026-10-25 18:10:00.078193
-# Unit test for constructor of class LiteralSortTypeMismatch
+    # Ensure valid known profiles do not trigger the error
+    with pytest.raises(ProfileDoesNotExist) as exc_info:
+        raise ProfileDoesNotExist("black")
 
-# Generated at 2026-10-25 18:10:02.494648
-# Unit test for constructor of class LiteralSortTypeMismatch
+    assert exc_info.value.profile == "black"
 
-# Generated at 2026-10-25 18:10:04.911061
-# Unit test for constructor of class LiteralSortTypeMismatch
+# Generated at 2026-11-01 23:24:25.342735
+# Unit test for constructor of class ProfileDoesNotExist
+def test_ProfileDoesNotExist():
+    from isort.exceptions import ISortError, ProfileDoesNotExist
+    from isort.profiles import profiles
 
-# Generated at 2026-10-25 18:10:07.323833
-# Unit test for constructor of class LiteralSortTypeMismatch
+    profile = "nonexistent_profile"
+    error = ProfileDoesNotExist(profile)
 
-# Generated at 2026-10-25 18:10:09.737408
-# Unit test for constructor of class LiteralSortTypeMismatch
+    # The exception should store the profile name
+    assert error.profile == profile
 
-# Generated at 2026-10-25 18:10:12.152285
-# Unit test for constructor of class FileSkipSetting
+    # It should derive from the base isort exception
+    assert isinstance(error, ISortError)
 
-# Generated at 2026-10-25 18:10:14.567380
-# Unit test for constructor of class FileSkipSetting
+    # The generated message should include the profile and available profiles
+    assert str(error) == (
+        f"Specified profile of {profile} does not exist. "
+        f"Available profiles: {','.join(profiles)}."
+    )
 
-# Generated at 2026-10-25 18:10:16.981251
-# Unit test for constructor of class FileSkipSetting
+# Generated at 2026-11-01 23:24:47.146722
+# Unit test for constructor of class ProfileDoesNotExist
+def test_ProfileDoesNotExist():from isort.exceptions import ISortError, ProfileDoesNotExist
 
-# Generated at 2026-10-25 18:10:19.396791
-# Unit test for constructor of class LiteralParsingFailure
+# Generated at 2026-11-01 23:24:57.960571
+# Unit test for constructor of class ProfileDoesNotExist
+def test_ProfileDoesNotExist():
+    from isort.exceptions import ProfileDoesNotExist
+    from isort.profiles import profiles
 
-# Generated at 2026-10-25 18:10:21.812520
-# Unit test for constructor of class LiteralParsingFailure
+    profile = "nonexistent_profile"
+    error = ProfileDoesNotExist(profile)
 
-# Generated at 2026-10-25 18:10:24.228700
-# Unit test for constructor of class LiteralParsingFailure
+    assert error.profile == profile
+    assert isinstance(error, Exception)
+    assert profile in str(error)
+    assert ",".join(profiles) in str(error)
 
-# Generated at 2026-10-25 18:10:26.642971
-# Unit test for constructor of class InvalidSettingsPath
+    # Verify available profiles are listed in the error message
+    for available_profile in profiles:
+        assert available_profile in str(error)
 
-# Generated at 2026-10-25 18:10:29.056838
-# Unit test for constructor of class InvalidSettingsPath
+# Generated at 2026-11-01 23:25:01.443081
+# Unit test for constructor of class ProfileDoesNotExist
+def test_ProfileDoesNotExist():
+    from isort.exceptions import ProfileDoesNotExist
+    from isort.profiles import profiles
 
-# Generated at 2026-10-25 18:10:31.470935
-# Unit test for constructor of class InvalidSettingsPath
+    # Test that the exception is constructed with the given profile
+    profile = "nonexistent_profile"
+    exception = ProfileDoesNotExist(profile)
 
-# Generated at 2026-10-25 18:10:33.884784
-# Unit test for constructor of class FileSkipped
+    # Verify the profile attribute is set correctly
+    assert exception.profile == profile
 
-# Generated at 2026-10-25 18:10:36.298690
-# Unit test for constructor of class FileSkipped
+    # Verify the error message contains the profile name
+    assert profile in str(exception)
 
-# Generated at 2026-10-25 18:10:38.713378
-# Unit test for constructor of class FileSkipped
+    # Verify the error message lists the available profiles
+    assert "Available profiles:" in str(exception)
+    assert ",".join(profiles) in str(exception)
 
-# Generated at 2026-10-25 18:10:41.127918
-# Unit test for constructor of class ExistingSyntaxErrors
+    # Verify inheritance from the base isort exception
+    from isort.exceptions import ISortError
+    assert isinstance(exception, ISortError)
+    assert isinstance(exception, Exception)
 
-# Generated at 2026-10-25 18:10:43.546111
-# Unit test for constructor of class ExistingSyntaxErrors
+# Generated at 2026-11-01 23:25:20.182249
+# Unit test for constructor of class ProfileDoesNotExist
+def test_ProfileDoesNotExist():
+    # Test instantiation with a non-existent profile name
+    profile = "nonexistent_profile"
+    exception = ProfileDoesNotExist(profile)
 
-# Generated at 2026-10-25 18:10:45.962895
-# Unit test for constructor of class ExistingSyntaxErrors
+    # Verify the profile attribute is stored correctly
+    assert exception.profile == profile
 
-# Generated at 2026-10-25 18:10:48.375982
-# Unit test for constructor of class LiteralSortTypeMismatch
+    # Verify it is an instance of the base isort exception
+    assert isinstance(exception, ISortError)
 
-# Generated at 2026-10-25 18:10:50.788474
-# Unit test for constructor of class LiteralSortTypeMismatch
+    # Verify the exception message includes the profile name and available profiles
+    assert str(exception) == (
+        f"Specified profile of {profile} does not exist. "
+        f"Available profiles: {','.join(profiles)}."
+    )
 
-# Generated at 2026-10-25 18:10:53.203073
-# Unit test for constructor of class LiteralSortTypeMismatch
+# Generated at 2026-11-01 23:25:29.540636
+# Unit test for constructor of class ProfileDoesNotExist
+def test_ProfileDoesNotExist():
+    from isort.exceptions import ProfileDoesNotExist, ISortError
+    from isort.profiles import profiles
 
-# Generated at 2026-10-25 18:10:55.617060
-# Unit test for constructor of class LiteralParsingFailure
+    error = ProfileDoesNotExist("does_not_exist")
 
-# Generated at 2026-10-25 18:10:58.032350
-# Unit test for constructor of class LiteralParsingFailure
+    assert error.profile == "does_not_exist"
+    assert isinstance(error, ISortError)
+    assert str(error) == (
+        "Specified profile of does_not_exist does not exist. "
+        f"Available profiles: {','.join(profiles)}."
+    )
 
-# Generated at 2026-10-25 18:11:00.446980
-# Unit test for constructor of class LiteralParsingFailure
+# Generated at 2026-11-01 23:25:45.208470
+# Unit test for constructor of class ProfileDoesNotExist
+def test_ProfileDoesNotExist():from isort.exceptions import ProfileDoesNotExist
 
-# Generated at 2026-10-25 18:11:10.779085
-# Unit test for constructor of class LiteralParsingFailure
+# Generated at 2026-11-01 23:26:00.056619
+# Unit test for constructor of class ProfileDoesNotExist
+def test_ProfileDoesNotExist():
+    profile = "nonexistent_profile"
+    exception = ProfileDoesNotExist(profile)
 
-# Generated at 2026-10-25 18:11:13.193380
-# Unit test for constructor of class LiteralParsingFailure
+    # Should be an instance of both ProfileDoesNotExist and the base ISortError
+    assert isinstance(exception, ProfileDoesNotExist)
+    assert isinstance(exception, ISortError)
 
-# Generated at 2026-10-25 18:11:15.607551
-# Unit test for constructor of class LiteralParsingFailure
+    # The profile attribute should be set to the provided profile
+    assert exception.profile == profile
 
-# Generated at 2026-10-25 18:11:18.021504
-# Unit test for constructor of class FileSkipSetting
+    # The error message should mention the missing profile and available profiles
+    assert f"Specified profile of {profile} does not exist." in str(exception)
+    assert "Available profiles:" in str(exception)
 
-# Generated at 2026-10-25 18:11:20.435763
-# Unit test for constructor of class FileSkipSetting
+# Generated at 2026-11-01 23:26:24.427891
+# Unit test for constructor of class ProfileDoesNotExist
+def test_ProfileDoesNotExist():
+    from isort.exceptions import ProfileDoesNotExist, ISortError
 
-# Generated at 2026-10-25 18:11:22.850256
-# Unit test for constructor of class FileSkipSetting
+    # Constructor should store the profile name as an attribute
+    profile = "non_existent_profile"
+    error = ProfileDoesNotExist(profile)
 
-# Generated at 2026-10-25 18:11:28.299122
-# Unit test for constructor of class FileSkipComment
+    assert error.profile == profile
 
-# Generated at 2026-10-25 18:11:30.711666
-# Unit test for constructor of class FileSkipComment
+    # Should be an instance of the base isort exception and Exception
+    assert isinstance(error, ISortError)
+    assert isinstance(error, Exception)
+
+    # Error message should mention the missing profile and available profiles
+    message = str(error)
+    assert profile in message
+    assert "does not exist" in message
+    assert "Available profiles:" in message

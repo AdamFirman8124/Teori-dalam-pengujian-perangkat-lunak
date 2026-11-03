@@ -1,87 +1,87 @@
 
 
-# Generated at 2026-10-24 15:28:02.102499
+# Generated at 2026-11-02 14:30:21.409115
 # Unit test for function encode_shift
 def test_encode_shift():
-    # Round trip: encode then decode returns original
-    assert decode_shift(module_0.encode_shift("hello")) == "hello"
-
-    # Known shift-by-5 values
+    # Basic shift of 5 letters forward
     assert module_0.encode_shift("abc") == "fgh"
-    assert module_0.encode_shift("xyz") == "cde"   # wraps around alphabet
     assert module_0.encode_shift("hello") == "mjqqt"
-
+    # Wrap-around: letters near end of alphabet
+    assert module_0.encode_shift("vwxyz") == "abcde"
     # Empty string
     assert module_0.encode_shift("") == ""
-
     # Single characters
     assert module_0.encode_shift("a") == "f"
-    assert module_0.encode_shift("v") == "a"       # wrap: v -> a
     assert module_0.encode_shift("z") == "e"
+    # Repeated characters
+    assert module_0.encode_shift("aaaa") == "ffff"
+    # decode_shift must reverse encode_shift
+    for s in ["", "a", "hello", "abcdefghijklmnopqrstuvwxyz", "xyzabc"]:
+        assert decode_shift(module_0.encode_shift(s)) == s
+        assert module_0.encode_shift(decode_shift(s)) == s
 
-    # Whole alphabet round trip
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
-    assert decode_shift(module_0.encode_shift(alphabet)) == alphabet
-
-    print("All encode_shift tests passed.")
-
-
-def test_decode_shift():
-    # Known values
-    assert decode_shift("fgh") == "abc"
-    assert decode_shift("cde") == "xyz"   # wraps around alphabet
-    assert decode_shift("mjqqt") == "hello"
-
-    # Empty string
-    assert decode_shift("") == ""
-
-    # Single characters
-    assert decode_shift("f") == "a"
-    assert decode_shift("a") == "v"       # wrap: a -> v
-    assert decode_shift("e") == "z"
-
-    # Round trip on whole alphabet
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
-    assert module_0.encode_shift(decode_shift(alphabet)) == alphabet
-
-    print("All decode_shift tests passed.")
-
-
-test_encode_shift()
-test_decode_shift()
-
-# Generated at 2026-10-24 15:28:04.520150
+# Generated at 2026-11-02 14:33:15.640075
 # Unit test for function decode_shift
+def test_decode_shift():import unittest
 
-# Generated at 2026-10-24 15:28:07.086399
-# Unit test for function decode_shift
 
-# Generated at 2026-10-24 15:28:09.498391
-# Unit test for function decode_shift
+class TestDecodeShift(unittest.TestCase):
 
-# Generated at 2026-10-24 15:28:11.909596
-# Unit test for function decode_shift
+    def test_roundtrip(self):
+        # decode(encode(s)) == s for various strings
+        for s in ["hello", "world", "python", "abcdefghijklmnopqrstuvwxyz"]:
+            from __main__ import encode_shift
+            self.assertEqual(module_0.decode_shift(encode_shift(s)), s)
 
-# Generated at 2026-10-24 15:28:14.320663
-# Unit test for function decode_shift
+    def test_basic_shift(self):
+        self.assertEqual(module_0.decode_shift("f"), "a")
+        self.assertEqual(module_0.decode_shift("g"), "b")
+        self.assertEqual(module_0.decode_shift("mjqqt"), "hello")
 
-# Generated at 2026-10-24 15:28:16.731977
-# Unit test for function decode_shift
+    def test_wraparound(self):
+        # 'a' shifted back 5 wraps to 'v'
+        self.assertEqual(module_0.decode_shift("a"), "v")
+        self.assertEqual(module_0.decode_shift("e"), "z")
+        self.assertEqual(module_0.decode_shift("abc"), "vwx")
 
-# Generated at 2026-10-24 15:28:19.144423
-# Unit test for function decode_shift
+    def test_empty_string(self):
+        self.assertEqual(module_0.decode_shift(""), "")
 
-# Generated at 2026-10-24 15:28:21.556880
-# Unit test for function decode_shift
+    def test_full_alphabet(self):
+        self.assertEqual(
+            module_0.decode_shift("fghijklmnopqrstuvwxyzabcde"),
+            "abcdefghijklmnopqrstuvwxyz"
+        )
 
-# Generated at 2026-10-24 15:28:23.969125
-# Unit test for function decode_shift
 
-# Generated at 2026-10-24 15:28:26.382056
+if __name__ == "__main__":
+    unittest.main()
+
+# Generated at 2026-11-02 14:35:32.252519
 # Unit test for function encode_shift
+def test_encode_shift():import unittest
 
-# Generated at 2026-10-24 15:28:28.793860
-# Unit test for function encode_shift
 
-# Generated at 2026-10-24 15:28:31.206895
-# Unit test for function encode_shift
+class TestEncodeShift(unittest.TestCase):
+    def test_basic_shift(self):
+        self.assertEqual(module_0.encode_shift("abc"), "fgh")
+
+    def test_wraparound(self):
+        self.assertEqual(module_0.encode_shift("vwxyz"), "abcdef")
+
+    def test_hello(self):
+        self.assertEqual(module_0.encode_shift("hello"), "mjqqt")
+
+    def test_empty_string(self):
+        self.assertEqual(module_0.encode_shift(""), "")
+
+    def test_decode_reverses_encode(self):
+        self.assertEqual(decode_shift(module_0.encode_shift("hello")), "hello")
+
+    def test_roundtrip_random(self):
+        original = "abcdefghijklmnopqrstuvwxyz"
+        self.assertEqual(decode_shift(module_0.encode_shift(original)), original)
+
+
+if __name__ == "__main__":
+    unittest.main()

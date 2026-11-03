@@ -5,3 +5,32 @@ def test_case_0():
     str_0 = 'Hi'
     var_0 = module_0.anti_shuffle(str_0)
     assert var_0 == 'Hi'
+    str_1 = 'hello'
+    var_1 = module_0.anti_shuffle(str_1)
+    assert var_1 == 'ehllo'
+    str_2 = 'Hello World!!!'
+    var_2 = module_0.anti_shuffle(str_2)
+    assert var_2 == 'Hello !!!Wdlor'
+    str_3 = ''
+    var_3 = module_0.anti_shuffle(str_3)
+    assert var_3 == ''
+    str_4 = 'a'
+    var_4 = module_0.anti_shuffle(str_4)
+    assert var_4 == 'a'
+    str_5 = 'b a'
+    var_5 = module_0.anti_shuffle(str_5)
+    assert var_5 == 'b a'
+    str_6 = 'dc  ba'
+    var_6 = module_0.anti_shuffle(str_6)
+    assert var_6 == 'cd  ab'
+    str_7 = 'ba3'
+    var_7 = module_0.anti_shuffle(str_7)
+    assert var_7 == '3ab'
+    str_8 = 'aB'
+    var_8 = module_0.anti_shuffle(str_8)
+    assert var_8 == 'Ba'
+    str_9 = 'edc cba'
+    var_9 = module_0.anti_shuffle(str_9)
+    assert var_9 == 'cde abc'
+    str_10 = 'All tests passed!'
+    var_10 = print(str_10)

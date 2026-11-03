@@ -8,24 +8,54 @@ def test_case_0():
     int_0 = 1
     int_1 = 3
     int_2 = 5
-    int_3 = [int_0, int_1, int_2]
-    var_2 = module_0.pluck(int_3)
+    int_3 = 7
+    int_4 = [int_0, int_1, int_2, int_3]
+    var_2 = module_0.pluck(int_4)
     assert var_2 == []
-    int_4 = 4
     int_5 = 2
-    int_6 = [int_4, int_5, int_1]
+    int_6 = [int_5]
     var_3 = module_0.pluck(int_6)
-    assert var_3 == [2, 1]
-    int_7 = 0
-    int_8 = [int_0, int_5, int_1, int_7]
-    var_4 = module_0.pluck(int_8)
-    assert var_4 == [0, 3]
-    int_9 = [int_0, int_5, int_5, int_1]
-    var_5 = module_0.pluck(int_9)
-    assert var_5 == [2, 1]
-    int_10 = -1
-    int_11 = -4
-    int_12 = -2
-    int_13 = [int_10, int_11, int_12, int_1]
-    var_6 = module_0.pluck(int_13)
-    assert var_6 == [-4, 1]
+    assert var_3 == [2, 0]
+    int_7 = 4
+    int_8 = 6
+    int_9 = [int_5, int_7, int_8]
+    var_4 = module_0.pluck(int_9)
+    assert var_4 == [2, 0]
+    int_10 = [int_7, int_8, int_5]
+    var_5 = module_0.pluck(int_10)
+    assert var_5 == [2, 2]
+    int_11 = [int_7, int_5, int_1, int_5, int_2]
+    var_6 = module_0.pluck(int_11)
+    assert var_6 == [2, 1]
+    int_12 = 0
+    int_13 = [int_2, int_12, int_1, int_12, int_7, int_5]
+    var_7 = module_0.pluck(int_13)
+    assert var_7 == [0, 1]
+    int_14 = -4
+    int_15 = -2
+    int_16 = [int_14, int_1, int_15, int_3]
+    var_8 = module_0.pluck(int_16)
+    assert var_8 == [-4, 0]
+    int_17 = -8
+    int_18 = 10
+    int_19 = [int_1, int_8, int_17, int_18]
+    var_9 = module_0.pluck(int_19)
+    assert var_9 == [-8, 2]
+    int_20 = -3
+    int_21 = -1
+    int_22 = [int_20, int_21, int_2]
+    var_10 = module_0.pluck(int_22)
+    assert var_10 == []
+    int_23 = [int_0, int_12, int_1]
+    var_11 = module_0.pluck(int_23)
+    assert var_11 == [0, 1]
+    int_24 = 9
+    int_25 = 8
+    int_26 = [int_3, int_24, int_5, int_7, int_8, int_25, int_5]
+    var_12 = module_0.pluck(int_26)
+    assert var_12 == [2, 2]
+    str_0 = 'All test_pluck tests passed!'
+    var_13 = print(str_0)
+
+def test_case_1():
+    pass

@@ -2,26 +2,78 @@
 import f081 as module_0
 
 def test_case_0():
-    bytes_0 = b'\x8c[\xcf\x01*/\xb1\xf9'
-    var_0 = module_0.numerical_letter_grade(bytes_0)
-    assert var_0 == ['A', 'A', 'A', 'D', 'A', 'A', 'A', 'A']
+    float_0 = 4.0
+    float_1 = [float_0]
+    var_0 = module_0.numerical_letter_grade(float_1)
+    assert var_0 == ['A+']
+    float_2 = 3.8
+    float_3 = 3.9
+    float_4 = 3.95
+    float_5 = [float_2, float_3, float_4]
+    var_1 = module_0.numerical_letter_grade(float_5)
+    assert var_1 == ['A', 'A', 'A']
+    float_6 = 3.7
+    float_7 = 3.5
+    float_8 = 3.4
+    float_9 = [float_6, float_7, float_8]
+    var_2 = module_0.numerical_letter_grade(float_9)
+    assert var_2 == ['A-', 'A-', 'A-']
+    float_10 = 3.3
+    float_11 = 3.1
+    float_12 = [float_10, float_11]
+    var_3 = module_0.numerical_letter_grade(float_12)
+    assert var_3 == ['B+', 'B+']
+    float_13 = 3.0
+    float_14 = 2.8
+    float_15 = [float_13, float_14]
+    var_4 = module_0.numerical_letter_grade(float_15)
+    assert var_4 == ['B', 'B']
+    float_16 = 2.7
+    float_17 = 2.4
+    float_18 = [float_16, float_17]
+    var_5 = module_0.numerical_letter_grade(float_18)
+    assert var_5 == ['B-', 'B-']
+    float_19 = 2.3
+    float_20 = 2.1
+    float_21 = [float_19, float_20]
+    var_6 = module_0.numerical_letter_grade(float_21)
+    assert var_6 == ['C+', 'C+']
+    float_22 = 2.0
+    float_23 = 1.8
+    float_24 = [float_22, float_23]
+    var_7 = module_0.numerical_letter_grade(float_24)
+    assert var_7 == ['C', 'C']
+    float_25 = 1.7
+    float_26 = 1.4
+    float_27 = [float_25, float_26]
+    var_8 = module_0.numerical_letter_grade(float_27)
+    assert var_8 == ['C-', 'C-']
+    float_28 = 1.3
+    float_29 = 1.1
+    float_30 = [float_28, float_29]
+    var_9 = module_0.numerical_letter_grade(float_30)
+    assert var_9 == ['D+', 'D+']
+    float_31 = 1.0
+    float_32 = 0.8
+    float_33 = [float_31, float_32]
+    var_10 = module_0.numerical_letter_grade(float_33)
+    assert var_10 == ['D', 'D']
+    float_34 = 0.7
+    float_35 = 0.3
+    float_36 = [float_34, float_35]
+    var_11 = module_0.numerical_letter_grade(float_36)
+    assert var_11 == ['D-', 'D-']
+    float_37 = 0.0
+    float_38 = -1.5
+    float_39 = [float_37, float_38]
+    var_12 = module_0.numerical_letter_grade(float_39)
+    assert var_12 == ['E', 'E']
+    float_40 = [float_0, float_7, float_22, float_37]
+    var_13 = module_0.numerical_letter_grade(float_40)
+    assert var_13 == ['A+', 'A-', 'C', 'E']
+    var_14 = []
+    var_15 = module_0.numerical_letter_grade(var_14)
+    assert var_15 == []
 
 def test_case_1():
-    bytes_0 = b'f~jToG\x1d\x00'
-    var_0 = module_0.numerical_letter_grade(bytes_0)
-    assert var_0 == ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'E']
-
-def test_case_2():
-    bytes_0 = b'\x03\xcc9j\xa3\xa1'
-    var_0 = module_0.numerical_letter_grade(bytes_0)
-    assert var_0 == ['B', 'A', 'A', 'A', 'A', 'A']
-
-def test_case_3():
-    bytes_0 = b'\xd1?\x1eZ\xb1r\x83\x1f\x04\xf7\xf9\x07\x02\x82\x13L'
-    var_0 = module_0.numerical_letter_grade(bytes_0)
-    assert var_0 == ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A+', 'A', 'A', 'A', 'C', 'A', 'A', 'A']
-
-def test_case_4():
-    bytes_0 = b"?+\xd6\xd2\x86\xc7\xba\xd4'\xb2\x08\xd7\xe9E\xd4\x0c\xcc\x97\x02g"
-    var_0 = module_0.numerical_letter_grade(bytes_0)
-    assert var_0 == ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'C', 'A']
+    pass

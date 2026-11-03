@@ -6,23 +6,29 @@ def test_case_0():
     int_1 = 5
     var_0 = module_0.rounded_avg(int_0, int_1)
     assert var_0 == '0b11'
-    var_1 = module_0.rounded_avg(int_0, int_0)
-    assert var_1 == '0b1'
     int_2 = 7
-    int_3 = 13
-    var_2 = module_0.rounded_avg(int_2, int_3)
-    assert var_2 == '0b1010'
-    int_4 = 10
-    var_3 = module_0.rounded_avg(int_1, int_4)
-    assert var_3 == '0b1000'
-    int_5 = 4
-    var_4 = module_0.rounded_avg(int_0, int_5)
-    assert var_4 == '0b10'
-    var_5 = module_0.rounded_avg(int_4, int_1)
-    assert var_5 == 1
-    assert var_5 == -1
-    int_6 = 30
-    int_7 = 2
-    var_6 = module_0.rounded_avg(int_6, int_7)
-    assert var_6 == 1
-    assert var_6 == -1
+    var_1 = module_0.rounded_avg(int_2, int_1)
+    assert var_1 == 1
+    assert var_1 == -1
+    int_3 = 10
+    int_4 = 20
+    var_2 = module_0.rounded_avg(int_3, int_4)
+    assert var_2 == '0b1111'
+    int_5 = 33
+    var_3 = module_0.rounded_avg(int_4, int_5)
+    assert var_3 == '0b11010'
+    int_6 = 4
+    var_4 = module_0.rounded_avg(int_6, int_1)
+    assert var_4 == '0b100'
+    var_5 = module_0.rounded_avg(int_1, int_1)
+    assert var_5 == '0b101'
+    int_7 = 0
+    var_6 = module_0.rounded_avg(int_7, int_7)
+    assert var_6 == '0b0'
+    int_8 = 3
+    int_9 = 2
+    var_7 = module_0.rounded_avg(int_8, int_9)
+    assert var_7 == 1
+    assert var_7 == -1
+    var_8 = module_0.rounded_avg(int_3, int_3)
+    assert var_8 == '0b1010'

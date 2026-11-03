@@ -2,25 +2,37 @@
 import f008 as module_0
 
 def test_case_0():
+    var_0 = []
+    tuple_0 = module_0.sum_product(var_0)
+    assert tuple_0 == (0, 1)
     int_0 = 1
     int_1 = 2
     int_2 = 3
     int_3 = 4
     int_4 = [int_0, int_1, int_2, int_3]
-    tuple_0 = module_0.sum_product(int_4)
-    assert tuple_0 == (10, 24)
+    tuple_1 = module_0.sum_product(int_4)
+    assert tuple_1 == (10, 24)
     int_5 = 5
     int_6 = [int_5]
-    tuple_1 = module_0.sum_product(int_6)
-    assert tuple_1 == (5, 5)
-    int_7 = -2
-    int_8 = [int_7, int_2, int_3]
-    tuple_2 = module_0.sum_product(int_8)
-    assert tuple_2 == (5, -24)
-    int_9 = 0
-    int_10 = [int_9, int_1, int_2]
-    tuple_3 = module_0.sum_product(int_10)
-    assert tuple_3 == (5, 0)
-    var_0 = []
-    tuple_4 = module_0.sum_product(var_0)
-    assert tuple_4 == (0, 1)
+    tuple_2 = module_0.sum_product(int_6)
+    assert tuple_2 == (5, 5)
+    int_7 = [int_0, int_1, int_2, int_3, int_5]
+    tuple_3 = module_0.sum_product(int_7)
+    assert tuple_3 == (15, 120)
+    int_8 = 0
+    int_9 = [int_8, int_0, int_1, int_2]
+    tuple_4 = module_0.sum_product(int_9)
+    assert tuple_4 == (6, 0)
+    int_10 = -1
+    int_11 = -2
+    int_12 = -3
+    int_13 = [int_10, int_11, int_12]
+    tuple_5 = module_0.sum_product(int_13)
+    assert tuple_5 == (-6, -6)
+    int_14 = [int_1, int_2]
+    tuple_6 = module_0.sum_product(int_14)
+    assert tuple_6 == (5, 6)
+    int_15 = 10
+    int_16 = [int_15]
+    tuple_7 = module_0.sum_product(int_16)
+    assert tuple_7 == (10, 10)

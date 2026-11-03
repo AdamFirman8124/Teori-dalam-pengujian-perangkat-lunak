@@ -1,721 +1,641 @@
 
 
-# Generated at 2026-10-25 17:34:52.790081
+# Generated at 2026-11-01 20:25:59.225909
 # Unit test for constructor of class FuxIE
+def test_FuxIE():
+    ie = FuxIE()
 
-# Generated at 2026-10-25 17:34:55.205590
+    # Class attributes set correctly
+    assert ie.IE_NAME is None  # inherited default; ie_key falls back to class name
+    assert ie.ie_key() == 'Fux'
+    assert ie._VALID_URL == (
+        r'https?://(?:(?P<kind>www|m)\.)?fux\.com/'
+        r'(?:video|embed)/(?P<id>\d+)(?:/(?P<display_id>[^/?#&]+))?'
+    )
+    assert ie._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
+    assert ie._TKN_HOST == 'token.fux.com'
+
+    # Suitable URL matching
+    assert ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert ie.suitable('https://fux.com/video/195359')
+    assert ie.suitable('https://m.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert ie.suitable('https://www.fux.com/embed/195359')
+    assert ie.suitable('https://m.fux.com/embed/195359')
+
+    # Non-matching URLs
+    assert not ie.suitable('https://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert not ie.suitable('https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert not ie.suitable('https://www.fux.com/videos/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert not ie.suitable('https://www.fux.com/channel/195359')
+
+    # Regex group extraction
+    mobj = re.match(ie._VALID_URL, 'https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert mobj.group('kind', 'id', 'display_id') == (
+        'www', '195359', 'awesome-fucking-kitchen-ends-cum-swallow')
+
+    mobj = re.match(ie._VALID_URL, 'https://fux.com/embed/195359')
+    assert mobj.group('kind', 'id', 'display_id') == (None, '195359', None)
+
+    # URL template builds the canonical URL
+    assert ie._URL_TEMPLATE % '195359' == 'https://www.fux.com/video/195359/video'
+
+# Generated at 2026-11-01 20:26:45.214140
+# Unit test for constructor of class FourTubeBaseIE
+def test_FourTubeBaseIE():
+    # Constructor should work with no arguments
+    ie = FourTubeBaseIE()
+    assert ie is not None
+
+    # Default
+
+# Generated at 2026-11-01 20:27:08.752485
+# Unit test for constructor of class FourTubeBaseIE
+def test_FourTubeBaseIE():
+    ie = FourTubeBaseIE()
+    assert isinstance(ie, InfoExtractor)
+    assert ie.ie_key() == 'FourTubeBase'
+    assert hasattr(ie, '_extract_formats')
+    assert hasattr(ie, '_real_extract')
+    assert ie._TKN_HOST is None
+    assert ie._URL_TEMPLATE is None
+
+# Generated at 2026-11-01 20:27:43.794906
 # Unit test for constructor of class FuxIE
+def test_FuxIE():
+    ie = FuxIE()
+    assert ie.IE_NAME is None
+    assert ie._VALID_URL == r'https?://(?:(?P<kind>www|m)\.)?fux\.com/(?:video|embed)/(?P<id>\d+)(?:/(?P<display_id>[^/?#&]+))?'
+    assert ie._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
+    assert ie._TKN_HOST == 'token.fux.com'
+    assert ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert ie.suitable('https://www.fux.com/embed/195359')
+    assert ie.suitable('https://m.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert not ie.suitable('https://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert not ie.suitable('https://www.fux.com/other/195359')
 
-# Generated at 2026-10-25 17:34:57.620150
+# Generated at 2026-11-01 20:28:02.201108
+# Unit test for constructor of class PornerBrosIE
+def test_PornerBrosIE():
+    """Unit test for constructor of class PornerBrosIE."""
+    ie = PornerBrosIE()
+
+    # Constructor should produce an instance with expected class attributes
+    assert ie._VALID_URL == (
+        r'https?://(?:(?P<kind>www|m)\.)?pornerbros\.com/'
+        r'(?:videos/(?P<display_id>[^/]+)_|embed/)(?P<id>\d+)'
+    )
+    assert ie._URL_TEMPLATE == 'https://www.pornerbros.com/videos/video_%s'
+    assert ie._TKN_HOST == 'token.pornerbros.com'
+    assert ie.IE_NAME == 'PornerBrosIE'
+    assert ie.suitable(
+        'https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+
+    # Regular www URL with display_id
+    m = re.match(
+        ie._VALID_URL,
+        'https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert m is not None
+    assert m.group('kind') == 'www'
+    assert m.group('id') == '181369'
+    assert m.group('display_id') == 'skinny-brunette-takes-big-cock-down-her-anal-hole'
+
+    # Embed URL (no display_id)
+    m = re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369')
+    assert m is not None
+    assert m.group('kind') == 'www'
+    assert m.group('id') == '181369'
+    assert m.group('display_id') is None
+
+    # Mobile subdomain URL
+    m = re.match(
+        ie._VALID_URL,
+        'https://m.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert m is not None
+    assert m.group('kind') == 'm'
+    assert m.group('id') == '181369'
+
+    # Non-matching URLs should not suit
+    assert not ie.suitable('https://www.4tube.com/videos/209733/hot-babe')
+    assert not ie.suitable('https://pornerbros.com/some-other-page')
+
+# Generated at 2026-11-01 20:28:21.453896
+# Unit test for constructor of class PornerBrosIE
+def test_PornerBrosIE():
+    ie = PornerBrosIE()
+    assert ie._VALID_URL == r'https?://(?:(?P<kind>www|m)\.)?pornerbros\.com/(?:videos/(?P<display_id>[^/]+)_|embed/)(?P<id>\d+)'
+    assert ie._URL_TEMPLATE == 'https://www.pornerbros.com/videos/video_%s'
+    assert ie._TKN_HOST == 'token.pornerbros.com'
+    assert ie.suitable('https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert ie.suitable('https://www.pornerbros.com/embed/181369')
+    assert not ie.suitable('https://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert not ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+
+# Generated at 2026-11-01 20:28:43.367546
+# Unit test for constructor of class FourTubeIE
+def test_FourTubeIE():
+    ie = FourTubeIE()
+
+    # Class attributes
+    assert ie.IE_NAME == '4tube'
+    assert ie._TKN_HOST == 'token.4tube.com'
+    assert ie._URL_TEMPLATE == 'https://www.4tube.com/videos/%s/video'
+
+    # Valid URLs should match
+    valid_urls = [
+        'http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black',
+        'https://www.4tube.com/videos/209733',
+        'http://www.4tube.com/embed/209733',
+        'http://m.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black',
+    ]
+    for url in valid_urls:
+        assert ie.suitable(url), 'should match: %s' % url
+
+    # Invalid URLs should not match
+    invalid_urls = [
+        'https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow',
+        'https://www.4tube.com/videos/',
+        'https://www.4tube.com/videos/abc/some-title',
+        'https://www.4tube.com/',
+    ]
+    for url in invalid_urls:
+        assert not ie.suitable(url), 'should not match: %s' % url
+
+    # Regex group extraction
+    mobj = re.match(
+        ie._VALID_URL,
+        'http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert mobj.group('id') == '209733'
+    assert mobj.group('display_id') == 'hot-babe-holly-michaels-gets-her-ass-stuffed-by-black'
+    assert mobj.group('kind') is None
+
+    mobj = re.match(ie._VALID_URL, 'http://m.4tube.com/embed/209733')
+    assert mobj.group('id') == '209733'
+    assert mobj.group('kind') == 'm'
+    assert mobj.group('display_id') is None
+
+    # _match_id helper
+    assert ie._match_id('http://www.4tube.com/embed/209733') == '209733'
+
+# Generated at 2026-11-01 20:29:07.232247
+# Unit test for constructor of class FourTubeIE
+def test_FourTubeIE():
+    ie = FourTubeIE()
+    assert ie.IE_NAME == '4tube'
+    assert ie._TKN_HOST == 'token.4tube.com'
+    assert ie._URL_TEMPLATE == 'https://www.4tube.com/videos/%s/video'
+    assert ie._VALID_URL == (
+        r'https?://(?:(?P<kind>www|m)\.)?4tube\.com/'
+        r'(?:videos|embed)/(?P<id>\d+)(?:/(?P<display_id>[^/?#&]+))?'
+    )
+    assert isinstance(ie._TESTS, list) and len(ie._TESTS) == 3
+    assert issubclass(FourTubeIE, FourTubeBaseIE)
+
+    url = 'http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black'
+    assert ie.suitable(url)
+    mobj = re.match(ie._VALID_URL, url)
+    assert mobj.group('id') == '209733'
+    assert mobj.group('display_id') == 'hot-babe-holly-michaels-gets-her-ass-stuffed-by-black'
+    assert mobj.group('kind') == 'www'
+
+    assert ie.suitable('http://www.4tube.com/embed/209733')
+    assert ie.suitable('http://m.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert not ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+
+# Generated at 2026-11-01 20:29:34.264306
+# Unit test for constructor of class PornTubeIE
+def test_PornTubeIE():
+    ie = PornTubeIE()
+
+    # Constructor should produce a working InfoExtractor instance
+    assert isinstance(ie, InfoExtractor)
+    assert isinstance(ie, FourTubeBaseIE)
+
+    # Class-level configuration attributes
+    assert ie._VALID_URL == (
+        r'https?://(?:(?P<kind>www|m)\.)?porntube\.com/'
+        r'(?:videos/(?P<display_id>[^/]+)_|embed/)(?P<id>\d+)'
+    )
+    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
+    assert ie._TKN_HOST == 'tkn.porntube.com'
+
+    # suitable() should accept porntube.com URLs only
+    assert ie.suitable('https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert ie.suitable('https://www.porntube.com/embed/7089759')
+    assert ie.suitable('https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert not ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert not ie.suitable('https://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+
+    # Regex group extraction
+    m = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert m.group('id') == '7089759'
+    assert m.group('display_id') == 'teen-couple-doing-anal'
+    assert m.group('kind') == 'www'
+
+    m = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
+    assert m.group('id') == '7089759'
+    assert m.group('display_id') is None
+
+# Generated at 2026-11-01 20:30:01.514495
+# Unit test for constructor of class FourTubeIE
+def test_FourTubeIE():
+    ie = FourTubeIE()
+    assert ie.IE_NAME == '4tube'
+    assert ie._TKN_HOST == 'token.4tube.com'
+    assert ie._URL_TEMPLATE == 'https://www.4tube.com/videos/%s/video'
+    assert ie._VALID_URL == r'https?://(?:(?P<kind>www|m)\.)?4tube\.com/(?:videos|embed)/(?P<id>\d+)(?:/(?P<display_id>[^/?#&]+))?'
+    assert ie.suitable('http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert ie.suitable('http://www.4tube.com/embed/209733')
+    assert ie.suitable('http://m.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert not ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert not ie.suitable('https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert isinstance(ie._TESTS, list) and len(ie._TESTS) == 3
+
+# Generated at 2026-11-01 20:30:24.333746
 # Unit test for constructor of class FuxIE
+def test_FuxIE():
+    """Test the constructor and class attributes of FuxIE."""
+    ie = FuxIE()
 
-# Generated at 2026-10-25 17:35:00.034342
-# Unit test for constructor of class PornerBrosIE
+    assert ie._VALID_URL == r'https?://(?:(?P<kind>www|m)\.)?fux\.com/(?:video|embed)/(?P<id>\d+)(?:/(?P<display_id>[^/?#&]+))?'
+    assert ie._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
+    assert ie._TKN_HOST == 'token.fux.com'
 
-# Generated at 2026-10-25 17:35:02.449310
-# Unit test for constructor of class PornerBrosIE
+    # The extractor recognizes fux.com video and embed URLs
+    assert ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert ie.suitable('https://www.fux.com/embed/195359')
+    assert ie.suitable('https://m.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
 
-# Generated at 2026-10-25 17:35:04.853810
-# Unit test for constructor of class PornerBrosIE
+    # URLs from other sites in the family must not match
+    assert not ie.suitable('https://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert not ie.suitable('https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert not ie.suitable('https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
 
-# Generated at 2026-10-25 17:35:07.272272
-# Unit test for constructor of class FourTubeIE
+    # Regex groups extracted for a canonical video URL
+    mobj = ie._match_valid_url('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert mobj is not None
+    assert mobj.group('kind') == 'www'
+    assert mobj.group('id') == '195359'
+    assert mobj.group('display_id') == 'awesome-fucking-kitchen-ends-cum-swallow'
 
-# Generated at 2026-10-25 17:35:09.690113
-# Unit test for constructor of class FourTubeIE
+    # Embed URL has no display_id
+    mobj = ie._match_valid_url('https://www.fux.com/embed/195359')
+    assert mobj is not None
+    assert mobj.group('id') == '195359'
+    assert mobj.group('display_id') is None
 
-# Generated at 2026-10-25 17:35:12.102278
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:35:14.516137
+# Generated at 2026-11-01 20:31:14.924114
 # Unit test for constructor of class FourTubeBaseIE
+def test_FourTubeBaseIE():
+    ie = FourTubeBaseIE()
+    assert isinstance(ie, InfoExtractor)
+    assert isinstance(ie, FourTubeBaseIE)
+    # Core helper methods must be present and callable
+    assert callable(getattr(ie, '_extract_formats', None))
+    assert callable(getattr(ie, '_real_extract', None))
+    # Base extractor does not define its own VALID_URL (subclasses do)
+    assert getattr(ie, 'IE_NAME', None) is None
+    # Default attribute state after construction
+    assert ie.age_limit is None
+    assert ie._downloader is None
 
-# Generated at 2026-10-25 17:35:16.930425
-# Unit test for constructor of class FourTubeBaseIE
+# Generated at 2026-11-01 20:31:29.260552
+# Unit test for constructor of class FourTubeIE
+def test_FourTubeIE():
+    ie = FourTubeIE()
+    assert ie.IE_NAME == '4tube'
+    assert ie._TKN_HOST == 'token.4tube.com'
+    assert ie._URL_TEMPLATE == 'https://www.4tube.com/videos/%s/video'
+    assert ie.suitable('http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert ie.suitable('http://www.4tube.com/embed/209733')
+    assert ie.suitable('http://m.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert not ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert not ie.suitable('https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert not ie.suitable('https://www.pornerbros.com/embed/181369')
+    assert not ie.suitable('http://www.4tube.com/videos/notanid')
 
-# Generated at 2026-10-25 17:35:19.345281
-# Unit test for constructor of class FourTubeBaseIE
+# Generated at 2026-11-01 20:31:44.205451
+# Unit test for constructor of class PornTubeIE
+def test_PornTubeIE():
+    ie = PornTubeIE()
+    assert ie.IE_NAME == 'FourTubeBase'
+    assert ie._TKN_HOST == 'tkn.porntube.com'
+    assert ie._URL_TEMPLATE == 'https://www.porntube.com/videos/video_%s'
 
-# Generated at 2026-10-25 17:35:21.759617
+    # Regular video URL
+    m = re.match(ie._VALID_URL, 'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert m is not None
+    assert m.group('id') == '7089759'
+    assert m.group('display_id') == 'teen-couple-doing-anal'
+    assert m.group('kind') is None
+
+    # Embed URL
+    m = re.match(ie._VALID_URL, 'https://www.porntube.com/embed/7089759')
+    assert m is not None
+    assert m.group('id') == '7089759'
+    assert m.group('display_id') is None
+
+    # Mobile URL
+    m = re.match(ie._VALID_URL, 'https://m.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert m is not None
+    assert m.group('kind') == 'm'
+    assert m.group('id') == '7089759'
+
+    # Non-matching URL should not match
+    assert re.match(ie._VALID_URL, 'https://www.porntube.com/videos/invalid') is None
+
+# Generated at 2026-11-01 20:32:25.373479
+# Unit test for constructor of class PornerBrosIE
+def test_PornerBrosIE():
+    ie = PornerBrosIE()
+
+    # Check class attributes set by the constructor/class definition
+    assert ie._TKN_HOST == 'token.pornerbros.com'
+    assert ie._URL_TEMPLATE == 'https://www.pornerbros.com/videos/video_%s'
+    assert ie._VALID_URL is not None
+
+    # Valid URLs should match _VALID_URL
+    valid_urls = [
+        'https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369',
+        'https://www.pornerbros.com/embed/181369',
+        'https://m.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369',
+        'http://pornerbros.com/embed/181369',
+    ]
+    for url in valid_urls:
+        assert re.match(ie._VALID_URL, url) is not None
+
+    # Invalid URLs should not match _VALID_URL
+    invalid_urls = [
+        'https://www.pornerbros.com/videos/181369',
+        'https://www.pornerbros.com/videos/title_no-id',
+        'https://www.pornerbros.com/other/181369',
+        'https://porntube.com/embed/181369',
+    ]
+    for url in invalid_urls:
+        assert re.match(ie._VALID_URL, url) is None
+
+    # Group extraction for a full video URL
+    mobj = re.match(
+        ie._VALID_URL,
+        'https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert mobj.group('kind') == 'www'
+    assert mobj.group('id') == '181369'
+    assert mobj.group('display_id') == 'skinny-brunette-takes-big-cock-down-her-anal-hole'
+
+    # Group extraction for an embed URL
+    mobj = re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369')
+    assert mobj.group('kind') == 'www'
+    assert mobj.group('id') == '181369'
+    assert mobj.group('display_id') is None
+
+    # Mobile subdomain sets kind to 'm'
+    mobj = re.match(
+        ie._VALID_URL,
+        'https://m.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert mobj.group('kind') == 'm'
+    assert mobj.group('id') == '181369'
+
+# Generated at 2026-11-01 20:32:41.453024
+# Unit test for constructor of class FourTubeIE
+def test_FourTubeIE():
+    ie = FourTubeIE()
+
+    # Basic class attributes set correctly
+    assert ie.IE_NAME == '4tube'
+    assert ie._TKN_HOST == 'token.4tube.com'
+    assert ie._URL_TEMPLATE == 'https://www.4tube.com/videos/%s/video'
+    assert ie._VALID_URL is not None
+
+    # Extractor accepts URLs it should handle
+    assert ie.suitable('http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert ie.suitable('https://www.4tube.com/videos/209733/video')
+    assert ie.suitable('http://www.4tube.com/embed/209733')
+    assert ie.suitable('http://m.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+
+    # Extractor rejects URLs of sibling extractors / invalid URLs
+    assert not ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert not ie.suitable('https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert not ie.suitable('https://www.pornerbros.com/embed/181369')
+    assert not ie.suitable('http://www.4tube.com/videos/not_a_number/slug')
+    assert not ie.suitable('http://example.com/videos/209733/slug')
+
+    # Regex named groups extract expected values
+    mobj = re.match(
+        FourTubeIE._VALID_URL,
+        'http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert mobj.group('id') == '209733'
+    assert mobj.group('kind') == 'www'
+    assert mobj.group('display_id') == 'hot-babe-holly-michaels-gets-her-ass-stuffed-by-black'
+
+    mobj = re.match(FourTubeIE._VALID_URL, 'http://www.4tube.com/embed/209733')
+    assert mobj.group('id') == '209733'
+    assert mobj.group('kind') is None
+    assert mobj.group('display_id') is None
+
+    mobj = re.match(
+        FourTubeIE._VALID_URL,
+        'http://m.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert mobj.group('kind') == 'm'
+    assert mobj.group('id') == '209733'
+
+# Generated at 2026-11-01 20:33:13.819964
 # Unit test for constructor of class FuxIE
+def test_FuxIE():
+    # nonce:871b6e23
+    import re
 
-# Generated at 2026-10-25 17:35:24.174133
-# Unit test for constructor of class FuxIE
+    ie = FuxIE()
+    assert ie is not None
 
-# Generated at 2026-10-25 17:35:26.592180
-# Unit test for constructor of class FuxIE
+    # Class-level configuration attributes
+    assert FuxIE._VALID_URL == (
+        r'https?://(?:(?P<kind>www|m)\.)?fux\.com/'
+        r'(?:video|embed)/(?P<id>\d+)(?:/(?P<display_id>[^/?#&]+))?')
+    assert FuxIE._URL_TEMPLATE == 'https://www.fux.com/video/%s/video'
+    assert FuxIE._TKN_HOST == 'token.fux.com'
+    assert FuxIE.IE_NAME is None
+    assert ie.ie_key() == 'Fux'
 
-# Generated at 2026-10-25 17:35:29.010079
-# Unit test for constructor of class FuxIE
+    # URL template produces the canonical video URL
+    assert FuxIE._URL_TEMPLATE % '195359' == 'https://www.fux.com/video/195359/video'
 
-# Generated at 2026-10-25 17:35:31.434279
-# Unit test for constructor of class FuxIE
+    # _VALID_URL matching (full URL with display_id)
+    mobj = re.match(
+        FuxIE._VALID_URL,
+        'https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert mobj.group('kind') == 'www'
+    assert mobj.group('id') == '195359'
+    assert mobj.group('display_id') == 'awesome-fucking-kitchen-ends-cum-swallow'
 
-# Generated at 2026-10-25 17:35:33.847649
-# Unit test for constructor of class FuxIE
+    # Embed URL: no kind, no display_id
+    mobj = re.match(FuxIE._VALID_URL, 'https://fux.com/embed/195359')
+    assert mobj.group('kind') is None
+    assert mobj.group('id') == '195359'
+    assert mobj.group('display_id') is None
 
-# Generated at 2026-10-25 17:35:36.332302
+    # Mobile URL
+    mobj = re.match(
+        FuxIE._VALID_URL,
+        'https://m.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert mobj.group('kind') == 'm'
+    assert mobj.group('id') == '195359'
+
+    # Suitability checks
+    assert FuxIE.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert FuxIE.suitable('https://fux.com/embed/195359')
+    assert FuxIE.suitable('https://m.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert not FuxIE.suitable('https://www.4tube.com/videos/209733/hot-babe')
+    assert not FuxIE.suitable('https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert not FuxIE.suitable('https://www.pornerbros.com/embed/181369')
+    assert not FuxIE.suitable('https://www.fux.com/other/195359')
+
+# Generated at 2026-11-01 20:33:35.617898
 # Unit test for constructor of class PornerBrosIE
+def test_PornerBrosIE():
+    instance = PornerBrosIE()
+    assert instance is not None
+    assert isinstance(instance, PornerBrosIE)
+    assert isinstance(instance, FourTubeBaseIE)
+    assert instance._TKN_HOST == 'token.pornerbros.com'
+    assert instance._URL_TEMPLATE == 'https://www.pornerbros.com/videos/video_%s'
+    assert re.match(
+        instance._VALID_URL,
+        'https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert re.match(
+        instance._VALID_URL,
+        'https://www.pornerbros.com/embed/181369')
+    mobj = re.match(
+        instance._VALID_URL,
+        'https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    kind, video_id, display_id = mobj.group('kind', 'id', 'display_id')
+    assert video_id == '181369'
+    assert display_id == 'skinny-brunette-takes-big-cock-down-her-anal-hole'
+    mobj = re.match(instance._VALID_URL, 'https://www.pornerbros.com/embed/181369')
+    assert mobj.group('id') == '181369'
+    mobj = re.match(
+        instance._VALID_URL,
+        'https://m.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert mobj.group('kind') == 'm'
+    assert mobj.group('id') == '181369'
 
-# Generated at 2026-10-25 17:35:38.744590
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:35:41.162871
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:35:43.573750
+# Generated at 2026-11-01 20:34:01.633384
 # Unit test for constructor of class FourTubeIE
+def test_FourTubeIE():
+    ie = FourTubeIE()
 
-# Generated at 2026-10-25 17:35:45.991185
+    # Check class attributes set by the constructor
+    assert ie.IE_NAME == '4tube'
+    assert ie._TKN_HOST == 'token.4tube.com'
+    assert ie._URL_TEMPLATE == 'https://www.4tube.com/videos/%s/video'
+    assert ie._VALID_URL == (
+        r'https?://(?:(?P<kind>www|m)\.)?4tube\.com/'
+        r'(?:videos|embed)/(?P<id>\d+)(?:/(?P<display_id>[^/?#&]+))?'
+    )
+
+    # Check that the extractor accepts its supported URL forms
+    assert ie.suitable(
+        'http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert ie.suitable('http://www.4tube.com/embed/209733')
+    assert ie.suitable(
+        'http://m.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+
+    # Check that URLs of sibling extractors are not matched
+    assert not ie.suitable(
+        'https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert not ie.suitable(
+        'https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert not ie.suitable('https://example.com/videos/209733')
+
+    # Check URL group extraction
+    mobj = re.match(
+        ie._VALID_URL,
+        'http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert mobj.group('kind') == 'www'
+    assert mobj.group('id') == '209733'
+    assert mobj.group('display_id') == 'hot-babe-holly-michaels-gets-her-ass-stuffed-by-black'
+
+    mobj = re.match(ie._VALID_URL, 'http://www.4tube.com/embed/209733')
+    assert mobj.group('kind') == 'www'
+    assert mobj.group('id') == '209733'
+    assert mobj.group('display_id') is None
+
+    mobj = re.match(
+        ie._VALID_URL,
+        'http://m.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert mobj.group('kind') == 'm'
+    assert mobj.group('id') == '209733'
+
+    # Check test cases are declared
+    assert isinstance(ie._TESTS, list) and len(ie._TESTS) == 3
+    assert ie._TESTS[0]['info_dict']['id'] == '209733'
+    assert ie._TESTS[1]['only_matching'] is True
+    assert ie._TESTS[2]['only_matching'] is True
+
+# Generated at 2026-11-01 20:35:10.440452
+# Unit test for constructor of class PornerBrosIE
+def test_PornerBrosIE():
+    ie = PornerBrosIE()
+
+    # Class-level configuration inherited/defined on subclass
+    assert ie._VALID_URL == (
+        r'https?://(?:(?P<kind>www|m)\.)?pornerbros\.com/'
+        r'(?:videos/(?P<display_id>[^/]+)_|embed/)(?P<id>\d+)'
+    )
+    assert ie._URL_TEMPLATE == 'https://www.pornerbros.com/videos/video_%s'
+    assert ie._TKN_HOST == 'token.pornerbros.com'
+
+    # Extractor identity
+    assert ie.ie_key() == 'PornerBros'
+    assert ie.ie_name() == 'PornerBros'
+
+    # URL suitability checks
+    assert ie.suitable('https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert ie.suitable('https://www.pornerbros.com/embed/181369')
+    assert ie.suitable('https://m.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert not ie.suitable('https://www.pornerbros.com/other/181369')
+    assert not ie.suitable('https://www.4tube.com/videos/209733/hot-babe')
+
+    # Regex group extraction
+    mobj = re.match(ie._VALID_URL, 'https://www.pornerbros.com/videos/skinny-brunette-takes-big-cock-down-her-anal-hole_181369')
+    assert mobj.group('kind') == 'www'
+    assert mobj.group('id') == '181369'
+    assert mobj.group('display_id') == 'skinny-brunette-takes-big-cock-down-her-anal-hole'
+
+    mobj_embed = re.match(ie._VALID_URL, 'https://www.pornerbros.com/embed/181369')
+    assert mobj_embed.group('id') == '181369'
+    assert mobj_embed.group('display_id') is None
+
+# Generated at 2026-11-01 20:35:42.085255
 # Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:35:48.406649
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:35:50.823892
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:35:53.236825
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:35:55.649995
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:35:58.065507
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:36:00.479660
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:36:02.894522
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:36:05.310037
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:36:07.727326
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:36:10.143480
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:36:15.585129
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:36:17.999726
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:36:20.415078
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:36:22.829518
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:36:25.244484
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:36:27.662025
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:36:30.079894
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:36:32.494998
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:36:34.910413
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:36:37.325654
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:36:39.739649
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:36:42.154948
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:36:44.569472
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:36:46.986394
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:36:49.399439
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:36:51.823652
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:36:54.238803
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:36:56.651121
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:36:59.065344
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:37:01.479683
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:37:03.894190
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:37:06.309237
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:37:08.727949
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:37:11.145764
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:37:13.558617
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:37:15.972494
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:37:18.387699
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:37:20.802614
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:37:23.249470
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:37:25.631147
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:37:28.048858
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:37:30.466295
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:37:32.879423
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:37:35.293629
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:37:37.709216
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:37:40.123640
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:37:42.537816
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:37:44.952358
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:37:47.371309
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:37:49.788818
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:37:52.203590
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:37:54.618094
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:37:57.033525
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:37:59.448096
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:38:01.866113
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:38:04.277188
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:38:06.694143
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:38:09.109226
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:38:11.524035
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:38:13.938004
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:38:19.431321
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:38:21.845678
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:38:24.261100
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:38:26.677795
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:38:29.094008
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:38:31.509241
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:38:33.924169
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:38:36.339990
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:38:38.754444
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:38:41.169155
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:38:43.583344
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:38:46.000375
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:38:48.417242
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:38:50.832547
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:38:53.248500
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:38:55.660970
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:38:58.075536
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:39:00.490918
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:39:02.904993
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:39:05.319237
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:39:07.738239
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:39:10.155459
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:39:12.569304
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:39:14.987094
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:39:17.398090
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:39:19.812624
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:39:22.226921
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:39:24.641619
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:39:27.058607
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:39:29.475881
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:39:31.922951
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:39:34.304016
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:39:36.719469
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:39:39.133461
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:39:41.548220
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:39:43.962296
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:39:46.379034
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:39:48.794357
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:39:51.265277
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:39:53.633564
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:39:56.053334
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:39:58.465523
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:40:00.880165
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:40:03.294813
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:40:05.709781
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:40:08.127140
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:40:10.543834
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:40:12.957124
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:40:15.370712
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:40:17.785571
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:40:20.200968
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:40:25.645765
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:40:28.062232
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:40:30.480159
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:40:32.893344
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:40:35.307908
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:40:37.723073
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:40:40.137510
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:40:42.563060
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:40:44.967049
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:40:47.383311
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:40:49.800437
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:40:52.216595
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:40:54.629085
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:40:57.043802
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:40:59.458342
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:41:01.872102
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:41:04.286577
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:41:06.714311
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:41:09.120059
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:41:11.534689
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:41:13.948400
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:41:16.362987
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:41:18.777751
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:41:21.191709
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:41:23.607048
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:41:26.020440
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:41:28.439416
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:41:30.857180
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:41:33.269487
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:41:35.683660
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:41:38.098411
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:41:41.440540
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:41:43.855328
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:41:46.270365
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:41:48.684281
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:41:51.098576
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:41:53.512772
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:41:55.926049
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:41:58.342701
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:42:00.759997
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:42:03.174441
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:42:05.588488
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:42:08.002923
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:42:10.416841
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:42:12.830057
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:42:15.244565
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:42:17.658670
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:42:20.149398
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:42:22.521697
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:42:27.963855
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:42:30.379580
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:42:32.796942
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:42:35.208424
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:42:37.623329
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:42:40.036787
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:42:42.450455
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:42:44.865826
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:42:47.280324
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:42:49.694480
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:42:52.109715
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:42:54.523204
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:42:59.930796
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:43:02.345245
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:43:04.792336
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:43:07.175961
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:43:09.592899
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:43:12.005153
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:43:14.419736
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:43:16.833922
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:43:19.247838
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:43:21.662274
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:43:24.076553
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:43:26.492540
-# Unit test for constructor of class PornerBrosIE
-
-# Generated at 2026-10-25 17:43:28.907073
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:43:31.322294
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:43:33.737562
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:43:36.152581
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:43:38.567649
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:43:40.980476
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:43:43.395862
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:43:45.860071
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:43:48.276965
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:43:50.690317
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:43:53.104683
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:43:55.519660
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:43:57.936518
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:44:00.352049
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:44:02.764992
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:44:05.178506
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:44:07.592194
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:44:10.007414
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:44:21.126957
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:44:23.542681
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:44:25.956763
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:44:31.398853
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:44:33.812336
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:44:36.231531
-# Unit test for constructor of class PornTubeIE
-
-# Generated at 2026-10-25 17:44:38.641832
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:44:41.056934
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:44:43.472508
-# Unit test for constructor of class FuxIE
-
-# Generated at 2026-10-25 17:44:45.884340
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:44:48.298855
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:44:50.713309
-# Unit test for constructor of class FourTubeIE
-
-# Generated at 2026-10-25 17:44:53.126558
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:44:55.541682
-# Unit test for constructor of class FourTubeBaseIE
-
-# Generated at 2026-10-25 17:44:57.966887
-# Unit test for constructor of class FourTubeBaseIE
+def test_FourTubeIE():
+    ie = FourTubeIE()
+
+    # IE_NAME should be set correctly
+    assert ie.IE_NAME == '4tube'
+
+    # Class-level configuration attributes
+    assert ie._TKN_HOST == 'token.4tube.com'
+    assert ie._URL_TEMPLATE == 'https://www.4tube.com/videos/%s/video'
+    assert ie._VALID_URL == r'https?://(?:(?P<kind>www|m)\.)?4tube\.com/(?:videos|embed)/(?P<id>\d+)(?:/(?P<display_id>[^/?#&]+))?'
+
+    # suitable() should accept valid URLs
+    assert ie.suitable('http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+    assert ie.suitable('https://www.4tube.com/videos/209733')
+    assert ie.suitable('http://www.4tube.com/embed/209733')
+    assert ie.suitable('http://m.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black')
+
+    # suitable() should reject invalid URLs / other sites
+    assert not ie.suitable('https://www.fux.com/video/195359/awesome-fucking-kitchen-ends-cum-swallow')
+    assert not ie.suitable('https://www.porntube.com/videos/teen-couple-doing-anal_7089759')
+    assert not ie.suitable('https://www.4tube.com/notvideos/209733')
+
+    # _match_id should extract the video id
+    assert ie._match_id('http://www.4tube.com/videos/209733/hot-babe-holly-michaels-gets-her-ass-stuffed-by-black') == '209733'
+    assert ie._match_id('http://www.4tube.com/embed/209733') == '209733'
+
+    # _real_extract URL rewriting logic (kind == 'm' uses URL_TEMPLATE)
+    mobj = re.match(ie._VALID_URL, 'http://m.4tube.com/videos/209733/some-title')
+    kind, video_id, display_id = mobj.group('kind', 'id', 'display_id')
+    assert kind == 'm'
+    assert video_id == '209733'
+    assert display_id == 'some-title'
+    assert ie._URL_TEMPLATE % video_id == 'https://www.4tube.com/videos/209733/video'

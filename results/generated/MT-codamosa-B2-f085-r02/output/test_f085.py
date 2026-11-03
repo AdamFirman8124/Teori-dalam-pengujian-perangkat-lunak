@@ -2,21 +2,38 @@
 import f085 as module_0
 
 def test_case_0():
-    int_0 = 1
+    int_0 = 4
     int_1 = 2
-    int_2 = 3
-    int_3 = 4
-    int_4 = 5
-    int_5 = 6
-    int_6 = [int_0, int_1, int_2, int_3, int_4, int_5]
-    var_0 = module_0.add(int_6)
-    assert var_0 == 12
-    int_7 = [int_1, int_0, int_3, int_2, int_5, int_4]
-    var_1 = module_0.add(int_7)
-    assert var_1 == 0
-    var_2 = []
-    var_3 = module_0.add(var_2)
-    assert var_3 == 0
-    int_8 = [int_0]
-    var_4 = module_0.add(int_8)
+    int_2 = 6
+    int_3 = 7
+    int_4 = [int_0, int_1, int_2, int_3]
+    var_0 = module_0.add(int_4)
+    assert var_0 == 2
+    int_5 = 1
+    int_6 = 3
+    int_7 = 5
+    int_8 = [int_5, int_1, int_6, int_0, int_7, int_2]
+    var_1 = module_0.add(int_8)
+    assert var_1 == 12
+    int_9 = [int_5, int_6, int_7, int_3]
+    var_2 = module_0.add(int_9)
+    assert var_2 == 0
+    var_3 = []
+    var_4 = module_0.add(var_3)
     assert var_4 == 0
+    int_10 = [int_1]
+    var_5 = module_0.add(int_10)
+    assert var_5 == 0
+    int_11 = [int_1, int_5, int_0, int_6]
+    var_6 = module_0.add(int_11)
+    assert var_6 == 0
+    int_12 = -2
+    int_13 = -4
+    int_14 = [int_5, int_12, int_6, int_13]
+    var_7 = module_0.add(int_14)
+    assert var_7 == 6
+    assert var_7 == -6
+    int_15 = 0
+    int_16 = [int_5, int_15, int_6, int_1]
+    var_8 = module_0.add(int_16)
+    assert var_8 == 2

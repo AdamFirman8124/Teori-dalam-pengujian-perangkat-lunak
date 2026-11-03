@@ -7,20 +7,28 @@ import pytest
 from f158 import find_max
 
 
-def test_find_max_unique_by_distinct_chars():
-    # Word with the most distinct characters wins.
-    assert find_max(["name", "of", "string"]) == "string"
+def test_find_max_returns_word_with_most_unique_characters():
+    words = ["name", "of", "string"]
+    result = find_max(words)
+    assert result == "string"
+    # The input list must not be mutated by the function.
+    assert words == ["name", "of", "string"]
+
+
+def test_find_max_breaks_ties_lexicographically():
+    # All words have 4 unique characters; the lexicographically
+    # smallest one must be returned.
     assert find_max(["name", "enam", "game"]) == "enam"
-    assert find_max(["aaaaaaa", "bb", "cc"]) == "aaaaaaa"
 
 
-def test_find_max_tie_broken_lexicographically():
-    # Same number of distinct characters -> lexicographically smallest wins.
-    assert find_max(["abc", "acb", "bac"]) == "abc"
-    assert find_max(["ab", "ba", "cd"]) == "ab"
+def test_find_max_single_word():
+    assert find_max(["aaaaaaa"]) == "aaaaaaa"
 
 
-def test_find_max_single_element_and_duplicates():
-    assert find_max(["hello"]) == "hello"
-    # Duplicated characters do not increase the distinct count.
-    assert find_max(["aabb", "ab", "xy"]) == "aabb"
+def test_find_max_empty_strings():
+    assert find_max(["", ""]) == ""
+
+
+def test_find_max_prefers_unique_count_over_length():
+    # "abc" has 3 unique chars, "aaaa" has only 1, even though it is longer.
+    assert find_max(["aaaa", "abc"]) == "abc"

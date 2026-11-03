@@ -8,32 +8,44 @@ def test_case_0():
     int_0 = 1
     int_1 = 3
     int_2 = 5
-    int_3 = [int_0, int_1, int_2]
-    var_2 = module_0.pluck(int_3)
+    int_3 = 7
+    int_4 = [int_0, int_1, int_2, int_3]
+    var_2 = module_0.pluck(int_4)
     assert var_2 == []
-    int_4 = 2
-    int_5 = [int_4]
+    int_5 = [int_3]
     var_3 = module_0.pluck(int_5)
-    assert var_3 == [2, 0]
-    int_6 = [int_0, int_4, int_1]
-    var_4 = module_0.pluck(int_6)
+    assert var_3 == []
+    int_6 = 4
+    int_7 = 2
+    int_8 = [int_6, int_7, int_1]
+    var_4 = module_0.pluck(int_8)
     assert var_4 == [2, 1]
-    int_7 = 4
-    int_8 = [int_7, int_4, int_1]
-    var_5 = module_0.pluck(int_8)
+    int_9 = [int_0, int_7, int_1]
+    var_5 = module_0.pluck(int_9)
     assert var_5 == [2, 1]
-    int_9 = [int_0, int_4, int_4, int_7]
-    var_6 = module_0.pluck(int_9)
-    assert var_6 == [2, 1]
     int_10 = 0
-    int_11 = [int_10, int_0, int_4]
-    var_7 = module_0.pluck(int_11)
-    assert var_7 == [0, 0]
-    int_12 = -4
-    int_13 = -2
-    int_14 = [int_12, int_13, int_1]
-    var_8 = module_0.pluck(int_14)
-    assert var_8 == [-4, 0]
-    int_15 = [int_2, int_7, int_1, int_4, int_0]
-    var_9 = module_0.pluck(int_15)
-    assert var_9 == [2, 3]
+    int_11 = [int_2, int_10, int_1, int_10, int_6, int_7]
+    var_6 = module_0.pluck(int_11)
+    assert var_6 == [0, 1]
+    int_12 = 6
+    int_13 = [int_7, int_6, int_7, int_12]
+    var_7 = module_0.pluck(int_13)
+    assert var_7 == [2, 0]
+    int_14 = 8
+    int_15 = [int_14]
+    var_8 = module_0.pluck(int_15)
+    assert var_8 == [8, 0]
+    int_16 = -2
+    int_17 = -4
+    int_18 = [int_16, int_17, int_1]
+    var_9 = module_0.pluck(int_18)
+    assert var_9 == [-4, 1]
+    int_19 = [int_0, int_10, int_2]
+    var_10 = module_0.pluck(int_19)
+    assert var_10 == [0, 1]
+    int_20 = 10
+    int_21 = [int_20, int_12, int_14]
+    var_11 = module_0.pluck(int_21)
+    assert var_11 == [6, 1]
+    str_0 = 'All tests passed!'
+    var_12 = print(str_0)

@@ -24,46 +24,38 @@ def test_case_0():
     var_4 = module_0.search(int_9)
     assert var_4 == 1
     assert var_4 == -1
-    int_10 = [int_2, int_2]
+    int_10 = [int_3, int_3, int_3]
     var_5 = module_0.search(int_10)
-    assert var_5 == 2
-    int_11 = [int_3, int_3, int_3]
+    assert var_5 == 3
+    int_11 = [int_2, int_2]
     var_6 = module_0.search(int_11)
-    assert var_6 == 3
-    int_12 = [int_0, int_0, int_0, int_0]
+    assert var_6 == 2
+    int_12 = [int_1, int_2, int_2, int_3, int_3, int_3, int_0, int_0, int_0, int_0]
     var_7 = module_0.search(int_12)
     assert var_7 == 4
-    int_13 = [int_6, int_6, int_6, int_6, int_6]
+    int_13 = [int_1, int_1, int_1, int_2, int_2, int_2, int_3, int_3, int_3]
     var_8 = module_0.search(int_13)
-    assert var_8 == 5
-    int_14 = [int_3, int_3]
-    var_9 = module_0.search(int_14)
+    assert var_8 == 3
+    int_14 = 10
+    int_15 = [int_14, int_14, int_14, int_14, int_14]
+    var_9 = module_0.search(int_15)
     assert var_9 == 1
     assert var_9 == -1
-    int_15 = [int_0, int_0, int_0]
-    var_10 = module_0.search(int_15)
-    assert var_10 == 1
-    assert var_10 == -1
-    int_16 = [int_1, int_2, int_2]
-    var_11 = module_0.search(int_16)
-    assert var_11 == 2
-    int_17 = [int_1, int_1, int_2, int_2, int_2]
-    var_12 = module_0.search(int_17)
+    int_16 = 6
+    int_17 = [int_16, int_16, int_16, int_16, int_16, int_16]
+    var_10 = module_0.search(int_17)
+    assert var_10 == 6
+    int_18 = 7
+    int_19 = [int_18, int_1, int_18, int_1, int_18, int_1]
+    var_11 = module_0.search(int_19)
+    assert var_11 == 1
+    int_20 = [int_2, int_1, int_2, int_1, int_2]
+    var_12 = module_0.search(int_20)
     assert var_12 == 2
-    int_18 = [int_1, int_2, int_2, int_3, int_3, int_3]
-    var_13 = module_0.search(int_18)
-    assert var_13 == 3
-    int_19 = [int_1, int_1, int_1]
-    var_14 = module_0.search(int_19)
-    assert var_14 == 1
-    int_20 = [int_1, int_2, int_3]
-    var_15 = module_0.search(int_20)
-    assert var_15 == 1
-    int_21 = [int_6]
-    var_16 = module_0.search(int_21)
-    assert var_16 == 1
-    assert var_16 == -1
-    int_22 = [int_2, int_3, int_3]
-    var_17 = module_0.search(int_22)
-    assert var_17 == 1
-    assert var_17 == -1
+    int_21 = 9
+    int_22 = 8
+    int_23 = [int_21, int_22, int_1]
+    var_13 = module_0.search(int_23)
+    assert var_13 == 1
+    str_0 = 'All tests passed!'
+    var_14 = print(str_0)

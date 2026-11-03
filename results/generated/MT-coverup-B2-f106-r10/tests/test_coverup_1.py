@@ -5,23 +5,17 @@
 from f106 import f
 
 
-def test_f_zero_returns_empty_list():
-    assert f(0) == []
-
-
-def test_f_one_odd_branch():
-    assert f(1) == [1]
-
-
-def test_f_two_covers_even_and_odd_branches():
+def test_f_even_and_odd_branches():
+    # f(2) executes the loop body for i=1 (odd branch, lines 10-12)
+    # and i=2 (even branch, lines 6-8), plus init (line 3) and return (line 13).
+    # i=1: x = 0+1 = 1 ; i=2: x = 1*1*2 = 2
     assert f(2) == [1, 2]
 
 
-def test_f_five_covers_repeated_loops():
+def test_f_edge_cases_and_values():
+    # n=0: loop never runs, returns empty list (lines 3 and 13 only)
+    assert f(0) == []
+    # n=1: only odd branch
+    assert f(1) == [1]
+    # n=5: interleaves both branches; odd i -> sum 1..i, even i -> factorial i
     assert f(5) == [1, 2, 6, 24, 15]
-
-
-def test_f_four_factorial_and_sum_values():
-    result = f(4)
-    assert result == [1, 2, 6, 24]
-    assert len(result) == 4

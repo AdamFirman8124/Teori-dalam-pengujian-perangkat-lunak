@@ -7,24 +7,31 @@ import pytest
 from isort.exceptions import FileSkipComment, FileSkipped, ISortError
 
 
-def test_file_skip_comment_message_and_file_path():
-    file_path = "example.py"
+def test_file_skip_comment_message_and_attributes():
+    """Instantiating FileSkipComment must execute the super().__init__ call
+    (lines 58-59) and set up the exception correctly."""
+    file_path = "/some/path/to/skipped_file.py"
     exc = FileSkipComment(file_path)
-    expected_message = f"{file_path} contains an file skip comment and was skipped."
+
+    # The formatted message passed to the parent constructor is preserved.
+    assert str(exc) == f"{file_path} contains an file skip comment and was skipped."
+
+    # FileSkipped.__init__ must have stored the file_path attribute.
     assert exc.file_path == file_path
-    assert str(exc) == expected_message
-    assert exc.args[0] == expected_message
 
-
-def test_file_skip_comment_inheritance_and_raise():
-    file_path = "/path/to/file.py"
-    with pytest.raises(FileSkipped) as exc_info:
-        raise FileSkipComment(file_path)
-    exc = exc_info.value
-    assert isinstance(exc, FileSkipComment)
+    # Inheritance chain postconditions.
     assert isinstance(exc, FileSkipped)
     assert isinstance(exc, ISortError)
     assert isinstance(exc, Exception)
-    assert exc.file_path == file_path
-    assert file_path in str(exc)
-    assert "file skip comment" in str(exc)
+
+
+def test_file_skip_comment_can_be_raised_and_caught():
+    """The exception should behave like a normal exception when raised."""
+    file_path = "another_skipped.py"
+    with pytest.raises(FileSkipComment) as exc_info:
+        raise FileSkipComment(file_path)
+
+    assert exc_info.value.file_path == file_path
+    assert str(exc_info.value) == (
+        f"{file_path} contains an file skip comment and was skipped."
+    )

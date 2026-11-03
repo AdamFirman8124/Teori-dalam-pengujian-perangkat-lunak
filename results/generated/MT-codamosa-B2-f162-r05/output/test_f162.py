@@ -5,3 +5,31 @@ def test_case_0():
     str_0 = 'abc'
     var_0 = module_0.string_to_md5(str_0)
     assert var_0 == '900150983cd24fb0d6963f7d28e17f72'
+    str_1 = 'hello'
+    var_1 = module_0.string_to_md5(str_1)
+    assert var_1 == '5d41402abc4b2a76b9719d911017c592'
+    str_2 = ''
+    var_2 = module_0.string_to_md5(str_2)
+    assert var_2 is None
+    var_3 = None
+    var_4 = module_0.string_to_md5(var_3)
+    assert var_4 is None
+    str_3 = 'Hello world'
+    var_5 = module_0.string_to_md5(str_3)
+    assert var_5 == '3e25960a79dbc69b674cd4ec67a72c62'
+    var_6 = len(var_5)
+    assert var_6 == 32
+    var_7 = module_0.string_to_md5(str_3)
+    assert var_7 == '3e25960a79dbc69b674cd4ec67a72c62'
+    var_8 = module_0.string_to_md5(str_3)
+    assert var_8 == '3e25960a79dbc69b674cd4ec67a72c62'
+    str_4 = 'Hello'
+    var_9 = module_0.string_to_md5(str_4)
+    assert var_9 == '8b1a9953c4611296a827abf8c47804d7'
+    var_10 = module_0.string_to_md5(str_1)
+    assert var_10 == '5d41402abc4b2a76b9719d911017c592'
+    str_5 = 'All tests passed!'
+    var_11 = print(str_5)
+
+def test_case_1():
+    pass

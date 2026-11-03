@@ -10,26 +10,21 @@ def test_case_0():
     assert var_1 == 2
     int_2 = 79
     var_2 = module_0.fizz_buzz(int_2)
+    assert var_2 == 2
     assert var_2 == 3
-    int_3 = 0
+    int_3 = 100
     var_3 = module_0.fizz_buzz(int_3)
-    assert var_3 == 0
-    int_4 = 1
+    assert var_3 == 3
+    int_4 = 0
     var_4 = module_0.fizz_buzz(int_4)
     assert var_4 == 0
-    int_5 = 11
+    int_5 = 1
     var_5 = module_0.fizz_buzz(int_5)
     assert var_5 == 0
-    int_6 = 12
+    int_6 = 13
     var_6 = module_0.fizz_buzz(int_6)
     assert var_6 == 0
-    int_7 = 100
+    int_7 = 200
     var_7 = module_0.fizz_buzz(int_7)
-    assert var_7 == 3
-    int_8 = 77
-    var_8 = module_0.fizz_buzz(int_8)
-    assert var_8 == 0
-    var_9 = module_0.fizz_buzz(int_1)
-    assert var_9 == 2
-    str_0 = 'All tests passed.'
-    var_10 = print(str_0)
+    assert var_7 == 4
+    assert var_7 == 6

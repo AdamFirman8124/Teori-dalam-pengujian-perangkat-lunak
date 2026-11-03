@@ -2,12 +2,51 @@
 import f128 as module_0
 
 def test_case_0():
-    float_0 = None
-    var_0 = module_0.prod_signs(float_0)
-    assert var_0 is None
-    bytes_0 = b'\xd1\xaf\xec\x06\x93q\xe9\x04\xbe\xa8\xd1}\xe4'
-    var_1 = module_0.prod_signs(bytes_0)
-    assert var_1 == 2043
-    complex_0 = None
-    var_2 = module_0.prod_signs(complex_0)
-    assert var_2 is None
+    var_0 = []
+    var_1 = module_0.prod_signs(var_0)
+    assert var_1 is None
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = [int_0, int_1, int_2]
+    var_2 = module_0.prod_signs(int_3)
+    assert var_2 == 6
+    int_4 = -1
+    int_5 = [int_4, int_1, int_2]
+    var_3 = module_0.prod_signs(int_5)
+    assert var_3 == 6
+    assert var_3 == -6
+    int_6 = -1
+    int_7 = -2
+    int_8 = [int_6, int_7, int_2]
+    var_4 = module_0.prod_signs(int_8)
+    assert var_4 == 6
+    int_9 = -1
+    int_10 = -2
+    int_11 = -3
+    int_12 = [int_9, int_10, int_11]
+    var_5 = module_0.prod_signs(int_12)
+    assert var_5 == 18
+    assert var_5 == -6
+    int_13 = 0
+    int_14 = -2
+    int_15 = [int_13, int_0, int_14, int_2]
+    var_6 = module_0.prod_signs(int_15)
+    assert var_6 == 0
+    int_16 = 5
+    int_17 = [int_16]
+    var_7 = module_0.prod_signs(int_17)
+    assert var_7 == 5
+    int_18 = -5
+    int_19 = [int_18]
+    var_8 = module_0.prod_signs(int_19)
+    assert var_8 == 5
+    assert var_8 == -5
+    int_20 = -2
+    int_21 = -2
+    int_22 = 4
+    int_23 = [int_20, int_21, int_13, int_22]
+    var_9 = module_0.prod_signs(int_23)
+    assert var_9 == 0
+    str_0 = 'All tests passed!'
+    var_10 = print(str_0)

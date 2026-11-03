@@ -5,34 +5,35 @@ def test_case_0():
     str_0 = '(()()) ((())) () ((())()())'
     list_0 = module_0.parse_nested_parens(str_0)
     assert list_0 == [2, 3, 1, 3]
-    str_1 = '()'
+    str_1 = ''
     list_1 = module_0.parse_nested_parens(str_1)
-    assert list_1 == [1]
-    str_2 = '(())'
+    assert list_1 == []
+    str_2 = '()'
     list_2 = module_0.parse_nested_parens(str_2)
-    assert list_2 == [2]
+    assert list_2 == [1]
     str_3 = '((()))'
     list_3 = module_0.parse_nested_parens(str_3)
     assert list_3 == [3]
-    str_4 = '(()())'
+    str_4 = '(((())))'
     list_4 = module_0.parse_nested_parens(str_4)
-    assert list_4 == [2]
-    str_5 = ''
+    assert list_4 == [4]
+    str_5 = '() (()) ((())) (((())))'
     list_5 = module_0.parse_nested_parens(str_5)
-    assert list_5 == []
-    str_6 = '   '
+    assert list_5 == [1, 2, 3, 4]
+    str_6 = '(())  (()())'
     list_6 = module_0.parse_nested_parens(str_6)
-    assert list_6 == []
-    str_7 = '(()) () ((()))'
+    assert list_6 == [2, 2]
+    str_7 = '  () ()  '
     list_7 = module_0.parse_nested_parens(str_7)
-    assert list_7 == [2, 1, 3]
-    str_8 = 'All tests passed!'
-    var_0 = print(str_8)
+    assert list_7 == [1, 1]
+    str_8 = '()()()'
+    list_8 = module_0.parse_nested_parens(str_8)
+    assert list_8 == [1]
+    str_9 = '(()()) ((())) ((())()())'
+    list_9 = module_0.parse_nested_parens(str_9)
+    assert list_9 == [2, 3, 3]
+    str_10 = 'All tests passed!'
+    var_0 = print(str_10)
 
 def test_case_1():
-    str_0 = '2MC<\x0bK>=kv,^tkt8pd'
-    list_0 = module_0.parse_nested_parens(str_0)
-    assert list_0 == [0]
-    str_1 = 'h1'
-    list_1 = module_0.parse_nested_parens(str_1)
-    assert list_1 == [0]
+    pass

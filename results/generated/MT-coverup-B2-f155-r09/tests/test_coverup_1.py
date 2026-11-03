@@ -5,16 +5,26 @@
 from f155 import even_odd_count
 
 
-def test_even_odd_count_mixed_digits():
-    assert even_odd_count(12345) == (2, 3)
+def test_even_odd_count_negative_mixed():
+    """Covers abs() handling of negative numbers, both even and odd branches."""
+    assert even_odd_count(-12) == (1, 1)
 
 
-def test_even_odd_count_all_even_and_zero():
-    assert even_odd_count(24680) == (5, 0)
+def test_even_odd_count_positive_mixed():
+    """Covers the loop with both even and odd digits."""
+    assert even_odd_count(123) == (1, 2)
+
+
+def test_even_odd_count_zero():
+    """Zero is a single even digit."""
     assert even_odd_count(0) == (1, 0)
 
 
-def test_even_odd_count_all_odd_and_negative():
-    assert even_odd_count(13579) == (0, 5)
-    assert even_odd_count(-12) == (1, 1)
-    assert even_odd_count(-13579) == (0, 5)
+def test_even_odd_count_all_even():
+    """Only the even branch executes."""
+    assert even_odd_count(2468) == (4, 0)
+
+
+def test_even_odd_count_all_odd():
+    """Only the odd (else) branch executes."""
+    assert even_odd_count(1357) == (0, 4)

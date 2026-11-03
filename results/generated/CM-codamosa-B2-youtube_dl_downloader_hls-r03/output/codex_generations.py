@@ -1,186 +1,61 @@
 
 
-# Generated at 2026-10-25 12:18:10.838236
-# Unit test for method can_download of class HlsFD
-
-# Generated at 2026-10-25 12:18:13.251155
-# Unit test for method can_download of class HlsFD
-
-# Generated at 2026-10-25 12:18:36.971308
-# Unit test for method can_download of class HlsFD
-def test_HlsFD_can_download():assert HlsFD.can_download(
-        '#EXTM3U\n#EXTINF:10,\nsegment1.ts\n',
-        {},
-    ) is True
-
-
-# Generated at 2026-10-25 12:19:11.013440
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:19:46.033999
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:19:53.147420
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:20:08.460935
-# Unit test for constructor of class HlsFD
-def test_HlsFD():
-    # HlsFD defines no __init__, so this tests the inherited
-    # FragmentFD/FileDownloader constructor.
-    class FakeYDL(object):
-        params = {}
-
-    ydl = FakeYDL()
-    params = {'test': True}
-
-    fd = HlsFD(ydl, params)
-
-    assert isinstance(fd, FragmentFD)
-    assert isinstance(fd, HlsFD)
-    assert fd.FD_NAME == 'hlsnative'
-    assert fd.ydl is ydl
-    assert fd.params is params
-
-# Generated at 2026-10-25 12:20:09.907515
-# Unit test for constructor of class HlsFD
-def test_HlsFD():
-    # HlsFD defines no __init__, so this tests the inherited
-    # FragmentFD/FileDownloader constructor.
-    class FakeYDL(object):
-        params = {}
-
-    ydl = FakeYDL()
-    params = {'test': True}
-
-    fd = HlsFD(ydl, params)
-
-    assert isinstance(fd, FragmentFD)
-    assert isinstance(fd, HlsFD)
-    assert fd.FD_NAME == 'hlsnative'
-    assert fd.ydl is ydl
-    assert fd.params is params
-
-# Generated at 2026-10-25 12:20:11.640070
-# Unit test for constructor of class HlsFD
-def test_HlsFD():
-    # HlsFD defines no __init__, so this tests the inherited
-    # FragmentFD/FileDownloader constructor.
-    class FakeYDL(object):
-        params = {}
-
-    ydl = FakeYDL()
-    params = {'test': True}
-
-    fd = HlsFD(ydl, params)
-
-    assert isinstance(fd, FragmentFD)
-    assert isinstance(fd, HlsFD)
-    assert fd.FD_NAME == 'hlsnative'
-    assert fd.ydl is ydl
-    assert fd.params is params
-
-# Generated at 2026-10-25 12:20:14.706188
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:20:17.653047
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:20:20.730773
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:20:52.450160
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:21:22.507085
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:21:57.691606
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:22:18.818875
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:22:32.229993
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:22:36.327495
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:23:47.597387
+# Generated at 2026-11-03 03:04:24.855846
 # Unit test for method can_download of class HlsFD
 def test_HlsFD_can_download():
-    base_manifest = (
+    plain_manifest = (
         '#EXTM3U\n'
-        '#EXT-X-VERSION:3\n'
         '#EXT-X-TARGETDURATION:10\n'
-        '#EXT-X-MEDIA-SEQUENCE:0\n'
-        '#EXTINF:10.0,\n'
+        '#EXTINF:10,\n'
         'segment0.ts\n'
-        '#EXTINF:10.0,\n'
+        '#EXTINF:10,\n'
         'segment1.ts\n'
         '#EXT-X-ENDLIST\n'
     )
-    assert HlsFD.can_download(base_manifest, {}) is True
-    assert HlsFD.can_download(base_manifest, {'is_live': False}) is True
-    assert HlsFD.can_download(base_manifest, {'is_live': True}) is False
-    assert HlsFD.can_download('', {}) is True
-    none_manifest = base_manifest + '#EXT-X-KEY:METHOD=NONE\n'
-    assert Hls
+    info_dict = {'is_live': False}
 
-# Generated at 2026-10-25 12:24:07.641918
-# Unit test for method can_download of class HlsFD
-def test_HlsFD_can_download():
-    base_manifest = (
-        '#EXTM3U\n'
-        '#EXT-X-VERSION:3\n'
-        '#EXT-X-TARGETDURATION:10\n'
-        '#EXT-X-MEDIA-SEQUENCE:0\n'
-        '#EXTINF:10.0,\n'
-        'segment0.ts\n'
-        '#EXTINF:10.0,\n'
-        'segment1.ts\n'
-        '#EXT-X-ENDLIST\n'
-    )
-    assert HlsFD.can_download(base_manifest, {}) is True
-    assert HlsFD.can_download(base_manifest, {'is_live': False}) is True
-    assert HlsFD.can_download(base_manifest, {'is_live': True}) is False
-    assert HlsFD.can_download('', {}) is True
-    none_manifest = base_manifest + '#EXT-X-KEY:METHOD=NONE\n'
-    assert Hls
+    # A plain, unencrypted VOD manifest should be downloadable
+    assert HlsFD.can_download(plain_manifest, info_dict)
 
-# Generated at 2026-10-25 12:24:59.891264
-# Unit test for method real_download of class HlsFD
+    # KEY with METHOD=NONE is supported
+    none_encrypted = plain_manifest.replace(
+        '#EXTM3U',
+        '#EXT-X-KEY:METHOD=NONE')
+    assert HlsFD.can_download(none_encrypted, info_dict)
 
-# Generated at 2026-10-25 12:25:04.195308
-# Unit test for method real_download of class HlsFD
+    # Unknown encryption methods (e.g. SAMPLE-AES) are not supported
+    sample_aes = plain_manifest.replace(
+        '#EXTM3U',
+        '#EXT-X-KEY:METHOD=SAMPLE-AES,URI="https://example.com/key"')
+    assert not HlsFD.can_download(sample_aes, info_dict)
 
-# Generated at 2026-10-25 12:25:11.242730
-# Unit test for method real_download of class HlsFD
+    # AES-128 is supported only when pycrypto is available
+    aes128 = plain_manifest.replace(
+        '#EXTM3U',
+        '#EXT-X-KEY:METHOD=AES-128,URI="https://example.com/key"')
+    if can_decrypt_frag:
+        assert HlsFD.can_download(aes128, info_dict)
+    else:
+        assert not HlsFD.can_download(aes128, info_dict)
 
-# Generated at 2026-10-25 12:25:59.187564
-# Unit test for method real_download of class HlsFD
+    # AES-128 combined with EXT-X-BYTERANGE is never supported
+    aes128_byterange = plain_manifest.replace(
+        '#EXTM3U',
+        '#EXT-X-KEY:METHOD=AES-128,URI="https://example.com/key"\n'
+        '#EXT-X-BYTERANGE:1024@0')
+    assert not HlsFD.can_download(aes128_byterange, {'is_live': False})
 
-# Generated at 2026-10-25 12:26:01.608104
-# Unit test for method real_download of class HlsFD
+    # Media initialization segments (EXT-X-MAP) are not supported
+    with_map = plain_manifest.replace(
+        '#EXTM3U',
+        '#EXT-X-MAP:URI="init.mp4"')
+    assert not HlsFD.can_download(with_map, info_dict)
 
-# Generated at 2026-10-25 12:26:04.408375
-# Unit test for method real_download of class HlsFD
+    # Live streams are not supported
+    assert not HlsFD.can_download(plain_manifest, {'is_live': True})
 
-# Generated at 2026-10-25 12:26:54.649369
-# Unit test for method real_download of class HlsFD
+    # Missing 'is_live' key is treated as not live
+    assert HlsFD.can_download(plain_manifest, {})
 
-# Generated at 2026-10-25 12:27:03.899096
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:27:09.331076
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:27:30.728313
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:27:42.509108
-# Unit test for method real_download of class HlsFD
-
-# Generated at 2026-10-25 12:27:56.022326
+# Generated at 2026-11-03 03:09:53.874634
 # Unit test for method real_download of class HlsFD

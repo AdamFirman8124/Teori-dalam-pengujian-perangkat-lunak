@@ -3,15 +3,27 @@ import pytest
 import f045 as module_0
 
 def test_case_0():
-    int_0 = 10
-    int_1 = 5
+    int_0 = 3
+    int_1 = 4
     var_0 = module_0.triangle_area(int_0, int_1)
-    assert var_0 == pytest.approx(25.0, abs=0.01, rel=0.01)
-    int_2 = 4
-    int_3 = 3
-    var_1 = module_0.triangle_area(int_2, int_3)
-    assert var_1 == pytest.approx(6.0, abs=0.01, rel=0.01)
-    int_4 = 7
-    int_5 = 2
-    var_2 = module_0.triangle_area(int_4, int_5)
-    assert var_2 == pytest.approx(7.0, abs=0.01, rel=0.01)
+    assert var_0 == pytest.approx(6.0, abs=0.01, rel=0.01)
+    float_0 = 2.5
+    var_1 = module_0.triangle_area(float_0, int_1)
+    assert var_1 == pytest.approx(5.0, abs=0.01, rel=0.01)
+    int_2 = 5
+    int_3 = 0
+    var_2 = module_0.triangle_area(int_2, int_3)
+    assert var_2 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    var_3 = module_0.triangle_area(int_3, int_2)
+    assert var_3 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    int_4 = 10
+    int_5 = 20
+    var_4 = module_0.triangle_area(int_4, int_5)
+    assert var_4 == pytest.approx(100.0, abs=0.01, rel=0.01)
+    int_6 = 1
+    var_5 = module_0.triangle_area(int_6, int_6)
+    assert var_5 == pytest.approx(0.5, abs=0.01, rel=0.01)
+    var_6 = module_0.triangle_area(int_0, int_2)
+    assert var_6 == pytest.approx(7.5, abs=0.01, rel=0.01)
+    var_7 = module_0.triangle_area(int_0, int_1)
+    assert var_7 == pytest.approx(6.0, abs=0.01, rel=0.01)

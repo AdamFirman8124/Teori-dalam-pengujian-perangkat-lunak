@@ -2,27 +2,29 @@
 import f019 as module_0
 
 def test_case_0():
-    str_0 = ''
+    str_0 = 'three one five'
     str_1 = module_0.sort_numbers(str_0)
-    assert str_1 == ''
-    str_2 = 'three'
+    assert str_1 == 'one three five'
+    str_2 = 'nine eight seven'
     str_3 = module_0.sort_numbers(str_2)
-    assert str_3 == 'three'
-    str_4 = 'three one five'
+    assert str_3 == 'seven eight nine'
+    str_4 = 'zero one two'
     str_5 = module_0.sort_numbers(str_4)
-    assert str_5 == 'one three five'
-    str_6 = 'three five nine'
+    assert str_5 == 'zero one two'
+    str_6 = 'four'
     str_7 = module_0.sort_numbers(str_6)
-    assert str_7 == 'three five nine'
-    str_8 = 'nine eight seven six five four three two one zero'
+    assert str_7 == 'four'
+    str_8 = ''
     str_9 = module_0.sort_numbers(str_8)
-    assert str_9 == 'zero one two three four five six seven eight nine'
-    str_10 = 'five zero four seven nine eight'
+    assert str_9 == ''
+    str_10 = 'two two one'
     str_11 = module_0.sort_numbers(str_10)
-    assert str_11 == 'zero four five seven eight nine'
-    str_12 = 'six five four three two one zero'
+    assert str_11 == 'one two two'
+    str_12 = 'nine one eight two seven three six four five zero'
     str_13 = module_0.sort_numbers(str_12)
-    assert str_13 == 'zero one two three four five six'
-    str_14 = 'one one zero two'
+    assert str_13 == 'zero one two three four five six seven eight nine'
+    str_14 = 'three  one'
     str_15 = module_0.sort_numbers(str_14)
-    assert str_15 == 'zero one one two'
+    assert str_15 == 'one three'
+    str_16 = 'All tests passed!'
+    var_0 = print(str_16)

@@ -8,25 +8,25 @@ from f131 import digits
 
 
 def test_digits_all_even_returns_zero():
+    """Covers lines 3-7 (even branch), 10-11: no odd digits -> return 0."""
     assert digits(2468) == 0
+
+
+def test_digits_zero_returns_zero():
+    """Covers lines 3-7 (even branch for digit 0), 10-11: digit 0 is even -> return 0."""
     assert digits(0) == 0
 
 
+def test_digits_all_odd_returns_product():
+    """Covers lines 3-9 (odd branch) and 13: all odd digits -> product of odds."""
+    assert digits(135) == 1 * 3 * 5
+
+
+def test_digits_mixed_returns_product_of_odds():
+    """Covers lines 3-9, 10 (False branch), 13: mixed digits -> product of odd digits only."""
+    assert digits(1234) == 1 * 3
+
+
 def test_digits_single_odd_digit():
+    """Covers lines 3-9, 10 (False branch), 13: a single odd digit -> that digit."""
     assert digits(7) == 7
-    assert digits(1) == 1
-
-
-def test_digits_all_odd_product():
-    assert digits(135) == 15
-    assert digits(999) == 729
-
-
-def test_digits_mixed_even_and_odd():
-    assert digits(1234) == 3
-    assert digits(246135) == 15
-
-
-def test_digits_ignores_even_digits_in_product():
-    assert digits(20) == 0
-    assert digits(102) == 1

@@ -7,30 +7,39 @@ import pytest
 from f118 import get_closest_vowel
 
 
-def test_short_word_returns_empty():
-    # Covers lines 3-4: len(word) < 3 branch (True path)
+def test_word_shorter_than_three_returns_empty_string():
+    # Covers lines 3-4: early return for words shorter than 3 characters.
     assert get_closest_vowel("") == ""
     assert get_closest_vowel("a") == ""
-    assert get_closest_vowel("ca") == ""
+    assert get_closest_vowel("ab") == ""
 
 
-def test_finds_closest_vowel():
-    # Covers lines 6-10: vowel found with non-vowel neighbors
-    assert get_closest_vowel("cat") == "a"
+def test_vowel_between_consonants_is_returned():
+    # Covers lines 6-10: the loop finds a vowel whose neighbours are consonants.
     assert get_closest_vowel("full") == "u"
-    assert get_closest_vowel("bEd") == "E"
-    assert get_closest_vowel("mOst") == "O"
+    assert get_closest_vowel("yogurt") == "u"
 
 
-def test_no_vowel_returns_empty():
-    # Covers line 11: loop completes without finding a vowel
+def test_uppercase_vowel_between_consonants_is_returned():
+    # The vowel set contains uppercase letters as well.
+    assert get_closest_vowel("bAd") == "A"
+    assert get_closest_vowel("FULL") == "U"
+
+
+def test_word_without_vowels_returns_empty_string():
+    # Covers the false branch of line 8 and line 11 (loop exhausts, no match).
     assert get_closest_vowel("xyz") == ""
     assert get_closest_vowel("bcdfg") == ""
 
 
-def test_vowel_with_vowel_neighbor_skipped():
-    # Covers line 9 False branch: vowel adjacent to another vowel is skipped
-    assert get_closest_vowel("aei") == ""
-    assert get_closest_vowel("quick") == ""
-    assert get_closest_vowel("HEAD") == ""
-    assert get_closest_vowel("easy") == ""
+def test_vowel_with_vowel_neighbour_is_skipped():
+    # Covers the false branches of line 9: candidate vowel touches another vowel.
+    assert get_closest_vowel("quick") == ""  # 'i' preceded by 'u'; 'u' followed by 'i'
+    assert get_closest_vowel("baa") == ""    # word[i+1] is a vowel
+    assert get_closest_vowel("oat") == ""    # word[i-1] is a vowel
+
+
+def test_only_interior_positions_are_examined():
+    # The loop range is len(word)-2 .. 1, so vowels at the edges are never candidates.
+    assert get_closest_vowel("aXe") == ""
+    assert get_closest_vowel("XaX") == "a"

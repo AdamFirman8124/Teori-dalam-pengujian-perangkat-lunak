@@ -2,19 +2,46 @@
 import f089 as module_0
 
 def test_case_0():
-    str_0 = 'abc'
+    str_0 = 'hi'
     var_0 = module_0.encrypt(str_0)
-    assert var_0 == 'efg'
-    str_1 = 'xyz'
+    assert var_0 == 'lm'
+    str_1 = 'asdf'
     var_1 = module_0.encrypt(str_1)
-    assert var_1 == 'bcd'
-    str_2 = 'hello world'
+    assert var_1 == 'ewhj'
+    str_2 = 'hello'
     var_2 = module_0.encrypt(str_2)
-    assert var_2 == 'lipps asvph'
-    str_3 = 'Hello, World!'
+    assert var_2 == 'lipps'
+    str_3 = 'asdf jkl;'
     var_3 = module_0.encrypt(str_3)
-    assert var_3 == 'Hello, World!'
-    assert var_3 == 'Hipps, Wsvph!'
-    str_4 = ''
+    assert var_3 == 'ewhj nop;'
+    str_4 = '1234'
     var_4 = module_0.encrypt(str_4)
-    assert var_4 == ''
+    assert var_4 == '1234'
+    str_5 = '!@# $%'
+    var_5 = module_0.encrypt(str_5)
+    assert var_5 == '!@# $%'
+    str_6 = 'wxyz'
+    var_6 = module_0.encrypt(str_6)
+    assert var_6 == 'abcd'
+    str_7 = 'z'
+    var_7 = module_0.encrypt(str_7)
+    assert var_7 == 'd'
+    str_8 = 'a'
+    var_8 = module_0.encrypt(str_8)
+    assert var_8 == 'e'
+    str_9 = 'HI'
+    var_9 = module_0.encrypt(str_9)
+    assert var_9 == 'HI'
+    str_10 = 'Hello'
+    var_10 = module_0.encrypt(str_10)
+    assert var_10 == 'Hello'
+    assert var_10 == 'Hipps'
+    str_11 = ''
+    var_11 = module_0.encrypt(str_11)
+    assert var_11 == ''
+    str_12 = 'abc123xyz!'
+    var_12 = module_0.encrypt(str_12)
+    assert var_12 == 'efg123bcd!'
+
+def test_case_1():
+    pass

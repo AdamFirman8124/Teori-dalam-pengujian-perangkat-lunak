@@ -3,13 +3,191 @@ import pytest
 import f032 as module_0
 
 def test_case_0():
-    list_0 = []
-    var_0 = module_0.find_zero(list_0)
-    assert var_0 == pytest.approx(-1.0, abs=0.01, rel=0.01)
+    int_0 = 1
+    int_1 = -2
+    int_2 = [int_0, int_1]
+    var_0 = module_0.find_zero(int_2)
+    assert var_0 == pytest.approx(0.49999999994179234, abs=0.01, rel=0.01)
+    float_0 = 0.5
+    var_1 = var_0 - float_0
+    var_2 = abs(var_1)
+    int_3 = 2
+    int_4 = [int_0, int_3]
+    var_3 = module_0.find_zero(int_4)
+    assert var_3 == pytest.approx(-0.5000000000582077, abs=0.01, rel=0.01)
+    var_4 = var_3 + float_0
+    var_5 = abs(var_4)
+    int_5 = -2
+    int_6 = [int_0, int_5]
+    var_6 = module_0.find_zero(int_6)
+    assert var_6 == pytest.approx(0.49999999994179234, abs=0.01, rel=0.01)
+    var_7 = module_0.poly(int_6, var_6)
+    assert var_7 == pytest.approx(1.1641532182693481e-10, abs=0.01, rel=0.01)
+    var_8 = abs(var_7)
+    int_7 = -6
+    int_8 = 11
+    int_9 = -6
+    int_10 = [int_7, int_8, int_9, int_0]
+    var_9 = module_0.find_zero(int_10)
+    assert var_9 == pytest.approx(0.9999999999417923, abs=0.01, rel=0.01)
+    var_10 = var_9 - int_0
+    var_11 = abs(var_10)
+    int_11 = -6
+    int_12 = -6
+    int_13 = [int_11, int_8, int_12, int_0]
+    var_12 = module_0.find_zero(int_13)
+    assert var_12 == pytest.approx(0.9999999999417923, abs=0.01, rel=0.01)
+    var_13 = module_0.poly(int_13, var_12)
+    assert var_13 == pytest.approx(-1.1641532182693481e-10, abs=0.01, rel=0.01)
+    var_14 = abs(var_13)
 
 def test_case_1():
-    float_0 = -0.5
-    float_1 = 1.0
-    float_2 = [float_0, float_1]
-    var_0 = module_0.find_zero(float_2)
-    assert var_0 == pytest.approx(0.49999999994179234, abs=0.01, rel=0.01)
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = [int_0, int_1, int_2]
+    var_0 = module_0.poly(int_3, int_1)
+    assert var_0 == pytest.approx(17.0, abs=0.01, rel=0.01)
+    int_4 = 5
+    int_5 = [int_4]
+    float_0 = 100.0
+    var_1 = module_0.poly(int_5, float_0)
+    assert var_1 == pytest.approx(5.0, abs=0.01, rel=0.01)
+    var_2 = []
+    var_3 = module_0.poly(var_2, int_2)
+    assert var_3 == 0
+    int_6 = 0
+    int_7 = -2
+    int_8 = [int_6, int_7, int_0]
+    var_4 = module_0.poly(int_8, int_2)
+    assert var_4 == pytest.approx(3.0, abs=0.01, rel=0.01)
+    var_5 = var_4 - int_2
+    var_6 = abs(var_5)
+    int_9 = [int_0, int_1]
+    var_7 = module_0.find_zero(int_9)
+    assert var_7 == pytest.approx(-0.5000000000582077, abs=0.01, rel=0.01)
+    float_1 = 0.5
+    var_8 = var_7 + float_1
+    var_9 = abs(var_8)
+    var_10 = module_0.poly(int_9, var_7)
+    assert var_10 == pytest.approx(-1.1641532182693481e-10, abs=0.01, rel=0.01)
+    var_11 = abs(var_10)
+    int_10 = -6
+    int_11 = 11
+    int_12 = [int_10, int_11]
+    var_12 = module_0.find_zero(int_12)
+    assert var_12 == pytest.approx(0.5454545454122126, abs=0.01, rel=0.01)
+    var_13 = module_0.poly(int_12, var_12)
+    assert var_13 == pytest.approx(-4.656612873077393e-10, abs=0.01, rel=0.01)
+    var_14 = abs(var_13)
+    float_2 = 6.0
+    var_15 = float_2 / int_11
+    var_16 = var_12 - var_15
+    var_17 = abs(var_16)
+    int_13 = -6
+    int_14 = -6
+    int_15 = [int_13, int_11, int_14, int_0]
+    var_18 = module_0.find_zero(int_15)
+    assert var_18 == pytest.approx(0.9999999999417923, abs=0.01, rel=0.01)
+    var_19 = module_0.poly(int_15, var_18)
+    assert var_19 == pytest.approx(-1.1641532182693481e-10, abs=0.01, rel=0.01)
+    var_20 = abs(var_19)
+    int_16 = -4
+    int_17 = [int_16, int_6, int_0]
+    var_21 = module_0.find_zero(int_17)
+    assert var_21 == pytest.approx(-2.0, abs=0.01, rel=0.01)
+    var_22 = abs(var_21)
+    var_23 = var_22 - int_1
+    var_24 = abs(var_23)
+    var_25 = module_0.poly(int_17, var_21)
+    assert var_25 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    var_26 = abs(var_25)
+    int_18 = -2
+    int_19 = -1
+    int_20 = [int_18, int_19, int_0]
+    var_27 = module_0.find_zero(int_20)
+    assert var_27 == pytest.approx(-1.0, abs=0.01, rel=0.01)
+    var_28 = module_0.poly(int_20, var_27)
+    assert var_28 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    var_29 = abs(var_28)
+    int_21 = -20
+    int_22 = [int_21, int_4]
+    var_30 = module_0.find_zero(int_22)
+    assert var_30 == pytest.approx(3.9999999999417923, abs=0.01, rel=0.01)
+    float_3 = 4.0
+    var_31 = var_30 - float_3
+    var_32 = abs(var_31)
+    var_33 = module_0.poly(int_22, var_30)
+    assert var_33 == pytest.approx(-2.9103830456733704e-10, abs=0.01, rel=0.01)
+    var_34 = abs(var_33)
+    int_23 = 20
+    int_24 = [int_23, int_4]
+    var_35 = module_0.find_zero(int_24)
+    assert var_35 == pytest.approx(-4.0, abs=0.01, rel=0.01)
+    var_36 = var_35 + float_3
+    var_37 = abs(var_36)
+    var_38 = module_0.poly(int_24, var_35)
+    assert var_38 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    var_39 = abs(var_38)
+
+def test_case_2():
+    int_0 = 2
+    int_1 = -3
+    int_2 = [int_0, int_1]
+    var_0 = module_0.find_zero(int_2)
+    assert var_0 == pytest.approx(0.6666666666278616, abs=0.01, rel=0.01)
+    var_1 = module_0.poly(int_2, var_0)
+    assert var_1 == pytest.approx(1.1641532182693481e-10, abs=0.01, rel=0.01)
+    var_2 = abs(var_1)
+    int_3 = 1
+    int_4 = -3
+    int_5 = [int_3, int_4, int_0]
+    var_3 = module_0.find_zero(int_5)
+    assert var_3 == pytest.approx(0.49999999994179234, abs=0.01, rel=0.01)
+    var_4 = module_0.poly(int_5, var_3)
+    assert var_4 == pytest.approx(5.820766091346741e-11, abs=0.01, rel=0.01)
+    var_5 = abs(var_4)
+    var_6 = var_3 - int_3
+    var_7 = abs(var_6)
+    int_6 = -6
+    int_7 = 11
+    int_8 = -6
+    int_9 = [int_6, int_7, int_8, int_3]
+    var_8 = module_0.find_zero(int_9)
+    assert var_8 == pytest.approx(0.9999999999417923, abs=0.01, rel=0.01)
+    var_9 = module_0.poly(int_9, var_8)
+    assert var_9 == pytest.approx(-1.1641532182693481e-10, abs=0.01, rel=0.01)
+    var_10 = abs(var_9)
+    int_10 = 5
+    int_11 = -4
+    int_12 = [int_10, int_11]
+    var_11 = module_0.find_zero(int_12)
+    assert var_11 == pytest.approx(1.2499999999417923, abs=0.01, rel=0.01)
+    var_12 = module_0.poly(int_12, var_11)
+    assert var_12 == pytest.approx(2.3283064365386963e-10, abs=0.01, rel=0.01)
+    var_13 = abs(var_12)
+    float_0 = 1.25
+    var_14 = var_11 - float_0
+    var_15 = abs(var_14)
+    int_13 = [int_3, int_0]
+    var_16 = module_0.find_zero(int_13)
+    assert var_16 == pytest.approx(-0.5000000000582077, abs=0.01, rel=0.01)
+    var_17 = module_0.poly(int_13, var_16)
+    assert var_17 == pytest.approx(-1.1641532182693481e-10, abs=0.01, rel=0.01)
+    var_18 = abs(var_17)
+    float_1 = -0.5
+    var_19 = var_16 - float_1
+    var_20 = abs(var_19)
+    int_14 = 0
+    int_15 = [int_14]
+    int_16 = [int_14]
+    var_21 = module_0.find_zero(int_16)
+    assert var_21 == pytest.approx(-1.0, abs=0.01, rel=0.01)
+    var_22 = module_0.poly(int_15, var_21)
+    assert var_22 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    var_23 = abs(var_22)
+    str_0 = 'test_find_zero passed'
+    var_24 = print(str_0)
+
+def test_case_3():
+    pass

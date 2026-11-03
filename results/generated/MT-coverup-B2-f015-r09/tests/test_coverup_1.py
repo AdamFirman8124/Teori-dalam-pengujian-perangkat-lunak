@@ -8,21 +8,25 @@ from f015 import string_sequence
 
 
 def test_string_sequence_zero():
-    """n = 0 must execute line 3 and return just '0'."""
+    """n = 0 yields a single element '0'."""
     result = string_sequence(0)
     assert result == "0"
+    assert isinstance(result, str)
 
 
 def test_string_sequence_positive():
-    """n = 5 must return numbers 0 through 5 space-separated."""
+    """n > 0 yields all integers from 0 to n inclusive, space-separated."""
     result = string_sequence(5)
     assert result == "0 1 2 3 4 5"
-    assert len(result.split()) == 6
+    assert result.split(" ") == [str(x) for x in range(6)]
 
 
-def test_string_sequence_returns_string():
-    """Postcondition: result is a str of space-separated ints."""
-    result = string_sequence(3)
-    assert isinstance(result, str)
-    assert result == "0 1 2 3"
-    assert all(part.isdigit() for part in result.split())
+def test_string_sequence_one():
+    """n = 1 yields exactly two elements."""
+    assert string_sequence(1) == "0 1"
+
+
+def test_string_sequence_negative():
+    """n < 0 makes range(n + 1) empty, so the join produces an empty string."""
+    assert string_sequence(-1) == ""
+    assert string_sequence(-10) == ""

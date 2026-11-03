@@ -11,9 +11,23 @@ def test_case_0():
     int_2 = 2
     var_2 = module_0.fib(int_2)
     assert var_2 == 1
-    int_3 = 5
+    int_3 = 3
     var_3 = module_0.fib(int_3)
-    assert var_3 == 5
-    int_4 = 10
+    assert var_3 == 2
+    int_4 = 4
     var_4 = module_0.fib(int_4)
-    assert var_4 == 55
+    assert var_4 == 3
+    int_5 = 5
+    var_5 = module_0.fib(int_5)
+    assert var_5 == 5
+    int_6 = 10
+    var_6 = module_0.fib(int_6)
+    assert var_6 == 55
+    int_7 = 15
+    var_7 = module_0.fib(int_7)
+    assert var_7 == 610
+    int_8 = 20
+    var_8 = module_0.fib(int_8)
+    assert var_8 == 6765
+    str_0 = 'All fib tests passed!'
+    var_9 = print(str_0)

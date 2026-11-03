@@ -5,21 +5,61 @@ def test_case_0():
     int_0 = 8
     var_0 = module_0.is_multiply_prime(int_0)
     assert var_0 is True
+
+def test_case_1():
+    int_0 = 8
+    var_0 = module_0.is_multiply_prime(int_0)
+    assert var_0 is True
     int_1 = 12
     var_1 = module_0.is_multiply_prime(int_1)
     assert var_1 is True
-    int_2 = 27
+    int_2 = 18
     var_2 = module_0.is_multiply_prime(int_2)
     assert var_2 is True
-    int_3 = 30
+    int_3 = 27
     var_3 = module_0.is_multiply_prime(int_3)
     assert var_3 is True
-    int_4 = 7
+    int_4 = 30
     var_4 = module_0.is_multiply_prime(int_4)
-    assert var_4 is False
-    int_5 = 16
+    assert var_4 is True
+    int_5 = 105
     var_5 = module_0.is_multiply_prime(int_5)
-    assert var_5 is False
-    int_6 = 1
+    assert var_5 is True
+    int_6 = 2
     var_6 = module_0.is_multiply_prime(int_6)
     assert var_6 is False
+    int_7 = 5
+    var_7 = module_0.is_multiply_prime(int_7)
+    assert var_7 is False
+    int_8 = 11
+    var_8 = module_0.is_multiply_prime(int_8)
+    assert var_8 is False
+    int_9 = 97
+    var_9 = module_0.is_multiply_prime(int_9)
+    assert var_9 is False
+    int_10 = 4
+    var_10 = module_0.is_multiply_prime(int_10)
+    assert var_10 is False
+    int_11 = 6
+    var_11 = module_0.is_multiply_prime(int_11)
+    assert var_11 is False
+    int_12 = 15
+    var_12 = module_0.is_multiply_prime(int_12)
+    assert var_12 is False
+    int_13 = 16
+    var_13 = module_0.is_multiply_prime(int_13)
+    assert var_13 is False
+    int_14 = 81
+    var_14 = module_0.is_multiply_prime(int_14)
+    assert var_14 is False
+    int_15 = 1
+    var_15 = module_0.is_multiply_prime(int_15)
+    assert var_15 is False
+    int_16 = 0
+    var_16 = module_0.is_multiply_prime(int_16)
+    assert var_16 is False
+    int_17 = -8
+    var_17 = module_0.is_multiply_prime(int_17)
+    assert var_17 is False
+    str_0 = 'All tests passed!'
+    var_18 = print(str_0)

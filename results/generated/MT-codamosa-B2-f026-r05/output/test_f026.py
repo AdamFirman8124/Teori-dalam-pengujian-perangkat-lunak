@@ -2,45 +2,39 @@
 import f026 as module_0
 
 def test_case_0():
-    int_0 = 305
-    list_0 = [int_0]
-    list_1 = module_0.remove_duplicates(list_0)
-    assert list_1 == [305]
-    list_2 = [int_0]
-    list_3 = module_0.remove_duplicates(list_2)
-    assert list_3 == [305]
-    int_1 = 1677
-    list_4 = [int_1]
-    list_5 = module_0.remove_duplicates(list_4)
-    assert list_5 == [1677]
-    list_6 = module_0.remove_duplicates(list_4)
-    assert list_6 == [1677]
-    list_7 = module_0.remove_duplicates(list_0)
-    assert list_7 == [305]
-    list_8 = module_0.remove_duplicates(list_3)
-    assert list_8 == [305]
-    list_9 = [int_0]
-    list_10 = []
-    list_11 = module_0.remove_duplicates(list_10)
-    assert list_11 == []
-    list_12 = [int_1]
-    list_13 = module_0.remove_duplicates(list_12)
-    assert list_13 == [1677]
-    list_14 = module_0.remove_duplicates(list_9)
-    assert list_14 == [305]
-    list_15 = module_0.remove_duplicates(list_9)
-    assert list_15 == [305]
-    int_2 = -1433
-    list_16 = [int_0, int_0, int_2]
-    list_17 = module_0.remove_duplicates(list_15)
-    assert list_17 == [305]
-    list_18 = module_0.remove_duplicates(list_15)
-    assert list_18 == [305]
-    list_19 = module_0.remove_duplicates(list_16)
-    assert list_19 == [-1433]
-
-def test_case_1():
-    int_0 = -395
-    list_0 = [int_0, int_0, int_0]
-    list_1 = module_0.remove_duplicates(list_0)
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = 4
+    int_4 = [int_0, int_1, int_2, int_1, int_3]
+    list_0 = module_0.remove_duplicates(int_4)
+    assert list_0 == [1, 3, 4]
+    var_0 = []
+    list_1 = module_0.remove_duplicates(var_0)
     assert list_1 == []
+    int_5 = [int_0, int_0, int_0]
+    list_2 = module_0.remove_duplicates(int_5)
+    assert list_2 == []
+    int_6 = 5
+    int_7 = [int_6]
+    list_3 = module_0.remove_duplicates(int_7)
+    assert list_3 == [5]
+    int_8 = [int_0, int_1, int_2]
+    list_4 = module_0.remove_duplicates(int_8)
+    assert list_4 == [1, 2, 3]
+    int_9 = 6
+    int_10 = [int_3, int_6, int_3, int_6, int_9]
+    list_5 = module_0.remove_duplicates(int_10)
+    assert list_5 == [6]
+    int_11 = [int_2, int_2, int_1, int_1, int_0]
+    list_6 = module_0.remove_duplicates(int_11)
+    assert list_6 == [1]
+    int_12 = 0
+    int_13 = [int_12, int_12, int_0, int_1, int_1, int_2]
+    list_7 = module_0.remove_duplicates(int_13)
+    assert list_7 == [1, 3]
+    int_14 = -1
+    int_15 = -1
+    int_16 = [int_14, int_15, int_12, int_0]
+    list_8 = module_0.remove_duplicates(int_16)
+    assert list_8 == [0, 1]

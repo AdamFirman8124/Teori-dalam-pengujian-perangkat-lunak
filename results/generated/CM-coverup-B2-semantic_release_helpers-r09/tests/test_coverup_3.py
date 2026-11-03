@@ -7,30 +7,32 @@ import pytest
 from semantic_release.helpers import format_arg
 
 
-def test_format_arg_string_is_stripped_and_quoted():
+def test_format_arg_with_string():
+    """Lines 10-11: a str value is stripped and wrapped in single quotes."""
     result = format_arg("  hello world  ")
-
     assert result == "'hello world'"
+    # The surrounding single quotes must be present
     assert result.startswith("'") and result.endswith("'")
+    # Leading/trailing whitespace must have been stripped
+    assert not result.strip("'").startswith(" ")
+    assert not result.strip("'").endswith(" ")
 
 
-def test_format_arg_empty_string_is_quoted():
-    assert format_arg("") == "''"
+def test_format_arg_with_plain_string():
+    """A string without surrounding whitespace still gets quoted."""
+    assert format_arg("abc") == "'abc'"
 
 
-def test_format_arg_non_string_uses_str():
+def test_format_arg_with_non_string_int():
+    """Line 13: a non-str value is converted with str()."""
     assert format_arg(42) == "42"
+
+
+def test_format_arg_with_non_string_list():
+    """Line 13: non-str containers are stringified via str()."""
+    assert format_arg([1, "a"]) == "[1, 'a']"
+
+
+def test_format_arg_with_none():
+    """Line 13: None is stringified via str()."""
     assert format_arg(None) == "None"
-    assert format_arg([1, 2]) == "[1, 2]"
-    assert format_arg(3.5) == "3.5"
-
-
-def test_format_arg_str_subclass_falls_back_to_str():
-    class MyStr(str):
-        pass
-
-    value = MyStr("  padded  ")
-
-    # type(value) == str is False for subclasses, so no stripping/quoting happens
-    assert format_arg(value) == "  padded  "
-    assert not format_arg(value).startswith("'")

@@ -2,94 +2,172 @@
 # asked: {"lines": [122, 123, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 138], "branches": [[122, 123], [122, 125], [125, 126], [125, 127], [127, 128], [127, 129], [129, 130], [129, 131], [131, 132], [131, 133], [133, 134], [133, 135], [135, 136], [135, 138]]}
 # gained: {"lines": [122, 123, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 138], "branches": [[122, 123], [122, 125], [125, 126], [125, 127], [127, 128], [127, 129], [129, 130], [129, 131], [131, 132], [131, 133], [133, 134], [133, 135], [135, 136], [135, 138]]}
 
-from ansible.utils import unsafe_proxy
+# -*- coding: utf-8 -*-
+# Tests for ansible/utils/unsafe_proxy.py::wrap_var (lines 122-138).
+# wrap_var is a pure function (no global/module state is mutated), so no
+# monkeypatching/cleanup is required; each test is fully self-contained.
+from __future__ import absolute_import, division, print_function
+__metaclass__ = type
+
+from ansible.module_utils.common._collections_compat import Mapping, Set
+from ansible.module_utils.six import binary_type, text_type
 from ansible.utils.native_jinja import NativeJinjaText
+from ansible.utils.unsafe_proxy import (
+    AnsibleUnsafe,
+    AnsibleUnsafeBytes,
+    AnsibleUnsafeText,
+    NativeJinjaUnsafeText,
+    wrap_var,
+)
 
 
-def test_wrap_var_returns_none_unchanged():
-    assert unsafe_proxy.wrap_var(None) is None
+def test_wrap_var_none_returns_none():
+    """Lines 122-123: ``v is None`` short-circuits to ``return v``."""
+    assert wrap_var(None) is None
 
 
-def test_wrap_var_returns_existing_unsafe_value_unchanged():
-    value = unsafe_proxy.AnsibleUnsafeText("already unsafe")
+def test_wrap_var_already_unsafe_text_passthrough():
+    """Lines 122-123: values already marked unsafe are returned unchanged."""
+    value = AnsibleUnsafeText(u'unsafe')
+    result = wrap_var(value)
+    assert result is value
+    assert isinstance(result, AnsibleUnsafe)
 
-    assert unsafe_proxy.wrap_var(value) is value
+
+def test_wrap_var_already_unsafe_bytes_passthrough():
+    """Lines 122-123: unsafe bytes are returned unchanged."""
+    value = AnsibleUnsafeBytes(b'unsafe')
+    result = wrap_var(value)
+    assert result is value
+    assert isinstance(result, AnsibleUnsafe)
 
 
-def test_wrap_var_wraps_mapping_keys_and_values():
-    value = {"key": "value"}
+def test_wrap_var_ansible_unsafe_base_passthrough():
+    """Lines 122-123: bare AnsibleUnsafe instances are returned unchanged."""
+    value = AnsibleUnsafe()
+    assert wrap_var(value) is value
 
-    result = unsafe_proxy.wrap_var(value)
 
-    assert result is not value
+def test_wrap_var_mapping_recursively_wrapped():
+    """Lines 125-126: Mapping branch dispatches to _wrap_dict.
+
+    _wrap_dict wraps both keys and values, so every (string) key in the
+    resulting mapping must be an unsafe text instance.
+    """
+    value = {'a': 1, 'b': u'text', 'c': [u'x', 2], 'd': {'e': u'inner'}}
+    result = wrap_var(value)
+    assert isinstance(result, Mapping)
     assert result == value
-    key = next(iter(result))
-    assert isinstance(key, unsafe_proxy.AnsibleUnsafeText)
-    assert isinstance(result[key], unsafe_proxy.AnsibleUnsafeText)
-    assert value == {"key": "value"}
-    assert type(next(iter(value))) is str
-    assert type(value["key"]) is str
+    # all string keys are wrapped
+    wrapped_keys = list(result)
+    assert len(wrapped_keys) == len(value)
+    for orig, wrapped in zip(sorted(value), sorted(wrapped_keys)):
+        assert isinstance(wrapped, AnsibleUnsafe)
+        assert isinstance(wrapped, AnsibleUnsafeText)
+        assert wrapped == orig
+    # (recursively) string values are wrapped
+    assert isinstance(result['b'], AnsibleUnsafeText)
+    assert isinstance(result['c'][0], AnsibleUnsafeText)
+    assert isinstance(result['d']['e'], AnsibleUnsafeText)
+    # non-string values are left alone
+    assert result['a'] == 1
+    assert result['c'][1] == 2
 
 
-def test_wrap_var_wraps_set_members():
-    value = {"first", "second"}
+def test_wrap_var_mapping_does_not_double_wrap_unsafe():
+    """Lines 122-123 via recursion: already-unsafe members are not re-wrapped."""
+    unsafe = AnsibleUnsafeText(u'unsafe')
+    result = wrap_var({'k': unsafe})
+    assert result['k'] is unsafe
 
-    result = unsafe_proxy.wrap_var(value)
 
-    assert result is not value
+def test_wrap_var_set_items_wrapped():
+    """Lines 127-128: Set branch dispatches to _wrap_set."""
+    value = {1, u'a'}
+    result = wrap_var(value)
+    assert isinstance(result, Set)
+    assert isinstance(result, set)
     assert result == value
-    assert all(isinstance(item, unsafe_proxy.AnsibleUnsafeText) for item in result)
-    assert all(type(item) is str for item in value)
+    unsafe_items = [item for item in result if isinstance(item, AnsibleUnsafe)]
+    assert len(unsafe_items) == 1
+    assert isinstance(unsafe_items[0], AnsibleUnsafeText)
+    assert unsafe_items[0] == u'a'
 
 
-def test_wrap_var_wraps_sequence_members_and_preserves_sequence_type():
-    value = ("text", b"bytes", 42)
-
-    result = unsafe_proxy.wrap_var(value)
-
-    assert result is not value
-    assert type(result) is tuple
+def test_wrap_var_frozenset_items_wrapped():
+    """Lines 127-128: frozenset also takes the Set branch."""
+    value = frozenset([u'a', 1])
+    result = wrap_var(value)
+    assert isinstance(result, Set)
     assert result == value
-    assert isinstance(result[0], unsafe_proxy.AnsibleUnsafeText)
-    assert isinstance(result[1], unsafe_proxy.AnsibleUnsafeBytes)
-    assert result[2] is value[2]
-    assert type(value[0]) is str
-    assert type(value[1]) is bytes
+    assert all(not isinstance(item, text_type) or isinstance(item, AnsibleUnsafeText)
+               for item in result)
 
 
-def test_wrap_var_wraps_native_jinja_text_with_specific_unsafe_type():
-    value = NativeJinjaText("native text")
-
-    result = unsafe_proxy.wrap_var(value)
-
+def test_wrap_var_list_items_wrapped():
+    """Lines 129-130: sequence branch dispatches to _wrap_sequence."""
+    value = [1, u'a', b'bytes', None]
+    result = wrap_var(value)
+    assert isinstance(result, list)
     assert result == value
-    assert result is not value
-    assert isinstance(result, unsafe_proxy.NativeJinjaUnsafeText)
-    assert isinstance(result, NativeJinjaText)
-    assert isinstance(result, unsafe_proxy.AnsibleUnsafe)
+    assert isinstance(result[1], AnsibleUnsafeText)
+    assert isinstance(result[2], AnsibleUnsafeBytes)
+    assert result[3] is None
+    assert result[0] == 1
 
 
-def test_wrap_var_wraps_binary_value():
-    value = b"binary value"
-
-    result = unsafe_proxy.wrap_var(value)
-
+def test_wrap_var_tuple_items_wrapped():
+    """Lines 129-130: tuples keep their type via _wrap_sequence."""
+    value = (1, u'a')
+    result = wrap_var(value)
+    assert isinstance(result, tuple)
     assert result == value
-    assert result is not value
-    assert isinstance(result, unsafe_proxy.AnsibleUnsafeBytes)
+    assert isinstance(result[1], AnsibleUnsafeText)
 
 
-def test_wrap_var_wraps_text_value():
-    value = "text value"
-
-    result = unsafe_proxy.wrap_var(value)
-
-    assert result == value
-    assert result is not value
-    assert isinstance(result, unsafe_proxy.AnsibleUnsafeText)
+def test_wrap_var_list_does_not_double_wrap_unsafe():
+    """Lines 122-123 via recursion: already-unsafe members are not re-wrapped."""
+    unsafe = AnsibleUnsafeText(u'unsafe')
+    result = wrap_var([unsafe])
+    assert result[0] is unsafe
 
 
-def test_wrap_var_returns_unsupported_value_unchanged():
-    value = 123
+def test_wrap_var_native_jinja_text():
+    """Lines 131-132: NativeJinjaText branch (checked before text_type)."""
+    value = NativeJinjaText(u'native')
+    result = wrap_var(value)
+    assert isinstance(result, NativeJinjaUnsafeText)
+    assert isinstance(result, AnsibleUnsafeText)
+    assert isinstance(result, AnsibleUnsafe)
+    assert result == u'native'
 
-    assert unsafe_proxy.wrap_var(value) is value
+
+def test_wrap_var_bytes():
+    """Lines 133-134: binary_type branch."""
+    value = b'bytes'
+    result = wrap_var(value)
+    assert isinstance(result, AnsibleUnsafeBytes)
+    assert isinstance(result, binary_type)
+    assert isinstance(result, AnsibleUnsafe)
+    assert result == b'bytes'
+
+
+def test_wrap_var_text():
+    """Lines 135-136: text_type branch."""
+    value = u'text'
+    result = wrap_var(value)
+    assert isinstance(result, AnsibleUnsafeText)
+    assert isinstance(result, text_type)
+    assert isinstance(result, AnsibleUnsafe)
+    assert result == u'text'
+
+
+def test_wrap_var_other_type_passthrough():
+    """Line 138: values matching no branch fall through and are returned as-is."""
+    value = 42
+    assert wrap_var(value) is value
+
+
+def test_wrap_var_bool_passthrough():
+    """Line 138: bool matches no branch and is returned unchanged."""
+    assert wrap_var(True) is True

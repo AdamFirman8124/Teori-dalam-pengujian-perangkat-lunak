@@ -1,115 +1,200 @@
 
 
-# Generated at 2026-10-25 01:56:33.659967
+# Generated at 2026-11-02 21:15:41.682482
 # Unit test for function sort_even
 def test_sort_even():
-    # empty and single-element
+    # Basic case: even indices already sorted
+    assert module_0.sort_even([1, 2, 3]) == [1, 2, 3]
+
+    # Even indices out of order
+    assert module_0.sort_even([5, 6, 3, 4]) == [3, 6, 5, 4]
+
+    # Empty list
+    assert module_0.sort_even([]) == []
+
+    # Single element (only even index)
+    assert module_0.sort_even([2]) == [2]
+
+    # Two elements: even index stays, odd index untouched
+    assert module_0.sort_even([2, 1]) == [2, 1]
+
+    # Odd-index elements kept in place, even-index sorted
+    assert module_0.sort_even([4, 1, 3, 2, 5]) == [3, 1, 4, 2, 5]
+
+    # Duplicates among even-index values
+    assert module_0.sort_even([3, 1, 3, 2, 1]) == [1, 1, 3, 2, 3]
+
+    # Negative numbers
+    assert module_0.sort_even([-1, 5, -3, 2]) == [-3, 5, -1, 2]
+
+    # Original list should not be modified
+    original = [5, 6, 3, 4]
+    module_0.sort_even(original)
+    assert original == [5, 6, 3, 4]
+
+    # Longer list
+    assert module_0.sort_even([9, 0, 7, 1, 8, 2]) == [7, 0, 8, 1, 9, 2]
+
+    print("All tests passed!")
+
+
+test_sort_even()
+
+# Generated at 2026-11-02 21:16:52.950960
+# Unit test for function sort_even
+def test_sort_even():
+    # Basic case: even-indexed values already sorted
+    assert module_0.sort_even([1, 2, 3]) == [1, 2, 3]
+
+    # Even-indexed values out of order
+    assert module_0.sort_even([5, 6, 3, 4]) == [3, 6, 5, 4]
+
+    # Longer list with negatives, from the classic example
+    assert module_0.sort_even([5, 3, -5, 2, -3, 3, 9, 0, 123, 1, -10]) == \
+        [-10, 3, -5, 2, -3, 3, 5, 0, 9, 1, 123]
+
+    # Odd-length list: last even-indexed element goes to the end
+    assert module_0.sort_even([5, 3, 2, 8, 4, 6, 1, 7, 9]) == [1, 3, 2, 8, 4, 6, 5, 7, 9]
+    assert module_0.sort_even([3, 1, 2]) == [2, 1, 3]
+
+    # Even-length list
+    assert module_0.sort_even([4, 1, 3, 2]) == [3, 1, 4, 2]
+    assert module_0.sort_even([2, 1]) == [2, 1]
+
+    # Edge cases
     assert module_0.sort_even([]) == []
     assert module_0.sort_even([1]) == [1]
 
-    # odd length: only even indices 0,2,4... are sorted
-    assert module_0.sort_even([3, 1, 2]) == [2, 1, 3]
-    assert module_0.sort_even([5, 2, 4, 3, 1]) == [1, 2, 4, 3, 5]
+    # Duplicates among even-indexed values
+    assert module_0.sort_even([2, 0, 2, 0, 1, 0]) == [1, 0, 2, 0, 2, 0]
 
-    # even length
-    assert module_0.sort_even([4, 1, 3, 2]) == [3, 1, 4, 2]
+    # Negative numbers only
+    assert module_0.sort_even([-1, 100, -5, 100, -3]) == [-5, 100, -3, 100, -1]
 
-    # already sorted evens / duplicates
-    assert module_0.sort_even([1, 9, 2, 8, 3]) == [1, 9, 2, 8, 3]
-    assert module_0.sort_even([2, 1, 2, 1, 2]) == [2, 1, 2, 1, 2]
+    # Input list must not be mutated
+    original = [3, 2, 1, 0]
+    module_0.sort_even(original)
+    assert original == [3, 2, 1, 0]
 
-    # negatives
-    assert module_0.sort_even([-1, 5, -3, 2, 0]) == [-3, 5, -1, 2, 0]
+    # Works with strings at even indices
+    assert module_0.sort_even(["b", 1, "a", 2]) == ["a", 1, "b", 2]
 
-    # odd positions unchanged
-    l = [5, 2, 4, 3, 1]
-    res = module_0.sort_even(l)
-    assert res[1::2] == l[1::2]
-    assert sorted(res[::2]) == res[::2]
-
-    # input not mutated
-    assert l == [5, 2, 4, 3, 1]
-
-# Generated at 2026-10-25 01:56:36.188703
-# Unit test for function sort_even
-
-# Generated at 2026-10-25 01:56:38.603549
-# Unit test for function sort_even
-
-# Generated at 2026-10-25 01:56:41.018852
-# Unit test for function sort_even
-
-# Generated at 2026-10-25 01:56:43.433736
-# Unit test for function sort_even
-
-# Generated at 2026-10-25 01:56:49.124088
+# Generated at 2026-11-02 21:17:45.577153
 # Unit test for function sort_even
 def test_sort_even():
+    # Empty list
+    assert module_0.sort_even([]) == []
+
+    # Single element (even index only)
+    assert module_0.sort_even([1]) == [1]
+
+    # Two elements (one even, one odd index)
+    assert module_0.sort_even([2, 1]) == [2, 1]
+
+    # Odd length list: evens sorted, odds untouched
+    assert module_0.sort_even([5, 6, 3, 4]) == [3, 6, 5, 4]
+
+    # Already sorted evens
+    assert module_0.sort_even([1, 2, 3]) == [1, 2, 3]
+
+    # Reverse sorted evens
+    assert module_0.sort_even([5, 1, 3, 2, 1]) == [1, 1, 3, 2, 5]
+
+    # Evens need sorting, odds stay in place
+    assert module_0.sort_even([9, 8, 7, 6, 5, 4]) == [5, 8, 7, 6, 9, 4]
+
+    # Odd-length list where last even element must be appended
+    assert module_0.sort_even([3, 1, 2]) == [2, 1, 3]
+
+    # Duplicates among even-indexed elements
+    assert module_0.sort_even([4, 0, 2, 0, 6, 9]) == [2, 0, 4, 0, 6, 9]
+
+    # Negative numbers
+    assert module_0.sort_even([-3, 10, -1, 20, -5]) == [-5, 10, -3, 20, -1]
+
+    # Input list must not be mutated
+    original = [5, 6, 3, 4]
+    module_0.sort_even(original)
+    assert original == [5, 6, 3, 4]
+
+    print("All tests passed!")
+
+
+test_sort_even()
+
+# Generated at 2026-11-02 21:19:29.318227
+# Unit test for function sort_even
+def test_sort_even():
+    # Empty list
+    assert module_0.sort_even([]) == []
+
+    # Single element (odd length: extra even-index element appended last)
+    assert module_0.sort_even([3]) == [3]
+
+    # Two elements (even length: odd positions untouched)
+    assert module_0.sort_even([5, 1]) == [5, 1]
+    assert module_0.sort_even([1, 5]) == [1, 5]
+
+    # Even length list
+    assert module_0.sort_even([4, 1, 3, 2]) == [3, 1, 4, 2]
+
+    # Odd length list: largest sorted even-index value goes to the end
     assert module_0.sort_even([1, 2, 3]) == [1, 2, 3]
     assert module_0.sort_even([5, 6, 3, 4]) == [3, 6, 5, 4]
-    assert module_0.sort_even([4, 1, 2, 3, 0]) == [0, 1, 2, 3, 4]
-    assert module_0.sort_even([]) == []
-    assert module_0.sort_even([7]) == [7]
-    assert module_0.sort_even([9, 8]) == [9, 8]
-    assert module_0.sort_even([10, 1, 5, 2, 3, 4]) == [3, 1, 5, 2, 10, 4]
-    assert module_0.sort_even([2, 2, 2, 2]) == [2, 2, 2, 2]
+    assert module_0.sort_even([-1, 0, -3, 0, -2]) == [-3, 0, -2, 0, -1]
 
-# Generated at 2026-10-25 01:56:50.510964
+    # Canonical example with negatives and duplicates
+    assert module_0.sort_even([5, 3, -5, 2, -3, 3, 9, 0, 123, 1, -10]) == \
+        [-10, 3, -5, 2, -3, 3, 5, 0, 9, 1, 123]
+
+    # Duplicates at even indices
+    assert module_0.sort_even([2, 1, 2, 1]) == [2, 1, 2, 1]
+
+    # Even-index values sorted, odd-index values preserved in place
+    result = module_0.sort_even([10, 7, 1, 8, 5, 9])
+    assert result == [1, 7, 5, 8, 10, 9]
+    assert result[1::2] == [7, 8, 9]
+    assert result[::2] == [1, 5, 10]
+
+    # Input list is not mutated
+    original = [3, 1, 2]
+    module_0.sort_even(original)
+    assert original == [3, 1, 2]
+
+# Generated at 2026-11-02 21:20:54.830228
 # Unit test for function sort_even
 def test_sort_even():
-    # empty and single-element
+    # Empty list
     assert module_0.sort_even([]) == []
-    assert module_0.sort_even([1]) == [1]
 
-    # odd length: only even indices 0,2,4... are sorted
-    assert module_0.sort_even([3, 1, 2]) == [2, 1, 3]
-    assert module_0.sort_even([5, 2, 4, 3, 1]) == [1, 2, 4, 3, 5]
+    # Single element (only even index)
+    assert module_0.sort_even([5]) == [5]
 
-    # even length
-    assert module_0.sort_even([4, 1, 3, 2]) == [3, 1, 4, 2]
+    # Two elements (no sorting change)
+    assert module_0.sort_even([3, 1]) == [3, 1]
 
-    # already sorted evens / duplicates
-    assert module_0.sort_even([1, 9, 2, 8, 3]) == [1, 9, 2, 8, 3]
-    assert module_0.sort_even([2, 1, 2, 1, 2]) == [2, 1, 2, 1, 2]
+    # Odd-length list: evens sorted, odds stay in place
+    assert module_0.sort_even([5, 6, 3, 4]) == [3, 6, 5, 4]
 
-    # negatives
-    assert module_0.sort_even([-1, 5, -3, 2, 0]) == [-3, 5, -1, 2, 0]
+    # Odd-length list where evens longer than odds
+    assert module_0.sort_even([5, 3, 4, 2, 1]) == [1, 3, 4, 2, 5]
 
-    # odd positions unchanged
-    l = [5, 2, 4, 3, 1]
-    res = module_0.sort_even(l)
-    assert res[1::2] == l[1::2]
-    assert sorted(res[::2]) == res[::2]
+    # Even-length list
+    assert module_0.sort_even([4, 1, 2, 3]) == [2, 1, 4, 3]
 
-    # input not mutated
-    assert l == [5, 2, 4, 3, 1]
+    # Already sorted even indices
+    assert module_0.sort_even([1, 9, 2, 8, 3, 7]) == [1, 9, 2, 8, 3, 7]
 
-# Generated at 2026-10-25 01:56:51.878031
-# Unit test for function sort_even
-def test_sort_even():
-    # empty and single-element
-    assert module_0.sort_even([]) == []
-    assert module_0.sort_even([1]) == [1]
+    # Duplicates
+    assert module_0.sort_even([2, 1, 2, 1, 1]) == [1, 1, 2, 1, 2]
 
-    # odd length: only even indices 0,2,4... are sorted
-    assert module_0.sort_even([3, 1, 2]) == [2, 1, 3]
-    assert module_0.sort_even([5, 2, 4, 3, 1]) == [1, 2, 4, 3, 5]
+    # Negative numbers
+    assert module_0.sort_even([-3, 0, -1, 5, -2]) == [-3, 0, -2, 5, -1]
 
-    # even length
-    assert module_0.sort_even([4, 1, 3, 2]) == [3, 1, 4, 2]
+    # Even indices descending, odds untouched
+    assert module_0.sort_even([10, 1, 9, 2, 8, 3]) == [8, 1, 9, 2, 10, 3]
 
-    # already sorted evens / duplicates
-    assert module_0.sort_even([1, 9, 2, 8, 3]) == [1, 9, 2, 8, 3]
-    assert module_0.sort_even([2, 1, 2, 1, 2]) == [2, 1, 2, 1, 2]
+    print("All tests passed!")
 
-    # negatives
-    assert module_0.sort_even([-1, 5, -3, 2, 0]) == [-3, 5, -1, 2, 0]
 
-    # odd positions unchanged
-    l = [5, 2, 4, 3, 1]
-    res = module_0.sort_even(l)
-    assert res[1::2] == l[1::2]
-    assert sorted(res[::2]) == res[::2]
-
-    # input not mutated
-    assert l == [5, 2, 4, 3, 1]
+test_sort_even()

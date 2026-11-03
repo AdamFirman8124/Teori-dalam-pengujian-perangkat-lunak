@@ -2,61 +2,39 @@
 # asked: {"lines": [3, 4, 6], "branches": []}
 # gained: {"lines": [3, 4, 6], "branches": []}
 
-import pytest
-
 from f163 import generate_integers
 
 
-def test_generate_integers_normal_range():
+def test_generate_integers_full_range():
+    """Both bounds within [2, 8]: all even numbers in between are returned."""
     assert generate_integers(2, 8) == [2, 4, 6, 8]
 
 
-def test_generate_integers_reversed_arguments():
+def test_generate_integers_reversed_args():
+    """Argument order must not matter (min/max are used)."""
     assert generate_integers(8, 2) == [2, 4, 6, 8]
 
 
-def test_generate_integers_clamps_lower_bound():
-    assert generate_integers(0, 5) == [2, 4]
+def test_generate_integers_lower_clamped():
+    """A lower bound below 2 is clamped up to 2."""
+    assert generate_integers(1, 5) == [2, 4]
 
 
-def test_generate_integers_clamps_upper_bound():
-    assert generate_integers(5, 20) == [6, 8]
+def test_generate_integers_upper_clamped():
+    """An upper bound above 8 is clamped down to 8."""
+    assert generate_integers(7, 10) == [8]
 
 
-def test_generate_integers_clamps_both_bounds():
-    assert generate_integers(-10, 100) == [2, 4, 6, 8]
+def test_generate_integers_empty_when_both_above():
+    """When both values exceed 8, lower > upper and the result is empty."""
+    assert generate_integers(10, 20) == []
 
 
-def test_generate_integers_odd_bounds_filter_evens():
-    assert generate_integers(3, 7) == [4, 6]
-
-
-def test_generate_integers_single_even():
-    assert generate_integers(4, 4) == [4]
-
-
-def test_generate_integers_single_odd_empty():
+def test_generate_integers_single_odd_value():
+    """A single odd value in range yields no even numbers (false branch of i % 2 == 0)."""
     assert generate_integers(3, 3) == []
 
 
-def test_generate_integers_below_range_empty():
-    assert generate_integers(0, 1) == []
-
-
-def test_generate_integers_above_range_empty():
-    assert generate_integers(9, 10) == []
-
-
-@pytest.mark.parametrize(
-    "a,b,expected",
-    [
-        (2, 2, [2]),
-        (7, 8, [8]),
-        (1, 9, [2, 4, 6, 8]),
-        (6, 3, [4, 6]),
-    ],
-)
-def test_generate_integers_parametrized(a, b, expected):
-    result = generate_integers(a, b)
-    assert result == expected
-    assert all(isinstance(i, int) and i % 2 == 0 and 2 <= i <= 8 for i in result)
+def test_generate_integers_single_even_value():
+    """A single even value in range is returned (true branch of i % 2 == 0)."""
+    assert generate_integers(2, 2) == [2]

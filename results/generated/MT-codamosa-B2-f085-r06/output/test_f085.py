@@ -11,30 +11,37 @@ def test_case_0():
     int_6 = [int_0, int_1, int_2, int_3, int_4, int_5]
     var_0 = module_0.add(int_6)
     assert var_0 == 12
+    int_7 = 8
+    int_8 = 12
+    int_9 = [int_0, int_3, int_2, int_7, int_4, int_8]
+    var_1 = module_0.add(int_9)
+    assert var_1 == 24
+    int_10 = [int_0, int_1]
+    var_2 = module_0.add(int_10)
+    assert var_2 == 2
+    int_11 = [int_1, int_2, int_3, int_4]
+    var_3 = module_0.add(int_11)
+    assert var_3 == 0
+    int_12 = 7
+    int_13 = [int_12, int_12, int_12, int_12]
+    var_4 = module_0.add(int_13)
+    assert var_4 == 0
+    var_5 = []
+    var_6 = module_0.add(var_5)
+    assert var_6 == 0
+    int_14 = [int_1]
+    var_7 = module_0.add(int_14)
+    assert var_7 == 0
+    int_15 = 0
+    int_16 = [int_0, int_15, int_2, int_15]
+    var_8 = module_0.add(int_16)
+    assert var_8 == 0
+    int_17 = -2
+    int_18 = -4
+    int_19 = [int_0, int_17, int_2, int_18]
+    var_9 = module_0.add(int_19)
+    assert var_9 == 6
+    assert var_9 == -6
 
 def test_case_1():
-    var_0 = []
-    var_1 = module_0.add(var_0)
-    assert var_1 == 0
-    int_0 = 1
-    int_1 = [int_0]
-    var_2 = module_0.add(int_1)
-    assert var_2 == 0
-    int_2 = 2
-    int_3 = 3
-    int_4 = 4
-    int_5 = [int_0, int_2, int_3, int_4]
-    var_3 = module_0.add(int_5)
-    assert var_3 == 6
-    int_6 = [int_2, int_0, int_4, int_3]
-    var_4 = module_0.add(int_6)
-    assert var_4 == 0
-    int_7 = -2
-    int_8 = 6
-    int_9 = [int_0, int_7, int_3, int_8]
-    var_5 = module_0.add(int_9)
-    assert var_5 == 4
-    int_10 = 0
-    int_11 = [int_10, int_10, int_10, int_10]
-    var_6 = module_0.add(int_11)
-    assert var_6 == 0
+    pass

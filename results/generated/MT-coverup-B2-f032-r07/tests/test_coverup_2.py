@@ -2,34 +2,32 @@
 # asked: {"lines": [6], "branches": []}
 # gained: {"lines": [6], "branches": []}
 
-import math
-
 import pytest
 
 from f032 import poly
 
 
-def test_poly_evaluates_polynomial():
-    # 2*x^2 + 3*x + 1 at x = 2 -> 8 + 6 + 1 = 15
-    assert poly([1, 3, 2], 2.0) == pytest.approx(15.0)
+def test_poly_basic():
+    """poly([1, 2, 3], 2) == 1 + 2*2 + 3*4 == 17 (executes line 6)."""
+    assert poly([1, 2, 3], 2.0) == pytest.approx(17.0)
 
 
 def test_poly_empty_coefficients():
-    # sum of empty list is 0 (int), line 6 executes with empty iterable
+    """An empty coefficient list yields the empty sum, 0."""
     assert poly([], 5.0) == 0
 
 
-def test_poly_zero_x():
-    # x = 0: only constant term survives (0**0 == 1.0 via math.pow)
-    assert poly([7, 1, 1], 0.0) == pytest.approx(7.0)
+def test_poly_constant():
+    """A single coefficient is a constant polynomial, independent of x."""
+    assert poly([7], 100.0) == pytest.approx(7.0)
 
 
-def test_poly_negative_x():
-    # x^2 - x at x = -2 -> 4 + 2 = 6
-    assert poly([0, -1, 1], -2.0) == pytest.approx(6.0)
+def test_poly_negative_and_zero_coefficients():
+    """Negative and zero coefficients are handled correctly."""
+    # -1 + 0*x + 2*x^2 at x = 3 -> -1 + 0 + 18 = 17
+    assert poly([-1, 0, 2], 3.0) == pytest.approx(17.0)
 
 
-def test_poly_does_not_mutate_input():
-    xs = [1, 2, 3]
-    poly(xs, 1.5)
-    assert xs == [1, 2, 3]
+def test_poly_at_zero():
+    """Any polynomial evaluated at x = 0 equals its constant term."""
+    assert poly([4, 5, 6], 0.0) == pytest.approx(4.0)

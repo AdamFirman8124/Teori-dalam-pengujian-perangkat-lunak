@@ -2,15 +2,27 @@
 import f027 as module_0
 
 def test_case_0():
-    str_0 = 'Hello World!'
+    str_0 = ''
     str_1 = module_0.flip_case(str_0)
-    assert str_1 == 'hELLO wORLD!'
-    str_2 = 'Python 3.12'
+    assert str_1 == ''
+    str_2 = 'Hello'
     str_3 = module_0.flip_case(str_2)
-    assert str_3 == 'pYTHON 3.12'
-    str_4 = 'ABCdef'
+    assert str_3 == 'hELLO'
+    str_4 = 'hELLO'
     str_5 = module_0.flip_case(str_4)
-    assert str_5 == 'abcDEF'
-    str_6 = ''
+    assert str_5 == 'Hello'
+    str_6 = 'hello world'
     str_7 = module_0.flip_case(str_6)
-    assert str_7 == ''
+    assert str_7 == 'HELLO WORLD'
+    str_8 = 'HELLO WORLD'
+    str_9 = module_0.flip_case(str_8)
+    assert str_9 == 'hello world'
+    str_10 = 'PyThOn 123!'
+    str_11 = module_0.flip_case(str_10)
+    assert str_11 == 'pYtHoN 123!'
+    str_12 = '12345!@#'
+    str_13 = module_0.flip_case(str_12)
+    assert str_13 == '12345!@#'
+    str_14 = 'aBcDeF'
+    str_15 = module_0.flip_case(str_14)
+    assert str_15 == 'AbCdEf'

@@ -7,33 +7,31 @@ import pytest
 from f051 import remove_vowels
 
 
-def test_remove_vowels_empty_string():
-    assert remove_vowels("") == ""
-
-
-def test_remove_vowels_all_lowercase_vowels():
-    assert remove_vowels("aeiou") == ""
-
-
-def test_remove_vowels_all_uppercase_vowels():
-    assert remove_vowels("AEIOU") == ""
+def test_remove_vowels_removes_all_vowels():
+    """Line 3: the join/comprehension must execute and strip vowels."""
+    assert remove_vowels("hello") == "hll"
 
 
 def test_remove_vowels_mixed_case():
-    assert remove_vowels("Hello World") == "Hll Wrld"
+    """Both upper- and lower-case vowels are removed (s.lower() branch)."""
+    assert remove_vowels("AbEcIdOfUg") == "bcdfg"
 
 
 def test_remove_vowels_no_vowels():
+    """A string without vowels is returned unchanged."""
     assert remove_vowels("rhythm") == "rhythm"
 
 
-def test_remove_vowels_digits_and_symbols():
-    assert remove_vowels("a1b2!c3") == "1b2!c3"
+def test_remove_vowels_empty_string():
+    """An empty string yields an empty string."""
+    assert remove_vowels("") == ""
 
 
-def test_remove_vowels_returns_str_and_does_not_mutate_input():
-    text = "Programming"
-    result = remove_vowels(text)
-    assert isinstance(result, str)
-    assert result == "Prgrmmng"
-    assert text == "Programming"
+def test_remove_vowels_only_vowels():
+    """A string consisting only of vowels yields an empty string."""
+    assert remove_vowels("AEIOUaeiou") == ""
+
+
+def test_remove_vowels_non_alpha_characters_kept():
+    """Digits, punctuation and whitespace are preserved."""
+    assert remove_vowels("a1b2c3! ?") == "1b2c3! ?"

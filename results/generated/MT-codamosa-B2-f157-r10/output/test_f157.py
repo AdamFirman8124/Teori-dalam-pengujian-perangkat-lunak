@@ -15,18 +15,33 @@ def test_case_0():
     int_4 = 13
     var_3 = module_0.right_angle_triangle(int_2, int_3, int_4)
     assert var_3 is True
-    int_5 = 6
-    int_6 = 8
-    int_7 = 10
+    int_5 = 8
+    int_6 = 15
+    int_7 = 17
     var_4 = module_0.right_angle_triangle(int_5, int_6, int_7)
     assert var_4 is True
-    int_8 = 1
-    int_9 = 2
-    var_5 = module_0.right_angle_triangle(int_8, int_9, int_0)
-    assert var_5 is False
-    var_6 = module_0.right_angle_triangle(int_9, int_0, int_1)
-    assert var_6 is False
-    var_7 = module_0.right_angle_triangle(int_0, int_1, int_5)
+    int_8 = 7
+    int_9 = 24
+    int_10 = 25
+    var_5 = module_0.right_angle_triangle(int_8, int_9, int_10)
+    assert var_5 is True
+    float_0 = 1.5
+    float_1 = 2.0
+    float_2 = 2.5
+    var_6 = module_0.right_angle_triangle(float_0, float_1, float_2)
+    assert var_6 is True
+    int_11 = 1
+    var_7 = module_0.right_angle_triangle(int_11, float_1, int_0)
     assert var_7 is False
-    var_8 = module_0.right_angle_triangle(int_2, int_2, int_2)
+    var_8 = module_0.right_angle_triangle(int_11, int_11, int_11)
     assert var_8 is False
+    var_9 = module_0.right_angle_triangle(float_1, float_1, int_0)
+    assert var_9 is False
+    int_12 = 10
+    var_10 = module_0.right_angle_triangle(int_12, int_12, int_12)
+    assert var_10 is False
+    int_13 = 6
+    var_11 = module_0.right_angle_triangle(int_0, int_1, int_13)
+    assert var_11 is False
+    var_12 = module_0.right_angle_triangle(int_11, float_1, int_1)
+    assert var_12 is False

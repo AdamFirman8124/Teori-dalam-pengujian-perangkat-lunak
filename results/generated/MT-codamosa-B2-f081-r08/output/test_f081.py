@@ -2,21 +2,119 @@
 import f081 as module_0
 
 def test_case_0():
-    bytes_0 = b'\xe0\xce$V4C\xdc\x00\x95Z`\xa8\x19,\x85\xe8\xb2\x81\xc2\x04'
-    var_0 = module_0.numerical_letter_grade(bytes_0)
-    assert var_0 == ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'E', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A+']
+    float_0 = 4.0
+    int_0 = 3
+    float_1 = 1.7
+    int_1 = 2
+    float_2 = 3.5
+    var_0 = [float_0, int_0, float_1, int_1, float_2]
+    var_1 = module_0.numerical_letter_grade(var_0)
+    assert var_1 == ['A+', 'B', 'C-', 'C', 'A-']
 
 def test_case_1():
-    bytes_0 = b'mv\xec\xaeF\x04\xff\x82\x01\x920\xf4F\xcf\x90\x8e'
-    var_0 = module_0.numerical_letter_grade(bytes_0)
-    assert var_0 == ['A', 'A', 'A', 'A', 'A', 'A+', 'A', 'A', 'D', 'A', 'A', 'A', 'A', 'A', 'A', 'A']
-
-def test_case_2():
-    bytes_0 = b'\xd9\xba\xf8\x174@f\x02\xd74\xf7%\xa8#\x9a\x0f\x01\xb9'
-    var_0 = module_0.numerical_letter_grade(bytes_0)
-    assert var_0 == ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'C', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'D', 'A']
-
-def test_case_3():
-    bytes_0 = b'\xc2FKNm56\xc6\xec\x1f1\xfe\x03\xb1\x9c\xda\xd1\xbf'
-    var_0 = module_0.numerical_letter_grade(bytes_0)
-    assert var_0 == ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'B', 'A', 'A', 'A', 'A', 'A']
+    float_0 = 4.0
+    float_1 = [float_0]
+    var_0 = module_0.numerical_letter_grade(float_1)
+    assert var_0 == ['A+']
+    float_2 = 3.8
+    float_3 = [float_2]
+    var_1 = module_0.numerical_letter_grade(float_3)
+    assert var_1 == ['A']
+    float_4 = 3.7
+    float_5 = [float_4]
+    var_2 = module_0.numerical_letter_grade(float_5)
+    assert var_2 == ['A-']
+    float_6 = 3.4
+    float_7 = [float_6]
+    var_3 = module_0.numerical_letter_grade(float_7)
+    assert var_3 == ['A-']
+    float_8 = 3.3
+    float_9 = [float_8]
+    var_4 = module_0.numerical_letter_grade(float_9)
+    assert var_4 == ['B+']
+    float_10 = 3.1
+    float_11 = [float_10]
+    var_5 = module_0.numerical_letter_grade(float_11)
+    assert var_5 == ['B+']
+    float_12 = 3.0
+    float_13 = [float_12]
+    var_6 = module_0.numerical_letter_grade(float_13)
+    assert var_6 == ['B']
+    float_14 = 2.8
+    float_15 = [float_14]
+    var_7 = module_0.numerical_letter_grade(float_15)
+    assert var_7 == ['B']
+    float_16 = 2.7
+    float_17 = [float_16]
+    var_8 = module_0.numerical_letter_grade(float_17)
+    assert var_8 == ['B-']
+    float_18 = 2.4
+    float_19 = [float_18]
+    var_9 = module_0.numerical_letter_grade(float_19)
+    assert var_9 == ['B-']
+    float_20 = 2.3
+    float_21 = [float_20]
+    var_10 = module_0.numerical_letter_grade(float_21)
+    assert var_10 == ['C+']
+    float_22 = 2.1
+    float_23 = [float_22]
+    var_11 = module_0.numerical_letter_grade(float_23)
+    assert var_11 == ['C+']
+    float_24 = 2.0
+    float_25 = [float_24]
+    var_12 = module_0.numerical_letter_grade(float_25)
+    assert var_12 == ['C']
+    float_26 = 1.8
+    float_27 = [float_26]
+    var_13 = module_0.numerical_letter_grade(float_27)
+    assert var_13 == ['C']
+    float_28 = 1.7
+    float_29 = [float_28]
+    var_14 = module_0.numerical_letter_grade(float_29)
+    assert var_14 == ['C-']
+    float_30 = 1.4
+    float_31 = [float_30]
+    var_15 = module_0.numerical_letter_grade(float_31)
+    assert var_15 == ['C-']
+    float_32 = 1.3
+    float_33 = [float_32]
+    var_16 = module_0.numerical_letter_grade(float_33)
+    assert var_16 == ['D+']
+    float_34 = 1.1
+    float_35 = [float_34]
+    var_17 = module_0.numerical_letter_grade(float_35)
+    assert var_17 == ['D+']
+    float_36 = 1.0
+    float_37 = [float_36]
+    var_18 = module_0.numerical_letter_grade(float_37)
+    assert var_18 == ['D']
+    float_38 = 0.8
+    float_39 = [float_38]
+    var_19 = module_0.numerical_letter_grade(float_39)
+    assert var_19 == ['D']
+    float_40 = 0.7
+    float_41 = [float_40]
+    var_20 = module_0.numerical_letter_grade(float_41)
+    assert var_20 == ['D-']
+    float_42 = 0.1
+    float_43 = [float_42]
+    var_21 = module_0.numerical_letter_grade(float_43)
+    assert var_21 == ['D-']
+    float_44 = 0.0
+    float_45 = [float_44]
+    var_22 = module_0.numerical_letter_grade(float_45)
+    assert var_22 == ['E']
+    float_46 = -1.0
+    float_47 = [float_46]
+    var_23 = module_0.numerical_letter_grade(float_47)
+    assert var_23 == ['E']
+    var_24 = []
+    var_25 = module_0.numerical_letter_grade(var_24)
+    assert var_25 == []
+    float_48 = 3.5
+    float_49 = [float_0, float_12, float_28, float_24, float_48]
+    var_26 = module_0.numerical_letter_grade(float_49)
+    assert var_26 == ['A+', 'B', 'C-', 'C', 'A-']
+    float_50 = [float_0, float_2, float_6, float_10, float_14, float_18, float_22, float_26, float_30, float_34, float_38, float_42, float_44]
+    var_27 = module_0.numerical_letter_grade(float_50)
+    assert var_27 == ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'E']

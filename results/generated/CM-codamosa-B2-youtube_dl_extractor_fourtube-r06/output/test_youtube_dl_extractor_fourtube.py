@@ -2,8 +2,8 @@
 import youtube_dl.extractor.fourtube as module_0
 
 def test_case_0():
-    porn_tube_i_e_0 = module_0.PornTubeIE()
-    assert porn_tube_i_e_0 is not None
+    porner_bros_i_e_0 = module_0.PornerBrosIE()
+    assert porner_bros_i_e_0 is not None
     assert module_0.unicode_literals.optional == (2, 6, 0, 'alpha', 2)
     assert module_0.unicode_literals.mandatory == (3, 0, 0, 'alpha', 0)
     assert module_0.unicode_literals.compiler_flag == 2097152

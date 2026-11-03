@@ -1,506 +1,357 @@
 
 
-# Generated at 2026-10-24 15:03:11.975966
+# Generated at 2026-11-03 01:17:50.019541
 # Unit test for constructor of class AnsibleJ2Vars
+def test_AnsibleJ2Vars():
+    """Test the constructor of AnsibleJ2Vars"""
 
-# Generated at 2026-10-24 15:03:14.390895
-# Unit test for constructor of class AnsibleJ2Vars
+    class FakeTemplar(object):
+        def __init__(self):
+            self.available_variables = {}
 
-# Generated at 2026-10-24 15:03:16.806969
-# Unit test for constructor of class AnsibleJ2Vars
+    templar = FakeTemplar()
+    globals_dict = {'global_var': 'global_value', 'range': range}
 
-# Generated at 2026-10-24 15:03:24.998234
+    # Test with locals=None (default), which should result in empty _locals
+    j2vars = AnsibleJ2Vars(templar, globals_dict)
+    assert j2vars._templar is templar
+    assert j2vars._globals is globals_dict
+    assert j2vars._locals == {}
+
+    # Test with a locals dict:
+    # - 'l_' prefixed keys should have the prefix stripped
+    # - 'context', 'environment', 'template' keys should be skipped
+    locals_dict = {
+        'l_local_var': 'local_value',
+        'plain_var': 'plain_value',
+        'context': 'ctx',
+        'environment': 'env',
+        'template': 'tmpl',
+    }
+    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
+    assert j2vars._locals == {
+        'local_var': 'local_value',
+        'plain_var': 'plain_value',
+    }
+
+    # Test that entries whose value is the jinja2 'missing' sentinel are skipped
+    locals_dict = {
+        'l_missing_var': missing,
+        'l_present_var': 'present',
+    }
+    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
+    assert j2vars._locals == {'present_var': 'present'}
+
+    # Test that non-dict locals are ignored entirely
+    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=[('l_x', 1)])
+    assert j2vars._locals == {}
+
+# Generated at 2026-11-03 01:20:21.175302
+# Unit test for method __getitem__ of class AnsibleJ2Vars
+
+# Generated at 2026-11-03 01:21:41.140511
+# Unit test for method __getitem__ of class AnsibleJ2Vars
+def test_AnsibleJ2Vars___getitem__():
+    class FakeTemplar(object):
+        def __init__(self, available_variables):
+            self.available_variables = available_variables
+            self.template_calls = []
+
+        def template(self, value):
+            self.template_calls.append(value)
+            return 'templated:%s' % value
+
+    templar = FakeTemplar({'foo': 'bar', 'vars': {'a': 1}})
+    globals_ = {'range': range, 'globalvar': 'gval'}
+    locals_ = {'l_localvar': 'lval', 'l_skipped_missing': missing}
+    j2vars = AnsibleJ2Vars(templar, globals_, locals=locals_)
+
+    # local variable (stripped of 'l_' prefix) is returned as-is
+    assert j2vars['localvar'] == 'lval'
+    # templar variable gets templated through the templar
+    assert j2vars['foo'] == 'templated:bar'
+    # global is returned as-is without templating
+    assert j2vars['globalvar'] == 'gval'
+    # special 'vars' dict is returned as-is without templating
+    assert j2vars['vars'] == {'a': 1}
+    # only 'foo' was sent through the templar
+    assert templar.template_calls == ['bar']
+
+# Generated at 2026-11-03 01:23:04.177842
 # Unit test for method add_locals of class AnsibleJ2Vars
 def test_AnsibleJ2Vars_add_locals():
     from ansible.template import Templar
+    from units.mock.loader import DictDataLoader
 
-    class FakeTemplar(object):
-        def __init__(self, available_variables=None):
-            self.available_variables = available_variables if available_variables is not None else {}
+    fake_loader = DictDataLoader({})
+    variable_manager = type('VariableManager', (object,), {'available_variables': {}})()
+    templar = Templar(loader=fake_loader, variables={})
+    templar.available_variables = {'foo': 'bar', 'num': 1}
 
-    # Case 1: locals is None -> returns self
-    templar = FakeTemplar({'foo': 'bar'})
-    globals_dict = {'range': range, 'lookup': None}
-    j2vars = AnsibleJ2Vars(templar, globals_dict)
-    result = j2vars.add_locals(None)
-    assert result is j2vars
+    globals_dict = {'range': range, 'lookup': lambda *a, **kw: None}
 
-    # Case 2: locals provided -> returns a new AnsibleJ2Vars with merged locals
-    j2vars = AnsibleJ2Vars(templar, globals_dict, locals={'local1': 'value1'})
-    new_j2vars = j2vars.add_locals({'local2': 'value2'})
+    # create initial instance with some locals
+    ajv = AnsibleJ2Vars(templar, globals_dict, locals={'l_x': 'local_x', 'context': 'skipme', 'template': 'skipme'})
 
-    assert isinstance(new_j2vars, AnsibleJ2Vars)
-    assert new_j2vars is not j2vars
+    # locals should be stripped of l_ prefix, and special keys excluded
+    assert ajv._locals == {'x': 'local_x'}
+    assert 'foo' in ajv
+    assert 'x' in ajv
+    assert 'range' in ajv
+    assert ajv['x'] == 'local_x'
+    assert ajv['foo'] == 'bar'
 
-    # Original locals plus new locals should be present
-    assert 'local1' in new_j2vars._locals
-    assert 'local2' in new_j2vars._locals
-    assert new_j2vars._locals['local1'] == 'value1'
-    assert new_j2vars._locals['local2'] == 'value2'
+    # add_locals with None returns the same object
+    result = ajv.add_locals(None)
+    assert result is ajv
 
-    # Original object should be unchanged
-    assert 'local2' not in j2vars._locals
-    assert j2vars._locals['local1'] == 'value1'
+    # add_locals with a dict returns a new object with merged locals
+    result = ajv.add_locals({'y': 'local_y', 'x': 'updated_x'})
+    assert result is not ajv
+    assert isinstance(result, AnsibleJ2Vars)
+    assert result._locals == {'x': 'updated_x', 'y': 'local_y'}
+    # original is unchanged
+    assert ajv._locals == {'x': 'local_x'}
+    # new instance shares templar and globals
+    assert result._templar is ajv._templar
+    assert result._globals is ajv._globals
+    # lookups through the new instance
+    assert result['x'] == 'updated_x'
+    assert result['y'] == 'local_y'
+    assert result['foo'] == 'bar'
+    assert 'y' in result
+    assert len(result) == len(set(templar.available_variables) | set(result._locals) | set(globals_dict))
 
-    # Globals and templar should be carried over
-    assert new_j2vars._globals is globals_dict
-    assert new_j2vars._templar is templar
+    # locals passed via constructor as jinja2 locals with l_ prefix and missing values
+    from jinja2.utils import missing as j2_missing
+    ajv2 = AnsibleJ2Vars(templar, globals_dict, locals={'l_a': j2_missing, 'l_b': 'val_b'})
+    assert ajv2._locals == {'b': 'val_b'}
 
-    # Membership and lookup through the new proxy
-    assert 'local1' in new_j2vars
-    assert 'local2' in new_j2vars
-    assert 'foo' in new_j2vars
-    assert 'range' in new_j2vars
-    assert 'nonexistent' not in new_j2vars
-
-    assert new_j2vars['local1'] == 'value1'
-    assert new_j2vars['local2'] == 'value2'
-
-    # Case 3: empty locals dict -> still returns a new object with copied locals
-    new_j2vars_empty = j2vars.add_locals({})
-    assert isinstance(new_j2vars_empty, AnsibleJ2Vars)
-    assert new_j2vars_empty is not j2vars
-    assert new_j2vars_empty._locals == j2vars._locals
-
-    # Case 4: chained add_locals calls accumulate locals
-    chained = j2vars.add_locals({'a': 1}).add_locals({'b': 2})
-    assert chained._locals['a'] == 1
-    assert chained._locals['b'] == 2
-    assert chained._locals['local1'] == 'value1'
-
-# Generated at 2026-10-24 15:03:43.429293
 # Unit test for constructor of class AnsibleJ2Vars
-def test_AnsibleJ2Vars():
-    templar = _FakeTemplar()
-    globals_ = {'range': range}
+def test_AnsibleJ2Vars_constructor():
+    from ansible.template import Templar
+    from units.mock.loader import DictDataLoader
 
-    # 1. scopes stored by reference; 'l_' prefix stripped
+    fake_loader = DictDataLoader({})
+    templar = Templar(loader=fake_loader, variables={})
+    templar.available_variables = {'hostvars': object(), 'vars': {'a': 1}}
 
-# Generated at 2026-10-24 15:03:45.957289
-# Unit test for method __len__ of class AnsibleJ2Vars
+    globals_dict = {'range': range}
+    ajv = AnsibleJ2Vars(templar, globals_dict)
 
-# Generated at 2026-10-24 15:03:48.372971
-# Unit test for method __len__ of class AnsibleJ2Vars
+    assert ajv._templar is templar
+    assert ajv._globals is globals_dict
+    assert ajv._locals == {}
+    assert len(ajv) == 2
+    assert 'hostvars' in ajv
+    assert 'vars' in ajv
+    assert 'nonexistent' not in ajv
 
-# Generated at 2026-10-24 15:03:50.786459
-# Unit test for method __len__ of class AnsibleJ2Vars
+    try:
+        ajv['nonexistent']
+    except KeyError as e:
+        assert 'undefined variable: nonexistent' in str(e)
+    else:
+        raise AssertionError("KeyError not raised for undefined variable")
 
-# Generated at 2026-10-24 15:03:53.331219
+# Unit test for method __getitem__ of class AnsibleJ2Vars
+def test_AnsibleJ2Vars_getitem():
+    from ansible.template import Templar
+    from units.mock.loader import DictDataLoader
+
+    fake_loader = DictDataLoader({})
+    templar = Templar(loader=fake_loader, variables={})
+    templar.available_variables = {
+        'plain': 'value',
+        'vars': {'inner': 'special'},
+        'hostvars': {'localhost': {}},
+    }
+
+    class Unsafe(object):
+        __UNSAFE__ = True
+
+    templar.available_variables['unsafe'] = Unsafe()
+
+    globals_dict = {'range': range, 'lookup': lambda *a, **kw: 'looked_up'}
+
+    ajv = AnsibleJ2Vars(templar, globals_dict, locals={'l_local': 'localval'})
+
+    # templated variable
+    assert ajv['plain'] == 'value'
+    # locals take precedence
+    assert ajv['local'] == 'localval'
+    # special 'vars' returned as-is
+    assert ajv['vars'] == {'inner': 'special'}
+    # globals returned as-is
+    assert ajv['range'] is range
+    assert ajv['lookup']() == 'looked_up'
+    # unsafe variables returned as-is
+    assert isinstance(ajv['unsafe'], Unsafe)
+
+# Unit test for method __contains__/__iter__/__len__ of class AnsibleJ2Vars
+def test_AnsibleJ2Vars_dunder_methods():
+    from ansible.template import Templar
+    from units.mock.loader import DictDataLoader
+
+    fake_loader = DictDataLoader({})
+    templar = Templar(loader=fake_loader, variables={})
+    templar.available_variables = {'a': 1, 'b': 2}
+
+    globals_dict = {'g1': 1, 'g2': 2}
+    ajv = AnsibleJ2Vars(templar, globals_dict, locals={'l_c': 3})
+
+    keys = set(ajv)
+    assert keys == {'a', 'b', 'g1', 'g2', 'c'}
+    assert len(ajv) == 5
+    assert 'a' in ajv
+    assert 'b' in ajv
+    assert 'c' in ajv
+    assert 'g1' in ajv
+    assert 'g2' in ajv
+    assert 'missing' not in ajv
+
+# Unit test for error handling in __getitem__ of class AnsibleJ2Vars
+def test_AnsibleJ2Vars_getitem_errors():
+    from ansible.template import Templar
+    from units.mock.loader import DictDataLoader
+
+    fake_loader = DictDataLoader({})
+
+    templar = Templar(loader=fake_loader, variables={})
+    templar.available_variables = {'bad_var': '{{ undefined_var }}'}
+
+    globals_dict = {}
+    ajv = AnsibleJ2Vars(templar, globals_dict)
+
+    try:
+        ajv['bad_var']
+    except AnsibleUndefinedVariable as e:
+        assert 'bad_var' in str(e)
+    except Exception as e:
+        raise AssertionError("Unexpected exception type: %s" % type(e))
+    else:
+        raise AssertionError("Expected AnsibleUndefinedVariable not raised")
+
+# Generated at 2026-11-03 01:25:10.344467
 # Unit test for method __contains__ of class AnsibleJ2Vars
+def test_AnsibleJ2Vars___contains__():
+    # Mock templar with available variables
+    templar = MagicMock()
+    templar.available_variables = {
+        'templar_var': 'templar_value',
+        'another_templar_var': {'nested': 'data'},
+    }
 
-# Generated at 2026-10-24 15:03:55.746777
+    globals_dict = {
+        'range': range,
+        'lookup': None,
+        'global_var': 'global_value',
+    }
+
+    locals_dict = {
+        'l_local_var': 'local_value',
+        'bare_local': 'bare_value',
+        'context': 'ignored',
+        'environment': 'ignored',
+        'template': 'ignored',
+        'l_missing_var': missing,
+    }
+
+    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
+
+    # Locals (with l_ prefix stripped) are contained
+    assert 'local_var' in j2vars
+    assert 'bare_local' in j2vars
+
+    # Templar available variables are contained
+    assert 'templar_var' in j2vars
+    assert 'another_templar_var' in j2vars
+
+    # Globals are contained
+    assert 'global_var' in j2vars
+    assert 'range' in j2vars
+    assert 'lookup' in j2vars
+
+    # Special jinja2 context keys are excluded from locals
+    assert 'context' not in j2vars
+    assert 'environment' not in j2vars
+    assert 'template' not in j2vars
+
+    # Values equal to jinja2's missing sentinel are excluded from locals
+    assert 'missing_var' not in j2vars
+
+    # Undefined variables are not contained
+    assert 'undefined_var' not in j2vars
+
+
+def test_AnsibleJ2Vars___contains___no_locals():
+    templar = MagicMock()
+    templar.available_variables = {'templar_var': 'templar_value'}
+
+    j2vars = AnsibleJ2Vars(templar, {'global_var': 1}, locals=None)
+
+    assert 'templar_var' in j2vars
+    assert 'global_var' in j2vars
+    assert 'nothing' not in j2vars
+
+
+def test_AnsibleJ2Vars___contains___precedence():
+    # Locals shadow templar variables and globals
+    templar = MagicMock()
+    templar.available_variables = {'shared_var': 'from_templar'}
+
+    globals_dict = {'shared_var': 'from_globals'}
+    locals_dict = {'l_shared_var': 'from_locals'}
+
+    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
+
+    assert 'shared_var' in j2vars
+
+# Generated at 2026-11-03 01:26:22.014692
 # Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:03:58.164389
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:00.580085
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:03.145119
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:05.556202
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:07.969650
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:10.398929
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:12.814924
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:15.230287
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:17.914628
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:20.330475
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:22.744953
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:25.162468
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:27.576142
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:29.993110
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:32.403535
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:37.393467
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:04:53.881051
-# Unit test for constructor of class AnsibleJ2Vars
-def test_AnsibleJ2Vars():
-    templar = _FakeTemplar()
-    globals_ = {'range': range}
-
-    # 1. scopes stored by reference; 'l_' prefix stripped
-
-# Generated at 2026-10-24 15:05:07.805498
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:06:00.445905
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___getitem__():from ansible.template.vars import AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:06:01.864745
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:06:29.841685
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:06:32.261006
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:06:34.856575
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:06:37.265228
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:06:39.675603
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:06:42.088491
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:06:43.400830
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:06:44.710016
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:19.655364
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:22.072048
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:24.487319
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:26.899389
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:29.315721
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:31.728723
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:34.140616
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:36.556207
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:38.968928
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:41.382331
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:43.795697
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:46.212747
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:48.622924
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:51.036839
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:53.449986
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:55.863990
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:07:58.277579
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:08:00.691895
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:08:03.105939
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:08:05.519115
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:08:07.933731
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:08:22.059238
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:08:23.372557
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:08:24.694232
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:08:59.844977
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:02.474219
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:04.887196
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:07.299676
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:09.713488
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:11.359652
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:12.852431
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:14.162148
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:15.616057
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:17.062022
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:18.391765
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:19.759979
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:36.304533
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:38.718455
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:41.226948
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:43.734079
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:46.148726
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:48.795690
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:51.208206
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:53.620497
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:56.033073
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:09:58.445971
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:00.859430
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:03.273066
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:05.686437
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:08.099443
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:10.513782
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:12.926078
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:15.340746
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:17.753572
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:20.167380
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:22.580940
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:24.994045
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:27.407594
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:29.821330
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:32.234809
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:35.312674
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:37.725160
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:40.138108
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:42.551153
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:44.965116
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:47.377801
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:49.790432
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:52.206185
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:54.617036
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:57.029877
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:10:59.443629
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:11:01.857604
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:11:04.273093
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:11:06.689115
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:11:08.369608
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:11:25.157789
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:11:26.466671
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:11:27.789660
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:11:29.130020
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:11:30.453090
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:11:31.775659
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:11:48.343051
-# Unit test for constructor of class AnsibleJ2Vars
-def test_AnsibleJ2Vars():
-    templar = _FakeTemplar()
-    globals_ = {'range': range}
-
-    # 1. scopes stored by reference; 'l_' prefix stripped
-
-# Generated at 2026-10-24 15:11:50.762985
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:11:53.178347
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:11:55.593910
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:11:58.009130
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:00.422452
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:02.836703
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:07.242852
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:09.654606
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:12.066398
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:14.478389
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:16.891811
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:19.304241
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:21.717026
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:24.131070
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:26.544974
-# Unit test for constructor of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:28.959734
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:31.372433
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:49.836739
-# Unit test for method __contains__ of class AnsibleJ2Vars
-def test_AnsibleJ2Vars___contains__():from ansible.template.vars import AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:51.151727
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:52.467968
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:12:53.831336
-# Unit test for method __getitem__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:13:10.520646
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:13:12.940642
-# Unit test for method __contains__ of class AnsibleJ2Vars
-
-# Generated at 2026-10-24 15:13:15.350883
-# Unit test for method __contains__ of class AnsibleJ2Vars
+def test_AnsibleJ2Vars___contains__():
+    from unittest.mock import MagicMock
+
+    # Set up a mock templar with available variables
+    templar = MagicMock()
+    templar.available_variables = {'available_var': 'value', 'another_var': 42}
+
+    globals_dict = {'global_var': 'global_value', 'range': range}
+
+    # locals with 'l_' prefix keys and regular keys, plus excluded keys
+    locals_dict = {
+        'l_local_var': 'local_value',
+        'plain_local': 'plain_value',
+        'l__context': 'should_be_kept_as_context',
+        'context': 'should_be_skipped',
+        'environment': 'should_be_skipped',
+        'template': 'should_be_skipped',
+    }
+
+    j2vars = AnsibleJ2Vars(templar, globals_dict, locals=locals_dict)
+
+    # Keys found in locals (prefix stripped from l_ keys)
+    assert 'local_var' in j2vars
+    assert 'plain_local' in j2vars
+    # Excluded keys were not stored in locals
+    assert 'context' not in j2vars
+    assert 'environment' not in j2vars
+    assert 'template' not in j2vars
+
+    # Keys found in templar.available_variables
+    assert 'available_var' in j2vars
+    assert 'another_var' in j2vars
+
+    # Keys found in globals
+    assert 'global_var' in j2vars
+    assert 'range' in j2vars
+
+    # Keys not found anywhere
+    assert 'nonexistent_var' not in j2vars
+    assert '' not in j2vars
+
+    # Constructed without locals - only templar and globals available
+    j2vars_no_locals = AnsibleJ2Vars(templar, globals_dict)
+    assert 'available_var' in j2vars_no_locals
+    assert 'global_var' in j2vars_no_locals
+    assert 'local_var' not in j2vars_no_locals

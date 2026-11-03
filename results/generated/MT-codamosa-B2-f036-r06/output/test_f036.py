@@ -5,15 +5,18 @@ def test_case_0():
     int_0 = 0
     var_0 = module_0.fizz_buzz(int_0)
     assert var_0 == 0
-    int_1 = 77
+    int_1 = 11
     var_1 = module_0.fizz_buzz(int_1)
     assert var_1 == 0
-    int_2 = 78
+    int_2 = 50
     var_2 = module_0.fizz_buzz(int_2)
-    assert var_2 == 2
-    int_3 = 79
+    assert var_2 == 0
+    int_3 = 78
     var_3 = module_0.fizz_buzz(int_3)
-    assert var_3 == 3
-    int_4 = 100
+    assert var_3 == 2
+    int_4 = 79
     var_4 = module_0.fizz_buzz(int_4)
     assert var_4 == 3
+    int_5 = 100
+    var_5 = module_0.fizz_buzz(int_5)
+    assert var_5 == 3

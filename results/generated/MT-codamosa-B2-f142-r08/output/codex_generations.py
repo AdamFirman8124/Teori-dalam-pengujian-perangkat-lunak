@@ -1,1219 +1,287 @@
 
 
-# Generated at 2026-10-25 01:13:45.648279
+# Generated at 2026-11-03 05:47:48.336672
 # Unit test for function sum_squares
 def test_sum_squares():
+    # Empty list sums to 0
     assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:13:46.962091
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:13:49.378725
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:13:51.793974
-# Unit test for function sum_squares
 
-# Generated at 2026-10-25 01:13:54.208293
-# Unit test for function sum_squares
+    # i=0 is divisible by 3 -> squared
+    assert module_0.sum_squares([1, 2, 3]) == 1**2 + 2 + 3  # 6
 
-# Generated at 2026-10-25 01:13:56.626972
-# Unit test for function sum_squares
+    # i=3 divisible by 3 -> squared
+    assert module_0.sum_squares([1, 3, 5, 7]) == 1 + 3 + 5 + 7**2  # 58
 
-# Generated at 2026-10-25 01:13:59.041322
-# Unit test for function sum_squares
+    # i=4 divisible by 4 but not 3 -> cubed
+    assert module_0.sum_squares([1, 2, 3, 4, 5]) == 1 + 2 + 3 + 4**2 + 5**3  # 145
 
-# Generated at 2026-10-25 01:14:01.454749
-# Unit test for function sum_squares
+    # Repeated indices: 0,3,6 squared; 4,8 cubed; others unchanged
+    assert module_0.sum_squares([2, 3, 4, 5, 6, 7, 8, 9, 10]) == (
+        2**2 + 3 + 4 + 5**2 + 6**3 + 7 + 8**2 + 9 + 10**3
+    )  # 1332
 
-# Generated at 2026-10-25 01:14:03.869977
-# Unit test for function sum_squares
+    # Negative numbers: squares positive, cubes negative
+    assert module_0.sum_squares([-1, -5, 2, -1, -5]) == (
+        (-1)**2 + (-5) + 2 + (-1)**2 + (-5)**3
+    )  # -126
 
-# Generated at 2026-10-25 01:14:06.284118
-# Unit test for function sum_squares
+    assert module_0.sum_squares([-7, -3, -2, -9, -11]) == (
+        (-7)**2 + (-3) + (-2) + (-9)**2 + (-11)**3
+    )  # -1206
 
-# Generated at 2026-10-25 01:14:08.699363
-# Unit test for function sum_squares
+    # Index 12 divisible by both 3 and 4 -> squared (3-check wins)
+    assert module_0.sum_squares(list(range(13))) == 882
 
-# Generated at 2026-10-25 01:14:17.296440
-# Unit test for function sum_squares
-def test_sum_squares():assert module_0.sum_squares([]) == 0
+    # All ones
+    assert module_0.sum_squares([1, 1, 1, 1, 1, 1, 1, 1, 1]) == 9
 
-# Generated at 2026-10-25 01:14:18.631391
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:14:19.954603
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:14:21.396445
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:14:22.720404
+# Generated at 2026-11-03 05:50:02.172391
 # Unit test for function sum_squares
 def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
+    # Squared entries: indices divisible by 3 (including index 0)
+    assert module_0.sum_squares([1, 2, 3]) == 6
+    assert module_0.sum_squares([1, 4, 9]) == 14
+    assert module_0.sum_squares([1, 3, 5, 7]) == 58          # 1^2 + 3 + 5 + 7^2
 
-# Generated at 2026-10-25 01:14:24.057408
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:14:25.389585
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:14:26.823905
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:14:28.151649
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:14:29.473734
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:14:30.798692
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:14:32.159333
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:14:33.583833
-# Unit test for function sum_squares
-def test_sum_squares():
+    # Empty list
     assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:14:34.981430
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:14:36.449715
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:14:37.782838
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:14:39.124502
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:14:41.542173
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:14:43.956607
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:14:46.535594
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:14:48.951048
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:14:51.366640
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:14:53.780728
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:14:56.195645
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:14:58.749207
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:01.163624
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:03.577813
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:06.163699
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:08.577224
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:10.990527
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:13.403493
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:15.818479
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:18.229697
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:20.644533
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:23.060868
-# Unit test for function sum_squares
 
-# Generated at 2026-10-25 01:15:25.475531
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:27.890646
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:30.304637
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:32.719551
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:35.133709
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:37.549198
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:39.963467
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:42.377489
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:44.792940
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:47.206892
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:49.623994
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:52.036389
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:54.451124
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:56.866761
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:15:59.281611
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:01.698118
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:04.114325
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:06.528673
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:08.942523
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:11.359598
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:13.775725
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:16.192711
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:18.606706
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:21.022555
-# Unit test for function sum_squares
+    # Single element: index 0 always squared
+    assert module_0.sum_squares([5]) == 25
 
-# Generated at 2026-10-25 01:16:23.440216
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:25.856538
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:28.280504
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:30.692208
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:33.107815
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:35.521879
-# Unit test for function sum_squares
+    # Cubed entries: indices divisible by 4 but not by 3
+    assert module_0.sum_squares([0, 0, 0, 0, 2]) == 8        # index 4: 2^3
+    assert module_0.sum_squares([0] * 8 + [2]) == 8          # index 8: 2^3
+    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8      # index 4: (-2)^3
 
-# Generated at 2026-10-25 01:16:37.935817
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:40.354111
-# Unit test for function sum_squares
+    # Index divisible by both 3 and 4 -> squared branch wins
+    assert module_0.sum_squares([0] * 12 + [2]) == 4         # index 12: 2^2
 
-# Generated at 2026-10-25 01:16:42.766487
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:16:45.181508
-# Unit test for function sum_squares
+    # All ones: every branch contributes 1
+    assert module_0.sum_squares([1] * 10) == 10
 
-# Generated at 2026-10-25 01:16:47.599886
-# Unit test for function sum_squares
+    # Mixed entries covering all branches
+    # i=0:1^2, i=1:2, i=2:3, i=3:4^2, i=4:5^3, i=5:6, i=6:7^2, i=7:8, i=8:9^3
+    assert module_0.sum_squares([1, 2, 3, 4, 5, 6, 7, 8, 9]) == 939
 
-# Generated at 2026-10-25 01:16:50.015025
-# Unit test for function sum_squares
+    # Negative numbers
+    assert module_0.sum_squares([-2, -5, 3, -1]) == 3        # 4 + (-5) + 3 + 1
 
-# Generated at 2026-10-25 01:16:52.428304
-# Unit test for function sum_squares
+    # Floats
+    assert abs(module_0.sum_squares([1.4, 4.2, 0]) - 6.16) < 1e-9
 
-# Generated at 2026-10-25 01:16:54.844106
+# Generated at 2026-11-03 05:51:16.182879
 # Unit test for function sum_squares
+def test_sum_squares():
+    # Empty list sums to 0
+    assert module_0.sum_squares([]) == 0
 
-# Generated at 2026-10-25 01:16:57.259719
-# Unit test for function sum_squares
+    # Simple case: index 0 is squared, others unchanged
+    assert module_0.sum_squares([1, 2, 3]) == 1 + 2 + 3
 
-# Generated at 2026-10-25 01:16:59.673956
-# Unit test for function sum_squares
+    # Index 3 is divisible by 3, so element is squared
+    assert module_0.sum_squares([1, 2, 3, 4]) == 1 + 2 + 3 + 16
 
-# Generated at 2026-10-25 01:17:02.089261
-# Unit test for function sum_squares
+    # All indices not divisible by 3 or 4 remain unchanged
+    assert module_0.sum_squares([1, 4, 1]) == 6
 
-# Generated at 2026-10-25 01:17:04.504562
-# Unit test for function sum_squares
+    # Squaring applies at indices 0 and 3
+    assert module_0.sum_squares([1, 3, 5, 7]) == 1 + 3 + 5 + 49
 
-# Generated at 2026-10-25 01:17:06.919732
-# Unit test for function sum_squares
+    # Cubing applies at index 4 (divisible by 4 but not 3), works with negatives
+    assert module_0.sum_squares([-1, -5, 2, -1, -5]) == 1 + (-5) + 2 + 1 + (-125)
 
-# Generated at 2026-10-25 01:17:09.336546
-# Unit test for function sum_squares
+    # Index divisible by both 3 and 4 (e.g. 12) is squared, not cubed
+    assert module_0.sum_squares([2] * 13) == 48
 
-# Generated at 2026-10-25 01:17:11.748697
-# Unit test for function sum_squares
+    # Squaring negative numbers yields positive results
+    assert module_0.sum_squares([-1, 2, 3, -4, 5]) == 1 + 2 + 3 + 16 + 5
 
-# Generated at 2026-10-25 01:17:18.958731
-# Unit test for function sum_squares
-def test_sum_squares():assert module_0.sum_squares([]) == 0
+test_sum_squares()
+print("All tests passed!")
 
-# Generated at 2026-10-25 01:17:20.278916
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:21.753500
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:23.157415
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:24.474378
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:25.803712
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:27.207269
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:28.532706
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:29.879802
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:31.210269
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:32.537088
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:33.910577
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:37.053686
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:38.415062
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:39.822485
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:41.157437
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:42.598435
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:43.926120
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:45.250396
+# Generated at 2026-11-03 05:52:04.649359
 # Unit test for function sum_squares
 def test_sum_squares():
+    # Empty list
     assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:17:47.669095
-# Unit test for function sum_squares
 
-# Generated at 2026-10-25 01:17:50.186144
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:17:52.603036
-# Unit test for function sum_squares
+    # All elements unchanged (indices 1, 2)
+    assert module_0.sum_squares([1, 2, 3]) == 1 + 2 + 3  # index 0 squared: 1
 
-# Generated at 2026-10-25 01:17:55.016868
-# Unit test for function sum_squares
+    # Index 3 divisible by 3 -> squared
+    assert module_0.sum_squares([1, 2, 3, 4]) == 1**2 + 2 + 3 + 4**2  # 1+2+3+16 = 22
 
-# Generated at 2026-10-25 01:17:57.434623
-# Unit test for function sum_squares
+    # Index 4 divisible by 4 but not 3 -> cubed
+    assert module_0.sum_squares([1, 2, 3, 4, 5]) == 1**2 + 2 + 3 + 4**2 + 5**3  # 147
 
-# Generated at 2026-10-25 01:17:59.859954
-# Unit test for function sum_squares
+    # Mixed case with all branches
+    assert module_0.sum_squares([1, 2, 3, 4, 5, 6, 7, 8, 9]) == (
+        1**2 + 2 + 3 + 4**2 + 5**3 + 6 + 7**2 + 8 + 9**3
+    )  # 1+2+3+16+125+6+49+8+729 = 939
 
-# Generated at 2026-10-25 01:18:02.429657
-# Unit test for function sum_squares
+    # Index divisible by 12 -> i % 3 == 0 takes priority (squared, not cubed)
+    lst = [10] * 13
+    assert module_0.sum_squares(lst) == 10**2 * 4 + 10**3 * 2 + 10 * 7
 
-# Generated at 2026-10-25 01:18:04.843190
-# Unit test for function sum_squares
+    # Negative numbers
+    assert module_0.sum_squares([-1, -2, -3, -4]) == (-1)**2 + (-2) + (-3) + (-4)**2  # 1-2-3+16 = 12
 
-# Generated at 2026-10-25 01:18:07.257937
-# Unit test for function sum_squares
+    # Single element at index 0 -> squared
+    assert module_0.sum_squares([5]) == 25
 
-# Generated at 2026-10-25 01:18:13.986400
-# Unit test for function sum_squares
+    # Zero values
+    assert module_0.sum_squares([0, 0, 0, 0, 0]) == 0
 
-# Generated at 2026-10-25 01:18:19.887635
-# Unit test for function sum_squares
-def test_sum_squares():assert module_0.sum_squares([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) == 1039
+    print("All tests passed!")
 
-# Generated at 2026-10-25 01:18:21.221346
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:18:22.651645
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:18:23.983828
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:18:25.300281
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:18:26.668160
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:18:27.986333
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:18:29.379808
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:18:30.700702
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:18:32.067927
+# Generated at 2026-11-03 05:52:56.458987
 # Unit test for function sum_squares
 def test_sum_squares():
+    # Empty list -> 0
     assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:18:43.848643
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:18:45.181389
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:18:46.552635
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:18:47.877506
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:18:49.212544
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:18:50.545093
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:18:53.071768
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:18:55.600229
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:18:58.015562
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:19:00.538537
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:19:02.950980
-# Unit test for function sum_squares
 
-# Generated at 2026-10-25 01:19:05.365189
-# Unit test for function sum_squares
+    # Single element: index 0 is a multiple of 3 -> squared
+    assert module_0.sum_squares([5]) == 25
 
-# Generated at 2026-10-25 01:19:07.780601
-# Unit test for function sum_squares
+    # Basic example: 1^2 + 2 + 3
+    assert module_0.sum_squares([1, 2, 3]) == 6
 
-# Generated at 2026-10-25 01:19:10.229089
-# Unit test for function sum_squares
+    # Indices 0,3,6 squared; index 4 (mult of 4, not 3) cubed
+    # 1 + 2 + 3 + 16 + 125 + 6 + 49 + 8 + 9 = 219
+    assert module_0.sum_squares([1, 2, 3, 4, 5, 6, 7, 8, 9]) == 219
 
-# Generated at 2026-10-25 01:19:12.610860
-# Unit test for function sum_squares
+    # Negative values: (-1)^2 + (-2) + (-3) = -4
+    assert module_0.sum_squares([-1, -2, -3]) == -4
 
-# Generated at 2026-10-25 01:19:15.025646
-# Unit test for function sum_squares
+    # Mixed signs: 1 + 4 + 1 + 4 + (-27) + 5 = -12
+    assert module_0.sum_squares([-1, 4, 1, 2, -3, 5]) == -12
 
-# Generated at 2026-10-25 01:19:19.848516
-# Unit test for function sum_squares
-def test_sum_squares():assert module_0.sum_squares([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) == 1099
+    # Cubing branch at index 4: 4 + 3 + 4 + 25 + 216 = 252
+    assert module_0.sum_squares([2, 3, 4, 5, 6]) == 252
 
-# Generated at 2026-10-25 01:19:44.137176
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:19:45.458177
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:19:46.773312
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:19:48.093544
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:19:49.487024
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:19:50.804688
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:19:52.124816
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:19:53.451530
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:19:55.976054
-# Unit test for function sum_squares
+    # All zeros
+    assert module_0.sum_squares([0, 0, 0, 0]) == 0
 
-# Generated at 2026-10-25 01:19:58.492976
-# Unit test for function sum_squares
+    # Index 12 is a multiple of both 3 and 4 -> squared (i % 3 branch wins)
+    # sum: 0 + 1 + 2 + 9 + 64 + 5 + 36 + 7 + 512 + 81 + 10 + 11 + 144 = 882
+    assert module_0.sum_squares(list(range(13))) == 882
 
-# Generated at 2026-10-25 01:20:00.904833
-# Unit test for function sum_squares
+    # Floats: 1.5^2 + 2 + 3 + 4^2 = 23.25
+    assert module_0.sum_squares([1.5, 2, 3, 4]) == 23.25
 
-# Generated at 2026-10-25 01:20:03.319711
-# Unit test for function sum_squares
 
-# Generated at 2026-10-25 01:20:05.735719
-# Unit test for function sum_squares
+if __name__ == "__main__":
+    test_sum_squares()
+    print("All tests passed!")
 
-# Generated at 2026-10-25 01:20:08.150659
+# Generated at 2026-11-03 05:53:28.509743
 # Unit test for function sum_squares
+def test_sum_squares():import pytest
 
-# Generated at 2026-10-25 01:20:50.845783
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:20:52.259382
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:20:53.693479
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:20:55.015365
-# Unit test for function sum_squares
-def test_sum_squares():
+def test_sum_squares_empty_list():
     assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:20:57.537296
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:20:59.952579
-# Unit test for function sum_squares
-
-# Generated at 2026-10-25 01:21:02.367351
-# Unit test for function sum_squares
 
-# Generated at 2026-10-25 01:21:04.782444
-# Unit test for function sum_squares
+def test_sum_squares_single_element():
+    # Index 0 satisfies i % 3 == 0, so it is squared
+    assert module_0.sum_squares([5]) == 25
 
-# Generated at 2026-10-25 01:21:07.198554
-# Unit test for function sum_squares
+def test_sum_squares_basic():
+    # indices: 0 squared, 1 kept, 2 kept
+    assert module_0.sum_squares([1, 2, 3]) == 1 + 2 + 3
 
-# Generated at 2026-10-25 01:21:09.612363
-# Unit test for function sum_squares
+def test_sum_squares_index_multiple_of_3():
+    # index 3 -> squared
+    assert module_0.sum_squares([1, 2, 3, 4]) == 1 + 2 + 3 + 16
 
-# Generated at 2026-10-25 01:21:12.027566
-# Unit test for function sum_squares
+def test_sum_squares_index_multiple_of_4_not_3():
+    # index 4 -> cubed (4 % 4 == 0, 4 % 3 != 0)
+    assert module_0.sum_squares([1, 4, 1, 4, 1]) == 1 + 4 + 1 + 16 + 1
 
-# Generated at 2026-10-25 01:21:14.442232
-# Unit test for function sum_squares
+def test_sum_squares_mixed():
+    # index 0 -> 1^2 = 1, index 3 -> 7^2 = 49
+    assert module_0.sum_squares([1, 3, 5, 7]) == 58
 
-# Generated at 2026-10-25 01:21:16.857349
-# Unit test for function sum_squares
+def test_sum_squares_all_same():
+    # indices 0,3,6 squared: 3*4=12; index 8 cubed: 8; remaining 5 kept: 10
+    assert module_0.sum_squares([2] * 9) == 30
 
-# Generated at 2026-10-25 01:21:19.275771
-# Unit test for function sum_squares
+def test_sum_squares_negative_numbers():
+    # index 0 -> 1, index 3 -> 16, others kept
+    assert module_0.sum_squares([-1, -2, -3, -4]) == 1 - 2 - 3 + 16
 
-# Generated at 2026-10-25 01:21:21.693709
-# Unit test for function sum_squares
+def test_sum_squares_floats():
+    # index 0 -> 0.25, index 3 -> 0.25, index 4 -> 0.125
+    assert module_0.sum_squares([0.5, 0.5, 0.5, 0.5, 0.5]) == pytest.approx(1.625)
 
-# Generated at 2026-10-25 01:21:24.109574
-# Unit test for function sum_squares
+def test_sum_squares_longer_list():
+    # indices 0,3,6,9,12 squared; indices 4,8,16 cubed; rest kept
+    lst = list(range(1, 18))
+    expected = sum(lst)
+    for i in (0, 3, 6, 9, 12):
+        expected += lst[i]**2 - lst[i]
+    for i in (4, 8, 16):
+        expected += lst[i]**3 - lst[i]
+    assert module_0.sum_squares(lst) == expected
 
-# Generated at 2026-10-25 01:21:26.524212
-# Unit test for function sum_squares
+def test_sum_squares_zeros():
+    assert module_0.sum_squares([0, 0, 0, 0, 0]) == 0
 
-# Generated at 2026-10-25 01:21:28.938857
+# Generated at 2026-11-03 05:53:58.615200
 # Unit test for function sum_squares
+def test_sum_squares():
+    # nonce:f486c852
 
-# Generated at 2026-10-25 01:21:31.354924
-# Unit test for function sum_squares
+    # Basic case: index 0 is squared (i % 3 == 0)
+    assert module_0.sum_squares([1, 2, 3]) == 1 + 2 + 3  # 1^2 + 2 + 3 = 6
 
-# Generated at 2026-10-25 01:21:40.295302
-# Unit test for function sum_squares
-def test_sum_squares():assert module_0.sum_squares([]) == 0
+    # Indices 3 (squared) and 4 (cubed, since 4 % 3 != 0)
+    assert module_0.sum_squares([1, 2, 3, 4, 5]) == 1 + 2 + 3 + 16 + 125  # 147
 
-# Generated at 2026-10-25 01:23:06.937155
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:23:08.254379
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:23:09.580829
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:23:10.899472
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:23:12.230002
-# Unit test for function sum_squares
-def test_sum_squares():
-    assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:23:13.559590
-# Unit test for function sum_squares
-def test_sum_squares():
+    # Empty list should return 0
     assert module_0.sum_squares([]) == 0
-    assert module_0.sum_squares([2]) == 4                  # index 0 -> squared
-    assert module_0.sum_squares([1, 2, 3, 4]) == 22        # index 3 -> squared
-    assert module_0.sum_squares([1, 1, 1, 1, 2]) == 12     # index 4 -> cubed
-    assert module_0.sum_squares([0, 0, 0, 0, -2]) == -8    # negative cube
-    assert module_0.sum_squares(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    ) == 1231                                     # mixed branches, incl. index 12
-
-# Generated at 2026-10-25 01:23:16.079762
-# Unit test for function sum_squares
 
-# Generated at 2026-10-25 01:23:18.621290
-# Unit test for function sum_squares
+    # Single element: index 0 squared
+    assert module_0.sum_squares([5]) == 25
 
-# Generated at 2026-10-25 01:23:21.035849
-# Unit test for function sum_squares
+    # Negative numbers: squares preserve sign loss, plain values keep sign
+    assert module_0.sum_squares([-1, -2, -3]) == 1 - 2 - 3  # -4
 
-# Generated at 2026-10-25 01:23:23.462985
-# Unit test for function sum_squares
+    # Longer list covering indices 0..6
+    # i=0: 2^2=4, i=1: 3, i=2: 4, i=3: 5^2=25, i=4: 6^3=216, i=5: 7, i=6: 8^2=64
+    assert module_0.sum_squares([2, 3, 4, 5, 6, 7, 8]) == 323
 
-# Generated at 2026-10-25 01:23:26.004682
-# Unit test for function sum_squares
+    # Index 12 is divisible by both 3 and 4 -> squared (first condition wins)
+    lst = [1] * 13
+    lst[12] = 3
+    # sum = 12 * 1 + 3^2 = 15
+    assert module_0.sum_squares(lst) == 15
 
-# Generated at 2026-10-25 01:23:28.422601
-# Unit test for function sum_squares
+    # Works with floats
+    assert module_0.sum_squares([1.5, 2, 3]) == 2.25 + 2 + 3  # 7.25
 
-# Generated at 2026-10-25 01:23:30.843024
-# Unit test for function sum_squares
+    # Zero elements
+    assert module_0.sum_squares([0, 0, 0, 0, 0]) == 0
 
-# Generated at 2026-10-25 01:23:33.253760
-# Unit test for function sum_squares
+    print("All tests passed!")
 
-# Generated at 2026-10-25 01:23:35.667753
-# Unit test for function sum_squares
 
-# Generated at 2026-10-25 01:23:43.065292
+if __name__ == "__main__":
+    test_sum_squares()
+
+# Generated at 2026-11-03 05:55:02.923566
 # Unit test for function sum_squares
-def test_sum_squares():assert module_0.sum_squares([]) == 0
+def test_sum_squares():
+    # i % 3 == 0 -> squared, i % 4 == 0 (and not % 3) -> cubed, otherwise unchanged
+    assert module_0.sum_squares([1, 2, 3]) == 6            # 1**2 + 2 + 3
+    assert module_0.sum_squares([]) == 0                    # empty list
+    assert module_0.sum_squares([1, 2, 3, 4, 5]) == 147     # 1**2 + 2 + 3 + 4**2 + 5**3
+    assert module_0.sum_squares([-1, -5, 2, -1, -5]) == -126  # (-1)**2 - 5 + 2 + (-1)**2 + (-5)**3
+    assert module_0.sum_squares([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) == 1734
+    # squares at i=0,3,6,9; cubes at i=4,10; i=12 is squared (12 % 3 == 0)
+    assert module_0.sum_squares([-7.5, -6.5, -1, -1.5]) == 51.0  # (-7.5)**2 - 6.5 - 1 + (-1.5)**2
+    assert module_0.sum_squares([0]) == 0                    # 0**2 == 0
+    assert module_0.sum_squares([2, 2, 2, 2, 2]) == 8 + 2 + 2 + 4 + 8  # 4+2+2+16+125? no: 2**2+2+2+2**2+2**3 = 4+2+2+4+8 = 20
+    assert module_0.sum_squares([2, 2, 2, 2, 2]) == 20
+    assert module_0.sum_squares([5, 1, 1, 5]) == 25 + 1 + 1 + 25  # i=3 squared
+    assert module_0.sum_squares([1.5, 2.5]) == 1.5**2 + 2.5       # i=0 squared, i=1 unchanged

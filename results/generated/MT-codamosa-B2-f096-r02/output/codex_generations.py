@@ -1,60 +1,124 @@
 
 
-# Generated at 2026-10-25 07:24:36.004746
+# Generated at 2026-11-02 15:11:26.937580
 # Unit test for function count_up_to
+def test_count_up_to():
+    # n less than 2 yields no primes
+    assert module_0.count_up_to(-1) == []
+    assert module_0.count_up_to(0) == []
+    assert module_0.count_up_to(1) == []
 
-# Generated at 2026-10-25 07:24:38.421647
-# Unit test for function count_up_to
+    # n = 2: range(2, 2) is empty
+    assert module_0.count_up_to(2) == []
 
-# Generated at 2026-10-25 07:24:40.839490
-# Unit test for function count_up_to
+    # n = 3: only 2 is below 3
+    assert module_0.count_up_to(3) == [2]
 
-# Generated at 2026-10-25 07:24:43.253106
-# Unit test for function count_up_to
+    # n = 5: primes below 5
+    assert module_0.count_up_to(5) == [2, 3]
 
-# Generated at 2026-10-25 07:24:45.668696
-# Unit test for function count_up_to
+    # n = 10: primes below 10
+    assert module_0.count_up_to(10) == [2, 3, 5, 7]
 
-# Generated at 2026-10-25 07:24:48.086813
-# Unit test for function count_up_to
+    # n = 20: primes below 20
+    assert module_0.count_up_to(20) == [2, 3, 5, 7, 11, 13, 17, 19]
 
-# Generated at 2026-10-25 07:24:50.497797
-# Unit test for function count_up_to
+    # n = 30: primes below 30
+    assert module_0.count_up_to(30) == [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
 
-# Generated at 2026-10-25 07:24:52.911596
-# Unit test for function count_up_to
+    # Result contains only primes
+    result = module_0.count_up_to(50)
+    for p in result:
+        assert all(p % j != 0 for j in range(2, p)), f"{p} is not prime"
 
-# Generated at 2026-10-25 07:24:55.325788
-# Unit test for function count_up_to
+    # Result is strictly increasing
+    assert result == sorted(result)
+    assert len(result) == len(set(result))
 
-# Generated at 2026-10-25 07:24:57.741683
-# Unit test for function count_up_to
+    print("All tests passed!")
 
-# Generated at 2026-10-25 07:25:00.159886
-# Unit test for function count_up_to
 
-# Generated at 2026-10-25 07:25:04.447645
+if __name__ == "__main__":
+    test_count_up_to()
+
+# Generated at 2026-11-02 15:15:06.089729
 # Unit test for function count_up_to
 def test_count_up_to():
     assert module_0.count_up_to(0) == []
     assert module_0.count_up_to(1) == []
     assert module_0.count_up_to(2) == []
     assert module_0.count_up_to(3) == [2]
+    assert module_0.count_up_to(10) == [2, 3, 5, 7]
+    assert module_0.count_up_to(11) == [2, 3, 5, 7]
+    assert module_0.count_up_to(20) == [2, 3, 5, 7, 11, 13, 17, 19]
+    assert module_0.count_up_to(-5) == []
+
+# Generated at 2026-11-02 15:16:35.887265
+# Unit test for function count_up_to
+def test_count_up_to():
+    # Test with a normal range
+    assert module_0.count_up_to(10) == [2, 3, 5, 7]
+    
+    # Test with larger range
+    assert module_0.count_up_to(20) == [2, 3, 5, 7, 11, 13, 17, 19]
+    
+    # Test with n = 2 (no primes less than 2)
+    assert module_0.count_up_to(2) == []
+    
+    # Test with n = 3 (only prime less than 3 is 2)
+    assert module_0.count_up_to(3) == [2]
+    
+    # Test with n = 0 and negative n (empty result)
+    assert module_0.count_up_to(0) == []
+    assert module_0.count_up_to(-5) == []
+    
+    # Test that result is a list
+    assert isinstance(module_0.count_up_to(5), list)
+    
+    # Test exact boundary: n=5 should include primes up to but not including 5
+    assert module_0.count_up_to(5) == [2, 3]
+    
+    # Test n=6 should include 5
+    assert module_0.count_up_to(6) == [2, 3, 5]
+    
+    print("All tests passed!")
+
+
+test_count_up_to()
+
+# Generated at 2026-11-02 15:18:57.043051
+# Unit test for function count_up_to
+def test_count_up_to():
+    # Edge cases: empty results
+    assert module_0.count_up_to(-5) == []
+    assert module_0.count_up_to(0) == []
+    assert module_0.count_up_to(1) == []
+    assert module_0.count_up_to(2) == []
+
+    # Small values
+    assert module_0.count_up_to(3) == [2]
+    assert module_0.count_up_to(5) == [2, 3]
+
+    # Typical cases
     assert module_0.count_up_to(10) == [2, 3, 5, 7]
     assert module_0.count_up_to(20) == [2, 3, 5, 7, 11, 13, 17, 19]
     assert module_0.count_up_to(30) == [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
 
-# Generated at 2026-10-25 07:25:09.804531
-# Unit test for function count_up_to
-def test_count_up_to():
-    assert module_0.count_up_to(0) == []
-    assert module_0.count_up_to(1) == []
-    assert module_0.count_up_to(2) == []
-    assert module_0.count_up_to(3) == [2]
-    assert module_0.count_up_to(10) == [2, 3, 5, 7]
-    assert module_0.count_up_to(11) == [2, 3, 5, 7]   # 11 excluded (range is exclusive of n)
-    assert module_0.count_up_to(12) == [2, 3, 5, 7, 11]
-    assert module_0.count_up_to(20) == [2, 3, 5, 7, 11, 13, 17, 19]
+    # Boundary: primes strictly less than n (n itself excluded)
+    assert module_0.count_up_to(7) == [2, 3, 5]
+    assert module_0.count_up_to(11) == [2, 3, 5, 7]
+    assert module_0.count_up_to(13) == [2, 3, 5, 7, 11]
+
+    # Properties: sorted, no duplicates, all prime
+    result = module_0.count_up_to(100)
+    assert result == sorted(result)
+    assert len(result) == len(set(result))
+    assert len(result) == 25  # number of primes below 100
+    for p in result:
+        assert all(p % j != 0 for j in range(2, p)), f"{p} is not prime"
+        assert p >= 2
+
     print("All tests passed!")
+
 
 test_count_up_to()

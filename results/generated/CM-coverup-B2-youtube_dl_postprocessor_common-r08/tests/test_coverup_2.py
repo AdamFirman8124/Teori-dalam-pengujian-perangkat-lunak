@@ -11,27 +11,26 @@ class FakeDownloader(object):
     """Minimal stand-in for a downloader object."""
 
 
-def test_postprocessor_init_with_downloader():
-    """Instantiating with a downloader must execute line 35
-    (self._downloader = downloader) and store the downloader."""
-    downloader = FakeDownloader()
-    pp = PostProcessor(downloader=downloader)
-    assert pp._downloader is downloader
-
-
-def test_postprocessor_init_default_downloader_is_none():
-    """Instantiating without arguments also executes line 35,
-    storing the default value None."""
+def test_postprocessor_default_constructor_sets_downloader_to_none():
+    # Covers line 35 (self._downloader = downloader) via the default branch
+    # where downloader is None.
     pp = PostProcessor()
     assert pp._downloader is None
 
 
-def test_postprocessor_init_overrides_class_attribute(monkeypatch):
-    """The instance attribute set on line 35 must shadow the
-    class-level _downloader attribute."""
-    sentinel = FakeDownloader()
-    # Ensure the class attribute is untouched after the test.
-    monkeypatch.setattr(PostProcessor, '_downloader', None)
-    pp = PostProcessor(downloader=sentinel)
-    assert pp._downloader is sentinel
+def test_postprocessor_constructor_stores_given_downloader():
+    # Covers line 35 again, this time via the branch where an explicit
+    # downloader is passed in.
+    downloader = FakeDownloader()
+    pp = PostProcessor(downloader)
+    assert pp._downloader is downloader
+
+
+def test_postprocessor_constructor_does_not_mutate_class_attribute():
+    # Guards against state pollution: the class attribute _downloader must
+    # remain None after instances set their own instance attribute.
+    downloader = FakeDownloader()
+    pp = PostProcessor(downloader)
+    assert pp._downloader is downloader
     assert PostProcessor._downloader is None
+    assert '_downloader' in pp.__dict__

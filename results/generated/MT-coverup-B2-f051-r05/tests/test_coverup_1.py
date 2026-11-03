@@ -7,33 +7,33 @@ import pytest
 from f051 import remove_vowels
 
 
+def test_remove_vowels_removes_lowercase_vowels():
+    """Vowels (condition False branch) are removed, consonants kept."""
+    assert remove_vowels("banana") == "bnn"
+
+
+def test_remove_vowels_removes_uppercase_vowels():
+    """Uppercase vowels exercise the s.lower() path and are removed."""
+    assert remove_vowels("Apple ORANGE") == "ppl RNG"
+
+
+def test_remove_vowels_keeps_non_vowel_characters():
+    """Non-letters, digits and spaces hit the condition True branch."""
+    assert remove_vowels("xyz 123!@#") == "xyz 123!@#"
+
+
 def test_remove_vowels_empty_string():
+    """Empty input yields empty output (comprehension body never runs)."""
     assert remove_vowels("") == ""
 
 
-def test_remove_vowels_all_lowercase_vowels():
-    assert remove_vowels("aeiou") == ""
+def test_remove_vowels_all_vowels_mixed_case():
+    """A string of only vowels (both cases) yields an empty result."""
+    assert remove_vowels("AEIOUaeiou") == ""
 
 
-def test_remove_vowels_all_uppercase_vowels():
-    assert remove_vowels("AEIOU") == ""
-
-
-def test_remove_vowels_mixed_case():
-    assert remove_vowels("Hello World") == "Hll Wrld"
-
-
-def test_remove_vowels_no_vowels():
-    assert remove_vowels("rhythm") == "rhythm"
-
-
-def test_remove_vowels_digits_and_symbols():
-    assert remove_vowels("a1b2!c3") == "1b2!c3"
-
-
-def test_remove_vowels_returns_str_and_does_not_mutate_input():
-    text = "Programming"
-    result = remove_vowels(text)
+def test_remove_vowels_returns_str_type():
+    """The result is always a plain str built by ''.join."""
+    result = remove_vowels("Testing 42")
     assert isinstance(result, str)
-    assert result == "Prgrmmng"
-    assert text == "Programming"
+    assert result == "Tstng 42"

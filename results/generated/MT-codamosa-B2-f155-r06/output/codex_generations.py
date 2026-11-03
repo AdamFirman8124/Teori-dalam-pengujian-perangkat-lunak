@@ -1,46 +1,129 @@
 
 
-# Generated at 2026-10-24 14:50:02.226159
+# Generated at 2026-11-02 17:54:03.725757
 # Unit test for function even_odd_count
+def test_even_odd_count():
+    # Test with mixed even and odd digits
+    assert module_0.even_odd_count(123) == (1, 2)  # 1 odd, 2 even, 3 odd
+    assert module_0.even_odd_count(-12) == (1, 1)  # negative number: 1 odd, 2 even
+    
+    # Test with zero
+    assert module_0.even_odd_count(0) == (1, 0)  # 0 is even
+    
+    # Test with all even digits
+    assert module_0.even_odd_count(2468) == (4, 0)
+    assert module_0.even_odd_count(-24680) == (5, 0)  # includes 0 as even
+    
+    # Test with all odd digits
+    assert module_0.even_odd_count(1357) == (0, 4)
+    assert module_0.even_odd_count(-999) == (0, 3)
+    
+    # Test with single digits
+    assert module_0.even_odd_count(7) == (0, 1)
+    assert module_0.even_odd_count(8) == (1, 0)
+    
+    # Test with repeated digits
+    assert module_0.even_odd_count(1000) == (3, 1)  # 1 odd, three 0s even
+    
+    # Test with large numbers
+    assert module_0.even_odd_count(1234567890) == (5, 5)
+    
+    print("All test cases passed!")
 
-# Generated at 2026-10-24 14:50:04.638296
-# Unit test for function even_odd_count
+if __name__ == "__main__":
+    test_even_odd_count()
 
-# Generated at 2026-10-24 14:50:07.053305
+# Generated at 2026-11-02 17:55:19.034277
 # Unit test for function even_odd_count
+def test_even_odd_count():
+    assert module_0.even_odd_count(-12) == (1, 1)
+    assert module_0.even_odd_count(123) == (1, 2)
+    assert module_0.even_odd_count(0) == (1, 0)
+    assert module_0.even_odd_count(2468) == (4, 0)
+    assert module_0.even_odd_count(1357) == (0, 4)
+    assert module_0.even_odd_count(-2468) == (4, 0)
+    assert module_0.even_odd_count(-13579) == (0, 5)
+    assert module_0.even_odd_count(100) == (2, 1)
+    assert module_0.even_odd_count(7) == (0, 1)
+    assert module_0.even_odd_count(-8) == (1, 0)
+    assert module_0.even_odd_count(1029384756) == (5, 5)
 
-# Generated at 2026-10-24 14:50:09.473093
+# Generated at 2026-11-02 17:56:49.533804
 # Unit test for function even_odd_count
+def test_even_odd_count():
+    # Mixed even and odd digits
+    assert module_0.even_odd_count(-12) == (1, 1)
+    assert module_0.even_odd_count(123) == (1, 2)
+    assert module_0.even_odd_count(1230) == (2, 2)
 
-# Generated at 2026-10-24 14:50:11.883623
-# Unit test for function even_odd_count
+    # Zero is even
+    assert module_0.even_odd_count(0) == (1, 0)
 
-# Generated at 2026-10-24 14:50:14.297320
-# Unit test for function even_odd_count
+    # All even digits
+    assert module_0.even_odd_count(2468) == (4, 0)
+    assert module_0.even_odd_count(-2468) == (4, 0)
 
-# Generated at 2026-10-24 14:50:16.710145
-# Unit test for function even_odd_count
+    # All odd digits
+    assert module_0.even_odd_count(1357) == (0, 4)
+    assert module_0.even_odd_count(-1357) == (0, 4)
 
-# Generated at 2026-10-24 14:50:19.122501
-# Unit test for function even_odd_count
+    # Single digit
+    assert module_0.even_odd_count(2) == (1, 0)
+    assert module_0.even_odd_count(7) == (0, 1)
+    assert module_0.even_odd_count(-7) == (0, 1)
 
-# Generated at 2026-10-24 14:50:21.535372
-# Unit test for function even_odd_count
+    # Negative numbers use absolute value
+    assert module_0.even_odd_count(-1000) == (3, 1)
+    assert module_0.even_odd_count(-505) == (2, 1)
 
-# Generated at 2026-10-24 14:50:23.948577
-# Unit test for function even_odd_count
+    print("All tests passed!")
 
-# Generated at 2026-10-24 14:50:26.361246
-# Unit test for function even_odd_count
 
-# Generated at 2026-10-24 14:50:28.773618
-# Unit test for function even_odd_count
+test_even_odd_count()
 
-# Generated at 2026-10-24 14:50:31.186613
+# Generated at 2026-11-02 17:58:21.492178
 # Unit test for function even_odd_count
+def test_even_odd_count():
+    assert module_0.even_odd_count(-12) == (1, 1)
+    assert module_0.even_odd_count(123) == (1, 2)
+    assert module_0.even_odd_count(0) == (1, 0)
+    assert module_0.even_odd_count(2468) == (4, 0)
+    assert module_0.even_odd_count(1357) == (0, 4)
+    assert module_0.even_odd_count(-1357) == (0, 4)
+    assert module_0.even_odd_count(100) == (2, 1)
+    assert module_0.even_odd_count(-100) == (2, 1)
+    assert module_0.even_odd_count(7) == (0, 1)
+    assert module_0.even_odd_count(1020304) == (4, 3)
 
-# Generated at 2026-10-24 14:50:33.598630
+# Generated at 2026-11-02 17:59:57.664490
 # Unit test for function even_odd_count
+def test_even_odd_count():
+    # Mixed even and odd digits
+    assert module_0.even_odd_count(-12) == (1, 1)
+    assert module_0.even_odd_count(123) == (1, 2)
+    assert module_0.even_odd_count(1230) == (2, 2)
 
-# Generated at 2026-10-24 14:50:36.011746
-# Unit test for function even_odd_count
+    # Negative numbers (abs should be applied)
+    assert module_0.even_odd_count(-123) == (1, 2)
+    assert module_0.even_odd_count(-2468) == (4, 0)
+
+    # All even digits
+    assert module_0.even_odd_count(2468) == (4, 0)
+    assert module_0.even_odd_count(0) == (1, 0)
+
+    # All odd digits
+    assert module_0.even_odd_count(1357) == (0, 4)
+    assert module_0.even_odd_count(1) == (0, 1)
+
+    # Single digits
+    assert module_0.even_odd_count(2) == (1, 0)
+    assert module_0.even_odd_count(3) == (0, 1)
+    assert module_0.even_odd_count(-7) == (0, 1)
+
+    # Large numbers
+    assert module_0.even_odd_count(9876543210) == (5, 5)
+
+    print("All tests passed!")
+
+
+test_even_odd_count()

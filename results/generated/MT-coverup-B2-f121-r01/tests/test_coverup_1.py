@@ -2,42 +2,36 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
+import pytest
+
 from f121 import solution
 
 
-def test_empty_list():
+def test_empty_list_returns_zero():
+    """Empty input: the comprehension loop body never executes."""
     assert solution([]) == 0
 
 
-def test_single_odd_at_even_index_included():
-    # idx=0 even True, x=1 odd True -> True and True -> included
-    assert solution([1]) == 1
+def test_even_index_odd_value_is_summed():
+    """Branch: idx % 2 == 0 is True and x % 2 == 1 is True (element kept)."""
+    # idx 0 -> 1 (odd, kept), idx 2 -> 3 (odd, kept)
+    assert solution([1, 2, 3]) == 4
 
 
-def test_single_even_at_even_index_excluded():
-    # idx=0 even True, x=2 odd False -> True and False -> excluded
-    assert solution([2]) == 0
+def test_even_index_even_value_is_skipped():
+    """Branch: idx % 2 == 0 is True but x % 2 == 1 is False (element dropped)."""
+    # Even indices hold even values (2 and 4), so nothing is summed.
+    assert solution([2, 1, 4, 3]) == 0
 
 
-def test_odd_value_at_odd_index_excluded():
-    # idx=1 even False -> short-circuit False, even though x=3 is odd
-    assert solution([2, 3]) == 0
+def test_odd_index_is_skipped():
+    """Branch: idx % 2 == 0 is False (short-circuits before evaluating x % 2 == 1)."""
+    # Odd values appear only at odd indices, so they are all skipped.
+    assert solution([0, 1, 0, 3]) == 0
 
 
-def test_even_value_at_odd_index_excluded():
-    # idx=0 included, idx=1 even False -> excluded
-    assert solution([1, 2]) == 1
-
-
-def test_mixed_even_indices_odd_values():
-    # idx0=5 included, idx1=6 excluded, idx2=7 included, idx3=8 excluded, idx4=9 included
-    assert solution([5, 6, 7, 8, 9]) == 21
-
-
-def test_all_even_values_at_even_indices_excluded():
-    assert solution([0, 1, 2, 3, 4]) == 0
-
-
-def test_negative_odd_values():
-    # -1 % 2 == 1 and -3 % 2 == 1 in Python, so both included
-    assert solution([-1, -2, -3]) == -4
+def test_mixed_input_covers_all_branches():
+    """All branches exercised together in a single call."""
+    # idx 0, x=1 -> kept (1); idx 2, x=2 -> dropped; idx 4, x=5 -> kept (5);
+    # odd indices 1, 3, 5 -> skipped regardless of value parity.
+    assert solution([1, 1, 2, 3, 5, 5]) == 6

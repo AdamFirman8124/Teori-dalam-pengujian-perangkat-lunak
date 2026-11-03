@@ -2,38 +2,55 @@
 import f007 as module_0
 
 def test_case_0():
-    str_0 = 'apple'
-    str_1 = 'banana'
-    str_2 = 'apricot'
-    str_3 = 'blueberry'
-    str_4 = [str_0, str_1, str_2, str_3]
-    str_5 = 'ap'
-    list_0 = module_0.filter_by_substring(str_4, str_5)
-    assert list_0 == ['apple', 'apricot']
-    str_6 = 'cat'
-    str_7 = 'dog'
-    str_8 = 'bird'
-    str_9 = [str_6, str_7, str_8]
-    str_10 = 'z'
-    list_1 = module_0.filter_by_substring(str_9, str_10)
-    assert list_1 == []
     var_0 = []
-    str_11 = 'test'
-    list_2 = module_0.filter_by_substring(var_0, str_11)
-    assert list_2 == []
-    str_12 = 'a'
-    str_13 = 'b'
+    str_0 = 'a'
+    list_0 = module_0.filter_by_substring(var_0, str_0)
+    assert list_0 == []
+    str_1 = 'abc'
+    str_2 = 'bcd'
+    str_3 = 'cde'
+    str_4 = 'array'
+    str_5 = [str_1, str_2, str_3, str_4]
+    list_1 = module_0.filter_by_substring(str_5, str_0)
+    assert list_1 == ['abc', 'array']
+    str_6 = [str_1, str_2, str_3, str_4]
+    str_7 = 'b'
+    list_2 = module_0.filter_by_substring(str_6, str_7)
+    assert list_2 == ['abc', 'bcd']
+    str_8 = [str_1, str_2, str_3, str_4]
+    str_9 = 'cd'
+    list_3 = module_0.filter_by_substring(str_8, str_9)
+    assert list_3 == ['bcd', 'cde']
+    str_10 = [str_1, str_2, str_3, str_4]
+    str_11 = 'z'
+    list_4 = module_0.filter_by_substring(str_10, str_11)
+    assert list_4 == []
+    str_12 = 'hello'
+    str_13 = 'world'
     str_14 = [str_12, str_13]
-    str_15 = ''
-    list_3 = module_0.filter_by_substring(str_14, str_15)
-    assert list_3 == ['a', 'b']
-    str_16 = 'Apple'
-    str_17 = 'APPLE'
-    str_18 = [str_16, str_0, str_17]
-    list_4 = module_0.filter_by_substring(str_18, str_0)
-    assert list_4 == ['apple']
-    str_19 = 'testing'
-    str_20 = 'attest'
-    str_21 = [str_11, str_19, str_20]
-    list_5 = module_0.filter_by_substring(str_21, str_11)
-    assert list_5 == ['test', 'testing', 'attest']
+    list_5 = module_0.filter_by_substring(str_14, str_12)
+    assert list_5 == ['hello']
+    str_15 = 'def'
+    str_16 = [str_1, str_15]
+    str_17 = ''
+    list_6 = module_0.filter_by_substring(str_16, str_17)
+    assert list_6 == ['abc', 'def']
+    str_18 = 'ABC'
+    str_19 = [str_18, str_1]
+    list_7 = module_0.filter_by_substring(str_19, str_1)
+    assert list_7 == ['abc']
+    str_20 = 'aaa'
+    str_21 = 'aba'
+    str_22 = [str_20, str_21, str_20]
+    list_8 = module_0.filter_by_substring(str_22, str_0)
+    assert list_8 == ['aaa', 'aba', 'aaa']
+    str_23 = 'test'
+    str_24 = [str_23]
+    list_9 = module_0.filter_by_substring(str_24, str_23)
+    assert list_9 == ['test']
+    str_25 = [str_23]
+    str_26 = 'testing'
+    list_10 = module_0.filter_by_substring(str_25, str_26)
+    assert list_10 == []
+    str_27 = 'All tests passed!'
+    var_1 = print(str_27)

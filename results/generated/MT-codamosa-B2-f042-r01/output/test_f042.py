@@ -8,12 +8,30 @@ def test_case_0():
     int_3 = [int_0, int_1, int_2]
     var_0 = module_0.incr_list(int_3)
     assert var_0 == [2, 3, 4]
-    var_1 = []
-    var_2 = module_0.incr_list(var_1)
-    assert var_2 == []
-    int_4 = -1
-    int_5 = 0
-    int_6 = 5
-    int_7 = [int_4, int_5, int_6]
-    var_3 = module_0.incr_list(int_7)
-    assert var_3 == [0, 1, 6]
+    int_4 = 5
+    int_5 = 9
+    int_6 = 0
+    int_7 = 123
+    int_8 = [int_4, int_2, int_4, int_1, int_2, int_2, int_5, int_6, int_7]
+    var_1 = module_0.incr_list(int_8)
+    assert var_1 == [6, 4, 6, 3, 4, 4, 10, 1, 124]
+    var_2 = []
+    var_3 = module_0.incr_list(var_2)
+    assert var_3 == []
+    int_9 = [int_6]
+    var_4 = module_0.incr_list(int_9)
+    assert var_4 == [1]
+    int_10 = -1
+    int_11 = -2
+    int_12 = -3
+    int_13 = [int_10, int_11, int_12]
+    var_5 = module_0.incr_list(int_13)
+    assert var_5 == [0, -1, -2]
+    float_0 = 1.5
+    float_1 = -0.5
+    float_2 = [float_0, float_1]
+    var_6 = module_0.incr_list(float_2)
+    assert len(var_6) == 2
+    int_14 = [int_0, int_1, int_2]
+    var_7 = module_0.incr_list(int_14)
+    assert var_7 == [2, 3, 4]

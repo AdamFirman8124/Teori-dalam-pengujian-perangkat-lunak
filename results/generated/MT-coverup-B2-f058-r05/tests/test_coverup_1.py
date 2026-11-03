@@ -5,25 +5,10 @@
 from f058 import common
 
 
-def test_common_with_overlap():
-    assert common([1, 2, 3], [2, 3, 4]) == [2, 3]
-
-
-def test_common_no_overlap():
-    assert common([1, 2], [3, 4]) == []
-
-
-def test_common_empty_l1():
-    assert common([], [1, 2, 3]) == []
-
-
-def test_common_empty_l2():
-    assert common([1, 2, 3], []) == []
-
-
-def test_common_both_empty():
-    assert common([], []) == []
-
-
-def test_common_duplicates_and_sorted():
-    assert common([3, 3, 2, 1, 2], [3, 3, 5, 1]) == [1, 3]
+def test_common_returns_sorted_common_elements():
+    assert common([3, 1, 2], [2, 3, 4]) == [2, 3]
+    assert common([], [1, 2]) == []
+    assert common([1, 2], []) == []
+    assert common(["b", "a"], ["a", "b", "c"]) == ["a", "b"]
+    assert common([1, 1, 2], [2, 1]) == [1, 2]
+    assert common([1], [2]) == []

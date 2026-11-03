@@ -2,39 +2,53 @@
 import f080 as module_0
 
 def test_case_0():
-    str_0 = ''
+    str_0 = 'a'
     var_0 = module_0.is_happy(str_0)
     assert var_0 is False
-    str_1 = 'a'
+    str_1 = 'aa'
     var_1 = module_0.is_happy(str_1)
     assert var_1 is False
-    str_2 = 'ab'
+    str_2 = ''
     var_2 = module_0.is_happy(str_2)
     assert var_2 is False
     str_3 = 'abc'
     var_3 = module_0.is_happy(str_3)
     assert var_3 is True
-    str_4 = 'abcd'
+    str_4 = 'xyz'
     var_4 = module_0.is_happy(str_4)
     assert var_4 is True
-    str_5 = 'abcab'
+    str_5 = 'aaa'
     var_5 = module_0.is_happy(str_5)
-    assert var_5 is True
-    str_6 = 'abca'
+    assert var_5 is False
+    str_6 = 'aab'
     var_6 = module_0.is_happy(str_6)
-    assert var_6 is True
-    str_7 = 'aab'
+    assert var_6 is False
+    str_7 = 'abb'
     var_7 = module_0.is_happy(str_7)
     assert var_7 is False
-    str_8 = 'abb'
+    str_8 = 'aba'
     var_8 = module_0.is_happy(str_8)
     assert var_8 is False
-    str_9 = 'aba'
+    str_9 = 'abcd'
     var_9 = module_0.is_happy(str_9)
-    assert var_9 is False
-    str_10 = 'abcc'
+    assert var_9 is True
+    str_10 = 'abcdef'
     var_10 = module_0.is_happy(str_10)
-    assert var_10 is False
-    str_11 = 'abcb'
+    assert var_10 is True
+    str_11 = 'aabb'
     var_11 = module_0.is_happy(str_11)
     assert var_11 is False
+    str_12 = 'xyy'
+    var_12 = module_0.is_happy(str_12)
+    assert var_12 is False
+    str_13 = 'abac'
+    var_13 = module_0.is_happy(str_13)
+    assert var_13 is False
+    str_14 = 'abcba'
+    var_14 = module_0.is_happy(str_14)
+    assert var_14 is False
+    str_15 = 'aAbB'
+    var_15 = module_0.is_happy(str_15)
+    assert var_15 is True
+    str_16 = 'All tests passed!'
+    var_16 = print(str_16)

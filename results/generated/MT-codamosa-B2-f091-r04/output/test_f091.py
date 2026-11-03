@@ -2,6 +2,33 @@
 import f091 as module_0
 
 def test_case_0():
-    str_0 = 'GFL9}*egS[}2\\F)T'
+    str_0 = 'Hello world'
     var_0 = module_0.is_bored(str_0)
     assert var_0 == 0
+    str_1 = 'The sky is blue. The sun is shining. I love this weather'
+    var_1 = module_0.is_bored(str_1)
+    assert var_1 == 1
+    str_2 = 'Is the sky blue?'
+    var_2 = module_0.is_bored(str_2)
+    assert var_2 == 0
+    str_3 = 'I love It !'
+    var_3 = module_0.is_bored(str_3)
+    assert var_3 == 1
+    str_4 = 'bIt'
+    var_4 = module_0.is_bored(str_4)
+    assert var_4 == 0
+    str_5 = 'I feel good today. I will be productive. will kill It'
+    var_5 = module_0.is_bored(str_5)
+    assert var_5 == 2
+    str_6 = 'You and I are going for a walk'
+    var_6 = module_0.is_bored(str_6)
+    assert var_6 == 0
+    str_7 = ''
+    var_7 = module_0.is_bored(str_7)
+    assert var_7 == 0
+    str_8 = 'I'
+    var_8 = module_0.is_bored(str_8)
+    assert var_8 == 0
+    str_9 = 'I am happy! Are you? I think so. Maybe not.'
+    var_9 = module_0.is_bored(str_9)
+    assert var_9 == 2

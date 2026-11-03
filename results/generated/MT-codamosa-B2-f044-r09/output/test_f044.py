@@ -2,31 +2,40 @@
 import f044 as module_0
 
 def test_case_0():
-    int_0 = 10
-    int_1 = 2
+    int_0 = 8
+    int_1 = 3
     var_0 = module_0.change_base(int_0, int_1)
-    assert var_0 == '1010'
-    int_2 = 8
+    assert var_0 == '22'
+    int_2 = 2
     var_1 = module_0.change_base(int_0, int_2)
-    assert var_1 == '12'
-    int_3 = 255
-    var_2 = module_0.change_base(int_3, int_0)
-    assert var_2 == '255'
-    int_4 = 1
-    var_3 = module_0.change_base(int_4, int_1)
-    assert var_3 == '1'
-
-def test_case_1():
-    int_0 = 10
-    int_1 = 2
-    var_0 = module_0.change_base(int_0, int_1)
-    assert var_0 == '1010'
-    int_2 = -1451
-    var_1 = module_0.change_base(int_2, int_0)
-    assert var_1 == ''
-    int_3 = -534
-    var_2 = module_0.change_base(int_0, int_3)
-    assert var_2 == '-524'
-    int_4 = -1486
-    var_3 = module_0.change_base(int_4, int_1)
-    assert var_3 == ''
+    assert var_1 == '1000'
+    int_3 = 7
+    var_2 = module_0.change_base(int_3, int_2)
+    assert var_2 == '111'
+    int_4 = 10
+    var_3 = module_0.change_base(int_4, int_4)
+    assert var_3 == '10'
+    int_5 = 100
+    int_6 = 5
+    var_4 = module_0.change_base(int_5, int_6)
+    assert var_4 == '400'
+    int_7 = 255
+    int_8 = 16
+    var_5 = module_0.change_base(int_7, int_8)
+    assert var_5 == '1515'
+    int_9 = 1
+    var_6 = module_0.change_base(int_9, int_2)
+    assert var_6 == '1'
+    int_10 = 0
+    var_7 = module_0.change_base(int_10, int_2)
+    assert var_7 == ''
+    int_11 = -5
+    var_8 = module_0.change_base(int_11, int_2)
+    assert var_8 == ''
+    int_12 = 31
+    var_9 = module_0.change_base(int_12, int_2)
+    assert var_9 == '11111'
+    int_13 = 64
+    int_14 = 4
+    var_10 = module_0.change_base(int_13, int_14)
+    assert var_10 == '1000'

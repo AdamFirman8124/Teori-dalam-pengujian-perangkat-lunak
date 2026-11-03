@@ -1,8 +1,8 @@
----- 2026-10-25T17:22:03 startup ----
-Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/__main__.py --tests-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f149-r09/tests /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f149-r09/project/f149/__init__.py --model openai/entah/auto --checkpoint /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f149-r09/coverup.checkpoint --package-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f149-r09/project/f149 --log-file /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f149-r09/coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3 --max-concurrency 1 --model-temperature 0
----- 2026-10-25T17:22:03 project/f149/__init__.py:1-8 ----
+---- 2026-11-02T03:13:30 startup ----
+Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/__main__.py --tests-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f149-r09/tests /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f149-r09/project/f149/__init__.py --model openai/glm-5.3-flash --checkpoint /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f149-r09/coverup.checkpoint --package-dir /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f149-r09/project/f149 --log-file /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f149-r09/coverup.log --no-isolate-tests --no-repeat-tests --no-disable-polluting --no-disable-failing --max-attempts 3 --max-concurrency 1 --model-temperature 0
+---- 2026-11-02T03:13:30 project/f149/__init__.py:1-8 ----
 {
-  "model": "openai/entah/auto",
+  "model": "openai/glm-5.3-flash",
   "temperature": 0.0,
   "messages": [
     {
@@ -10,6 +10,7 @@ Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/
       "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from f149/__init__.py, does not achieve full coverage:\nwhen tested, lines 3-8 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            def sorted_list_sum(lst):\n                \n         3:     lst.sort()\n         4:     new_lst = []\n         5:     for i in lst:\n         6:         if len(i)%2 == 0:\n         7:             new_lst.append(i)\n         8:     return sorted(new_lst, key=len)\n\n```\n"
     }
   ],
+  "user": "cu-71906548",
   "tools": [
     {
       "type": "function",
@@ -32,22 +33,35 @@ Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/
     }
   ]
 }
----- 2026-10-25T17:22:05 project/f149/__init__.py:1-8 ----
+---- 2026-11-02T03:13:37 project/f149/__init__.py:1-8 ----
+RPM gate: waited 7.4s
+---- 2026-11-02T03:13:39 project/f149/__init__.py:1-8 ----
 {
-  "id": "chatcmpl_req_e870fcef9afedb50e3d0d6b5",
-  "created": 1792923725,
-  "model": "auto",
+  "id": "chatcmpl-6ae79d73b47f",
+  "created": 1793564019,
+  "model": "zai-org/GLM-5.3-Flash",
   "object": "chat.completion",
   "system_fingerprint": null,
   "choices": [
     {
-      "finish_reason": "stop",
+      "finish_reason": "tool_calls",
       "index": 0,
       "message": {
-        "content": "```python\nimport pytest\n\nfrom f149 import sorted_list_sum\n\n\ndef test_sorted_list_sum_filters_odd_and_sorts_by_length():\n    result = sorted_list_sum([\"aa\", \"a\", \"aaa\", \"bb\"])\n    # \"a\" and \"aaa\" have odd lengths and are removed;\n    # \"aa\" and \"bb\" are sorted by length (stable, so original order kept)\n    assert result == [\"aa\", \"bb\"]\n\n\ndef test_sorted_list_sum_sorts_equal_lengths_alphabetically():\n    # lst.sort() on line 3 makes equal-length strings come out alphabetically\n    result = sorted_list_sum([\"dd\", \"cc\", \"bb\", \"aa\"])\n    assert result == [\"aa\", \"bb\", \"cc\", \"dd\"]\n\n\ndef test_sorted_list_sum_empty_input():\n    assert sorted_list_sum([]) == []\n\n\ndef test_sorted_list_sum_all_odd_lengths_removed():\n    assert sorted_list_sum([\"a\", \"abc\", \"abcde\"]) == []\n\n\ndef test_sorted_list_sum_does_not_mutate_callers_list():\n    original = [\"aaa\", \"bb\", \"c\"]\n    snapshot = list(original)\n    sorted_list_sum(original)\n    # the function sorts in place, but the caller's list content order\n    # is the only observable mutation; verify content is preserved\n    assert sorted(original) == sorted(snapshot)\n```",
+        "content": "",
         "role": "assistant",
-        "tool_calls": null,
+        "tool_calls": [
+          {
+            "index": 0,
+            "function": {
+              "arguments": "{\"name\": \"sorted_list_sum\"}",
+              "name": "get_info"
+            },
+            "id": "call_0_266851efdd112db0",
+            "type": "function"
+          }
+        ],
         "function_call": null,
+        "reasoning_content": "The user wants me to create pytest tests for a function `sorted_list_sum` in `f149/__init__.py`. The function:\n\n1. Sorts the list in place\n2. Creates a new list\n3. Iterates over the list, appending elements with even length\n4. Returns the new list sorted by length\n\nLet me check the function info first to understand it better.\n\nLet me use the get_info tool to check the function.",
         "provider_specific_fields": {
           "refusal": null
         }
@@ -58,26 +72,142 @@ Command: /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/coverup/src/coverup/
     }
   ],
   "usage": {
-    "completion_tokens": 312,
-    "prompt_tokens": 3290,
-    "total_tokens": 3602,
+    "completion_tokens": 106,
+    "prompt_tokens": 452,
+    "total_tokens": 558,
     "completion_tokens_details": {
       "accepted_prediction_tokens": null,
       "audio_tokens": null,
-      "reasoning_tokens": 31,
+      "reasoning_tokens": 92,
       "rejected_prediction_tokens": null
     },
     "prompt_tokens_details": {
       "audio_tokens": null,
-      "cached_tokens": 1024
+      "cached_tokens": 0
     }
   },
   "moderation": null,
   "service_tier": null
 }
----- 2026-10-25T17:22:05 project/f149/__init__.py:1-8 ----
-.....                                                                    [100%]
+---- 2026-11-02T03:13:39 project/f149/__init__.py:1-8 ----
+{
+  "model": "openai/glm-5.3-flash",
+  "temperature": 0.0,
+  "messages": [
+    {
+      "role": "user",
+      "content": "\nYou are an expert Python test-driven developer.\nThe code below, extracted from f149/__init__.py, does not achieve full coverage:\nwhen tested, lines 3-8 do not execute.\nCreate new pytest test functions that execute all missing lines and branches, always making\nsure that each test is correct and indeed improves coverage.\nUse the get_info tool function as necessary.\nAlways send entire Python test scripts when proposing a new test or correcting one you\npreviously proposed.\nBe sure to include assertions in the test that verify any applicable postconditions.\nPlease also make VERY SURE to clean up after the test, so as to avoid state pollution;\nuse 'monkeypatch' or 'pytest-mock' if appropriate.\nWrite as little top-level code as possible, and in particular do not include any top-level code\ncalling into pytest.main or the test itself.\nRespond ONLY with the Python code enclosed in backticks, without any explanation.\n```python\n            def sorted_list_sum(lst):\n                \n         3:     lst.sort()\n         4:     new_lst = []\n         5:     for i in lst:\n         6:         if len(i)%2 == 0:\n         7:             new_lst.append(i)\n         8:     return sorted(new_lst, key=len)\n\n```\n"
+    },
+    {
+      "content": "",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "index": 0,
+          "function": {
+            "arguments": "{\"name\": \"sorted_list_sum\"}",
+            "name": "get_info"
+          },
+          "id": "call_0_266851efdd112db0",
+          "type": "function"
+        }
+      ],
+      "function_call": null,
+      "reasoning_content": "The user wants me to create pytest tests for a function `sorted_list_sum` in `f149/__init__.py`. The function:\n\n1. Sorts the list in place\n2. Creates a new list\n3. Iterates over the list, appending elements with even length\n4. Returns the new list sorted by length\n\nLet me check the function info first to understand it better.\n\nLet me use the get_info tool to check the function.",
+      "provider_specific_fields": {
+        "refusal": null
+      }
+    },
+    {
+      "tool_call_id": "call_0_266851efdd112db0",
+      "role": "tool",
+      "name": "get_info",
+      "content": "\"...\" below indicates omitted code.\n\n```python\ndef sorted_list_sum(lst):\n    lst.sort()\n    new_lst = []\n    for i in lst:\n        if len(i) % 2 == 0:\n            new_lst.append(i)\n    return sorted(new_lst, key=len)\n```"
+    }
+  ],
+  "user": "cu-19b5e4e9",
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_info",
+        "description": "Returns information about a symbol.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "class, function or method name, as in 'f' for function f or 'C.foo' for method foo in class C."
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    }
+  ]
+}
+---- 2026-11-02T03:13:42 project/f149/__init__.py:1-8 ----
+RPM gate: waited 2.3s
+---- 2026-11-02T03:13:51 project/f149/__init__.py:1-8 ----
+{
+  "id": "chatcmpl-828316bda8f745eb",
+  "created": 1793564022,
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "```python\nimport pytest\n\nfrom f149 import sorted_list_sum\n\n\ndef test_filters_odd_lengths_and_sorts_by_length():\n    \"\"\"Covers lines 3-8 including both branches of the parity check.\"\"\"\n    lst = [\"school\", \"AI\", \"asdf\", \"b\"]\n    result = sorted_list_sum(lst)\n    # \"b\" (len 1) is odd -> dropped; remaining sorted by length\n    assert result == [\"AI\", \"asdf\", \"school\"]\n\n\ndef test_input_list_is_sorted_in_place():\n    \"\"\"Line 3 (lst.sort()) mutates the caller's list; verify that side effect.\"\"\"\n    lst = [\"ccc\", \"a\", \"bb\"]\n    result = sorted_list_sum(lst)\n    assert lst == [\"a\", \"bb\", \"ccc\"]          # in-place sort happened\n    assert result == [\"bb\"]                    # only even-length string kept\n\n\ndef test_equal_lengths_keep_alphabetical_order():\n    \"\"\"Stable sort by len must preserve the earlier alphabetical ordering.\"\"\"\n    lst = [\"dd\", \"bb\", \"cc\", \"aa\"]\n    result = sorted_list_sum(lst)\n    assert result == [\"aa\", \"bb\", \"cc\", \"dd\"]\n\n\ndef test_empty_list_returns_empty_list():\n    \"\"\"Covers the loop-skipped branch (line 5 with empty iterable).\"\"\"\n    assert sorted_list_sum([]) == []\n\n\ndef test_all_odd_lengths_yields_empty_list():\n    \"\"\"Every element takes the False branch of the parity check.\"\"\"\n    assert sorted_list_sum([\"a\", \"abc\", \"abcde\"]) == []\n\n\n@pytest.mark.parametrize(\n    \"input_list, expected\",\n    [\n        ([\"ab\", \"a\", \"aaa\", \"cd\"], [\"ab\", \"cd\"]),\n        ([\"a\", \"b\", \"c\"], []),\n        ([\"aaaa\", \"bb\", \"cc\"], [\"bb\", \"cc\", \"aaaa\"]),\n    ],\n)\ndef test_parametrized_behavior(input_list, expected):\n    assert sorted_list_sum(list(input_list)) == expected\n```",
+        "role": "assistant",
+        "tool_calls": null,
+        "function_call": null,
+        "reasoning_content": "Now I understand the function. It's the classic HumanEval problem #149:\n\n```python\ndef sorted_list_sum(lst):\n    \"\"\"Write a function that accepts a list of strings as a parameter,\n    deletes the strings that have odd lengths from it,\n    and returns the resulted list with a sorted order,\n    The main list should follow these criteria:\n    - The returned list should be sorted in ascending order based on the length of the words.\n    - If two words have the same length, sort the list alphabetically.\n    \"\"\"\n```\n\nWait, actually looking at the code again \u2014 it sorts `lst` in place (alphabetical), then filters even-length strings, then sorts by length (stable sort preserves alphabetical order for ties).\n\nHmm, but wait \u2014 there's a subtlety. The original HumanEval solution sorts `new_lst` by length only, relying on the fact that `lst.sort()` was done first so ties in length are already alphabetical. Actually no \u2014 the stable sort by len preserves the alphabetical order from the initial sort. Correct.\n\nSo my tests need to cover lines 3-8:\n- Line 3: `lst.sort()`\n- Line 4: `new_lst = []`\n- Line 5: `for i in lst:` (loop)\n- Line 6: `if len(i)%2 == 0:` (both True and False branches ideally)\n- Line 7: `new_lst.append(i)`\n- Line 8: `return sorted(new_lst, key=len)`\n\nTo cover both branches of line 6, I need a list with both even-length and odd-length strings.\n\nTest cases:\n1. `[\"aa\", \"a\", \"aaa\"]` \u2192 filter odd: \"a\" (len 1), \"aaa\" (len 3) removed; keep \"aa\". Result: `[\"aa\"]`.\n2. `[\"school\", \"AI\", \"asdf\", \"b\"]` \u2192 sort: [\"AI\", \"asdf\", \"b\", \"school\"]; even lengths: \"AI\" (2), \"asdf\" (4), \"school\" (6). Result sorted by len: [\"AI\", \"asdf\", \"school\"].\n3. Test tie-breaking: e.g., `[\"bb\", \"aa\", \"cc\"]` \u2192 sorted: [\"aa\", \"bb\", \"cc\"], all even, result by len: [\"aa\", \"bb\", \"cc\"].\n4. Empty list: `[]` \u2192 returns `[]`. This covers loop-not-taken branch.\n5. All odd lengths: `[\"a\", \"abc\"]` \u2192 returns `[]`.\n\nAlso verify that the input list is sorted in place? That's a side effect \u2014 `lst.sort()` mutates the input. I could assert that too, but careful: the function mutates the caller's list. For cleanup/state pollution concerns, since we pass fresh lists created inside the test, there's no global state pollution. No monkeypatch needed really since the function doesn't touch globals, files, etc.\n\nI should write parametrized tests perhaps, or multiple test functions. Let me write clear test functions with assertions.\n\nSince the function is in `f149/__init__.py`, import as `from f149 import sorted_list_sum`.\n\nLet me write:\n\n```python\nimport pytest\n\nfrom f149 import sorted_list_sum\n\n\ndef test_filters_odd_and_sorts_by_length():\n    lst = [\"school\", \"AI\", \"asdf\", \"b\"]\n    result = sorted_list_sum(lst)\n    assert result == [\"AI\", \"asdf\", \"school\"]\n\n\ndef test_input_sorted_in_place():\n    lst = [\"ccc\", \"a\", \"bb\"]\n    result = sorted_list_sum(lst)\n    # input list mutated by lst.sort()\n    assert lst == [\"a\", \"bb\", \"ccc\"]\n    # odd-length entries dropped (\"a\" len 1, \"ccc\" len 3)\n    assert result == [\"bb\"]\n\n\ndef test_ties_sorted_alphabetically():\n    lst = [\"dd\", \"bb\", \"cc\", \"aa\"]\n    result = sorted_list_sum(lst)\n    assert result == [\"aa\", \"bb\", \"cc\", \"dd\"]\n\n\ndef test_empty_list():\n    assert sorted_list_sum([]) == []\n\n\ndef test_all_odd_lengths_removed():\n    assert sorted_list_sum([\"a\", \"abc\", \"abcde\"]) == []\n```\n\nThese cover:\n- Line 3 executed in all tests.\n- Line 4 executed.\n- Line 5 loop body executed (non-empty lists).\n- Line 6 both branches: True (even) and False (odd).\n- Line 7 append executed.\n- Line 8 return executed.\n- Empty list covers loop-skip branch.\n\nNo state pollution: everything local. No monkeypatch needed. But maybe I can add a small note... The instructions say use monkeypatch/pytest-mock if appropriate \u2014 here it's not needed since the function has no external dependencies.\n\nShould I combine into fewer tests? The instruction says \"Create new pytest test functions that execute all missing lines and branches\". Multiple tests fine.\n\nOne consideration: `test_input_sorted_in_place` asserts mutation of input \u2014 that's a real behavior of the function (`lst.sort()` in place). Good postcondition assertion.\n\nMaybe also a parametrized test. Keep it simple and readable.\n\nFinal answer: just the Python code in backticks.",
+        "provider_specific_fields": {
+          "refusal": null,
+          "reasoning": "Now I understand the function. It's the classic HumanEval problem #149:\n\n```python\ndef sorted_list_sum(lst):\n    \"\"\"Write a function that accepts a list of strings as a parameter,\n    deletes the strings that have odd lengths from it,\n    and returns the resulted list with a sorted order,\n    The main list should follow these criteria:\n    - The returned list should be sorted in ascending order based on the length of the words.\n    - If two words have the same length, sort the list alphabetically.\n    \"\"\"\n```\n\nWait, actually looking at the code again \u2014 it sorts `lst` in place (alphabetical), then filters even-length strings, then sorts by length (stable sort preserves alphabetical order for ties).\n\nHmm, but wait \u2014 there's a subtlety. The original HumanEval solution sorts `new_lst` by length only, relying on the fact that `lst.sort()` was done first so ties in length are already alphabetical. Actually no \u2014 the stable sort by len preserves the alphabetical order from the initial sort. Correct.\n\nSo my tests need to cover lines 3-8:\n- Line 3: `lst.sort()`\n- Line 4: `new_lst = []`\n- Line 5: `for i in lst:` (loop)\n- Line 6: `if len(i)%2 == 0:` (both True and False branches ideally)\n- Line 7: `new_lst.append(i)`\n- Line 8: `return sorted(new_lst, key=len)`\n\nTo cover both branches of line 6, I need a list with both even-length and odd-length strings.\n\nTest cases:\n1. `[\"aa\", \"a\", \"aaa\"]` \u2192 filter odd: \"a\" (len 1), \"aaa\" (len 3) removed; keep \"aa\". Result: `[\"aa\"]`.\n2. `[\"school\", \"AI\", \"asdf\", \"b\"]` \u2192 sort: [\"AI\", \"asdf\", \"b\", \"school\"]; even lengths: \"AI\" (2), \"asdf\" (4), \"school\" (6). Result sorted by len: [\"AI\", \"asdf\", \"school\"].\n3. Test tie-breaking: e.g., `[\"bb\", \"aa\", \"cc\"]` \u2192 sorted: [\"aa\", \"bb\", \"cc\"], all even, result by len: [\"aa\", \"bb\", \"cc\"].\n4. Empty list: `[]` \u2192 returns `[]`. This covers loop-not-taken branch.\n5. All odd lengths: `[\"a\", \"abc\"]` \u2192 returns `[]`.\n\nAlso verify that the input list is sorted in place? That's a side effect \u2014 `lst.sort()` mutates the input. I could assert that too, but careful: the function mutates the caller's list. For cleanup/state pollution concerns, since we pass fresh lists created inside the test, there's no global state pollution. No monkeypatch needed really since the function doesn't touch globals, files, etc.\n\nI should write parametrized tests perhaps, or multiple test functions. Let me write clear test functions with assertions.\n\nSince the function is in `f149/__init__.py`, import as `from f149 import sorted_list_sum`.\n\nLet me write:\n\n```python\nimport pytest\n\nfrom f149 import sorted_list_sum\n\n\ndef test_filters_odd_and_sorts_by_length():\n    lst = [\"school\", \"AI\", \"asdf\", \"b\"]\n    result = sorted_list_sum(lst)\n    assert result == [\"AI\", \"asdf\", \"school\"]\n\n\ndef test_input_sorted_in_place():\n    lst = [\"ccc\", \"a\", \"bb\"]\n    result = sorted_list_sum(lst)\n    # input list mutated by lst.sort()\n    assert lst == [\"a\", \"bb\", \"ccc\"]\n    # odd-length entries dropped (\"a\" len 1, \"ccc\" len 3)\n    assert result == [\"bb\"]\n\n\ndef test_ties_sorted_alphabetically():\n    lst = [\"dd\", \"bb\", \"cc\", \"aa\"]\n    result = sorted_list_sum(lst)\n    assert result == [\"aa\", \"bb\", \"cc\", \"dd\"]\n\n\ndef test_empty_list():\n    assert sorted_list_sum([]) == []\n\n\ndef test_all_odd_lengths_removed():\n    assert sorted_list_sum([\"a\", \"abc\", \"abcde\"]) == []\n```\n\nThese cover:\n- Line 3 executed in all tests.\n- Line 4 executed.\n- Line 5 loop body executed (non-empty lists).\n- Line 6 both branches: True (even) and False (odd).\n- Line 7 append executed.\n- Line 8 return executed.\n- Empty list covers loop-skip branch.\n\nNo state pollution: everything local. No monkeypatch needed. But maybe I can add a small note... The instructions say use monkeypatch/pytest-mock if appropriate \u2014 here it's not needed since the function has no external dependencies.\n\nShould I combine into fewer tests? The instruction says \"Create new pytest test functions that execute all missing lines and branches\". Multiple tests fine.\n\nOne consideration: `test_input_sorted_in_place` asserts mutation of input \u2014 that's a real behavior of the function (`lst.sort()` in place). Good postcondition assertion.\n\nMaybe also a parametrized test. Keep it simple and readable.\n\nFinal answer: just the Python code in backticks."
+        }
+      },
+      "provider_specific_fields": {
+        "token_ids": null,
+        "routed_experts": null,
+        "stop_reason": 154827
+      }
+    }
+  ],
+  "usage": {
+    "completion_tokens": 1520,
+    "prompt_tokens": 620,
+    "total_tokens": 2140,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 1103,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cached_tokens": 0,
+      "created_cache_tokens": 0,
+      "multimodal_tokens": null
+    }
+  },
+  "moderation": null,
+  "service_tier": null,
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}
+---- 2026-11-02T03:13:52 project/f149/__init__.py:1-8 ----
+........                                                                 [100%]
 
----- 2026-10-25T17:22:05 project/f149/__init__.py:1-8 ----
+---- 2026-11-02T03:13:52 project/f149/__init__.py:1-8 ----
 Saved as /home/masoyi/Teori-dalam-pengujian-perangkat-lunak/results/generated/MT-coverup-B2-f149-r09/tests/test_coverup_1.py
 

@@ -2,7 +2,18 @@
 # asked: {"lines": [19, 20, 21, 23, 24, 25, 28, 30, 31, 33, 34, 35, 36, 37, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 60, 61, 62, 63, 66, 67, 68, 69, 71, 72, 73, 74, 75, 76, 78, 80], "branches": [[34, 35], [34, 78], [36, 37], [36, 40], [42, 43], [42, 71], [45, 46], [45, 48], [49, 50], [49, 51], [61, 42], [61, 62], [66, 67], [66, 69], [71, 34], [71, 72], [72, 73], [72, 75]]}
 # gained: {"lines": [19, 20, 21, 23, 24, 25, 28, 30, 31, 33, 34, 35, 36, 37, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 60, 61, 62, 63, 66, 67, 68, 69, 71, 72, 73, 74, 75, 76, 78, 80], "branches": [[34, 35], [34, 78], [36, 37], [36, 40], [42, 43], [42, 71], [45, 46], [45, 48], [49, 50], [49, 51], [61, 42], [61, 62], [66, 67], [66, 69], [71, 34], [71, 72], [72, 73], [72, 75]]}
 
-from unittest.mock import Mock
+"""Coverage tests for youtube_dl.downloader.dash.DashSegmentsFD.real_download.
+
+The fragment plumbing inherited from FragmentFD (HTTP downloads, file I/O,
+progress reporting) is stubbed out with monkeypatch, so the tests exercise
+exactly the logic of real_download() itself without touching the network or
+the filesystem.  All interactions are recorded so postconditions can be
+asserted precisely.
+"""
+
+import io
+from collections import defaultdict
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -10,278 +21,255 @@ from youtube_dl.compat import compat_urllib_error
 from youtube_dl.downloader.dash import DashSegmentsFD
 from youtube_dl.utils import DownloadError
 
+FRAG_CONTENT = b'fragment-bytes'
 
-def _make_fd(monkeypatch, params=None, fragment_index=0):
-    fd = DashSegmentsFD(None, params or {})
 
-    def prepare(ctx):
-        ctx["fragment_index"] = fragment_index
+def _http_error():
+    """Build a genuine urllib HTTPError (404) to trigger the retry path."""
+    return compat_urllib_error.HTTPError(
+        'http://example.com/frag', 404, 'Not Found', {}, io.BytesIO(b''))
 
-    fd._prepare_and_start_frag_download = Mock(side_effect=prepare)
-    fd._download_fragment = Mock()
-    fd._append_fragment = Mock()
-    fd._finish_frag_download = Mock()
-    fd.report_retry_fragment = Mock()
-    fd.report_skip_fragment = Mock()
-    fd.report_error = Mock()
 
+def _make_fd(monkeypatch, params, fragment_index=0, download_results=None):
+    """Build a DashSegmentsFD whose fragment plumbing is stubbed out.
+
+    ``fragment_index`` simulates a (partially) resumed download.
+    ``download_results`` is a list of outcomes consumed by each
+    ``_download_fragment`` call; an outcome may be an exception to raise or a
+    ``(success, frag_content)`` tuple.  When exhausted, downloads succeed.
+    """
+    fd = DashSegmentsFD(MagicMock(), params)
+    calls = defaultdict(list)
+
+    def fake_prepare(ctx):
+        calls['prepare'].append(dict(ctx))
+        ctx['fragment_index'] = fragment_index
+
+    def fake_download(ctx, url, info_dict):
+        calls['download'].append(url)
+        if download_results:
+            outcome = download_results.pop(0)
+        else:
+            outcome = (True, FRAG_CONTENT)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
+
+    def fake_append(ctx, frag_content):
+        calls['append'].append(frag_content)
+
+    def fake_finish(ctx):
+        calls['finish'].append(dict(ctx))
+
+    def fake_report_retry(err, frag_index, count, retries):
+        calls['retry'].append((err, frag_index, count, retries))
+
+    def fake_report_skip(frag_index):
+        calls['skip'].append(frag_index)
+
+    def fake_report_error(message):
+        calls['error'].append(message)
+
+    monkeypatch.setattr(fd, '_prepare_and_start_frag_download', fake_prepare)
+    monkeypatch.setattr(fd, '_download_fragment', fake_download)
+    monkeypatch.setattr(fd, '_append_fragment', fake_append)
+    monkeypatch.setattr(fd, '_finish_frag_download', fake_finish)
+    monkeypatch.setattr(fd, 'report_retry_fragment', fake_report_retry)
+    monkeypatch.setattr(fd, 'report_skip_fragment', fake_report_skip)
+    monkeypatch.setattr(fd, 'report_error', fake_report_error)
+    fd.calls = calls
     return fd
 
 
-def _http_error(code=404):
-    return compat_urllib_error.HTTPError(
-        "https://example.test/fragment",
-        code,
-        "Not Found",
-        {},
-        None,
-    )
-
-
-def test_real_download_downloads_direct_and_relative_fragment_urls(monkeypatch):
-    fd = _make_fd(monkeypatch)
-    fd._download_fragment.side_effect = [
-        (True, b"header"),
-        (True, b"media"),
-    ]
+def test_successful_download_downloads_all_fragments(monkeypatch):
     info_dict = {
-        "fragment_base_url": "https://example.test/media/",
-        "fragments": [
-            {"url": "https://cdn.example.test/header.m4s"},
-            {"path": "segment-1.m4s"},
+        'fragments': [
+            {'url': 'http://example.com/seg-1'},
+            {'url': 'http://example.com/seg-2'},
         ],
     }
+    fd = _make_fd(monkeypatch, {})
 
-    result = fd.real_download("video.mp4", info_dict)
+    assert fd.real_download('video.mp4', info_dict) is True
 
-    assert result is True
-    ctx = fd._prepare_and_start_frag_download.call_args.args[0]
-    assert ctx["filename"] == "video.mp4"
-    assert ctx["total_frags"] == 2
-    assert ctx["fragment_index"] == 0
-    assert fd._download_fragment.call_args_list[0].args == (
-        ctx,
-        "https://cdn.example.test/header.m4s",
-        info_dict,
-    )
-    assert fd._download_fragment.call_args_list[1].args == (
-        ctx,
-        "https://example.test/media/segment-1.m4s",
-        info_dict,
-    )
-    assert [call.args for call in fd._append_fragment.call_args_list] == [
-        (ctx, b"header"),
-        (ctx, b"media"),
-    ]
-    fd._finish_frag_download.assert_called_once_with(ctx)
+    assert fd.calls['prepare'][0]['filename'] == 'video.mp4'
+    assert fd.calls['prepare'][0]['total_frags'] == 2
+    assert fd.calls['download'] == [
+        'http://example.com/seg-1', 'http://example.com/seg-2']
+    assert fd.calls['append'] == [FRAG_CONTENT, FRAG_CONTENT]
+    assert len(fd.calls['finish']) == 1
+    assert fd.calls['retry'] == []
+    assert fd.calls['skip'] == []
+    assert fd.calls['error'] == []
 
 
-def test_real_download_test_mode_only_downloads_first_fragment(monkeypatch):
-    fd = _make_fd(monkeypatch, {"test": True})
-    fd._download_fragment.return_value = (True, b"first")
+def test_test_mode_downloads_only_the_first_fragment(monkeypatch):
     info_dict = {
-        "fragments": [
-            {"url": "https://example.test/first.m4s"},
-            {"url": "https://example.test/second.m4s"},
+        'fragments': [
+            {'url': 'http://example.com/seg-1'},
+            {'url': 'http://example.com/seg-2'},
         ],
     }
+    fd = _make_fd(monkeypatch, {'test': True})
 
-    result = fd.real_download("test.mp4", info_dict)
+    assert fd.real_download('video.mp4', info_dict) is True
 
-    assert result is True
-    ctx = fd._prepare_and_start_frag_download.call_args.args[0]
-    assert ctx["total_frags"] == 1
-    fd._download_fragment.assert_called_once_with(
-        ctx, "https://example.test/first.m4s", info_dict
-    )
-    fd._append_fragment.assert_called_once_with(ctx, b"first")
-    fd._finish_frag_download.assert_called_once_with(ctx)
+    assert fd.calls['prepare'][0]['total_frags'] == 1
+    assert fd.calls['download'] == ['http://example.com/seg-1']
+    assert len(fd.calls['finish']) == 1
 
 
-def test_real_download_skips_fragments_already_recorded_in_context(monkeypatch):
-    fd = _make_fd(monkeypatch, fragment_index=1)
-    fd._download_fragment.return_value = (True, b"second")
+def test_fragment_url_is_joined_from_base_url_and_path(monkeypatch):
     info_dict = {
-        "fragments": [
-            {"url": "https://example.test/first.m4s"},
-            {"url": "https://example.test/second.m4s"},
-        ],
+        'fragment_base_url': 'http://example.com/base/',
+        'fragments': [{'path': 'seg-1.m4s'}],
     }
+    fd = _make_fd(monkeypatch, {})
 
-    result = fd.real_download("resumed.mp4", info_dict)
+    assert fd.real_download('video.mp4', info_dict) is True
 
-    assert result is True
-    ctx = fd._prepare_and_start_frag_download.call_args.args[0]
-    fd._download_fragment.assert_called_once_with(
-        ctx, "https://example.test/second.m4s", info_dict
-    )
-    fd._append_fragment.assert_called_once_with(ctx, b"second")
-    fd._finish_frag_download.assert_called_once_with(ctx)
+    assert fd.calls['download'] == ['http://example.com/base/seg-1.m4s']
+    assert fd.calls['append'] == [FRAG_CONTENT]
+    assert len(fd.calls['finish']) == 1
 
 
-def test_real_download_returns_false_when_fragment_download_is_unsuccessful(
-    monkeypatch,
-):
-    fd = _make_fd(monkeypatch)
-    fd._download_fragment.return_value = (False, None)
-    info_dict = {
-        "fragments": [{"url": "https://example.test/first.m4s"}],
-    }
-
-    result = fd.real_download("video.mp4", info_dict)
-
-    assert result is False
-    fd._append_fragment.assert_not_called()
-    fd._finish_frag_download.assert_not_called()
-    fd.report_error.assert_not_called()
-
-
-def test_real_download_retries_http_error_and_then_succeeds(monkeypatch):
-    fd = _make_fd(monkeypatch, {"fragment_retries": 2})
-    error = _http_error()
-    fd._download_fragment.side_effect = [
-        error,
-        (True, b"fragment"),
-    ]
-    info_dict = {
-        "fragments": [{"url": "https://example.test/first.m4s"}],
-    }
-
-    result = fd.real_download("video.mp4", info_dict)
-
-    assert result is True
-    ctx = fd._prepare_and_start_frag_download.call_args.args[0]
-    assert fd._download_fragment.call_count == 2
-    fd.report_retry_fragment.assert_called_once_with(error, 1, 1, 2)
-    fd._append_fragment.assert_called_once_with(ctx, b"fragment")
-    fd._finish_frag_download.assert_called_once_with(ctx)
-    fd.report_error.assert_not_called()
-
-
-def test_real_download_gives_up_after_http_errors_on_first_fragment(monkeypatch):
-    fd = _make_fd(monkeypatch, {"fragment_retries": 1})
-    first_error = _http_error(500)
-    second_error = _http_error(503)
-    fd._download_fragment.side_effect = [first_error, second_error]
-    info_dict = {
-        "fragments": [{"url": "https://example.test/first.m4s"}],
-    }
-
-    result = fd.real_download("video.mp4", info_dict)
-
-    assert result is False
-    assert fd._download_fragment.call_count == 2
-    fd.report_retry_fragment.assert_called_once_with(first_error, 1, 1, 1)
-    fd.report_error.assert_called_once_with(
-        "giving up after 1 fragment retries"
-    )
-    fd.report_skip_fragment.assert_not_called()
-    fd._append_fragment.assert_not_called()
-    fd._finish_frag_download.assert_not_called()
-
-
-def test_real_download_skips_later_fragment_after_http_retries_are_exhausted(
-    monkeypatch,
-):
-    fd = _make_fd(monkeypatch, {"fragment_retries": 0})
-    error = _http_error()
-    fd._download_fragment.side_effect = [
-        (True, b"header"),
-        error,
-    ]
-    info_dict = {
-        "fragments": [
-            {"url": "https://example.test/header.m4s"},
-            {"url": "https://example.test/missing.m4s"},
-        ],
-    }
-
-    result = fd.real_download("video.mp4", info_dict)
-
-    assert result is True
-    ctx = fd._prepare_and_start_frag_download.call_args.args[0]
-    fd.report_skip_fragment.assert_called_once_with(2)
-    fd.report_retry_fragment.assert_not_called()
-    fd.report_error.assert_not_called()
-    fd._append_fragment.assert_called_once_with(ctx, b"header")
-    fd._finish_frag_download.assert_called_once_with(ctx)
-
-
-def test_real_download_skips_later_fragment_on_download_error(monkeypatch):
-    fd = _make_fd(monkeypatch)
-    fd._download_fragment.side_effect = [
-        (True, b"header"),
-        DownloadError("fragment download failed"),
-    ]
-    info_dict = {
-        "fragments": [
-            {"url": "https://example.test/header.m4s"},
-            {"url": "https://example.test/media.m4s"},
-        ],
-    }
-
-    result = fd.real_download("video.mp4", info_dict)
-
-    assert result is True
-    ctx = fd._prepare_and_start_frag_download.call_args.args[0]
-    fd.report_skip_fragment.assert_called_once_with(2)
-    fd.report_retry_fragment.assert_not_called()
-    fd._append_fragment.assert_called_once_with(ctx, b"header")
-    fd._finish_frag_download.assert_called_once_with(ctx)
-
-
-def test_real_download_reraises_download_error_for_first_fragment(monkeypatch):
-    fd = _make_fd(monkeypatch)
-    error = DownloadError("header download failed")
-    fd._download_fragment.side_effect = error
-    info_dict = {
-        "fragments": [{"url": "https://example.test/header.m4s"}],
-    }
-
-    with pytest.raises(DownloadError) as exc_info:
-        fd.real_download("video.mp4", info_dict)
-
-    assert exc_info.value is error
-    fd.report_skip_fragment.assert_not_called()
-    fd._append_fragment.assert_not_called()
-    fd._finish_frag_download.assert_not_called()
-
-
-def test_real_download_reraises_later_error_when_skipping_is_disabled(
-    monkeypatch,
-):
-    fd = _make_fd(monkeypatch, {"skip_unavailable_fragments": False})
-    error = DownloadError("media fragment failed")
-    fd._download_fragment.side_effect = [
-        (True, b"header"),
-        error,
-    ]
-    info_dict = {
-        "fragments": [
-            {"url": "https://example.test/header.m4s"},
-            {"url": "https://example.test/media.m4s"},
-        ],
-    }
-
-    with pytest.raises(DownloadError) as exc_info:
-        fd.real_download("video.mp4", info_dict)
-
-    assert exc_info.value is error
-    ctx = fd._prepare_and_start_frag_download.call_args.args[0]
-    fd._append_fragment.assert_called_once_with(ctx, b"header")
-    fd.report_skip_fragment.assert_not_called()
-    fd._finish_frag_download.assert_not_called()
-
-
-def test_real_download_requires_base_url_for_relative_fragment(monkeypatch):
-    fd = _make_fd(monkeypatch)
-    info_dict = {
-        "fragments": [{"path": "segment.m4s"}],
-    }
+def test_missing_base_url_with_path_only_fragment_asserts(monkeypatch):
+    info_dict = {'fragments': [{'path': 'seg-1.m4s'}]}
+    fd = _make_fd(monkeypatch, {})
 
     with pytest.raises(AssertionError):
-        fd.real_download("video.mp4", info_dict)
+        fd.real_download('video.mp4', info_dict)
 
-    fd._download_fragment.assert_not_called()
-    fd._append_fragment.assert_not_called()
-    fd._finish_frag_download.assert_not_called()
+    assert fd.calls['download'] == []
+    assert fd.calls['finish'] == []
+
+
+def test_failed_fragment_download_returns_false(monkeypatch):
+    info_dict = {'fragments': [{'url': 'http://example.com/seg-1'}]}
+    fd = _make_fd(monkeypatch, {}, download_results=[(False, None)])
+
+    assert fd.real_download('video.mp4', info_dict) is False
+
+    assert fd.calls['download'] == ['http://example.com/seg-1']
+    assert fd.calls['append'] == []
+    assert fd.calls['finish'] == []
+
+
+def test_http_error_is_retried_until_success(monkeypatch):
+    info_dict = {'fragments': [{'url': 'http://example.com/seg-1'}]}
+    err = _http_error()
+    fd = _make_fd(
+        monkeypatch, {'fragment_retries': 2},
+        download_results=[err, (True, FRAG_CONTENT)])
+
+    assert fd.real_download('video.mp4', info_dict) is True
+
+    assert len(fd.calls['download']) == 2
+    assert fd.calls['retry'] == [(err, 1, 1, 2)]
+    assert fd.calls['append'] == [FRAG_CONTENT]
+    assert len(fd.calls['finish']) == 1
+
+
+def test_http_error_gives_up_on_fatal_first_fragment(monkeypatch):
+    info_dict = {'fragments': [{'url': 'http://example.com/seg-1'}]}
+    err1, err2 = _http_error(), _http_error()
+    fd = _make_fd(
+        monkeypatch, {'fragment_retries': 1},
+        download_results=[err1, err2])
+
+    assert fd.real_download('video.mp4', info_dict) is False
+
+    assert len(fd.calls['download']) == 2
+    # Only the first failure is reported as a retry; the second exhausts the
+    # retry budget (count=2 > retries=1) and is not reported.
+    assert fd.calls['retry'] == [(err1, 1, 1, 1)]
+    assert fd.calls['error'] == ['giving up after 1 fragment retries']
+    assert fd.calls['finish'] == []
+
+
+def test_http_error_on_unavailable_fragment_is_skipped(monkeypatch):
+    info_dict = {
+        'fragments': [
+            {'url': 'http://example.com/seg-1'},
+            {'url': 'http://example.com/seg-2'},
+        ],
+    }
+    fd = _make_fd(
+        monkeypatch, {'fragment_retries': 0},
+        download_results=[(True, FRAG_CONTENT), _http_error()])
+
+    assert fd.real_download('video.mp4', info_dict) is True
+
+    assert fd.calls['download'] == [
+        'http://example.com/seg-1', 'http://example.com/seg-2']
+    assert fd.calls['skip'] == [2]
+    assert fd.calls['error'] == []
+    assert len(fd.calls['finish']) == 1
+
+
+def test_download_error_on_unavailable_fragment_is_skipped(monkeypatch):
+    info_dict = {
+        'fragments': [
+            {'url': 'http://example.com/seg-1'},
+            {'url': 'http://example.com/seg-2'},
+        ],
+    }
+    fd = _make_fd(
+        monkeypatch, {},
+        download_results=[(True, FRAG_CONTENT), DownloadError('boom')])
+
+    assert fd.real_download('video.mp4', info_dict) is True
+
+    assert fd.calls['download'] == [
+        'http://example.com/seg-1', 'http://example.com/seg-2']
+    assert fd.calls['skip'] == [2]
+    assert fd.calls['error'] == []
+    assert len(fd.calls['finish']) == 1
+
+
+def test_download_error_on_first_fragment_is_fatal(monkeypatch):
+    info_dict = {'fragments': [{'url': 'http://example.com/seg-1'}]}
+    fd = _make_fd(monkeypatch, {}, download_results=[DownloadError('boom')])
+
+    with pytest.raises(DownloadError):
+        fd.real_download('video.mp4', info_dict)
+
+    assert fd.calls['finish'] == []
+
+
+def test_download_error_is_fatal_when_skipping_is_disabled(monkeypatch):
+    info_dict = {
+        'fragments': [
+            {'url': 'http://example.com/seg-1'},
+            {'url': 'http://example.com/seg-2'},
+        ],
+    }
+    fd = _make_fd(
+        monkeypatch, {'skip_unavailable_fragments': False},
+        download_results=[(True, FRAG_CONTENT), DownloadError('boom')])
+
+    with pytest.raises(DownloadError):
+        fd.real_download('video.mp4', info_dict)
+
+    assert fd.calls['skip'] == []
+    assert fd.calls['finish'] == []
+
+
+def test_resume_skips_fragments_up_to_fragment_index(monkeypatch):
+    info_dict = {
+        'fragments': [
+            {'url': 'http://example.com/seg-1'},
+            {'url': 'http://example.com/seg-2'},
+            {'url': 'http://example.com/seg-3'},
+        ],
+    }
+    fd = _make_fd(monkeypatch, {}, fragment_index=2)
+
+    assert fd.real_download('video.mp4', info_dict) is True
+
+    # Fragments 1 and 2 are silently skipped (already downloaded); only
+    # fragment 3 is fetched.
+    assert fd.calls['download'] == ['http://example.com/seg-3']
+    assert fd.calls['skip'] == []
+    assert fd.calls['append'] == [FRAG_CONTENT]
+    assert len(fd.calls['finish']) == 1

@@ -3,102 +3,88 @@ import pysnooper.utils as module_0
 
 def test_case_0():
     try:
-        str_0 = '\\(<PwAaNr,A'
-        var_0 = module_0.shitcode(str_0)
-        assert var_0 == '\\(<PwAaNr,A'
-        str_1 = 'W8%f'
-        str_2 = ',+X}9)$\x0c<CB1Gt&N80F'
-        dict_0 = {str_0: str_0, str_1: str_1, str_2: str_1, str_1: str_1}
-        var_1 = module_0.normalize_repr(dict_0)
+        var_0 = None
+        var_1 = module_0.get_shortish_repr(var_0)
+        assert var_1 == 'None'
+        assert len(module_0.string_types) == 1
+        assert len(module_0.file_reading_errors) == 3
+        float_0 = 821.71
+        var_2 = module_0.shitcode(float_0)
     except BaseException:
         pass
 
 def test_case_1():
     try:
-        str_0 = ''
-        list_0 = []
-        bool_0 = None
-        dict_0 = {str_0: bool_0, str_0: list_0, str_0: str_0}
-        var_0 = module_0.get_shortish_repr(list_0, str_0, dict_0)
+        var_0 = None
+        var_1 = module_0.get_shortish_repr(var_0)
+        assert var_1 == 'None'
+        assert len(module_0.string_types) == 1
+        assert len(module_0.file_reading_errors) == 3
+        str_0 = '`p[U1%ijV'
+        dict_0 = {str_0: var_0, str_0: var_1}
+        int_0 = 239
+        var_2 = module_0.truncate(int_0, dict_0)
     except BaseException:
         pass
 
 def test_case_2():
     try:
-        str_0 = 'xceion'
-        var_0 = module_0.get_shortish_repr(str_0)
-        assert var_0 == "'foo'"
-        assert var_0 == "'xceion'"
+        var_0 = None
+        var_1 = module_0.get_shortish_repr(var_0)
+        assert var_1 == 'None'
         assert len(module_0.string_types) == 1
         assert len(module_0.file_reading_errors) == 3
-        int_0 = 196
-        var_1 = module_0.get_repr_function(int_0, str_0)
+        dict_0 = {}
+        str_0 = 'Va%u;E}j{Af#`\x0c'
+        var_2 = module_0.get_repr_function(dict_0, str_0)
     except BaseException:
         pass
 
 def test_case_3():
     try:
-        dict_0 = {}
-        tuple_0 = ()
-        var_0 = module_0.ensure_tuple(tuple_0)
-        assert var_0 == ()
-        var_1 = module_0.shitcode(dict_0)
-        writable_stream_0 = module_0.WritableStream()
+        var_0 = None
+        var_1 = module_0.get_shortish_repr(var_0)
+        assert var_1 == 'None'
+        assert len(module_0.string_types) == 1
+        assert len(module_0.file_reading_errors) == 3
+        bytes_0 = b'\xf9\xf9\x97\xbdL\xa2<\xd9\xb4u\xf2O'
+        float_0 = -2329.273
+        var_2 = module_0.truncate(bytes_0, float_0)
     except BaseException:
         pass
 
 def test_case_4():
     try:
-        dict_0 = {}
-        var_0 = module_0.shitcode(dict_0)
-        assert var_0 == ''
+        var_0 = None
+        str_0 = '3$au+6s\x0c^'
+        var_1 = module_0.normalize_repr(str_0)
+        assert var_1 == '3$au+6s\x0c^'
         assert len(module_0.string_types) == 1
         assert len(module_0.file_reading_errors) == 3
-        bytes_0 = None
-        set_0 = {bytes_0, bytes_0}
-        int_0 = -925
-        var_1 = module_0.truncate(set_0, int_0)
+        var_2 = module_0.get_shortish_repr(var_0)
+        assert var_2 == 'None'
+        dict_0 = {}
+        str_1 = 'Va%u;E}j{Af#`\x0c'
+        var_3 = module_0.get_repr_function(dict_0, str_1)
     except BaseException:
         pass
 
 def test_case_5():
     try:
-        str_0 = 'abcdefghij'
-        var_0 = None
-        var_1 = module_0.truncate(str_0, var_0)
-        assert var_1 == 'abcdefghij'
+        int_0 = 123
+        var_0 = ()
+        var_1 = module_0.get_repr_function(int_0, var_0)
         assert len(module_0.string_types) == 1
         assert len(module_0.file_reading_errors) == 3
-        str_1 = 'abc'
-        int_0 = 5
-        var_2 = module_0.truncate(str_1, int_0)
-        assert var_2 == 'abc'
-        str_2 = 'abcde'
-        var_3 = module_0.truncate(str_2, int_0)
-        assert var_3 == 'abcde'
-        var_4 = module_0.truncate(str_0, int_0)
-        assert var_4 == 'a...j'
-        str_3 = 'abcdefghijklmnopqrst'
-        int_1 = 8
-        var_5 = module_0.truncate(str_3, int_1)
-        assert var_5 == 'ab...rst'
-        int_2 = 4
-        var_6 = module_0.truncate(str_0, int_2)
-        assert var_6 == '...j'
-        var_7 = len(var_0)
-    except BaseException:
-        pass
-
-def test_case_6():
-    try:
-        str_0 = 'foo'
-        bytes_0 = b'\xc0G'
-        bool_0 = True
-        float_0 = 2636.871726521486
-        tuple_0 = (str_0, bool_0, float_0)
-        bool_1 = True
-        tuple_1 = (bytes_0, tuple_0, float_0, bool_1)
-        dict_0 = {bytes_0: bool_0, tuple_0: tuple_0, bool_0: str_0, float_0: tuple_1}
-        var_0 = module_0.get_shortish_repr(tuple_1, dict_0)
+        str_0 = 'INT'
+        var_2 = lambda x: str_0
+        int_1 = 100
+        var_3 = lambda x: x > int_1
+        str_1 = 'BIG'
+        var_4 = lambda x: str_1
+        var_5 = (var_3, var_4)
+        var_6 = [var_5]
+        int_2 = 150
+        var_7 = module_0.get_repr_function(int_2, var_6)
     except BaseException:
         pass

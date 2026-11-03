@@ -8,60 +8,26 @@ def test_case_0():
     str_2 = 'x'
     str_3 = module_0.make_palindrome(str_2)
     assert str_3 == 'x'
-    str_4 = 'aaa'
+    str_4 = 'xyz'
     str_5 = module_0.make_palindrome(str_4)
-    assert str_5 == 'aaa'
-    str_6 = 'racecar'
+    assert str_5 == 'xyzyx'
+    str_6 = 'xyx'
     str_7 = module_0.make_palindrome(str_6)
-    assert str_7 == 'racecar'
-    str_8 = 'cat'
+    assert str_7 == 'xyx'
+    str_8 = 'jerry'
     str_9 = module_0.make_palindrome(str_8)
-    assert str_9 == 'catac'
+    assert str_9 == 'jerryrrej'
     str_10 = 'cata'
     str_11 = module_0.make_palindrome(str_10)
     assert str_11 == 'catac'
-    str_12 = module_0.make_palindrome(str_0)
-    assert str_12 == ''
-    str_13 = 'xyz'
-    str_14 = module_0.make_palindrome(str_13)
-    assert str_14 == 'xyzyx'
-    str_15 = 'jerry'
-    str_16 = module_0.make_palindrome(str_15)
-    assert str_16 == 'jerryrrej'
-    bool_0 = module_0.is_palindrome(str_0)
-    assert bool_0 is True
+    str_12 = 'race'
+    str_13 = module_0.make_palindrome(str_12)
+    assert str_13 == 'racecar'
+    str_14 = 'abab'
+    str_15 = module_0.make_palindrome(str_14)
+    assert str_15 == 'ababa'
 
 def test_case_1():
-    str_0 = ''
-    bool_0 = module_0.is_palindrome(str_0)
-    assert bool_0 is True
-    str_1 = '+Rh-#w"\x0bBXb&+mqa6"l'
-    str_2 = module_0.make_palindrome(str_1)
-    assert str_2 == '+Rh-#w"\x0bBXb&+mqa6"l"6aqm+&bXB\x0b"w#-hR+'
-    bool_1 = module_0.is_palindrome(str_0)
-    assert bool_1 is True
-    str_3 = '3Z*f'
-    str_4 = module_0.make_palindrome(str_3)
-    assert str_4 == '3Z*f*Z3'
-    str_5 = ';\rxV7@5 yjN;#T'
-    bool_2 = module_0.is_palindrome(str_5)
-    assert bool_2 is False
-    str_6 = '+os!'
-    bool_3 = module_0.is_palindrome(str_6)
-    assert bool_3 is False
-    bool_4 = module_0.is_palindrome(str_5)
-    assert bool_4 is False
-    str_7 = '0=]49[#hPK\x0c(J>3smy'
-    bool_5 = module_0.is_palindrome(str_7)
-    assert bool_5 is False
-    bool_6 = module_0.is_palindrome(str_7)
-    assert bool_6 is False
-    str_8 = module_0.make_palindrome(str_5)
-    assert str_8 == ';\rxV7@5 yjN;#T#;Njy 5@7Vx\r;'
-    str_9 = module_0.make_palindrome(str_7)
-    assert str_9 == '0=]49[#hPK\x0c(J>3smyms3>J(\x0cKPh#[94]=0'
-
-def test_case_2():
     str_0 = ''
     str_1 = module_0.make_palindrome(str_0)
     assert str_1 == ''

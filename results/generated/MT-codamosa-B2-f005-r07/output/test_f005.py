@@ -3,7 +3,7 @@ import f005 as module_0
 
 def test_case_0():
     var_0 = []
-    int_0 = 4
+    int_0 = 7
     list_0 = module_0.intersperse(var_0, int_0)
     assert list_0 == []
     int_1 = 5
@@ -12,27 +12,26 @@ def test_case_0():
     assert list_1 == [5]
     int_3 = 1
     int_4 = 2
-    int_5 = [int_3, int_4]
-    list_2 = module_0.intersperse(int_5, int_0)
-    assert list_2 == [1, 4, 2]
-    int_6 = 3
-    int_7 = [int_3, int_4, int_6]
-    list_3 = module_0.intersperse(int_7, int_0)
-    assert list_3 == [1, 4, 2, 4, 3]
-    int_8 = 7
-    int_9 = [int_8, int_8, int_8]
-    list_4 = module_0.intersperse(int_9, int_8)
-    assert list_4 == [7, 7, 7, 7, 7]
-    int_10 = -1
-    int_11 = -2
-    int_12 = -3
-    int_13 = [int_10, int_11, int_12]
-    int_14 = 0
-    list_5 = module_0.intersperse(int_13, int_14)
+    int_5 = 3
+    int_6 = [int_3, int_4, int_5]
+    int_7 = 4
+    list_2 = module_0.intersperse(int_6, int_7)
+    assert list_2 == [1, 4, 2, 4, 3]
+    int_8 = [int_3, int_4]
+    int_9 = 0
+    list_3 = module_0.intersperse(int_8, int_9)
+    assert list_3 == [1, 0, 2]
+    int_10 = [int_3, int_4, int_5, int_7]
+    list_4 = module_0.intersperse(int_10, int_9)
+    assert list_4 == [1, 0, 2, 0, 3, 0, 4]
+    int_11 = -1
+    int_12 = -2
+    int_13 = -3
+    int_14 = [int_11, int_12, int_13]
+    list_5 = module_0.intersperse(int_14, int_9)
     assert list_5 == [-1, 0, -2, 0, -3]
-    int_15 = [int_3, int_4, int_6]
-    int_16 = -9
-    list_6 = module_0.intersperse(int_15, int_16)
-    assert list_6 == [1, -9, 2, -9, 3]
-    str_0 = 'All tests passed!'
-    var_1 = print(str_0)
+    int_15 = 10
+    int_16 = 20
+    int_17 = [int_15, int_16]
+    list_6 = module_0.intersperse(int_17, int_15)
+    assert list_6 == [10, 10, 20]

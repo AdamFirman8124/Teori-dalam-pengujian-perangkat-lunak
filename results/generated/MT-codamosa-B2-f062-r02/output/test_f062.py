@@ -6,16 +6,37 @@ def test_case_0():
     int_1 = 1
     int_2 = 2
     int_3 = 4
-    int_4 = [int_0, int_1, int_2, int_3]
-    var_0 = module_0.derivative(int_4)
-    assert var_0 == [1, 4, 12]
-    int_5 = [int_1, int_2]
-    var_1 = module_0.derivative(int_5)
-    assert var_1 == [2]
-    int_6 = 5
-    int_7 = [int_6]
+    int_4 = 5
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    var_0 = module_0.derivative(int_5)
+    assert var_0 == [1, 4, 12, 20]
+    int_6 = [int_1, int_2, int_0]
+    var_1 = module_0.derivative(int_6)
+    assert var_1 == [2, 6]
+    int_7 = [int_4]
     var_2 = module_0.derivative(int_7)
     assert var_2 == []
     var_3 = []
     var_4 = module_0.derivative(var_3)
     assert var_4 == []
+    int_8 = [int_0, int_2, int_1]
+    var_5 = module_0.derivative(int_8)
+    assert var_5 == [2, 2]
+    float_0 = 6.5
+    var_6 = [float_0, int_2]
+    var_7 = module_0.derivative(var_6)
+    assert var_7 == [2]
+    int_9 = -7
+    int_10 = [int_9, int_3]
+    var_8 = module_0.derivative(int_10)
+    assert var_8 == [4]
+    int_11 = 0
+    int_12 = 7
+    int_13 = [int_11, int_11, int_11, int_12]
+    var_9 = module_0.derivative(int_13)
+    assert var_9 == [0, 0, 21]
+    int_14 = [int_1, int_2, int_0, int_3]
+    var_10 = module_0.derivative(int_14)
+    assert var_10 == [2, 6, 12]
+    var_11 = len(var_10)
+    var_12 = var_11 == int_0

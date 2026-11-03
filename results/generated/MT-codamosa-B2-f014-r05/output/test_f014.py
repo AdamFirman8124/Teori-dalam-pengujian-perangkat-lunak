@@ -2,6 +2,30 @@
 import f014 as module_0
 
 def test_case_0():
-    str_0 = '\rY[s>7$'
+    str_0 = ''
     list_0 = module_0.all_prefixes(str_0)
-    assert list_0 == ['\r', '\rY', '\rY[', '\rY[s', '\rY[s>', '\rY[s>7', '\rY[s>7$']
+    assert list_0 == []
+    str_1 = 'a'
+    list_1 = module_0.all_prefixes(str_1)
+    assert list_1 == ['a']
+    str_2 = 'ab'
+    list_2 = module_0.all_prefixes(str_2)
+    assert list_2 == ['a', 'ab']
+    str_3 = 'abc'
+    list_3 = module_0.all_prefixes(str_3)
+    assert list_3 == ['a', 'ab', 'abc']
+    str_4 = 'asdf'
+    list_4 = module_0.all_prefixes(str_4)
+    assert list_4 == ['a', 'as', 'asd', 'asdf']
+    str_5 = 'xyz'
+    list_5 = module_0.all_prefixes(str_5)
+    assert list_5 == ['x', 'xy', 'xyz']
+    str_6 = 'hello'
+    list_6 = module_0.all_prefixes(str_6)
+    assert list_6 == ['h', 'he', 'hel', 'hell', 'hello']
+    str_7 = ' '
+    list_7 = module_0.all_prefixes(str_7)
+    assert list_7 == [' ']
+    str_8 = 'aa'
+    list_8 = module_0.all_prefixes(str_8)
+    assert list_8 == ['a', 'aa']

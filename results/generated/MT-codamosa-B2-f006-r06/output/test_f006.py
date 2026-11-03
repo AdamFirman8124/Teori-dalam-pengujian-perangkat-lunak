@@ -2,46 +2,27 @@
 import f006 as module_0
 
 def test_case_0():
-    str_0 = 'V'
+    str_0 = '(()()) ((())) () ((())()())'
     list_0 = module_0.parse_nested_parens(str_0)
-    assert list_0 == [0]
-    list_1 = module_0.parse_nested_parens(str_0)
-    assert list_1 == [0]
-    str_1 = "y#9P-']NSnm}y\n(hM);"
-    str_2 = 'd%qo~q\n:'
+    assert list_0 == [2, 3, 1, 3]
+    str_1 = '()'
+    list_1 = module_0.parse_nested_parens(str_1)
+    assert list_1 == [1]
+    str_2 = '(((())))'
     list_2 = module_0.parse_nested_parens(str_2)
-    assert list_2 == [0]
-    str_3 = 'cW\t%$YfpKndZ9@wce['
+    assert list_2 == [4]
+    str_3 = '(()) (())'
     list_3 = module_0.parse_nested_parens(str_3)
-    assert list_3 == [0]
-    list_4 = module_0.parse_nested_parens(str_1)
-    assert list_4 == [0]
-    str_4 = '+'
-    list_5 = module_0.parse_nested_parens(str_4)
-    assert list_5 == [0]
-    str_5 = ' o|1@`V.$#\tG:H\rZ'
-    str_6 = 'j^!d'
-    list_6 = module_0.parse_nested_parens(str_0)
-    assert list_6 == [0]
-    list_7 = module_0.parse_nested_parens(str_6)
-    assert list_7 == [0]
-    list_8 = module_0.parse_nested_parens(str_5)
-    assert list_8 == [0]
-    list_9 = module_0.parse_nested_parens(str_5)
-    assert list_9 == [0]
-
-def test_case_1():
-    str_0 = 'hN?7\rOq=8 {DKOM~'
-    str_1 = "iOezF`\t$'$mU\\0p"
-    list_0 = module_0.parse_nested_parens(str_1)
-    assert list_0 == [0]
-    list_1 = module_0.parse_nested_parens(str_0)
-    assert list_1 == [0, 0]
-    list_2 = module_0.parse_nested_parens(str_0)
-    assert list_2 == [0, 0]
-    list_3 = module_0.parse_nested_parens(str_1)
-    assert list_3 == [0]
-    list_4 = module_0.parse_nested_parens(str_1)
-    assert list_4 == [0]
-    list_5 = module_0.parse_nested_parens(str_0)
-    assert list_5 == [0, 0]
+    assert list_3 == [2, 2]
+    str_4 = ''
+    list_4 = module_0.parse_nested_parens(str_4)
+    assert list_4 == []
+    str_5 = '  () ((()))  '
+    list_5 = module_0.parse_nested_parens(str_5)
+    assert list_5 == [1, 3]
+    str_6 = '()((()))'
+    list_6 = module_0.parse_nested_parens(str_6)
+    assert list_6 == [3]
+    str_7 = '(()()) ((())) ()'
+    list_7 = module_0.parse_nested_parens(str_7)
+    assert list_7 == [2, 3, 1]

@@ -8,27 +8,35 @@ def test_case_0():
     str_1 = '()'
     var_1 = module_0.correct_bracketing(str_1)
     assert var_1 is True
-    str_2 = '(())'
+    str_2 = '()()'
     var_2 = module_0.correct_bracketing(str_2)
     assert var_2 is True
-    str_3 = '()()'
+    str_3 = '(())'
     var_3 = module_0.correct_bracketing(str_3)
     assert var_3 is True
-    str_4 = '((()())())'
+    str_4 = '((()))'
     var_4 = module_0.correct_bracketing(str_4)
     assert var_4 is True
-    str_5 = '('
+    str_5 = '()((())())'
     var_5 = module_0.correct_bracketing(str_5)
-    assert var_5 is False
-    str_6 = ')'
+    assert var_5 is True
+    str_6 = '('
     var_6 = module_0.correct_bracketing(str_6)
     assert var_6 is False
-    str_7 = ')('
+    str_7 = ')'
     var_7 = module_0.correct_bracketing(str_7)
     assert var_7 is False
-    str_8 = '(()'
+    str_8 = ')('
     var_8 = module_0.correct_bracketing(str_8)
     assert var_8 is False
-    str_9 = '())'
+    str_9 = '(()'
     var_9 = module_0.correct_bracketing(str_9)
     assert var_9 is False
+    str_10 = '())'
+    var_10 = module_0.correct_bracketing(str_10)
+    assert var_10 is False
+    str_11 = '(()))('
+    var_11 = module_0.correct_bracketing(str_11)
+    assert var_11 is False
+    str_12 = 'All tests passed!'
+    var_12 = print(str_12)

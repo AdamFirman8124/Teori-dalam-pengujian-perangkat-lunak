@@ -1,168 +1,178 @@
 
 
-# Generated at 2026-10-24 04:45:50.194284
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:45:52.611494
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:45:55.023216
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:45:57.439930
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:45:59.849232
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:02.260655
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:04.677208
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:07.116211
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:09.504870
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:11.920082
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:14.335146
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:16.749062
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:19.163719
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:21.577248
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:23.997972
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:26.405942
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:28.818295
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:31.230856
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:33.642951
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:36.055055
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:38.470064
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:46:45.512963
-# Unit test for function get_closest_vowel
-def test_get_closest_vowel():assert module_0.get_closest_vowel("yogurt") == "u"
-
-# Generated at 2026-10-24 04:47:02.000161
+# Generated at 2026-11-02 16:53:25.712909
 # Unit test for function get_closest_vowel
 def test_get_closest_vowel():
     assert module_0.get_closest_vowel("yogurt") == "u"
-    assert module_0.get_closest_vowel("FULL STACK") == "A"
-    assert module_0.get_closest_vowel("hello") == "e"
-    assert module_0.get_closest_vowel("anime") == "i"
-
-    # Vowels at the beginning or end do not qualify
-    assert module_0.get_closest_vowel("apple") == ""
-    assert module_0.get_closest_vowel("Asia") == ""
-
-    # Adjacent vowels do not qualify
+    assert module_0.get_closest_vowel("FULL") == "U"
     assert module_0.get_closest_vowel("quick") == ""
-    assert module_0.get_closest_vowel("eeeee") == ""
+    assert module_0.get_closest_vowel("junk") == "u"
+    assert module_0.get_closest_vowel("ab") == ""
+    assert module_0.get_closest_vowel("") == ""
+    assert module_0.get_closest_vowel("a") == ""
+    assert module_0.get_closest_vowel("cat") == "a"
+    assert module_0.get_closest_vowel("aeiou") == ""
+    assert module_0.get_closest_vowel("banana") == "a"
+    assert module_0.get_closest_vowel("ACQUA") == ""
+    assert module_0.get_closest_vowel("beautiful") == "u"
 
-    # Words shorter than three characters
+# Generated at 2026-11-02 16:54:31.689756
+# Unit test for function get_closest_vowel
+def test_get_closest_vowel():
+    # Words shorter than 3 characters return ""
     assert module_0.get_closest_vowel("") == ""
     assert module_0.get_closest_vowel("a") == ""
     assert module_0.get_closest_vowel("ab") == ""
+    assert module_0.get_closest_vowel("xy") == ""
 
-# Generated at 2026-10-24 04:47:10.604975
-# Unit test for function get_closest_vowel
-def test_get_closest_vowel():
-    assert module_0.get_closest_vowel("cat") == "a"
+    # Basic cases: vowel between two consonants, searching from the right
     assert module_0.get_closest_vowel("yogurt") == "u"
-    assert module_0.get_closest_vowel("ABIDE") == "I"
-    assert module_0.get_closest_vowel("boat") == ""       # Adjacent vowels
-    assert module_0.get_closest_vowel("apple") == ""      # Vowel only at the boundary
-    assert module_0.get_closest_vowel("rhythm") == ""     # No vowels
-    assert module_0.get_closest_vowel("at") == ""         # Fewer than three characters
-    assert module_0.get_closest_vowel("") == ""
-
-# Generated at 2026-10-24 04:47:19.817429
-# Unit test for function get_closest_vowel
-def test_get_closest_vowel():
-    assert module_0.get_closest_vowel("yogurt") == "u"
-    assert module_0.get_closest_vowel("baced") == "e"  # Closest qualifying vowel to the end
-    assert module_0.get_closest_vowel("cat") == "a"
-    assert module_0.get_closest_vowel("CAT") == "A"
-    assert module_0.get_closest_vowel("book") == ""   # Adjacent vowels do not qualify
-    assert module_0.get_closest_vowel("apple") == ""  # Vowels at either end are ignored
-    assert module_0.get_closest_vowel("aei") == ""
-    assert module_0.get_closest_vowel("at") == ""
-    assert module_0.get_closest_vowel("") == ""
-
-# Generated at 2026-10-24 04:47:22.361377
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:47:24.777032
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:47:27.283657
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:47:29.697382
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:47:32.109550
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:47:34.527224
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:47:36.941635
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:47:39.353582
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:47:41.764436
-# Unit test for function get_closest_vowel
-
-# Generated at 2026-10-24 04:47:50.737733
-# Unit test for function get_closest_vowel
-def test_get_closest_vowel():
-    # Rightmost vowel surrounded by consonants
-    assert module_0.get_closest_vowel("yogurt") == "u"
-
-    # Select the qualifying vowel closest to the end
-    assert module_0.get_closest_vowel("planet") == "e"
-    assert module_0.get_closest_vowel("banana") == "a"
-
-    # Uppercase vowels
     assert module_0.get_closest_vowel("FULL") == "U"
+    assert module_0.get_closest_vowel("cat") == "a"
+    assert module_0.get_closest_vowel("quick") == ""
+    assert module_0.get_closest_vowel("aeiou") == ""
 
-    # Adjacent vowels do not qualify
-    assert module_0.get_closest_vowel("boat") == ""
+    # Vowel adjacent to other vowels is not counted
+    assert module_0.get_closest_vowel("banana") == "a"
+    assert module_0.get_closest_vowel("beautiful") == "u"
 
-    # First and last characters are not considered
-    assert module_0.get_closest_vowel("apple") == ""
+    # No vowels between consonants
+    assert module_0.get_closest_vowel("bcdfg") == ""
 
-    # Words shorter than three characters
+    # Vowel at edge positions (index 0 or last index) is never returned
+    assert module_0.get_closest_vowel("abba") == ""      # 'a' at edges, no inner vowel
+    assert module_0.get_closest_vowel("cab") == "a"      # inner vowel valid
+
+    # Mixed case handling
+    assert module_0.get_closest_vowel("cAt") == "A"
+    assert module_0.get_closest_vowel("CcCc") == ""
+
+    # Multiple valid candidates: rightmost is returned
+    assert module_0.get_closest_vowel("tatar") == "a"
+    assert module_0.get_closest_vowel("meter") == "e"
+
+    # Word of exactly length 3
+    assert module_0.get_closest_vowel("bob") == "o"
+
+    print("All tests passed!")
+
+
+test_get_closest_vowel()
+
+# Generated at 2026-11-02 16:55:54.088994
+# Unit test for function get_closest_vowel
+def test_get_closest_vowel():
+    # Words with a vowel between two consonants
+    assert module_0.get_closest_vowel("yogurt") == "u"
+    assert module_0.get_closest_vowel("FULL") == "U"
+    assert module_0.get_closest_vowel("cat") == "a"
+    assert module_0.get_closest_vowel("banana") == "a"
+    assert module_0.get_closest_vowel("beautiful") == "u"
+    assert module_0.get_closest_vowel("rhythm") == ""
+
+    # Words where the vowel has a vowel neighbor (should be skipped)
+    assert module_0.get_closest_vowel("quick") == ""
+    assert module_0.get_closest_vowel("aeiou") == ""
+    assert module_0.get_closest_vowel("APPLE") == ""
+
+    # Words shorter than 3 characters
     assert module_0.get_closest_vowel("") == ""
     assert module_0.get_closest_vowel("a") == ""
-    assert module_0.get_closest_vowel("at") == ""
+    assert module_0.get_closest_vowel("ab") == ""
+    assert module_0.get_closest_vowel("ea") == ""
 
-    # No vowels
+    # Vowel at edge positions should not count (index 0 or len-1 excluded)
+    assert module_0.get_closest_vowel("abide") == "i"   # 'i' at index 2, neighbors 'b' and 'd'
+    assert module_0.get_closest_vowel("open") == ""     # vowels only at edges
+    assert module_0.get_closest_vowel("bUtter") == "e"  # lowercase/uppercase mix
+
+    print("All tests passed!")
+
+
+test_get_closest_vowel()
+
+# Generated at 2026-11-02 16:57:05.171339
+# Unit test for function get_closest_vowel
+def test_get_closest_vowel():
+    # nonce:c0209beb
+    # Standard cases: vowel between two consonants, searching from the right
+    assert module_0.get_closest_vowel("yogurt") == "u"
+    assert module_0.get_closest_vowel("FULL") == "U"
+    assert module_0.get_closest_vowel("banana") == "a"
+    assert module_0.get_closest_vowel("abCdef") == "e"
+    assert module_0.get_closest_vowel("cat") == "a"
+
+    # No qualifying vowel (vowel adjacent to another vowel, or at edges)
+    assert module_0.get_closest_vowel("quick") == ""
+    assert module_0.get_closest_vowel("aeiou") == ""
+    assert module_0.get_closest_vowel("aeiouXYZ") == ""
+    assert module_0.get_closest_vowel("abC") == ""
+    assert module_0.get_closest_vowel("apple") == ""
+
+    # Words shorter than 3 characters return ""
+    assert module_0.get_closest_vowel("ab") == ""
+    assert module_0.get_closest_vowel("a") == ""
+    assert module_0.get_closest_vowel("A") == ""
+    assert module_0.get_closest_vowel("") == ""
+
+    # Mixed case handling
+    assert module_0.get_closest_vowel("bEgIn") == "I"
+    assert module_0.get_closest_vowel("OrAnGe") == "n" or True  # sanity: 'g' not vowel, check below
+    # "OrAnGe": i=4 'G' no; i=3 'n' no; i=2 'A' vowel, word[3]='n' not, word[1]='r' not -> 'A'
+    assert module_0.get_closest_vowel("OrAnGe") == "A"
+
+    # All consonants
+    assert module_0.get_closest_vowel("bcdfg") == ""
+    assert module_0.get_closest_vowel("xyz") == ""
+
+    # Single vowel sandwiched between consonants at the last valid index
+    assert module_0.get_closest_vowel("abCde") == "C" or True  # 'C' not vowel; verify real result
+    # "abCde": i=3 'd' no; i=2 'C' no; i=1 'b' no -> ""
+    assert module_0.get_closest_vowel("abCde") == ""
+
+    # Vowel found at the earliest possible interior index
+    assert module_0.get_closest_vowel("xay") == "a"
+
+# Generated at 2026-11-02 16:58:44.999745
+# Unit test for function get_closest_vowel
+def test_get_closest_vowel():
+    # Basic cases
+    assert module_0.get_closest_vowel("yogurt") == "u"
+    assert module_0.get_closest_vowel("FULL") == "U"
+    assert module_0.get_closest_vowel("quick") == ""  # 'u' and 'i' adjacent to each other
+    assert module_0.get_closest_vowel("cat") == "a"
+    assert module_0.get_closest_vowel("abc") == ""  # no vowels
+
+    # Words shorter than 3 characters
+    assert module_0.get_closest_vowel("") == ""
+    assert module_0.get_closest_vowel("a") == ""
+    assert module_0.get_closest_vowel("ab") == ""
+    assert module_0.get_closest_vowel("Au") == ""
+
+    # All vowels adjacent -> no qualifying vowel
+    assert module_0.get_closest_vowel("aei") == ""
+    assert module_0.get_closest_vowel("aeiou") == ""
+    assert module_0.get_closest_vowel("XaeiouX") == ""
+    assert module_0.get_closest_vowel("XeaX") == ""
+
+    # Uppercase vowels are recognized
+    assert module_0.get_closest_vowel("bAc") == "A"
+    assert module_0.get_closest_vowel("XEXO") == "E"
+
+    # Scans right-to-left: returns rightmost qualifying vowel
+    assert module_0.get_closest_vowel("uXeXoX") == "o"
+    assert module_0.get_closest_vowel("bXaXeXeX") == "e"
+
+    # First and last characters are never eligible
+    assert module_0.get_closest_vowel("aqoXe") == "o"
+    assert module_0.get_closest_vowel("aXoXe") == "o"
+
+    # No vowels at all
     assert module_0.get_closest_vowel("rhythm") == ""
+    assert module_0.get_closest_vowel("bcdfg") == ""
+    assert module_0.get_closest_vowel("12345") == ""
+
+
+if __name__ == "__main__":
+    test_get_closest_vowel()
+    print("All tests passed!")

@@ -2,30 +2,32 @@
 import f038 as module_0
 
 def test_case_0():
-    str_0 = 'bca'
-    var_0 = module_0.decode_cyclic(str_0)
-    assert var_0 == 'abc'
-    str_1 = 'cab'
-    var_1 = module_0.decode_cyclic(str_1)
-    assert var_1 == 'bca'
-    str_2 = 'abc'
-    var_2 = module_0.decode_cyclic(str_2)
-    assert var_2 == 'cab'
-    str_3 = ''
-    var_3 = module_0.decode_cyclic(str_3)
-    assert var_3 == ''
-    str_4 = 'a'
-    var_4 = module_0.decode_cyclic(str_4)
-    assert var_4 == 'a'
-    str_5 = 'ab'
-    var_5 = module_0.decode_cyclic(str_5)
-    assert var_5 == 'ab'
-    var_6 = module_0.decode_cyclic(str_0)
-    assert var_6 == 'abc'
-    var_7 = module_0.encode_cyclic(str_1)
-    assert var_7 == 'abc'
-
-def test_case_1():
     str_0 = ''
     var_0 = module_0.encode_cyclic(str_0)
     assert var_0 == ''
+    str_1 = 'a'
+    var_1 = module_0.encode_cyclic(str_1)
+    assert var_1 == 'a'
+    str_2 = 'ab'
+    var_2 = module_0.encode_cyclic(str_2)
+    assert var_2 == 'ab'
+    str_3 = 'abc'
+    var_3 = module_0.encode_cyclic(str_3)
+    assert var_3 == 'bca'
+    str_4 = 'abcd'
+    var_4 = module_0.encode_cyclic(str_4)
+    assert var_4 == 'bcad'
+    str_5 = 'abcde'
+    var_5 = module_0.encode_cyclic(str_5)
+    assert var_5 == 'bcade'
+    str_6 = 'abcdef'
+    var_6 = module_0.encode_cyclic(str_6)
+    assert var_6 == 'bcaefd'
+    str_7 = 'abcdefgh'
+    var_7 = module_0.encode_cyclic(str_7)
+    assert var_7 == 'bcaefdh'
+    assert var_7 == 'bcaefdgh'
+    var_8 = module_0.decode_cyclic(str_0)
+    assert var_8 == ''
+    var_9 = module_0.encode_cyclic(var_8)
+    assert var_9 == ''

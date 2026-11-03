@@ -8,29 +8,40 @@ from f090 import next_smallest
 
 
 def test_next_smallest_returns_second_smallest():
+    # Covers line 3 (sorted(set(...))) and the len >= 2 branch of line 4.
     assert next_smallest([4, 1, 3, 2]) == 2
 
 
-def test_next_smallest_deduplicates_before_sorting():
-    # duplicates are removed by set(), so second smallest is 2, not 1
-    assert next_smallest([1, 1, 2, 3]) == 2
+def test_next_smallest_deduplicates_and_sorts():
+    # Duplicates are removed by set(); result is the second distinct smallest.
+    assert next_smallest([5, 1, 1, 5, 3]) == 3
 
 
-def test_next_smallest_returns_none_for_single_element():
-    assert next_smallest([5]) is None
+def test_next_smallest_with_strings():
+    # Works with any orderable type.
+    assert next_smallest(["banana", "apple", "cherry"]) == "banana"
 
 
-def test_next_smallest_returns_none_for_empty_list():
-    assert next_smallest([]) is None
-
-
-def test_next_smallest_returns_none_when_all_duplicates():
-    # set() collapses to one element -> len < 2 -> None
+def test_next_smallest_all_duplicates_returns_none():
+    # Covers the len(lst) < 2 branch of line 4 (duplicates collapse to one).
     assert next_smallest([7, 7, 7]) is None
 
 
-def test_next_smallest_does_not_mutate_input():
-    original = [3, 1, 2]
-    snapshot = list(original)
-    next_smallest(original)
-    assert original == snapshot
+def test_next_smallest_single_element_returns_none():
+    assert next_smallest([1]) is None
+
+
+def test_next_smallest_empty_returns_none():
+    assert next_smallest([]) is None
+
+
+def test_next_smallest_two_elements():
+    # Boundary case: exactly two distinct elements.
+    assert next_smallest([2, 1]) == 2
+    assert next_smallest([1, 2]) == 2
+
+
+def test_next_smallest_unhashable_input_raises():
+    # set(lst) on unhashable elements raises TypeError; documents that behavior.
+    with pytest.raises(TypeError):
+        next_smallest([[1, 2], [3, 4]])

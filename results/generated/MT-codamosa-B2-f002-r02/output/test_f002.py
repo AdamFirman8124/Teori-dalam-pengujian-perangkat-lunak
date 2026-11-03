@@ -6,31 +6,27 @@ def test_case_0():
     float_0 = 3.5
     float_1 = module_0.truncate_number(float_0)
     assert float_1 == pytest.approx(0.5, abs=0.01, rel=0.01)
-    float_2 = 123.456
+    float_2 = 5.0
     float_3 = module_0.truncate_number(float_2)
-    assert float_3 == pytest.approx(0.45600000000000307, abs=0.01, rel=0.01)
-    float_4 = 0.25
+    assert float_3 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    float_4 = 1.0
     float_5 = module_0.truncate_number(float_4)
-    assert float_5 == pytest.approx(0.25, abs=0.01, rel=0.01)
-    float_6 = 7.0
+    assert float_5 == pytest.approx(0.0, abs=0.01, rel=0.01)
+    float_6 = 0.0
     float_7 = module_0.truncate_number(float_6)
     assert float_7 == pytest.approx(0.0, abs=0.01, rel=0.01)
-    float_8 = 100.0
+    float_8 = 0.25
     float_9 = module_0.truncate_number(float_8)
-    assert float_9 == pytest.approx(0.0, abs=0.01, rel=0.01)
-    float_10 = -1.5
+    assert float_9 == pytest.approx(0.25, abs=0.01, rel=0.01)
+    float_10 = 123.456
     float_11 = module_0.truncate_number(float_10)
-    assert float_11 == pytest.approx(0.5, abs=0.01, rel=0.01)
-    float_12 = -3.0
+    assert float_11 == pytest.approx(0.45600000000000307, abs=0.01, rel=0.01)
+    float_12 = 3.999
     float_13 = module_0.truncate_number(float_12)
-    assert float_13 == pytest.approx(0.0, abs=0.01, rel=0.01)
-    float_14 = 1000000000.0
-    float_15 = 0.75
-    var_0 = float_14 + float_15
-    float_16 = module_0.truncate_number(var_0)
-    assert float_16 == pytest.approx(0.75, abs=0.01, rel=0.01)
-    float_17 = 1e-09
-    float_18 = module_0.truncate_number(float_17)
-    assert float_18 == pytest.approx(1e-09, abs=0.01, rel=0.01)
-    str_0 = 'All tests passed!'
-    var_1 = print(str_0)
+    assert float_13 == pytest.approx(0.9990000000000001, abs=0.01, rel=0.01)
+    float_14 = 2.0001
+    float_15 = module_0.truncate_number(float_14)
+    assert float_15 == pytest.approx(0.00010000000000021103, abs=0.01, rel=0.01)
+    float_16 = -1.5
+    float_17 = module_0.truncate_number(float_16)
+    assert float_17 == pytest.approx(0.5, abs=0.01, rel=0.01)

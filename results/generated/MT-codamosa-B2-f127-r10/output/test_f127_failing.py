@@ -3,58 +3,40 @@ import f127 as module_0
 
 def test_case_0():
     try:
-        int_0 = 5
-        int_1 = [int_0, int_0]
-        int_2 = 3
-        int_3 = 7
-        int_4 = [int_2, int_3]
-        var_0 = module_0.intersection(int_1, int_4)
-        assert var_0 == 'YES'
-        assert var_0 == 'NO'
-        int_5 = 6
-        int_6 = [int_0, int_5]
-        int_7 = 8
-        int_8 = [int_2, int_7]
-        var_1 = module_0.intersection(int_6, int_8)
-        assert var_1 == 'NO'
-        int_9 = [int_2, int_0]
-        int_10 = 2
-        int_11 = 4
-        int_12 = [int_2, int_7]
-        int_13 = [int_10, int_0]
-        var_2 = module_0.intersection(int_12, int_13)
-        assert var_2 == 'YES'
-        int_14 = [int_7, int_11]
-        var_3 = module_0.intersection(int_14, int_9)
-        assert var_3 == 'NO'
-        int_15 = -1
-        int_16 = [int_15, int_2]
-        var_4 = module_0.intersection(int_7, int_16)
-        assert var_4 == 'YES'
-    except BaseException:
-        pass
-
-def test_case_1():
-    try:
         int_0 = 1
-        int_1 = 5
-        int_2 = [int_0, int_1]
-        int_3 = 3
-        int_4 = 7
-        int_5 = [int_3, int_4]
-        var_0 = module_0.intersection(int_2, int_5)
-        assert var_0 == 'YES'
-        int_6 = 6
-        int_7 = [int_0, int_6]
-        int_8 = 8
-        int_9 = [int_3, int_8]
-        var_1 = module_0.intersection(int_7, int_9)
+        int_1 = (int_0, int_0)
+        int_2 = 3
+        int_3 = (int_2, int_2)
+        var_0 = module_0.intersection(int_1, int_3)
+        assert var_0 == 'NO'
+        int_4 = -1
+        int_5 = (int_4, int_0)
+        int_6 = 0
+        int_7 = 4
+        int_8 = (int_6, int_7)
+        var_1 = module_0.intersection(int_5, int_8)
         assert var_1 == 'NO'
-        assert var_1 == 'YES'
-        int_10 = 2
-        int_11 = [int_0, int_10]
-        int_12 = 4
-        var_2 = module_0.intersection(int_11, int_12)
-        assert var_2 == 'NO'
+        int_9 = -3
+        int_10 = -1
+        int_11 = (int_9, int_10)
+        int_12 = -5
+        int_13 = 5
+        int_14 = (int_12, int_13)
+        var_2 = module_0.intersection(int_11, int_14)
+        assert var_2 == 'YES'
+        int_15 = (int_0, int_2)
+        int_16 = (int_7, int_13)
+        var_3 = module_0.intersection(int_15, int_16)
+        assert var_3 == 'NO'
+        int_17 = 10
+        int_18 = (int_0, int_17)
+        int_19 = 8
+        int_20 = (int_10, int_19)
+        var_4 = module_0.intersection(int_18, int_20)
+        assert var_4 == 'NO'
+        assert var_4 == 'YES'
+        int_21 = (int_6, int_13)
+        var_5 = module_0.intersection(int_21, int_6)
+        assert var_5 == 'YES'
     except BaseException:
         pass

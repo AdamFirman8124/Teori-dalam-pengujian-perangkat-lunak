@@ -8,45 +8,45 @@ from f009 import rolling_max
 
 
 def test_rolling_max_empty_list():
-    """Covers lines 6-7 (initialization) and line 17 (return) with an empty input."""
+    """Covers lines 6, 7 and 17 (loop never entered)."""
     assert rolling_max([]) == []
 
 
 def test_rolling_max_single_element():
-    """Covers the 'running_max is None' branch (lines 10-11) with one element."""
-    assert rolling_max([5]) == [5]
+    """Covers lines 9, 10, 11 and 15 (first-iteration branch)."""
+    assert rolling_max([7]) == [7]
 
 
 def test_rolling_max_increasing():
-    """Covers the else branch (line 13) where each new element is larger."""
+    """Covers line 13 (else branch) with strictly increasing values."""
     assert rolling_max([1, 2, 3, 4]) == [1, 2, 3, 4]
 
 
 def test_rolling_max_decreasing():
-    """Covers the else branch (line 13) where max() keeps the previous value."""
-    assert rolling_max([4, 3, 2, 1]) == [4, 4, 4, 4]
+    """Covers line 13 with decreasing values (max keeps previous)."""
+    assert rolling_max([5, 4, 3, 2, 1]) == [5, 5, 5, 5, 5]
 
 
 def test_rolling_max_mixed():
-    """Covers both branches and verifies the full rolling-max postcondition."""
-    numbers = [2, 5, 1, 3, 0, 8]
-    expected = [2, 5, 5, 5, 5, 8]
-    result = rolling_max(numbers)
-    assert result == expected
-    # Postcondition: result is non-decreasing and each entry is the max of the prefix.
-    for i in range(len(numbers)):
-        assert result[i] == max(numbers[: i + 1])
-    assert result == sorted(result)
+    """Covers both branches of the if/else across a mixed sequence."""
+    assert rolling_max([3, 1, 4, 1, 5, 2]) == [3, 3, 4, 4, 5, 5]
 
 
-def test_rolling_max_with_negatives():
-    """Covers both branches with negative numbers, including None-branch first element."""
-    assert rolling_max([-3, -1, -7, -2]) == [-3, -1, -1, -1]
+def test_rolling_max_with_duplicates():
+    """Equal values still take the else branch (max of equal values)."""
+    assert rolling_max([2, 2, 2]) == [2, 2, 2]
+
+
+def test_rolling_max_negative_numbers():
+    """Works correctly with negative values."""
+    assert rolling_max([-5, -1, -3, -2]) == [-5, -1, -1, -1]
 
 
 def test_rolling_max_does_not_mutate_input():
-    """Ensures the function has no side effects on its argument (state-pollution check)."""
+    """Postcondition: the input list is left unchanged."""
     numbers = [3, 1, 2]
     original = list(numbers)
-    rolling_max(numbers)
+    result = rolling_max(numbers)
     assert numbers == original
+    assert result == [3, 3, 3]
+    assert result is not numbers

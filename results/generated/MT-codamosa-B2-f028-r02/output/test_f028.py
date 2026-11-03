@@ -6,37 +6,28 @@ def test_case_0():
     str_0 = module_0.concatenate(var_0)
     assert str_0 == ''
     str_1 = 'a'
-    str_2 = [str_1]
-    str_3 = module_0.concatenate(str_2)
-    assert str_3 == 'a'
-    str_4 = 'b'
-    str_5 = 'c'
-    str_6 = [str_1, str_4, str_5]
-    str_7 = module_0.concatenate(str_6)
-    assert str_7 == 'abc'
-    str_8 = 'hello'
-    str_9 = ' '
-    str_10 = 'world'
-    str_11 = [str_8, str_9, str_10]
-    str_12 = module_0.concatenate(str_11)
-    assert str_12 == 'hello world'
-    str_13 = ''
-    str_14 = 'ab'
-    str_15 = 'cd'
-    str_16 = [str_13, str_14, str_13, str_15]
-    str_17 = module_0.concatenate(str_16)
-    assert str_17 == 'abcd'
-    str_18 = 'x'
-    str_19 = 'y'
-    str_20 = [str_18, str_19]
+    str_2 = 'b'
+    str_3 = 'c'
+    str_4 = [str_1, str_2, str_3]
+    str_5 = module_0.concatenate(str_4)
+    assert str_5 == 'abc'
+    str_6 = 'x'
+    str_7 = [str_6]
+    str_8 = module_0.concatenate(str_7)
+    assert str_8 == 'x'
+    str_9 = ''
+    str_10 = [str_1, str_9, str_2]
+    str_11 = module_0.concatenate(str_10)
+    assert str_11 == 'ab'
+    str_12 = 'hello'
+    str_13 = ' '
+    str_14 = 'world'
+    str_15 = [str_12, str_13, str_14]
+    str_16 = module_0.concatenate(str_15)
+    assert str_16 == 'hello world'
+    str_17 = 'abc'
+    str_18 = 'def'
+    str_19 = 'ghi'
+    str_20 = [str_17, str_18, str_19]
     str_21 = module_0.concatenate(str_20)
-    assert str_21 == 'xy'
-    str_22 = [str_19, str_18]
-    str_23 = module_0.concatenate(str_22)
-    assert str_23 == 'yx'
-    var_1 = str_21 != str_23
-    str_24 = 'hÃ©llo'
-    str_25 = 'ð\x9f\x8e\x89'
-    str_26 = [str_24, str_25]
-    str_27 = module_0.concatenate(str_26)
-    assert str_27 == 'hÃ©lloð\x9f\x8e\x89'
+    assert str_21 == 'abcdefghi'

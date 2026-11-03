@@ -2,7 +2,48 @@
 import f149 as module_0
 
 def test_case_0():
-    str_0 = '<aDsP)/n`'
-    list_0 = [str_0, str_0, str_0]
-    var_0 = module_0.sorted_list_sum(list_0)
-    assert var_0 == []
+    str_0 = 'aa'
+    str_1 = 'a'
+    str_2 = 'aaa'
+    str_3 = [str_0, str_1, str_2]
+    var_0 = module_0.sorted_list_sum(str_3)
+    assert var_0 == ['aa']
+    str_4 = 'ab'
+    str_5 = 'cd'
+    str_6 = [str_4, str_1, str_2, str_5]
+    var_1 = module_0.sorted_list_sum(str_6)
+    assert var_1 == ['ab', 'cd']
+    var_2 = []
+    var_3 = module_0.sorted_list_sum(var_2)
+    assert var_3 == []
+    str_7 = 'abc'
+    str_8 = 'abcde'
+    str_9 = [str_1, str_7, str_8]
+    var_4 = module_0.sorted_list_sum(str_9)
+    assert var_4 == []
+    str_10 = 'dddd'
+    str_11 = 'bb'
+    str_12 = 'cc'
+    str_13 = [str_10, str_11, str_12]
+    var_5 = module_0.sorted_list_sum(str_13)
+    assert var_5 == ['bb', 'cc', 'dddd']
+    str_14 = 'dcba'
+    str_15 = 'abcd'
+    str_16 = [str_14, str_15, str_4]
+    var_6 = module_0.sorted_list_sum(str_16)
+    assert var_6 == ['ab', 'abcd', 'dcba']
+    str_17 = 'eee'
+    str_18 = 'ef'
+    str_19 = 'ff'
+    str_20 = 'gh'
+    str_21 = [str_17, str_18, str_19, str_20]
+    var_7 = module_0.sorted_list_sum(str_21)
+    assert var_7 == ['ef', 'ff', 'gh']
+    str_22 = 'test'
+    str_23 = [str_22]
+    var_8 = module_0.sorted_list_sum(str_23)
+    assert var_8 == ['test']
+    str_24 = 'tests'
+    str_25 = [str_24]
+    var_9 = module_0.sorted_list_sum(str_25)
+    assert var_9 == []

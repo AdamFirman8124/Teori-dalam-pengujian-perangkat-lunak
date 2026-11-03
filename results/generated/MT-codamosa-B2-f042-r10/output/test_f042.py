@@ -12,8 +12,20 @@ def test_case_0():
     var_2 = module_0.incr_list(var_1)
     assert var_2 == []
     int_4 = -1
-    int_5 = 0
-    int_6 = 5
+    int_5 = -2
+    int_6 = 0
     int_7 = [int_4, int_5, int_6]
     var_3 = module_0.incr_list(int_7)
-    assert var_3 == [0, 1, 6]
+    assert var_3 == [0, -1, 1]
+    int_8 = 5
+    int_9 = [int_8]
+    var_4 = module_0.incr_list(int_9)
+    assert var_4 == [6]
+    int_10 = 1000
+    int_11 = 999999
+    int_12 = [int_10, int_11]
+    var_5 = module_0.incr_list(int_12)
+    assert var_5 == [1001, 1000000]
+    int_13 = [int_0, int_1, int_2]
+    var_6 = module_0.incr_list(int_13)
+    assert var_6 == [2, 3, 4]

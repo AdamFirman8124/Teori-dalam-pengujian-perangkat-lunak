@@ -2,38 +2,63 @@
 import f013 as module_0
 
 def test_case_0():
-    int_0 = 2048
-    int_1 = 221
-    int_2 = -2457
-    int_3 = module_0.greatest_common_divisor(int_1, int_2)
-    assert int_3 == -13
-    int_4 = -1562
-    int_5 = module_0.greatest_common_divisor(int_3, int_4)
-    assert int_5 == -1
-    int_6 = 4669
-    int_7 = module_0.greatest_common_divisor(int_0, int_6)
-    assert int_7 == 1
+    int_0 = 12
+    int_1 = 8
+    int_2 = module_0.greatest_common_divisor(int_0, int_1)
+    assert int_2 == 4
+    int_3 = module_0.greatest_common_divisor(int_1, int_0)
+    assert int_3 == 4
+    int_4 = 48
+    int_5 = 18
+    int_6 = module_0.greatest_common_divisor(int_4, int_5)
+    assert int_6 == 6
+    int_7 = module_0.greatest_common_divisor(int_5, int_4)
+    assert int_7 == 6
+    int_8 = 7
+    int_9 = 13
+    int_10 = module_0.greatest_common_divisor(int_8, int_9)
+    assert int_10 == 1
+    int_11 = 17
+    int_12 = 5
+    int_13 = module_0.greatest_common_divisor(int_11, int_12)
+    assert int_13 == 1
+    int_14 = 10
+    int_15 = module_0.greatest_common_divisor(int_12, int_14)
+    assert int_15 == 5
+    int_16 = module_0.greatest_common_divisor(int_14, int_12)
+    assert int_16 == 5
+    int_17 = 0
+    int_18 = module_0.greatest_common_divisor(int_17, int_12)
+    assert int_18 == 5
+    int_19 = module_0.greatest_common_divisor(int_12, int_17)
+    assert int_19 == 5
+    int_20 = module_0.greatest_common_divisor(int_8, int_8)
+    assert int_20 == 7
+    int_21 = 100
+    int_22 = module_0.greatest_common_divisor(int_21, int_21)
+    assert int_22 == 100
+    int_23 = -12
+    int_24 = module_0.greatest_common_divisor(int_23, int_1)
+    assert int_24 == 4
+    int_25 = -8
+    int_26 = module_0.greatest_common_divisor(int_0, int_25)
+    assert int_26 == 4
+    assert int_26 == -4
+    int_27 = -12
+    int_28 = -8
+    int_29 = module_0.greatest_common_divisor(int_27, int_28)
+    assert int_29 == 4
+    assert int_29 == -4
+    int_30 = 270
+    int_31 = 192
+    int_32 = module_0.greatest_common_divisor(int_30, int_31)
+    assert int_32 == 6
+    int_33 = 1000000
+    int_34 = 500000
+    int_35 = module_0.greatest_common_divisor(int_33, int_34)
+    assert int_35 == 500000
+    str_0 = 'All tests passed!'
+    var_0 = print(str_0)
 
 def test_case_1():
-    int_0 = -1523
-    int_1 = 2970
-    int_2 = -1975
-    int_3 = None
-    int_4 = module_0.greatest_common_divisor(int_2, int_3)
-    assert int_4 == -1975
-    int_5 = module_0.greatest_common_divisor(int_1, int_0)
-    assert int_5 == -1
-    int_6 = 1721
-    int_7 = module_0.greatest_common_divisor(int_0, int_6)
-    assert int_7 == 1
-    int_8 = 844
-    int_9 = module_0.greatest_common_divisor(int_8, int_8)
-    assert int_9 == 844
-    int_10 = -648
-    int_11 = module_0.greatest_common_divisor(int_0, int_2)
-    assert int_11 == -1
-    int_12 = -2110
-    int_13 = module_0.greatest_common_divisor(int_12, int_4)
-    assert int_13 == -5
-    int_14 = module_0.greatest_common_divisor(int_8, int_10)
-    assert int_14 == -4
+    pass

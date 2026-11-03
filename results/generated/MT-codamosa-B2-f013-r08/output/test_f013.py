@@ -8,12 +8,50 @@ def test_case_0():
     assert int_2 == 6
     int_3 = module_0.greatest_common_divisor(int_1, int_0)
     assert int_3 == 6
-    int_4 = 270
-    int_5 = 192
+    int_4 = 10
+    int_5 = 25
     int_6 = module_0.greatest_common_divisor(int_4, int_5)
-    assert int_6 == 6
-
-def test_case_1():
-    int_0 = 2459
-    int_1 = module_0.greatest_common_divisor(int_0, int_0)
-    assert int_1 == 2459
+    assert int_6 == 5
+    int_7 = 7
+    int_8 = 13
+    int_9 = module_0.greatest_common_divisor(int_7, int_8)
+    assert int_9 == 1
+    int_10 = 4
+    int_11 = 12
+    int_12 = module_0.greatest_common_divisor(int_10, int_11)
+    assert int_12 == 4
+    int_13 = module_0.greatest_common_divisor(int_11, int_10)
+    assert int_13 == 4
+    int_14 = 5
+    int_15 = module_0.greatest_common_divisor(int_14, int_14)
+    assert int_15 == 5
+    int_16 = 100
+    int_17 = module_0.greatest_common_divisor(int_16, int_16)
+    assert int_17 == 100
+    int_18 = 0
+    int_19 = module_0.greatest_common_divisor(int_18, int_14)
+    assert int_19 == 5
+    int_20 = module_0.greatest_common_divisor(int_14, int_18)
+    assert int_20 == 5
+    int_21 = module_0.greatest_common_divisor(int_18, int_18)
+    assert int_21 == 0
+    int_22 = 17
+    int_23 = 19
+    int_24 = module_0.greatest_common_divisor(int_22, int_23)
+    assert int_24 == 1
+    int_25 = 2
+    var_0 = int_25 ** int_4
+    int_26 = 3
+    var_1 = var_0 * int_26
+    var_2 = int_25 ** int_4
+    var_3 = var_2 * int_14
+    int_27 = module_0.greatest_common_divisor(var_1, var_3)
+    assert int_27 == 1024
+    int_28 = 1
+    int_29 = module_0.greatest_common_divisor(int_28, int_28)
+    assert int_29 == 1
+    int_30 = 999
+    int_31 = module_0.greatest_common_divisor(int_28, int_30)
+    assert int_31 == 1
+    str_0 = 'All tests passed!'
+    var_4 = print(str_0)

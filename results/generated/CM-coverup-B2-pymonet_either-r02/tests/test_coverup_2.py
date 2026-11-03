@@ -7,39 +7,67 @@ import pytest
 from pymonet.either import Either, Left, Right
 
 
-def test_eq_same_right_values():
-    """Lines 18-20: equal Rights compare equal."""
-    assert Right(42) == Right(42)
+def test_eq_left_with_equal_left_is_true():
+    """Left(1) == Left(1): isinstance, value and is_right all match -> True.
+
+    Exercises the full True path through lines 18-20.
+    """
+    result = Left(1).__eq__(Left(1))
+    assert result is True
+    assert Left(1) == Left(1)
 
 
-def test_eq_same_left_values():
-    """Lines 18-20: equal Lefts compare equal."""
-    assert Left("err") == Left("err")
+def test_eq_left_with_non_either_is_false():
+    """Left(1) == <non-Either>: isinstance check fails -> False.
+
+    Exercises the False branch of the isinstance check on line 18.
+    """
+    assert Left(1).__eq__(1) is False
+    assert Left(1).__eq__(None) is False
+    assert (Left(1) == 1) is False
 
 
-def test_eq_not_an_either():
-    """Line 18 short-circuits: non-Either operand is not equal."""
-    assert Right(42) != 42
-    assert Left("err") != "err"
-    assert Right(42) != None  # noqa: E711
+def test_eq_left_with_left_of_different_value_is_false():
+    """Left(1) == Left(2): values differ -> False.
+
+    Exercises the False branch of the value comparison on line 19.
+    """
+    assert Left(1).__eq__(Left(2)) is False
+    assert (Left(1) == Left(2)) is False
 
 
-def test_eq_different_values():
-    """Line 19 short-circuits: same side, different values are not equal."""
-    assert Right(42) != Right(43)
-    assert Left("err") != Left("other")
+def test_eq_left_with_right_of_same_value_is_false():
+    """Left(1) == Right(1): values equal but is_right differs -> False.
+
+    Exercises the False branch of the is_right comparison on line 20.
+    """
+    assert Left(1).__eq__(Right(1)) is False
+    assert (Left(1) == Right(1)) is False
 
 
-def test_eq_different_sides_same_value():
-    """Line 20: same value but different sides are not equal."""
-    assert Right(42) != Left(42)
+def test_eq_right_with_equal_right_is_true():
+    """Right(1) == Right(1): all conditions hold -> True.
+
+    Exercises the full True path through lines 18-20 for the Right subclass.
+    """
+    result = Right(1).__eq__(Right(1))
+    assert result is True
+    assert Right(1) == Right(1)
 
 
-def test_eq_against_subclass_instance():
-    """Line 18: any Either subclass instance passes the isinstance check."""
-    class CustomEither(Either):
-        def is_right(self):
-            return True
+def test_eq_right_with_right_of_different_value_is_false():
+    """Right(1) == Right(2): values differ -> False."""
+    assert Right(1).__eq__(Right(2)) is False
+    assert (Right(1) == Right(2)) is False
 
-    assert Right(1) == CustomEither(1)
-    assert CustomEither(1) == Right(1)
+
+def test_eq_right_with_left_of_same_value_is_false():
+    """Right(1) == Left(1): values equal but is_right differs -> False."""
+    assert Right(1).__eq__(Left(1)) is False
+    assert (Right(1) == Left(1)) is False
+
+
+def test_eq_right_with_non_either_is_false():
+    """Right(1) == <non-Either>: isinstance check fails -> False."""
+    assert Right(1).__eq__('not an either') is False
+    assert (Right(1) == 'not an either') is False

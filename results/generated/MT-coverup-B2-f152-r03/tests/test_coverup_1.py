@@ -8,18 +8,15 @@ from f152 import compare
 
 
 def test_compare_returns_absolute_differences():
-    game = [1, 2, 3, 4, 5, 1]
-    guess = [1, 2, 3, 4, 1, -1]
-    result = compare(game, guess)
-    assert result == [0, 0, 0, 0, 4, 2]
-    assert all(isinstance(v, int) for v in result)
+    result = compare([1, 2, 3], [4, 5, 3])
+    assert result == [3, 3, 0]
 
 
-def test_compare_empty_inputs():
-    assert compare([], []) == []
+def test_compare_with_negative_differences():
+    result = compare([5, 0, -2], [2, 3, 1])
+    assert result == [3, 3, 3]
 
 
-def test_compare_negative_differences():
-    game = [10, -5, 0]
-    guess = [3, 2, 7]
-    assert compare(game, guess) == [7, 7, 7]
+def test_compare_with_empty_lists():
+    result = compare([], [])
+    assert result == []

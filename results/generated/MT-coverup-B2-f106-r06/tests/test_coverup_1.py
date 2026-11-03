@@ -7,46 +7,32 @@ import pytest
 from f106 import f
 
 
-def test_f_odd_branch_sums():
-    # i = 1, 3 -> triangular numbers
-    assert f(3) == [1, 2, 6]
-
-
-def test_f_even_branch_factorials():
-    # i = 2, 4 -> factorials
-    assert f(4) == [1, 2, 6, 24]
-
-
-def test_f_mixed_branches():
+def test_f_mixed_even_and_odd():
+    """
+    Covers both branches of the if/else for multiple iterations:
+      - even i  -> factorial of i (lines 6-8)
+      - odd i   -> sum 1..i (lines 10-12)
+    and the final return (line 13).
+    Expected for n=5:
+      i=1 (odd):  sum 1..1   = 1
+      i=2 (even): 2!         = 2
+      i=3 (odd):  sum 1..3   = 6
+      i=4 (even): 4!         = 24
+      i=5 (odd):  sum 1..5   = 15
+    """
     assert f(5) == [1, 2, 6, 24, 15]
 
 
-def test_f_zero_returns_empty_list():
-    assert f(0) == []
-
-
-def test_f_one_only_odd_branch():
+def test_f_single_odd():
+    """Covers the odd branch with a single iteration (loop entered once)."""
     assert f(1) == [1]
 
 
-def test_f_two_only_even_branch():
+def test_f_single_even():
+    """Covers the even branch with a single iteration (loop entered once)."""
     assert f(2) == [1, 2]
 
 
-def test_f_returns_new_list_each_call():
-    first = f(3)
-    second = f(3)
-    assert first == second
-    assert first is not second
-    first.append(999)
-    assert f(3) == [1, 2, 6]
-
-
-def test_f_negative_returns_empty_list():
-    assert f(-5) == []
-
-
-def test_f_larger_input_length_and_values():
-    result = f(6)
-    assert len(result) == 6
-    assert result == [1, 2, 6, 24, 15, 720]
+def test_f_zero_iterations():
+    """Covers the zero-iteration branch of the for loop (n < 1)."""
+    assert f(0) == []

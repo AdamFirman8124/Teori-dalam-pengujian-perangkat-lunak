@@ -14,3 +14,11 @@ def test_case_0():
     int_3 = 4
     var_3 = module_0.starts_one_ends(int_3)
     assert var_3 == 1800
+    int_4 = 5
+    var_4 = module_0.starts_one_ends(int_4)
+    assert var_4 == 18000
+    int_5 = 10
+    var_5 = module_0.starts_one_ends(int_5)
+    assert var_5 == 1800000000
+    str_0 = 'All tests passed!'
+    var_6 = print(str_0)

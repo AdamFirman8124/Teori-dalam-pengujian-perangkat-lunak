@@ -6,21 +6,50 @@ def test_case_0():
     str_1 = '110'
     str_2 = module_0.string_xor(str_0, str_1)
     assert str_2 == '100'
-    str_3 = '111'
-    str_4 = '000'
-    str_5 = module_0.string_xor(str_3, str_4)
-    assert str_5 == '111'
-    str_6 = '1010'
-    str_7 = module_0.string_xor(str_6, str_6)
-    assert str_7 == '0000'
-    str_8 = '1'
-    str_9 = '0'
-    str_10 = module_0.string_xor(str_8, str_9)
-    assert str_10 == '1'
-    str_11 = ''
-    str_12 = module_0.string_xor(str_11, str_11)
-    assert str_12 == ''
-    str_13 = '1101'
-    str_14 = '0110'
-    str_15 = module_0.string_xor(str_13, str_14)
-    assert str_15 == '1011'
+    str_3 = '0000'
+    str_4 = module_0.string_xor(str_3, str_3)
+    assert str_4 == '0000'
+    str_5 = '1111'
+    str_6 = module_0.string_xor(str_5, str_5)
+    assert str_6 == '0000'
+    str_7 = module_0.string_xor(str_5, str_3)
+    assert str_7 == '1111'
+    str_8 = module_0.string_xor(str_3, str_5)
+    assert str_8 == '1111'
+    str_9 = '1'
+    str_10 = module_0.string_xor(str_9, str_9)
+    assert str_10 == '0'
+    str_11 = '0'
+    str_12 = module_0.string_xor(str_9, str_11)
+    assert str_12 == '1'
+    str_13 = module_0.string_xor(str_11, str_9)
+    assert str_13 == '1'
+    str_14 = module_0.string_xor(str_11, str_11)
+    assert str_14 == '0'
+    str_15 = '1010'
+    str_16 = module_0.string_xor(str_15, str_15)
+    assert str_16 == '0000'
+    str_17 = '0101'
+    str_18 = module_0.string_xor(str_15, str_17)
+    assert str_18 == '1111'
+    str_19 = '111000'
+    str_20 = '101010'
+    str_21 = module_0.string_xor(str_19, str_20)
+    assert str_21 == '010010'
+    str_22 = '110100'
+    str_23 = '011010'
+    str_24 = module_0.string_xor(str_22, str_23)
+    assert str_24 == '101110'
+    str_25 = module_0.string_xor(str_23, str_22)
+    assert str_25 == '101110'
+    str_26 = ''
+    str_27 = module_0.string_xor(str_26, str_26)
+    assert str_27 == ''
+    str_28 = 'abc'
+    str_29 = module_0.string_xor(str_28, str_28)
+    assert str_29 == '000'
+    str_30 = 'abd'
+    str_31 = module_0.string_xor(str_28, str_30)
+    assert str_31 == '001'
+    str_32 = 'All tests passed!'
+    var_0 = print(str_32)

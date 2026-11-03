@@ -1,1041 +1,677 @@
 
 
-# Generated at 2026-10-24 11:57:28.766144
+# Generated at 2026-11-01 22:01:49.339554
 # Unit test for method handle_from_dict of class _UndefinedParameterAction
-def test__UndefinedParameterAction_handle_from_dict():import unittest
-from dataclasses import dataclass, field
-from typing import Optional
-
-from dataclasses_json.undefined import (
-    _RaiseUndefinedParameters,
-    _IgnoreUndefinedParameters,
-    _CatchAllUndefinedParameters,
-    UndefinedParameterError,
-)
-
-
-@dataclass
-class Person:
-    name: str
-    age: int
-
-
-@dataclass
-class PersonWithCatchAll:
-    name: str
-    misc: Optional[CatchAllVar] = None
-
-
-from dataclasses_json.utils import CatchAllVar  # noqa: E402  (needs CatchAllVar at annotation time)
-
-
-class TestHandleFromDict(unittest.TestCase):
-
-    # --- _RaiseUndefinedParameters: known params only ---
-    def test_raise_with_known_params(self):
-        result = _RaiseUndefinedParameters.handle_from_dict(
-            Person, {"name": "Alice", "age": 30})
-        self.assertEqual(result, {"name": "Alice", "age": 30})
-
-    # --- _RaiseUndefinedParameters: unknown param raises ---
-    def test_raise_with_unknown_param(self):
-        with self.assertRaises(UndefinedParameterError) as ctx:
-            _RaiseUndefinedParameters.handle_from_dict(
-                Person, {"name": "Alice", "age": 30, "city": "Berlin"})
-        self.assertIn("city", str(ctx.exception))
-
-    # --- _IgnoreUndefinedParameters: unknown params are dropped ---
-    def test_ignore_drops_unknown_params(self):
-        result = _IgnoreUndefinedParameters.handle_from_dict(
-            Person, {"name": "Alice", "age": 30, "city": "Berlin"})
-        self.assertEqual(result, {"name": "Alice", "age": 30})
-
-    # --- _CatchAllUndefinedParameters: unknown params go into catch-all field ---
-    def test_catch_all_collects_unknown(self):
-        result = _CatchAllUndefinedParameters.handle_from_dict(
-            PersonWithCatchAll, {"name": "Alice", "city": "Berlin"})
-        self.assertEqual(result, {"name": "Alice", "misc": {"city": "Berlin"}})
-
-    # --- _CatchAllUndefinedParameters: no unknowns -> empty dict ---
-    def test_catch_all_empty_when_no_unknowns(self):
-        result = _CatchAllUndefinedParameters.handle_from_dict(
-            PersonWithCatchAll, {"name": "Alice"})
-        self.assertEqual(result, {"name": "Alice", "misc": {}})
-
-    # --- _CatchAllUndefinedParameters: merges into pre-filled catch-all ---
-    def test_catch_all_merges_prefilled(self):
-        result = _CatchAllUndefinedParameters.handle_from_dict(
-            PersonWithCatchAll,
-            {"name": "Alice", "misc": {"country": "DE"}, "city": "Berlin"})
-        self.assertEqual(result, {
-            "name": "Alice",
-            "misc": {"country": "DE", "city": "Berlin"}})
-
-    # --- _CatchAllUndefinedParameters: non-dict value for catch-all field errors ---
-    def test_catch_all_rejects_non_dict_conflict(self):
-        with self.assertRaises(UndefinedParameterError):
-            _CatchAllUndefinedParameters.handle_from_dict(
-                PersonWithCatchAll, {"name": "Alice", "misc": "oops"})
-
-# Generated at 2026-10-24 11:57:44.437187
-# Unit test for constructor of class UndefinedParameterError
-def test_UndefinedParameterError():
-    # 1. String message â how it's raised in undefined.py
-    err = UndefinedParameterError("Received undefined initialization arguments {'x': 1}")
-    assert isinstance(err, ValidationError)
-    assert isinstance(err, Exception)
-    assert err.messages == ["Received undefined initialization arguments {'x': 1}"]
-    assert err.data is None
-    assert err.valid_data is None
-
-    # 2. Explicit constructor arguments are stored unchanged
-    err = UndefinedParameterError(
-        {"x": ["Invalid value."]},
-        field_name="x",
-        data={"x": 1},
-        valid_data={},
-    )
-    assert err.messages == {"x": ["Invalid value."]}
-    assert err.field_name == "x"
-    assert err.data == {"x": 1}
-    assert err.valid_data == {}
-
-    # 3. List message is preserved
-    assert UndefinedParameterError(["a", "b"]).messages == ["a", "b"]
-
-    # 4. Raisable / catchable as both types
-    with pytest.raises(UndefinedParameterError, match="bad input"):
-        raise UndefinedParameterError("bad input")
-    with pytest.raises(ValidationError):
-        raise UndefinedParameterError("bad input")
-
-# Generated at 2026-10-24 11:57:57.243354
-# Unit test for constructor of class _RaiseUndefinedParameters
-def test__RaiseUndefinedParameters():
+def test__UndefinedParameterAction_handle_from_dict():
     @dataclasses.dataclass
-    class Dummy:
-        a: int
-        b: str
-
-    # 1. constructor: can instantiate concrete subclass
-    instance = _RaiseUndefinedParameters()
-    assert isinstance(instance, _RaiseUndefinedParameters)
-    assert isinstance(instance, _UndefinedParameterAction)
-
-    # base class is still abstract and cannot be instantiated directly
-    with pytest.raises(TypeError):
-        _UndefinedParameterAction()  # type: ignore
-
-    # 2. only known params -> returned unchanged
-    known = {"a": 1, "b": "x"}
-    result = _RaiseUndefinedParameters.handle_from_dict(Dummy, dict(known))
-    assert result == known
-
-    # 3. empty input -> empty output, no error
-    assert _RaiseUndefinedParameters.handle_from_dict(Dummy, {}) == {}
-
-    # 4. unknown param -> raises UndefinedParameterError
-    with pytest.raises(UndefinedParameterError) as exc_info:
-        _RaiseUndefinedParameters.handle_from_dict(
-            Dummy, {"a": 1, "b": "x", "c": 999}
-        )
-    assert "c" in str(exc_info.value)
-    assert "Received undefined initialization arguments" in str(exc_info.value)
-
-    # 5. only unknown params -> raises
-    with pytest.raises(UndefinedParameterError):
-        _RaiseUndefinedParameters.handle_from_dict(Dummy, {"unknown": 1})
-
-    # 6. inherited default behavior is preserved
-    kvs = {"a": 1}
-    assert _RaiseUndefinedParameters.handle_to_dict(Dummy("a", "b"), kvs) == kvs
-    assert _RaiseUndefinedParameters.handle_dump(Dummy("a", "b")) == {}
-    assert _RaiseUndefinedParameters.create_init(Dummy) == Dummy.__init__
-
-# Generated at 2026-10-24 11:58:28.863494
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 11:58:31.288404
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 11:59:06.318709
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-def test__CatchAllUndefinedParameters_handle_from_dict():from dataclasses import dataclass
-
-# Generated at 2026-10-24 11:59:41.689997
-# Unit test for constructor of class _IgnoreUndefinedParameters
-def test__IgnoreUndefinedParameters():
-    # 1. constructor: no custom __init__, can be instantiated directly
-    obj = _IgnoreUndefinedParameters()
-    assert isinstance(obj, _IgnoreUndefinedParameters)
-    assert isinstance(obj, _UndefinedParameterAction)
-
-    # 2. handle_from_dict: keeps known, drops unknown
-    @dataclass
     class Sample:
         a: int
-        b: str
+        b: str = "default_b"
 
-    kvs = {"a": 1, "b": "x", "unknown": 123}
-    assert _IgnoreUndefinedParameters.handle_from_dict(Sample, kvs) == {
-        "a": 1,
-        "b": "x",
-    }
-    assert _IgnoreUndefinedParameters.handle_from_dict(Sample, {}) == {}
+    # The base-class implementation is an abstract stub: calling it directly
+    # performs no processing and returns None.
+    assert _UndefinedParameterAction.handle_from_dict(Sample, {"a": 1}) is None
 
-    # 3. create_init: generated __init__ ignores unknown kwargs/args
-    @dataclass
-    class Person:
-        name: str
-        age: int
+    # RAISE strategy: known parameters are passed through unchanged...
+    assert _RaiseUndefinedParameters.handle_from_dict(
+        Sample, {"a": 1, "b": "value"}) == {"a": 1, "b": "value"}
 
-    Person.__init__ = _IgnoreUndefinedParameters.create_init(Person)
+    # ...and any undefined parameter triggers UndefinedParameterError.
+    try:
+        _RaiseUndefinedParameters.handle_from_dict(Sample, {"a": 1, "c": 3})
+        raised = False
+    except UndefinedParameterError:
+        raised = True
+    assert raised, "Expected UndefinedParameterError for unknown parameter 'c'"
 
-    p1 = Person(name="Alice", age=30, extra="ignored", other=123)
-    assert p1.name == "Alice"
-    assert p1.age == 30
-    assert not hasattr(p1, "extra")
-    assert not hasattr(p1, "other")
+    # EXCLUDE strategy: undefined parameters are silently dropped.
+    assert _IgnoreUndefinedParameters.handle_from_dict(
+        Sample, {"a": 1, "c": 3, "d": 4}) == {"a": 1}
 
-    # positional + unknown kwarg mixed
-    p2 = Person("Bob", 25, unknown_field="ignored")
-    assert (p2.name, p2.age) == ("Bob", 25)
-
-    # extra positional args are truncated, not raised
-    p3 = Person("Carol", 40, "extra-positional")
-    assert (p3.name, p3.age) == ("Carol", 40)
-
-    # 4. inherited behavior unchanged
-    d = {"a": 1, "b": 2}
-    assert _IgnoreUndefinedParameters.handle_to_dict(p1, d) == d
-    assert _IgnoreUndefinedParameters.handle_dump(p1) == {}
-
-# Generated at 2026-10-24 11:59:58.085713
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-def test__UndefinedParameterAction_handle_from_dict():import unittest
-from dataclasses import dataclass, field
-from typing import Optional
-
-from dataclasses_json.undefined import (
-    _RaiseUndefinedParameters,
-    _IgnoreUndefinedParameters,
-    _CatchAllUndefinedParameters,
-    UndefinedParameterError,
-)
-
-
-@dataclass
-class Person:
-    name: str
-    age: int
-
-
-@dataclass
-class PersonWithCatchAll:
-    name: str
-    misc: Optional[CatchAllVar] = None
-
-
-from dataclasses_json.utils import CatchAllVar  # noqa: E402  (needs CatchAllVar at annotation time)
-
-
-class TestHandleFromDict(unittest.TestCase):
-
-    # --- _RaiseUndefinedParameters: known params only ---
-    def test_raise_with_known_params(self):
-        result = _RaiseUndefinedParameters.handle_from_dict(
-            Person, {"name": "Alice", "age": 30})
-        self.assertEqual(result, {"name": "Alice", "age": 30})
-
-    # --- _RaiseUndefinedParameters: unknown param raises ---
-    def test_raise_with_unknown_param(self):
-        with self.assertRaises(UndefinedParameterError) as ctx:
-            _RaiseUndefinedParameters.handle_from_dict(
-                Person, {"name": "Alice", "age": 30, "city": "Berlin"})
-        self.assertIn("city", str(ctx.exception))
-
-    # --- _IgnoreUndefinedParameters: unknown params are dropped ---
-    def test_ignore_drops_unknown_params(self):
-        result = _IgnoreUndefinedParameters.handle_from_dict(
-            Person, {"name": "Alice", "age": 30, "city": "Berlin"})
-        self.assertEqual(result, {"name": "Alice", "age": 30})
-
-    # --- _CatchAllUndefinedParameters: unknown params go into catch-all field ---
-    def test_catch_all_collects_unknown(self):
-        result = _CatchAllUndefinedParameters.handle_from_dict(
-            PersonWithCatchAll, {"name": "Alice", "city": "Berlin"})
-        self.assertEqual(result, {"name": "Alice", "misc": {"city": "Berlin"}})
-
-    # --- _CatchAllUndefinedParameters: no unknowns -> empty dict ---
-    def test_catch_all_empty_when_no_unknowns(self):
-        result = _CatchAllUndefinedParameters.handle_from_dict(
-            PersonWithCatchAll, {"name": "Alice"})
-        self.assertEqual(result, {"name": "Alice", "misc": {}})
-
-    # --- _CatchAllUndefinedParameters: merges into pre-filled catch-all ---
-    def test_catch_all_merges_prefilled(self):
-        result = _CatchAllUndefinedParameters.handle_from_dict(
-            PersonWithCatchAll,
-            {"name": "Alice", "misc": {"country": "DE"}, "city": "Berlin"})
-        self.assertEqual(result, {
-            "name": "Alice",
-            "misc": {"country": "DE", "city": "Berlin"}})
-
-    # --- _CatchAllUndefinedParameters: non-dict value for catch-all field errors ---
-    def test_catch_all_rejects_non_dict_conflict(self):
-        with self.assertRaises(UndefinedParameterError):
-            _CatchAllUndefinedParameters.handle_from_dict(
-                PersonWithCatchAll, {"name": "Alice", "misc": "oops"})
-
-# Generated at 2026-10-24 12:00:12.188954
-# Unit test for method handle_dump of class _CatchAllUndefinedParameters
-def test__CatchAllUndefinedParameters_handle_dump():
+    # INCLUDE strategy requires a catch-all field to collect unknowns.
     @dataclasses.dataclass
-    class Example:
-        x: int
-        catch_all: CatchAll = dataclasses.field(default_factory=dict)
+    class WithCatchAll:
+        a: int
+        rest: CatchAll = None
 
-    obj = Example(x=1, catch_all={"extra": 42, "other": "value"})
+    # Unknown parameters end up inside the catch-all field.
+    assert _CatchAllUndefinedParameters.handle_from_dict(
+        WithCatchAll, {"a": 1, "c": 3}) == {"a": 1, "rest": {"c": 3}}
 
-    result = _CatchAllUndefinedParameters.handle_dump(obj)
+    # No undefined parameters yields an empty catch-all dictionary.
+    assert _CatchAllUndefinedParameters.handle_from_dict(
+        WithCatchAll, {"a": 1}) == {"a": 1, "rest": {}}
 
-    assert result == {"extra": 42, "other": "value"}
-    assert _CatchAllUndefinedParameters.handle_dump(Example(x=1)) == {}
+    # Multiple unknown parameters are all collected.
+    assert _CatchAllUndefinedParameters.handle_from_dict(
+        WithCatchAll, {"a": 1, "x": 10, "y": 20}) == {
+        "a": 1, "rest": {"x": 10, "y": 20}}
 
-# Generated at 2026-10-24 12:00:37.577330
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-def test__UndefinedParameterAction_handle_to_dict():
-    dummy_obj = object()
+    # Explicitly supplying the catch-all field with its default value while
+    # unknown parameters are present fills it with the unknown parameters.
+    assert _CatchAllUndefinedParameters.handle_from_dict(
+        WithCatchAll, {"a": 1, "rest": None, "z": 5}) == {
+        "a": 1, "rest": {"z": 5}}
 
-    # empty dict
-    kvs = {}
-    result = _UndefinedParameterAction.handle_to_dict(dummy_obj, kvs)
-    assert result == {}
-    assert result is kvs
-
-    # normal defined parameters
-    kvs = {"a": 1, "b": "x"}
-    result = _UndefinedParameterAction.handle_to_dict(dummy_obj, kvs)
-    assert result == {"a": 1, "b": "x"}
-    assert result is kvs
-
-    # Any keys / values are passed through unchanged
-    kvs = {1: "one", None: object(), "nested": {"k": [1, 2, 3]}}
-    result = _UndefinedParameterAction.handle_to_dict(dummy_obj, kvs)
-    assert result == kvs
-    assert result is kvs
-
-    # obj argument is ignored
-    kvs = {"x": 1}
-    assert _UndefinedParameterAction.handle_to_dict(None, kvs) is kvs
-    assert _UndefinedParameterAction.handle_to_dict("anything", kvs) is kvs
-
-# Generated at 2026-10-24 12:01:14.816964
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:01:17.402427
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:01:19.819283
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:01:22.236569
-# Unit test for constructor of class UndefinedParameterError
-
-# Generated at 2026-10-24 12:01:24.661607
-# Unit test for constructor of class UndefinedParameterError
-
-# Generated at 2026-10-24 12:01:27.079166
-# Unit test for constructor of class UndefinedParameterError
-
-# Generated at 2026-10-24 12:01:29.494788
-# Unit test for constructor of class UndefinedParameterError
-
-# Generated at 2026-10-24 12:01:31.915131
-# Unit test for constructor of class UndefinedParameterError
-
-# Generated at 2026-10-24 12:01:34.334715
-# Unit test for constructor of class UndefinedParameterError
-
-# Generated at 2026-10-24 12:01:35.685659
+# Generated at 2026-11-01 22:02:42.382637
 # Unit test for constructor of class UndefinedParameterError
 def test_UndefinedParameterError():
-    # 1. String message â how it's raised in undefined.py
-    err = UndefinedParameterError("Received undefined initialization arguments {'x': 1}")
-    assert isinstance(err, ValidationError)
-    assert isinstance(err, Exception)
-    assert err.messages == ["Received undefined initialization arguments {'x': 1}"]
-    assert err.data is None
-    assert err.valid_data is None
+    # Test that UndefinedParameterError can be constructed with a message
+    message = "Received undefined initialization arguments {'foo': 1}"
+    error = UndefinedParameterError(message)
 
-    # 2. Explicit constructor arguments are stored unchanged
-    err = UndefinedParameterError(
-        {"x": ["Invalid value."]},
-        field_name="x",
-        data={"x": 1},
-        valid_data={},
-    )
-    assert err.messages == {"x": ["Invalid value."]}
-    assert err.field_name == "x"
-    assert err.data == {"x": 1}
-    assert err.valid_data == {}
+    # Verify the error is an instance of UndefinedParameterError
+    assert isinstance(error, UndefinedParameterError)
 
-    # 3. List message is preserved
-    assert UndefinedParameterError(["a", "b"]).messages == ["a", "b"]
+    # Verify it is also a ValidationError (inherits from marshmallow)
+    assert isinstance(error, ValidationError)
 
-    # 4. Raisable / catchable as both types
-    with pytest.raises(UndefinedParameterError, match="bad input"):
-        raise UndefinedParameterError("bad input")
-    with pytest.raises(ValidationError):
-        raise UndefinedParameterError("bad input")
+    # Verify the message is stored correctly
+    assert str(error) == message
 
-# Generated at 2026-10-24 12:02:08.957696
+    # Verify it can be raised and caught
+    try:
+        raise UndefinedParameterError("test error")
+    except UndefinedParameterError as e:
+        assert str(e) == "test error"
+    except ValidationError:
+        assert False, "Should have been caught as UndefinedParameterError"
+
+    # Verify it can be caught as a ValidationError
+    try:
+        raise UndefinedParameterError("another test")
+    except ValidationError as e:
+        assert str(e) == "another test"
+
+    # Verify construction with no arguments
+    error_no_args = UndefinedParameterError()
+    assert isinstance(error_no_args, UndefinedParameterError)
+
+# Generated at 2026-11-01 22:03:02.103517
+# Unit test for constructor of class _RaiseUndefinedParameters
+def test__RaiseUndefinedParameters():
+    instance = _RaiseUndefinedParameters()
+    assert instance is not None
+    assert isinstance(instance, _RaiseUndefinedParameters)
+    assert isinstance(instance, _UndefinedParameterAction)
+    # Static methods should be accessible on the instance
+    assert callable(instance.handle_from_dict)
+    assert callable(instance.handle_to_dict)
+    assert callable(instance.handle_dump)
+    assert callable(instance.create_init)
+
+# Generated at 2026-11-01 22:03:29.220119
 # Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:02:11.525770
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:02:14.046019
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:02:16.468672
-# Unit test for constructor of class UndefinedParameterError
-
-# Generated at 2026-10-24 12:02:18.892549
-# Unit test for constructor of class UndefinedParameterError
-
-# Generated at 2026-10-24 12:02:21.459984
-# Unit test for constructor of class UndefinedParameterError
-
-# Generated at 2026-10-24 12:02:23.876962
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:02:26.299078
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:02:28.718390
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:02:31.136135
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:02:33.553218
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:02:35.975571
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:02:38.395291
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:02:40.814004
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:02:43.232196
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:02:45.848062
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:02:47.238874
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-def test__CatchAllUndefinedParameters_handle_from_dict():from dataclasses import dataclass
-
-# Generated at 2026-10-24 12:03:21.753127
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:03:23.076920
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-def test__CatchAllUndefinedParameters_handle_from_dict():from dataclasses import dataclass
-
-# Generated at 2026-10-24 12:03:41.947802
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-def test__CatchAllUndefinedParameters_handle_to_dict():import unittest
-from dataclasses import dataclass
-
-from dataclasses_json import CatchAll
-from dataclasses_json.undefined import _CatchAllUndefinedParameters
-
-
-@dataclass
-class _Example:
-    field_a: str
-    extra_data: CatchAll = None
-
-
-class TestCatchAllUndefinedParametersHandleToDict(unittest.TestCase):
-
-    def test_merges_catch_all_dict_into_kvs(self):
-        # arrange
-        obj = _Example(field_a="value")
-        kvs = {"field_a": "value", "extra_data": {"b": 2, "c": "three"}}
-
-        # act
-        result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-
-        # assert â catch-all contents are hoisted to top level
-        self.assertEqual(result, {"field_a": "value", "b": 2, "c": "three"})
-
-    def test_catch_all_key_is_removed(self):
-        # arrange
-        obj = _Example(field_a="value")
-        kvs = {"field_a": "value", "extra_data": {"b": 2}}
-
-        # act
-        result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-
-        # assert â the catch-all field name itself no longer appears
-        self.assertNotIn("extra_data", result)
-
-    def test_empty_catch_all_dict(self):
-        # arrange
-        obj = _Example(field_a="value", extra_data={})
-        kvs = {"field_a": "value", "extra_data": {}}
-
-        # act
-        result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-
-        # assert
-        self.assertEqual(result, {"field_a": "value"})
-
-    def test_non_dict_catch_all_is_dropped(self):
-        # arrange
-        obj = _Example(field_a="value", extra_data="not-a-dict")
-        kvs = {"field_a": "value", "extra_data": "not-a-dict"}
-
-        # act
-        result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-
-        # assert â popped unconditionally, only merged if dict
-        self.assertEqual(result, {"field_a": "value"})
-
-    def test_mutates_kvs_in_place_and_returns_it(self):
-        # arrange
-        obj = _Example(field_a="value")
-        kvs = {"field_a": "value", "extra_data": {"x": 1}}
-
-        # act
-        result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-
-        # assert â implementation pops/updates on the same dict
-        self.assertIs(result, kvs)
-
-
-if __name__ == "__main__":
-    unittest.main()
-
-# Generated at 2026-10-24 12:03:44.374679
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:03:46.806762
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:03:49.225406
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:03:50.805508
-# Unit test for method handle_dump of class _CatchAllUndefinedParameters
-def test__CatchAllUndefinedParameters_handle_dump():
+def test__CatchAllUndefinedParameters_handle_from_dict():
+    # Test 1: no unknown parameters, catch-all field not provided
     @dataclasses.dataclass
-    class Example:
-        x: int
+    class ObjectWithCatchAll1:
+        a: int
+        catch_all: CatchAll = None
+
+    kvs = {'a': 1}
+    result = _CatchAllUndefinedParameters.handle_from_dict(ObjectWithCatchAll1, kvs)
+    assert result == {'a': 1, 'catch_all': {}}
+
+    # Test 2: catch-all field received with its default value, no unknown parameters
+    kvs = {'a': 1, 'catch_all': None}
+    result = _CatchAllUndefinedParameters.handle_from_dict(ObjectWithCatchAll1, kvs)
+    assert result == {'a': 1, 'catch_all': None}
+
+    # Test 3: catch-all field received with its default value, unknown parameters present
+    kvs = {'a': 1, 'catch_all': None, 'b': 'unknown'}
+    result = _CatchAllUndefinedParameters.handle_from_dict(ObjectWithCatchAll1, kvs)
+    assert result == {'a': 1, 'catch_all': {'b': 'unknown'}}
+
+    # Test 4: catch-all field already parsed as dict, unknown parameters are merged
+    kvs = {'a': 1, 'catch_all': {'x': 1}, 'b': 'unknown'}
+    result = _CatchAllUndefinedParameters.handle_from_dict(ObjectWithCatchAll1, kvs)
+    assert result == {'a': 1, 'catch_all': {'x': 1, 'b': 'unknown'}}
+
+    # Test 5: catch-all field already parsed as dict, no unknown parameters
+    kvs = {'a': 1, 'catch_all': {'x': 1}}
+    result = _CatchAllUndefinedParameters.handle_from_dict(ObjectWithCatchAll1, kvs)
+    assert result == {'a': 1, 'catch_all': {'x': 1}}
+
+    # Test 6: input field with same name as catch-all but not a dict raises error
+    kvs = {'a': 1, 'catch_all': 'not-a-dict'}
+    with pytest.raises(UndefinedParameterError):
+        _CatchAllUndefinedParameters.handle_from_dict(ObjectWithCatchAll1, kvs)
+
+    # Test 7: catch-all field with default_factory
+    @dataclasses.dataclass
+    class ObjectWithCatchAllFactory:
+        a: int
         catch_all: CatchAll = dataclasses.field(default_factory=dict)
 
-    obj = Example(x=1, catch_all={"extra": 42, "other": "value"})
+    kvs = {'a': 1, 'catch_all': {}}
+    result = _CatchAllUndefinedParameters.handle_from_dict(ObjectWithCatchAllFactory, kvs)
+    assert result == {'a': 1, 'catch_all': {}}
 
-    result = _CatchAllUndefinedParameters.handle_dump(obj)
+    kvs = {'a': 1, 'catch_all': {}, 'b': 'unknown'}
+    result = _CatchAllUndefinedParameters.handle_from_dict(ObjectWithCatchAllFactory, kvs)
+    assert result == {'a': 1, 'catch_all': {'b': 'unknown'}}
 
-    assert result == {"extra": 42, "other": "value"}
-    assert _CatchAllUndefinedParameters.handle_dump(Example(x=1)) == {}
+    # Test 8: class without a catch-all field raises error
+    @dataclasses.dataclass
+    class ObjectWithoutCatchAll:
+        a: int
 
-# Generated at 2026-10-24 12:04:07.631086
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-def test__UndefinedParameterAction_handle_from_dict():import unittest
-from dataclasses import dataclass, field
-from typing import Optional
+    with pytest.raises(UndefinedParameterError):
+        _CatchAllUndefinedParameters.handle_from_dict(ObjectWithoutCatchAll, {'a': 1, 'b': 2})
 
-from dataclasses_json.undefined import (
-    _RaiseUndefinedParameters,
-    _IgnoreUndefinedParameters,
-    _CatchAllUndefinedParameters,
-    UndefinedParameterError,
-)
+# Generated at 2026-11-01 22:03:48.530468
+# Unit test for constructor of class _IgnoreUndefinedParameters
+def test__IgnoreUndefinedParameters():
+    @dataclasses.dataclass
+    class DataClass:
+        id: int
+        name: str = "default"
 
+    # handle_from_dict keeps only known parameters, silently dropping unknown ones
+    result = _IgnoreUndefinedParameters.handle_from_dict(
+        DataClass, {"id": 1, "name": "Alice", "unexpected_key": "value"})
+    assert result == {"id": 1, "name": "Alice"}
 
-@dataclass
-class Person:
-    name: str
-    age: int
+    # Input consisting solely of unknown parameters yields an empty mapping
+    result = _IgnoreUndefinedParameters.handle_from_dict(DataClass, {"foo": 1})
+    assert result == {}
 
+    # Wrapped __init__ accepts and discards unknown keyword arguments
+    wrapped_init = _IgnoreUndefinedParameters.create_init(DataClass)
+    instance = object.__new__(DataClass)
+    wrapped_init(instance, id=5, name="Bob", unknown_kwarg=123)
+    assert instance.id == 5
+    assert instance.name == "Bob"
 
-@dataclass
-class PersonWithCatchAll:
-    name: str
-    misc: Optional[CatchAllVar] = None
+    # Extra positional arguments are truncated to the number of takeable fields
+    instance2 = object.__new__(DataClass)
+    wrapped_init(instance2, 7, "Carol", "surplus_positional")
+    assert instance2.id == 7
+    assert instance2.name == "Carol"
 
+    # Defaults are applied for parameters that were not provided
+    instance3 = object.__new__(DataClass)
+    wrapped_init(instance3, 8)
+    assert instance3.id == 8
+    assert instance3.name == "default"
 
-from dataclasses_json.utils import CatchAllVar  # noqa: E402  (needs CatchAllVar at annotation time)
+    # handle_to_dict passes the kvs through unchanged
+    kvs = {"id": 1, "name": "Alice"}
+    assert _IgnoreUndefinedParameters.handle_to_dict(None, kvs) == kvs
 
+    # handle_dump contributes no additional parameters
+    assert _IgnoreUndefinedParameters.handle_dump(None) == {}
 
-class TestHandleFromDict(unittest.TestCase):
+# Generated at 2026-11-01 22:04:00.312179
+# Unit test for constructor of class UndefinedParameterError
+def test_UndefinedParameterError():
+    # Constructor accepts a message string and preserves it
+    message = "Received undefined initialization arguments {'unknown_param': 42}"
+    error = UndefinedParameterError(message)
 
-    # --- _RaiseUndefinedParameters: known params only ---
-    def test_raise_with_known_params(self):
-        result = _RaiseUndefinedParameters.handle_from_dict(
-            Person, {"name": "Alice", "age": 30})
-        self.assertEqual(result, {"name": "Alice", "age": 30})
+    # It is an instance of both the custom error and marshmallow's ValidationError
+    assert isinstance(error, UndefinedParameterError)
+    assert isinstance(error, ValidationError)
 
-    # --- _RaiseUndefinedParameters: unknown param raises ---
-    def test_raise_with_unknown_param(self):
-        with self.assertRaises(UndefinedParameterError) as ctx:
-            _RaiseUndefinedParameters.handle_from_dict(
-                Person, {"name": "Alice", "age": 30, "city": "Berlin"})
-        self.assertIn("city", str(ctx.exception))
+    # The message should be stored and retrievable
+    assert error.messages == message
+    assert message in str(error)
 
-    # --- _IgnoreUndefinedParameters: unknown params are dropped ---
-    def test_ignore_drops_unknown_params(self):
-        result = _IgnoreUndefinedParameters.handle_from_dict(
-            Person, {"name": "Alice", "age": 30, "city": "Berlin"})
-        self.assertEqual(result, {"name": "Alice", "age": 30})
+    # Constructor also accepts a list of messages
+    list_error = UndefinedParameterError(["first error", "second error"])
+    assert isinstance(list_error, UndefinedParameterError)
+    assert isinstance(list_error, ValidationError)
+    assert list_error.messages == ["first error", "second error"]
 
-    # --- _CatchAllUndefinedParameters: unknown params go into catch-all field ---
-    def test_catch_all_collects_unknown(self):
-        result = _CatchAllUndefinedParameters.handle_from_dict(
-            PersonWithCatchAll, {"name": "Alice", "city": "Berlin"})
-        self.assertEqual(result, {"name": "Alice", "misc": {"city": "Berlin"}})
+    # It can be raised and caught as UndefinedParameterError
+    try:
+        raise UndefinedParameterError("test raise message")
+    except UndefinedParameterError as caught:
+        assert "test raise message" in str(caught)
+    except ValidationError:
+        # Should never reach here: UndefinedParameterError is caught first
+        assert False, "UndefinedParameterError was not caught as its own type"
 
-    # --- _CatchAllUndefinedParameters: no unknowns -> empty dict ---
-    def test_catch_all_empty_when_no_unknowns(self):
-        result = _CatchAllUndefinedParameters.handle_from_dict(
-            PersonWithCatchAll, {"name": "Alice"})
-        self.assertEqual(result, {"name": "Alice", "misc": {}})
+# Generated at 2026-11-01 22:05:12.506163
+# Unit test for method create_init of class _CatchAllUndefinedParameters
 
-    # --- _CatchAllUndefinedParameters: merges into pre-filled catch-all ---
-    def test_catch_all_merges_prefilled(self):
-        result = _CatchAllUndefinedParameters.handle_from_dict(
-            PersonWithCatchAll,
-            {"name": "Alice", "misc": {"country": "DE"}, "city": "Berlin"})
-        self.assertEqual(result, {
-            "name": "Alice",
-            "misc": {"country": "DE", "city": "Berlin"}})
+# Generated at 2026-11-01 22:05:51.158293
+# Unit test for method create_init of class _CatchAllUndefinedParameters
+def test__CatchAllUndefinedParameters_create_init():
+    # nonce:da65f232
+    @dataclasses.dataclass
+    class _Record:
+        id: int
+        name: str
+        extras: CatchAll = None
 
-    # --- _CatchAllUndefinedParameters: non-dict value for catch-all field errors ---
-    def test_catch_all_rejects_non_dict_conflict(self):
-        with self.assertRaises(UndefinedParameterError):
-            _CatchAllUndefinedParameters.handle_from_dict(
-                PersonWithCatchAll, {"name": "Alice", "misc": "oops"})
+    custom_init = _CatchAllUndefinedParameters.create_init(_Record)
 
-# Generated at 2026-10-24 12:04:18.883199
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-def test__RaiseUndefinedParameters_handle_from_dict():
+    record = object.__new__(_Record)
+    custom_init(record, 1, "widget", color="red", size="XL")
+
+    assert record.id == 1
+    assert record.name == "widget"
+    assert record.extras == {"color": "red", "size": "XL"}
+
+    # With no undefined parameters the catch-all field ends up as an empty dict
+    plain = object.__new__(_Record)
+    custom_init(plain, id=2, name="gadget")
+
+    assert plain.id == 2
+    assert plain.name == "gadget"
+    assert plain.extras == {}
+
+# Generated at 2026-11-01 22:06:24.693964
+# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
+def test__CatchAllUndefinedParameters_handle_to_dict():
+    @dataclasses.dataclass
+    class TestClass:
+        known_field: int
+        extras: CatchAll = None
+
+    # Case 1: catch-all value is a dict -> popped and merged into kvs
+    obj = TestClass(known_field=1, extras={"undefined_a": 1, "undefined_b": "x"})
+    kvs = {"known_field": 1, "extras": {"undefined_a": 1, "undefined_b": "x"}}
+    result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
+    assert result == {"known_field": 1, "undefined_a": 1, "undefined_b": "x"}
+    assert "extras" not in result
+
+    # Case 2: catch-all value is not a dict -> only popped, not merged
+    obj = TestClass(known_field=2, extras=None)
+    kvs = {"known_field": 2, "extras": None}
+    result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
+    assert result == {"known_field": 2}
+
+    # Case 3: empty dict catch-all -> nothing extra merged
+    obj = TestClass(known_field=3, extras={})
+    kvs = {"known_field": 3, "extras": {}}
+    result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
+    assert result == {"known_field": 3}
+
+# Generated at 2026-11-01 22:06:44.761628
+# Unit test for method handle_dump of class _UndefinedParameterAction
+def test__UndefinedParameterAction_handle_dump():
+    # handle_dump is the base implementation that always returns an empty
+    # dict, regardless of the object passed in.
+
+    class _Dummy:
+        pass
+
+    obj = _Dummy()
+
+    result = _UndefinedParameterAction.handle_dump(obj)
+
+    assert result == {}
+    assert isinstance(result, dict)
+
+# Generated at 2026-11-01 22:07:03.154552
+# Unit test for method handle_dump of class _UndefinedParameterAction
+
+# Generated at 2026-11-01 22:07:06.536616
+# Unit test for method handle_dump of class _UndefinedParameterAction
+
+# Generated at 2026-11-01 22:08:02.898737
+# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
+def test__CatchAllUndefinedParameters_handle_from_dict():
+    import pytest
+    from dataclasses import dataclass, field
+
     @dataclass
+    class Example:
+        first_name: str
+        last_name: str
+        catch_all: CatchAll = field(default_factory=dict)
+
+    # Unknown parameters are collected into the catch-all field
+    result = _CatchAllUndefinedParameters.handle_from_dict(
+        Example, {"first_name": "John", "last_name": "Doe",
+                  "age": 30, "city": "Berlin"})
+    assert result == {"first_name": "John", "last_name": "Doe",
+                      "catch_all": {"age": 30, "city": "Berlin"}}
+
+    # No unknown parameters -> catch-all becomes the (empty) default
+    result = _CatchAllUndefinedParameters.handle_from_dict(
+        Example, {"first_name": "John", "last_name": "Doe"})
+    assert result == {"first_name": "John", "last_name": "Doe",
+                      "catch_all": {}}
+
+    # Explicitly provided (already parsed) catch-all dict is preserved
+    result = _CatchAllUndefinedParameters.handle_from_dict(
+        Example, {"first_name": "John", "last_name": "Doe",
+                  "catch_all": {"a": 1}})
+    assert result == {"first_name": "John", "last_name": "Doe",
+                      "catch_all": {"a": 1}}
+
+    # Already parsed catch-all dict is merged with new unknown parameters
+    result = _CatchAllUndefinedParameters.handle_from_dict(
+        Example, {"first_name": "John", "last_name": "Doe",
+                  "catch_all": {"a": 1}, "b": 2})
+    assert result == {"first_name": "John", "last_name": "Doe",
+                      "catch_all": {"a": 1, "b": 2}}
+
+    # A non-dict value for the catch-all field raises an error
+    with pytest.raises(UndefinedParameterError):
+        _CatchAllUndefinedParameters.handle_from_dict(
+            Example, {"first_name": "John", "last_name": "Doe",
+                      "catch_all": "invalid"})
+
+# Generated at 2026-11-01 22:08:14.772436
+# Unit test for method handle_dump of class _UndefinedParameterAction
+def test__UndefinedParameterAction_handle_dump():
+    """
+    Test the base implementation of _UndefinedParameterAction.handle_dump,
+    which should always return an empty dict regardless of the object passed.
+    """
+    class DummyClass:
+        def __init__(self):
+            self.attr = "value"
+
+    # With a regular object instance
+    dummy_instance = DummyClass()
+    result = _UndefinedParameterAction.handle_dump(dummy_instance)
+    assert result == {}
+    assert isinstance(result, dict)
+
+    # With None as the argument
+    assert _UndefinedParameterAction.handle_dump(None) == {}
+
+    # With a plain string argument
+    assert _UndefinedParameterAction.handle_dump("some_string") == {}
+
+# Generated at 2026-11-01 22:08:36.073051
+# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
+def test__CatchAllUndefinedParameters_handle_to_dict():
+    @dataclasses.dataclass
     class Person:
+        first_name: str
+        last_name: str
+        misc: CatchAll = None
+
+    # Case 1: catch-all field contains a dict -> entries merged into kvs
+    person = Person(first_name="John", last_name="Doe",
+                    misc={"age": 42, "city": "Berlin"})
+    kvs = {"first_name": "John", "last_name": "Doe",
+           "misc": {"age": 42, "city": "Berlin"}}
+    expected = {"first_name": "John", "last_name": "Doe",
+                "age": 42, "city": "Berlin"}
+    result = _CatchAllUndefinedParameters.handle_to_dict(person, kvs)
+    assert result == expected
+    assert "misc" not in result
+
+    # Case 2: catch-all field is None (not a dict) -> key simply removed
+    person = Person(first_name="Jane", last_name="Roe", misc=None)
+    kvs = {"first_name": "Jane", "last_name": "Roe", "misc": None}
+    expected = {"first_name": "Jane", "last_name": "Roe"}
+    result = _CatchAllUndefinedParameters.handle_to_dict(person, kvs)
+    assert result == expected
+
+    # Case 3: catch-all field is an empty dict -> nothing merged
+    person = Person(first_name="A", last_name="B", misc={})
+    kvs = {"first_name": "A", "last_name": "B", "misc": {}}
+    expected = {"first_name": "A", "last_name": "B"}
+    result = _CatchAllUndefinedParameters.handle_to_dict(person, kvs)
+    assert result == expected
+
+# Generated at 2026-11-01 22:08:43.137843
+# Unit test for method create_init of class _UndefinedParameterAction
+def test__UndefinedParameterAction_create_init():
+    # nonce:18fa0a00
+    class Dummy:
+        def __init__(self, a=0, b=None):
+            self.a = a
+            self.b = b
+
+    # create_init should simply return the original __init__ of the object
+    result = _UndefinedParameterAction.create_init(Dummy)
+    assert result == Dummy.__init__
+
+    # The returned callable should behave like the original __init__
+    instance = Dummy.__new__(Dummy)
+    result(instance, a=5, b="x")
+    assert instance.a == 5
+    assert instance.b == "x"
+
+    # Works with default arguments too
+    instance2 = Dummy.__new__(Dummy)
+    result(instance2)
+    assert instance2.a == 0
+    assert instance2.b is None
+
+# Generated at 2026-11-01 22:08:47.542495
+# Unit test for method handle_to_dict of class _UndefinedParameterAction
+def test__UndefinedParameterAction_handle_to_dict():
+    class DummyObj:
+        pass
+
+    obj = DummyObj()
+
+    # Non-empty mapping should be returned unchanged
+    kvs = {"a": 1, "b": "value", "c": [1, 2, 3]}
+    result = _UndefinedParameterAction.handle_to_dict(obj, kvs)
+    assert result == {"a": 1, "b": "value", "c": [1, 2, 3]}
+    assert result is kvs  # identity: base implementation returns same dict
+
+    # Empty mapping should also be returned unchanged
+    empty_kvs = {}
+    result_empty = _UndefinedParameterAction.handle_to_dict(obj, empty_kvs)
+    assert result_empty == {}
+
+# Generated at 2026-11-01 22:09:25.027762
+# Unit test for method create_init of class _CatchAllUndefinedParameters
+
+# Generated at 2026-11-01 22:09:41.926276
+# Unit test for method create_init of class _CatchAllUndefinedParameters
+
+# Generated at 2026-11-01 22:10:00.143482
+# Unit test for method create_init of class _CatchAllUndefinedParameters
+
+# Generated at 2026-11-01 22:10:07.311167
+# Unit test for method handle_from_dict of class _IgnoreUndefinedParameters
+def test__IgnoreUndefinedParameters_handle_from_dict():
+    @dataclasses.dataclass
+    class _ExampleClass:
+        known_field: str
+        another_known_field: int = 0
+
+    # Case: mix of known and unknown parameters -> unknown are dropped
+    kvs = {
+        "known_field": "value",
+        "another_known_field": 42,
+        "undefined_param": "should be ignored",
+        "another_undefined": 123,
+    }
+    result = _IgnoreUndefinedParameters.handle_from_dict(
+        cls=_ExampleClass, kvs=kvs)
+    assert result == {"known_field": "value", "another_known_field": 42}
+
+    # Case: only known parameters -> returned unchanged
+    kvs = {"known_field": "value", "another_known_field": 7}
+    result = _IgnoreUndefinedParameters.handle_from_dict(
+        cls=_ExampleClass, kvs=kvs)
+    assert result == {"known_field": "value", "another_known_field": 7}
+
+    # Case: only unknown parameters -> empty dict returned
+    kvs = {"undefined_param": "ignored", "another_undefined": 1}
+    result = _IgnoreUndefinedParameters.handle_from_dict(
+        cls=_ExampleClass, kvs=kvs)
+    assert result == {}
+
+    # Case: empty input -> empty dict returned
+    result = _IgnoreUndefinedParameters.handle_from_dict(
+        cls=_ExampleClass, kvs={})
+    assert result == {}
+
+# Generated at 2026-11-01 22:10:20.736958
+# Unit test for method create_init of class _IgnoreUndefinedParameters
+def test__IgnoreUndefinedParameters_create_init():
+    @dataclasses.dataclass
+    class Employee:
+        name: str
+        age: int = 42
+        city: str = "Berlin"
+
+    original_init = Employee.__init__
+
+    # Patch the class initializer with the wrapped one
+    Employee.__init__ = _IgnoreUndefinedParameters.create_init(Employee)
+
+    # The wrapper keeps a reference to the original init via functools.wraps
+    assert Employee.__init__.__wrapped__ is original_init
+
+    # 1. All defined parameters are passed through unchanged
+    emp = Employee(name="Alice", age=30, city="Paris")
+    assert emp.name == "Alice"
+    assert emp.age == 30
+    assert emp.city == "Paris"
+
+    # 2. Missing parameters fall back to their declared defaults
+    emp_default = Employee(name="Bob")
+    assert emp_default.name == "Bob"
+    assert emp_default.age == 42
+    assert emp_default.city == "Berlin"
+
+    # 3. Undefined keyword parameters are silently ignored (no error raised)
+    emp_unknown = Employee(name="Carol", salary=5000, department="IT")
+    assert emp_unknown.name == "Carol"
+    assert emp_unknown.age == 42
+    assert emp_unknown.city == "Berlin"
+
+    # 4. Mixing positional and keyword arguments works
+    emp_mixed = Employee("Dave", 50, city="London")
+    assert emp_mixed.name == "Dave"
+    assert emp_mixed.age == 50
+    assert emp_mixed.city == "London"
+
+    # 5. Excess positional arguments are truncated away
+    emp_extra = Employee("Eve", 33, "Oslo", "extra1", "extra2")
+    assert emp_extra.name == "Eve"
+    assert emp_extra.age == 33
+    assert emp_extra.city == "Oslo"
+
+    # 6. A missing required argument still results in a TypeError
+    raised = False
+    try:
+        Employee()
+    except TypeError:
+        raised = True
+    assert raised
+
+# Generated at 2026-11-01 22:10:36.126461
+# Unit test for method handle_from_dict of class _UndefinedParameterAction
+def test__UndefinedParameterAction_handle_from_dict():
+    """Unit test for method handle_from_dict of class _UndefinedParameterAction"""
+
+    # Concrete implementation of the abstract handler used for testing
+    class _ConcreteHandler(_UndefinedParameterAction):
+        @staticmethod
+        def module_0.handle_from_dict(cls, kvs):
+            known, _ = _UndefinedParameterAction._separate_defined_undefined_kvs(
+                cls=cls, kvs=kvs)
+            return known
+
+    @dataclasses.dataclass
+    class Example:
         name: str
         age: int
 
-    # 1. only known params -> returned as-is
-    kvs = {"name": "Alice", "age": 30}
-    assert _RaiseUndefinedParameters.handle_from_dict(Person, kvs) == kvs
-
-    # 2. empty input -> empty output, no error
-    assert _RaiseUndefinedParameters.handle_from_dict(Person, {}) == {}
-
-    # 3. subset of known params -> returned as-is, no error
-    assert _RaiseUndefinedParameters.handle_from_dict(
-        Person, {"name": "Bob"}
-    ) == {"name": "Bob"}
-
-    # 4. only unknown params -> raises
-    with pytest.raises(UndefinedParameterError) as exc_info:
-        _RaiseUndefinedParameters.handle_from_dict(
-            Person, {"unknown": 1}
-        )
-    assert "'unknown': 1" in str(exc_info.value)
-
-    # 5. mix of known + unknown -> raises, does not silently drop
-    with pytest.raises(UndefinedParameterError) as exc_info:
-        _RaiseUndefinedParameters.handle_from_dict(
-            Person, {"name": "Alice", "age": 30, "extra": "boom"}
-        )
-    assert "'extra': 'boom'" in str(exc_info.value)
-
-# Generated at 2026-10-24 12:04:21.308033
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:04:23.727845
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:04:26.299162
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:04:28.947057
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:04:31.361115
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:04:33.780186
-# Unit test for method create_init of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:04:36.199591
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:04:38.618478
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:04:41.039001
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:04:43.455253
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:04:45.873186
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:04:48.290560
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:04:50.879852
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-
-# Generated at 2026-10-24 12:04:52.452978
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
-def test__CatchAllUndefinedParameters_handle_from_dict():from dataclasses import dataclass
-
-# Generated at 2026-10-24 12:05:01.168989
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:05:07.005086
-# Unit test for method handle_dump of class _UndefinedParameterAction
-def test__UndefinedParameterAction_handle_dump():from dataclasses import dataclass
-
-@dataclasses.dataclass
-class _Sample:
-    x: int
-    y: str = "default"
-
-obj = _Sample(x=1)
-result = _UndefinedParameterAction.handle_dump(obj)
-assert result == {}
-
-# Generated at 2026-10-24 12:05:08.653312
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-def test__CatchAllUndefinedParameters_handle_to_dict():import unittest
-from dataclasses import dataclass
-
-from dataclasses_json import CatchAll
-from dataclasses_json.undefined import _CatchAllUndefinedParameters
-
-
-@dataclass
-class _Example:
-    field_a: str
-    extra_data: CatchAll = None
-
-
-class TestCatchAllUndefinedParametersHandleToDict(unittest.TestCase):
-
-    def test_merges_catch_all_dict_into_kvs(self):
-        # arrange
-        obj = _Example(field_a="value")
-        kvs = {"field_a": "value", "extra_data": {"b": 2, "c": "three"}}
-
-        # act
-        result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-
-        # assert â catch-all contents are hoisted to top level
-        self.assertEqual(result, {"field_a": "value", "b": 2, "c": "three"})
-
-    def test_catch_all_key_is_removed(self):
-        # arrange
-        obj = _Example(field_a="value")
-        kvs = {"field_a": "value", "extra_data": {"b": 2}}
-
-        # act
-        result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-
-        # assert â the catch-all field name itself no longer appears
-        self.assertNotIn("extra_data", result)
-
-    def test_empty_catch_all_dict(self):
-        # arrange
-        obj = _Example(field_a="value", extra_data={})
-        kvs = {"field_a": "value", "extra_data": {}}
-
-        # act
-        result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-
-        # assert
-        self.assertEqual(result, {"field_a": "value"})
-
-    def test_non_dict_catch_all_is_dropped(self):
-        # arrange
-        obj = _Example(field_a="value", extra_data="not-a-dict")
-        kvs = {"field_a": "value", "extra_data": "not-a-dict"}
-
-        # act
-        result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-
-        # assert â popped unconditionally, only merged if dict
-        self.assertEqual(result, {"field_a": "value"})
-
-    def test_mutates_kvs_in_place_and_returns_it(self):
-        # arrange
-        obj = _Example(field_a="value")
-        kvs = {"field_a": "value", "extra_data": {"x": 1}}
-
-        # act
-        result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-
-        # assert â implementation pops/updates on the same dict
-        self.assertIs(result, kvs)
-
-
-if __name__ == "__main__":
-    unittest.main()
-
-# Generated at 2026-10-24 12:05:20.222954
-# Unit test for method create_init of class _UndefinedParameterAction
-def test__UndefinedParameterAction_create_init():
-    class Dummy:
-        def __init__(self, x=1):
-            self.x = x
-
-    # base implementation must return original __init__ unwrapped
-    assert _UndefinedParameterAction.create_init(Dummy) == Dummy.__init__
-
-    # returned callable must still work as init
-    obj = Dummy.__new__(Dummy)
-    init = _UndefinedParameterAction.create_init(Dummy)
-    assert callable(init)
-    init(obj, x=42)
-    assert obj.x == 42
-
-# Generated at 2026-10-24 12:05:21.553342
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
-def test__CatchAllUndefinedParameters_handle_to_dict():import unittest
-from dataclasses import dataclass
-
-from dataclasses_json import CatchAll
-from dataclasses_json.undefined import _CatchAllUndefinedParameters
-
-
-@dataclass
-class _Example:
-    field_a: str
-    extra_data: CatchAll = None
-
-
-class TestCatchAllUndefinedParametersHandleToDict(unittest.TestCase):
-
-    def test_merges_catch_all_dict_into_kvs(self):
-        # arrange
-        obj = _Example(field_a="value")
-        kvs = {"field_a": "value", "extra_data": {"b": 2, "c": "three"}}
-
-        # act
-        result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-
-        # assert â catch-all contents are hoisted to top level
-        self.assertEqual(result, {"field_a": "value", "b": 2, "c": "three"})
-
-    def test_catch_all_key_is_removed(self):
-        # arrange
-        obj = _Example(field_a="value")
-        kvs = {"field_a": "value", "extra_data": {"b": 2}}
-
-        # act
-        result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-
-        # assert â the catch-all field name itself no longer appears
-        self.assertNotIn("extra_data", result)
-
-    def test_empty_catch_all_dict(self):
-        # arrange
-        obj = _Example(field_a="value", extra_data={})
-        kvs = {"field_a": "value", "extra_data": {}}
-
-        # act
-        result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-
-        # assert
-        self.assertEqual(result, {"field_a": "value"})
-
-    def test_non_dict_catch_all_is_dropped(self):
-        # arrange
-        obj = _Example(field_a="value", extra_data="not-a-dict")
-        kvs = {"field_a": "value", "extra_data": "not-a-dict"}
-
-        # act
-        result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-
-        # assert â popped unconditionally, only merged if dict
-        self.assertEqual(result, {"field_a": "value"})
-
-    def test_mutates_kvs_in_place_and_returns_it(self):
-        # arrange
-        obj = _Example(field_a="value")
-        kvs = {"field_a": "value", "extra_data": {"x": 1}}
-
-        # act
-        result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
-
-        # assert â implementation pops/updates on the same dict
-        self.assertIs(result, kvs)
-
-
-if __name__ == "__main__":
-    unittest.main()
-
-# Generated at 2026-10-24 12:05:38.345721
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-def test__UndefinedParameterAction_handle_from_dict():import unittest
-from dataclasses import dataclass, field
-from typing import Optional
-
-from dataclasses_json.undefined import (
-    _RaiseUndefinedParameters,
-    _IgnoreUndefinedParameters,
-    _CatchAllUndefinedParameters,
-    UndefinedParameterError,
-)
-
-
-@dataclass
-class Person:
-    name: str
-    age: int
-
-
-@dataclass
-class PersonWithCatchAll:
-    name: str
-    misc: Optional[CatchAllVar] = None
-
-
-from dataclasses_json.utils import CatchAllVar  # noqa: E402  (needs CatchAllVar at annotation time)
-
-
-class TestHandleFromDict(unittest.TestCase):
-
-    # --- _RaiseUndefinedParameters: known params only ---
-    def test_raise_with_known_params(self):
-        result = _RaiseUndefinedParameters.handle_from_dict(
-            Person, {"name": "Alice", "age": 30})
-        self.assertEqual(result, {"name": "Alice", "age": 30})
-
-    # --- _RaiseUndefinedParameters: unknown param raises ---
-    def test_raise_with_unknown_param(self):
-        with self.assertRaises(UndefinedParameterError) as ctx:
-            _RaiseUndefinedParameters.handle_from_dict(
-                Person, {"name": "Alice", "age": 30, "city": "Berlin"})
-        self.assertIn("city", str(ctx.exception))
-
-    # --- _IgnoreUndefinedParameters: unknown params are dropped ---
-    def test_ignore_drops_unknown_params(self):
-        result = _IgnoreUndefinedParameters.handle_from_dict(
-            Person, {"name": "Alice", "age": 30, "city": "Berlin"})
-        self.assertEqual(result, {"name": "Alice", "age": 30})
-
-    # --- _CatchAllUndefinedParameters: unknown params go into catch-all field ---
-    def test_catch_all_collects_unknown(self):
-        result = _CatchAllUndefinedParameters.handle_from_dict(
-            PersonWithCatchAll, {"name": "Alice", "city": "Berlin"})
-        self.assertEqual(result, {"name": "Alice", "misc": {"city": "Berlin"}})
-
-    # --- _CatchAllUndefinedParameters: no unknowns -> empty dict ---
-    def test_catch_all_empty_when_no_unknowns(self):
-        result = _CatchAllUndefinedParameters.handle_from_dict(
-            PersonWithCatchAll, {"name": "Alice"})
-        self.assertEqual(result, {"name": "Alice", "misc": {}})
-
-    # --- _CatchAllUndefinedParameters: merges into pre-filled catch-all ---
-    def test_catch_all_merges_prefilled(self):
-        result = _CatchAllUndefinedParameters.handle_from_dict(
-            PersonWithCatchAll,
-            {"name": "Alice", "misc": {"country": "DE"}, "city": "Berlin"})
-        self.assertEqual(result, {
-            "name": "Alice",
-            "misc": {"country": "DE", "city": "Berlin"}})
-
-    # --- _CatchAllUndefinedParameters: non-dict value for catch-all field errors ---
-    def test_catch_all_rejects_non_dict_conflict(self):
-        with self.assertRaises(UndefinedParameterError):
-            _CatchAllUndefinedParameters.handle_from_dict(
-                PersonWithCatchAll, {"name": "Alice", "misc": "oops"})
-
-# Generated at 2026-10-24 12:05:40.774933
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-24 12:05:43.191317
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-24 12:05:45.608852
-# Unit test for method handle_from_dict of class _RaiseUndefinedParameters
-
-# Generated at 2026-10-24 12:05:48.185665
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:05:50.605771
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:05:53.041792
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:06:09.169778
+    # Known parameters are kept, unknown ones are filtered out
+    kvs = {"name": "Alice", "age": 30, "extra": "ignored"}
+    result = _ConcreteHandler.handle_from_dict(Example, kvs)
+    assert result == {"name": "Alice", "age": 30}
+
+    # Only unknown parameters results in an empty dict
+    result = _ConcreteHandler.handle_from_dict(Example, {"unknown": 42})
+    assert result == {}
+
+    # Empty input yields an empty dict
+    result = _ConcreteHandler.handle_from_dict(Example, {})
+    assert result == {}
+
+    # The abstract base implementation itself performs no processing
+    assert _UndefinedParameterAction.handle_from_dict(Example, kvs) is None
+
+    # The RAISE strategy rejects unknown parameters
+    with pytest.raises(UndefinedParameterError):
+        _RaiseUndefinedParameters.handle_from_dict(Example, kvs)
+
+    # The RAISE strategy accepts known parameters only
+    result = _RaiseUndefinedParameters.handle_from_dict(
+        Example, {"name": "Bob", "age": 25})
+    assert result == {"name": "Bob", "age": 25}
+
+    # The EXCLUDE strategy silently drops unknown parameters
+    result = _IgnoreUndefinedParameters.handle_from_dict(Example, kvs)
+    assert result == {"name": "Alice", "age": 30}
+
+# Generated at 2026-11-01 22:10:40.694970
 # Unit test for constructor of class UndefinedParameterError
-def test_UndefinedParameterError():message = "Received undefined initialization arguments {'extra': 1}"
+def test_UndefinedParameterError():
+    # Test basic construction with a message
+    message = "Received undefined initialization arguments {'foo': 1}"
+    error = UndefinedParameterError(message)
+    assert error is not None
+    assert str(error) == message
+    assert error.args == (message,)
 
-# Generated at 2026-10-24 12:06:26.983421
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
+    # It should be a subclass of ValidationError and Exception
+    assert isinstance(error, UndefinedParameterError)
+    assert isinstance(error, ValidationError)
+    assert isinstance(error, Exception)
 
-# Generated at 2026-10-24 12:06:29.507092
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
+    # It should be raisable and catchable as UndefinedParameterError
+    try:
+        raise UndefinedParameterError("some error")
+    except UndefinedParameterError as caught:
+        assert str(caught) == "some error"
 
-# Generated at 2026-10-24 12:06:31.928321
-# Unit test for method handle_from_dict of class _CatchAllUndefinedParameters
+    # It should also be catchable as a ValidationError
+    try:
+        raise UndefinedParameterError("validation failure")
+    except ValidationError as caught:
+        assert isinstance(caught, UndefinedParameterError)
+        assert str(caught) == "validation failure"
 
-# Generated at 2026-10-24 12:06:34.345621
-# Unit test for method handle_dump of class _UndefinedParameterAction
+    # Construction with no arguments should also work
+    empty_error = UndefinedParameterError()
+    assert isinstance(empty_error, UndefinedParameterError)
+    assert str(empty_error) == ""
 
-# Generated at 2026-10-24 12:06:36.761842
-# Unit test for method handle_dump of class _UndefinedParameterAction
+    # Construction with multiple args is preserved like a normal Exception
+    multi_error = UndefinedParameterError("msg", {"key": "value"})
+    assert multi_error.args == ("msg", {"key": "value"})
 
-# Generated at 2026-10-24 12:06:39.179222
-# Unit test for method handle_dump of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:06:41.594576
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:06:44.015170
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:06:46.435054
-# Unit test for method handle_from_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:06:48.855811
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:06:51.272767
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:06:53.692102
-# Unit test for method handle_to_dict of class _UndefinedParameterAction
-
-# Generated at 2026-10-24 12:06:56.110995
+# Generated at 2026-11-01 22:10:58.718163
 # Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
+def test__CatchAllUndefinedParameters_handle_to_dict():
+    import pytest
 
-# Generated at 2026-10-24 12:06:58.531217
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
+    @dataclasses.dataclass
+    class ObjectWithCatchAll:
+        id: str
+        undefined_parameters: CatchAll = None
 
-# Generated at 2026-10-24 12:07:00.949671
-# Unit test for method handle_to_dict of class _CatchAllUndefinedParameters
+    # undefined parameters stored in the catch-all field are merged
+    # into the output dict and the catch-all key is removed
+    obj = ObjectWithCatchAll(id='123',
+                             undefined_parameters={'unknown': 'unknown'})
+    kvs = {'id': '123',
+           'undefined_parameters': {'unknown': 'unknown'}}
+    result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
+    assert result == {'id': '123', 'unknown': 'unknown'}
 
-# Generated at 2026-10-24 12:07:03.383795
-# Unit test for constructor of class UndefinedParameterError
+    # a non-dict catch-all value is simply removed from the dict
+    obj = ObjectWithCatchAll(id='123', undefined_parameters=None)
+    kvs = {'id': '123', 'undefined_parameters': None}
+    result = _CatchAllUndefinedParameters.handle_to_dict(obj, kvs)
+    assert result == {'id': '123'}
 
-# Generated at 2026-10-24 12:07:05.803563
-# Unit test for constructor of class UndefinedParameterError
+    # a class without a catch-all field raises UndefinedParameterError
+    @dataclasses.dataclass
+    class ObjectWithoutCatchAll:
+        id: str
 
-# Generated at 2026-10-24 12:07:08.226265
-# Unit test for constructor of class UndefinedParameterError
+    with pytest.raises(UndefinedParameterError):
+        _CatchAllUndefinedParameters.handle_to_dict(
+            ObjectWithoutCatchAll(id='123'), {'id': '123'})

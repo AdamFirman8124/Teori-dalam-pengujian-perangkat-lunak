@@ -3,17 +3,34 @@ import f067 as module_0
 
 def test_case_0():
     str_0 = '5 apples and 6 oranges'
-    int_0 = 20
+    int_0 = 19
     var_0 = module_0.fruit_distribution(str_0, int_0)
-    assert var_0 == 9
-    str_1 = '1 apple and 2 oranges'
-    int_1 = 10
-    var_1 = module_0.fruit_distribution(str_1, int_1)
-    assert var_1 == 7
-    str_2 = '0 apples and 0 oranges'
-    int_2 = 15
-    var_2 = module_0.fruit_distribution(str_2, int_2)
-    assert var_2 == 15
-    str_3 = '10 apples and 5 oranges'
-    var_3 = module_0.fruit_distribution(str_3, int_2)
-    assert var_3 == 0
+    assert var_0 == 8
+    int_1 = 21
+    var_1 = module_0.fruit_distribution(str_0, int_1)
+    assert var_1 == 10
+    str_1 = '0 apples and 1 oranges'
+    int_2 = 3
+    var_2 = module_0.fruit_distribution(str_1, int_2)
+    assert var_2 == 2
+    str_2 = '1 apples and 1 oranges'
+    var_3 = module_0.fruit_distribution(str_2, int_2)
+    assert var_3 == 1
+    str_3 = '2 apples and 3 oranges'
+    int_3 = 100
+    var_4 = module_0.fruit_distribution(str_3, int_3)
+    assert var_4 == 95
+    str_4 = '100 apples and 1 oranges'
+    int_4 = 120
+    var_5 = module_0.fruit_distribution(str_4, int_4)
+    assert var_5 == 19
+    str_5 = 'apples and oranges'
+    int_5 = 10
+    var_6 = module_0.fruit_distribution(str_5, int_5)
+    assert var_6 == 10
+    str_6 = '10 apples'
+    var_7 = module_0.fruit_distribution(str_6, int_5)
+    assert var_7 == 0
+
+def test_case_1():
+    pass

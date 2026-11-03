@@ -2,15 +2,28 @@
 import f014 as module_0
 
 def test_case_0():
-    str_0 = ''
+    str_0 = 'abc'
     list_0 = module_0.all_prefixes(str_0)
-    assert list_0 == []
-    str_1 = 'a'
+    assert list_0 == ['a', 'ab', 'abc']
+    str_1 = ''
     list_1 = module_0.all_prefixes(str_1)
-    assert list_1 == ['a']
-    str_2 = 'abc'
+    assert list_1 == []
+    str_2 = 'a'
     list_2 = module_0.all_prefixes(str_2)
-    assert list_2 == ['a', 'ab', 'abc']
+    assert list_2 == ['a']
     str_3 = 'hello'
     list_3 = module_0.all_prefixes(str_3)
     assert list_3 == ['h', 'he', 'hel', 'hell', 'hello']
+    str_4 = 'a b'
+    list_4 = module_0.all_prefixes(str_4)
+    assert list_4 == ['a', 'a ', 'a b']
+    str_5 = 'x1!'
+    list_5 = module_0.all_prefixes(str_5)
+    assert list_5 == ['x', 'x1', 'x1!']
+    str_6 = 'testing'
+    list_6 = module_0.all_prefixes(str_6)
+    assert list_6 == ['t', 'te', 'tes', 'test', 'testi', 'testin', 'testing']
+    var_0 = len(list_6)
+    var_1 = len(str_6)
+    str_7 = 'All tests passed!'
+    var_2 = print(str_7)

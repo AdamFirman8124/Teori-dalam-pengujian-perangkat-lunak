@@ -1,191 +1,161 @@
 
 
-# Generated at 2026-10-25 11:47:47.655024
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:47:50.861455
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:47:53.488716
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:47:55.902354
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:47:58.349780
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:00.731025
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:03.330972
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:05.745427
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:08.158355
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:10.574061
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:12.987768
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:15.401535
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:17.818010
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:20.231797
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:22.651269
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:25.064181
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:27.479103
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:29.894265
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:32.308805
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:34.722440
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:37.136290
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:48:44.971494
+# Generated at 2026-11-02 10:48:01.442384
 # Unit test for function right_angle_triangle
 def test_right_angle_triangle():
-    assert module_0.right_angle_triangle(3, 4, 5) is True
-    assert module_0.right_angle_triangle(5, 3, 4) is True
-    assert module_0.right_angle_triangle(4, 5, 3) is True
-    assert module_0.right_angle_triangle(6, 8, 10) is True
-    assert module_0.right_angle_triangle(1, 2, 3) is False
-    assert module_0.right_angle_triangle(3, 4, 6) is False
-    assert module_0.right_angle_triangle(2, 2, 2) is False
-    print("All tests passed")
+    # Classic 3-4-5 right triangle (all rotations of the hypotenuse)
+    assert module_0.right_angle_triangle(3, 4, 5) == True
+    assert module_0.right_angle_triangle(5, 3, 4) == True
+    assert module_0.right_angle_triangle(4, 5, 3) == True
+
+    # Other Pythagorean triples
+    assert module_0.right_angle_triangle(5, 12, 13) == True
+    assert module_0.right_angle_triangle(12, 13, 5) == True
+    assert module_0.right_angle_triangle(8, 15, 17) == True
+    assert module_0.right_angle_triangle(6, 8, 10) == True
+    assert module_0.right_angle_triangle(10, 6, 8) == True
+    assert module_0.right_angle_triangle(9, 12, 15) == True
+
+    # Floating-point right triangles (exact in binary floating point)
+    assert module_0.right_angle_triangle(1.5, 2.0, 2.5) == True
+    assert module_0.right_angle_triangle(2.5, 6.0, 6.5) == True
+
+    # Non-right triangles
+    assert module_0.right_angle_triangle(1, 2, 3) == False
+    assert module_0.right_angle_triangle(2, 2, 2) == False
+    assert module_0.right_angle_triangle(1, 1, 1) == False
+    assert module_0.right_angle_triangle(7, 8, 9) == False
+    assert module_0.right_angle_triangle(3, 4, 6) == False
+    assert module_0.right_angle_triangle(4, 5, 6) == False
+    assert module_0.right_angle_triangle(5, 10, 12) == False
+
+    # Edge cases
+    assert module_0.right_angle_triangle(0, 4, 5) == False
+    assert module_0.right_angle_triangle(1, 1, 2) == False  # degenerate, not right-angled
+
+    print("All test cases passed!")
 
 
 if __name__ == "__main__":
     test_right_angle_triangle()
 
-# Generated at 2026-10-25 11:48:49.714657
+# Generated at 2026-11-02 10:48:20.695223
 # Unit test for function right_angle_triangle
 def test_right_angle_triangle():
-    # Right-angled triangles - all permutations
+    # Classic right-angled triangles
     assert module_0.right_angle_triangle(3, 4, 5) == True
     assert module_0.right_angle_triangle(5, 3, 4) == True
     assert module_0.right_angle_triangle(4, 5, 3) == True
+
+    # Another right-angled triangle (scaled)
     assert module_0.right_angle_triangle(6, 8, 10) == True
-    assert module_0.right_angle_triangle(5, 12, 13) == True
-    assert module_0.right_angle_triangle(8, 15, 17) == True
+    assert module_0.right_angle_triangle(10, 6, 8) == True
 
-    # Not right-angled triangles
+    # Non right-angled triangles
     assert module_0.right_angle_triangle(1, 2, 3) == False
-    assert module_0.right_angle_triangle(2, 3, 4) == False
+    assert module_0.right_angle_triangle(1, 1, 1) == False
+    assert module_0.right_angle_triangle(2, 2, 2) == False
     assert module_0.right_angle_triangle(4, 5, 6) == False
-    assert module_0.right_angle_triangle(3, 3, 3) == False
 
-# Generated at 2026-10-25 11:48:51.250288
+    # Large values
+    assert module_0.right_angle_triangle(5, 12, 13) == True
+    assert module_0.right_angle_triangle(7, 24, 25) == True
+
+    # Nearly right but not exact
+    assert module_0.right_angle_triangle(3, 4, 6) == False
+
+# Generated at 2026-11-02 10:48:28.779645
 # Unit test for function right_angle_triangle
 def test_right_angle_triangle():
-    # Right-angled triangles - all permutations
+    # Classic right triangle
     assert module_0.right_angle_triangle(3, 4, 5) == True
+    # Not a right triangle (and not a valid triangle)
+    assert module_0.right_angle_triangle(1, 2, 3) == False
+    # Right triangle with hypotenuse in different positions
     assert module_0.right_angle_triangle(5, 3, 4) == True
     assert module_0.right_angle_triangle(4, 5, 3) == True
-    assert module_0.right_angle_triangle(6, 8, 10) == True
+    # Other well-known right triangles
     assert module_0.right_angle_triangle(5, 12, 13) == True
+    assert module_0.right_angle_triangle(6, 8, 10) == True
     assert module_0.right_angle_triangle(8, 15, 17) == True
+    # Equilateral triangle: not right-angled
+    assert module_0.right_angle_triangle(1, 1, 1) == False
+    assert module_0.right_angle_triangle(2, 2, 2) == False
+    # Isosceles non-right triangle
+    assert module_0.right_angle_triangle(2, 2, 3) == False
+    # Float inputs
+    assert module_0.right_angle_triangle(3.0, 4.0, 5.0) == True
+    assert module_0.right_angle_triangle(1.5, 2.0, 2.5) == True
+    # Invalid triangle sides (violates triangle inequality)
+    assert module_0.right_angle_triangle(1, 1, 10) == False
+    # Very small sides
+    assert module_0.right_angle_triangle(0.3, 0.4, 0.5) == True
+    # Large numbers
+    assert module_0.right_angle_triangle(300, 400, 500) == True
+    assert module_0.right_angle_triangle(300, 400, 501) == False
 
-    # Not right-angled triangles
-    assert module_0.right_angle_triangle(1, 2, 3) == False
-    assert module_0.right_angle_triangle(2, 3, 4) == False
-    assert module_0.right_angle_triangle(4, 5, 6) == False
-    assert module_0.right_angle_triangle(3, 3, 3) == False
-
-# Generated at 2026-10-25 11:48:52.785555
+# Generated at 2026-11-02 10:49:01.727025
 # Unit test for function right_angle_triangle
 def test_right_angle_triangle():
-    # Right-angled triangles - all permutations
+    # Classic right triangle
     assert module_0.right_angle_triangle(3, 4, 5) == True
-    assert module_0.right_angle_triangle(5, 3, 4) == True
+    # Different order of sides
     assert module_0.right_angle_triangle(4, 5, 3) == True
-    assert module_0.right_angle_triangle(6, 8, 10) == True
+    assert module_0.right_angle_triangle(5, 3, 4) == True
+    # Another Pythagorean triple
     assert module_0.right_angle_triangle(5, 12, 13) == True
     assert module_0.right_angle_triangle(8, 15, 17) == True
-
-    # Not right-angled triangles
+    assert module_0.right_angle_triangle(7, 24, 25) == True
+    # Non-right triangles
     assert module_0.right_angle_triangle(1, 2, 3) == False
-    assert module_0.right_angle_triangle(2, 3, 4) == False
-    assert module_0.right_angle_triangle(4, 5, 6) == False
-    assert module_0.right_angle_triangle(3, 3, 3) == False
+    assert module_0.right_angle_triangle(1, 1, 1) == False
+    assert module_0.right_angle_triangle(2, 2, 2) == False
+    assert module_0.right_angle_triangle(10, 10, 10) == False
+    # Invalid triangle (degenerate / impossible)
+    assert module_0.right_angle_triangle(1, 1, 5) == False
+    assert module_0.right_angle_triangle(0, 0, 0) == False
+    # Near miss
+    assert module_0.right_angle_triangle(3, 4, 6) == False
+    assert module_0.right_angle_triangle(6, 8, 10) == True
+    # Negative sides (squared, mathematically satisfies condition)
+    assert module_0.right_angle_triangle(-3, 4, 5) == True
+    # Floating point sides
+    assert module_0.right_angle_triangle(1.5, 2.0, 2.5) == True
+    assert module_0.right_angle_triangle(1.5, 2.0, 2.6) == False
 
-# Generated at 2026-10-25 11:48:54.218225
+# Generated at 2026-11-02 10:49:12.299454
 # Unit test for function right_angle_triangle
 def test_right_angle_triangle():
-    # Right-angled triangles - all permutations
+    # Classic right triangle
     assert module_0.right_angle_triangle(3, 4, 5) == True
+    # Permutations of a right triangle (right angle can be at any side)
     assert module_0.right_angle_triangle(5, 3, 4) == True
     assert module_0.right_angle_triangle(4, 5, 3) == True
-    assert module_0.right_angle_triangle(6, 8, 10) == True
+    assert module_0.right_angle_triangle(5, 4, 3) == True
+
+    # Not a right triangle
+    assert module_0.right_angle_triangle(1, 2, 3) == False
+    assert module_0.right_angle_triangle(2, 2, 2) == False
+    assert module_0.right_angle_triangle(4, 5, 6) == False
+
+    # Larger right triangles
     assert module_0.right_angle_triangle(5, 12, 13) == True
     assert module_0.right_angle_triangle(8, 15, 17) == True
+    assert module_0.right_angle_triangle(7, 24, 25) == True
 
-    # Not right-angled triangles
-    assert module_0.right_angle_triangle(1, 2, 3) == False
-    assert module_0.right_angle_triangle(2, 3, 4) == False
-    assert module_0.right_angle_triangle(4, 5, 6) == False
-    assert module_0.right_angle_triangle(3, 3, 3) == False
+    # Invalid triangles (sides don't form a triangle)
+    assert module_0.right_angle_triangle(1, 1, 10) == False
+    assert module_0.right_angle_triangle(0, 0, 0) == False
 
-# Generated at 2026-10-25 11:48:56.190016
-# Unit test for function right_angle_triangle
-def test_right_angle_triangle():
-    # Right-angled triangles - all permutations
-    assert module_0.right_angle_triangle(3, 4, 5) == True
-    assert module_0.right_angle_triangle(5, 3, 4) == True
-    assert module_0.right_angle_triangle(4, 5, 3) == True
-    assert module_0.right_angle_triangle(6, 8, 10) == True
-    assert module_0.right_angle_triangle(5, 12, 13) == True
-    assert module_0.right_angle_triangle(8, 15, 17) == True
+    # Near-miss cases (off by one)
+    assert module_0.right_angle_triangle(3, 4, 6) == False
+    assert module_0.right_angle_triangle(6, 8, 9) == False
 
-    # Not right-angled triangles
-    assert module_0.right_angle_triangle(1, 2, 3) == False
-    assert module_0.right_angle_triangle(2, 3, 4) == False
-    assert module_0.right_angle_triangle(4, 5, 6) == False
-    assert module_0.right_angle_triangle(3, 3, 3) == False
+    # Floating point right triangle
+    assert module_0.right_angle_triangle(0.5, 1.2, 1.3) == True
 
-# Generated at 2026-10-25 11:48:57.701356
-# Unit test for function right_angle_triangle
-def test_right_angle_triangle():
-    # Right-angled triangles - all permutations
-    assert module_0.right_angle_triangle(3, 4, 5) == True
-    assert module_0.right_angle_triangle(5, 3, 4) == True
-    assert module_0.right_angle_triangle(4, 5, 3) == True
-    assert module_0.right_angle_triangle(6, 8, 10) == True
-    assert module_0.right_angle_triangle(5, 12, 13) == True
-    assert module_0.right_angle_triangle(8, 15, 17) == True
+    print("All tests passed!")
 
-    # Not right-angled triangles
-    assert module_0.right_angle_triangle(1, 2, 3) == False
-    assert module_0.right_angle_triangle(2, 3, 4) == False
-    assert module_0.right_angle_triangle(4, 5, 6) == False
-    assert module_0.right_angle_triangle(3, 3, 3) == False
 
-# Generated at 2026-10-25 11:49:01.404481
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:49:03.818503
-# Unit test for function right_angle_triangle
-
-# Generated at 2026-10-25 11:49:06.232970
-# Unit test for function right_angle_triangle
+if __name__ == "__main__":
+    test_right_angle_triangle()

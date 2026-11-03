@@ -8,36 +8,36 @@ def test_case_0():
     str_1 = 'one two three'
     var_1 = module_0.split_words(str_1)
     assert var_1 == ['one', 'two', 'three']
-    str_2 = '  hello   world  '
+    str_2 = ' single '
     var_2 = module_0.split_words(str_2)
-    assert var_2 == ['hello', 'world']
-    str_3 = 'hello, world'
+    assert var_2 == ['single']
+    str_3 = 'hello,world'
     var_3 = module_0.split_words(str_3)
-    assert var_3 == ['hello,', 'world']
-    str_4 = 'hello,world'
+    assert var_3 == ['hello', 'world']
+    str_4 = 'a,b,c'
     var_4 = module_0.split_words(str_4)
-    assert var_4 == ['hello', 'world']
-    str_5 = 'a,b,c'
+    assert var_4 == ['a', 'b', 'c']
+    str_5 = 'one,two,three'
     var_5 = module_0.split_words(str_5)
-    assert var_5 == ['a', 'b', 'c']
-    str_6 = 'one,two,three'
+    assert var_5 == ['one', 'two', 'three']
+    str_6 = 'abcdef'
     var_6 = module_0.split_words(str_6)
-    assert var_6 == ['one', 'two', 'three']
-    str_7 = 'abcd'
+    assert var_6 == 3
+    str_7 = 'HelloWorld!'
     var_7 = module_0.split_words(str_7)
     assert var_7 == 2
-    str_8 = 'hello'
+    assert var_7 == 5
+    str_8 = ''
     var_8 = module_0.split_words(str_8)
-    assert var_8 == 3
-    str_9 = 'bdf'
+    assert var_8 == 0
+    str_9 = '1234'
     var_9 = module_0.split_words(str_9)
-    assert var_9 == 3
-    str_10 = 'ABC'
+    assert var_9 == 0
+    str_10 = 'bdfh'
     var_10 = module_0.split_words(str_10)
-    assert var_10 == 0
-    str_11 = '123'
-    var_11 = module_0.split_words(str_11)
-    assert var_11 == 0
-    str_12 = ''
-    var_12 = module_0.split_words(str_12)
-    assert var_12 == 0
+    assert var_10 == 4
+    str_11 = 'All tests passed!'
+    var_11 = print(str_11)
+
+def test_case_1():
+    pass

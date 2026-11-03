@@ -2,8 +2,107 @@
 import f129 as module_0
 
 def test_case_0():
-    bytes_0 = b'\xdf\xb3$\xadO%\xa9\x9a^\xcf\xec\x06x|'
-    list_0 = [bytes_0, bytes_0, bytes_0]
-    bool_0 = True
-    var_0 = module_0.minPath(list_0, bool_0)
-    assert var_0 == [1]
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = [int_0, int_1, int_2]
+    int_4 = 4
+    int_5 = 5
+    int_6 = 6
+    int_7 = [int_4, int_5, int_6]
+    int_8 = 7
+    int_9 = 8
+    int_10 = 9
+    int_11 = [int_8, int_9, int_10]
+    int_12 = [int_3, int_7, int_11]
+    var_0 = module_0.minPath(int_12, int_2)
+    assert var_0 == [1, 2, 1]
+    int_13 = [int_0, int_1, int_2]
+    int_14 = [int_4, int_5, int_6]
+    int_15 = [int_8, int_9, int_10]
+    int_16 = [int_13, int_14, int_15]
+    var_1 = module_0.minPath(int_16, int_0)
+    assert var_1 == [1]
+    int_17 = [int_5, int_10, int_2]
+    int_18 = [int_4, int_0, int_6]
+    int_19 = [int_8, int_9, int_1]
+    int_20 = [int_17, int_18, int_19]
+    var_2 = module_0.minPath(int_20, int_5)
+    assert var_2 == [1, 4, 1, 4, 1]
+    int_21 = [int_5, int_10, int_2]
+    int_22 = [int_4, int_0, int_6]
+    int_23 = [int_8, int_9, int_1]
+    int_24 = [int_21, int_22, int_23]
+    var_3 = module_0.minPath(int_24, int_0)
+    assert var_3 == [1]
+    int_25 = [int_1, int_1]
+    int_26 = [int_0, int_1]
+    int_27 = [int_25, int_26]
+    var_4 = module_0.minPath(int_27, int_4)
+    assert var_4 == [1, 2, 1, 2]
+    int_28 = [int_0, int_1]
+    int_29 = [int_2, int_4]
+    int_30 = [int_28, int_29]
+    int_31 = 0
+    var_5 = module_0.minPath(int_30, int_31)
+    assert var_5 == []
+
+def test_case_1():
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = [int_0, int_1, int_2]
+    int_4 = 4
+    int_5 = 5
+    int_6 = 6
+    int_7 = [int_4, int_5, int_6]
+    int_8 = 7
+    int_9 = 8
+    int_10 = 9
+    int_11 = [int_8, int_9, int_10]
+    int_12 = [int_3, int_7, int_11]
+    var_0 = module_0.minPath(int_12, int_2)
+    assert var_0 == [1, 2, 1]
+    int_13 = [int_5, int_10, int_2]
+    int_14 = [int_4, int_0, int_6]
+    int_15 = [int_8, int_9, int_1]
+    int_16 = [int_13, int_14, int_15]
+    var_1 = module_0.minPath(int_16, int_0)
+    assert var_1 == [1]
+    int_17 = [int_0, int_1, int_2]
+    int_18 = [int_4, int_5, int_6]
+    int_19 = [int_8, int_9, int_10]
+    int_20 = [int_17, int_18, int_19]
+    var_2 = module_0.minPath(int_20, int_5)
+    assert var_2 == [1, 2, 1, 2, 1]
+    int_21 = [int_0, int_2]
+    int_22 = [int_1, int_4]
+    int_23 = [int_21, int_22]
+    var_3 = module_0.minPath(int_23, int_4)
+    assert var_3 == [1, 2, 1, 2]
+    int_24 = 10
+    int_25 = [int_24, int_0]
+    int_26 = 11
+    int_27 = 12
+    int_28 = [int_26, int_27]
+    int_29 = [int_25, int_28]
+    var_4 = module_0.minPath(int_29, int_2)
+    assert var_4 == [1, 10, 1]
+    int_30 = [int_10, int_9, int_8]
+    int_31 = [int_6, int_0, int_1]
+    int_32 = [int_5, int_4, int_2]
+    int_33 = [int_30, int_31, int_32]
+    var_5 = module_0.minPath(int_33, int_2)
+    assert var_5 == [1, 2, 1]
+    int_34 = [int_8, int_9, int_10]
+    int_35 = [int_5, int_6, int_2]
+    int_36 = [int_0, int_1, int_4]
+    int_37 = [int_34, int_35, int_36]
+    var_6 = module_0.minPath(int_37, int_4)
+    assert var_6 == [1, 2, 1, 2]
+    int_38 = [int_2, int_5, int_8]
+    int_39 = [int_0, int_10, int_9]
+    int_40 = [int_6, int_4, int_1]
+    int_41 = [int_38, int_39, int_40]
+    var_7 = module_0.minPath(int_41, int_6)
+    assert var_7 == [1, 3, 1, 3, 1, 3]

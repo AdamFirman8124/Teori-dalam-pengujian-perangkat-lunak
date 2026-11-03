@@ -7,55 +7,31 @@ import pytest
 from f061 import correct_bracketing
 
 
-def test_correct_bracketing_empty_string_returns_true():
-    assert correct_bracketing("") is True
-
-
-def test_correct_bracketing_single_pair_returns_true():
-    assert correct_bracketing("()") is True
-
-
-def test_correct_bracketing_nested_pairs_returns_true():
-    assert correct_bracketing("(()())") is True
-
-
-def test_correct_bracketing_unclosed_open_returns_false():
-    # loop completes with depth > 0 -> final `return depth == 0` is False
-    assert correct_bracketing("(()") is False
-
-
-def test_correct_bracketing_extra_closing_returns_false_early():
-    # depth goes negative on the first char -> early `return False`
-    assert correct_bracketing(")(") is False
-
-
-def test_correct_bracketing_negative_depth_short_circuits(monkeypatch):
-    # Verify the early return happens before the rest of the string is consumed.
-    seen = []
-
-    class SpyStr(str):
-        def __iter__(self):
-            for ch in str(self):
-                seen.append(ch)
-                yield ch
-
-    assert correct_bracketing(SpyStr(")abc")) is False
-    assert seen == [")"]
-
-
-def test_correct_bracketing_balanced_with_extra_closing_at_end_returns_false():
-    assert correct_bracketing("())(()") is False
-
-
 @pytest.mark.parametrize(
-    "brackets, expected",
+    ("brackets", "expected"),
     [
-        ("(", False),
+        # Empty input: loop body never executes (line 4 loop-exit branch),
+        # falls through to the final return with depth == 0 (line 11, True).
+        ("", True),
+        # Covers the if-branch (line 6) and the else-branch (line 8),
+        # with depth never going negative (line 9 False branch).
+        ("()", True),
+        ("(())", True),
+        ("()()", True),
+        # Depth goes negative on the first char: early return False
+        # (lines 9-10, the depth < 0 True branch).
         (")", False),
-        ("()()()", True),
-        ("((()))", True),
-        ("(()))", False),
+        (")(", False),
+        # Depth stays positive until the end: final return with
+        # depth != 0 (line 11, False outcome).
+        ("(()", False),
+        ("(()()", False),
+        # Any non-'(' character takes the else-branch (line 8),
+        # driving depth negative -> early return False.
+        ("a", False),
     ],
 )
-def test_correct_bracketing_parametrized(brackets, expected):
-    assert correct_bracketing(brackets) is expected
+def test_correct_bracketing(brackets: str, expected: bool):
+    result = correct_bracketing(brackets)
+    assert isinstance(result, bool)
+    assert result is expected

@@ -1,404 +1,115 @@
 
 
-# Generated at 2026-10-25 08:35:23.905337
+# Generated at 2026-11-01 22:45:33.159205
 # Unit test for function double_the_difference
 def test_double_the_difference():
-    # basic: 1^2 + 3^2 + 5^2
-    assert module_0.double_the_difference([1, 3, 5]) == 35
-
-    # empty list -> 0
     assert module_0.double_the_difference([]) == 0
+    assert module_0.double_the_difference([5]) == 25
+    assert module_0.double_the_difference([-1, -2, 0]) == 0
+    assert module_0.double_the_difference([0.1, 0.2, 0.3]) == 0
+    assert module_0.double_the_difference([1, 3, 5, 7]) == 84          # 1 + 9 + 25 + 49
+    assert module_0.double_the_difference([-10, -4, 2, 6]) == 0        # even/negative ignored
+    assert module_0.double_the_difference([1, 2, 3.5, -1, 4, 5]) == 35 # 1 + 9 + 25
+    assert module_0.double_the_difference([9, -9, 11, -11, 13]) == 371 # 81 + 121 + 169
+    assert module_0.double_the_difference([1.0, 3.0, 5]) == 35         # whole floats pass filter
 
-    # evens, negatives, zero are skipped
-    assert module_0.double_the_difference([-1, -3, 0, 2, 4]) == 0
-
-    # floats are excluded even if positive & "odd"
-    assert module_0.double_the_difference([1.0, 3.0, 5.0]) == 0
-
-    # mixed bag: only 1, 7, 9 count
-    assert module_0.double_the_difference([1, 2, 3.0, -7, 7, 9, 0]) == 1 + 49 + 81
-
-    # single odd positive
-    assert module_0.double_the_difference([11]) == 121
-
-    # large value
-    assert module_0.double_the_difference([999]) == 998001
-
-# Generated at 2026-10-25 08:35:25.276079
+# Generated at 2026-11-01 22:45:49.844445
 # Unit test for function double_the_difference
 def test_double_the_difference():
-    # basic: 1^2 + 3^2 + 5^2
-    assert module_0.double_the_difference([1, 3, 5]) == 35
-
-    # empty list -> 0
+    # Positive odd integers: 1^2 + 3^2 + 2 excluded (even) + 0 excluded
+    assert module_0.double_the_difference([1, 3, 2, 0]) == 10
+    # Negative numbers and zero contribute nothing
+    assert module_0.double_the_difference([-1, -2, 0]) == 0
+    # Single positive odd number
+    assert module_0.double_the_difference([9, -2]) == 81
+    # Zero alone
+    assert module_0.double_the_difference([0]) == 0
+    # Empty list
     assert module_0.double_the_difference([]) == 0
+    # Floats are excluded (contain "." in string representation)
+    assert module_0.double_the_difference([1.5, 3.5, -0.5]) == 0
+    # Mixed list: 1^2 + 3^2 + 5^2 = 35
+    assert module_0.double_the_difference([1, 2, 3, 4, 5, -1, -3, 1.5]) == 35
+    # Even numbers only
+    assert module_0.double_the_difference([2, 4, 6, 8]) == 0
+    # Negative odd numbers only
+    assert module_0.double_the_difference([-1, -3, -5]) == 0
+    # Larger values: 7^2 + 11^2 = 49 + 121 = 170
+    assert module_0.double_the_difference([7, 11, -7, 8]) == 170
 
-    # evens, negatives, zero are skipped
-    assert module_0.double_the_difference([-1, -3, 0, 2, 4]) == 0
+if __name__ == "__main__":
+    test_double_the_difference()
+    print("All tests passed!")
 
-    # floats are excluded even if positive & "odd"
-    assert module_0.double_the_difference([1.0, 3.0, 5.0]) == 0
-
-    # mixed bag: only 1, 7, 9 count
-    assert module_0.double_the_difference([1, 2, 3.0, -7, 7, 9, 0]) == 1 + 49 + 81
-
-    # single odd positive
-    assert module_0.double_the_difference([11]) == 121
-
-    # large value
-    assert module_0.double_the_difference([999]) == 998001
-
-# Generated at 2026-10-25 08:35:27.697583
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:35:30.115979
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:35:32.529900
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:35:34.947493
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:35:37.425330
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:35:39.842599
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:35:42.261143
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:35:44.822795
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:35:47.234625
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:35:49.652772
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:35:52.343611
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:35:54.758121
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:35:57.207036
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:35:59.591484
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:02.009188
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:04.428693
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:06.844473
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:09.325041
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:11.740477
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:14.158111
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:16.574382
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:18.991355
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:21.405527
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:23.821828
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:26.235781
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:28.651453
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:31.107815
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:33.526410
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:35.947254
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:38.363900
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:40.779867
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:43.339694
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:45.752072
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:48.166517
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:50.585778
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:53.000976
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:36:55.416574
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:08.389863
-# Unit test for function double_the_difference
-def test_double_the_difference():assert module_0.double_the_difference([1, 2, 3, 4]) == 10
-
-# Generated at 2026-10-25 08:37:09.823310
+# Generated at 2026-11-01 22:46:00.698646
 # Unit test for function double_the_difference
 def test_double_the_difference():
-    # basic: 1^2 + 3^2 + 5^2
-    assert module_0.double_the_difference([1, 3, 5]) == 35
-
-    # empty list -> 0
+    # Basic case with positive odd and even integers
+    assert module_0.double_the_difference([1, 3, 2, 0]) == 10  # 1^2 + 3^2
+    # Negative and zero values contribute nothing
+    assert module_0.double_the_difference([-1, -2, 0]) == 0
+    # Single odd positive number
+    assert module_0.double_the_difference([9, -2]) == 81
+    # Only zero
+    assert module_0.double_the_difference([0]) == 0
+    # Empty list
     assert module_0.double_the_difference([]) == 0
+    # Floats are excluded ("." in string representation)
+    assert module_0.double_the_difference([1.0, 3.5, 2.0]) == 0
+    # Mix of ints and floats
+    assert module_0.double_the_difference([1, 2.5, 3, -7]) == 10  # 1^2 + 3^2
+    # Large odd numbers
+    assert module_0.double_the_difference([11, 13]) == 121 + 169
+    # All even positives
+    assert module_0.double_the_difference([2, 4, 6]) == 0
+    # Negative odds ignored
+    assert module_0.double_the_difference([-3, -5]) == 0
+    # Combined scenario
+    assert module_0.double_the_difference([-10, 1.5, 3, 4, 5]) == 34  # 9 + 25
 
-    # evens, negatives, zero are skipped
-    assert module_0.double_the_difference([-1, -3, 0, 2, 4]) == 0
-
-    # floats are excluded even if positive & "odd"
-    assert module_0.double_the_difference([1.0, 3.0, 5.0]) == 0
-
-    # mixed bag: only 1, 7, 9 count
-    assert module_0.double_the_difference([1, 2, 3.0, -7, 7, 9, 0]) == 1 + 49 + 81
-
-    # single odd positive
-    assert module_0.double_the_difference([11]) == 121
-
-    # large value
-    assert module_0.double_the_difference([999]) == 998001
-
-# Generated at 2026-10-25 08:37:11.256759
+# Generated at 2026-11-01 22:46:06.536165
 # Unit test for function double_the_difference
 def test_double_the_difference():
-    # basic: 1^2 + 3^2 + 5^2
-    assert module_0.double_the_difference([1, 3, 5]) == 35
-
-    # empty list -> 0
     assert module_0.double_the_difference([]) == 0
+    assert module_0.double_the_difference([5, 4]) == 25
+    assert module_0.double_the_difference([0.1, 0.2, 0.3]) == 0
+    assert module_0.double_the_difference([-10, -20, -30]) == 0
+    assert module_0.double_the_difference([-1, -2, 8]) == 0
+    assert module_0.double_the_difference([0.2, 3, 5]) == 34
+    assert module_0.double_the_difference([1, 3, 5, 7]) == 84
+    assert module_0.double_the_difference([2, 4, 6]) == 0
+    assert module_0.double_the_difference([1.5, 3, 2.5]) == 9
+    print("All tests passed!")
 
-    # evens, negatives, zero are skipped
-    assert module_0.double_the_difference([-1, -3, 0, 2, 4]) == 0
+if __name__ == "__main__":
+    test_double_the_difference()
+# nonce:a71cec89
 
-    # floats are excluded even if positive & "odd"
-    assert module_0.double_the_difference([1.0, 3.0, 5.0]) == 0
-
-    # mixed bag: only 1, 7, 9 count
-    assert module_0.double_the_difference([1, 2, 3.0, -7, 7, 9, 0]) == 1 + 49 + 81
-
-    # single odd positive
-    assert module_0.double_the_difference([11]) == 121
-
-    # large value
-    assert module_0.double_the_difference([999]) == 998001
-
-# Generated at 2026-10-25 08:37:12.590895
+# Generated at 2026-11-01 22:46:22.543777
 # Unit test for function double_the_difference
 def test_double_the_difference():
-    # basic: 1^2 + 3^2 + 5^2
+    # Basic positive odd numbers
     assert module_0.double_the_difference([1, 3, 5]) == 35
+    assert module_0.double_the_difference([1, 3, 2, 0]) == 10
 
-    # empty list -> 0
+    # Negative numbers are ignored
+    assert module_0.double_the_difference([-1, -2, -3]) == 0
+    assert module_0.double_the_difference([9, -2]) == 81
+
+    # Zero is ignored
+    assert module_0.double_the_difference([0]) == 0
+
+    # Empty list
     assert module_0.double_the_difference([]) == 0
 
-    # evens, negatives, zero are skipped
-    assert module_0.double_the_difference([-1, -3, 0, 2, 4]) == 0
+    # Floats (containing ".") are ignored
+    assert module_0.double_the_difference([1.5, 2.5, 3.5]) == 0
+    assert module_0.double_the_difference([1, 2.5, 3]) == 10
 
-    # floats are excluded even if positive & "odd"
-    assert module_0.double_the_difference([1.0, 3.0, 5.0]) == 0
+    # Mixed list combining all filter conditions
+    assert module_0.double_the_difference([-1, 2.5, 4, 5, 0]) == 25
 
-    # mixed bag: only 1, 7, 9 count
-    assert module_0.double_the_difference([1, 2, 3.0, -7, 7, 9, 0]) == 1 + 49 + 81
-
-    # single odd positive
+    # Larger odd number
     assert module_0.double_the_difference([11]) == 121
 
-    # large value
-    assert module_0.double_the_difference([999]) == 998001
-
-# Generated at 2026-10-25 08:37:14.022110
-# Unit test for function double_the_difference
-def test_double_the_difference():
-    # basic: 1^2 + 3^2 + 5^2
-    assert module_0.double_the_difference([1, 3, 5]) == 35
-
-    # empty list -> 0
-    assert module_0.double_the_difference([]) == 0
-
-    # evens, negatives, zero are skipped
-    assert module_0.double_the_difference([-1, -3, 0, 2, 4]) == 0
-
-    # floats are excluded even if positive & "odd"
-    assert module_0.double_the_difference([1.0, 3.0, 5.0]) == 0
-
-    # mixed bag: only 1, 7, 9 count
-    assert module_0.double_the_difference([1, 2, 3.0, -7, 7, 9, 0]) == 1 + 49 + 81
-
-    # single odd positive
-    assert module_0.double_the_difference([11]) == 121
-
-    # large value
-    assert module_0.double_the_difference([999]) == 998001
-
-# Generated at 2026-10-25 08:37:16.441023
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:18.859807
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:21.275596
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:23.691421
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:26.110533
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:28.532305
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:31.312688
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:33.731984
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:36.149171
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:38.566257
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:40.982179
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:43.399433
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:45.814641
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:48.233189
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:50.648194
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:53.064824
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:55.479529
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:37:57.897451
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:00.315556
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:02.734023
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:05.152177
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:07.568164
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:09.983821
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:12.399257
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:14.858331
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:17.274850
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:19.691869
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:22.106474
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:24.522623
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:26.939102
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:29.356098
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:31.777391
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:34.189818
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:36.609353
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:39.026556
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:41.443630
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:43.862767
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:46.280556
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:48.736265
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:51.163683
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:53.581141
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:56.031945
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:38:58.422274
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:39:00.838798
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:39:03.253989
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:39:05.670503
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:39:08.087877
-# Unit test for function double_the_difference
-
-# Generated at 2026-10-25 08:39:10.508892
-# Unit test for function double_the_difference
+    print("All tests passed!")

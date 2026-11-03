@@ -1,46 +1,142 @@
 
 
-# Generated at 2026-10-25 17:41:24.644705
+# Generated at 2026-11-03 04:51:57.338134
 # Unit test for function intersperse
+def test_intersperse():
+    # Test empty list
+    assert module_0.intersperse([], 4) == []
 
-# Generated at 2026-10-25 17:41:27.061290
-# Unit test for function intersperse
+    # Test single element
+    assert module_0.intersperse([1], 4) == [1]
 
-# Generated at 2026-10-25 17:41:29.477740
-# Unit test for function intersperse
+    # Test two elements
+    assert module_0.intersperse([1, 2], 4) == [1, 4, 2]
 
-# Generated at 2026-10-25 17:41:31.895400
-# Unit test for function intersperse
+    # Test multiple elements
+    assert module_0.intersperse([1, 2, 3], 4) == [1, 4, 2, 4, 3]
 
-# Generated at 2026-10-25 17:41:34.305763
-# Unit test for function intersperse
+    # Test with negative numbers
+    assert module_0.intersperse([-1, -2, -3], 0) == [-1, 0, -2, 0, -3]
 
-# Generated at 2026-10-25 17:41:36.749238
-# Unit test for function intersperse
+    # Test delimiter equal to element values
+    assert module_0.intersperse([5, 5, 5], 5) == [5, 5, 5, 5, 5]
 
-# Generated at 2026-10-25 17:41:39.156858
-# Unit test for function intersperse
+    # Test original list is not modified
+    original = [1, 2, 3]
+    module_0.intersperse(original, 4)
+    assert original == [1, 2, 3]
 
-# Generated at 2026-10-25 17:41:41.569422
-# Unit test for function intersperse
+    print("All tests passed!")
 
-# Generated at 2026-10-25 17:41:43.984146
-# Unit test for function intersperse
 
-# Generated at 2026-10-25 17:41:46.397524
-# Unit test for function intersperse
+test_intersperse()
 
-# Generated at 2026-10-25 17:41:48.810809
+# Generated at 2026-11-03 04:54:33.194528
 # Unit test for function intersperse
+def test_intersperse():
+    # Test empty list
+    assert module_0.intersperse([], 4) == []
 
-# Generated at 2026-10-25 17:41:51.224671
-# Unit test for function intersperse
+    # Test single element (no delimiter needed)
+    assert module_0.intersperse([5], 4) == [5]
 
-# Generated at 2026-10-25 17:41:53.638748
-# Unit test for function intersperse
+    # Test two elements
+    assert module_0.intersperse([1, 2], 4) == [1, 4, 2]
 
-# Generated at 2026-10-25 17:41:56.053398
-# Unit test for function intersperse
+    # Test multiple elements
+    assert module_0.intersperse([1, 2, 3], 4) == [1, 4, 2, 4, 3]
 
-# Generated at 2026-10-25 17:41:58.467615
+    # Test with zero delimiter
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+
+    # Test with negative numbers and negative delimiter
+    assert module_0.intersperse([-1, -2, -3], -9) == [-1, -9, -2, -9, -3]
+
+    # Test delimiter equal to elements
+    assert module_0.intersperse([7, 7, 7], 7) == [7, 7, 7, 7, 7]
+
+    # Test original list is not modified
+    original = [1, 2, 3]
+    module_0.intersperse(original, 4)
+    assert original == [1, 2, 3]
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_intersperse()
+
+# Generated at 2026-11-03 04:56:28.190627
 # Unit test for function intersperse
+def test_intersperse():
+    # Test with empty list
+    assert module_0.intersperse([], 4) == []
+
+    # Test with single element (no delimiter needed)
+    assert module_0.intersperse([5], 4) == [5]
+
+    # Test with two elements
+    assert module_0.intersperse([1, 2], 4) == [1, 4, 2]
+
+    # Test with multiple elements
+    assert module_0.intersperse([1, 2, 3], 4) == [1, 4, 2, 4, 3]
+
+    # Test with zero delimiter
+    assert module_0.intersperse([1, 2, 3], 0) == [1, 0, 2, 0, 3]
+
+    # Test with negative numbers and negative delimiter
+    assert module_0.intersperse([-1, -2, -3], -9) == [-1, -9, -2, -9, -3]
+
+    # Test that original list is not modified
+    original = [1, 2, 3]
+    module_0.intersperse(original, 9)
+    assert original == [1, 2, 3]
+
+    # Test with duplicate values
+    assert module_0.intersperse([7, 7, 7], 1) == [7, 1, 7, 1, 7]
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_intersperse()
+
+# Generated at 2026-11-03 04:59:05.478047
+# Unit test for function intersperse
+def test_intersperse():
+    # Test empty list
+    assert module_0.intersperse([], 7) == []
+
+    # Test single element list
+    assert module_0.intersperse([5], 7) == [5]
+
+    # Test two elements
+    assert module_0.intersperse([1, 2], 3) == [1, 3, 2]
+
+    # Test multiple elements
+    assert module_0.intersperse([1, 2, 3], 4) == [1, 4, 2, 4, 3]
+
+    # Test with negative delimiter
+    assert module_0.intersperse([1, 2, 3], -1) == [1, -1, 2, -1, 3]
+
+    # Test with negative numbers in list
+    assert module_0.intersperse([-1, -2, -3], 0) == [-1, 0, -2, 0, -3]
+
+    # Test with duplicate values
+    assert module_0.intersperse([5, 5, 5], 1) == [5, 1, 5, 1, 5]
+
+    # Test delimiter same as element values
+    assert module_0.intersperse([2, 2], 2) == [2, 2, 2]
+
+    # Test longer list
+    assert module_0.intersperse([1, 2, 3, 4, 5], 0) == [1, 0, 2, 0, 3, 0, 4, 0, 5]
+
+    # Verify result length for n elements is 2n - 1
+    result = module_0.intersperse([1, 2, 3, 4], 9)
+    assert len(result) == 2 * 4 - 1
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_intersperse()

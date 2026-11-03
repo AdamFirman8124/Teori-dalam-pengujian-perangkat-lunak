@@ -1,266 +1,134 @@
 
 
-# Generated at 2026-10-24 07:43:43.790006
-# Unit test for function sort_array
-
-# Generated at 2026-10-24 07:43:52.756783
+# Generated at 2026-11-02 15:54:35.496211
 # Unit test for function sort_array
 def test_sort_array():
+    # Sorted by count of 1-bits in binary representation; ties broken by value
     assert module_0.sort_array([1, 5, 2, 3, 4]) == [1, 2, 4, 3, 5]
-    assert module_0.sort_array([0, 1, 2, 3, 4]) == [0, 1, 2, 4, 3]
-    assert module_0.sort_array([7, 8, 6, 5]) == [8, 5, 6, 7]
-    assert module_0.sort_array([]) == []
-    assert module_0.sort_array([15, 15, 1]) == [1, 15, 15]
-    assert module_0.sort_array([2]) == [2]
+    assert module_0.sort_array([1, 0, 2, 3, 4]) == [0, 1, 2, 4, 3]
 
-# Generated at 2026-10-24 07:43:54.192454
+    # Edge cases
+    assert module_0.sort_array([]) == []
+    assert module_0.sort_array([7]) == [7]
+    assert module_0.sort_array([0]) == [0]
+
+    # Duplicates
+    assert module_0.sort_array([2, 2, 1, 1]) == [1, 1, 2, 2]
+
+    # Powers of two each have exactly one 1-bit
+    assert module_0.sort_array([8, 4, 2, 1]) == [1, 2, 4, 8]
+
+    # Mixed values
+    assert module_0.sort_array([3, 8, 7, 6, 4]) == [4, 8, 3, 6, 7]
+    assert module_0.sort_array([10, 15, 7, 1]) == [1, 10, 7, 15]
+
+    # Negative numbers (bin(-n)[2:] yields 'b...' so key counts magnitude bits)
+    assert module_0.sort_array([-2, -3, -4, -5, -6]) == [-4, -2, -6, -5, -3]
+
+    print("test_sort_array passed")
+
+# Generated at 2026-11-02 15:56:52.786451
 # Unit test for function sort_array
-def test_sort_array():import random
-import pytest
+def test_sort_array():
+    # Sorts by number of 1 bits in binary; ties broken by numeric value (stable sort)
+    assert module_0.sort_array([1, 5, 2, 3, 4]) == [1, 2, 4, 3, 5]
 
-from solution import sort_array  # adjust to your module name
-
-
-def popcount(x: int) -> int:
-    return bin(x)[2:].count("1")
-
-
-def reference(arr):
-    """Sort by popcount asc, ties broken by value asc (stable-sort semantics)."""
-    return sorted(arr, key=lambda x: (popcount(x), x))
-
-
-def test_empty():
-    assert module_0.sort_array([]) == []
-
-
-def test_single_element():
-    assert module_0.sort_array([42]) == [42]
-
-
-def test_orders_by_popcount_then_value():
-    # popcount 1: 1,2,4 | popcount 2: 3,5
-    assert module_0.sort_array([5, 3, 2, 4, 1]) == [1, 2, 4, 3, 5]
-
-
-def test_input_order_does_not_matter():
-    assert module_0.sort_array([1, 2, 3, 4, 5]) == [1, 2, 4, 3, 5]
-    assert module_0.sort_array([5, 4, 3, 2, 1]) == [1, 2, 4, 3, 5]
-
-
-def test_duplicates_preserved():
-    assert module_0.sort_array([3, 1, 3, 2]) == [1, 2, 3, 3]
-
-
-def test_zero_and_powers_of_two():
-    # 0 has popcount 0 and comes first; 1,2,4,8 all have popcount 1
-    assert module_0.sort_array([8, 0, 4, 2, 1]) == [0, 1, 2, 4, 8]
-
-
-def test_does_not_mutate_input():
-    data = [7, 1, 4]
-    original = list(data)
-    module_0.sort_array(data)
-    assert data == original
-
-
-def test_matches_reference_on_range():
-    data = list(range(0, 200))
-    random.Random(0).shuffle(data)
-    assert module_0.sort_array(data) == reference(data)
-
-
-def test_matches_reference_on_random_inputs():
-    rng = random.Random(1234)
-    for _ in range(50):
-        data = [rng.randint(0, 5000) for _ in range(rng.randint(0, 30))]
-        assert module_0.sort_array(data) == reference(data)
-
-# Generated at 2026-10-24 07:43:55.832006
+# Generated at 2026-11-02 15:57:55.466780
 # Unit test for function sort_array
-def test_sort_array():import random
-import pytest
+def test_sort_array():
+    # Basic sorting by number of 1s in binary representation
+    assert module_0.sort_array([1, 5, 2, 3, 4]) == [1, 2, 4, 3, 5]
+    # 1->1, 2->1, 4->1 (stable order kept), 3->2, 5->2
 
-from solution import sort_array  # adjust to your module name
-
-
-def popcount(x: int) -> int:
-    return bin(x)[2:].count("1")
-
-
-def reference(arr):
-    """Sort by popcount asc, ties broken by value asc (stable-sort semantics)."""
-    return sorted(arr, key=lambda x: (popcount(x), x))
-
-
-def test_empty():
+    # Empty array
     assert module_0.sort_array([]) == []
 
+    # Single element
+    assert module_0.sort_array([7]) == [7]
 
-def test_single_element():
-    assert module_0.sort_array([42]) == [42]
+    # All elements with a single 1-bit stay in ascending order
+    assert module_0.sort_array([16, 2, 8, 4]) == [2, 4, 8, 16]
 
+    # Already sorted input
+    assert module_0.sort_array([1, 2, 3]) == [1, 2, 3]
 
-def test_orders_by_popcount_then_value():
-    # popcount 1: 1,2,4 | popcount 2: 3,5
-    assert module_0.sort_array([5, 3, 2, 4, 1]) == [1, 2, 4, 3, 5]
+    # Ties resolved by numeric order (stable sort after initial sort)
+    assert module_0.sort_array([5, 3, 6, 1]) == [1, 3, 5, 6]
 
+    # Duplicates
+    assert module_0.sort_array([3, 3, 1, 1]) == [1, 1, 3, 3]
 
-def test_input_order_does_not_matter():
-    assert module_0.sort_array([1, 2, 3, 4, 5]) == [1, 2, 4, 3, 5]
-    assert module_0.sort_array([5, 4, 3, 2, 1]) == [1, 2, 4, 3, 5]
+    # Zero has zero 1-bits, comes first
+    assert module_0.sort_array([1, 0, 3]) == [0, 1, 3]
 
+    # Negative numbers: bin(-n)[2:] drops the sign, e.g. bin(-2) -> 'b10'
+    assert module_0.sort_array([-2, -3, -4]) == [-4, -2, -3]
 
-def test_duplicates_preserved():
-    assert module_0.sort_array([3, 1, 3, 2]) == [1, 2, 3, 3]
+    # Larger mixed case
+    assert module_0.sort_array([10, 1, 7, 15, 2]) == [1, 2, 10, 7, 15]
+    # 1->1, 2->1, 10(1010)->2, 7(111)->3, 15(1111)->4
 
-
-def test_zero_and_powers_of_two():
-    # 0 has popcount 0 and comes first; 1,2,4,8 all have popcount 1
-    assert module_0.sort_array([8, 0, 4, 2, 1]) == [0, 1, 2, 4, 8]
-
-
-def test_does_not_mutate_input():
-    data = [7, 1, 4]
-    original = list(data)
-    module_0.sort_array(data)
-    assert data == original
+    print("All tests passed!")
 
 
-def test_matches_reference_on_range():
-    data = list(range(0, 200))
-    random.Random(0).shuffle(data)
-    assert module_0.sort_array(data) == reference(data)
+test_sort_array()
 
-
-def test_matches_reference_on_random_inputs():
-    rng = random.Random(1234)
-    for _ in range(50):
-        data = [rng.randint(0, 5000) for _ in range(rng.randint(0, 30))]
-        assert module_0.sort_array(data) == reference(data)
-
-# Generated at 2026-10-24 07:43:57.469119
+# Generated at 2026-11-02 16:00:05.208219
 # Unit test for function sort_array
-def test_sort_array():import random
-import pytest
+def test_sort_array():
+    # Sorts primarily by number of ones in binary representation
+    assert module_0.sort_array([1, 5, 2, 3, 4]) == [1, 2, 4, 3, 5]
 
-from solution import sort_array  # adjust to your module name
+    # Negative numbers: ones counted from magnitude's binary form
+    assert module_0.sort_array([-2, -3, -4, -5, -6]) == [-4, -2, -6, -5, -3]
 
-
-def popcount(x: int) -> int:
-    return bin(x)[2:].count("1")
-
-
-def reference(arr):
-    """Sort by popcount asc, ties broken by value asc (stable-sort semantics)."""
-    return sorted(arr, key=lambda x: (popcount(x), x))
-
-
-def test_empty():
+    # Empty array
     assert module_0.sort_array([]) == []
 
+    # Single element
+    assert module_0.sort_array([7]) == [7]
 
-def test_single_element():
-    assert module_0.sort_array([42]) == [42]
+    # Ties in ones count broken by numeric value (stable pre-sort)
+    assert module_0.sort_array([2, 1]) == [1, 2]
+    assert module_0.sort_array([4, 2, 1]) == [1, 2, 4]
 
+    # Zero has zero ones in binary, comes first
+    assert module_0.sort_array([1, 0, 3]) == [0, 1, 3]
 
-def test_orders_by_popcount_then_value():
-    # popcount 1: 1,2,4 | popcount 2: 3,5
-    assert module_0.sort_array([5, 3, 2, 4, 1]) == [1, 2, 4, 3, 5]
+    # Duplicates preserved
+    assert module_0.sort_array([3, 3, 1]) == [1, 3, 3]
 
+    # Larger range: 0,1,2,4,8 have <=1 one; 3,5,6 have two; 7 has three
+    assert module_0.sort_array([0, 1, 2, 3, 4, 5, 6, 7, 8]) == [0, 1, 2, 4, 8, 3, 5, 6, 7]
 
-def test_input_order_does_not_matter():
-    assert module_0.sort_array([1, 2, 3, 4, 5]) == [1, 2, 4, 3, 5]
-    assert module_0.sort_array([5, 4, 3, 2, 1]) == [1, 2, 4, 3, 5]
+    # Already sorted input remains sorted
+    assert module_0.sort_array([1, 2, 3]) == [1, 2, 3]
 
+    # Unsorted input with equal ones counts
+    assert module_0.sort_array([9, 6, 3, 5]) == [3, 5, 6, 9]
 
-def test_duplicates_preserved():
-    assert module_0.sort_array([3, 1, 3, 2]) == [1, 2, 3, 3]
-
-
-def test_zero_and_powers_of_two():
-    # 0 has popcount 0 and comes first; 1,2,4,8 all have popcount 1
-    assert module_0.sort_array([8, 0, 4, 2, 1]) == [0, 1, 2, 4, 8]
-
-
-def test_does_not_mutate_input():
-    data = [7, 1, 4]
-    original = list(data)
-    module_0.sort_array(data)
-    assert data == original
-
-
-def test_matches_reference_on_range():
-    data = list(range(0, 200))
-    random.Random(0).shuffle(data)
-    assert module_0.sort_array(data) == reference(data)
-
-
-def test_matches_reference_on_random_inputs():
-    rng = random.Random(1234)
-    for _ in range(50):
-        data = [rng.randint(0, 5000) for _ in range(rng.randint(0, 30))]
-        assert module_0.sort_array(data) == reference(data)
-
-# Generated at 2026-10-24 07:43:58.919272
+# Generated at 2026-11-02 16:01:50.190993
 # Unit test for function sort_array
-def test_sort_array():import random
-import pytest
+def test_sort_array():
+    # Sorted by number of 1-bits; ties broken by ascending value
+    assert module_0.sort_array([1, 5, 2, 3, 4]) == [1, 2, 4, 3, 5]
+    assert module_0.sort_array([1, 0, 2, 3, 4]) == [0, 1, 2, 4, 3]
 
-from solution import sort_array  # adjust to your module name
-
-
-def popcount(x: int) -> int:
-    return bin(x)[2:].count("1")
-
-
-def reference(arr):
-    """Sort by popcount asc, ties broken by value asc (stable-sort semantics)."""
-    return sorted(arr, key=lambda x: (popcount(x), x))
-
-
-def test_empty():
+    # Empty list
     assert module_0.sort_array([]) == []
 
+    # Single element
+    assert module_0.sort_array([7]) == [7]
 
-def test_single_element():
-    assert module_0.sort_array([42]) == [42]
+    # All elements have the same bit count -> plain ascending sort
+    assert module_0.sort_array([9, 5, 6, 3]) == [3, 5, 6, 9]  # each has two 1-bits
 
+    # Powers of two all have exactly one 1-bit
+    assert module_0.sort_array([8, 4, 2, 1]) == [1, 2, 4, 8]
 
-def test_orders_by_popcount_then_value():
-    # popcount 1: 1,2,4 | popcount 2: 3,5
-    assert module_0.sort_array([5, 3, 2, 4, 1]) == [1, 2, 4, 3, 5]
+    # Input already in expected order
+    assert module_0.sort_array([0, 1, 2, 4, 3]) == [0, 1, 2, 4, 3]
 
-
-def test_input_order_does_not_matter():
-    assert module_0.sort_array([1, 2, 3, 4, 5]) == [1, 2, 4, 3, 5]
-    assert module_0.sort_array([5, 4, 3, 2, 1]) == [1, 2, 4, 3, 5]
-
-
-def test_duplicates_preserved():
-    assert module_0.sort_array([3, 1, 3, 2]) == [1, 2, 3, 3]
-
-
-def test_zero_and_powers_of_two():
-    # 0 has popcount 0 and comes first; 1,2,4,8 all have popcount 1
-    assert module_0.sort_array([8, 0, 4, 2, 1]) == [0, 1, 2, 4, 8]
-
-
-def test_does_not_mutate_input():
-    data = [7, 1, 4]
-    original = list(data)
-    module_0.sort_array(data)
-    assert data == original
-
-
-def test_matches_reference_on_range():
-    data = list(range(0, 200))
-    random.Random(0).shuffle(data)
-    assert module_0.sort_array(data) == reference(data)
-
-
-def test_matches_reference_on_random_inputs():
-    rng = random.Random(1234)
-    for _ in range(50):
-        data = [rng.randint(0, 5000) for _ in range(rng.randint(0, 30))]
-        assert module_0.sort_array(data) == reference(data)
+    # Mixed values requiring reordering by bit count
+    assert module_0.sort_array([31, 1, 7, 3]) == [1, 3, 7, 31]
+    # 31='11111' (5 ones), 1='1' (1), 7='111' (3), 3='11' (2)

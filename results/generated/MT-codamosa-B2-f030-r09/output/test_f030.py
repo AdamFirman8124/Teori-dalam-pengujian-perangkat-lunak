@@ -2,12 +2,48 @@
 import f030 as module_0
 
 def test_case_0():
-    int_0 = -3
-    int_1 = -1
-    int_2 = 0
-    int_3 = 1
-    int_4 = 2
-    int_5 = 5
-    int_6 = [int_0, int_1, int_2, int_3, int_4, int_5]
-    var_0 = module_0.get_positive(int_6)
-    assert var_0 == [1, 2, 5]
+    int_0 = -1
+    int_1 = 2
+    int_2 = -4
+    int_3 = 5
+    int_4 = 6
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    var_0 = module_0.get_positive(int_5)
+    assert var_0 == [2, 5, 6]
+    int_6 = 1
+    int_7 = 3
+    int_8 = 4
+    int_9 = [int_6, int_1, int_7, int_8]
+    var_1 = module_0.get_positive(int_9)
+    assert var_1 == [1, 2, 3, 4]
+    int_10 = -1
+    int_11 = -2
+    int_12 = -3
+    int_13 = -4
+    int_14 = [int_10, int_11, int_12, int_13]
+    var_2 = module_0.get_positive(int_14)
+    assert var_2 == []
+    var_3 = []
+    var_4 = module_0.get_positive(var_3)
+    assert var_4 == []
+    int_15 = 0
+    int_16 = -1
+    int_17 = [int_15, int_6, int_16, int_15, int_1]
+    var_5 = module_0.get_positive(int_17)
+    assert var_5 == [1, 2]
+    float_0 = -1.5
+    float_1 = 2.5
+    float_2 = -3.7
+    float_3 = 0.1
+    float_4 = [float_0, float_1, float_2, float_3]
+    var_6 = module_0.get_positive(float_4)
+    assert len(var_6) == 2
+    int_18 = -3
+    int_19 = [int_7, int_7, int_18, int_7]
+    var_7 = module_0.get_positive(int_19)
+    assert var_7 == [3, 3, 3]
+    str_0 = 'All tests passed!'
+    var_8 = print(str_0)
+
+def test_case_1():
+    pass

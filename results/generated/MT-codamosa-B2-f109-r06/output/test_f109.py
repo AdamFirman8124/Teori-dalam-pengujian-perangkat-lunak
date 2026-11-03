@@ -16,36 +16,34 @@ def test_case_0():
     int_6 = [int_0, int_2, int_3, int_4, int_5]
     var_3 = module_0.move_one_ball(int_6)
     assert var_3 is True
-    int_7 = [int_0, int_2]
+    int_7 = [int_3, int_4, int_5, int_0, int_2]
     var_4 = module_0.move_one_ball(int_7)
     assert var_4 is True
-    int_8 = [int_3, int_4, int_5, int_0, int_2]
+    int_8 = [int_5, int_0, int_2, int_3, int_4]
     var_5 = module_0.move_one_ball(int_8)
     assert var_5 is True
-    int_9 = [int_4, int_5, int_0, int_2, int_3]
+    int_9 = [int_3, int_5, int_4, int_0, int_2]
     var_6 = module_0.move_one_ball(int_9)
-    assert var_6 is True
-    int_10 = [int_2, int_0]
+    assert var_6 is False
+    int_10 = [int_2, int_0, int_3, int_4, int_5]
     var_7 = module_0.move_one_ball(int_10)
-    assert var_7 is True
-    int_11 = [int_2, int_2, int_0, int_2]
+    assert var_7 is False
+    int_11 = [int_2, int_0]
     var_8 = module_0.move_one_ball(int_11)
     assert var_8 is True
-    int_12 = [int_2, int_0, int_2]
-    var_9 = module_0.move_one_ball(int_12)
+    int_12 = 7
+    int_13 = [int_12, int_3]
+    var_9 = module_0.move_one_ball(int_13)
+    assert var_9 is False
     assert var_9 is True
-    int_13 = [int_0, int_3, int_2]
-    var_10 = module_0.move_one_ball(int_13)
-    assert var_10 is False
-    int_14 = [int_3, int_2, int_0]
-    var_11 = module_0.move_one_ball(int_14)
-    assert var_11 is False
-    int_15 = [int_5, int_4, int_3, int_2, int_0]
-    var_12 = module_0.move_one_ball(int_15)
+    int_14 = [int_2, int_2, int_3, int_0, int_2]
+    var_10 = module_0.move_one_ball(int_14)
+    assert var_10 is True
+    int_15 = [int_5, int_5, int_5, int_5]
+    var_11 = module_0.move_one_ball(int_15)
+    assert var_11 is True
+    int_16 = [int_4, int_3, int_2, int_0]
+    var_12 = module_0.move_one_ball(int_16)
     assert var_12 is False
-    int_16 = [int_2, int_3, int_0, int_4]
-    var_13 = module_0.move_one_ball(int_16)
-    assert var_13 is False
-    int_17 = [int_0, int_2, int_0]
-    var_14 = module_0.move_one_ball(int_17)
-    assert var_14 is False
+    str_0 = 'All tests passed!'
+    var_13 = print(str_0)

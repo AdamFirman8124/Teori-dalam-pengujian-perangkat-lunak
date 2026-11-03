@@ -8,47 +8,73 @@ def test_case_0():
     int_2 = 5
     var_0 = module_0.triangle_area(int_0, int_1, int_2)
     assert var_0 == pytest.approx(6.0, abs=0.01, rel=0.01)
-    float_0 = 6.0
-    int_3 = 8
-    int_4 = 10
-    var_1 = module_0.triangle_area(float_0, int_3, int_4)
-    assert var_1 == pytest.approx(24.0, abs=0.01, rel=0.01)
-    var_2 = module_0.triangle_area(int_2, int_2, float_0)
-    assert var_2 == pytest.approx(12.0, abs=0.01, rel=0.01)
-    var_3 = module_0.triangle_area(int_0, int_0, int_0)
-    assert var_3 == pytest.approx(3.9, abs=0.01, rel=0.01)
+    var_1 = module_0.triangle_area(int_1, int_0, int_2)
+    assert var_1 == pytest.approx(6.0, abs=0.01, rel=0.01)
+    var_2 = module_0.triangle_area(int_2, int_1, int_0)
+    assert var_2 == pytest.approx(6.0, abs=0.01, rel=0.01)
+    int_3 = 2
+    var_3 = module_0.triangle_area(int_3, int_3, int_3)
+    assert var_3 == pytest.approx(1.73, abs=0.01, rel=0.01)
+    var_4 = module_0.triangle_area(int_2, int_2, int_2)
+    assert var_4 == pytest.approx(10.83, abs=0.01, rel=0.01)
+    int_4 = 6
+    var_5 = module_0.triangle_area(int_2, int_2, int_4)
+    assert var_5 == pytest.approx(12.0, abs=0.01, rel=0.01)
+    var_6 = module_0.triangle_area(int_1, int_2, int_4)
+    assert var_6 == pytest.approx(9.92, abs=0.01, rel=0.01)
     int_5 = 1
-    var_4 = module_0.triangle_area(int_5, int_5, int_5)
-    assert var_4 == pytest.approx(0.43, abs=0.01, rel=0.01)
-    int_6 = 2
-    var_5 = module_0.triangle_area(int_6, int_6, int_0)
-    assert var_5 == pytest.approx(1.98, abs=0.01, rel=0.01)
-    var_6 = module_0.triangle_area(int_5, int_6, int_0)
-    assert var_6 == 1
-    assert var_6 == -1
-    var_7 = module_0.triangle_area(int_0, int_0, float_0)
+    int_6 = 10
+    var_7 = module_0.triangle_area(int_5, int_3, int_6)
     assert var_7 == 1
     assert var_7 == -1
-    int_7 = 0
-    var_8 = module_0.triangle_area(int_7, int_7, int_7)
+    var_8 = module_0.triangle_area(int_6, int_5, int_3)
     assert var_8 == 1
     assert var_8 == -1
-    var_9 = module_0.triangle_area(int_5, int_5, int_2)
+    var_9 = module_0.triangle_area(int_5, int_6, int_3)
     assert var_9 == 1
     assert var_9 == -1
-    var_10 = module_0.triangle_area(int_4, int_5, int_5)
+    var_10 = module_0.triangle_area(int_5, int_3, int_0)
     assert var_10 == 1
     assert var_10 == -1
-    int_8 = -1
-    var_11 = module_0.triangle_area(int_8, int_2, int_2)
+    var_11 = module_0.triangle_area(int_0, int_5, int_3)
     assert var_11 == 1
     assert var_11 == -1
-    int_9 = -1
-    var_12 = module_0.triangle_area(int_4, int_4, int_9)
+    int_7 = 0
+    var_12 = module_0.triangle_area(int_7, int_1, int_2)
     assert var_12 == 1
     assert var_12 == -1
-    var_13 = module_0.triangle_area(int_6, int_6, int_0)
-    assert var_13 == pytest.approx(1.98, abs=0.01, rel=0.01)
-    var_14 = module_0.triangle_area(int_6, int_6, int_0)
-    assert var_14 == pytest.approx(1.98, abs=0.01, rel=0.01)
-    var_15 = round(var_14, int_6)
+    str_0 = 'All tests passed!'
+    var_13 = print(str_0)
+
+def test_case_1():
+    int_0 = 3
+    int_1 = 4
+    int_2 = 5
+    var_0 = module_0.triangle_area(int_0, int_1, int_2)
+    assert var_0 == pytest.approx(6.0, abs=0.01, rel=0.01)
+    int_3 = 12
+    int_4 = 13
+    var_1 = module_0.triangle_area(int_2, int_3, int_4)
+    assert var_1 == pytest.approx(30.0, abs=0.01, rel=0.01)
+    int_5 = 2
+    var_2 = module_0.triangle_area(int_5, int_5, int_5)
+    assert var_2 == pytest.approx(1.73, abs=0.01, rel=0.01)
+    int_6 = 8
+    var_3 = module_0.triangle_area(int_2, int_2, int_6)
+    assert var_3 == pytest.approx(12.0, abs=0.01, rel=0.01)
+    int_7 = 1
+    int_8 = 10
+    var_4 = module_0.triangle_area(int_7, int_5, int_8)
+    assert var_4 == 1
+    assert var_4 == -1
+    var_5 = module_0.triangle_area(int_7, int_5, int_0)
+    assert var_5 == 1
+    assert var_5 == -1
+    int_9 = 0
+    var_6 = module_0.triangle_area(int_9, int_1, int_1)
+    assert var_6 == 1
+    assert var_6 == -1
+    float_0 = 4.5
+    float_1 = 6.5
+    var_7 = module_0.triangle_area(float_0, float_1, int_6)
+    assert var_7 == pytest.approx(14.62, abs=0.01, rel=0.01)

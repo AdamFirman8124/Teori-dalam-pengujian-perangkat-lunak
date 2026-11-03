@@ -2,50 +2,53 @@
 import f145 as module_0
 
 def test_case_0():
-    int_0 = 1
-    int_1 = 11
-    int_2 = -1
-    int_3 = -11
-    int_4 = -12
-    int_5 = [int_0, int_1, int_2, int_3, int_4]
-    var_0 = module_0.order_by_points(int_5)
-    assert var_0 == [-1, -11, 1, -12, 11]
+    int_0 = 12
+    int_1 = 3
+    int_2 = 21
+    int_3 = [int_0, int_1, int_2]
+    var_0 = module_0.order_by_points(int_3)
+    assert var_0 == [12, 3, 21]
+    int_4 = 1
+    int_5 = 11
     int_6 = -1
     int_7 = -11
     int_8 = -12
-    int_9 = [int_0, int_1, int_6, int_7, int_8]
+    int_9 = [int_4, int_5, int_6, int_7, int_8]
     var_1 = module_0.order_by_points(int_9)
     assert var_1 == [-1, -11, 1, -12, 11]
     var_2 = []
     var_3 = module_0.order_by_points(var_2)
     assert var_3 == []
-    int_10 = 5
+    int_10 = 0
     int_11 = [int_10]
     var_4 = module_0.order_by_points(int_11)
-    assert var_4 == [5]
-    int_12 = 21
-    int_13 = 12
-    int_14 = 3
-    int_15 = [int_12, int_13, int_14]
+    assert var_4 == [0]
+    int_12 = 6
+    int_13 = -76
+    int_14 = -21
+    int_15 = [int_10, int_12, int_12, int_13, int_14, int_4]
     var_5 = module_0.order_by_points(int_15)
-    assert var_5 == [21, 12, 3]
-    int_16 = -56
-    int_17 = -23
-    int_18 = -9
+    assert var_5 == [-76, -21, 0, 1, 6, 6]
+    int_16 = -1
+    int_17 = -2
+    int_18 = -3
     int_19 = [int_16, int_17, int_18]
     var_6 = module_0.order_by_points(int_19)
-    assert var_6 == [-9, -56, -23]
-    int_20 = -56
-    int_21 = -23
-    int_22 = -9
-    int_23 = [int_20, int_21, int_22]
-    var_7 = module_0.order_by_points(int_23)
-    assert var_7 == [-9, -56, -23]
-    int_24 = 0
-    int_25 = -10
-    int_26 = 10
-    int_27 = [int_24, int_25, int_26]
-    var_8 = module_0.order_by_points(int_27)
-    assert var_8 == [-10, 0, 10]
-    str_0 = 'All tests passed!'
-    var_9 = print(str_0)
+    assert var_6 == [-3, -2, -1]
+    int_20 = 56
+    int_21 = 65
+    int_22 = 100
+    int_23 = -100
+    int_24 = [int_20, int_21, int_22, int_23]
+    var_7 = module_0.order_by_points(int_24)
+    assert var_7 == [-100, 100, 56, 65]
+    int_25 = 23
+    int_26 = 32
+    int_27 = 14
+    int_28 = [int_25, int_26, int_27]
+    var_8 = module_0.order_by_points(int_28)
+    assert var_8 == [23, 32, 14]
+    int_29 = -19
+    int_30 = [int_29]
+    var_9 = module_0.order_by_points(int_30)
+    assert var_9 == [-19]

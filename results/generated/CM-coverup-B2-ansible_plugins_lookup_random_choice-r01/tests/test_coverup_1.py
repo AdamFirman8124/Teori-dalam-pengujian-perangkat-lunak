@@ -10,31 +10,41 @@ from ansible.errors import AnsibleError
 from ansible.plugins.lookup.random_choice import LookupModule
 
 
-def test_run_empty_terms():
-    """Empty terms list: line 46 executes, line 47 branch is False, returns []."""
-    lookup = LookupModule()
-    ret = lookup.run([])
-    assert ret == []
+@pytest.fixture
+def lookup():
+    return LookupModule()
 
 
-def test_run_non_empty_terms():
-    """Non-empty terms: line 49 executes, result is one of the terms."""
+def test_run_empty_terms_returns_empty_list(lookup):
+    """Covers: ret = terms, the False branch of `if terms:`, and `return ret`."""
+    result = lookup.run([])
+    assert result == []
+
+
+def test_run_non_empty_terms_returns_single_random_term(lookup, monkeypatch):
+    """Covers: the True branch of `if terms:`, the try block, and
+    ret = [random.choice(terms)], plus `return ret`."""
     terms = ['a', 'b', 'c']
-    lookup = LookupModule()
-    ret = lookup.run(terms)
-    assert len(ret) == 1
-    assert ret[0] in terms
+    # Patch random.choice for a deterministic result; monkeypatch restores it.
+    monkeypatch.setattr(random, 'choice', lambda seq: 'b')
+
+    result = lookup.run(terms)
+
+    assert result == ['b']
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert result[0] in terms
 
 
-def test_run_exception_raises_ansible_error(monkeypatch):
-    """Exception in random.choice: lines 50-51 execute, AnsibleError raised."""
+def test_run_random_choice_failure_raises_ansible_error(lookup, monkeypatch):
+    """Covers: the except branch and the `raise AnsibleError(...)` line."""
 
-    def fake_choice(seq):
-        raise ValueError("boom")
+    def failing_choice(seq):
+        raise ValueError('boom')
 
-    monkeypatch.setattr(random, 'choice', fake_choice)
+    monkeypatch.setattr(random, 'choice', failing_choice)
 
-    lookup = LookupModule()
     with pytest.raises(AnsibleError) as excinfo:
         lookup.run(['a', 'b'])
-    assert "Unable to choose random term: boom" in str(excinfo.value)
+
+    assert excinfo.value.message == 'Unable to choose random term: boom'

@@ -7,33 +7,36 @@ import pytest
 from f005 import intersperse
 
 
-def test_intersperse_empty_list_returns_empty():
-    numbers = []
-    result = intersperse(numbers, 0)
+def test_intersperse_empty_list():
+    """Covers lines 6-7: empty input short-circuits to an empty list."""
+    result = intersperse([], 5)
     assert result == []
-    assert numbers == []
+    assert isinstance(result, list)
 
 
-def test_intersperse_single_element_skips_loop():
-    numbers = [7]
-    result = intersperse(numbers, 0)
-    assert result == [7]
-    assert numbers == [7]
-
-
-def test_intersperse_two_elements():
-    assert intersperse([1, 2], 0) == [1, 0, 2]
+def test_intersperse_single_element():
+    """Covers lines 9, 11 (loop body skipped), 15, 17: single element has no delimiters."""
+    result = intersperse([42], 0)
+    assert result == [42]
 
 
 def test_intersperse_multiple_elements():
-    numbers = [1, 2, 3, 4]
-    result = intersperse(numbers, -1)
-    assert result == [1, -1, 2, -1, 3, -1, 4]
-    assert numbers == [1, 2, 3, 4]
+    """Covers lines 9, 11-13 (loop body), 15, 17: delimiters inserted between elements."""
+    result = intersperse([1, 2, 3], 4)
+    assert result == [1, 4, 2, 4, 3]
+    assert len(result) == 2 * len([1, 2, 3]) - 1
+
+
+def test_intersperse_two_elements():
+    """Covers loop body executed exactly once."""
+    result = intersperse([7, 8], -1)
+    assert result == [7, -1, 8]
 
 
 def test_intersperse_does_not_mutate_input():
-    numbers = [5, 6, 7]
-    original = list(numbers)
-    intersperse(numbers, 99)
-    assert numbers == original
+    """Verifies the function is pure: the input list is left unchanged."""
+    numbers = [1, 2, 3]
+    result = intersperse(numbers, 9)
+    assert result == [1, 9, 2, 9, 3]
+    assert numbers == [1, 2, 3]
+    assert result is not numbers

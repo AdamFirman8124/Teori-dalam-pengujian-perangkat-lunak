@@ -3,40 +3,47 @@ import f153 as module_0
 
 def test_case_0():
     str_0 = 'Slices'
-    str_1 = 'SErvice'
-    str_2 = 'LIFE'
-    str_3 = [str_1, str_2]
-    var_0 = module_0.Strongest_Extension(str_0, str_3)
-    assert var_0 == 'Slices.LIFE'
-    str_4 = 'MyClass'
-    str_5 = 'aBc'
-    str_6 = 'ABc'
-    str_7 = 'ABC'
-    str_8 = [str_5, str_6, str_7]
-    var_1 = module_0.Strongest_Extension(str_4, str_8)
-    assert var_1 == 'MyClass.ABC'
-    str_9 = 'AB'
-    str_10 = 'CD'
-    str_11 = [str_9, str_10]
-    var_2 = module_0.Strongest_Extension(str_4, str_11)
-    assert var_2 == 'MyClass.AB'
-    str_12 = 'Test'
-    str_13 = 'Extension'
-    str_14 = [str_13]
-    var_3 = module_0.Strongest_Extension(str_12, str_14)
-    assert var_3 == 'Test.Extension'
-    str_15 = 'File'
-    str_16 = 'A1b'
-    str_17 = 'AB-1'
-    str_18 = [str_16, str_17]
-    var_4 = module_0.Strongest_Extension(str_15, str_18)
-    assert var_4 == 'File.AB-1'
-
-def test_case_1():
-    str_0 = 'Slices'
-    str_1 = 'SErviNGSliCes'
-    str_2 = 'Cheese'
-    str_3 = 'StuFfed'
+    str_1 = 'SErviCSHUB'
+    str_2 = 'Ptns'
+    str_3 = 'ware'
     str_4 = [str_1, str_2, str_3]
     var_0 = module_0.Strongest_Extension(str_0, str_4)
-    assert var_0 == 'Slices.SErviNGSliCes'
+    assert var_0 == 'Slices.SErviCSHUB'
+    str_5 = 'my_class'
+    str_6 = 'AA'
+    str_7 = 'Be'
+    str_8 = 'CC'
+    str_9 = [str_6, str_7, str_8]
+    var_1 = module_0.Strongest_Extension(str_5, str_9)
+    assert var_1 == 'my_class.AA'
+    str_10 = 'Test'
+    str_11 = 'onlyOne'
+    str_12 = [str_11]
+    var_2 = module_0.Strongest_Extension(str_10, str_12)
+    assert var_2 == 'Test.onlyOne'
+    str_13 = 'Nums'
+    str_14 = 'a1B2'
+    str_15 = 'xyz'
+    str_16 = [str_14, str_15]
+    var_3 = module_0.Strongest_Extension(str_13, str_16)
+    assert var_3 == 'Nums.a1B2'
+    str_17 = 'Neg'
+    str_18 = 'abcdef'
+    str_19 = 'abc'
+    str_20 = [str_18, str_19]
+    var_4 = module_0.Strongest_Extension(str_17, str_20)
+    assert var_4 == 'Neg.abc'
+    str_21 = 'X'
+    str_22 = 'aB'
+    str_23 = 'AB'
+    str_24 = 'Ab'
+    str_25 = [str_22, str_23, str_24]
+    var_5 = module_0.Strongest_Extension(str_21, str_25)
+    assert var_5 == 'X.AB'
+    str_26 = 'C'
+    str_27 = 'e'
+    str_28 = [str_27]
+    var_6 = module_0.Strongest_Extension(str_26, str_28)
+    assert var_6 == 'C.e'
+    str_29 = 'All tests passed!'
+    var_7 = print(str_29)

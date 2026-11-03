@@ -3,19 +3,29 @@ import f159 as module_0
 
 def test_case_0():
     int_0 = 5
-    int_1 = 6
+    int_1 = 3
     int_2 = 10
     var_0 = module_0.eat(int_0, int_1, int_2)
-    assert var_0 == [11, 4]
-    int_3 = 4
-    int_4 = 8
-    int_5 = 9
-    var_1 = module_0.eat(int_3, int_4, int_5)
-    assert var_1 == [12, 1]
-    int_6 = 1
-    var_2 = module_0.eat(int_6, int_2, int_2)
-    assert var_2 == [11, 0]
-    int_7 = 2
-    int_8 = 11
-    var_3 = module_0.eat(int_7, int_8, int_0)
-    assert var_3 == [7, 0]
+    assert var_0 == [8, 7]
+    var_1 = module_0.eat(int_0, int_2, int_1)
+    assert var_1 == [8, 0]
+    int_3 = 7
+    var_2 = module_0.eat(int_0, int_3, int_3)
+    assert var_2 == [12, 0]
+    int_4 = 0
+    var_3 = module_0.eat(int_0, int_4, int_2)
+    assert var_3 == [5, 10]
+    var_4 = module_0.eat(int_0, int_2, int_4)
+    assert var_4 == [5, 0]
+    var_5 = module_0.eat(int_4, int_4, int_4)
+    assert var_5 == [0, 0]
+    int_5 = 100
+    int_6 = 50
+    int_7 = 200
+    var_6 = module_0.eat(int_5, int_6, int_7)
+    assert var_6 == [150, 150]
+    int_8 = 250
+    var_7 = module_0.eat(int_5, int_8, int_7)
+    assert var_7 == [300, 0]
+    str_0 = 'All tests passed!'
+    var_8 = print(str_0)

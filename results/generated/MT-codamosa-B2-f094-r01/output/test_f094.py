@@ -4,66 +4,55 @@ import f094 as module_0
 def test_case_0():
     int_0 = 0
     int_1 = 3
-    int_2 = 4
-    int_3 = 7
-    int_4 = 9
-    int_5 = 10
-    int_6 = 11
-    int_7 = [int_0, int_1, int_2, int_3, int_4, int_5, int_6]
-    var_0 = module_0.skjkasdkd(int_7)
-    assert var_0 == 2
-    int_8 = 5
-    int_9 = 15
-    int_10 = [int_8, int_5, int_9]
-    var_1 = module_0.skjkasdkd(int_10)
-    assert var_1 == 5
-    int_11 = 13
-    int_12 = 19
-    int_13 = 23
-    int_14 = [int_11, int_12, int_13]
-    var_2 = module_0.skjkasdkd(int_14)
-    assert var_2 == 5
-    int_15 = 17
-    int_16 = [int_6, int_11, int_15, int_12]
-    var_3 = module_0.skjkasdkd(int_16)
-    assert var_3 == 10
-    int_17 = 89
-    int_18 = 97
-    int_19 = 101
-    int_20 = [int_17, int_18, int_19]
-    var_4 = module_0.skjkasdkd(int_20)
-    assert var_4 == 2
-
-def test_case_1():
-    int_0 = 0
-    int_1 = 3
-    int_2 = 4
-    int_3 = 7
-    int_4 = 9
-    int_5 = 10
-    int_6 = 11
-    int_7 = [int_0, int_1, int_2, int_3, int_4, int_5, int_6]
-    var_0 = module_0.skjkasdkd(int_7)
-    assert var_0 == 2
-    int_8 = 5
-    int_9 = 15
-    int_10 = [int_8, int_5, int_9]
-    var_1 = module_0.skjkasdkd(int_10)
-    assert var_1 == 5
-    dict_0 = {}
-    var_2 = module_0.skjkasdkd(dict_0)
-    assert var_2 == 0
-    int_11 = 13
-    int_12 = 19
-    int_13 = 23
-    int_14 = [int_11, int_12, int_13]
-    var_3 = module_0.skjkasdkd(int_14)
-    assert var_3 == 5
-    int_15 = 17
-    int_16 = [int_6, int_11, int_15, int_12]
-    var_4 = module_0.skjkasdkd(int_16)
-    assert var_4 == 10
-    int_17 = 101
-    int_18 = [int_11, int_3, int_17, int_3]
-    var_5 = module_0.skjkasdkd(int_18)
-    assert var_5 == 2
+    int_2 = 2
+    int_3 = 1
+    int_4 = 5
+    int_5 = 7
+    int_6 = 4
+    int_7 = 181
+    int_8 = 32
+    int_9 = 324
+    int_10 = [int_0, int_1, int_2, int_3, int_1, int_4, int_5, int_6, int_4, int_4, int_4, int_2, int_7, int_8, int_6, int_8, int_1, int_2, int_8, int_9, int_6, int_1]
+    var_0 = module_0.skjkasdkd(int_10)
+    assert var_0 == 10
+    int_11 = 8
+    int_12 = 4597
+    int_13 = 40
+    int_14 = [int_3, int_0, int_3, int_11, int_2, int_12, int_2, int_3, int_1, int_13, int_3, int_2, int_3, int_2, int_6, int_2, int_4, int_3]
+    var_1 = module_0.skjkasdkd(int_14)
+    assert var_1 == 25
+    int_15 = [int_0, int_11, int_3, int_2, int_3, int_5]
+    var_2 = module_0.skjkasdkd(int_15)
+    assert var_2 == 7
+    int_16 = 10
+    int_17 = 6
+    int_18 = [int_1, int_3, int_3, int_0, int_1, int_16, int_6, int_6, int_2, int_16, int_6, int_1, int_6, int_16, int_3, int_16, int_17, int_16, int_6, int_1, int_6]
+    var_3 = module_0.skjkasdkd(int_18)
+    assert var_3 == 3
+    var_4 = []
+    var_5 = module_0.skjkasdkd(var_4)
+    assert var_5 == 0
+    int_19 = 9
+    int_20 = [int_6, int_17, int_11, int_19, int_16]
+    var_6 = module_0.skjkasdkd(int_20)
+    assert var_6 == 0
+    int_21 = [int_2]
+    var_7 = module_0.skjkasdkd(int_21)
+    assert var_7 == 2
+    int_22 = 13
+    int_23 = 17
+    int_24 = 23
+    int_25 = [int_22, int_23, int_24]
+    var_8 = module_0.skjkasdkd(int_25)
+    assert var_8 == 5
+    int_26 = 11
+    int_27 = [int_3, int_6, int_17, int_26]
+    var_9 = module_0.skjkasdkd(int_27)
+    assert var_9 == 2
+    int_28 = 97
+    int_29 = 96
+    int_30 = [int_28, int_28, int_29]
+    var_10 = module_0.skjkasdkd(int_30)
+    assert var_10 == 16
+    str_0 = 'All test cases passed!'
+    var_11 = print(str_0)

@@ -5,21 +5,10 @@
 from f084 import solve
 
 
-def test_solve_returns_binary_of_digit_sum():
-    assert solve(123) == "110"  # 1+2+3 = 6 -> 0b110
-
-
-def test_solve_single_digit():
-    assert solve(7) == "111"  # 7 -> 0b111
-
-
-def test_solve_zero():
-    assert solve(0) == "0"  # 0 -> 0b0
-
-
-def test_solve_trailing_zero_digit():
-    assert solve(10) == "1"  # 1+0 = 1 -> 0b1
-
-
-def test_solve_large_number():
-    assert solve(9999) == "100100"  # 36 -> 0b100100
+def test_solve():
+    # solve(N) sums the digits of N and returns the binary representation
+    # (without the '0b' prefix) of that sum.
+    assert solve(10) == '1'        # 1 + 0 = 1  -> bin(1)  = '0b1'   -> '1'
+    assert solve(99) == '10010'    # 9 + 9 = 18 -> bin(18) = '0b10010' -> '10010'
+    assert solve(0) == '0'         # 0          -> bin(0)  = '0b0'    -> '0'
+    assert solve(12345) == '1111'  # 1+2+3+4+5 = 15 -> bin(15) = '0b1111' -> '1111'

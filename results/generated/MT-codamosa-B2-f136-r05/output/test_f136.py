@@ -11,54 +11,61 @@ def test_case_0():
     int_6 = [int_0, int_1, int_2, int_3, int_4, int_5]
     var_0 = module_0.largest_smallest_integers(int_6)
     assert var_0 == (None, 1)
-    var_1 = []
-    var_2 = module_0.largest_smallest_integers(var_1)
-    assert var_2 == (None, None)
-    int_7 = 0
-    int_8 = [int_7]
-    var_3 = module_0.largest_smallest_integers(int_8)
-    assert var_3 == (None, None)
+    int_7 = -5
+    int_8 = -3
     int_9 = -1
-    int_10 = -2
-    int_11 = -3
-    int_12 = [int_9, int_10, int_11, int_2, int_0, int_3]
-    var_4 = module_0.largest_smallest_integers(int_12)
-    assert var_4 == (-1, 1)
-    int_13 = -1
-    int_14 = [int_7, int_13, int_2]
-    var_5 = module_0.largest_smallest_integers(int_14)
-    assert var_5 == (-1, 1)
-    int_15 = -10
-    int_16 = 10
-    int_17 = -1
-    int_18 = [int_15, int_7, int_16, int_17, int_2]
-    var_6 = module_0.largest_smallest_integers(int_18)
-    assert var_6 == (-1, 1)
-    int_19 = -5
-    int_20 = -1
-    int_21 = -10
-    int_22 = [int_19, int_20, int_21]
-    var_7 = module_0.largest_smallest_integers(int_22)
-    assert var_7 == (-1, None)
-    int_23 = -5
-    int_24 = [int_23]
-    var_8 = module_0.largest_smallest_integers(int_24)
+    int_10 = [int_7, int_8, int_9, int_0, int_1]
+    var_1 = module_0.largest_smallest_integers(int_10)
+    assert var_1 == (-1, 2)
+    int_11 = -10
+    int_12 = -20
+    int_13 = -30
+    int_14 = [int_11, int_12, int_13]
+    var_2 = module_0.largest_smallest_integers(int_14)
+    assert var_2 == (-10, None)
+    int_15 = 10
+    int_16 = 20
+    int_17 = 30
+    int_18 = [int_15, int_16, int_17]
+    var_3 = module_0.largest_smallest_integers(int_18)
+    assert var_3 == (None, 10)
+    var_4 = []
+    var_5 = module_0.largest_smallest_integers(var_4)
+    assert var_5 == (None, None)
+    int_19 = 0
+    int_20 = [int_19, int_19, int_19]
+    var_6 = module_0.largest_smallest_integers(int_20)
+    assert var_6 == (None, None)
+    int_21 = [int_4]
+    var_7 = module_0.largest_smallest_integers(int_21)
+    assert var_7 == (None, 5)
+    int_22 = -5
+    int_23 = [int_22]
+    var_8 = module_0.largest_smallest_integers(int_23)
     assert var_8 == (-5, None)
-    int_25 = -3
-    int_26 = -2
-    int_27 = -1
-    int_28 = [int_25, int_26, int_27, int_7]
-    var_9 = module_0.largest_smallest_integers(int_28)
-    assert var_9 == (-1, None)
-    int_29 = [int_4, int_2, int_16]
-    var_10 = module_0.largest_smallest_integers(int_29)
-    assert var_10 == (None, 1)
-    int_30 = [int_4]
+    int_24 = [int_19]
+    var_9 = module_0.largest_smallest_integers(int_24)
+    assert var_9 == (None, None)
+    int_25 = -1
+    int_26 = -1
+    int_27 = [int_25, int_26, int_2, int_2]
+    var_10 = module_0.largest_smallest_integers(int_27)
+    assert var_10 == (-1, 1)
+    int_28 = -3
+    int_29 = -3
+    int_30 = [int_28, int_29, int_0, int_0]
     var_11 = module_0.largest_smallest_integers(int_30)
-    assert var_11 == (None, 5)
-    int_31 = [int_7, int_2, int_0, int_3]
-    var_12 = module_0.largest_smallest_integers(int_31)
-    assert var_12 == (None, 1)
-    int_32 = [int_7, int_7, int_7]
-    var_13 = module_0.largest_smallest_integers(int_32)
-    assert var_13 == (None, None)
+    assert var_11 == (-3, 2)
+    int_31 = -2
+    int_32 = [int_19, int_31, int_3]
+    var_12 = module_0.largest_smallest_integers(int_32)
+    assert var_12 == (-2, 3)
+    int_33 = -100
+    int_34 = -50
+    int_35 = 1000
+    int_36 = 500
+    int_37 = [int_33, int_34, int_35, int_36]
+    var_13 = module_0.largest_smallest_integers(int_37)
+    assert var_13 == (-50, 500)
+    str_0 = 'All tests passed!'
+    var_14 = print(str_0)

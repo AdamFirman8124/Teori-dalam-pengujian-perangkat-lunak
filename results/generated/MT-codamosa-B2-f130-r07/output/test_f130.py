@@ -5,13 +5,25 @@ def test_case_0():
     int_0 = 0
     var_0 = module_0.tri(int_0)
     assert var_0 == [1]
-
-def test_case_1():
-    bool_0 = True
-    var_0 = module_0.tri(bool_0)
-    assert var_0 == [1, 3]
-
-def test_case_2():
-    int_0 = 518
-    var_0 = module_0.tri(int_0)
-    assert len(var_0) == 519
+    int_1 = 1
+    var_1 = module_0.tri(int_1)
+    assert var_1 == [1, 3]
+    int_2 = 2
+    var_2 = module_0.tri(int_2)
+    assert len(var_2) == 3
+    int_3 = 3
+    var_3 = module_0.tri(int_3)
+    assert len(var_3) == 4
+    int_4 = 4
+    var_4 = module_0.tri(int_4)
+    assert len(var_4) == 5
+    int_5 = 5
+    var_5 = module_0.tri(int_5)
+    assert len(var_5) == 6
+    int_6 = 10
+    var_6 = module_0.tri(int_6)
+    assert len(var_6) == 11
+    var_7 = len(var_6)
+    assert var_7 == 11
+    var_8 = module_0.tri(int_6)
+    assert len(var_8) == 11

@@ -6,36 +6,40 @@ def test_case_0():
     int_1 = 1
     var_0 = module_0.circular_shift(int_0, int_1)
     assert var_0 == '21'
-    int_2 = 1234
-    var_1 = module_0.circular_shift(int_2, int_1)
-    assert var_1 == '4123'
+    int_2 = 12345
     int_3 = 2
-    var_2 = module_0.circular_shift(int_2, int_3)
-    assert var_2 == '3412'
-    int_4 = 4
-    var_3 = module_0.circular_shift(int_2, int_4)
-    assert var_3 == '1234'
-    int_5 = 0
-    var_4 = module_0.circular_shift(int_2, int_5)
-    assert var_4 == '1234'
-    int_6 = 5
-    var_5 = module_0.circular_shift(int_2, int_6)
-    assert var_5 == '4321'
-    int_7 = 100
-    var_6 = module_0.circular_shift(int_0, int_7)
-    assert var_6 == '21'
-    int_8 = 7
-    var_7 = module_0.circular_shift(int_8, int_1)
-    assert var_7 == '7'
-    int_9 = -123
-    var_8 = module_0.circular_shift(int_9, int_1)
-    assert var_8 == '-312'
-    assert var_8 == '3-12'
-    str_0 = 'All tests passed.'
-    var_9 = print(str_0)
+    var_1 = module_0.circular_shift(int_2, int_3)
+    assert var_1 == '45123'
+    int_4 = 1234
+    int_5 = 3
+    var_2 = module_0.circular_shift(int_4, int_5)
+    assert var_2 == '2341'
+    int_6 = 123
+    var_3 = module_0.circular_shift(int_6, int_5)
+    assert var_3 == '123'
+    int_7 = 0
+    var_4 = module_0.circular_shift(int_6, int_7)
+    assert var_4 == '123'
+    var_5 = module_0.circular_shift(int_0, int_5)
+    assert var_5 == '21'
+    int_8 = 5
+    var_6 = module_0.circular_shift(int_6, int_8)
+    assert var_6 == '321'
+    int_9 = 6
+    var_7 = module_0.circular_shift(int_2, int_9)
+    assert var_7 == '54321'
+    int_10 = 7
+    var_8 = module_0.circular_shift(int_10, int_1)
+    assert var_8 == '7'
+    int_11 = 10
+    var_9 = module_0.circular_shift(int_10, int_11)
+    assert var_9 == '7'
+    var_10 = module_0.circular_shift(int_7, int_1)
+    assert var_10 == '0'
+    var_11 = module_0.circular_shift(int_7, int_8)
+    assert var_11 == '0'
+    var_12 = module_0.circular_shift(int_6, int_1)
+    assert var_12 == '312'
 
 def test_case_1():
-    int_0 = 100
-    bool_0 = False
-    var_0 = module_0.circular_shift(int_0, bool_0)
-    assert var_0 == '100'
+    pass

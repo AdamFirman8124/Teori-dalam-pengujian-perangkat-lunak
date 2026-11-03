@@ -3,36 +3,39 @@ import pytutils.files as module_0
 
 def test_case_0():
     try:
-        tuple_0 = None
-        bytes_0 = None
-        str_0 = 'tH@'
-        set_0 = {str_0, tuple_0, tuple_0, bytes_0}
-        var_0 = module_0.burp(str_0, tuple_0, set_0, tuple_0)
+        str_0 = '.txt'
+        var_0 = list(str_0)
+        str_1 = '$ISLURP_TEST_VAR'
+        var_1 = module_0.islurp(str_1)
+        assert module_0.LINEMODE == 0
+        var_2 = list(var_1)
     except BaseException:
         pass
 
 def test_case_1():
     try:
-        str_0 = 'first line\nsecond line\n'
-        var_0 = module_0.islurp(str_0)
-        assert module_0.LINEMODE == 0
-        var_1 = list(var_0)
-    except BaseException:
-        pass
-
-def test_case_2():
-    try:
         str_0 = '-'
-        var_0 = module_0.islurp(str_0)
+        assert str_0 == 'to stdout'
+        str_1 = 'to stdout'
+        var_0 = module_0.burp(str_0, str_1)
         assert module_0.LINEMODE == 0
-        var_1 = list(var_0)
-    except BaseException:
-        pass
-
-def test_case_3():
-    try:
-        bytes_0 = b'\xcb\xbe'
-        float_0 = -1749.061
-        var_0 = module_0.burp(bytes_0, float_0)
+        str_2 = '-'
+        str_3 = 'data'
+        bool_0 = False
+        var_1 = module_0.burp(str_2, str_3, bool_0)
+        assert var_0 is None
+        assert var_1 is None
+        str_4 = '~/file.txt'
+        str_5 = 'data'
+        var_2 = module_0.burp(str_4, str_5)
+        assert var_2 is None
+        str_6 = '$HOME/file.txt'
+        str_7 = 'data'
+        var_3 = module_0.burp(str_6, str_7)
+        assert var_3 is None
+        str_8 = '~/plain/$VAR'
+        str_9 = 'data'
+        bool_1 = False
+        var_4 = module_0.burp(str_8, str_9, bool_1, bool_1)
     except BaseException:
         pass

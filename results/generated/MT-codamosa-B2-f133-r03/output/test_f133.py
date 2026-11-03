@@ -8,16 +8,41 @@ def test_case_0():
     int_3 = [int_0, int_1, int_2]
     var_0 = module_0.sum_squares(int_3)
     assert var_0 == 14
-    float_0 = 1.2
-    float_1 = -1.2
-    var_1 = [float_0, int_1, float_1]
-    var_2 = module_0.sum_squares(var_1)
-    assert var_2 == 9
-    var_3 = []
-    var_4 = module_0.sum_squares(var_3)
-    assert var_4 == 0
-
-def test_case_1():
-    var_0 = []
-    var_1 = module_0.sum_squares(var_0)
-    assert var_1 == 0
+    float_0 = 1.5
+    float_1 = 2.5
+    float_2 = [float_0, float_1]
+    var_1 = module_0.sum_squares(float_2)
+    assert var_1 == 13
+    var_2 = []
+    var_3 = module_0.sum_squares(var_2)
+    assert var_3 == 0
+    int_4 = 5
+    int_5 = [int_4]
+    var_4 = module_0.sum_squares(int_5)
+    assert var_4 == 25
+    float_3 = -1.5
+    int_6 = -2
+    var_5 = [float_3, int_6]
+    var_6 = module_0.sum_squares(var_5)
+    assert var_6 == 5
+    int_7 = 0
+    int_8 = [int_7, int_7, int_7]
+    var_7 = module_0.sum_squares(int_8)
+    assert var_7 == 0
+    int_9 = 10
+    int_10 = 20
+    int_11 = 30
+    int_12 = [int_9, int_10, int_11]
+    var_8 = module_0.sum_squares(int_12)
+    assert var_8 == 1400
+    float_4 = 2.3
+    int_13 = 4
+    var_9 = [int_0, float_4, int_13]
+    var_10 = module_0.sum_squares(var_9)
+    assert var_10 == 30
+    assert var_10 == 26
+    int_14 = [int_1, int_2]
+    var_11 = module_0.sum_squares(int_14)
+    assert var_11 == 13
+    str_0 = 'All tests passed!'
+    var_12 = print(str_0)

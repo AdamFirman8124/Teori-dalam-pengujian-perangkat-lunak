@@ -2,38 +2,33 @@
 import f051 as module_0
 
 def test_case_0():
-    str_0 = '_!l9\\vhz2'
+    str_0 = ''
     var_0 = module_0.remove_vowels(str_0)
-    assert var_0 == '_!l9\\vhz2'
-
-def test_case_1():
-    str_0 = 'hello world'
-    var_0 = module_0.remove_vowels(str_0)
-    assert var_0 == 'hll wrld'
-    str_1 = 'aeiou'
+    assert var_0 == ''
+    str_1 = 'abcdef'
     var_1 = module_0.remove_vowels(str_1)
-    assert var_1 == ''
-    str_2 = 'AEIOU'
+    assert var_1 == 'bcdf'
+    str_2 = 'aaaaa'
     var_2 = module_0.remove_vowels(str_2)
     assert var_2 == ''
-    str_3 = 'StackOverflow'
+    str_3 = 'aaBAA'
     var_3 = module_0.remove_vowels(str_3)
-    assert var_3 == 'Stckvrflw'
-    str_4 = 'rhythm'
+    assert var_3 == 'B'
+    str_4 = 'zbcd'
     var_4 = module_0.remove_vowels(str_4)
-    assert var_4 == 'rhythm'
-    str_5 = ''
+    assert var_4 == 'zbcd'
+    str_5 = 'HELLO'
     var_5 = module_0.remove_vowels(str_5)
-    assert var_5 == ''
-    str_6 = '123 !?'
+    assert var_5 == 'HLL'
+    str_6 = 'Python is fun!'
     var_6 = module_0.remove_vowels(str_6)
-    assert var_6 == '123 !?'
-    str_7 = 'my gym'
+    assert var_6 == 'Pythn s fn!'
+    str_7 = 'AEIOUaeiou'
     var_7 = module_0.remove_vowels(str_7)
-    assert var_7 == 'my gym'
-    str_8 = 'a e i o u'
+    assert var_7 == ''
+    str_8 = 'xyz'
     var_8 = module_0.remove_vowels(str_8)
-    assert var_8 == '    '
-    str_9 = 'cafÃ©'
+    assert var_8 == 'xyz'
+    str_9 = 'a1e2i3o4u5'
     var_9 = module_0.remove_vowels(str_9)
-    assert var_9 == 'cfÃ©'
+    assert var_9 == '12345'

@@ -2,32 +2,54 @@
 import f119 as module_0
 
 def test_case_0():
-    str_0 = ';3'
+    str_0 = '()('
     str_1 = ')'
     str_2 = [str_0, str_1]
     var_0 = module_0.match_parens(str_2)
     assert var_0 == 'Yes'
-    assert var_0 == 'No'
     str_3 = [str_1, str_1]
     var_1 = module_0.match_parens(str_3)
     assert var_1 == 'No'
-    str_4 = [str_2, str_2]
-    var_2 = module_0.match_parens(str_4)
+    str_4 = '()'
+    str_5 = [str_4, str_4]
+    var_2 = module_0.match_parens(str_5)
     assert var_2 == 'Yes'
-    assert var_2 == 'No'
-    str_5 = ')(('
-    var_3 = module_0.match_parens(str_5)
-    assert var_3 == 'No'
+    str_6 = '(('
+    str_7 = '))'
+    str_8 = [str_6, str_7]
+    var_3 = module_0.match_parens(str_8)
     assert var_3 == 'Yes'
-    str_6 = '('
-    str_7 = [str_6, str_1]
-    var_4 = module_0.match_parens(str_7)
+    str_9 = '('
+    str_10 = [str_9, str_1]
+    var_4 = module_0.match_parens(str_10)
     assert var_4 == 'Yes'
-    str_8 = '))('
-    str_9 = '(('
-    str_10 = [str_8, str_9]
-    var_5 = module_0.match_parens(str_10)
+    str_11 = [str_9, str_4]
+    var_5 = module_0.match_parens(str_11)
     assert var_5 == 'Yes'
     assert var_5 == 'No'
-    str_11 = 'All tests passed.'
-    var_6 = print(str_11)
+    str_12 = [str_1, str_0]
+    var_6 = module_0.match_parens(str_12)
+    assert var_6 == 'Yes'
+    str_13 = [str_4, str_1]
+    var_7 = module_0.match_parens(str_13)
+    assert var_7 == 'No'
+    str_14 = '(()'
+    str_15 = [str_14, str_7]
+    var_8 = module_0.match_parens(str_15)
+    assert var_8 == 'No'
+    str_16 = [str_1, str_4]
+    var_9 = module_0.match_parens(str_16)
+    assert var_9 == 'No'
+    str_17 = ''
+    str_18 = [str_17, str_17]
+    var_10 = module_0.match_parens(str_18)
+    assert var_10 == 'Yes'
+    str_19 = [str_17, str_4]
+    var_11 = module_0.match_parens(str_19)
+    assert var_11 == 'Yes'
+    str_20 = [str_17, str_9]
+    var_12 = module_0.match_parens(str_20)
+    assert var_12 == 'No'
+
+def test_case_1():
+    pass

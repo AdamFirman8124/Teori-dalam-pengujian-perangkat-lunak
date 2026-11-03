@@ -3,16 +3,17 @@ import ansible.plugins.action.validate_argument_spec as module_0
 
 def test_case_0():
     try:
-        bool_0 = True
-        bool_1 = True
-        bool_2 = True
-        str_0 = 'WY$ vs7+<>'
-        int_0 = 302
-        list_0 = [int_0, bool_0, int_0, bool_2]
-        dict_0 = {bool_2: list_0}
-        tuple_0 = ()
-        set_0 = {str_0}
-        action_module_0 = module_0.ActionModule(bool_1, bool_2, bool_2, str_0, bool_2, tuple_0)
+        bytes_0 = b'4\xee@\x9a\x14\x08\x06\xa4\xf0\x11\xe0\x1cE\xc1}\\\xf8'
+        int_0 = 2405
+        str_0 = '%ZZ;h\\Rm\\\x0bw6|3#\\5&*\x0c'
+        str_1 = 'JR.\n]A)0eF#)voW,<wb'
+        list_0 = [str_0, str_1]
+        list_1 = [list_0, str_0]
+        dict_0 = {}
+        str_2 = 'K@L\x0cI\t5.tc2Ge'
+        float_0 = 230.18645581565372
+        set_0 = set()
+        action_module_0 = module_0.ActionModule(float_0, str_2, list_1, float_0, set_0, dict_0)
         assert action_module_0 is not None
         assert module_0.absolute_import.optional == (2, 5, 0, 'alpha', 1)
         assert module_0.absolute_import.mandatory == (3, 0, 0, 'alpha', 0)
@@ -25,62 +26,34 @@ def test_case_0():
         assert module_0.print_function.compiler_flag == 1048576
         assert len(module_0.string_types) == 1
         assert module_0.ActionModule.TRANSFERS_FILES is False
-        bool_3 = False
-        action_module_1 = module_0.ActionModule(bool_0, action_module_0, set_0, bool_3, set_0, dict_0)
+        action_module_1 = module_0.ActionModule(int_0, action_module_0, dict_0, str_1, str_2, action_module_0)
         assert action_module_1 is not None
-        var_0 = action_module_1.run()
+        var_0 = action_module_1.run(bytes_0)
     except BaseException:
         pass
 
 def test_case_1():
     try:
-        bool_0 = True
-        bool_1 = True
-        bool_2 = False
-        bool_3 = True
-        str_0 = 'WY$ vs7+<>'
-        int_0 = 302
-        list_0 = [int_0, bool_0, int_0, bool_3]
-        dict_0 = {bool_3: list_0}
-        float_0 = -124.0
-        tuple_0 = ()
-        set_0 = {str_0}
-        action_module_0 = module_0.ActionModule(bool_1, bool_2, bool_3, str_0, bool_2, tuple_0)
-        assert action_module_0 is not None
-        assert module_0.absolute_import.optional == (2, 5, 0, 'alpha', 1)
-        assert module_0.absolute_import.mandatory == (3, 0, 0, 'alpha', 0)
-        assert module_0.absolute_import.compiler_flag == 262144
-        assert module_0.division.optional == (2, 2, 0, 'alpha', 2)
-        assert module_0.division.mandatory == (3, 0, 0, 'alpha', 0)
-        assert module_0.division.compiler_flag == 131072
-        assert module_0.print_function.optional == (2, 6, 0, 'alpha', 2)
-        assert module_0.print_function.mandatory == (3, 0, 0, 'alpha', 0)
-        assert module_0.print_function.compiler_flag == 1048576
-        assert len(module_0.string_types) == 1
-        assert module_0.ActionModule.TRANSFERS_FILES is False
-        action_module_1 = module_0.ActionModule(bool_2, set_0, action_module_0, int_0, dict_0, list_0)
-        assert action_module_1 is not None
-        bytes_0 = b'6\x13\xd0GB\xe9\xaf\xf6'
-        var_0 = action_module_1.run(bytes_0, float_0)
-    except BaseException:
-        pass
-
-def test_case_2():
-    try:
+        str_0 = '\n<'
+        set_0 = {str_0, str_0, str_0, str_0}
+        str_1 = '~\r}\re&wu'
+        set_1 = {str_1, str_1, str_1, str_1}
+        str_2 = 'from_yaml_all'
+        int_0 = 7
+        list_0 = [str_1]
         bool_0 = False
-        bool_1 = True
-        bool_2 = True
-        float_0 = 2135.48
-        dict_0 = {bool_1: bool_1, bool_1: bool_0, bool_1: float_0}
-        bytes_0 = b'\xc8\xb2-01\xbe\xc0\xdfo \r0\x14 '
-        int_0 = -2622
-        set_0 = {bool_1, bool_2, bool_2}
-        str_0 = 'keyword9'
-        float_1 = -52.828383
-        list_0 = [bool_2, float_1]
-        dict_1 = {str_0: list_0}
-        str_1 = '#rKjo ld2fKp}.^'
-        action_module_0 = module_0.ActionModule(set_0, float_0, list_0, dict_1, str_1, int_0)
+        float_0 = 2.0
+        tuple_0 = (float_0,)
+        tuple_1 = (list_0, bool_0, bool_0, tuple_0)
+        tuple_2 = (tuple_1,)
+        dict_0 = {}
+        str_3 = 'Template source files must be utf-8 encoded'
+        str_4 = 'LMc'
+        bytes_0 = b'uH\xba\xa0\xbd'
+        complex_0 = None
+        str_5 = "=E6jqo\ts'"
+        int_1 = 3
+        action_module_0 = module_0.ActionModule(complex_0, str_5, dict_0, int_1, tuple_0, dict_0)
         assert action_module_0 is not None
         assert module_0.absolute_import.optional == (2, 5, 0, 'alpha', 1)
         assert module_0.absolute_import.mandatory == (3, 0, 0, 'alpha', 0)
@@ -93,6 +66,18 @@ def test_case_2():
         assert module_0.print_function.compiler_flag == 1048576
         assert len(module_0.string_types) == 1
         assert module_0.ActionModule.TRANSFERS_FILES is False
-        var_0 = action_module_0.get_args_from_task_vars(dict_0, bytes_0)
+        action_module_1 = module_0.ActionModule(set_1, bool_0, bool_0, str_4, bytes_0, set_1)
+        assert action_module_1 is not None
+        action_module_2 = module_0.ActionModule(tuple_2, tuple_1, dict_0, str_3, float_0, action_module_1)
+        assert action_module_2 is not None
+        str_6 = 'bWY%\r\x0cF'
+        action_module_3 = module_0.ActionModule(action_module_2, str_6, dict_0, dict_0, set_1, dict_0)
+        assert action_module_3 is not None
+        int_2 = -5328
+        tuple_3 = (int_0, action_module_3, int_2, bytes_0)
+        bytes_1 = b'\xef\xf4\x80\x7f?\x89\x984u\xd9\xd4\x010)\x82\x1c'
+        action_module_4 = module_0.ActionModule(str_1, set_1, str_2, tuple_3, dict_0, bytes_1)
+        assert action_module_4 is not None
+        var_0 = action_module_4.run(set_0, str_0)
     except BaseException:
         pass

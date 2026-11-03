@@ -2,38 +2,30 @@
 import f049 as module_0
 
 def test_case_0():
-    int_0 = 0
+    int_0 = 3
     int_1 = 5
     var_0 = module_0.modp(int_0, int_1)
-    assert var_0 == 1
-    int_2 = 1
-    var_1 = module_0.modp(int_2, int_1)
+    assert var_0 == 3
+    int_2 = 1101
+    int_3 = 101
+    var_1 = module_0.modp(int_2, int_3)
     assert var_1 == 2
-    int_3 = 3
-    var_2 = module_0.modp(int_3, int_1)
-    assert var_2 == 3
-    int_4 = 10
-    int_5 = 100
-    var_3 = module_0.modp(int_4, int_5)
-    assert var_3 == 24
-    var_4 = module_0.modp(int_1, int_2)
-    assert var_4 == 0
-
-def test_case_1():
-    int_0 = -4301
-    var_0 = module_0.modp(int_0, int_0)
-    assert var_0 == 1
-    int_1 = -2829
-    int_2 = 1465
-    var_1 = module_0.modp(int_1, int_2)
-    assert var_1 == 1
-    int_3 = -2786
-    int_4 = -195
-    int_5 = -839
-    var_2 = module_0.modp(int_4, int_5)
+    int_4 = 0
+    var_2 = module_0.modp(int_4, int_3)
     assert var_2 == 1
-    int_6 = -1105
-    var_3 = module_0.modp(int_3, int_6)
-    assert var_3 == 1
-    var_4 = module_0.modp(int_1, int_1)
+    int_5 = 11
+    var_3 = module_0.modp(int_0, int_5)
+    assert var_3 == 8
+    int_6 = 100
+    var_4 = module_0.modp(int_6, int_3)
     assert var_4 == 1
+    int_7 = 1
+    int_8 = 2
+    var_5 = module_0.modp(int_7, int_8)
+    assert var_5 == 0
+    int_9 = 10
+    int_10 = 1000
+    var_6 = module_0.modp(int_9, int_10)
+    assert var_6 == 24
+    var_7 = module_0.modp(int_1, int_0)
+    assert var_7 == 2

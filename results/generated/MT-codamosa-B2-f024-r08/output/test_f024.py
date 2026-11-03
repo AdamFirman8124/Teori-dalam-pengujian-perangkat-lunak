@@ -2,56 +2,28 @@
 import f024 as module_0
 
 def test_case_0():
-    int_0 = 10
+    int_0 = 3
     int_1 = module_0.largest_divisor(int_0)
-    assert int_1 == 5
-    int_2 = 15
-    int_3 = module_0.largest_divisor(int_2)
-    assert int_3 == 5
-    int_4 = 100
-    int_5 = module_0.largest_divisor(int_4)
-    assert int_5 == 50
-    int_6 = 49
-    int_7 = module_0.largest_divisor(int_6)
-    assert int_7 == 7
-    int_8 = 9
-    int_9 = module_0.largest_divisor(int_8)
-    assert int_9 == 3
-    int_10 = 4
-    int_11 = module_0.largest_divisor(int_10)
-    assert int_11 == 2
-    int_12 = 13
-    int_13 = module_0.largest_divisor(int_12)
-    assert int_13 == 1
-    int_14 = 2
-    int_15 = module_0.largest_divisor(int_14)
-    assert int_15 == 1
-
-def test_case_1():
-    int_0 = 1062
-    int_1 = 176
-    int_2 = module_0.largest_divisor(int_1)
-    assert int_2 == 88
-    int_3 = module_0.largest_divisor(int_0)
-    assert int_3 == 531
-    int_4 = module_0.largest_divisor(int_0)
-    assert int_4 == 531
-    int_5 = 1200
+    assert int_1 == 1
+    int_2 = 8
+    int_3 = 4533
+    int_4 = module_0.largest_divisor(int_3)
+    assert int_4 == 1511
+    int_5 = -3692
     int_6 = module_0.largest_divisor(int_5)
-    assert int_6 == 600
-    int_7 = -1303
-    int_8 = 669
-    int_9 = -1641
-    int_10 = module_0.largest_divisor(int_9)
-    assert int_10 is None
+    assert int_6 is None
+    int_7 = module_0.largest_divisor(int_2)
+    assert int_7 == 4
+    int_8 = -1303
+    int_9 = module_0.largest_divisor(int_8)
+    assert int_9 is None
+    int_10 = module_0.largest_divisor(int_3)
+    assert int_10 == 1511
     int_11 = -16
     int_12 = module_0.largest_divisor(int_11)
     assert int_12 is None
-    int_13 = module_0.largest_divisor(int_8)
-    assert int_13 == 223
-    int_14 = module_0.largest_divisor(int_7)
-    assert int_14 is None
-    int_15 = module_0.largest_divisor(int_5)
-    assert int_15 == 600
-    int_16 = module_0.largest_divisor(int_15)
-    assert int_16 == 300
+    int_13 = 2705
+    int_14 = module_0.largest_divisor(int_13)
+    assert int_14 == 541
+    int_15 = module_0.largest_divisor(int_10)
+    assert int_15 == 1

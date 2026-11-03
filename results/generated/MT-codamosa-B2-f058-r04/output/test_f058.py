@@ -5,8 +5,54 @@ def test_case_0():
     int_0 = 1
     int_1 = 2
     int_2 = 3
-    int_3 = [int_0, int_1, int_1, int_2]
+    int_3 = [int_0, int_1, int_2]
     int_4 = 4
     int_5 = [int_1, int_2, int_4]
     var_0 = module_0.common(int_3, int_5)
     assert var_0 == [2, 3]
+    int_6 = [int_0, int_1, int_2]
+    int_7 = 5
+    int_8 = 6
+    int_9 = [int_4, int_7, int_8]
+    var_1 = module_0.common(int_6, int_9)
+    assert var_1 == []
+    var_2 = []
+    int_10 = [int_0, int_1, int_2]
+    var_3 = module_0.common(var_2, int_10)
+    assert var_3 == []
+    int_11 = [int_0, int_1, int_2]
+    var_4 = []
+    var_5 = module_0.common(int_11, var_4)
+    assert var_5 == []
+    var_6 = []
+    var_7 = []
+    var_8 = module_0.common(var_6, var_7)
+    assert var_8 == []
+    int_12 = [int_0, int_0, int_1, int_1]
+    int_13 = [int_0, int_1, int_1]
+    var_9 = module_0.common(int_12, int_13)
+    assert var_9 == [1, 2]
+    int_14 = 8
+    int_15 = [int_7, int_2, int_1, int_14]
+    int_16 = [int_14, int_2, int_1]
+    var_10 = module_0.common(int_15, int_16)
+    assert var_10 == [2, 3, 8]
+    str_0 = 'a'
+    str_1 = 'b'
+    str_2 = 'c'
+    str_3 = [str_0, str_1, str_2]
+    str_4 = 'd'
+    str_5 = [str_1, str_4, str_0]
+    var_11 = module_0.common(str_3, str_5)
+    assert var_11 == ['a', 'b']
+    int_17 = -1
+    int_18 = 0
+    int_19 = [int_17, int_18, int_0]
+    int_20 = [int_18, int_0, int_1]
+    var_12 = module_0.common(int_19, int_20)
+    assert var_12 == [0, 1]
+    int_21 = 7
+    int_22 = [int_21]
+    int_23 = [int_21]
+    var_13 = module_0.common(int_22, int_23)
+    assert var_13 == [7]

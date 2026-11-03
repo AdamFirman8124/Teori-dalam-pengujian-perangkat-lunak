@@ -3,30 +3,52 @@ import f022 as module_0
 
 def test_case_0():
     int_0 = 1
-    int_1 = 2
-    int_2 = 3
-    int_3 = [int_0, int_1, int_2]
-    list_0 = module_0.filter_integers(int_3)
-    assert list_0 == [1, 2, 3]
-    str_0 = 'a'
     float_0 = 2.5
+    str_0 = 'a'
+    int_1 = 3
     bool_0 = True
     var_0 = None
-    var_1 = [int_0, str_0, float_0, int_2, bool_0, var_0]
-    list_1 = module_0.filter_integers(var_1)
-    assert list_1 == [1, 3, True]
-    var_2 = []
-    list_2 = module_0.filter_integers(var_2)
+    var_1 = [int_0, float_0, str_0, int_1, bool_0, var_0]
+    list_0 = module_0.filter_integers(var_1)
+    assert list_0 == [1, 3, True]
+    int_2 = 2
+    int_3 = 4
+    var_2 = [bool_0, int_2, int_1, int_3]
+    list_1 = module_0.filter_integers(var_2)
+    assert list_1 == [True, 2, 3, 4]
+    str_1 = 'b'
+    float_1 = 1.5
+    var_3 = [str_0, str_1, float_1, var_0]
+    list_2 = module_0.filter_integers(var_3)
     assert list_2 == []
-    str_1 = 'x'
-    str_2 = 'y'
-    str_3 = [str_1, str_2]
-    list_3 = module_0.filter_integers(str_3)
+    var_4 = []
+    list_3 = module_0.filter_integers(var_4)
     assert list_3 == []
-    int_4 = 0
-    int_5 = -1
-    float_1 = 3.14
-    int_6 = 100
-    var_3 = [int_4, int_5, float_1, int_6]
-    list_4 = module_0.filter_integers(var_3)
-    assert list_4 == [0, -1, 100]
+    int_4 = -1
+    int_5 = -2
+    int_6 = 0
+    float_2 = 3.14
+    str_2 = 'x'
+    var_5 = [int_4, int_5, int_6, float_2, str_2]
+    list_4 = module_0.filter_integers(var_5)
+    assert list_4 == [-1, -2, 0]
+    int_7 = 10
+    int_8 = 18
+    var_6 = int_7 ** int_8
+    str_3 = 'big'
+    int_9 = 19
+    var_7 = int_7 ** int_9
+    var_8 = [var_6, str_3, var_7]
+    list_5 = module_0.filter_integers(var_8)
+    assert list_5 == [1000000000000000000, 10000000000000000000]
+    var_9 = [bool_0, str_0, int_2]
+    list_6 = module_0.filter_integers(var_9)
+    assert list_6 == [True, 2]
+    var_10 = [bool_0, str_0, int_2]
+    list_7 = module_0.filter_integers(var_10)
+    assert list_7 == [True, 2]
+    str_4 = 'All tests passed!'
+    var_11 = print(str_4)
+
+def test_case_1():
+    pass

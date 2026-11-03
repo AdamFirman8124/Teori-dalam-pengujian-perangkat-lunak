@@ -2,27 +2,45 @@
 import f018 as module_0
 
 def test_case_0():
-    str_0 = '+nidU(c&m\x0cXa{|'
+    str_0 = 'hello'
     int_0 = module_0.how_many_times(str_0, str_0)
     assert int_0 == 1
-    str_1 = '"N!b};-) '
-    str_2 = '$\x0cy%t%E3q%E~_d\x0b\x0c7eoM'
-    str_3 = '=(od'
-    str_4 = '*N64(Yje\x0b'
-    int_1 = module_0.how_many_times(str_3, str_4)
+    str_1 = ''
+    str_2 = 'a'
+    int_1 = module_0.how_many_times(str_1, str_2)
     assert int_1 == 0
-    int_2 = module_0.how_many_times(str_1, str_2)
-    assert int_2 == 0
-    str_5 = 'QIWSUnK'
-    str_6 = 'G#'
-    int_3 = module_0.how_many_times(str_6, str_5)
-    assert int_3 == 0
-    str_7 = '<)qV,49=qE4:3vi9x'
-    int_4 = module_0.how_many_times(str_5, str_7)
+    str_3 = 'abc'
+    int_2 = module_0.how_many_times(str_3, str_1)
+    assert int_2 == 4
+    int_3 = module_0.how_many_times(str_1, str_1)
+    assert int_3 == 1
+    str_4 = 'x'
+    int_4 = module_0.how_many_times(str_3, str_4)
     assert int_4 == 0
-
-def test_case_1():
-    str_0 = 'G#_a'
-    str_1 = 'q!'
-    int_0 = module_0.how_many_times(str_0, str_1)
-    assert int_0 == 0
+    str_5 = 'aaa'
+    int_5 = module_0.how_many_times(str_5, str_2)
+    assert int_5 == 3
+    str_6 = 'aaaa'
+    str_7 = 'aa'
+    int_6 = module_0.how_many_times(str_6, str_7)
+    assert int_6 == 3
+    int_7 = module_0.how_many_times(str_6, str_5)
+    assert int_7 == 2
+    int_8 = module_0.how_many_times(str_6, str_6)
+    assert int_8 == 1
+    str_8 = 'ab'
+    int_9 = module_0.how_many_times(str_8, str_3)
+    assert int_9 == 0
+    str_9 = 'abcabcabc'
+    int_10 = module_0.how_many_times(str_9, str_3)
+    assert int_10 == 3
+    str_10 = 'abcabc'
+    int_11 = module_0.how_many_times(str_9, str_10)
+    assert int_11 == 2
+    str_11 = 'AbcAbc'
+    int_12 = module_0.how_many_times(str_11, str_3)
+    assert int_12 == 0
+    str_12 = 'abababab'
+    str_13 = 'abab'
+    int_13 = module_0.how_many_times(str_12, str_13)
+    assert int_13 == 3

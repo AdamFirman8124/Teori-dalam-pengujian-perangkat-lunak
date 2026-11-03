@@ -7,34 +7,42 @@ import pytest
 from f155 import even_odd_count
 
 
-def test_even_odd_count_all_even_digits():
-    assert even_odd_count(2468) == (4, 0)
-
-
-def test_even_odd_count_all_odd_digits():
-    assert even_odd_count(1357) == (0, 4)
-
-
 def test_even_odd_count_mixed_digits():
-    assert even_odd_count(123456) == (3, 3)
+    # 123 has one even digit (2) and two odd digits (1, 3)
+    result = even_odd_count(123)
+    assert result == (1, 2)
 
 
-def test_even_odd_count_negative_number_uses_absolute_value():
-    assert even_odd_count(-123456) == (3, 3)
+def test_even_odd_count_negative_number():
+    # Covers the abs() branch: -456 -> digits 4,5,6 -> two even (4,6), one odd (5)
+    result = even_odd_count(-456)
+    assert result == (2, 1)
+
+
+def test_even_odd_count_negative_mixed_digits():
+    # -1214 -> digits 1,2,1,4 -> two odd (1,1), two even (2,4)
+    result = even_odd_count(-1214)
+    assert result == (2, 2)
 
 
 def test_even_odd_count_zero():
-    assert even_odd_count(0) == (1, 0)
+    # Zero is a single even digit
+    result = even_odd_count(0)
+    assert result == (1, 0)
 
 
-def test_even_odd_count_single_digit():
-    assert even_odd_count(7) == (0, 1)
-    assert even_odd_count(8) == (1, 0)
+def test_even_odd_count_all_odd():
+    result = even_odd_count(13579)
+    assert result == (0, 5)
 
 
-def test_even_odd_count_returns_tuple_of_ints():
-    result = even_odd_count(1234)
+def test_even_odd_count_all_even():
+    result = even_odd_count(24680)
+    assert result == (5, 0)
+
+
+def test_even_odd_count_returns_tuple():
+    result = even_odd_count(10)
     assert isinstance(result, tuple)
     assert len(result) == 2
-    assert all(isinstance(count, int) for count in result)
-    assert sum(result) == len(str(abs(1234)))
+    assert result == (1, 1)

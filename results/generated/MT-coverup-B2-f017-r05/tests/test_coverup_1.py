@@ -2,53 +2,52 @@
 # asked: {"lines": [6, 7], "branches": []}
 # gained: {"lines": [6, 7], "branches": []}
 
-import pytest
+"""Tests for f017.parse_music covering all previously missed lines (6-7) and branches.
+
+parse_music is a pure function (no globals, no I/O, no mutable state), so no
+monkeypatching/teardown is required; each test is fully self-contained.
+"""
 
 from f017 import parse_music
 
 
+def test_parse_music_all_note_types():
+    """Exercises line 6 (note_map construction) and line 7 (comprehension,
+    'if x' True branch) with every note token."""
+    assert parse_music('o o| .|') == [4, 2, 1]
+
+
+def test_parse_music_single_tokens():
+    """Each mapping key individually, covering all dict lookups on line 7."""
+    assert parse_music('o') == [4]
+    assert parse_music('o|') == [2]
+    assert parse_music('.|') == [1]
+
+
+def test_parse_music_skips_empty_tokens():
+    """Covers the 'if x' False branch: consecutive, leading and trailing
+    spaces produce empty tokens that must be filtered out."""
+    assert parse_music('o  o|   .| ') == [4, 2, 1]
+    assert parse_music(' o ') == [4]
+    assert parse_music('o| .|  ') == [2, 1]
+
+
 def test_parse_music_empty_string():
-    assert parse_music("") == []
+    """Empty input: split(' ') yields [''], the 'if x' False branch filters
+    it out, and the comprehension yields an empty list."""
+    assert parse_music('') == []
 
 
-def test_parse_music_single_whole_note():
-    assert parse_music("o") == [4]
-
-
-def test_parse_music_single_half_note():
-    assert parse_music("o|") == [2]
-
-
-def test_parse_music_single_quarter_note():
-    assert parse_music(".|") == [1]
-
-
-def test_parse_music_multiple_notes():
-    assert parse_music("o o| .| o| o| .| .| .| .| o o") == [
-        4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4,
-    ]
-
-
-def test_parse_music_skips_empty_tokens_from_extra_spaces():
-    # Exercises the falsy branch of `if x` in the comprehension.
-    assert parse_music("o  o|   .|") == [4, 2, 1]
-
-
-def test_parse_music_leading_and_trailing_spaces():
-    assert parse_music("  o| .|  ") == [2, 1]
-
-
-def test_parse_music_whitespace_only():
-    assert parse_music("   ") == []
+def test_parse_music_longer_sequence():
+    """A longer mixed sequence to verify order and repeated lookups."""
+    result = parse_music('o| o| .| .| .| .| .| .| o o')
+    assert result == [2, 2, 1, 1, 1, 1, 1, 1, 4, 4]
+    assert len(result) == 10
 
 
 def test_parse_music_returns_new_list_each_call():
-    first = parse_music("o .|")
-    second = parse_music("o .|")
-    assert first == second == [4, 1]
+    """Postcondition: each call returns a fresh list (no shared state)."""
+    first = parse_music('o o')
+    second = parse_music('o o')
+    assert first == second == [4, 4]
     assert first is not second
-
-
-def test_parse_music_invalid_note_raises_key_error():
-    with pytest.raises(KeyError):
-        parse_music("o x .|")

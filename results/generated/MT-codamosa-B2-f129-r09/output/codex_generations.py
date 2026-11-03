@@ -1,126 +1,143 @@
 
 
-# Generated at 2026-10-24 16:01:21.550813
-# Unit test for function minPath
-
-# Generated at 2026-10-24 16:01:33.372955
-# Unit test for function minPath
-def test_minPath():assert module_0.minPath([[1, 2], [3, 4]], 3) == [1, 2, 1]
-
-# Generated at 2026-10-24 16:02:12.796089
-# Unit test for function minPath
-
-# Generated at 2026-10-24 16:02:26.838637
-# Unit test for function minPath
-def test_minPath():assert module_0.minPath([[1, 2], [3, 4]], 3) == [1, 2, 1]
-
-# Generated at 2026-10-24 16:02:51.696173
-# Unit test for function minPath
-
-# Generated at 2026-10-24 16:02:53.146605
-# Unit test for function minPath
-def test_minPath():assert module_0.minPath([[1, 2], [3, 4]], 3) == [1, 2, 1]
-
-# Generated at 2026-10-24 16:02:58.467430
-# Unit test for function minPath
-
-# Generated at 2026-10-24 16:02:59.814109
-# Unit test for function minPath
-def test_minPath():assert module_0.minPath([[1, 2], [3, 4]], 3) == [1, 2, 1]
-
-# Generated at 2026-10-24 16:03:02.787854
-# Unit test for function minPath
-
-# Generated at 2026-10-24 16:03:08.810002
-# Unit test for function minPath
-def test_minPath():assert module_0.minPath([[1, 2], [3, 4]], 3) == [1, 2, 1]
-
-# Generated at 2026-10-24 16:03:10.243980
+# Generated at 2026-11-02 23:08:11.028960
 # Unit test for function minPath
 def test_minPath():
-    # Case 1: 3x3 grid, k=3 â path alternates 1 and smallest neighbor of 1
+    # Test case 1: 1 in top-left corner of 3x3 grid, min neighbor is 2
     assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 3) == [1, 2, 1]
 
-    # Case 2: k=1 â just [1]
+    # Test case 2: k=1 returns just [1]
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 1) == [1]
+
+    # Test case 3: 1 in center of grid, min of neighbors (9,4,8,6) is 4
     assert module_0.minPath([[5, 9, 3], [4, 1, 6], [7, 8, 2]], 1) == [1]
 
-    # Case 3: 1 is at a corner â only two neighbors exist
-    assert module_0.minPath([[1, 3], [2, 4]], 4) == [1, 2, 1, 2]
+    # Test case 4: 1 in center, k=3
+    assert module_0.minPath([[5, 9, 3], [4, 1, 6], [7, 8, 2]], 3) == [1, 4, 1]
 
-    # Case 4: 1 in the middle â smallest neighbor wins
-    assert module_0.minPath([[9, 9, 9], [9, 1, 2], [9, 8, 3]], 2) == [1, 2]
+    # Test case 5: 2x2 grid, 1 in corner, min neighbor is 2, k=4
+    assert module_0.minPath([[1, 2], [3, 4]], 4) == [1, 2, 1, 2]
 
-    # Case 5: k=0 â empty path
+    # Test case 6: 1 in top-right corner of 2x2 grid
+    assert module_0.minPath([[2, 1], [4, 3]], 2) == [1, 2]
+
+    # Test case 7: 1 at top-left with larger k
+    assert module_0.minPath([[1, 3], [2, 4]], 5) == [1, 2, 1, 2, 1]
+
+    # Test case 8: 1 in top-right of 2x2, min neighbor is 7
+    assert module_0.minPath([[10, 1], [5, 7]], 4) == [1, 7, 1, 7]
+
+    # Test case 9: 1 in top-right of 3x3 grid, min neighbor is 2
+    assert module_0.minPath([[4, 2, 1], [7, 5, 3], [8, 9, 6]], 5) == [1, 2, 1, 2, 1]
+
+    # Test case 10: 1 in bottom-left of 3x3 grid, neighbors are 4 and 8, min is 4
+    assert module_0.minPath([[9, 8, 7], [6, 5, 4], [1, 2, 3]], 3) == [1, 4, 1]
+
+    print("All test cases passed!")
+
+
+if __name__ == "__main__":
+    test_minPath()
+
+# Generated at 2026-11-02 23:10:51.526592
+# Unit test for function minPath
+def test_minPath():
+    # 1 at top-left corner: only down (4) and right (2) neighbors considered
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 3) == [1, 2, 1]
+
+    # k = 1 returns just [1]
+    assert module_0.minPath([[5, 9, 3], [4, 1, 6], [7, 8, 2]], 1) == [1]
+
+    # 1 in the middle: min of all four neighbors (9, 4, 8, 6) -> 4
+    assert module_0.minPath([[5, 9, 3], [4, 1, 6], [7, 8, 2]], 3) == [1, 4, 1]
+
+    # 1 at bottom-right corner: up (4) and left (6) neighbors -> min is 4
+    assert module_0.minPath([[3, 2, 9], [8, 5, 4], [7, 6, 1]], 4) == [1, 4, 1, 4]
+
+    # 1 at top-right corner: left (2) and down (4) neighbors -> min is 2
+    assert module_0.minPath([[3, 2, 1], [6, 5, 4], [9, 8, 7]], 2) == [1, 2]
+
+    # 1 at bottom-left corner: up (4) and right (2) neighbors -> min is 2
+    assert module_0.minPath([[7, 8, 9], [4, 5, 6], [1, 2, 3]], 3) == [1, 2, 1]
+
+    # 2x2 grid, 1 at top-left
+    assert module_0.minPath([[1, 3], [2, 4]], 2) == [1, 2]
+
+    # 2x2 grid, 1 at bottom-left
+    assert module_0.minPath([[2, 3], [1, 4]], 4) == [1, 2, 1, 2]
+
+    # k = 0 returns an empty list
     assert module_0.minPath([[1, 2], [3, 4]], 0) == []
 
-    # Case 6: 1x1 grid â only cell is 1, val stays n*n+1
-    assert module_0.minPath([[1]], 3) == [1, 2, 1]
+    # larger k alternates correctly
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 6) == [1, 2, 1, 2, 1, 2]
 
-# Generated at 2026-10-24 16:03:13.111180
-# Unit test for function minPath
+    print("All tests passed!")
 
-# Generated at 2026-10-24 16:03:14.544360
-# Unit test for function minPath
-def test_minPath():assert module_0.minPath([[1, 2], [3, 4]], 3) == [1, 2, 1]
 
-# Generated at 2026-10-24 16:03:17.413969
-# Unit test for function minPath
+test_minPath()
 
-# Generated at 2026-10-24 16:03:18.846893
+# Generated at 2026-11-02 23:13:01.948752
 # Unit test for function minPath
-def test_minPath():assert module_0.minPath([[1, 2], [3, 4]], 3) == [1, 2, 1]
+def test_minPath():
+    # 1 at top-left; smallest neighbor is 2
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 3) == [1, 2, 1]
 
-# Generated at 2026-10-24 16:03:21.679160
-# Unit test for function minPath
+    # k = 1 returns just [1]
+    assert module_0.minPath([[5, 9, 3], [4, 1, 6], [7, 8, 2]], 1) == [1]
 
-# Generated at 2026-10-24 16:03:23.025554
-# Unit test for function minPath
-def test_minPath():assert module_0.minPath([[1, 2], [3, 4]], 3) == [1, 2, 1]
+    # Longer path alternates 1 and the minimum neighbor value
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 5) == [1, 2, 1, 2, 1]
 
-# Generated at 2026-10-24 16:03:25.899070
-# Unit test for function minPath
+    # 1 surrounded by 8s on all sides
+    assert module_0.minPath([[8, 8, 8], [8, 1, 8], [8, 8, 8]], 4) == [1, 8, 1, 8]
 
-# Generated at 2026-10-24 16:03:27.345473
-# Unit test for function minPath
-def test_minPath():assert module_0.minPath([[1, 2], [3, 4]], 3) == [1, 2, 1]
+    # 1 at bottom-left corner; neighbors are 7 and 2, min is 2
+    assert module_0.minPath([[4, 5, 6], [7, 8, 9], [1, 2, 3]], 2) == [1, 2]
 
-# Generated at 2026-10-24 16:03:30.110434
-# Unit test for function minPath
+    # 1 at bottom-left corner, odd k ends with 1
+    assert module_0.minPath([[4, 5, 6], [7, 8, 9], [1, 2, 3]], 3) == [1, 2, 1]
 
-# Generated at 2026-10-24 16:03:31.542353
-# Unit test for function minPath
-def test_minPath():assert module_0.minPath([[1, 2], [3, 4]], 3) == [1, 2, 1]
+    # 1 in 2x2 grid; neighbors are 5 and 7, min is 5
+    assert module_0.minPath([[1, 5], [7, 2]], 4) == [1, 5, 1, 5]
 
-# Generated at 2026-10-24 16:03:33.958143
-# Unit test for function minPath
 
-# Generated at 2026-10-24 16:03:36.371384
-# Unit test for function minPath
+test_minPath()
 
-# Generated at 2026-10-24 16:03:38.783566
+# Generated at 2026-11-02 23:14:36.363026
 # Unit test for function minPath
+def test_minPath():
+    # 1 at top-left corner, k=3 -> neighbors of 1 are {4, 2}, min is 2
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 3) == [1, 2, 1]
 
-# Generated at 2026-10-24 16:03:41.196339
-# Unit test for function minPath
+    # 1 in center, k=1 -> path is just [1]
+    assert module_0.minPath([[5, 9, 3], [4, 1, 6], [7, 8, 2]], 1) == [1]
 
-# Generated at 2026-10-24 16:03:43.610054
-# Unit test for function minPath
+    # k=2 with 1 at corner -> [1, 2]
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 2) == [1, 2]
 
-# Generated at 2026-10-24 16:03:46.161995
-# Unit test for function minPath
+    # k=4 with 1 at corner -> alternating pattern
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 4) == [1, 2, 1, 2]
 
-# Generated at 2026-10-24 16:03:48.575026
-# Unit test for function minPath
+    # 1 in center, k=5 -> min neighbor of 1 is 4
+    assert module_0.minPath([[5, 9, 3], [4, 1, 6], [7, 8, 2]], 5) == [1, 4, 1, 4, 1]
 
-# Generated at 2026-10-24 16:03:50.988020
-# Unit test for function minPath
+    # 2x2 grid, 1 at bottom-left -> neighbors are {3, 4}, min is 3
+    assert module_0.minPath([[3, 2], [1, 4]], 3) == [1, 3, 1]
 
-# Generated at 2026-10-24 16:03:53.400701
-# Unit test for function minPath
+    # 2x2 grid, 1 at top-right -> neighbors are {2, 3}, min is 2
+    assert module_0.minPath([[2, 1], [4, 3]], 4) == [1, 2, 1, 2]
 
-# Generated at 2026-10-24 16:03:56.232958
-# Unit test for function minPath
+    # 1 on top edge of 3x3 grid -> neighbors are {7, 8, 5}, min is 5
+    assert module_0.minPath([[7, 1, 5], [2, 8, 3], [9, 6, 4]], 2) == [1, 5]
 
-# Generated at 2026-10-24 16:03:57.655160
-# Unit test for function minPath
-def test_minPath():assert module_0.minPath([[1, 2], [3, 4]], 3) == [1, 2, 1]
+    # larger k with 1 at corner
+    assert module_0.minPath([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 6) == [1, 2, 1, 2, 1, 2]
+
+    # 1 in middle of 3x3 grid, k=3 -> min neighbor is 4
+    assert module_0.minPath([[5, 9, 3], [4, 1, 6], [7, 8, 2]], 3) == [1, 4, 1]
+
+
+if __name__ == "__main__":
+    test_minPath()
+    print("All tests passed.")

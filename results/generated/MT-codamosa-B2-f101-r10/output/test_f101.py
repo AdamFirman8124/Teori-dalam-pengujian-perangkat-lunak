@@ -2,21 +2,26 @@
 import f101 as module_0
 
 def test_case_0():
-    str_0 = ''
+    str_0 = 'Hi, my name is John'
     var_0 = module_0.words_string(str_0)
-    assert var_0 == []
-    str_1 = 'hello'
+    assert var_0 == ['Hi', 'my', 'name', 'is', 'John']
+    str_1 = 'One,,Two,Three'
     var_1 = module_0.words_string(str_1)
-    assert var_1 == ['hello']
-    str_2 = 'hello,world'
+    assert var_1 == ['One', 'Two', 'Three']
+    str_2 = 'Hello, world, foo, bar'
     var_2 = module_0.words_string(str_2)
-    assert var_2 == ['hello', 'world']
-    str_3 = 'one,two,three'
+    assert var_2 == ['Hello', 'world', 'foo', 'bar']
+    str_3 = 'Python'
     var_3 = module_0.words_string(str_3)
-    assert var_3 == ['one', 'two', 'three']
-    str_4 = 'one, two, three'
+    assert var_3 == ['Python']
+    str_4 = ''
     var_4 = module_0.words_string(str_4)
-    assert var_4 == ['one', 'two', 'three']
-    str_5 = ',one,,two,'
+    assert var_4 == []
+    str_5 = ', , ,'
     var_5 = module_0.words_string(str_5)
-    assert var_5 == ['one', 'two']
+    assert var_5 == []
+    str_6 = ',start,end,'
+    var_6 = module_0.words_string(str_6)
+    assert var_6 == ['start', 'end']
+    str_7 = 'All tests passed!'
+    var_7 = print(str_7)

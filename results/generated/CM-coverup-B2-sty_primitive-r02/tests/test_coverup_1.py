@@ -7,56 +7,82 @@ import pytest
 from sty.primitive import Register
 
 
-class TestRegisterCallCoverage:
-    """Covers Register.__call__ lines 99-120: muted early-return, 8bit call,
-    named-attribute lookup, 24bit rgb call, and fallback empty string."""
+@pytest.fixture
+def reg():
+    """Provide a fresh Register instance per test so no shared/global state is touched."""
+    r = Register()
+    # A plain (non-Style) attribute: Register.__setattr__ stores it verbatim,
+    # which is enough to exercise the string-lookup branch of __call__.
+    r.red = "RED"
+    yield r
+    # Defensive cleanup: the object is per-test anyway, so nothing leaks.
+    r.unmute()
 
-    def test_call_returns_empty_str_when_muted(self):
-        reg = Register()
-        reg.mute()
-        assert reg.is_muted is True
-        # All branches (1 int arg, 1 str arg, 3 args, other) short-circuit.
-        assert reg(42) == ""
-        assert reg("red") == ""
-        assert reg(1, 2, 3) == ""
-        assert reg() == ""
-        # Cleanup: restore state on this isolated instance.
-        reg.unmute()
-        assert reg.is_muted is False
 
-    def test_call_single_int_uses_eightbit_call(self):
-        reg = Register()
-        # Default eightbit_call is identity, but use a sentinel to prove
-        # the eightbit branch (line 108) is the one executed.
-        reg.eightbit_call = lambda x: f"eightbit:{x}"
-        result = reg(42)
-        assert result == "eightbit:42"
+def test_call_muted_returns_empty_string(reg):
+    reg.mute()
+    assert reg.is_muted is True
 
-    def test_call_single_str_returns_matching_attribute(self):
-        reg = Register()
-        # A plain (non-Style) string attribute bypasses rendering and is
-        # returned verbatim by the getattr branch (line 113).
-        reg.mycolor = "rendered-mycolor"
-        assert reg("mycolor") == "rendered-mycolor"
+    # All call forms short-circuit to "" while muted.
+    assert reg(42) == ""
+    assert reg("red") == ""
+    assert reg(10, 20, 30) == ""
+    assert reg() == ""
 
-    def test_call_three_args_uses_rgb_call(self):
-        reg = Register()
-        # Default rgb_call returns the tuple; use a sentinel to prove the
-        # rgb branch (line 117) is the one executed.
-        reg.rgb_call = lambda r, g, b: f"rgb:{r}-{g}-{b}"
-        result = reg(10, 20, 30)
-        assert result == "rgb:10-20-30"
+    # The early return must not invoke the render functions.
+    calls = []
 
-    @pytest.mark.parametrize("args", [(), (1, 2), (1, 2, 3, 4)])
-    def test_call_other_arity_returns_empty_str(self, args):
-        reg = Register()
-        assert reg(*args) == ""
+    def spy(x):
+        calls.append(x)
+        return x
 
-    def test_call_unmuted_after_mute_restores_behavior(self):
-        reg = Register()
-        reg.mute()
-        assert reg(42) == ""
-        reg.unmute()
-        # Default eightbit_call is the identity function.
-        assert reg(42) == 42
-        assert reg(1, 2, 3) == (1, 2, 3)
+    reg.eightbit_call = spy
+    assert reg(1) == ""
+    assert calls == []
+
+    # Attributes keep their values while muted (mute does not delete them).
+    assert reg.red == "RED"
+
+
+def test_call_unmute_restores_behaviour(reg):
+    reg.mute()
+    assert reg(42) == ""
+    reg.unmute()
+    assert reg.is_muted is False
+
+    assert reg(42) == 42
+    assert reg("red") == "RED"
+    assert reg(1, 2, 3) == (1, 2, 3)
+
+
+def test_call_single_int_uses_eightbit_call(reg):
+    # Default eightbit_call is the identity function.
+    assert reg(42) == 42
+
+    # kwargs are forwarded to the eightbit renderer.
+    reg.eightbit_call = lambda x, **kwargs: (x, kwargs)
+    assert reg(7, foo="bar") == (7, {"foo": "bar"})
+
+
+def test_call_single_str_returns_named_attribute(reg):
+    assert reg("red") == "RED"
+    # Unknown names still hit getattr (and raise AttributeError as expected).
+    with pytest.raises(AttributeError):
+        reg("does_not_exist")
+
+
+def test_call_three_args_uses_rgb_call(reg):
+    # Default rgb_call simply returns the tuple of the three components.
+    assert reg(10, 20, 30) == (10, 20, 30)
+
+    # kwargs are forwarded to the rgb renderer.
+    reg.rgb_call = lambda r, g, b, **kwargs: (r, g, b, kwargs)
+    assert reg(1, 2, 3, key="val") == (1, 2, 3, {"key": "val"})
+
+
+def test_call_wrong_arity_returns_empty_string(reg):
+    # Arities other than 1 and 3 fall through to the final `return ""`.
+    assert reg() == ""
+    assert reg(1, 2) == ""
+    assert reg(1, 2, 3, 4) == ""
+    assert reg("a", "b") == ""

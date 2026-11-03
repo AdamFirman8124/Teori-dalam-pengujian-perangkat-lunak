@@ -1,1516 +1,219 @@
 
 
-# Generated at 2026-10-24 20:17:26.532223
+# Generated at 2026-11-02 20:37:06.827025
 # Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:17:27.918048
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
-
-# Generated at 2026-10-24 20:17:29.237350
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:17:30.685853
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
-
-# Generated at 2026-10-24 20:17:32.020266
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:17:33.449076
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
-
-# Generated at 2026-10-24 20:17:34.772324
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:17:36.222784
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
-
-# Generated at 2026-10-24 20:17:37.551258
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:17:38.976944
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
-
-# Generated at 2026-10-24 20:17:40.299182
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:17:41.744983
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
-
-# Generated at 2026-10-24 20:17:43.179162
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:17:44.610194
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
-
-# Generated at 2026-10-24 20:17:45.930033
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:17:47.288641
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
-
-# Generated at 2026-10-24 20:17:49.013056
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:17:50.446063
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
-
-# Generated at 2026-10-24 20:17:51.781722
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:17:53.210072
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
-
-# Generated at 2026-10-24 20:17:54.560630
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:17:55.974806
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
-
-# Generated at 2026-10-24 20:17:57.295126
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:17:58.740291
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
-
-# Generated at 2026-10-24 20:18:00.095884
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:18:01.482192
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
-
-# Generated at 2026-10-24 20:18:02.831489
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:18:04.269394
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
-
-# Generated at 2026-10-24 20:18:05.674461
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:18:08.215137
-# Unit test for function check_dict_case
-
-# Generated at 2026-10-24 20:18:10.632668
-# Unit test for function check_dict_case
-
-# Generated at 2026-10-24 20:18:13.051552
-# Unit test for function check_dict_case
-
-# Generated at 2026-10-24 20:18:15.620368
-# Unit test for function check_dict_case
-
-# Generated at 2026-10-24 20:18:18.142567
-# Unit test for function check_dict_case
-
-# Generated at 2026-10-24 20:18:20.559717
-# Unit test for function check_dict_case
-
-# Generated at 2026-10-24 20:18:22.975934
-# Unit test for function check_dict_case
-
-# Generated at 2026-10-24 20:18:25.416933
-# Unit test for function check_dict_case
-
-# Generated at 2026-10-24 20:18:27.970706
-# Unit test for function check_dict_case
+def test_check_dict_case():
+    # Empty dictionary should return False
+    assert module_0.check_dict_case({}) == False
 
-# Generated at 2026-10-24 20:18:30.389909
-# Unit test for function check_dict_case
+    # All lowercase keys should return True
+    assert module_0.check_dict_case({"a": 1, "b": 2, "c": 3}) == True
 
-# Generated at 2026-10-24 20:18:32.810451
-# Unit test for function check_dict_case
+    # All uppercase keys should return True
+    assert module_0.check_dict_case({"A": 1, "B": 2, "C": 3}) == True
 
-# Generated at 2026-10-24 20:18:35.225362
-# Unit test for function check_dict_case
+    # Mixed case keys should return False
+    assert module_0.check_dict_case({"a": 1, "B": 2}) == False
 
-# Generated at 2026-10-24 20:18:37.642018
-# Unit test for function check_dict_case
+    # Mixed case within a single key should return False
+    assert module_0.check_dict_case({"aB": 1, "Av": 2}) == False
 
-# Generated at 2026-10-24 20:18:40.057775
-# Unit test for function check_dict_case
+    # Non-string keys should return False
+    assert module_0.check_dict_case({1: 1, 2: 2}) == False
+    assert module_0.check_dict_case({"a": 1, 2: 2}) == False
 
-# Generated at 2026-10-24 20:18:42.475396
-# Unit test for function check_dict_case
+    # Keys with no case (digits/symbols) should return False
+    assert module_0.check_dict_case({"1": 1, "2": 2}) == False
+    assert module_0.check_dict_case({"a": 1, "1": 2}) == False
 
-# Generated at 2026-10-24 20:18:44.890680
-# Unit test for function check_dict_case
+    # Single lowercase key should return True
+    assert module_0.check_dict_case({"a": 1}) == True
 
-# Generated at 2026-10-24 20:18:47.307939
-# Unit test for function check_dict_case
+    # Single uppercase key should return True
+    assert module_0.check_dict_case({"A": 1}) == True
 
-# Generated at 2026-10-24 20:18:49.725658
-# Unit test for function check_dict_case
+    # Keys with leading/trailing uppercase should return False
+    assert module_0.check_dict_case({"a": 1, "b": 2, "C": 3}) == False
 
-# Generated at 2026-10-24 20:18:52.141969
-# Unit test for function check_dict_case
+    print("All tests passed!")
 
-# Generated at 2026-10-24 20:18:54.558665
-# Unit test for function check_dict_case
 
-# Generated at 2026-10-24 20:18:56.975977
-# Unit test for function check_dict_case
+if __name__ == "__main__":
+    test_check_dict_case()
 
-# Generated at 2026-10-24 20:18:59.390515
+# Generated at 2026-11-02 20:38:34.315418
 # Unit test for function check_dict_case
+def test_check_dict_case():
+    # Empty dict should return False
+    assert module_0.check_dict_case({}) == False
 
-# Generated at 2026-10-24 20:19:01.806959
-# Unit test for function check_dict_case
+    # All uppercase keys should return True
+    assert module_0.check_dict_case({"a": 1, "b": 2}) == True
 
-# Generated at 2026-10-24 20:19:04.225756
-# Unit test for function check_dict_case
+    # All lowercase keys should return True
+    assert module_0.check_dict_case({"a": 1, "b": 2, "c": 3}) == True
 
-# Generated at 2026-10-24 20:19:06.646087
-# Unit test for function check_dict_case
+    # Mixed case keys should return False
+    assert module_0.check_dict_case({"a": 1, "B": 2}) == False
 
-# Generated at 2026-10-24 20:19:09.063157
-# Unit test for function check_dict_case
+    # Keys that are neither upper nor lower (e.g., mixed case word) should return False
+    assert module_0.check_dict_case({"Hello": 1, "World": 2}) == False
 
-# Generated at 2026-10-24 20:19:11.482146
-# Unit test for function check_dict_case
+    # Non-string keys should return False
+    assert module_0.check_dict_case({1: 1, 2: 2}) == False
+    assert module_0.check_dict_case({"a": 1, 2: 2}) == False
 
-# Generated at 2026-10-24 20:19:13.900593
-# Unit test for function check_dict_case
+    # Single uppercase key should return True
+    assert module_0.check_dict_case({"A": 1}) == True
 
-# Generated at 2026-10-24 20:19:16.319531
-# Unit test for function check_dict_case
+    # Single lowercase key should return True
+    assert module_0.check_dict_case({"a": 1}) == True
 
-# Generated at 2026-10-24 20:19:18.740057
-# Unit test for function check_dict_case
+    # Single mixed-case key should return False
+    assert module_0.check_dict_case({"Ab": 1}) == False
 
-# Generated at 2026-10-24 20:19:21.157169
-# Unit test for function check_dict_case
+    # Keys with punctuation/digits (neither upper nor lower) should return False
+    assert module_0.check_dict_case({"1": 1, "2": 2}) == False
 
-# Generated at 2026-10-24 20:19:23.573282
-# Unit test for function check_dict_case
+    # Start with uppercase then lowercase should return False
+    assert module_0.check_dict_case({"A": 1, "b": 2}) == False
 
-# Generated at 2026-10-24 20:19:25.987947
-# Unit test for function check_dict_case
+    # Start with lowercase then uppercase should return False
+    assert module_0.check_dict_case({"a": 1, "B": 2}) == False
 
-# Generated at 2026-10-24 20:19:28.403977
-# Unit test for function check_dict_case
+    # All uppercase keys with values should return True
+    assert module_0.check_dict_case({"KEY1": 1, "KEY2": 2}) == True
 
-# Generated at 2026-10-24 20:19:30.819771
-# Unit test for function check_dict_case
+    # All lowercase keys with underscores should return True
+    assert module_0.check_dict_case({"key_one": 1, "key_two": 2}) == True
 
-# Generated at 2026-10-24 20:19:32.312239
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:19:33.689707
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
 
-# Generated at 2026-10-24 20:19:35.076495
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:19:36.440642
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+# nonce:13ac7646
 
-# Generated at 2026-10-24 20:19:37.847117
+# Generated at 2026-11-02 20:40:17.608596
 # Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:19:39.298962
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+def test_check_dict_case():
+    # Empty dictionary returns False
+    assert module_0.check_dict_case({}) == False
 
-# Generated at 2026-10-24 20:19:40.654363
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:19:43.076047
-# Unit test for function check_dict_case
+    # All lowercase string keys returns True
+    assert module_0.check_dict_case({"a": 1, "b": 2, "c": 3}) == True
 
-# Generated at 2026-10-24 20:19:51.688221
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({"a": 1, "b": 2}) is True
+    # All uppercase string keys returns True
+    assert module_0.check_dict_case({"A": 1, "B": 2, "C": 3}) == True
 
-# Generated at 2026-10-24 20:19:53.057205
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:19:54.451587
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # Mixed upper and lower case keys returns False
+    assert module_0.check_dict_case({"a": 1, "B": 2, "c": 3}) == False
 
-# Generated at 2026-10-24 20:19:55.772979
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:19:57.150965
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # Single lowercase key returns True
+    assert module_0.check_dict_case({"a": 1}) == True
 
-# Generated at 2026-10-24 20:19:58.475765
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:19:59.840124
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # Single uppercase key returns True
+    assert module_0.check_dict_case({"A": 1}) == True
 
-# Generated at 2026-10-24 20:20:01.180952
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:20:02.644092
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # Non-string key returns False
+    assert module_0.check_dict_case({"a": 1, 2: 2}) == False
 
-# Generated at 2026-10-24 20:20:03.992926
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:20:05.408256
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # Keys with mixed casing within string (e.g. title case) returns False
+    assert module_0.check_dict_case({"Hello": 1, "World": 2}) == False
 
-# Generated at 2026-10-24 20:20:06.842663
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:20:08.275305
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # Keys with digits/symbols (not upper or lower) returns False
+    assert module_0.check_dict_case({"a1": 1, "b2": 2}) == False
 
-# Generated at 2026-10-24 20:20:09.604591
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:20:10.959908
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # Mixed lowercase keys still True with multiple entries
+    assert module_0.check_dict_case({"apple": 1, "banana": 2}) == True
 
-# Generated at 2026-10-24 20:20:12.282463
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:20:13.808107
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # Mixed uppercase keys still True with multiple entries
+    assert module_0.check_dict_case({"APPLE": 1, "BANANA": 2}) == True
 
-# Generated at 2026-10-24 20:20:15.259977
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:20:16.677642
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    print("All tests passed!")
 
-# Generated at 2026-10-24 20:20:18.006398
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:20:19.379248
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+if __name__ == "__main__":
+    test_check_dict_case()
 
-# Generated at 2026-10-24 20:20:21.916162
+# Generated at 2026-11-02 20:41:26.501727
 # Unit test for function check_dict_case
+def test_check_dict_case():
+    # Empty dictionary should return False
+    assert module_0.check_dict_case({}) == False
 
-# Generated at 2026-10-24 20:20:24.339452
-# Unit test for function check_dict_case
+    # All uppercase string keys -> True
+    assert module_0.check_dict_case({"A": 1, "B": 2, "C": 3}) == True
 
-# Generated at 2026-10-24 20:20:26.754946
-# Unit test for function check_dict_case
+    # All lowercase string keys -> True
+    assert module_0.check_dict_case({"a": 1, "b": 2, "c": 3}) == True
 
-# Generated at 2026-10-24 20:20:29.173245
-# Unit test for function check_dict_case
+    # Mixed case keys -> False
+    assert module_0.check_dict_case({"a": 1, "B": 2}) == False
 
-# Generated at 2026-10-24 20:20:31.590978
-# Unit test for function check_dict_case
+    # Non-string keys -> False
+    assert module_0.check_dict_case({1: 1, 2: 2}) == False
+    assert module_0.check_dict_case({"a": 1, 2: 2}) == False
 
-# Generated at 2026-10-24 20:20:34.009157
-# Unit test for function check_dict_case
+    # Single key cases
+    assert module_0.check_dict_case({"A": 1}) == True
+    assert module_0.check_dict_case({"a": 1}) == True
 
-# Generated at 2026-10-24 20:20:36.429043
-# Unit test for function check_dict_case
+    # Keys with non-alpha characters (isupper/islower return False) -> False
+    assert module_0.check_dict_case({"a1": 1, "b2": 2}) == False
+    assert module_0.check_dict_case({"A1": 1, "B2": 2}) == False
+    assert module_0.check_dict_case({"!": 1, "@": 2}) == False
 
-# Generated at 2026-10-24 20:20:38.848489
-# Unit test for function check_dict_case
+    # Mixed upper and lower starting with upper -> False
+    assert module_0.check_dict_case({"A": 1, "b": 2, "C": 3}) == False
 
-# Generated at 2026-10-24 20:20:41.261311
-# Unit test for function check_dict_case
+    # Mixed upper and lower starting with lower -> False
+    assert module_0.check_dict_case({"a": 1, "B": 2, "c": 3}) == False
 
-# Generated at 2026-10-24 20:20:43.679264
-# Unit test for function check_dict_case
+    # Multi-character keys
+    assert module_0.check_dict_case({"HELLO": 1, "WORLD": 2}) == True
+    assert module_0.check_dict_case({"hello": 1, "world": 2}) == True
+    assert module_0.check_dict_case({"Hello": 1, "World": 2}) == False
 
-# Generated at 2026-10-24 20:20:46.094304
-# Unit test for function check_dict_case
+    print("All tests passed!")
 
-# Generated at 2026-10-24 20:20:47.514436
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
 
-# Generated at 2026-10-24 20:20:48.875653
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:20:50.463259
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+test_check_dict_case()
 
-# Generated at 2026-10-24 20:20:51.791591
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:20:53.228450
+# Generated at 2026-11-02 20:43:12.072765
 # Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+def test_check_dict_case():
+    # nonce:d3fbb84a
+    # Empty dictionary
+    assert module_0.check_dict_case({}) == False
 
-# Generated at 2026-10-24 20:20:54.555403
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:20:55.994607
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # All lower case keys
+    assert module_0.check_dict_case({"a": 1, "b": 2, "c": 3}) == True
 
-# Generated at 2026-10-24 20:20:57.319049
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:20:58.763174
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # All upper case keys
+    assert module_0.check_dict_case({"A": 1, "B": 2, "C": 3}) == True
 
-# Generated at 2026-10-24 20:21:00.135174
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:21:01.524043
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # Mixed case keys
+    assert module_0.check_dict_case({"a": 1, "B": 2, "c": 3}) == False
+    assert module_0.check_dict_case({"A": 1, "b": 2, "C": 3}) == False
 
-# Generated at 2026-10-24 20:21:02.849735
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:21:04.233317
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # Non-string keys
+    assert module_0.check_dict_case({1: "one", 2: "two"}) == False
+    assert module_0.check_dict_case({"a": 1, 2: "two"}) == False
 
-# Generated at 2026-10-24 20:21:05.621905
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:21:07.052324
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # Single key dictionaries
+    assert module_0.check_dict_case({"a": 1}) == True
+    assert module_0.check_dict_case({"A": 1}) == True
 
-# Generated at 2026-10-24 20:21:08.383869
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:21:09.818134
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # Alphanumeric keys that are consistently lower/upper
+    assert module_0.check_dict_case({"a1": 1, "b2": 2}) == True
+    assert module_0.check_dict_case({"A1": 1, "B2": 2}) == True
 
-# Generated at 2026-10-24 20:21:11.182169
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:21:12.583344
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # Keys that are neither upper nor lower (digits only)
+    assert module_0.check_dict_case({"1": 1, "2": 2}) == False
 
-# Generated at 2026-10-24 20:21:13.902069
-# Unit test for function check_dict_case
-def test_check_dict_case():import pytest
-
-@pytest.mark.parametrize("d,expected", [
-    # empty
-    ({}, False),
-    # all lower / all upper
-    ({"a": 1, "b": 2}, True),
-    ({"A": 1, "B": 2}, True),
-    ({"a": 1}, True),
-    ({"A": 1}, True),
-    # mixed case
-    ({"a": 1, "B": 2}, False),
-    ({"A": 1, "b": 2}, False),
-    ({"a": 1, "b": 2, "C": 3}, False),
-    # non-string keys
-    ({"a": 1, 2: 2}, False),
-    ({1: "a", 2: "b"}, False),
-    ({"A": 1, "B": 2, 3: 3}, False),
-    ({"A": 1, None: 2}, False),
-    # string keys that are neither upper nor lower
-    ({"1": 1}, False),
-    ({"a": 1, "1": 2}, False),
-    ({"A": 1, "a b": 2}, False),   # space breaks isupper/islower
-    # digits are ignored by isupper()/islower()
-    ({"AB1": 1, "CD2": 2}, True),
-])
-def test_check_dict_case(d, expected):
-    assert module_0.check_dict_case(d) == expected
-
-# Generated at 2026-10-24 20:21:15.318660
-# Unit test for function check_dict_case
-def test_check_dict_case():assert module_0.check_dict_case({}) == False
+    # Title case keys (neither all upper nor all lower)
+    assert module_0.check_dict_case({"Hello": 1, "World": 2}) == False
 
-# Generated at 2026-10-24 20:21:17.742167
-# Unit test for function check_dict_case
+    # Empty string key
+    assert module_0.check_dict_case({"": 1}) == False
 
-# Generated at 2026-10-24 20:21:20.157510
-# Unit test for function check_dict_case
+    # Lower case start but later key not lower
+    assert module_0.check_dict_case({"a": 1, "b": 2, "1C": 3}) == False
 
-# Generated at 2026-10-24 20:21:22.574307
-# Unit test for function check_dict_case
+    print("All tests passed!")

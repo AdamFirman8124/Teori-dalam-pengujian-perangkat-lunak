@@ -5,18 +5,31 @@ def test_case_0():
     str_0 = 'three one five'
     str_1 = module_0.sort_numbers(str_0)
     assert str_1 == 'one three five'
+
+def test_case_1():
+    str_0 = 'three one five'
+    str_1 = module_0.sort_numbers(str_0)
+    assert str_1 == 'one three five'
     str_2 = 'nine eight seven six five four three two one zero'
     str_3 = module_0.sort_numbers(str_2)
     assert str_3 == 'zero one two three four five six seven eight nine'
-    str_4 = 'zero'
+    str_4 = 'zero one two'
     str_5 = module_0.sort_numbers(str_4)
-    assert str_5 == 'zero'
-    str_6 = ''
+    assert str_5 == 'zero one two'
+    str_6 = 'five'
     str_7 = module_0.sort_numbers(str_6)
-    assert str_7 == ''
-    str_8 = 'one three two'
+    assert str_7 == 'five'
+    str_8 = ''
     str_9 = module_0.sort_numbers(str_8)
-    assert str_9 == 'one two three'
-    str_10 = 'five five two'
+    assert str_9 == ''
+    str_10 = 'three one three'
     str_11 = module_0.sort_numbers(str_10)
-    assert str_11 == 'two five five'
+    assert str_11 == 'one three three'
+    str_12 = 'four two seven zero'
+    str_13 = module_0.sort_numbers(str_12)
+    assert str_13 == 'zero two four seven'
+    str_14 = 'three  one'
+    str_15 = module_0.sort_numbers(str_14)
+    assert str_15 == 'one three'
+    str_16 = 'All tests passed!'
+    var_0 = print(str_16)

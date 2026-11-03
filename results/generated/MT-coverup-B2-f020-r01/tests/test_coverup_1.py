@@ -7,36 +7,45 @@ import pytest
 from f020 import find_closest_elements
 
 
-def test_first_pair_initializes_distance():
-    # Covers lines 6-7 (init), 9-14 (first comparison sets distance/closest_pair)
-    result = find_closest_elements([1.0, 2.0, 3.9, 4.0, 5.0, 2.2])
-    assert result == (3.9, 4.0)
+def test_find_closest_elements_all_branches():
+    """Exercise every line and branch: the distance-is-None initialization
+    path (lines 12-14), the new_distance-not-less path (line 17 false),
+    and the new_distance-less path (lines 17-19)."""
+    result = find_closest_elements([1.0, 2.0, 3.5, 4.0])
+    # Closest pair is (3.5, 4.0) with distance 0.5
+    assert result == (3.5, 4.0)
+    assert isinstance(result, tuple)
+    assert len(result) == 2
+    assert result[0] <= result[1]  # pair must be sorted
 
 
-def test_improves_on_initial_distance():
-    # Covers lines 16-19 (new_distance computed and improves on current distance)
-    result = find_closest_elements([10.0, 1.0, 1.5])
-    assert result == (1.0, 1.5)
+def test_find_closest_elements_two_elements_sorted_output():
+    """Two elements: the first (and only) comparison takes the
+    distance-is-None branch; result is sorted even if input is not."""
+    result = find_closest_elements([10.0, 3.0])
+    assert result == (3.0, 10.0)
+    assert result[0] <= result[1]
 
 
-def test_unsorted_input_returns_sorted_pair():
-    # Covers line 14/19 sorted() branch when elem < elem2
-    result = find_closest_elements([5.0, 4.9])
-    assert result == (4.9, 5.0)
+def test_find_closest_elements_unsorted_candidates():
+    """A later (unsorted) pair becomes the closest, exercising the
+    new_distance < distance update branch with a sorted tuple result."""
+    result = find_closest_elements([5.0, 1.0, 2.1, 9.0])
+    # 1.0 and 2.1 are closest (distance 1.1)
+    assert result == (1.0, 2.1)
 
 
-def test_negative_numbers():
-    result = find_closest_elements([-1.0, -1.1, 3.0])
-    assert result == (-1.1, -1.0)
+def test_find_closest_elements_equal_distances_keeps_first_pair():
+    """When a later pair's distance equals (does not beat) the current
+    minimum, the first-found pair is kept."""
+    result = find_closest_elements([1.0, 2.0, 3.0])
+    # (1.0, 2.0) found first with distance 1.0; (2.0, 3.0) also has
+    # distance 1.0 but is not strictly smaller, so the first pair stays.
+    assert result == (1.0, 2.0)
 
 
-def test_duplicate_values():
-    result = find_closest_elements([2.0, 2.0, 5.0])
-    assert result == (2.0, 2.0)
-
-
-def test_skips_self_comparison():
-    # idx == idx2 branch (line 11 false) must be skipped; with two equal
-    # elements the only valid pair is the cross pair.
-    result = find_closest_elements([1.0, 1.0])
-    assert result == (1.0, 1.0)
+def test_find_closest_elements_duplicate_values():
+    """Duplicate values yield a zero-distance pair and still hit all
+    inner-loop branches."""
+    result = find_closest_elements([4.0, 4.0, 7.0])
+    assert result == (4.0, 4.0)

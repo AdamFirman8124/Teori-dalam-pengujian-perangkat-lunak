@@ -2,116 +2,63 @@
 import f156 as module_0
 
 def test_case_0():
-    float_0 = -3612.054
-    int_0 = -2226
-    var_0 = module_0.int_to_mini_roman(int_0)
-    list_0 = [float_0, float_0, float_0]
-    list_1 = [float_0, float_0, float_0, list_0]
-    dict_0 = {list_1: float_0}
-    var_1 = module_0.int_to_mini_roman(dict_0)
-    str_0 = 'qt},(('
-    var_2 = module_0.int_to_mini_roman(str_0)
-    var_3 = module_0.int_to_mini_roman(dict_0)
-    var_4 = module_0.int_to_mini_roman(list_1)
-    tuple_0 = (float_0,)
-    var_5 = module_0.int_to_mini_roman(str_0)
-    bytes_0 = b';\xaf\x1a\xe5\xf0\xda\t\x9da\x8d\r\x8d'
-    var_6 = module_0.int_to_mini_roman(bytes_0)
-    var_7 = module_0.int_to_mini_roman(tuple_0)
-    bytes_1 = b'\x88h\xe5\xb6\xa4\x92\xef~@'
-    var_8 = module_0.int_to_mini_roman(bytes_1)
-    bool_0 = False
-    var_9 = module_0.int_to_mini_roman(bool_0)
-    var_10 = module_0.int_to_mini_roman(bool_0)
-
-def test_case_1():
     int_0 = 1
     var_0 = module_0.int_to_mini_roman(int_0)
     assert var_0 == 'i'
     int_1 = 4
     var_1 = module_0.int_to_mini_roman(int_1)
     assert var_1 == 'iv'
-    int_2 = 9
+    int_2 = 5
     var_2 = module_0.int_to_mini_roman(int_2)
-    assert var_2 == 'ix'
-    int_3 = 14
+    assert var_2 == 'v'
+    int_3 = 9
     var_3 = module_0.int_to_mini_roman(int_3)
-    assert var_3 == 'xiv'
-    int_4 = 19
+    assert var_3 == 'ix'
+    int_4 = 10
     var_4 = module_0.int_to_mini_roman(int_4)
-    assert var_4 == 'xix'
-    int_5 = 40
+    assert var_4 == 'x'
+    int_5 = 14
     var_5 = module_0.int_to_mini_roman(int_5)
-    assert var_5 == 'xl'
-    int_6 = 90
+    assert var_5 == 'xiv'
+    int_6 = 19
     var_6 = module_0.int_to_mini_roman(int_6)
-    assert var_6 == 'xc'
-    int_7 = 400
+    assert var_6 == 'xix'
+    int_7 = 40
     var_7 = module_0.int_to_mini_roman(int_7)
-    assert var_7 == 'cd'
-    int_8 = 900
+    assert var_7 == 'xl'
+    int_8 = 58
     var_8 = module_0.int_to_mini_roman(int_8)
-    assert var_8 == 'cm'
-    int_9 = 1000
+    assert var_8 == 'lviii'
+    int_9 = 90
     var_9 = module_0.int_to_mini_roman(int_9)
-    assert var_9 == 'm'
+    assert var_9 == 'xc'
     int_10 = 152
     var_10 = module_0.int_to_mini_roman(int_10)
     assert var_10 == 'clii'
-    int_11 = 2024
+    int_11 = 400
     var_11 = module_0.int_to_mini_roman(int_11)
-    assert var_11 == 'mmxxiv'
-    int_12 = 3999
+    assert var_11 == 'cd'
+    int_12 = 421
     var_12 = module_0.int_to_mini_roman(int_12)
-    assert var_12 == 'mmmcmxcix'
-    int_13 = 3549
+    assert var_12 == 'cdxxi'
+    int_13 = 900
     var_13 = module_0.int_to_mini_roman(int_13)
-    assert var_13 == 'mmmdxlix'
-    str_0 = 'All tests passed!'
-    var_14 = print(str_0)
-
-def test_case_2():
-    int_0 = 1
-    var_0 = module_0.int_to_mini_roman(int_0)
-    assert var_0 == 'i'
-    int_1 = 4
-    var_1 = module_0.int_to_mini_roman(int_1)
-    assert var_1 == 'iv'
-    int_2 = 9
-    var_2 = module_0.int_to_mini_roman(int_2)
-    assert var_2 == 'ix'
-    int_3 = 14
-    var_3 = module_0.int_to_mini_roman(int_3)
-    assert var_3 == 'xiv'
-    int_4 = 19
-    var_4 = module_0.int_to_mini_roman(int_4)
-    assert var_4 == 'xix'
-    int_5 = 40
-    var_5 = module_0.int_to_mini_roman(int_5)
-    assert var_5 == 'xl'
-    int_6 = 90
-    var_6 = module_0.int_to_mini_roman(int_6)
-    assert var_6 == 'xc'
-    int_7 = 400
-    var_7 = module_0.int_to_mini_roman(int_7)
-    assert var_7 == 'cd'
-    int_8 = 1000
-    var_8 = module_0.int_to_mini_roman(int_8)
-    assert var_8 == 'm'
-    int_9 = 152
-    var_9 = module_0.int_to_mini_roman(int_9)
-    assert var_9 == 'clii'
-    dict_0 = {}
-    var_10 = module_0.int_to_mini_roman(dict_0)
-    assert var_10 == ''
-    int_10 = 2024
-    var_11 = module_0.int_to_mini_roman(int_10)
-    assert var_11 == 'mmxxiv'
-    int_11 = 3999
-    var_12 = module_0.int_to_mini_roman(int_11)
-    assert var_12 == 'mmmcmxcix'
-    int_12 = 3549
-    var_13 = module_0.int_to_mini_roman(int_12)
-    assert var_13 == 'mmmdxlix'
-    str_0 = 'All tests passed!'
-    var_14 = print(str_0)
+    assert var_13 == 'cm'
+    int_14 = 1000
+    var_14 = module_0.int_to_mini_roman(int_14)
+    assert var_14 == 'm'
+    int_15 = 1976
+    var_15 = module_0.int_to_mini_roman(int_15)
+    assert var_15 == 'mcmlxxvi'
+    int_16 = 2024
+    var_16 = module_0.int_to_mini_roman(int_16)
+    assert var_16 == 'mmxxiv'
+    int_17 = 3999
+    var_17 = module_0.int_to_mini_roman(int_17)
+    assert var_17 == 'mmmcmxcix'
+    int_18 = 3
+    var_18 = module_0.int_to_mini_roman(int_18)
+    assert var_18 == 'iii'
+    int_19 = 3888
+    var_19 = module_0.int_to_mini_roman(int_19)
+    assert var_19 == 'mmmdccclxxxviii'

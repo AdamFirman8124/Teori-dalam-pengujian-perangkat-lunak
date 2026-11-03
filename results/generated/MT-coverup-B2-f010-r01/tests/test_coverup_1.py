@@ -7,60 +7,48 @@ import pytest
 from f010 import make_palindrome
 
 
-def test_make_palindrome_empty_string_returns_empty():
-    result = make_palindrome("")
-    assert result == ""
+def test_make_palindrome_empty_string():
+    """Covers lines 8-9: empty string short-circuits to ''."""
+    assert make_palindrome('') == ''
+
+
+def test_make_palindrome_already_palindrome():
+    """Covers line 13 (loop condition false immediately) and line 16 with suffix 0."""
+    result = make_palindrome('aba')
+    assert result == 'aba'
     assert result == result[::-1]
 
 
-def test_make_palindrome_already_palindrome_returns_unchanged():
-    result = make_palindrome("aba")
-    assert result == "aba"
+def test_make_palindrome_single_char():
+    """Single character is already a palindrome; loop body never runs."""
+    assert make_palindrome('x') == 'x'
+
+
+def test_make_palindrome_appends_reversed_prefix():
+    """Covers line 14 (loop increments) and line 16 with a non-zero suffix."""
+    result = make_palindrome('cat')
+    assert result == 'catac'
+    assert result == result[::-1]
+    assert result.startswith('cat')
+
+
+def test_make_palindrome_partial_palindrome_suffix():
+    """'cata' has palindromic suffix 'ata', so only 'c' is mirrored."""
+    result = make_palindrome('cata')
+    assert result == 'catac'
     assert result == result[::-1]
 
 
-def test_make_palindrome_single_char_returns_unchanged():
-    result = make_palindrome("a")
-    assert result == "a"
+def test_make_palindrome_two_chars():
+    """Minimal case exercising one loop iteration."""
+    result = make_palindrome('ab')
+    assert result == 'aba'
     assert result == result[::-1]
 
 
-def test_make_palindrome_loop_runs_once():
-    # "ab" -> suffix "b" is a palindrome at index 1
-    result = make_palindrome("ab")
-    assert result == "aba"
-    assert result == result[::-1]
-
-
-def test_make_palindrome_loop_runs_multiple_times():
-    # "abc" -> "abcba"
-    result = make_palindrome("abc")
-    assert result == "abcba"
-    assert result == result[::-1]
-
-
-def test_make_palindrome_longer_input():
-    result = make_palindrome("racecarx")
-    assert result == "racecarxracecar"
-    assert result == result[::-1]
-
-
-def test_make_palindrome_does_not_mutate_input():
-    original = "abc"
-    value = "abc"
-    make_palindrome(value)
-    assert value == original
-
-
-def test_make_palindrome_uses_is_palindrome(monkeypatch):
-    calls = []
-
-    def fake_is_palindrome(string: str) -> bool:
-        calls.append(string)
-        return string == string[::-1]
-
-    monkeypatch.setattr("f010.is_palindrome", fake_is_palindrome)
-
-    result = make_palindrome("abc")
-    assert result == "abcba"
-    assert calls == ["abc", "bc", "c"]
+def test_make_palindrome_result_is_palindrome_for_various_inputs():
+    """Property check: output is always a palindrome containing the input."""
+    for s in ['race', 'abcba', 'abab', 'z', '']:
+        result = make_palindrome(s)
+        assert result == result[::-1]
+        assert result.startswith(s)

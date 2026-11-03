@@ -2,6 +2,8 @@
 # asked: {"lines": [3, 4, 5, 6, 7], "branches": [[3, 4], [3, 5], [5, 6], [5, 7]]}
 # gained: {"lines": [3, 4, 5, 6, 7], "branches": [[3, 4], [3, 5], [5, 6], [5, 7]]}
 
+"""Tests for f055.fib covering all lines and branches (lines 3-7)."""
+
 import pytest
 
 from f055 import fib
@@ -18,11 +20,14 @@ def test_fib_base_case_one():
 
 
 def test_fib_recursive_case():
-    """Covers line 7: recursive branch, and exercises all lines together."""
+    """Covers line 7: recursive branch for n >= 2."""
+    assert fib(2) == 1
+    assert fib(3) == 2
     assert fib(5) == 5
     assert fib(10) == 55
 
 
-@pytest.mark.parametrize("n,expected", [(0, 0), (1, 1), (2, 1), (3, 2), (7, 13)])
-def test_fib_known_values(n, expected):
-    assert fib(n) == expected
+def test_fib_known_values():
+    """End-to-end check of the first Fibonacci numbers."""
+    expected = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+    assert [fib(n) for n in range(len(expected))] == expected

@@ -10,20 +10,21 @@ def test_case_0():
     var_0 = module_0.median(int_3)
     assert var_0 == 2
     int_4 = 4
-    int_5 = [int_4, int_1, int_0, int_2]
+    int_5 = [int_0, int_1, int_2, int_4]
     var_1 = module_0.median(int_5)
     assert var_1 == pytest.approx(2.5, abs=0.01, rel=0.01)
-    int_6 = 7
-    int_7 = [int_6]
-    var_2 = module_0.median(int_7)
-    assert var_2 == 7
-    int_8 = -5
-    int_9 = -1
-    int_10 = -3
-    int_11 = [int_8, int_9, int_10]
-    var_3 = module_0.median(int_11)
-    assert var_3 == 3
-    assert var_3 == -3
-    int_12 = [int_2, int_2, int_2, int_2]
-    var_4 = module_0.median(int_12)
-    assert var_4 == pytest.approx(2.0, abs=0.01, rel=0.01)
+    int_6 = [int_1]
+    var_2 = module_0.median(int_6)
+    assert var_2 == 1
+    int_7 = 5
+    int_8 = -2
+    int_9 = 8
+    int_10 = [int_7, int_8, int_9, int_1]
+    var_3 = module_0.median(int_10)
+    assert var_3 == pytest.approx(3.0, abs=0.01, rel=0.01)
+    int_11 = [int_2, int_2, int_2]
+    var_4 = module_0.median(int_11)
+    assert var_4 == 2
+
+def test_case_1():
+    pass

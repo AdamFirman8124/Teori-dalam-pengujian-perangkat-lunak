@@ -1,138 +1,121 @@
 
 
-# Generated at 2026-10-25 06:57:18.778818
+# Generated at 2026-11-02 11:11:44.825596
 # Unit test for function bf
 def test_bf():
-    # planets between - normal order
-    assert module_0.bf("Mercury", "Earth") == ("Venus",)
-    assert module_0.bf("Earth", "Jupiter") == ("Mars",)
-    assert module_0.bf("Jupiter", "Neptune") == ("Saturn", "Uranus")
+    # Valid planets: planet1 before planet2 in orbit order
     assert module_0.bf("Mercury", "Uranus") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn")
+    assert module_0.bf("Earth", "Jupiter") == ("Mars",)
     assert module_0.bf("Mercury", "Neptune") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus")
 
-    # reversed order should give same result
-    assert module_0.bf("Earth", "Mercury") == ("Venus",)
+    # Valid planets: planet1 after planet2 (reversed order)
+    assert module_0.bf("Uranus", "Mercury") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn")
     assert module_0.bf("Jupiter", "Earth") == ("Mars",)
-    assert module_0.bf("Neptune", "Jupiter") == ("Saturn", "Uranus")
     assert module_0.bf("Neptune", "Mercury") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus")
 
-    # adjacent planets -> empty
-    assert module_0.bf("Mercury", "Venus") == ()
-    assert module_0.bf("Venus", "Mercury") == ()
+    # Adjacent planets: nothing in between
     assert module_0.bf("Earth", "Mars") == ()
+    assert module_0.bf("Mars", "Earth") == ()
+    assert module_0.bf("Jupiter", "Saturn") == ()
 
-    # same planet -> empty
+    # Same planet for both arguments
     assert module_0.bf("Earth", "Earth") == ()
-    assert module_0.bf("Mars", "Mars") == ()
+    assert module_0.bf("Neptune", "Neptune") == ()
 
-    # invalid names -> empty
-    assert module_0.bf("Mercury", "Pluto") == ()
-    assert module_0.bf("Pluto", "Mercury") == ()
-    assert module_0.bf("Pluto", "Pluto") == ()
-    assert module_0.bf("earth", "Mars") == ()
-    assert module_0.bf("", "Earth") == ()
+    # Invalid planet names
+    assert module_0.bf("Pluto", "Earth") == ()
+    assert module_0.bf("Earth", "Pluto") == ()
+    assert module_0.bf("Foo", "Bar") == ()
+    assert module_0.bf("mercury", "Venus") == ()  # case-sensitive
+    assert module_0.bf("", "Mars") == ()
 
-# Generated at 2026-10-25 06:57:20.204405
+    # Result is a tuple
+    assert isinstance(module_0.bf("Earth", "Saturn"), tuple)
+    assert module_0.bf("Earth", "Saturn") == ("Mars", "Jupiter")
+
+# Generated at 2026-11-02 11:14:06.493191
 # Unit test for function bf
 def test_bf():
-    # planets between - normal order
-    assert module_0.bf("Mercury", "Earth") == ("Venus",)
-    assert module_0.bf("Earth", "Jupiter") == ("Mars",)
+    # Planets between Jupiter and Neptune (in order)
     assert module_0.bf("Jupiter", "Neptune") == ("Saturn", "Uranus")
-    assert module_0.bf("Mercury", "Uranus") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn")
-    assert module_0.bf("Mercury", "Neptune") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus")
-
-    # reversed order should give same result
-    assert module_0.bf("Earth", "Mercury") == ("Venus",)
-    assert module_0.bf("Jupiter", "Earth") == ("Mars",)
+    # Reversed order should still return planets in orbital order
     assert module_0.bf("Neptune", "Jupiter") == ("Saturn", "Uranus")
-    assert module_0.bf("Neptune", "Mercury") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus")
-
-    # adjacent planets -> empty
-    assert module_0.bf("Mercury", "Venus") == ()
-    assert module_0.bf("Venus", "Mercury") == ()
+    # Planets between Earth and Mercury
+    assert module_0.bf("Earth", "Mercury") == ("Venus",)
+    # Adjacent planets -> nothing in between
     assert module_0.bf("Earth", "Mars") == ()
-
-    # same planet -> empty
+    assert module_0.bf("Mars", "Earth") == ()
+    # Same planet -> empty tuple
     assert module_0.bf("Earth", "Earth") == ()
-    assert module_0.bf("Mars", "Mars") == ()
+    # Invalid planet names -> empty tuple
+    assert module_0.bf("Asculon", "Earth") == ()
+    assert module_0.bf("Earth", "Pluto") == ()
+    assert module_0.bf("foo", "bar") == ()
+    # Wide range
+    assert module_0.bf("Mercury", "Uranus") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn")
+    assert module_0.bf("Venus", "Venus") == ()
 
-    # invalid names -> empty
-    assert module_0.bf("Mercury", "Pluto") == ()
-    assert module_0.bf("Pluto", "Mercury") == ()
-    assert module_0.bf("Pluto", "Pluto") == ()
-    assert module_0.bf("earth", "Mars") == ()
-    assert module_0.bf("", "Earth") == ()
-
-# Generated at 2026-10-25 06:57:21.580049
+# Generated at 2026-11-02 11:16:30.728143
 # Unit test for function bf
 def test_bf():
-    # planets between - normal order
-    assert module_0.bf("Mercury", "Earth") == ("Venus",)
-    assert module_0.bf("Earth", "Jupiter") == ("Mars",)
+    # Planets between Jupiter and Neptune (exclusive)
     assert module_0.bf("Jupiter", "Neptune") == ("Saturn", "Uranus")
-    assert module_0.bf("Mercury", "Uranus") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn")
+
+    # Reversed order should still return planets in order from the sun
+    assert module_0.bf("Neptune", "Jupiter") == ("Saturn", "Uranus")
+
+    # Adjacent planets yield empty tuple
+    assert module_0.bf("Earth", "Mars") == ()
+    assert module_0.bf("Mars", "Earth") == ()
+
+    # Single planet in between
+    assert module_0.bf("Earth", "Mercury") == ("Venus",)
+    assert module_0.bf("Mercury", "Earth") == ("Venus",)
+
+    # Full range between outermost planets
     assert module_0.bf("Mercury", "Neptune") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus")
 
-    # reversed order should give same result
-    assert module_0.bf("Earth", "Mercury") == ("Venus",)
-    assert module_0.bf("Jupiter", "Earth") == ("Mars",)
-    assert module_0.bf("Neptune", "Jupiter") == ("Saturn", "Uranus")
-    assert module_0.bf("Neptune", "Mercury") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus")
+    # Invalid planet names return empty tuple
+    assert module_0.bf("Earth", "Pluto") == ()
+    assert module_0.bf("Pluto", "Earth") == ()
+    assert module_0.bf("ASDF", "Venus") == ()
+    assert module_0.bf("Venus", "ASDF") == ()
 
-    # adjacent planets -> empty
-    assert module_0.bf("Mercury", "Venus") == ()
-    assert module_0.bf("Venus", "Mercury") == ()
-    assert module_0.bf("Earth", "Mars") == ()
-
-    # same planet -> empty
+    # Same planet returns empty tuple
     assert module_0.bf("Earth", "Earth") == ()
-    assert module_0.bf("Mars", "Mars") == ()
+    assert module_0.bf("Venus", "Venus") == ()
 
-    # invalid names -> empty
-    assert module_0.bf("Mercury", "Pluto") == ()
-    assert module_0.bf("Pluto", "Mercury") == ()
-    assert module_0.bf("Pluto", "Pluto") == ()
+    # Case-sensitive invalid inputs
     assert module_0.bf("earth", "Mars") == ()
-    assert module_0.bf("", "Earth") == ()
+    assert module_0.bf("Mars", "earth") == ()
 
-# Generated at 2026-10-25 06:57:23.076983
+# Generated at 2026-11-02 11:18:28.582185
 # Unit test for function bf
 def test_bf():
-    # planets between - normal order
-    assert module_0.bf("Mercury", "Earth") == ("Venus",)
+    # Correct order (planet1 closer to the sun)
     assert module_0.bf("Earth", "Jupiter") == ("Mars",)
-    assert module_0.bf("Jupiter", "Neptune") == ("Saturn", "Uranus")
-    assert module_0.bf("Mercury", "Uranus") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn")
     assert module_0.bf("Mercury", "Neptune") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus")
+    assert module_0.bf("Venus", "Saturn") == ("Earth", "Mars", "Jupiter")
 
-    # reversed order should give same result
-    assert module_0.bf("Earth", "Mercury") == ("Venus",)
+    # Reverse order (planet2 closer to the sun)
     assert module_0.bf("Jupiter", "Earth") == ("Mars",)
-    assert module_0.bf("Neptune", "Jupiter") == ("Saturn", "Uranus")
     assert module_0.bf("Neptune", "Mercury") == ("Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus")
+    assert module_0.bf("Saturn", "Venus") == ("Earth", "Mars", "Jupiter")
 
-    # adjacent planets -> empty
-    assert module_0.bf("Mercury", "Venus") == ()
-    assert module_0.bf("Venus", "Mercury") == ()
+    # Adjacent planets yield empty tuple
     assert module_0.bf("Earth", "Mars") == ()
+    assert module_0.bf("Mars", "Earth") == ()
+    assert module_0.bf("Uranus", "Neptune") == ()
 
-    # same planet -> empty
+    # Invalid planet names yield empty tuple
+    assert module_0.bf("Pluto", "Earth") == ()
+    assert module_0.bf("Earth", "Pluto") == ()
+    assert module_0.bf("Xyz", "Abc") == ()
+
+    # Same planet yields empty tuple
     assert module_0.bf("Earth", "Earth") == ()
-    assert module_0.bf("Mars", "Mars") == ()
+    assert module_0.bf("Mercury", "Mercury") == ()
 
-    # invalid names -> empty
-    assert module_0.bf("Mercury", "Pluto") == ()
-    assert module_0.bf("Pluto", "Mercury") == ()
-    assert module_0.bf("Pluto", "Pluto") == ()
+    # Case sensitivity: lowercase names are invalid
     assert module_0.bf("earth", "Mars") == ()
-    assert module_0.bf("", "Earth") == ()
-
-# Generated at 2026-10-25 06:57:25.492166
-# Unit test for function bf
-
-# Generated at 2026-10-25 06:57:28.082130
-# Unit test for function bf
-
-# Generated at 2026-10-25 06:57:30.497887
-# Unit test for function bf
+    assert module_0.bf("Earth", "mars") == ()

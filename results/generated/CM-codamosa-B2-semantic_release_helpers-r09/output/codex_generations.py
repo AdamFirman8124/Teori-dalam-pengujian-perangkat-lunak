@@ -1,2472 +1,621 @@
 
 
-# Generated at 2026-10-24 07:20:33.626530
+# Generated at 2026-11-01 21:51:42.922381
 # Unit test for function build_requests_session
+def test_build_requests_session():
+    # Default arguments: raise_for_status hook installed, default Retry adapter mounted
+    session = module_0.build_requests_session()
+    assert isinstance(session, Session)
+    assert "response" in session.hooks
+    assert len(session.hooks["response"]) == 1
 
-# Generated at 2026-10-24 07:20:36.042296
-# Unit test for function build_requests_session
+    adapter = session.get_adapter("https://example.com")
+    assert isinstance(adapter, HTTPAdapter)
+    assert isinstance(adapter.max_retries, Retry)
+    assert adapter.max_retries.total == Retry().total
+    # Same adapter instance mounted for both http and https
+    assert session.get_adapter("http://example.com") is adapter
 
-# Generated at 2026-10-24 07:20:38.456900
-# Unit test for function build_requests_session
+    # The installed hook should call raise_for_status on the response
+    mock_response = MagicMock()
+    session.hooks["response"][0](mock_response)
+    mock_response.raise_for_status.assert_called_once_with()
 
-# Generated at 2026-10-24 07:20:40.868474
+    # raise_for_status=False -> no hook installed
+    session = module_0.build_requests_session(raise_for_status=False)
+    assert session.hooks["response"] == []
+
+    # retry=False -> no retry adapter mounted (default adapter, no retries)
+    session = module_0.build_requests_session(retry=False)
+    adapter = session.get_adapter("https://example.com")
+    assert isinstance(adapter, HTTPAdapter)
+    assert adapter.max_retries.total == 0
+
+    # retry as int -> Retry configured with that total
+    session = module_0.build_requests_session(retry=5)
+    adapter = session.get_adapter("https://example.com")
+    assert isinstance(adapter.max_retries, Retry)
+    assert adapter.max_retries.total == 5
+
+    # retry as Retry instance -> used as-is
+    custom_retry = Retry(total=3, backoff_factor=0.1)
+    session = module_0.build_requests_session(retry=custom_retry)
+    adapter = session.get_adapter("http://example.com")
+    assert adapter.max_retries is custom_retry
+
+    # Invalid retry type -> ValueError
+    with pytest.raises(ValueError):
+        module_0.build_requests_session(retry="not a valid retry")
+
+# Generated at 2026-11-01 21:52:00.837085
 # Unit test for constructor of class LoggedFunction
+def test_LoggedFunction():
+    """Unit test for constructor of class LoggedFunction."""
+    from unittest.mock import MagicMock
 
-# Generated at 2026-10-24 07:20:43.286126
+    logger = MagicMock()
+
+    # Test constructor sets logger attribute
+    logged_function = LoggedFunction(logger)
+    assert logged_function.logger is logger
+
+    # Test with different logger instances
+    another_logger = MagicMock()
+    another_logged_function = LoggedFunction(another_logger)
+    assert another_logged_function.logger is another_logger
+
+    # Each instance holds its own logger reference
+    assert logged_function.logger is not another_logged_function.logger
+
+# Generated at 2026-11-01 21:52:21.257977
+# Unit test for function format_arg
+def test_format_arg():
+    # Strings are wrapped in single quotes and stripped
+    assert module_0.format_arg("hello") == "'hello'"
+    assert module_0.format_arg("  padded  ") == "'padded'"
+    assert module_0.format_arg("") == "''"
+    assert module_0.format_arg("no trailing space\n") == "'no trailing space'"
+
+    # Non-string values are converted via str()
+    assert module_0.format_arg(42) == "42"
+    assert module_0.format_arg(-7) == "-7"
+    assert module_0.format_arg(3.14) == "3.14"
+    assert module_0.format_arg(None) == "None"
+    assert module_0.format_arg(True) == "True"
+    assert module_0.format_arg([1, 2, 3]) == "[1, 2, 3]"
+    assert module_0.format_arg((1, 2)) == "(1, 2)"
+    assert module_0.format_arg({"key": "value"}) == "{'key': 'value'}"
+
+# Generated at 2026-11-01 21:52:40.875479
 # Unit test for constructor of class LoggedFunction
+def test_LoggedFunction():
+    logger = MagicMock()
+    logged_function = LoggedFunction(logger)
+    assert logged_function.logger is logger
 
-# Generated at 2026-10-24 07:20:45.698795
+# Generated at 2026-11-01 21:53:27.371775
 # Unit test for constructor of class LoggedFunction
+def test_LoggedFunction():from unittest.mock import Mock
 
-# Generated at 2026-10-24 07:20:48.112709
-# Unit test for function build_requests_session
 
-# Generated at 2026-10-24 07:20:50.529208
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:20:52.944587
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:20:55.361313
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:20:57.776291
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:21:00.191982
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:21:02.604567
+# Generated at 2026-11-01 21:54:06.238852
 # Unit test for constructor of class LoggedFunction
+def test_LoggedFunction():
+    logger = "test_logger"
+    logged_function = LoggedFunction(logger)
+    assert logged_function.logger == logger
 
-# Generated at 2026-10-24 07:21:05.017530
-# Unit test for constructor of class LoggedFunction
-
-# Generated at 2026-10-24 07:21:07.448450
-# Unit test for constructor of class LoggedFunction
-
-# Generated at 2026-10-24 07:21:09.849683
+# Generated at 2026-11-01 21:55:00.657535
 # Unit test for method __call__ of class LoggedFunction
+def test_LoggedFunction___call__():
+    from unittest.mock import Mock
 
-# Generated at 2026-10-24 07:21:12.263925
+    logger = Mock()
+    logged_function = LoggedFunction(logger)
+
+    @logged_function
+    def add(a, b=0):
+        """Add two numbers."""
+        return a + b
+
+    # functools.wraps preserves function metadata
+    assert add.__name__ == "add"
+    assert add.__doc__ == "Add two numbers."
+
+    # Return value is passed through unchanged
+    assert add(1, b=2) == 3
+
+    # Both invocation and result are logged
+    assert logger.debug.call_count == 2
+    logger.debug.assert_any_call("add(1, b=2)")
+    logger.debug.assert_any_call("add -> 3")
+
+    # String arguments are wrapped in single quotes
+    logger.reset_mock()
+
+    @logged_function
+    def concat(left, right):
+        return left + right
+
+    assert concat("foo", "bar") == "foobar"
+    logger.debug.assert_any_call("concat('foo', 'bar')")
+    logger.debug.assert_any_call("concat -> foobar")
+
+    # A None result is not logged
+    logger.reset_mock()
+
+    @logged_function
+    def noop():
+        pass
+
+    assert noop() is None
+    assert logger.debug.call_count == 1
+    logger.debug.assert_called_once_with("noop()")
+
+# Generated at 2026-11-01 21:55:47.979311
 # Unit test for method __call__ of class LoggedFunction
+def test_LoggedFunction___call__():
+    logger = MagicMock()
 
-# Generated at 2026-10-24 07:21:14.679060
-# Unit test for method __call__ of class LoggedFunction
+    @LoggedFunction(logger)
+    def add(a, b=0):
+        """Add two numbers."""
+        return a + b
 
-# Generated at 2026-10-24 07:21:17.092096
-# Unit test for method __call__ of class LoggedFunction
+    # Decorated function returns the wrapped function's result
+    result = add(1, b=2)
+    assert result == 3
 
-# Generated at 2026-10-24 07:21:19.507641
-# Unit test for method __call__ of class LoggedFunction
+    # functools.wraps preserves the wrapped function's metadata
+    assert add.__name__ == "add"
+    assert add.__doc__ == "Add two numbers."
 
-# Generated at 2026-10-24 07:21:21.922185
-# Unit test for method __call__ of class LoggedFunction
+    # Arguments logged before the call, result logged after
+    assert logger.debug.call_count == 2
+    logger.debug.assert_any_call("add(1, b=2)")
+    logger.debug.assert_any_call("add -> 3")
 
-# Generated at 2026-10-24 07:21:24.334074
-# Unit test for method __call__ of class LoggedFunction
 
-# Generated at 2026-10-24 07:21:26.749353
-# Unit test for method __call__ of class LoggedFunction
+def test_LoggedFunction___call__string_args_formatted():
+    logger = MagicMock()
 
-# Generated at 2026-10-24 07:21:29.181949
-# Unit test for method __call__ of class LoggedFunction
+    @LoggedFunction(logger)
+    def greet(name):
+        return "hi " + name
 
-# Generated at 2026-10-24 07:21:31.596931
-# Unit test for function build_requests_session
+    result = greet("  bob ")
+    assert result == "hi   bob "
 
-# Generated at 2026-10-24 07:21:34.014794
-# Unit test for function build_requests_session
+    # Strings are stripped and quoted by format_arg
+    logger.debug.assert_any_call("greet('bob')")
+    logger.debug.assert_any_call("greet -> hi   bob ")
 
-# Generated at 2026-10-24 07:21:36.625550
-# Unit test for function build_requests_session
-def test_build_requests_session():session = module_0.build_requests_session()
 
-# Generated at 2026-10-24 07:21:37.949285
+def test_LoggedFunction___call__none_result_not_logged():
+    logger = MagicMock()
+
+    @LoggedFunction(logger)
+    def nothing():
+        pass
+
+    assert nothing() is None
+
+    # None results are not logged, only the call itself
+    logger.debug.assert_called_once_with("nothing()")
+
+
+def test_LoggedFunction___call__positional_and_mixed_args():
+    logger = MagicMock()
+
+    @LoggedFunction(logger)
+    def combine(x, y, sep="-"):
+        return sep.join([str(x), str(y)])
+
+    result = combine(1, 2, sep=":")
+    assert result == "1:2"
+
+    logger.debug.assert_any_call("combine(1, 2, sep=':')")
+    logger.debug.assert_any_call("combine -> 1:2")
+
+# Generated at 2026-11-01 21:56:33.009489
 # Unit test for function build_requests_session
 def test_build_requests_session():
-    # Default: raise_for_status=True, retry=True
+    # Default configuration: raise_for_status hook installed, default Retry mounted
     session = module_0.build_requests_session()
     assert isinstance(session, Session)
-    assert "response" in session.hooks
-    assert session.get_adapter("http://example.com").max_retries.total == Retry().total
+    assert len(session.hooks["response"]) == 1
 
-    # raise_for_status=False -> no hooks installed
+    adapter = session.get_adapter("http://example.com")
+    assert isinstance(adapter, HTTPAdapter)
+    assert isinstance(adapter.max_retries, Retry)
+    assert adapter.max_retries.total == Retry().total
+    # Same adapter mounted for both http and https
+    assert session.get_adapter("https://example.com") is adapter
+
+    # The installed hook invokes raise_for_status on error responses
+    response = requests.Response()
+    response.status_code = 500
+    with pytest.raises(requests.HTTPError):
+        session.hooks["response"][0](response)
+
+    # raise_for_status=False: no hook installed
     session = module_0.build_requests_session(raise_for_status=False)
-    assert session.hooks == {} or "response" not in session.hooks
+    assert session.hooks.get("response") in ([], None)
 
-    # retry=False -> no retry adapter mounted
+    # retry=False: adapters remain default (no retries)
     session = module_0.build_requests_session(retry=False)
-    default_adapter = session.get_adapter("https://example.com")
-    assert default_adapter.max_retries.total == 0
+    adapter = session.get_adapter("http://example.com")
+    assert isinstance(adapter, HTTPAdapter)
+    assert adapter.max_retries.total == 0
 
-    # retry as int
+    # retry as int: Retry configured with given total
     session = module_0.build_requests_session(retry=5)
     adapter = session.get_adapter("https://example.com")
     assert isinstance(adapter.max_retries, Retry)
     assert adapter.max_retries.total == 5
 
-    # retry as Retry instance
-    custom_retry = Retry(total=3, backoff_factor=0.5)
-    session = module_0.build_requests_session(retry=custom_retry)
-    adapter = session.get_adapter("http://example.com")
-    assert adapter.max_retries is custom_retry
+    # retry as Retry instance: instance is used directly
+    retry = Retry(total=3, backoff_factor=0.5)
+    session = module_0.build_requests_session(retry=retry)
+    adapter = session.get_adapter("https://example.com")
+    assert adapter.max_retries is retry
 
-    # retry as invalid type -> ValueError
-    try:
-        module_0.build_requests_session(retry="yes")
-        assert False, "Expected ValueError"
-    except ValueError:
-        pass
+    # Invalid retry type raises ValueError
+    with pytest.raises(ValueError):
+        module_0.build_requests_session(retry="not valid")
 
-# Generated at 2026-10-24 07:21:39.263912
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:21:40.626607
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:21:41.943026
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:21:43.255124
+# Generated at 2026-11-01 21:57:13.161232
 # Unit test for function build_requests_session
 def test_build_requests_session():
-    # Default: raise_for_status=True, retry=True
+    # Default construction returns a configured Session
+    session = module_0.build_requests_session()
+    assert isinstance(session, Session)
+
+    # raise_for_status hook is installed by default and invokes raise_for_status
+    hook_calls = []
+
+    class FakeResponse:
+        def raise_for_status(self):
+            hook_calls.append(True)
+
+    hooks = session.hooks["response"]
+    assert len(hooks) == 1
+    hooks[0](FakeResponse())
+    assert hook_calls == [True]
+
+    # Retry-enabled adapter is mounted on both http and https by default
+    adapter_http = session.get_adapter("http://example.com/")
+    adapter_https = session.get_adapter("https://example.com/")
+    assert isinstance(adapter_http, HTTPAdapter)
+    assert adapter_http is adapter_https
+    assert adapter_http.max_retries.total == Retry().total
+
+    # raise_for_status=False leaves hooks untouched (no raise_for_status hook)
+    session = module_0.build_requests_session(raise_for_status=False)
+    assert len(session.hooks.get("response", [])) == 0
+
+    # retry=False means the default (zero-retry) adapters remain
+    session = module_0.build_requests_session(retry=False)
+    adapter = session.get_adapter("http://example.com/")
+    assert adapter.max_retries.total == 0
+
+    # retry as an int sets the total retry count
+    session = module_0.build_requests_session(retry=5)
+    adapter = session.get_adapter("https://example.com/")
+    assert isinstance(adapter, HTTPAdapter)
+    assert adapter.max_retries.total == 5
+
+    # retry as a Retry instance is passed through unchanged
+    retry = Retry(total=3, backoff_factor=0.5)
+    session = module_0.build_requests_session(retry=retry)
+    adapter = session.get_adapter("http://example.com/")
+    assert adapter.max_retries is retry
+
+    # An invalid retry value raises ValueError
+    try:
+        module_0.build_requests_session(retry="lots")
+        raised = False
+    except ValueError:
+        raised = True
+    assert raised
+
+# Generated at 2026-11-01 21:57:51.520683
+# Unit test for method __call__ of class LoggedFunction
+def test_LoggedFunction___call__():
+    # Setup a mock logger
+    logger = Mock()
+
+    # Create the decorator
+    decorator = LoggedFunction(logger)
+
+    # Decorate a function with positional and keyword arguments
+    @decorator
+    def add(a, b, c=0):
+        """Add numbers."""
+        return a + b + c
+
+    # Verify functools.wraps preserved function metadata
+    assert add.__name__ == "add"
+    assert add.__doc__ == "Add numbers."
+
+    # Call the decorated function
+    result = add(1, " two", c=3.5)
+    assert result == "1 two3.5" or result == 1 + 3.5  # sanity: function executed
+
+    # Verify the arguments were logged before the call
+    first_call = logger.debug.call_args_list[0][0][0]
+    assert "add(1, ' two', c=3.5)" == first_call
+
+    # Verify the result was logged after the call
+    second_call = logger.debug.call_args_list[1][0][0]
+    assert "add -> " in second_call
+
+    # Verify a function returning None does not log a result
+    @LoggedFunction(logger)
+    def returns_none(x):
+        return None
+
+    debug_count_before = logger.debug.call_count
+    assert returns_none(5) is None
+    # Only the argument log call should have occurred, no result log
+    assert logger.debug.call_count == debug_count_before + 1
+    last_call = logger.debug.call_args_list[-1][0][0]
+    assert "returns_none(5)" == last_call
+
+    # Verify string args are quoted and stripped
+    @LoggedFunction(logger)
+    def greet(name):
+        return name
+
+    greet("  bob  ")
+    expected_args_call = logger.debug.call_args_list[-2][0][0]
+    assert "greet('bob')" == expected_args_call
+
+# Generated at 2026-11-01 21:58:42.052829
+# Unit test for function build_requests_session
+def test_build_requests_session():import pytest
+from requests import Session
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+
+from mymodule import build_requests_session  # adjust import as needed
+
+
+def test_build_requests_session_defaults():
+    session = module_0.build_requests_session()
+    assert isinstance(session, Session)
+    # raise_for_status hook installed by default
+    assert "response" in session.hooks
+    assert callable(session.hooks["response"][0])
+    # default retry adapter mounted on http and https
+    adapter = session.get_adapter("http://example.com")
+    assert isinstance(adapter, HTTPAdapter)
+    assert adapter.max_retries.total == Retry().total
+    assert session.get_adapter("https://example.com") is adapter
+
+
+def test_build_requests_session_no_raise_for_status():
+    session = module_0.build_requests_session(raise_for_status=False)
+    assert isinstance(session, Session)
+    assert session.hooks == {}
+
+
+def test_build_requests_session_no_retry():
+    session = module_0.build_requests_session(retry=False)
+    assert isinstance(session, Session)
+    # default adapters mounted, not ours
+    adapter = session.get_adapter("http://example.com")
+    assert isinstance(adapter, HTTPAdapter)
+    assert not adapter.max_retries.total
+
+
+def test_build_requests_session_retry_int():
+    session = module_0.build_requests_session(retry=5)
+    adapter = session.get_adapter("https://example.com")
+    assert isinstance(adapter, HTTPAdapter)
+    assert adapter.max_retries.total == 5
+
+
+def test_build_requests_session_retry_zero_int():
+    session = module_0.build_requests_session(retry=0)
+    adapter = session.get_adapter("http://example.com")
+    assert isinstance(adapter, HTTPAdapter)
+    assert adapter.max_retries.total == 0
+
+
+def test_build_requests_session_retry_instance():
+    retry = Retry(total=3, backoff_factor=0.5)
+    session = module_0.build_requests_session(retry=retry)
+    adapter = session.get_adapter("http://example.com")
+    assert isinstance(adapter, HTTPAdapter)
+    assert adapter.max_retries is retry
+
+
+def test_build_requests_session_invalid_retry_type():
+    with pytest.raises(ValueError):
+        module_0.build_requests_session(retry="invalid")
+
+
+def test_build_requests_session_hook_raises_for_status():
+    session = module_0.build_requests_session()
+    import responses  # optional; fallback to manual test below if unavailable
+
+    responses.add(
+        responses.GET,
+        "http://example.com/fail",
+        status=500,
+    )
+    with pytest.raises(Exception):
+        session.get("http://example.com/fail")
+
+# Generated at 2026-11-01 21:59:29.871390
+# Unit test for method __call__ of class LoggedFunction
+def test_LoggedFunction___call__():
+    logger = Mock()
+    decorator = LoggedFunction(logger)
+
+    @decorator
+    def add(a, b, c=0):
+        """Add numbers."""
+        return a + b + c
+
+    # functools.wraps preserves function metadata
+    assert add.__name__ == "add"
+    assert add.__doc__ == "Add numbers."
+
+    # Return value is passed through unchanged
+    assert add(1, 2, c=3) == 6
+
+    # Input arguments and result are both logged
+    assert logger.debug.call_count == 2
+    logger.debug.assert_any_call("add(1, 2, c=3)")
+    logger.debug.assert_any_call("add -> 6")
+
+
+def test_LoggedFunction___call__string_args_are_quoted_and_stripped():
+    logger = Mock()
+    decorator = LoggedFunction(logger)
+
+    @decorator
+    def greet(name, greeting="Hello"):
+        return f"{greeting} {name}"
+
+    result = greet("  Bob ", greeting="Hi")
+    assert result == "Hi   Bob "  # original (unstripped) value is used in the call
+
+    # Logged strings are stripped and wrapped in single quotes
+    logger.debug.assert_any_call("greet('Bob', greeting='Hi')")
+    logger.debug.assert_any_call("greet -> Hi   Bob ")
+
+
+def test_LoggedFunction___call__none_result_not_logged():
+    logger = Mock()
+    decorator = LoggedFunction(logger)
+
+    @decorator
+    def nothing():
+        pass
+
+    assert nothing() is None
+
+    # Only the input-arguments debug call happens; None result is not logged
+    assert logger.debug.call_count == 1
+    logger.debug.assert_called_once_with("nothing()")
+
+
+def test_LoggedFunction___call__no_args():
+    logger = Mock()
+    decorator = LoggedFunction(logger)
+
+    @decorator
+    def constant():
+        return 42
+
+    assert constant() == 42
+    logger.debug.assert_any_call("constant()")
+    logger.debug.assert_any_call("constant -> 42")
+    assert logger.debug.call_count == 2
+
+# Generated at 2026-11-01 22:00:09.709122
+# Unit test for function build_requests_session
+def test_build_requests_session():
+    # Default arguments: raise_for_status=True, retry=True
     session = module_0.build_requests_session()
     assert isinstance(session, Session)
     assert "response" in session.hooks
-    assert session.get_adapter("http://example.com").max_retries.total == Retry().total
+    assert len(session.hooks["response"]) == 1
 
-    # raise_for_status=False -> no hooks installed
-    session = module_0.build_requests_session(raise_for_status=False)
-    assert session.hooks == {} or "response" not in session.hooks
-
-    # retry=False -> no retry adapter mounted
-    session = module_0.build_requests_session(retry=False)
-    default_adapter = session.get_adapter("https://example.com")
-    assert default_adapter.max_retries.total == 0
-
-    # retry as int
-    session = module_0.build_requests_session(retry=5)
-    adapter = session.get_adapter("https://example.com")
-    assert isinstance(adapter.max_retries, Retry)
-    assert adapter.max_retries.total == 5
-
-    # retry as Retry instance
-    custom_retry = Retry(total=3, backoff_factor=0.5)
-    session = module_0.build_requests_session(retry=custom_retry)
+    # Mounted adapter should use a default Retry config (total=10)
     adapter = session.get_adapter("http://example.com")
-    assert adapter.max_retries is custom_retry
+    assert isinstance(adapter, HTTPAdapter)
+    assert isinstance(adapter.max_retries, Retry)
+    assert adapter.max_retries.total == 10
 
-    # retry as invalid type -> ValueError
-    try:
-        module_0.build_requests_session(retry="yes")
-        assert False, "Expected ValueError"
-    except ValueError:
-        pass
+    # The installed hook should invoke raise_for_status on the response
+    mock_response = mock.Mock()
+    session.hooks["response"][0](mock_response)
+    mock_response.raise_for_status.assert_called_once()
 
-# Generated at 2026-10-24 07:21:44.561791
-# Unit test for function build_requests_session
-def test_build_requests_session():
-    # Default: raise_for_status=True, retry=True
-    session = module_0.build_requests_session()
+    # raise_for_status=False: no hook installed
+    session = module_0.build_requests_session(raise_for_status=False)
     assert isinstance(session, Session)
-    assert "response" in session.hooks
-    assert session.get_adapter("http://example.com").max_retries.total == Retry().total
+    assert session.hooks == {"response": []}
 
-    # raise_for_status=False -> no hooks installed
-    session = module_0.build_requests_session(raise_for_status=False)
-    assert session.hooks == {} or "response" not in session.hooks
-
-    # retry=False -> no retry adapter mounted
+    # retry=False: no retry adapter mounted (default max_retries is 0)
     session = module_0.build_requests_session(retry=False)
-    default_adapter = session.get_adapter("https://example.com")
-    assert default_adapter.max_retries.total == 0
-
-    # retry as int
-    session = module_0.build_requests_session(retry=5)
-    adapter = session.get_adapter("https://example.com")
-    assert isinstance(adapter.max_retries, Retry)
-    assert adapter.max_retries.total == 5
-
-    # retry as Retry instance
-    custom_retry = Retry(total=3, backoff_factor=0.5)
-    session = module_0.build_requests_session(retry=custom_retry)
-    adapter = session.get_adapter("http://example.com")
-    assert adapter.max_retries is custom_retry
-
-    # retry as invalid type -> ValueError
-    try:
-        module_0.build_requests_session(retry="yes")
-        assert False, "Expected ValueError"
-    except ValueError:
-        pass
-
-# Generated at 2026-10-24 07:21:45.951884
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:21:47.262631
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:21:48.611798
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:21:49.916084
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:21:51.255057
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:21:52.581588
-# Unit test for function build_requests_session
-def test_build_requests_session():
-    # Default: raise_for_status=True, retry=True
-    session = module_0.build_requests_session()
     assert isinstance(session, Session)
-    assert "response" in session.hooks
-    assert session.get_adapter("http://example.com").max_retries.total == Retry().total
-
-    # raise_for_status=False -> no hooks installed
-    session = module_0.build_requests_session(raise_for_status=False)
-    assert session.hooks == {} or "response" not in session.hooks
-
-    # retry=False -> no retry adapter mounted
-    session = module_0.build_requests_session(retry=False)
-    default_adapter = session.get_adapter("https://example.com")
-    assert default_adapter.max_retries.total == 0
-
-    # retry as int
-    session = module_0.build_requests_session(retry=5)
     adapter = session.get_adapter("https://example.com")
+    assert isinstance(adapter, HTTPAdapter)
+    assert adapter.max_retries.total == 0
+
+    # retry as int: Retry configured with the given total
+    session = module_0.build_requests_session(retry=5)
+    adapter = session.get_adapter("http://example.com")
     assert isinstance(adapter.max_retries, Retry)
     assert adapter.max_retries.total == 5
 
-    # retry as Retry instance
-    custom_retry = Retry(total=3, backoff_factor=0.5)
-    session = module_0.build_requests_session(retry=custom_retry)
-    adapter = session.get_adapter("http://example.com")
-    assert adapter.max_retries is custom_retry
-
-    # retry as invalid type -> ValueError
-    try:
-        module_0.build_requests_session(retry="yes")
-        assert False, "Expected ValueError"
-    except ValueError:
-        pass
-
-# Generated at 2026-10-24 07:21:54.693176
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:21:56.001827
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:21:57.375725
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:21:58.731555
-# Unit test for function build_requests_session
-def test_build_requests_session():
-    # Default: raise_for_status=True, retry=True
-    session = module_0.build_requests_session()
-    assert isinstance(session, Session)
-    assert "response" in session.hooks
-    assert session.get_adapter("http://example.com").max_retries.total == Retry().total
-
-    # raise_for_status=False -> no hooks installed
-    session = module_0.build_requests_session(raise_for_status=False)
-    assert session.hooks == {} or "response" not in session.hooks
-
-    # retry=False -> no retry adapter mounted
-    session = module_0.build_requests_session(retry=False)
-    default_adapter = session.get_adapter("https://example.com")
-    assert default_adapter.max_retries.total == 0
-
-    # retry as int
-    session = module_0.build_requests_session(retry=5)
+    # retry as Retry instance: instance is passed through unchanged
+    retry_instance = Retry(total=3, backoff_factor=0.5)
+    session = module_0.build_requests_session(retry=retry_instance)
     adapter = session.get_adapter("https://example.com")
-    assert isinstance(adapter.max_retries, Retry)
-    assert adapter.max_retries.total == 5
+    assert adapter.max_retries is retry_instance
 
-    # retry as Retry instance
-    custom_retry = Retry(total=3, backoff_factor=0.5)
-    session = module_0.build_requests_session(retry=custom_retry)
-    adapter = session.get_adapter("http://example.com")
-    assert adapter.max_retries is custom_retry
+    # Invalid retry type should raise ValueError
+    with pytest.raises(ValueError):
+        module_0.build_requests_session(retry="invalid")
 
-    # retry as invalid type -> ValueError
-    try:
-        module_0.build_requests_session(retry="yes")
-        assert False, "Expected ValueError"
-    except ValueError:
+    with pytest.raises(ValueError):
+        module_0.build_requests_session(retry=1.5)
+
+# Generated at 2026-11-01 22:00:56.118235
+# Unit test for method __call__ of class LoggedFunction
+def test_LoggedFunction___call__():
+    logger = MagicMock()
+
+    @LoggedFunction(logger)
+    def add(a, b=0):
+        """Add two numbers."""
+        return a + b
+
+    result = add(1, b=2)
+
+    # Result is returned unchanged
+    assert result == 3
+
+    # Function name and arguments are logged before the call
+    logger.debug.assert_any_call("add(1, b=2)")
+
+    # Return value is logged after the call
+    logger.debug.assert_any_call("add -> 3")
+
+    # Exactly two debug calls were made
+    assert logger.debug.call_count == 2
+
+    # functools.wraps preserves function metadata
+    assert add.__name__ == "add"
+    assert add.__doc__ == "Add two numbers."
+
+
+def test_LoggedFunction___call__string_args():
+    logger = MagicMock()
+
+    @LoggedFunction(logger)
+    def greet(name):
+        return "hello " + name
+
+    assert greet("world") == "hello world"
+    # Strings are quoted in the log output
+    logger.debug.assert_any_call("greet('world')")
+    logger.debug.assert_any_call("greet -> hello world")
+
+
+def test_LoggedFunction___call__none_result_not_logged():
+    logger = MagicMock()
+
+    @LoggedFunction(logger)
+    def do_nothing():
         pass
 
-# Generated at 2026-10-24 07:22:01.243313
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:22:03.796706
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:22:06.433298
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:22:08.849131
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:22:11.266830
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:22:13.890633
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:22:16.309170
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:22:18.724831
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:22:21.138178
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:22:23.555891
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:22:25.968880
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:22:28.390043
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:22:30.803898
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:22:33.216961
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:22:35.635167
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:22:38.045861
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:22:40.457880
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:22:42.869845
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:22:45.282238
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:23:16.948297
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():from unittest import mock
-
-
-# Generated at 2026-10-24 07:23:19.363534
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:23:21.775394
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:23:24.190166
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:23:26.608274
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:23:29.023271
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:23:31.439902
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:23:33.852389
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:23:36.268138
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:23:38.683243
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:23:41.266354
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:23:43.677388
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:23:46.091173
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:23:48.505054
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:23:50.923381
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:23:53.336501
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:23:55.749822
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:23:58.164697
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:24:00.580683
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:24:02.994920
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:24:05.407951
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:24:07.823428
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:24:10.237198
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:24:12.654415
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:24:15.068569
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:24:17.482991
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:24:19.896539
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:24:22.312412
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:24:24.730920
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:24:27.141906
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:24:29.555984
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:24:31.970077
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:24:34.387228
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:24:36.800803
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:24:39.214290
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:24:41.628604
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:24:44.045110
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:24:45.419289
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:24:46.748034
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:24:48.067010
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:24:49.398002
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:24:50.730794
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:24:52.057114
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:24:53.361945
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:24:54.667372
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:24:55.981658
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:24:57.283137
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:24:58.601648
-# Unit test for function build_requests_session
-def test_build_requests_session():
-    # Default: raise_for_status=True, retry=True
-    session = module_0.build_requests_session()
-    assert isinstance(session, Session)
-    assert "response" in session.hooks
-    assert session.get_adapter("http://example.com").max_retries.total == Retry().total
-
-    # raise_for_status=False -> no hooks installed
-    session = module_0.build_requests_session(raise_for_status=False)
-    assert session.hooks == {} or "response" not in session.hooks
-
-    # retry=False -> no retry adapter mounted
-    session = module_0.build_requests_session(retry=False)
-    default_adapter = session.get_adapter("https://example.com")
-    assert default_adapter.max_retries.total == 0
-
-    # retry as int
-    session = module_0.build_requests_session(retry=5)
-    adapter = session.get_adapter("https://example.com")
-    assert isinstance(adapter.max_retries, Retry)
-    assert adapter.max_retries.total == 5
-
-    # retry as Retry instance
-    custom_retry = Retry(total=3, backoff_factor=0.5)
-    session = module_0.build_requests_session(retry=custom_retry)
-    adapter = session.get_adapter("http://example.com")
-    assert adapter.max_retries is custom_retry
-
-    # retry as invalid type -> ValueError
-    try:
-        module_0.build_requests_session(retry="yes")
-        assert False, "Expected ValueError"
-    except ValueError:
-        pass
-
-# Generated at 2026-10-24 07:25:00.502247
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:25:01.836334
-# Unit test for function build_requests_session
-def test_build_requests_session():
-    # Default: raise_for_status=True, retry=True
-    session = module_0.build_requests_session()
-    assert isinstance(session, Session)
-    assert "response" in session.hooks
-    assert session.get_adapter("http://example.com").max_retries.total == Retry().total
-
-    # raise_for_status=False -> no hooks installed
-    session = module_0.build_requests_session(raise_for_status=False)
-    assert session.hooks == {} or "response" not in session.hooks
-
-    # retry=False -> no retry adapter mounted
-    session = module_0.build_requests_session(retry=False)
-    default_adapter = session.get_adapter("https://example.com")
-    assert default_adapter.max_retries.total == 0
-
-    # retry as int
-    session = module_0.build_requests_session(retry=5)
-    adapter = session.get_adapter("https://example.com")
-    assert isinstance(adapter.max_retries, Retry)
-    assert adapter.max_retries.total == 5
-
-    # retry as Retry instance
-    custom_retry = Retry(total=3, backoff_factor=0.5)
-    session = module_0.build_requests_session(retry=custom_retry)
-    adapter = session.get_adapter("http://example.com")
-    assert adapter.max_retries is custom_retry
-
-    # retry as invalid type -> ValueError
-    try:
-        module_0.build_requests_session(retry="yes")
-        assert False, "Expected ValueError"
-    except ValueError:
-        pass
-
-# Generated at 2026-10-24 07:25:03.148239
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:25:05.655839
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:25:08.067639
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:25:10.484590
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:25:12.901950
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:25:15.425065
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:25:17.842079
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:25:20.259303
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:25:22.676389
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:25:25.094506
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:25:27.504659
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:25:29.920534
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:25:32.338227
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:25:34.752251
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:25:37.167646
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:25:39.583134
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:25:42.000293
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:25:44.417765
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:25:46.832254
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:25:49.250814
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:25:51.666157
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:25:54.082636
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:25:58.621828
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:26:01.265530
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():import logging
-
-
-# Generated at 2026-10-24 07:26:02.548927
-# Unit test for function build_requests_session
-def test_build_requests_session():
-    # Default: raise_for_status=True, retry=True
-    session = module_0.build_requests_session()
-    assert isinstance(session, Session)
-    assert "response" in session.hooks
-    assert session.get_adapter("http://example.com").max_retries.total == Retry().total
-
-    # raise_for_status=False -> no hooks installed
-    session = module_0.build_requests_session(raise_for_status=False)
-    assert session.hooks == {} or "response" not in session.hooks
-
-    # retry=False -> no retry adapter mounted
-    session = module_0.build_requests_session(retry=False)
-    default_adapter = session.get_adapter("https://example.com")
-    assert default_adapter.max_retries.total == 0
-
-    # retry as int
-    session = module_0.build_requests_session(retry=5)
-    adapter = session.get_adapter("https://example.com")
-    assert isinstance(adapter.max_retries, Retry)
-    assert adapter.max_retries.total == 5
-
-    # retry as Retry instance
-    custom_retry = Retry(total=3, backoff_factor=0.5)
-    session = module_0.build_requests_session(retry=custom_retry)
-    adapter = session.get_adapter("http://example.com")
-    assert adapter.max_retries is custom_retry
-
-    # retry as invalid type -> ValueError
-    try:
-        module_0.build_requests_session(retry="yes")
-        assert False, "Expected ValueError"
-    except ValueError:
-        pass
-
-# Generated at 2026-10-24 07:26:03.878928
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:26:05.207306
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:26:06.557334
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:26:07.826548
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:26:09.224939
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:26:10.537356
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:26:11.857112
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:26:13.179510
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:26:18.276594
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:26:19.581999
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:26:22.099184
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:26:24.514822
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:26:26.927715
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:26:29.344472
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:26:31.759749
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:26:34.174911
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:26:36.590932
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:26:39.003907
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:26:41.422174
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:26:43.838954
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:26:46.257227
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:26:48.676129
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:26:51.086485
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:26:53.501104
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:26:55.915586
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:26:58.331349
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:27:00.745107
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:27:03.159122
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:27:05.573360
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:27:08.166877
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():import logging
-
-
-# Generated at 2026-10-24 07:27:09.491484
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:27:17.166367
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:27:18.490757
-# Unit test for function build_requests_session
-def test_build_requests_session():
-    # Default: raise_for_status=True, retry=True
-    session = module_0.build_requests_session()
-    assert isinstance(session, Session)
-    assert "response" in session.hooks
-    assert session.get_adapter("http://example.com").max_retries.total == Retry().total
-
-    # raise_for_status=False -> no hooks installed
-    session = module_0.build_requests_session(raise_for_status=False)
-    assert session.hooks == {} or "response" not in session.hooks
-
-    # retry=False -> no retry adapter mounted
-    session = module_0.build_requests_session(retry=False)
-    default_adapter = session.get_adapter("https://example.com")
-    assert default_adapter.max_retries.total == 0
-
-    # retry as int
-    session = module_0.build_requests_session(retry=5)
-    adapter = session.get_adapter("https://example.com")
-    assert isinstance(adapter.max_retries, Retry)
-    assert adapter.max_retries.total == 5
-
-    # retry as Retry instance
-    custom_retry = Retry(total=3, backoff_factor=0.5)
-    session = module_0.build_requests_session(retry=custom_retry)
-    adapter = session.get_adapter("http://example.com")
-    assert adapter.max_retries is custom_retry
-
-    # retry as invalid type -> ValueError
-    try:
-        module_0.build_requests_session(retry="yes")
-        assert False, "Expected ValueError"
-    except ValueError:
-        pass
-
-# Generated at 2026-10-24 07:27:19.795271
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:27:21.106200
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:27:22.433164
-# Unit test for function build_requests_session
-def test_build_requests_session():
-    # Default: raise_for_status=True, retry=True
-    session = module_0.build_requests_session()
-    assert isinstance(session, Session)
-    assert "response" in session.hooks
-    assert session.get_adapter("http://example.com").max_retries.total == Retry().total
-
-    # raise_for_status=False -> no hooks installed
-    session = module_0.build_requests_session(raise_for_status=False)
-    assert session.hooks == {} or "response" not in session.hooks
-
-    # retry=False -> no retry adapter mounted
-    session = module_0.build_requests_session(retry=False)
-    default_adapter = session.get_adapter("https://example.com")
-    assert default_adapter.max_retries.total == 0
-
-    # retry as int
-    session = module_0.build_requests_session(retry=5)
-    adapter = session.get_adapter("https://example.com")
-    assert isinstance(adapter.max_retries, Retry)
-    assert adapter.max_retries.total == 5
-
-    # retry as Retry instance
-    custom_retry = Retry(total=3, backoff_factor=0.5)
-    session = module_0.build_requests_session(retry=custom_retry)
-    adapter = session.get_adapter("http://example.com")
-    assert adapter.max_retries is custom_retry
-
-    # retry as invalid type -> ValueError
-    try:
-        module_0.build_requests_session(retry="yes")
-        assert False, "Expected ValueError"
-    except ValueError:
-        pass
-
-# Generated at 2026-10-24 07:27:23.783829
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:27:25.104069
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:27:26.423399
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:27:27.732734
-# Unit test for function build_requests_session
-def test_build_requests_session():
-    # Default: raise_for_status=True, retry=True
-    session = module_0.build_requests_session()
-    assert isinstance(session, Session)
-    assert "response" in session.hooks
-    assert session.get_adapter("http://example.com").max_retries.total == Retry().total
-
-    # raise_for_status=False -> no hooks installed
-    session = module_0.build_requests_session(raise_for_status=False)
-    assert session.hooks == {} or "response" not in session.hooks
-
-    # retry=False -> no retry adapter mounted
-    session = module_0.build_requests_session(retry=False)
-    default_adapter = session.get_adapter("https://example.com")
-    assert default_adapter.max_retries.total == 0
-
-    # retry as int
-    session = module_0.build_requests_session(retry=5)
-    adapter = session.get_adapter("https://example.com")
-    assert isinstance(adapter.max_retries, Retry)
-    assert adapter.max_retries.total == 5
-
-    # retry as Retry instance
-    custom_retry = Retry(total=3, backoff_factor=0.5)
-    session = module_0.build_requests_session(retry=custom_retry)
-    adapter = session.get_adapter("http://example.com")
-    assert adapter.max_retries is custom_retry
-
-    # retry as invalid type -> ValueError
-    try:
-        module_0.build_requests_session(retry="yes")
-        assert False, "Expected ValueError"
-    except ValueError:
-        pass
-
-# Generated at 2026-10-24 07:27:29.059064
-# Unit test for method __call__ of class LoggedFunction
-def test_LoggedFunction___call__():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def add(a, b, c=0):
-        return a + b + c
-
-    result = add(1, 2, c=3)
-
-    # return value passes through unchanged
-    assert result == 6
-
-    # one debug call for the call, one for the result
-    assert logger.debug.call_count == 2
-    logger.debug.assert_any_call("add(1, 2, c=3)")
-    logger.debug.assert_any_call("add -> 6")
-
-    # functools.wraps preserves metadata
-    assert add.__name__ == "add"
-
-
-def test_LoggedFunction___call___strips_strings_and_skips_none_result():
-    logger = MagicMock()
-    logged = LoggedFunction(logger)
-
-    @logged
-    def noop(x):
-        return None
-
-    assert noop("  hi  ") is None
-
-    # strings are stripped by format_arg; None result is not logged
-    logger.debug.assert_called_once_with("noop('hi')")
-
-# Generated at 2026-10-24 07:27:52.087762
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:27:54.509627
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:27:56.927815
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:27:59.347386
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:01.768411
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:04.190445
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:07.189642
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:09.618327
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:12.037564
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:14.452948
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:16.864532
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:19.275313
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:21.688284
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:24.104824
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:26.517136
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:28.935980
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:28:31.350065
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:28:33.765820
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:28:36.184519
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:38.601624
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:41.018031
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:43.434955
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:45.854106
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:48.274671
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:50.691135
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:53.107222
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:55.530167
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:28:57.937105
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:29:00.353727
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:29:02.769979
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:29:37.061038
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:29:39.475826
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:29:41.891403
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:29:44.303870
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:29:46.715511
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:29:49.130693
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:29:51.546497
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:29:53.961983
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:29:56.374928
-# Unit test for function build_requests_session
-
-# Generated at 2026-10-24 07:29:58.789432
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:30:01.202515
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:30:03.621274
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:30:06.031776
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:30:08.445697
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:30:10.862184
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:30:13.277449
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:30:15.693672
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:30:18.108552
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:30:20.522765
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:30:22.937999
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:30:25.351494
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:30:27.805780
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:30:30.181601
-# Unit test for method __call__ of class LoggedFunction
-
-# Generated at 2026-10-24 07:30:32.595522
-# Unit test for method __call__ of class LoggedFunction
+    assert do_nothing() is None
+    # Only the invocation is logged; None results are not logged
+    logger.debug.assert_called_once_with("do_nothing()")

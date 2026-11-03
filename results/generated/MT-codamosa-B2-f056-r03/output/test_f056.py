@@ -14,41 +14,30 @@ def test_case_0():
     str_3 = '<><>'
     var_3 = module_0.correct_bracketing(str_3)
     assert var_3 is True
-    str_4 = '<<><>>'
+    str_4 = '<<<>>>'
     var_4 = module_0.correct_bracketing(str_4)
     assert var_4 is True
-    str_5 = '<'
-    int_0 = 10
-    var_5 = str_5 * int_0
+    str_5 = '<<><>>'
+    var_5 = module_0.correct_bracketing(str_5)
+    assert var_5 is True
     str_6 = '>'
-    var_6 = str_6 * int_0
-    var_7 = var_5 + var_6
-    var_8 = module_0.correct_bracketing(var_7)
-    assert var_8 is True
-    var_9 = module_0.correct_bracketing(str_5)
+    var_6 = module_0.correct_bracketing(str_6)
+    assert var_6 is False
+    str_7 = '><'
+    var_7 = module_0.correct_bracketing(str_7)
+    assert var_7 is False
+    str_8 = '<'
+    var_8 = module_0.correct_bracketing(str_8)
+    assert var_8 is False
+    str_9 = '<<'
+    var_9 = module_0.correct_bracketing(str_9)
     assert var_9 is False
-    str_7 = '<<>'
-    var_10 = module_0.correct_bracketing(str_7)
-    assert var_10 is False
-    str_8 = '<<<>>>><'
-    var_11 = module_0.correct_bracketing(str_8)
-    assert var_11 is False
-    var_12 = module_0.correct_bracketing(str_6)
-    assert var_12 is False
-    str_9 = '><'
-    var_13 = module_0.correct_bracketing(str_9)
-    assert var_13 is False
     str_10 = '<>>'
-    var_14 = module_0.correct_bracketing(str_10)
-    assert var_14 is False
-    str_11 = '<<><>>>'
-    var_15 = module_0.correct_bracketing(str_11)
-    assert var_15 is False
-    str_12 = '<><>>'
-    var_16 = module_0.correct_bracketing(str_12)
-    assert var_16 is False
+    var_10 = module_0.correct_bracketing(str_10)
+    assert var_10 is False
+    str_11 = '<<>>><'
+    var_11 = module_0.correct_bracketing(str_11)
+    assert var_11 is False
 
 def test_case_1():
-    str_0 = ''
-    var_0 = module_0.correct_bracketing(str_0)
-    assert var_0 is True
+    pass

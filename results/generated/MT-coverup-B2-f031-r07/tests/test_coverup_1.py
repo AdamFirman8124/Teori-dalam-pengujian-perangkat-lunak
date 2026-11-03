@@ -7,25 +7,20 @@ import pytest
 from f031 import is_prime
 
 
-@pytest.mark.parametrize("n", [-10, -1, 0, 1])
-def test_is_prime_below_two_returns_false(n):
-    result = is_prime(n)
-    assert result is False
-
-
-@pytest.mark.parametrize("n", [4, 6, 9, 15, 25, 49, 100])
-def test_is_prime_composite_returns_false(n):
-    result = is_prime(n)
-    assert result is False
+@pytest.mark.parametrize("n", [0, 1, -1, -17])
+def test_is_prime_numbers_below_two_are_not_prime(n):
+    """Covers lines 3-4: the 'n < 2' branch and its early return."""
+    assert is_prime(n) is False
 
 
 @pytest.mark.parametrize("n", [2, 3, 5, 7, 11, 13, 97])
-def test_is_prime_prime_returns_true(n):
-    result = is_prime(n)
-    assert result is True
+def test_is_prime_prime_numbers_are_prime(n):
+    """Covers lines 5 and 8: loop entry (including empty ranges for 2 and 3)
+    and the final 'return True'."""
+    assert is_prime(n) is True
 
 
-def test_is_prime_returns_bool_type():
-    assert isinstance(is_prime(7), bool)
-    assert isinstance(is_prime(8), bool)
-    assert isinstance(is_prime(1), bool)
+@pytest.mark.parametrize("n", [4, 6, 9, 15, 25, 100])
+def test_is_prime_composite_numbers_are_not_prime(n):
+    """Covers lines 5-7: loop body, the divisibility check, and 'return False'."""
+    assert is_prime(n) is False

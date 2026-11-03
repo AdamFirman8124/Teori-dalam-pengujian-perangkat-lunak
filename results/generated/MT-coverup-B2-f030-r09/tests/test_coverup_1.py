@@ -2,23 +2,21 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
-import pytest
-
 from f030 import get_positive
 
 
-def test_get_positive_filters_and_preserves_order():
-    result = get_positive([-1, 2, -4, 5, 6])
-    assert result == [2, 5, 6]
+def test_get_positive_filters_positive_values():
+    """Covers line 3 and both branches of the comprehension condition:
+    elements > 0 (kept) and elements <= 0 (filtered out)."""
+    result = get_positive([1, -2, 3, 0, 5, -7])
+    assert result == [1, 3, 5]
 
 
 def test_get_positive_empty_list():
+    """Covers line 3 with an empty input list (loop body never runs)."""
     assert get_positive([]) == []
 
 
-def test_get_positive_all_negative():
-    assert get_positive([-1, -2, -3]) == []
-
-
-def test_get_positive_zero_excluded():
-    assert get_positive([0, 1, -0.0, 0.5]) == [1, 0.5]
+def test_get_positive_all_non_positive():
+    """Covers line 3 where every element takes the false branch."""
+    assert get_positive([-1, 0, -3.5]) == []

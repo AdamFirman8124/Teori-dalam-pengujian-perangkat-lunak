@@ -2,23 +2,59 @@
 import f054 as module_0
 
 def test_case_0():
-    str_0 = 'eabcdzzzz'
-    str_1 = 'zzzzzabcde'
+    pass
+
+def test_case_1():
+    str_0 = 'abc'
+    str_1 = 'cba'
     var_0 = module_0.same_chars(str_0, str_1)
     assert var_0 is True
-    str_2 = 'abc'
-    str_3 = 'ab'
+    str_2 = 'eabcdzzzz'
+    str_3 = 'dddzzzzzzzddeddabc'
     var_1 = module_0.same_chars(str_2, str_3)
-    assert var_1 is False
-    str_4 = 'abd'
-    var_2 = module_0.same_chars(str_2, str_4)
+    assert var_1 is True
+    str_4 = 'abcd'
+    str_5 = 'adc'
+    var_2 = module_0.same_chars(str_4, str_5)
     assert var_2 is False
-    str_5 = 'hello'
-    var_3 = module_0.same_chars(str_5, str_5)
-    assert var_3 is True
-    str_6 = 'ABC'
-    var_4 = module_0.same_chars(str_2, str_6)
-    assert var_4 is False
-    str_7 = ''
-    var_5 = module_0.same_chars(str_7, str_7)
+    str_6 = 'adcde'
+    var_3 = module_0.same_chars(str_4, str_6)
+    assert var_3 is False
+    str_7 = 'aabbcc'
+    var_4 = module_0.same_chars(str_7, str_0)
+    assert var_4 is True
+    str_8 = 'aaa'
+    str_9 = 'a'
+    var_5 = module_0.same_chars(str_8, str_9)
     assert var_5 is True
+    str_10 = 'hello'
+    var_6 = module_0.same_chars(str_10, str_10)
+    assert var_6 is True
+    str_11 = ''
+    var_7 = module_0.same_chars(str_11, str_11)
+    assert var_7 is True
+    var_8 = module_0.same_chars(str_11, str_9)
+    assert var_8 is False
+    var_9 = module_0.same_chars(str_9, str_11)
+    assert var_9 is False
+    str_12 = 'x'
+    var_10 = module_0.same_chars(str_12, str_12)
+    assert var_10 is True
+    str_13 = 'y'
+    var_11 = module_0.same_chars(str_12, str_13)
+    assert var_11 is False
+    str_14 = 'ABC'
+    var_12 = module_0.same_chars(str_0, str_14)
+    assert var_12 is False
+    str_15 = 'a1!'
+    str_16 = '!1a'
+    var_13 = module_0.same_chars(str_15, str_16)
+    assert var_13 is True
+    str_17 = '123'
+    str_18 = '321'
+    var_14 = module_0.same_chars(str_17, str_18)
+    assert var_14 is True
+    str_19 = 'python'
+    str_20 = 'typhon'
+    var_15 = module_0.same_chars(str_19, str_20)
+    assert var_15 is True

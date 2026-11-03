@@ -5,15 +5,34 @@ def test_case_0():
     int_0 = 1
     var_0 = module_0.even_odd_palindrome(int_0)
     assert var_0 == (0, 1)
-    int_1 = 9
+
+def test_case_1():
+    int_0 = 1
+    var_0 = module_0.even_odd_palindrome(int_0)
+    assert var_0 == (0, 1)
+    int_1 = 2
     var_1 = module_0.even_odd_palindrome(int_1)
-    assert var_1 == (4, 5)
-    int_2 = 12
+    assert var_1 == (1, 1)
+    int_2 = 3
     var_2 = module_0.even_odd_palindrome(int_2)
-    assert var_2 == (4, 6)
-    int_3 = 100
+    assert var_2 == (1, 2)
+    int_3 = 5
     var_3 = module_0.even_odd_palindrome(int_3)
-    assert var_3 == (8, 10)
-    int_4 = 0
+    assert var_3 == (2, 3)
+    int_4 = 9
     var_4 = module_0.even_odd_palindrome(int_4)
-    assert var_4 == (0, 0)
+    assert var_4 == (4, 5)
+    int_5 = 12
+    var_5 = module_0.even_odd_palindrome(int_5)
+    assert var_5 == (4, 6)
+    int_6 = 100
+    var_6 = module_0.even_odd_palindrome(int_6)
+    assert var_6 == (8, 10)
+    int_7 = 0
+    var_7 = module_0.even_odd_palindrome(int_7)
+    assert var_7 == (0, 0)
+    int_8 = 50
+    var_8 = module_0.even_odd_palindrome(int_8)
+    assert var_8 == (6, 7)
+    var_9 = len(var_8)
+    var_10 = var_9 == int_1

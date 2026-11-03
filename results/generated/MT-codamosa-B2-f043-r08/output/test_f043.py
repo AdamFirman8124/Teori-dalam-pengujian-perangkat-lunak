@@ -3,8 +3,60 @@ import f043 as module_0
 
 def test_case_0():
     int_0 = 1
-    int_1 = 2
-    int_2 = -1
-    int_3 = [int_0, int_1, int_2]
-    var_0 = module_0.pairs_sum_to_zero(int_3)
-    assert var_0 is True
+    int_1 = 3
+    int_2 = 5
+    int_3 = 0
+    int_4 = [int_0, int_1, int_2, int_3]
+    var_0 = module_0.pairs_sum_to_zero(int_4)
+    assert var_0 is False
+    int_5 = -2
+    int_6 = [int_0, int_1, int_5, int_0]
+    var_1 = module_0.pairs_sum_to_zero(int_6)
+    assert var_1 is False
+    int_7 = 2
+    int_8 = 7
+    int_9 = [int_0, int_7, int_1, int_8]
+    var_2 = module_0.pairs_sum_to_zero(int_9)
+    assert var_2 is False
+    int_10 = 4
+    int_11 = -5
+    int_12 = [int_7, int_10, int_11, int_1, int_2, int_8]
+    var_3 = module_0.pairs_sum_to_zero(int_12)
+    assert var_3 is True
+    int_13 = -1
+    int_14 = [int_0, int_13, int_7]
+    var_4 = module_0.pairs_sum_to_zero(int_14)
+    assert var_4 is True
+    int_15 = -5
+    int_16 = [int_2, int_15]
+    var_5 = module_0.pairs_sum_to_zero(int_16)
+    assert var_5 is True
+    int_17 = -3
+    int_18 = [int_17, int_0, int_7, int_1]
+    var_6 = module_0.pairs_sum_to_zero(int_18)
+    assert var_6 is True
+    var_7 = []
+    var_8 = module_0.pairs_sum_to_zero(var_7)
+    assert var_8 is False
+    int_19 = [int_0]
+    var_9 = module_0.pairs_sum_to_zero(int_19)
+    assert var_9 is False
+    int_20 = [int_3, int_3]
+    var_10 = module_0.pairs_sum_to_zero(int_20)
+    assert var_10 is True
+    float_0 = 1.5
+    float_1 = -1.5
+    float_2 = [float_0, float_1]
+    var_11 = module_0.pairs_sum_to_zero(float_2)
+    assert var_11 is True
+    float_3 = [float_0, float_0]
+    var_12 = module_0.pairs_sum_to_zero(float_3)
+    assert var_12 is False
+    int_21 = -1
+    int_22 = -2
+    int_23 = -3
+    int_24 = [int_21, int_22, int_23]
+    var_13 = module_0.pairs_sum_to_zero(int_24)
+    assert var_13 is False
+    str_0 = 'All test_pairs_sum_to_zero tests passed!'
+    var_14 = print(str_0)

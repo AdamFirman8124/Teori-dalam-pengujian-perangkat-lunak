@@ -4,8 +4,68 @@ import f160 as module_0
 def test_case_0():
     str_0 = '+'
     str_1 = [str_0]
-    int_0 = 2
-    int_1 = 3
+    int_0 = 3
+    int_1 = 5
     int_2 = [int_0, int_1]
     var_0 = module_0.do_algebra(str_1, int_2)
-    assert var_0 == 5
+    assert var_0 == 8
+    str_2 = '-'
+    str_3 = [str_2]
+    int_3 = 10
+    int_4 = 4
+    int_5 = [int_3, int_4]
+    var_1 = module_0.do_algebra(str_3, int_5)
+    assert var_1 == 6
+    str_4 = '*'
+    str_5 = [str_4]
+    int_6 = 6
+    int_7 = 7
+    int_8 = [int_6, int_7]
+    var_2 = module_0.do_algebra(str_5, int_8)
+    assert var_2 == 42
+    str_6 = '//'
+    str_7 = [str_6]
+    int_9 = 9
+    int_10 = 2
+    int_11 = [int_9, int_10]
+    var_3 = module_0.do_algebra(str_7, int_11)
+    assert var_3 == 4
+    str_8 = '**'
+    str_9 = [str_8]
+    int_12 = [int_10, int_0]
+    var_4 = module_0.do_algebra(str_9, int_12)
+    assert var_4 == 8
+    str_10 = [str_0, str_2, str_4]
+    int_13 = [int_10, int_0, int_4, int_1]
+    var_5 = module_0.do_algebra(str_10, int_13)
+    assert var_5 == 15
+    assert var_5 == -15
+    str_11 = [str_0, str_4]
+    int_14 = 1
+    int_15 = [int_14, int_10, int_0]
+    var_6 = module_0.do_algebra(str_11, int_15)
+    assert var_6 == 7
+    str_12 = [str_8, str_4]
+    int_16 = [int_10, int_0, int_4]
+    var_7 = module_0.do_algebra(str_12, int_16)
+    assert var_7 == 32
+    str_13 = [str_6, str_2]
+    int_17 = [int_7, int_0, int_4]
+    var_8 = module_0.do_algebra(str_13, int_17)
+    assert var_8 == 2
+    assert var_8 == -2
+    str_14 = [str_4, str_2]
+    int_18 = [int_1, int_0, int_10]
+    var_9 = module_0.do_algebra(str_14, int_18)
+    assert var_9 == 13
+    str_15 = [str_0, str_0, str_4]
+    int_19 = [int_14, int_10, int_0, int_4]
+    var_10 = module_0.do_algebra(str_15, int_19)
+    assert var_10 == 15
+    str_16 = [str_6, str_6]
+    int_20 = 100
+    int_21 = [int_20, int_1, int_10]
+    var_11 = module_0.do_algebra(str_16, int_21)
+    assert var_11 == 10
+    str_17 = 'All tests passed!'
+    var_12 = print(str_17)

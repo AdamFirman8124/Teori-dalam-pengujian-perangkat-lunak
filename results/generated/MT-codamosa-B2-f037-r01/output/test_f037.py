@@ -14,26 +14,35 @@ def test_case_0():
     int_7 = [int_4, int_5, int_2, int_6]
     var_1 = module_0.sort_even(int_7)
     assert var_1 == [3, 6, 5, 4]
-    int_8 = 0
-    int_9 = [int_6, int_0, int_1, int_2, int_8]
-    var_2 = module_0.sort_even(int_9)
-    assert var_2 == [0, 1, 2, 3, 4]
-    var_3 = []
-    var_4 = module_0.sort_even(var_3)
-    assert var_4 == []
-    int_10 = 7
-    int_11 = [int_10]
-    var_5 = module_0.sort_even(int_11)
-    assert var_5 == [7]
-    int_12 = 9
-    int_13 = 8
-    int_14 = [int_12, int_13]
-    var_6 = module_0.sort_even(int_14)
-    assert var_6 == [9, 8]
-    int_15 = 10
-    int_16 = [int_15, int_0, int_4, int_1, int_2, int_6]
-    var_7 = module_0.sort_even(int_16)
-    assert var_7 == [3, 1, 5, 2, 10, 4]
-    int_17 = [int_1, int_1, int_1, int_1]
-    var_8 = module_0.sort_even(int_17)
-    assert var_8 == [2, 2, 2, 2]
+    var_2 = []
+    var_3 = module_0.sort_even(var_2)
+    assert var_3 == []
+    int_8 = [int_1]
+    var_4 = module_0.sort_even(int_8)
+    assert var_4 == [2]
+    int_9 = [int_1, int_0]
+    var_5 = module_0.sort_even(int_9)
+    assert var_5 == [2, 1]
+    int_10 = [int_6, int_0, int_2, int_1, int_4]
+    var_6 = module_0.sort_even(int_10)
+    assert var_6 == [3, 1, 4, 2, 5]
+    int_11 = [int_2, int_0, int_2, int_1, int_0]
+    var_7 = module_0.sort_even(int_11)
+    assert var_7 == [1, 1, 3, 2, 3]
+    int_12 = -1
+    int_13 = -3
+    int_14 = [int_12, int_4, int_13, int_1]
+    var_8 = module_0.sort_even(int_14)
+    assert var_8 == [-3, 5, -1, 2]
+    int_15 = [int_4, int_5, int_2, int_6]
+    var_9 = module_0.sort_even(int_15)
+    assert var_9 == [3, 6, 5, 4]
+    int_16 = 9
+    int_17 = 0
+    int_18 = 7
+    int_19 = 8
+    int_20 = [int_16, int_17, int_18, int_0, int_19, int_1]
+    var_10 = module_0.sort_even(int_20)
+    assert var_10 == [7, 0, 8, 1, 9, 2]
+    str_0 = 'All tests passed!'
+    var_11 = print(str_0)

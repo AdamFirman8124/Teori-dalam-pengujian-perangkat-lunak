@@ -7,33 +7,38 @@ import pytest
 from f141 import file_name_check
 
 
-def test_valid_name_returns_yes():
+def test_valid_file_name_returns_yes():
+    """Covers the full 'Yes' path: lines 3-5, 7, 9, 11, 13-14, 16."""
     assert file_name_check("example.txt") == "Yes"
+    assert file_name_check("some_name.exe") == "Yes"
+    assert file_name_check("A123.dll") == "Yes"  # exactly 3 digits is allowed
 
 
-def test_valid_name_with_up_to_three_digits_returns_yes():
-    assert file_name_check("a1b2c3.exe") == "Yes"
+def test_wrong_number_of_dots_returns_no():
+    """Covers lines 5-6 (len(lst) != 2)."""
+    assert file_name_check("example") == "No"          # no dot at all
+    assert file_name_check("a.b.c") == "No"            # two dots
+    assert file_name_check("example.txt.txt") == "No"  # two dots
 
 
-def test_more_than_one_dot_returns_no():
-    assert file_name_check("my.file.txt") == "No"
+def test_bad_extension_returns_no():
+    """Covers lines 7-8 (extension not in the allowed suffix list)."""
+    assert file_name_check("example.pdf") == "No"
+    assert file_name_check("example.") == "No"  # empty extension
 
 
-def test_no_dot_returns_no():
-    assert file_name_check("filename") == "No"
-
-
-def test_invalid_extension_returns_no():
-    assert file_name_check("example.doc") == "No"
-
-
-def test_empty_basename_returns_no():
+def test_empty_stem_returns_no():
+    """Covers lines 9-10 (empty part before the dot)."""
     assert file_name_check(".txt") == "No"
 
 
-def test_basename_not_starting_with_letter_returns_no():
+def test_non_alpha_first_char_returns_no():
+    """Covers lines 11-12 (first character of the stem is not a letter)."""
     assert file_name_check("1example.txt") == "No"
+    assert file_name_check("_name.exe") == "No"
 
 
-def test_more_than_three_digits_returns_no():
-    assert file_name_check("a1234.txt") == "No"
+def test_too_many_digits_returns_no():
+    """Covers lines 13-15 (more than 3 digits in the stem)."""
+    assert file_name_check("name1234.txt") == "No"
+    assert file_name_check("a1b2c3d4.exe") == "No"

@@ -2,35 +2,34 @@
 import f161 as module_0
 
 def test_case_0():
-    str_0 = 'AbC123'
+    str_0 = 'AsDf'
     var_0 = module_0.solve(str_0)
-    assert var_0 == 'aBc123'
-
-def test_case_1():
-    str_0 = 'hello'
-    var_0 = module_0.solve(str_0)
-    assert var_0 == 'HELLO'
-    str_1 = 'WORLD'
+    assert var_0 == 'aSdF'
+    str_1 = '1234'
     var_1 = module_0.solve(str_1)
-    assert var_1 == 'world'
-    str_2 = 'HeLLo WoRLd'
+    assert var_1 == '4321'
+    str_2 = '#a@C'
     var_2 = module_0.solve(str_2)
-    assert var_2 == 'hEllO wOrlD'
-    str_3 = 'a1B2c3'
+    assert var_2 == '#A@c'
+    str_3 = '#As@W'
     var_3 = module_0.solve(str_3)
-    assert var_3 == 'A1b2C3'
-    str_4 = 'Python3.9'
+    assert var_3 == '#aS@w'
+    str_4 = 'asdf'
     var_4 = module_0.solve(str_4)
-    assert var_4 == 'pYTHON3.9'
-    str_5 = '12345'
+    assert var_4 == 'ASDF'
+    str_5 = 'HELLO'
     var_5 = module_0.solve(str_5)
-    assert var_5 == '54321'
-    str_6 = '!@#'
+    assert var_5 == 'hello'
+    str_6 = ''
     var_6 = module_0.solve(str_6)
-    assert var_6 == '#@!'
-    str_7 = '123! 456'
+    assert var_6 == ''
+    str_7 = '12345!@#$%'
     var_7 = module_0.solve(str_7)
-    assert var_7 == '654 !321'
-    str_8 = ''
+    assert var_7 == '$%@#!54321'
+    assert var_7 == '%$#@!54321'
+    str_8 = 'aB1cD'
     var_8 = module_0.solve(str_8)
-    assert var_8 == ''
+    assert var_8 == 'Ab1Cd'
+    str_9 = '!@#'
+    var_9 = module_0.solve(str_9)
+    assert var_9 == '#@!'

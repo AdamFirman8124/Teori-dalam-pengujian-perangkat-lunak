@@ -8,17 +8,21 @@ from f065 import circular_shift
 
 
 def test_circular_shift_reverses_when_shift_exceeds_length():
-    # shift > len(s) -> reversed string branch (lines 3-5)
-    assert circular_shift(12, 3) == "21"
+    """When shift > len(str(x)), the digits are reversed (lines 3-5)."""
+    assert circular_shift(12345, 6) == "54321"
     assert circular_shift(12345, 100) == "54321"
+    # Works for non-int values too, since str() is applied
+    assert circular_shift(12.5, 10) == "5.21"
 
 
 def test_circular_shift_rotates_when_shift_within_length():
-    # shift <= len(s) -> rotation branch (lines 6-7)
+    """When shift <= len(str(x)), the string is rotated right (lines 3-4, 7)."""
     assert circular_shift(12345, 2) == "45123"
-    assert circular_shift(1234, 4) == "1234"  # shift == len(s) -> unchanged
-    assert circular_shift(12, 1) == "21"
+    assert circular_shift(12345, 1) == "51234"
+    assert circular_shift(12345, 3) == "34512"
 
 
-def test_circular_shift_zero_shift_returns_original():
-    assert circular_shift(987, 0) == "987"
+def test_circular_shift_boundary_shift_equals_length():
+    """Edge case: shift == len(str(x)) takes the else branch and is a no-op."""
+    assert circular_shift(12345, 5) == "12345"
+    assert circular_shift(0, 1) == "0"

@@ -1,694 +1,271 @@
 
 
-# Generated at 2026-10-25 15:26:02.946795
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:05.360592
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:07.775538
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:10.201917
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:12.629114
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:15.042375
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:17.460491
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:19.872369
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:22.286097
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:24.700402
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:27.115260
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:29.529744
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:31.943985
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:34.358682
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:36.800727
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:39.217179
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:41.666367
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:44.080289
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:46.499155
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:48.911240
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:51.325278
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:53.740165
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:56.158283
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:26:58.572810
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:00.989367
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:03.403336
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:05.829648
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:08.244082
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:10.658628
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:13.084963
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:15.502143
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:17.919884
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:20.332845
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:22.747688
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:25.162194
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:30.605060
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:33.018863
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:35.436278
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:37.849178
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:40.265772
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:42.679774
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:45.095555
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:47.509886
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:49.922284
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:52.336093
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:54.750660
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:57.169133
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:27:59.587559
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:01.998592
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:04.412288
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:06.830779
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:09.244962
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:11.660119
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:14.073986
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:16.490889
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:18.904222
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:21.318090
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:23.731065
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:26.145773
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:28.561516
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:30.974172
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:33.388788
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:35.800416
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:38.235666
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:40.626982
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:43.038857
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:45.451475
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:47.866170
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:50.280983
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:52.695790
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:55.112490
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:57.530911
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:28:59.945361
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:02.357434
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:04.772805
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:07.186597
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:09.600865
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:12.016585
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:14.441240
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:16.853056
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:19.266450
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:21.678334
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:24.094000
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:26.511789
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:28.922056
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:34.413504
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:36.827389
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:39.239941
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:41.652682
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:44.066612
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:46.480909
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:48.895745
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:51.312522
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:53.739360
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:56.218495
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:29:58.580888
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:00.991459
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:03.404584
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:05.817500
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:08.241033
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:10.653652
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:13.067814
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:15.481588
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:17.894956
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:20.307270
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:22.721348
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:25.135036
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:27.550164
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:29.963392
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:32.377428
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:34.792262
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:37.205941
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:39.625725
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:42.035642
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:44.449363
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:46.864096
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:49.278389
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:51.696463
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:54.113736
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:56.529296
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:30:58.941101
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:01.357155
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:03.772324
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:06.196623
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:08.609776
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:11.022986
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:13.438204
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:15.850998
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:18.275835
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:20.705925
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:23.105921
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:25.521314
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:27.935618
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:30.349713
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:32.764229
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:38.728941
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:41.143740
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:43.561805
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:45.972803
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:48.390296
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:50.807610
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:53.224449
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:55.636812
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:31:58.051413
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:00.465695
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:02.879940
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:05.294981
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:07.712369
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:10.129676
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:12.546905
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:14.959568
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:17.373703
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:19.788204
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:22.202482
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:24.617142
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:27.033857
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:29.451255
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:31.970549
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:34.371720
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:36.785929
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:39.200061
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:41.613990
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:44.028718
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:46.445691
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:48.862209
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:52.647090
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:55.056646
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:57.471956
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:32:59.886097
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:02.300493
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:04.714512
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:07.132822
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:09.551747
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:11.962740
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:14.376989
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:16.794855
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:19.212718
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:21.624260
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:24.038874
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:26.453090
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:28.868091
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:31.282374
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:33.700104
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:36.117310
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:38.533803
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:40.950931
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:46.389422
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:48.821712
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:51.236001
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:53.653204
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:56.072165
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:33:58.484427
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:00.897934
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:03.312938
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:05.727059
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:13.023382
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:15.441302
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:17.858233
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:20.274584
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:22.684375
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:25.098503
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:27.513834
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:29.927852
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:32.344722
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:34.762343
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:37.179491
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:39.593071
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:42.007737
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:44.422328
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:46.836486
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:49.250723
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:51.667652
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:54.084874
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:56.499645
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:34:58.914311
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:35:01.328865
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:35:03.743730
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:35:06.157709
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:35:08.572875
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:35:10.989895
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:35:13.406854
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:35:15.819780
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:35:18.234290
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:35:20.650066
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:35:23.063689
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:35:50.983714
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:35:53.403340
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:35:55.820094
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:35:58.234602
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:36:00.647828
-# Unit test for function numerical_letter_grade
-
-# Generated at 2026-10-25 15:36:03.063450
-# Unit test for function numerical_letter_grade
+# Generated at 2026-11-02 12:25:41.563336
+# Unit test for function numerical_letter_grade
+def test_numerical_letter_grade():# Test boundary values for each grade tier
+    assert module_0.numerical_letter_grade([4.0]) == ["A+"]
+    assert module_0.numerical_letter_grade([3.7]) == ["A"]
+    assert module_0.numerical_letter_grade([3.6]) == ["A"]
+    assert module_0.numerical_letter_grade([3.3]) == ["A-"]
+    assert module_0.numerical_letter_grade([3.2]) == ["A-"]
+    assert module_0.numerical_letter_grade([3.0]) == ["B+"]
+    assert module_0.numerical_letter_grade([2.9]) == ["B+"]
+    assert module_0.numerical_letter_grade([2.7]) == ["B"]
+    assert module_0.numerical_letter_grade([2.6]) == ["B"]
+    assert module_0.numerical_letter_grade([2.3]) == ["B-"]
+    assert module_0.numerical_letter_grade([2.2]) == ["B-"]
+    assert module_0.numerical_letter_grade([2.0]) == ["C+"]
+    assert module_0.numerical_letter_grade([1.9]) == ["C+"]
+    assert module_0.numerical_letter_grade([1.7]) == ["C"]
+    assert module_0.numerical_letter_grade([1.6]) == ["C"]
+    assert module_0.numerical_letter_grade([1.3]) == ["C-"]
+    assert module_0.numerical_letter_grade([1.2]) == ["C-"]
+    assert module_0.numerical_letter_grade([1.0]) == ["D+"]
+    assert module_0.numerical_letter_grade([0.9]) == ["D+"]
+    assert module_0.numerical_letter_grade([0.7]) == ["D"]
+    assert module_0.numerical_letter_grade([0.6]) == ["D"]
+    assert module_0.numerical_letter_grade([0.1]) == ["D-"]
+    assert module_0.numerical_letter_grade([0.0]) == ["E"]
+
+    # Test a mixed list of GPAs
+    assert module_0.numerical_letter_grade([4.0, 3, 1.7, 2, 3.5]) == ["A+", "B+", "C", "C+", "A-"]
+
+    # Test empty list
+    assert module_0.numerical_letter_grade([]) == []
+
+    # Test all grades in one list
+    assert module_0.numerical_letter_grade(
+        [4.0, 3.8, 3.5, 3.1, 2.8, 2.5, 2.1, 1.8, 1.5, 1.1, 0.8, 0.3, 0.0]
+    ) == ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "E"]
+
+# Generated at 2026-11-02 12:27:04.047579
+# Unit test for function numerical_letter_grade
+def test_numerical_letter_grade():
+    # Exact 4.0
+    assert module_0.numerical_letter_grade([4.0]) == ["A+"]
+
+    # A range (> 3.7)
+    assert module_0.numerical_letter_grade([3.8, 3.9, 3.95]) == ["A", "A", "A"]
+
+    # A- range (> 3.3)
+    assert module_0.numerical_letter_grade([3.7, 3.5, 3.4]) == ["A-", "A-", "A-"]
+
+    # B+ range (> 3.0)
+    assert module_0.numerical_letter_grade([3.3, 3.1]) == ["B+", "B+"]
+
+    # B range (> 2.7)
+    assert module_0.numerical_letter_grade([3.0, 2.8]) == ["B", "B"]
+
+    # B- range (> 2.3)
+    assert module_0.numerical_letter_grade([2.7, 2.4]) == ["B-", "B-"]
+
+    # C+ range (> 2.0)
+    assert module_0.numerical_letter_grade([2.3, 2.1]) == ["C+", "C+"]
+
+    # C range (> 1.7)
+    assert module_0.numerical_letter_grade([2.0, 1.8]) == ["C", "C"]
+
+    # C- range (> 1.3)
+    assert module_0.numerical_letter_grade([1.7, 1.4]) == ["C-", "C-"]
+
+    # D+ range (> 1.0)
+    assert module_0.numerical_letter_grade([1.3, 1.1]) == ["D+", "D+"]
+
+    # D range (> 0.7)
+    assert module_0.numerical_letter_grade([1.0, 0.8]) == ["D", "D"]
+
+    # D- range (> 0.0)
+    assert module_0.numerical_letter_grade([0.7, 0.3]) == ["D-", "D-"]
+
+    # E range (<= 0.0)
+    assert module_0.numerical_letter_grade([0.0, -1.5]) == ["E", "E"]
+
+    # Mixed input
+    assert module_0.numerical_letter_grade([4.0, 3.5, 2.0, 0.0]) == ["A+", "A-", "C", "E"]
+
+    # Empty input
+    assert module_0.numerical_letter_grade([]) == []
+
+# Generated at 2026-11-02 12:27:53.670907
+# Unit test for function numerical_letter_grade
+def test_numerical_letter_grade():
+    # Test exact boundary: 4.0 -> A+
+    assert module_0.numerical_letter_grade([4.0]) == ["A+"]
+
+    # Test values just above thresholds
+    assert module_0.numerical_letter_grade([3.9]) == ["A"]
+    assert module_0.numerical_letter_grade([3.75]) == ["A"]
+    assert module_0.numerical_letter_grade([3.7]) == ["A-"]
+    assert module_0.numerical_letter_grade([3.5]) == ["A-"]
+    assert module_0.numerical_letter_grade([3.3]) == ["B+"]
+    assert module_0.numerical_letter_grade([3.1]) == ["B+"]
+    assert module_0.numerical_letter_grade([3.0]) == ["B"]
+    assert module_0.numerical_letter_grade([2.9]) == ["B"]
+    assert module_0.numerical_letter_grade([2.7]) == ["B-"]
+    assert module_0.numerical_letter_grade([2.5]) == ["B-"]
+    assert module_0.numerical_letter_grade([2.3]) == ["C+"]
+    assert module_0.numerical_letter_grade([2.1]) == ["C+"]
+    assert module_0.numerical_letter_grade([2.0]) == ["C"]
+    assert module_0.numerical_letter_grade([1.9]) == ["C"]
+    assert module_0.numerical_letter_grade([1.7]) == ["C-"]
+    assert module_0.numerical_letter_grade([1.5]) == ["C-"]
+    assert module_0.numerical_letter_grade([1.3]) == ["D+"]
+    assert module_0.numerical_letter_grade([1.1]) == ["D+"]
+    assert module_0.numerical_letter_grade([1.0]) == ["D"]
+    assert module_0.numerical_letter_grade([0.9]) == ["D"]
+    assert module_0.numerical_letter_grade([0.7]) == ["D-"]
+    assert module_0.numerical_letter_grade([0.5]) == ["D-"]
+    assert module_0.numerical_letter_grade([0.1]) == ["D-"]
+
+    # Test zero and below -> E
+    assert module_0.numerical_letter_grade([0.0]) == ["E"]
+    assert module_0.numerical_letter_grade([-0.5]) == ["E"]
+
+    # Test mixed list of grades
+    assert module_0.numerical_letter_grade([4.0, 3.0, 1.7, 3.0]) == ["A+", "B", "C-", "B"]
+
+    # Test empty list
+    assert module_0.numerical_letter_grade([]) == []
+
+    # Test a full range example
+    assert module_0.numerical_letter_grade([4.0, 3.8, 3.5, 3.2, 2.9, 2.5, 2.2, 1.9, 1.5, 1.2, 0.9, 0.5, 0.0]) == [
+        "A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "E"
+    ]
+
+    print("All tests passed!")
+
+
+# Run tests
+if __name__ == "__main__":
+    test_numerical_letter_grade()
+
+# Generated at 2026-11-02 12:28:53.563076
+# Unit test for function numerical_letter_grade
+def test_numerical_letter_grade():
+    # Test A+ (exactly 4.0)
+    assert module_0.numerical_letter_grade([4.0]) == ["A+"]
+    assert module_0.numerical_letter_grade([4.0, 4.0]) == ["A+", "A+"]
+
+    # Test A (gpa > 3.7, but not 4.0)
+    assert module_0.numerical_letter_grade([3.9]) == ["A"]
+    assert module_0.numerical_letter_grade([3.8]) == ["A"]
+    assert module_0.numerical_letter_grade([3.75]) == ["A"]
+    assert module_0.numerical_letter_grade([3.71]) == ["A"]
+
+    # Test A- (gpa > 3.3, up to and including 3.7)
+    assert module_0.numerical_letter_grade([3.7]) == ["A-"]
+    assert module_0.numerical_letter_grade([3.5]) == ["A-"]
+    assert module_0.numerical_letter_grade([3.31]) == ["A-"]
+
+    # Test B+ (gpa > 3.0, up to and including 3.3)
+    assert module_0.numerical_letter_grade([3.3]) == ["B+"]
+    assert module_0.numerical_letter_grade([3.1]) == ["B+"]
+    assert module_0.numerical_letter_grade([3.01]) == ["B+"]
+
+    # Test B (gpa > 2.7, up to and including 3.0)
+    assert module_0.numerical_letter_grade([3.0]) == ["B"]
+    assert module_0.numerical_letter_grade([2.8]) == ["B"]
+    assert module_0.numerical_letter_grade([2.71]) == ["B"]
+
+    # Test B- (gpa > 2.3, up to and including 2.7)
+    assert module_0.numerical_letter_grade([2.7]) == ["B-"]
+    assert module_0.numerical_letter_grade([2.5]) == ["B-"]
+    assert module_0.numerical_letter_grade([2.31]) == ["B-"]
+
+    # Test C+ (gpa > 2.0, up to and including 2.3)
+    assert module_0.numerical_letter_grade([2.3]) == ["C+"]
+    assert module_0.numerical_letter_grade([2.1]) == ["C+"]
+    assert module_0.numerical_letter_grade([2.01]) == ["C+"]
+
+    # Test C (gpa > 1.7, up to and including 2.0)
+    assert module_0.numerical_letter_grade([2.0]) == ["C"]
+    assert module_0.numerical_letter_grade([1.8]) == ["C"]
+    assert module_0.numerical_letter_grade([1.71]) == ["C"]
+
+    # Test C- (gpa > 1.3, up to and including 1.7)
+    assert module_0.numerical_letter_grade([1.7]) == ["C-"]
+    assert module_0.numerical_letter_grade([1.5]) == ["C-"]
+    assert module_0.numerical_letter_grade([1.31]) == ["C-"]
+
+    # Test D+ (gpa > 1.0, up to and including 1.3)
+    assert module_0.numerical_letter_grade([1.3]) == ["D+"]
+    assert module_0.numerical_letter_grade([1.1]) == ["D+"]
+    assert module_0.numerical_letter_grade([1.01]) == ["D+"]
+
+    # Test D (gpa > 0.7, up to and including 1.0)
+    assert module_0.numerical_letter_grade([1.0]) == ["D"]
+    assert module_0.numerical_letter_grade([0.8]) == ["D"]
+    assert module_0.numerical_letter_grade([0.71]) == ["D"]
+
+    # Test D- (gpa > 0.0, up to and including 0.7)
+    assert module_0.numerical_letter_grade([0.7]) == ["D-"]
+    assert module_0.numerical_letter_grade([0.5]) == ["D-"]
+    assert module_0.numerical_letter_grade([0.3]) == ["D-"]
+    assert module_0.numerical_letter_grade([0.01]) == ["D-"]
+
+    # Test E (gpa == 0.0 or negative)
+    assert module_0.numerical_letter_grade([0.0]) == ["E"]
+    assert module_0.numerical_letter_grade([-0.5]) == ["E"]
+    assert module_0.numerical_letter_grade([-2.0]) == ["E"]
+
+    # Test mixed list of grades
+    assert module_0.numerical_letter_grade([4.0, 3.0, 1.7, 3.5]) == ["A+", "B", "C-", "A-"]
+    assert module_0.numerical_letter_grade([1.0, 0.7, 0.0, 2.0]) == ["D", "D-", "E", "C"]
+    assert module_0.numerical_letter_grade([4.0, 3.8, 3.5, 3.2, 2.9, 2.5, 2.2, 1.9, 1.5, 1.2, 0.9, 0.5, 0.0]) == \
+        ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "E"]
+
+    # Test empty list
+    assert module_0.numerical_letter_grade([]) == []
+
+    # Test that boundary values are strictly exclusive (e.g., 3.7 is A-, not A)
+    assert module_0.numerical_letter_grade([3.7, 2.7, 1.7, 0.7]) == ["A-", "B-", "C-", "D-"]
+
+    print("All tests passed!")
+
+
+# Run tests
+if __name__ == "__main__":
+    test_numerical_letter_grade()
+
+# Generated at 2026-11-02 12:30:20.787497
+# Unit test for function numerical_letter_grade
+def test_numerical_letter_grade():import unittest
+
+
+class TestNumericalLetterGrade(unittest.TestCase):
+
+    def test_typical_values(self):
+        self.assertEqual(module_0.numerical_letter_grade([4.0, 3.0, 1.7, 2.0, 0.5]),
+                         ["A+", "B-", "C-", "C", "D-"])
+
+    def test_exact_boundaries(self):
+        self.assertEqual(module_0.numerical_letter_grade([4.0, 3.7, 3.3, 3.0, 2.7, 2.3,
+                                                 2.0, 1.7, 1.3, 1.0, 0.7, 0.0]),
+                         ["A+", "A-", "B", "B-", "C+", "C",
+                          "C-", "D+", "D", "D-", "E", "E"])
+
+    def test_just_above_boundaries(self):
+        self.assertEqual(module_0.numerical_letter_grade([3.85, 3.5, 3.1, 2.85, 2.5,
+                                                 2.1, 1.85, 1.5, 1.1, 0.85, 0.3]),
+                         ["A", "A-", "B+", "B", "B-", "C+",
+                          "C", "C-", "D+", "D", "D-"])
+
+    def test_zero_and_negative(self):
+        self.assertEqual(module_0.numerical_letter_grade([0.0, -0.2, -1.0]),
+                         ["E", "E", "E"])
+
+    def test_empty_list(self):
+        self.assertEqual(module_0.numerical_letter_grade([]), [])
+
+    def test_single_value(self):
+        self.assertEqual(module_0.numerical_letter_grade([4.0]), ["A+"])
+        self.assertEqual(module_0.numerical_letter_grade([2.5]), ["B-"])
+
+    def test_result_length_matches_input(self):
+        grades = [4.0, 3.9, 3.5, 3.2, 2.9, 2.4, 1.9, 1.4, 0.9, 0.4, 0.0]
+        result = module_0.numerical_letter_grade(grades)
+        self.assertEqual(len(result), len(grades))
+
+
+if __name__ == "__main__":
+    unittest.main()

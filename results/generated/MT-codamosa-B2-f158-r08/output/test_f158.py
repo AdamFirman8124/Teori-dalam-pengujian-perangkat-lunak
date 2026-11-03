@@ -2,34 +2,55 @@
 import f158 as module_0
 
 def test_case_0():
-    str_0 = 'ab'
-    str_1 = 'abcd'
-    str_2 = 'abc'
+    str_0 = 'name'
+    str_1 = 'of'
+    str_2 = 'string'
     str_3 = [str_0, str_1, str_2]
     var_0 = module_0.find_max(str_3)
-    assert var_0 == 'abcd'
-    str_4 = 'aaaa'
-    str_5 = [str_4, str_0]
-    var_1 = module_0.find_max(str_5)
-    assert var_1 == 'ab'
-    str_6 = 'ba'
-    str_7 = 'ac'
-    str_8 = [str_6, str_0, str_7]
-    var_2 = module_0.find_max(str_8)
-    assert var_2 == 'ab'
-    str_9 = 'xyz'
-    str_10 = 'def'
-    str_11 = [str_9, str_2, str_10]
-    var_3 = module_0.find_max(str_11)
-    assert var_3 == 'abc'
-    str_12 = 'only'
-    str_13 = [str_12]
-    var_4 = module_0.find_max(str_13)
-    assert var_4 == 'only'
-    str_14 = ''
-    str_15 = 'a'
-    str_16 = [str_14, str_15]
-    var_5 = module_0.find_max(str_16)
+    assert var_0 == 'string'
+    str_4 = 'enam'
+    str_5 = 'game'
+    str_6 = [str_0, str_4, str_5]
+    var_1 = module_0.find_max(str_6)
+    assert var_1 == 'enam'
+    str_7 = 'abc'
+    str_8 = 'cba'
+    str_9 = 'bac'
+    str_10 = [str_7, str_8, str_9]
+    var_2 = module_0.find_max(str_10)
+    assert var_2 == 'abc'
+    str_11 = 'aaaaaaa'
+    str_12 = 'bb'
+    str_13 = 'cc'
+    str_14 = [str_11, str_12, str_13]
+    var_3 = module_0.find_max(str_14)
+    assert var_3 == 'aaaaaaa'
+    str_15 = 'hello'
+    str_16 = [str_15]
+    var_4 = module_0.find_max(str_16)
+    assert var_4 == 'hello'
+    str_17 = ''
+    str_18 = 'a'
+    str_19 = [str_17, str_18]
+    var_5 = module_0.find_max(str_19)
     assert var_5 == 'a'
-    str_17 = 'All tests passed'
-    var_6 = print(str_17)
+    str_20 = [str_17, str_17]
+    var_6 = module_0.find_max(str_20)
+    assert var_6 == ''
+    str_21 = 'aA'
+    str_22 = 'aa'
+    str_23 = [str_21, str_22]
+    var_7 = module_0.find_max(str_23)
+    assert var_7 == 'aA'
+    str_24 = [str_7, str_7]
+    var_8 = module_0.find_max(str_24)
+    assert var_8 == 'abc'
+    str_25 = 'mississippi'
+    str_26 = [str_25, str_7]
+    var_9 = module_0.find_max(str_26)
+    assert var_9 == 'mississippi'
+    str_27 = 'a1!'
+    str_28 = 'ab'
+    str_29 = [str_27, str_28]
+    var_10 = module_0.find_max(str_29)
+    assert var_10 == 'a1!'

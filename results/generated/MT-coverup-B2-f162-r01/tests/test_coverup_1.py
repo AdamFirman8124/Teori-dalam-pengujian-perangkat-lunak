@@ -2,41 +2,30 @@
 # asked: {"lines": [3, 4], "branches": []}
 # gained: {"lines": [3, 4], "branches": []}
 
-import hashlib
-
 import pytest
 
 from f162 import string_to_md5
 
 
-def test_string_to_md5_returns_hexdigest_for_non_empty_text():
-    result = string_to_md5("hello world")
-    assert result == hashlib.md5(b"hello world").hexdigest()
-    assert result == "5eb63bbbe01eeed093cb22bb8f5acdc3"
+def test_string_to_md5_nonempty_text():
+    """Covers the truthy branch of the conditional on line 4 (and the import on line 3)."""
+    result = string_to_md5("Hello world")
+    assert result == "3e25960a79dbc69b674cd4ec67a72c62"
+    # Postcondition: result is a 32-character lowercase hex digest
     assert isinstance(result, str)
     assert len(result) == 32
+    assert all(c in "0123456789abcdef" for c in result)
 
 
-def test_string_to_md5_returns_none_for_empty_text():
+def test_string_to_md5_empty_text_returns_none():
+    """Covers the falsy branch of the conditional on line 4 (and the import on line 3)."""
     assert string_to_md5("") is None
 
 
-def test_string_to_md5_uses_ascii_encoding(monkeypatch):
-    calls = []
-    real_md5 = hashlib.md5
+def test_string_to_md5_matches_hashlib():
+    """Cross-check the truthy branch against hashlib directly."""
+    import hashlib
 
-    def spy_md5(data=b"", *args, **kwargs):
-        calls.append(data)
-        return real_md5(data, *args, **kwargs)
-
-    monkeypatch.setattr(hashlib, "md5", spy_md5)
-
-    result = string_to_md5("abc")
-
-    assert calls == [b"abc"]
-    assert result == real_md5(b"abc").hexdigest()
-
-
-def test_string_to_md5_rejects_non_ascii_text():
-    with pytest.raises(UnicodeEncodeError):
-        string_to_md5("héllo")
+    text = "test input"
+    expected = hashlib.md5(text.encode("ascii")).hexdigest()
+    assert string_to_md5(text) == expected

@@ -2,13 +2,53 @@
 import f072 as module_0
 
 def test_case_0():
-    int_0 = -18
-    int_1 = [int_0, int_0, int_0]
-    var_0 = module_0.will_it_fly(int_1, int_0)
+    int_0 = 3
+    int_1 = 2
+    int_2 = [int_0, int_1, int_0]
+    int_3 = 9
+    var_0 = module_0.will_it_fly(int_2, int_3)
     assert var_0 is True
-
-def test_case_1():
-    int_0 = -45
-    int_1 = [int_0, int_0, int_0, int_0, int_0, int_0]
-    var_0 = module_0.will_it_fly(int_1, int_0)
-    assert var_0 is True
+    int_4 = 1
+    int_5 = [int_4, int_1]
+    int_6 = 5
+    var_1 = module_0.will_it_fly(int_5, int_6)
+    assert var_1 is False
+    int_7 = [int_0]
+    var_2 = module_0.will_it_fly(int_7, int_6)
+    assert var_2 is True
+    int_8 = [int_4, int_1, int_0]
+    var_3 = module_0.will_it_fly(int_8, int_4)
+    assert var_3 is False
+    int_9 = [int_4, int_1, int_0]
+    int_10 = 6
+    var_4 = module_0.will_it_fly(int_9, int_10)
+    assert var_4 is False
+    var_5 = []
+    int_11 = 0
+    var_6 = module_0.will_it_fly(var_5, int_11)
+    assert var_6 is True
+    int_12 = [int_6, int_6, int_6, int_6]
+    int_13 = 20
+    var_7 = module_0.will_it_fly(int_12, int_13)
+    assert var_7 is True
+    int_14 = [int_6, int_6, int_6, int_6]
+    int_15 = 19
+    var_8 = module_0.will_it_fly(int_14, int_15)
+    assert var_8 is False
+    int_16 = 4
+    int_17 = [int_16, int_16]
+    int_18 = 8
+    var_9 = module_0.will_it_fly(int_17, int_18)
+    assert var_9 is True
+    int_19 = [int_4, int_1, int_4]
+    var_10 = module_0.will_it_fly(int_19, int_11)
+    assert var_10 is False
+    int_20 = [int_11]
+    var_11 = module_0.will_it_fly(int_20, int_11)
+    assert var_11 is True
+    int_21 = [int_4, int_1, int_0, int_1, int_4]
+    int_22 = 100
+    var_12 = module_0.will_it_fly(int_21, int_22)
+    assert var_12 is True
+    str_0 = 'All tests passed!'
+    var_13 = print(str_0)

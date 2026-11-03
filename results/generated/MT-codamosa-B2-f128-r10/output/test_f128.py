@@ -5,45 +5,54 @@ def test_case_0():
     var_0 = []
     var_1 = module_0.prod_signs(var_0)
     assert var_1 is None
-    int_0 = 1
-    int_1 = 2
-    int_2 = 3
-    int_3 = 4
+    int_0 = 0
+    int_1 = 1
+    int_2 = 2
+    int_3 = -3
     int_4 = [int_0, int_1, int_2, int_3]
     var_2 = module_0.prod_signs(int_4)
-    assert var_2 == 10
-    int_5 = -1
-    int_6 = [int_5, int_1, int_2, int_3]
-    var_3 = module_0.prod_signs(int_6)
-    assert var_3 == 10
-    assert var_3 == -10
-    int_7 = -1
-    int_8 = -2
-    int_9 = [int_7, int_8, int_2, int_3]
-    var_4 = module_0.prod_signs(int_9)
-    assert var_4 == 10
-    int_10 = -1
-    int_11 = -2
-    int_12 = -3
-    int_13 = [int_10, int_11, int_12, int_3]
-    var_5 = module_0.prod_signs(int_13)
-    assert var_5 == 10
-    assert var_5 == -10
-    int_14 = 0
+    assert var_2 == 0
+    int_5 = [int_0]
+    var_3 = module_0.prod_signs(int_5)
+    assert var_3 == 0
+    int_6 = -4
+    int_7 = [int_1, int_2, int_2, int_6]
+    var_4 = module_0.prod_signs(int_7)
+    assert var_4 == 9
+    assert var_4 == -9
+    int_8 = -1
+    int_9 = -2
+    int_10 = -3
+    int_11 = [int_8, int_9, int_10]
+    var_5 = module_0.prod_signs(int_11)
+    assert var_5 == 6
+    assert var_5 == -6
+    int_12 = -5
+    int_13 = [int_12]
+    var_6 = module_0.prod_signs(int_13)
+    assert var_6 == 5
+    assert var_6 == -5
+    int_14 = -1
     int_15 = -2
-    int_16 = [int_14, int_0, int_15, int_2]
-    var_6 = module_0.prod_signs(int_16)
-    assert var_6 == 0
-    int_17 = [int_14]
+    int_16 = 3
+    int_17 = [int_14, int_15, int_16]
     var_7 = module_0.prod_signs(int_17)
-    assert var_7 == 0
+    assert var_7 == 6
+    int_18 = -1
+    int_19 = -2
+    int_20 = -3
+    int_21 = -4
+    int_22 = [int_18, int_19, int_20, int_21]
+    var_8 = module_0.prod_signs(int_22)
+    assert var_8 == 10
+    int_23 = [int_1, int_2, int_16]
+    var_9 = module_0.prod_signs(int_23)
+    assert var_9 == 6
+    int_24 = [int_1]
+    var_10 = module_0.prod_signs(int_24)
+    assert var_10 == 1
+    str_0 = 'All tests passed!'
+    var_11 = print(str_0)
 
 def test_case_1():
-    int_0 = 1
-    int_1 = 2
-    int_2 = 3
-    int_3 = -4
-    int_4 = [int_0, int_1, int_2, int_3]
-    var_0 = module_0.prod_signs(int_4)
-    assert var_0 == 10
-    assert var_0 == -10
+    pass

@@ -1,80 +1,206 @@
 
 
-# Generated at 2026-10-24 19:40:35.815890
+# Generated at 2026-11-03 06:07:06.183119
 # Unit test for function cycpattern_check
 def test_cycpattern_check():
-    # Exact pattern
-    assert module_0.cycpattern_check("abcdef", "abc") is True
+    # Basic rotation match cases
+    assert module_0.cycpattern_check("abcd", "abd") == False, "Expected False: no rotation of 'abd' in 'abcd'"
+    assert module_0.cycpattern_check("hello", "ell") == True, "Expected True: 'ell' is a substring of 'hello'"
+    assert module_0.cycpattern_check("whassup", "psus") == False, "Expected False: no rotation of 'psus' in 'whassup'"
+    assert module_0.cycpattern_check("abab", "baa") == True, "Expected True: rotation 'aba' of 'baa' is in 'abab'"
+    assert module_0.cycpattern_check("efef", "eeff") == False, "Expected False: no rotation of 'eeff' in 'efef'"
+    assert module_0.cycpattern_check("himenss", "simen") == True, "Expected True: rotation 'imens' of 'simen' is in 'himenss'"
 
-    # Cyclic rotations of "abc": "bca" and "cab"
-    assert module_0.cycpattern_check("xxbcayy", "abc") is True
-    assert module_0.cycpattern_check("xxcabyy", "abc") is True
+    # Exact substring match (no rotation needed)
+    assert module_0.cycpattern_check("abcdefg", "cde") == True, "Expected True: 'cde' directly in 'abcdefg'"
 
-    # No cyclic rotation is present
-    assert module_0.cycpattern_check("xxacbyy", "abc") is False
+    # Pattern equal to string
+    assert module_0.cycpattern_check("xyz", "xyz") == True, "Expected True: identical strings"
+    assert module_0.cycpattern_check("xyz", "zyx") == True, "Expected True: rotation 'yzx'... check rotation of 'zyx' exists" if module_0.cycpattern_check("xyz", "yzx") else True
 
-    # Pattern is longer than the searched string
-    assert module_0.cycpattern_check("ab", "abc") is False
+    # Pattern longer than string
+    assert module_0.cycpattern_check("ab", "abc") == False, "Expected False: pattern longer than string"
+    assert module_0.cycpattern_check("", "a") == False, "Expected False: empty string cannot contain pattern"
 
-    # Single-character pattern
-    assert module_0.cycpattern_check("hello", "e") is True
-    assert module_0.cycpattern_check("hello", "z") is False
+    # Empty pattern (vacuously present)
+    assert module_0.cycpattern_check("abc", "") == True, "Expected True: empty pattern matches trivially"
+    assert module_0.cycpattern_check("", "") == True, "Expected True: both empty"
 
-# Generated at 2026-10-24 19:40:44.363031
+    # Single character cases
+    assert module_0.cycpattern_check("a", "a") == True, "Expected True: single char match"
+    assert module_0.cycpattern_check("a", "b") == False, "Expected False: single char mismatch"
+
+    # Repeated rotations
+    assert module_0.cycpattern_check("aabcc", "cca") == True, "Expected True: rotation 'cca' or its rotations found"
+    assert module_0.cycpattern_check("aaaa", "aa") == True, "Expected True: 'aa' in 'aaaa'"
+
+    print("All tests for cycpattern_check passed!")
+
+
+if __name__ == "__main__":
+    test_cycpattern_check()
+
+# Generated at 2026-11-03 06:09:06.297885
 # Unit test for function cycpattern_check
 def test_cycpattern_check():
+    # Basic cases
+    assert module_0.cycpattern_check("abcd", "abd") == False
+    assert module_0.cycpattern_check("hello", "ell") == True
+    assert module_0.cycpattern_check("whassup", "psus") == False
+    assert module_0.cycpattern_check("abab", "baa") == True
+    assert module_0.cycpattern_check("efef", "eeff") == False
+    assert module_0.cycpattern_check("himenss", "simen") == True
+
     # Exact match
-    assert module_0.cycpattern_check("abcd", "abcd") is True
+    assert module_0.cycpattern_check("hello", "hello") == True
+    assert module_0.cycpattern_check("abc", "abc") == True
 
-    # Cyclic rotation appears in a
-    assert module_0.cycpattern_check("xxcdabyy", "abcd") is True
+    # Rotated pattern matches
+    assert module_0.cycpattern_check("abcd", "dabc") == True
+    assert module_0.cycpattern_check("abcdef", "cdeab") == True
+    assert module_0.cycpattern_check("aab", "ba") == True
 
-    # Entire string is a cyclic rotation
-    assert module_0.cycpattern_check("hello", "lohel") is True
+    # No rotation of b appears in a
+    assert module_0.cycpattern_check("abcdef", "fab") == False
+    assert module_0.cycpattern_check("aaaa", "bb") == False
 
-    # No cyclic rotation appears
-    assert module_0.cycpattern_check("abdc", "abcd") is False
+    # Pattern longer than the string
+    assert module_0.cycpattern_check("ab", "abc") == False
+    assert module_0.cycpattern_check("", "abc") == False
 
-    # Pattern is longer than the searched string
-    assert module_0.cycpattern_check("abc", "abcd") is False
+    # Empty pattern is trivially contained
+    assert module_0.cycpattern_check("abc", "") == True
+    assert module_0.cycpattern_check("", "") == True
 
-    # Single-character pattern
-    assert module_0.cycpattern_check("xyz", "y") is True
-    assert module_0.cycpattern_check("xyz", "a") is False
+    # Repeated characters
+    assert module_0.cycpattern_check("aaaa", "aa") == True
 
-# Generated at 2026-10-24 19:40:52.964192
+    # Case sensitivity
+    assert module_0.cycpattern_check("ABC", "abc") == False
+
+
+if __name__ == "__main__":
+    test_cycpattern_check()
+    print("All tests passed!")
+
+# Generated at 2026-11-03 06:11:09.984826
 # Unit test for function cycpattern_check
 def test_cycpattern_check():
-    # Direct match
-    assert module_0.cycpattern_check("xxabcxx", "abc") is True
+    # Basic cases
+    assert module_0.cycpattern_check("abcd", "abd") == False
+    assert module_0.cycpattern_check("hello", "ell") == True
+    assert module_0.cycpattern_check("whassup", "psus") == False
+    assert module_0.cycpattern_check("abab", "baa") == True
+    assert module_0.cycpattern_check("efef", "eeff") == False
+    assert module_0.cycpattern_check("himenssx", "simm") == False
 
-    # Cyclic rotations of "abc": "bca" and "cab"
-    assert module_0.cycpattern_check("xxbcaxx", "abc") is True
-    assert module_0.cycpattern_check("xxcabxx", "abc") is True
+    # Rotated pattern found in the string
+    assert module_0.cycpattern_check("abcde", "cdeab") == True
+    assert module_0.cycpattern_check("hello", "llohe") == True
+    assert module_0.cycpattern_check("abab", "ba") == True
+    assert module_0.cycpattern_check("xyz", "zyx") == False
 
-    # No cyclic rotation is present
-    assert module_0.cycpattern_check("xxacbxx", "abc") is False
+    # Identical strings
+    assert module_0.cycpattern_check("abc", "abc") == True
 
-    # Pattern is longer than the searched string
-    assert module_0.cycpattern_check("ab", "abc") is False
+    # Pattern longer than the string
+    assert module_0.cycpattern_check("ab", "abc") == False
 
-    # Empty searched string
-    assert module_0.cycpattern_check("", "abc") is False
+    # Empty pattern matches trivially
+    assert module_0.cycpattern_check("abc", "") == True
+    assert module_0.cycpattern_check("", "") == True
 
-# Generated at 2026-10-24 19:40:55.386229
+    # Empty string with non-empty pattern
+    assert module_0.cycpattern_check("", "a") == False
+
+    # Single character cases
+    assert module_0.cycpattern_check("a", "a") == True
+    assert module_0.cycpattern_check("a", "b") == False
+
+    # Repeated patterns
+    assert module_0.cycpattern_check("aaaa", "aa") == True
+    assert module_0.cycpattern_check("ababab", "abab") == True
+
+    # Case sensitivity
+    assert module_0.cycpattern_check("Abc", "abc") == False
+
+# Generated at 2026-11-03 06:12:36.834808
 # Unit test for function cycpattern_check
+def test_cycpattern_check():
+    # Basic cases from canonical examples
+    assert module_0.cycpattern_check("abcd", "abd") == False
+    assert module_0.cycpattern_check("hello", "ell") == True
+    assert module_0.cycpattern_check("whassup", "psus") == False
+    assert module_0.cycpattern_check("abab", "baa") == True
+    assert module_0.cycpattern_check("efef", "eeff") == False
+    assert module_0.cycpattern_check("himenss", "simen") == True
 
-# Generated at 2026-10-24 19:40:57.809447
-# Unit test for function cycpattern_check
+    # Exact match
+    assert module_0.cycpattern_check("abc", "abc") == True
 
-# Generated at 2026-10-24 19:41:00.221535
-# Unit test for function cycpattern_check
+    # Rotation match
+    assert module_0.cycpattern_check("abc", "cab") == True
+    assert module_0.cycpattern_check("abc", "bca") == True
 
-# Generated at 2026-10-24 19:41:02.638288
-# Unit test for function cycpattern_check
+    # Pattern longer than string
+    assert module_0.cycpattern_check("ab", "abc") == False
 
-# Generated at 2026-10-24 19:41:05.054280
-# Unit test for function cycpattern_check
+    # Empty pattern (empty string is substring of anything)
+    assert module_0.cycpattern_check("abc", "") == True
+    assert module_0.cycpattern_check("", "") == True
 
-# Generated at 2026-10-24 19:41:07.638784
+    # Empty string with non-empty pattern
+    assert module_0.cycpattern_check("", "a") == False
+
+    # Single characters
+    assert module_0.cycpattern_check("a", "a") == True
+    assert module_0.cycpattern_check("a", "b") == False
+
+    # Repeated characters
+    assert module_0.cycpattern_check("aaaa", "aa") == True
+    assert module_0.cycpattern_check("aaaa", "bb") == False
+
+    # Rotation requires wrap-around not present
+    assert module_0.cycpattern_check("abcdef", "fa") == False
+    assert module_0.cycpattern_check("abcdef", "fab") == False
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_cycpattern_check()
+
+# Generated at 2026-11-03 06:14:05.513420
 # Unit test for function cycpattern_check
+def test_cycpattern_check():
+    # Basic cases
+    assert module_0.cycpattern_check("abcd", "abd") == False
+    assert module_0.cycpattern_check("hello", "ell") == True
+    assert module_0.cycpattern_check("whassup", "psus") == False
+    assert module_0.cycpattern_check("abab", "baa") == True
+    assert module_0.cycpattern_check("efef", "eeff") == False
+    assert module_0.cycpattern_check("himenssss", "sim") == False
+    assert module_0.cycpattern_check("himenssss", "simen") == True
+
+    # Rotation matches
+    assert module_0.cycpattern_check("abab", "baa") == True      # rotation "aba"/"baa" logic
+    assert module_0.cycpattern_check("abcdef", "cde") == True    # direct substring
+    assert module_0.cycpattern_check("abcdef", "efab") == False  # not a rotation substring
+
+    # Repeated characters
+    assert module_0.cycpattern_check("aaaa", "aa") == True
+    assert module_0.cycpattern_check("aaa", "aaaa") == False     # b longer than a
+
+    # Edge cases
+    assert module_0.cycpattern_check("", "a") == False
+    assert module_0.cycpattern_check("abc", "") == True
+    assert module_0.cycpattern_check("", "") == True
+    assert module_0.cycpattern_check("a", "a") == True
+
+    # Case sensitivity
+    assert module_0.cycpattern_check("Hello", "ell") == True
+    assert module_0.cycpattern_check("hello", "ELL") == False
+
+    # Longer rotations
+    assert module_0.cycpattern_check("xyzabc", "abcxyz") == True   # full rotation of a
+    assert module_0.cycpattern_check("xyzabc", "bcaxyz") == False

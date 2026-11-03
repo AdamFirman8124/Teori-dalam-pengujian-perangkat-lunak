@@ -7,34 +7,35 @@ import pytest
 from f114 import minSubArraySum
 
 
-def test_min_sub_array_sum_mixed():
-    # Covers lines 3-9 (loop with s < 0 reset) and 12-13.
-    # For [2, 3, 4, 1, 2, 4], the minimum-sum subarray is [4, 1, 2] -> sum 7? No:
-    # minimum subarray sum is the single element 1... but the algorithm computes
-    # max of negated prefix sums, i.e. min subarray sum = -max_sum.
-    # Negated array: [-2, -3, -4, -1, -2, -4]; max subarray sum of negated is -1
-    # (best is just [-1]), so min_sum = 1.
-    assert minSubArraySum([2, 3, 4, 1, 2, 4]) == 1
+def test_all_positive_hits_reset_and_fallback_branches():
+    """Every element is positive, so s goes negative each iteration
+    (reset branch taken) and final max_sum == 0 (fallback branch taken)."""
+    assert minSubArraySum([1, 2, 3]) == 1
+    assert minSubArraySum([5]) == 5
+    assert minSubArraySum([0]) == 0
 
 
-def test_min_sub_array_sum_all_positive():
-    # Covers line 10-11 branch (max_sum == 0 after loop, since all s stay 0).
-    # All elements positive -> min subarray is the smallest single element.
-    assert minSubArraySum([5, 3, 8]) == 3
+def test_all_negative_skips_reset_and_fallback_branches():
+    """Every element is negative, so s never goes negative (reset branch
+    skipped) and final max_sum != 0 (fallback branch skipped)."""
+    assert minSubArraySum([-1, -2, -3]) == -6
+    assert minSubArraySum([-4]) == -4
 
 
-def test_min_sub_array_sum_single_element():
-    # Single positive element exercises the max_sum == 0 branch too.
-    assert minSubArraySum([7]) == 7
+def test_mixed_input_exercises_both_outcomes_of_reset_branch():
+    """Leading positive drives s negative (reset taken); a later negative
+    does not drive s below zero (reset skipped) -> both branch outcomes."""
+    assert minSubArraySum([2, -3, 4]) == -3
+    assert minSubArraySum([1, -2, 3, -4, 5]) == -4
 
 
-def test_min_sub_array_sum_single_negative():
-    # Single negative element exercises the normal loop path.
-    assert minSubArraySum([-7]) == -7
+def test_fallback_branch_with_single_zero():
+    """max_sum stays 0 and the fallback max(-i for i in nums) runs."""
+    assert minSubArraySum([0, 0]) == 0
 
 
-def test_min_sub_array_sum_does_not_mutate_input():
-    nums = [2, -1, 3]
-    snapshot = list(nums)
-    minSubArraySum(nums)
-    assert nums == snapshot
+def test_empty_input_raises_value_error():
+    """With no elements, max_sum stays 0 and the fallback max() over an
+    empty generator raises ValueError (documents current behavior)."""
+    with pytest.raises(ValueError):
+        minSubArraySum([])

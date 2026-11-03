@@ -2,29 +2,41 @@
 import f009 as module_0
 
 def test_case_0():
-    int_0 = 2964
-    int_1 = -1968
-    int_2 = -1100
-    list_0 = [int_0, int_0, int_1, int_2]
-    list_1 = module_0.rolling_max(list_0)
-    assert list_1 == [2964, 2964, 2964, 2964]
-    int_3 = 1804
-    list_2 = [int_3, int_3]
-    list_3 = module_0.rolling_max(list_2)
-    assert list_3 == [1804, 1804]
-    list_4 = module_0.rolling_max(list_2)
-    assert list_4 == [1804, 1804]
-    list_5 = module_0.rolling_max(list_2)
-    assert list_5 == [1804, 1804]
-    list_6 = module_0.rolling_max(list_2)
-    assert list_6 == [1804, 1804]
-    list_7 = module_0.rolling_max(list_2)
-    assert list_7 == [1804, 1804]
-    int_4 = -1982
-    list_8 = [int_3, int_4, int_4]
-    list_9 = module_0.rolling_max(list_6)
-    assert list_9 == [1804, 1804]
-    list_10 = module_0.rolling_max(list_8)
-    assert list_10 == [1804, 1804, 1804]
-    list_11 = module_0.rolling_max(list_2)
-    assert list_11 == [1804, 1804]
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = 4
+    int_4 = 5
+    int_5 = [int_0, int_1, int_2, int_3, int_4]
+    list_0 = module_0.rolling_max(int_5)
+    assert list_0 == [1, 2, 3, 4, 5]
+    int_6 = [int_4, int_3, int_2, int_1, int_0]
+    list_1 = module_0.rolling_max(int_6)
+    assert list_1 == [5, 5, 5, 5, 5]
+    int_7 = [int_0, int_2, int_1, int_4, int_3]
+    list_2 = module_0.rolling_max(int_7)
+    assert list_2 == [1, 3, 3, 5, 5]
+    var_0 = []
+    list_3 = module_0.rolling_max(var_0)
+    assert list_3 == []
+    int_8 = 7
+    int_9 = [int_8]
+    list_4 = module_0.rolling_max(int_9)
+    assert list_4 == [7]
+    int_10 = -5
+    int_11 = -3
+    int_12 = -4
+    int_13 = -1
+    int_14 = [int_10, int_11, int_12, int_13]
+    list_5 = module_0.rolling_max(int_14)
+    assert list_5 == [-5, -3, -3, -1]
+    int_15 = [int_1, int_1, int_1, int_1]
+    list_6 = module_0.rolling_max(int_15)
+    assert list_6 == [2, 2, 2, 2]
+    int_16 = -1
+    int_17 = 0
+    int_18 = -2
+    int_19 = -4
+    int_20 = [int_16, int_17, int_18, int_2, int_19]
+    list_7 = module_0.rolling_max(int_20)
+    assert list_7 == [-1, 0, 0, 3, 3]

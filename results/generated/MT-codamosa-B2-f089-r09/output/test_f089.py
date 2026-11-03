@@ -2,18 +2,27 @@
 import f089 as module_0
 
 def test_case_0():
-    str_0 = ''
+    str_0 = 'hi'
     var_0 = module_0.encrypt(str_0)
-    assert var_0 == ''
-    str_1 = 'abc'
+    assert var_0 == 'lm'
+    str_1 = 'asdf'
     var_1 = module_0.encrypt(str_1)
-    assert var_1 == 'efg'
-    str_2 = 'xyz'
+    assert var_1 == 'wejh'
+    assert var_1 == 'ewhj'
+    str_2 = 'asdf gHJ!'
     var_2 = module_0.encrypt(str_2)
-    assert var_2 == 'bcd'
-    str_3 = 'hello, world!'
+    assert var_2 == 'wejh gHJ!'
+    assert var_2 == 'ewhj kHJ!'
+    str_3 = ''
     var_3 = module_0.encrypt(str_3)
-    assert var_3 == 'lipps, asvph!'
-    str_4 = 'ABC 123!'
+    assert var_3 == ''
+    str_4 = 'wxyz'
     var_4 = module_0.encrypt(str_4)
-    assert var_4 == 'ABC 123!'
+    assert var_4 == 'abcd'
+    str_5 = '12345'
+    var_5 = module_0.encrypt(str_5)
+    assert var_5 == '12345'
+    str_6 = 'Hello, World!'
+    var_6 = module_0.encrypt(str_6)
+    assert var_6 == 'Lipps, Asvph!'
+    assert var_6 == 'Hipps, Wsvph!'

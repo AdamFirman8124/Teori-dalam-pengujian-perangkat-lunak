@@ -4,15 +4,28 @@
 
 import pytest
 
-from isort.exceptions import FileSkipComment
+from isort.exceptions import FileSkipComment, FileSkipped, ISortError
 
 
-def test_file_skip_comment_message_and_attributes():
-    file_path = "some/path/to/file.py"
-    expected_message = f"{file_path} contains an file skip comment and was skipped."
+def test_file_skip_comment_initialization():
+    """Test that FileSkipComment correctly initializes its message and file_path.
 
-    with pytest.raises(FileSkipComment) as exc_info:
-        raise FileSkipComment(file_path)
+    This covers lines 58-59 in isort/exceptions.py, where the super().__init__
+    call formats the message and passes file_path to FileSkipped.
+    """
+    file_path = "/tmp/some_skipped_file.py"
 
-    assert str(exc_info.value) == expected_message
-    assert exc_info.value.file_path == file_path
+    exception = FileSkipComment(file_path)
+
+    # Verify inheritance chain
+    assert isinstance(exception, FileSkipComment)
+    assert isinstance(exception, FileSkipped)
+    assert isinstance(exception, ISortError)
+
+    # Verify the file_path attribute was set via FileSkipped.__init__
+    assert exception.file_path == file_path
+
+    # Verify the message was formatted correctly and passed to the base exception
+    assert str(exception) == (
+        f"{file_path} contains an file skip comment and was skipped."
+    )

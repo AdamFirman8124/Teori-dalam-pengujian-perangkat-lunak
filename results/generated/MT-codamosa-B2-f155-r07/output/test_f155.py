@@ -5,24 +5,24 @@ def test_case_0():
     int_0 = 123
     var_0 = module_0.even_odd_count(int_0)
     assert var_0 == (1, 2)
-    int_1 = 2468
+    int_1 = -12
     var_1 = module_0.even_odd_count(int_1)
-    assert var_1 == (4, 0)
-    int_2 = 1357
+    assert var_1 == (1, 1)
+    int_2 = 0
     var_2 = module_0.even_odd_count(int_2)
-    assert var_2 == (0, 4)
-    int_3 = 0
+    assert var_2 == (1, 0)
+    int_3 = 2468
     var_3 = module_0.even_odd_count(int_3)
-    assert var_3 == (1, 0)
-    int_4 = -123
+    assert var_3 == (4, 0)
+    int_4 = 13579
     var_4 = module_0.even_odd_count(int_4)
-    assert var_4 == (1, 2)
-    int_5 = -2468
+    assert var_4 == (0, 5)
+    int_5 = -1357
     var_5 = module_0.even_odd_count(int_5)
-    assert var_5 == (4, 0)
-    int_6 = 7
+    assert var_5 == (0, 4)
+    int_6 = 100
     var_6 = module_0.even_odd_count(int_6)
-    assert var_6 == (0, 1)
-    int_7 = 10
+    assert var_6 == (2, 1)
+    int_7 = 7
     var_7 = module_0.even_odd_count(int_7)
-    assert var_7 == (1, 1)
+    assert var_7 == (0, 1)

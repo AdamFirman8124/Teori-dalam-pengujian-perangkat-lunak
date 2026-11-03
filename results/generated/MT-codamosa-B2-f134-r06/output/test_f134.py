@@ -5,26 +5,51 @@ def test_case_0():
     str_0 = 'apple a'
     var_0 = module_0.check_if_last_char_is_a_letter(str_0)
     assert var_0 is True
-
-def test_case_1():
-    str_0 = 'A'
-    str_1 = 'EEndJ wIth Z'
-    var_0 = module_0.check_if_last_char_is_a_letter(str_1)
-    assert var_0 is True
-    str_2 = 'number 1'
-    var_1 = module_0.check_if_last_char_is_a_letter(str_2)
-    assert var_1 is False
-    str_3 = 'trailing space '
-    var_2 = module_0.check_if_last_char_is_a_letter(str_3)
-    assert var_2 is False
-    var_3 = module_0.check_if_last_char_is_a_letter(str_0)
-    assert var_3 is False
-    assert var_3 is True
-
-def test_case_2():
-    str_0 = 'EEndJ wIth Z'
-    var_0 = module_0.check_if_last_char_is_a_letter(str_0)
-    assert var_0 is True
-    str_1 = '}'
+    str_1 = 'a'
     var_1 = module_0.check_if_last_char_is_a_letter(str_1)
-    assert var_1 is False
+    assert var_1 is True
+    str_2 = 'z'
+    var_2 = module_0.check_if_last_char_is_a_letter(str_2)
+    assert var_2 is True
+    str_3 = 'apple A'
+    var_3 = module_0.check_if_last_char_is_a_letter(str_3)
+    assert var_3 is True
+    str_4 = 'A'
+    var_4 = module_0.check_if_last_char_is_a_letter(str_4)
+    assert var_4 is True
+    str_5 = 'apple'
+    var_5 = module_0.check_if_last_char_is_a_letter(str_5)
+    assert var_5 is False
+    str_6 = 'hello world'
+    var_6 = module_0.check_if_last_char_is_a_letter(str_6)
+    assert var_6 is False
+    str_7 = 'ab'
+    var_7 = module_0.check_if_last_char_is_a_letter(str_7)
+    assert var_7 is False
+    str_8 = 'apple 1'
+    var_8 = module_0.check_if_last_char_is_a_letter(str_8)
+    assert var_8 is False
+    str_9 = '1'
+    var_9 = module_0.check_if_last_char_is_a_letter(str_9)
+    assert var_9 is False
+    str_10 = '!'
+    var_10 = module_0.check_if_last_char_is_a_letter(str_10)
+    assert var_10 is False
+    str_11 = '?'
+    var_11 = module_0.check_if_last_char_is_a_letter(str_11)
+    assert var_11 is False
+    str_12 = ''
+    var_12 = module_0.check_if_last_char_is_a_letter(str_12)
+    assert var_12 is False
+    str_13 = 'apple '
+    var_13 = module_0.check_if_last_char_is_a_letter(str_13)
+    assert var_13 is False
+    str_14 = 'a  b'
+    var_14 = module_0.check_if_last_char_is_a_letter(str_14)
+    assert var_14 is True
+    str_15 = 'a\tb'
+    var_15 = module_0.check_if_last_char_is_a_letter(str_15)
+    assert var_15 is False
+    str_16 = 'apple é'
+    var_16 = module_0.check_if_last_char_is_a_letter(str_16)
+    assert var_16 is False

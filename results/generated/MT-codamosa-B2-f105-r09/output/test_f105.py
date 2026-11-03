@@ -3,8 +3,43 @@ import f105 as module_0
 
 def test_case_0():
     int_0 = 2
-    int_1 = 3
-    int_2 = 1
-    int_3 = [int_0, int_1, int_2]
-    var_0 = module_0.by_length(int_3)
-    assert var_0 == ['Three', 'Two', 'One']
+    int_1 = 1
+    int_2 = 4
+    int_3 = 5
+    int_4 = 8
+    int_5 = 3
+    int_6 = [int_0, int_1, int_1, int_2, int_3, int_4, int_0, int_5]
+    var_0 = module_0.by_length(int_6)
+    assert var_0 == ['Eight', 'Five', 'Four', 'Three', 'Two', 'Two', 'One', 'One']
+    var_1 = []
+    var_2 = module_0.by_length(var_1)
+    assert var_2 == []
+    int_7 = -1
+    int_8 = 55
+    int_9 = [int_1, int_7, int_8]
+    var_3 = module_0.by_length(int_9)
+    assert var_3 == ['One']
+    int_10 = 0
+    int_11 = 10
+    int_12 = -5
+    int_13 = 100
+    int_14 = [int_10, int_11, int_12, int_13]
+    var_4 = module_0.by_length(int_14)
+    assert var_4 == []
+    int_15 = 9
+    int_16 = [int_15]
+    var_5 = module_0.by_length(int_16)
+    assert var_5 == ['Nine']
+    int_17 = [int_5, int_5, int_5]
+    var_6 = module_0.by_length(int_17)
+    assert var_6 == ['Three', 'Three', 'Three']
+    int_18 = [int_1, int_0, int_5]
+    var_7 = module_0.by_length(int_18)
+    assert var_7 == ['Three', 'Two', 'One']
+    int_19 = 7
+    int_20 = 12
+    int_21 = [int_2, int_19, int_20, int_0, int_10]
+    var_8 = module_0.by_length(int_21)
+    assert var_8 == ['Seven', 'Four', 'Two']
+    str_0 = 'All tests passed!'
+    var_9 = print(str_0)

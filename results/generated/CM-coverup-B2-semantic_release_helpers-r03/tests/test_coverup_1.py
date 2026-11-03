@@ -2,89 +2,96 @@
 # asked: {"lines": [26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39], "branches": [[27, 28], [27, 29], [29, 30], [29, 39], [30, 31], [30, 32], [32, 33], [32, 34], [34, 35], [34, 36]]}
 # gained: {"lines": [26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39], "branches": [[27, 28], [27, 29], [29, 30], [29, 39], [30, 31], [30, 32], [32, 33], [32, 34], [34, 35], [34, 36]]}
 
+"""Unit tests for semantic_release.helpers.build_requests_session."""
+
 from unittest.mock import Mock
 
 import pytest
+from requests import Session
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 
-import semantic_release.helpers as helpers
-
-
-def test_build_requests_session_adds_status_hook_and_default_retry():
-    session = helpers.build_requests_session()
-    try:
-        response = Mock()
-        expected = object()
-        response.raise_for_status.return_value = expected
-
-        assert len(session.hooks["response"]) == 1
-        assert session.hooks["response"][0](response, object(), unused=True) is expected
-        response.raise_for_status.assert_called_once_with()
-
-        http_adapter = session.get_adapter("http://example.com")
-        https_adapter = session.get_adapter("https://example.com")
-        assert http_adapter is https_adapter
-        assert isinstance(http_adapter, helpers.HTTPAdapter)
-        assert isinstance(http_adapter.max_retries, helpers.Retry)
-    finally:
-        session.close()
+from semantic_release.helpers import build_requests_session
 
 
-def test_build_requests_session_accepts_integer_retry_count():
-    session = helpers.build_requests_session(raise_for_status=False, retry=3)
-    try:
-        adapter = session.get_adapter("https://example.com")
+def test_build_requests_session_defaults():
+    """Default arguments install the raise_for_status hook and a default Retry adapter."""
+    session = build_requests_session()
 
-        assert session.hooks["response"] == []
-        assert adapter is session.get_adapter("http://example.com")
-        assert adapter.max_retries.total == 3
-    finally:
-        session.close()
+    assert isinstance(session, Session)
 
+    # raise_for_status=True installs a single "response" hook that calls
+    # raise_for_status() on the response object it receives.
+    assert "response" in session.hooks
+    assert len(session.hooks["response"]) == 1
+    mock_response = Mock()
+    session.hooks["response"][0](mock_response)
+    mock_response.raise_for_status.assert_called_once_with()
 
-def test_build_requests_session_uses_provided_retry_instance():
-    retry = helpers.Retry(total=7)
-    session = helpers.build_requests_session(retry=retry)
-    try:
-        adapter = session.get_adapter("https://example.com")
-
-        assert adapter is session.get_adapter("http://example.com")
-        assert adapter.max_retries is retry
-    finally:
-        session.close()
-
-
-def test_build_requests_session_can_disable_retry_and_status_hook():
-    session = helpers.build_requests_session(raise_for_status=False, retry=False)
-    try:
-        http_adapter = session.get_adapter("http://example.com")
-        https_adapter = session.get_adapter("https://example.com")
-
-        assert session.hooks["response"] == []
-        assert http_adapter is not https_adapter
-        assert http_adapter.max_retries.total == 0
-        assert https_adapter.max_retries.total == 0
-    finally:
-        session.close()
+    # retry=True mounts one shared HTTPAdapter with a default Retry
+    # configuration on both the http:// and https:// prefixes.
+    http_adapter = session.get_adapter("http://example.com/path")
+    https_adapter = session.get_adapter("https://example.com/path")
+    assert isinstance(http_adapter, HTTPAdapter)
+    assert http_adapter is https_adapter
+    assert isinstance(http_adapter.max_retries, Retry)
+    assert http_adapter.max_retries.total == Retry().total
 
 
-def test_build_requests_session_rejects_invalid_retry_and_cleans_up(monkeypatch):
-    real_session_class = helpers.Session
-    created_sessions = []
+def test_build_requests_session_disabled(monkeypatch):
+    """raise_for_status=False and retry=False install neither hook nor adapter."""
+    constructed = []
+    real_http_adapter = HTTPAdapter
 
-    def tracked_session():
-        session = real_session_class()
-        created_sessions.append(session)
-        return session
+    def recording_http_adapter(*args, **kwargs):
+        constructed.append(kwargs)
+        return real_http_adapter(*args, **kwargs)
 
-    monkeypatch.setattr(helpers, "Session", tracked_session)
+    monkeypatch.setattr(
+        "semantic_release.helpers.HTTPAdapter", recording_http_adapter
+    )
 
-    try:
-        with pytest.raises(
-            ValueError, match=r"retry should be a bool, int or Retry instance\."
-        ):
-            helpers.build_requests_session(retry=object())
+    session = build_requests_session(raise_for_status=False, retry=False)
 
-        assert len(created_sessions) == 1
-    finally:
-        for session in created_sessions:
-            session.close()
+    assert isinstance(session, Session)
+    # No raise_for_status hook was installed.
+    assert session.hooks == {"response": []}
+    # build_requests_session did not build (nor mount) any extra adapter.
+    assert constructed == []
+    # Only the plain Session defaults remain: two distinct adapter instances.
+    http_adapter = session.get_adapter("http://example.com")
+    https_adapter = session.get_adapter("https://example.com")
+    assert isinstance(http_adapter, HTTPAdapter)
+    assert http_adapter is not https_adapter
+
+
+def test_build_requests_session_retry_as_int():
+    """An integer retry is converted into a Retry with that total."""
+    session = build_requests_session(retry=3)
+
+    adapter = session.get_adapter("https://example.com/path")
+    assert isinstance(adapter, HTTPAdapter)
+    assert isinstance(adapter.max_retries, Retry)
+    assert adapter.max_retries.total == 3
+    # The same adapter instance serves both http and https.
+    assert session.get_adapter("http://example.com/path") is adapter
+
+
+def test_build_requests_session_retry_as_retry_instance():
+    """A Retry instance is handed to the mounted adapter unchanged."""
+    retry = Retry(total=7)
+    session = build_requests_session(retry=retry)
+
+    adapter = session.get_adapter("https://example.com/path")
+    assert isinstance(adapter, HTTPAdapter)
+    assert adapter.max_retries is retry
+    assert adapter.max_retries.total == 7
+    assert session.get_adapter("http://example.com/path") is adapter
+
+
+def test_build_requests_session_invalid_retry_raises():
+    """Any other retry type is rejected with a ValueError."""
+    with pytest.raises(
+        ValueError, match=r"retry should be a bool, int or Retry instance\."
+    ):
+        build_requests_session(retry="not-a-retry")

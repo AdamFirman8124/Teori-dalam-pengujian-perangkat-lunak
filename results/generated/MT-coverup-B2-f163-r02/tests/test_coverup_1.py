@@ -7,56 +7,38 @@ import pytest
 from f163 import generate_integers
 
 
-def test_generate_integers_normal_range():
+def test_generate_integers_basic_range():
+    """Covers lines 3-6 with a typical ascending range."""
     assert generate_integers(2, 8) == [2, 4, 6, 8]
 
 
 def test_generate_integers_reversed_arguments():
+    """min/max handle swapped arguments; covers lines 3-4 branches."""
     assert generate_integers(8, 2) == [2, 4, 6, 8]
 
 
-def test_generate_integers_clamps_lower_bound():
-    assert generate_integers(0, 5) == [2, 4]
+def test_generate_integers_clamped_lower_bound():
+    """Values below 2 are clamped up to 2 (line 3 max branch)."""
+    assert generate_integers(0, 3) == [2]
 
 
-def test_generate_integers_clamps_upper_bound():
-    assert generate_integers(5, 20) == [6, 8]
+def test_generate_integers_clamped_upper_bound():
+    """Values above 8 are clamped down to 8 (line 4 min branch)."""
+    assert generate_integers(10, 12) == []
 
 
-def test_generate_integers_clamps_both_bounds():
-    assert generate_integers(-10, 100) == [2, 4, 6, 8]
-
-
-def test_generate_integers_odd_bounds_filter_evens():
-    assert generate_integers(3, 7) == [4, 6]
-
-
-def test_generate_integers_single_even():
+def test_generate_integers_equal_arguments():
+    """When a == b, lower == upper; range yields at most one value."""
     assert generate_integers(4, 4) == [4]
 
 
-def test_generate_integers_single_odd_empty():
-    assert generate_integers(3, 3) == []
+def test_generate_integers_single_even_value():
+    """A single even value in range is returned."""
+    assert generate_integers(7, 7) == []
 
 
-def test_generate_integers_below_range_empty():
-    assert generate_integers(0, 1) == []
-
-
-def test_generate_integers_above_range_empty():
-    assert generate_integers(9, 10) == []
-
-
-@pytest.mark.parametrize(
-    "a,b,expected",
-    [
-        (2, 2, [2]),
-        (7, 8, [8]),
-        (1, 9, [2, 4, 6, 8]),
-        (6, 3, [4, 6]),
-    ],
-)
-def test_generate_integers_parametrized(a, b, expected):
-    result = generate_integers(a, b)
-    assert result == expected
-    assert all(isinstance(i, int) and i % 2 == 0 and 2 <= i <= 8 for i in result)
+def test_generate_integers_filters_odd_numbers():
+    """The comprehension (line 6) filters out odd numbers."""
+    result = generate_integers(3, 6)
+    assert result == [4, 6]
+    assert all(i % 2 == 0 for i in result)

@@ -2,53 +2,55 @@
 # asked: {"lines": [3, 4, 6, 7, 8, 9, 10, 11], "branches": [[3, 4], [3, 6], [7, 8], [7, 11], [8, 7], [8, 9], [9, 7], [9, 10]]}
 # gained: {"lines": [3, 4, 6, 7, 8, 9, 10, 11], "branches": [[3, 4], [3, 6], [7, 8], [7, 11], [8, 7], [8, 9], [9, 7], [9, 10]]}
 
-import importlib
+"""Tests for f118.get_closest_vowel, covering every line and branch.
 
-import pytest
+The function under test is pure (no I/O, no global state), so no
+monkeypatching or teardown is required to avoid state pollution.
+"""
 
-
-@pytest.fixture()
-def get_closest_vowel():
-    module = importlib.import_module("f118")
-    return module.get_closest_vowel
+from f118 import get_closest_vowel
 
 
-def test_short_word_returns_empty(get_closest_vowel):
+def test_words_shorter_than_three_return_empty_string():
+    """Covers the `len(word) < 3` branch and its early `return ""`."""
     assert get_closest_vowel("") == ""
     assert get_closest_vowel("a") == ""
     assert get_closest_vowel("ab") == ""
 
 
-def test_vowel_between_consonants_is_returned(get_closest_vowel):
-    assert get_closest_vowel("rab") == "a"
-    assert get_closest_vowel("dog") == "o"
+def test_no_vowel_inside_scan_range_returns_empty_string():
+    """Covers the loop body's 'not a vowel' branch and the final `return ""`."""
+    assert get_closest_vowel("bcdfg") == ""
 
 
-def test_uppercase_vowel_is_returned(get_closest_vowel):
-    assert get_closest_vowel("rAb") == "A"
-    assert get_closest_vowel("dOg") == "O"
+def test_returns_closest_vowel_scanning_from_the_right():
+    """Covers the loop, both neighbour checks, and `return word[i]`."""
+    assert get_closest_vowel("cat") == "a"
+    assert get_closest_vowel("yogurt") == "u"
+    assert get_closest_vowel("strength") == "e"
+    # Uppercase vowels are in the vowel set; lowercase consonants are not.
+    assert get_closest_vowel("FULL") == "U"
+    assert get_closest_vowel("fUlL") == "U"
 
 
-def test_rightmost_qualifying_vowel_wins(get_closest_vowel):
-    assert get_closest_vowel("rabec") == "e"
-
-
-def test_vowel_with_vowel_after_is_skipped(get_closest_vowel):
+def test_vowel_with_vowel_right_neighbour_is_skipped():
+    """Covers `word[i + 1] not in vowels` evaluating to False."""
+    # Only candidate vowel 'a' (index 1) has vowel 'a' as its right neighbour.
     assert get_closest_vowel("baa") == ""
-    assert get_closest_vowel("tree") == ""
+    # The scan continues leftwards and can still succeed afterwards:
+    # i=3 'a' fails (right neighbour is a vowel), i=2 'c' skipped,
+    # i=1 'a' has consonant neighbours -> returned.
+    assert get_closest_vowel("cacaa") == "a"
 
 
-def test_vowel_with_vowel_before_is_skipped(get_closest_vowel):
-    assert get_closest_vowel("aab") == ""
-    assert get_closest_vowel("eat") == ""
+def test_vowel_with_vowel_left_neighbour_is_skipped():
+    """Covers `word[i - 1] not in vowels` evaluating to False
+    while the right-neighbour condition holds."""
+    # i=2: 'a' has consonant 'b' on the right but vowel 'a' on the left.
+    assert get_closest_vowel("baab") == ""
 
 
-def test_no_vowels_returns_empty(get_closest_vowel):
-    assert get_closest_vowel("bcd") == ""
-    assert get_closest_vowel("xyz") == ""
-
-
-def test_first_and_last_positions_are_never_considered(get_closest_vowel):
-    # 'a' at index 0 and 'e' at the last index are outside the loop range.
-    assert get_closest_vowel("abcde") == ""
-    assert get_closest_vowel("abce") == ""
+def test_vowel_between_two_vowels_is_skipped():
+    """Covers both neighbour conditions failing across loop iterations."""
+    # 'quick': i=2 'i' fails on left neighbour 'u'; i=1 'u' fails on right neighbour 'i'.
+    assert get_closest_vowel("quick") == ""

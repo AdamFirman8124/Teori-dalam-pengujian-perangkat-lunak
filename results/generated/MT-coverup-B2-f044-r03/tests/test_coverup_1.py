@@ -5,25 +5,26 @@
 from f044 import change_base
 
 
-def test_change_base_zero_returns_empty():
+def test_change_base_multiple_iterations():
+    # Exercises lines 3-7: loop body runs several times (true branch of while)
+    assert change_base(8, 2) == "1000"
+
+
+def test_change_base_base10():
+    # Multi-digit conversion in base 10
+    assert change_base(123, 10) == "123"
+
+
+def test_change_base_base16():
+    # Digits >= 10 are concatenated as their decimal string representations
+    assert change_base(255, 16) == "1515"
+
+
+def test_change_base_zero():
+    # Covers the false branch of the while condition (loop never entered)
     assert change_base(0, 2) == ""
 
 
-def test_change_base_negative_returns_empty():
-    assert change_base(-5, 2) == ""
-
-
-def test_change_base_single_iteration():
-    assert change_base(1, 2) == "1"
-    assert change_base(5, 10) == "5"
-
-
-def test_change_base_multiple_iterations_binary():
-    assert change_base(5, 2) == "101"
-    assert change_base(10, 2) == "1010"
-
-
-def test_change_base_other_bases():
-    assert change_base(8, 8) == "10"
-    assert change_base(10, 10) == "10"
-    assert change_base(7, 3) == "21"
+def test_change_base_negative():
+    # Negative x also skips the loop body entirely
+    assert change_base(-7, 3) == ""

@@ -2,27 +2,42 @@
 import f009 as module_0
 
 def test_case_0():
-    var_0 = []
-    list_0 = module_0.rolling_max(var_0)
-    assert list_0 == []
-    int_0 = 5
-    int_1 = [int_0]
-    list_1 = module_0.rolling_max(int_1)
-    assert list_1 == [5]
-    int_2 = 1
-    int_3 = 3
-    int_4 = 2
-    int_5 = 4
-    int_6 = [int_2, int_3, int_4, int_0, int_5]
-    list_2 = module_0.rolling_max(int_6)
-    assert list_2 == [1, 3, 3, 5, 5]
-    int_7 = [int_0, int_5, int_3, int_4, int_2]
-    list_3 = module_0.rolling_max(int_7)
-    assert list_3 == [5, 5, 5, 5, 5]
-    int_8 = -3
-    int_9 = -1
-    int_10 = -4
-    int_11 = 0
+    int_0 = 1
+    int_1 = 2
+    int_2 = 3
+    int_3 = 4
+    int_4 = [int_0, int_1, int_2, int_3]
+    list_0 = module_0.rolling_max(int_4)
+    assert list_0 == [1, 2, 3, 4]
+    int_5 = 5
+    int_6 = [int_0, int_2, int_1, int_5, int_3]
+    list_1 = module_0.rolling_max(int_6)
+    assert list_1 == [1, 3, 3, 5, 5]
+    int_7 = [int_5, int_3, int_2, int_1, int_0]
+    list_2 = module_0.rolling_max(int_7)
+    assert list_2 == [5, 5, 5, 5, 5]
+    int_8 = -1
+    int_9 = -3
+    int_10 = -2
+    int_11 = -5
     int_12 = [int_8, int_9, int_10, int_11]
-    list_4 = module_0.rolling_max(int_12)
-    assert list_4 == [-3, -1, -1, 0]
+    list_3 = module_0.rolling_max(int_12)
+    assert list_3 == [-1, -1, -1, -1]
+    int_13 = 7
+    int_14 = [int_13]
+    list_4 = module_0.rolling_max(int_14)
+    assert list_4 == [7]
+    var_0 = []
+    list_5 = module_0.rolling_max(var_0)
+    assert list_5 == []
+    int_15 = [int_1, int_1, int_1]
+    list_6 = module_0.rolling_max(int_15)
+    assert list_6 == [2, 2, 2]
+    int_16 = -5
+    int_17 = 0
+    int_18 = 10
+    int_19 = [int_16, int_17, int_18, int_2]
+    list_7 = module_0.rolling_max(int_19)
+    assert list_7 == [-5, 0, 10, 10]
+    str_0 = 'All test cases passed!'
+    var_1 = print(str_0)

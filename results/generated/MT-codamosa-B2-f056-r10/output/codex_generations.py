@@ -1,166 +1,189 @@
 
 
-# Generated at 2026-10-24 10:32:43.045174
+# Generated at 2026-11-02 15:32:25.477959
+# Unit test for function correct_bracketing
+def test_correct_bracketing():
+    assert module_0.correct_bracketing("") == True
+    assert module_0.correct_bracketing("<") == False
+    assert module_0.correct_bracketing(">") == False
+    assert module_0.correct_bracketing("<>") == True
+    assert module_0.correct_bracketing("><") == False
+    assert module_0.correct_bracketing("<<>") == False
+    assert module_0.correct_bracketing("<>>") == False
+    assert module_0.correct_bracketing("<><>") == True
+    assert module_0.correct_bracketing("<<>>") == True
+    assert module_0.correct_bracketing("<<<>>>") == True
+    assert module_0.correct_bracketing("<<><>>") == True
+    assert module_0.correct_bracketing("><<>") == False
+    assert module_0.correct_bracketing("><>>") == False
+    assert module_0.correct_bracketing("<<<<<>>>>>") == True
+    assert module_0.correct_bracketing("<><<>><>") == False
+
+# Generated at 2026-11-02 15:33:59.424460
+# Unit test for function correct_bracketing
+def test_correct_bracketing():
+# nonce:0f2c2e4b
+    # Balanced cases
+    assert module_0.correct_bracketing("") is True           # empty string is trivially balanced
+    assert module_0.correct_bracketing("<>") is True         # single pair
+    assert module_0.correct_bracketing("<<>>") is True       # nested brackets
+    assert module_0.correct_bracketing("<><>") is True       # sequential brackets
+    assert module_0.correct_bracketing("<<<><>>>") is True   # mixed nesting and sequencing
+    assert module_0.correct_bracketing("<<><<<>>>><>") is True
+
+    # Unbalanced: closing bracket before matching opening bracket
+    assert module_0.correct_bracketing(">") is False
+    assert module_0.correct_bracketing("><") is False
+    assert module_0.correct_bracketing(">>><<<") is False
+
+    # Unbalanced: unclosed opening brackets
+    assert module_0.correct_bracketing("<") is False
+    assert module_0.correct_bracketing("<<") is False
+    assert module_0.correct_bracketing("<<><") is False
+
+    # Unbalanced: extra closing brackets
+    assert module_0.correct_bracketing("<>>") is False
+    assert module_0.correct_bracketing("<><>>") is False
+    assert module_0.correct_bracketing("<<>><>>") is False
+
+    print("All correct_bracketing tests passed!")
+
+
+if __name__ == "__main__":
+    test_correct_bracketing()
+
+# Generated at 2026-11-02 15:35:05.103848
+# Unit test for function correct_bracketing
+def test_correct_bracketing():
+    # Empty string is trivially balanced
+    assert module_0.correct_bracketing("") is True
+
+    # Single open bracket is unbalanced
+    assert module_0.correct_bracketing("<") is False
+
+    # Single close bracket is unbalanced
+    assert module_0.correct_bracketing(">") is False
+
+    # Simple matched pair
+    assert module_0.correct_bracketing("<>") is True
+
+    # Nested brackets
+    assert module_0.correct_bracketing("<<>>") is True
+
+    # Deeply nested brackets
+    assert module_0.correct_bracketing("<<<>>>") is True
+
+    # Sequential pairs
+    assert module_0.correct_bracketing("<><>") is True
+
+    # Reversed order is invalid
+    assert module_0.correct_bracketing("><") is False
+
+    # Closing before opening
+    assert module_0.correct_bracketing("><<>") is False
+
+    # Unbalanced: extra opening
+    assert module_0.correct_bracketing("<<") is False
+
+    # Unbalanced: extra closing
+    assert module_0.correct_bracketing(">>") is False
+
+    # Unbalanced: extra closing at end
+    assert module_0.correct_bracketing("<><>>") is False
+
+    # Unbalanced: extra opening at end
+    assert module_0.correct_bracketing("<<><>") is False
+
+    # Prefix goes negative
+    assert module_0.correct_bracketing("><<") is False
+
+    # Balanced after going negative still fails
+    assert module_0.correct_bracketing("><><") is False
+
+    # Long balanced sequence
+    assert module_0.correct_bracketing("<" * 50 + ">" * 50) is True
+
+    # Long unbalanced sequence
+    assert module_0.correct_bracketing("<" * 50 + ">" * 49) is False
+
+    # Interleaved complex pattern
+    assert module_0.correct_bracketing("<<><>>") is True
+
+    # Complex invalid pattern
+    assert module_0.correct_bracketing("<<><>>>" ) is False
+
+# Generated at 2026-11-02 15:35:55.669430
 # Unit test for function correct_bracketing
 def test_correct_bracketing():
     # Simple valid cases
-    assert module_0.correct_bracketing("<") is False          # unclosed
-    assert module_0.correct_bracketing("<>") is True           # basic pair
-    assert module_0.correct_bracketing("<<><>>") is True       # nested
-    assert module_0.correct_bracketing("><") is False          # closes before opening
+    assert module_0.correct_bracketing("") == True
+    assert module_0.correct_bracketing("<>") == True
+    assert module_0.correct_bracketing("<<>>") == True
+    assert module_0.correct_bracketing("<><>") == True
+    assert module_0.correct_bracketing("<<<>>>") == True
+    assert module_0.correct_bracketing("<<><>>") == True
 
-    # Empty string: balanced (depth 0)
-    assert module_0.correct_bracketing("") is True
+    # Simple invalid cases
+    assert module_0.correct_bracketing("<") == False
+    assert module_0.correct_bracketing(">") == False
+    assert module_0.correct_bracketing("><") == False
+    assert module_0.correct_bracketing("<<>") == False
+    assert module_0.correct_bracketing("<>>") == False
+    assert module_0.correct_bracketing("<<>>><") == False
 
-    # Multiple sequential pairs
-    assert module_0.correct_bracketing("<><><>") is True
+    # Closing bracket before any opening bracket
+    assert module_0.correct_bracketing("><><") == False
 
-    # Deeply nested
-    assert module_0.correct_bracketing("<<<>>>") is True
+    # Unbalanced at end (extra opening)
+    assert module_0.correct_bracketing("<<<><>>") == False
 
-    # Extra closers at end
-    assert module_0.correct_bracketing("<>>") is False
+    # Unbalanced at end (extra closing)
+    assert module_0.correct_bracketing("<<><>>>") == False
 
-    # Extra opener at start, never recovers
-    assert module_0.correct_bracketing("<<>") is False
+    # Deep nesting
+    assert module_0.correct_bracketing("<<<<>>>>") == True
+    assert module_0.correct_bracketing("<<<<>>>>>") == False
 
-    # Negative depth mid-string, recovers, but must fail
-    assert module_0.correct_bracketing("><<>") is False
-
-    # Long balanced string
-    assert module_0.correct_bracketing("<" * 1000 + ">" * 1000) is True
-
-    # Long unbalanced string
-    assert module_0.correct_bracketing("<" * 1000 + ">" * 999) is False
-
-# Generated at 2026-10-24 10:32:44.490925
+# Generated at 2026-11-02 15:36:45.110367
 # Unit test for function correct_bracketing
 def test_correct_bracketing():
-    # Simple valid cases
-    assert module_0.correct_bracketing("<") is False          # unclosed
-    assert module_0.correct_bracketing("<>") is True           # basic pair
-    assert module_0.correct_bracketing("<<><>>") is True       # nested
-    assert module_0.correct_bracketing("><") is False          # closes before opening
-
-    # Empty string: balanced (depth 0)
+    # Empty string is trivially balanced
     assert module_0.correct_bracketing("") is True
 
-    # Multiple sequential pairs
+    # Simple valid pairs
+    assert module_0.correct_bracketing("<>") is True
+    assert module_0.correct_bracketing("><") is False
+
+    # Nested brackets
+    assert module_0.correct_bracketing("<<>>") is True
+    assert module_0.correct_bracketing("<<><>>") is True
+
+    # Sequential pairs
+    assert module_0.correct_bracketing("<><>") is True
     assert module_0.correct_bracketing("<><><>") is True
 
-    # Deeply nested
-    assert module_0.correct_bracketing("<<<>>>") is True
-
-    # Extra closers at end
-    assert module_0.correct_bracketing("<>>") is False
-
-    # Extra opener at start, never recovers
+    # Unclosed opening brackets
+    assert module_0.correct_bracketing("<") is False
+    assert module_0.correct_bracketing("<<") is False
     assert module_0.correct_bracketing("<<>") is False
 
-    # Negative depth mid-string, recovers, but must fail
-    assert module_0.correct_bracketing("><<>") is False
-
-    # Long balanced string
-    assert module_0.correct_bracketing("<" * 1000 + ">" * 1000) is True
-
-    # Long unbalanced string
-    assert module_0.correct_bracketing("<" * 1000 + ">" * 999) is False
-
-# Generated at 2026-10-24 10:32:45.803404
-# Unit test for function correct_bracketing
-def test_correct_bracketing():
-    # Simple valid cases
-    assert module_0.correct_bracketing("<") is False          # unclosed
-    assert module_0.correct_bracketing("<>") is True           # basic pair
-    assert module_0.correct_bracketing("<<><>>") is True       # nested
-    assert module_0.correct_bracketing("><") is False          # closes before opening
-
-    # Empty string: balanced (depth 0)
-    assert module_0.correct_bracketing("") is True
-
-    # Multiple sequential pairs
-    assert module_0.correct_bracketing("<><><>") is True
-
-    # Deeply nested
-    assert module_0.correct_bracketing("<<<>>>") is True
-
-    # Extra closers at end
+    # Extra closing brackets
+    assert module_0.correct_bracketing(">") is False
     assert module_0.correct_bracketing("<>>") is False
+    assert module_0.correct_bracketing("<>>>") is False
 
-    # Extra opener at start, never recovers
-    assert module_0.correct_bracketing("<<>") is False
+    # Wrong ordering
+    assert module_0.correct_bracketing("><<") is False
+    assert module_0.correct_bracketing("<><>>") is False
 
-    # Negative depth mid-string, recovers, but must fail
-    assert module_0.correct_bracketing("><<>") is False
+    # Complex valid case
+    assert module_0.correct_bracketing("<<<><>>>") is True
 
-    # Long balanced string
-    assert module_0.correct_bracketing("<" * 1000 + ">" * 1000) is True
+    # Depth goes negative in the middle
+    assert module_0.correct_bracketing("<><><") is False
 
-    # Long unbalanced string
-    assert module_0.correct_bracketing("<" * 1000 + ">" * 999) is False
+    print("All tests passed!")
 
-# Generated at 2026-10-24 10:32:47.110725
-# Unit test for function correct_bracketing
-def test_correct_bracketing():
-    # Simple valid cases
-    assert module_0.correct_bracketing("<") is False          # unclosed
-    assert module_0.correct_bracketing("<>") is True           # basic pair
-    assert module_0.correct_bracketing("<<><>>") is True       # nested
-    assert module_0.correct_bracketing("><") is False          # closes before opening
 
-    # Empty string: balanced (depth 0)
-    assert module_0.correct_bracketing("") is True
-
-    # Multiple sequential pairs
-    assert module_0.correct_bracketing("<><><>") is True
-
-    # Deeply nested
-    assert module_0.correct_bracketing("<<<>>>") is True
-
-    # Extra closers at end
-    assert module_0.correct_bracketing("<>>") is False
-
-    # Extra opener at start, never recovers
-    assert module_0.correct_bracketing("<<>") is False
-
-    # Negative depth mid-string, recovers, but must fail
-    assert module_0.correct_bracketing("><<>") is False
-
-    # Long balanced string
-    assert module_0.correct_bracketing("<" * 1000 + ">" * 1000) is True
-
-    # Long unbalanced string
-    assert module_0.correct_bracketing("<" * 1000 + ">" * 999) is False
-
-# Generated at 2026-10-24 10:32:48.413066
-# Unit test for function correct_bracketing
-def test_correct_bracketing():
-    # Simple valid cases
-    assert module_0.correct_bracketing("<") is False          # unclosed
-    assert module_0.correct_bracketing("<>") is True           # basic pair
-    assert module_0.correct_bracketing("<<><>>") is True       # nested
-    assert module_0.correct_bracketing("><") is False          # closes before opening
-
-    # Empty string: balanced (depth 0)
-    assert module_0.correct_bracketing("") is True
-
-    # Multiple sequential pairs
-    assert module_0.correct_bracketing("<><><>") is True
-
-    # Deeply nested
-    assert module_0.correct_bracketing("<<<>>>") is True
-
-    # Extra closers at end
-    assert module_0.correct_bracketing("<>>") is False
-
-    # Extra opener at start, never recovers
-    assert module_0.correct_bracketing("<<>") is False
-
-    # Negative depth mid-string, recovers, but must fail
-    assert module_0.correct_bracketing("><<>") is False
-
-    # Long balanced string
-    assert module_0.correct_bracketing("<" * 1000 + ">" * 1000) is True
-
-    # Long unbalanced string
-    assert module_0.correct_bracketing("<" * 1000 + ">" * 999) is False
+if __name__ == "__main__":
+    test_correct_bracketing()

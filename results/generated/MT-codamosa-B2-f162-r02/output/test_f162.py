@@ -2,40 +2,30 @@
 import f162 as module_0
 
 def test_case_0():
-    str_0 = 'hello'
+    str_0 = 'Hello world'
     var_0 = module_0.string_to_md5(str_0)
-    assert var_0 == '5d41402abc4b2a76b9719d911017c592'
+    assert var_0 == '3e25960a79dbc69b674cd4ec67a72c62'
+    str_1 = 'hello'
+    var_1 = module_0.string_to_md5(str_1)
+    assert var_1 == '5d41402abc4b2a76b9719d911017c592'
+    str_2 = 'test'
+    var_2 = module_0.string_to_md5(str_2)
+    assert var_2 == '098f6bcd4621d373cade4e832627b4f6'
+    str_3 = ' '
+    var_3 = module_0.string_to_md5(str_3)
+    assert var_3 == '7215ee9c7d9dc229d2921a40e17d9f35'
+    assert var_3 == '7215ee9c7d9dc229d2921a40e899ec5f'
+    str_4 = ''
+    var_4 = module_0.string_to_md5(str_4)
+    assert var_4 is None
+    var_5 = None
+    var_6 = module_0.string_to_md5(var_5)
+    assert var_6 is None
+    str_5 = 'Python 3.8'
+    var_7 = module_0.string_to_md5(str_5)
+    assert var_7 == '0fed476d5e1e7b57c436e1eb91d4f7e7'
+    var_8 = len(var_7)
+    assert var_8 == 32
 
 def test_case_1():
-    str_0 = 'hello world'
-    var_0 = module_0.string_to_md5(str_0)
-    assert var_0 == '5eb63bbbe01eeed093cb22bb8f5acdc3'
-    var_1 = module_0.string_to_md5(str_0)
-    assert var_1 == '5eb63bbbe01eeed093cb22bb8f5acdc3'
-    str_1 = ''
-    var_2 = module_0.string_to_md5(str_1)
-    assert var_2 is None
-    str_2 = 'a'
-    var_3 = module_0.string_to_md5(str_2)
-    assert var_3 == '0cc175b9c0f1b6a831c399e269772661'
-    str_3 = 'abc123!@#'
-    var_4 = module_0.string_to_md5(str_3)
-    assert var_4 == '65af2bf5f5c7d6802d01bf967917e0cd'
-    str_4 = 'Hello'
-    var_5 = module_0.string_to_md5(str_4)
-    assert var_5 == '8b1a9953c4611296a827abf8c47804d7'
-    str_5 = 'hello'
-    var_6 = module_0.string_to_md5(str_5)
-    assert var_6 == '5d41402abc4b2a76b9719d911017c592'
-    str_6 = 'hello '
-    var_7 = module_0.string_to_md5(str_6)
-    assert var_7 == 'f814893777bcc2295fff05f00e508da6'
-    var_8 = module_0.string_to_md5(str_5)
-    assert var_8 == '5d41402abc4b2a76b9719d911017c592'
-    str_7 = 'x'
-    int_0 = 10000
-    var_9 = str_7 * int_0
-    var_10 = module_0.string_to_md5(var_9)
-    assert var_10 == 'b567fcb68d8555227123ab87e255872e'
-    str_8 = 'All tests passed!'
-    var_11 = print(str_8)
+    pass

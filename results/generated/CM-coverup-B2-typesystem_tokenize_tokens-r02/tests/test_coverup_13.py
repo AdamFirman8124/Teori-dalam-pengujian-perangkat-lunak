@@ -7,32 +7,43 @@ import pytest
 from typesystem.tokenize.tokens import Token
 
 
-def test_token_repr_uses_class_name_and_string():
-    token = Token(value=None, start_index=0, end_index=4, content="hello world")
+def test_token_repr_contains_class_name_and_quoted_string():
+    """
+    Covers Token.__repr__ (line 64): the returned string must be built from
+    the class name and repr() of the token's `string` property.
+    """
+    # content="hello", indices 0..4 => string == "hello"
+    token = Token("some_value", 0, 4, content="hello")
 
-    assert token.string == "hello"
-    assert repr(token) == "Token('hello')"
+    result = repr(token)
+
+    assert result == "Token('hello')"
+    assert token.__class__.__name__ in result
+    assert repr(token.string) in result
 
 
-def test_token_repr_uses_subclass_name():
-    class SubToken(Token):
+def test_token_repr_uses_actual_subclass_name():
+    """
+    Ensures __repr__ uses self.__class__.__name__ rather than a hard-coded
+    class name, by checking a subclass instance.
+    """
+    class SpecialToken(Token):
         pass
 
-    token = SubToken(value=1, start_index=2, end_index=3, content="abcdef")
+    token = SpecialToken(123, 1, 3, content="abcdef")
 
-    assert token.string == "cd"
-    assert repr(token) == "SubToken('cd')"
+    result = repr(token)
 
-
-def test_token_repr_with_empty_string():
-    token = Token(value=None, start_index=0, end_index=-1, content="")
-
-    assert token.string == ""
-    assert repr(token) == "Token('')"
+    assert result == "SpecialToken('bcd')"
+    assert result.startswith(SpecialToken.__name__ + "(")
 
 
-def test_token_repr_quotes_are_escaped():
-    token = Token(value=None, start_index=0, end_index=2, content="a'b")
+def test_token_repr_with_empty_string_content():
+    """
+    Edge case: empty slice yields an empty string, whose repr is "''".
+    """
+    token = Token(None, 0, -1, content="anything")
 
-    assert token.string == "a'b"
-    assert repr(token) == 'Token("a\'b")'
+    result = repr(token)
+
+    assert result == "Token('')"

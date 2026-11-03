@@ -2,29 +2,29 @@
 # asked: {"lines": [3], "branches": []}
 # gained: {"lines": [3], "branches": []}
 
-import pytest
-
 from f086 import anti_shuffle
 
 
 def test_anti_shuffle_sorts_characters_within_each_word():
-    result = anti_shuffle("hello world")
-    assert result == "ehllo dlorw"
-
-
-def test_anti_shuffle_single_word():
-    assert anti_shuffle("dcba") == "abcd"
+    # Each word's characters are sorted; word order and spacing are preserved.
+    assert anti_shuffle("Hello World") == "Hello Wdlor"
 
 
 def test_anti_shuffle_empty_string():
+    # Empty input yields empty output (split(' ') produces ['']).
     assert anti_shuffle("") == ""
 
 
-def test_anti_shuffle_multiple_spaces_preserved():
-    assert anti_shuffle("ab  cd") == "ab  cd"
+def test_anti_shuffle_reorders_words_characters():
+    # Words whose characters are out of order get fully sorted.
+    assert anti_shuffle("bca fed") == "abc def"
 
 
-def test_anti_shuffle_no_state_pollution():
-    # Pure function: same input always yields same output, no side effects.
-    assert anti_shuffle("cba") == "abc"
-    assert anti_shuffle("cba") == "abc"
+def test_anti_shuffle_preserves_multiple_spaces():
+    # Consecutive spaces produce empty tokens that are preserved on join.
+    assert anti_shuffle("ba  ab") == "ab  ab"
+
+
+def test_anti_shuffle_single_word_and_single_char():
+    assert anti_shuffle("dcba") == "abcd"
+    assert anti_shuffle("a") == "a"

@@ -2,11 +2,30 @@
 import f024 as module_0
 
 def test_case_0():
-    int_0 = 10
+    int_0 = 3
     int_1 = module_0.largest_divisor(int_0)
-    assert int_1 == 5
-
-def test_case_1():
-    int_0 = -3961
-    int_1 = module_0.largest_divisor(int_0)
-    assert int_1 is None
+    assert int_1 == 1
+    int_2 = 10
+    int_3 = module_0.largest_divisor(int_2)
+    assert int_3 == 5
+    int_4 = 15
+    int_5 = module_0.largest_divisor(int_4)
+    assert int_5 == 5
+    int_6 = module_0.largest_divisor(int_0)
+    assert int_6 == 6
+    assert int_6 == 1
+    int_7 = 7
+    int_8 = module_0.largest_divisor(int_7)
+    assert int_8 == 1
+    int_9 = 2
+    int_10 = module_0.largest_divisor(int_9)
+    assert int_10 == 1
+    int_11 = module_0.largest_divisor(int_2)
+    assert int_11 == 50
+    assert int_11 == 5
+    int_12 = 49
+    int_13 = module_0.largest_divisor(int_12)
+    assert int_13 == 7
+    int_14 = 1000000
+    int_15 = module_0.largest_divisor(int_14)
+    assert int_15 == 500000

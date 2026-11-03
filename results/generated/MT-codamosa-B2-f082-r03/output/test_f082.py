@@ -14,27 +14,36 @@ def test_case_0():
     str_3 = 'abc'
     var_3 = module_0.prime_length(str_3)
     assert var_3 is True
-    str_4 = 'abcde'
+    str_4 = 'abcd'
     var_4 = module_0.prime_length(str_4)
-    assert var_4 is True
-    str_5 = 'abcdefg'
+    assert var_4 is False
+    str_5 = 'abcde'
     var_5 = module_0.prime_length(str_5)
     assert var_5 is True
-    str_6 = 'abcdefghijk'
+    str_6 = 'abcdef'
     var_6 = module_0.prime_length(str_6)
-    assert var_6 is True
-    str_7 = 'abcd'
+    assert var_6 is False
+    str_7 = 'abcdefg'
     var_7 = module_0.prime_length(str_7)
-    assert var_7 is False
-    str_8 = 'abcdef'
+    assert var_7 is True
+    str_8 = 'abcdefgh'
     var_8 = module_0.prime_length(str_8)
     assert var_8 is False
-    str_9 = 'abcdefgh'
+    str_9 = 'abcdefghi'
     var_9 = module_0.prime_length(str_9)
     assert var_9 is False
-    str_10 = 'abcdefghi'
+    str_10 = '0123456789'
     var_10 = module_0.prime_length(str_10)
     assert var_10 is False
-    str_11 = 'abcdefghij'
+    str_11 = 'hello world'
     var_11 = module_0.prime_length(str_11)
-    assert var_11 is False
+    assert var_11 is True
+    str_12 = 'Hello, World!'
+    var_12 = module_0.prime_length(str_12)
+    assert var_12 is True
+    str_13 = 'hello world!!'
+    var_13 = module_0.prime_length(str_13)
+    assert var_13 is False
+    assert var_13 is True
+    str_14 = 'All test_prime_length tests passed!'
+    var_14 = print(str_14)

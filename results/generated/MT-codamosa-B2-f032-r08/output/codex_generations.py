@@ -1,663 +1,244 @@
 
 
-# Generated at 2026-10-25 07:39:08.710172
+# Generated at 2026-11-03 01:54:55.286321
 # Unit test for function find_zero
+def test_find_zero():
+    # Linear polynomial: 2x + 3 -> zero at x = -1.5
+    xs = [3, 2]
+    assert abs(poly(xs, module_0.find_zero(xs))) < 1e-6
 
-# Generated at 2026-10-25 07:39:11.126199
+    # Quadratic polynomial: x^2 - 4 -> zero at x = 2 (or -2)
+    xs = [-4, 0, 1]
+    zero = module_0.find_zero(xs)
+    assert abs(poly(xs, zero)) < 1e-6
+    assert abs(abs(zero) - 2.0) < 1e-6
+
+    # Cubic polynomial: x^3 - 8 -> zero at x = 2
+    xs = [-8, 0, 0, 1]
+    zero = module_0.find_zero(xs)
+    assert abs(poly(xs, zero)) < 1e-6
+    assert abs(zero - 2.0) < 1e-5
+
+    # Polynomial: x - 1 -> zero at x = 1
+    xs = [-1, 1]
+    assert abs(module_0.find_zero(xs) - 1.0) < 1e-6
+
+    # Polynomial: 5x - 10 -> zero at x = 2
+    xs = [-10, 5]
+    assert abs(module_0.find_zero(xs) - 2.0) < 1e-6
+
+    # Polynomial with negative leading coefficient: -x + 4 -> zero at x = 4
+    xs = [4, -1]
+    assert abs(module_0.find_zero(xs) - 4.0) < 1e-6
+
+    # Larger interval expansion: 1000x - 1 -> zero at x = 0.001
+    xs = [-1, 1000]
+    assert abs(poly(xs, module_0.find_zero(xs))) < 1e-6
+
+    # Verify returned value is a float
+    xs = [2, 1]
+    assert isinstance(module_0.find_zero(xs), float)
+
+    # Polynomial: x^2 + 3x - 10 -> roots at x = 2 and x = -5
+    xs = [-10, 3, 1]
+    zero = module_0.find_zero(xs)
+    assert abs(poly(xs, zero)) < 1e-6
+
+# Generated at 2026-11-03 01:56:37.483905
 # Unit test for function find_zero
+def test_find_zero():
+    # Linear polynomial: 1 + 2x = 0 has root x = -0.5
+    assert abs(module_0.find_zero([1, 2]) - (-0.5)) < 1e-6
 
-# Generated at 2026-10-25 07:39:13.543578
-# Unit test for function find_zero
+    # poly evaluated at the returned zero should be close to zero
+    assert abs(poly([1, 2], module_0.find_zero([1, 2]))) < 1e-6
 
-# Generated at 2026-10-25 07:39:15.962429
-# Unit test for function find_zero
+    # Cubic: -6 + 11x - 6x^2 + x^3 has roots 1, 2, 3
+    assert abs(poly([-6, 11, -6, 1], module_0.find_zero([-6, 11, -6, 1]))) < 1e-6
 
-# Generated at 2026-10-25 07:39:18.421497
-# Unit test for function find_zero
+    # Quadratic: -4 + x^2 has roots -2 and 2
+    assert abs(poly([-4, 0, 1], module_0.find_zero([-4, 0, 1]))) < 1e-6
 
-# Generated at 2026-10-25 07:39:20.840035
-# Unit test for function find_zero
+    # Result should be a float
+    assert isinstance(module_0.find_zero([1, 2]), float)
 
-# Generated at 2026-10-25 07:39:23.257571
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:39:25.668648
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:39:28.083176
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:39:30.501203
-# Unit test for function poly
-
-# Generated at 2026-10-25 07:39:39.745364
-# Unit test for function poly
-def test_poly():assert module_0.poly([1, 2, 3], 2.0) == 17.0
-
-# Generated at 2026-10-25 07:39:49.986988
+# Generated at 2026-11-03 01:57:13.526708
 # Unit test for function poly
 def test_poly():
-    assert module_0.poly([], 2.0) == 0
-    assert module_0.poly([1], 100.0) == 1.0
-    assert math.isclose(module_0.poly([1, 2, 3], 2.0), 17.0)  # 1 + 2*2 + 3*4
-    assert math.isclose(module_0.poly([0, 1], 5.0), 5.0)      # x
-    assert math.isclose(module_0.poly([2, -3, 1], 0.0), 2.0)  # constant term
-    assert math.isclose(module_0.poly([0, 0, 1], 3.0), 9.0)   # x^2
-    assert math.isclose(module_0.poly([1, 1], -1.0), 0.0)
-    assert math.isclose(module_0.poly([-2, 0, 1, 1], 2.0), 10.0) # -2 + 4 + 8
+    # Constant polynomial
+    assert module_0.poly([5], 0) == 5
+    assert module_0.poly([5], 100.0) == 5
 
-# Generated at 2026-10-25 07:40:03.005893
-# Unit test for function find_zero
+    # Linear polynomial: 2x + 3
+    assert math.isclose(module_0.poly([3, 2], 0), 3)
+    assert math.isclose(module_0.poly([3, 2], 1), 5)
+    assert math.isclose(module_0.poly([3, 2], -2), -1)
 
-# Generated at 2026-10-25 07:40:05.474582
-# Unit test for function find_zero
+    # Quadratic polynomial: 1 + 2x + 3x^2
+    assert math.isclose(module_0.poly([1, 2, 3], 0), 1)
+    assert math.isclose(module_0.poly([1, 2, 3], 2), 1 + 2 * 2 + 3 * 4)
+    assert math.isclose(module_0.poly([1, 2, 3], -1), 1 - 2 + 3)
 
-# Generated at 2026-10-25 07:40:07.989787
-# Unit test for function find_zero
+    # Cubic polynomial with known root: x^3 - 6x^2 + 11x - 6 = (x-1)(x-2)(x-3)
+    xs = [-6, 11, -6, 1]
+    assert math.isclose(module_0.poly(xs, 1), 0)
+    assert math.isclose(module_0.poly(xs, 2), 0)
+    assert math.isclose(module_0.poly(xs, 3), 0)
+    assert math.isclose(module_0.poly(xs, 0.5), 0.5 ** 3 - 6 * 0.25 + 11 * 0.5 - 6)
 
-# Generated at 2026-10-25 07:40:10.473069
-# Unit test for function find_zero
+    # Negative x values
+    assert math.isclose(module_0.poly([0, 1], -2), -2)
+    assert math.isclose(module_0.poly([0, 0, 1], -3), 9)
 
-# Generated at 2026-10-25 07:40:12.973636
-# Unit test for function find_zero
+    # Empty coefficient list evaluates to 0
+    assert module_0.poly([], 42.0) == 0
 
-# Generated at 2026-10-25 07:40:15.467138
-# Unit test for function find_zero
+    # Fractional x
+    assert math.isclose(module_0.poly([1, 1], 0.5), 1.5)
 
-# Generated at 2026-10-25 07:40:17.946625
-# Unit test for function find_zero
 
-# Generated at 2026-10-25 07:40:20.460020
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:40:22.984137
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:40:25.473213
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:40:27.973725
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:40:30.484179
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:40:33.110922
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:40:35.590154
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:40:38.084490
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:40:40.638309
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:40:43.092581
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:40:45.548072
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:40:48.040746
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:40:50.551746
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:40:53.031899
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:40:55.550384
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:40:58.015551
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:41:00.527216
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:41:02.990612
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:41:05.477710
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:41:07.965534
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:41:10.455640
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:41:12.969750
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:41:15.444727
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:43:36.518205
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:43:40.126087
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:43:43.581017
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:43:47.147829
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:43:50.034088
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:43:53.187791
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:43:56.938594
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:44:00.539509
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:44:03.748449
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:44:06.692468
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:44:10.946564
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:44:13.603916
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:44:16.655072
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:44:19.830654
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:44:23.219416
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:44:26.687960
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:44:29.753420
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:44:32.304605
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:44:36.023997
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:44:39.403579
-# Unit test for function find_zero
-def test_find_zero():assert abs(module_0.find_zero([-2, 1]) - 2.0) < 1e-9
-
-# Generated at 2026-10-25 07:44:41.914702
 # Unit test for function find_zero
 def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
+    # Zero of 2x + 1 is -0.5
+    assert math.isclose(find_zero([1, 2]), -0.5, abs_tol=1e-8)
 
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
+    # Zero of -6 + 11x - 6x^2 + x^3 = (x-1)(x-2)(x-3), bracketing finds one root
+    root = find_zero([-6, 11, -6, 1])
+    assert any(math.isclose(root, r, abs_tol=1e-6) for r in (1.0, 2.0, 3.0))
 
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
+    # Zero of x is 0
+    assert math.isclose(find_zero([0, 1]), 0.0, abs_tol=1e-8)
 
-# Generated at 2026-10-25 07:44:44.280342
+
+if __name__ == "__main__":
+    test_poly()
+    test_find_zero()
+    print("All tests passed.")
+
+# Generated at 2026-11-03 01:58:14.772103
 # Unit test for function find_zero
 def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:44:45.878632
-# Unit test for function find_zero
-def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:45:59.630481
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:46:02.590490
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:46:06.475584
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:46:09.673678
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:46:13.438620
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:46:16.821129
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:46:21.221501
-# Unit test for function find_zero
-
-# Generated at 2026-10-25 07:46:36.769068
-# Unit test for function find_zero
-def test_find_zero():
-    # Linear polynomial: 2x - 3 = 0 -> root at 1.5
-    xs1 = [2.0, -3.0]
+    # Linear polynomial: 2x + 3, root at x = -1.5
+    xs1 = [3, 2]
     root1 = module_0.find_zero(xs1)
     assert abs(poly(xs1, root1)) < 1e-6
 
-    # Quadratic polynomial: x^2 - 4 = 0 -> root at 2 or -2
-    xs2 = [-4.0, 0.0, 1.0]
+    # Quadratic polynomial: x^2 - 4, roots at x = -2 and x = 2
+    xs2 = [-4, 0, 1]
     root2 = module_0.find_zero(xs2)
     assert abs(poly(xs2, root2)) < 1e-6
-    assert abs(abs(root2) - 2.0) < 1e-6
 
-    # Cubic polynomial: (x-1)(x-2)(x-3) = x^3 - 6x^2 + 11x - 6
-    xs3 = [-6.0, 11.0, -6.0, 1.0]
+    # Cubic polynomial: x^3 - 1, root at x = 1
+    xs3 = [-1, 0, 0, 1]
     root3 = module_0.find_zero(xs3)
     assert abs(poly(xs3, root3)) < 1e-6
 
-    # Polynomial with root at zero: 5x = 0 -> root at 0
-    xs4 = [0.0, 5.0]
+    # Cubic polynomial: (x-1)(x-2)(x-3) = x^3 - 6x^2 + 11x - 6
+    xs4 = [-6, 11, -6, 1]
     root4 = module_0.find_zero(xs4)
-    assert abs(root4) < 1e-6
+    assert abs(poly(xs4, root4)) < 1e-6
 
-# Generated at 2026-10-25 07:46:38.416823
+    # Polynomial with no sign change within [-1, 1] initially:
+    # 5x + 1, root at x = -0.2
+    xs5 = [1, 5]
+    root5 = module_0.find_zero(xs5)
+    assert abs(poly(xs5, root5)) < 1e-6
+
+    # Verify the found root brackets correctly: sign of polynomial near root ~ 0
+    assert poly(xs1, root1 - 0.1) * poly(xs1, root1 + 0.1) <= 0
+
+    print("All tests passed for find_zero!")
+
+
+test_find_zero()
+
+# Generated at 2026-11-03 01:59:17.645420
+# Unit test for function poly
+def test_poly():
+    assert module_0.poly([1, 2, 3], 2) == 17.0
+    assert module_0.poly([1, 2], 3) == 7.0
+    assert module_0.poly([5], 10) == 5.0
+    assert module_0.poly([1, 2, 3, 4], 0) == 1.0
+    assert module_0.poly([-1, 1], 1) == 0.0
+    assert module_0.poly([2, -6, 2], -3) == 38.0
+    assert module_0.poly([0, 0, 1], 5) == 25.0
+    assert module_0.poly([1.5, 2.5], 2.0) == 6.5
+    assert module_0.poly([], 1) == 0
+    assert module_0.poly([-3, 0, 2], 2) == 5.0
+
+
 # Unit test for function find_zero
 def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
+    assert abs(find_zero([-6, 11, -6, 1]) - 1.0) < 1e-4        # roots 1, 2, 3
+    assert abs(find_zero([-4, 1]) - 4.0) < 1e-4                # root 4
+    assert abs(find_zero([2, -3]) - (2 / 3)) < 1e-4            # root 2/3
+    assert abs(find_zero([-1, 0, 1]) - 1.0) < 1e-4             # roots -1, 1
+    assert abs(module_0.poly([find_zero([1, 0, -2])], find_zero([1, 0, -2]))) < 1e-4  # root of x^2 - 2
+    assert abs(find_zero([5, -5]) - 1.0) < 1e-4                # root 1
+    assert abs(find_zero([0, 1]) - 0.0) < 1e-4                 # root 0
+    assert abs(find_zero([-10, 0, 1]) - math.sqrt(10)) < 1e-4  # root sqrt(10)
 
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:46:41.526875
+# Generated at 2026-11-03 02:00:17.695320
 # Unit test for function find_zero
 def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
+    # Test 1: linear polynomial 2x + 3 = 0 -> root at x = -1.5
+    result = module_0.find_zero([3, 2])
+    assert math.isclose(poly([3, 2], result), 0, abs_tol=1e-6), \
+        f"Expected poly value near 0, got {poly([3, 2], result)}"
+    assert math.isclose(result, -1.5, abs_tol=1e-6), \
+        f"Expected root near -1.5, got {result}"
 
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
+    # Test 2: linear polynomial x - 4 = 0 -> root at x = 4.0
+    result = module_0.find_zero([-4, 1])
+    assert math.isclose(result, 4.0, abs_tol=1e-6), \
+        f"Expected root near 4.0, got {result}"
 
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
+    # Test 3: quadratic (x - 1)(x - 2) = x^2 - 3x + 2 -> root at 1.0 or 2.0
+    result = module_0.find_zero([2, -3, 1])
+    assert math.isclose(poly([2, -3, 1], result), 0, abs_tol=1e-6), \
+        f"Expected poly value near 0, got {poly([2, -3, 1], result)}"
 
-# Generated at 2026-10-25 07:46:43.414514
+    # Test 4: quadratic with root at 0.5: 2x - 1 = 0
+    result = module_0.find_zero([-1, 2])
+    assert math.isclose(result, 0.5, abs_tol=1e-6), \
+        f"Expected root near 0.5, got {result}"
+
+    # Test 5: polynomial with larger coefficients: -6 + 11x - 6x^2
+    # roots at 1, 2, 3
+    result = module_0.find_zero([-6, 11, -6])
+    assert math.isclose(poly([-6, 11, -6], result), 0, abs_tol=1e-6), \
+        f"Expected poly value near 0, got {poly([-6, 11, -6], result)}"
+
+    # Test 6: cubic x^3 - 8 = 0 -> root at x = 2.0
+    result = module_0.find_zero([-8, 0, 0, 1])
+    assert math.isclose(result, 2.0, abs_tol=1e-6), \
+        f"Expected root near 2.0, got {result}"
+
+    # Test 7: result should be a float
+    result = module_0.find_zero([1, 1])
+    assert isinstance(result, float), f"Expected float, got {type(result)}"
+
+    # Test 8: symmetric check around known root x = 0.25 for 4x - 1
+    result = module_0.find_zero([-1, 4])
+    assert abs(result - 0.25) < 1e-8, \
+        f"Expected root near 0.25, got {result}"
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_find_zero()
+
+# Generated at 2026-11-03 02:01:27.682708
 # Unit test for function find_zero
 def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:46:45.669837
-# Unit test for function find_zero
-def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:46:46.963857
-# Unit test for function find_zero
-def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:46:49.235406
-# Unit test for function find_zero
-def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:46:51.714689
-# Unit test for function find_zero
-def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:48:19.299038
-# Unit test for function find_zero
-def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:48:22.340005
-# Unit test for function find_zero
-def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:48:24.379686
-# Unit test for function find_zero
-def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:48:25.845152
-# Unit test for function find_zero
-def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:48:27.897644
-# Unit test for function find_zero
-def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:48:30.015660
-# Unit test for function find_zero
-def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:48:32.407050
-# Unit test for function find_zero
-def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:48:35.698345
-# Unit test for function find_zero
-def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:48:36.917494
-# Unit test for function find_zero
-def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-# Generated at 2026-10-25 07:48:39.778562
-# Unit test for function find_zero
-def test_find_zero():
-    # x - 2  -> root at 2
-    xs = [-2.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(z - 2.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # x^2 - 1  -> roots at Â±1 (converges to -1)
-    xs = [-1.0, 0.0, 1.0]
-    z = module_0.find_zero(xs)
-    assert abs(abs(z) - 1.0) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
-
-    # 2x + 1  -> root at -0.5
-    xs = [1.0, 2.0]
-    z = module_0.find_zero(xs)
-    assert abs(z + 0.5) < 1e-6, z
-    assert abs(poly(xs, z)) < 1e-6
+    # Linear: 1 + 2x = 0 -> x = -0.5
+    assert abs(module_0.find_zero([1, 2]) + 0.5) < 1e-6
+    # Linear: 5 + 4x = 0 -> x = -1.25 (requires interval doubling)
+    assert abs(module_0.find_zero([5, 4]) + 1.25) < 1e-6
+    # Linear: -3 + x = 0 -> x = 3 (zero found outside initial [-1, 1])
+    assert abs(module_0.find_zero([-3, 1]) - 3.0) < 1e-6
+    # Cubic: (x-1)(x-2)(x-3), bisection converges to root at x = 1
+    assert abs(module_0.find_zero([-6, 11, -6, 1]) - 1.0) < 1e-6
+    # Quadratic: (x-1)(x-2), bisection converges to root at x = 1
+    assert abs(module_0.find_zero([2, -3, 1]) - 1.0) < 1e-6

@@ -5,37 +5,24 @@ def test_case_0():
     str_0 = ''
     var_0 = module_0.digitSum(str_0)
     assert var_0 == 0
-    str_1 = 'abc'
+    str_1 = 'abAB'
     var_1 = module_0.digitSum(str_1)
-    assert var_1 == 0
-    str_2 = 'ABC'
+    assert var_1 == 131
+    str_2 = 'abcCd'
     var_2 = module_0.digitSum(str_2)
-    assert var_2 == 198
-    str_3 = 'A'
-    var_3 = ord(str_3)
-    str_4 = 'B'
-    var_4 = ord(str_4)
-    var_5 = var_3 + var_4
-    str_5 = 'C'
-    var_6 = ord(str_5)
-    var_7 = var_5 + var_6
-    str_6 = 'aBcD'
-    var_8 = module_0.digitSum(str_6)
-    assert var_8 == 134
-    var_9 = ord(str_4)
-    str_7 = 'D'
-    var_10 = ord(str_7)
-    var_11 = var_9 + var_10
-    str_8 = 'A1!z'
-    var_12 = module_0.digitSum(str_8)
-    assert var_12 == 65
-    var_13 = ord(str_3)
-
-def test_case_1():
-    list_0 = []
-    str_0 = '+"<Il'
-    tuple_0 = (str_0,)
-    var_0 = module_0.digitSum(tuple_0)
-    assert var_0 == 0
-    var_1 = module_0.digitSum(list_0)
-    assert var_1 == 0
+    assert var_2 == 67
+    str_3 = 'helloE'
+    var_3 = module_0.digitSum(str_3)
+    assert var_3 == 69
+    str_4 = 'woArBld'
+    var_4 = module_0.digitSum(str_4)
+    assert var_4 == 131
+    str_5 = 'aAaaaXa'
+    var_5 = module_0.digitSum(str_5)
+    assert var_5 == 153
+    str_6 = '123!@#'
+    var_6 = module_0.digitSum(str_6)
+    assert var_6 == 0
+    str_7 = 'A'
+    var_7 = module_0.digitSum(str_7)
+    assert var_7 == 65

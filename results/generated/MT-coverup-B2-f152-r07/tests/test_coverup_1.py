@@ -7,38 +7,34 @@ import pytest
 from f152 import compare
 
 
-def test_compare_returns_absolute_differences():
-    game = [1, 2, 3, 4, 5]
-    guess = [1, 3, 3, 3, 5]
+def test_compare_basic():
+    """Execute line 3: the list comprehension computing absolute differences."""
+    game = [1, 2, 3, 4, 5, 1]
+    guess = [1, 2, 3, 4, 2, -2]
     result = compare(game, guess)
-    assert result == [0, 1, 0, 1, 0]
+    assert result == [0, 0, 0, 0, 3, 3]
     assert isinstance(result, list)
-    assert len(result) == len(game)
 
 
-def test_compare_empty_inputs_return_empty_list():
+def test_compare_all_equal():
+    """When every guess matches, all differences are zero."""
+    assert compare([0, 5, 10], [0, 5, 10]) == [0, 0, 0]
+
+
+def test_compare_empty_inputs():
+    """zip over empty sequences yields an empty result list."""
     assert compare([], []) == []
 
 
-def test_compare_truncates_to_shortest_input():
-    # zip stops at the shortest iterable
-    assert compare([1, 2, 3], [1, 2]) == [0, 0]
-    assert compare([1], [1, 2, 3]) == [0]
+def test_compare_tuples_and_negative_values():
+    """Works with any iterable pairs, including negative numbers."""
+    assert compare((3, -4), (-3, 4)) == [6, 8]
 
 
-def test_compare_handles_negative_values_and_floats():
-    result = compare([-1, -5, 0.5], [1, -2, 0.25])
-    assert result == pytest.approx([2, 3, 0.25])
-
-
-def test_compare_accepts_arbitrary_iterables():
-    assert compare((1, 2, 3), iter([3, 2, 1])) == [2, 0, 2]
-
-
-def test_compare_does_not_mutate_inputs():
-    game = [1, 2, 3]
-    guess = [4, 5, 6]
-    game_copy, guess_copy = list(game), list(guess)
-    compare(game, guess)
-    assert game == game_copy
-    assert guess == guess_copy
+def test_compare_result_length_matches_inputs():
+    """Postcondition: output length equals the shorter input length."""
+    game = [1, 2, 3, 4]
+    guess = [4, 3, 2]
+    result = compare(game, guess)
+    assert len(result) == min(len(game), len(guess))
+    assert result == [3, 1, 1]

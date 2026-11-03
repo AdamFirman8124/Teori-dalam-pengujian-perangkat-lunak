@@ -2,14 +2,27 @@
 import f125 as module_0
 
 def test_case_0():
-    str_0 = '?y-xmq,g9Y,-nto*'
+    str_0 = 'Hello World'
     var_0 = module_0.split_words(str_0)
-    assert var_0 == ['?y-xmq', 'g9Y', '-nto*']
-    str_1 = 'e'
+    assert var_0 == ['Hello', 'World']
+    str_1 = 'one,two,three'
     var_1 = module_0.split_words(str_1)
-    assert var_1 == 0
-
-def test_case_1():
-    str_0 = 'hello world'
-    var_0 = module_0.split_words(str_0)
-    assert var_0 == ['hello', 'world']
+    assert var_1 == ['one', 'two', 'three']
+    str_2 = 'abcdef'
+    var_2 = module_0.split_words(str_2)
+    assert var_2 == 3
+    str_3 = 'aaaa'
+    var_3 = module_0.split_words(str_3)
+    assert var_3 == 0
+    str_4 = 'BBBB'
+    var_4 = module_0.split_words(str_4)
+    assert var_4 == 0
+    str_5 = 'zzzz'
+    var_5 = module_0.split_words(str_5)
+    assert var_5 == 4
+    str_6 = ''
+    var_6 = module_0.split_words(str_6)
+    assert var_6 == 0
+    str_7 = '123!@#bd'
+    var_7 = module_0.split_words(str_7)
+    assert var_7 == 2

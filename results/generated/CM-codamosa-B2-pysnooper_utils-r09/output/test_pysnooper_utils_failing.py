@@ -3,52 +3,98 @@ import pysnooper.utils as module_0
 
 def test_case_0():
     try:
-        str_0 = '.n'
-        set_0 = {str_0, str_0, str_0, str_0, str_0}
-        var_0 = module_0.get_shortish_repr(set_0, set_0, str_0)
+        int_0 = 1
+        set_0 = {int_0, int_0}
+        var_0 = module_0.ensure_tuple(set_0)
+        assert var_0 == (1,)
+        dict_0 = None
+        var_1 = module_0.get_shortish_repr(dict_0)
+        str_0 = 'é'
+        var_2 = module_0.shitcode(str_0)
+        assert var_2 == 'é'
+        var_3 = module_0.shitcode(str_0)
+        assert var_3 == '?'
+        assert var_3 == 'é'
+        str_1 = '€'
+        var_4 = module_0.shitcode(str_1)
+        assert var_4 == '?'
+        str_2 = 'א'
+        var_5 = module_0.shitcode(str_2)
+        assert var_5 == '?'
+        var_6 = module_0.shitcode(str_0)
+        assert var_6 == 'a?b?c'
+        assert var_6 == 'é'
+        str_3 = "\x0cCS'RR!sr(ud|>Bc"
+        var_7 = module_0.shitcode(str_3)
+        assert var_7 == 'héllo?'
+        assert var_7 == "\x0cCS'RR!sr(ud|>Bc"
+        var_8 = module_0.shitcode(dict_0)
     except BaseException:
         pass
 
 def test_case_1():
     try:
-        set_0 = set()
-        int_0 = 111
-        var_0 = module_0.ensure_tuple(int_0)
-        assert var_0 == (111,)
+        int_0 = 123
+        var_0 = ()
+        var_1 = module_0.get_repr_function(int_0, var_0)
         assert len(module_0.string_types) == 1
         assert len(module_0.file_reading_errors) == 3
-        str_0 = '22yV_]z3-*6%ah{o(VA('
-        var_1 = module_0.shitcode(str_0)
-        assert var_1 == '22yV_]z3-*6%ah{o(VA('
-        var_2 = module_0.get_shortish_repr(set_0)
-        assert var_2 == 'set()'
-        dict_0 = None
-        var_3 = module_0.get_shortish_repr(dict_0, str_0)
+        str_0 = 'abc'
+        var_2 = []
+        var_3 = module_0.get_repr_function(str_0, var_2)
+        var_4 = lambda x: var_6.format(x)
+        str_1 = 'BIG'
+        var_5 = lambda x: str_1
+        int_1 = 10
+        var_6 = lambda x: x > int_1
+        var_7 = (var_6, var_5)
+        var_8 = (var_7,)
+        var_9 = module_0.get_repr_function(int_1, var_8)
     except BaseException:
         pass
 
 def test_case_2():
     try:
-        dict_0 = {}
-        list_0 = []
-        bytes_0 = b'^b\nax'
-        var_0 = module_0.get_shortish_repr(list_0, dict_0, bytes_0)
+        int_0 = 1
+        set_0 = {int_0, int_0}
+        var_0 = module_0.ensure_tuple(set_0)
+        assert var_0 == (1,)
+        str_0 = "C>'hP3"
+        var_1 = module_0.shitcode(str_0)
+        assert var_1 == 'abc'
+        assert var_1 == "C>'hP3"
+        var_2 = module_0.shitcode(str_0)
+        assert var_2 == '\x01'
+        assert var_2 == "C>'hP3"
+        var_3 = module_0.get_shortish_repr(str_0, set_0, set_0)
     except BaseException:
         pass
 
 def test_case_3():
     try:
-        list_0 = []
-        var_0 = module_0.get_shortish_repr(list_0)
-        assert var_0 == '[]'
+        int_0 = 123
+        var_0 = module_0.get_shortish_repr(int_0)
+        assert var_0 == '123'
         assert len(module_0.string_types) == 1
         assert len(module_0.file_reading_errors) == 3
-        float_0 = -1843.50164
-        str_0 = 'New var:....... '
-        tuple_0 = (list_0, float_0, str_0)
-        dict_0 = {}
-        bytes_0 = b'\xbc\x05\x83\xf4~\t\x80}'
-        int_0 = -3302
-        var_1 = module_0.get_shortish_repr(tuple_0, dict_0, bytes_0, int_0)
+        str_0 = 'foo'
+        var_1 = module_0.get_shortish_repr(str_0)
+        assert var_1 == "'foo'"
+        str_1 = 'custom repr'
+        var_2 = lambda x: str_1
+        str_2 = 'callable repr'
+        var_3 = lambda x: str_2
+        str_3 = 'abc'
+        int_1 = 100
+        var_4 = module_0.get_shortish_repr(str_3, int_1)
+        assert var_4 == "'abc'"
+    except BaseException:
+        pass
+
+def test_case_4():
+    try:
+        str_0 = 'abc'
+        dict_0 = {str_0: str_0}
+        var_0 = module_0.normalize_repr(dict_0)
     except BaseException:
         pass

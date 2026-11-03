@@ -2,62 +2,50 @@
 import f122 as module_0
 
 def test_case_0():
-    int_0 = 1
-    int_1 = 2
+    int_0 = 111
+    int_1 = 21
     int_2 = 3
-    int_3 = 100
+    int_3 = 4000
     int_4 = 5
-    int_5 = [int_0, int_1, int_2, int_3, int_4]
-    var_0 = module_0.add_elements(int_5, int_2)
-    assert var_0 == 6
-
-def test_case_1():
-    int_0 = 1
-    int_1 = -2
-    int_2 = 18
-    int_3 = 123
-    int_4 = 76
-    int_5 = 100
-    int_6 = -1
-    int_7 = 2
-    int_8 = -5
-    int_9 = 77
-    int_10 = [int_0, int_1, int_2, int_3, int_4, int_5, int_6, int_7, int_8, int_9]
-    int_11 = 5
-    var_0 = module_0.add_elements(int_10, int_11)
-    assert var_0 == 94
-    assert var_0 == 93
-    int_12 = 10
-    int_13 = 20
-    int_14 = 30
-    int_15 = [int_12, int_13, int_14]
-    var_1 = module_0.add_elements(int_15, int_12)
-    assert var_1 == 60
-    int_16 = 200
-    int_17 = 300
-    int_18 = [int_5, int_16, int_17]
-    int_19 = 3
-    var_2 = module_0.add_elements(int_18, int_19)
+    int_5 = 6
+    int_6 = 7
+    int_7 = 8
+    int_8 = 9
+    int_9 = [int_0, int_1, int_2, int_3, int_4, int_5, int_6, int_7, int_8]
+    int_10 = 4
+    var_0 = module_0.add_elements(int_9, int_10)
+    assert var_0 == 24
+    int_11 = 1
+    int_12 = 2
+    int_13 = [int_11, int_12, int_2]
+    var_1 = module_0.add_elements(int_13, int_2)
+    assert var_1 == 6
+    int_14 = 100
+    int_15 = 200
+    int_16 = 300
+    int_17 = [int_14, int_15, int_16]
+    var_2 = module_0.add_elements(int_17, int_2)
     assert var_2 == 0
-    int_20 = [int_11]
-    var_3 = module_0.add_elements(int_20, int_0)
-    assert var_3 == 5
-    int_21 = 11
-    int_22 = 22
-    int_23 = 33
-    int_24 = [int_21, int_22, int_23]
-    var_4 = module_0.add_elements(int_24, int_19)
-    assert var_4 == 66
-    int_25 = [int_0, int_7, int_19]
-    int_26 = 0
-    var_5 = module_0.add_elements(int_25, int_26)
-    assert var_5 == 0
-    var_6 = []
-    var_7 = module_0.add_elements(var_6, int_11)
-    assert var_7 == 0
-    int_27 = 99
-    int_28 = [int_27, int_5, int_27]
-    var_8 = module_0.add_elements(int_28, int_7)
-    assert var_8 == 99
+    var_3 = []
+    int_18 = 0
+    var_4 = module_0.add_elements(var_3, int_18)
+    assert var_4 == 0
+    int_19 = -15
+    int_20 = -200
+    int_21 = 30
+    int_22 = [int_19, int_20, int_21]
+    var_5 = module_0.add_elements(int_22, int_2)
+    assert var_5 == 15
+    assert var_5 == 30
+    int_23 = 99
+    int_24 = [int_23, int_14]
+    var_6 = module_0.add_elements(int_24, int_11)
+    assert var_6 == 99
+    int_25 = 10
+    int_26 = -99
+    int_27 = [int_25, int_26, int_4]
+    var_7 = module_0.add_elements(int_27, int_2)
+    assert var_7 == 84
+    assert var_7 == 15
     str_0 = 'All tests passed!'
-    var_9 = print(str_0)
+    var_8 = print(str_0)

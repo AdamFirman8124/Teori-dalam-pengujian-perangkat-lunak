@@ -5,97 +5,85 @@
 import pytest
 
 import typesystem
+from typesystem.schemas import Schema
 
 
-class ExampleSchema(typesystem.Schema):
-    name = typesystem.String()
-    age = typesystem.Integer(default=0)
+class _Person:
+    """A plain (non-dict) object carrying attributes, for the object branch."""
+
+    def __init__(self):
+        self.name = "from-object"
+        self.extra = "not-a-field"
 
 
-class OtherSchema(typesystem.Schema):
-    title = typesystem.String()
+@pytest.fixture
+def person_schema():
+    # The Schema subclass is created inside the fixture so that no global
+    # state is created or polluted; it is garbage-collected after each test.
+    class PersonSchema(Schema):
+        name = typesystem.String()
+        age = typesystem.Integer(default=0)
+
+    return PersonSchema
 
 
-def test_init_with_positional_dict():
-    instance = ExampleSchema({"name": "alice", "age": 30})
-    assert instance.name == "alice"
-    assert instance.age == 30
-
-
-def test_init_with_positional_dict_partial():
-    instance = ExampleSchema({"name": "bob"})
-    assert instance.name == "bob"
-    # The dict branch only sets keys present in the dict; defaults are not applied.
+def test_init_with_dict_argument_sets_matching_fields(person_schema):
+    instance = person_schema({"name": "Alice"})
+    assert instance.name == "Alice"
+    # The dict branch returns early: defaults are *not* applied and keys
+    # missing from the dict are skipped entirely.
     assert not hasattr(instance, "age")
 
 
-def test_init_with_positional_object():
-    class Obj:
-        pass
-
-    obj = Obj()
-    obj.name = "carol"
-    obj.age = 42
-    instance = ExampleSchema(obj)
-    assert instance.name == "carol"
-    assert instance.age == 42
-
-
-def test_init_with_positional_object_missing_attrs():
-    class Obj:
-        pass
-
-    obj = Obj()
-    obj.name = "dave"
-    instance = ExampleSchema(obj)
-    assert instance.name == "dave"
+def test_init_with_empty_dict_argument(person_schema):
+    instance = person_schema({})
+    assert not hasattr(instance, "name")
     assert not hasattr(instance, "age")
 
 
-def test_init_with_positional_dict_and_kwargs_rejected():
-    with pytest.raises(AssertionError):
-        ExampleSchema({"name": "eve"}, extra="kwarg")
+def test_init_with_object_argument_copies_attributes(person_schema):
+    instance = person_schema(_Person())
+    assert instance.name == "from-object"
+    # Attributes that are not schema fields are not copied.
+    assert not hasattr(instance, "extra")
+    # Fields missing on the object are skipped (no defaults applied here).
+    assert not hasattr(instance, "age")
 
 
-def test_init_with_multiple_positional_args_rejected():
-    with pytest.raises(AssertionError):
-        ExampleSchema({"name": "eve"}, {"name": "frank"})
+def test_init_with_kwargs_validates_and_applies_defaults(person_schema):
+    instance = person_schema(name="Alice")
+    assert instance.name == "Alice"
+    assert instance.age == 0  # default value applied for missing field
 
 
-def test_init_with_kwargs():
-    instance = ExampleSchema(name="grace", age=33)
-    assert instance.name == "grace"
-    assert instance.age == 33
-
-
-def test_init_with_kwargs_applies_defaults():
-    instance = ExampleSchema(name="heidi")
-    assert instance.name == "heidi"
+def test_init_with_no_arguments_applies_defaults_only(person_schema):
+    instance = person_schema()
     assert instance.age == 0
+    # 'name' has no default and was not supplied: nothing is set for it.
+    assert not hasattr(instance, "name")
 
 
-def test_init_with_invalid_kwarg_value_raises_type_error():
-    with pytest.raises(TypeError) as exc_info:
-        ExampleSchema(name=123)
-    assert "Invalid argument 'name' for ExampleSchema()." in str(exc_info.value)
+def test_init_with_invalid_kwarg_raises_type_error(person_schema):
+    with pytest.raises(TypeError) as excinfo:
+        person_schema(name=123)
+    message = str(excinfo.value)
+    assert message.startswith("Invalid argument 'name' for PersonSchema().")
+    assert "Must be a string" in message
 
 
-def test_init_with_invalid_kwarg_value_error_text():
-    with pytest.raises(TypeError) as exc_info:
-        ExampleSchema(age="not a number")
-    message = str(exc_info.value)
-    assert "Invalid argument 'age' for ExampleSchema()." in message
-    assert "Must be a number." in message
-
-
-def test_init_with_unknown_kwarg_raises_type_error():
-    with pytest.raises(TypeError) as exc_info:
-        ExampleSchema(bogus="value")
-    assert "'bogus' is an invalid keyword argument for ExampleSchema()." in str(
-        exc_info.value
+def test_init_with_unknown_kwarg_raises_type_error(person_schema):
+    with pytest.raises(TypeError) as excinfo:
+        person_schema(name="Alice", unknown="oops")
+    assert str(excinfo.value) == (
+        "'unknown' is an invalid keyword argument for PersonSchema()."
     )
 
 
-def test_init_with_no_arguments():
-    instance = OtherSchema()
-    assert not hasattr(instance, "title")
+def test_init_with_multiple_positional_args_asserts(person_schema):
+    with pytest.raises(AssertionError):
+        person_schema({}, {})
+
+
+def test_init_with_positional_arg_and_kwargs_asserts(person_schema):
+    with pytest.raises(AssertionError):
+        person_schema({}, name="Alice")

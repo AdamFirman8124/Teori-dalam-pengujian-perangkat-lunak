@@ -3,30 +3,63 @@ import f074 as module_0
 
 def test_case_0():
     str_0 = 'hi'
-    str_1 = 'bye'
+    str_1 = 'admin'
     str_2 = [str_0, str_1]
-    str_3 = 'hello'
-    str_4 = 'world'
+    str_3 = 'hI'
+    str_4 = 'Hi'
     str_5 = [str_3, str_4]
     var_0 = module_0.total_match(str_2, str_5)
-    assert var_0 == ['hi', 'bye']
-    str_6 = [str_3, str_4]
-    str_7 = [str_0, str_1]
+    assert var_0 == ['hI', 'Hi']
+    str_6 = [str_0, str_1]
+    str_7 = [str_3, str_0, str_0]
     var_1 = module_0.total_match(str_6, str_7)
-    assert var_1 == ['hi', 'bye']
-    str_8 = 'a'
-    str_9 = 'bb'
-    str_10 = [str_8, str_9]
-    str_11 = 'ccc'
-    str_12 = [str_11]
-    var_2 = module_0.total_match(str_10, str_12)
-    assert var_2 == ['a', 'bb']
-    var_3 = []
-    str_13 = 'test'
-    str_14 = [str_13]
-    var_4 = module_0.total_match(var_3, str_14)
-    assert var_4 == []
+    assert var_1 == ['hI', 'hi', 'hi']
+    str_8 = '4'
+    str_9 = [str_8]
+    str_10 = '1'
+    str_11 = '2'
+    str_12 = '3'
+    str_13 = '5'
+    str_14 = [str_10, str_11, str_12, str_8, str_13]
+    var_2 = module_0.total_match(str_9, str_14)
+    assert var_2 == ['4']
+    str_15 = [str_0, str_0]
+    str_16 = 'ab'
+    str_17 = 'cd'
+    str_18 = [str_16, str_17]
+    var_3 = module_0.total_match(str_15, str_18)
+    assert var_3 == ['hi', 'hi']
+    var_4 = []
     var_5 = []
-    var_6 = []
-    var_7 = module_0.total_match(var_5, var_6)
-    assert var_7 == []
+    var_6 = module_0.total_match(var_4, var_5)
+    assert var_6 == []
+    var_7 = []
+    str_19 = 'abc'
+    str_20 = [str_19]
+    var_8 = module_0.total_match(var_7, str_20)
+    assert var_8 == []
+    str_21 = [str_19]
+    var_9 = []
+    var_10 = module_0.total_match(str_21, var_9)
+    assert var_10 == []
+    str_22 = 'a'
+    str_23 = [str_22]
+    str_24 = 'bb'
+    str_25 = [str_24]
+    var_11 = module_0.total_match(str_23, str_25)
+    assert var_11 == ['a']
+    str_26 = 'aa'
+    str_27 = [str_26]
+    str_28 = 'b'
+    str_29 = [str_28]
+    var_12 = module_0.total_match(str_27, str_29)
+    assert var_12 == ['b']
+    str_30 = 'x'
+    str_31 = 'y'
+    str_32 = [str_30, str_31]
+    str_33 = [str_30, str_31]
+    var_13 = module_0.total_match(str_32, str_33)
+    assert var_13 == ['x', 'y']
+
+def test_case_1():
+    pass

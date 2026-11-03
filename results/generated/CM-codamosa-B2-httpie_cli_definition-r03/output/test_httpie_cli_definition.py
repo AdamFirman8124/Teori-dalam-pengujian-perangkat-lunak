@@ -2,24 +2,9 @@
 import httpie.cli.definition as module_0
 
 def test_case_0():
-    auth_type_lazy_choices_0 = module_0._AuthTypeLazyChoices()
-    assert module_0.parser.prog == 'http'
-    assert module_0.parser.epilog == '\nFor every --OPTION there is also a --no-OPTION that reverts OPTION\nto its default value.\n\nSuggestions and bug reports are greatly appreciated:\n\n    https://github.com/httpie/httpie/issues\n\n'
-    assert module_0.positional.description == '\nThese arguments come after any flags and in the order they are listed here.\nOnly URL is required.\n\n'
-    assert module_0.positional.title == 'Positional Arguments'
-    assert module_0.content_type.title == 'Predefined Content Types'
-    assert module_0.content_processing.title == 'Content Processing Options'
-    assert module_0.output_processing.title == 'Output Processing'
-    assert module_0.output_options.title == 'Output Options'
-    assert module_0.auth.title == 'Authentication'
-    assert module_0.network.title == 'Network'
-    assert module_0.ssl.title == 'SSL'
-    assert module_0.troubleshooting.title == 'Troubleshooting'
+    pass
 
 def test_case_1():
-    var_0 = object()
-    var_1 = object()
-    var_2 = object()
     auth_type_lazy_choices_0 = module_0._AuthTypeLazyChoices()
     assert module_0.parser.prog == 'http'
     assert module_0.parser.epilog == '\nFor every --OPTION there is also a --no-OPTION that reverts OPTION\nto its default value.\n\nSuggestions and bug reports are greatly appreciated:\n\n    https://github.com/httpie/httpie/issues\n\n'
@@ -33,7 +18,29 @@ def test_case_1():
     assert module_0.network.title == 'Network'
     assert module_0.ssl.title == 'SSL'
     assert module_0.troubleshooting.title == 'Troubleshooting'
-    var_3 = iter(auth_type_lazy_choices_0)
-    var_4 = iter(var_3)
-    var_5 = list(var_3)
-    var_6 = list(auth_type_lazy_choices_0)
+    var_0 = list(auth_type_lazy_choices_0)
+
+def test_case_2():
+    str_0 = 'digest'
+    float_0 = -1850.0
+    auth_type_lazy_choices_0 = module_0._AuthTypeLazyChoices()
+    assert module_0.parser.prog == 'http'
+    assert module_0.parser.epilog == '\nFor every --OPTION there is also a --no-OPTION that reverts OPTION\nto its default value.\n\nSuggestions and bug reports are greatly appreciated:\n\n    https://github.com/httpie/httpie/issues\n\n'
+    assert module_0.positional.description == '\nThese arguments come after any flags and in the order they are listed here.\nOnly URL is required.\n\n'
+    assert module_0.positional.title == 'Positional Arguments'
+    assert module_0.content_type.title == 'Predefined Content Types'
+    assert module_0.content_processing.title == 'Content Processing Options'
+    assert module_0.output_processing.title == 'Output Processing'
+    assert module_0.output_options.title == 'Output Options'
+    assert module_0.auth.title == 'Authentication'
+    assert module_0.network.title == 'Network'
+    assert module_0.ssl.title == 'SSL'
+    assert module_0.troubleshooting.title == 'Troubleshooting'
+    var_0 = auth_type_lazy_choices_0.__contains__(float_0)
+    assert var_0 is False
+    var_1 = auth_type_lazy_choices_0.__iter__()
+    auth_type_lazy_choices_1 = module_0._AuthTypeLazyChoices()
+    var_2 = list(auth_type_lazy_choices_1)
+    var_3 = sorted(str_0)
+    var_4 = iter(auth_type_lazy_choices_1)
+    var_5 = list(var_4)

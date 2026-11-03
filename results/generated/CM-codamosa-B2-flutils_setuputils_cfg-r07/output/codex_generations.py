@@ -1,577 +1,764 @@
 
 
-# Generated at 2026-10-25 08:49:17.686217
+# Generated at 2026-11-01 19:21:19.754903
 # Unit test for function each_sub_command_config
 
-# Generated at 2026-10-25 08:49:20.102545
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:49:22.553407
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:49:24.943704
-# Unit test for constructor of class SetupCfgCommandConfig
-
-# Generated at 2026-10-25 08:49:27.358109
-# Unit test for constructor of class SetupCfgCommandConfig
-
-# Generated at 2026-10-25 08:49:29.774422
-# Unit test for constructor of class SetupCfgCommandConfig
-
-# Generated at 2026-10-25 08:49:32.191555
-# Unit test for constructor of class SetupCfgCommandConfig
-
-# Generated at 2026-10-25 08:49:34.631253
-# Unit test for constructor of class SetupCfgCommandConfig
-
-# Generated at 2026-10-25 08:49:37.048752
-# Unit test for constructor of class SetupCfgCommandConfig
-
-# Generated at 2026-10-25 08:49:39.464355
-# Unit test for constructor of class SetupCfgCommandConfig
-
-# Generated at 2026-10-25 08:49:41.884056
-# Unit test for constructor of class SetupCfgCommandConfig
-
-# Generated at 2026-10-25 08:49:44.303252
-# Unit test for constructor of class SetupCfgCommandConfig
-
-# Generated at 2026-10-25 08:49:46.721689
-# Unit test for constructor of class SetupCfgCommandConfig
-
-# Generated at 2026-10-25 08:49:49.137321
-# Unit test for constructor of class SetupCfgCommandConfig
-
-# Generated at 2026-10-25 08:49:51.555959
-# Unit test for constructor of class SetupCfgCommandConfig
-
-# Generated at 2026-10-25 08:49:53.972127
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:49:56.391983
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:49:58.805897
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:01.225158
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:03.674138
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:06.090693
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:08.508318
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:10.924787
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:13.344446
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:15.760744
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:18.177475
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:20.595082
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:23.009891
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:25.426590
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:27.846043
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:30.263934
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:32.682807
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:35.099973
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:37.518438
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:39.937192
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:42.354300
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:44.861710
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:47.209058
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:49.626175
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:52.041857
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:54.460457
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:56.931800
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:50:59.347891
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:51:01.764558
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:51:04.182156
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:51:11.658877
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:51:15.447317
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:51:21.808030
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:51:52.208874
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:51:57.330070
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:51:59.745702
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:02.195743
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:04.610787
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:07.028751
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:09.445083
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:11.862465
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:14.281387
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:16.699094
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:19.115713
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:21.906372
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:25.082233
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:28.152365
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:31.023219
+# Generated at 2026-11-01 19:21:40.638993
 # Unit test for function each_sub_command_config
 def test_each_sub_command_config():import tempfile
 
-# Generated at 2026-10-25 08:52:33.886334
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:36.873935
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:39.530350
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:41.947365
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:44.361731
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:46.947864
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:49.475217
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:51.894522
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:54.316296
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:56.732466
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:52:59.150944
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:01.566076
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:03.986943
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:06.403568
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:08.821396
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:11.235651
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:13.653804
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:16.073376
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:18.488413
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:20.909401
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:23.325013
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:25.742150
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:28.158098
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:30.672933
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:33.084679
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:35.502021
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:42.699520
-# Unit test for function each_sub_command_config
-def test_each_sub_command_config():import tempfile
-
-# Generated at 2026-10-25 08:53:45.668353
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:48.450039
-# Unit test for function each_sub_command_config
-def test_each_sub_command_config():import tempfile
-
-# Generated at 2026-10-25 08:53:52.779552
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:57.035356
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:53:59.908606
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:02.723999
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:05.410844
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:07.828194
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:10.244317
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:12.664818
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:15.080442
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:17.496957
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:19.915176
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:22.363570
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:24.940932
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:27.356051
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:29.773484
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:32.192936
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:34.611665
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:37.029635
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:39.445248
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:42.083205
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:44.919629
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:48.030191
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:54.127940
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:57.058656
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:54:59.906961
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:02.874366
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:05.848823
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:09.026024
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:18.223664
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:20.885504
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:23.302181
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:25.716140
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:28.427420
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:30.853099
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:33.268555
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:35.684041
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:38.099333
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:40.520513
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:42.945501
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:45.361930
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:47.791565
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:50.207484
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:52.623672
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:55.041576
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:57.457149
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:55:59.873946
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:02.292157
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:04.709478
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:07.123437
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:09.539902
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:12.013061
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:14.408471
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:16.825602
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:19.242855
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:21.679828
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:24.096005
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:26.514362
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:28.932201
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:31.352769
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:34.527660
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:37.496859
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:42.515254
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:45.587618
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:48.799611
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:56:55.009630
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:57:04.605153
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:57:09.037284
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:57:26.941057
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:57:29.359192
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:57:31.776795
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:57:34.193706
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:57:37.605977
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:57:51.995408
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:57:55.347035
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:58:01.362695
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:58:04.436483
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:58:08.838400
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:58:11.909973
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:58:14.925929
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:58:18.057705
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:58:21.024581
-# Unit test for function each_sub_command_config
-def test_each_sub_command_config():import tempfile
-
-# Generated at 2026-10-25 08:58:24.404213
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:58:27.371846
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:58:30.021138
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:58:32.625657
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:58:35.042531
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:58:40.259311
-# Unit test for function each_sub_command_config
-def test_each_sub_command_config():import tempfile
-
-# Generated at 2026-10-25 08:58:50.107110
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:58:53.078924
-# Unit test for function each_sub_command_config
-def test_each_sub_command_config():import tempfile
-
-# Generated at 2026-10-25 08:58:56.146834
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:58:59.218655
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:59:02.184559
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:59:05.089668
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:59:09.464262
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:59:12.535429
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:59:15.324707
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:59:18.005752
-# Unit test for function each_sub_command_config
-
-# Generated at 2026-10-25 08:59:20.591271
-# Unit test for function each_sub_command_config
+    # Scenario 1: commands defined directly in setup.cfg
+
+# Generated at 2026-11-01 19:21:59.479365
+# Unit test for function each_sub_command_config
+def test_each_sub_command_config():import os
+from pathlib import Path
+
+import pytest
+
+
+def _make_project(
+        tmp_path,
+        setup_cfg=None,
+        commands_cfg=None,
+        with_setup_py=True,
+):
+    setup_dir = tmp_path / 'proj'
+    setup_dir.mkdir()
+    if with_setup_py:
+        (setup_dir / 'setup.py').write_text('# setup.py\n')
+    if setup_cfg is not None:
+        (setup_dir / 'setup.cfg').write_text(setup_cfg)
+    if commands_cfg is not None:
+        (setup_dir / 'setup_commands.cfg').write_text(commands_cfg)
+    return setup_dir
+
+
+METADATA = '[metadata]\nname = my_pkg\n'
+
+
+def test_each_sub_command_config_basic(tmp_path):
+    setup_dir = _make_project(
+        tmp_path,
+        setup_cfg=(
+            METADATA +
+            '[setup.command.build_html]\n'
+            'commands =\n'
+            '    echo one\n'
+            '    echo two\n'
+        ),
+    )
+    results = list(module_0.each_sub_command_config(str(setup_dir)))
+    assert len(results) == 1
+    cfg = results[0]
+    assert isinstance(cfg, SetupCfgCommandConfig)
+    assert cfg.name == 'build_html'
+    assert cfg.camel == 'BuildHtml'
+    assert cfg.description == ''
+    assert cfg.commands == ('echo one', 'echo two')
+
+
+def test_each_sub_command_config_name_description_formatting(tmp_path):
+    setup_dir = _make_project(
+        tmp_path,
+        setup_cfg=(
+            METADATA +
+            '[setup.command.run_tests]\n'
+            'name = test-{name}\n'
+            'description = Tests for {name}\n'
+            'command = echo {name}\n'
+        ),
+    )
+    results = list(module_0.each_sub_command_config(str(setup_dir)))
+    assert len(results) == 1
+    cfg = results[0]
+    assert cfg.name == 'test-my_pkg'
+    assert cfg.camel == 'TestMyPkg'
+    assert cfg.description == 'Tests for my_pkg'
+    assert cfg.commands == ('echo my_pkg',)
+
+
+def test_each_sub_command_config_setup_dir_and_home_formatting(tmp_path):
+    setup_dir = _make_project(
+        tmp_path,
+        setup_cfg=(
+            METADATA +
+            '[setup.command.listing]\n'
+            'commands =\n'
+            '    ls {setup_dir}\n'
+            '    ls {home}\n'
+        ),
+    )
+    results = list(module_0.each_sub_command_config(str(setup_dir)))
+    real = os.path.realpath(str(setup_dir))
+    assert results[0].commands == (
+        'ls %s' % real,
+        'ls %s' % os.path.expanduser('~'),
+    )
+
+
+def test_each_sub_command_config_commands_file_override(tmp_path):
+    setup_dir = _make_project(
+        tmp_path,
+        setup_cfg=METADATA,
+        commands_cfg=(
+            '[setup.command.from_file]\n'
+            'commands =\n'
+            '    echo from_commands_file\n'
+        ),
+    )
+    results = list(module_0.each_sub_command_config(str(setup_dir)))
+    assert len(results) == 1
+    assert results[0].name == 'from_file'
+    assert results[0].commands == ('echo from_commands_file',)
+
+
+def test_each_sub_command_config_multiple_sections_order(tmp_path):
+    setup_dir = _make_project(
+        tmp_path,
+        setup_cfg=(
+            METADATA +
+            '[setup.command.alpha]\n'
+            'command = echo alpha\n'
+            '\n'
+            '[setup.command.beta]\n'
+            'command = echo beta\n'
+        ),
+    )
+    results = list(module_0.each_sub_command_config(Path(setup_dir)))
+    assert [cfg.name for cfg in results] == ['alpha', 'beta']
+
+
+def test_each_sub_command_config_skips_invalid_and_empty(tmp_path):
+    setup_dir = _make_project(
+        tmp_path,
+        setup_cfg=(
+            METADATA +
+            '[setup.command.]\n'
+            'command = echo empty\n'
+            '\n'
+            '[setup.command.bad-name!]\n'
+            'command = echo bad\n'
+            '\n'
+            '[setup.command.good_one]\n'
+            'command = echo good\n'
+            '\n'
+            '[other.section]\n'
+            'command = echo other\n'
+        ),
+    )
+    results = list(module_0.each_sub_command_config(str(setup_dir)))
+    assert [cfg.name for cfg in results] == ['good_one']
+
+
+def test_each_sub_command_config_no_command_sections(tmp_path):
+    setup_dir = _make_project(tmp_path, setup_cfg=METADATA)
+    assert list(module_0.each_sub_command_config(str(setup_dir))) == []
+
+
+def test_each_sub_command_config_dotted_command_name(tmp_path):
+    setup_dir = _make_project(
+        tmp_path,
+        setup_cfg=(
+            METADATA +
+            '[setup.command.docs.build]\n'
+            'command = echo docs\n'
+        ),
+    )
+    results = list(module_0.each_sub_command_config(str(setup_dir)))
+    assert len(results) == 1
+    assert results[0].name == 'docs.build'
+    assert results[0].camel == 'DocsBuild'
+
+
+def test_each_sub_command_config_missing_setup_dir(tmp_path):
+    with pytest.raises(FileNotFoundError):
+        list(module_0.each_sub_command_config(str(tmp_path / 'does_not_exist')))
+
+
+def test_each_sub_command_config_not_a_directory(tmp_path):
+    file_path = tmp_path / 'afile.txt'
+    file_path.write_text('hello')
+    with pytest.raises(NotADirectoryError):
+        list(module_0.each_sub_command_config(str(file_path)))
+
+
+def test_each_sub_command_config_missing_setup_py(tmp_path):
+    setup_dir = tmp_path / 'proj'
+    setup_dir.mkdir()
+    (setup_dir / 'setup.cfg').write_text(METADATA)
+    with pytest.raises(FileNotFoundError):
+        list(module_0.each_sub_command_config(str(setup_dir)))
+
+
+def test_each_sub_command_config_missing_setup_cfg(tmp_path):
+    setup_dir = tmp_path / 'proj'
+    setup_dir.mkdir()
+    (setup_dir / 'setup.py').write_text('# setup.py\n')
+    with pytest.raises(FileNotFoundError):
+        list(module_0.each_sub_command_config(str(setup_dir)))
+
+
+def test_each_sub_command_config_missing_metadata_section(tmp_path):
+    setup_dir = _make_project(tmp_path, setup_cfg='[other]\nfoo = bar\n')
+    with pytest.raises(LookupError):
+        list(module_0.each_sub_command_config(str(setup_dir)))
+
+
+def test_each_sub_command_config_missing_name_option(tmp_path):
+    setup_dir = _make_project(tmp_path, setup_cfg='[metadata]\nversion = 1.0\n')
+    with pytest.raises(LookupError):
+        list(module_0.each_sub_command_config(str(setup_dir)))
+
+
+def test_each_sub_command_config_empty_name_option(tmp_path):
+    setup_dir = _make_project(tmp_path, setup_cfg='[metadata]\nname =\n')
+    with pytest.raises(LookupError):
+        list(module_0.each_sub_command_config(str(setup_dir)))
+
+# Generated at 2026-11-01 19:22:15.963288
+# Unit test for constructor of class SetupCfgCommandConfig
+def test_SetupCfgCommandConfig():
+    # Test construction with positional arguments
+    name = 'build_docs'
+    camel = 'BuildDocs'
+    description = 'Builds the documentation.'
+    commands = ('make html', 'make latex')
+
+    config = SetupCfgCommandConfig(name, camel, description, commands)
+
+    assert config.name == name
+    assert config.camel == camel
+    assert config.description == description
+    assert config.commands == commands
+
+    # Test construction with keyword arguments
+    config = SetupCfgCommandConfig(
+        name=name,
+        camel=camel,
+        description=description,
+        commands=commands,
+    )
+
+    assert config.name == name
+    assert config.camel == camel
+    assert config.description == description
+    assert config.commands == commands
+
+    # Verify the named tuple's fields
+    assert config._fields == ('name', 'camel', 'description', 'commands')
+
+    # Verify _asdict conversion
+    expected_dict = {
+        'name': name,
+        'camel': camel,
+        'description': description,
+        'commands': commands,
+    }
+    assert config._asdict() == expected_dict
+
+    # Verify immutability
+    try:
+        config.name = 'new_name'  # type: ignore[misc]
+        raised = False
+    except AttributeError:
+        raised = True
+    assert raised is True
+
+    # Verify equality between instances with identical values
+    other = SetupCfgCommandConfig(name, camel, description, commands)
+    assert config == other
+
+    # Verify empty commands tuple is allowed
+    config = SetupCfgCommandConfig(name, camel, description, ())
+    assert config.commands == ()
+
+# Generated at 2026-11-01 19:24:00.514621
+# Unit test for function each_sub_command_config
+def test_each_sub_command_config():
+    import tempfile
+
+    # Standard usage with a proper setup.cfg
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        with open(os.path.join(tmp_dir, 'setup.py'), 'w') as f:
+            f.write('')
+        with open(os.path.join(tmp_dir, 'setup.cfg'), 'w') as f:
+            f.write(
+                '[metadata]\n'
+                'name = my_pkg\n'
+                '\n'
+                '[setup.command.build]\n'
+                'commands =\n'
+                '    echo building {name}\n'
+                '    echo in {setup_dir}\n'
+                '\n'
+                '[setup.command.run-tests]\n'
+                'name = run tests\n'
+                'description = Runs the tests for {name}.\n'
+                'commands =\n'
+                '    pytest\n'
+            )
+
+        results = list(module_0.each_sub_command_config(tmp_dir))
+
+        assert len(results) == 2
+
+        build = results[0]
+        assert isinstance(build, SetupCfgCommandConfig)
+        assert build.name == 'build'
+        assert build.camel == 'Build'
+        assert build.description == ''
+        assert build.commands == (
+            'echo building my_pkg',
+            'echo in %s' % os.path.realpath(tmp_dir),
+        )
+
+        run_tests = results[1]
+        assert isinstance(run_tests, SetupCfgCommandConfig)
+        assert run_tests.name == 'run tests'
+        assert run_tests.camel == 'RunTests'
+        assert run_tests.description == 'Runs the tests for my_pkg.'
+        assert run_tests.commands == ('pytest',)
+
+        # A setup_commands.cfg file replaces the parsed setup.cfg contents
+        with open(os.path.join(tmp_dir, 'setup_commands.cfg'), 'w') as f:
+            f.write(
+                '[setup.command.clean]\n'
+                'commands =\n'
+                '    rm -rf build\n'
+            )
+        results = list(module_0.each_sub_command_config(tmp_dir))
+        assert len(results) == 1
+        clean = results[0]
+        assert isinstance(clean, SetupCfgCommandConfig)
+        assert clean.name == 'clean'
+        assert clean.camel == 'Clean'
+        assert clean.commands == ('rm -rf build',)
+
+    # Accepts os.PathLike arguments
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        with open(os.path.join(tmp_dir, 'setup.py'), 'w') as f:
+            f.write('')
+        with open(os.path.join(tmp_dir, 'setup.cfg'), 'w') as f:
+            f.write('[metadata]\nname = other_pkg\n')
+        results = list(each_sub_command_config.__wrapped__(tmp_dir)) \
+            if hasattr(each_sub_command_config, '__wrapped__') \
+            else list(module_0.each_sub_command_config(tmp_dir))
+        assert results == []
+
+    # Non-existent setup_dir raises FileNotFoundError
+    bad_dir = os.path.join(tmp_dir, 'does_not_exist')
+    try:
+        list(module_0.each_sub_command_config(bad_dir))
+    except FileNotFoundError:
+        pass
+    else:
+        raise AssertionError('FileNotFoundError was not raised')
+
+    # Missing setup.py raises FileNotFoundError
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        with open(os.path.join(tmp_dir, 'setup.cfg'), 'w') as f:
+            f.write('[metadata]\nname = my_pkg\n')
+        try:
+            list(module_0.each_sub_command_config(tmp_dir))
+        except FileNotFoundError:
+            pass
+        else:
+            raise AssertionError('FileNotFoundError was not raised')
+
+    # Missing setup.cfg raises FileNotFoundError
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        with open(os.path.join(tmp_dir, 'setup.py'), 'w') as f:
+            f.write('')
+        try:
+            list(module_0.each_sub_command_config(tmp_dir))
+        except FileNotFoundError:
+            pass
+        else:
+            raise AssertionError('FileNotFoundError was not raised')
+
+    # setup_dir pointing at a file raises NotADirectoryError
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        file_path = os.path.join(tmp_dir, 'a_file.txt')
+        with open(file_path, 'w') as f:
+            f.write('')
+        try:
+            list(module_0.each_sub_command_config(file_path))
+        except NotADirectoryError:
+            pass
+        else:
+            raise AssertionError('NotADirectoryError was not raised')
+
+    # Missing 'metadata' section raises LookupError
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        with open(os.path.join(tmp_dir, 'setup.py'), 'w') as f:
+            f.write('')
+        with open(os.path.join(tmp_dir, 'setup.cfg'), 'w') as f:
+            f.write('[bdist]\n')
+        try:
+            list(module_0.each_sub_command_config(tmp_dir))
+        except LookupError:
+            pass
+        else:
+            raise AssertionError('LookupError was not raised')
+
+    # Missing 'name' option in 'metadata' section raises LookupError
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        with open(os.path.join(tmp_dir, 'setup.py'), 'w') as f:
+            f.write('')
+        with open(os.path.join(tmp_dir, 'setup.cfg'), 'w') as f:
+            f.write('[metadata]\nversion = 1.0\n')
+        try:
+            list(module_0.each_sub_command_config(tmp_dir))
+        except LookupError:
+            pass
+        else:
+            raise AssertionError('LookupError was not raised')
+
+    # Empty 'name' option raises LookupError
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        with open(os.path.join(tmp_dir, 'setup.py'), 'w') as f:
+            f.write('')
+        with open(os.path.join(tmp_dir, 'setup.cfg'), 'w') as f:
+            f.write('[metadata]\nname =\n')
+        try:
+            list(module_0.each_sub_command_config(tmp_dir))
+        except LookupError:
+            pass
+        else:
+            raise AssertionError('LookupError was not raised')
+
+    # Sections without commands or non-identifier names are skipped
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        with open(os.path.join(tmp_dir, 'setup.py'), 'w') as f:
+            f.write('')
+        with open(os.path.join(tmp_dir, 'setup.cfg'), 'w') as f:
+            f.write(
+                '[metadata]\n'
+                'name = my_pkg\n'
+                '\n'
+                '[setup.command.no_cmds]\n'
+                'description = nothing here\n'
+                '\n'
+                '[setup.command.bad-name-section]\n'
+                'commands =\n'
+                '    echo hi\n'
+                '\n'
+                '[other.section]\n'
+                'commands =\n'
+                '    echo ignored\n'
+            )
+        results = list(module_0.each_sub_command_config(tmp_dir))
+        assert results == []
+
+# Generated at 2026-11-01 19:24:42.501596
+# Unit test for function each_sub_command_config
+def test_each_sub_command_config():
+    setup_dir = tempfile.mkdtemp()
+    try:
+        with open(os.path.join(setup_dir, 'setup.py'), 'w') as f:
+            f.write('# setup.py\n')
+        with open(os.path.join(setup_dir, 'setup.cfg'), 'w') as f:
+            f.write(
+                '[metadata]\n'
+                'name = test_package\n'
+                '\n'
+                '[setup.command.docs]\n'
+                'description = Build docs for {name}.\n'
+                'commands =\n'
+                '    echo building docs\n'
+                '\n'
+                '    echo done\n'
+                '\n'
+                '[setup.command.run-tests]\n'
+                'command =\n'
+                '    pytest -v\n'
+            )
+
+        result = list(module_0.each_sub_command_config(setup_dir))
+
+        assert len(result) == 2
+
+        docs = result[0]
+        assert isinstance(docs, SetupCfgCommandConfig)
+        assert docs.name == 'docs'
+        assert docs.camel == 'Docs'
+        assert docs.description == 'Build docs for test_package.'
+        assert docs.commands == ('echo building docs', 'echo done')
+
+        run_tests = result[1]
+        assert isinstance(run_tests, SetupCfgCommandConfig)
+        assert run_tests.name == 'run-tests'
+        assert run_tests.camel == 'RunTests'
+        assert run_tests.description == ''
+        assert run_tests.commands == ('pytest -v',)
+    finally:
+        shutil.rmtree(setup_dir)
+
+
+def test_each_sub_command_config_setup_commands_cfg():
+    setup_dir = tempfile.mkdtemp()
+    try:
+        with open(os.path.join(setup_dir, 'setup.py'), 'w') as f:
+            f.write('# setup.py\n')
+        with open(os.path.join(setup_dir, 'setup.cfg'), 'w') as f:
+            f.write('[metadata]\nname = test_package\n')
+        with open(
+                os.path.join(setup_dir, 'setup_commands.cfg'), 'w'
+        ) as f:
+            f.write(
+                '[setup.command.lint]\n'
+                'name = flake8_{name}\n'
+                'commands =\n'
+                '    flake8 .\n'
+            )
+
+        result = list(module_0.each_sub_command_config(setup_dir))
+
+        assert len(result) == 1
+        cfg = result[0]
+        assert isinstance(cfg, SetupCfgCommandConfig)
+        assert cfg.name == 'flake8_test_package'
+        assert cfg.camel == 'Flake8TestPackage'
+        assert cfg.description == ''
+        assert cfg.commands == ('flake8 .',)
+    finally:
+        shutil.rmtree(setup_dir)
+
+
+def test_each_sub_command_config_skips_invalid_identifiers():
+    setup_dir = tempfile.mkdtemp()
+    try:
+        with open(os.path.join(setup_dir, 'setup.py'), 'w') as f:
+            f.write('# setup.py\n')
+        with open(os.path.join(setup_dir, 'setup.cfg'), 'w') as f:
+            f.write(
+                '[metadata]\n'
+                'name = test_package\n'
+                '\n'
+                '[setup.command.123bad]\n'
+                'command = echo nope\n'
+                '\n'
+                '[setup.command.okay]\n'
+                'command = echo yes\n'
+            )
+
+        result = list(module_0.each_sub_command_config(setup_dir))
+
+        assert len(result) == 1
+        assert result[0].name == 'okay'
+        assert result[0].commands == ('echo yes',)
+    finally:
+        shutil.rmtree(setup_dir)
+
+# Generated at 2026-11-01 19:26:55.208969
+# Unit test for function each_sub_command_config
+def test_each_sub_command_config():
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        setup_dir = Path(tmp_dir)
+        (setup_dir / 'setup.py').write_text('')
+        (setup_dir / 'setup.cfg').write_text(
+            '[metadata]\n'
+            'name = test_package\n'
+            '\n'
+            '[setup.command.test]\n'
+            'commands =\n'
+            '    echo hello\n'
+            '    echo world\n'
+            'description = A test command\n'
+        )
+        configs = list(module_0.each_sub_command_config(str(setup_dir)))
+        assert len(configs) == 1
+        config = configs[0]
+        assert isinstance(config, SetupCfgCommandConfig)
+        assert config.name == 'test'
+        assert config.camel == 'Test'
+        assert config.description == 'A test command'
+        assert config.commands == ('echo hello', 'echo world')
+
+
+def test_each_sub_command_config_with_setup_commands_cfg():
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        setup_dir = Path(tmp_dir)
+        (setup_dir / 'setup.py').write_text('')
+        (setup_dir / 'setup.cfg').write_text(
+            '[metadata]\n'
+            'name = test_package\n'
+        )
+        (setup_dir / 'setup_commands.cfg').write_text(
+            '[setup.command.build]\n'
+            'commands =\n'
+            '    echo building {name}\n'
+            'name = custom build\n'
+            'description = Builds the {name} package\n'
+        )
+        configs = list(module_0.each_sub_command_config(str(setup_dir)))
+        assert len(configs) == 1
+        config = configs[0]
+        assert config.name == 'custom build'
+        assert config.camel == 'CustomBuild'
+        assert config.description == 'Builds the test_package package'
+        assert config.commands == ('echo building test_package',)
+
+
+def test_each_sub_command_config_missing_metadata_section():
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        setup_dir = Path(tmp_dir)
+        (setup_dir / 'setup.py').write_text('')
+        (setup_dir / 'setup.cfg').write_text(
+            '[other]\n'
+            'name = test_package\n'
+        )
+        try:
+            list(module_0.each_sub_command_config(str(setup_dir)))
+        except LookupError as e:
+            assert "missing the 'metadata' section" in str(e)
+        else:
+            raise AssertionError('LookupError not raised')
+
+
+def test_each_sub_command_config_missing_name_option():
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        setup_dir = Path(tmp_dir)
+        (setup_dir / 'setup.py').write_text('')
+        (setup_dir / 'setup.cfg').write_text(
+            '[metadata]\n'
+            'version = 1.0\n'
+        )
+        try:
+            list(module_0.each_sub_command_config(str(setup_dir)))
+        except LookupError as e:
+            assert "missing the 'name' option" in str(e)
+        else:
+            raise AssertionError('LookupError not raised')
+
+
+def test_each_sub_command_config_empty_name():
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        setup_dir = Path(tmp_dir)
+        (setup_dir / 'setup.py').write_text('')
+        (setup_dir / 'setup.cfg').write_text(
+            '[metadata]\n'
+            'name =\n'
+        )
+        try:
+            list(module_0.each_sub_command_config(str(setup_dir)))
+        except LookupError as e:
+            assert "'name' option is not set" in str(e)
+        else:
+            raise AssertionError('LookupError not raised')
+
+
+def test_each_sub_command_config_no_commands():
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        setup_dir = Path(tmp_dir)
+        (setup_dir / 'setup.py').write_text('')
+        (setup_dir / 'setup.cfg').write_text(
+            '[metadata]\n'
+            'name = test_package\n'
+            '\n'
+            '[setup.command.empty]\n'
+            'description = No commands here\n'
+        )
+        configs = list(module_0.each_sub_command_config(str(setup_dir)))
+        assert len(configs) == 0
+
+
+def test_each_sub_command_config_invalid_setup_dir():
+    try:
+        list(module_0.each_sub_command_config('/nonexistent/path/that/does/not/exist'))
+    except FileNotFoundError:
+        pass
+    else:
+        raise AssertionError('FileNotFoundError not raised')
+
+
+def test_each_sub_command_config_setup_dir_not_directory():
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        file_path = Path(tmp_dir) / 'afile.txt'
+        file_path.write_text('')
+        try:
+            list(module_0.each_sub_command_config(str(file_path)))
+        except NotADirectoryError:
+            pass
+        else:
+            raise AssertionError('NotADirectoryError not raised')
+
+
+def test_each_sub_command_config_missing_setup_py():
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        (Path(tmp_dir) / 'setup.cfg').write_text('')
+        try:
+            list(module_0.each_sub_command_config(tmp_dir))
+        except FileNotFoundError as e:
+            assert 'setup.py' in str(e)
+        else:
+            raise AssertionError('FileNotFoundError not raised')
+
+
+def test_each_sub_command_config_missing_setup_cfg():
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        (Path(tmp_dir) / 'setup.py').write_text('')
+        try:
+            list(module_0.each_sub_command_config(tmp_dir))
+        except FileNotFoundError as e:
+            assert 'setup.cfg' in str(e)
+        else:
+            raise AssertionError('FileNotFoundError not raised')
+
+
+def test_each_sub_command_config_pathlike():
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        setup_dir = Path(tmp_dir)
+        (setup_dir / 'setup.py').write_text('')
+        (setup_dir / 'setup.cfg').write_text(
+            '[metadata]\n'
+            'name = test_package\n'
+            '\n'
+            '[setup.command.multi.word.cmd]\n'
+            'commands =\n'
+            '    echo multi\n'
+        )
+        configs = list(module_0.each_sub_command_config(setup_dir))
+        assert len(configs) == 1
+        config = configs[0]
+        assert config.name == 'multi.word.cmd'
+        assert config.camel == 'MultiWordCmd'
+        assert config.commands == ('echo multi',)
+
+# Generated at 2026-11-01 19:28:46.218457
+# Unit test for function each_sub_command_config
+
+# Generated at 2026-11-01 19:29:03.714886
+# Unit test for function each_sub_command_config
+def test_each_sub_command_config():import shutil

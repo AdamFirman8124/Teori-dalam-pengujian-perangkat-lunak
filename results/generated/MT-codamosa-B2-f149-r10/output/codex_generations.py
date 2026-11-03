@@ -1,226 +1,183 @@
 
 
-# Generated at 2026-10-25 15:19:44.524153
+# Generated at 2026-11-01 21:43:32.622846
 # Unit test for function sorted_list_sum
+def test_sorted_list_sum():
+    # Only even-length strings are kept; odd-length ones removed
+    assert module_0.sorted_list_sum(["aa", "a", "aaa"]) == ["aa"]
 
-# Generated at 2026-10-25 15:19:46.940455
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:19:49.354535
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:19:51.772752
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:19:54.185315
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:19:56.612191
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:19:59.020752
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:20:01.435154
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:20:03.861540
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:20:06.276414
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:20:08.695076
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:20:11.112280
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:20:13.525349
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:20:15.940079
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:20:18.353985
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:20:20.768856
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:20:23.183460
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:20:25.600636
-# Unit test for function sorted_list_sum
+    # Result sorted primarily by length, then alphabetically
+    assert module_0.sorted_list_sum(["ab", "a", "aaa", "cd"]) == ["ab", "cd"]
 
-# Generated at 2026-10-25 15:20:28.030860
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:20:30.443692
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:20:32.857888
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:20:35.274266
-# Unit test for function sorted_list_sum
-
-# Generated at 2026-10-25 15:20:37.689043
-# Unit test for function sorted_list_sum
+    # Empty input returns empty list
+    assert module_0.sorted_list_sum([]) == []
 
-# Generated at 2026-10-25 15:20:40.103692
-# Unit test for function sorted_list_sum
+    # All odd-length strings results in empty list
+    assert module_0.sorted_list_sum(["a", "abc", "abcde"]) == []
 
-# Generated at 2026-10-25 15:20:42.532141
-# Unit test for function sorted_list_sum
+    # Length ordering overrides original positions
+    assert module_0.sorted_list_sum(["dddd", "bb", "cc"]) == ["bb", "cc", "dddd"]
 
-# Generated at 2026-10-25 15:20:44.958534
-# Unit test for function sorted_list_sum
+    # Ties on length broken alphabetically (via initial sort + stable sort)
+    assert module_0.sorted_list_sum(["dcba", "abcd", "ab"]) == ["ab", "abcd", "dcba"]
 
-# Generated at 2026-10-25 15:20:47.375574
-# Unit test for function sorted_list_sum
+    # Mixed lengths with duplicates
+    assert module_0.sorted_list_sum(["eee", "ef", "ff", "gh"]) == ["ef", "ff", "gh"]
 
-# Generated at 2026-10-25 15:20:49.792882
-# Unit test for function sorted_list_sum
+    # Single element, even length
+    assert module_0.sorted_list_sum(["test"]) == ["test"]
 
-# Generated at 2026-10-25 15:20:52.206150
-# Unit test for function sorted_list_sum
+    # Single element, odd length gets filtered
+    assert module_0.sorted_list_sum(["tests"]) == []
 
-# Generated at 2026-10-25 15:20:54.628031
+# Generated at 2026-11-01 21:43:42.555413
 # Unit test for function sorted_list_sum
+def test_sorted_list_sum():
+    # Filters out odd-length strings
+    assert module_0.sorted_list_sum(["aa", "a", "aaa"]) == ["aa"]
+    assert module_0.sorted_list_sum(["ab", "a", "aaa", "cd"]) == ["ab", "cd"]
 
-# Generated at 2026-10-25 15:20:57.037981
-# Unit test for function sorted_list_sum
+    # Sorted by length ascending when lengths differ
+    assert module_0.sorted_list_sum(["abc", "de", "abcd", "a"]) == ["de", "abcd"]
+    assert module_0.sorted_list_sum(["aaaa", "bb", "cc"]) == ["bb", "cc", "aaaa"]
 
-# Generated at 2026-10-25 15:20:59.452330
-# Unit test for function sorted_list_sum
+    # Same-length strings remain in alphabetical order (stable sort)
+    assert module_0.sorted_list_sum(["dd", "aa", "cc", "bb"]) == ["aa", "bb", "cc", "dd"]
+    assert module_0.sorted_list_sum(["school", "AI", "asdf", "b"]) == ["AI", "asdf", "school"]
 
-# Generated at 2026-10-25 15:21:01.866170
-# Unit test for function sorted_list_sum
+    # Empty input returns empty list
+    assert module_0.sorted_list_sum([]) == []
 
-# Generated at 2026-10-25 15:21:04.283733
-# Unit test for function sorted_list_sum
+    # All odd-length strings get filtered out
+    assert module_0.sorted_list_sum(["a", "bbb", "ccccc"]) == []
 
-# Generated at 2026-10-25 15:21:06.700801
-# Unit test for function sorted_list_sum
+    # Single element cases
+    assert module_0.sorted_list_sum(["even"]) == ["even"]
+    assert module_0.sorted_list_sum(["odd"]) == []
 
-# Generated at 2026-10-25 15:21:09.117800
-# Unit test for function sorted_list_sum
+    # Duplicates are preserved
+    assert module_0.sorted_list_sum(["ab", "ab", "abc"]) == ["ab", "ab"]
 
-# Generated at 2026-10-25 15:21:11.531062
-# Unit test for function sorted_list_sum
+    print("All tests passed!")
 
-# Generated at 2026-10-25 15:21:17.027311
-# Unit test for function sorted_list_sum
 
-# Generated at 2026-10-25 15:21:19.441630
-# Unit test for function sorted_list_sum
+test_sorted_list_sum()
 
-# Generated at 2026-10-25 15:21:21.855723
+# Generated at 2026-11-01 21:44:06.325376
 # Unit test for function sorted_list_sum
+def test_sorted_list_sum():
+    # Test with mixed even and odd length strings
+    assert module_0.sorted_list_sum(["aa", "a", "aaa"]) == ["aa"]
+    assert module_0.sorted_list_sum(["ab", "a", "aaa", "cd"]) == ["ab", "cd"]
 
-# Generated at 2026-10-25 15:21:24.269323
-# Unit test for function sorted_list_sum
+    # Test with all even length strings, sorted by length then lexicographically
+    assert module_0.sorted_list_sum(["ab", "cd", "efgh"]) == ["ab", "cd", "efgh"]
+    assert module_0.sorted_list_sum(["abcd", "ab", "abcdef"]) == ["ab", "abcd", "abcdef"]
 
-# Generated at 2026-10-25 15:21:26.683585
-# Unit test for function sorted_list_sum
+    # Test with same length strings - should be lexicographically ordered
+    assert module_0.sorted_list_sum(["dd", "aa", "cc", "bb"]) == ["aa", "bb", "cc", "dd"]
 
-# Generated at 2026-10-25 15:21:29.099296
-# Unit test for function sorted_list_sum
+    # Test with empty list
+    assert module_0.sorted_list_sum([]) == []
 
-# Generated at 2026-10-25 15:21:31.512627
-# Unit test for function sorted_list_sum
+    # Test with all odd length strings - should return empty list
+    assert module_0.sorted_list_sum(["a", "abc", "abcde"]) == []
 
-# Generated at 2026-10-25 15:21:33.905806
-# Unit test for function sorted_list_sum
+    # Test with single element
+    assert module_0.sorted_list_sum(["even"]) == ["even"]
+    assert module_0.sorted_list_sum(["odd"]) == []
 
-# Generated at 2026-10-25 15:21:36.320146
-# Unit test for function sorted_list_sum
+    # Test with duplicates
+    assert module_0.sorted_list_sum(["aa", "aa", "bbb"]) == ["aa", "aa"]
 
-# Generated at 2026-10-25 15:21:38.736249
-# Unit test for function sorted_list_sum
+    # Test that original list sorting happens first (lexicographic tiebreak for equal lengths)
+    assert module_0.sorted_list_sum(["bbaa", "abba", "cc"]) == ["cc", "abba", "bbaa"]
 
-# Generated at 2026-10-25 15:21:41.149323
-# Unit test for function sorted_list_sum
+    # Test with empty strings (length 0 is even)
+    assert module_0.sorted_list_sum(["", "a", "bb"]) == ["", "bb"]
 
-# Generated at 2026-10-25 15:21:43.565344
-# Unit test for function sorted_list_sum
+    # Verify original list is not mutated in an unexpected way
+    original = ["bb", "a", "cc"]
+    result = module_0.sorted_list_sum(original)
+    assert result == ["bb", "cc"]
+    # Note: original list IS sorted in place by the function
+    assert original == ["a", "bb", "cc"]
 
-# Generated at 2026-10-25 15:21:45.982645
-# Unit test for function sorted_list_sum
+    print("All tests passed!")
 
-# Generated at 2026-10-25 15:21:48.396459
-# Unit test for function sorted_list_sum
 
-# Generated at 2026-10-25 15:21:50.810589
-# Unit test for function sorted_list_sum
+if __name__ == "__main__":
+    test_sorted_list_sum()
 
-# Generated at 2026-10-25 15:21:53.224301
+# Generated at 2026-11-01 21:44:42.279904
 # Unit test for function sorted_list_sum
+def test_sorted_list_sum():
+    # Basic case: odd-length strings are removed, result sorted by length
+    assert module_0.sorted_list_sum(["aa", "a", "aaa"]) == ["aa"]
 
-# Generated at 2026-10-25 15:21:55.638755
-# Unit test for function sorted_list_sum
+    # Ties in length preserve alphabetical order (stable sort after pre-sort)
+    assert module_0.sorted_list_sum(["ab", "a", "aaa", "cd"]) == ["ab", "cd"]
 
-# Generated at 2026-10-25 15:21:58.053093
-# Unit test for function sorted_list_sum
+    # Empty input list
+    assert module_0.sorted_list_sum([]) == []
 
-# Generated at 2026-10-25 15:22:00.467956
-# Unit test for function sorted_list_sum
+    # All odd-length strings filtered out
+    assert module_0.sorted_list_sum(["a", "abc", "abcde"]) == []
 
-# Generated at 2026-10-25 15:22:02.885013
-# Unit test for function sorted_list_sum
+    # All even-length strings kept, ordered by length then alphabetically
+    assert module_0.sorted_list_sum(["dd", "bbbb", "cc"]) == ["dd", "cc", "bbbb"]
 
-# Generated at 2026-10-25 15:22:05.322788
-# Unit test for function sorted_list_sum
+    # Mixed case with pre-sorting affecting tie order
+    assert module_0.sorted_list_sum(["school", "AI", "asdf", "b"]) == ["AI", "asdf", "school"]
 
-# Generated at 2026-10-25 15:22:07.736351
-# Unit test for function sorted_list_sum
+    # Duplicates are preserved
+    assert module_0.sorted_list_sum(["aa", "aa", "b"]) == ["aa", "aa"]
 
-# Generated at 2026-10-25 15:22:10.150308
-# Unit test for function sorted_list_sum
+    # Single element cases
+    assert module_0.sorted_list_sum(["hello"]) == []
+    assert module_0.sorted_list_sum(["hi"]) == ["hi"]
 
-# Generated at 2026-10-25 15:22:12.564462
-# Unit test for function sorted_list_sum
+    # Empty string has length 0 (even), so it is kept
+    assert module_0.sorted_list_sum(["", "a", "bb"]) == ["", "bb"]
 
-# Generated at 2026-10-25 15:22:14.979015
-# Unit test for function sorted_list_sum
+    # Odd-length mixed with even-length
+    assert module_0.sorted_list_sum(["abc", "de", "fgh"]) == ["de"]
 
-# Generated at 2026-10-25 15:22:17.392529
-# Unit test for function sorted_list_sum
 
-# Generated at 2026-10-25 15:22:19.807062
-# Unit test for function sorted_list_sum
+if __name__ == "__main__":
+    test_sorted_list_sum()
+    print("All tests passed!")
 
-# Generated at 2026-10-25 15:22:22.223578
+# Generated at 2026-11-01 21:45:07.241569
 # Unit test for function sorted_list_sum
+def test_sorted_list_sum():
+    # Filters out odd-length strings and sorts remaining by length
+    assert module_0.sorted_list_sum(["ab", "a", "aaa", "cd"]) == ["ab", "cd"]
+    assert module_0.sorted_list_sum(["abc", "abcd", "ab"]) == ["ab", "abcd"]
 
-# Generated at 2026-10-25 15:22:24.639720
-# Unit test for function sorted_list_sum
+    # Only even-length strings remain
+    assert module_0.sorted_list_sum(["aa", "bb", "cc"]) == ["aa", "bb", "cc"]
 
-# Generated at 2026-10-25 15:22:27.053375
-# Unit test for function sorted_list_sum
+    # All odd-length strings -> empty result
+    assert module_0.sorted_list_sum(["a", "abc", "abcde"]) == []
 
-# Generated at 2026-10-25 15:22:29.467032
-# Unit test for function sorted_list_sum
+    # Empty input list
+    assert module_0.sorted_list_sum([]) == []
 
-# Generated at 2026-10-25 15:22:31.881607
-# Unit test for function sorted_list_sum
+    # Single even-length element
+    assert module_0.sorted_list_sum(["hello!!"]) == ["hello!!"]
 
-# Generated at 2026-10-25 15:22:34.299761
-# Unit test for function sorted_list_sum
+    # Same length -> preserves alphabetical order (initial sort is stable via sorted-by-len)
+    assert module_0.sorted_list_sum(["dog", "cat", "bird", "fish"]) == ["bird", "fish"]
 
-# Generated at 2026-10-25 15:22:36.711977
-# Unit test for function sorted_list_sum
+    # Ties resolved alphabetically among equal-length strings
+    assert module_0.sorted_list_sum(["dcba", "ab", "cd"]) == ["ab", "cd", "dcba"]
 
-# Generated at 2026-10-25 15:22:39.126205
-# Unit test for function sorted_list_sum
+    # Mixed case duplicates of same length
+    assert module_0.sorted_list_sum(["xyz", "xy", "wxy", "wx"]) == ["wx", "xy", "wxy", "xyz"]
 
-# Generated at 2026-10-25 15:22:41.553753
-# Unit test for function sorted_list_sum
+    print("All tests passed!")
 
-# Generated at 2026-10-25 15:22:43.970619
-# Unit test for function sorted_list_sum
 
-# Generated at 2026-10-25 15:22:46.395683
-# Unit test for function sorted_list_sum
+if __name__ == "__main__":
+    test_sorted_list_sum()

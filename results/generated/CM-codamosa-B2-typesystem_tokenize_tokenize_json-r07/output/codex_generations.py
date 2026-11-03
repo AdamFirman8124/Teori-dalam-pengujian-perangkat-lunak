@@ -1,954 +1,211 @@
 
 
-# Generated at 2026-10-24 12:59:55.066882
+# Generated at 2026-11-01 20:12:55.440903
 # Unit test for function validate_json
 
-# Generated at 2026-10-24 12:59:57.580391
+# Generated at 2026-11-01 20:14:26.474140
+# Unit test for function validate_json
+def test_validate_json():import typesystem
+
+
+# Generated at 2026-11-01 20:15:18.912071
+# Unit test for function validate_json
+def test_validate_json():
+    import pytest
+    import typesystem
+
+    class Example(typesystem.Schema):
+        text = typesystem.String(max_length=10)
+
+    # Valid content returns the parsed value, with no errors.
+    value, errors = module_0.validate_json('{"text": "abc"}', validator=Example)
+    assert value == {"text": "abc"}
+    assert not errors
+
+    # Bytestrings are decoded before tokenization.
+    value, errors = module_0.validate_json(b'{"text": "abc"}', validator=Example)
+    assert value == {"text": "abc"}
+    assert not errors
+
+    # A Field instance can also be used as the validator.
+    value, errors = module_0.validate_json('"abc"', validator=typesystem.String())
+    assert value == "abc"
+    assert not errors
+
+    # Validation failures return positionally marked error messages.
+    value, errors = module_0.validate_json('{"text": "abcdefghijk"}', validator=Example)
+    assert value is None
+    assert len(errors) == 1
+    error = errors[0]
+    assert error.code == "max_length"
+    assert error.text == "Must have no more than 10 characters."
+    assert error.index == ["text"]
+    assert error.start_position.line_no == 1
+    assert error.start_position.column_no == 10
+    assert error.start_position.char_index == 9
+    assert error.end_position.line_no == 1
+
+    # JSON parse failures raise a ParseError.
+    with pytest.raises(ParseError):
+        module_0.validate_json('{"text": }', validator=Example)
+
+    # Empty content raises a ParseError.
+    with pytest.raises(ParseError):
+        module_0.validate_json("", validator=Example)
+
+    # Whitespace-only content raises a ParseError.
+    with pytest.raises(ParseError):
+        module_0.validate_json("   \n  ", validator=Example)
+
+# Generated at 2026-11-01 20:15:45.527206
+# Unit test for constructor of class _TokenizingDecoder
+def test__TokenizingDecoder():
+    content = '{"key": "value"}'
+
+    # Constructing with content kwarg sets up a usable scan_once scanner.
+    decoder = _TokenizingDecoder(content=content)
+    assert decoder.scan_once is not None
+    assert callable(decoder.scan_once)
+
+    # The scanner produces a DictToken spanning the whole content.
+    token, end = decoder.scan_once(content, 0)
+    assert isinstance(token, DictToken)
+    assert token.value == {"key": "value"}
+    assert end == len(content)
+
+    # Additional JSONDecoder kwargs are forwarded to the superclass.
+    decoder = _TokenizingDecoder(
+        content=content,
+        parse_float=float,
+        parse_int=int,
+        strict=True,
+    )
+    assert decoder.strict is True
+    token, end = decoder.scan_once(content, 0)
+    assert isinstance(token, DictToken)
+    assert end == len(content)
+
+    # Constructing without the required content kwarg raises KeyError.
+    try:
+        _TokenizingDecoder()
+    except KeyError:
+        pass
+    else:
+        raise AssertionError("Expected KeyError when 'content' is missing")
+
+# Generated at 2026-11-01 20:16:10.098225
+# Unit test for constructor of class _TokenizingDecoder
+def test__TokenizingDecoder():
+    """
+    Test that the _TokenizingDecoder constructor accepts a ``content``
+    keyword argument and produces a working JSON decoder with a
+    tokenizing ``scan_once`` method.
+    """
+    content = '{"example": "value"}'
+    decoder = _TokenizingDecoder(content=content)
+
+    # It's a valid JSONDecoder subclass instance.
+    assert isinstance(decoder, JSONDecoder)
+
+    # The scanner must have been installed.
+    assert callable(decoder.scan_once)
+
+    # Decoding returns a DictToken wrapping the parsed content.
+    token = decoder.decode(content)
+    assert isinstance(token, DictToken)
+    assert token.value == {"example": "value"}
+
+    # The token's underlying string is the original content.
+    assert token.string == content
+
+    # Scalar values are wrapped in ScalarToken with positions.
+    key_token, value_token = token.value.items().__iter__().__next__()
+    assert isinstance(key_token, ScalarToken)
+    assert key_token.value == "example"
+    assert isinstance(value_token, ScalarToken)
+    assert value_token.value == "value"
+
+    # Standard JSONDecoder attributes are still present.
+    assert decoder.strict is True
+    assert isinstance(decoder.memo, dict)
+
+
+def test__TokenizingDecoder_with_kwargs():
+    """
+    Extra JSONDecoder keyword arguments should be passed through to the
+    parent constructor.
+    """
+    content = "[1, 2, 3]"
+    decoder = _TokenizingDecoder(strict=False, content=content)
+    assert isinstance(decoder, JSONDecoder)
+    assert decoder.strict is False
+
+    token = decoder.decode(content)
+    assert isinstance(token, ListToken)
+    assert [item.value for item in token.value] == [1, 2, 3]
+
+
+def test__TokenizingDecoder_missing_content():
+    """
+    The ``content`` keyword argument is required; omitting it should
+    raise a KeyError.
+    """
+    with pytest.raises(KeyError):
+        _TokenizingDecoder()
+
+
+def test__TokenizingDecoder_scan_once_nested():
+    """
+    The scan_once function produced by the constructor should tokenize
+    nested structures, attaching the content string to every token.
+    """
+    content = '{"a": {"b": [true, null]}}'
+    decoder = _TokenizingDecoder(content=content)
+    token = decoder.decode(content)
+
+    assert isinstance(token, DictToken)
+    inner = token.value["a"]
+    assert isinstance(inner, DictToken)
+    assert inner.string == content
+
+    lst = inner.value["b"]
+    assert isinstance(lst, ListToken)
+    assert lst.string == content
+
+    true_token, null_token = lst.value
+    assert isinstance(true_token, ScalarToken)
+    assert true_token.value is True
+    assert null_token.value is None
+
+# Generated at 2026-11-01 20:17:38.598745
 # Unit test for function validate_json
 
-# Generated at 2026-10-24 13:00:00.001782
+# Generated at 2026-11-01 20:19:07.876577
 # Unit test for function validate_json
 
-# Generated at 2026-10-24 13:00:02.416151
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:00:04.831846
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:00:07.245426
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:00:45.063488
+# Generated at 2026-11-01 20:21:11.819375
 # Unit test for function validate_json
-
-# Generated at 2026-10-24 13:00:47.482458
-# Unit test for function validate_json
-
-# Generated at 2026-10-24 13:00:49.901758
-# Unit test for function validate_json
-
-# Generated at 2026-10-24 13:00:52.315772
-# Unit test for function validate_json
-
-# Generated at 2026-10-24 13:00:54.729699
-# Unit test for function validate_json
-
-# Generated at 2026-10-24 13:00:57.142774
-# Unit test for function validate_json
-
-# Generated at 2026-10-24 13:00:59.555580
-# Unit test for function validate_json
-
-# Generated at 2026-10-24 13:01:01.970908
-# Unit test for function validate_json
-
-# Generated at 2026-10-24 13:01:04.388056
-# Unit test for function validate_json
-
-# Generated at 2026-10-24 13:01:06.796873
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:01:29.301772
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:01:53.365049
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:01:54.796798
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:01:56.230224
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:01:57.766421
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:01.806518
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:04.222879
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:02:06.639785
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:02:09.051810
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:02:10.662125
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:12.207339
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:13.657706
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:18.840001
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:25.107219
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:26.501155
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:27.975986
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:29.515534
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:30.946646
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:32.377168
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:44.974356
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:46.407252
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:50.812809
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:52.205961
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:53.574138
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:02:56.186243
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:02:58.603185
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:03:01.013045
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:03:03.425772
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:03:06.022439
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:03:08.435078
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:03:11.388698
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:03:13.802452
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:03:16.218463
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:03:38.650412
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:04:02.797265
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:04:05.441544
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:04:07.854078
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:04:10.272387
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:04:12.686233
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:04:15.100567
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:04:17.514975
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:04:20.069477
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:04:22.483690
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:04:24.898455
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:04:42.878002
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:04:44.265795
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:04:45.704775
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:04:47.137007
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:04:53.999070
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:05:03.932274
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:05:10.381420
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:05:11.816969
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:05:14.440539
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:05:16.852951
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:05:19.398774
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:05:21.811061
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:05:24.311399
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:05:26.723579
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:05:29.409677
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:05:32.202163
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:05:54.312418
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:05:55.740669
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:05:57.163574
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:05:58.715825
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:06:00.150025
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:06:01.582683
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:06:02.982312
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:06:04.343812
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:06:05.717693
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:06:07.090331
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:06:08.462039
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:06:09.998383
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:06:11.412046
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:06:27.088672
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:06:44.999481
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:07:48.055998
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:07:50.743152
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:08:40.389855
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:09:21.058868
-# Unit test for function tokenize_json
-
-# Generated at 2026-10-24 13:09:25.597593
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:09:28.227524
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:09:41.538261
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:09:47.378766
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:09:48.810283
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:09:50.242091
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:09:51.677515
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
-
-# Generated at 2026-10-24 13:09:53.108918
-# Unit test for function tokenize_json
-def test_tokenize_json():
-    # Scalar: string
-    token = module_0.tokenize_json('"hello"')
-    assert isinstance(token, ScalarToken)
-    assert token.value == "hello"
-
-    # Scalar: int, float, exponent
-    assert module_0.tokenize_json("123").value == 123
-    assert module_0.tokenize_json("-42").value == -42
-    assert module_0.tokenize_json("3.14").value == 3.14
-    assert module_0.tokenize_json("1e3").value == 1000.0
-    assert isinstance(module_0.tokenize_json("123"), ScalarToken)
-
-    # Scalar
+def test_validate_json():
+    from typesystem import Integer, Schema, String
+
+    class Person(Schema):
+        name = String()
+        age = Integer()
+
+    value, errors = module_0.validate_json('{"name": "Tom", "age": 25}', Person)
+    assert value == {"name": "Tom", "age": 25}
+    assert errors == []
+
+    value, errors = module_0.validate_json(b'{"name": "Tom", "age": 25}', Person)
+    assert value == {"name": "Tom", "age": 25}
+    assert errors == []
+
+    value, errors = module_0.validate_json('{"name": 123, "age": "x"}', Person)
+    assert value is None
+    assert len(errors) == 2
+    assert errors[0].message == "Must be a string."
+    assert errors[0].start_position.line_no == 1
+    assert errors[0].start_position.column_no == 11
+    assert errors[1].message == "Must be a number."
+    assert errors[1].start_position.line_no == 1
+    assert errors[1].start_position.column_no == 23

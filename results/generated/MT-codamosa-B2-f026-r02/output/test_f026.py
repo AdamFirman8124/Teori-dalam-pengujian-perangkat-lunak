@@ -2,28 +2,36 @@
 import f026 as module_0
 
 def test_case_0():
-    var_0 = []
-    list_0 = module_0.remove_duplicates(var_0)
-    assert list_0 == []
     int_0 = 1
     int_1 = 2
     int_2 = 3
-    int_3 = [int_0, int_1, int_2]
-    list_1 = module_0.remove_duplicates(int_3)
-    assert list_1 == [1, 2, 3]
-    int_4 = [int_0, int_1, int_1, int_2]
-    list_2 = module_0.remove_duplicates(int_4)
-    assert list_2 == [1, 3]
-    int_5 = [int_0, int_0, int_0]
-    list_3 = module_0.remove_duplicates(int_5)
+    int_3 = 4
+    int_4 = [int_0, int_1, int_2, int_1, int_3]
+    list_0 = module_0.remove_duplicates(int_4)
+    assert list_0 == [1, 3, 4]
+    int_5 = 5
+    int_6 = [int_0, int_1, int_2, int_3, int_5]
+    list_1 = module_0.remove_duplicates(int_6)
+    assert list_1 == [1, 2, 3, 4, 5]
+    int_7 = [int_5, int_5, int_5, int_5]
+    list_2 = module_0.remove_duplicates(int_7)
+    assert list_2 == []
+    var_0 = []
+    list_3 = module_0.remove_duplicates(var_0)
     assert list_3 == []
-    int_6 = [int_2, int_0, int_2, int_1, int_0]
-    list_4 = module_0.remove_duplicates(int_6)
-    assert list_4 == [2]
-    int_7 = -1
-    int_8 = 0
-    int_9 = -1
-    int_10 = 5
-    int_11 = [int_7, int_8, int_9, int_10]
-    list_5 = module_0.remove_duplicates(int_11)
-    assert list_5 == [0, 5]
+    int_8 = 7
+    int_9 = [int_8]
+    list_4 = module_0.remove_duplicates(int_9)
+    assert list_4 == [7]
+    int_10 = [int_2, int_0, int_2, int_1, int_0, int_3]
+    list_5 = module_0.remove_duplicates(int_10)
+    assert list_5 == [2, 4]
+    int_11 = -1
+    int_12 = -1
+    int_13 = 0
+    int_14 = [int_11, int_12, int_13, int_1, int_1, int_2]
+    list_6 = module_0.remove_duplicates(int_14)
+    assert list_6 == [0, 3]
+    int_15 = [int_0, int_1, int_0, int_2, int_1, int_3, int_5, int_3]
+    list_7 = module_0.remove_duplicates(int_15)
+    assert list_7 == [3, 5]

@@ -2,18 +2,50 @@
 import f086 as module_0
 
 def test_case_0():
-    str_0 = 'hello'
+    str_0 = 'Hi'
     var_0 = module_0.anti_shuffle(str_0)
-    assert var_0 == 'ehllo'
+    assert var_0 == 'Hi'
     str_1 = 'Hello World!!!'
     var_1 = module_0.anti_shuffle(str_1)
     assert var_1 == 'Hello !!!Wdlor'
-    str_2 = 'dcba hgfe'
+    str_2 = 'Edabit'
     var_2 = module_0.anti_shuffle(str_2)
-    assert var_2 == 'abcd efgh'
-    str_3 = 'a  b'
+    assert var_2 == 'Eabdit'
+    str_3 = 'hello'
     var_3 = module_0.anti_shuffle(str_3)
-    assert var_3 == 'a  b'
-    str_4 = ''
+    assert var_3 == 'ehllo'
+    str_4 = 'dcba'
     var_4 = module_0.anti_shuffle(str_4)
-    assert var_4 == ''
+    assert var_4 == 'abcd'
+    str_5 = 'ba'
+    var_5 = module_0.anti_shuffle(str_5)
+    assert var_5 == 'ab'
+    str_6 = '4321'
+    var_6 = module_0.anti_shuffle(str_6)
+    assert var_6 == '1234'
+    str_7 = 'b a c'
+    var_7 = module_0.anti_shuffle(str_7)
+    assert var_7 == 'a b c'
+    assert var_7 == 'b a c'
+    str_8 = 'cat dog'
+    var_8 = module_0.anti_shuffle(str_8)
+    assert var_8 == 'act dgo'
+    str_9 = 'a'
+    var_9 = module_0.anti_shuffle(str_9)
+    assert var_9 == 'a'
+    str_10 = ''
+    var_10 = module_0.anti_shuffle(str_10)
+    assert var_10 == ''
+    str_11 = 'a  b'
+    var_11 = module_0.anti_shuffle(str_11)
+    assert var_11 == 'a  b'
+    str_12 = ' x '
+    var_12 = module_0.anti_shuffle(str_12)
+    assert var_12 == ' x '
+    str_13 = 'bA! aB!'
+    var_13 = module_0.anti_shuffle(str_13)
+    assert var_13 == '!Ab !Ab'
+    assert var_13 == '!Ab !Ba'
+
+def test_case_1():
+    pass

@@ -2,11 +2,31 @@
 import f041 as module_0
 
 def test_case_0():
-    int_0 = 544
+    int_0 = 0
     var_0 = module_0.car_race_collision(int_0)
-    assert var_0 == 295936
-    int_1 = 1568
+    assert var_0 == 0
+    int_1 = 1
     var_1 = module_0.car_race_collision(int_1)
-    assert var_1 == 2458624
-    var_2 = module_0.car_race_collision(int_1)
-    assert var_2 == 2458624
+    assert var_1 == 1
+    int_2 = 2
+    var_2 = module_0.car_race_collision(int_2)
+    assert var_2 == 4
+    int_3 = 3
+    var_3 = module_0.car_race_collision(int_3)
+    assert var_3 == 9
+    int_4 = 5
+    var_4 = module_0.car_race_collision(int_4)
+    assert var_4 == 25
+    int_5 = 10
+    var_5 = module_0.car_race_collision(int_5)
+    assert var_5 == 100
+    int_6 = 100
+    var_6 = module_0.car_race_collision(int_6)
+    assert var_6 == 10000
+    int_7 = 1000
+    var_7 = module_0.car_race_collision(int_7)
+    assert var_7 == 1000000
+    int_8 = 6
+    var_8 = int_5 ** int_8
+    var_9 = module_0.car_race_collision(var_8)
+    assert var_9 == 1000000000000

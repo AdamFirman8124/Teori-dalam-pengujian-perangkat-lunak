@@ -35,6 +35,7 @@ def test_case_0():
     int_10 = 10
     var_10 = module_0.fib4(int_10)
     assert var_10 == 104
-    int_11 = 12
+    int_11 = 15
     var_11 = module_0.fib4(int_11)
-    assert var_11 == 386
+    assert var_11 == 19960
+    assert var_11 == 2764

@@ -7,16 +7,51 @@ def test_case_0():
     str_2 = [str_0, str_1]
     var_0 = module_0.match_parens(str_2)
     assert var_0 == 'Yes'
-
-def test_case_1():
-    str_0 = "GT$6'(JQm"
-    var_0 = module_0.match_parens(str_0)
-    assert var_0 == 'No'
-
-def test_case_2():
-    str_0 = '()('
-    str_1 = ''
-    str_2 = [str_0, str_1]
-    var_0 = module_0.match_parens(str_2)
-    assert var_0 == 'Yes'
-    assert var_0 == 'No'
+    str_3 = [str_1, str_1]
+    var_1 = module_0.match_parens(str_3)
+    assert var_1 == 'No'
+    str_4 = '('
+    str_5 = [str_4, str_1]
+    var_2 = module_0.match_parens(str_5)
+    assert var_2 == 'Yes'
+    str_6 = '()'
+    str_7 = [str_6, str_6]
+    var_3 = module_0.match_parens(str_7)
+    assert var_3 == 'Yes'
+    str_8 = '(('
+    str_9 = '))'
+    str_10 = [str_8, str_9]
+    var_4 = module_0.match_parens(str_10)
+    assert var_4 == 'Yes'
+    str_11 = '((('
+    str_12 = ')))'
+    str_13 = [str_11, str_12]
+    var_5 = module_0.match_parens(str_13)
+    assert var_5 == 'Yes'
+    str_14 = [str_12, str_11]
+    var_6 = module_0.match_parens(str_14)
+    assert var_6 == 'Yes'
+    str_15 = '(()'
+    str_16 = [str_15, str_1]
+    var_7 = module_0.match_parens(str_16)
+    assert var_7 == 'Yes'
+    str_17 = '())'
+    str_18 = [str_17, str_0]
+    var_8 = module_0.match_parens(str_18)
+    assert var_8 == 'Yes'
+    str_19 = [str_4, str_4]
+    var_9 = module_0.match_parens(str_19)
+    assert var_9 == 'No'
+    str_20 = ')('
+    str_21 = [str_20, str_4]
+    var_10 = module_0.match_parens(str_21)
+    assert var_10 == 'No'
+    str_22 = [str_20, str_20]
+    var_11 = module_0.match_parens(str_22)
+    assert var_11 == 'No'
+    str_23 = [str_6, str_8]
+    var_12 = module_0.match_parens(str_23)
+    assert var_12 == 'No'
+    str_24 = [str_4, str_6]
+    var_13 = module_0.match_parens(str_24)
+    assert var_13 == 'No'

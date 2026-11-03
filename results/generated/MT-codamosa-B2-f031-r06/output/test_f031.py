@@ -2,27 +2,54 @@
 import f031 as module_0
 
 def test_case_0():
-    int_0 = -5
+    int_0 = 6
     var_0 = module_0.is_prime(int_0)
     assert var_0 is False
-    int_1 = 0
+    int_1 = 101
     var_1 = module_0.is_prime(int_1)
-    assert var_1 is False
-    int_2 = 1
+    assert var_1 is True
+    int_2 = 11
     var_2 = module_0.is_prime(int_2)
-    assert var_2 is False
-    int_3 = 2
+    assert var_2 is True
+    int_3 = 13441
     var_3 = module_0.is_prime(int_3)
     assert var_3 is True
-    int_4 = 3
+    int_4 = 61
     var_4 = module_0.is_prime(int_4)
     assert var_4 is True
     int_5 = 4
     var_5 = module_0.is_prime(int_5)
     assert var_5 is False
-    int_6 = 17
+    int_6 = 1
     var_6 = module_0.is_prime(int_6)
-    assert var_6 is True
-    int_7 = 25
+    assert var_6 is False
+    int_7 = 5
     var_7 = module_0.is_prime(int_7)
-    assert var_7 is False
+    assert var_7 is True
+    int_8 = 17
+    var_8 = module_0.is_prime(int_8)
+    assert var_8 is True
+    int_9 = 20
+    var_9 = module_0.is_prime(int_9)
+    assert var_9 is False
+    int_10 = 2
+    var_10 = module_0.is_prime(int_10)
+    assert var_10 is True
+    int_11 = 0
+    var_11 = module_0.is_prime(int_11)
+    assert var_11 is False
+    int_12 = 79
+    var_12 = module_0.is_prime(int_12)
+    assert var_12 is True
+    int_13 = 100
+    var_13 = module_0.is_prime(int_13)
+    assert var_13 is False
+    int_14 = -1
+    var_14 = module_0.is_prime(int_14)
+    assert var_14 is False
+    int_15 = 3
+    var_15 = module_0.is_prime(int_15)
+    assert var_15 is True
+    int_16 = 31
+    var_16 = module_0.is_prime(int_16)
+    assert var_16 is True

@@ -7,49 +7,28 @@ import pytest
 from f082 import prime_length
 
 
-@pytest.mark.parametrize(
-    "string, expected",
-    [
-        ("", False),          # l == 0 -> line 5
-        ("a", False),         # l == 1 -> line 5
-        ("ab", True),         # l == 2, loop body never runs -> line 9
-        ("abcd", False),      # l == 4, divisible by 2 -> line 8
-        ("abcdef", False),    # l == 6, divisible by 2 -> line 8
-        ("abcdefg", True),    # l == 7, prime -> line 9
-        ("abcdefghij", False),  # l == 10, divisible by 2 -> line 8
-        ("abcdefghijk", True),  # l == 11, prime -> line 9
-        ("abcdefghijklm", True),  # l == 13, prime -> line 9
-        ("abcdefghijklmn", False),  # l == 14, divisible by 2 -> line 8
-        ("abcdefghijklmno", False),  # l == 15, divisible by 3 -> line 8
-    ],
-)
-def test_prime_length(string, expected):
-    result = prime_length(string)
-    assert result is expected
-    assert isinstance(result, bool)
-
-
-def test_prime_length_empty_and_single_char_are_not_prime():
+def test_prime_length_empty_string():
+    # Covers lines 3, 4 (l == 0 branch True) and 5
     assert prime_length("") is False
-    assert prime_length("x") is False
 
 
-def test_prime_length_two_is_prime():
-    # Smallest prime length: the for-loop range(2, 2) is empty.
-    assert prime_length("hi") is True
+def test_prime_length_single_char():
+    # Covers lines 3, 4 (l == 1 branch True) and 5
+    assert prime_length("a") is False
 
 
-def test_prime_length_composite_lengths_return_false():
-    for n in (4, 6, 8, 9, 10, 12, 15, 16, 25):
-        assert prime_length("a" * n) is False, f"length {n} should not be prime"
+def test_prime_length_two_chars():
+    # Covers lines 3, 4 (branch False), 6 (loop body never runs) and 9
+    assert prime_length("ab") is True
 
 
-def test_prime_length_prime_lengths_return_true():
-    for n in (2, 3, 5, 7, 11, 13, 17, 19, 23):
-        assert prime_length("a" * n) is True, f"length {n} should be prime"
+def test_prime_length_prime_length_string():
+    # Covers lines 3, 4 (branch False), 6, 7 (l % i != 0) and 9
+    assert prime_length("abc") is True
+    assert prime_length("hello") is True  # len 5 is prime
 
 
-def test_prime_length_does_not_mutate_input():
-    s = "abcdefg"
-    prime_length(s)
-    assert s == "abcdefg"
+def test_prime_length_composite_length_string():
+    # Covers lines 3, 4 (branch False), 6, 7 (l % i == 0) and 8
+    assert prime_length("abcd") is False
+    assert prime_length("a" * 6) is False

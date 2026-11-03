@@ -7,24 +7,30 @@ import pytest
 from f066 import digitSum
 
 
-def test_digit_sum_empty_string():
-    """Line 2: empty string returns 0."""
+def test_empty_string_returns_zero():
+    """Covers line 2: the `if s == "": return 0` branch."""
     assert digitSum("") == 0
 
 
-def test_digit_sum_all_uppercase():
-    """Line 3: uppercase chars contribute their ord values."""
-    assert digitSum("aBC") == ord("B") + ord("C")
-    assert digitSum("A") == ord("A")
+def test_all_uppercase_sums_ordinals():
+    """Covers line 3 with the `char.isupper()` True branch."""
+    assert digitSum("ABC") == ord("A") + ord("B") + ord("C")
+    assert digitSum("Z") == ord("Z")
 
 
-def test_digit_sum_mixed_case():
-    """Line 3: lowercase chars contribute 0, uppercase contribute ord."""
+def test_all_lowercase_sums_zero():
+    """Covers line 3 with the `else 0` branch (no uppercase chars)."""
+    assert digitSum("abc") == 0
+    assert digitSum("xyz") == 0
+
+
+def test_mixed_case_counts_only_uppercase():
+    """Covers both branches of the conditional expression on line 3."""
     assert digitSum("aBcD") == ord("B") + ord("D")
-    assert digitSum("hello") == 0
+    assert digitSum("Hello World") == ord("H") + ord("W")
 
 
-def test_digit_sum_digits_and_symbols():
-    """Non-letter characters are not uppercase, so contribute 0."""
-    assert digitSum("1!2@") == 0
-    assert digitSum("Z9") == ord("Z")
+def test_non_alpha_characters_contribute_zero():
+    """Digits, punctuation and whitespace are not upper, so contribute 0."""
+    assert digitSum("1! Z") == ord("Z")
+    assert digitSum("123!@#") == 0

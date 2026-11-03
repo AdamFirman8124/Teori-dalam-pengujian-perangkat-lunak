@@ -5,13 +5,41 @@ def test_case_0():
     str_0 = 'hello world'
     var_0 = module_0.split_words(str_0)
     assert var_0 == ['hello', 'world']
-
-def test_case_1():
-    str_0 = 'N}fgi.[:ww_o~!RA\\'
-    var_0 = module_0.split_words(str_0)
-    assert var_0 == 1
-
-def test_case_2():
-    str_0 = "v1,qK7i'3{|EI\x0c]"
-    var_0 = module_0.split_words(str_0)
-    assert var_0 == ['v1', "qK7i'3{|EI", ']']
+    str_1 = 'one two three'
+    var_1 = module_0.split_words(str_1)
+    assert var_1 == ['one', 'two', 'three']
+    str_2 = 'a b  c'
+    var_2 = module_0.split_words(str_2)
+    assert var_2 == ['a', 'b', 'c']
+    str_3 = 'hello,world'
+    var_3 = module_0.split_words(str_3)
+    assert var_3 == ['hello', 'world']
+    str_4 = 'one,two,three'
+    var_4 = module_0.split_words(str_4)
+    assert var_4 == ['one', 'two', 'three']
+    str_5 = 'a,b,,c'
+    var_5 = module_0.split_words(str_5)
+    assert var_5 == ['a', 'b', 'c']
+    str_6 = 'abcdef'
+    var_6 = module_0.split_words(str_6)
+    assert var_6 == 3
+    str_7 = 'ACEG'
+    var_7 = module_0.split_words(str_7)
+    assert var_7 == 0
+    str_8 = '12345'
+    var_8 = module_0.split_words(str_8)
+    assert var_8 == 0
+    str_9 = ''
+    var_9 = module_0.split_words(str_9)
+    assert var_9 == 0
+    str_10 = 'bdfhjl'
+    var_10 = module_0.split_words(str_10)
+    assert var_10 == 6
+    str_11 = 'acegik'
+    var_11 = module_0.split_words(str_11)
+    assert var_11 == 0
+    str_12 = 'a1b2c3d4'
+    var_12 = module_0.split_words(str_12)
+    assert var_12 == 2
+    str_13 = 'All tests passed!'
+    var_13 = print(str_13)

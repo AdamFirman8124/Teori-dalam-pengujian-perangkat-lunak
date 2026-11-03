@@ -1,84 +1,179 @@
 
 
-# Generated at 2026-10-24 12:44:28.603559
+# Generated at 2026-11-01 19:31:36.095459
 # Unit test for function parse_music
 def test_parse_music():
-    # Basic: each note type maps correctly
-    assert module_0.parse_music('o o| .|') == [4, 2, 1]
-
-    # Single note
-    assert module_0.parse_music('o') == [4]
-    assert module_0.parse_music('o|') == [2]
-    assert module_0.parse_music('.|') == [1]
-
-    # Empty string returns empty list
+    # Test with empty string
     assert module_0.parse_music('') == []
 
-    # Extra spaces are ignored (the `if x` filter)
+    # Test with a single whole note
+    assert module_0.parse_music('o') == [4]
+
+    # Test with a single half note
+    assert module_0.parse_music('o|') == [2]
+
+    # Test with a single quarter note
+    assert module_0.parse_music('.|') == [1]
+
+    # Test with multiple whole notes
+    assert module_0.parse_music('o o o o') == [4, 4, 4, 4]
+
+    # Test with mixed note types
+    assert module_0.parse_music('o .| o| .| o| o| O O'.replace('O', 'o')) == [4, 1, 2, 1, 2, 2, 4, 4]
+
+    # Test with the classic example pattern
+    assert module_0.parse_music('o o| .| o| o| .| .| .| .| o o') == [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]
+
+    # Test that extra spaces are handled gracefully
     assert module_0.parse_music('  o   o|  ') == [4, 2]
-
-    # Longer sequence
-    assert module_0.parse_music('o o| o .| o| .| o') == [4, 2, 4, 1, 2, 1, 4]
-
-    # Sum check: beats add up
-    assert sum(module_0.parse_music('o o| .| .|')) == 8
 
     print("All tests passed!")
 
 
-test_parse_music()
+if __name__ == "__main__":
+    test_parse_music()
 
-# Generated at 2026-10-24 12:44:29.913990
+# Generated at 2026-11-01 19:32:13.618156
 # Unit test for function parse_music
 def test_parse_music():
-    # Basic: each note type maps correctly
-    assert module_0.parse_music('o o| .|') == [4, 2, 1]
+    # Test with whole notes ('o' = 4)
+    assert module_0.parse_music('o o o') == [4, 4, 4]
 
-    # Single note
+    # Test with half notes ('o|' = 2)
+    assert module_0.parse_music('o| o|') == [2, 2]
+
+    # Test with quarter notes ('.|' = 1)
+    assert module_0.parse_music('.| .| .|') == [1, 1, 1]
+
+    # Test with mixed notes
+    assert module_0.parse_music('o .| o| o| .|') == [4, 1, 2, 2, 1]
+
+    # Test with a single note
     assert module_0.parse_music('o') == [4]
-    assert module_0.parse_music('o|') == [2]
     assert module_0.parse_music('.|') == [1]
 
-    # Empty string returns empty list
+    # Test with empty string
     assert module_0.parse_music('') == []
 
-    # Extra spaces are ignored (the `if x` filter)
-    assert module_0.parse_music('  o   o|  ') == [4, 2]
+    # Test with extra spaces
+    assert module_0.parse_music('  o  o|  ') == [4, 2]
 
-    # Longer sequence
-    assert module_0.parse_music('o o| o .| o| .| o') == [4, 2, 4, 1, 2, 1, 4]
+    print("All parse_music tests passed!")
 
-    # Sum check: beats add up
-    assert sum(module_0.parse_music('o o| .| .|')) == 8
+
+test_parse_music()
+
+# Generated at 2026-11-01 19:33:06.107690
+# Unit test for function parse_music
+def test_parse_music():
+    # Empty string yields no beats
+    assert module_0.parse_music("") == []
+
+    # Single whole note
+    assert module_0.parse_music("o") == [4]
+
+    # Single half note
+    assert module_0.parse_music("o|") == [2]
+
+    # Single quarter note
+    assert module_0.parse_music(".|") == [1]
+
+    # Mixed notes, one of each type
+    assert module_0.parse_music("o o| .|") == [4, 2, 1]
+
+    # Classic example: sequence of varying lengths
+    assert module_0.parse_music("o o| .| o| o| .| .| .| .| o o") == [
+        4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4
+    ]
+
+    # Repeated quarter notes
+    assert module_0.parse_music(".| .| .| .|") == [1, 1, 1, 1]
+
+    # Extra whitespace between notes is ignored
+    assert module_0.parse_music("  o   o|  ") == [4, 2]
+
+    # Result length matches number of tokens
+    result = module_0.parse_music("o o o o| .|")
+    assert len(result) == 5
+
+    # Sum of beats for a known melody
+    melody = "o .| o| .|"
+    assert sum(module_0.parse_music(melody)) == 8
 
     print("All tests passed!")
 
 
-test_parse_music()
+if __name__ == "__main__":
+    test_parse_music()
 
-# Generated at 2026-10-24 12:44:32.532910
+# Generated at 2026-11-01 19:33:58.539256
 # Unit test for function parse_music
+def test_parse_music():
+    # Empty string should return an empty list
+    assert module_0.parse_music('') == []
 
-# Generated at 2026-10-24 12:44:34.947936
-# Unit test for function parse_music
+    # Single whole note
+    assert module_0.parse_music('o') == [4]
 
-# Generated at 2026-10-24 12:44:37.474983
-# Unit test for function parse_music
+    # Single half note
+    assert module_0.parse_music('o|') == [2]
 
-# Generated at 2026-10-24 12:44:39.885940
-# Unit test for function parse_music
+    # Single quarter note
+    assert module_0.parse_music('.|') == [1]
 
-# Generated at 2026-10-24 12:44:42.302853
-# Unit test for function parse_music
+    # Example from the docstring: whole, half, quarter, whole, half, quarter, quarter
+    assert module_0.parse_music('o o| .| o o| .| .|') == [4, 2, 1, 4, 2, 1, 1]
 
-# Generated at 2026-10-24 12:44:44.718832
-# Unit test for function parse_music
+    # Repeated whole notes
+    assert module_0.parse_music('o o o') == [4, 4, 4]
 
-# Generated at 2026-10-24 12:44:47.136572
-# Unit test for function parse_music
+    # Repeated half notes
+    assert module_0.parse_music('o| o|') == [2, 2]
 
-# Generated at 2026-10-24 12:44:49.549813
-# Unit test for function parse_music
+    # Repeated quarter notes
+    assert module_0.parse_music('.| .| .|') == [1, 1, 1]
 
-# Generated at 2026-10-24 12:44:51.965058
+    # Mixed notes in a different order
+    assert module_0.parse_music('.| o| o') == [1, 2, 4]
+
+    # Extra whitespace should be ignored
+    assert module_0.parse_music('  o   o|  ') == [4, 2]
+
+    # Verify return type is a list
+    assert isinstance(module_0.parse_music('o o|'), list)
+
+    # Verify all elements are integers
+    assert all(isinstance(x, int) for x in module_0.parse_music('o o| .|'))
+
+# Generated at 2026-11-01 19:34:54.244779
 # Unit test for function parse_music
+def test_parse_music():
+    # Single notes
+    assert module_0.parse_music('o') == [4]
+    assert module_0.parse_music('o|') == [2]
+    assert module_0.parse_music('.|') == [1]
+
+    # Mixed notes
+    assert module_0.parse_music('o o| .|') == [4, 2, 1]
+
+    # Classic example sequence
+    assert module_0.parse_music('o o| .| o| o| .| .| .| .| o o') == [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]
+
+    # Empty string yields empty list
+    assert module_0.parse_music('') == []
+
+    # Extra spaces are ignored
+    assert module_0.parse_music('o  o|') == [4, 2]
+    assert module_0.parse_music(' o ') == [4]
+    assert module_0.parse_music('   ') == []
+
+    # Repeated notes
+    assert module_0.parse_music('.| .| .| .|') == [1, 1, 1, 1]
+    assert module_0.parse_music('o| o| o|') == [2, 2, 2]
+    assert module_0.parse_music('o o o') == [4, 4, 4]
+
+    # Alternating pattern
+    assert module_0.parse_music('o .| o .|') == [4, 1, 4, 1]
+
+    # Long sequence
+    assert module_0.parse_music('o| .| o .| o| .| o') == [2, 1, 4, 1, 2, 1, 4]

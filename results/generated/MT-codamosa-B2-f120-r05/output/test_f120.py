@@ -2,28 +2,50 @@
 import f120 as module_0
 
 def test_case_0():
-    int_0 = 1
-    int_1 = 3
-    int_2 = 2
-    int_3 = 5
-    int_4 = 4
+    int_0 = -10
+    int_1 = -8
+    int_2 = -6
+    int_3 = -4
+    int_4 = -2
     int_5 = [int_0, int_1, int_2, int_3, int_4]
-    var_0 = module_0.maximum(int_5, int_1)
-    assert var_0 == [3, 4, 5]
-    int_6 = 7
-    int_7 = [int_6, int_2, int_6, int_0]
-    var_1 = module_0.maximum(int_7, int_2)
-    assert var_1 == [7, 7]
-    int_8 = [int_4, int_0, int_1]
-    int_9 = 0
-    var_2 = module_0.maximum(int_8, int_9)
-    assert var_2 == []
-    int_10 = -5
-    int_11 = -1
-    int_12 = -3
-    int_13 = [int_10, int_11, int_12]
-    var_3 = module_0.maximum(int_13, int_2)
-    assert var_3 == [-3, -1]
-    int_14 = [int_2, int_0]
-    var_4 = module_0.maximum(int_14, int_3)
-    assert var_4 == [1, 2]
+    int_6 = 3
+    var_0 = module_0.maximum(int_5, int_6)
+    assert var_0 == [-6, -4, -2]
+    int_7 = 2
+    int_8 = 4
+    int_9 = 1
+    int_10 = 5
+    int_11 = [int_7, int_8, int_9, int_6, int_10]
+    var_1 = module_0.maximum(int_11, int_7)
+    assert var_1 == [4, 5]
+    int_12 = 0
+    int_13 = [int_12, int_12, int_12, int_12]
+    var_2 = module_0.maximum(int_13, int_7)
+    assert var_2 == [0, 0]
+    int_14 = [int_9]
+    var_3 = module_0.maximum(int_14, int_9)
+    assert var_3 == [1]
+    int_15 = [int_6, int_9, int_7]
+    var_4 = module_0.maximum(int_15, int_12)
+    assert var_4 == []
+    int_16 = [int_9, int_7, int_6]
+    var_5 = module_0.maximum(int_16, int_6)
+    assert var_5 == [1, 2, 3]
+    int_17 = [int_10, int_10, int_10, int_10]
+    var_6 = module_0.maximum(int_17, int_6)
+    assert var_6 == [5, 5, 5]
+    int_18 = 7
+    int_19 = 9
+    int_20 = 8
+    int_21 = [int_18, int_9, int_19, int_6, int_20]
+    var_7 = module_0.maximum(int_21, int_8)
+    assert var_7 == [3, 7, 8, 9]
+    int_22 = -1
+    int_23 = -5
+    int_24 = -3
+    int_25 = [int_22, int_23, int_24]
+    var_8 = module_0.maximum(int_25, int_9)
+    assert var_8 == [-1]
+
+def test_case_1():
+    pass

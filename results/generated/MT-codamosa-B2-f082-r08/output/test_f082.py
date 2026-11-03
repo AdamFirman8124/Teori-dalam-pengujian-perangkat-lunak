@@ -2,22 +2,41 @@
 import f082 as module_0
 
 def test_case_0():
-    bytes_0 = b'\xb8\xe1{\x0f\t)~\x03\x12/\xe4\xf8\xba\xb1'
-    list_0 = [bytes_0, bytes_0]
-    var_0 = module_0.prime_length(list_0)
+    str_0 = 'Hello'
+    var_0 = module_0.prime_length(str_0)
     assert var_0 is True
-    var_1 = module_0.prime_length(list_0)
+    str_1 = 'ab'
+    var_1 = module_0.prime_length(str_1)
     assert var_1 is True
-    str_0 = 'wX6'
-    var_2 = module_0.prime_length(str_0)
+    str_2 = 'abc'
+    var_2 = module_0.prime_length(str_2)
     assert var_2 is True
+    str_3 = 'aaaa'
+    var_3 = module_0.prime_length(str_3)
+    assert var_3 is False
+    str_4 = ''
+    var_4 = module_0.prime_length(str_4)
+    assert var_4 is False
+    str_5 = 'a'
+    var_5 = module_0.prime_length(str_5)
+    assert var_5 is False
+    str_6 = 'abcdef'
+    var_6 = module_0.prime_length(str_6)
+    assert var_6 is False
+    str_7 = 'aabbccdd'
+    var_7 = module_0.prime_length(str_7)
+    assert var_7 is False
+    str_8 = 'aabbcc'
+    var_8 = module_0.prime_length(str_8)
+    assert var_8 is False
+    str_9 = 'aabbccc'
+    var_9 = module_0.prime_length(str_9)
+    assert var_9 is True
+    str_10 = 'aaaaaaaaaaa'
+    var_10 = module_0.prime_length(str_10)
+    assert var_10 is True
+    str_11 = 'All test cases passed!'
+    var_11 = print(str_11)
 
 def test_case_1():
-    bytes_0 = b'\x9a\xa0'
-    var_0 = module_0.prime_length(bytes_0)
-    assert var_0 is True
-
-def test_case_2():
-    str_0 = ''
-    var_0 = module_0.prime_length(str_0)
-    assert var_0 is False
+    pass

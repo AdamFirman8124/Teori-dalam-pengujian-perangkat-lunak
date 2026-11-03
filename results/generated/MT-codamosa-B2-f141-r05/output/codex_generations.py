@@ -1,100 +1,250 @@
 
 
-# Generated at 2026-10-25 04:42:16.163622
-# Unit test for function file_name_check
-
-# Generated at 2026-10-25 04:42:18.567459
-# Unit test for function file_name_check
-
-# Generated at 2026-10-25 04:42:20.988476
-# Unit test for function file_name_check
-
-# Generated at 2026-10-25 04:42:23.509010
-# Unit test for function file_name_check
-
-# Generated at 2026-10-25 04:42:25.930041
-# Unit test for function file_name_check
-
-# Generated at 2026-10-25 04:42:28.345108
-# Unit test for function file_name_check
-
-# Generated at 2026-10-25 04:42:30.758500
-# Unit test for function file_name_check
-
-# Generated at 2026-10-25 04:42:33.173337
-# Unit test for function file_name_check
-
-# Generated at 2026-10-25 04:42:35.584650
-# Unit test for function file_name_check
-
-# Generated at 2026-10-25 04:42:38.001437
-# Unit test for function file_name_check
-
-# Generated at 2026-10-25 04:42:39.373975
-# Unit test for function file_name_check
-def test_file_name_check():assert module_0.file_name_check("abc.txt") == "Yes"
-
-# Generated at 2026-10-25 04:42:47.771936
-# Unit test for function file_name_check
-def test_file_name_check():assert module_0.file_name_check("document.txt") == "Yes"
-
-# Generated at 2026-10-25 04:42:54.231329
-# Unit test for function file_name_check
-def test_file_name_check():assert module_0.file_name_check("example.txt") == "Yes"
-
-# Generated at 2026-10-25 04:43:01.904914
-# Unit test for function file_name_check
-def test_file_name_check():assert module_0.file_name_check("document.txt") == "Yes"
-
-# Generated at 2026-10-25 04:43:08.545238
-# Unit test for function file_name_check
-def test_file_name_check():assert module_0.file_name_check('example.txt') == 'Yes'
-
-# Generated at 2026-10-25 04:43:14.646439
-# Unit test for function file_name_check
-def test_file_name_check():assert module_0.file_name_check("file.txt") == "Yes"
-
-# Generated at 2026-10-25 04:43:21.052603
+# Generated at 2026-11-02 18:19:33.841780
 # Unit test for function file_name_check
 def test_file_name_check():
-    assert module_0.file_name_check("document.txt") == "Yes"
-    assert module_0.file_name_check("app.exe") == "Yes"
-    assert module_0.file_name_check("lib123.dll") == "Yes"
-    assert module_0.file_name_check("file1234.txt") == "No"
-    assert module_0.file_name_check("1file.txt") == "No"
-    assert module_0.file_name_check(".txt") == "No"
-    assert module_0.file_name_check("file.pdf") == "No"
-    assert module_0.file_name_check("file.TXT") == "No"
-    assert module_0.file_name_check("file") == "No"
-    assert module_0.file_name_check("archive.tar.txt") == "No"
+    # Valid file names
+    assert module_0.file_name_check('example.txt') == 'Yes'
+    assert module_0.file_name_check('1example.dll') == 'No'  # starts with digit
+    assert module_0.file_name_check('s1sdf3.asd') == 'No'  # invalid extension
+    assert module_0.file_name_check('K.dll') == 'Yes'
+    assert module_0.file_name_check('MY16FILE3.exe') == 'Yes'
+    assert module_0.file_name_check(' myfile.exe') == 'No'  # starts with space
+    assert module_0.file_name_check('hisfile7dll.exe') == 'Yes'
+    assert module_0.file_name_check('A.dll') == 'Yes'
+    assert module_0.file_name_check('B.exe') == 'Yes'
+    assert module_0.file_name_check('C.txt') == 'Yes'
+    
+    # Invalid: wrong number of dots
+    assert module_0.file_name_check('example.txt.exe') == 'No'
+    assert module_0.file_name_check('example') == 'No'
+    assert module_0.file_name_check('ex.ample.txt') == 'No'
+    assert module_0.file_name_check('') == 'No'
+    
+    # Invalid: empty base name
+    assert module_0.file_name_check('.txt') == 'No'
+    assert module_0.file_name_check('.exe') == 'No'
+    assert module_0.file_name_check('.dll') == 'No'
+    
+    # Invalid: extension not in allowed suffixes
+    assert module_0.file_name_check('example.pdf') == 'No'
+    assert module_0.file_name_check('example.doc') == 'No'
+    assert module_0.file_name_check('example.exe1') == 'No'
+    assert module_0.file_name_check('example.TXT') == 'No'  # case-sensitive
+    
+    # Invalid: first character not a letter
+    assert module_0.file_name_check('1example.txt') == 'No'
+    assert module_0.file_name_check('_example.txt') == 'No'
+    assert module_0.file_name_check('9example.dll') == 'No'
+    assert module_0.file_name_check('1234.txt') == 'No'
+    
+    # Invalid: more than 3 digits
+    assert module_0.file_name_check('a1234txt.txt') == 'No'
+    assert module_0.file_name_check('ab12cd34.txt') == 'No'  # 4 digits
+    assert module_0.file_name_check('1a2b3c4d.dll') == 'No'  # starts with digit and 4 digits
+    
+    # Valid: exactly 3 digits
+    assert module_0.file_name_check('a123.txt') == 'Yes'
+    assert module_0.file_name_check('a1b2c3.dll') == 'Yes'
+    assert module_0.file_name_check('x999.exe') == 'Yes'
+    
+    # Valid: zero digits
+    assert module_0.file_name_check('abcdef.txt') == 'Yes'
+    assert module_0.file_name_check('Z.dll') == 'Yes'
+    
+    # Edge cases
+    assert module_0.file_name_check('a.txt') == 'Yes'
+    assert module_0.file_name_check('a.exe') == 'Yes'
+    assert module_0.file_name_check('a.dll') == 'Yes'
+    assert module_0.file_name_check('123.txt') == 'No'  # starts with digit
+    assert module_0.file_name_check('a.b.txt') == 'No'  # more than one dot
+    
+    print('All tests passed!')
 
-# Generated at 2026-10-25 04:43:27.094629
-# Unit test for function file_name_check
-def test_file_name_check():assert module_0.file_name_check("file.txt") == "Yes"
+test_file_name_check()
 
-# Generated at 2026-10-25 04:43:29.512527
+# Generated at 2026-11-02 18:20:30.581387
 # Unit test for function file_name_check
+def test_file_name_check():
+    # Valid file names
+    assert module_0.file_name_check("example.txt") == 'Yes'
+    assert module_0.file_name_check("example.dll") == 'Yes'
+    assert module_0.file_name_check("example.exe") == 'Yes'
+    assert module_0.file_name_check("a.txt") == 'Yes'
+    assert module_0.file_name_check("file1name.txt") == 'Yes'
+    assert module_0.file_name_check("a1b2c3.exe") == 'Yes'  # exactly 3 digits allowed
+    assert module_0.file_name_check("I563yes.txt") == 'Yes'
+    assert module_0.file_name_check("Name.dll") == 'Yes'
 
-# Generated at 2026-10-25 04:43:31.927637
-# Unit test for function file_name_check
+    # No dot or wrong number of parts
+    assert module_0.file_name_check("example") == 'No'
+    assert module_0.file_name_check("example.txt.exe") == 'No'
+    assert module_0.file_name_check("my.file.name.txt") == 'No'
+    assert module_0.file_name_check("") == 'No'
 
-# Generated at 2026-10-25 04:43:34.484771
-# Unit test for function file_name_check
+    # Invalid extension
+    assert module_0.file_name_check("example.pdf") == 'No'
+    assert module_0.file_name_check("example.doc") == 'No'
+    assert module_0.file_name_check("example.TXT") == 'No'  # case-sensitive
+    assert module_0.file_name_check("example.") == 'No'
 
-# Generated at 2026-10-25 04:43:36.898307
-# Unit test for function file_name_check
+    # Empty base name
+    assert module_0.file_name_check(".txt") == 'No'
+    assert module_0.file_name_check(".exe") == 'No'
 
-# Generated at 2026-10-25 04:43:39.312673
-# Unit test for function file_name_check
+    # First character not alphabetic
+    assert module_0.file_name_check("1example.txt") == 'No'
+    assert module_0.file_name_check("_example.txt") == 'No'
+    assert module_0.file_name_check("1.txt") == 'No'
+    assert module_0.file_name_check("123.txt") == 'No'
 
-# Generated at 2026-10-25 04:43:40.709359
-# Unit test for function file_name_check
-def test_file_name_check():assert module_0.file_name_check("abc.txt") == "Yes"
+    # Too many digits (more than 3)
+    assert module_0.file_name_check("a1b2c3d4.txt") == 'No'
+    assert module_0.file_name_check("s1s2s3s4s.dll") == 'No'
+    assert module_0.file_name_check("a1234.exe") == 'No'
 
-# Generated at 2026-10-25 04:43:48.274813
-# Unit test for function file_name_check
-def test_file_name_check():assert module_0.file_name_check("example.txt") == "Yes"
+    # Exactly 3 digits is fine
+    assert module_0.file_name_check("a123.exe") == 'Yes'
+    assert module_0.file_name_check("x9y8z7.dll") == 'Yes'
 
-# Generated at 2026-10-25 04:43:53.820249
+# Generated at 2026-11-02 18:21:13.411953
 # Unit test for function file_name_check
-def test_file_name_check():assert module_0.file_name_check("file.txt") == "Yes"
+def test_file_name_check():
+    # Valid filenames
+    assert module_0.file_name_check("example.txt") == 'Yes'
+    assert module_0.file_name_check("file.exe") == 'Yes'
+    assert module_0.file_name_check("file.dll") == 'Yes'
+    assert module_0.file_name_check("a123.txt") == 'Yes'
+    assert module_0.file_name_check("a1b2c3.txt") == 'Yes'
+    assert module_0.file_name_check("MyFile.dll") == 'Yes'
+    assert module_0.file_name_check("A.txt") == 'Yes'
+
+    # Invalid: wrong or missing extension
+    assert module_0.file_name_check("s1sdf3.asd") == 'No'
+    assert module_0.file_name_check("asdasdf.asdf") == 'No'
+    assert module_0.file_name_check("example.doc") == 'No'
+    assert module_0.file_name_check("example") == 'No'
+    assert module_0.file_name_check("example.TXT") == 'No'
+
+    # Invalid: more than one dot
+    assert module_0.file_name_check("a.b.txt") == 'No'
+    assert module_0.file_name_check("file.txt.exe") == 'No'
+
+    # Invalid: empty name before extension
+    assert module_0.file_name_check(".txt") == 'No'
+    assert module_0.file_name_check(".exe") == 'No'
+
+    # Invalid: first character not a letter
+    assert module_0.file_name_check("1example.dll") == 'No'
+    assert module_0.file_name_check("123.txt") == 'No'
+    assert module_0.file_name_check("_example.txt") == 'No'
+    assert module_0.file_name_check("1.exe") == 'No'
+    assert module_0.file_name_check("-file.txt") == 'No'
+
+    # Invalid: more than 3 digits
+    assert module_0.file_name_check("a1234.txt") == 'No'
+    assert module_0.file_name_check("a1b2c3d4.txt") == 'No'
+    assert module_0.file_name_check("1234.exe") == 'No'
+
+    # Edge: exactly 3 digits is fine
+    assert module_0.file_name_check("a123.exe") == 'Yes'
+    assert module_0.file_name_check("x999dll") == 'No'  # no dot -> single part
+
+# Generated at 2026-11-02 18:22:22.015681
+# Unit test for function file_name_check
+def test_file_name_check():import unittest
+
+
+class TestFileNameCheck(unittest.TestCase):
+
+    def test_valid_txt_file(self):
+        self.assertEqual(module_0.file_name_check('example.txt'), 'Yes')
+
+    def test_valid_exe_file(self):
+        self.assertEqual(module_0.file_name_check('program1.exe'), 'Yes')
+
+    def test_valid_dll_file(self):
+        self.assertEqual(module_0.file_name_check('library2.dll'), 'Yes')
+
+    def test_valid_with_max_three_digits(self):
+        self.assertEqual(module_0.file_name_check('a123b.txt'), 'Yes')
+
+    def test_invalid_more_than_three_digits(self):
+        self.assertEqual(module_0.file_name_check('a1234.txt'), 'No')
+
+    def test_invalid_no_extension(self):
+        self.assertEqual(module_0.file_name_check('filename'), 'No')
+
+    def test_invalid_multiple_dots(self):
+        self.assertEqual(module_0.file_name_check('file.name.txt'), 'No')
+
+    def test_invalid_extension(self):
+        self.assertEqual(module_0.file_name_check('example.pdf'), 'No')
+
+    def test_invalid_starts_with_digit(self):
+        self.assertEqual(module_0.file_name_check('1example.txt'), 'No')
+
+    def test_invalid_starts_with_special_char(self):
+        self.assertEqual(module_0.file_name_check('_example.txt'), 'No')
+
+    def test_invalid_empty_base_name(self):
+        self.assertEqual(module_0.file_name_check('.txt'), 'No')
+
+    def test_invalid_empty_string(self):
+        self.assertEqual(module_0.file_name_check(''), 'No')
+
+    def test_invalid_only_digits_in_name(self):
+        self.assertEqual(module_0.file_name_check('123.txt'), 'No')
+
+    def test_valid_single_char_name(self):
+        self.assertEqual(module_0.file_name_check('a.exe'), 'Yes')
+
+    def test_invalid_three_dots(self):
+        self.assertEqual(module_0.file_name_check('a.b.txt'), 'No')
+
+    def test_invalid_uppercase_start_digit(self):
+        self.assertEqual(module_0.file_name_check('9dll.dll'), 'No')
+
+
+if __name__ == '__main__':
+    unittest.main()
+
+# Generated at 2026-11-02 18:23:35.762134
+# Unit test for function file_name_check
+def test_file_name_check():
+    # Valid file names
+    assert module_0.file_name_check("example.txt") == 'Yes'
+    assert module_0.file_name_check("file.dll") == 'Yes'
+    assert module_0.file_name_check("program.exe") == 'Yes'
+    assert module_0.file_name_check("a1b2c3.txt") == 'Yes'  # exactly 3 digits allowed
+    assert module_0.file_name_check("s1s2s3.exe") == 'Yes'
+    assert module_0.file_name_check("A.txt") == 'Yes'  # single letter name
+    assert module_0.file_name_check("file1.txt") == 'Yes'  # one digit
+
+    # Invalid: wrong number of dot-separated parts
+    assert module_0.file_name_check("example") == 'No'  # no extension
+    assert module_0.file_name_check("example.txt.txt") == 'No'  # two dots
+    assert module_0.file_name_check("") == 'No'  # empty string
+    assert module_0.file_name_check(".txt.txt") == 'No'  # multiple dots
+
+    # Invalid: wrong extension
+    assert module_0.file_name_check("example.pdf") == 'No'
+    assert module_0.file_name_check("example.doc") == 'No'
+    assert module_0.file_name_check("example.TXT") == 'No'  # case sensitive
+    assert module_0.file_name_check("example.") == 'No'  # empty extension
+
+    # Invalid: empty name part
+    assert module_0.file_name_check(".txt") == 'No'
+    assert module_0.file_name_check(".exe") == 'No'
+    assert module_0.file_name_check(".dll") == 'No'
+
+    # Invalid: name does not start with a letter
+    assert module_0.file_name_check("1example.txt") == 'No'
+    assert module_0.file_name_check("123.txt") == 'No'
+    assert module_0.file_name_check("_example.txt") == 'No'
+    assert module_0.file_name_check("1file.dll") == 'No'
+
+    # Invalid: more than 3 digits in name
+    assert module_0.file_name_check("a1b2c3d4.txt") == 'No'  # 4 digits
+    assert module_0.file_name_check("1234.exe") == 'No'  # 4 digits
+    assert module_0.file_name_check("a12345.txt") == 'No'  # 5 digits
