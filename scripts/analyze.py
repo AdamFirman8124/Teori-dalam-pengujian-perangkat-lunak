@@ -43,7 +43,12 @@ def derivatives(df: pd.DataFrame) -> pd.DataFrame:
 
 def load_all_data(input_path: Path) -> pd.DataFrame:
     df = pd.read_csv(input_path)
+    if input_path.name == "pilot_results.csv":
+        return derivatives(df)
     base_dir = input_path.parent
+    b2_file = base_dir / "b2_results.csv"
+    if b2_file.exists() and input_path.name == "results.csv":
+        df = pd.concat([df[df.backbone != "B2"], pd.read_csv(b2_file)], ignore_index=True)
     existing_tools = set(df.tool.dropna().unique())
 
     to_merge = []
@@ -55,8 +60,9 @@ def load_all_data(input_path: Path) -> pd.DataFrame:
     if "MuTAP" not in existing_tools and mutap_file.exists():
         to_merge.append(pd.read_csv(mutap_file))
 
-    if to_merge:
-        df = pd.concat([df, *to_merge], ignore_index=True)
+    if to_merge or (b2_file.exists() and input_path.name == "results.csv"):
+        if to_merge:
+            df = pd.concat([df, *to_merge], ignore_index=True)
         # Save canonical merged file
         combined_path = base_dir / "results_combined.csv"
         df.to_csv(combined_path, index=False)
