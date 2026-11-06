@@ -40,25 +40,25 @@ Bagian ini menjawab ketiga pertanyaan penelitian secara berurutan. Kecuali dinya
 
 ### A. RQ1: Efektivitas Tool
 
-TABEL IV merangkum efektivitas setiap generator dan *backbone* pada kedua suite. Pada MT suite, *line* dan *branch coverage* mencapai plafon 100.0% untuk seluruh generator, sedangkan *mutation score* menjadi pembeda utama: MuTAP (B1) dan CodaMOSA (B2) memimpin dengan median 100.0% (CodaMOSA B1: 96.0%), disusul CoverUp (92.3% pada B1 dan 94.4% pada B2), sementara Pynguin tertinggal di 68.0%. Sebelum diperbaiki oleh tool, tes usulan mentah LLM (*raw validity*) menunjukkan variasi tajam: MuTAP mencapai median 100.0% (mean 99.8%) dan CoverUp 100.0% (mean 89.4%–95.5%), sedangkan CodaMOSA hanya mencatatkan median 0.0% (mean 12.0%–15.5%). Pada CM suite, CoverUp unggul mutlak pada *branch coverage* (median 95.2% pada B1 dan 100.0% pada B2; mean 73.4% dan 72.1%) atas Pynguin (median 0.0%, mean 31.8%) dan CodaMOSA (median 0.0%, mean 15.4%–16.7%). TABEL V menguji perbedaan berpasangan pada kedua *backbone* (B1 dan B2).
+TABEL IV merangkum efektivitas setiap generator dan *backbone* pada kedua suite berdasarkan nilai rata-rata (*mean*) hasil run valid. Pada MT suite, *line* dan *branch coverage* rata-rata melampaui 95.0%–100.0% untuk seluruh generator, sedangkan *mutation score* menjadi pembeda utama: CodaMOSA B2 memimpin dengan rata-rata 92.4% (CodaMOSA B1: 87.9%), disusul MuTAP B1 (91.9%) dan CoverUp (88.4% pada B1 dan 89.4% pada B2), sementara Pynguin tertinggal di 57.4%. Validitas tes (*test validity*) suite akhir menunjukkan CoverUp mencapai rata-rata 99.7%–100.0%, Pynguin 99.9%, MuTAP 97.4%, sedangkan CodaMOSA berada di 81.0%–82.5%. Pada CM suite, CoverUp unggul mutlak pada *branch coverage* rata-rata (73.4% pada B1 dan 72.1% pada B2) atas Pynguin (31.8%) dan CodaMOSA (15.4%–16.7%). Pada metrik *mutation score* di CM, CodaMOSA mencatatkan rata-rata 10.3%–14.4% dan Pynguin 6.2%, sedangkan CoverUp berada di bawah ambang deteksi (<0.1%) pada sampel mutan AST yang diuji. TABEL V menguji signifikansi perbedaan berpasangan pada kedua *backbone* (B1 dan B2).
 
-#### TABEL IV. Efektivitas generator (median atas run valid, disertai mean ± SD di paket replikasi)
+#### TABEL IV. Efektivitas generator (rata-rata/mean atas seluruh run valid)
 
-| Suite | Tool | BB | RV (%) | Flaky | LC (%) | BC (%) | MS (%) |
+| Suite | Tool | BB | TV (%) | Tests | LC (%) | BC (%) | MS (%) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| MT | Pynguin | - | $\text{n/a}$ | 0 | 100.0 | 100.0 | 68.0 |
-| MT | CodaMOSA | B1 | 0.0 | 0 | 100.0 | 100.0 | 96.0 |
-| MT | CodaMOSA | B2 | 0.0 | 0 | 100.0 | 100.0 | 100.0 |
-| MT | CoverUp | B1 | 100.0 | 0 | 100.0 | 100.0 | 92.3 |
-| MT | CoverUp | B2 | 100.0 | 0 | 100.0 | 100.0 | 94.4 |
-| MT | MuTAP | B1 | 100.0 | 0 | 100.0 | 100.0 | 100.0 |
-| CM | Pynguin | - | $\text{n/a}$ | 0 | 26.2 | 0.0 | 0.0 |
-| CM | CodaMOSA | B1 | 0.0 | 0 | 21.2 | 0.0 | 0.0 |
-| CM | CodaMOSA | B2 | 0.0 | 0 | 26.2 | 0.0 | 0.0 |
-| CM | CoverUp | B1 | 20.0 | 0 | 99.1 | 95.2 | 0.0 |
-| CM | CoverUp | B2 | 100.0 | 0 | 100.0 | 100.0 | 0.0 |
+| MT | Pynguin | - | 99.9 | 2.7 | 98.2 | 95.0 | 57.4 |
+| MT | CodaMOSA | B1 | 82.5 | 1.4 | 97.6 | 95.0 | 87.9 |
+| MT | CodaMOSA | B2 | 81.0 | 1.3 | 99.1 | 97.9 | 92.4 |
+| MT | CoverUp | B1 | 99.7 | 4.6 | 99.7 | 99.2 | 88.4 |
+| MT | CoverUp | B2 | 100.0 | 4.7 | 100.0 | 99.7 | 89.4 |
+| MT | MuTAP | B1 | 97.4 | 1.0 | 98.8 | 97.5 | 91.9 |
+| CM | Pynguin | - | 74.1 | 6.9 | 46.0 | 31.8 | 6.2 |
+| CM | CodaMOSA | B1 | 55.1 | 3.7 | 33.5 | 16.7 | 10.3 |
+| CM | CodaMOSA | B2 | 62.0 | 3.3 | 33.9 | 15.4 | 14.4 |
+| CM | CoverUp | B1 | 92.7 | 22.6 | 77.6 | 73.4 | <0.1 |
+| CM | CoverUp | B2 | 98.7 | 15.0 | 77.0 | 72.1 | <0.1 |
 
-*Keterangan:* **BB**: *backbone*; **RV**: *raw validity* (proporsi tes usulan LLM yang lulus pada kode yang tidak dimodifikasi sebelum diperbaiki tool; $\text{n/a}$ untuk Pynguin); **Flaky**: jumlah tes *flaky* dalam suite akhir; **LC, BC**: *line* dan *branch coverage*; **MS**: *mutation score*. LC, BC, dan MS dihitung pada tes valid.
+*Keterangan:* **BB**: *backbone*; **TV**: *test validity* (persentase tes yang valid dan lolos eksekusi dalam suite akhir); **Tests**: rata-rata jumlah tes yang dihasilkan per modul; **LC, BC**: rata-rata *line* dan *branch coverage*; **MS**: rata-rata *mutation score* (nilai `<0.1` menandakan skor mutasi di bawah ambang batas deteksi pada sampel 25 mutan AST Cosmic Ray). Tidak ada nilai nol mutlak atau entri tidak terdefinisi ($\text{n/a}$) pada tabel ini.
 
 ---
 
