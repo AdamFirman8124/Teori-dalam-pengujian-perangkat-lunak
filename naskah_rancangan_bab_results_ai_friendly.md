@@ -40,85 +40,89 @@ Bagian ini menjawab ketiga pertanyaan penelitian secara berurutan. Kecuali dinya
 
 ### A. RQ1: Efektivitas Tool
 
-TABEL IV merangkum efektivitas setiap generator dan *backbone* pada kedua suite. Pada MT suite, line dan branch coverage mencapai plafon 100.0% untuk seluruh generator, sedangkan *mutation score* menjadi pembeda utama: MuTAP (B1) memimpin dengan median 100.0%, disusul CodaMOSA (96.0%), CoverUp (92.0%–92.3%), dan Pynguin tertinggal di 68.0%. Sebelum diperbaiki oleh tool, tes usulan mentah LLM menunjukkan validitas bervariasi tajam: MuTAP mencapai median 100.0% (mean 99.9%) dan CoverUp 100.0% (mean 89.5%), sedangkan CodaMOSA hanya mencatatkan median 0.0% (mean 15.5%). Pada CM suite, CoverUp unggul mutlak pada branch coverage (median 95.2%–97.2%, mean 73.4%) atas Pynguin (median 0.0%, mean 30.4%) dan CodaMOSA (median 0.0%, mean 16.7%). TABEL V menguji perbedaan berpasangan dengan *backbone* B1.
+TABEL IV merangkum efektivitas setiap generator dan *backbone* pada kedua suite. Pada MT suite, *line* dan *branch coverage* mencapai plafon 100.0% untuk seluruh generator, sedangkan *mutation score* menjadi pembeda utama: MuTAP (B1) dan CodaMOSA (B2) memimpin dengan median 100.0% (CodaMOSA B1: 96.0%), disusul CoverUp (92.3% pada B1 dan 94.4% pada B2), sementara Pynguin tertinggal di 68.0%. Sebelum diperbaiki oleh tool, tes usulan mentah LLM (*raw validity*) menunjukkan variasi tajam: MuTAP mencapai median 100.0% (mean 99.8%) dan CoverUp 100.0% (mean 89.4%–95.5%), sedangkan CodaMOSA hanya mencatatkan median 0.0% (mean 12.0%–15.5%). Pada CM suite, CoverUp unggul mutlak pada *branch coverage* (median 95.2% pada B1 dan 100.0% pada B2; mean 73.4% dan 72.1%) atas Pynguin (median 0.0%, mean 31.8%) dan CodaMOSA (median 0.0%, mean 15.4%–16.7%). TABEL V menguji perbedaan berpasangan pada kedua *backbone* (B1 dan B2).
 
-#### TABEL IV. Efektivitas generator (median atas unit)
+#### TABEL IV. Efektivitas generator (median atas run valid, disertai mean ± SD di paket replikasi)
 
 | Suite | Tool | BB | RV (%) | Flaky | LC (%) | BC (%) | MS (%) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | MT | Pynguin | - | $\text{n/a}$ | 0 | 100.0 | 100.0 | 68.0 |
 | MT | CodaMOSA | B1 | 0.0 | 0 | 100.0 | 100.0 | 96.0 |
-| MT | CodaMOSA | B2 | 0.0 | 0 | 100.0 | 100.0 | 96.0 |
+| MT | CodaMOSA | B2 | 0.0 | 0 | 100.0 | 100.0 | 100.0 |
 | MT | CoverUp | B1 | 100.0 | 0 | 100.0 | 100.0 | 92.3 |
-| MT | CoverUp | B2 | 100.0 | 0 | 100.0 | 100.0 | 92.0 |
+| MT | CoverUp | B2 | 100.0 | 0 | 100.0 | 100.0 | 94.4 |
 | MT | MuTAP | B1 | 100.0 | 0 | 100.0 | 100.0 | 100.0 |
 | CM | Pynguin | - | $\text{n/a}$ | 0 | 26.2 | 0.0 | 0.0 |
 | CM | CodaMOSA | B1 | 0.0 | 0 | 21.2 | 0.0 | 0.0 |
-| CM | CodaMOSA | B2 | 0.0 | 0 | 21.2 | 0.0 | 0.0 |
+| CM | CodaMOSA | B2 | 0.0 | 0 | 26.2 | 0.0 | 0.0 |
 | CM | CoverUp | B1 | 20.0 | 0 | 99.1 | 95.2 | 0.0 |
-| CM | CoverUp | B2 | 25.0 | 0 | 99.3 | 97.2 | 0.0 |
+| CM | CoverUp | B2 | 100.0 | 0 | 100.0 | 100.0 | 0.0 |
 
 *Keterangan:* **BB**: *backbone*; **RV**: *raw validity* (proporsi tes usulan LLM yang lulus pada kode yang tidak dimodifikasi sebelum diperbaiki tool; $\text{n/a}$ untuk Pynguin); **Flaky**: jumlah tes *flaky* dalam suite akhir; **LC, BC**: *line* dan *branch coverage*; **MS**: *mutation score*. LC, BC, dan MS dihitung pada tes valid.
 
 ---
 
-#### TABEL V. Perbandingan berpasangan dengan backbone B1 (uji Wilcoxon signed-rank, koreksi Holm)
+#### TABEL V. Perbandingan berpasangan pada backbone B1 dan B2 (uji Wilcoxon signed-rank, koreksi Holm)
 
-| Suite | Metrik | A vs B | M/S/K | $\hat{A}_{12}$ | $p\text{ (Holm)}$ |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| MT | MS | MuTAP vs Pynguin | 82/20/7 | 0.79 | $<0.001$ |
-| MT | MS | MuTAP vs CodaMOSA | 16/78/16 | 0.48 | 1.000 |
-| MT | MS | MuTAP vs CoverUp | 23/79/9 | 0.55 | 0.484 |
-| MT | MS | CoverUp vs Pynguin | 106/30/15 | 0.76 | $<0.001$ |
-| MT | MS | CoverUp vs CodaMOSA | 11/97/44 | 0.44 | 0.022 |
-| MT | MS | CodaMOSA vs Pynguin | 113/28/10 | 0.79 | $<0.001$ |
-| CM | BC | CoverUp vs Pynguin | 14/5/3 | 0.73 | 0.124 |
-| CM | BC | CoverUp vs CodaMOSA | 24/1/3 | 0.88 | 0.001 |
-| CM | BC | CodaMOSA vs Pynguin | 0/17/12 | 0.40 | 0.018 |
-| CM | MS | CoverUp vs Pynguin | 0/12/1 | 0.46 | 1.000 |
-| CM | MS | CoverUp vs CodaMOSA | 0/14/2 | 0.44 | 0.719 |
-| CM | MS | CodaMOSA vs Pynguin | 3/20/1 | 0.54 | 1.000 |
+| Suite | Metrik | BB | A vs B | $n$ | M/S/K | $\hat{A}_{12}$ | $\Delta\text{ Mean}$ | $p\text{ (Holm)}$ |
+| :--- | :--- | :---: | :--- | :---: | :--- | :--- | :---: | :--- |
+| MT | MS | B1 | MuTAP vs Pynguin | 110 | 83/20/7 | 0.80 | +31.15 | $<0.001$ |
+| MT | MS | B1 | MuTAP vs CodaMOSA | 110 | 16/78/16 | 0.48 | -0.63 | 1.000 |
+| MT | MS | B1 | MuTAP vs CoverUp | 111 | 23/79/9 | 0.55 | +1.45 | 0.705 |
+| MT | MS | B1 | CoverUp vs Pynguin | 152 | 107/30/15 | 0.77 | +32.48 | $<0.001$ |
+| MT | MS | B1 | CoverUp vs CodaMOSA | 152 | 11/97/44 | 0.44 | -1.52 | 0.038 |
+| MT | MS | B1 | CodaMOSA vs Pynguin | 152 | 115/27/10 | 0.80 | +34.01 | $<0.001$ |
+| CM | BC | B1 | CoverUp vs Pynguin | 22 | 14/5/3 | 0.73 | +33.35 | 0.186 |
+| CM | BC | B1 | CoverUp vs CodaMOSA | 28 | 24/1/3 | 0.88 | +53.80 | 0.002 |
+| CM | BC | B1 | CodaMOSA vs Pynguin | 29 | 0/17/12 | 0.40 | -14.34 | 0.029 |
+| CM | MS | B1 | CoverUp vs Pynguin | 13 | 0/12/1 | 0.46 | -7.69 | 1.000 |
+| CM | MS | B1 | CoverUp vs CodaMOSA | 16 | 0/14/2 | 0.44 | -9.38 | 0.944 |
+| CM | MS | B1 | CodaMOSA vs Pynguin | 24 | 3/20/1 | 0.54 | +6.25 | 1.000 |
+| MT | MS | B2 | CoverUp vs Pynguin | 152 | 109/29/14 | 0.78 | +33.17 | $<0.001$ |
+| MT | MS | B2 | CoverUp vs CodaMOSA | 152 | 11/96/45 | 0.43 | -2.01 | $<0.001$ |
+| MT | MS | B2 | CodaMOSA vs Pynguin | 151 | 116/28/7 | 0.81 | +35.16 | $<0.001$ |
+| CM | BC | B2 | CoverUp vs Pynguin | 19 | 13/5/1 | 0.71 | +33.18 | 0.106 |
+| CM | BC | B2 | CoverUp vs CodaMOSA | 16 | 14/1/1 | 0.85 | +53.30 | 0.029 |
+| CM | BC | B2 | CodaMOSA vs Pynguin | 21 | 0/11/10 | 0.37 | -23.39 | 0.055 |
+| CM | MS | B2 | CoverUp vs Pynguin | 19 | 0/17/2 | 0.45 | -10.53 | 0.944 |
+| CM | MS | B2 | CoverUp vs CodaMOSA | 17 | 0/13/4 | 0.38 | -13.80 | 0.525 |
+| CM | MS | B2 | CodaMOSA vs Pynguin | 21 | 3/17/1 | 0.55 | +4.03 | 1.000 |
 
-*Keterangan:* **M/S/K**: jumlah unit tempat A lebih tinggi (Menang), setara (Seri), atau lebih rendah (Kalah) daripada B; **$\hat{A}_{12}$**: peluang A mengungguli B ($0.5$ berarti tidak berbeda). Value $p$ dikoreksi dengan metode Holm atas 12 uji.
+*Keterangan:* **$n$**: jumlah unit berpasangan yang menghasilkan run valid pada kedua tool; **M/S/K**: jumlah unit tempat A lebih tinggi (Menang), setara (Seri), atau lebih rendah (Kalah) daripada B; **$\hat{A}_{12}$**: peluang A mengungguli B ($0.5$ berarti tidak berbeda). Nilai $p$ dikoreksi dengan metode Holm atas seluruh 21 uji berpasangan.
 
 > ### 📌 CATATAN TABEL V: Arti Kolom dan Cara Membaca (Hapus sebelum submit)
 > - **Letak:** Subbab IV-A (RQ1). **Sumber data:** Median per unit dari TABEL IV (S4).
 > - **Analisis:** 2 (Wilcoxon *signed-rank* [27]), 3 ($\hat{A}_{12}$ [24]), 4 (koreksi Holm [26]); pemilihan uji dan ukuran efek mengikuti pedoman Arcuri dan Briand [23].
 > - **Metrik:** Di MT hanya MS (karena coverage terkena efek plafon). Di CM dipakai BC dan MS.
-> - **A vs B:** Pasangan tool dengan *backbone* B1 ($6\text{ MT} + 3\text{ CM} \times 2\text{ metrik} = 12\text{ uji}$).
 > - **$\hat{A}_{12}$ (Besar Efek):** $0.5 =$ setara; $\ge 0.56$ kecil; $\ge 0.64$ sedang; $\ge 0.71$ besar [24]. Di bawah $0.5$ berarti B yang unggul.
-> - **$p\text{ (Holm)}$:** $p$-value setelah koreksi Holm atas 12 uji. $< 0.05 =$ perbedaan nyata.
-> - **Kenapa Wilcoxon (bukan Mann-Whitney):** Data berpasangan (setiap fungsi/modul dikerjakan oleh kedua tool). Jumlah uji kecil (12), sehingga Holm tidak terlalu ketat.
-> - *Contoh kalimat:* "MuTAP (B1) mencapai mutation score lebih tinggi daripada CoverUp (B1) pada seluruh 163 fungsi ($\hat{A}_{12} = 0.86$, $p\text{ terkoreksi Holm} < 0.001$). "
+> - **$p\text{ (Holm)}$:** $p$-value setelah koreksi Holm. $< 0.05 =$ perbedaan nyata.
 
 ---
 
 > ### 🖼️ Gambar 3 (Boxplot, dua panel) [Placeholder]
 > - **Panel (a):** Line + branch coverage (%)
 > - **Panel (b):** Mutation score (%)
-> - **Sumbu-x:** 7 konfigurasi MT (Pynguin, CodaMOSA-B1/B2, CoverUp-B1/B2, MuTAP-B1/B2)
-> - **Sumbu-y:** Persentase (satu titik data = median $R$ run untuk satu fungsi)
+> - **Sumbu-x:** Konfigurasi MT & CM (`results/figures/figure3_lc.png`, `figure3_bc.png`, `figure3_ms.png`)
+> - **Sumbu-y:** Persentase (satu titik data = median $R$ run untuk satu fungsi/modul)
 > 
-> **Deskripsi Gambar:** *Gambar 3. Distribusi coverage per fungsi (a) dan mutation score (b) pada MT suite.*
-> 
-> *Catatan Penulis:* Memperlihatkan argumen inti paper: di MT, panel coverage menempel dekat 100% untuk semua tool, sedangkan panel mutation score terpisah jelas.
+> **Deskripsi Gambar:** *Gambar 3. Distribusi line coverage, branch coverage, dan mutation score per konfigurasi.*
 
 ---
 
 ### B. RQ2: Algoritma dan Backbone
 
-TABEL VI melaporkan, untuk setiap generator berbasis LLM, perubahan efektivitas ketika *backbone* B1 diganti dengan B2. TABEL VII melaporkan estimasi model *linear mixed-effects* beserta porsi variasi yang dijelaskan oleh setiap faktor. Temuan kunci RQ2 menunjukkan bahwa variasi kinerja didominasi oleh faktor **algoritma tool** (menjelaskan 43.43% variasi pada branch coverage di CM), sedangkan efek **backbone** dan **interaksi keduanya** sangat kecil (< 0.01% variasi, $p > 0.8$) dan tidak signifikan.
+TABEL VI melaporkan, untuk setiap generator berbasis LLM, perubahan efektivitas rata-rata per unit ketika *backbone* B1 (`gpt-5.6-sol`) diganti dengan B2 (`glm-5.3-flash`). TABEL VII melaporkan estimasi model *linear mixed-effects* beserta porsi variasi yang dijelaskan oleh setiap faktor. Temuan kunci RQ2 menunjukkan bahwa pada modul proyek riil (CM), variasi kinerja didominasi oleh faktor **algoritma tool** (menjelaskan **43.16%** variasi pada *branch coverage*, $\beta = +55.276$, $p < 0.001$), sedangkan efek **backbone** ($0.00\%$ variasi, $p = 0.253$) dan **interaksi keduanya** ($0.01\%$ variasi, $p = 0.662$) tidak signifikan. Pada fungsi tunggal (MT), meskipun efek *backbone* B2 ($\beta = +3.647$, $p < 0.001$) dan interaksi ($\beta = -2.630$, $p < 0.001$) terdeteksi signifikan secara statistik karena ukuran sampel besar, porsi variasi yang dijelaskan sangat kecil ($< 1\%$ dari total variasi: Tool $0.14\%$, Backbone $0.63\%$, Interaksi $0.25\%$).
 
-#### TABEL VI. Efek backbone pada setiap generator berbasis LLM (rata-rata atas unit)
+#### TABEL VI. Efek backbone pada setiap generator berbasis LLM (rata-rata atas median per unit)
 
 | Suite | Metrik | Tool | Adaptasi | B1 | B2 | $\Delta\text{ (B1}-\text{B2)}$ | $n$ |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| MT | MS | CodaMOSA | interface-only | 91.29 | 90.91 | 0.38 | 162 |
-| MT | MS | CoverUp | tidak ada | 89.42 | 89.81 | -0.39 | 163 |
-| CM | BC | CodaMOSA | interface-only | 17.85 | 17.40 | 0.45 | 37 |
-| CM | BC | CoverUp | tidak ada | 76.04 | 75.59 | 0.45 | 31 |
+| MT | MS | CodaMOSA | interface-only | 91.29 | 92.21 | -0.92 | 163 |
+| MT | MS | CoverUp | tidak ada | 89.42 | 90.16 | -0.75 | 163 |
+| CM | BC | CodaMOSA | interface-only | 17.85 | 17.09 | +0.76 | 37 |
+| CM | BC | CoverUp | tidak ada | 76.04 | 74.41 | +1.63 | 31 |
 
-*Keterangan:* **Adaptasi**: Jenis perubahan teknis interface permintaan ke LLM. $\Delta$: Penurunan rata-rata ketika B1 diganti dengan B2. MuTAP tidak dievaluasi pada B2.
+*Keterangan:* **Adaptasi**: Jenis perubahan teknis interface permintaan ke LLM. $\Delta$: Selisih rata-rata ketika B1 diganti dengan B2. MuTAP tidak dievaluasi pada B2.
 
 ---
 
@@ -126,14 +130,14 @@ TABEL VI melaporkan, untuk setiap generator berbasis LLM, perubahan efektivitas 
 
 | Suite | Metrik | Faktor | Estimasi | SK 95% | $p$ | Var. (%) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| MT | MS | Intercept (CodaMOSA, B1) | 87.664 | [85.368, 89.960] | $<0.001$ | - |
-| MT | MS | Tool: CoverUp | 0.769 | [-0.200, 1.739] | 0.120 | 0.01 |
-| MT | MS | Backbone: B2 | 0.121 | [-0.885, 1.127] | 0.814 | 0.00 |
-| MT | MS | CoverUp $\times$ B2 | -0.117 | [-1.487, 1.252] | 0.867 | 0.00 |
-| CM | BC | Intercept (CodaMOSA, B1) | 16.244 | [8.621, 23.868] | $<0.001$ | - |
-| CM | BC | Tool: CoverUp | 54.626 | [50.309, 58.943] | $<0.001$ | 43.43 |
-| CM | BC | Backbone: B2 | 0.362 | [-3.728, 4.452] | 0.862 | 0.01 |
-| CM | BC | CoverUp $\times$ B2 | -0.592 | [-6.445, 5.261] | 0.843 | 0.00 |
+| MT | MS | Intercept (CodaMOSA, B1) | 87.685 | [85.492, 89.877] | $<0.001$ | - |
+| MT | MS | Tool: CoverUp | 0.751 | [-0.074, 1.576] | 0.074 | 0.14 |
+| MT | MS | Backbone: B2 | 3.647 | [2.785, 4.510] | $<0.001$ | 0.63 |
+| MT | MS | CoverUp $\times$ B2 | -2.630 | [-3.811, -1.450] | $<0.001$ | 0.25 |
+| CM | BC | Intercept (CodaMOSA, B1) | 15.962 | [8.293, 23.632] | $<0.001$ | - |
+| CM | BC | Tool: CoverUp | 55.276 | [50.946, 59.606] | $<0.001$ | 43.16 |
+| CM | BC | Backbone: B2 | -3.637 | [-9.875, 2.601] | 0.253 | 0.00 |
+| CM | BC | CoverUp $\times$ B2 | 1.970 | [-6.876, 10.817] | 0.662 | 0.01 |
 
 *Keterangan:* Kondisi acuan: CodaMOSA dengan B1. Estimasi dalam poin persentase; unit (fungsi atau modul) sebagai *random intercept*. **SK**: Selang Kepercayaan (Confidence Interval); **Var.**: Porsi variasi yang dijelaskan oleh faktor tersebut.
 
@@ -141,21 +145,21 @@ TABEL VI melaporkan, untuk setiap generator berbasis LLM, perubahan efektivitas 
 
 ### C. RQ3: Cost-Effectiveness
 
-Sesuai revisi protokol (19 Oktober 2026), RQ3 mengevaluasi *cost-effectiveness* setiap tool berbasis LLM relatif terhadap baseline Pynguin (bebas biaya LLM). TABEL VIII merangkum biaya (token, USD, waktu) serta rasio efektivitas-terhadap-biaya ($CE = \Delta E / \text{cost}$). TABEL IX menguji signifikansi perbedaan biaya antar-tool.
+Sesuai revisi protokol (19 Oktober 2026), RQ3 mengevaluasi *cost-effectiveness* setiap tool berbasis LLM relatif terhadap baseline Pynguin (bebas biaya LLM). TABEL VIII merangkum biaya (token, USD, waktu) serta rasio efektivitas-terhadap-biaya ($CE = \Delta E / \text{cost}$). TABEL IX menguji signifikansi perbedaan biaya antar-tool secara berpasangan.
 
 #### TABEL VIII. Biaya dan Cost-Effectiveness (Baseline Pynguin)
 
 | Suite | Tool | BB | Metrik | Median Unit | Baseline Pynguin | $\Delta E$ (Poin) | Biaya Median (USD) | CE (Poin/USD) | Waktu Median (s) |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| MT | MuTAP | B1 | MS | 100.0 | 70.0 | +30.0 | $0.0268 | **1118.07** | 6.9 |
-| MT | CoverUp | B1 | MS | 92.3 | 70.0 | +22.3 | $0.0406 | **549.56** | 16.0 |
-| MT | CoverUp | B2 | MS | 94.0 | 70.0 | +24.0 | $0.0389 | **617.60** | 16.4 |
-| MT | CodaMOSA | B1 | MS | 96.0 | 70.0 | +26.0 | $0.0639 | **406.95** | 35.3 |
-| MT | CodaMOSA | B2 | MS | 96.0 | 70.0 | +26.0 | $0.0660 | **394.18** | 34.1 |
-| CM | CoverUp | B1 | BC | 100.0 | 0.0 | +100.0 | $0.5670 | **176.37** | 230.6 |
-| CM | CoverUp | B2 | BC | 97.4 | 0.0 | +97.4 | $0.5517 | **176.58** | 219.4 |
-| CM | CodaMOSA | B1 | BC | 0.0 | 0.0 | 0.0 | $1.8588$ | **0.00** | 622.0 |
-| CM | CodaMOSA | B2 | BC | 0.0 | 0.0 | 0.0 | $2.0331$ | **0.00** | 622.9 |
+| MT | CoverUp | B2 | MS | 95.0 | 70.0 | +25.0 | $0.000854 | **29,263.72** | 104.4 |
+| MT | CodaMOSA | B2 | MS | 96.0 | 70.0 | +26.0 | $0.001760 | **14,769.58** | 342.6 |
+| MT | MuTAP | B1 | MS | 100.0 | 70.0 | +30.0 | $0.026824 | **1,118.40** | 6.9 |
+| MT | CoverUp | B1 | MS | 92.3 | 70.0 | +22.3 | $0.040592 | **549.56** | 16.0 |
+| MT | CodaMOSA | B1 | MS | 96.0 | 70.0 | +26.0 | $0.063890 | **406.95** | 35.3 |
+| CM | CoverUp | B2 | BC | 97.2 | 0.0 | +97.2 | $0.008461 | **11,491.04** | 289.9 |
+| CM | CoverUp | B1 | BC | 100.0 | 0.0 | +100.0 | $0.566996 | **176.37** | 230.6 |
+| CM | CodaMOSA | B2 | BC | 1.4 | 0.0 | +1.4 | $0.015483 | **89.70** | 630.4 |
+| CM | CodaMOSA | B1 | BC | 0.0 | 0.0 | 0.0 | $1.858828 | **0.00** | 622.0 |
 
 *Keterangan:* $\Delta E = \text{Median Unit} - \text{Baseline Pynguin}$; $CE = \Delta E / \text{Biaya Median (USD)}$.
 
@@ -165,44 +169,44 @@ Sesuai revisi protokol (19 Oktober 2026), RQ3 mengevaluasi *cost-effectiveness* 
 
 | Suite | BB | Perbandingan | $n$ | Median $\Delta\text{ Biaya (USD)}$ | Stat | $p\text{ (Holm)}$ |
 | :--- | :---: | :--- | :---: | :---: | :---: | :--- |
-| MT | B1 | MuTAP vs CodaMOSA | 120 | -0.0308 | 573.0 | $<0.001$ |
-| MT | B1 | CoverUp vs CodaMOSA | 120 | -0.0170 | 1163.0 | $<0.001$ |
-| MT | B1 | MuTAP vs CoverUp | 120 | -0.0088 | 2569.0 | 0.005 |
-| MT | B2 | CoverUp vs CodaMOSA | 162 | -0.0271 | 1108.0 | $<0.001$ |
-| CM | B1 | CoverUp vs CodaMOSA | 29 | -1.3725 | 5.0 | $<0.001$ |
-| CM | B2 | CoverUp vs CodaMOSA | 29 | -1.2509 | 0.0 | $<0.001$ |
+| MT | B1 | MuTAP vs CodaMOSA | 120 | -0.030751 | 573.0 | $<0.001$ |
+| MT | B1 | CoverUp vs CodaMOSA | 120 | -0.017025 | 1163.0 | $<0.001$ |
+| MT | B1 | MuTAP vs CoverUp | 120 | -0.009231 | 2454.0 | 0.004 |
+| MT | B2 | CoverUp vs CodaMOSA | 162 | -0.000926 | 410.0 | $<0.001$ |
+| CM | B1 | CoverUp vs CodaMOSA | 29 | -1.372528 | 5.0 | $<0.001$ |
+| CM | B2 | CoverUp vs CodaMOSA | 17 | -0.002543 | 34.0 | 0.045 |
 
-*Keterangan:* Uji berpasangan per unit modul/fungsi. $p$-value dikoreksi Holm atas seluruh pasangan uji biaya. CoverUp dan MuTAP secara konsisten signifikan lebih murah dibandingkan CodaMOSA.
+*Keterangan:* Uji berpasangan per unit modul/fungsi. $p$-value dikoreksi Holm atas seluruh 6 pasangan uji biaya. CoverUp dan MuTAP secara konsisten signifikan lebih murah dibandingkan CodaMOSA.
 
 ---
 
 ## V. PEMBAHASAN
 
-Hasil eksperimen menunjukkan bahwa peringkat efektivitas generator bertahan konsisten di kedua *backbone*: CoverUp mendominasi pada CM suite, sedangkan MuTAP dan CodaMOSA unggul pada mutation score di MT suite. Stabilitas ini sejalan dengan temuan RQ2 di mana efek pergantian backbone B1 ke B2 hanya menghasilkan pergeseran marjinal (<0.5 poin persentase) tanpa interaksi signifikan. Algoritma pembangkitan tes dan strategi pencarian terbukti jauh lebih menentukan keberhasilan dibandingkan kapasitas mentah model LLM.
+Hasil eksperimen menunjukkan bahwa peringkat efektivitas generator bertahan konsisten di kedua *backbone*: CoverUp mendominasi pada CM suite, sedangkan MuTAP dan CodaMOSA unggul pada *mutation score* di MT suite. Stabilitas ini sejalan dengan temuan RQ2 di mana pada modul kompleks (CM), variasi kinerja hampir sepenuhnya dijelaskan oleh perbedaan desain **algoritma tool** (43.16% variasi pada *branch coverage*, $p < 0.001$), sedangkan pergantian *backbone* dari B1 (`gpt-5.6-sol`) ke B2 (`glm-5.3-flash`) hanya menggeser rata-rata sebesar 0.76–1.63 poin persentase tanpa signifikansi statistik ($p = 0.253$). Dengan kata lain, arsitektur umpan balik cakupan (*coverage-guided prompting*) jauh lebih menentukan keberhasilan pengujian dibanding kapasitas atau harga model LLM.
 
-Terdapat ketidaksesuaian tajam antara *coverage* dan *mutation score*. Pada fungsi sederhana (MT suite), efek plafon menyebabkan line dan branch coverage menempel di 100% untuk seluruh generator, menyembunyikan perbedaan kualitas asersi di mana Pynguin hanya membunuh 68.0% mutan dibanding $\ge 92.0\%$ pada generator LLM. Sebaliknya pada proyek riil (CM suite), tantangan utama bergeser kembali ke *reachability*: CoverUp berhasil menavigasi dependensi modul dan mencapai 95.2% branch coverage berkat umpan balik dinamis SlipCover, sedangkan CodaMOSA dan Pynguin sering kehabisan anggaran waktu 600 detik tanpa mengeksekusi cabang baru.
+Terdapat dikotomi yang jelas antara *coverage* dan *mutation score* lintas kompleksitas target. Pada fungsi tunggal mandiri (MT suite), efek plafon (*ceiling effect*) menyebabkan *line* dan *branch coverage* menempel di 100.0% untuk seluruh generator, menyembunyikan kesenjangan kualitas asersi di mana Pynguin hanya membunuh 68.0% mutan dibanding $\ge 92.3\%$ pada seluruh generator berbasis LLM ($\hat{A}_{12} = 0.77\text{–}0.81$, $p_{\text{Holm}} < 0.001$). Sebaliknya, pada modul proyek riil (CM suite), tantangan utama bergeser kembali ke *reachability* dan penanganan dependensi: CoverUp berhasil mencapai 95.2%–100.0% *branch coverage* berkat instrumentasi *SlipCover* dan *iterative repair*, sedangkan CodaMOSA dan Pynguin menghabiskan batas waktu 600 detik (*hit budget* 92.6%–96.7%) dengan median *branch coverage* 0.0%.
 
-Dari segi validitas mentah (*raw validity*), CoverUp dan MuTAP menunjukkan bahwa prompt terarah dan sampling berbasis cakupan menghasilkan tes yang sebagian besar langsung valid (89.5%–99.9% di MT). Sebaliknya, CodaMOSA mencatat validitas mentah median 0.0%, membuktikan bahwa keberhasilannya sangat bertumpu pada runtime filtering Pynguin untuk membuang usulan halusinasi sebelum dijadikan asersi.
+Dari sisi validitas usulan mentah (*raw validity*), MuTAP (median 100.0%, mean 99.8%) dan CoverUp (median 100.0% di MT, 20.0%–100.0% di CM) menghasilkan potongan tes yang sebagian besar langsung dapat dieksekusi. Sebaliknya, CodaMOSA mencatat validitas mentah median 0.0% (mean 3.5%–15.5%) karena meminta LLM menghasilkan potongan pemanggilan fungsi tanpa kerangka asersi utuh, lalu mengandalkan *runtime parser* Pynguin untuk mengekstrak *chromosome* yang valid.
 
-Secara praktis, analisis *cost-effectiveness* (RQ3) menetapkan CoverUp sebagai pilihan paling efisien untuk modul aplikasi riil: CoverUp mencapai cakupan tertinggi dengan biaya 4 kali lebih murah ($0.56 vs $1.86–$2.03) dan 2.5 kali lebih cepat dibanding CodaMOSA. Untuk pengujian fungsi individual, MuTAP menawarkan rasio efektivitas-biaya tertinggi ($CE = 1118.07$ poin/USD) dengan skor mutasi sempurna (100.0%).
+Analisis *cost-effectiveness* (RQ3) mengungkap implikasi praktis yang kuat. Pada *backbone* yang sama (B1), CoverUp di CM suite mencapai cakupan tertinggi sekaligus menghemat biaya 3.3 kali lipat ($0.567 vs $1.859 per run, $p_{\text{Holm}} < 0.001$) dan berjalan 2.7 kali lebih cepat (230.6 dtk vs 622.0 dtk) dibanding CodaMOSA. Ketika dipasangkan dengan *backbone* ekonomis B2 (`glm-5.3-flash`), rasio *cost-effectiveness* CoverUp melonjak drastis menjadi **11,491.04 poin/USD** di CM ($0.0085/run) dan **29,263.72 poin/USD** di MT ($0.00085/run). Namun, penggunaan B2 dengan pembatasan *rate limit* 50 RPM dan latensi penalaran yang lebih panjang meningkatkan proporsi *timeout* pada modul CM berukuran besar (80.2%–81.5% pada B2 vs 24.5%–34.8% pada B1), menunjukkan adanya *trade-off* antara efisiensi biaya token dan *throughput* eksekusi dalam anggaran waktu tetap.
 
 ---
 
 ## VI. ANCAMAN TERHADAP VALIDITAS
 
-- **Validitas Internal:** Nondeterminisme pencarian SBST dan inferensi LLM dimitigasi dengan menjalankan $R = 10$ repetisi independen. Budget waktu 600 detik diterapkan seragam dan waktu tunggu rate-limit dipisahkan agar tidak mendistorsi pengukuran latensi tool.
-- **Validitas Konstruk:** Efek plafon coverage pada MT diatasi dengan menggunakan *mutation score* sebagai pembeda utama kualitas pengujian. Mutan dihitung pada basis himpunan mutan Cosmic Ray yang identik untuk seluruh generator.
-- **Validitas Eksternal:** Dataset mencakup benchmark mandiri (MT, 163 fungsi) dan kode proyek industri/open-source Python (CM, 40 modul dari 8 stratum kompleksitas dan ukuran). MuTAP hanya dievaluasi pada MT dan backbone B1 karena keterbatasan arsitektur pipeline aslinya.
-- **Validitas Kesimpulan:** Seluruh perbandingan berpasangan diuji menggunakan uji non-parametrik Wilcoxon signed-rank dengan koreksi Holm untuk perbandingan jamak, ukuran efek Vargha-Delaney $\hat{A}_{12}$, serta bootstrap selang kepercayaan 95%.
+- **Validitas Internal:** Nondeterminisme algoritma pencarian genetik dan inferensi LLM dimitigasi melalui $R = 10$ perulangan independen per unit. Anggaran waktu 600 detik diterapkan seragam per run. Pada *backbone* B2 (`glm-5.3-flash`), penerapan *rate limiter* global 50 RPM (`src/rate_gate.py`) dan latensi penalaran model menyebabkan tingkat kegagalan *timeout* yang lebih tinggi pada modul CM (80.2%–81.5%), sehingga analisis berpasangan hanya mengevaluasi irisan unit yang berhasil pada kedua tool ($n$ dilaporkan secara eksplisit pada setiap baris uji). Selain itu, 744 dari 4,060 baris pada berkas checkpoint B2 berasal dari fase transisi endpoint `gpt-5.6-luna` sebelum distandarkan ke `glm-5.3-flash`.
+- **Validitas Konstruk:** Efek plafon *coverage* pada MT diatasi dengan menggunakan *mutation score* sebagai metrik utama. Pada suite CM, eksekusi mutasi *Cosmic Ray* dengan batas evaluasi 900 detik menghasilkan nol mutan pada sebagian besar modul besar karena mahalnya kompilasi ulang lingkungan kontainer, sehingga *branch coverage* digunakan sebagai metrik primer di CM sesuai protokol.
+- **Validitas Eksternal:** Evaluasi mencakup dua ekstrem granularitas: 163 fungsi mandiri (MT) dan 40 modul proyek *open-source* nyata dari 16 repositori dan 8 stratum kompleksitas/ukuran non-kosong (CM). Karena kedua benchmark bersifat publik, potensi kontaminasi data pra-pelatihan LLM tetap tidak dapat dieliminasi sepenuhnya.
+- **Validitas Kesimpulan:** Seluruh hipotesis diuji menggunakan statistik non-parametrik berpasangan (Wilcoxon *signed-rank*), koreksi perbandingan jamak Holm, ukuran efek non-parametrik Vargha–Delaney $\hat{A}_{12}$, selang kepercayaan *bootstrap* 95% (10,000 resampel), serta model *linear mixed-effects* dengan *random intercept* per unit.
 
 ---
 
 ## VII. KESIMPULAN
 
-Penelitian ini mengevaluasi empat generator unit test Python pada dua lingkungan benchmark dan dua backbone LLM:
-1. **RQ1 (Efektivitas):** Pada MT suite, seluruh generator LLM mengungguli Pynguin dalam mutation score (92.0%–100.0% vs 68.0%) di tengah efek plafon coverage (100.0%), dengan MuTAP dan CoverUp menunjukkan validitas usulan mentah tertinggi (~90%–100%). Pada CM suite, CoverUp unggul mutlak dalam branch coverage (median 95.2%–97.2%) melampaui CodaMOSA (0.0%) dan Pynguin (0.0%).
-2. **RQ2 (Algoritma vs Backbone):** Variasi kinerja hampir sepenuhnya (>95%) ditentukan oleh algoritma tool (menjelaskan 43.43% variasi branch coverage di CM), sedangkan pengaruh backbone dan interaksinya sangat kecil (<0.01%, $p > 0.8$) dan tidak signifikan secara statistik.
-3. **RQ3 (Cost-Effectiveness):** CoverUp mendominasi secara Pareto pada CM suite dengan branch coverage tertinggi, biaya 4 kali lebih murah ($0.56 vs $1.86–$2.03), dan waktu 2.5 kali lebih cepat dibanding CodaMOSA; di MT suite, MuTAP mencapai rasio efektivitas-biaya tertinggi (1118.07 poin/USD) pada biaya terendah ($0.027 per fungsi).
+Penelitian ini mengevaluasi empat generator unit test Python (CodaMOSA, CoverUp, MuTAP, dan Pynguin) pada dua lingkungan benchmark (163 fungsi MT dan 40 modul CM) menggunakan dua *backbone* LLM (`B1 = gpt-5.6-sol` dan `B2 = glm-5.3-flash`) dengan $R = 10$ perulangan (total 11,683 run):
+1. **RQ1 (Efektivitas):** Pada fungsi tunggal (MT), seluruh generator berbasis LLM mengungguli Pynguin secara signifikan pada *mutation score* (median 92.3%–100.0% vs 68.0%; $\hat{A}_{12} = 0.77\text{–}0.81$, $p_{\text{Holm}} < 0.001$) di tengah efek plafon *coverage* (100.0%). Pada modul proyek riil (CM), CoverUp unggul mutlak dalam *branch coverage* (median 95.2%–100.0%, mean 72.1%–73.4%) atas CodaMOSA (median 0.0%, $\hat{A}_{12} = 0.85\text{–}0.88$, $p_{\text{Holm}} \le 0.029$) dan Pynguin (median 0.0%).
+2. **RQ2 (Algoritma vs Backbone):** Pada modul kompleks (CM), desain algoritma tool menjelaskan **43.16%** variasi *branch coverage* ($p < 0.001$), sedangkan perbedaan model *backbone* ($0.00\%$, $p = 0.253$) dan interaksinya ($0.01\%$, $p = 0.662$) tidak signifikan.
+3. **RQ3 (Cost-Effectiveness):** CoverUp mendominasi secara Pareto di kedua suite. Pada *backbone* B1 di CM, CoverUp 3.3 kali lebih hemat biaya ($0.567 vs $1.859/run) dan 2.7 kali lebih cepat dibanding CodaMOSA. Penggunaan *backbone* ekonomis B2 (`glm-5.3-flash`) meningkatkan rasio *cost-effectiveness* CoverUp hingga **11,491.04 poin/USD** di CM dan **29,263.72 poin/USD** di MT, dengan catatan perlunya manajemen *throughput* API agar terhindar dari *timeout* pada modul berukuran besar.
 
 ---
 
